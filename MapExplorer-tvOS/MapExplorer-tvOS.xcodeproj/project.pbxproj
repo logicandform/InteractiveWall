@@ -1,0 +1,684 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2212B9E52016FA2100BD91E1 /* CoreGraphics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2212B9E42016FA2100BD91E1 /* CoreGraphics.swift */; };
+		221564EA1FFF106A007CE7AD /* LocationDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 221564E91FFF106A007CE7AD /* LocationDetailView.xib */; };
+		221564EC20003E3C007CE7AD /* LocationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221564EB20003E3C007CE7AD /* LocationDetailView.swift */; };
+		221FED942011A42400E72A22 /* GestureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221FED932011A42400E72A22 /* GestureView.swift */; };
+		221FED9620126BFB00E72A22 /* TouchProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221FED9520126BFB00E72A22 /* TouchProperties.swift */; };
+		22292AB32003FD3F00814597 /* LocationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22292AB22003FD3F00814597 /* LocationItem.swift */; };
+		223012CA2007F99A00A9FB04 /* TouchHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223012C82007F99A00A9FB04 /* TouchHandler.swift */; };
+		223012D8200811C900A9FB04 /* RotateGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223012CF200811C800A9FB04 /* RotateGestureRecognizer.swift */; };
+		223012D9200811C900A9FB04 /* GestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223012D0200811C800A9FB04 /* GestureHandler.swift */; };
+		223012DA200811C900A9FB04 /* Touch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223012D1200811C800A9FB04 /* Touch.swift */; };
+		223012DB200811C900A9FB04 /* GestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223012D2200811C900A9FB04 /* GestureRecognizer.swift */; };
+		223012DC200811C900A9FB04 /* PanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223012D3200811C900A9FB04 /* PanGestureRecognizer.swift */; };
+		223012DD200811C900A9FB04 /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223012D4200811C900A9FB04 /* TapGestureRecognizer.swift */; };
+		223012DE200811C900A9FB04 /* GestureDemoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223012D5200811C900A9FB04 /* GestureDemoController.swift */; };
+		223012DF200811C900A9FB04 /* PinchGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223012D6200811C900A9FB04 /* PinchGestureRecognizer.swift */; };
+		223012E0200811C900A9FB04 /* SwipeGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223012D7200811C900A9FB04 /* SwipeGestureRecognizer.swift */; };
+		22A0EF931FFD719200959101 /* LocationAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A0EF921FFD719200959101 /* LocationAnnotation.swift */; };
+		22A0EF981FFD72D600959101 /* MKMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A0EF971FFD72D600959101 /* MKMapView.swift */; };
+		22A0EF9A1FFD734B00959101 /* NetworkConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A0EF991FFD734B00959101 /* NetworkConfiguration.swift */; };
+		22A0EF9C1FFD736F00959101 /* PacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A0EF9B1FFD736F00959101 /* PacketType.swift */; };
+		22A0EF9E1FFD85C700959101 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22A0EF9D1FFD85C700959101 /* MapKit.framework */; };
+		22A0EFA01FFD863F00959101 /* UniverseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A0EF9F1FFD863F00959101 /* UniverseController.swift */; };
+		22A0EFA41FFD9D7D00959101 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A0EFA31FFD9D7D00959101 /* Style.swift */; };
+		22A0EFA61FFD9FBD00959101 /* Discipline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A0EFA51FFD9FBD00959101 /* Discipline.swift */; };
+		22B75BE11FFC387200F51F87 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B75BE01FFC387200F51F87 /* AppDelegate.swift */; };
+		22B75BE31FFC387200F51F87 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B75BE21FFC387200F51F87 /* MapViewController.swift */; };
+		22B75BE61FFC387200F51F87 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22B75BE41FFC387200F51F87 /* Main.storyboard */; };
+		22B75BE81FFC387200F51F87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22B75BE71FFC387200F51F87 /* Assets.xcassets */; };
+		22B75C0C1FFC38AF00F51F87 /* MapPoints.json in Resources */ = {isa = PBXBuildFile; fileRef = 22B75C0B1FFC38AF00F51F87 /* MapPoints.json */; };
+		3F0D5F9620115CF90060104E /* CircleAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0D5F9520115CF90060104E /* CircleAnnotationView.swift */; };
+		3F63E67F2016648300DE7005 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F63E67E2016648300DE7005 /* NetworkManager.swift */; };
+		47C90DA2E2F56B820071EAD7 /* Pods_All_MapExplorer_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ADA089C9B0EE4B34F99557 /* Pods_All_MapExplorer_tvOS.framework */; };
+		771B45ECB5BBDA97937AA711 /* Pods_MapExplorer_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 717EB77E11899F445B1AAA11 /* Pods_MapExplorer_tvOS.framework */; };
+		8F3180FC2011348800E03BA2 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8F3180FB2011348800E03BA2 /* Settings.bundle */; };
+		8F3180FE2011685100E03BA2 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F3180FD2011685100E03BA2 /* Int.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		06F3E2FD23AD59F72F76EEDC /* Pods-All-MapExplorer-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-tvOS.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-tvOS/Pods-All-MapExplorer-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		07E33632D1C49C9591FC23D8 /* Pods-MapExplorer-UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-UITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-UITests/Pods-MapExplorer-UITests.release.xcconfig"; sourceTree = "<group>"; };
+		1033DE3EBB100377CA9B2748 /* Pods-MapExplorer-UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-UITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-UITests/Pods-MapExplorer-UITests.debug.xcconfig"; sourceTree = "<group>"; };
+		1A3CB44267D69878B89B9647 /* Pods-MapExplorer-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-tvOS/Pods-MapExplorer-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		1D0D75334C931C9C50B2B9AF /* Pods-MapExplorer-UnitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-UnitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-UnitTests/Pods-MapExplorer-UnitTests.debug.xcconfig"; sourceTree = "<group>"; };
+		2212B9E42016FA2100BD91E1 /* CoreGraphics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreGraphics.swift; sourceTree = "<group>"; };
+		221564E91FFF106A007CE7AD /* LocationDetailView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LocationDetailView.xib; sourceTree = "<group>"; };
+		221564EB20003E3C007CE7AD /* LocationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDetailView.swift; sourceTree = "<group>"; };
+		221EE7E31FFEC55800626437 /* MapExplorer.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MapExplorer.plist; sourceTree = "<group>"; };
+		221EE7E51FFEC58300626437 /* UITests.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UITests.plist; sourceTree = "<group>"; };
+		221EE7E61FFEC58300626437 /* UnitTests.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UnitTests.plist; sourceTree = "<group>"; };
+		221FED932011A42400E72A22 /* GestureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureView.swift; sourceTree = "<group>"; };
+		221FED9520126BFB00E72A22 /* TouchProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchProperties.swift; sourceTree = "<group>"; };
+		22292AB22003FD3F00814597 /* LocationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationItem.swift; sourceTree = "<group>"; };
+		223012C82007F99A00A9FB04 /* TouchHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchHandler.swift; sourceTree = "<group>"; };
+		223012CF200811C800A9FB04 /* RotateGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotateGestureRecognizer.swift; sourceTree = "<group>"; };
+		223012D0200811C800A9FB04 /* GestureHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureHandler.swift; sourceTree = "<group>"; };
+		223012D1200811C800A9FB04 /* Touch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Touch.swift; sourceTree = "<group>"; };
+		223012D2200811C900A9FB04 /* GestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureRecognizer.swift; sourceTree = "<group>"; };
+		223012D3200811C900A9FB04 /* PanGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanGestureRecognizer.swift; sourceTree = "<group>"; };
+		223012D4200811C900A9FB04 /* TapGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapGestureRecognizer.swift; sourceTree = "<group>"; };
+		223012D5200811C900A9FB04 /* GestureDemoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureDemoController.swift; sourceTree = "<group>"; };
+		223012D6200811C900A9FB04 /* PinchGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinchGestureRecognizer.swift; sourceTree = "<group>"; };
+		223012D7200811C900A9FB04 /* SwipeGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeGestureRecognizer.swift; sourceTree = "<group>"; };
+		22A0EF921FFD719200959101 /* LocationAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAnnotation.swift; sourceTree = "<group>"; };
+		22A0EF971FFD72D600959101 /* MKMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKMapView.swift; sourceTree = "<group>"; };
+		22A0EF991FFD734B00959101 /* NetworkConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConfiguration.swift; sourceTree = "<group>"; };
+		22A0EF9B1FFD736F00959101 /* PacketType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacketType.swift; sourceTree = "<group>"; };
+		22A0EF9D1FFD85C700959101 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		22A0EF9F1FFD863F00959101 /* UniverseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniverseController.swift; sourceTree = "<group>"; };
+		22A0EFA31FFD9D7D00959101 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
+		22A0EFA51FFD9FBD00959101 /* Discipline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Discipline.swift; sourceTree = "<group>"; };
+		22B75BDD1FFC387200F51F87 /* MapExplorer-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MapExplorer-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		22B75BE01FFC387200F51F87 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		22B75BE21FFC387200F51F87 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		22B75BE51FFC387200F51F87 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		22B75BE71FFC387200F51F87 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		22B75BF21FFC387300F51F87 /* UnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitTests.swift; sourceTree = "<group>"; };
+		22B75BFD1FFC387300F51F87 /* UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITests.swift; sourceTree = "<group>"; };
+		22B75C0B1FFC38AF00F51F87 /* MapPoints.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MapPoints.json; sourceTree = "<group>"; };
+		296A88DC700265ACDB2ED8A2 /* Pods_MapExplorer_tvOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapExplorer_tvOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3F0D5F9520115CF90060104E /* CircleAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleAnnotationView.swift; sourceTree = "<group>"; };
+		3F63E67E2016648300DE7005 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		717EB77E11899F445B1AAA11 /* Pods_MapExplorer_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapExplorer_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		76FE58CFD57CAEA4B14D82E7 /* Pods_MapExplorer_UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapExplorer_UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		79976DA56EA93EDB7FA41893 /* Pods-MapExplorer-tvOSUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-tvOSUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-tvOSUITests/Pods-MapExplorer-tvOSUITests.release.xcconfig"; sourceTree = "<group>"; };
+		8F3180FB2011348800E03BA2 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		8F3180FD2011685100E03BA2 /* Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
+		9347337353BA1FC3A1039E5D /* Pods-MapExplorer-UnitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-UnitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-UnitTests/Pods-MapExplorer-UnitTests.release.xcconfig"; sourceTree = "<group>"; };
+		9D02946526D7E17D0A657AF8 /* Pods_MapExplorer_tvOSUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapExplorer_tvOSUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6146830E03450D1DFFA5DBE /* Pods-MapExplorer-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-tvOS/Pods-MapExplorer-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		ABED2DE63C9EFA3F4359BC68 /* Pods-MapExplorer-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-tvOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-tvOSTests/Pods-MapExplorer-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		C38E5A5CA87EA54057CC1BE7 /* Pods-All-MapExplorer-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-tvOS.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-tvOS/Pods-All-MapExplorer-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		C9ADA089C9B0EE4B34F99557 /* Pods_All_MapExplorer_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_MapExplorer_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2BB5660E384C8A9AA77BDA8 /* Pods-MapExplorer-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-tvOSTests/Pods-MapExplorer-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		E4E3D11A2E364F343A7A72BF /* Pods_MapExplorer_UnitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapExplorer_UnitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F36BFE6CAEDDE51FB1944675 /* Pods-MapExplorer-tvOSUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-tvOSUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-tvOSUITests/Pods-MapExplorer-tvOSUITests.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		22B75BDA1FFC387200F51F87 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22A0EF9E1FFD85C700959101 /* MapKit.framework in Frameworks */,
+				771B45ECB5BBDA97937AA711 /* Pods_MapExplorer_tvOS.framework in Frameworks */,
+				47C90DA2E2F56B820071EAD7 /* Pods_All_MapExplorer_tvOS.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2210A2591FFC830500CA7C16 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				3F63E67D2016647000DE7005 /* Networking */,
+				223012CE200811AA00A9FB04 /* Gestures */,
+				22A0EFA21FFD9D6C00959101 /* Helpers */,
+				22442AC91FFCB258000FFA32 /* Managers */,
+				22442AC81FFCB22A000FFA32 /* Controllers */,
+				221FED9720126C6C00E72A22 /* Views */,
+				22442AC21FFCB1BE000FFA32 /* Models */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		2210A25A1FFC831600CA7C16 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				22B75BFD1FFC387300F51F87 /* UITests.swift */,
+				22B75BF21FFC387300F51F87 /* UnitTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		2210A25B1FFC842E00CA7C16 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				22B75C0B1FFC38AF00F51F87 /* MapPoints.json */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		2210A25E1FFC893700CA7C16 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				22B75BE71FFC387200F51F87 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		221EE7E91FFEC58E00626437 /* Metadata */ = {
+			isa = PBXGroup;
+			children = (
+				8F3180FB2011348800E03BA2 /* Settings.bundle */,
+				221EE7E51FFEC58300626437 /* UITests.plist */,
+				221EE7E61FFEC58300626437 /* UnitTests.plist */,
+				221EE7E31FFEC55800626437 /* MapExplorer.plist */,
+			);
+			path = Metadata;
+			sourceTree = "<group>";
+		};
+		221FED9720126C6C00E72A22 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				221FED932011A42400E72A22 /* GestureView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		223012CE200811AA00A9FB04 /* Gestures */ = {
+			isa = PBXGroup;
+			children = (
+				223012D2200811C900A9FB04 /* GestureRecognizer.swift */,
+				223012D3200811C900A9FB04 /* PanGestureRecognizer.swift */,
+				223012D6200811C900A9FB04 /* PinchGestureRecognizer.swift */,
+				223012CF200811C800A9FB04 /* RotateGestureRecognizer.swift */,
+				223012D7200811C900A9FB04 /* SwipeGestureRecognizer.swift */,
+				223012D4200811C900A9FB04 /* TapGestureRecognizer.swift */,
+				223012D5200811C900A9FB04 /* GestureDemoController.swift */,
+			);
+			path = Gestures;
+			sourceTree = "<group>";
+		};
+		22442AC21FFCB1BE000FFA32 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				223012D1200811C800A9FB04 /* Touch.swift */,
+				22A0EFA51FFD9FBD00959101 /* Discipline.swift */,
+				22292AB22003FD3F00814597 /* LocationItem.swift */,
+				221FED9520126BFB00E72A22 /* TouchProperties.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		22442AC81FFCB22A000FFA32 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				22B75BE41FFC387200F51F87 /* Main.storyboard */,
+				22A0EF911FFD6CB200959101 /* MapViewController */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		22442AC91FFCB258000FFA32 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				22B75BE01FFC387200F51F87 /* AppDelegate.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		22A0EF911FFD6CB200959101 /* MapViewController */ = {
+			isa = PBXGroup;
+			children = (
+				22A0EF9F1FFD863F00959101 /* UniverseController.swift */,
+				22B75BE21FFC387200F51F87 /* MapViewController.swift */,
+				3F0D5F9520115CF90060104E /* CircleAnnotationView.swift */,
+				221564E91FFF106A007CE7AD /* LocationDetailView.xib */,
+				221564EB20003E3C007CE7AD /* LocationDetailView.swift */,
+				22A0EF921FFD719200959101 /* LocationAnnotation.swift */,
+			);
+			path = MapViewController;
+			sourceTree = "<group>";
+		};
+		22A0EF961FFD72C200959101 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8F3180FD2011685100E03BA2 /* Int.swift */,
+				22A0EF971FFD72D600959101 /* MKMapView.swift */,
+				22A0EF991FFD734B00959101 /* NetworkConfiguration.swift */,
+				22A0EF9B1FFD736F00959101 /* PacketType.swift */,
+				2212B9E42016FA2100BD91E1 /* CoreGraphics.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		22A0EFA21FFD9D6C00959101 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				223012C82007F99A00A9FB04 /* TouchHandler.swift */,
+				223012D0200811C800A9FB04 /* GestureHandler.swift */,
+				22A0EFA31FFD9D7D00959101 /* Style.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		22B75BD41FFC387200F51F87 = {
+			isa = PBXGroup;
+			children = (
+				2210A2591FFC830500CA7C16 /* Sources */,
+				2210A25B1FFC842E00CA7C16 /* Data */,
+				22A0EF961FFD72C200959101 /* Extensions */,
+				2210A25E1FFC893700CA7C16 /* Resources */,
+				2210A25A1FFC831600CA7C16 /* Tests */,
+				221EE7E91FFEC58E00626437 /* Metadata */,
+				A61F03FDA0B0C49EA22BB816 /* Pods */,
+				95D609990CE90E857091AFDE /* Frameworks */,
+				22B75BDE1FFC387200F51F87 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		22B75BDE1FFC387200F51F87 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				22B75BDD1FFC387200F51F87 /* MapExplorer-tvOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3F63E67D2016647000DE7005 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				3F63E67E2016648300DE7005 /* NetworkManager.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		95D609990CE90E857091AFDE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				22A0EF9D1FFD85C700959101 /* MapKit.framework */,
+				717EB77E11899F445B1AAA11 /* Pods_MapExplorer_tvOS.framework */,
+				296A88DC700265ACDB2ED8A2 /* Pods_MapExplorer_tvOSTests.framework */,
+				9D02946526D7E17D0A657AF8 /* Pods_MapExplorer_tvOSUITests.framework */,
+				76FE58CFD57CAEA4B14D82E7 /* Pods_MapExplorer_UITests.framework */,
+				E4E3D11A2E364F343A7A72BF /* Pods_MapExplorer_UnitTests.framework */,
+				C9ADA089C9B0EE4B34F99557 /* Pods_All_MapExplorer_tvOS.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A61F03FDA0B0C49EA22BB816 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1A3CB44267D69878B89B9647 /* Pods-MapExplorer-tvOS.debug.xcconfig */,
+				A6146830E03450D1DFFA5DBE /* Pods-MapExplorer-tvOS.release.xcconfig */,
+				E2BB5660E384C8A9AA77BDA8 /* Pods-MapExplorer-tvOSTests.debug.xcconfig */,
+				ABED2DE63C9EFA3F4359BC68 /* Pods-MapExplorer-tvOSTests.release.xcconfig */,
+				F36BFE6CAEDDE51FB1944675 /* Pods-MapExplorer-tvOSUITests.debug.xcconfig */,
+				79976DA56EA93EDB7FA41893 /* Pods-MapExplorer-tvOSUITests.release.xcconfig */,
+				1033DE3EBB100377CA9B2748 /* Pods-MapExplorer-UITests.debug.xcconfig */,
+				07E33632D1C49C9591FC23D8 /* Pods-MapExplorer-UITests.release.xcconfig */,
+				1D0D75334C931C9C50B2B9AF /* Pods-MapExplorer-UnitTests.debug.xcconfig */,
+				9347337353BA1FC3A1039E5D /* Pods-MapExplorer-UnitTests.release.xcconfig */,
+				C38E5A5CA87EA54057CC1BE7 /* Pods-All-MapExplorer-tvOS.debug.xcconfig */,
+				06F3E2FD23AD59F72F76EEDC /* Pods-All-MapExplorer-tvOS.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		22B75BDC1FFC387200F51F87 /* MapExplorer-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 22B75C021FFC387300F51F87 /* Build configuration list for PBXNativeTarget "MapExplorer-tvOS" */;
+			buildPhases = (
+				C07413F22D97B10F9CED0043 /* [CP] Check Pods Manifest.lock */,
+				22B75BD91FFC387200F51F87 /* Sources */,
+				22B75BDA1FFC387200F51F87 /* Frameworks */,
+				22B75BDB1FFC387200F51F87 /* Resources */,
+				223012E42008425300A9FB04 /* Run Swiftlint */,
+				D6B0B8C57D3A35BA1CE23D8C /* [CP] Embed Pods Frameworks */,
+				95406760E0ED20A889779655 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "MapExplorer-tvOS";
+			productName = "MapExplorer-tvOS";
+			productReference = 22B75BDD1FFC387200F51F87 /* MapExplorer-tvOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		22B75BD51FFC387200F51F87 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0920;
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = slant;
+				TargetAttributes = {
+					22B75BDC1FFC387200F51F87 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = 22B75BD81FFC387200F51F87 /* Build configuration list for PBXProject "MapExplorer-tvOS" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 22B75BD41FFC387200F51F87;
+			productRefGroup = 22B75BDE1FFC387200F51F87 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				22B75BDC1FFC387200F51F87 /* MapExplorer-tvOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		22B75BDB1FFC387200F51F87 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22B75C0C1FFC38AF00F51F87 /* MapPoints.json in Resources */,
+				22B75BE81FFC387200F51F87 /* Assets.xcassets in Resources */,
+				8F3180FC2011348800E03BA2 /* Settings.bundle in Resources */,
+				221564EA1FFF106A007CE7AD /* LocationDetailView.xib in Resources */,
+				22B75BE61FFC387200F51F87 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		223012E42008425300A9FB04 /* Run Swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Swiftlint";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+		};
+		95406760E0ED20A889779655 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-All-MapExplorer-tvOS/Pods-All-MapExplorer-tvOS-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C07413F22D97B10F9CED0043 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-All-MapExplorer-tvOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D6B0B8C57D3A35BA1CE23D8C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/../Pods/Target Support Files/Pods-All-MapExplorer-tvOS/Pods-All-MapExplorer-tvOS-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire-tvOS/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket-tvOS/CocoaAsyncSocket.framework",
+				"${BUILT_PRODUCTS_DIR}/MONode-tvOS/MONode.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MONode.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-All-MapExplorer-tvOS/Pods-All-MapExplorer-tvOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		22B75BD91FFC387200F51F87 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22A0EFA01FFD863F00959101 /* UniverseController.swift in Sources */,
+				223012CA2007F99A00A9FB04 /* TouchHandler.swift in Sources */,
+				223012DD200811C900A9FB04 /* TapGestureRecognizer.swift in Sources */,
+				22A0EF981FFD72D600959101 /* MKMapView.swift in Sources */,
+				223012DE200811C900A9FB04 /* GestureDemoController.swift in Sources */,
+				2212B9E52016FA2100BD91E1 /* CoreGraphics.swift in Sources */,
+				22A0EF9C1FFD736F00959101 /* PacketType.swift in Sources */,
+				223012E0200811C900A9FB04 /* SwipeGestureRecognizer.swift in Sources */,
+				22B75BE31FFC387200F51F87 /* MapViewController.swift in Sources */,
+				223012DF200811C900A9FB04 /* PinchGestureRecognizer.swift in Sources */,
+				221564EC20003E3C007CE7AD /* LocationDetailView.swift in Sources */,
+				223012DC200811C900A9FB04 /* PanGestureRecognizer.swift in Sources */,
+				22A0EFA61FFD9FBD00959101 /* Discipline.swift in Sources */,
+				22B75BE11FFC387200F51F87 /* AppDelegate.swift in Sources */,
+				221FED942011A42400E72A22 /* GestureView.swift in Sources */,
+				22A0EF931FFD719200959101 /* LocationAnnotation.swift in Sources */,
+				221FED9620126BFB00E72A22 /* TouchProperties.swift in Sources */,
+				22A0EFA41FFD9D7D00959101 /* Style.swift in Sources */,
+				223012DB200811C900A9FB04 /* GestureRecognizer.swift in Sources */,
+				22292AB32003FD3F00814597 /* LocationItem.swift in Sources */,
+				3F0D5F9620115CF90060104E /* CircleAnnotationView.swift in Sources */,
+				223012D8200811C900A9FB04 /* RotateGestureRecognizer.swift in Sources */,
+				223012DA200811C900A9FB04 /* Touch.swift in Sources */,
+				8F3180FE2011685100E03BA2 /* Int.swift in Sources */,
+				3F63E67F2016648300DE7005 /* NetworkManager.swift in Sources */,
+				22A0EF9A1FFD734B00959101 /* NetworkConfiguration.swift in Sources */,
+				223012D9200811C900A9FB04 /* GestureHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		22B75BE41FFC387200F51F87 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				22B75BE51FFC387200F51F87 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		22B75C001FFC387300F51F87 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = appletvos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TVOS_DEPLOYMENT_TARGET = 11.2;
+			};
+			name = Debug;
+		};
+		22B75C011FFC387300F51F87 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = appletvos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TVOS_DEPLOYMENT_TARGET = 11.2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		22B75C031FFC387300F51F87 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C38E5A5CA87EA54057CC1BE7 /* Pods-All-MapExplorer-tvOS.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = M6262HME76;
+				INFOPLIST_FILE = Metadata/MapExplorer.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "is.slant.MapExplorer-tvOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 11.2;
+			};
+			name = Debug;
+		};
+		22B75C041FFC387300F51F87 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 06F3E2FD23AD59F72F76EEDC /* Pods-All-MapExplorer-tvOS.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = M6262HME76;
+				INFOPLIST_FILE = Metadata/MapExplorer.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "is.slant.MapExplorer-tvOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 11.2;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		22B75BD81FFC387200F51F87 /* Build configuration list for PBXProject "MapExplorer-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				22B75C001FFC387300F51F87 /* Debug */,
+				22B75C011FFC387300F51F87 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		22B75C021FFC387300F51F87 /* Build configuration list for PBXNativeTarget "MapExplorer-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				22B75C031FFC387300F51F87 /* Debug */,
+				22B75C041FFC387300F51F87 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 22B75BD51FFC387200F51F87 /* Project object */;
+}

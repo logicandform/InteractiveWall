@@ -1,0 +1,27 @@
+PODS:
+  - C4 (3.0.1)
+  - CocoaAsyncSocket (7.6.2)
+  - MONode (0.0.1):
+    - CocoaAsyncSocket (~> 7.6.1)
+
+DEPENDENCIES:
+  - C4 (~> 3.0.1)
+  - MONode (from `git@github.com:SlantDesign/mo.git`)
+
+EXTERNAL SOURCES:
+  MONode:
+    :git: git@github.com:SlantDesign/mo.git
+
+CHECKOUT OPTIONS:
+  MONode:
+    :commit: 50eab2c5b295ec5a66d79aeb6637f19868b056b9
+    :git: git@github.com:SlantDesign/mo.git
+
+SPEC CHECKSUMS:
+  C4: 8a51425000f760d5e89ba294a8284467a1bd1231
+  CocoaAsyncSocket: 3541e024f48c54b251638ef72d51dd42808de932
+  MONode: 6bcc731f16d2f355b7c29da63823b95cd945b290
+
+PODFILE CHECKSUM: 2ca5c1f51d207b3cf032209f951a376da97be1e5
+
+COCOAPODS: 1.3.1

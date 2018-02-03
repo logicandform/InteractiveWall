@@ -1,0 +1,12 @@
+pipeline {
+  agent any
+  stages {
+    stage('Build & Test') {
+      steps {
+        timeout(time: 10, unit: 'MINUTES') {
+        	sh 'fastlane test'
+       	}
+      }
+    }
+  }
+}

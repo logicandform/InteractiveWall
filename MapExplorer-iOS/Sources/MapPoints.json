@@ -1,0 +1,2222 @@
+{"locations": [
+{
+"type": "School","title": "Residential School",
+"locationName": "Assumption (Hay Lakes)",
+"placeName": "Assumption",
+"latitude":"58.7018N",
+"longitude":"118.686322W",
+"start": "1951", 
+"end": "1974",
+"id":"S-49"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Blue Quills (Sacred Heart)",
+"placeName": "St. Paul",
+"latitude":"53.991486111111115N",
+"longitude":"111.29561388888888W",
+"start": "1898", 
+"end": "1990",
+"id":"S-50"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Crowfoot (St. Joseph&#39;s)",
+"placeName": "Cluny",
+"latitude":"50.83276388888889N",
+"longitude":"112.88692222222222W",
+"start": "1900", 
+"end": "1968",
+"id":"S-51"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Desmarais (St. Martin&#39;s)",
+"placeName": "Desmarais-Wabasca",
+"latitude":"55.9438555555555N",
+"longitude":"113.80587222222222W",
+"start": "1902", 
+"end": "1973",
+"id":"S-52"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Edmonton (Poundmaker)",
+"placeName": "St. Albert",
+"latitude":"53.6522333333333N",
+"longitude":"113.57271388888888W",
+"start": "1924", 
+"end": "1968",
+"id":"S-53"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Ermineskin (Hobbema)",
+"placeName": "Hobbema",
+"latitude":"52.8363222222222N",
+"longitude":"113.45735555555555W",
+"start": "1895", 
+"end": "1975",
+"id":"S-54"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Fort Vermilion (St. Henri)",
+"placeName": "Fort Vermilion",
+"latitude":"58.3891888888888N",
+"longitude":"116.02031111111111W",
+"start": "1903", 
+"end": "1968",
+"id":"S-55"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Grouard (St. Bernard&#39;s)",
+"placeName": "Grouard",
+"latitude":"55.5471667N",
+"longitude":"116.12205555555555W",
+"start": "1894", 
+"end": "1957",
+"id":"S-56"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Holy Angels (Fort Chipewyan)",
+"placeName": "Fort Chipewyan",
+"latitude":"58.7112N",
+"longitude":"111.17351111111111W",
+"start": "1900", 
+"end": "1974",
+"id":"S-57"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Joussard (St. Bruno&#39;s)",
+"placeName": "Joussard",
+"latitude":"55.401075N",
+"longitude":"115.9701388888889W",
+"start": "1913", 
+"end": "1969",
+"id":"S-58"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Lac la Biche (Notre Dame des Victoires)",
+"placeName": "Lac la Biche",
+"latitude":"54.82355555555556N",
+"longitude":"112.09356388888888W",
+"start": "1893", 
+"end": "1898",
+"id":"S-59"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Lesser Slave Lake (St. Peter&#39;s)",
+"placeName": "Lesser Slave Lake",
+"latitude":"55.579483333333336N",
+"longitude":"116.19805277777777 W",
+"start": "1895", 
+"end": "1932",
+"id":"S-60"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Morley (Stony)",
+"placeName": "Morley",
+"latitude":"51.18805555555555N",
+"longitude":"114.8261111111111W",
+"start": "1922", 
+"end": "1969",
+"id":"S-61"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Old Sun (Blackfoot)",
+"placeName": "Gleichen",
+"latitude":"50.8481555555555N",
+"longitude":"113.06037777777777W",
+"start": "1886", 
+"end": "1971",
+"id":"S-62"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Sacred Heart (Peigan)",
+"placeName": "Brocket",
+"latitude":"49.546N",
+"longitude":"113.6494W",
+"start": "1887", 
+"end": "1961",
+"id":"S-63"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "St. Albert (Youville)",
+"placeName": "Youville",
+"latitude":"53.63701666666667N",
+"longitude":"113.63092499999999W",
+"start": "1873", 
+"end": "1948",
+"id":"S-64"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "St. Augustine (Smoky River)",
+"placeName": "Smoky River / Peace River",
+"latitude":"56.154961111111106N",
+"longitude":"117.44531666666667W",
+"start": "1900", 
+"end": "1907",
+"id":"S-65"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "St. Cyprian&#39;s (Queen Victoria&#39;s Jubilee Home)",
+"placeName": "Brocket (Peigan Reserve)",
+"latitude":"49.515769444444444N",
+"longitude":"113.70534444444445W",
+"start": "1890", 
+"end": "1961",
+"id":"S-66"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "St. Joseph&#39;s (Dunbow)",
+"placeName": "High River",
+"latitude":"50.8082416666666N",
+"longitude":"113.79081111111111W",
+"start": "1884", 
+"end": "1922",
+"id":"S-67"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "St. Mary&#39;s (Blood)",
+"placeName": "Cardston",
+"latitude":"49.29872222222222N",
+"longitude":"113.3441W",
+"start": "1898", 
+"end": "1988",
+"id":"S-68"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "St. Paul&#39;s (Blood)",
+"placeName": "Cardston",
+"latitude":"49.29872222222222N",
+"longitude":"113.3441W",
+"start": "1893", 
+"end": "1975",
+"id":"S-69"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Sarcee (St. Barnabas)",
+"placeName": "Sarcee Junction (T&#39;suu Tina)",
+"latitude":"50.9319777777777N",
+"longitude":"114.1487388888889W",
+"start": "1892", 
+"end": "1921",
+"id":"S-70"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Sturgeon Lake (Calais)",
+"placeName": "Calais",
+"latitude":"55.0725388888888N",
+"longitude":"117.50205555555556W",
+"start": "1907", 
+"end": "1961",
+"id":"S-71"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Wabasca (St. John&#39;s)",
+"placeName": "Wabasca",
+"latitude":"55.9823N",
+"longitude":"113.89792777777778W",
+"start": "1902", 
+"end": "1966",
+"id":"S-72"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Whitefish Lake (St. Andrew&#39;s)",
+"placeName": "Whitefish Lake",
+"latitude":"55.9178694444444N",
+"longitude":"115.66080555555555W",
+"start": "1908", 
+"end": "1950",
+"id":"S-73"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Ahousaht",
+"placeName": "Ahousaht",
+"latitude":"49.273044444444444N",
+"longitude":"126.05105W",
+"start": "1904", 
+"end": "1940",
+"id":"S-32"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Alberni",
+"placeName": "Port Alberni",
+"latitude":"49.264005555555556N",
+"longitude":"124.84431388888889W",
+"start": "1900", 
+"end": "1973",
+"id":"S-33"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Cariboo (Williams Lake)",
+"placeName": "Williams Lake",
+"latitude":"52.06208888888889N",
+"longitude":"121.95203055555555W",
+"start": "1891", 
+"end": "1981",
+"id":"S-34"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Christie (Tofino)",
+"placeName": "Meares Island / Tofino",
+"latitude":"49.13110833333334N",
+"longitude":"125.90098333333334W",
+"start": "1900", 
+"end": "1983",
+"id":"S-35"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Coqualeetza (Chilliwack Home)",
+"placeName": "Chilliwack / Sardis",
+"latitude":"49.135930555555554N",
+"longitude":"121.95994722222222W",
+"start": "1889", 
+"end": "1940",
+"id":"S-36"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Cranbrook (St. Eugene&#39;s)",
+"placeName": "Cranbrook",
+"latitude":"49.58550833333334N",
+"longitude":"115.75664444444445W",
+"start": "1890", 
+"end": "1970",
+"id":"S-37"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Kamloops (St. Louis)",
+"placeName": "Kamloops",
+"latitude":"50.67955833333333N",
+"longitude":"120.2951361111111W",
+"start": "1890", 
+"end": "1978",
+"id":"S-38"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Kitimaat (Elizabeth Long Memorial Home for Girls)",
+"placeName": "Kitimaat",
+"latitude":"53.96943888888889N",
+"longitude":"128.64783055555554W",
+"start": "1908", 
+"end": "1941",
+"id":"S-39"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Kuper Island",
+"placeName": "Kuper Island",
+"latitude":"48.972855555555554N",
+"longitude":"123.65574722222223W",
+"start": "1890", 
+"end": "1975",
+"id":"S-40"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Lejac (Stuart Lake)",
+"placeName": "Fraser Lake",
+"latitude":"54.062330555555555N",
+"longitude":"124.76186944444444W",
+"start": "1917", 
+"end": "1976",
+"id":"S-41"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Lower Post",
+"placeName": "Lower Post",
+"latitude":"59.92429722222222N",
+"longitude":"128.4965222222222W",
+"start": "1951", 
+"end": "1975",
+"id":"S-42"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Port Simpson (Crosby Home for Girls)",
+"placeName": "Port Simpson",
+"latitude":"54.55626944444444N",
+"longitude":"130.43140277777778W",
+"start": "1892", 
+"end": "1948",
+"id":"S-43"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "St. George&#39;s (Lytton)",
+"placeName": "Lytton",
+"latitude":"50.27011666666667N",
+"longitude":"121.60079444444443W",
+"start": "1901", 
+"end": "1979",
+"id":"S-44"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "St. Mary&#39;s (Mission)",
+"placeName": "Mission",
+"latitude":"49.1374N",
+"longitude":"122.28794722222221W",
+"start": "1867", 
+"end": "1984",
+"id":"S-45"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "St. Michael&#39;s (Alert Bay)",
+"placeName": "Alert Bay",
+"latitude":"50.59395555555556N",
+"longitude":"126.94139722222222W",
+"start": "1894", 
+"end": "1974",
+"id":"S-46"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Sechelt (St. Augustine&#39;s)",
+"placeName": "Sechelt",
+"latitude":"49.473955555555555N",
+"longitude":"123.75006944444445W",
+"start": "1904", 
+"end": "1975",
+"id":"S-47"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "St. Paul&#39;s (Squamish)",
+"placeName": "North Vancouver",
+"latitude":"49.319586111111114N",
+"longitude":"123.08731666666666W",
+"start": "1899", 
+"end": "1959",
+"id":"S-48"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Anahim Lake Dormitory (Ulkatcho)",
+"placeName": "Anahim Lake",
+"latitude":"52.4654277777777N",
+"longitude":"125.30755277777777W",
+"start": "1968", 
+"end": "1977",
+"id":"S-133"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Assiniboia (Winnipeg)",
+"placeName": "Winnipeg",
+"latitude":"49.875280555555555N",
+"longitude":"97.19981944444444 W",
+"start": "1958", 
+"end": "1973",
+"id":"S-90"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Birtle",
+"placeName": "Birtle",
+"latitude":"50.431911111111106N",
+"longitude":"101.04183055555555W",
+"start": "1888", 
+"end": "1970",
+"id":"S-91"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Brandon",
+"placeName": "Brandon",
+"latitude":"49.86935N",
+"longitude":"99.98953055555556W",
+"start": "1895", 
+"end": "1972",
+"id":"S-92"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Churchill",
+"placeName": "Churchill",
+"latitude":"58.75689444444444N",
+"longitude":"94.07794444444444W",
+"start": "1964", 
+"end": "1973",
+"id":"S-93"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Cross Lake",
+"placeName": "Cross Lake",
+"latitude":"54.60236666666667N",
+"longitude":"97.77560833333334W",
+"start": "1912", 
+"end": "1969",
+"id":"S-94"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "McKay (Dauphin)",
+"placeName": "The Pas / Dauphin",
+"latitude":"51.140299999999996N",
+"longitude":"100.06588333333333W",
+"start": "1914", 
+"end": "1988",
+"id":"S-95"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Elkhorn (Washakada)",
+"placeName": "Elkhorn",
+"latitude":"49.977069444444446N",
+"longitude":"101.25095W",
+"start": "1889", 
+"end": "1949",
+"id":"S-96"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Fort Alexander (Pine Falls)",
+"placeName": "Fort Alexander",
+"latitude":"50.616308333333336N",
+"longitude":"96.30871666666667W",
+"start": "1905", 
+"end": "1970",
+"id":"S-97"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Guy Hill (Clearwater)",
+"placeName": "The Pas",
+"latitude":"53.98446111111111N",
+"longitude":"101.03793888888889W",
+"start": "1952", 
+"end": "1979",
+"id":"S-99"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Norway House (Rossville)",
+"placeName": "Norway House",
+"latitude":"53.99718333333333N",
+"longitude":"97.78369166666667W",
+"start": "1899", 
+"end": "1967",
+"id":"S-100"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Notre Dame Hostel (Jack River Annex)",
+"placeName": "Cross Lake",
+"latitude":"53.950125N",
+"longitude":"97.84936666666667W",
+"start": "1960", 
+"end": "1967",
+"id":"S-130"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Pine Creek (Camperville)",
+"placeName": "Camperville",
+"latitude":"52.00363055555555N",
+"longitude":"100.15050000000001W",
+"start": "1890", 
+"end": "1969",
+"id":"S-101"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Portage la Prairie",
+"placeName": "Portage la Prairie",
+"latitude":"49.962300000000006N",
+"longitude":"98.32254999999999W",
+"start": "1891", 
+"end": "1975",
+"id":"S-102"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Sandy Bay",
+"placeName": "Marius",
+"latitude":"50.558049999999994N",
+"longitude":"98.64953055555556W",
+"start": "1905", 
+"end": "1970",
+"id":"S-103"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Shubenacadie (St. Anne&#39;s Convent)",
+"placeName": "Shubenacadie",
+"latitude":"45.096650000000004N",
+"longitude":"63.40818055555555W",
+"start": "1929", 
+"end": "1967",
+"id":"S-129"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Chesterfield Inlet (Turquetil Hall)",
+"placeName": "Chesterfield Inlet",
+"latitude":"63.34011944444445N",
+"longitude":"90.70515833333333W",
+"start": "1954", 
+"end": "1969",
+"id":"S-19"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Federal Tent Hostel at Coppermine",
+"placeName": "Coppermine",
+"latitude":"67.82262222222222N",
+"longitude":"115.09606944444444W",
+"start": "1951", 
+"end": "1959",
+"id":"S-20"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Federal Hostel at Baker Lake (Qamani&#39;tuaq)",
+"placeName": " Qamanittuaq",
+"latitude":"64.31631944444444N",
+"longitude":"96.01343333333334W",
+"start": "1961", 
+"end": "1968",
+"id":"S-21"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Federal Hostel at Belcher Islands",
+"placeName": "Flaherty Island (South Camp) / Sanikiluaq",
+"latitude":"56.51016111111111N",
+"longitude":"79.21507222222222W",
+"start": "1963", 
+"end": "1964",
+"id":"S-22"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Federal Hostel at Broughton Island (Qikiqtarjuaq)",
+"placeName": "Qikiqtarjuaq",
+"latitude":"67.55561666666666N",
+"longitude":"64.02568055555555W",
+"start": "1961", 
+"end": "1966",
+"id":"S-23"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Federal Hostel at Cambridge Bay",
+"placeName": "Cambridge Bay",
+"latitude":"69.11723055555555N",
+"longitude":"105.05305555555556W",
+"start": "1964", 
+"end": "1997",
+"id":"S-24"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Federal Hostel at Cape Dorset (Kinngait)",
+"placeName": "Kinngait",
+"latitude":"64.23037222222223N",
+"longitude":"76.54096388888888W",
+"start": "1962", 
+"end": "1965",
+"id":"S-25"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Federal Hostel at Eskimo Point (Arviat)",
+"placeName": "Arviat",
+"latitude":"61.10782777777778N",
+"longitude":"94.06236944444444W",
+"start": "1962", 
+"end": "1967",
+"id":"S-26"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Federal Hostel at Frobisher Bay (Ukkivik Student Residence)",
+"placeName": "Iqaluit",
+"latitude":"63.757575N",
+"longitude":"68.54323333333333W",
+"start": "1971", 
+"end": "1995",
+"id":"S-27"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Federal Hostel at Igloolik (Iglulik)",
+"placeName": "Igloolik / Iglulik",
+"latitude":"69.36733333333332N",
+"longitude":"81.82313055555555 W",
+"start": "1961", 
+"end": "1969",
+"id":"S-28"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Federal Hostel at Lake Harbour (Kimmirut Hostel)",
+"placeName": "Kimmirut",
+"latitude":"62.8474027777777 N",
+"longitude":"69.86920277777777 W",
+"start": "1963", 
+"end": "1965",
+"id":"S-29"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Federal Hostel at Pangnirtung (Pangnirtang)",
+"placeName": "Panniqtuuq",
+"latitude":"66.1465583333333N",
+"longitude":"65.70121944444445 W",
+"start": "1964", 
+"end": "1967",
+"id":"S-30"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Federal Hostel at Pond Inlet (Mittimatalik)",
+"placeName": "Mittimatalik",
+"latitude":" 72�42&#39;0.42&quot;N",
+"longitude":"77�57&#39;30.71&quot;W",
+"start": "1962", 
+"end": "1970",
+"id":"S-31"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Immaculate Conception  (Aklavik Roman Catholic)",
+"placeName": "Aklavik",
+"latitude":"68�13&#39;11.70&quot;N",
+"longitude":"135� 0&#39;28.04&quot;W",
+"start": "1926", 
+"end": "1959",
+"id":"S-6"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "All Saints (Aklavik Anglican)",
+"placeName": "Aklavik",
+"latitude":"68.2209972222222 N",
+"longitude":"135.00754444444445 W",
+"start": "1936", 
+"end": "1959",
+"id":"S-7"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Fleming Hall (St. Matthew&#39;s Anglican Hostel)",
+"placeName": "Fort McPherson",
+"latitude":"67.4369222222222 N",
+"longitude":"134.8817888888889 W",
+"start": "1955", 
+"end": "1976",
+"id":"S-8"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Sacred Heart (Providence Mission)",
+"placeName": "Fort Providence",
+"latitude":"61.35563611111111 N",
+"longitude":"117.66648055555557 W",
+"start": "1906", 
+"end": "1960",
+"id":"S-9"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "St. Joseph&#39;s (Fort Resolution)",
+"placeName": "Fort Resolution",
+"latitude":"61.1674166666666 N",
+"longitude":"113.66141111111112 W",
+"start": "1903", 
+"end": "1957",
+"id":"S-10"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Bompas Hall (Koe Go Cho)",
+"placeName": "Fort Simpson",
+"latitude":"61.8667083333333 N",
+"longitude":"121.35900277777777 W",
+"start": "1960", 
+"end": "1975",
+"id":"S-11"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Lapointe Hall (Deh Cho Hall)",
+"placeName": "Fort Simpson",
+"latitude":"61.866708333333335 N",
+"longitude":"121.35900277777777 W",
+"start": "1960", 
+"end": "1988",
+"id":"S-12"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Breynat Hall (Fort Smith Hostel)",
+"placeName": "Fort Smith",
+"latitude":"60.0065388888888 N",
+"longitude":"111.89332777777778 W",
+"start": "1957", 
+"end": "1975",
+"id":"S-13"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Grandin College",
+"placeName": "Fort Smith",
+"latitude":"60.00223888888889 N",
+"longitude":"111.89820277777778 W",
+"start": "1960", 
+"end": "1985",
+"id":"S-14"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Hay River (All Saints)",
+"placeName": "Hay River",
+"latitude":"60.85754444444444 N",
+"longitude":"115.72266111111111 W",
+"start": "1895", 
+"end": "1937",
+"id":"S-15"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Grollier Hall (Notre-Dame Residence)",
+"placeName": "Inuvik",
+"latitude":"68.3581388888888 N",
+"longitude":"133.71765833333333 W",
+"start": "1959", 
+"end": "1997",
+"id":"S-16"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Stringer Hall (Inuvik Anglican Hostel)",
+"placeName": "Inuvik",
+"latitude":"68.3581138888888 N",
+"longitude":" 133.71768055555555 W",
+"start": "1959", 
+"end": "1975",
+"id":"S-17"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Akaitcho Hall  (Yellowknife Federal Hostel)",
+"placeName": "Yellowknife",
+"latitude":"62.4530722222222 N",
+"longitude":"114.36136666666665 W",
+"start": "1958", 
+"end": "1994",
+"id":"S-18"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Federal Hostel at Fort Franklin",
+"placeName": "D�line",
+"latitude":"65.1863888888889 N",
+"longitude":"123.42342777777779 W",
+"start": "1967", 
+"end": "1972",
+"id":"S-131"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Bishop Horden Hall (Moose Factory)",
+"placeName": "Moose Island",
+"latitude":"51.24976388888889 N",
+"longitude":" 80.61425 W",
+"start": "1906", 
+"end": "1976",
+"id":"S-104"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Cecilia Jeffrey (Shoal Lake)",
+"placeName": "Kenora",
+"latitude":"49.78279722222222 N",
+"longitude":"94.4401 W",
+"start": "1902", 
+"end": "1976",
+"id":"S-105"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Chapleau (St. John&#39;s)",
+"placeName": "Chapleau",
+"latitude":"47.8178083333333 N",
+"longitude":"83.39447777777778 W",
+"start": "1907", 
+"end": "1948",
+"id":"S-106"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Cristal Lake High School",
+"placeName": "Cristal Lake",
+"latitude":"52.11318055555556 N",
+"longitude":"90.08484999999999 W",
+"start": "1976", 
+"end": "1986",
+"id":"S-139"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Fort Frances (Coochiching)",
+"placeName": "Fort Frances",
+"latitude":"48.628816666666665 N",
+"longitude":"93.35896388888888 W",
+"start": "1906", 
+"end": "1974",
+"id":"S-107"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Fort William (St. Joseph&#39;s)",
+"placeName": "Fort William",
+"latitude":"48.3808472222222 N",
+"longitude":"89.25665 W",
+"start": "1885", 
+"end": "1970",
+"id":"S-108"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "McIntosh (Kenora)",
+"placeName": "McIntosh",
+"latitude":"49.96018611111111 N",
+"longitude":" 93.61131666666667 W",
+"start": "1925", 
+"end": "1969",
+"id":"S-109"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Mohawk Institute (Mechanic&#39;s Institute)",
+"placeName": "Brantford",
+"latitude":"43.1260194444444 N",
+"longitude":"80.24200277777778 W",
+"start": "1885", 
+"end": "1970",
+"id":"S-110"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Mount Elgin (Muncey)",
+"placeName": "Munceytown",
+"latitude":"42.79652222222222 N",
+"longitude":"81.43461111111111 W",
+"start": "1867", 
+"end": "1946",
+"id":"S-111"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Pelican Lake (Pelican Falls)",
+"placeName": "Sioux Lookout",
+"latitude":"50.12052777777778 N",
+"longitude":" 92.01173055555556 W",
+"start": "1927", 
+"end": "1978",
+"id":"S-112"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Poplar Hill",
+"placeName": "Poplar Hill",
+"latitude":"52.0999250N",
+"longitude":"094.3018806W",
+"start": "1962", 
+"end": "1989",
+"id":"S-113"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "St. Anne&#39;s (Fort Albany)",
+"placeName": "Fort Albany",
+"latitude":"52.2062861N",
+"longitude":"081.6903528W",
+"start": "1906", 
+"end": "1976",
+"id":"S-114"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "St. Mary&#39;s (St. Anthony&#39;s)",
+"placeName": "Kenora",
+"latitude":"49.744347222222224 N",
+"longitude":"94.48271111111112 W",
+"start": "1897", 
+"end": "1972",
+"id":"S-115"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Shingwauk (Wawanosh)",
+"placeName": "Sault Ste. Marie",
+"latitude":"46.501083333333334 N",
+"longitude":"84.2872111111111 W",
+"start": "1878", 
+"end": "1970",
+"id":"S-116"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Spanish Boys School (St. Peter Claver)",
+"placeName": "Spanish",
+"latitude":"46.18703333333333 N",
+"longitude":"82.35684722222221 W",
+"start": "1879", 
+"end": "1958",
+"id":"S-117"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Spanish Girls School (St. Anne&#39;s)",
+"placeName": "Spanish",
+"latitude":"46.1869305555555 N",
+"longitude":"82.35567499999999 W",
+"start": "1868", 
+"end": "1962",
+"id":"S-118"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Stirland Lake High School (Wahbon Bay Academy)",
+"placeName": "Stirland Lake",
+"latitude":"52.34647777777778 N",
+"longitude":"91.0247 W",
+"start": "1971", 
+"end": "1991",
+"id":"S-138"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Wawanosh Home",
+"placeName": "Sault Ste. Marie",
+"latitude":"46.52921944444444 N",
+"longitude":"84.344875 W",
+"start": "1879", 
+"end": "1892",
+"id":"S-137"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Amos (Saint-Marc-de-Figuery)",
+"placeName": "Amos",
+"latitude":"48.442077777777776 N",
+"longitude":"78.04351666666666 W",
+"start": "1955", 
+"end": "1973",
+"id":"S-119"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Pointe Bleue",
+"placeName": "Pointe Bleue",
+"latitude":"48.577672222222226 N",
+"longitude":"72.231475 W",
+"start": "1960", 
+"end": "1991",
+"id":"S-120"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "La Tuque",
+"placeName": "La Tuque",
+"latitude":"47.44733055555555 N",
+"longitude":"72.78200833333334 W",
+"start": "1963", 
+"end": "1978",
+"id":"S-121"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Fort George Church of England (St. Philip&#39;s)",
+"placeName": "Fort George",
+"latitude":"53.830738888888895 N",
+"longitude":"78.98974722222222 W",
+"start": "1933", 
+"end": "1975",
+"id":"S-122"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Fort George Roman Catholic (Residence Couture)",
+"placeName": "Fort George",
+"latitude":"53.830738888888895 N",
+"longitude":"78.98974722222222 W",
+"start": "1937", 
+"end": "1981",
+"id":"S-123"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Sept-Iles (Maliotenam)",
+"placeName": "Sept-Iles",
+"latitude":"50.21333333333334 N",
+"longitude":"66.20710277777778 W",
+"start": "1952", 
+"end": "1971",
+"id":"S-124"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Federal Hostel at George River (Kangiqsualujjuaq)",
+"placeName": "Kangirsualujjuaq",
+"latitude":"58.6924444444444 N",
+"longitude":"65.95375555555556 W",
+"start": "1960", 
+"end": "1960",
+"id":"S-125"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Federal Hostel at Great Whale River (Poste-de-la-Baleine)",
+"placeName": "Kuujjuaraapik / Whapmagoostui",
+"latitude":"55.2745888888888 N",
+"longitude":"77�45&#39;49.63&quot;W",
+"start": "1960", 
+"end": "1970",
+"id":"S-126"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Federal Hostel at Payne Bay (Bellin)",
+"placeName": "Kangirsuk",
+"latitude":"60.01557777777778 N",
+"longitude":"70.01038055555556 W",
+"start": "1960", 
+"end": "1962",
+"id":"S-127"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Federal Hostel at Port Harrison (Inoucdjouac)",
+"placeName": "Inukjuak",
+"latitude":"58.452802777777784 N",
+"longitude":"78.11154722222221 W",
+"start": "1960", 
+"end": "1971",
+"id":"S-128"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Fort George Hostels",
+"placeName": "Fort George",
+"latitude":"53.830911111111114 N",
+"longitude":"78.98991944444444 W",
+"start": "1975", 
+"end": "1978",
+"id":"S-136"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Mistassini Hostels",
+"placeName": "Mistassini",
+"latitude":"48.5766722222222 N",
+"longitude":"72.23239722222222 W",
+"start": "1971", 
+"end": "1978",
+"id":"S-140"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Beauval (Ile a la Crosse)",
+"placeName": "Beauval",
+"latitude":"55.15725 N",
+"longitude":"107.58172222222221 W",
+"start": "1897", 
+"end": "1995",
+"id":"S-74"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Crowstand",
+"placeName": "Kamsack",
+"latitude":"51.527975 N",
+"longitude":"101.84322777777777 W",
+"start": "1889", 
+"end": "1915",
+"id":"S-75"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "File Hills",
+"placeName": "Balcarres",
+"latitude":"50.935069444444444 N",
+"longitude":"103.50555 W",
+"start": "1889", 
+"end": "1949",
+"id":"S-76"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Fort Pelly (St. Philip&#39;s)",
+"placeName": "Fort Pelly",
+"latitude":"51.714 N",
+"longitude":"101.89620000000001 W",
+"start": "1905", 
+"end": "1913",
+"id":"S-98"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Gordon&#39;s",
+"placeName": "Punnichy (Gordon&#39;s Reserve)",
+"latitude":"51.28932777777778 N",
+"longitude":"104.296975 W",
+"start": "1888", 
+"end": "1996",
+"id":"S-77"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Lebret (Qu&#39;Appelle)",
+"placeName": "Lebret",
+"latitude":"50.75785 N",
+"longitude":"103.71157222222223 W",
+"start": "1884", 
+"end": "1998",
+"id":"S-78"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Marieval (Cowesess)",
+"placeName": "Grayson",
+"latitude":"50.58074166666667 N",
+"longitude":"102.65333333333334 W",
+"start": "1898", 
+"end": "1997",
+"id":"S-79"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Muscowequan (Touchwood)",
+"placeName": "Lestock",
+"latitude":"51.3414166666666 N",
+"longitude":"104.02925833333333 W",
+"start": "1889", 
+"end": "1997",
+"id":"S-80"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Prince Albert",
+"placeName": "Prince Albert",
+"latitude":"53.19320277777778 N",
+"longitude":"105.77296388888888 W",
+"start": "1894", 
+"end": "1997",
+"id":"S-81"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Regina",
+"placeName": "Regina",
+"latitude":"50.4659388888888 N",
+"longitude":"104.69364166666666 W",
+"start": "1891", 
+"end": "1910",
+"id":"S-83"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Round Lake",
+"placeName": "Stockholm",
+"latitude":"50.5262972222222 N",
+"longitude":"102.310575 W",
+"start": "1887", 
+"end": "1950",
+"id":"S-84"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "St. Anthony&#39;s (Sacred Heart)",
+"placeName": "Onion Lake",
+"latitude":"53.6380777777777 N",
+"longitude":"109.97870833333333 W",
+"start": "1894", 
+"end": "1974",
+"id":"S-85"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "St. Michael&#39;s (Duck Lake)",
+"placeName": "Duck Lake",
+"latitude":"52.79979722222222 N",
+"longitude":"106.23264722222223 W",
+"start": "1894", 
+"end": "1996",
+"id":"S-86"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "St. Philip&#39;s",
+"placeName": "Kamsack",
+"latitude":"51.7139333333333 N",
+"longitude":"101.90646666666667 W",
+"start": "1928", 
+"end": "1969",
+"id":"S-87"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Sturgeon Landing",
+"placeName": "Sturgeon Landing",
+"latitude":"54.2743888888888 N",
+"longitude":"101.82122777777778 W",
+"start": "1926", 
+"end": "1952",
+"id":"S-88"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Thunderchild (St. Henri)",
+"placeName": "Delmas",
+"latitude":"52.9321027777777 N",
+"longitude":"108.59755 W",
+"start": "1901", 
+"end": "1948",
+"id":"S-89"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Cote Improved Federal Day School (School #604)",
+"placeName": "Kamsack",
+"latitude":"51.6393333333333 N",
+"longitude":"101.91098055555557 W",
+"start": "1928", 
+"end": "1940",
+"id":"S-134"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Battleford",
+"placeName": "Battleford",
+"latitude":"52.7120527777777 N",
+"longitude":"108.30874722222222 W",
+"start": "1883", 
+"end": "1914",
+"id":"S-135"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Lac La Ronge (All Saints)",
+"placeName": "Lac La Ronge",
+"latitude":"55.0999916666666 N",
+"longitude":"105.29122777777778 W",
+"start": "1894", 
+"end": "1997",
+"id":"S-82"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Carcross (Chooutla)",
+"placeName": "Carcross",
+"latitude":"60.1761333333333 N",
+"longitude":"134.67606666666666 W",
+"start": "1903", 
+"end": "1969",
+"id":"S-1"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Coudert Hall (Whitehorse Hostel)",
+"placeName": "Whitehorse",
+"latitude":"60.7043833333333 N",
+"longitude":"135.03717777777777 W",
+"start": "1960", 
+"end": "1971",
+"id":"S-2"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Shingle Point (St. John&#39;s)",
+"placeName": "Shingle Point",
+"latitude":"68.9794583333333 N",
+"longitude":"137.40254166666668 W",
+"start": "1929", 
+"end": "1936",
+"id":"S-3"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Whitehorse Baptist (Lee School)",
+"placeName": "Whitehorse",
+"latitude":"60.7166083333333 N",
+"longitude":"135.05449444444446 W",
+"start": "1947", 
+"end": "1960",
+"id":"S-4"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "Yukon Hall (Whitehorse)",
+"placeName": "Whitehorse",
+"latitude":"60.7052472222222 N",
+"longitude":"135.03760555555556 W",
+"start": "1960", 
+"end": "1985",
+"id":"S-5"
+},
+{
+"type": "School","title": "Residential School",
+"locationName": "St. Paul&#39;s Hostel",
+"placeName": "Dawson City",
+"latitude":"64.0561305555555 N",
+"longitude":"139.43424166666668 W",
+"start": "1920", 
+"end": "1943",
+"id":"S-132"
+},
+{
+"type": "Hearing",
+"title": "Calgary Hearing",
+"placeName": "Calgary",
+"latitude":"51.07745",
+"longitude":"114.003825",
+"start": "2013/11/04", 
+"end": "2013/11/05",
+"id":"E-1"
+},
+{
+"type": "Hearing",
+"title": "Kamloops Hearing",
+"placeName": "Kamloops",
+"latitude":"50.68170833",
+"longitude":"120.2978667",
+"start": "2013/05/28", 
+"end": "2013/05/29",
+"id":"E-10"
+},
+{
+"type": "Hearing",
+"title": "Port Alberni Hearing",
+"placeName": "Port Alberni",
+"latitude":"49.26124167",
+"longitude":"124.8406417",
+"start": "2012/03/12", 
+"end": "2012/03/13",
+"id":"E-11"
+},
+{
+"type": "Hearing",
+"title": "Port Hardy Hearing",
+"placeName": "Port Hardy",
+"latitude":"50.69471667",
+"longitude":"127.4075889",
+"start": "2012/02/27", 
+"end": "2012/02/28",
+"id":"E-12"
+},
+{
+"type": "Hearing",
+"title": "Prince George Hearing",
+"placeName": "Prince George",
+"latitude":"53.91237778",
+"longitude":"122.748825",
+"start": "2013/05/13", 
+"end": "2013/05/14",
+"id":"E-13"
+},
+{
+"type": "Hearing",
+"title": "Terrace Hearing",
+"placeName": "Terrace",
+"latitude":"54.52263889",
+"longitude":"128.6669389",
+"start": "2013/06/25", 
+"end": "2013/06/26",
+"id":"E-14"
+},
+{
+"type": "Event",
+"title": "BC National Event",
+"placeName": "Vancouver",
+"latitude":"49.28240833",
+"longitude":"123.0428167",
+"start": "2013/09/18", 
+"end": "2013/09/21",
+"id":"E-15"
+},
+{
+"type": "Event",
+"title": "Victoria Regional Event",
+"placeName": "Victoria",
+"latitude":"48.42048333",
+"longitude":"123.3663833",
+"start": "2013/04/13", 
+"end": "2013/04/14",
+"id":"E-16"
+},
+{
+"type": "Hearing",
+"title": "Williams Lake Hearing",
+"placeName": "Williams Lake",
+"latitude":"52.15047222",
+"longitude":"122.1537028",
+"start": "2013/05/16", 
+"end": "2013/05/18",
+"id":"E-17"
+},
+{
+"type": "Hearing",
+"title": "Garden Hill Hearing",
+"placeName": "Garden Hill",
+"latitude":"53.86988611",
+"longitude":"94.6468",
+"start": "2013/02/19", 
+"end": "2013/02/20",
+"id":"E-18"
+},
+{
+"type": "Hearing",
+"title": "Sagkeeng Hearing",
+"placeName": "Sagkeeng",
+"latitude":"50.56911944",
+"longitude":"96.20188056",
+"start": "2012/10/02", 
+"end": "2012/10/03",
+"id":"E-19"
+},
+{
+"type": "Event",
+"title": "Alberta National Event",
+"placeName": "Edmonton",
+"latitude":"53.54145833",
+"longitude":"113.4860861",
+"start": "2014/03/27", 
+"end": "2014/03/30",
+"id":"E-2"
+},
+{
+"type": "Hearing",
+"title": "Thompson Hearing",
+"placeName": "Thompson",
+"latitude":"55.75775278",
+"longitude":"97.83067778",
+"start": "2012/09/25", 
+"end": "2012/09/26",
+"id":"E-20"
+},
+{
+"type": "Event",
+"title": "Winnipeg National Event",
+"placeName": "Winnipeg",
+"latitude":"49.88786111",
+"longitude":"97.12956389",
+"start": "2010/06/16", 
+"end": "2010/06/19",
+"id":"E-21"
+},
+{
+"type": "Hearing",
+"title": "Fredericton Hearing",
+"placeName": "Fredericton",
+"latitude":"45.96561944",
+"longitude":"66.65593056",
+"start": "2011/09/08", 
+"end": "2011/09/08",
+"id":"E-22"
+},
+{
+"type": "Hearing",
+"title": "Goose Bay Hearing",
+"placeName": "Goose Bay",
+"latitude":"53.29674444",
+"longitude":"60.32704167",
+"start": "2011/09/20", 
+"end": "2011/09/20",
+"id":"E-23"
+},
+{
+"type": "Hearing",
+"title": "Hopedale Hearing",
+"placeName": "Hopedale",
+"latitude":"55.459925",
+"longitude":"60.211425",
+"start": "2011/09/22", 
+"end": "2011/09/23",
+"id":"E-24"
+},
+{
+"type": "Hearing",
+"title": "Eskasoni Hearing",
+"placeName": "Eskasoni",
+"latitude":"45.93035278",
+"longitude":"60.646775",
+"start": "2011/10/14", 
+"end": "2011/10/14",
+"id":"E-25"
+},
+{
+"type": "Event",
+"title": "Atlantic National Event",
+"placeName": "Halifax",
+"latitude":"44.64822778",
+"longitude":"63.57636667",
+"start": "2011/10/26", 
+"end": "2011/10/29",
+"id":"E-26"
+},
+{
+"type": "Hearing",
+"title": "Indian Brook Hearing",
+"placeName": "Indian Brook",
+"latitude":"45.09661111",
+"longitude":"63.49062778",
+"start": "2011/10/12", 
+"end": "2011/10/12",
+"id":"E-27"
+},
+{
+"type": "Hearing",
+"title": "Aklavik Hearing",
+"placeName": "Aklavik",
+"latitude":"68.22072778",
+"longitude":"135.0060417",
+"start": "2011/05/12", 
+"end": "2011/05/12",
+"id":"E-28"
+},
+{
+"type": "Hearing",
+"title": "Behchoko Hearing",
+"placeName": "Behchoko",
+"latitude":"62.82741111",
+"longitude":"116.0578917",
+"start": "2011/04/15", 
+"end": "2011/04/15",
+"id":"E-29"
+},
+{
+"type": "Hearing",
+"title": "High Level Hearing",
+"placeName": "High Level",
+"latitude":"58.50773333",
+"longitude":"117.1353528",
+"start": "2013/07/03", 
+"end": "2013/07/04",
+"id":"E-3"
+},
+{
+"type": "Hearing",
+"title": "Fort Providence Hearing",
+"placeName": "Fort Providence",
+"latitude":"61.35800556",
+"longitude":"117.6599278",
+"start": "2011/04/26", 
+"end": "2011/04/27",
+"id":"E-30"
+},
+{
+"type": "Hearing",
+"title": "Fort Resolution Hearing",
+"placeName": "Fort Resolution",
+"latitude":"61.17203056",
+"longitude":"113.6737806",
+"start": "2011/04/28", 
+"end": "2011/04/28",
+"id":"E-31"
+},
+{
+"type": "Hearing",
+"title": "Fort Simpson Hearing",
+"placeName": "Fort Simpson",
+"latitude":"61.862846",
+"longitude":"121.356779",
+"start": "2011/11/23", 
+"end": "2011/11/23",
+"id":"E-32"
+},
+{
+"type": "Hearing",
+"title": "Fort Smith Hearing",
+"placeName": "Fort Smith",
+"latitude":"60.00230556",
+"longitude":"111.8925",
+"start": "2011/05/06", 
+"end": "2011/05/06",
+"id":"E-33"
+},
+{
+"type": "Hearing",
+"title": "Hay River (Katlodeeche) Hearing",
+"placeName": "Hay River (Katlodeeche)",
+"latitude":"60.817375",
+"longitude":"115.7801556",
+"start": "2012/03/07", 
+"end": "2012/03/08",
+"id":"E-34"
+},
+{
+"type": "Event",
+"title": "Northern National Event",
+"placeName": "Inuvik",
+"latitude":"68.35915833",
+"longitude":"133.7183806",
+"start": "2011/06/28", 
+"end": "2011/07/01",
+"id":"E-35"
+},
+{
+"type": "Hearing",
+"title": "Paulatuk Hearing",
+"placeName": "Paulatuk",
+"latitude":"69.351225",
+"longitude":"124.0682389",
+"start": "2012/04/17", 
+"end": "2012/04/18",
+"id":"E-36"
+},
+{
+"type": "Hearing",
+"title": "Sachs Harbour Hearing",
+"placeName": "Sachs Harbour",
+"latitude":"71.98512222",
+"longitude":"125.2464833",
+"start": "2012/04/16", 
+"end": "2012/04/16",
+"id":"E-37"
+},
+{
+"type": "Hearing",
+"title": "Tuktoyaktuk Hearing",
+"placeName": "Tuktoyaktuk",
+"latitude":"69.44329167",
+"longitude":"133.0255361",
+"start": "2012/04/11", 
+"end": "2012/04/11",
+"id":"E-38"
+},
+{
+"type": "Hearing",
+"title": "Tulita Hearing",
+"placeName": "Tulita",
+"latitude":"64.08075",
+"longitude":"126.3358444",
+"start": "2011/05/10", 
+"end": "2011/05/10",
+"id":"E-39"
+},
+{
+"type": "Hearing",
+"title": "Hobbema Hearing",
+"placeName": "Hobbema",
+"latitude":"52.81274722",
+"longitude":"113.5518611",
+"start": "2013/07/24", 
+"end": "2013/07/25",
+"id":"E-4"
+},
+{
+"type": "Hearing",
+"title": "Ulukhatok Hearing",
+"placeName": "Ulukhatok",
+"latitude":"70.73704444",
+"longitude":"117.7704583",
+"start": "2012/04/14", 
+"end": "2012/04/14",
+"id":"E-40"
+},
+{
+"type": "Hearing",
+"title": "Yellowknife Hearing",
+"placeName": "Yellowknife",
+"latitude":"62.44113889",
+"longitude":"114.3988528",
+"start": "2011/04/14", 
+"end": "2011/04/14",
+"id":"E-41"
+},
+{
+"type": "Hearing",
+"title": "Baker Lake Hearing",
+"placeName": "Baker Lake",
+"latitude":"64.31284167",
+"longitude":"96.05746667",
+"start": "2011/11/15", 
+"end": "2011/11/15",
+"id":"E-42"
+},
+{
+"type": "Hearing",
+"title": "Cambridge Bay Hearing",
+"placeName": "Cambridge Bay",
+"latitude":"69.11761944",
+"longitude":"105.0537889",
+"start": "2011/04/11", 
+"end": "2011/04/11",
+"id":"E-43"
+},
+{
+"type": "Hearing",
+"title": "Chesterfield Inlet Hearing",
+"placeName": "Chesterfield Inlet",
+"latitude":"63.34111667",
+"longitude":"90.70085",
+"start": "2011/03/22", 
+"end": "2011/03/22",
+"id":"E-44"
+},
+{
+"type": "Hearing",
+"title": "Gjoa Haven Hearing",
+"placeName": "Gjoa Haven",
+"latitude":"68.63059444",
+"longitude":"95.85782222",
+"start": "2012/09/19", 
+"end": "2012/09/19",
+"id":"E-45"
+},
+{
+"type": "Hearing",
+"title": "Igloolik Hearing",
+"placeName": "Igloolik",
+"latitude":"69.37250556",
+"longitude":"81.82465",
+"start": "2011/03/23", 
+"end": "2011/03/24",
+"id":"E-46"
+},
+{
+"type": "Hearing",
+"title": "Iqaluit Hearing",
+"placeName": "Iqaluit",
+"latitude":"63.74669167",
+"longitude":"68.51696667",
+"start": "2011/03/25", 
+"end": "2011/03/25",
+"id":"E-47"
+},
+{
+"type": "Hearing",
+"title": "Kugluktuk Hearing",
+"placeName": "Kugluktuk",
+"latitude":"67.82527222",
+"longitude":"115.09655",
+"start": "2011/04/12", 
+"end": "2011/04/13",
+"id":"E-48"
+},
+{
+"type": "Hearing",
+"title": "Pangnirtung Hearing",
+"placeName": "Pangnirtung",
+"latitude":"66.14799444",
+"longitude":"65.69823611",
+"start": "2012/02/13", 
+"end": "2012/02/13",
+"id":"E-49"
+},
+{
+"type": "Hearing",
+"title": "Lethbridge Hearing",
+"placeName": "Lethbridge",
+"latitude":"49.69455556",
+"longitude":"112.84545",
+"start": "2013/10/09", 
+"end": "2013/10/10",
+"id":"E-5"
+},
+{
+"type": "Hearing",
+"title": "Pond Inlet Hearing",
+"placeName": "Pond Inlet",
+"latitude":"72.69941389",
+"longitude":"77.9555",
+"start": "2012/02/07", 
+"end": "2012/02/07",
+"id":"E-50"
+},
+{
+"type": "Hearing",
+"title": "Qikiqtarjuaq Hearing",
+"placeName": "Qikiqtarjuaq",
+"latitude":"67.54387778",
+"longitude":"64.02909167",
+"start": "2012/02/15", 
+"end": "2012/02/15",
+"id":"E-51"
+},
+{
+"type": "Hearing",
+"title": "Rankin Inlet Hearing",
+"placeName": "Rankin Inlet",
+"latitude":"62.80906667",
+"longitude":"92.088875",
+"start": "2011/03/21", 
+"end": "2011/03/21",
+"id":"E-52"
+},
+{
+"type": "Hearing",
+"title": "Dryden Hearing",
+"placeName": "Dryden",
+"latitude":"49.79392222",
+"longitude":"93.19535",
+"start": "2012/11/22", 
+"end": "2012/11/23",
+"id":"E-53"
+},
+{
+"type": "Hearing",
+"title": "Fort Albany Hearing",
+"placeName": "Fort Albany",
+"latitude":"52.20709167",
+"longitude":"81.68788611",
+"start": "2013/01/28", 
+"end": "2013/01/30",
+"id":"E-54"
+},
+{
+"type": "Hearing",
+"title": "Manitoulin Island Hearing",
+"placeName": "Manitoulin Island",
+"latitude":"45.82631667",
+"longitude":"82.16168333",
+"start": "2012/10/25", 
+"end": "2012/10/26",
+"id":"E-55"
+},
+{
+"type": "Hearing",
+"title": "Thunder Bay Hearing",
+"placeName": "Thunder Bay",
+"latitude":"48.38075833",
+"longitude":"89.26563056",
+"start": "2012/12/04", 
+"end": "2012/12/05",
+"id":"E-57"
+},
+{
+"type": "Hearing",
+"title": "Charlottetown Hearing",
+"placeName": "Charlottetown",
+"latitude":"46.23414167",
+"longitude":"63.13088611",
+"start": "2011/10/04", 
+"end": "2011/10/04",
+"id":"E-58"
+},
+{
+"type": "Hearing",
+"title": "Chisasibi Hearing",
+"placeName": "Chisasibi",
+"latitude":"53.78248333",
+"longitude":"78.89232222",
+"start": "2013/03/19", 
+"end": "2013/03/20",
+"id":"E-59"
+},
+{
+"type": "Hearing",
+"title": "Red Deer Hearing",
+"placeName": "Red Deer",
+"latitude":"52.24673333",
+"longitude":"113.8262194",
+"start": "2013/06/06", 
+"end": "2013/06/07",
+"id":"E-6"
+},
+{
+"type": "Hearing",
+"title": "Inukjuak Hearing",
+"placeName": "Inukjuak",
+"latitude":"58.45185556",
+"longitude":"78.108725",
+"start": "2011/03/14", 
+"end": "2011/03/14",
+"id":"E-60"
+},
+{
+"type": "Hearing",
+"title": "Kuujjuaq Hearing",
+"placeName": "Kuujjuaq",
+"latitude":"58.10546944",
+"longitude":"68.40170833",
+"start": "2011/03/15", 
+"end": "2011/03/16",
+"id":"E-62"
+},
+{
+"type": "Hearing",
+"title": "La Tuque Hearing",
+"placeName": "La Tuque",
+"latitude":"47.43021944",
+"longitude":"72.78686944",
+"start": "2013/03/05", 
+"end": "2013/03/06",
+"id":"E-63"
+},
+{
+"type": "Event",
+"title": "Quebec National Event",
+"placeName": "Montreal",
+"latitude":"45.50045",
+"longitude":"73.56811389",
+"start": "2013/04/24", 
+"end": "2013/04/27",
+"id":"E-64"
+},
+{
+"type": "Hearing",
+"title": "Sept Iles Hearing",
+"placeName": "Sept Iles",
+"latitude":"50.226325",
+"longitude":"66.39806667",
+"start": "2013/01/22", 
+"end": "2013/01/23",
+"id":"E-65"
+},
+{
+"type": "Hearing",
+"title": "Val D&#39;Or Hearing",
+"placeName": "Val D&#39;Or",
+"latitude":"48.09878056",
+"longitude":"77.76588333",
+"start": "2013/02/05", 
+"end": "2013/02/06",
+"id":"E-66"
+},
+{
+"type": "Hearing",
+"title": "Buffalo River Hearing",
+"placeName": "Buffalo River",
+"latitude":"55.92815833",
+"longitude":"108.9366056",
+"start": "2012/07/03", 
+"end": "2012/07/04",
+"id":"E-68"
+},
+{
+"type": "Hearing",
+"title": "English River First Nation (Patuanak) Hearing",
+"placeName": "English River First Nation (Patuanak)",
+"latitude":"55.91666667",
+"longitude":"107.7166667",
+"start": "2012/10/29", 
+"end": "2012/10/30",
+"id":"E-69"
+},
+{
+"type": "Hearing",
+"title": "Slave Lake Hearing",
+"placeName": "Slave Lake",
+"latitude":"55.27444444",
+"longitude":"114.7788778",
+"start": "2013/06/18", 
+"end": "2013/06/19",
+"id":"E-7"
+},
+{
+"type": "Hearing",
+"title": "Fort Qu&#39;Appelle Hearing",
+"placeName": "Fort Qu&#39;Appelle",
+"latitude":"50.76104722",
+"longitude":"103.7868333",
+"start": "2012/05/14", 
+"end": "2012/05/15",
+"id":"E-70"
+},
+{
+"type": "Hearing",
+"title": "Ile-a-la-Crosse Hearing",
+"placeName": "Ile-a-la-Crosse",
+"latitude":"55.43937778",
+"longitude":"107.9020028",
+"start": "2012/11/01", 
+"end": "2012/11/01",
+"id":"E-71"
+},
+{
+"type": "Hearing",
+"title": "Key First Nation Hearing",
+"placeName": "Key First Nation",
+"latitude":"51.88616667",
+"longitude":"102.10905",
+"start": "2012/01/20", 
+"end": "2012/01/22",
+"id":"E-72"
+},
+{
+"type": "Hearing",
+"title": "La Ronge Hearing",
+"placeName": "La Ronge",
+"latitude":"55.10624",
+"longitude":"105.285061",
+"start": "2012/06/05", 
+"end": "2012/06/07",
+"id":"E-73"
+},
+{
+"type": "Hearing",
+"title": "Lebret Hearing",
+"placeName": "Lebret",
+"latitude":"50.75905278",
+"longitude":"103.7109917",
+"start": "2011/12/01", 
+"end": "2011/12/01",
+"id":"E-74"
+},
+{
+"type": "Hearing",
+"title": "North Battleford Hearing",
+"placeName": "North Battleford",
+"latitude":"52.76856944",
+"longitude":"108.3013694",
+"start": "2012/09/10", 
+"end": "2012/09/11",
+"id":"E-75"
+},
+{
+"type": "Hearing",
+"title": "Onion Lake Hearing",
+"placeName": "Onion Lake",
+"latitude":"53.71837778",
+"longitude":"110.0034972",
+"start": "2012/04/03", 
+"end": "2012/04/05",
+"id":"E-76"
+},
+{
+"type": "Hearing",
+"title": "Pelican Narrows Hearing",
+"placeName": "Pelican Narrows",
+"latitude":"55.17045833",
+"longitude":"102.9396556",
+"start": "2012/02/13", 
+"end": "2012/02/14",
+"id":"E-77"
+},
+{
+"type": "Hearing",
+"title": "Prince Albert Hearing",
+"placeName": "Prince Albert",
+"latitude":"53.20005833",
+"longitude":"105.7514917",
+"start": "2012/01/31", 
+"end": "2012/02/02",
+"id":"E-78"
+},
+{
+"type": "Hearing",
+"title": "Regina Hearing",
+"placeName": "Regina",
+"latitude":"50.41933611",
+"longitude":"104.5821556",
+"start": "2012/01/16", 
+"end": "2012/01/18",
+"id":"E-79"
+},
+{
+"type": "Hearing",
+"title": "Campbell River Hearing",
+"placeName": "Campbell River",
+"latitude":"50.03183889",
+"longitude":"125.2533583",
+"start": "2012/03/01", 
+"end": "2012/03/02",
+"id":"E-8"
+},
+{
+"type": "Event",
+"title": "Saskatchewan National Event",
+"placeName": "Saskatoon",
+"latitude":"52.09905",
+"longitude":"106.677075",
+"start": "2012/06/21", 
+"end": "2012/06/24",
+"id":"E-80"
+},
+{
+"type": "Hearing",
+"title": "Stony Rapids Hearing",
+"placeName": "Stony Rapids",
+"latitude":"59.25666389",
+"longitude":"105.8326694",
+"start": "2012/02/16", 
+"end": "2012/02/17",
+"id":"E-81"
+},
+{
+"type": "Event",
+"title": "Yukon Regional Event",
+"placeName": "Whitehorse",
+"latitude":"60.72481389",
+"longitude":"135.0526111",
+"start": "2013/01/14", 
+"end": "2013/01/15",
+"id":"E-82"
+},
+{
+"type": "Hearing",
+"title": "Dawson City Hearing",
+"placeName": "Dawson City",
+"latitude":"64.064725",
+"longitude":"139.4314944",
+"start": "2011/05/24", 
+"end": "2011/05/24",
+"id":"E-83"
+},
+{
+"type": "Hearing",
+"title": "Watson Lake Hearing",
+"placeName": "Watson Lake",
+"latitude":"60.0648",
+"longitude":"128.7141444",
+"start": "2011/05/25", 
+"end": "2011/05/25",
+"id":"E-84"
+},
+{
+"type": "Hearing",
+"title": "Whitehorse Hearing",
+"placeName": "Whitehorse",
+"latitude":"60.71902222",
+"longitude":"135.1071889",
+"start": "2011/05/26", 
+"end": "2011/05/27",
+"id":"E-85"
+},
+{
+"type": "Hearing",
+"title": "Cowichan (Duncan) Hearing",
+"placeName": "Cowichan (Duncan)",
+"latitude":"48.77353889",
+"longitude":"123.7016639",
+"start": "2012/03/15", 
+"end": "2012/03/16",
+"id":"E-9"
+}
+]}

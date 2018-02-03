@@ -1,0 +1,18 @@
+platform :tvos, '11.2'
+use_frameworks!
+project 'MapExplorer-tvOS.xcodeproj'
+
+target 'MapExplorer-tvOS' do
+  pod 'MONode', :git => 'git@github.com:SlantDesign/mo.git'
+  pod 'C4', '~> 3.0.1'
+  pod 'Alamofire', '~> 4.5'
+
+  target 'MapExplorer-tvOSTests' do
+    inherit! :search_paths
+  end
+
+  target 'MapExplorer-tvOSUITests' do
+    inherit! :search_paths
+  end
+
+end
