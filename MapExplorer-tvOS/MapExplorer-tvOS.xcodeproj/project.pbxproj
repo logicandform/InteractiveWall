@@ -38,8 +38,6 @@
 		22B75C0C1FFC38AF00F51F87 /* MapPoints.json in Resources */ = {isa = PBXBuildFile; fileRef = 22B75C0B1FFC38AF00F51F87 /* MapPoints.json */; };
 		3F0D5F9620115CF90060104E /* CircleAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0D5F9520115CF90060104E /* CircleAnnotationView.swift */; };
 		3F63E67F2016648300DE7005 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F63E67E2016648300DE7005 /* NetworkManager.swift */; };
-		47C90DA2E2F56B820071EAD7 /* Pods_All_MapExplorer_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9ADA089C9B0EE4B34F99557 /* Pods_All_MapExplorer_tvOS.framework */; };
-		771B45ECB5BBDA97937AA711 /* Pods_MapExplorer_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 717EB77E11899F445B1AAA11 /* Pods_MapExplorer_tvOS.framework */; };
 		8F3180FC2011348800E03BA2 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8F3180FB2011348800E03BA2 /* Settings.bundle */; };
 		8F3180FE2011685100E03BA2 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F3180FD2011685100E03BA2 /* Int.swift */; };
 /* End PBXBuildFile section */
@@ -85,22 +83,16 @@
 		22B75BF21FFC387300F51F87 /* UnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitTests.swift; sourceTree = "<group>"; };
 		22B75BFD1FFC387300F51F87 /* UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITests.swift; sourceTree = "<group>"; };
 		22B75C0B1FFC38AF00F51F87 /* MapPoints.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MapPoints.json; sourceTree = "<group>"; };
-		296A88DC700265ACDB2ED8A2 /* Pods_MapExplorer_tvOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapExplorer_tvOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F0D5F9520115CF90060104E /* CircleAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleAnnotationView.swift; sourceTree = "<group>"; };
 		3F63E67E2016648300DE7005 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
-		717EB77E11899F445B1AAA11 /* Pods_MapExplorer_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapExplorer_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		76FE58CFD57CAEA4B14D82E7 /* Pods_MapExplorer_UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapExplorer_UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		79976DA56EA93EDB7FA41893 /* Pods-MapExplorer-tvOSUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-tvOSUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-tvOSUITests/Pods-MapExplorer-tvOSUITests.release.xcconfig"; sourceTree = "<group>"; };
 		8F3180FB2011348800E03BA2 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		8F3180FD2011685100E03BA2 /* Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
 		9347337353BA1FC3A1039E5D /* Pods-MapExplorer-UnitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-UnitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-UnitTests/Pods-MapExplorer-UnitTests.release.xcconfig"; sourceTree = "<group>"; };
-		9D02946526D7E17D0A657AF8 /* Pods_MapExplorer_tvOSUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapExplorer_tvOSUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6146830E03450D1DFFA5DBE /* Pods-MapExplorer-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-tvOS/Pods-MapExplorer-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		ABED2DE63C9EFA3F4359BC68 /* Pods-MapExplorer-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-tvOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-tvOSTests/Pods-MapExplorer-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		C38E5A5CA87EA54057CC1BE7 /* Pods-All-MapExplorer-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-tvOS.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-tvOS/Pods-All-MapExplorer-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		C9ADA089C9B0EE4B34F99557 /* Pods_All_MapExplorer_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_MapExplorer_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2BB5660E384C8A9AA77BDA8 /* Pods-MapExplorer-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-tvOSTests/Pods-MapExplorer-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		E4E3D11A2E364F343A7A72BF /* Pods_MapExplorer_UnitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapExplorer_UnitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F36BFE6CAEDDE51FB1944675 /* Pods-MapExplorer-tvOSUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-tvOSUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-tvOSUITests/Pods-MapExplorer-tvOSUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -110,8 +102,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				22A0EF9E1FFD85C700959101 /* MapKit.framework in Frameworks */,
-				771B45ECB5BBDA97937AA711 /* Pods_MapExplorer_tvOS.framework in Frameworks */,
-				47C90DA2E2F56B820071EAD7 /* Pods_All_MapExplorer_tvOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -288,12 +278,6 @@
 			isa = PBXGroup;
 			children = (
 				22A0EF9D1FFD85C700959101 /* MapKit.framework */,
-				717EB77E11899F445B1AAA11 /* Pods_MapExplorer_tvOS.framework */,
-				296A88DC700265ACDB2ED8A2 /* Pods_MapExplorer_tvOSTests.framework */,
-				9D02946526D7E17D0A657AF8 /* Pods_MapExplorer_tvOSUITests.framework */,
-				76FE58CFD57CAEA4B14D82E7 /* Pods_MapExplorer_UITests.framework */,
-				E4E3D11A2E364F343A7A72BF /* Pods_MapExplorer_UnitTests.framework */,
-				C9ADA089C9B0EE4B34F99557 /* Pods_All_MapExplorer_tvOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -451,12 +435,14 @@
 			inputPaths = (
 				"${SRCROOT}/../Pods/Target Support Files/Pods-All-MapExplorer-tvOS/Pods-All-MapExplorer-tvOS-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire-tvOS/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/C4-tvOS/C4.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket-tvOS/CocoaAsyncSocket.framework",
 				"${BUILT_PRODUCTS_DIR}/MONode-tvOS/MONode.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/C4.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MONode.framework",
 			);

@@ -15,6 +15,8 @@ abstract_target 'All' do
     target 'MapExplorer-tvOS' do
         project 'MapExplorer-tvOS/MapExplorer-tvOS.xcodeproj'
         platform :tvos, '11.2'
+
+	pod 'C4', '~> 3.0.1'
     end
 
     target 'MapExplorer-macOS' do

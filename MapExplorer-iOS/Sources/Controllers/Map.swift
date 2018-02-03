@@ -17,13 +17,6 @@ public extension NetworkConfiguration {
         self.broadcastHost = broadcast
         self.nodePort = port
     }
-
-    public init(multicast: String, port: UInt16) {
-        self.init()
-        self.enableMulticast = true
-        self.multicastGroup = multicast
-        self.nodePort = port
-    }
 }
 
 extension Packet {
@@ -39,8 +32,7 @@ fileprivate enum UserActivity {
 }
 
 class Map: UniverseController, MKMapViewDelegate, UIGestureRecognizerDelegate, SocketManagerDelegate {
-//    static let config = NetworkConfiguration(broadcast: "10.0.0.255", port: 15150)
-    static let config = NetworkConfiguration(multicast: "239.255.255.1", port: 15150)
+    static let config = NetworkConfiguration(broadcast: "239.255.255.1", port: 15150)
 
     private struct Constants {
         static let availableDeviceID: Int32 = 0
@@ -143,19 +135,19 @@ class Map: UniverseController, MKMapViewDelegate, UIGestureRecognizerDelegate, S
             data.append(mapView.visibleMapRect)
             socketQueue.async {
                 let packet = Packet(type: .zoomAndCenter, id: self.deviceID, payload: data)
-                self.socketManager.multicastPacket(packet)
+                self.socketManager.broadcastPacket(packet)
             }
         case .disconnection:
             var data = Data()
             data.append(mapView.visibleMapRect)
             socketQueue.async {
                 let packet = Packet(type: .disconnection, id: self.deviceID, payload: data)
-                self.socketManager.multicastPacket(packet)
+                self.socketManager.broadcastPacket(packet)
             }
         case .reset:
             socketQueue.async {
                 let packet = Packet(type: .reset, id: self.deviceID)
-                self.socketManager.multicastPacket(packet)
+                self.socketManager.broadcastPacket(packet)
             }
         default:
             print("No such packet type")
