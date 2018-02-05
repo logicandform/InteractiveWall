@@ -20,9 +20,11 @@
 		22964FF52025218200F3BE85 /* WorkSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22964FED2025218200F3BE85 /* WorkSpace.swift */; };
 		22964FF72025218200F3BE85 /* MapPoints.json in Resources */ = {isa = PBXBuildFile; fileRef = 22964FEF2025218200F3BE85 /* MapPoints.json */; };
 		22964FF82025218200F3BE85 /* RemoteInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22964FF02025218200F3BE85 /* RemoteInteraction.swift */; };
+		FBC5DA4CC810358E67088094 /* Pods_All_MapExplorer_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21DFA0CDAAD0891F17C2A640 /* Pods_All_MapExplorer_iOS.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		21DFA0CDAAD0891F17C2A640 /* Pods_All_MapExplorer_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_MapExplorer_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		221EBCEF20253633007F4024 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		221EBCF42025368A007F4024 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22964FD42025213A00F3BE85 /* MapExplorer-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MapExplorer-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -48,6 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBC5DA4CC810358E67088094 /* Pods_All_MapExplorer_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -162,6 +165,7 @@
 		C20F6DA7C4FED8ECB91BD1D1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				21DFA0CDAAD0891F17C2A640 /* Pods_All_MapExplorer_iOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

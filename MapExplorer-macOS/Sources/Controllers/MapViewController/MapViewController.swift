@@ -1,19 +1,18 @@
 //  Copyright © 2018 slant. All rights reserved.
 
 import Foundation
-import MONode
 import MapKit
-import AppKit
+import MONode
 
 fileprivate enum UserActivity {
     case idle
     case active
 }
 
-let deviceID = Int32(arc4random() & 0x0FFFFFFF)
+private let deviceID = Int32(arc4random() & 0x0FFFFFFF)
 
 class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognizerDelegate, SocketManagerDelegate {
-    static let config = NetworkConfiguration(broadcastHost: "192.168.1.255", nodePort: 15155)
+    static let config = NetworkConfiguration(broadcastHost: "192.168.1.255", nodePort: 13255)
 
     /// Must be updated to reflect the current configuration of devices.
     private struct Config {
@@ -36,9 +35,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
 
     }
 
-    let socketManager = SocketManager(networkConfiguration: config)
+    let socketManager = SocketManager(networkConfiguration: MapViewController.config)
     let socketQueue = DispatchQueue(label: "socket", qos: .default)
-
 
     private var pairedDeviceID: Int32 = Constants.availableDeviceID
     private var activeDevices = Set<Int32>()
@@ -63,13 +61,14 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
     private var isMasterDevice: Bool {
         return deviceID == Config.masterDeviceID
     }
+
     /// Is currently not paired to any device
     private var unpaired: Bool {
         return pairedDeviceID == Constants.availableDeviceID
     }
 
-    override func viewDidLayout() {
-        super.viewDidLayout()
+    override func viewDidLoad() {
+        super.viewDidLoad()
         socketManager.delegate = self
         setupMap()
         createMapLocations()
@@ -77,6 +76,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
 
     private func setupMap() {
         mapView.register(CircleAnnotationView.self, forAnnotationViewWithReuseIdentifier: CircleAnnotationView.identifier)
+        mapView.delegate = self
         resetMap()
     }
 
@@ -138,6 +138,14 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
 
     func mapViewDidFinishRenderingMap(_ mapView: MKMapView, fullyRendered: Bool) {
         initialized = true
+    }
+
+    public func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
+        beginSendingPosition()
+    }
+
+    public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        stopSendingPosition()
     }
 
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
