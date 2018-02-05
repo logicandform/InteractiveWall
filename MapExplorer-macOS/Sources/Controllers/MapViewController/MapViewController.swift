@@ -9,15 +9,15 @@ fileprivate enum UserActivity {
     case active
 }
 
-private let deviceID = Int32(arc4random() & 0x0FFFFFFF)
+private let deviceID = Int32(1)
 
 class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognizerDelegate, SocketManagerDelegate {
-    static let config = NetworkConfiguration(broadcastHost: "192.168.1.255", nodePort: 13255)
+    static let config = NetworkConfiguration(broadcastHost: "192.168.1.255", nodePort: 14444)
 
     /// Must be updated to reflect the current configuration of devices.
     private struct Config {
         static let masterDeviceID: Int32 = 1
-        static let defaultDevicesInColumn = 4
+        static let defaultDevicesInColumn = 1
         static let singleDeviceLatitudeDelta = 40
     }
 
