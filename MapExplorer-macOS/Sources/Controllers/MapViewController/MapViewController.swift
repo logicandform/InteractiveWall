@@ -9,7 +9,7 @@ fileprivate enum UserActivity {
     case active
 }
 
-private let deviceID = Int32(1)
+private let deviceID = Int32(2)
 
 class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognizerDelegate, SocketManagerDelegate {
     static let config = NetworkConfiguration(broadcastHost: "192.168.1.255", nodePort: 14444)
@@ -71,7 +71,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
         super.viewDidLoad()
         socketManager.delegate = self
         setupMap()
-        createMapLocations()
     }
 
     private func setupMap() {
@@ -112,40 +111,24 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
     }
 
 
-    // MARK: Gesture Handling
-
-    @objc
-    func didPan(_ recognizer: NSPanGestureRecognizer) {
-        switch recognizer.state {
-        case .began:
-            // Set paired device to self
-            userState = .active
-            pairedDeviceID = deviceID
-            beginSendingPosition()
-        case .ended:
-            // Set timer to reset the pairedDeviceID to allow receiving packets
-            userState = .idle
-            beginActivityTimeout()
-            beginLongActivityTimeout()
-            stopSendingPosition()
-        default:
-            break
-        }
-    }
-
-
     // MARK: MKMapViewDelegate
 
     func mapViewDidFinishRenderingMap(_ mapView: MKMapView, fullyRendered: Bool) {
         initialized = true
+        createMapLocations()
     }
 
     public func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
-        beginSendingPosition()
+        userState = .active
+        pairedDeviceID = deviceID
+//        beginSendingPosition()
     }
 
     public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        stopSendingPosition()
+        userState = .idle
+        beginActivityTimeout()
+        beginLongActivityTimeout()
+//        stopSendingPosition()
     }
 
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
@@ -291,23 +274,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
         newMapRect.origin.y += rectHeight * Double(verticalDifference)
         mapView.setVisibleMapRect(newMapRect, animated: unpaired)
         lastMapRect = newMapRect
-    }
-
-    /// Takes the coordinates of a touch event and checks if it selected a marker. Returns the selected marker or nil if no marker was selected.
-    private func touchMarker(location: CGPoint) -> MKAnnotationView? {
-        let visibleMap = mapView.visibleMapRect
-        for annotation in mapView.annotations(in: visibleMap) {
-            if let view = mapView.view(for: annotation as! MKAnnotation) {
-                if !view.isHidden {
-                    let frame = view.frame
-                    if frame.contains(location) {
-                        mapView.selectAnnotation(annotation as! MKAnnotation, animated: true)
-                        return view
-                    }
-                }
-            }
-        }
-        return nil
     }
 
     /// Resets the pairedDeviceID after a timeout period

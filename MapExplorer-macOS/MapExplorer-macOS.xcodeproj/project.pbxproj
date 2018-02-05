@@ -101,7 +101,6 @@
 				22290C212028FA1E000E0573 /* Helpers */,
 				22290C232028FA1E000E0573 /* Managers */,
 				22290C262028FA1E000E0573 /* Models */,
-				22290C252028FA1E000E0573 /* Views */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -139,13 +138,6 @@
 				22290C082028F9EC000E0573 /* AppDelegate.swift */,
 			);
 			path = Managers;
-			sourceTree = "<group>";
-		};
-		22290C252028FA1E000E0573 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		22290C262028FA1E000E0573 /* Models */ = {
