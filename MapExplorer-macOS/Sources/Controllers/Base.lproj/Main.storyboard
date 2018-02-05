@@ -710,22 +710,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <mapView mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="nDF-Yh-yka">
+                            <mapView mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="sja-EH-768">
                                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
-                                <connections>
-                                    <outlet property="delegate" destination="XfG-lQ-9wD" id="Fmi-0B-sHe"/>
-                                </connections>
                             </mapView>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="nDF-Yh-yka" secondAttribute="bottom" id="QxV-u7-Zre"/>
-                            <constraint firstItem="nDF-Yh-yka" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="UkJ-MA-x0R"/>
-                            <constraint firstAttribute="trailing" secondItem="nDF-Yh-yka" secondAttribute="trailing" id="VLw-p2-wWd"/>
-                            <constraint firstItem="nDF-Yh-yka" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="h9N-b3-NV2"/>
+                            <constraint firstAttribute="bottom" secondItem="sja-EH-768" secondAttribute="bottom" id="6pr-Nk-ghX"/>
+                            <constraint firstItem="sja-EH-768" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="Irb-ao-NiO"/>
+                            <constraint firstItem="sja-EH-768" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="dx2-ld-nty"/>
+                            <constraint firstAttribute="trailing" secondItem="sja-EH-768" secondAttribute="trailing" id="jl2-1T-aGQ"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="mapView" destination="nDF-Yh-yka" id="GxT-Z7-JVW"/>
+                        <outlet property="mapView" destination="sja-EH-768" id="ASc-A1-5Vs"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

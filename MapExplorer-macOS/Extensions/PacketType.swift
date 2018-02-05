@@ -1,7 +1,6 @@
 //  Copyright © 2018 slant. All rights reserved.
 
 import Foundation
-
 import MONode
 
 extension PacketType {

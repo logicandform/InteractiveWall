@@ -32,7 +32,7 @@ fileprivate enum UserActivity {
 }
 
 class Map: UniverseController, MKMapViewDelegate, UIGestureRecognizerDelegate, SocketManagerDelegate {
-    static let config = NetworkConfiguration(broadcast: "239.255.255.1", port: 15150)
+    static let config = NetworkConfiguration(broadcast: "192.168.1.255", port: 15150)
 
     private struct Constants {
         static let availableDeviceID: Int32 = 0
