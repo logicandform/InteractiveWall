@@ -131,26 +131,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
 //        stopSendingPosition()
     }
 
-    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-//        if let annotationView = view as? CircleAnnotationView {
-//            UIView.animate(withDuration: Constants.selectAnimationDuration) {
-//                annotationView.circle.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
-//                annotationView.circle.transform = Constants.increaseScaleTransform
-//            }
-//        }
-    }
-
-    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
-//        if let annotationView = view as? CircleAnnotationView {
-//            UIView.animate(withDuration: Constants.selectAnimationDuration) {
-//                annotationView.circle.transform = Constants.decreaseScaleTransform
-//                if let annotation = annotationView.annotation as? LocationAnnotation {
-//                    annotationView.circle.backgroundColor = annotation.item.discipline.color
-//                }
-//            }
-//        }
-    }
-
 
     // MARK: Sending packets
 
