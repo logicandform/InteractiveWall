@@ -9,7 +9,7 @@ fileprivate enum UserActivity {
     case active
 }
 
-private let deviceID = Int32(2)
+private let deviceID = Int32(1)
 
 class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognizerDelegate, SocketManagerDelegate {
     static let config = NetworkConfiguration(broadcastHost: "192.168.1.255", nodePort: 14444)
@@ -27,12 +27,11 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
         static let sendMapRectInterval = 1.0 / 60.0
         static let longActivityTimeoutPeriod: TimeInterval = 10
         static let devicesInColumnKey = "devicesInColumnPreference"
-        static let initialMapPoint = MKMapPoint(x: 24889420.928354669, y: 47956961.545679152)
-        static let initialMapSize = MKMapSize(width: 71181048.90470624, height: 53385786.67852962) // For landscape orientation
+        static let initialMapPoint = MKMapPoint(x: 11435029.807890361, y: 46239458.820914999)
+        static let initialMapSize = MKMapSize(width: 105959171.60879987, height: 59602034.029949859)
         static let selectAnimationDuration = 0.2
         static let increaseScaleTransform = CGAffineTransform(scaleX: 1.5, y: 1.5)
         static let decreaseScaleTransform = CGAffineTransform(scaleX: 1, y: 1)
-
     }
 
     let socketManager = SocketManager(networkConfiguration: MapViewController.config)
@@ -73,12 +72,15 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
         setupMap()
     }
 
+    override func viewDidLayout() {
+        resetMap()
+    }
+
     private func setupMap() {
         mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
         mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultClusterAnnotationViewReuseIdentifier)
         createMapPlaces()
         mapView.delegate = self
-        resetMap()
     }
 
     private func createMapPlaces() {
