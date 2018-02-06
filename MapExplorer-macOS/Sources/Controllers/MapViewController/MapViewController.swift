@@ -74,18 +74,20 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
     }
 
     private func setupMap() {
-        mapView.register(CircleAnnotationView.self, forAnnotationViewWithReuseIdentifier: CircleAnnotationView.identifier)
+        mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
+        mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultClusterAnnotationViewReuseIdentifier)
+        createMapPlaces()
         mapView.delegate = self
         resetMap()
     }
 
-    private func createMapLocations() {
+    private func createMapPlaces() {
         do {
             if let file = Bundle.main.url(forResource: "MapPoints", withExtension: "json") {
                 let data = try Data(contentsOf: file)
                 let json = try JSONSerialization.jsonObject(with: data, options: [])
                 if let jsonBlob = json as? [String: Any], let json = jsonBlob["locations"] as? [[String: Any]] {
-                    addLocationsToMap(locationJSON: json)
+                    addPlacesToMap(placesJSON: json)
                 } else {
                     print("JSON is invalid")
                 }
@@ -97,17 +99,16 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
         }
     }
 
-    private func addLocationsToMap(locationJSON: [[String: Any]]) {
-        var items = [LocationItem]()
+    private func addPlacesToMap(placesJSON: [[String: Any]]) {
+        var places = [Place]()
 
-        for location in locationJSON {
-            if let item = LocationItem(fromJSON: location) {
-                items.append(item)
+        for json in placesJSON {
+            if let place = Place(fromJSON: json) {
+                places.append(place)
             }
         }
 
-        let markers = items.map { LocationAnnotation(item: $0) }
-        mapView.addAnnotations(markers)
+        mapView.addAnnotations(places)
     }
 
 
@@ -115,7 +116,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
 
     func mapViewDidFinishRenderingMap(_ mapView: MKMapView, fullyRendered: Bool) {
         initialized = true
-        createMapLocations()
     }
 
     public func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
@@ -126,34 +126,29 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
 
     public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         userState = .idle
-        beginActivityTimeout()
-        beginLongActivityTimeout()
+//        beginActivityTimeout()
+//        beginLongActivityTimeout()
 //        stopSendingPosition()
     }
 
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-
-        if let annotationView = view as? CircleAnnotationView {
+//        if let annotationView = view as? CircleAnnotationView {
 //            UIView.animate(withDuration: Constants.selectAnimationDuration) {
 //                annotationView.circle.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
 //                annotationView.circle.transform = Constants.increaseScaleTransform
 //            }
-        }
+//        }
     }
 
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
-        if let annotationView = view as? CircleAnnotationView {
+//        if let annotationView = view as? CircleAnnotationView {
 //            UIView.animate(withDuration: Constants.selectAnimationDuration) {
 //                annotationView.circle.transform = Constants.decreaseScaleTransform
 //                if let annotation = annotationView.annotation as? LocationAnnotation {
 //                    annotationView.circle.backgroundColor = annotation.item.discipline.color
 //                }
 //            }
-        }
-    }
-
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        return mapView.dequeueReusableAnnotationView(withIdentifier: CircleAnnotationView.identifier) 
+//        }
     }
 
 
@@ -186,7 +181,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
     }
 
     private func sendZoomAndCenter() {
-        let currentMapRect = self.mapView.visibleMapRect
+        let currentMapRect = mapView.visibleMapRect
 
         // If the mapRects are the same, do nothing
         if lastMapRect == currentMapRect {
