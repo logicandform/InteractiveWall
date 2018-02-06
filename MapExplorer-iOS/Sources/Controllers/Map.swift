@@ -89,6 +89,9 @@ class Map: UniverseController, MKMapViewDelegate, UIGestureRecognizerDelegate, S
         mapView.addGestureRecognizer(panGestureRecognizer)
         mapView.isRotateEnabled = false
         canvas.add(mapView)
+        mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
+        mapView.register(CustomClusterView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultClusterAnnotationViewReuseIdentifier)
+        createMapLocations()
         resetMap()
     }
 
@@ -102,13 +105,13 @@ class Map: UniverseController, MKMapViewDelegate, UIGestureRecognizerDelegate, S
             // Set paired device to self
             userState = .active
             pairedDeviceID = deviceID
-            beginSendingPosition()
+//            beginSendingPosition()
         case .ended:
             // Set timer to reset the pairedDeviceID to allow receiving packets
             userState = .idle
-            beginActivityTimeout()
-            beginLongActivityTimeout()
-            stopSendingPosition()
+//            beginActivityTimeout()
+//            beginLongActivityTimeout()
+//            stopSendingPosition()
         default:
             break
         }
@@ -304,5 +307,38 @@ class Map: UniverseController, MKMapViewDelegate, UIGestureRecognizerDelegate, S
 
     private func stopSendingPosition() {
         sendMapRectTimer?.invalidate()
+    }
+
+
+    // MARK: Locations on map
+
+    private func createMapLocations() {
+        do {
+            if let file = Bundle.main.url(forResource: "MapPoints", withExtension: "json") {
+                let data = try Data(contentsOf: file)
+                let json = try JSONSerialization.jsonObject(with: data, options: [])
+                if let jsonBlob = json as? [String: Any], let json = jsonBlob["locations"] as? [[String: Any]] {
+                    addPlacesToMap(placesJSON: json)
+                } else {
+                    print("JSON is invalid")
+                }
+            } else {
+                print("No file")
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+
+    private func addPlacesToMap(placesJSON: [[String: Any]]) {
+        var places = [Place]()
+
+        for json in placesJSON {
+            if let place = Place(fromJSON: json) {
+                places.append(place)
+            }
+        }
+
+        mapView.addAnnotations(places)
     }
 }

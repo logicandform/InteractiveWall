@@ -1,34 +1,33 @@
 //  Copyright © 2018 slant. All rights reserved.
 
-import Foundation
 import MapKit
 
-class LocationItem {
-    let title: String?
-    let locationName: String
-    let discipline: Discipline
-    let coordinate: CLLocationCoordinate2D
+class Place: MKPointAnnotation {
 
-    init(title: String?, name: String, coordinate: CLLocationCoordinate2D, discipline: Discipline) {
-        self.title = title
-        self.locationName = name
-        self.coordinate = coordinate
+    let discipline: Discipline
+
+    init(title: String?, subtitle: String, coordinate: CLLocationCoordinate2D, discipline: Discipline) {
         self.discipline = discipline
+        super.init()
+        self.title = title
+        self.subtitle = subtitle
+        self.coordinate = coordinate
     }
 
     init?(fromJSON json: [String: Any]) {
-        guard let name = json["placeName"] as? String,
+        guard let subtitle = json["placeName"] as? String,
             let type = json["type"] as? String,
             let discipline = Discipline(from: type),
             let latitudeString = json["latitude"] as? String,
             let longitudeString = json["longitude"] as? String else {
                 return nil
         }
-        self.title = json["title"] as? String
-        self.locationName = name
         self.discipline = discipline
-        let latitude = Double(LocationItem.matches(for: "\\d+(\\.\\d+)?", in: latitudeString)[0])!
-        let longitude = Double(LocationItem.matches(for: "\\d+(\\.\\d+)?", in: longitudeString)[0])! * (-1)
+        super.init()
+        self.title = json["title"] as? String
+        self.subtitle = subtitle
+        let latitude = Double(Place.matches(for: "\\d+(\\.\\d+)?", in: latitudeString)[0])!
+        let longitude = Double(Place.matches(for: "\\d+(\\.\\d+)?", in: longitudeString)[0])! * (-1)
         self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
 
@@ -45,3 +44,4 @@ class LocationItem {
         }
     }
 }
+

@@ -9,7 +9,7 @@ fileprivate enum UserActivity {
     case active
 }
 
-private let deviceID = Int32(1)
+private let deviceID = Int32(2)
 
 class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognizerDelegate, SocketManagerDelegate {
     static let config = NetworkConfiguration(broadcastHost: "192.168.1.255", nodePort: 14444)
@@ -71,22 +71,23 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
         super.viewDidLoad()
         socketManager.delegate = self
         setupMap()
-        createMapLocations()
     }
 
     private func setupMap() {
-        mapView.register(CircleAnnotationView.self, forAnnotationViewWithReuseIdentifier: CircleAnnotationView.identifier)
+        mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
+        mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultClusterAnnotationViewReuseIdentifier)
+        createMapPlaces()
         mapView.delegate = self
         resetMap()
     }
 
-    private func createMapLocations() {
+    private func createMapPlaces() {
         do {
             if let file = Bundle.main.url(forResource: "MapPoints", withExtension: "json") {
                 let data = try Data(contentsOf: file)
                 let json = try JSONSerialization.jsonObject(with: data, options: [])
                 if let jsonBlob = json as? [String: Any], let json = jsonBlob["locations"] as? [[String: Any]] {
-                    addLocationsToMap(locationJSON: json)
+                    addPlacesToMap(placesJSON: json)
                 } else {
                     print("JSON is invalid")
                 }
@@ -98,39 +99,16 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
         }
     }
 
-    private func addLocationsToMap(locationJSON: [[String: Any]]) {
-        var items = [LocationItem]()
+    private func addPlacesToMap(placesJSON: [[String: Any]]) {
+        var places = [Place]()
 
-        for location in locationJSON {
-            if let item = LocationItem(fromJSON: location) {
-                items.append(item)
+        for json in placesJSON {
+            if let place = Place(fromJSON: json) {
+                places.append(place)
             }
         }
 
-        let markers = items.map { LocationAnnotation(item: $0) }
-        mapView.addAnnotations(markers)
-    }
-
-
-    // MARK: Gesture Handling
-
-    @objc
-    func didPan(_ recognizer: NSPanGestureRecognizer) {
-        switch recognizer.state {
-        case .began:
-            // Set paired device to self
-            userState = .active
-            pairedDeviceID = deviceID
-            beginSendingPosition()
-        case .ended:
-            // Set timer to reset the pairedDeviceID to allow receiving packets
-            userState = .idle
-            beginActivityTimeout()
-            beginLongActivityTimeout()
-            stopSendingPosition()
-        default:
-            break
-        }
+        mapView.addAnnotations(places)
     }
 
 
@@ -141,36 +119,16 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
     }
 
     public func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
-        beginSendingPosition()
+        userState = .active
+        pairedDeviceID = deviceID
+//        beginSendingPosition()
     }
 
     public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        stopSendingPosition()
-    }
-
-    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-
-        if let annotationView = view as? CircleAnnotationView {
-//            UIView.animate(withDuration: Constants.selectAnimationDuration) {
-//                annotationView.circle.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
-//                annotationView.circle.transform = Constants.increaseScaleTransform
-//            }
-        }
-    }
-
-    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
-        if let annotationView = view as? CircleAnnotationView {
-//            UIView.animate(withDuration: Constants.selectAnimationDuration) {
-//                annotationView.circle.transform = Constants.decreaseScaleTransform
-//                if let annotation = annotationView.annotation as? LocationAnnotation {
-//                    annotationView.circle.backgroundColor = annotation.item.discipline.color
-//                }
-//            }
-        }
-    }
-
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        return mapView.dequeueReusableAnnotationView(withIdentifier: CircleAnnotationView.identifier) 
+        userState = .idle
+//        beginActivityTimeout()
+//        beginLongActivityTimeout()
+//        stopSendingPosition()
     }
 
 
@@ -203,7 +161,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
     }
 
     private func sendZoomAndCenter() {
-        let currentMapRect = self.mapView.visibleMapRect
+        let currentMapRect = mapView.visibleMapRect
 
         // If the mapRects are the same, do nothing
         if lastMapRect == currentMapRect {
@@ -291,23 +249,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
         newMapRect.origin.y += rectHeight * Double(verticalDifference)
         mapView.setVisibleMapRect(newMapRect, animated: unpaired)
         lastMapRect = newMapRect
-    }
-
-    /// Takes the coordinates of a touch event and checks if it selected a marker. Returns the selected marker or nil if no marker was selected.
-    private func touchMarker(location: CGPoint) -> MKAnnotationView? {
-        let visibleMap = mapView.visibleMapRect
-        for annotation in mapView.annotations(in: visibleMap) {
-            if let view = mapView.view(for: annotation as! MKAnnotation) {
-                if !view.isHidden {
-                    let frame = view.frame
-                    if frame.contains(location) {
-                        mapView.selectAnnotation(annotation as! MKAnnotation, animated: true)
-                        return view
-                    }
-                }
-            }
-        }
-        return nil
     }
 
     /// Resets the pairedDeviceID after a timeout period
