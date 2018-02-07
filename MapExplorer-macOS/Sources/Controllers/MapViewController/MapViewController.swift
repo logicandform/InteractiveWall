@@ -146,13 +146,21 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
             }
         } else if let cluster = annotation as? MKClusterAnnotation {
             if let clusterView = mapView.dequeueReusableAnnotationView(withIdentifier: ClusterView.identifier) as? ClusterView {
+                clusterView.didTapCallout = didSelectAnnotationCallout(for:)
                 return clusterView
             } else {
-                return ClusterView(annotation: cluster, reuseIdentifier: ClusterView.identifier)
+                let clusterView = ClusterView(annotation: cluster, reuseIdentifier: ClusterView.identifier)
+                clusterView.didTapCallout = didSelectAnnotationCallout(for:)
+                return clusterView
             }
         }
 
         return nil
+    }
+
+    private func didSelectAnnotationCallout(for cluster: MKClusterAnnotation) {
+        let selectedAnnotations = cluster.memberAnnotations
+        mapView.showAnnotations(selectedAnnotations, animated: true)
     }
 
     /// Display a place view controller on top of the selected callout annotation for the associated place.
