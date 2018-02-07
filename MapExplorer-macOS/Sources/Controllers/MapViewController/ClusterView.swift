@@ -6,10 +6,14 @@ import MapKit
 class ClusterView: MKAnnotationView {
     static let identifier = "ClusterView"
 
+    var didTapCallout: ((MKClusterAnnotation)->())?
+
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
         displayPriority = .defaultHigh
         collisionMode = .circle
+        canShowCallout = true
+        rightCalloutAccessoryView = NSButton(title: "Show More", target: self, action: #selector(calloutButtonSelected))
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -21,6 +25,13 @@ class ClusterView: MKAnnotationView {
             if let _ = newValue as? MKClusterAnnotation {
                 image = NSImage(named: "Cluster")
             }
+        }
+    }
+
+    @objc
+    private func calloutButtonSelected() {
+        if let cluster = annotation as? MKClusterAnnotation {
+            didTapCallout?(cluster)
         }
     }
 }
