@@ -5,6 +5,7 @@ import MapKit
 import UIKit
 
 class PlaceView: MKAnnotationView {
+    static let identifier = "PlaceView"
 
     override var annotation: MKAnnotation? {
         willSet {

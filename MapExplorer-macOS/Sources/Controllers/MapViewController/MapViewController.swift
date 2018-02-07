@@ -74,8 +74,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
     }
 
     private func setupMap() {
-        mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
-        mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultClusterAnnotationViewReuseIdentifier)
+        mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
+        mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
         createMapPlaces()
         mapView.delegate = self
         resetMap()
@@ -129,6 +129,24 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
 //        beginActivityTimeout()
 //        beginLongActivityTimeout()
 //        stopSendingPosition()
+    }
+
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if let place = annotation as? Place {
+            if let placeView = mapView.dequeueReusableAnnotationView(withIdentifier: PlaceView.identifier) as? PlaceView {
+                return placeView
+            } else {
+                return PlaceView(annotation: place, reuseIdentifier: PlaceView.identifier)
+            }
+        } else if let cluster = annotation as? MKClusterAnnotation {
+            if let clusterView = mapView.dequeueReusableAnnotationView(withIdentifier: ClusterView.identifier) as? ClusterView {
+                return clusterView
+            } else {
+                return ClusterView(annotation: cluster, reuseIdentifier: ClusterView.identifier)
+            }
+        }
+
+        return nil
     }
 
 

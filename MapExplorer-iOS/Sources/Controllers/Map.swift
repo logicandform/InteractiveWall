@@ -32,20 +32,20 @@ fileprivate enum UserActivity {
 }
 
 class Map: UniverseController, MKMapViewDelegate, UIGestureRecognizerDelegate, SocketManagerDelegate {
-    static let config = NetworkConfiguration(broadcast: "192.168.1.255", port: 15150)
+    static let config = NetworkConfiguration(broadcast: "192.168.1.255", port: 15151)
 
     private struct Constants {
         static let availableDeviceID: Int32 = 0
         static let activityTimeoutPeriod    = TimeInterval(4)
         static let sendMapRectInterval = 1.0 / 60.0
         static let longActivityTimeoutPeriod = TimeInterval(10)
-        static let setupHeight = 2
+        static let setupHeight = 1
         static let masterDevice: Int32 = 1
         static let effectiveHeight = setupHeight
         static let singleDeviceLatitudeDelta = 40
         static let worldHeight = MKMapSizeWorld.height
-        static let initialMapPoint = MKMapPoint(x: 9081485.9989239797, y: 38924969.338196307)
-        static let initialMapSize = MKMapSize(width: 56402432.446596466, height: 42301824.334947348)
+        static let initialMapPoint = MKMapPoint(x:  261955936.69110817, y: 66567808.638827801)
+        static let initialMapSize = MKMapSize(width: 24046569.040224195, height: 32062092.053632274)
     }
 
     // MO
@@ -89,8 +89,8 @@ class Map: UniverseController, MKMapViewDelegate, UIGestureRecognizerDelegate, S
         mapView.addGestureRecognizer(panGestureRecognizer)
         mapView.isRotateEnabled = false
         canvas.add(mapView)
-        mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
-        mapView.register(CustomClusterView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultClusterAnnotationViewReuseIdentifier)
+        mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
+        mapView.register(CustomClusterView.self, forAnnotationViewWithReuseIdentifier: CustomClusterView.identifier)
         createMapLocations()
         resetMap()
     }
@@ -105,13 +105,13 @@ class Map: UniverseController, MKMapViewDelegate, UIGestureRecognizerDelegate, S
             // Set paired device to self
             userState = .active
             pairedDeviceID = deviceID
-//            beginSendingPosition()
+            beginSendingPosition()
         case .ended:
             // Set timer to reset the pairedDeviceID to allow receiving packets
             userState = .idle
-//            beginActivityTimeout()
-//            beginLongActivityTimeout()
-//            stopSendingPosition()
+            beginActivityTimeout()
+            beginLongActivityTimeout()
+            stopSendingPosition()
         default:
             break
         }
@@ -128,6 +128,23 @@ class Map: UniverseController, MKMapViewDelegate, UIGestureRecognizerDelegate, S
         initialized = true
     }
 
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if let place = annotation as? Place {
+            if let placeView = mapView.dequeueReusableAnnotationView(withIdentifier: PlaceView.identifier) as? PlaceView {
+                return placeView
+            } else {
+                return PlaceView(annotation: place, reuseIdentifier: PlaceView.identifier)
+            }
+        } else if let cluster = annotation as? MKClusterAnnotation {
+            if let clusterView = mapView.dequeueReusableAnnotationView(withIdentifier: CustomClusterView.identifier) as? CustomClusterView {
+                return clusterView
+            } else {
+                return CustomClusterView(annotation: cluster, reuseIdentifier: CustomClusterView.identifier)
+            }
+        }
+
+        return nil
+    }
 
     // MARK: Sending packets
 

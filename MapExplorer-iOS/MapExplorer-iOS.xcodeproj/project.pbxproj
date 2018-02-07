@@ -18,7 +18,6 @@
 		22964FE22025213B00F3BE85 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22964FE02025213B00F3BE85 /* LaunchScreen.storyboard */; };
 		22964FF12025218200F3BE85 /* UniverseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22964FE92025218200F3BE85 /* UniverseController.swift */; };
 		22964FF22025218200F3BE85 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22964FEA2025218200F3BE85 /* Map.swift */; };
-		22964FF42025218200F3BE85 /* Marker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22964FEC2025218200F3BE85 /* Marker.swift */; };
 		22964FF52025218200F3BE85 /* WorkSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22964FED2025218200F3BE85 /* WorkSpace.swift */; };
 		22964FF72025218200F3BE85 /* MapPoints.json in Resources */ = {isa = PBXBuildFile; fileRef = 22964FEF2025218200F3BE85 /* MapPoints.json */; };
 		FBC5DA4CC810358E67088094 /* Pods_All_MapExplorer_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21DFA0CDAAD0891F17C2A640 /* Pods_All_MapExplorer_iOS.framework */; };
@@ -38,7 +37,6 @@
 		22964FE12025213B00F3BE85 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		22964FE92025218200F3BE85 /* UniverseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UniverseController.swift; sourceTree = "<group>"; };
 		22964FEA2025218200F3BE85 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
-		22964FEC2025218200F3BE85 /* Marker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Marker.swift; sourceTree = "<group>"; };
 		22964FED2025218200F3BE85 /* WorkSpace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkSpace.swift; sourceTree = "<group>"; };
 		22964FEF2025218200F3BE85 /* MapPoints.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MapPoints.json; sourceTree = "<group>"; };
 		77BAFB2DF0F2C2C8334020F4 /* Pods-MapExplorer-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-iOS/Pods-MapExplorer-iOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -132,7 +130,6 @@
 			children = (
 				226EA6F320294EF90067B542 /* Discipline.swift */,
 				226EA6F420294EF90067B542 /* Place.swift */,
-				22964FEC2025218200F3BE85 /* Marker.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -318,7 +315,6 @@
 				226EA6FA202959DC0067B542 /* PlaceView.swift in Sources */,
 				221EBCF52025368A007F4024 /* AppDelegate.swift in Sources */,
 				22964FF52025218200F3BE85 /* WorkSpace.swift in Sources */,
-				22964FF42025218200F3BE85 /* Marker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,7 +389,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -445,7 +441,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -459,10 +455,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = G3GED29J33;
+				DEVELOPMENT_TEAM = M6262HME76;
 				INFOPLIST_FILE = Metadata/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.jabt.MapExplorer-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "is.slant.MapExplorer-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -475,10 +471,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = G3GED29J33;
+				DEVELOPMENT_TEAM = M6262HME76;
 				INFOPLIST_FILE = Metadata/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.jabt.MapExplorer-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "is.slant.MapExplorer-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
