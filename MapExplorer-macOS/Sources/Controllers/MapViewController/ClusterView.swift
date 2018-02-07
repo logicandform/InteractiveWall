@@ -13,7 +13,7 @@ class ClusterView: MKAnnotationView {
         displayPriority = .defaultHigh
         collisionMode = .circle
         canShowCallout = true
-        rightCalloutAccessoryView = NSButton(title: "Show More", target: self, action: #selector(calloutButtonSelected))
+        rightCalloutAccessoryView = NSButton(title: "More", target: self, action: #selector(calloutButtonSelected))
     }
 
     required init?(coder aDecoder: NSCoder) {
