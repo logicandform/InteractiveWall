@@ -4,11 +4,25 @@ PODS:
   - CocoaAsyncSocket (7.6.2)
   - MONode (0.0.1):
     - CocoaAsyncSocket (~> 7.6.1)
+  - PromiseKit (4.5.2):
+    - PromiseKit/Foundation (= 4.5.2)
+    - PromiseKit/QuartzCore (= 4.5.2)
+    - PromiseKit/UIKit (= 4.5.2)
+  - PromiseKit/Alamofire (4.5.2):
+    - Alamofire (~> 4.0)
+    - PromiseKit/CorePromise
+  - PromiseKit/CorePromise (4.5.2)
+  - PromiseKit/Foundation (4.5.2):
+    - PromiseKit/CorePromise
+  - PromiseKit/QuartzCore (4.5.2):
+    - PromiseKit/CorePromise
 
 DEPENDENCIES:
   - Alamofire (~> 4.5)
   - C4 (~> 3.0.1)
   - MONode (from `git@github.com:SlantDesign/mo.git`)
+  - PromiseKit (~> 4.4)
+  - PromiseKit/Alamofire
 
 EXTERNAL SOURCES:
   MONode:
@@ -24,7 +38,8 @@ SPEC CHECKSUMS:
   C4: 8a51425000f760d5e89ba294a8284467a1bd1231
   CocoaAsyncSocket: 3541e024f48c54b251638ef72d51dd42808de932
   MONode: 6bcc731f16d2f355b7c29da63823b95cd945b290
+  PromiseKit: 743e497a5f505a470d3bbbf4ce0663c1268af0a4
 
-PODFILE CHECKSUM: 6b0aa2864b47abae3df94a318b5341e50fc5c598
+PODFILE CHECKSUM: d876792d6e9c4df0676a478519afa0abe028c889
 
 COCOAPODS: 1.4.0

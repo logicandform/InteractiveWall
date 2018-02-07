@@ -16,12 +16,15 @@ abstract_target 'All' do
         project 'MapExplorer-tvOS/MapExplorer-tvOS.xcodeproj'
         platform :tvos, '11.2'
 
-	pod 'C4', '~> 3.0.1'
+	    pod 'C4', '~> 3.0.1'
     end
 
     target 'MapExplorer-macOS' do
         project 'MapExplorer-macOS/MapExplorer-macOS.xcodeproj'
         platform :osx, '10.13'
+
+        pod 'PromiseKit', '~> 4.4'
+        pod 'PromiseKit/Alamofire'
     end
 
 end
