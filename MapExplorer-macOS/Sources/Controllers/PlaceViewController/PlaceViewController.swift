@@ -32,7 +32,7 @@ class PlaceViewController: NSViewController {
     // MARK: Setup
 
     private func setup(with place: Place) {
-        titleLabel.stringValue = place.title ?? "unknown"
+        titleLabel.stringValue = place.subtitle ?? "unknown"
     }
 
 
