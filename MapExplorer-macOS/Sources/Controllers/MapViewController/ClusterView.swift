@@ -4,6 +4,7 @@ import Cocoa
 import MapKit
 
 class ClusterView: MKAnnotationView {
+    static let identifier = "ClusterView"
 
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
