@@ -152,6 +152,13 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
         return nil
     }
 
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        if let clusterAnnotation = view.annotation as? MKClusterAnnotation {
+            let selectedAnnotations = clusterAnnotation.memberAnnotations
+            mapView.showAnnotations(selectedAnnotations, animated: true)
+        }
+    }
+
     /// Display a place view controller on top of the selected callout annotation for the associated place.
     private func didSelectAnnotationCallout(for place: Place) {
         let storyboard = NSStoryboard(name: PlaceViewController.storyboard, bundle: nil)
