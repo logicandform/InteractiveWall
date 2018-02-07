@@ -158,6 +158,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
         if let placeVC = storyboard.instantiateInitialController() as? PlaceViewController {
             addChildViewController(placeVC)
             view.addSubview(placeVC.view)
+            mapView.deselectAnnotation(place, animated: false)
 
             // Set origin of new view
             var origin = mapView.convert(place.coordinate, toPointTo: view)
