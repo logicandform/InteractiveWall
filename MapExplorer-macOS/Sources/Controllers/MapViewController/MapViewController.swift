@@ -3,6 +3,7 @@
 import Foundation
 import MapKit
 import MONode
+import PromiseKit
 
 fileprivate enum UserActivity {
     case idle
