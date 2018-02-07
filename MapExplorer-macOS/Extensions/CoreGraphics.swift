@@ -8,6 +8,21 @@ extension CGPoint {
         lhs.x += rhs.dx
         lhs.y += rhs.dy
     }
+
+    static func -= (lhs: inout CGPoint, rhs: CGVector) {
+        lhs.x -= rhs.dx
+        lhs.y -= rhs.dy
+    }
+
+    static func += (lhs: inout CGPoint, rhs: CGPoint) {
+        lhs.x += rhs.x
+        lhs.y += rhs.y
+    }
+
+    static func -= (lhs: inout CGPoint, rhs: CGPoint) {
+        lhs.x -= rhs.x
+        lhs.y -= rhs.y
+    }
 }
 
 extension CGSize {
