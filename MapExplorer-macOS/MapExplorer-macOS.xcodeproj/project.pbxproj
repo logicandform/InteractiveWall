@@ -23,6 +23,8 @@
 		22290C40202915D8000E0573 /* MapPoints.json in Resources */ = {isa = PBXBuildFile; fileRef = 22290C3F202915D8000E0573 /* MapPoints.json */; };
 		22290C4220292D22000E0573 /* ClusterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C4120292D22000E0573 /* ClusterView.swift */; };
 		226EA70120296C240067B542 /* NSImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226EA70020296C240067B542 /* NSImage.swift */; };
+		22EF0FA4202ABE6C00571002 /* PlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EF0FA3202ABE6C00571002 /* PlaceViewController.swift */; };
+		22EF0FA6202ACAB400571002 /* Place.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22EF0FA5202ACAB400571002 /* Place.storyboard */; };
 		67C759AB770299C488231A9D /* Pods_All_MapExplorer_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +48,8 @@
 		22290C3F202915D8000E0573 /* MapPoints.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = MapPoints.json; path = "../../MapExplorer-tvOS/Data/MapPoints.json"; sourceTree = "<group>"; };
 		22290C4120292D22000E0573 /* ClusterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterView.swift; sourceTree = "<group>"; };
 		226EA70020296C240067B542 /* NSImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSImage.swift; sourceTree = "<group>"; };
+		22EF0FA3202ABE6C00571002 /* PlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceViewController.swift; sourceTree = "<group>"; };
+		22EF0FA5202ACAB400571002 /* Place.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Place.storyboard; sourceTree = "<group>"; };
 		26A4912457E23A30817143A3 /* Pods-All-MapExplorer-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-macOS.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-macOS/Pods-All-MapExplorer-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		39B2384F39CC84964B0970BD /* Pods-MapExplorer-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_MapExplorer_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -112,6 +116,7 @@
 			children = (
 				22290C0E2028F9EC000E0573 /* Main.storyboard */,
 				22290C1D2028FA1E000E0573 /* MapViewController */,
+				22EF0FA2202ABE4F00571002 /* PlaceViewController */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -178,6 +183,15 @@
 				22290C3F202915D8000E0573 /* MapPoints.json */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		22EF0FA2202ABE4F00571002 /* PlaceViewController */ = {
+			isa = PBXGroup;
+			children = (
+				22EF0FA5202ACAB400571002 /* Place.storyboard */,
+				22EF0FA3202ABE6C00571002 /* PlaceViewController.swift */,
+			);
+			path = PlaceViewController;
 			sourceTree = "<group>";
 		};
 		54917AC90A012134E9DA525B /* Frameworks */ = {
@@ -261,6 +275,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22EF0FA6202ACAB400571002 /* Place.storyboard in Resources */,
 				22290C40202915D8000E0573 /* MapPoints.json in Resources */,
 				22290C0D2028F9EC000E0573 /* Assets.xcassets in Resources */,
 				22290C102028F9EC000E0573 /* Main.storyboard in Resources */,
@@ -342,6 +357,7 @@
 				22290C092028F9EC000E0573 /* AppDelegate.swift in Sources */,
 				22290C392028FA35000E0573 /* CoreGraphics.swift in Sources */,
 				22290C2C2028FA1F000E0573 /* MapViewController.swift in Sources */,
+				22EF0FA4202ABE6C00571002 /* PlaceViewController.swift in Sources */,
 				22290C3C2028FA35000E0573 /* NetworkConfiguration.swift in Sources */,
 				22290C2E2028FA1F000E0573 /* Style.swift in Sources */,
 				22290C2D2028FA1F000E0573 /* Place.swift in Sources */,

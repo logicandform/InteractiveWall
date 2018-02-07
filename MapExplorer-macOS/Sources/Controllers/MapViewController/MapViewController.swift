@@ -134,9 +134,12 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let place = annotation as? Place {
             if let placeView = mapView.dequeueReusableAnnotationView(withIdentifier: PlaceView.identifier) as? PlaceView {
+                placeView.didTapCallout = didSelectAnnotationCallout(for:)
                 return placeView
             } else {
-                return PlaceView(annotation: place, reuseIdentifier: PlaceView.identifier)
+                let placeView = PlaceView(annotation: place, reuseIdentifier: PlaceView.identifier)
+                placeView.didTapCallout = didSelectAnnotationCallout(for:)
+                return placeView
             }
         } else if let cluster = annotation as? MKClusterAnnotation {
             if let clusterView = mapView.dequeueReusableAnnotationView(withIdentifier: ClusterView.identifier) as? ClusterView {
@@ -147,6 +150,21 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
         }
 
         return nil
+    }
+
+    /// Display a place view controller on top of the selected callout annotation for the associated place.
+    private func didSelectAnnotationCallout(for place: Place) {
+        let storyboard = NSStoryboard(name: PlaceViewController.storyboard, bundle: nil)
+        if let placeVC = storyboard.instantiateInitialController() as? PlaceViewController {
+            addChildViewController(placeVC)
+            view.addSubview(placeVC.view)
+
+            // Set origin of new view
+            var origin = mapView.convert(place.coordinate, toPointTo: view)
+            origin -= CGVector(dx: placeVC.view.bounds.width / 2, dy: placeVC.view.bounds.height + 10.0)
+            placeVC.view.frame.origin = origin
+            placeVC.place = place
+        }
     }
 
 

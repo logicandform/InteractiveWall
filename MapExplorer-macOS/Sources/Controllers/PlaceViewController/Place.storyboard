@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="k5b-MF-Zdf">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Place View Controller-->
+        <scene sceneID="5LE-vP-wAv">
+            <objects>
+                <viewController id="k5b-MF-Zdf" customClass="PlaceViewController" customModule="MapExplorer_macOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="02T-mc-d0F">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="584"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fEk-RQ-fgW">
+                                <rect key="frame" x="16" y="540" width="29" height="26"/>
+                                <buttonCell key="cell" type="disclosure" bezelStyle="roundedDisclosure" image="buttonCell:aid-5d-iuo:image" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="aid-5d-iuo">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="closeButtonTapped:" target="k5b-MF-Zdf" id="P4f-6y-MgR"/>
+                                </connections>
+                            </button>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Pqy-Rw-Og1">
+                                <rect key="frame" x="59" y="545" width="332" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Label" id="cE4-OT-sCv">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="Pqy-Rw-Og1" firstAttribute="top" secondItem="02T-mc-d0F" secondAttribute="top" constant="22" id="FBh-UT-dPL"/>
+                            <constraint firstItem="Pqy-Rw-Og1" firstAttribute="leading" secondItem="fEk-RQ-fgW" secondAttribute="trailing" constant="20" id="WyK-Cx-Pbe"/>
+                            <constraint firstItem="Pqy-Rw-Og1" firstAttribute="centerX" secondItem="02T-mc-d0F" secondAttribute="centerX" id="XnE-t5-nhg"/>
+                            <constraint firstItem="Pqy-Rw-Og1" firstAttribute="centerY" secondItem="fEk-RQ-fgW" secondAttribute="centerY" id="dD7-0C-xjf"/>
+                            <constraint firstItem="fEk-RQ-fgW" firstAttribute="leading" secondItem="02T-mc-d0F" secondAttribute="leading" constant="20" id="rnH-fc-waw"/>
+                            <constraint firstItem="fEk-RQ-fgW" firstAttribute="top" secondItem="02T-mc-d0F" secondAttribute="top" constant="20" id="vU2-CP-9TW"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="titleLabel" destination="Pqy-Rw-Og1" id="L6U-Le-HIq"/>
+                    </connections>
+                </viewController>
+                <customObject id="Rgh-H9-W1a" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="91" y="242"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="buttonCell:aid-5d-iuo:image" width="128" height="128"/>
+    </resources>
+</document>
