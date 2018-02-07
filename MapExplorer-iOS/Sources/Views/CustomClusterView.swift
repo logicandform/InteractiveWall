@@ -3,6 +3,7 @@
 import MapKit
 
 class CustomClusterView: MKAnnotationView {
+    static let identifier = "CustomClusterView"
 
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)

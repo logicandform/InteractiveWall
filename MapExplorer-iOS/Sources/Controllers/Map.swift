@@ -89,10 +89,28 @@ class Map: UniverseController, MKMapViewDelegate, UIGestureRecognizerDelegate, S
         mapView.addGestureRecognizer(panGestureRecognizer)
         mapView.isRotateEnabled = false
         canvas.add(mapView)
-        mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
-        mapView.register(CustomClusterView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultClusterAnnotationViewReuseIdentifier)
+        mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
+        mapView.register(CustomClusterView.self, forAnnotationViewWithReuseIdentifier: CustomClusterView.identifier)
         createMapLocations()
         resetMap()
+    }
+
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if let place = annotation as? Place {
+            if let view = mapView.dequeueReusableAnnotationView(withIdentifier: PlaceView.identifier) as? PlaceView {
+                return view
+            } else {
+                return PlaceView(annotation: place, reuseIdentifier: PlaceView.identifier)
+            }
+        } else if let cluster = annotation as? MKClusterAnnotation {
+            if let view = mapView.dequeueReusableAnnotationView(withIdentifier: CustomClusterView.identifier) as? CustomClusterView {
+                return view
+            } else {
+                return CustomClusterView(annotation: cluster, reuseIdentifier: CustomClusterView.identifier)
+            }
+        }
+
+        return nil
     }
 
 
