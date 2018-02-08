@@ -75,10 +75,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
         setupMap()
     }
 
-    override func viewDidLayout() {
-        resetMap()
-    }
-
     private func setupMap() {
         mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
         mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
