@@ -33,6 +33,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
         static let selectAnimationDuration = 0.2
         static let increaseScaleTransform = CGAffineTransform(scaleX: 1.5, y: 1.5)
         static let decreaseScaleTransform = CGAffineTransform(scaleX: 1, y: 1)
+        static let tileURL = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
     }
 
     let socketManager = SocketManager(networkConfiguration: MapViewController.config)
@@ -56,6 +57,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
     private var initialized = false
     private var lastMapRect = MKMapRect()
     private var userState = UserActivity.idle
+    private var useCustomTiles = false
 
     /// After a longActivityTimeoutPeriod this devices will reset and tell all other devices to follow
     private var isMasterDevice: Bool {
@@ -73,15 +75,16 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
         setupMap()
     }
 
-    override func viewDidLayout() {
-        resetMap()
-    }
-
     private func setupMap() {
         mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
         mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
         createMapPlaces()
         mapView.delegate = self
+        if useCustomTiles {
+            let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
+            overlay.canReplaceMapContent = true
+            self.mapView.add(overlay)
+        }
     }
 
     private func createMapPlaces() {
@@ -161,6 +164,13 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
     private func didSelectAnnotationCallout(for cluster: MKClusterAnnotation) {
         let selectedAnnotations = cluster.memberAnnotations
         mapView.showAnnotations(selectedAnnotations, animated: true)
+    }
+
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        guard let tileOverlay = overlay as? MKTileOverlay else {
+            return MKOverlayRenderer(overlay: overlay)
+        }
+        return MKTileOverlayRenderer(tileOverlay: tileOverlay)
     }
 
     /// Display a place view controller on top of the selected callout annotation for the associated place.
