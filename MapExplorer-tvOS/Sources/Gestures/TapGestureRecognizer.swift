@@ -1,7 +1,7 @@
 //  Copyright © 2017 JABT. All rights reserved.
 
 import Foundation
-import UIKit
+import AppKit
 
 class TapGestureRecognizer: NSObject, GestureRecognizer {
 
@@ -10,7 +10,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         static let minimumFingers = 1
     }
 
-    var state = UIGestureRecognizerState.possible
+    var state = NSGestureRecognizer.State.possible
     var initialPositions = [Int: CGPoint]()
     var fingers: Int
 

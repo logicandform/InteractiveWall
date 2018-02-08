@@ -20,7 +20,6 @@
 		223012DB200811C900A9FB04 /* GestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223012D2200811C900A9FB04 /* GestureRecognizer.swift */; };
 		223012DC200811C900A9FB04 /* PanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223012D3200811C900A9FB04 /* PanGestureRecognizer.swift */; };
 		223012DD200811C900A9FB04 /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223012D4200811C900A9FB04 /* TapGestureRecognizer.swift */; };
-		223012DE200811C900A9FB04 /* GestureDemoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223012D5200811C900A9FB04 /* GestureDemoController.swift */; };
 		223012DF200811C900A9FB04 /* PinchGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223012D6200811C900A9FB04 /* PinchGestureRecognizer.swift */; };
 		223012E0200811C900A9FB04 /* SwipeGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223012D7200811C900A9FB04 /* SwipeGestureRecognizer.swift */; };
 		22A0EF931FFD719200959101 /* LocationAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A0EF921FFD719200959101 /* LocationAnnotation.swift */; };
@@ -65,7 +64,6 @@
 		223012D2200811C900A9FB04 /* GestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureRecognizer.swift; sourceTree = "<group>"; };
 		223012D3200811C900A9FB04 /* PanGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanGestureRecognizer.swift; sourceTree = "<group>"; };
 		223012D4200811C900A9FB04 /* TapGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapGestureRecognizer.swift; sourceTree = "<group>"; };
-		223012D5200811C900A9FB04 /* GestureDemoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureDemoController.swift; sourceTree = "<group>"; };
 		223012D6200811C900A9FB04 /* PinchGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinchGestureRecognizer.swift; sourceTree = "<group>"; };
 		223012D7200811C900A9FB04 /* SwipeGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeGestureRecognizer.swift; sourceTree = "<group>"; };
 		22A0EF921FFD719200959101 /* LocationAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAnnotation.swift; sourceTree = "<group>"; };
@@ -178,7 +176,6 @@
 				223012CF200811C800A9FB04 /* RotateGestureRecognizer.swift */,
 				223012D7200811C900A9FB04 /* SwipeGestureRecognizer.swift */,
 				223012D4200811C900A9FB04 /* TapGestureRecognizer.swift */,
-				223012D5200811C900A9FB04 /* GestureDemoController.swift */,
 			);
 			path = Gestures;
 			sourceTree = "<group>";
@@ -466,7 +463,6 @@
 				223012CA2007F99A00A9FB04 /* TouchHandler.swift in Sources */,
 				223012DD200811C900A9FB04 /* TapGestureRecognizer.swift in Sources */,
 				22A0EF981FFD72D600959101 /* MKMapView.swift in Sources */,
-				223012DE200811C900A9FB04 /* GestureDemoController.swift in Sources */,
 				2212B9E52016FA2100BD91E1 /* CoreGraphics.swift in Sources */,
 				22A0EF9C1FFD736F00959101 /* PacketType.swift in Sources */,
 				223012E0200811C900A9FB04 /* SwipeGestureRecognizer.swift in Sources */,

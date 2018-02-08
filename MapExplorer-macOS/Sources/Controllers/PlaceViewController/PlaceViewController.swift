@@ -26,7 +26,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         leftView.wantsLayer = true
         leftView.layer?.backgroundColor = #colorLiteral(red: 0.7317136762, green: 0.81375, blue: 0.7637042526, alpha: 0.8230652265)
 
-        panGesture = NSPanGestureRecognizer(target: self, action: #selector(handlePan(gesture:)))
+        panGesture = NSPanGestureRecognizer(target: leftView, action: #selector(handlePan(gesture:)))
         view.addGestureRecognizer(panGesture)
 
         tableView.register(NSNib(nibNamed: RelatedItemView.nibName, bundle: nil), forIdentifier: RelatedItemView.interfaceIdentifier)

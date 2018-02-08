@@ -1,8 +1,7 @@
 //  Copyright © 2017 JABT. All rights reserved.
 
 import Foundation
-import UIKit
-import C4
+import AppKit
 
 protocol GestureRecognizer: class {
 
@@ -10,7 +9,7 @@ protocol GestureRecognizer: class {
 
     var gestureRecognized: ((GestureRecognizer) -> Void)? { get set }
 
-    var state: UIGestureRecognizerState { get set }
+    var state: NSGestureRecognizer.State { get set }
 
     func start(_ touch: Touch, with properties: TouchProperties)
 

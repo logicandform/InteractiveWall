@@ -20,7 +20,6 @@
 		22964FF22025218200F3BE85 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22964FEA2025218200F3BE85 /* Map.swift */; };
 		22964FF52025218200F3BE85 /* WorkSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22964FED2025218200F3BE85 /* WorkSpace.swift */; };
 		22FEF1C1202CE7AB001E9596 /* MapPoints.json in Resources */ = {isa = PBXBuildFile; fileRef = 22FEF1C0202CE7AB001E9596 /* MapPoints.json */; };
-		7F424BE2961F5F63026E8B95 /* Pods_MapExplorer_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FC20CE97BA6B9DC4C5B8AD0 /* Pods_MapExplorer_iOS.framework */; };
 		FBC5DA4CC810358E67088094 /* Pods_All_MapExplorer_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21DFA0CDAAD0891F17C2A640 /* Pods_All_MapExplorer_iOS.framework */; };
 /* End PBXBuildFile section */
 
@@ -41,7 +40,6 @@
 		22964FED2025218200F3BE85 /* WorkSpace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkSpace.swift; sourceTree = "<group>"; };
 		22FEF1C0202CE7AB001E9596 /* MapPoints.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = MapPoints.json; path = "../../MapExplorer-macOS/Data/MapPoints.json"; sourceTree = "<group>"; };
 		77BAFB2DF0F2C2C8334020F4 /* Pods-MapExplorer-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-iOS/Pods-MapExplorer-iOS.debug.xcconfig"; sourceTree = "<group>"; };
-		8FC20CE97BA6B9DC4C5B8AD0 /* Pods_MapExplorer_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapExplorer_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE43665DD9B8FCD86136FE87 /* Pods-MapExplorer-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-iOS/Pods-MapExplorer-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		AF077F8331FD44F1B4061975 /* Pods-All-MapExplorer-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-iOS.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-iOS/Pods-All-MapExplorer-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		C5DD963583E13D2C859B0EEC /* Pods-All-MapExplorer-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-iOS.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-iOS/Pods-All-MapExplorer-iOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -53,7 +51,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FBC5DA4CC810358E67088094 /* Pods_All_MapExplorer_iOS.framework in Frameworks */,
-				7F424BE2961F5F63026E8B95 /* Pods_MapExplorer_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,7 +166,6 @@
 			isa = PBXGroup;
 			children = (
 				21DFA0CDAAD0891F17C2A640 /* Pods_All_MapExplorer_iOS.framework */,
-				8FC20CE97BA6B9DC4C5B8AD0 /* Pods_MapExplorer_iOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

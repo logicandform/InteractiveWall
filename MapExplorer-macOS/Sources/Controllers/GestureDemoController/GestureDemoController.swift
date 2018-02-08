@@ -1,10 +1,8 @@
 //  Copyright © 2017 JABT. All rights reserved.
 
-import UIKit
-import C4
 import MONode
 
-class GestureDemoController: CanvasController, SocketManagerDelegate, TouchResponder {
+class GestureDemoController: NSViewController, SocketManagerDelegate, TouchResponder {
     static let config = NetworkConfiguration(broadcastHost: "192.168.1.255", nodePort: 12222)
 
     let socketManager = SocketManager(networkConfiguration: config)
@@ -18,8 +16,9 @@ class GestureDemoController: CanvasController, SocketManagerDelegate, TouchRespo
         touchHandler = TouchHandler(responder: self)
 
         rect = GestureView(frame: CGRect(x: 300, y: 300, width: 400, height: 400))
-        rect.backgroundColor = .blue
-        view.add(rect)
+        rect.wantsLayer = true
+        rect.layer?.backgroundColor = NSColor.blue.cgColor
+        view.addSubview(rect)
 
         let tapGesture = TapGestureRecognizer()
         rect.add(tapGesture)
@@ -65,18 +64,11 @@ class GestureDemoController: CanvasController, SocketManagerDelegate, TouchRespo
         touchHandler.handle(touch)
     }
 
-
     // MARK: GestureHandlerDelegate
 
     func rectTapped(_ gesture: GestureRecognizer) {
-        let grow = ViewAnimation(duration: 0.1) {
-            self.rect.frame.size *= 1.5
-        }
-        let shrink = ViewAnimation(duration: 0.1) {
-            self.rect.frame.size /= 1.5
-        }
-
-        ViewAnimationSequence(animations: [grow, shrink]).animate()
+        rect.frame.size.width *= 1.1
+        rect.frame.size.height *= 1.1
     }
 
     func rectPanned(_ gesture: GestureRecognizer) {
@@ -84,7 +76,7 @@ class GestureDemoController: CanvasController, SocketManagerDelegate, TouchRespo
             return
         }
         print(pan.delta)
-        rect.center += pan.delta
+        rect.frame.origin += pan.delta
     }
 
     func rectPinched(_ gesture: GestureRecognizer) {
