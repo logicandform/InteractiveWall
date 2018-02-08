@@ -26,6 +26,9 @@
 		22EF0FA4202ABE6C00571002 /* PlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EF0FA3202ABE6C00571002 /* PlaceViewController.swift */; };
 		22EF0FA6202ACAB400571002 /* Place.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22EF0FA5202ACAB400571002 /* Place.storyboard */; };
 		22EF0FA8202B847200571002 /* CachingNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EF0FA7202B847200571002 /* CachingNetwork.swift */; };
+		22FEF1C4202CE7E4001E9596 /* RelatedItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22FEF1C2202CE7E4001E9596 /* RelatedItemView.xib */; };
+		22FEF1C5202CE7E4001E9596 /* RelatedItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1C3202CE7E4001E9596 /* RelatedItemView.swift */; };
+		22FEF1C9202CE8CC001E9596 /* MapPoints.json in Resources */ = {isa = PBXBuildFile; fileRef = 22FEF1C8202CE8CC001E9596 /* MapPoints.json */; };
 		67C759AB770299C488231A9D /* Pods_All_MapExplorer_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +55,9 @@
 		22EF0FA3202ABE6C00571002 /* PlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceViewController.swift; sourceTree = "<group>"; };
 		22EF0FA5202ACAB400571002 /* Place.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Place.storyboard; sourceTree = "<group>"; };
 		22EF0FA7202B847200571002 /* CachingNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachingNetwork.swift; sourceTree = "<group>"; };
+		22FEF1C2202CE7E4001E9596 /* RelatedItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RelatedItemView.xib; sourceTree = "<group>"; };
+		22FEF1C3202CE7E4001E9596 /* RelatedItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelatedItemView.swift; sourceTree = "<group>"; };
+		22FEF1C8202CE8CC001E9596 /* MapPoints.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MapPoints.json; sourceTree = "<group>"; };
 		26A4912457E23A30817143A3 /* Pods-All-MapExplorer-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-macOS.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-macOS/Pods-All-MapExplorer-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		39B2384F39CC84964B0970BD /* Pods-MapExplorer-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_MapExplorer_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,11 +80,11 @@
 		22290BFC2028F9EC000E0573 = {
 			isa = PBXGroup;
 			children = (
-				3F962F2A202BB01D00B608D6 /* Data */,
 				22290C182028FA0B000E0573 /* Sources */,
 				22290C3D2028FE99000E0573 /* Resources */,
 				22290C322028FA34000E0573 /* Extensions */,
 				22290C072028F9EC000E0573 /* Metadata */,
+				3F962F2A202BB01D00B608D6 /* Data */,
 				22290C062028F9EC000E0573 /* Products */,
 				8F71A70A409CF5D890B51883 /* Pods */,
 				54917AC90A012134E9DA525B /* Frameworks */,
@@ -186,6 +192,8 @@
 			children = (
 				22EF0FA5202ACAB400571002 /* Place.storyboard */,
 				22EF0FA3202ABE6C00571002 /* PlaceViewController.swift */,
+				22FEF1C3202CE7E4001E9596 /* RelatedItemView.swift */,
+				22FEF1C2202CE7E4001E9596 /* RelatedItemView.xib */,
 			);
 			path = PlaceViewController;
 			sourceTree = "<group>";
@@ -193,6 +201,7 @@
 		3F962F2A202BB01D00B608D6 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				22FEF1C8202CE8CC001E9596 /* MapPoints.json */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -227,6 +236,7 @@
 				22290C012028F9EC000E0573 /* Sources */,
 				22290C022028F9EC000E0573 /* Frameworks */,
 				22290C032028F9EC000E0573 /* Resources */,
+				22FEF1BD202CD86D001E9596 /* Run Swiftlint */,
 				5B065ABFB721CD1408B62F1F /* [CP] Embed Pods Frameworks */,
 				D8855A93EB93AE06012A685B /* [CP] Copy Pods Resources */,
 			);
@@ -280,13 +290,29 @@
 			files = (
 				22EF0FA6202ACAB400571002 /* Place.storyboard in Resources */,
 				22290C0D2028F9EC000E0573 /* Assets.xcassets in Resources */,
+				22FEF1C9202CE8CC001E9596 /* MapPoints.json in Resources */,
 				22290C102028F9EC000E0573 /* Main.storyboard in Resources */,
+				22FEF1C4202CE7E4001E9596 /* RelatedItemView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		22FEF1BD202CD86D001E9596 /* Run Swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Swiftlint";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+		};
 		5B065ABFB721CD1408B62F1F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -353,6 +379,7 @@
 			files = (
 				22290C3B2028FA35000E0573 /* PacketType.swift in Sources */,
 				22290C4220292D22000E0573 /* ClusterView.swift in Sources */,
+				22FEF1C5202CE7E4001E9596 /* RelatedItemView.swift in Sources */,
 				22290C3A2028FA35000E0573 /* Int.swift in Sources */,
 				226EA70120296C240067B542 /* NSImage.swift in Sources */,
 				22290C302028FA1F000E0573 /* Discipline.swift in Sources */,
