@@ -181,6 +181,7 @@
 				22964FD02025213A00F3BE85 /* Sources */,
 				22964FD12025213A00F3BE85 /* Frameworks */,
 				22964FD22025213A00F3BE85 /* Resources */,
+				22FEF1BE202CD8BA001E9596 /* Run Swiftlint */,
 				1A93AA03D1F48C1B62BB8339 /* [CP] Embed Pods Frameworks */,
 				A8D6E9F5966F4775C041C9E4 /* [CP] Copy Pods Resources */,
 			);
@@ -266,6 +267,20 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-All-MapExplorer-iOS/Pods-All-MapExplorer-iOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		22FEF1BE202CD8BA001E9596 /* Run Swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Swiftlint";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
 		};
 		941996A9E14121B776A78C02 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
