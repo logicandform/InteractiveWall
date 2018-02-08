@@ -6,12 +6,7 @@ import Quartz
 
 class PdfViewController: NSViewController {
 
-
-    @IBOutlet weak var pdfView: PDFView! {
-        didSet {
-            pdfThumbnailView.pdfView = pdfView
-        }
-    }
+    @IBOutlet weak var pdfView: PDFView!
     @IBOutlet weak var pdfThumbnailView: PDFThumbnailView!
 
 
@@ -29,5 +24,9 @@ class PdfViewController: NSViewController {
                 pdfView.document = pdfDoc
             }
         }
+    }
+
+    override func viewWillAppear() {
+        pdfThumbnailView.pdfView = pdfView
     }
 }
