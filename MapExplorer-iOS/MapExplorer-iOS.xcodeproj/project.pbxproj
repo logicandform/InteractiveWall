@@ -19,7 +19,8 @@
 		22964FF12025218200F3BE85 /* UniverseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22964FE92025218200F3BE85 /* UniverseController.swift */; };
 		22964FF22025218200F3BE85 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22964FEA2025218200F3BE85 /* Map.swift */; };
 		22964FF52025218200F3BE85 /* WorkSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22964FED2025218200F3BE85 /* WorkSpace.swift */; };
-		22964FF72025218200F3BE85 /* MapPoints.json in Resources */ = {isa = PBXBuildFile; fileRef = 22964FEF2025218200F3BE85 /* MapPoints.json */; };
+		22FEF1C1202CE7AB001E9596 /* MapPoints.json in Resources */ = {isa = PBXBuildFile; fileRef = 22FEF1C0202CE7AB001E9596 /* MapPoints.json */; };
+		7F424BE2961F5F63026E8B95 /* Pods_MapExplorer_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FC20CE97BA6B9DC4C5B8AD0 /* Pods_MapExplorer_iOS.framework */; };
 		FBC5DA4CC810358E67088094 /* Pods_All_MapExplorer_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21DFA0CDAAD0891F17C2A640 /* Pods_All_MapExplorer_iOS.framework */; };
 /* End PBXBuildFile section */
 
@@ -38,8 +39,9 @@
 		22964FE92025218200F3BE85 /* UniverseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UniverseController.swift; sourceTree = "<group>"; };
 		22964FEA2025218200F3BE85 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 		22964FED2025218200F3BE85 /* WorkSpace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkSpace.swift; sourceTree = "<group>"; };
-		22964FEF2025218200F3BE85 /* MapPoints.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MapPoints.json; sourceTree = "<group>"; };
+		22FEF1C0202CE7AB001E9596 /* MapPoints.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = MapPoints.json; path = "../../MapExplorer-macOS/Data/MapPoints.json"; sourceTree = "<group>"; };
 		77BAFB2DF0F2C2C8334020F4 /* Pods-MapExplorer-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-iOS/Pods-MapExplorer-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		8FC20CE97BA6B9DC4C5B8AD0 /* Pods_MapExplorer_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapExplorer_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE43665DD9B8FCD86136FE87 /* Pods-MapExplorer-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-iOS/Pods-MapExplorer-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		AF077F8331FD44F1B4061975 /* Pods-All-MapExplorer-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-iOS.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-iOS/Pods-All-MapExplorer-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		C5DD963583E13D2C859B0EEC /* Pods-All-MapExplorer-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-iOS.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-iOS/Pods-All-MapExplorer-iOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -51,20 +53,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				FBC5DA4CC810358E67088094 /* Pods_All_MapExplorer_iOS.framework in Frameworks */,
+				7F424BE2961F5F63026E8B95 /* Pods_MapExplorer_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		221EBCEB20253605007F4024 /* Data */ = {
-			isa = PBXGroup;
-			children = (
-				22964FEF2025218200F3BE85 /* MapPoints.json */,
-			);
-			path = Data;
-			sourceTree = "<group>";
-		};
 		221EBCEC20253616007F4024 /* Metadata */ = {
 			isa = PBXGroup;
 			children = (
@@ -86,8 +81,8 @@
 			children = (
 				22964FD62025213B00F3BE85 /* Sources */,
 				221EBCEC20253616007F4024 /* Metadata */,
-				221EBCEB20253605007F4024 /* Data */,
 				22964FFB202521A400F3BE85 /* Resources */,
+				22FEF1BF202CE79D001E9596 /* Data */,
 				22964FD52025213A00F3BE85 /* Products */,
 				B2116BBC6DE90E7304E66CBD /* Pods */,
 				C20F6DA7C4FED8ECB91BD1D1 /* Frameworks */,
@@ -151,6 +146,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		22FEF1BF202CE79D001E9596 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				22FEF1C0202CE7AB001E9596 /* MapPoints.json */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		B2116BBC6DE90E7304E66CBD /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -166,6 +169,7 @@
 			isa = PBXGroup;
 			children = (
 				21DFA0CDAAD0891F17C2A640 /* Pods_All_MapExplorer_iOS.framework */,
+				8FC20CE97BA6B9DC4C5B8AD0 /* Pods_MapExplorer_iOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -234,8 +238,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				22964FE22025213B00F3BE85 /* LaunchScreen.storyboard in Resources */,
-				22964FF72025218200F3BE85 /* MapPoints.json in Resources */,
 				221EBCF020253633007F4024 /* Info.plist in Resources */,
+				22FEF1C1202CE7AB001E9596 /* MapPoints.json in Resources */,
 				22964FDF2025213B00F3BE85 /* Assets.xcassets in Resources */,
 				22964FDD2025213B00F3BE85 /* Main.storyboard in Resources */,
 			);

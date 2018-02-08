@@ -57,7 +57,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
     private var initialized = false
     private var lastMapRect = MKMapRect()
     private var userState = UserActivity.idle
-    private var useCustomTiles = true
+    private var useCustomTiles = false
 
     /// After a longActivityTimeoutPeriod this devices will reset and tell all other devices to follow
     private var isMasterDevice: Bool {
