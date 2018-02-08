@@ -31,5 +31,3 @@ abstract_target 'All' do
 inhibit_all_warnings!
 
 end
-
-
