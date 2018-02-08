@@ -6,7 +6,7 @@ import AppKit
 class PlaceView: MKAnnotationView {
     static let identifier = "PlaceView"
 
-    var didTapCallout: ((Place)->())?
+    var didTapCallout: ((Place) -> Void)?
 
     override var annotation: MKAnnotation? {
         willSet {
