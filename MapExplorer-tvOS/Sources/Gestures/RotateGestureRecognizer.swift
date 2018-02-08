@@ -1,11 +1,11 @@
 //  Copyright © 2017 JABT. All rights reserved.
 
 import Foundation
-import UIKit
+import AppKit
 
 class RotateGestureRecognizer: NSObject, GestureRecognizer {
 
-    var state = UIGestureRecognizerState.possible
+    var state = NSGestureRecognizer.State.possible
     var startAngle: CGFloat = 0.0
     var lastAngle: CGFloat = 0.0
     var rotation: CGFloat = 0.0

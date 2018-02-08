@@ -1,7 +1,7 @@
 //  Copyright © 2017 JABT. All rights reserved.
 
 import Foundation
-import UIKit
+import AppKit
 
 class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
@@ -11,7 +11,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         static let minimumSpreadThreshhold: CGFloat = 0.1
     }
 
-    var state = UIGestureRecognizerState.possible
+    var state = NSGestureRecognizer.State.possible
     var lastSpread: CGFloat?
     var scale: CGFloat = Constants.initialScale
     var fingers: Int

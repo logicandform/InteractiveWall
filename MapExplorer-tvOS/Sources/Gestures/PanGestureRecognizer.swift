@@ -1,7 +1,7 @@
 //  Copyright © 2017 JABT. All rights reserved.
 
 import Foundation
-import UIKit
+import AppKit
 
 class PanGestureRecognizer: NSObject, GestureRecognizer {
 
@@ -10,7 +10,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         static let minimumFingers = 1
     }
 
-    var state = UIGestureRecognizerState.possible
+    var state = NSGestureRecognizer.State.possible
     var delta = CGVector.zero
     var lastPosition: CGPoint?
     var fingers: Int

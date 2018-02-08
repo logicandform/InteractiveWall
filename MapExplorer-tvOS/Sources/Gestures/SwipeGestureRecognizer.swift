@@ -1,8 +1,14 @@
 //  Copyright © 2017 JABT. All rights reserved.
 
 import Foundation
-import UIKit
+import AppKit
 
+enum SwipeDirection {
+    case up
+    case down
+    case left
+    case right
+}
 
 class SwipeGestureRecognizer: NSObject, GestureRecognizer {
 
@@ -13,7 +19,7 @@ class SwipeGestureRecognizer: NSObject, GestureRecognizer {
         static let minimumFingers = 1
     }
 
-    var state = UIGestureRecognizerState.possible
+    var state = NSGestureRecognizer.State.possible
     var delta = CGVector.zero
     var startPosition: CGPoint?
     var angle: CGFloat
@@ -24,7 +30,7 @@ class SwipeGestureRecognizer: NSObject, GestureRecognizer {
     var gestureUpdated: ((GestureRecognizer) -> Void)?
     var gestureRecognized: ((GestureRecognizer) -> Void)?
 
-    init(direction: UISwipeGestureRecognizerDirection, withFingers fingers: Int = Constants.minimumFingers) {
+    init(direction: SwipeDirection, withFingers fingers: Int = Constants.minimumFingers) {
         precondition(fingers >= Constants.minimumFingers, "\(fingers) is an invalid number of fingers, errors will occur")
         self.angle = SwipeGestureRecognizer.angle(for: direction)
         self.fingers = fingers
@@ -107,7 +113,7 @@ class SwipeGestureRecognizer: NSObject, GestureRecognizer {
 
     // MARK: Helpers
 
-    static private func angle(for direction: UISwipeGestureRecognizerDirection) -> CGFloat {
+    static private func angle(for direction: SwipeDirection) -> CGFloat {
         switch direction {
         case .down:
             return .pi / 2.0
@@ -116,8 +122,6 @@ class SwipeGestureRecognizer: NSObject, GestureRecognizer {
         case .left:
             return .pi
         case .right:
-            return 0
-        default:
             return 0
         }
     }

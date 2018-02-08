@@ -29,6 +29,18 @@
 		22FEF1C4202CE7E4001E9596 /* RelatedItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22FEF1C2202CE7E4001E9596 /* RelatedItemView.xib */; };
 		22FEF1C5202CE7E4001E9596 /* RelatedItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1C3202CE7E4001E9596 /* RelatedItemView.swift */; };
 		22FEF1C9202CE8CC001E9596 /* MapPoints.json in Resources */ = {isa = PBXBuildFile; fileRef = 22FEF1C8202CE8CC001E9596 /* MapPoints.json */; };
+		22FEF1D2202CFE8D001E9596 /* RotateGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1CB202CFE8C001E9596 /* RotateGestureRecognizer.swift */; };
+		22FEF1D3202CFE8D001E9596 /* SwipeGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1CC202CFE8C001E9596 /* SwipeGestureRecognizer.swift */; };
+		22FEF1D4202CFE8D001E9596 /* PanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1CD202CFE8C001E9596 /* PanGestureRecognizer.swift */; };
+		22FEF1D5202CFE8D001E9596 /* GestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1CE202CFE8C001E9596 /* GestureRecognizer.swift */; };
+		22FEF1D6202CFE8D001E9596 /* GestureDemoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1CF202CFE8C001E9596 /* GestureDemoController.swift */; };
+		22FEF1D7202CFE8D001E9596 /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1D0202CFE8C001E9596 /* TapGestureRecognizer.swift */; };
+		22FEF1D8202CFE8D001E9596 /* PinchGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1D1202CFE8C001E9596 /* PinchGestureRecognizer.swift */; };
+		22FEF1DB202CFF0B001E9596 /* GestureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1DA202CFF0B001E9596 /* GestureView.swift */; };
+		22FEF1DD202CFF68001E9596 /* GestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1DC202CFF68001E9596 /* GestureHandler.swift */; };
+		22FEF1DF202CFFFA001E9596 /* Touch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1DE202CFFFA001E9596 /* Touch.swift */; };
+		22FEF1E1202D005D001E9596 /* TouchProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1E0202D005D001E9596 /* TouchProperties.swift */; };
+		22FEF1E3202D0150001E9596 /* TouchHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1E2202D0150001E9596 /* TouchHandler.swift */; };
 		67C759AB770299C488231A9D /* Pods_All_MapExplorer_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */; };
 		8F717365202CECDE003480FF /* 5V Relay.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 8F717364202CECDE003480FF /* 5V Relay.pdf */; };
 		8F8AEF84202BAD9400F7970D /* PdfViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8AEF83202BAD9400F7970D /* PdfViewController.swift */; };
@@ -60,6 +72,18 @@
 		22FEF1C2202CE7E4001E9596 /* RelatedItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RelatedItemView.xib; sourceTree = "<group>"; };
 		22FEF1C3202CE7E4001E9596 /* RelatedItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelatedItemView.swift; sourceTree = "<group>"; };
 		22FEF1C8202CE8CC001E9596 /* MapPoints.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MapPoints.json; sourceTree = "<group>"; };
+		22FEF1CB202CFE8C001E9596 /* RotateGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotateGestureRecognizer.swift; sourceTree = "<group>"; };
+		22FEF1CC202CFE8C001E9596 /* SwipeGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeGestureRecognizer.swift; sourceTree = "<group>"; };
+		22FEF1CD202CFE8C001E9596 /* PanGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanGestureRecognizer.swift; sourceTree = "<group>"; };
+		22FEF1CE202CFE8C001E9596 /* GestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureRecognizer.swift; sourceTree = "<group>"; };
+		22FEF1CF202CFE8C001E9596 /* GestureDemoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureDemoController.swift; sourceTree = "<group>"; };
+		22FEF1D0202CFE8C001E9596 /* TapGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapGestureRecognizer.swift; sourceTree = "<group>"; };
+		22FEF1D1202CFE8C001E9596 /* PinchGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinchGestureRecognizer.swift; sourceTree = "<group>"; };
+		22FEF1DA202CFF0B001E9596 /* GestureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureView.swift; sourceTree = "<group>"; };
+		22FEF1DC202CFF68001E9596 /* GestureHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureHandler.swift; sourceTree = "<group>"; };
+		22FEF1DE202CFFFA001E9596 /* Touch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Touch.swift; sourceTree = "<group>"; };
+		22FEF1E0202D005D001E9596 /* TouchProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchProperties.swift; sourceTree = "<group>"; };
+		22FEF1E2202D0150001E9596 /* TouchHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchHandler.swift; sourceTree = "<group>"; };
 		26A4912457E23A30817143A3 /* Pods-All-MapExplorer-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-macOS.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-macOS/Pods-All-MapExplorer-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		39B2384F39CC84964B0970BD /* Pods-MapExplorer-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		8F717364202CECDE003480FF /* 5V Relay.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "5V Relay.pdf"; sourceTree = "<group>"; };
@@ -119,6 +143,8 @@
 				22290C212028FA1E000E0573 /* Helpers */,
 				22290C232028FA1E000E0573 /* Managers */,
 				22290C262028FA1E000E0573 /* Models */,
+				22FEF1D9202CFEDE001E9596 /* Views */,
+				22FEF1CA202CFE8C001E9596 /* Gestures */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -150,6 +176,8 @@
 				22290C222028FA1E000E0573 /* Style.swift */,
 				22EF0FA7202B847200571002 /* CachingNetwork.swift */,
 				22318DDF202B984F0092937C /* ResponseHandler.swift */,
+				22FEF1DC202CFF68001E9596 /* GestureHandler.swift */,
+				22FEF1E2202D0150001E9596 /* TouchHandler.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -167,6 +195,8 @@
 			children = (
 				22290C202028FA1E000E0573 /* Place.swift */,
 				22290C272028FA1E000E0573 /* Discipline.swift */,
+				22FEF1DE202CFFFA001E9596 /* Touch.swift */,
+				22FEF1E0202D005D001E9596 /* TouchProperties.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -201,6 +231,29 @@
 				22FEF1C2202CE7E4001E9596 /* RelatedItemView.xib */,
 			);
 			path = PlaceViewController;
+			sourceTree = "<group>";
+		};
+		22FEF1CA202CFE8C001E9596 /* Gestures */ = {
+			isa = PBXGroup;
+			children = (
+				22FEF1CE202CFE8C001E9596 /* GestureRecognizer.swift */,
+				22FEF1D0202CFE8C001E9596 /* TapGestureRecognizer.swift */,
+				22FEF1CD202CFE8C001E9596 /* PanGestureRecognizer.swift */,
+				22FEF1CC202CFE8C001E9596 /* SwipeGestureRecognizer.swift */,
+				22FEF1D1202CFE8C001E9596 /* PinchGestureRecognizer.swift */,
+				22FEF1CB202CFE8C001E9596 /* RotateGestureRecognizer.swift */,
+				22FEF1CF202CFE8C001E9596 /* GestureDemoController.swift */,
+			);
+			name = Gestures;
+			path = "../../MapExplorer-tvOS/Sources/Gestures";
+			sourceTree = "<group>";
+		};
+		22FEF1D9202CFEDE001E9596 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				22FEF1DA202CFF0B001E9596 /* GestureView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		3F962F2A202BB01D00B608D6 /* Data */ = {
@@ -392,23 +445,35 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22FEF1D8202CFE8D001E9596 /* PinchGestureRecognizer.swift in Sources */,
 				22290C3B2028FA35000E0573 /* PacketType.swift in Sources */,
 				22290C4220292D22000E0573 /* ClusterView.swift in Sources */,
 				22FEF1C5202CE7E4001E9596 /* RelatedItemView.swift in Sources */,
+				22FEF1D5202CFE8D001E9596 /* GestureRecognizer.swift in Sources */,
 				22290C3A2028FA35000E0573 /* Int.swift in Sources */,
+				22FEF1E3202D0150001E9596 /* TouchHandler.swift in Sources */,
+				22FEF1DF202CFFFA001E9596 /* Touch.swift in Sources */,
 				226EA70120296C240067B542 /* NSImage.swift in Sources */,
+				22FEF1E1202D005D001E9596 /* TouchProperties.swift in Sources */,
 				8F8AEF84202BAD9400F7970D /* PdfViewController.swift in Sources */,
 				22290C302028FA1F000E0573 /* Discipline.swift in Sources */,
 				22290C2B2028FA1F000E0573 /* PlaceView.swift in Sources */,
+				22FEF1D4202CFE8D001E9596 /* PanGestureRecognizer.swift in Sources */,
 				22290C382028FA35000E0573 /* MKMapView.swift in Sources */,
+				22FEF1D3202CFE8D001E9596 /* SwipeGestureRecognizer.swift in Sources */,
 				22EF0FA8202B847200571002 /* CachingNetwork.swift in Sources */,
 				22290C092028F9EC000E0573 /* AppDelegate.swift in Sources */,
+				22FEF1DB202CFF0B001E9596 /* GestureView.swift in Sources */,
 				22290C392028FA35000E0573 /* CoreGraphics.swift in Sources */,
+				22FEF1DD202CFF68001E9596 /* GestureHandler.swift in Sources */,
 				22290C2C2028FA1F000E0573 /* MapViewController.swift in Sources */,
+				22FEF1D2202CFE8D001E9596 /* RotateGestureRecognizer.swift in Sources */,
+				22FEF1D7202CFE8D001E9596 /* TapGestureRecognizer.swift in Sources */,
 				22EF0FA4202ABE6C00571002 /* PlaceViewController.swift in Sources */,
 				22318DE0202B984F0092937C /* ResponseHandler.swift in Sources */,
 				22290C3C2028FA35000E0573 /* NetworkConfiguration.swift in Sources */,
 				22290C2E2028FA1F000E0573 /* Style.swift in Sources */,
+				22FEF1D6202CFE8D001E9596 /* GestureDemoController.swift in Sources */,
 				22290C2D2028FA1F000E0573 /* Place.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
