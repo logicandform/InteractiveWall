@@ -6,7 +6,7 @@ import MapKit
 class ClusterView: MKAnnotationView {
     static let identifier = "ClusterView"
 
-    var didTapCallout: ((MKClusterAnnotation)->())?
+    var didTapCallout: ((MKClusterAnnotation) -> Void)?
 
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
@@ -22,7 +22,7 @@ class ClusterView: MKAnnotationView {
 
     override var annotation: MKAnnotation? {
         willSet {
-            if let _ = newValue as? MKClusterAnnotation {
+            if newValue as? MKClusterAnnotation != nil {
                 image = NSImage(named: "Cluster")
             }
         }

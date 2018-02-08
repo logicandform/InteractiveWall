@@ -27,4 +27,9 @@ abstract_target 'All' do
         pod 'PromiseKit/Alamofire'
     end
 
+# ignore all warnings from all pods
+inhibit_all_warnings!
+
 end
+
+
