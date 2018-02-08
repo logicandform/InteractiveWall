@@ -30,6 +30,8 @@
 		22FEF1C5202CE7E4001E9596 /* RelatedItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1C3202CE7E4001E9596 /* RelatedItemView.swift */; };
 		22FEF1C9202CE8CC001E9596 /* MapPoints.json in Resources */ = {isa = PBXBuildFile; fileRef = 22FEF1C8202CE8CC001E9596 /* MapPoints.json */; };
 		67C759AB770299C488231A9D /* Pods_All_MapExplorer_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */; };
+		8F717365202CECDE003480FF /* 5V Relay.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 8F717364202CECDE003480FF /* 5V Relay.pdf */; };
+		8F8AEF84202BAD9400F7970D /* PdfViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8AEF83202BAD9400F7970D /* PdfViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +62,8 @@
 		22FEF1C8202CE8CC001E9596 /* MapPoints.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MapPoints.json; sourceTree = "<group>"; };
 		26A4912457E23A30817143A3 /* Pods-All-MapExplorer-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-macOS.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-macOS/Pods-All-MapExplorer-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		39B2384F39CC84964B0970BD /* Pods-MapExplorer-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.release.xcconfig"; sourceTree = "<group>"; };
+		8F717364202CECDE003480FF /* 5V Relay.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "5V Relay.pdf"; sourceTree = "<group>"; };
+		8F8AEF83202BAD9400F7970D /* PdfViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PdfViewController.swift; sourceTree = "<group>"; };
 		9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_MapExplorer_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E45B0B207D66FC5A3CD5BEA /* Pods-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		D9FF0C65383B61E5A7A798B0 /* Pods-All-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-macOS.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-macOS/Pods-All-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -125,6 +129,7 @@
 				22290C0E2028F9EC000E0573 /* Main.storyboard */,
 				22290C1D2028FA1E000E0573 /* MapViewController */,
 				22EF0FA2202ABE4F00571002 /* PlaceViewController */,
+				8F8AEF82202BAC5C00F7970D /* PdfViewController */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -201,6 +206,7 @@
 		3F962F2A202BB01D00B608D6 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				8F717364202CECDE003480FF /* 5V Relay.pdf */,
 				22FEF1C8202CE8CC001E9596 /* MapPoints.json */,
 			);
 			path = Data;
@@ -223,6 +229,14 @@
 				26A4912457E23A30817143A3 /* Pods-All-MapExplorer-macOS.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		8F8AEF82202BAC5C00F7970D /* PdfViewController */ = {
+			isa = PBXGroup;
+			children = (
+				8F8AEF83202BAD9400F7970D /* PdfViewController.swift */,
+			);
+			path = PdfViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -288,6 +302,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8F717365202CECDE003480FF /* 5V Relay.pdf in Resources */,
 				22EF0FA6202ACAB400571002 /* Place.storyboard in Resources */,
 				22290C0D2028F9EC000E0573 /* Assets.xcassets in Resources */,
 				22FEF1C9202CE8CC001E9596 /* MapPoints.json in Resources */,
@@ -382,6 +397,7 @@
 				22FEF1C5202CE7E4001E9596 /* RelatedItemView.swift in Sources */,
 				22290C3A2028FA35000E0573 /* Int.swift in Sources */,
 				226EA70120296C240067B542 /* NSImage.swift in Sources */,
+				8F8AEF84202BAD9400F7970D /* PdfViewController.swift in Sources */,
 				22290C302028FA1F000E0573 /* Discipline.swift in Sources */,
 				22290C2B2028FA1F000E0573 /* PlaceView.swift in Sources */,
 				22290C382028FA35000E0573 /* MKMapView.swift in Sources */,
