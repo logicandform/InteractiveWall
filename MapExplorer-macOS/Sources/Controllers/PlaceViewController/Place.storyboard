@@ -10,7 +10,7 @@
         <scene sceneID="5LE-vP-wAv">
             <objects>
                 <viewController id="k5b-MF-Zdf" customClass="PlaceViewController" customModule="MapExplorer_macOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" misplaced="YES" id="02T-mc-d0F">
+                    <view key="view" id="02T-mc-d0F">
                         <rect key="frame" x="0.0" y="0.0" width="640" height="584"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
@@ -101,6 +101,17 @@
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
+                                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="irn-zg-xjl">
+                                        <rect key="frame" x="275" y="91" width="81" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pQ6-rF-9Cm">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <segue destination="h8q-KE-X7P" kind="popover" popoverAnchorView="irn-zg-xjl" popoverBehavior="t" preferredEdge="maxY" id="rXT-0R-bYV"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="Pqy-Rw-Og1" firstAttribute="leading" secondItem="XEF-WZ-sT9" secondAttribute="leading" id="3ZF-4X-Mlo"/>
@@ -140,10 +151,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="594" height="598"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <pdfView autoresizesSubviews="NO" wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZKS-kz-G2l">
+                            <pdfView autoresizesSubviews="NO" wantsLayer="YES" displayMode="singlePage" translatesAutoresizingMaskIntoConstraints="NO" id="ZKS-kz-G2l">
                                 <rect key="frame" x="0.0" y="0.0" width="594" height="598"/>
                             </pdfView>
-                            <pdfThumbnailView wantsLayer="YES" canDrawConcurrently="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Gw-8v-svM">
+                            <pdfThumbnailView wantsLayer="YES" canDrawConcurrently="YES" allowsDragging="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Gw-8v-svM">
                                 <rect key="frame" x="0.0" y="0.0" width="75" height="598"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="75" id="2lH-M3-rC5"/>
