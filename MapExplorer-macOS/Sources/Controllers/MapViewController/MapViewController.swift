@@ -20,6 +20,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
         static let masterDeviceID: Int32 = 1
         static let defaultDevicesInColumn = 1
         static let singleDeviceLatitudeDelta = 40
+        static let useCustomTiles = false
     }
 
     private struct Constants {
@@ -57,7 +58,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
     private var initialized = false
     private var lastMapRect = MKMapRect()
     private var userState = UserActivity.idle
-    private var useCustomTiles = false
+    private var doneSetUp = false
 
     /// After a longActivityTimeoutPeriod this devices will reset and tell all other devices to follow
     private var isMasterDevice: Bool {
@@ -75,12 +76,18 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
         setupMap()
     }
 
+    override func viewWillAppear() {
+        view.window?.toggleFullScreen(nil)
+        resetMap()
+        doneSetUp = true
+    }
+
     private func setupMap() {
         mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
         mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
         createMapPlaces()
         mapView.delegate = self
-        if useCustomTiles {
+        if Config.useCustomTiles {
             let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
             overlay.canReplaceMapContent = true
             self.mapView.add(overlay)
@@ -305,7 +312,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
         let verticalDifference = row(forDevice: deviceID) - row(forDevice: packetID)
         newMapRect.origin.x += rectWidth * Double(horizontalDifference)
         newMapRect.origin.y += rectHeight * Double(verticalDifference)
-        mapView.setVisibleMapRect(newMapRect, animated: unpaired)
+        mapView.setVisibleMapRect(newMapRect, animated: (unpaired && doneSetUp))
         lastMapRect = newMapRect
     }
 
