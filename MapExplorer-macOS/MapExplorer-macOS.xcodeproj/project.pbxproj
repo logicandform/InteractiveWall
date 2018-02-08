@@ -155,6 +155,7 @@
 				22290C0E2028F9EC000E0573 /* Main.storyboard */,
 				22290C1D2028FA1E000E0573 /* MapViewController */,
 				22EF0FA2202ABE4F00571002 /* PlaceViewController */,
+				22FEF1E4202D079B001E9596 /* GestureDemoController */,
 				8F8AEF82202BAC5C00F7970D /* PdfViewController */,
 			);
 			path = Controllers;
@@ -242,7 +243,6 @@
 				22FEF1CC202CFE8C001E9596 /* SwipeGestureRecognizer.swift */,
 				22FEF1D1202CFE8C001E9596 /* PinchGestureRecognizer.swift */,
 				22FEF1CB202CFE8C001E9596 /* RotateGestureRecognizer.swift */,
-				22FEF1CF202CFE8C001E9596 /* GestureDemoController.swift */,
 			);
 			name = Gestures;
 			path = "../../MapExplorer-tvOS/Sources/Gestures";
@@ -254,6 +254,14 @@
 				22FEF1DA202CFF0B001E9596 /* GestureView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		22FEF1E4202D079B001E9596 /* GestureDemoController */ = {
+			isa = PBXGroup;
+			children = (
+				22FEF1CF202CFE8C001E9596 /* GestureDemoController.swift */,
+			);
+			path = GestureDemoController;
 			sourceTree = "<group>";
 		};
 		3F962F2A202BB01D00B608D6 /* Data */ = {

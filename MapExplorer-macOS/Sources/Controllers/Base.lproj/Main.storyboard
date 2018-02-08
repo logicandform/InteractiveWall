@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
-        <plugIn identifier="com.apple.MapKitIBPlugin" version="13771"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -702,28 +701,14 @@
             </objects>
             <point key="canvasLocation" x="75" y="250"/>
         </scene>
-        <!--Map View Controller-->
+        <!--Gesture Demo Controller-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
-                <viewController id="XfG-lQ-9wD" customClass="MapViewController" customModule="MapExplorer_macOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="XfG-lQ-9wD" customClass="GestureDemoController" customModule="MapExplorer_macOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="798" height="558"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <mapView mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsBuildings="NO" showsPointsOfInterest="NO" showsCompass="NO" showsZoomControls="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sja-EH-768">
-                                <rect key="frame" x="0.0" y="0.0" width="798" height="558"/>
-                            </mapView>
-                        </subviews>
-                        <constraints>
-                            <constraint firstAttribute="bottom" secondItem="sja-EH-768" secondAttribute="bottom" id="6pr-Nk-ghX"/>
-                            <constraint firstItem="sja-EH-768" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="Irb-ao-NiO"/>
-                            <constraint firstItem="sja-EH-768" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="dx2-ld-nty"/>
-                            <constraint firstAttribute="trailing" secondItem="sja-EH-768" secondAttribute="trailing" id="jl2-1T-aGQ"/>
-                        </constraints>
                     </view>
-                    <connections>
-                        <outlet property="mapView" destination="sja-EH-768" id="ASc-A1-5Vs"/>
-                    </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
