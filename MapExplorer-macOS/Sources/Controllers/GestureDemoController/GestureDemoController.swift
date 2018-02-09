@@ -3,7 +3,7 @@
 import MONode
 
 class GestureDemoController: NSViewController, SocketManagerDelegate, TouchResponder {
-    static let config = NetworkConfiguration(broadcastHost: "192.168.1.255", nodePort: 12222)
+    static let config = NetworkConfiguration(broadcastHost: "192.168.1.255", nodePort: 12211)
 
     let socketManager = SocketManager(networkConfiguration: config)
     var touchHandler: TouchHandler!
