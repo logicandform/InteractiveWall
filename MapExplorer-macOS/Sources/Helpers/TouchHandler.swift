@@ -70,15 +70,9 @@ class TouchHandler {
         touchIndicator.layer?.borderWidth = Constants.circleRadius / 4
         touchIndicator.layer?.borderColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 0.802921661)
         responder.view.addSubview(touchIndicator)
-
-//        NSAnimationContext.runAnimationGroup({ _ in
-//            NSAnimationContext.current.duration = 1.0
-//            touchIndicator.layer?.cornerRadius = 0
-//            touchIndicator.frame.size = .zero
-//            touchIndicator.frame.origin.x += radius
-//            touchIndicator.frame.origin.y += radius
-//        }, completionHandler: {
-//
-//        })
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = 1.0
+            touchIndicator.animator().alphaValue = 0.0
+        })
     }
 }
