@@ -188,6 +188,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             // Displayed from a map annotation
             origin = mapView.convert(place.coordinate, toPointTo: view)
             origin -= CGVector(dx: placeVC.view.bounds.width / 2, dy: placeVC.view.bounds.height + 10.0)
+            placeVC.view.frame.origin = origin
+            adjustBoundaries(of: placeVC)
+            placeVC.place = place
         }
 
         placeVC.view.frame.origin = origin
@@ -283,5 +286,19 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         let spanX = (maxX - minX) * 2
         let spanY = (maxY - minY) * 2
         return MKCoordinateSpan(latitudeDelta: spanY, longitudeDelta: spanX)
+    }
+
+    /// Checks if the placeView currently displayed is hidden behind the screen, and adjusts it accordingly.
+    private func adjustBoundaries(of placeVC: PlaceViewController) {
+        let origin = placeVC.view.frame.origin
+        if origin.y < 0 {
+            placeVC.view.frame.origin = CGPoint(x: placeVC.view.frame.origin.x, y: 15)
+        }
+        if origin.x < 0 {
+            placeVC.view.frame.origin = CGPoint(x: 15, y: placeVC.view.frame.origin.y)
+        }
+        if placeVC.view.frame.maxX > self.view.frame.maxX {
+            placeVC.view.frame.origin = CGPoint(x: self.view.frame.maxX - placeVC.view.frame.width, y: placeVC.view.frame.origin.y)
+        }
     }
 }
