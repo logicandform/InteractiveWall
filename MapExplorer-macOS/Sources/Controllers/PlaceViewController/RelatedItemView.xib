@@ -36,23 +36,35 @@
                         <color key="backgroundColor" red="0.37778362630000001" green="0.42505797740000001" blue="0.47585868840000001" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     </textFieldCell>
                 </textField>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="YQD-s2-RG2" userLabel="Content View">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="80"/>
+                    <gestureRecognizers>
+                        <clickGestureRecognizer delaysPrimaryMouseButtonEvents="YES" numberOfClicksRequired="1" id="FFh-kI-PMe">
+                            <connections>
+                                <action selector="didTapView:" target="c22-O7-iKe" id="2K7-q4-aQQ"/>
+                            </connections>
+                        </clickGestureRecognizer>
+                    </gestureRecognizers>
+                </customView>
             </subviews>
             <constraints>
                 <constraint firstItem="dJi-7O-zmd" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="5RV-KN-jMe"/>
+                <constraint firstItem="YQD-s2-RG2" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="8E7-z8-yaB"/>
+                <constraint firstItem="YQD-s2-RG2" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="Cqb-EX-4h0"/>
                 <constraint firstItem="7uJ-Be-vLq" firstAttribute="trailing" secondItem="tFZ-V1-VN1" secondAttribute="trailing" id="Cye-XG-ggb"/>
                 <constraint firstItem="7uJ-Be-vLq" firstAttribute="top" secondItem="tFZ-V1-VN1" secondAttribute="bottom" id="D87-k3-7Xy"/>
                 <constraint firstItem="7uJ-Be-vLq" firstAttribute="leading" secondItem="tFZ-V1-VN1" secondAttribute="leading" id="Jwj-av-h0A"/>
                 <constraint firstAttribute="bottom" secondItem="dJi-7O-zmd" secondAttribute="bottom" constant="10" id="KIN-ni-lY0"/>
                 <constraint firstAttribute="trailing" secondItem="tFZ-V1-VN1" secondAttribute="trailing" constant="8" id="NY2-Kw-7sr"/>
+                <constraint firstAttribute="trailing" secondItem="YQD-s2-RG2" secondAttribute="trailing" id="P6f-x8-Jtw"/>
                 <constraint firstItem="tFZ-V1-VN1" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" constant="-6" id="UhU-b7-SGm"/>
                 <constraint firstItem="dJi-7O-zmd" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="10" id="cGA-w2-4Ze"/>
                 <constraint firstItem="tFZ-V1-VN1" firstAttribute="leading" secondItem="dJi-7O-zmd" secondAttribute="trailing" constant="8" id="ecI-cO-v5w"/>
+                <constraint firstAttribute="bottom" secondItem="YQD-s2-RG2" secondAttribute="bottom" id="tta-Pn-hhc"/>
                 <constraint firstItem="dJi-7O-zmd" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="10" id="zpP-5g-Tkg"/>
             </constraints>
             <connections>
                 <outlet property="imageView" destination="dJi-7O-zmd" id="zUt-Ye-fML"/>
-                <outlet property="projectDirectory" destination="7uJ-Be-vLq" id="ajp-2Z-fvB"/>
-                <outlet property="projectName" destination="tFZ-V1-VN1" id="dQb-W4-36g"/>
                 <outlet property="subtitleTextField" destination="7uJ-Be-vLq" id="RTG-RG-6Pu"/>
                 <outlet property="titleTextField" destination="tFZ-V1-VN1" id="PF8-Gn-Kax"/>
             </connections>

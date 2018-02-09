@@ -6,31 +6,30 @@ import AppKit
 class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Place")
 
+    @IBOutlet weak var titleLabel: NSTextField!
+    @IBOutlet weak var relatedView: NSTableView!
+    @IBOutlet weak var detailView: NSView!
+
+    var panGesture: NSPanGestureRecognizer!
+    var initialPanningOrigin: CGPoint?
     var place: Place! {
         didSet {
             setup(with: place)
         }
     }
 
-    @IBOutlet weak var titleLabel: NSTextField!
-    @IBOutlet weak var tableView: NSTableView!
-    @IBOutlet weak var leftView: NSView!
-    var panGesture: NSPanGestureRecognizer!
-    var initialPanningOrigin: CGPoint?
-
-
     // MARK: Life-cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        leftView.wantsLayer = true
-        leftView.layer?.backgroundColor = #colorLiteral(red: 0.7317136762, green: 0.81375, blue: 0.7637042526, alpha: 0.8230652265)
+        detailView.wantsLayer = true
+        detailView.layer?.backgroundColor = #colorLiteral(red: 0.7317136762, green: 0.81375, blue: 0.7637042526, alpha: 0.8230652265)
 
-        panGesture = NSPanGestureRecognizer(target: leftView, action: #selector(handlePan(gesture:)))
-        view.addGestureRecognizer(panGesture)
+        panGesture = NSPanGestureRecognizer(target: self, action: #selector(handlePan(gesture:)))
+        detailView.addGestureRecognizer(panGesture)
 
-        tableView.register(NSNib(nibNamed: RelatedItemView.nibName, bundle: nil), forIdentifier: RelatedItemView.interfaceIdentifier)
-        tableView.backgroundColor = NSColor.clear
+        relatedView.register(NSNib(nibNamed: RelatedItemView.nibName, bundle: nil), forIdentifier: RelatedItemView.interfaceIdentifier)
+        relatedView.backgroundColor = NSColor.clear
     }
 
 
@@ -79,11 +78,11 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         return relatedItemView
     }
 
-    func tableView(_ tableView: NSTableView, didClick tableColumn: NSTableColumn) {
-
-    }
-
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
         return 50.0
+    }
+
+    func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
+        return false
     }
 }

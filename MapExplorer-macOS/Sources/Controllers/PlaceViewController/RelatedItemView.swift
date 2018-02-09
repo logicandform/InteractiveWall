@@ -10,11 +10,17 @@ class RelatedItemView: NSView {
     @IBOutlet weak var subtitleTextField: NSTextField!
     @IBOutlet weak var imageView: NSImageView!
 
+    var didTapItem: (() -> Void)?
+
     override func awakeFromNib() {
         super.awakeFromNib()
         wantsLayer = true
         layer?.backgroundColor = #colorLiteral(red: 0.7317136762, green: 0.81375, blue: 0.7637042526, alpha: 0.8230652265)
         layer?.cornerRadius = 5.0
         layer?.masksToBounds = true
+    }
+
+    @IBAction func didTapView(_ sender: Any) {
+        didTapItem?()
     }
 }
