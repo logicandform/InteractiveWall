@@ -134,8 +134,8 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="leftView" destination="ldO-fp-Tec" id="hbC-UV-Aw5"/>
-                        <outlet property="tableView" destination="ohw-Ux-hDf" id="jba-Xq-UW0"/>
+                        <outlet property="detailView" destination="ldO-fp-Tec" id="aR4-sd-eIk"/>
+                        <outlet property="relatedView" destination="ohw-Ux-hDf" id="RSn-s9-ecN"/>
                         <outlet property="titleLabel" destination="Pqy-Rw-Og1" id="L6U-Le-HIq"/>
                     </connections>
                 </viewController>
