@@ -145,6 +145,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
     }
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        print("HI!")
         if let place = annotation as? Place {
             if let placeView = mapView.dequeueReusableAnnotationView(withIdentifier: PlaceView.identifier) as? PlaceView {
                 placeView.didTapCallout = didSelectAnnotationCallout(for:)

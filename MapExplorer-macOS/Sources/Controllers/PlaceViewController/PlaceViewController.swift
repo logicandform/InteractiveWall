@@ -74,7 +74,6 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         guard let relatedItemView = tableView.makeView(withIdentifier: RelatedItemView.interfaceIdentifier, owner: self) as? RelatedItemView else {
             return nil
         }
-
         return relatedItemView
     }
 
