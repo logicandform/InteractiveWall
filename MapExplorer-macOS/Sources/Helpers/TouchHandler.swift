@@ -25,6 +25,7 @@ class TouchHandler {
     // MARK: API
 
     func handle(_ touch: Touch) {
+        convertToResponder(touch)
         // Pass touch to proper gesture view
         switch touch.state {
         case .down:
@@ -43,7 +44,6 @@ class TouchHandler {
     // MARK: Helpers
 
     private func handleTouchDown(_ touch: Touch) {
-        convertToResponder(touch)
         displayTouchIndicator(at: touch.position)
 
         if let receiver = responder.view(for: touch.position) {
