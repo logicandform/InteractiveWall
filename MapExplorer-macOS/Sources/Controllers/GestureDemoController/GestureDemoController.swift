@@ -75,7 +75,6 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, TouchRespo
         guard let pan = gesture as? PanGestureRecognizer else {
             return
         }
-        print(pan.delta)
         rect.frame.origin += pan.delta
     }
 
