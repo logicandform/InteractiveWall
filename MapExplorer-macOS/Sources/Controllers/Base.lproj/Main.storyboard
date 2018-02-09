@@ -721,6 +721,9 @@
                             <constraint firstItem="4ZL-dt-oMm" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="xgX-gz-l3X"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="mapView" destination="4ZL-dt-oMm" id="6rO-1o-9eJ"/>
+                    </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
