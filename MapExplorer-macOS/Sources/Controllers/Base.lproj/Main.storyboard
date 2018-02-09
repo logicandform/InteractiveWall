@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <plugIn identifier="com.apple.MapKitIBPlugin" version="13771"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -701,14 +702,28 @@
             </objects>
             <point key="canvasLocation" x="75" y="250"/>
         </scene>
-        <!--Gesture Demo Controller-->
+        <!--Map View Controller-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
-                <viewController id="XfG-lQ-9wD" customClass="GestureDemoController" customModule="MapExplorer_macOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="XfG-lQ-9wD" customClass="MapViewController" customModule="MapExplorer_macOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="798" height="558"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <mapView mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="3Wx-qs-iJq">
+                                <rect key="frame" x="0.0" y="0.0" width="798" height="558"/>
+                            </mapView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="3Wx-qs-iJq" secondAttribute="trailing" id="1oC-xj-IoK"/>
+                            <constraint firstItem="3Wx-qs-iJq" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="BXr-2d-c6h"/>
+                            <constraint firstAttribute="bottom" secondItem="3Wx-qs-iJq" secondAttribute="bottom" id="GEQ-dL-Nev"/>
+                            <constraint firstItem="3Wx-qs-iJq" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="K9C-MO-enb"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="mapView" destination="3Wx-qs-iJq" id="Yqz-7q-jcK"/>
+                    </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
