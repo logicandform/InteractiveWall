@@ -9,7 +9,6 @@ class GestureHandler: NSObject {
 
     private(set) var touches = Set<Touch>()
     private(set) var gestures = [GestureRecognizer]()
-
     private var properties: TouchProperties {
         let c = centerOfGravity(for: touches)
         let (a, s) = angleAndSpread(of: touches)
@@ -19,30 +18,20 @@ class GestureHandler: NSObject {
 
     // MARK: API
 
-    func handle(_ touch: Touch) {
-        switch touch.state {
-        case .down:
-            touches.insert(touch)
-            gestures.forEach { $0.start(touch, with: properties) }
-        case .up:
-            touches.remove(touch)
-            gestures.forEach { gesture in
-                gesture.end(touch, with: properties)
-                if touches.isEmpty {
-                    gesture.reset()
-                }
-            }
-        case .moved:
-            if let match = touches.first(where: { $0 == touch }) {
-                match.update(with: touch)
-                gestures.forEach { $0.move(touch, with: properties) }
-            }
-        }
-    }
-
     func add(_ gesture: GestureRecognizer) {
         gesture.gestureRecognized = gestureRecognized(_:)
         gestures.append(gesture)
+    }
+
+    func handle(_ touch: Touch) {
+        switch touch.state {
+        case .down:
+            handleTouchDown(touch)
+        case .up:
+            handleTouchUp(touch)
+        case .moved:
+            handleTouchMoved(touch)
+        }
     }
 
     func gestureRecognized(_ gesture: GestureRecognizer) {
@@ -55,6 +44,28 @@ class GestureHandler: NSObject {
 
 
     // MARK: Helpers
+
+    private func handleTouchDown(_ touch: Touch) {
+        touches.insert(touch)
+        gestures.forEach { $0.start(touch, with: properties) }
+    }
+
+    private func handleTouchMoved(_ touch: Touch) {
+        if let match = touches.first(where: { $0 == touch }) {
+            match.update(with: touch)5
+            gestures.forEach { $0.move(touch, with: properties) }
+        }
+    }
+
+    private func handleTouchUp(_ touch: Touch) {
+        touches.remove(touch)
+        gestures.forEach { gesture in
+            gesture.end(touch, with: properties)
+            if touches.isEmpty {
+                gesture.reset()
+            }
+        }
+    }
 
     /// Calculate the center of gravity of the touches involved
     private func centerOfGravity(for touches: Set<Touch>) -> CGPoint {

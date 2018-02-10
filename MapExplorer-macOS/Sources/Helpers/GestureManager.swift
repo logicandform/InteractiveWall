@@ -3,39 +3,47 @@
 import Foundation
 import AppKit
 
-protocol TouchResponder: class {
+
+protocol GestureResponder: class {
     var view: NSView { get }
-    func view(for point: CGPoint) -> GestureView?
 }
 
-class TouchHandler {
+
+final class GestureManager {
 
     private struct Constants {
         static let planarScreenSize = CGSize(width: 4095, height: 2242.5)
-        static let circleRadius: CGFloat = 20
+        static let indicatorRadius: CGFloat = 20
     }
 
-    let responder: TouchResponder
+    private let responder: GestureResponder
+    private var gestureHandlers = [NSView: GestureHandler]()
 
-    init(responder: TouchResponder) {
+    init(responder: GestureResponder) {
         self.responder = responder
     }
 
 
     // MARK: API
 
+    func add(_ gesture: GestureRecognizer, for view: NSView) {
+        guard let handler = gestureHandlers[view] else {
+            gestureHandlers[view] = GestureHandler(gestures: [gesture])
+            return
+        }
+
+        handler.add(gesture)
+    }
+
     func handle(_ touch: Touch) {
         convertToResponder(touch)
-        // Pass touch to proper gesture view
+
         switch touch.state {
         case .down:
             handleTouchDown(touch)
         case .up, .moved:
-            let gestureViews = responder.view.subviews.flatMap { $0 as? GestureView }
-            for view in gestureViews {
-                if view.owns(touch) {
-                    view.handle(touch)
-                }
+            if let handler = handler(for: touch) {
+                handler.handle(touch)
             }
         }
     }
@@ -43,12 +51,22 @@ class TouchHandler {
 
     // MARK: Helpers
 
+    /// Displays a touch indicator at the touch position and produces a view if it exists at the location with interaction enabled.
     private func handleTouchDown(_ touch: Touch) {
         displayTouchIndicator(at: touch.position)
 
-        if let receiver = responder.view(for: touch.position) {
-            receiver.handle(touch)
+        if let view = responder.view.hitTest(touch.position), let handler = gestureHandlers[view] {
+            handler.handle(touch)
         }
+    }
+
+    /// Returns a handler from the gestures dictionary if it exists for the given view
+    private func handler(for touch: Touch) -> GestureHandler? {
+        guard let handler = gestureHandlers.values.first(where: { $0.owns(touch) }) else {
+            return nil
+        }
+
+        return handler
     }
 
     /// Converts a position received from a planar screen to the coordinate of the current devices bounds.
@@ -61,15 +79,16 @@ class TouchHandler {
 
     /// Displays a touch indicator on the screen for testing
     private func displayTouchIndicator(at position: CGPoint) {
-        let radius = Constants.circleRadius
+        let radius = Constants.indicatorRadius
         let frame = CGRect(origin: CGPoint(x: position.x - radius, y: position.y - radius), size: CGSize(width: 2*radius, height: 2*radius))
         let touchIndicator = NSView(frame: frame)
         touchIndicator.wantsLayer = true
-        touchIndicator.layer?.cornerRadius = Constants.circleRadius
+        touchIndicator.layer?.cornerRadius = radius
         touchIndicator.layer?.masksToBounds = true
-        touchIndicator.layer?.borderWidth = Constants.circleRadius / 4
+        touchIndicator.layer?.borderWidth = radius / 4
         touchIndicator.layer?.borderColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 0.802921661)
         responder.view.addSubview(touchIndicator)
+
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = 1.0
             touchIndicator.animator().alphaValue = 0.0

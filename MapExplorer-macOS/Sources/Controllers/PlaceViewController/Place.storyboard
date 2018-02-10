@@ -143,10 +143,10 @@
             </objects>
             <point key="canvasLocation" x="164.5" y="242"/>
         </scene>
-        <!--Pdf View Controller-->
+        <!--View Controller-->
         <scene sceneID="gdI-Ne-3Yg">
             <objects>
-                <viewController id="h8q-KE-X7P" customClass="PdfViewController" customModule="MapExplorer_macOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="h8q-KE-X7P" customClass="PDFViewController" customModule="MapExplorer_macOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="ZmE-zm-Cef">
                         <rect key="frame" x="0.0" y="0.0" width="594" height="598"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -173,8 +173,8 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="pdfThumbnailView" destination="3Gw-8v-svM" id="ajr-H0-LdP"/>
-                        <outlet property="pdfView" destination="ZKS-kz-G2l" id="KRK-Gv-8sy"/>
+                        <outlet property="pdfThumbnailView" destination="3Gw-8v-svM" id="gxn-DI-69k"/>
+                        <outlet property="pdfView" destination="ZKS-kz-G2l" id="Chp-9a-4Tl"/>
                     </connections>
                 </viewController>
                 <customObject id="Q8t-te-xA9" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

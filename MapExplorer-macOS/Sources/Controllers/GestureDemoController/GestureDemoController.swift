@@ -2,51 +2,35 @@
 
 import MONode
 
-class GestureDemoController: NSViewController, SocketManagerDelegate, TouchResponder {
+class GestureDemoController: NSViewController, SocketManagerDelegate, GestureResponder {
     static let config = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12222)
 
     let socketManager = SocketManager(networkConfiguration: config)
-    var touchHandler: TouchHandler!
-    var rect: GestureView!
+    var gestureManager: GestureManager!
+    var rect: NSView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         socketManager.delegate = self
-        touchHandler = TouchHandler(responder: self)
+        gestureManager = GestureManager(responder: self)
 
-        rect = GestureView(frame: CGRect(x: 300, y: 300, width: 400, height: 400))
+        rect = NSView(frame: CGRect(x: 300, y: 300, width: 400, height: 400))
         rect.wantsLayer = true
         rect.layer?.backgroundColor = NSColor.blue.cgColor
         view.addSubview(rect)
 
         let tapGesture = TapGestureRecognizer()
-        rect.add(tapGesture)
+        gestureManager.add(tapGesture, for: rect)
         tapGesture.gestureUpdated = rectTapped(_:)
 
         let panGesture = PanGestureRecognizer()
-        rect.add(panGesture)
+        gestureManager.add(panGesture, for: rect)
         panGesture.gestureUpdated = rectPanned(_:)
 
         let pinchGesture = PinchGestureRecognizer()
-        rect.add(pinchGesture)
+        gestureManager.add(pinchGesture, for: rect)
         pinchGesture.gestureUpdated = rectPinched(_:)
-    }
-
-
-    // MARK: TouchResponder
-
-    /// Returns the GestureView located at the point
-    func view(for point: CGPoint) -> GestureView? {
-        let gestureViews = view.subviews.flatMap { $0 as? GestureView }
-
-        for subview in gestureViews.reversed() {
-            if let target = subview.view(for: point) {
-                return target
-            }
-        }
-
-        return nil
     }
 
 
@@ -61,8 +45,9 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, TouchRespo
             return
         }
 
-        touchHandler.handle(touch)
+        gestureManager.handle(touch)
     }
+
 
     // MARK: GestureHandlerDelegate
 
@@ -75,6 +60,7 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, TouchRespo
         guard let pan = gesture as? PanGestureRecognizer else {
             return
         }
+
         rect.frame.origin += pan.delta
     }
 
