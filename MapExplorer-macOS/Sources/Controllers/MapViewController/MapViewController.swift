@@ -12,7 +12,11 @@ fileprivate enum UserActivity {
 
 private let deviceID = Int32(1)
 
-class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognizerDelegate, SocketManagerDelegate {
+protocol ViewManagerDelegate: class {
+    func displayView(for: Place, from: NSView?)
+}
+
+class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognizerDelegate, SocketManagerDelegate, ViewManagerDelegate {
     static let config = NetworkConfiguration(broadcastHost: "192.168.1.255", nodePort: 14444)
 
     /// Must be updated to reflect the current configuration of devices.
@@ -182,18 +186,33 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
 
     /// Display a place view controller on top of the selected callout annotation for the associated place.
     private func didSelectAnnotationCallout(for place: Place) {
-        let storyboard = NSStoryboard(name: PlaceViewController.storyboard, bundle: nil)
-        if let placeVC = storyboard.instantiateInitialController() as? PlaceViewController {
-            addChildViewController(placeVC)
-            view.addSubview(placeVC.view)
-            mapView.deselectAnnotation(place, animated: false)
+        mapView.deselectAnnotation(place, animated: false)
+        displayView(for: place, from: nil)
+    }
 
-            // Set origin of new view
-            var origin = mapView.convert(place.coordinate, toPointTo: view)
+
+    // MARK: ViewManagerDelegate
+
+    func displayView(for place: Place, from focus: NSView?) {
+        let storyboard = NSStoryboard(name: PlaceViewController.storyboard, bundle: nil)
+        let placeVC = storyboard.instantiateInitialController() as! PlaceViewController
+        addChildViewController(placeVC)
+        view.addSubview(placeVC.view)
+        var origin: CGPoint
+
+        if let focusedView = focus {
+            // Displayed from subview
+            origin = focusedView.frame.origin
+            origin += CGVector(dx: focusedView.bounds.width + 20.0, dy: 0)
+        } else {
+            // Displayed from a map annotation
+            origin = mapView.convert(place.coordinate, toPointTo: view)
             origin -= CGVector(dx: placeVC.view.bounds.width / 2, dy: placeVC.view.bounds.height + 10.0)
-            placeVC.view.frame.origin = origin
-            placeVC.place = place
         }
+
+        placeVC.view.frame.origin = origin
+        placeVC.place = place
+        placeVC.viewDelegate = self
     }
 
 

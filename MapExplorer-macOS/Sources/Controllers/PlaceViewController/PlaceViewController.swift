@@ -6,17 +6,23 @@ import AppKit
 class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Place")
 
+    private struct Constants {
+        static let tableRowHeight: CGFloat = 50
+    }
+
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var relatedView: NSTableView!
     @IBOutlet weak var detailView: NSView!
 
+    weak var viewDelegate: ViewManagerDelegate?
     var panGesture: NSPanGestureRecognizer!
     var initialPanningOrigin: CGPoint?
     var place: Place! {
         didSet {
-            setup(with: place)
+            setup(for: place)
         }
     }
+
 
     // MARK: Life-cycle
 
@@ -35,7 +41,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
 
     // MARK: Setup
 
-    private func setup(with place: Place) {
+    private func setup(for place: Place) {
         titleLabel.stringValue = place.subtitle ?? "unknown"
     }
 
@@ -45,22 +51,6 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     @IBAction func closeButtonTapped(_ sender: Any) {
         view.removeFromSuperview()
         removeFromParentViewController()
-    }
-
-
-    // MARK: Helpers
-
-    @objc
-    private func handlePan(gesture: NSPanGestureRecognizer) {
-        if gesture.state == .began {
-            initialPanningOrigin = view.frame.origin
-            return
-        }
-
-        if var origin = initialPanningOrigin {
-            origin += gesture.translation(in: view.superview)
-            view.frame.origin = origin
-        }
     }
 
 
@@ -75,14 +65,36 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
             return nil
         }
 
+        relatedItemView.didTapItem = didSelectRelatedItem
         return relatedItemView
     }
 
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        return 50.0
+        return Constants.tableRowHeight
     }
 
     func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
         return false
+    }
+
+
+    // MARK: Helpers
+
+    private func didSelectRelatedItem() {
+        /// Display another detail view to the right of the current view.
+        viewDelegate?.displayView(for: place, from: view)
+    }
+
+    @objc
+    private func handlePan(gesture: NSPanGestureRecognizer) {
+        if gesture.state == .began {
+            initialPanningOrigin = view.frame.origin
+            return
+        }
+
+        if var origin = initialPanningOrigin {
+            origin += gesture.translation(in: view.superview)
+            view.frame.origin = origin
+        }
     }
 }

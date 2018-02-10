@@ -710,7 +710,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="798" height="558"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <mapView mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="3Wx-qs-iJq">
+                            <mapView mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsBuildings="NO" showsPointsOfInterest="NO" showsCompass="NO" showsZoomControls="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4ZL-dt-oMm">
                                 <rect key="frame" x="0.0" y="0.0" width="798" height="558"/>
                             </mapView>
                         </subviews>

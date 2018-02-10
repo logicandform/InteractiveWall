@@ -1,10 +1,4 @@
-//
-//  AppDelegate.swift
-//  MapExplorer-macOS
-//
-//  Created by Tim Davis on 2018-02-05.
 //  Copyright © 2018 JABT. All rights reserved.
-//
 
 import Cocoa
 
