@@ -6,17 +6,23 @@ import AppKit
 class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Place")
 
+    private struct Constants {
+        static let tableRowHeight: CGFloat = 50
+    }
+
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var relatedView: NSTableView!
     @IBOutlet weak var detailView: NSView!
 
+    weak var viewDelegate: ViewManagerDelegate?
     var panGesture: NSPanGestureRecognizer!
     var initialPanningOrigin: CGPoint?
     var place: Place! {
         didSet {
-            setup(with: place)
+            setup(for: place)
         }
     }
+
 
     // MARK: Life-cycle
 
@@ -35,7 +41,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
 
     // MARK: Setup
 
-    private func setup(with place: Place) {
+    private func setup(for place: Place) {
         titleLabel.stringValue = place.subtitle ?? "unknown"
     }
 
@@ -48,7 +54,36 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     }
 
 
+    // MARK: NSTableViewDataSource & NSTableViewDelegate
+
+    func numberOfRows(in tableView: NSTableView) -> Int {
+        return 12
+    }
+
+    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        guard let relatedItemView = tableView.makeView(withIdentifier: RelatedItemView.interfaceIdentifier, owner: self) as? RelatedItemView else {
+            return nil
+        }
+
+        relatedItemView.didTapItem = didSelectRelatedItem
+        return relatedItemView
+    }
+
+    func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+        return Constants.tableRowHeight
+    }
+
+    func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
+        return false
+    }
+
+
     // MARK: Helpers
+
+    private func didSelectRelatedItem() {
+        /// Display another detail view to the right of the current view.
+        viewDelegate?.displayView(for: place, from: view)
+    }
 
     @objc
     private func handlePan(gesture: NSPanGestureRecognizer) {
@@ -61,28 +96,5 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
             origin += gesture.translation(in: view.superview)
             view.frame.origin = origin
         }
-    }
-
-
-    // MARK: NSTableViewDataSource & NSTableViewDelegate
-
-    func numberOfRows(in tableView: NSTableView) -> Int {
-        return 4
-    }
-
-    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        guard let relatedItemView = tableView.makeView(withIdentifier: RelatedItemView.interfaceIdentifier, owner: self) as? RelatedItemView else {
-            return nil
-        }
-
-        return relatedItemView
-    }
-
-    func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        return 50.0
-    }
-
-    func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
-        return false
     }
 }
