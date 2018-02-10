@@ -68,7 +68,6 @@ class MapNetwork: SocketManagerDelegate {
 
     // MARK: API
 
-
     func beginSendingPosition() {
         userState = .active
         pairedDeviceID = deviceID
