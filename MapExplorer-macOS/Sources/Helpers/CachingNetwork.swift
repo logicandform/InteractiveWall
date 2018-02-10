@@ -24,7 +24,7 @@ final class CachingNetwork {
     }
 
     private static let credentials: [String: String] = {
-        let credentialData = "administrator):changeme".data(using: String.Encoding.utf8)!
+        let credentialData = "administrator:changeme".data(using: String.Encoding.utf8)!
         let base64Credentials = credentialData.base64EncodedString(options: [])
         return ["Authorization": "Basic \(base64Credentials)"]
     }()

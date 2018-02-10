@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2220D3FD202F7E4200B878D6 /* GestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2220D3FC202F7E4200B878D6 /* GestureManager.swift */; };
+		2220D3FF202F84A300B878D6 /* MapNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2220D3FE202F84A300B878D6 /* MapNetwork.swift */; };
 		22290C092028F9EC000E0573 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C082028F9EC000E0573 /* AppDelegate.swift */; };
 		22290C0D2028F9EC000E0573 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22290C0C2028F9EC000E0573 /* Assets.xcassets */; };
 		22290C102028F9EC000E0573 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22290C0E2028F9EC000E0573 /* Main.storyboard */; };
@@ -47,6 +48,7 @@
 
 /* Begin PBXFileReference section */
 		2220D3FC202F7E4200B878D6 /* GestureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureManager.swift; sourceTree = "<group>"; };
+		2220D3FE202F84A300B878D6 /* MapNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapNetwork.swift; sourceTree = "<group>"; };
 		22290C052028F9EC000E0573 /* MapExplorer-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MapExplorer-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22290C082028F9EC000E0573 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22290C0C2028F9EC000E0573 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -141,7 +143,6 @@
 				22290C212028FA1E000E0573 /* Helpers */,
 				22290C232028FA1E000E0573 /* Managers */,
 				22290C262028FA1E000E0573 /* Models */,
-				22FEF1D9202CFEDE001E9596 /* Views */,
 				22FEF1CA202CFE8C001E9596 /* Gestures */,
 			);
 			path = Sources;
@@ -163,6 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				22290C1F2028FA1E000E0573 /* MapViewController.swift */,
+				2220D3FE202F84A300B878D6 /* MapNetwork.swift */,
 				22290C1E2028FA1E000E0573 /* PlaceView.swift */,
 				22290C4120292D22000E0573 /* ClusterView.swift */,
 			);
@@ -244,13 +246,6 @@
 			);
 			name = Gestures;
 			path = "../../MapExplorer-tvOS/Sources/Gestures";
-			sourceTree = "<group>";
-		};
-		22FEF1D9202CFEDE001E9596 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		22FEF1E4202D079B001E9596 /* GestureDemoController */ = {
@@ -477,6 +472,7 @@
 				22318DE0202B984F0092937C /* ResponseHandler.swift in Sources */,
 				22290C3C2028FA35000E0573 /* NetworkConfiguration.swift in Sources */,
 				22290C2E2028FA1F000E0573 /* Style.swift in Sources */,
+				2220D3FF202F84A300B878D6 /* MapNetwork.swift in Sources */,
 				22FEF1D6202CFE8D001E9596 /* GestureDemoController.swift in Sources */,
 				22290C2D2028FA1F000E0573 /* Place.swift in Sources */,
 			);
