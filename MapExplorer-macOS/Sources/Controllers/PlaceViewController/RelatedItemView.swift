@@ -21,8 +21,19 @@ class RelatedItemView: NSView {
     }
 
     @IBAction func didTapView(_ sender: Any) {
+        indicateTap()
         didTapItem?()
         layer?.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.layer?.backgroundColor = #colorLiteral(red: 0.7317136762, green: 0.81375, blue: 0.7637042526, alpha: 0.8230652265)
+        }
+    }
+
+
+    // MARK: Helpers
+
+    private func indicateTap() {
+        layer?.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.layer?.backgroundColor = #colorLiteral(red: 0.7317136762, green: 0.81375, blue: 0.7637042526, alpha: 0.8230652265)
         }

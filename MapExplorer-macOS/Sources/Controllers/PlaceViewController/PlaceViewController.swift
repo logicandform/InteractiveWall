@@ -57,7 +57,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     // MARK: NSTableViewDataSource & NSTableViewDelegate
 
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return 4
+        return 12
     }
 
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {

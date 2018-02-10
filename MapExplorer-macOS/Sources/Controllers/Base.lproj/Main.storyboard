@@ -695,7 +695,7 @@
                         </connections>
                     </window>
                     <connections>
-                        <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="cq2-FE-JQM"/>
+                        <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="9jJ-d7-WV7"/>
                     </connections>
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -707,11 +707,11 @@
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="MapViewController" customModule="MapExplorer_macOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="798" height="558"/>
+                        <rect key="frame" x="0.0" y="0.0" width="915" height="605"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <mapView mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsBuildings="NO" showsPointsOfInterest="NO" showsCompass="NO" showsZoomControls="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4ZL-dt-oMm">
-                                <rect key="frame" x="0.0" y="0.0" width="798" height="558"/>
+                            <mapView mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsBuildings="NO" showsPointsOfInterest="NO" showsCompass="NO" showsZoomControls="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Wx-qs-iJq">
+                                <rect key="frame" x="0.0" y="0.0" width="915" height="605"/>
                             </mapView>
                         </subviews>
                         <constraints>
@@ -727,7 +727,20 @@
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="880"/>
+            <point key="canvasLocation" x="76" y="905"/>
+        </scene>
+        <!--Gesture Demo Controller-->
+        <scene sceneID="bet-cy-fkr">
+            <objects>
+                <viewController id="TYt-an-uvq" customClass="GestureDemoController" customModule="MapExplorer_macOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="vyE-sq-SWh">
+                        <rect key="frame" x="0.0" y="0.0" width="732" height="460"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="3Mv-vb-yqs" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="892" y="155"/>
         </scene>
     </scenes>
 </document>
