@@ -23,14 +23,12 @@ class MapNetwork: SocketManagerDelegate {
 
     private struct Constants {
         static let availableDeviceID: Int32 = 0
+        static let sendPositionInterval = 1.0 / 60.0
         static let activityTimeoutPeriod: TimeInterval = 4
-        static let sendMapRectInterval = 1.0 / 60.0
         static let longActivityTimeoutPeriod: TimeInterval = 10
         static let devicesPerColumnKey = "devicesInColumnPreference"
         static let initialMapPoint = MKMapPoint(x: 11435029.807890361, y: 46239458.820914999)
         static let initialMapSize = MKMapSize(width: 105959171.60879987, height: 59602034.029949859)
-        static let increaseScaleTransform = CGAffineTransform(scaleX: 1.5, y: 1.5)
-        static let decreaseScaleTransform = CGAffineTransform(scaleX: 1, y: 1)
     }
 
     private var mapView: MKMapView
@@ -40,8 +38,8 @@ class MapNetwork: SocketManagerDelegate {
     private var pairedDeviceID: Int32 = Constants.availableDeviceID
     private var activeDevices = Set<Int32>()
     private var userState = UserActivity.idle
-    
-    private weak var sendMapRectTimer: Foundation.Timer?
+
+    private weak var sendPositionTimer: Foundation.Timer?
     private weak var activityTimer: Foundation.Timer?
     private weak var longActivityTimer: Foundation.Timer?
 
@@ -63,6 +61,7 @@ class MapNetwork: SocketManagerDelegate {
 
     init(map: MKMapView) {
         self.mapView = map
+        socketManager.delegate = self
     }
 
 
@@ -71,7 +70,7 @@ class MapNetwork: SocketManagerDelegate {
     func beginSendingPosition() {
         userState = .active
         pairedDeviceID = deviceID
-        sendMapRectTimer = Timer.scheduledTimer(withTimeInterval: Constants.sendMapRectInterval, repeats: true) { [weak self] _ in
+        sendPositionTimer = Timer.scheduledTimer(withTimeInterval: Constants.sendPositionInterval, repeats: true) { [weak self] _ in
             self?.sendZoomAndCenter()
         }
     }
@@ -80,7 +79,7 @@ class MapNetwork: SocketManagerDelegate {
         userState = .idle
         beginActivityTimeout()
         beginLongActivityTimeout()
-        sendMapRectTimer?.invalidate()
+        sendPositionTimer?.invalidate()
     }
 
     func resetMap() {

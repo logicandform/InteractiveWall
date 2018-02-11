@@ -49,7 +49,7 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
     }
 
 
-    // MARK: GestureHandlerDelegate
+    // MARK: Gesture handling
 
     func rectTapped(_ gesture: GestureRecognizer) {
         rect.frame.size.width *= 1.1

@@ -5,25 +5,28 @@ import MapKit
 import MONode
 import PromiseKit
 
+
 protocol ViewManagerDelegate: class {
     func displayView(for: Place, from: NSView?)
 }
 
-class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognizerDelegate, ViewManagerDelegate {
+
+class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegate, GestureResponder {
 
     private struct Constants {
-        static let useCustomTiles = false
         static let tileURL = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
     }
 
     @IBOutlet weak var mapView: MKMapView!
     private var mapNetwork: MapNetwork?
+    private var gestureManager: GestureManager!
 
 
     // MARK: Life-Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        gestureManager = GestureManager(responder: self)
         setupMap()
     }
 
@@ -35,46 +38,14 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
 
     // MARK: Setup
 
-    private func setupMap() {
+    func setupMap() {
         mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
         mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
         createMapPlaces()
         mapView.delegate = self
-        if Constants.useCustomTiles {
-            let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
-            overlay.canReplaceMapContent = true
-            mapView.add(overlay)
-        }
-    }
-
-    private func createMapPlaces() {
-        do {
-            if let file = Bundle.main.url(forResource: "MapPoints", withExtension: "json") {
-                let data = try Data(contentsOf: file)
-                let json = try JSONSerialization.jsonObject(with: data, options: [])
-                if let jsonBlob = json as? [String: Any], let json = jsonBlob["locations"] as? [[String: Any]] {
-                    addPlacesToMap(placesJSON: json)
-                } else {
-                    print("JSON is invalid")
-                }
-            } else {
-                print("No file")
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
-
-    private func addPlacesToMap(placesJSON: [[String: Any]]) {
-        var places = [Place]()
-
-        for json in placesJSON {
-            if let place = Place(fromJSON: json) {
-                places.append(place)
-            }
-        }
-
-        mapView.addAnnotations(places)
+//        let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
+//        overlay.canReplaceMapContent = true
+//        mapView.add(overlay)
     }
 
 
@@ -84,11 +55,11 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
         mapNetwork = MapNetwork(map: mapView)
     }
 
-    public func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
+    func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
 //        mapNetwork?.beginSendingPosition()
     }
 
-    public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
 //        mapNetwork?.stopSendingPosition()
     }
 
@@ -152,6 +123,36 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
 
 
     // MARK: Helpers
+
+    private func createMapPlaces() {
+        do {
+            if let file = Bundle.main.url(forResource: "MapPoints", withExtension: "json") {
+                let data = try Data(contentsOf: file)
+                let json = try JSONSerialization.jsonObject(with: data, options: [])
+                if let jsonBlob = json as? [String: Any], let json = jsonBlob["locations"] as? [[String: Any]] {
+                    addPlacesToMap(placesJSON: json)
+                } else {
+                    print("JSON is invalid")
+                }
+            } else {
+                print("No file")
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+
+    private func addPlacesToMap(placesJSON: [[String: Any]]) {
+        var places = [Place]()
+
+        for json in placesJSON {
+            if let place = Place(fromJSON: json) {
+                places.append(place)
+            }
+        }
+
+        mapView.addAnnotations(places)
+    }
 
     /// Zoom into the annotations contained in the cluster
     private func didSelectAnnotationCallout(for cluster: MKClusterAnnotation) {
