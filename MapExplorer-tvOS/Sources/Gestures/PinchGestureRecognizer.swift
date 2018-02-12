@@ -45,6 +45,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
         switch state {
         case .began where abs(properties.spread / lastSpread - 1.0) > Constants.minimumSpreadThreshhold:
+            gestureUpdated?(self)
             state = .recognized
             gestureRecognized?(self)
         case .recognized:
@@ -63,6 +64,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         } else {
             state = .failed
         }
+        gestureUpdated?(self)
     }
 
     func reset() {

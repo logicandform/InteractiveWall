@@ -16,18 +16,15 @@ let deviceID = Int32(1)
 class MapNetwork: SocketManagerDelegate {
     static let network = NetworkConfiguration(broadcastHost: "192.168.1.255", nodePort: 14444)
 
-    private struct Configuration {
+    private struct Constants {
         static let devicesPerColumn = 1
         static let masterDeviceID: Int32 = 1
-    }
-
-    private struct Constants {
         static let availableDeviceID: Int32 = 0
         static let sendPositionInterval = 1.0 / 60.0
         static let activityTimeoutPeriod: TimeInterval = 4
         static let longActivityTimeoutPeriod: TimeInterval = 10
         static let devicesPerColumnKey = "devicesInColumnPreference"
-        static let initialMapPoint = MKMapPoint(x: 11435029.807890361, y: 46239458.820914999)
+        static let initialMapOrigin = MKMapPoint(x: 11435029.807890361, y: 46239458.820914999)
         static let initialMapSize = MKMapSize(width: 105959171.60879987, height: 59602034.029949859)
     }
 
@@ -38,7 +35,6 @@ class MapNetwork: SocketManagerDelegate {
     private var pairedDeviceID: Int32 = Constants.availableDeviceID
     private var activeDevices = Set<Int32>()
     private var userState = UserActivity.idle
-
     private weak var sendPositionTimer: Foundation.Timer?
     private weak var activityTimer: Foundation.Timer?
     private weak var longActivityTimer: Foundation.Timer?
@@ -48,12 +44,12 @@ class MapNetwork: SocketManagerDelegate {
     }
 
     private var isMasterDevice: Bool {
-        return deviceID == Configuration.masterDeviceID
+        return deviceID == Constants.masterDeviceID
     }
 
     private var devicesInColumn: Int {
         let preference = UserDefaults.standard.integer(forKey: Constants.devicesPerColumnKey)
-        return preference.isZero ? Configuration.devicesPerColumn : preference
+        return preference.isZero ? Constants.devicesPerColumn : preference
     }
 
 
@@ -83,12 +79,9 @@ class MapNetwork: SocketManagerDelegate {
     }
 
     func resetMap() {
-        let origin = Constants.initialMapPoint
         var size = Constants.initialMapSize
-        size.height /= Double(devicesInColumn)
-        size.width /= Double(devicesInColumn)
-        let mapRect = MKMapRect(origin: origin, size: size)
-        set(mapRect, packetID: Configuration.masterDeviceID)
+        size /= Double(devicesInColumn)
+        set(MKMapRect(origin: Constants.initialMapOrigin, size: size), packetID: Constants.masterDeviceID)
     }
 
 
@@ -106,13 +99,10 @@ class MapNetwork: SocketManagerDelegate {
         switch packet.packetType {
         case .zoomAndCenter:
             handleZoomAndCenter(packet: packet)
-
         case .disconnection:
             activeDevices.remove(packet.id)
-
         case .reset:
             resetMap()
-
         default:
             break
         }
@@ -124,12 +114,10 @@ class MapNetwork: SocketManagerDelegate {
     /// Sets the map's position based on the sending packet id. If unpaired, will animate.
     private func set(_ mapRect: MKMapRect, packetID: Int32) {
         var newMapRect = mapRect
-        let rectWidth = newMapRect.size.width
-        let rectHeight = newMapRect.size.height
         let horizontalDifference = column(forDevice: deviceID) - column(forDevice: packetID)
         let verticalDifference = row(forDevice: deviceID) - row(forDevice: packetID)
-        newMapRect.origin.x += rectWidth * Double(horizontalDifference)
-        newMapRect.origin.y += rectHeight * Double(verticalDifference)
+        newMapRect.origin.x += mapRect.size.width * Double(horizontalDifference)
+        newMapRect.origin.y += mapRect.size.height * Double(verticalDifference)
         mapView.setVisibleMapRect(newMapRect, animated: unpaired)
         lastMapRect = newMapRect
     }

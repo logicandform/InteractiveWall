@@ -68,7 +68,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             return
         }
 
-        switch gesture.state {
+        switch pan.state {
         case .began:
             mapNetwork?.beginSendingPosition()
         case .recognized:
@@ -89,14 +89,23 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             return
         }
 
-        var mapRect = mapView.visibleMapRect
-        let scaledWidth = Double(pinch.scale) * mapRect.size.width / Double(mapView.frame.width)
-        let scaledHeight = Double(pinch.scale) * mapRect.size.height / Double(mapView.frame.height)
-        let translationX = (mapRect.size.width - scaledWidth) * Double(pinch.location.x / mapView.frame.width)
-        let translationY = (mapRect.size.height - scaledHeight) * Double(pinch.location.y / mapView.frame.height)
-        mapRect.origin += MKMapPoint(x: translationX, y: translationY)
-        mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
-        mapView.setVisibleMapRect(mapRect, animated: false)
+        switch pinch.state {
+        case .began:
+            mapNetwork?.beginSendingPosition()
+        case .recognized:
+            var mapRect = mapView.visibleMapRect
+            let scaledWidth = Double(pinch.scale) * mapRect.size.width / Double(mapView.frame.width)
+            let scaledHeight = Double(pinch.scale) * mapRect.size.height / Double(mapView.frame.height)
+            let translationX = (mapRect.size.width - scaledWidth) * Double(pinch.location.x / mapView.frame.width)
+            let translationY = (mapRect.size.height - scaledHeight) * Double(pinch.location.y / mapView.frame.height)
+            mapRect.origin += MKMapPoint(x: translationX, y: translationY)
+            mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
+            mapView.setVisibleMapRect(mapRect, animated: false)
+        case .possible, .failed:
+            mapNetwork?.stopSendingPosition()
+        default:
+            return
+        }
     }
 
 

@@ -42,4 +42,9 @@ extension MKMapSize: Equatable {
         lhs.width -= rhs.width
         lhs.height -= rhs.height
     }
+
+    static public func /= (lhs: inout MKMapSize, rhs: Double) {
+        lhs.width /= rhs
+        lhs.height /= rhs
+    }
 }
