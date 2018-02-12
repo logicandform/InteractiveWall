@@ -108,7 +108,6 @@ final class GestureManager {
             }
         }
 
-
         return gestureHandlers.keys.contains(view) ? view : nil
     }
 }

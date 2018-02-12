@@ -68,11 +68,20 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             return
         }
 
-        var mapRect = mapView.visibleMapRect
-        let translationX = Double(pan.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
-        let translationY = Double(pan.delta.dy) * mapRect.size.height / Double(mapView.frame.height)
-        mapRect.origin -= MKMapPoint(x: translationX, y: translationY)
-        mapView.setVisibleMapRect(mapRect, animated: false)
+        switch gesture.state {
+        case .began:
+            mapNetwork?.beginSendingPosition()
+        case .recognized:
+            var mapRect = mapView.visibleMapRect
+            let translationX = Double(pan.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
+            let translationY = Double(pan.delta.dy) * mapRect.size.height / Double(mapView.frame.height)
+            mapRect.origin -= MKMapPoint(x: translationX, y: translationY)
+            mapView.setVisibleMapRect(mapRect, animated: false)
+        case .possible, .failed:
+            mapNetwork?.stopSendingPosition()
+        default:
+            return
+        }
     }
 
     private func mapViewDidZoom(_ gesture: GestureRecognizer) {
@@ -95,14 +104,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
 
     func mapViewDidFinishRenderingMap(_ mapView: MKMapView, fullyRendered: Bool) {
         mapNetwork = MapNetwork(map: mapView)
-    }
-
-    func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
-//        mapNetwork?.beginSendingPosition()
-    }
-
-    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-//        mapNetwork?.stopSendingPosition()
     }
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -185,14 +186,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     }
 
     private func addPlacesToMap(placesJSON: [[String: Any]]) {
-        var places = [Place]()
-
-        for json in placesJSON {
-            if let place = Place(fromJSON: json) {
-                places.append(place)
-            }
-        }
-
+        let places = placesJSON.flatMap { Place(fromJSON: $0) }
         mapView.addAnnotations(places)
     }
 

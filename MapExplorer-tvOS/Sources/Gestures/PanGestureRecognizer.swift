@@ -40,6 +40,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
 
         switch state {
         case .began where abs(properties.cog.x - lastPosition.x) + abs(properties.cog.y - lastPosition.y) > Constants.recognizedThreshhold:
+            gestureUpdated?(self)
             state = .recognized
             gestureRecognized?(self)
         case .recognized:
@@ -57,6 +58,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         } else {
             state = .failed
         }
+        gestureUpdated?(self)
     }
 
     func reset() {
