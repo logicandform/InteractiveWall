@@ -20,14 +20,16 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     @IBOutlet weak var mapView: MKMapView!
     private var mapNetwork: MapNetwork?
     private var gestureManager: GestureManager!
+    private var initialPanningCenter: CLLocationCoordinate2D?
 
 
-    // MARK: Life-Cycle
+    // MARK: Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         gestureManager = GestureManager(responder: self)
         setupMap()
+        setupGestures()
     }
 
     override func viewWillAppear() {
@@ -46,6 +48,46 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
 //        let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
 //        overlay.canReplaceMapContent = true
 //        mapView.add(overlay)
+    }
+
+    func setupGestures() {
+        let panGesture = PanGestureRecognizer()
+        gestureManager.add(panGesture, for: mapView)
+        panGesture.gestureUpdated = mapViewDidPan(_:)
+
+        let pinchGesture = PinchGestureRecognizer()
+        gestureManager.add(pinchGesture, for: mapView)
+        pinchGesture.gestureUpdated = mapViewDidZoom(_:)
+    }
+
+
+    // MARK: Gesture handling
+
+    private func mapViewDidPan(_ gesture: GestureRecognizer) {
+        guard let pan = gesture as? PanGestureRecognizer else {
+            return
+        }
+
+        var mapRect = mapView.visibleMapRect
+        let translationX = Double(pan.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
+        let translationY = Double(pan.delta.dy) * mapRect.size.height / Double(mapView.frame.height)
+        mapRect.origin -= MKMapPoint(x: translationX, y: translationY)
+        mapView.setVisibleMapRect(mapRect, animated: false)
+    }
+
+    private func mapViewDidZoom(_ gesture: GestureRecognizer) {
+        guard let pinch = gesture as? PinchGestureRecognizer else {
+            return
+        }
+
+        var mapRect = mapView.visibleMapRect
+        let scaledWidth = Double(pinch.scale) * mapRect.size.width / Double(mapView.frame.width)
+        let scaledHeight = Double(pinch.scale) * mapRect.size.height / Double(mapView.frame.height)
+        let translationX = (mapRect.size.width - scaledWidth) * Double(pinch.location.x / mapView.frame.width)
+        let translationY = (mapRect.size.height - scaledHeight) * Double(pinch.location.y / mapView.frame.height)
+        mapRect.origin += MKMapPoint(x: translationX, y: translationY)
+        mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
+        mapView.setVisibleMapRect(mapRect, animated: false)
     }
 
 
