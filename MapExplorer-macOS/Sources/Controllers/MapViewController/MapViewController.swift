@@ -161,11 +161,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         return nil
     }
 
-    private func didSelectAnnotationCallout(for cluster: MKClusterAnnotation) {
-        let selectedAnnotations = cluster.memberAnnotations
-        showAnnotations(annotations: selectedAnnotations)
-    }
-
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         guard let tileOverlay = overlay as? MKTileOverlay else {
             return MKOverlayRenderer(overlay: overlay)
@@ -229,27 +224,13 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     /// Zoom into the annotations contained in the cluster
     private func didSelectAnnotationCallout(for cluster: MKClusterAnnotation) {
         let selectedAnnotations = cluster.memberAnnotations
-        mapView.showAnnotations(selectedAnnotations, animated: true)
+        showAnnotations(annotations: selectedAnnotations)
     }
 
     /// Display a place view controller on top of the selected callout annotation for the associated place.
     private func didSelectAnnotationCallout(for place: Place) {
         mapView.deselectAnnotation(place, animated: false)
         displayView(for: place, from: nil)
-    }
-
-    private func row(forDevice id: Int32) -> Int {
-        return (Int(id) - 1) % devicesInColumn + 1
-    }
-
-    private func beginSendingPosition() {
-        sendMapRectTimer = Timer.scheduledTimer(withTimeInterval: Constants.sendMapRectInterval, repeats: true) { [weak self] _ in
-            self?.sendZoomAndCenter()
-        }
-    }
-
-    private func stopSendingPosition() {
-        sendMapRectTimer?.invalidate()
     }
 
     /// Zooms into a cluster of annotations to make them more visible.
