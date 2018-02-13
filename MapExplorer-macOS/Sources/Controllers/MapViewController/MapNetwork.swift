@@ -14,7 +14,7 @@ fileprivate enum UserActivity {
 let deviceID = Int32(1)
 
 class MapNetwork: SocketManagerDelegate {
-    static let network = NetworkConfiguration(broadcastHost: "192.168.1.255", nodePort: 14444)
+    static let network = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 13333)
 
     private struct Constants {
         static let devicesPerColumn = 1
@@ -92,15 +92,11 @@ class MapNetwork: SocketManagerDelegate {
     }
 
     func handlePacket(_ packet: Packet) {
-        guard packet.id != deviceID || packet.packetType == .reset else {
-            return
-        }
-
         switch packet.packetType {
         case .zoomAndCenter:
             handleZoomAndCenter(packet: packet)
         case .disconnection:
-            activeDevices.remove(packet.id)
+            handleDisconnection(packet: packet)
         case .reset:
             resetMap()
         default:
@@ -161,6 +157,10 @@ class MapNetwork: SocketManagerDelegate {
     }
 
     private func handleZoomAndCenter(packet: Packet) {
+        guard packet.id != deviceID else {
+            return
+        }
+
         // Only activates long activity timer for the master device
         beginLongActivityTimeout()
         activeDevices.insert(packet.id)
@@ -179,6 +179,15 @@ class MapNetwork: SocketManagerDelegate {
 
         set(mapRect, packetID: packet.id)
         beginActivityTimeout()
+    }
+
+    /// Remove the device from the currently active device list.
+    private func handleDisconnection(packet: Packet) {
+        guard packet.id != deviceID else {
+            return
+        }
+
+        activeDevices.remove(packet.id)
     }
 
     /// Determines if the given packet should replace the paired device. Gives precedence to the current column over distance.

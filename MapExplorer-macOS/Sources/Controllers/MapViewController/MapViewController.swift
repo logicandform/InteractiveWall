@@ -11,7 +11,8 @@ protocol ViewManagerDelegate: class {
 }
 
 
-class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegate, GestureResponder {
+class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegate, GestureResponder, SocketManagerDelegate {
+    static let network = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12222)
 
     private struct Constants {
         static let tileURL = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -19,6 +20,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
 
     @IBOutlet weak var mapView: MKMapView!
     private var mapNetwork: MapNetwork?
+    private let socketManager = SocketManager(networkConfiguration: network)
+    private let touchQueue = DispatchQueue(label: "touches", qos: .default)
     private var gestureManager: GestureManager!
     private var initialPanningCenter: CLLocationCoordinate2D?
 
@@ -28,6 +31,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         gestureManager = GestureManager(responder: self)
+        socketManager.delegate = self
         setupMap()
         setupGestures()
     }
@@ -51,9 +55,13 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     }
 
     func setupGestures() {
-        let panGesture = PanGestureRecognizer()
-        gestureManager.add(panGesture, for: mapView)
-        panGesture.gestureUpdated = mapViewDidPan(_:)
+        let singleFingerPan = PanGestureRecognizer()
+        gestureManager.add(singleFingerPan, for: mapView)
+        singleFingerPan.gestureUpdated = mapViewDidPan(_:)
+
+        let twoFingerPan = PanGestureRecognizer(withFingers: 2)
+        gestureManager.add(twoFingerPan, for: mapView)
+        twoFingerPan.gestureUpdated = mapViewDidPan(_:)
 
         let pinchGesture = PinchGestureRecognizer()
         gestureManager.add(pinchGesture, for: mapView)
@@ -75,7 +83,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             var mapRect = mapView.visibleMapRect
             let translationX = Double(pan.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
             let translationY = Double(pan.delta.dy) * mapRect.size.height / Double(mapView.frame.height)
-            mapRect.origin -= MKMapPoint(x: translationX, y: translationY)
+            mapRect.origin -= MKMapPoint(x: translationX, y: -translationY)
             mapView.setVisibleMapRect(mapRect, animated: false)
         case .possible, .failed:
             mapNetwork?.stopSendingPosition()
@@ -94,10 +102,10 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             mapNetwork?.beginSendingPosition()
         case .recognized:
             var mapRect = mapView.visibleMapRect
-            let scaledWidth = Double(pinch.scale) * mapRect.size.width / Double(mapView.frame.width)
-            let scaledHeight = Double(pinch.scale) * mapRect.size.height / Double(mapView.frame.height)
+            let scaledWidth = (2 - Double(pinch.scale)) * mapRect.size.width
+            let scaledHeight = (2 - Double(pinch.scale)) * mapRect.size.height
             let translationX = (mapRect.size.width - scaledWidth) * Double(pinch.location.x / mapView.frame.width)
-            let translationY = (mapRect.size.height - scaledHeight) * Double(pinch.location.y / mapView.frame.height)
+            let translationY = (mapRect.size.height - scaledHeight) * (1 - Double(pinch.location.y / mapView.frame.height))
             mapRect.origin += MKMapPoint(x: translationX, y: translationY)
             mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
             mapView.setVisibleMapRect(mapRect, animated: false)
@@ -106,6 +114,21 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         default:
             return
         }
+    }
+
+
+    // MARK: SocketManagerDelegate
+
+    func handlePacket(_ packet: Packet) {
+        guard let touch = Touch(from: packet) else {
+            return
+        }
+
+        gestureManager.handle(touch)
+    }
+
+    func handleError(_ message: String) {
+        print(message)
     }
 
 

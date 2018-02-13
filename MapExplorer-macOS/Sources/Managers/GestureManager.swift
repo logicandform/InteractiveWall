@@ -16,7 +16,7 @@ final class GestureManager {
         static let indicatorRadius: CGFloat = 20
     }
 
-    private let responder: GestureResponder
+    private weak var responder: GestureResponder!
     private var gestureHandlers = [NSView: GestureHandler]()
 
     init(responder: GestureResponder) {
