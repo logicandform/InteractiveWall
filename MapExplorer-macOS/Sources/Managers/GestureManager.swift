@@ -26,7 +26,7 @@ final class GestureManager {
 
     // MARK: API
 
-    func add(_ gesture: GestureRecognizer, for view: NSView) {
+    func add(_ gesture: GestureRecognizer, to view: NSView) {
         guard let handler = gestureHandlers[view] else {
             gestureHandlers[view] = GestureHandler(gestures: [gesture])
             return

@@ -12,16 +12,15 @@ protocol ViewManagerDelegate: class {
 
 
 class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegate, GestureResponder, SocketManagerDelegate {
-    static let network = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12222)
+    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12222)
 
     private struct Constants {
         static let tileURL = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
     }
 
     @IBOutlet weak var mapView: MKMapView!
-    private var mapNetwork: MapNetwork?
-    private let socketManager = SocketManager(networkConfiguration: network)
-    private let touchQueue = DispatchQueue(label: "touches", qos: .default)
+    private var activityController: MapActivityController?
+    private let socketManager = SocketManager(networkConfiguration: touchNetwork)
     private var gestureManager: GestureManager!
     private var initialPanningCenter: CLLocationCoordinate2D?
 
@@ -38,7 +37,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
 
     override func viewWillAppear() {
         view.window?.toggleFullScreen(nil)
-        mapNetwork?.resetMap()
+        activityController?.resetMap()
     }
 
 
@@ -56,15 +55,15 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
 
     func setupGestures() {
         let singleFingerPan = PanGestureRecognizer()
-        gestureManager.add(singleFingerPan, for: mapView)
+        gestureManager.add(singleFingerPan, to: mapView)
         singleFingerPan.gestureUpdated = mapViewDidPan(_:)
 
         let twoFingerPan = PanGestureRecognizer(withFingers: 2)
-        gestureManager.add(twoFingerPan, for: mapView)
+        gestureManager.add(twoFingerPan, to: mapView)
         twoFingerPan.gestureUpdated = mapViewDidPan(_:)
 
         let pinchGesture = PinchGestureRecognizer()
-        gestureManager.add(pinchGesture, for: mapView)
+        gestureManager.add(pinchGesture, to: mapView)
         pinchGesture.gestureUpdated = mapViewDidZoom(_:)
     }
 
@@ -78,7 +77,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
 
         switch pan.state {
         case .began:
-            mapNetwork?.beginSendingPosition()
+            activityController?.beginSendingPosition()
         case .recognized:
             var mapRect = mapView.visibleMapRect
             let translationX = Double(pan.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
@@ -86,7 +85,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             mapRect.origin -= MKMapPoint(x: translationX, y: -translationY)
             mapView.setVisibleMapRect(mapRect, animated: false)
         case .possible, .failed:
-            mapNetwork?.stopSendingPosition()
+            activityController?.stopSendingPosition()
         default:
             return
         }
@@ -99,7 +98,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
 
         switch pinch.state {
         case .began:
-            mapNetwork?.beginSendingPosition()
+            activityController?.beginSendingPosition()
         case .recognized:
             var mapRect = mapView.visibleMapRect
             let scaledWidth = (2 - Double(pinch.scale)) * mapRect.size.width
@@ -110,7 +109,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
             mapView.setVisibleMapRect(mapRect, animated: false)
         case .possible, .failed:
-            mapNetwork?.stopSendingPosition()
+            activityController?.stopSendingPosition()
         default:
             return
         }
@@ -135,7 +134,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     // MARK: MKMapViewDelegate
 
     func mapViewDidFinishRenderingMap(_ mapView: MKMapView, fullyRendered: Bool) {
-        mapNetwork = MapNetwork(map: mapView)
+        activityController = MapActivityController(map: mapView)
     }
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
