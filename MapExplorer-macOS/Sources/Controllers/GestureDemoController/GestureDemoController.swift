@@ -21,15 +21,15 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
         view.addSubview(rect)
 
         let tapGesture = TapGestureRecognizer()
-        gestureManager.add(tapGesture, for: rect)
+        gestureManager.add(tapGesture, to: rect)
         tapGesture.gestureUpdated = rectTapped(_:)
 
         let panGesture = PanGestureRecognizer()
-        gestureManager.add(panGesture, for: rect)
+        gestureManager.add(panGesture, to: rect)
         panGesture.gestureUpdated = rectPanned(_:)
 
         let pinchGesture = PinchGestureRecognizer()
-        gestureManager.add(pinchGesture, for: rect)
+        gestureManager.add(pinchGesture, to: rect)
         pinchGesture.gestureUpdated = rectPinched(_:)
     }
 
@@ -49,7 +49,7 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
     }
 
 
-    // MARK: GestureHandlerDelegate
+    // MARK: Gesture handling
 
     func rectTapped(_ gesture: GestureRecognizer) {
         rect.frame.size.width *= 1.1

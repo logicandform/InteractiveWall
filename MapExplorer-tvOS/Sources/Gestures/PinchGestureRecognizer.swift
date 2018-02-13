@@ -12,7 +12,8 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     var state = NSGestureRecognizer.State.possible
-    var lastSpread: CGFloat?
+    var lastSpread: CGFloat!
+    var location: CGPoint!
     var scale: CGFloat = Constants.initialScale
     var fingers: Int
 
@@ -44,11 +45,13 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
         switch state {
         case .began where abs(properties.spread / lastSpread - 1.0) > Constants.minimumSpreadThreshhold:
+            gestureUpdated?(self)
             state = .recognized
             gestureRecognized?(self)
         case .recognized:
             scale = properties.spread / lastSpread
             self.lastSpread = properties.spread
+            self.location = properties.cog
             gestureUpdated?(self)
         default:
             return
@@ -61,12 +64,14 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         } else {
             state = .failed
         }
+        gestureUpdated?(self)
     }
 
     func reset() {
         state = .possible
         scale = Constants.initialScale
         lastSpread = nil
+        location = nil
     }
 
     func invalidate() {

@@ -5,91 +5,136 @@ import MapKit
 import MONode
 import PromiseKit
 
+
 protocol ViewManagerDelegate: class {
     func displayView(for: Place, from: NSView?)
 }
 
-class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognizerDelegate, ViewManagerDelegate {
+
+class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegate, GestureResponder, SocketManagerDelegate {
+    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12222)
 
     private struct Constants {
-        static let useCustomTiles = false
         static let tileURL = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
     }
 
     @IBOutlet weak var mapView: MKMapView!
-    private var mapNetwork: MapNetwork?
+    private var activityController: MapActivityController?
+    private let socketManager = SocketManager(networkConfiguration: touchNetwork)
+    private var gestureManager: GestureManager!
+    private var initialPanningCenter: CLLocationCoordinate2D?
 
 
-    // MARK: Life-Cycle
+    // MARK: Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        gestureManager = GestureManager(responder: self)
+        socketManager.delegate = self
         setupMap()
+        setupGestures()
     }
 
     override func viewWillAppear() {
         view.window?.toggleFullScreen(nil)
-        mapNetwork?.resetMap()
+        activityController?.resetMap()
     }
 
 
     // MARK: Setup
 
-    private func setupMap() {
+    func setupMap() {
         mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
         mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
         createMapPlaces()
         mapView.delegate = self
-        if Constants.useCustomTiles {
-            let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
-            overlay.canReplaceMapContent = true
-            mapView.add(overlay)
+//        let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
+//        overlay.canReplaceMapContent = true
+//        mapView.add(overlay)
+    }
+
+    func setupGestures() {
+        let singleFingerPan = PanGestureRecognizer()
+        gestureManager.add(singleFingerPan, to: mapView)
+        singleFingerPan.gestureUpdated = mapViewDidPan(_:)
+
+        let twoFingerPan = PanGestureRecognizer(withFingers: 2)
+        gestureManager.add(twoFingerPan, to: mapView)
+        twoFingerPan.gestureUpdated = mapViewDidPan(_:)
+
+        let pinchGesture = PinchGestureRecognizer()
+        gestureManager.add(pinchGesture, to: mapView)
+        pinchGesture.gestureUpdated = mapViewDidZoom(_:)
+    }
+
+
+    // MARK: Gesture handling
+
+    private func mapViewDidPan(_ gesture: GestureRecognizer) {
+        guard let pan = gesture as? PanGestureRecognizer else {
+            return
+        }
+
+        switch pan.state {
+        case .began:
+            activityController?.beginSendingPosition()
+        case .recognized:
+            var mapRect = mapView.visibleMapRect
+            let translationX = Double(pan.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
+            let translationY = Double(pan.delta.dy) * mapRect.size.height / Double(mapView.frame.height)
+            mapRect.origin -= MKMapPoint(x: translationX, y: -translationY)
+            mapView.setVisibleMapRect(mapRect, animated: false)
+        case .possible, .failed:
+            activityController?.stopSendingPosition()
+        default:
+            return
         }
     }
 
-    private func createMapPlaces() {
-        do {
-            if let file = Bundle.main.url(forResource: "MapPoints", withExtension: "json") {
-                let data = try Data(contentsOf: file)
-                let json = try JSONSerialization.jsonObject(with: data, options: [])
-                if let jsonBlob = json as? [String: Any], let json = jsonBlob["locations"] as? [[String: Any]] {
-                    addPlacesToMap(placesJSON: json)
-                } else {
-                    print("JSON is invalid")
-                }
-            } else {
-                print("No file")
-            }
-        } catch {
-            print(error.localizedDescription)
+    private func mapViewDidZoom(_ gesture: GestureRecognizer) {
+        guard let pinch = gesture as? PinchGestureRecognizer else {
+            return
+        }
+
+        switch pinch.state {
+        case .began:
+            activityController?.beginSendingPosition()
+        case .recognized:
+            var mapRect = mapView.visibleMapRect
+            let scaledWidth = (2 - Double(pinch.scale)) * mapRect.size.width
+            let scaledHeight = (2 - Double(pinch.scale)) * mapRect.size.height
+            let translationX = (mapRect.size.width - scaledWidth) * Double(pinch.location.x / mapView.frame.width)
+            let translationY = (mapRect.size.height - scaledHeight) * (1 - Double(pinch.location.y / mapView.frame.height))
+            mapRect.origin += MKMapPoint(x: translationX, y: translationY)
+            mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
+            mapView.setVisibleMapRect(mapRect, animated: false)
+        case .possible, .failed:
+            activityController?.stopSendingPosition()
+        default:
+            return
         }
     }
 
-    private func addPlacesToMap(placesJSON: [[String: Any]]) {
-        var places = [Place]()
 
-        for json in placesJSON {
-            if let place = Place(fromJSON: json) {
-                places.append(place)
-            }
+    // MARK: SocketManagerDelegate
+
+    func handlePacket(_ packet: Packet) {
+        guard let touch = Touch(from: packet) else {
+            return
         }
 
-        mapView.addAnnotations(places)
+        gestureManager.handle(touch)
+    }
+
+    func handleError(_ message: String) {
+        print(message)
     }
 
 
     // MARK: MKMapViewDelegate
 
     func mapViewDidFinishRenderingMap(_ mapView: MKMapView, fullyRendered: Bool) {
-        mapNetwork = MapNetwork(map: mapView)
-    }
-
-    public func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
-//        mapNetwork?.beginSendingPosition()
-    }
-
-    public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-//        mapNetwork?.stopSendingPosition()
+        activityController = MapActivityController(map: mapView)
     }
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -152,6 +197,29 @@ class MapViewController: NSViewController, MKMapViewDelegate, NSGestureRecognize
 
 
     // MARK: Helpers
+
+    private func createMapPlaces() {
+        do {
+            if let file = Bundle.main.url(forResource: "MapPoints", withExtension: "json") {
+                let data = try Data(contentsOf: file)
+                let json = try JSONSerialization.jsonObject(with: data, options: [])
+                if let jsonBlob = json as? [String: Any], let json = jsonBlob["locations"] as? [[String: Any]] {
+                    addPlacesToMap(placesJSON: json)
+                } else {
+                    print("JSON is invalid")
+                }
+            } else {
+                print("No file")
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+
+    private func addPlacesToMap(placesJSON: [[String: Any]]) {
+        let places = placesJSON.flatMap { Place(fromJSON: $0) }
+        mapView.addAnnotations(places)
+    }
 
     /// Zoom into the annotations contained in the cluster
     private func didSelectAnnotationCallout(for cluster: MKClusterAnnotation) {

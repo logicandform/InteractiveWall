@@ -16,7 +16,7 @@ final class GestureManager {
         static let indicatorRadius: CGFloat = 20
     }
 
-    private let responder: GestureResponder
+    private weak var responder: GestureResponder!
     private var gestureHandlers = [NSView: GestureHandler]()
 
     init(responder: GestureResponder) {
@@ -26,7 +26,7 @@ final class GestureManager {
 
     // MARK: API
 
-    func add(_ gesture: GestureRecognizer, for view: NSView) {
+    func add(_ gesture: GestureRecognizer, to view: NSView) {
         guard let handler = gestureHandlers[view] else {
             gestureHandlers[view] = GestureHandler(gestures: [gesture])
             return
@@ -55,7 +55,7 @@ final class GestureManager {
     private func handleTouchDown(_ touch: Touch) {
         displayTouchIndicator(at: touch.position)
 
-        if let view = responder.view.hitTest(touch.position), let handler = gestureHandlers[view] {
+        if let view = target(in: responder.view, at: touch.position), let handler = gestureHandlers[view] {
             handler.handle(touch)
         }
     }
@@ -93,5 +93,21 @@ final class GestureManager {
             NSAnimationContext.current.duration = 1.0
             touchIndicator.animator().alphaValue = 0.0
         })
+    }
+
+    /// Returns the deepest possible view for the given point that is registered with a gesture handler.
+    private func target(in view: NSView, at point: CGPoint) -> NSView? {
+        guard view.frame.contains(point) else {
+            return nil
+        }
+
+        let positionInBounds = view.convert(point, from: view)
+        for subview in view.subviews.reversed() {
+            if let target = target(in: subview, at: positionInBounds) {
+                return target
+            }
+        }
+
+        return gestureHandlers.keys.contains(view) ? view : nil
     }
 }

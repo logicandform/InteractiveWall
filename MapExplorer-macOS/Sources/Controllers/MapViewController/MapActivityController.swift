@@ -13,35 +13,29 @@ fileprivate enum UserActivity {
 
 let deviceID = Int32(1)
 
-class MapNetwork: SocketManagerDelegate {
-    static let network = NetworkConfiguration(broadcastHost: "192.168.1.255", nodePort: 14444)
-
-    private struct Configuration {
-        static let devicesPerColumn = 1
-        static let masterDeviceID: Int32 = 1
-    }
+class MapActivityController: SocketManagerDelegate {
+    static let mapNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 13333)
 
     private struct Constants {
+        static let devicesPerColumn = 1
+        static let masterDeviceID: Int32 = 1
         static let availableDeviceID: Int32 = 0
+        static let sendPositionInterval = 1.0 / 60.0
         static let activityTimeoutPeriod: TimeInterval = 4
-        static let sendMapRectInterval = 1.0 / 60.0
         static let longActivityTimeoutPeriod: TimeInterval = 10
         static let devicesPerColumnKey = "devicesInColumnPreference"
-        static let initialMapPoint = MKMapPoint(x: 11435029.807890361, y: 46239458.820914999)
+        static let initialMapOrigin = MKMapPoint(x: 11435029.807890361, y: 46239458.820914999)
         static let initialMapSize = MKMapSize(width: 105959171.60879987, height: 59602034.029949859)
-        static let increaseScaleTransform = CGAffineTransform(scaleX: 1.5, y: 1.5)
-        static let decreaseScaleTransform = CGAffineTransform(scaleX: 1, y: 1)
     }
 
     private var mapView: MKMapView
     private var lastMapRect = MKMapRect()
-    private let socketManager = SocketManager(networkConfiguration: MapNetwork.network)
+    private let socketManager = SocketManager(networkConfiguration: mapNetwork)
     private let socketQueue = DispatchQueue(label: "socket", qos: .default)
     private var pairedDeviceID: Int32 = Constants.availableDeviceID
     private var activeDevices = Set<Int32>()
     private var userState = UserActivity.idle
-    
-    private weak var sendMapRectTimer: Foundation.Timer?
+    private weak var sendPositionTimer: Foundation.Timer?
     private weak var activityTimer: Foundation.Timer?
     private weak var longActivityTimer: Foundation.Timer?
 
@@ -50,12 +44,12 @@ class MapNetwork: SocketManagerDelegate {
     }
 
     private var isMasterDevice: Bool {
-        return deviceID == Configuration.masterDeviceID
+        return deviceID == Constants.masterDeviceID
     }
 
     private var devicesInColumn: Int {
         let preference = UserDefaults.standard.integer(forKey: Constants.devicesPerColumnKey)
-        return preference.isZero ? Configuration.devicesPerColumn : preference
+        return preference.isZero ? Constants.devicesPerColumn : preference
     }
 
 
@@ -63,6 +57,7 @@ class MapNetwork: SocketManagerDelegate {
 
     init(map: MKMapView) {
         self.mapView = map
+        socketManager.delegate = self
     }
 
 
@@ -71,7 +66,7 @@ class MapNetwork: SocketManagerDelegate {
     func beginSendingPosition() {
         userState = .active
         pairedDeviceID = deviceID
-        sendMapRectTimer = Timer.scheduledTimer(withTimeInterval: Constants.sendMapRectInterval, repeats: true) { [weak self] _ in
+        sendPositionTimer = Timer.scheduledTimer(withTimeInterval: Constants.sendPositionInterval, repeats: true) { [weak self] _ in
             self?.sendZoomAndCenter()
         }
     }
@@ -80,16 +75,13 @@ class MapNetwork: SocketManagerDelegate {
         userState = .idle
         beginActivityTimeout()
         beginLongActivityTimeout()
-        sendMapRectTimer?.invalidate()
+        sendPositionTimer?.invalidate()
     }
 
     func resetMap() {
-        let origin = Constants.initialMapPoint
         var size = Constants.initialMapSize
-        size.height /= Double(devicesInColumn)
-        size.width /= Double(devicesInColumn)
-        let mapRect = MKMapRect(origin: origin, size: size)
-        set(mapRect, packetID: Configuration.masterDeviceID)
+        size /= Double(devicesInColumn)
+        set(MKMapRect(origin: Constants.initialMapOrigin, size: size), packetID: Constants.masterDeviceID)
     }
 
 
@@ -100,20 +92,13 @@ class MapNetwork: SocketManagerDelegate {
     }
 
     func handlePacket(_ packet: Packet) {
-        guard packet.id != deviceID || packet.packetType == .reset else {
-            return
-        }
-
         switch packet.packetType {
         case .zoomAndCenter:
             handleZoomAndCenter(packet: packet)
-
         case .disconnection:
-            activeDevices.remove(packet.id)
-
+            handleDisconnection(packet: packet)
         case .reset:
             resetMap()
-
         default:
             break
         }
@@ -125,12 +110,10 @@ class MapNetwork: SocketManagerDelegate {
     /// Sets the map's position based on the sending packet id. If unpaired, will animate.
     private func set(_ mapRect: MKMapRect, packetID: Int32) {
         var newMapRect = mapRect
-        let rectWidth = newMapRect.size.width
-        let rectHeight = newMapRect.size.height
         let horizontalDifference = column(forDevice: deviceID) - column(forDevice: packetID)
         let verticalDifference = row(forDevice: deviceID) - row(forDevice: packetID)
-        newMapRect.origin.x += rectWidth * Double(horizontalDifference)
-        newMapRect.origin.y += rectHeight * Double(verticalDifference)
+        newMapRect.origin.x += mapRect.size.width * Double(horizontalDifference)
+        newMapRect.origin.y += mapRect.size.height * Double(verticalDifference)
         mapView.setVisibleMapRect(newMapRect, animated: unpaired)
         lastMapRect = newMapRect
     }
@@ -174,6 +157,10 @@ class MapNetwork: SocketManagerDelegate {
     }
 
     private func handleZoomAndCenter(packet: Packet) {
+        guard packet.id != deviceID else {
+            return
+        }
+
         // Only activates long activity timer for the master device
         beginLongActivityTimeout()
         activeDevices.insert(packet.id)
@@ -192,6 +179,15 @@ class MapNetwork: SocketManagerDelegate {
 
         set(mapRect, packetID: packet.id)
         beginActivityTimeout()
+    }
+
+    /// Remove the device from the currently active device list.
+    private func handleDisconnection(packet: Packet) {
+        guard packet.id != deviceID else {
+            return
+        }
+
+        activeDevices.remove(packet.id)
     }
 
     /// Determines if the given packet should replace the paired device. Gives precedence to the current column over distance.
