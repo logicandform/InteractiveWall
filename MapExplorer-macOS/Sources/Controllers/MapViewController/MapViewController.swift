@@ -189,11 +189,11 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             origin = mapView.convert(place.coordinate, toPointTo: view)
             origin -= CGVector(dx: placeVC.view.bounds.width / 2, dy: placeVC.view.bounds.height + 10.0)
             placeVC.view.frame.origin = origin
-            adjustBoundaries(of: placeVC.view)
             placeVC.place = place
         }
 
         placeVC.view.frame.origin = origin
+        adjustBoundaries(of: placeVC.view)
         placeVC.place = place
         placeVC.viewDelegate = self
     }
