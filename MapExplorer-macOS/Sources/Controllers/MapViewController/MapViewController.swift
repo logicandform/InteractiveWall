@@ -25,8 +25,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     private var initialPanningCenter: CLLocationCoordinate2D?
 
 
-
-
     // MARK: Lifecycle
 
     override func viewDidLoad() {
@@ -181,7 +179,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         placeVC.gestureManager = gestureManager
         addChildViewController(placeVC)
         view.addSubview(placeVC.view)
-
         var origin: CGPoint
 
         if let focusedView = focus {

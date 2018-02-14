@@ -37,7 +37,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
 
         relatedView.register(NSNib(nibNamed: RelatedItemView.nibName, bundle: nil), forIdentifier: RelatedItemView.interfaceIdentifier)
         relatedView.backgroundColor = NSColor.clear
-
+        
         setupGestures()
     }
 

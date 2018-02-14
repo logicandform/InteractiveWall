@@ -2,7 +2,6 @@
 
 import Foundation
 import AppKit
-import MapKit
 
 
 protocol GestureResponder: class {
