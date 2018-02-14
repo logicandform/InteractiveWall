@@ -36,6 +36,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     }
 
     override func viewWillAppear() {
+        activityController = MapActivityController(map: mapView)
         view.window?.toggleFullScreen(nil)
         activityController?.resetMap()
     }
@@ -132,10 +133,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
 
 
     // MARK: MKMapViewDelegate
-
-    func mapViewDidFinishRenderingMap(_ mapView: MKMapView, fullyRendered: Bool) {
-        activityController = MapActivityController(map: mapView)
-    }
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let place = annotation as? Place {
