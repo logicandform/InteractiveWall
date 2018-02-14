@@ -14,7 +14,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     @IBOutlet weak var relatedView: NSTableView!
     @IBOutlet weak var detailView: NSView!
 
-    var gestureManager: GestureManager!
+    weak var gestureManager: GestureManager!
     weak var viewDelegate: ViewManagerDelegate?
     var panGesture: NSPanGestureRecognizer!
     var initialPanningOrigin: CGPoint?
