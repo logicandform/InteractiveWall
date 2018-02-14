@@ -191,6 +191,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         }
 
         placeVC.view.frame.origin = origin
+        adjustBoundaries(of: placeVC.view)
         placeVC.place = place
         placeVC.viewDelegate = self
     }
@@ -283,5 +284,19 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         let spanX = (maxX - minX) * 2
         let spanY = (maxY - minY) * 2
         return MKCoordinateSpan(latitudeDelta: spanY, longitudeDelta: spanX)
+    }
+
+    /// Checks if the placeView currently displayed is hidden behind the screen, and adjusts it accordingly.
+    private func adjustBoundaries(of view: NSView) {
+        let origin = view.frame.origin
+        if origin.y < 0 {
+            view.frame.origin = CGPoint(x: view.frame.origin.x, y: 15)
+        }
+        if origin.x < 0 {
+            view.frame.origin = CGPoint(x: 15, y: view.frame.origin.y)
+        }
+        if view.frame.maxX > self.view.frame.maxX {
+            view.frame.origin = CGPoint(x: self.view.frame.maxX - view.frame.width, y: view.frame.origin.y)
+        }
     }
 }
