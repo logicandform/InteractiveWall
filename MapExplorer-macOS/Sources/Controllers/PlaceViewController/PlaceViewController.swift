@@ -37,14 +37,10 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
 
         relatedView.register(NSNib(nibNamed: RelatedItemView.nibName, bundle: nil), forIdentifier: RelatedItemView.interfaceIdentifier)
         relatedView.backgroundColor = NSColor.clear
-        
+
         setupGestures()
     }
 
-
-    deinit {
-        gestureManager.remove(views: [relatedView, detailView])
-    }
 
     // MARK: Setup
 
@@ -68,6 +64,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     @IBAction func closeButtonTapped(_ sender: Any) {
         view.removeFromSuperview()
         removeFromParentViewController()
+        gestureManager.remove(views: [relatedView, detailView])
     }
 
 
