@@ -28,10 +28,10 @@ class MapActivityController: SocketManagerDelegate {
         static let initialMapSize = MKMapSize(width: 105959171.60879987, height: 59602034.029949859)
     }
 
-    private var mapView: MKMapView
-    private var lastMapRect = MKMapRect()
+    private let mapView: MKMapView
     private let socketManager = SocketManager(networkConfiguration: mapNetwork)
     private let socketQueue = DispatchQueue(label: "socket", qos: .default)
+    private var lastMapRect = MKMapRect()
     private var pairedDeviceID: Int32 = Constants.availableDeviceID
     private var activeDevices = Set<Int32>()
     private var userState = UserActivity.idle

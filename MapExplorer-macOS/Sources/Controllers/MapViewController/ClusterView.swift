@@ -29,7 +29,7 @@ class ClusterView: MKAnnotationView {
     }
 
     @objc
-    private func calloutButtonSelected() {
+    func calloutButtonSelected() {
         if let cluster = annotation as? MKClusterAnnotation {
             didTapCallout?(cluster)
         }

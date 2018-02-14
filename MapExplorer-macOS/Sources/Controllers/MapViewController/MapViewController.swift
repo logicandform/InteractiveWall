@@ -141,10 +141,16 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         if let place = annotation as? Place {
             if let placeView = mapView.dequeueReusableAnnotationView(withIdentifier: PlaceView.identifier) as? PlaceView {
                 placeView.didTapCallout = didSelectAnnotationCallout(for:)
+                let tapGesture = TapGestureRecognizer()
+                gestureManager.add(tapGesture, to: placeView)
+                tapGesture.gestureUpdated = placeView.didSelectPlace(_:)
                 return placeView
             } else {
                 let placeView = PlaceView(annotation: place, reuseIdentifier: PlaceView.identifier)
                 placeView.didTapCallout = didSelectAnnotationCallout(for:)
+                let tapGesture = TapGestureRecognizer()
+                gestureManager.add(tapGesture, to: placeView)
+                tapGesture.gestureUpdated = placeView.didSelectPlace(_:)
                 return placeView
             }
         } else if let cluster = annotation as? MKClusterAnnotation {

@@ -20,8 +20,16 @@ class PlaceView: MKAnnotationView {
         }
     }
 
+    func didSelectPlace(_ gesture: GestureRecognizer) {
+        guard let place = annotation as? Place else {
+            return
+        }
+
+        didTapCallout?(place)
+    }
+
     @objc
-    private func calloutButtonSelected() {
+    func calloutButtonSelected() {
         if let place = annotation as? Place {
             didTapCallout?(place)
         }
