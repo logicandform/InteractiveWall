@@ -30,13 +30,24 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         detailView.wantsLayer = true
+        //detailView.alphaValue = 0.0
+        detailView.setFrameSize(NSSize(width: 1, height: 1))
         detailView.layer?.backgroundColor = #colorLiteral(red: 0.7317136762, green: 0.81375, blue: 0.7637042526, alpha: 0.8230652265)
 
         panGesture = NSPanGestureRecognizer(target: self, action: #selector(handlePan(gesture:)))
         detailView.addGestureRecognizer(panGesture)
 
         relatedView.register(NSNib(nibNamed: RelatedItemView.nibName, bundle: nil), forIdentifier: RelatedItemView.interfaceIdentifier)
+        //relatedView.alphaValue = 0.0
         relatedView.backgroundColor = NSColor.clear
+        NSAnimationContext.runAnimationGroup({_ in
+            NSAnimationContext.current.duration = 1.0
+            detailView.animator().alphaValue = 1.0
+            relatedView.animator().alphaValue = 1.0
+            detailView.animator().setFrameSize(NSSize(width: 100.0, height: 100.0))
+        }, completionHandler: {
+            print("Animation Completed")
+        })
 
         setupGestures()
     }
