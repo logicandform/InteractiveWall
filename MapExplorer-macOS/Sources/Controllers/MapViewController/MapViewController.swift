@@ -23,7 +23,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     private var activityController: MapActivityController?
     private let socketManager = SocketManager(networkConfiguration: touchNetwork)
     private var gestureManager: GestureManager!
-    private var initialPanningCenter: CLLocationCoordinate2D?
 
 
     // MARK: Lifecycle
@@ -59,10 +58,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         let singleFingerPan = PanGestureRecognizer()
         gestureManager.add(singleFingerPan, to: mapView)
         singleFingerPan.gestureUpdated = mapViewDidPan(_:)
-
-        let twoFingerPan = PanGestureRecognizer(withFingers: 2)
-        gestureManager.add(twoFingerPan, to: mapView)
-        twoFingerPan.gestureUpdated = mapViewDidPan(_:)
 
         let pinchGesture = PinchGestureRecognizer()
         gestureManager.add(pinchGesture, to: mapView)
@@ -182,7 +177,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     func displayView(for place: Place, from focus: NSView?) {
         let storyboard = NSStoryboard(name: PlaceViewController.storyboard, bundle: nil)
         let placeVC = storyboard.instantiateInitialController() as! PlaceViewController
-        placeVC.gestureManager = gestureManager
         addChildViewController(placeVC)
         view.addSubview(placeVC.view)
         var origin: CGPoint
@@ -201,6 +195,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         adjustBoundaries(of: placeVC.view)
         placeVC.place = place
         placeVC.viewDelegate = self
+        placeVC.gestureManager = gestureManager
     }
 
 
@@ -263,7 +258,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         centroidX /= count
         centroidY /= count
         return CLLocationCoordinate2D(latitude: centroidY, longitude: centroidX)
-
     }
 
     /// Checks the coordinates of each annotation and returns a span that comfortably fits all annotations within the current screen view.

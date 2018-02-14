@@ -3,6 +3,7 @@
 import Foundation
 import MONode
 
+
 enum TouchState {
     case down
     case up
@@ -22,7 +23,6 @@ enum TouchState {
     }
 }
 
-let screenID = Int32(1)
 
 class Touch: Hashable, CustomStringConvertible {
 
@@ -60,7 +60,7 @@ class Touch: Hashable, CustomStringConvertible {
         let screen = payload.extract(Int32.self, at: index)
 
         // Ensure that the packet is intended for this device
-        guard screen == screenID else {
+        guard screen == deviceID else {
             return nil
         }
 

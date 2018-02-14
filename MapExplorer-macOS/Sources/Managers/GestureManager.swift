@@ -107,7 +107,7 @@ final class GestureManager {
             return nil
         }
 
-        let positionInBounds = transformFromParent(point, from: view)
+        let positionInBounds = transform(point, from: view)
         for subview in view.subviews.reversed() {
             if let target = target(in: subview, at: positionInBounds) {
                 return target
@@ -117,7 +117,8 @@ final class GestureManager {
         return gestureHandlers.keys.contains(view) ? view : nil
     }
 
-    private func transformFromParent(_ point: CGPoint, from view: NSView) -> NSPoint {
-        return CGPoint(x: point.x - view.frame.origin.x, y: point.y - view.frame.origin.y)
+    /// Transforms a point into the bounds of a given view.
+    private func transform(_ point: CGPoint, from parent: NSView) -> NSPoint {
+        return CGPoint(x: point.x - parent.frame.origin.x, y: point.y - parent.frame.origin.y)
     }
 }
