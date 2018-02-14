@@ -10,11 +10,11 @@
         <scene sceneID="5LE-vP-wAv">
             <objects>
                 <viewController id="k5b-MF-Zdf" customClass="PlaceViewController" customModule="MapExplorer_macOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="02T-mc-d0F">
-                        <rect key="frame" x="0.0" y="0.0" width="640" height="584"/>
+                    <view key="view" misplaced="YES" id="02T-mc-d0F">
+                        <rect key="frame" x="0.0" y="0.0" width="726" height="584"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="47" horizontalPageScroll="10" verticalLineScroll="47" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="nLk-Sj-wEx">
+                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="47" horizontalPageScroll="10" verticalLineScroll="47" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="nLk-Sj-wEx" userLabel="Scroll View">
                                 <rect key="frame" x="400" y="0.0" width="240" height="584"/>
                                 <clipView key="contentView" drawsBackground="NO" id="Px3-oW-lkk">
                                     <rect key="frame" x="0.0" y="0.0" width="240" height="584"/>
@@ -136,12 +136,13 @@
                     <connections>
                         <outlet property="detailView" destination="ldO-fp-Tec" id="aR4-sd-eIk"/>
                         <outlet property="relatedView" destination="ohw-Ux-hDf" id="RSn-s9-ecN"/>
+                        <outlet property="scrollView" destination="nLk-Sj-wEx" id="723-iL-Rki"/>
                         <outlet property="titleLabel" destination="Pqy-Rw-Og1" id="L6U-Le-HIq"/>
                     </connections>
                 </viewController>
                 <customObject id="Rgh-H9-W1a" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="164.5" y="242"/>
+            <point key="canvasLocation" x="121" y="242"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="gdI-Ne-3Yg">

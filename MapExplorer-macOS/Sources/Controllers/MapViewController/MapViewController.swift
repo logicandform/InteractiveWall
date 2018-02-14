@@ -176,6 +176,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     func displayView(for place: Place, from focus: NSView?) {
         let storyboard = NSStoryboard(name: PlaceViewController.storyboard, bundle: nil)
         let placeVC = storyboard.instantiateInitialController() as! PlaceViewController
+        placeVC.gestureManager = gestureManager
         addChildViewController(placeVC)
         view.addSubview(placeVC.view)
         var origin: CGPoint

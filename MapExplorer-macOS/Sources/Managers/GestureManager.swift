@@ -35,6 +35,12 @@ final class GestureManager {
         handler.add(gesture)
     }
 
+    func remove(views: [NSView]) {
+        for view in views {
+            gestureHandlers.removeValue(forKey: view)
+        }
+    }
+
     func handle(_ touch: Touch) {
         convertToResponder(touch)
 
@@ -101,7 +107,7 @@ final class GestureManager {
             return nil
         }
 
-        let positionInBounds = view.convert(point, from: view)
+        let positionInBounds = transformFromParent(point, from: view)
         for subview in view.subviews.reversed() {
             if let target = target(in: subview, at: positionInBounds) {
                 return target
@@ -109,5 +115,9 @@ final class GestureManager {
         }
 
         return gestureHandlers.keys.contains(view) ? view : nil
+    }
+
+    private func transformFromParent(_ point: CGPoint, from view: NSView) -> NSPoint {
+        return CGPoint(x: point.x - view.frame.origin.x, y: point.y - view.frame.origin.y)
     }
 }
