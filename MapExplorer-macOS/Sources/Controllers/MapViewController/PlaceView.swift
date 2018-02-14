@@ -11,7 +11,7 @@ class PlaceView: MKAnnotationView {
     override var annotation: MKAnnotation? {
         willSet {
             if let place = newValue as? Place {
-//                clusteringIdentifier = "place"
+                clusteringIdentifier = "place"
                 canShowCallout = true
                 displayPriority = .defaultHigh
                 image = NSImage(named: place.discipline.rawValue)
