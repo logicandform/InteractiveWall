@@ -31,23 +31,13 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         super.viewDidLoad()
         detailView.wantsLayer = true
         detailView.layer?.backgroundColor = #colorLiteral(red: 0.7317136762, green: 0.81375, blue: 0.7637042526, alpha: 0.8230652265)
-        detailView.setFrameOrigin(NSPoint(x: 0.0, y: view.frame.size.height))
-        view.alphaValue = 0.0
         panGesture = NSPanGestureRecognizer(target: self, action: #selector(handlePan(gesture:)))
         detailView.addGestureRecognizer(panGesture)
 
         relatedView.register(NSNib(nibNamed: RelatedItemView.nibName, bundle: nil), forIdentifier: RelatedItemView.interfaceIdentifier)
         relatedView.backgroundColor = NSColor.clear
-        relatedView.setFrameOrigin(NSPoint(x: -relatedView.frame.size.width, y: 0.0))
-        NSAnimationContext.runAnimationGroup({_ in
-            NSAnimationContext.current.duration = 1.0
-            view.animator().alphaValue = 1.0
-            detailView.animator().setFrameOrigin(NSPoint(x: 0.0, y: 0.0))
-            relatedView.animator().setFrameOrigin(NSPoint(x: 0.0, y: 0.0))
-        }, completionHandler: {
-            print("Animation Completed")
-        })
 
+        animateView()
         setupGestures()
     }
 
@@ -103,6 +93,19 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
 
 
     // MARK: Helpers
+
+    private func animateView() {
+        view.alphaValue = 0.0
+        detailView.frame.origin.y = view.frame.size.height
+        relatedView.frame.origin.x = -relatedView.frame.size.width
+
+        NSAnimationContext.runAnimationGroup({_ in
+            NSAnimationContext.current.duration = 1.0
+            view.animator().alphaValue = 1.0
+            detailView.animator().frame.origin.y = 0
+            relatedView.animator().frame.origin.x = 0
+        })
+    }
 
     private func didSelectRelatedItem() {
         /// Display another detail view to the right of the current view.
