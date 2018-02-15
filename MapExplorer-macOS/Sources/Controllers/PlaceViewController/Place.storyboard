@@ -123,8 +123,8 @@
                                             <action selector="closeButtonTapped:" target="k5b-MF-Zdf" id="6V7-LI-4bo"/>
                                         </connections>
                                     </button>
-                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="U1m-am-vcE">
-                                        <rect key="frame" x="16" y="536" width="30" height="30"/>
+                                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U1m-am-vcE">
+                                        <rect key="frame" x="16" y="540" width="29" height="26"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="30" id="2If-k6-x3X"/>
                                             <constraint firstAttribute="height" constant="30" id="DUg-an-qOr"/>

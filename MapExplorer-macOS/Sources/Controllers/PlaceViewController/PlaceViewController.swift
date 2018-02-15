@@ -156,6 +156,5 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         view.removeFromSuperview()
         removeFromParentViewController()
         gestureManager.remove(views: [relatedView, detailView])
-
     }
 }
