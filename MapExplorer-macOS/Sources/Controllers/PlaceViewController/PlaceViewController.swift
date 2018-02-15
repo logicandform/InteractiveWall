@@ -55,11 +55,11 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         singleFingerRelatedViewPan.gestureUpdated = tableViewDidPan(_:)
 
         let singleFingerDetialViewPan = PanGestureRecognizer()
-        gestureManager.add(singleFingerDetialViewPan, to: closeButtonView)
+        gestureManager.add(singleFingerDetialViewPan, to: detailView)
         singleFingerDetialViewPan.gestureUpdated = detailViewDidPan(_:)
 
         let singleFingerTap = TapGestureRecognizer()
-        gestureManager.add(singleFingerTap, to: detailView)
+        gestureManager.add(singleFingerTap, to: closeButtonView)
         singleFingerTap.gestureUpdated = detailViewDidTap(_:)
     }
 
@@ -149,19 +149,13 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     }
 
     private func detailViewDidTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer else {
+        guard let _ = gesture as? TapGestureRecognizer else {
             return
         }
-        guard let location = tap.firstPosition else {
-            return
-        }
-        let locationNew = closeButtonView.convert(location, from: nil)
-        print(locationNew)
 
-        if closeButtonView.frame.contains(location) && tap.state == .began {
-            view.removeFromSuperview()
-            removeFromParentViewController()
-            gestureManager.remove(views: [relatedView, detailView])
-        }
+        view.removeFromSuperview()
+        removeFromParentViewController()
+        gestureManager.remove(views: [relatedView, detailView])
+
     }
 }
