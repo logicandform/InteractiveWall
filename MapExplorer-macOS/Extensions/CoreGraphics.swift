@@ -58,3 +58,11 @@ extension CGSize {
         lhs.height -= rhs
     }
 }
+
+extension CGVector {
+    func size() -> Double {
+        return Double(sqrt(pow(self.dx, 2) + pow(self.dy, 2)))
+    }
+}
+
+
