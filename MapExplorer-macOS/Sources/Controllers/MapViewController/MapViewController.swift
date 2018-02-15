@@ -16,6 +16,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
 
     private struct Constants {
         static let tileURL = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
+        static let maxZoomWidth =  134217731.09397572
     }
 
     @IBOutlet weak var mapView: MKMapView!
@@ -107,7 +108,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             let translationX = (mapRect.size.width - scaledWidth) * Double(pinch.location.x / mapView.frame.width)
             let translationY = (mapRect.size.height - scaledHeight) * (1 - Double(pinch.location.y / mapView.frame.height))
             mapRect.origin += MKMapPoint(x: translationX, y: translationY)
-            mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
+            if scaledWidth <= Constants.maxZoomWidth {
+                mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
+            }
             mapView.setVisibleMapRect(mapRect, animated: false)
         case .possible, .failed:
             activityController?.stopSendingPosition()
