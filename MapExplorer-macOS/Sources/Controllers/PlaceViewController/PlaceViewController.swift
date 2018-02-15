@@ -13,6 +13,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var relatedView: NSTableView!
     @IBOutlet weak var detailView: NSView!
+    @IBOutlet weak var closeButtonView: NSView!
 
     weak var gestureManager: GestureManager!
     weak var viewDelegate: ViewManagerDelegate?
@@ -56,6 +57,10 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         let singleFingerDetialViewPan = PanGestureRecognizer()
         gestureManager.add(singleFingerDetialViewPan, to: detailView)
         singleFingerDetialViewPan.gestureUpdated = detailViewDidPan(_:)
+
+        let singleFingerTap = TapGestureRecognizer()
+        gestureManager.add(singleFingerTap, to: closeButtonView)
+        singleFingerTap.gestureUpdated = detailViewDidTap(_:)
     }
 
 
@@ -141,5 +146,15 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         default:
             return
         }
+    }
+
+    private func detailViewDidTap(_ gesture: GestureRecognizer) {
+        guard let _ = gesture as? TapGestureRecognizer else {
+            return
+        }
+
+        view.removeFromSuperview()
+        removeFromParentViewController()
+        gestureManager.remove(views: [relatedView, detailView])
     }
 }
