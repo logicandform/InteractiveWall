@@ -12,6 +12,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
 
     var state = NSGestureRecognizer.State.possible
     var initialPositions = [Int: CGPoint]()
+    var firstPosition: CGPoint?
     var fingers: Int
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
@@ -24,6 +25,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func start(_ touch: Touch, with properties: TouchProperties) {
+        firstPosition = touch.position
         initialPositions[touch.id] = touch.position
         if state == .began {
             state = .failed

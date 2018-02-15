@@ -13,6 +13,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var relatedView: NSTableView!
     @IBOutlet weak var detailView: NSView!
+    @IBOutlet weak var closeButtonView: NSView!
 
     weak var gestureManager: GestureManager!
     weak var viewDelegate: ViewManagerDelegate?
@@ -54,8 +55,12 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         singleFingerRelatedViewPan.gestureUpdated = tableViewDidPan(_:)
 
         let singleFingerDetialViewPan = PanGestureRecognizer()
-        gestureManager.add(singleFingerDetialViewPan, to: detailView)
+        gestureManager.add(singleFingerDetialViewPan, to: closeButtonView)
         singleFingerDetialViewPan.gestureUpdated = detailViewDidPan(_:)
+
+        let singleFingerTap = TapGestureRecognizer()
+        gestureManager.add(singleFingerTap, to: detailView)
+        singleFingerTap.gestureUpdated = detailViewDidTap(_:)
     }
 
 
@@ -140,6 +145,23 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
             view.frame.origin = origin
         default:
             return
+        }
+    }
+
+    private func detailViewDidTap(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer else {
+            return
+        }
+        guard let location = tap.firstPosition else {
+            return
+        }
+        let locationNew = closeButtonView.convert(location, from: nil)
+        print(locationNew)
+
+        if closeButtonView.frame.contains(location) && tap.state == .began {
+            view.removeFromSuperview()
+            removeFromParentViewController()
+            gestureManager.remove(views: [relatedView, detailView])
         }
     }
 }

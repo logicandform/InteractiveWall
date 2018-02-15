@@ -112,12 +112,32 @@
                                             <segue destination="h8q-KE-X7P" kind="popover" popoverAnchorView="irn-zg-xjl" popoverBehavior="t" preferredEdge="maxY" id="rXT-0R-bYV"/>
                                         </connections>
                                     </button>
+                                    <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8wA-OD-SXO">
+                                        <rect key="frame" x="16" y="540" width="29" height="26"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="disclosure" bezelStyle="roundedDisclosure" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tx3-ms-sik">
+                                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="closeButtonTapped:" target="k5b-MF-Zdf" id="6V7-LI-4bo"/>
+                                        </connections>
+                                    </button>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="U1m-am-vcE">
+                                        <rect key="frame" x="16" y="536" width="30" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="30" id="2If-k6-x3X"/>
+                                            <constraint firstAttribute="height" constant="30" id="DUg-an-qOr"/>
+                                        </constraints>
+                                    </customView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="Pqy-Rw-Og1" firstAttribute="leading" secondItem="XEF-WZ-sT9" secondAttribute="leading" id="3ZF-4X-Mlo"/>
                                     <constraint firstAttribute="width" constant="400" id="Dnk-EL-KaH"/>
+                                    <constraint firstItem="U1m-am-vcE" firstAttribute="leading" secondItem="ldO-fp-Tec" secondAttribute="leading" constant="16" id="F0F-bs-ByT"/>
                                     <constraint firstAttribute="trailing" secondItem="Pqy-Rw-Og1" secondAttribute="trailing" constant="20" id="Mf5-VU-o6o"/>
                                     <constraint firstItem="Pqy-Rw-Og1" firstAttribute="top" secondItem="XEF-WZ-sT9" secondAttribute="bottom" constant="20" id="Wnz-i7-5Ti"/>
+                                    <constraint firstItem="U1m-am-vcE" firstAttribute="top" secondItem="ldO-fp-Tec" secondAttribute="top" constant="18" id="cM6-zf-DJS"/>
                                     <constraint firstItem="XEF-WZ-sT9" firstAttribute="top" secondItem="ldO-fp-Tec" secondAttribute="top" constant="20" id="djH-dX-TxY"/>
                                     <constraint firstItem="XEF-WZ-sT9" firstAttribute="leading" secondItem="ldO-fp-Tec" secondAttribute="leading" constant="20" id="oed-ql-cxW"/>
                                 </constraints>
@@ -134,6 +154,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="closeButton" destination="8wA-OD-SXO" id="5QL-IQ-avo"/>
+                        <outlet property="closeButtonView" destination="U1m-am-vcE" id="IP8-TO-V2B"/>
                         <outlet property="detailView" destination="ldO-fp-Tec" id="aR4-sd-eIk"/>
                         <outlet property="relatedView" destination="ohw-Ux-hDf" id="RSn-s9-ecN"/>
                         <outlet property="scrollView" destination="nLk-Sj-wEx" id="723-iL-Rki"/>
