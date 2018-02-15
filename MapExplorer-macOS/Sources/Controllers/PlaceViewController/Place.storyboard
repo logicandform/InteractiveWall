@@ -10,8 +10,8 @@
         <scene sceneID="5LE-vP-wAv">
             <objects>
                 <viewController id="k5b-MF-Zdf" customClass="PlaceViewController" customModule="MapExplorer_macOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" misplaced="YES" id="02T-mc-d0F">
-                        <rect key="frame" x="0.0" y="0.0" width="726" height="584"/>
+                    <view key="view" id="02T-mc-d0F">
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="584"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="47" horizontalPageScroll="10" verticalLineScroll="47" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="nLk-Sj-wEx" userLabel="Scroll View">
@@ -164,7 +164,7 @@
                 </viewController>
                 <customObject id="Rgh-H9-W1a" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="121" y="242"/>
+            <point key="canvasLocation" x="78" y="242"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="gdI-Ne-3Yg">
