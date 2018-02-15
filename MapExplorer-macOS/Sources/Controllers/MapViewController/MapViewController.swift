@@ -107,8 +107,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             let scaledHeight = (2 - Double(pinch.scale)) * mapRect.size.height
             let translationX = (mapRect.size.width - scaledWidth) * Double(pinch.location.x / mapView.frame.width)
             let translationY = (mapRect.size.height - scaledHeight) * (1 - Double(pinch.location.y / mapView.frame.height))
-            mapRect.origin += MKMapPoint(x: translationX, y: translationY)
             if scaledWidth <= Constants.maxZoomWidth {
+                mapRect.origin += MKMapPoint(x: translationX, y: translationY)
                 mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
             }
             mapView.setVisibleMapRect(mapRect, animated: false)
