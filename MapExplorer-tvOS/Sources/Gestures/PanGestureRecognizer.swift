@@ -13,9 +13,8 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
 
     var state = NSGestureRecognizer.State.possible
     var delta = CGVector.zero
+    var lastDelta: CGVector?
     var lastPosition: CGPoint?
-    var lastPositionTime: Date!
-    var time: CGFloat!
     var velocity: CGVector!
     var fingers: Int
 
@@ -34,7 +33,6 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         } else if state == .possible && properties.touchCount == fingers {
             state = .began
             lastPosition = properties.cog
-            lastPositionTime = Date()
         }
     }
 
@@ -49,13 +47,8 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             state = .recognized
             gestureRecognized?(self)
         case .recognized:
-            time = CGFloat(-lastPositionTime.timeIntervalSinceNow)
-            lastPositionTime = Date()
+            lastDelta = delta
             delta = CGVector(dx: properties.cog.x - lastPosition.x, dy: properties.cog.y - lastPosition.y)
-            //velocity = CGVector(dx: delta.dx / time, dy: delta.dy / time)
-            velocity = CGVector(dx: 100, dy: 0)
-
-           // print(velocity)
             self.lastPosition = properties.cog
             gestureUpdated?(self)
         default:
@@ -65,12 +58,17 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
 
     func end(_ touch: Touch, with properties: TouchProperties) {
         if properties.touchCount.isZero {
-            guard let lastPosition = lastPosition else {
+            guard let lastDelta = lastDelta else {
                 return
             }
 
+            let changeInDelta = delta - lastDelta
+
+
+
+            
+
             while(velocity.size() > Constants.velocityThreshold) {
-                delta = CGVector(dx: lastPosition.x - velocity.dx, dy:lastPosition.y - velocity.dy)
 
                 gestureUpdated?(self)
             }

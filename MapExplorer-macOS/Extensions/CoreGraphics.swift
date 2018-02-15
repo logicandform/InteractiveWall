@@ -63,6 +63,11 @@ extension CGVector {
     func size() -> Double {
         return Double(sqrt(pow(self.dx, 2) + pow(self.dy, 2)))
     }
+
+    static func - (lhs: inout CGVector, rhs: CGVector) {
+        lhs.x -= rhs.x
+        lsh.y -= rhs.y
+    }
 }
 
 
