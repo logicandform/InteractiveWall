@@ -9,15 +9,18 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         static let recognizedThreshhold: CGFloat = 100
         static let minimumFingers = 1
         static let thresholdDelta: Double = 8
-        static let frictionFactor =  1.05
+        static let frictionFactorScale = 0.001
     }
 
+    var frictionFactor = 1.05
     var state = State.possible
     var delta = CGVector.zero
     var fingers: Int
     var momentumTimer: Timer?
     var gestureUpdated: ((GestureRecognizer) -> Void)?
     var gestureRecognized: ((GestureRecognizer) -> Void)?
+
+    // Leave this as an array for now for testing purposes, but more efficent to just store the past 3 positions
     var positions = [CGPoint?]()
 
     init(withFingers fingers: Int = Constants.minimumFingers) {
@@ -64,20 +67,15 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             delta = CGVector(dx: lastPosition.x - secondLastPosition.x, dy: lastPosition.y - secondLastPosition.y)
             delta *= Double(fingers)
 
-            print(delta.magnitude())
-
-            var frictionFactor: Double = Constants.frictionFactor
-
             momentumTimer = Timer.scheduledTimer(withTimeInterval: 1 / 60, repeats: true) { _ in
                 if self.delta.magnitude() < Constants.thresholdDelta {
                     self.state = .possible
-                    self.positions.removeAll()
-                    self.delta = .zero
+                    self.reset()
                     self.momentumTimer?.invalidate()
                 }
                 self.gestureUpdated?(self)
-                frictionFactor += 0.001
-                self.delta /= frictionFactor
+                self.frictionFactor += Constants.frictionFactorScale
+                self.delta /= self.frictionFactor
             }
         } else {
             state = .failed
@@ -87,9 +85,9 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     func reset() {
         if state != .momentum {
             state = .possible
-            positions.removeAll()
-            delta = .zero
         }
+        positions.removeAll()
+        delta = .zero
     }
 
     func invalidate() {
