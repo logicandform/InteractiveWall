@@ -179,16 +179,15 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         guard let tap = gesture as? TapGestureRecognizer else {
             return
         }
-
-        let touchLocation = tap.initialPositions.first!.value
-        let locationInRelatedView = relatedView.convert(touchLocation, from: nil)
-        let row = relatedView.row(at: locationInRelatedView)
-
-        guard let relatedItemView = relatedView.view(atColumn: 0, row: row, makeIfNecessary: false) as? RelatedItemView else {
+        guard let touchLocation = tap.initialPositions.first?.value else {
             return
         }
 
-        relatedItemView.didTapView()
-    }
+        let locationInRelatedView = relatedView.convert(touchLocation, from: nil)
+        let row = relatedView.row(at: locationInRelatedView)
 
+        if let relatedItemView = relatedView.view(atColumn: 0, row: row, makeIfNecessary: false) as? RelatedItemView {
+            relatedItemView.didTapView()
+        }
+    }
 }
