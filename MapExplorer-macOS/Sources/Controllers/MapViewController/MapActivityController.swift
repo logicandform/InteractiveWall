@@ -18,7 +18,7 @@ class MapActivityController: SocketManagerDelegate {
 
     private struct Constants {
         static let devicesPerColumn = 1
-        static let masterDeviceID: Int32 = 1
+        static let masterDeviceID: Int32 = 2
         static let availableDeviceID: Int32 = 0
         static let sendPositionInterval = 1.0 / 60.0
         static let activityTimeoutPeriod: TimeInterval = 4

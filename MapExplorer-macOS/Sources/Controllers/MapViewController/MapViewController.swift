@@ -18,6 +18,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         static let tileURL = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
         static let annotationContainerClass = "MKNewAnnotationContainerView"
         static let maxZoomWidth: Double =  134217730
+        static let annotationHitRadius: CGFloat = 25
     }
 
     @IBOutlet weak var mapView: MKMapView!
@@ -107,11 +108,11 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             let scaledHeight = (2 - Double(pinch.scale)) * mapRect.size.height
             let translationX = (mapRect.size.width - scaledWidth) * Double(pinch.location.x / mapView.frame.width)
             let translationY = (mapRect.size.height - scaledHeight) * (1 - Double(pinch.location.y / mapView.frame.height))
+            mapRect.origin += MKMapPoint(x: translationX, y: translationY)
+            mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
             if scaledWidth <= Constants.maxZoomWidth {
-                mapRect.origin += MKMapPoint(x: translationX, y: translationY)
-                mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
+                mapView.setVisibleMapRect(mapRect, animated: false)
             }
-            mapView.setVisibleMapRect(mapRect, animated: false)
         case .possible, .failed:
             activityController?.stopSendingPosition()
         default:
@@ -125,10 +126,25 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             return
         }
 
+        var targets = [SelectableView]()
+
         for annotation in container.subviews {
-            if let selectableView = annotation as? SelectableView, annotation.frame.contains(position.value) {
-                selectableView.didSelectView()
+            // Calculate proper frame; MapRect uses screen coordinates whereas NSView does not.
+            var hitFrame = annotation.frame
+            hitFrame.origin.y = mapView.frame.height - hitFrame.origin.y
+            // Increase hit area for annotation
+            hitFrame.size += Constants.annotationHitRadius * 2
+            hitFrame.origin -= Constants.annotationHitRadius
+            if let selectableView = annotation as? SelectableView, hitFrame.contains(position.value) {
+                targets.append(selectableView)
             }
+        }
+
+        /// Give presedence to a ClusterView
+        if let clusterView = targets.first(where: { type(of: $0) == ClusterView.self }) {
+            clusterView.didSelectView()
+        } else if let first = targets.first {
+            first.didSelectView()
         }
     }
 
