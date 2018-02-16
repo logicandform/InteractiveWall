@@ -50,6 +50,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     }
 
      func setupGestures() {
+
         let singleFingerRelatedViewPan = PanGestureRecognizer()
         gestureManager.add(singleFingerRelatedViewPan, to: relatedView)
         singleFingerRelatedViewPan.gestureUpdated = tableViewDidPan(_:)
@@ -61,6 +62,10 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         let singleFingerTap = TapGestureRecognizer()
         gestureManager.add(singleFingerTap, to: closeButtonView)
         singleFingerTap.gestureUpdated = detailViewDidTap(_:)
+
+        let singleFingerRelatedViewTap = TapGestureRecognizer()
+        gestureManager.add(singleFingerRelatedViewTap, to: relatedView)
+        singleFingerRelatedViewTap.gestureUpdated = relatedViewDidTap(_:)
     }
 
 
@@ -150,7 +155,6 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         guard let pan = gesture as? PanGestureRecognizer else {
             return
         }
-
         switch pan.state {
         case .recognized:
             var origin = view.frame.origin
@@ -170,4 +174,21 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         removeFromParentViewController()
         gestureManager.remove(views: [relatedView, detailView])
     }
+
+    private func relatedViewDidTap(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer else {
+            return
+        }
+
+        let touchLocation = tap.initialPositions.first!.value
+        let locationInRelatedView = relatedView.convert(touchLocation, from: nil)
+        let row = relatedView.row(at: locationInRelatedView)
+
+        guard let relatedItemView = relatedView.view(atColumn: 0, row: row, makeIfNecessary: false) as? RelatedItemView else {
+            return
+        }
+
+        relatedItemView.didTapView()
+    }
+
 }
