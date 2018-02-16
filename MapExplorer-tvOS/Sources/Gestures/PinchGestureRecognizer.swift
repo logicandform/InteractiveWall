@@ -26,7 +26,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         super.init()
     }
 
-    func start(_ touch: Touch, with properties: TouchProperties) {
+    func start(_ properties: TouchProperties, of touch: Touch?) {
         switch state {
         case .began:
             state = .failed

@@ -65,9 +65,13 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         gestureManager.add(singleFingerPan, to: mapView)
         singleFingerPan.gestureUpdated = mapViewDidPan(_:)
 
-        let pinchGesture = PinchGestureRecognizer()
-        gestureManager.add(pinchGesture, to: mapView)
-        pinchGesture.gestureUpdated = mapViewDidZoom(_:)
+        let twoFingerPan = PanGestureRecognizer(withFingers: 2)
+        gestureManager.add(twoFingerPan, to: mapView)
+        twoFingerPan.gestureUpdated = mapViewDidPan(_:)
+
+//        let pinchGesture = PinchGestureRecognizer()
+//        gestureManager.add(pinchGesture, to: mapView)
+//        pinchGesture.gestureUpdated = mapViewDidZoom(_:)
     }
 
 

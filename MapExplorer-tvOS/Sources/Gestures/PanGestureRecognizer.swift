@@ -8,19 +8,19 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     private struct Constants {
         static let recognizedThreshhold: CGFloat = 100
         static let minimumFingers = 1
+        static let thresholdDelta: Double = 8
+        static let frictionFactor =  1.05
     }
 
     var state = State.possible
     var delta = CGVector.zero
-    var lastPosition: CGPoint?
-    var secondLastPosition: CGPoint?
-    var thirdLastPosition: CGPoint?
     var fingers: Int
-
     var momentumTimer: Timer?
-
     var gestureUpdated: ((GestureRecognizer) -> Void)?
     var gestureRecognized: ((GestureRecognizer) -> Void)?
+    var positions = [CGPoint?]()
+
+    var centerOfGravity: CGPoint!
 
     init(withFingers fingers: Int = Constants.minimumFingers) {
         precondition(fingers >= Constants.minimumFingers, "\(fingers) is an invalid number of fingers, errors will occur")
@@ -28,19 +28,18 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         super.init()
     }
 
-    func start(_ touch: Touch, with properties: TouchProperties) {
+    func start(_ properties: TouchProperties, of touch: Touch?) {
         if state == .began {
             state = .failed
         } else if (state == .possible || state == .momentum) && properties.touchCount == fingers {
             state = .began
-            momentumTimer?.invalidate()
-            lastPosition = properties.cog
-            secondLastPosition = lastPosition
+            positions.append(properties.cog)
+            print(properties)
         }
     }
 
     func move(_ touch: Touch, with properties: TouchProperties) {
-        guard let lastPosition = lastPosition, let secondLastPosition = secondLastPosition else {
+        guard !positions.isEmpty, let lastPosition = positions[positions.count - 1] else {
             return
         }
 
@@ -50,10 +49,9 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             state = .recognized
             gestureRecognized?(self)
         case .recognized:
-            delta = CGVector(dx: properties.cog.x - lastPosition.x, dy: properties.cog.y - lastPosition.y)
-            thirdLastPosition = secondLastPosition
-            self.secondLastPosition = lastPosition
-            self.lastPosition = properties.cog
+            delta =  CGVector(dx: properties.cog.x - lastPosition.x, dy: properties.cog.y - lastPosition.y)
+            positions.append(properties.cog)
+            centerOfGravity = properties.cog
             gestureUpdated?(self)
         default:
             return
@@ -62,33 +60,40 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
 
     func end(_ touch: Touch, with properties: TouchProperties) {
         if properties.touchCount.isZero {
-            guard let thirdLastPosition = thirdLastPosition, let lastPosition = lastPosition else {
+            guard positions.count > 2, let lastPosition = positions[positions.count - 1], let secondLastPosition = positions[positions.count - 3]  else {
                 return
             }
             self.state = .momentum
 
-            var difInPos = CGPoint(x: lastPosition.x - thirdLastPosition.x, y: lastPosition.y - thirdLastPosition.y)
-            var factor: Double = 1
+            delta = CGVector(dx: lastPosition.x - secondLastPosition.x, dy: lastPosition.y - secondLastPosition.y)
+            delta *= Double(fingers)
+
+            print(delta.magnitude())
+
+            var frictionFactor: Double = Constants.frictionFactor
 
             momentumTimer = Timer.scheduledTimer(withTimeInterval: 1 / 60, repeats: true) { _ in
-                if(difInPos.magnitude() < 3) {
+                if self.delta.magnitude() < Constants.thresholdDelta {
                     self.state = .possible
+                    self.positions.removeAll()
+                    self.delta = .zero
                     self.momentumTimer?.invalidate()
                 }
-                self.delta = CGVector(dx: difInPos.x, dy: difInPos.y)
                 self.gestureUpdated?(self)
-//                factor += 0.002
-//                difInPos /= factor
+                frictionFactor += 0.001
+                self.delta /= frictionFactor
             }
         } else {
             state = .failed
         }
-        gestureUpdated?(self)
     }
 
     func reset() {
-        lastPosition = nil
-        delta = .zero
+        if state != .momentum {
+            state = .possible
+            positions.removeAll()
+            delta = .zero
+        }
     }
 
     func invalidate() {

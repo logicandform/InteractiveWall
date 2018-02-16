@@ -23,8 +23,10 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         super.init()
     }
 
-    func start(_ touch: Touch, with properties: TouchProperties) {
-        initialPositions[touch.id] = touch.position
+    func start(_ properties: TouchProperties, of touch: Touch?) {
+        if let touch = touch {
+            initialPositions[touch.id] = touch.position
+        }
         if state == .began {
             state = .failed
         } else if state == .possible && properties.touchCount == fingers {

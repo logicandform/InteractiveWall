@@ -11,7 +11,7 @@ protocol GestureRecognizer: class {
 
     var state: State { get }
 
-    func start(_ touch: Touch, with properties: TouchProperties)
+    func start(_ properties: TouchProperties, of touch: Touch?)
 
     func move(_ touch: Touch, with properties: TouchProperties)
 
