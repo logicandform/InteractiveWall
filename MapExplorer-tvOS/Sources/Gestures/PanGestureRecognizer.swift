@@ -10,14 +10,14 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         static let minimumFingers = 1
     }
 
-    var state = NSGestureRecognizer.State.possible
+    var state = State.possible
     var delta = CGVector.zero
     var lastPosition: CGPoint?
     var secondLastPosition: CGPoint?
     var thirdLastPosition: CGPoint?
     var fingers: Int
 
-    //var momentumTimer = Timer!
+    var momentumTimer: Timer?
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
     var gestureRecognized: ((GestureRecognizer) -> Void)?
@@ -31,18 +31,19 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     func start(_ touch: Touch, with properties: TouchProperties) {
         if state == .began {
             state = .failed
-        } else if state == .possible && properties.touchCount == fingers {
+        } else if (state == .possible || state == .momentum) && properties.touchCount == fingers {
             state = .began
+            momentumTimer?.invalidate()
             lastPosition = properties.cog
+            secondLastPosition = lastPosition
         }
     }
 
     func move(_ touch: Touch, with properties: TouchProperties) {
-        guard let lastPosition = lastPosition else {
+        guard let lastPosition = lastPosition, let secondLastPosition = secondLastPosition else {
             return
         }
 
-      //  momentumTimer = Timer.scheduledTimer(timeInterval: 1 / 60, target: self, selector: #selector(updatePan), userInfo: nil, repeats: true)
         switch state {
         case .began where abs(properties.cog.x - lastPosition.x) + abs(properties.cog.y - lastPosition.y) > Constants.recognizedThreshhold:
             gestureUpdated?(self)
@@ -51,7 +52,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         case .recognized:
             delta = CGVector(dx: properties.cog.x - lastPosition.x, dy: properties.cog.y - lastPosition.y)
             thirdLastPosition = secondLastPosition
-            secondLastPosition = lastPosition
+            self.secondLastPosition = lastPosition
             self.lastPosition = properties.cog
             gestureUpdated?(self)
         default:
@@ -61,38 +62,24 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
 
     func end(_ touch: Touch, with properties: TouchProperties) {
         if properties.touchCount.isZero {
-            state = .recognized
             guard let thirdLastPosition = thirdLastPosition, let lastPosition = lastPosition else {
                 return
             }
+            self.state = .momentum
 
             var difInPos = CGPoint(x: lastPosition.x - thirdLastPosition.x, y: lastPosition.y - thirdLastPosition.y)
             var factor: Double = 1
 
-            print("Size: ", difInPos.magnitude())
-
-            var count = 0 {
-                didSet {
-                    print(count)
+            momentumTimer = Timer.scheduledTimer(withTimeInterval: 1 / 60, repeats: true) { _ in
+                if(difInPos.magnitude() < 3) {
+                    self.state = .possible
+                    self.momentumTimer?.invalidate()
                 }
+                self.delta = CGVector(dx: difInPos.x, dy: difInPos.y)
+                self.gestureUpdated?(self)
+//                factor += 0.002
+//                difInPos /= factor
             }
-
-
-
-
-            DispatchQueue.global(qos: .utility).async{
-                while(difInPos.magnitude() > 5) {
-
-                    factor += 0.01
-                    difInPos /= factor
-                    self.delta = CGVector(dx: difInPos.x, dy: difInPos.y)
-                    DispatchQueue.main.async {
-                        self.gestureUpdated?(self)
-                        count += 1
-                    }
-                }
-            }
-            state = .possible
         } else {
             state = .failed
         }
@@ -100,7 +87,6 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func reset() {
-        state = .possible
         lastPosition = nil
         delta = .zero
     }

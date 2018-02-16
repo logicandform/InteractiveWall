@@ -81,7 +81,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         switch pan.state {
         case .began:
             activityController?.beginSendingPosition()
-        case .recognized:
+        case .recognized, .momentum:
             var mapRect = mapView.visibleMapRect
             let translationX = Double(pan.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
             let translationY = Double(pan.delta.dy) * mapRect.size.height / Double(mapView.frame.height)

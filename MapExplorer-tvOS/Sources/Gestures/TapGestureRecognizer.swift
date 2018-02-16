@@ -10,7 +10,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         static let minimumFingers = 1
     }
 
-    var state = NSGestureRecognizer.State.possible
+    var state = State.possible
     var initialPositions = [Int: CGPoint]()
     var fingers: Int
 
