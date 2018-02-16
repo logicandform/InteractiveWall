@@ -38,8 +38,12 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         relatedView.register(NSNib(nibNamed: RelatedItemView.nibName, bundle: nil), forIdentifier: RelatedItemView.interfaceIdentifier)
         relatedView.backgroundColor = NSColor.clear
 
-        animateView()
+        let indexes = NSIndexSet(indexesIn: relatedView.rows(in: view.frame))
+        relatedView.hideRows(at: indexes as IndexSet, withAnimation: .slideUp)
+
         setupGestures()
+        animateView()
+
     }
 
 
@@ -85,6 +89,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         }
 
         relatedItemView.didTapItem = didSelectRelatedItem
+
         return relatedItemView
     }
 
@@ -96,19 +101,49 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         return false
     }
 
+    override func viewDidAppear() {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 4) {
+        self.animateTableView()
+        }
+    }
+
 
     // MARK: Helpers
 
+    private func animateTableView() {
+        cascadingAnimate(for: 0)
+    }
+
+    private func cascadingAnimate(for row: Int) {
+        if row > 11 {
+            return
+        }
+        var index = IndexSet()
+        index.insert(row)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2) {
+            self.relatedView.unhideRows(at: index, withAnimation: .slideRight)
+            self.cascadingAnimate(for: row + 1)
+        }
+    }
+
     private func animateView() {
-        view.alphaValue = 0.0
+
+//
+//        relatedView.beginUpdates()
+//        relatedView.insertRows(at: indexes, withAnimation: .slideRight)
+//        relatedView.endUpdates()
+
+        detailView.alphaValue = 0.0
         detailView.frame.origin.y = view.frame.size.height
-        relatedView.frame.origin.x = -relatedView.frame.size.width
+        //relatedView.frame.origin.x = -relatedView.frame.size.width
 
         NSAnimationContext.runAnimationGroup({_ in
+
             NSAnimationContext.current.duration = 1.0
-            view.animator().alphaValue = 1.0
+            detailView.animator().alphaValue = 1.0
             detailView.animator().frame.origin.y = 0
-            relatedView.animator().frame.origin.x = 0
+
+            //relatedView.animator().frame.origin.x = 0
         })
     }
 
