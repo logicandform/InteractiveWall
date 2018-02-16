@@ -50,7 +50,6 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     }
 
      func setupGestures() {
-
         let singleFingerRelatedViewPan = PanGestureRecognizer()
         gestureManager.add(singleFingerRelatedViewPan, to: relatedView)
         singleFingerRelatedViewPan.gestureUpdated = tableViewDidPan(_:)
@@ -155,6 +154,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         guard let pan = gesture as? PanGestureRecognizer else {
             return
         }
+        
         switch pan.state {
         case .recognized:
             var origin = view.frame.origin
