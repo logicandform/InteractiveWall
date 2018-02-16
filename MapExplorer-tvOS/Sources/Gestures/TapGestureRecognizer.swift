@@ -23,7 +23,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         super.init()
     }
 
-    func start(_ properties: TouchProperties, of touch: Touch?) {
+    func start(_ touch: Touch?, with properties: TouchProperties) {
         if let touch = touch {
             initialPositions[touch.id] = touch.position
         }

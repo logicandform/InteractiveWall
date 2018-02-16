@@ -57,7 +57,7 @@ class GestureHandler {
         touches.insert(touch)
         gestures.forEach {
             $0.reset()
-            $0.start(properties, of: touch)
+            $0.start(touch, with: properties)
         }
     }
 
@@ -75,7 +75,7 @@ class GestureHandler {
             if touches.isEmpty {
                 gesture.reset()
             } else {
-                gesture.start(properties, of: nil)
+                gesture.start(nil, with: properties)
             }
         }
     }

@@ -49,7 +49,7 @@ class SwipeGestureRecognizer: NSObject, GestureRecognizer {
         super.init()
     }
 
-    func start(_ properties: TouchProperties, of touch: Touch?) {
+    func start(_ touch: Touch?, with properties: TouchProperties) {
         switch state {
         case .began:
             state = .failed

@@ -26,7 +26,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         super.init()
     }
 
-    func start(_ properties: TouchProperties, of touch: Touch?) {
+    func start(_ touch: Touch?, with properties: TouchProperties) {
         if state == .began {
             state = .failed
         } else if (state == .possible || state == .momentum) && properties.touchCount == fingers {

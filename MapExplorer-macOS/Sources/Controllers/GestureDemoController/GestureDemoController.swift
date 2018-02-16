@@ -92,8 +92,7 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
             return
         }
 
-        // This makes the object bounce off the edges when it hits, has some bugs
-
+        // This makes the object bounce off the edges when it hits, has some bugs, may be used for collisions later? must uncoment the hits about this func
 //        switch pan.state {
 //        case .recognized:
 //            let newFrameOriginX = min(view.frame.origin.x + view.frame.width - rect.frame.width, max(view.frame.origin.x, rect.frame.origin.x + pan.delta.dx))
