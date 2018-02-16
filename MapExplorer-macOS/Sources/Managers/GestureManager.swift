@@ -98,6 +98,8 @@ final class GestureManager {
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = 1.0
             touchIndicator.animator().alphaValue = 0.0
+        }, completionHandler: {
+            touchIndicator.removeFromSuperview()
         })
     }
 

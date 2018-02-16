@@ -3,17 +3,17 @@
 import Cocoa
 import MapKit
 
-class ClusterView: MKAnnotationView {
+class ClusterView: MKAnnotationView, SelectableView {
     static let identifier = "ClusterView"
 
-    var didTapCallout: ((MKClusterAnnotation) -> Void)?
+    var didSelect: ((MKClusterAnnotation) -> Void)?
 
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
         displayPriority = .defaultHigh
         collisionMode = .circle
         canShowCallout = true
-        rightCalloutAccessoryView = NSButton(title: "More", target: self, action: #selector(calloutButtonSelected))
+        rightCalloutAccessoryView = NSButton(title: "More", target: self, action: #selector(didSelectView))
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -29,9 +29,9 @@ class ClusterView: MKAnnotationView {
     }
 
     @objc
-    func calloutButtonSelected() {
+    func didSelectView() {
         if let cluster = annotation as? MKClusterAnnotation {
-            didTapCallout?(cluster)
+            didSelect?(cluster)
         }
     }
 }
