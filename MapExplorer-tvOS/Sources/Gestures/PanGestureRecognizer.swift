@@ -20,8 +20,6 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     var gestureRecognized: ((GestureRecognizer) -> Void)?
     var positions = [CGPoint?]()
 
-    var centerOfGravity: CGPoint!
-
     init(withFingers fingers: Int = Constants.minimumFingers) {
         precondition(fingers >= Constants.minimumFingers, "\(fingers) is an invalid number of fingers, errors will occur")
         self.fingers = fingers
@@ -34,7 +32,6 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         } else if (state == .possible || state == .momentum) && properties.touchCount == fingers {
             state = .began
             positions.append(properties.cog)
-            print(properties)
         }
     }
 
@@ -51,7 +48,6 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         case .recognized:
             delta =  CGVector(dx: properties.cog.x - lastPosition.x, dy: properties.cog.y - lastPosition.y)
             positions.append(properties.cog)
-            centerOfGravity = properties.cog
             gestureUpdated?(self)
         default:
             return
