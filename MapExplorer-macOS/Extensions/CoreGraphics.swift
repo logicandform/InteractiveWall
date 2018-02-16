@@ -34,6 +34,15 @@ extension CGPoint {
         lhs.x -= rhs
         lhs.y -= rhs
     }
+
+    static func /= (lhs: inout CGPoint, rhs: Double) {
+        lhs.x /= CGFloat(rhs)
+        lhs.y /= CGFloat(rhs)
+    }
+
+    func magnitude() -> Double {
+        return Double(sqrt(pow(self.x, 2) + pow(self.y, 2)))
+    }
 }
 
 extension CGSize {
@@ -58,16 +67,3 @@ extension CGSize {
         lhs.height -= rhs
     }
 }
-
-extension CGVector {
-    func size() -> Double {
-        return Double(sqrt(pow(self.dx, 2) + pow(self.dy, 2)))
-    }
-
-    static func - (lhs: inout CGVector, rhs: CGVector) {
-        lhs.x -= rhs.x
-        lsh.y -= rhs.y
-    }
-}
-
-

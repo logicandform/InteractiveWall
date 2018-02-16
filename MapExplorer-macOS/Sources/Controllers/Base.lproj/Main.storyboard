@@ -696,7 +696,7 @@
                         </connections>
                     </window>
                     <connections>
-                        <segue destination="TYt-an-uvq" kind="relationship" relationship="window.shadowedContentViewController" id="p9y-KH-NJF"/>
+                        <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="EKx-tl-rmP"/>
                     </connections>
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -730,7 +730,7 @@
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="76" y="905"/>
+            <point key="canvasLocation" x="65" y="926"/>
         </scene>
         <!--Gesture Demo Controller-->
         <scene sceneID="bet-cy-fkr">

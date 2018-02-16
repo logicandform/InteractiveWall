@@ -8,15 +8,16 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     private struct Constants {
         static let recognizedThreshhold: CGFloat = 100
         static let minimumFingers = 1
-        static let velocityThreshold = Double(1)
     }
 
     var state = NSGestureRecognizer.State.possible
     var delta = CGVector.zero
-    var lastDelta: CGVector?
     var lastPosition: CGPoint?
-    var velocity: CGVector!
+    var secondLastPosition: CGPoint?
+    var thirdLastPosition: CGPoint?
     var fingers: Int
+
+    //var momentumTimer = Timer!
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
     var gestureRecognized: ((GestureRecognizer) -> Void)?
@@ -41,14 +42,16 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             return
         }
 
+      //  momentumTimer = Timer.scheduledTimer(timeInterval: 1 / 60, target: self, selector: #selector(updatePan), userInfo: nil, repeats: true)
         switch state {
         case .began where abs(properties.cog.x - lastPosition.x) + abs(properties.cog.y - lastPosition.y) > Constants.recognizedThreshhold:
             gestureUpdated?(self)
             state = .recognized
             gestureRecognized?(self)
         case .recognized:
-            lastDelta = delta
             delta = CGVector(dx: properties.cog.x - lastPosition.x, dy: properties.cog.y - lastPosition.y)
+            thirdLastPosition = secondLastPosition
+            secondLastPosition = lastPosition
             self.lastPosition = properties.cog
             gestureUpdated?(self)
         default:
@@ -58,22 +61,37 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
 
     func end(_ touch: Touch, with properties: TouchProperties) {
         if properties.touchCount.isZero {
-            guard let lastDelta = lastDelta else {
+            state = .recognized
+            guard let thirdLastPosition = thirdLastPosition, let lastPosition = lastPosition else {
                 return
             }
 
-            let changeInDelta = delta - lastDelta
+            var difInPos = CGPoint(x: lastPosition.x - thirdLastPosition.x, y: lastPosition.y - thirdLastPosition.y)
+            var factor: Double = 1
 
+            print("Size: ", difInPos.magnitude())
 
-
-            
-
-            while(velocity.size() > Constants.velocityThreshold) {
-
-                gestureUpdated?(self)
+            var count = 0 {
+                didSet {
+                    print(count)
+                }
             }
 
 
+
+
+            DispatchQueue.global(qos: .utility).async{
+                while(difInPos.magnitude() > 5) {
+
+                    factor += 0.01
+                    difInPos /= factor
+                    self.delta = CGVector(dx: difInPos.x, dy: difInPos.y)
+                    DispatchQueue.main.async {
+                        self.gestureUpdated?(self)
+                        count += 1
+                    }
+                }
+            }
             state = .possible
         } else {
             state = .failed
