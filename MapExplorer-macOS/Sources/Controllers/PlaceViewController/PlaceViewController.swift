@@ -39,8 +39,8 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         relatedView.backgroundColor = NSColor.clear
         relatedView.isHidden = true
 
-        setupGestures()
         animateView()
+        setupGestures()
     }
 
 
