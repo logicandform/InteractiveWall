@@ -37,13 +37,10 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
 
         relatedView.register(NSNib(nibNamed: RelatedItemView.nibName, bundle: nil), forIdentifier: RelatedItemView.interfaceIdentifier)
         relatedView.backgroundColor = NSColor.clear
-
-        let indexes = NSIndexSet(indexesIn: relatedView.rows(in: view.frame))
-        relatedView.hideRows(at: indexes as IndexSet, withAnimation: .slideUp)
+        relatedView.isHidden = true
 
         setupGestures()
         animateView()
-
     }
 
 
@@ -87,9 +84,8 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         guard let relatedItemView = tableView.makeView(withIdentifier: RelatedItemView.interfaceIdentifier, owner: self) as? RelatedItemView else {
             return nil
         }
-
+        relatedItemView.alphaValue = 0.0
         relatedItemView.didTapItem = didSelectRelatedItem
-
         return relatedItemView
     }
 
@@ -101,50 +97,49 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         return false
     }
 
-    override func viewDidAppear() {
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 4) {
-        self.animateTableView()
-        }
-    }
-
 
     // MARK: Helpers
 
-    private func animateTableView() {
-        cascadingAnimate(for: 0)
-    }
-
-    private func cascadingAnimate(for row: Int) {
-        if row > 11 {
+    private func animateTableView(for row: Int) {
+        if !relatedView.rows(in: relatedView.frame).contains(row) {
             return
         }
-        var index = IndexSet()
-        index.insert(row)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2) {
-            self.relatedView.unhideRows(at: index, withAnimation: .slideRight)
-            self.cascadingAnimate(for: row + 1)
+
+        guard let view = relatedView.view(atColumn: 0, row: row, makeIfNecessary: false) as? RelatedItemView else {
+            return
+        }
+
+        view.frame.origin.x = 200
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.05) {
+
+            NSAnimationContext.runAnimationGroup({_ in
+
+                NSAnimationContext.current.duration = 0.4
+                view.animator().alphaValue = 1.0
+                view.animator().frame.origin.x = 20
+            })
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+            self.animateTableView(for: row + 1)
         }
     }
 
     private func animateView() {
-
-//
-//        relatedView.beginUpdates()
-//        relatedView.insertRows(at: indexes, withAnimation: .slideRight)
-//        relatedView.endUpdates()
-
         detailView.alphaValue = 0.0
         detailView.frame.origin.y = view.frame.size.height
-        //relatedView.frame.origin.x = -relatedView.frame.size.width
+        relatedView.isHidden = false
 
         NSAnimationContext.runAnimationGroup({_ in
 
             NSAnimationContext.current.duration = 1.0
             detailView.animator().alphaValue = 1.0
             detailView.animator().frame.origin.y = 0
-
-            //relatedView.animator().frame.origin.x = 0
         })
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.05) {
+            self.animateTableView(for: 0)
+        }
     }
 
     private func didSelectRelatedItem() {

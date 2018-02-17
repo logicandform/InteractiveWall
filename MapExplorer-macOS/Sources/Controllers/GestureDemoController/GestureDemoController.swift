@@ -18,7 +18,10 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
         rect = NSView(frame: CGRect(x: 300, y: 300, width: 400, height: 400))
         rect.wantsLayer = true
         rect.layer?.backgroundColor = NSColor.blue.cgColor
+        rect.isHidden = true
+        rect.alphaValue = 0.0
         view.addSubview(rect)
+
 
         let tapGesture = TapGestureRecognizer()
         gestureManager.add(tapGesture, to: rect)
@@ -31,7 +34,17 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
         let pinchGesture = PinchGestureRecognizer()
         gestureManager.add(pinchGesture, to: rect)
         pinchGesture.gestureUpdated = rectPinched(_:)
+
+        NSAnimationContext.runAnimationGroup({_ in
+
+            NSAnimationContext.current.duration = 1.0
+            rect.animator().isHidden = false
+            rect.animator().alphaValue = 1.0
+        })
+
     }
+
+
 
 
     // MARK: SocketManagerDelegate
