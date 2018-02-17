@@ -100,31 +100,6 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
 
     // MARK: Helpers
 
-    private func animateTableView(for row: Int) {
-        if !relatedView.rows(in: relatedView.frame).contains(row) {
-            return
-        }
-
-        guard let view = relatedView.view(atColumn: 0, row: row, makeIfNecessary: false) as? RelatedItemView else {
-            return
-        }
-
-        view.frame.origin.x = 200
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.05) {
-
-            NSAnimationContext.runAnimationGroup({_ in
-
-                NSAnimationContext.current.duration = 0.4
-                view.animator().alphaValue = 1.0
-                view.animator().frame.origin.x = 20
-            })
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
-            self.animateTableView(for: row + 1)
-        }
-    }
-
     private func animateView() {
         detailView.alphaValue = 0.0
         detailView.frame.origin.y = view.frame.size.height
@@ -132,13 +107,29 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
 
         NSAnimationContext.runAnimationGroup({_ in
 
-            NSAnimationContext.current.duration = 1.0
+            NSAnimationContext.current.duration = 0.7
             detailView.animator().alphaValue = 1.0
             detailView.animator().frame.origin.y = 0
         })
-        
+        animateTableView(for: 0)
+    }
+
+    private func animateTableView(for row: Int) {
+        guard relatedView.rows(in: relatedView.frame).contains(row), let relatedItemView = relatedView.view(atColumn: 0, row: row, makeIfNecessary: true) as? RelatedItemView else {
+            return
+        }
+
+        relatedItemView.frame.origin.x = 200
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.05) {
-            self.animateTableView(for: 0)
+
+            NSAnimationContext.runAnimationGroup({_ in
+
+                NSAnimationContext.current.duration = 0.4
+                relatedItemView.animator().alphaValue = 1.0
+                relatedItemView.animator().frame.origin.x = 20
+            })
+
+            self.animateTableView(for: row + 1)
         }
     }
 
