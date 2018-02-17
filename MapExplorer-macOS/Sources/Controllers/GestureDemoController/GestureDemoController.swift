@@ -20,11 +20,11 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
         rect.layer?.backgroundColor = NSColor.blue.cgColor
         view.addSubview(rect)
 
-//        let tapGesture = TapGestureRecognizer()
-//        gestureManager.add(tapGesture, to: rect)
-//        tapGesture.gestureUpdated = rectTapped(_:)
+        let tapGesture = TapGestureRecognizer()
+        gestureManager.add(tapGesture, to: rect)
+        tapGesture.gestureUpdated = rectTapped(_:)
 
-        let panGesture = PanGestureRecognizer()
+        let panGesture = PanGestureRecognizer() 
         gestureManager.add(panGesture, to: rect)
         panGesture.gestureUpdated = rectPanned(_:)
 

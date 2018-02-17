@@ -9,10 +9,11 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         static let recognizedThreshhold: CGFloat = 100
         static let minimumFingers = 1
         static let thresholdDelta: Double = 8
+        static let frictionFactor = 1.05
         static let frictionFactorScale = 0.001
     }
 
-    var frictionFactor = 1.05
+
     var state = State.possible
     var delta = CGVector.zero
     var fingers: Int
@@ -32,7 +33,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     func start(_ touch: Touch?, with properties: TouchProperties) {
         if state == .began {
             state = .failed
-        } else if (state == .possible || state == .momentum) && properties.touchCount == fingers {
+        } else if (state == .possible || state == .momentum || touch == nil) && properties.touchCount == fingers {
             state = .began
             positions.append(properties.cog)
         }
@@ -64,6 +65,8 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             }
             self.state = .momentum
 
+            var frictionFactor = Constants.frictionFactor
+
             delta = CGVector(dx: lastPosition.x - secondLastPosition.x, dy: lastPosition.y - secondLastPosition.y)
             delta *= Double(fingers)
 
@@ -74,8 +77,8 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
                     self.momentumTimer?.invalidate()
                 }
                 self.gestureUpdated?(self)
-                self.frictionFactor += Constants.frictionFactorScale
-                self.delta /= self.frictionFactor
+                frictionFactor += Constants.frictionFactorScale
+                self.delta /= frictionFactor
             }
         } else {
             state = .failed
@@ -85,9 +88,9 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     func reset() {
         if state != .momentum {
             state = .possible
+            positions.removeAll()
+            delta = .zero
         }
-        positions.removeAll()
-        delta = .zero
     }
 
     func invalidate() {
