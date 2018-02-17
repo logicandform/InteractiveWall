@@ -37,7 +37,6 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
 
         relatedView.register(NSNib(nibNamed: RelatedItemView.nibName, bundle: nil), forIdentifier: RelatedItemView.interfaceIdentifier)
         relatedView.backgroundColor = NSColor.clear
-        relatedView.isHidden = true
 
         animateView()
         setupGestures()
@@ -103,7 +102,6 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     private func animateView() {
         detailView.alphaValue = 0.0
         detailView.frame.origin.y = view.frame.size.height
-        relatedView.isHidden = false
 
         NSAnimationContext.runAnimationGroup({_ in
 
