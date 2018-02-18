@@ -18,7 +18,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         static let tileURL = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
         static let annotationContainerClass = "MKNewAnnotationContainerView"
         static let maxZoomWidth: Double =  134217730
-        static let annotationHitRadius: CGFloat = 25
+        static let annotationHitSize = CGSize(width: 50, height: 50)
     }
 
     @IBOutlet weak var mapView: MKMapView!
@@ -126,26 +126,23 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             return
         }
 
-        var targets = [SelectableView]()
+        var selected = [SelectableView]()
 
         for annotation in container.subviews {
-            // Calculate proper frame; MapRect uses screen coordinates whereas NSView does not.
-            var hitFrame = annotation.frame
-            hitFrame.origin.y = mapView.frame.height - hitFrame.origin.y
-            // Increase hit area for annotation
-            hitFrame.size += Constants.annotationHitRadius * 2
-            hitFrame.origin -= Constants.annotationHitRadius
+            let radius = Constants.annotationHitSize.width / 2
+            let hitFrame = CGRect(origin: CGPoint(x: annotation.frame.midX - radius, y: mapView.frame.height - annotation.frame.midY - radius), size: Constants.annotationHitSize)
+
             if let selectableView = annotation as? SelectableView, hitFrame.contains(position.value) {
-                targets.append(selectableView)
+                if let cluster = selectableView as? ClusterView {
+                    cluster.didSelectView()
+                    return
+                } else {
+                    selected.append(selectableView)
+                }
             }
         }
 
-        /// Give presedence to a ClusterView
-        if let clusterView = targets.first(where: { type(of: $0) == ClusterView.self }) {
-            clusterView.didSelectView()
-        } else if let first = targets.first {
-            first.didSelectView()
-        }
+        selected.first?.didSelectView()
     }
 
 
