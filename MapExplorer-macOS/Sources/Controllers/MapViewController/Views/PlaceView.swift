@@ -3,10 +3,10 @@
 import MapKit
 import AppKit
 
-class PlaceView: MKAnnotationView {
+class PlaceView: MKAnnotationView, SelectableView {
     static let identifier = "PlaceView"
 
-    var didTapCallout: ((Place) -> Void)?
+    var didSelect: ((Place) -> Void)?
 
     override var annotation: MKAnnotation? {
         willSet {
@@ -15,15 +15,15 @@ class PlaceView: MKAnnotationView {
                 canShowCallout = true
                 displayPriority = .defaultHigh
                 image = NSImage(named: place.discipline.rawValue)
-                rightCalloutAccessoryView = NSButton(title: "Show", target: self, action: #selector(calloutButtonSelected))
+                rightCalloutAccessoryView = NSButton(title: "Show", target: self, action: #selector(didSelectView))
             }
         }
     }
 
     @objc
-    private func calloutButtonSelected() {
+    func didSelectView() {
         if let place = annotation as? Place {
-            didTapCallout?(place)
+            didSelect?(place)
         }
     }
 }

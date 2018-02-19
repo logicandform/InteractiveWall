@@ -16,14 +16,15 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
 
     private struct Constants {
         static let tileURL = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
-        static let maxZoomWidth =  134217731.09397572
+        static let annotationContainerClass = "MKNewAnnotationContainerView"
+        static let maxZoomWidth: Double =  134217730
+        static let annotationHitSize = CGSize(width: 50, height: 50)
     }
 
     @IBOutlet weak var mapView: MKMapView!
     private var activityController: MapActivityController?
     private let socketManager = SocketManager(networkConfiguration: touchNetwork)
     private var gestureManager: GestureManager!
-    private var initialPanningCenter: CLLocationCoordinate2D?
 
 
     // MARK: Lifecycle
@@ -56,13 +57,13 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     }
 
     func setupGestures() {
+        let singleFingerTap = TapGestureRecognizer()
+        gestureManager.add(singleFingerTap, to: mapView)
+        singleFingerTap.gestureUpdated = didTapOnMap(_:)
+
         let singleFingerPan = PanGestureRecognizer()
         gestureManager.add(singleFingerPan, to: mapView)
         singleFingerPan.gestureUpdated = mapViewDidPan(_:)
-
-        let twoFingerPan = PanGestureRecognizer(withFingers: 2)
-        gestureManager.add(twoFingerPan, to: mapView)
-        twoFingerPan.gestureUpdated = mapViewDidPan(_:)
 
         let pinchGesture = PinchGestureRecognizer()
         gestureManager.add(pinchGesture, to: mapView)
@@ -107,16 +108,41 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             let scaledHeight = (2 - Double(pinch.scale)) * mapRect.size.height
             let translationX = (mapRect.size.width - scaledWidth) * Double(pinch.location.x / mapView.frame.width)
             let translationY = (mapRect.size.height - scaledHeight) * (1 - Double(pinch.location.y / mapView.frame.height))
+            mapRect.origin += MKMapPoint(x: translationX, y: translationY)
+            mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
             if scaledWidth <= Constants.maxZoomWidth {
-                mapRect.origin += MKMapPoint(x: translationX, y: translationY)
-                mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
+                mapView.setVisibleMapRect(mapRect, animated: false)
             }
-            mapView.setVisibleMapRect(mapRect, animated: false)
         case .possible, .failed:
             activityController?.stopSendingPosition()
         default:
             return
         }
+    }
+
+    /// If the tap is positioned on a selectable annotation, the annotation's didSelect function is invoked.
+    private func didTapOnMap(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, let position = tap.initialPositions.first, let container = mapView.subviews.first(where: { $0.className == Constants.annotationContainerClass }) else {
+            return
+        }
+
+        var selected = [SelectableView]()
+
+        for annotation in container.subviews {
+            let radius = Constants.annotationHitSize.width / 2
+            let hitFrame = CGRect(origin: CGPoint(x: annotation.frame.midX - radius, y: mapView.frame.height - annotation.frame.midY - radius), size: Constants.annotationHitSize)
+
+            if let selectableView = annotation as? SelectableView, hitFrame.contains(position.value) {
+                if let cluster = selectableView as? ClusterView {
+                    cluster.didSelectView()
+                    return
+                } else {
+                    selected.append(selectableView)
+                }
+            }
+        }
+
+        selected.first?.didSelectView()
     }
 
 
@@ -140,20 +166,20 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let place = annotation as? Place {
             if let placeView = mapView.dequeueReusableAnnotationView(withIdentifier: PlaceView.identifier) as? PlaceView {
-                placeView.didTapCallout = didSelectAnnotationCallout(for:)
+                placeView.didSelect = didSelectAnnotationCallout(for:)
                 return placeView
             } else {
                 let placeView = PlaceView(annotation: place, reuseIdentifier: PlaceView.identifier)
-                placeView.didTapCallout = didSelectAnnotationCallout(for:)
+                placeView.didSelect = didSelectAnnotationCallout(for:)
                 return placeView
             }
         } else if let cluster = annotation as? MKClusterAnnotation {
             if let clusterView = mapView.dequeueReusableAnnotationView(withIdentifier: ClusterView.identifier) as? ClusterView {
-                clusterView.didTapCallout = didSelectAnnotationCallout(for:)
+                clusterView.didSelect = didSelectAnnotationCallout(for:)
                 return clusterView
             } else {
                 let clusterView = ClusterView(annotation: cluster, reuseIdentifier: ClusterView.identifier)
-                clusterView.didTapCallout = didSelectAnnotationCallout(for:)
+                clusterView.didSelect = didSelectAnnotationCallout(for:)
                 return clusterView
             }
         }
@@ -257,7 +283,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         centroidX /= count
         centroidY /= count
         return CLLocationCoordinate2D(latitude: centroidY, longitude: centroidX)
-
     }
 
     /// Checks the coordinates of each annotation and returns a span that comfortably fits all annotations within the current screen view.

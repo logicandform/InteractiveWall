@@ -4,6 +4,7 @@ import Foundation
 import CoreGraphics
 
 extension CGPoint {
+
     static func += (lhs: inout CGPoint, rhs: CGVector) {
         lhs.x += rhs.dx
         lhs.y += rhs.dy
@@ -23,9 +24,20 @@ extension CGPoint {
         lhs.x -= rhs.x
         lhs.y -= rhs.y
     }
+
+    static func += (lhs: inout CGPoint, rhs: CGFloat) {
+        lhs.x += rhs
+        lhs.y += rhs
+    }
+
+    static func -= (lhs: inout CGPoint, rhs: CGFloat) {
+        lhs.x -= rhs
+        lhs.y -= rhs
+    }
 }
 
 extension CGSize {
+
     static func *= (lhs: inout CGSize, rhs: CGFloat) {
         lhs.width *= rhs
         lhs.height *= rhs
@@ -34,5 +46,15 @@ extension CGSize {
     static func /= (lhs: inout CGSize, rhs: CGFloat) {
         lhs.width /= rhs
         lhs.height /= rhs
+    }
+
+    static func += (lhs: inout CGSize, rhs: CGFloat) {
+        lhs.width += rhs
+        lhs.height += rhs
+    }
+
+    static func -= (lhs: inout CGSize, rhs: CGFloat) {
+        lhs.width -= rhs
+        lhs.height -= rhs
     }
 }
