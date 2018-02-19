@@ -106,13 +106,15 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             var mapRect = mapView.visibleMapRect
             let scaledWidth = (2 - Double(pinch.scale)) * mapRect.size.width
             let scaledHeight = (2 - Double(pinch.scale)) * mapRect.size.height
-            let translationX = (mapRect.size.width - scaledWidth) * Double(pinch.location.x / mapView.frame.width)
-            let translationY = (mapRect.size.height - scaledHeight) * (1 - Double(pinch.location.y / mapView.frame.height))
-            mapRect.origin += MKMapPoint(x: translationX, y: translationY)
-            mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
+            var translationX = -Double(pinch.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
+            var translationY = Double(pinch.delta.dy) * mapRect.size.height / Double(mapView.frame.height)
             if scaledWidth <= Constants.maxZoomWidth {
-                mapView.setVisibleMapRect(mapRect, animated: false)
+                translationX += (mapRect.size.width - scaledWidth) * Double(pinch.lastPosition.x / mapView.frame.width)
+                translationY += (mapRect.size.height - scaledHeight) * (1 - Double(pinch.lastPosition.y / mapView.frame.height))
+                mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
             }
+            mapRect.origin += MKMapPoint(x: translationX, y: translationY)
+            mapView.setVisibleMapRect(mapRect, animated: false)
         case .possible, .failed:
             activityController?.stopSendingPosition()
         default:
