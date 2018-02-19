@@ -55,7 +55,10 @@ class GestureHandler {
 
     private func handleTouchDown(_ touch: Touch) {
         touches.insert(touch)
-        gestures.forEach { $0.start(touch, with: properties) }
+        gestures.forEach {
+            $0.reset()
+            $0.start(touch, with: properties)
+        }
     }
 
     private func handleTouchMoved(_ touch: Touch) {

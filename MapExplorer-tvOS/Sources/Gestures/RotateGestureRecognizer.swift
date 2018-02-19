@@ -5,7 +5,7 @@ import AppKit
 
 class RotateGestureRecognizer: NSObject, GestureRecognizer {
 
-    var state = NSGestureRecognizer.State.possible
+    var state = GestureState.possible
     var startAngle: CGFloat = 0.0
     var lastAngle: CGFloat = 0.0
     var rotation: CGFloat = 0.0

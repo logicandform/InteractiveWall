@@ -19,7 +19,7 @@ class SwipeGestureRecognizer: NSObject, GestureRecognizer {
         static let minimumFingers = 1
     }
 
-    var state = NSGestureRecognizer.State.possible
+    var state = GestureState.possible
     var delta = CGVector.zero
     var startPosition: CGPoint?
     var angle: CGFloat

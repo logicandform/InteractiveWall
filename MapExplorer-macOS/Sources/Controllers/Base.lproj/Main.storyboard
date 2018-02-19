@@ -730,7 +730,7 @@
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="76" y="905"/>
+            <point key="canvasLocation" x="65" y="926"/>
         </scene>
         <!--Gesture Demo Controller-->
         <scene sceneID="bet-cy-fkr">

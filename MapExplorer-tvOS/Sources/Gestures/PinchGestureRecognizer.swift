@@ -11,7 +11,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         static let minimumSpreadThreshhold: CGFloat = 0.1
     }
 
-    var state = NSGestureRecognizer.State.possible
+    var state = GestureState.possible
     var lastSpread: CGFloat!
     var location: CGPoint!
     var scale: CGFloat = Constants.initialScale

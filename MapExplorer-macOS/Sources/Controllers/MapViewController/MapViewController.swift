@@ -57,17 +57,13 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     }
 
     func setupGestures() {
-        let singleFingerTap = TapGestureRecognizer()
-        gestureManager.add(singleFingerTap, to: mapView)
-        singleFingerTap.gestureUpdated = didTapOnMap(_:)
+        let panGesture = PanGestureRecognizer()
+        gestureManager.add(panGesture, to: mapView)
+        panGesture.gestureUpdated = mapViewDidPan(_:)
 
-        let singleFingerPan = PanGestureRecognizer()
-        gestureManager.add(singleFingerPan, to: mapView)
-        singleFingerPan.gestureUpdated = mapViewDidPan(_:)
-
-        let pinchGesture = PinchGestureRecognizer()
-        gestureManager.add(pinchGesture, to: mapView)
-        pinchGesture.gestureUpdated = mapViewDidZoom(_:)
+//        let pinchGesture = PinchGestureRecognizer()
+//        gestureManager.add(pinchGesture, to: mapView)
+//        pinchGesture.gestureUpdated = mapViewDidZoom(_:)
     }
 
 
@@ -81,7 +77,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         switch pan.state {
         case .began:
             activityController?.beginSendingPosition()
-        case .recognized:
+        case .recognized, .momentum:
             var mapRect = mapView.visibleMapRect
             let translationX = Double(pan.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
             let translationY = Double(pan.delta.dy) * mapRect.size.height / Double(mapView.frame.height)

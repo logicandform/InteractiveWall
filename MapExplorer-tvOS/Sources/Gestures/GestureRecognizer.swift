@@ -9,7 +9,7 @@ protocol GestureRecognizer: class {
 
     var gestureRecognized: ((GestureRecognizer) -> Void)? { get set }
 
-    var state: NSGestureRecognizer.State { get set }
+    var state: GestureState { get }
 
     func start(_ touch: Touch, with properties: TouchProperties)
 
@@ -20,4 +20,15 @@ protocol GestureRecognizer: class {
     func reset()
 
     func invalidate()
+}
+
+enum GestureState {
+    case possible
+    case began
+    case changed
+    case ended
+    case cancelled
+    case failed
+    case momentum
+    case recognized
 }
