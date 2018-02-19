@@ -74,8 +74,6 @@ class GestureHandler {
             gesture.end(touch, with: properties)
             if touches.isEmpty {
                 gesture.reset()
-            } else {
-                gesture.start(nil, with: properties)
             }
         }
     }

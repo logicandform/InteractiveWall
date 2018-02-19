@@ -57,17 +57,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     }
 
     func setupGestures() {
-        let singleFingerTap = TapGestureRecognizer()
-        gestureManager.add(singleFingerTap, to: mapView)
-        singleFingerTap.gestureUpdated = didTapOnMap(_:)
-
-        let singleFingerPan = PanGestureRecognizer()
+        let singleFingerPan = PanGestureRecognizer(withFingers: [1])
         gestureManager.add(singleFingerPan, to: mapView)
         singleFingerPan.gestureUpdated = mapViewDidPan(_:)
-
-        let twoFingerPan = PanGestureRecognizer(withFingers: 2)
-        gestureManager.add(twoFingerPan, to: mapView)
-        twoFingerPan.gestureUpdated = mapViewDidPan(_:)
 
 //        let pinchGesture = PinchGestureRecognizer()
 //        gestureManager.add(pinchGesture, to: mapView)

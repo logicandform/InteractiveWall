@@ -11,7 +11,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         static let minimumSpreadThreshhold: CGFloat = 0.1
     }
 
-    var state = State.possible
+    var state = GestureState.possible
     var lastSpread: CGFloat!
     var location: CGPoint!
     var scale: CGFloat = Constants.initialScale
@@ -26,7 +26,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         super.init()
     }
 
-    func start(_ touch: Touch?, with properties: TouchProperties) {
+    func start(_ touch: Touch, with properties: TouchProperties) {
         switch state {
         case .began:
             state = .failed

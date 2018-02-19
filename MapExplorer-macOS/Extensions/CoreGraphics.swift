@@ -47,6 +47,11 @@ extension CGPoint {
 }
 
 extension CGVector {
+
+    var magnitude: Double {
+        return Double(sqrt(pow(self.dx, 2) + pow(self.dy, 2)))
+    }
+
     static func *= (lhs: inout CGVector, rhs: Double) {
         lhs.dx *= CGFloat(rhs)
         lhs.dy *= CGFloat(rhs)
@@ -55,10 +60,6 @@ extension CGVector {
     static func /= (lhs: inout CGVector, rhs: Double) {
         lhs.dx /= CGFloat(rhs)
         lhs.dy /= CGFloat(rhs)
-    }
-
-    func magnitude() -> Double {
-        return Double(sqrt(pow(self.dx, 2) + pow(self.dy, 2)))
     }
 }
 

@@ -19,7 +19,7 @@ class SwipeGestureRecognizer: NSObject, GestureRecognizer {
         static let minimumFingers = 1
     }
 
-    var state = State.possible
+    var state = GestureState.possible
     var delta = CGVector.zero
     var startPosition: CGPoint?
     var angle: CGFloat
@@ -49,7 +49,7 @@ class SwipeGestureRecognizer: NSObject, GestureRecognizer {
         super.init()
     }
 
-    func start(_ touch: Touch?, with properties: TouchProperties) {
+    func start(_ touch: Touch, with properties: TouchProperties) {
         switch state {
         case .began:
             state = .failed

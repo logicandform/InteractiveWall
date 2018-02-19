@@ -5,7 +5,7 @@ import AppKit
 
 class RotateGestureRecognizer: NSObject, GestureRecognizer {
 
-    var state = State.possible
+    var state = GestureState.possible
     var startAngle: CGFloat = 0.0
     var lastAngle: CGFloat = 0.0
     var rotation: CGFloat = 0.0
@@ -25,7 +25,7 @@ class RotateGestureRecognizer: NSObject, GestureRecognizer {
         super.init()
     }
 
-    func start(_ touch: Touch?, with properties: TouchProperties) {
+    func start(_ touch: Touch, with properties: TouchProperties) {
         switch state {
         case .began:
             state = .failed
