@@ -137,6 +137,9 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
             return
         }
 
+        let translationX = (1 - pinch.scale) * rect.frame.size.width / 4 + pinch.delta.dx
+        let translationY = (1 - pinch.scale) * rect.frame.size.height / 4 + pinch.delta.dy
         rect.frame.size *= pinch.scale
+        rect.frame.origin += CGPoint(x: translationX, y: translationY)
     }
 }
