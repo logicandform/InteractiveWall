@@ -38,7 +38,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         relatedView.register(NSNib(nibNamed: RelatedItemView.nibName, bundle: nil), forIdentifier: RelatedItemView.interfaceIdentifier)
         relatedView.backgroundColor = NSColor.clear
 
-        animateView()
+        animateViewIn()
         setupGestures()
     }
 
@@ -71,9 +71,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     // MARK: IB-Actions
 
     @IBAction func closeButtonTapped(_ sender: Any) {
-        view.removeFromSuperview()
-        removeFromParentViewController()
-        gestureManager.remove(views: [relatedView, detailView])
+        animateViewOut()
     }
 
 
@@ -87,7 +85,8 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         guard let relatedItemView = tableView.makeView(withIdentifier: RelatedItemView.interfaceIdentifier, owner: self) as? RelatedItemView else {
             return nil
         }
-
+        
+        relatedItemView.alphaValue = 0.0
         relatedItemView.didTapItem = didSelectRelatedItem
         return relatedItemView
     }
@@ -103,16 +102,66 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
 
     // MARK: Helpers
 
-    private func animateView() {
-        view.alphaValue = 0.0
+    private func animateViewIn() {
+        detailView.alphaValue = 0.0
         detailView.frame.origin.y = view.frame.size.height
-        relatedView.frame.origin.x = -relatedView.frame.size.width
 
         NSAnimationContext.runAnimationGroup({_ in
-            NSAnimationContext.current.duration = 1.0
-            view.animator().alphaValue = 1.0
+            NSAnimationContext.current.duration = 0.7
+            detailView.animator().alphaValue = 1.0
             detailView.animator().frame.origin.y = 0
-            relatedView.animator().frame.origin.x = 0
+        })
+        animateTableViewIn(for: 0)
+    }
+
+    private func animateTableViewIn(for row: Int) {
+        guard relatedView.rows(in: relatedView.frame).contains(row), let relatedItemView = relatedView.view(atColumn: 0, row: row, makeIfNecessary: true) as? RelatedItemView else {
+            return
+        }
+
+        relatedItemView.frame.origin.x = -200
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.05) {
+
+            NSAnimationContext.runAnimationGroup({_ in
+                NSAnimationContext.current.duration = 0.4
+                relatedItemView.animator().alphaValue = 1.0
+                relatedItemView.animator().frame.origin.x = 20
+            })
+
+            self.animateTableViewIn(for: row + 1)
+        }
+    }
+
+    private func animateTableViewOut(for row: Int) {
+        guard relatedView.rows(in: relatedView.frame).contains(row), let relatedItemView = relatedView.view(atColumn: 0, row: row, makeIfNecessary: true) as? RelatedItemView else {
+            return
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.04) {
+
+            NSAnimationContext.runAnimationGroup({_ in
+                NSAnimationContext.current.duration = 0.2
+                relatedItemView.animator().alphaValue = 0.0
+                relatedItemView.animator().frame.origin.x = -self.relatedView.frame.width
+            })
+
+            self.animateTableViewOut(for: row - 1)
+        }
+    }
+
+    private func animateViewOut() {
+        let range = relatedView.rows(in: relatedView.visibleRect)
+        animateTableViewOut(for: range.location + range.length - 1)
+
+        NSAnimationContext.runAnimationGroup({_ in
+            NSAnimationContext.current.duration = 1.3
+            detailView.animator().alphaValue = 0.0
+            detailView.animator().frame.origin.y = detailView.frame.height
+
+        }, completionHandler: {
+            self.view.removeFromSuperview()
+            self.removeFromParentViewController()
+            self.gestureManager.remove(views: [self.relatedView, self.detailView])
         })
     }
 
@@ -169,10 +218,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         guard let _ = gesture as? TapGestureRecognizer else {
             return
         }
-
-        view.removeFromSuperview()
-        removeFromParentViewController()
-        gestureManager.remove(views: [relatedView, detailView])
+        animateViewOut()
     }
 
     private func relatedViewDidTap(_ gesture: GestureRecognizer) {
