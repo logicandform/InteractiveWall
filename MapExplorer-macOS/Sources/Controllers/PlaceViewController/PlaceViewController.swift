@@ -81,6 +81,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         guard let relatedItemView = tableView.makeView(withIdentifier: RelatedItemView.interfaceIdentifier, owner: self) as? RelatedItemView else {
             return nil
         }
+        git 
         relatedItemView.alphaValue = 0.0
         relatedItemView.didTapItem = didSelectRelatedItem
         return relatedItemView
