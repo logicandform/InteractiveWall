@@ -176,10 +176,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     }
 
     private func relatedViewDidTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer else {
-            return
-        }
-        guard let touchLocation = tap.initialPositions.first?.value else {
+        guard let tap = gesture as? TapGestureRecognizer, let touchLocation = tap.initialPositions.first?.value else {
             return
         }
 
