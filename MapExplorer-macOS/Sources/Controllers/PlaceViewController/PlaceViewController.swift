@@ -61,6 +61,10 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         let singleFingerTap = TapGestureRecognizer()
         gestureManager.add(singleFingerTap, to: closeButtonView)
         singleFingerTap.gestureUpdated = detailViewDidTap(_:)
+
+        let singleFingerRelatedViewTap = TapGestureRecognizer()
+        gestureManager.add(singleFingerRelatedViewTap, to: relatedView)
+        singleFingerRelatedViewTap.gestureUpdated = relatedViewDidTap(_:)
     }
 
 
@@ -169,5 +173,18 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         view.removeFromSuperview()
         removeFromParentViewController()
         gestureManager.remove(views: [relatedView, detailView])
+    }
+
+    private func relatedViewDidTap(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, let touchLocation = tap.initialPositions.first?.value else {
+            return
+        }
+
+        let locationInRelatedView = relatedView.convert(touchLocation, from: nil)
+        let row = relatedView.row(at: locationInRelatedView)
+
+        if let relatedItemView = relatedView.view(atColumn: 0, row: row, makeIfNecessary: false) as? RelatedItemView {
+            relatedItemView.didTapView()
+        }
     }
 }
