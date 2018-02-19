@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		221C629F203B4906009493DA /* School.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C629E203B4906009493DA /* School.swift */; };
+		221C62A1203B4A10009493DA /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C62A0203B4A10009493DA /* Entity.swift */; };
+		221C62A3203B4A18009493DA /* Occurance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C62A2203B4A18009493DA /* Occurance.swift */; };
+		221C62A5203B4A20009493DA /* Artifact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C62A4203B4A20009493DA /* Artifact.swift */; };
+		221C62A8203B57F7009493DA /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C62A7203B57F7009493DA /* URL.swift */; };
 		2220D3FD202F7E4200B878D6 /* GestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2220D3FC202F7E4200B878D6 /* GestureManager.swift */; };
 		2220D3FF202F84A300B878D6 /* MapActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2220D3FE202F84A300B878D6 /* MapActivityController.swift */; };
 		22290C092028F9EC000E0573 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C082028F9EC000E0573 /* AppDelegate.swift */; };
@@ -17,7 +22,7 @@
 		22290C2D2028FA1F000E0573 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C202028FA1E000E0573 /* Place.swift */; };
 		22290C2E2028FA1F000E0573 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C222028FA1E000E0573 /* Style.swift */; };
 		22290C302028FA1F000E0573 /* Discipline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C272028FA1E000E0573 /* Discipline.swift */; };
-		22290C382028FA35000E0573 /* MKMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C332028FA34000E0573 /* MKMapView.swift */; };
+		22290C382028FA35000E0573 /* MapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C332028FA34000E0573 /* MapKit.swift */; };
 		22290C392028FA35000E0573 /* CoreGraphics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C342028FA34000E0573 /* CoreGraphics.swift */; };
 		22290C3A2028FA35000E0573 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C352028FA34000E0573 /* Int.swift */; };
 		22290C3B2028FA35000E0573 /* PacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C362028FA34000E0573 /* PacketType.swift */; };
@@ -48,6 +53,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		221C629E203B4906009493DA /* School.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = School.swift; sourceTree = "<group>"; };
+		221C62A0203B4A10009493DA /* Entity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
+		221C62A2203B4A18009493DA /* Occurance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Occurance.swift; sourceTree = "<group>"; };
+		221C62A4203B4A20009493DA /* Artifact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artifact.swift; sourceTree = "<group>"; };
+		221C62A7203B57F7009493DA /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		2220D3FC202F7E4200B878D6 /* GestureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureManager.swift; sourceTree = "<group>"; };
 		2220D3FE202F84A300B878D6 /* MapActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapActivityController.swift; sourceTree = "<group>"; };
 		22290C052028F9EC000E0573 /* MapExplorer-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MapExplorer-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,7 +71,7 @@
 		22290C202028FA1E000E0573 /* Place.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		22290C222028FA1E000E0573 /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		22290C272028FA1E000E0573 /* Discipline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Discipline.swift; sourceTree = "<group>"; };
-		22290C332028FA34000E0573 /* MKMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKMapView.swift; sourceTree = "<group>"; };
+		22290C332028FA34000E0573 /* MapKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapKit.swift; sourceTree = "<group>"; };
 		22290C342028FA34000E0573 /* CoreGraphics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreGraphics.swift; sourceTree = "<group>"; };
 		22290C352028FA34000E0573 /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
 		22290C362028FA34000E0573 /* PacketType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PacketType.swift; sourceTree = "<group>"; };
@@ -199,6 +209,10 @@
 				22290C272028FA1E000E0573 /* Discipline.swift */,
 				22FEF1DE202CFFFA001E9596 /* Touch.swift */,
 				22FEF1E0202D005D001E9596 /* TouchProperties.swift */,
+				221C629E203B4906009493DA /* School.swift */,
+				221C62A0203B4A10009493DA /* Entity.swift */,
+				221C62A2203B4A18009493DA /* Occurance.swift */,
+				221C62A4203B4A20009493DA /* Artifact.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -206,12 +220,13 @@
 		22290C322028FA34000E0573 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				22290C332028FA34000E0573 /* MKMapView.swift */,
+				22290C332028FA34000E0573 /* MapKit.swift */,
 				22290C342028FA34000E0573 /* CoreGraphics.swift */,
 				22290C352028FA34000E0573 /* Int.swift */,
 				22290C362028FA34000E0573 /* PacketType.swift */,
 				22290C372028FA34000E0573 /* NetworkConfiguration.swift */,
 				226EA70020296C240067B542 /* NSImage.swift */,
+				221C62A7203B57F7009493DA /* URL.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -467,15 +482,19 @@
 				226EA70120296C240067B542 /* NSImage.swift in Sources */,
 				22FEF1E1202D005D001E9596 /* TouchProperties.swift in Sources */,
 				8F8AEF84202BAD9400F7970D /* PDFViewController.swift in Sources */,
+				221C62A8203B57F7009493DA /* URL.swift in Sources */,
 				22290C302028FA1F000E0573 /* Discipline.swift in Sources */,
 				22290C2B2028FA1F000E0573 /* PlaceView.swift in Sources */,
 				22FEF1D4202CFE8D001E9596 /* PanGestureRecognizer.swift in Sources */,
-				22290C382028FA35000E0573 /* MKMapView.swift in Sources */,
+				22290C382028FA35000E0573 /* MapKit.swift in Sources */,
+				221C629F203B4906009493DA /* School.swift in Sources */,
 				22FEF1D3202CFE8D001E9596 /* SwipeGestureRecognizer.swift in Sources */,
 				22EF0FA8202B847200571002 /* CachingNetwork.swift in Sources */,
 				22290C092028F9EC000E0573 /* AppDelegate.swift in Sources */,
 				22290C392028FA35000E0573 /* CoreGraphics.swift in Sources */,
 				22FEF1DD202CFF68001E9596 /* GestureHandler.swift in Sources */,
+				221C62A3203B4A18009493DA /* Occurance.swift in Sources */,
+				221C62A5203B4A20009493DA /* Artifact.swift in Sources */,
 				22290C2C2028FA1F000E0573 /* MapViewController.swift in Sources */,
 				22FEF1D2202CFE8D001E9596 /* RotateGestureRecognizer.swift in Sources */,
 				22368E29203791A700D03A0E /* SelectableView.swift in Sources */,
@@ -484,6 +503,7 @@
 				22318DE0202B984F0092937C /* ResponseHandler.swift in Sources */,
 				22290C3C2028FA35000E0573 /* NetworkConfiguration.swift in Sources */,
 				22290C2E2028FA1F000E0573 /* Style.swift in Sources */,
+				221C62A1203B4A10009493DA /* Entity.swift in Sources */,
 				2220D3FF202F84A300B878D6 /* MapActivityController.swift in Sources */,
 				22FEF1D6202CFE8D001E9596 /* GestureDemoController.swift in Sources */,
 				22290C2D2028FA1F000E0573 /* Place.swift in Sources */,
