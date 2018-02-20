@@ -22,7 +22,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     }
 
     @IBOutlet weak var mapView: MKMapView!
-    private var activityController: NetworkMapActivityController?
+    private var activityController: ActivityController?
     private let socketManager = SocketManager(networkConfiguration: touchNetwork)
     private var gestureManager: GestureManager!
 
