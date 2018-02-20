@@ -57,13 +57,17 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     }
 
     func setupGestures() {
+        let tapGesture = TapGestureRecognizer()
+        gestureManager.add(tapGesture, to: mapView)
+        tapGesture.gestureUpdated = didTapOnMap(_:)
+
         let panGesture = PanGestureRecognizer()
         gestureManager.add(panGesture, to: mapView)
         panGesture.gestureUpdated = mapViewDidPan(_:)
 
-//        let pinchGesture = PinchGestureRecognizer()
-//        gestureManager.add(pinchGesture, to: mapView)
-//        pinchGesture.gestureUpdated = mapViewDidZoom(_:)
+        let pinchGesture = PinchGestureRecognizer()
+        gestureManager.add(pinchGesture, to: mapView)
+        pinchGesture.gestureUpdated = mapViewDidZoom(_:)
     }
 
 
@@ -98,12 +102,14 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         switch pinch.state {
         case .began:
             activityController?.beginSendingPosition()
-        case .recognized:
+        case .recognized, .momentum:
             var mapRect = mapView.visibleMapRect
             let scaledWidth = (2 - Double(pinch.scale)) * mapRect.size.width
             let scaledHeight = (2 - Double(pinch.scale)) * mapRect.size.height
-            var translationX = -Double(pinch.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
-            var translationY = Double(pinch.delta.dy) * mapRect.size.height / Double(mapView.frame.height)
+//            var translationX = -Double(pinch.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
+//            var translationY = Double(pinch.delta.dy) * mapRect.size.height / Double(mapView.frame.height)
+            var translationX = 0.0
+            var translationY = 0.0
             if scaledWidth <= Constants.maxZoomWidth {
                 translationX += (mapRect.size.width - scaledWidth) * Double(pinch.lastPosition.x / mapView.frame.width)
                 translationY += (mapRect.size.height - scaledHeight) * (1 - Double(pinch.lastPosition.y / mapView.frame.height))
