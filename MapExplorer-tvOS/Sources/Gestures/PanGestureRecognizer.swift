@@ -110,11 +110,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         positionForTouch.removeAll()
         delta = .zero
     }
-
-    func invalidate() {
-        // Not needed, just conforming to protocol
-    }
-
+    
 
     // MARK: Helpers
 

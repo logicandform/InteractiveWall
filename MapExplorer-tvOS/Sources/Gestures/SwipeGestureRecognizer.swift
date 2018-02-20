@@ -28,7 +28,6 @@ class SwipeGestureRecognizer: NSObject, GestureRecognizer {
     var timer = Timer()
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
-    var gestureRecognized: ((GestureRecognizer) -> Void)?
 
     init(direction: SwipeDirection, withFingers fingers: Int = Constants.minimumFingers) {
         precondition(fingers >= Constants.minimumFingers, "\(fingers) is an invalid number of fingers, errors will occur")
@@ -75,7 +74,6 @@ class SwipeGestureRecognizer: NSObject, GestureRecognizer {
         case .began where abs(delta.dx) + abs(delta.dy) > Constants.deltaThresh:
             if abs(atan2(delta.dy, delta.dx) - angle) < Constants.rotationThresh {
                 state = .recognized
-                gestureRecognized?(self)
                 timer.invalidate()
                 timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(timeout), userInfo: nil, repeats: false)
             } else {
@@ -97,11 +95,6 @@ class SwipeGestureRecognizer: NSObject, GestureRecognizer {
         timer.invalidate()
         state = .possible
         delta = .zero
-    }
-
-    func invalidate() {
-        timer.invalidate()
-        state = .failed
     }
 
     @objc

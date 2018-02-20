@@ -52,7 +52,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         case .began where abs(properties.spread / lastSpread - 1.0) > Constants.minimumSpreadThreshhold:
             gestureUpdated?(self)
             state = .recognized
-            gestureRecognized?(self)
         case .recognized:
             scale = properties.spread / lastSpread
             delta = CGVector(dx: properties.cog.x - lastPosition.x, dy: properties.cog.y - lastPosition.y)
@@ -85,10 +84,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             lastSpread = nil
             lastPosition = nil
         }
-    }
-
-    func invalidate() {
-        state = .failed
     }
 
     private func getLastSpreads() -> (last: CGFloat?, secondLast: CGFloat?) {

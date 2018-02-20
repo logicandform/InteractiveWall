@@ -7,8 +7,6 @@ protocol GestureRecognizer: class {
 
     var gestureUpdated: ((GestureRecognizer) -> Void)? { get set }
 
-    var gestureRecognized: ((GestureRecognizer) -> Void)? { get set }
-
     var state: GestureState { get }
 
     func start(_ touch: Touch, with properties: TouchProperties)
@@ -18,8 +16,6 @@ protocol GestureRecognizer: class {
     func end(_ touch: Touch, with properties: TouchProperties)
 
     func reset()
-
-    func invalidate()
 }
 
 enum GestureState {
