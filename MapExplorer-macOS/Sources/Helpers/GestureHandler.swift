@@ -38,6 +38,7 @@ class GestureHandler {
         }
     }
 
+    // Pan does not need this
     func gestureRecognized(_ gesture: GestureRecognizer) {
         for each in gestures where each !== gesture {
             if type(of: each) == type(of: gesture) {

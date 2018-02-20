@@ -48,15 +48,21 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     // MARK: API
 
     func start(_ touch: Touch, with properties: TouchProperties) {
-        positionForTouch[touch] = touch.position
+        guard fingers.contains(properties.touchCount) else {
+            return
+        }
 
-        if state == .began && properties.touchCount == lastTouchCount {
-            state = .failed
-        } else if (state == .possible || state == .momentum) && fingers.contains(properties.touchCount) {
-            momentumTimer?.invalidate()
+        switch state {
+        case .possible, .momentum:
             state = .began
             locations.append(properties.cog)
+            fallthrough
+        case .recognized:
+            momentumTimer?.invalidate()
+            positionForTouch[touch] = touch.position
             lastTouchCount = properties.touchCount
+        default:
+            return
         }
     }
 
@@ -70,9 +76,8 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
 
         switch state {
         case .began:
-            gestureUpdated?(self)
             state = .recognized
-            gestureRecognized?(self)
+            fallthrough
         case .recognized:
             var touchVector = touch.position - lastPositionOfTouch
             touchVector /= Double(properties.touchCount)
@@ -107,7 +112,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func invalidate() {
-        state = .failed
+        // Not needed, just conforming to protocol
     }
 
 
