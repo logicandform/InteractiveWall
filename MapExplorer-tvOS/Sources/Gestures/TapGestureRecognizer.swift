@@ -15,7 +15,6 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
     var fingers: Int
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
-    var gestureRecognized: ((GestureRecognizer) -> Void)?
 
     init(withFingers fingers: Int = Constants.minimumFingers) {
         precondition(fingers >= Constants.minimumFingers, "\(fingers) is an invalid number of fingers, errors will occur")
@@ -48,7 +47,6 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
 
     func end(_ touch: Touch, with properties: TouchProperties) {
         if state == .began {
-            gestureRecognized?(self)
             gestureUpdated?(self)
         }
         state = .possible

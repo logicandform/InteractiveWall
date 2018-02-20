@@ -23,7 +23,6 @@ class GestureHandler {
     // MARK: API
 
     func add(_ gesture: GestureRecognizer) {
-        gesture.gestureRecognized = gestureRecognized(_:)
         gestures.append(gesture)
     }
 
@@ -35,14 +34,6 @@ class GestureHandler {
             handleTouchUp(touch)
         case .moved:
             handleTouchMoved(touch)
-        }
-    }
-
-    func gestureRecognized(_ gesture: GestureRecognizer) {
-        for each in gestures where each !== gesture {
-            if type(of: each) == type(of: gesture) {
-                each.invalidate()
-            }
         }
     }
 

@@ -43,7 +43,6 @@ class RotateGestureRecognizer: NSObject, GestureRecognizer {
         switch state {
         case .began where abs(properties.angle - startAngle) > Constants.thresh:
             state = .recognized
-            gestureRecognized?(self)
         case .recognized:
             rotation = properties.angle - lastAngle
             lastAngle = properties.angle
@@ -63,9 +62,5 @@ class RotateGestureRecognizer: NSObject, GestureRecognizer {
 
     func reset() {
         state = .possible
-    }
-
-    func invalidate() {
-        state = .failed
     }
 }
