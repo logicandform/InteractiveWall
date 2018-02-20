@@ -8,24 +8,20 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     private struct Constants {
         static let recognizedThreshhold: CGFloat = 100
         static let minimumFingers = 1
-        static let thresholdDelta: Double = 8
+        static let thresholdMomentumDelta: Double = 8
         static let frictionFactor = 1.05
         static let frictionFactorScale = 0.001
     }
 
-
-    var state = GestureState.possible {
-        didSet {
-            print(state)
-        }
-    }
+    private var momentumTimer: Timer?
+    var state = GestureState.possible
     var delta = CGVector.zero
     var fingers: [Int]
-    var momentumTimer: Timer?
     var gestureUpdated: ((GestureRecognizer) -> Void)?
     var gestureRecognized: ((GestureRecognizer) -> Void)?
     var lastTouchCount: Int?
     var positions = [CGPoint?]()
+
 
     init(withFingers fingers: [Int] = [1]) {
         for finger in fingers {
@@ -91,7 +87,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         state = .failed
     }
 
-    func getLastPositions() -> (last: CGPoint?, secondLast: CGPoint?) {
+    private func getLastPositions() -> (last: CGPoint?, secondLast: CGPoint?) {
         var last: CGPoint?
         var secondLast: CGPoint?
 
@@ -104,7 +100,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         return (last, secondLast)
     }
 
-    func beginMomentum(_ lastPosition: CGPoint, _ secondLastPosition: CGPoint, with properties: TouchProperties) {
+    private func beginMomentum(_ lastPosition: CGPoint, _ secondLastPosition: CGPoint, with properties: TouchProperties) {
         guard let lastTouchCount = lastTouchCount else {
             return
         }
@@ -115,7 +111,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         delta *= Double(lastTouchCount)
         self.momentumTimer?.invalidate()
         momentumTimer = Timer.scheduledTimer(withTimeInterval: 1 / 60, repeats: true) { _ in
-            if self.delta.magnitude < Constants.thresholdDelta {
+            if self.delta.magnitude < Constants.thresholdMomentumDelta {
                 self.momentumTimer?.invalidate()
                 self.state = .possible
                 self.reset()

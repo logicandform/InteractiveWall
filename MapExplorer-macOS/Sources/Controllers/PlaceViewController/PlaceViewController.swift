@@ -189,7 +189,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         }
 
         switch pan.state {
-        case .recognized:
+        case .recognized, .momentum:
             let deltaY = pan.delta.dy
             let orginX = relatedView.visibleRect.origin.x
             let orginY = relatedView.visibleRect.origin.y
@@ -205,7 +205,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         }
 
         switch pan.state {
-        case .recognized:
+        case .recognized, .momentum:
             var origin = view.frame.origin
             origin += pan.delta
             view.frame.origin = origin

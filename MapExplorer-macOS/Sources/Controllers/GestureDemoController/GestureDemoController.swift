@@ -24,9 +24,9 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
         gestureManager.add(tapGesture, to: rect)
         tapGesture.gestureUpdated = rectTapped(_:)
 
-        let panGesture = PanGestureRecognizer(withFingers: [1, 2, 3, 4, 5])
-        gestureManager.add(panGesture, to: rect)
-        panGesture.gestureUpdated = rectPanned(_:)
+//        let panGesture = PanGestureRecognizer(withFingers: [1, 2, 3, 4, 5])
+//        gestureManager.add(panGesture, to: rect)
+//        panGesture.gestureUpdated = rectPanned(_:)
 
         let pinchGesture = PinchGestureRecognizer()
         gestureManager.add(pinchGesture, to: rect)
@@ -137,9 +137,19 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
             return
         }
 
-        let translationX = (1 - pinch.scale) * rect.frame.size.width / 4 + pinch.delta.dx
-        let translationY = (1 - pinch.scale) * rect.frame.size.height / 4 + pinch.delta.dy
-        rect.frame.size *= pinch.scale
-        rect.frame.origin += CGPoint(x: translationX, y: translationY)
+        switch pinch.state {
+        case .recognized, .momentum:
+            let translationX = (1 - pinch.scale) * rect.frame.size.width / 4
+            let translationY = (1 - pinch.scale) * rect.frame.size.height / 4
+
+            // Uncomment for pan with the pinch gesture
+//                    translationX += pinch.delta.dx
+//                    translationY += pinch.delta.dy
+
+            rect.frame.size *= pinch.scale
+            rect.frame.origin += CGPoint(x: translationX, y: translationY)
+        default:
+            return
+        }
     }
 }
