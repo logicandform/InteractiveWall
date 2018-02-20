@@ -14,7 +14,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     private var momentumTimer: Timer?
-    var state = GestureState.possible
+    var state = GestureState.possible 
     var delta = CGVector.zero
     var fingers: [Int]
     var gestureUpdated: ((GestureRecognizer) -> Void)?
@@ -35,6 +35,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         if state == .began && properties.touchCount == lastTouchCount {
             state = .failed
         } else if (state == .possible || state == .momentum) && fingers.contains(properties.touchCount) {
+            self.momentumTimer?.invalidate()
             state = .began
             positions.append(properties.cog)
             lastTouchCount = properties.touchCount
@@ -112,14 +113,14 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         self.momentumTimer?.invalidate()
         momentumTimer = Timer.scheduledTimer(withTimeInterval: 1 / 60, repeats: true) { _ in
             if self.delta.magnitude < Constants.thresholdMomentumDelta {
-                self.momentumTimer?.invalidate()
                 self.state = .possible
                 self.reset()
+                self.momentumTimer?.invalidate()
                 return
             }
             self.gestureUpdated?(self)
             frictionFactor += Constants.frictionFactorScale
-            self.delta /= frictionFactor
+           // self.delta /= frictionFactor
         }
     }
 }
