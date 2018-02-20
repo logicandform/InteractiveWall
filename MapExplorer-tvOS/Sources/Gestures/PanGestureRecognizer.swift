@@ -120,7 +120,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             }
             self.gestureUpdated?(self)
             frictionFactor += Constants.frictionFactorScale
-           // self.delta /= frictionFactor
+            self.delta /= frictionFactor
         }
     }
 }
