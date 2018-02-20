@@ -10,9 +10,10 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         static let minimumFingers = 1
     }
 
-    var state = GestureState.possible
-    var initialPositions = [Int: CGPoint]()
     var fingers: Int
+    private var positionForTouch = [Touch: CGPoint]()
+    var position: CGPoint?
+
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
 
@@ -23,42 +24,41 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func start(_ touch: Touch, with properties: TouchProperties) {
-        initialPositions[touch.id] = touch.position
-        if state == .began {
-            state = .failed
-        } else if state == .possible && properties.touchCount == fingers {
-            state = .began
+        guard !positionForTouch.keys.contains(touch) else {
+            return
         }
+
+        positionForTouch[touch] = touch.position
     }
 
     func move(_ touch: Touch, with properties: TouchProperties) {
-        if state == .began {
-            guard let initialPoint = initialPositions[touch.id] else {
-                return
-            }
+        guard let initialPosition = positionForTouch[touch] else {
+            return
+        }
 
-            let delta = CGVector(dx: initialPoint.x - touch.position.x, dy: initialPoint.y - touch.position.y)
-            let distance = sqrt(delta.dx * delta.dx + delta.dy * delta.dy)
-            if distance > Constants.maximumDistanceMoved {
-                state = .failed
-            }
+        let delta = CGVector(dx: initialPosition.x - touch.position.x, dy: initialPosition.y - touch.position.y)
+        let distance = sqrt(pow(delta.dx, 2) + pow(delta.dy, 2))
+        if distance > Constants.maximumDistanceMoved {
+            positionForTouch.removeValue(forKey: touch)
         }
     }
 
     func end(_ touch: Touch, with properties: TouchProperties) {
-        if state == .began {
-            gestureUpdated?(self)
+        guard positionForTouch.keys.contains(touch) else {
+            return
         }
-        state = .possible
-        initialPositions.removeValue(forKey: touch.id)
+
+        position = touch.position
+
+        gestureUpdated?(self)
+        if properties.touchCount.isZero {
+           reset()
+        } else {
+            positionForTouch.removeValue(forKey: touch)
+        }
     }
 
     func reset() {
-        state = .possible
-        initialPositions.removeAll()
-    }
-
-    func invalidate() {
-        state = .failed
+         positionForTouch.removeAll()
     }
 }

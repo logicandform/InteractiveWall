@@ -127,7 +127,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
 
     /// If the tap is positioned on a selectable annotation, the annotation's didSelect function is invoked.
     private func didTapOnMap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let position = tap.initialPositions.first, let container = mapView.subviews.first(where: { $0.className == Constants.annotationContainerClass }) else {
+        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position, let container = mapView.subviews.first(where: { $0.className == Constants.annotationContainerClass }) else {
             return
         }
 
@@ -137,7 +137,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             let radius = Constants.annotationHitSize.width / 2
             let hitFrame = CGRect(origin: CGPoint(x: annotation.frame.midX - radius, y: mapView.frame.height - annotation.frame.midY - radius), size: Constants.annotationHitSize)
 
-            if let selectableView = annotation as? SelectableView, hitFrame.contains(position.value) {
+            if let selectableView = annotation as? SelectableView, hitFrame.contains(position) {
                 if let cluster = selectableView as? ClusterView {
                     cluster.didSelectView()
                     return

@@ -18,6 +18,12 @@ protocol GestureRecognizer: class {
     func reset()
 }
 
+extension GestureRecognizer {
+    var state: GestureState {
+        return GestureState.possible
+    }
+}
+
 enum GestureState {
     case possible
     case began
