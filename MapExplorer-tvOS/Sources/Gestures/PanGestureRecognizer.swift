@@ -53,7 +53,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         if state == .began && properties.touchCount == lastTouchCount {
             state = .failed
         } else if (state == .possible || state == .momentum) && fingers.contains(properties.touchCount) {
-            self.momentumTimer?.invalidate()
+            momentumTimer?.invalidate()
             state = .began
             locations.append(properties.cog)
             lastTouchCount = properties.touchCount
@@ -66,6 +66,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         }
 
         positionForTouch[touch] = touch.position
+        lastTouchCount = properties.touchCount
 
         switch state {
         case .began:
@@ -78,7 +79,6 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             delta = touchVector
             currentLocation += delta
             locations.append(currentLocation)
-            lastTouchCount = properties.touchCount
             gestureUpdated?(self)
         default:
             return
