@@ -115,7 +115,6 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         })
 
         animateTableViewIn(for: 0)
-        scrollEnabled = true
     }
 
     private func animateTableViewIn(for row: Int) {
@@ -138,6 +137,8 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
                 relatedItemView.animator().frame.origin.x = 20
             }, completionHandler: {
                 self.animationHappened = true
+                self.scrollEnabled = true
+
             })
 
             self.animateTableViewIn(for: row + 1)
