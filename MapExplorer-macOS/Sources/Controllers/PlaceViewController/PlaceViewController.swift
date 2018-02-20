@@ -16,7 +16,6 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     @IBOutlet weak var closeButtonView: NSView!
 
     private var animationHappened = false
-    private var scrollEnabled = false
     weak var gestureManager: GestureManager!
     weak var viewDelegate: ViewManagerDelegate?
     var panGesture: NSPanGestureRecognizer!
@@ -122,6 +121,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
             return
         }
 
+        // Checks if the current relatedItemView can be visibly displayed on the relatedView. If it can't, skip the animation.
         if self.relatedView.convert(self.relatedView.frame.origin, to: relatedItemView).y - relatedItemView.frame.height > self.detailView.frame.height {
             relatedItemView.alphaValue = 1.0
             animateTableViewIn(for: row + 1)
@@ -137,8 +137,6 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
                 relatedItemView.animator().frame.origin.x = 20
             }, completionHandler: {
                 self.animationHappened = true
-                self.scrollEnabled = true
-
             })
 
             self.animateTableViewIn(for: row + 1)
@@ -197,20 +195,18 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     }
 
     private func tableViewDidPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer else {
+        guard let pan = gesture as? PanGestureRecognizer, animationHappened else {
             return
         }
 
-        if scrollEnabled {
-            switch pan.state {
-            case .recognized, .momentum:
-                let deltaY = pan.delta.dy
-                let orginX = relatedView.visibleRect.origin.x
-                let orginY = relatedView.visibleRect.origin.y
-                relatedView.scroll(CGPoint(x: orginX, y: orginY + deltaY))
-            default:
-                return
-            }
+        switch pan.state {
+        case .recognized, .momentum:
+            let deltaY = pan.delta.dy
+            let orginX = relatedView.visibleRect.origin.x
+            let orginY = relatedView.visibleRect.origin.y
+            relatedView.scroll(CGPoint(x: orginX, y: orginY + deltaY))
+        default:
+            return
         }
     }
 
