@@ -15,6 +15,8 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     @IBOutlet weak var detailView: NSView!
     @IBOutlet weak var closeButtonView: NSView!
 
+    private var animationHappened = false
+    private var scrollEnabled = false
     weak var gestureManager: GestureManager!
     weak var viewDelegate: ViewManagerDelegate?
     var panGesture: NSPanGestureRecognizer!
@@ -86,7 +88,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
             return nil
         }
 
-        relatedItemView.alphaValue = 0.0
+        relatedItemView.alphaValue = animationHappened ? 1.0 : 0.0
         relatedItemView.didTapItem = didSelectRelatedItem
         return relatedItemView
     }
@@ -111,11 +113,19 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
             detailView.animator().alphaValue = 1.0
             detailView.animator().frame.origin.y = 0
         })
+
         animateTableViewIn(for: 0)
+        scrollEnabled = true
     }
 
     private func animateTableViewIn(for row: Int) {
         guard relatedView.rows(in: relatedView.frame).contains(row), let relatedItemView = relatedView.view(atColumn: 0, row: row, makeIfNecessary: true) as? RelatedItemView else {
+            return
+        }
+
+        if self.relatedView.convert(self.relatedView.frame.origin, to: relatedItemView).y - relatedItemView.frame.height > self.detailView.frame.height {
+            relatedItemView.alphaValue = 1.0
+            animateTableViewIn(for: row + 1)
             return
         }
 
@@ -126,6 +136,8 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
                 NSAnimationContext.current.duration = 0.4
                 relatedItemView.animator().alphaValue = 1.0
                 relatedItemView.animator().frame.origin.x = 20
+            }, completionHandler: {
+                self.animationHappened = true
             })
 
             self.animateTableViewIn(for: row + 1)
@@ -188,14 +200,16 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
             return
         }
 
-        switch pan.state {
-        case .recognized, .momentum:
-            let deltaY = pan.delta.dy
-            let orginX = relatedView.visibleRect.origin.x
-            let orginY = relatedView.visibleRect.origin.y
-            relatedView.scroll(CGPoint(x: orginX, y: orginY + deltaY))
-        default:
-            return
+        if scrollEnabled {
+            switch pan.state {
+            case .recognized, .momentum:
+                let deltaY = pan.delta.dy
+                let orginX = relatedView.visibleRect.origin.x
+                let orginY = relatedView.visibleRect.origin.y
+                relatedView.scroll(CGPoint(x: orginX, y: orginY + deltaY))
+            default:
+                return
+            }
         }
     }
 
