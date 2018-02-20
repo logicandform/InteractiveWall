@@ -38,7 +38,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     }
 
     override func viewWillAppear() {
-        activityController = MapActivityController(map: mapView)
+//        activityController = MapActivityController(map: mapView)
         view.window?.toggleFullScreen(nil)
         activityController?.resetMap()
     }
@@ -61,7 +61,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         gestureManager.add(tapGesture, to: mapView)
         tapGesture.gestureUpdated = didTapOnMap(_:)
 
-        let panGesture = PanGestureRecognizer()
+        let panGesture = PanGestureRecognizer(withFingers: [1, 2, 3, 4, 5])
         gestureManager.add(panGesture, to: mapView)
         panGesture.gestureUpdated = mapViewDidPan(_:)
 
