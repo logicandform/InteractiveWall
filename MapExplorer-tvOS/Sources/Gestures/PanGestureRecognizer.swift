@@ -95,17 +95,15 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         if let velocity = currentVelocity, let touchCount = lastTouchCount {
             beginMomentum(with: velocity, for: touchCount)
         } else {
-            state = .possible
+            reset()
         }
     }
 
     func reset() {
-        if state != .momentum {
-            state = .possible
-            locations.removeAll()
-            positionForTouch.removeAll()
-            delta = .zero
-        }
+        state = .possible
+        locations.removeAll()
+        positionForTouch.removeAll()
+        delta = .zero
     }
 
     func invalidate() {
@@ -140,7 +138,6 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
 
     private func endMomentum() {
         momentumTimer?.invalidate()
-        state = .possible
         reset()
     }
 }

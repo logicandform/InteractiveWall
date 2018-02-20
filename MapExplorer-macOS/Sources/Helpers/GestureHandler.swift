@@ -69,7 +69,6 @@ class GestureHandler {
         touches.remove(touch)
         gestures.forEach { gesture in
             gesture.end(touch, with: properties)
-            if touches.isEmpty { gesture.reset() }
         }
     }
 
