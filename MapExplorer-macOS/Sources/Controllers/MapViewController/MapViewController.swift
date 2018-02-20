@@ -22,7 +22,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     }
 
     @IBOutlet weak var mapView: MKMapView!
-    private var activityController: MapActivityController?
+    private var activityController: ActivityController?
     private let socketManager = SocketManager(networkConfiguration: touchNetwork)
     private var gestureManager: GestureManager!
 
@@ -38,7 +38,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     }
 
     override func viewWillAppear() {
-        activityController = MapActivityController(map: mapView)
+//        activityController = NetworkMapActivityController(map: mapView)
         view.window?.toggleFullScreen(nil)
         activityController?.resetMap()
     }
@@ -61,7 +61,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         gestureManager.add(tapGesture, to: mapView)
         tapGesture.gestureUpdated = didTapOnMap(_:)
 
-        let panGesture = PanGestureRecognizer()
+        let panGesture = PanGestureRecognizer(withFingers: [1, 2, 3, 4, 5])
         gestureManager.add(panGesture, to: mapView)
         panGesture.gestureUpdated = mapViewDidPan(_:)
 

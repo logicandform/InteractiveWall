@@ -85,7 +85,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         guard let relatedItemView = tableView.makeView(withIdentifier: RelatedItemView.interfaceIdentifier, owner: self) as? RelatedItemView else {
             return nil
         }
-        
+
         relatedItemView.alphaValue = 0.0
         relatedItemView.didTapItem = didSelectRelatedItem
         return relatedItemView
@@ -215,9 +215,10 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     }
 
     private func detailViewDidTap(_ gesture: GestureRecognizer) {
-        guard let _ = gesture as? TapGestureRecognizer else {
+        guard gesture is TapGestureRecognizer else {
             return
         }
+
         animateViewOut()
     }
 

@@ -13,7 +13,15 @@ fileprivate enum UserActivity {
 
 let deviceID = Int32(1)
 
-class MapActivityController: SocketManagerDelegate {
+
+protocol ActivityController: class {
+    func resetMap()
+    func beginSendingPosition()
+    func stopSendingPosition()
+}
+
+
+class NetworkMapActivityController: ActivityController, SocketManagerDelegate {
     static let mapNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 13333)
 
     private struct Constants {

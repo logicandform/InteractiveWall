@@ -5,6 +5,14 @@ import CoreGraphics
 
 extension CGPoint {
 
+    static func + (lhs: CGPoint, rhs: CGPoint) -> CGVector {
+        return CGVector(dx: lhs.x + rhs.x, dy: lhs.y + rhs.y)
+    }
+
+    static func - (lhs: CGPoint, rhs: CGPoint) -> CGVector {
+        return CGVector(dx: lhs.x - rhs.x, dy: lhs.y - rhs.y)
+    }
+
     static func += (lhs: inout CGPoint, rhs: CGVector) {
         lhs.x += rhs.dx
         lhs.y += rhs.dy
@@ -50,6 +58,14 @@ extension CGVector {
 
     var magnitude: Double {
         return Double(sqrt(pow(self.dx, 2) + pow(self.dy, 2)))
+    }
+
+    static func * (lhs: CGVector, rhs: CGVector) -> CGVector {
+        return CGVector(dx: lhs.dx * rhs.dx, dy: lhs.dy * rhs.dy)
+    }
+
+    static func * (lhs: CGVector, rhs: CGFloat) -> CGVector {
+        return CGVector(dx: lhs.dx * rhs, dy: lhs.dy * rhs)
     }
 
     static func *= (lhs: inout CGVector, rhs: Double) {
