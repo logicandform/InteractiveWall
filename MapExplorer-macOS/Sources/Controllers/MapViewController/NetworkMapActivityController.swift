@@ -13,7 +13,7 @@ fileprivate enum UserActivity {
 
 let deviceID = Int32(1)
 
-class MapActivityController: SocketManagerDelegate {
+class NetworkMapActivityController: SocketManagerDelegate {
     static let mapNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 13333)
 
     private struct Constants {

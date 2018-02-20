@@ -22,7 +22,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     }
 
     @IBOutlet weak var mapView: MKMapView!
-    private var activityController: MapActivityController?
+    private var activityController: NetworkMapActivityController?
     private let socketManager = SocketManager(networkConfiguration: touchNetwork)
     private var gestureManager: GestureManager!
 
@@ -38,7 +38,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     }
 
     override func viewWillAppear() {
-//        activityController = MapActivityController(map: mapView)
+//        activityController = NetworkMapActivityController(map: mapView)
         view.window?.toggleFullScreen(nil)
         activityController?.resetMap()
     }

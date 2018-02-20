@@ -13,7 +13,7 @@
 		221C62A5203B4A20009493DA /* Artifact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C62A4203B4A20009493DA /* Artifact.swift */; };
 		221C62A8203B57F7009493DA /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C62A7203B57F7009493DA /* URL.swift */; };
 		2220D3FD202F7E4200B878D6 /* GestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2220D3FC202F7E4200B878D6 /* GestureManager.swift */; };
-		2220D3FF202F84A300B878D6 /* MapActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2220D3FE202F84A300B878D6 /* MapActivityController.swift */; };
+		2220D3FF202F84A300B878D6 /* NetworkMapActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2220D3FE202F84A300B878D6 /* NetworkMapActivityController.swift */; };
 		22290C092028F9EC000E0573 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C082028F9EC000E0573 /* AppDelegate.swift */; };
 		22290C0D2028F9EC000E0573 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22290C0C2028F9EC000E0573 /* Assets.xcassets */; };
 		22290C102028F9EC000E0573 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22290C0E2028F9EC000E0573 /* Main.storyboard */; };
@@ -61,7 +61,7 @@
 		221C62A4203B4A20009493DA /* Artifact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artifact.swift; sourceTree = "<group>"; };
 		221C62A7203B57F7009493DA /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		2220D3FC202F7E4200B878D6 /* GestureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureManager.swift; sourceTree = "<group>"; };
-		2220D3FE202F84A300B878D6 /* MapActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapActivityController.swift; sourceTree = "<group>"; };
+		2220D3FE202F84A300B878D6 /* NetworkMapActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMapActivityController.swift; sourceTree = "<group>"; };
 		22290C052028F9EC000E0573 /* MapExplorer-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MapExplorer-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22290C082028F9EC000E0573 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22290C0C2028F9EC000E0573 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -181,7 +181,7 @@
 			children = (
 				22368E272037918F00D03A0E /* Views */,
 				22290C1F2028FA1E000E0573 /* MapViewController.swift */,
-				2220D3FE202F84A300B878D6 /* MapActivityController.swift */,
+				2220D3FE202F84A300B878D6 /* NetworkMapActivityController.swift */,
 			);
 			path = MapViewController;
 			sourceTree = "<group>";
@@ -512,7 +512,7 @@
 				22290C3C2028FA35000E0573 /* NetworkConfiguration.swift in Sources */,
 				22290C2E2028FA1F000E0573 /* Style.swift in Sources */,
 				221C62A1203B4A10009493DA /* Entity.swift in Sources */,
-				2220D3FF202F84A300B878D6 /* MapActivityController.swift in Sources */,
+				2220D3FF202F84A300B878D6 /* NetworkMapActivityController.swift in Sources */,
 				22FEF1D6202CFE8D001E9596 /* GestureDemoController.swift in Sources */,
 				22290C2D2028FA1F000E0573 /* Place.swift in Sources */,
 			);
