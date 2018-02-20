@@ -106,6 +106,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             var mapRect = mapView.visibleMapRect
             let scaledWidth = (2 - Double(pinch.scale)) * mapRect.size.width
             let scaledHeight = (2 - Double(pinch.scale)) * mapRect.size.height
+            // Uncomment and delete the other two duplicate veriable below for pinch with pan gesture
 //            var translationX = -Double(pinch.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
 //            var translationY = Double(pinch.delta.dy) * mapRect.size.height / Double(mapView.frame.height)
             var translationX = 0.0
