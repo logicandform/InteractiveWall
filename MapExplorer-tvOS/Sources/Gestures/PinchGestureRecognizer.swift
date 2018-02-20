@@ -36,6 +36,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         if state == .began {
             state = .failed
         } else if (state == .possible || state == .momentum)  && fingers == properties.touchCount {
+            self.momentumTimer?.invalidate()
             state = .began
             spreads.append(properties.spread)
             lastPosition = properties.cog
@@ -103,12 +104,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         return (last, secondLast)
     }
 
-    var count = 0 {
-        didSet {
-            print(count)
-        }
-    }
-
     private func beginMomentum(_ lastSpread: CGFloat, _ secondLastSpread: CGFloat, with properties: TouchProperties) {
         state = .momentum
 
@@ -121,7 +116,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
                 self.endMomentum()
                 return
             }
-            self.count += 1
             self.scale = 1 + testScale
             self.gestureUpdated?(self)
             frictionFactor += Constants.frictionFactorScale

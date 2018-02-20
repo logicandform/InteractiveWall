@@ -35,6 +35,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         if state == .began && properties.touchCount == lastTouchCount {
             state = .failed
         } else if (state == .possible || state == .momentum) && fingers.contains(properties.touchCount) {
+            self.momentumTimer?.invalidate()
             state = .began
             positions.append(properties.cog)
             lastTouchCount = properties.touchCount
