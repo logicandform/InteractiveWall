@@ -40,21 +40,15 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     // MARK: Lifecycle
 
     override func viewDidLoad() {
-
         super.viewDidLoad()
         gestureManager = GestureManager(responder: self)
         socketManager.delegate = self
         setupMap()
         setupGestures()
-        setInitialMapPositions(with: Constants.numberOfScreens)
-
     }
-
-
 
     override func viewWillAppear() {
         view.window?.toggleFullScreen(nil)
-       // activityController?.resetMap()
         setInitialMapPositions(with: Constants.numberOfScreens)
     }
 
@@ -62,7 +56,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     // MARK: Setup
 
     func setupMap() {
-
+        mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
+        mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
         createMapPlaces()
         mapViewIDs[mapView] = 0
         mapViewIDs[mapView2] = 1
