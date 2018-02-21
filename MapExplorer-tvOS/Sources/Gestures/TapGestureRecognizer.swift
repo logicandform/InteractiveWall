@@ -6,7 +6,7 @@ import AppKit
 class TapGestureRecognizer: NSObject, GestureRecognizer {
 
     private struct Constants {
-        static let maximumDistanceMoved: CGFloat = 100
+        static let maximumDistanceMoved: CGFloat = 20
         static let minimumFingers = 1
     }
 
