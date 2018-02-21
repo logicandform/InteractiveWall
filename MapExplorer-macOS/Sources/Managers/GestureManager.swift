@@ -54,6 +54,16 @@ final class GestureManager {
         }
     }
 
+    func view(for gesture: GestureRecognizer) -> NSView? {
+        for (view, handler) in gestureHandlers {
+            if handler.owns(gesture) {
+                return view
+            }
+        }
+
+        return nil
+    }
+
 
     // MARK: Helpers
 

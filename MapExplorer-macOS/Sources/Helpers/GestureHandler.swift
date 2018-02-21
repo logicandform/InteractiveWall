@@ -41,6 +41,10 @@ class GestureHandler {
         return touches.contains(touch)
     }
 
+    func owns(_ gesture: GestureRecognizer) -> Bool {
+        return gestures.contains(where: { $0 === gesture })
+    }
+
 
     // MARK: Helpers
 

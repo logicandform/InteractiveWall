@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="Obm-Mk-56V">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Gesture Demo Controller-->
+        <scene sceneID="9Ct-Rm-omX">
+            <objects>
+                <viewController id="Obm-Mk-56V" customClass="GestureDemoController" customModule="MapExplorer_macOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="Ohh-Gz-YPV">
+                        <rect key="frame" x="0.0" y="0.0" width="960" height="663"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="DsM-Mb-9Jx" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="303" y="188.5"/>
+        </scene>
+    </scenes>
+</document>
