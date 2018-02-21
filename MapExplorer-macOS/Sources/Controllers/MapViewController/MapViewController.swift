@@ -35,7 +35,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     private var activityController: MapActivityController?
     private let socketManager = SocketManager(networkConfiguration: touchNetwork)
     private var gestureManager: GestureManager!
-    private var lastOrigin: MKMapPoint = MKMapPointMake(Constants.initialMapOriginX, Constants.initialMapOriginY)
 
 
     // MARK: Lifecycle
