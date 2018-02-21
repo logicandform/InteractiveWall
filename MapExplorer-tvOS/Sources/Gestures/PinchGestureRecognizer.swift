@@ -22,7 +22,11 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private(set) var fingers: Int
 
     private var momentumTimer: Timer?
-    private var spreads = [CGFloat?]()
+    private var spreads = [CGFloat?]() {
+        didSet {
+            print(spreads.last)
+        }
+    }
     private var frictionFactor = Constants.initialFrictionFactor
     private var scaleDifference: CGFloat = 0
 
@@ -39,25 +43,30 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     // MARK: API
 
     func start(_ touch: Touch, with properties: TouchProperties) {
-        if state == .began {
-            state = .failed
-        } else if (state == .possible || state == .momentum)  && fingers == properties.touchCount {
+        guard fingers == properties.touchCount else {
+            return
+        }
+
+        switch state {
+        case .possible, .momentum:
             self.momentumTimer?.invalidate()
             state = .began
             spreads.append(properties.spread)
             lastPosition = properties.cog
+        default:
+            return
         }
     }
 
     func move(_ touch: Touch, with properties: TouchProperties) {
-        guard let lastSpread = getLastSpreads().last, let lastPosition = lastPosition else {
+        guard let lastSpread = getLastSpreads().last, let lastPosition = lastPosition, properties.touchCount == fingers else {
             return
         }
 
         switch state {
         case .began where abs(properties.spread / lastSpread - 1.0) > Constants.minimumSpreadThreshhold:
-            gestureUpdated?(self)
             state = .recognized
+            fallthrough
         case .recognized:
             scale = properties.spread / lastSpread
             delta = CGVector(dx: properties.cog.x - lastPosition.x, dy: properties.cog.y - lastPosition.y)
