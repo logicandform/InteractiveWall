@@ -22,6 +22,8 @@ protocol ActivityController: class {
 
 
 class NetworkMapActivityController: ActivityController, SocketManagerDelegate {
+
+
     static let mapNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 13333)
 
     private struct Constants {
@@ -68,6 +70,9 @@ class NetworkMapActivityController: ActivityController, SocketManagerDelegate {
 
 
     // MARK: API
+
+    func resetMap() {
+    }
 
     func beginSendingPosition() {
         userState = .active

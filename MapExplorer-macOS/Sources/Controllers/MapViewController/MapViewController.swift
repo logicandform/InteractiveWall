@@ -32,7 +32,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
 
     var mapViewIDs = [MKMapView: Int]()
     var mapViews: [MKMapView]!
-    private var activityController: MapActivityController?
+    private var activityController: NetworkMapActivityController?
     private let socketManager = SocketManager(networkConfiguration: touchNetwork)
     private var gestureManager: GestureManager!
 
