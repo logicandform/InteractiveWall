@@ -30,7 +30,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
 
     @IBOutlet weak var stackView: NSStackView!
     var mapViews = [MKMapView]()
-    var activityController: ActivityController?
+    var mapManager: LocalMapManager?
     private let socketManager = SocketManager(networkConfiguration: touchNetwork)
     private var gestureManager: GestureManager!
 
@@ -47,7 +47,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     override func viewWillAppear() {
 //        activityController = NetworkMapActivityController(map: mapView)
 //        view.window?.toggleFullScreen(nil)
-        activityController?.resetMap()
+        mapManager?.reset()
     }
 
     func setupMaps() {
@@ -85,16 +85,14 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         }
 
         switch pan.state {
-        case .began:
-            activityController?.beginSendingPosition()
         case .recognized, .momentum:
             var mapRect = mapView.visibleMapRect
             let translationX = Double(pan.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
             let translationY = Double(pan.delta.dy) * mapRect.size.height / Double(mapView.frame.height)
             mapRect.origin -= MKMapPoint(x: translationX, y: -translationY)
-            mapView.setVisibleMapRect(mapRect, animated: false)
+            mapManager?.set(mapRect, of: mapView)
         case .possible, .failed:
-            activityController?.stopSendingPosition()
+            mapManager?.finishedUpdating(mapView)
         default:
             return
         }
@@ -106,8 +104,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         }
 
         switch pinch.state {
-        case .began:
-            activityController?.beginSendingPosition()
         case .recognized, .momentum:
             var mapRect = mapView.visibleMapRect
             let scaledWidth = (2 - Double(pinch.scale)) * mapRect.size.width
@@ -123,9 +119,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
                 mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
             }
             mapRect.origin += MKMapPoint(x: translationX, y: translationY)
-            mapView.setVisibleMapRect(mapRect, animated: false)
+            mapManager?.set(mapRect, of: mapView)
         case .possible, .failed:
-            activityController?.stopSendingPosition()
+            mapManager?.finishedUpdating(mapView)
         default:
             return
         }

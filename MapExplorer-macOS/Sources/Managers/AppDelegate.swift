@@ -11,7 +11,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
 
-        let sharedActivityController = LocalMapActivityController()
+        let mapManager = LocalMapManager()
         let mapStoryboard = NSStoryboard(name: MapViewController.storyboard, bundle: nil)
 
         for index in (1 ... Configuration.numberOfWindows) {
@@ -19,8 +19,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             let mapWindow = NSWindow(contentViewController: mapVC)
             mapWindow.title = "Map Window \(index)"
             mapWindow.makeKeyAndOrderFront(self)
-            sharedActivityController.add(mapVC.mapViews)
-            mapVC.activityController = sharedActivityController
+            mapManager.add(mapVC.mapViews)
+            mapVC.mapManager = mapManager
         }
 
         /// Display the DemoViewController

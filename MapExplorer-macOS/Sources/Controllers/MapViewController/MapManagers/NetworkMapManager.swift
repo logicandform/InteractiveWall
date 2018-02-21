@@ -5,25 +5,9 @@ import MONode
 import MapKit
 
 
-fileprivate enum UserActivity {
-    case idle
-    case active
-}
-
-
 let deviceID = Int32(1)
 
-
-protocol ActivityController: class {
-    func resetMap()
-    func beginSendingPosition()
-    func stopSendingPosition()
-}
-
-
-class NetworkMapActivityController: ActivityController, SocketManagerDelegate {
-
-
+class NetworkMapManager: SocketManagerDelegate {
     static let mapNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 13333)
 
     private struct Constants {
