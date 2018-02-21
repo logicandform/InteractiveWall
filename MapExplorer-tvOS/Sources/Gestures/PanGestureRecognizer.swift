@@ -20,17 +20,18 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     private(set) var delta = CGVector.zero
     private(set) var fingers: [Int]
 
-    private var locations = [CGPoint]()
+    private var locations = LastThreeStructure<CGPoint>()
     private var positionForTouch = [Touch: CGPoint]()
     private var momentumTimer: Timer?
     private var frictionFactor = Constants.initialFrictionFactor
     private var lastTouchCount: Int?
 
     private var currentVelocity: CGVector? {
-        if locations.count < 3 { return nil }
-        let last = locations[locations.endIndex - 1]
-        let secondLast = locations[locations.endIndex - 3]
-        return CGVector(dx: last.x - secondLast.x, dy: last.y - secondLast.y)
+        if let last = locations.last, let secondLast = locations.secondLast {
+            return CGVector(dx: last.x - secondLast.x, dy: last.y - secondLast.y)
+        }
+
+        return nil
     }
 
 
@@ -57,7 +58,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         switch state {
         case .possible, .momentum:
             state = .began
-            locations.append(properties.cog)
+            locations.add(properties.cog)
             fallthrough
         case .recognized:
             momentumTimer?.invalidate()
@@ -84,7 +85,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             touchVector /= Double(properties.touchCount)
             delta = touchVector
             currentLocation += delta
-            locations.append(currentLocation)
+            locations.add(currentLocation)
             gestureUpdated?(self)
         default:
             return
@@ -107,7 +108,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
 
     func reset() {
         state = .possible
-        locations.removeAll()
+        locations.clear()
         positionForTouch.removeAll()
         delta = .zero
     }
