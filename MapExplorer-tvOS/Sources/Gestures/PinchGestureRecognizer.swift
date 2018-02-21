@@ -22,11 +22,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private(set) var fingers: Int
 
     private var momentumTimer: Timer?
-    private var spreads = [CGFloat?]() {
-        didSet {
-            print(spreads.last)
-        }
-    }
+    private var spreads = [CGFloat?]() 
     private var frictionFactor = Constants.initialFrictionFactor
     private var scaleDifference: CGFloat = 0
 

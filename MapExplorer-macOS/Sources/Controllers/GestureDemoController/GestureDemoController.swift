@@ -20,17 +20,17 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
         rect.layer?.backgroundColor = NSColor.blue.cgColor
         view.addSubview(rect)
 
-        let tapGesture = TapGestureRecognizer()
-        gestureManager.add(tapGesture, to: rect)
-        tapGesture.gestureUpdated = rectTapped(_:)
+//        let tapGesture = TapGestureRecognizer()
+//        gestureManager.add(tapGesture, to: rect)
+//        tapGesture.gestureUpdated = rectTapped(_:)
+//
+//        let panGesture = PanGestureRecognizer(withFingers: [1, 2, 3, 4, 5])
+//        gestureManager.add(panGesture, to: rect)
+//        panGesture.gestureUpdated = rectPanned(_:)
 
-        let panGesture = PanGestureRecognizer(withFingers: [1, 2, 3, 4, 5])
-        gestureManager.add(panGesture, to: rect)
-        panGesture.gestureUpdated = rectPanned(_:)
-
-//        let pinchGesture = PinchGestureRecognizer()
-//        gestureManager.add(pinchGesture, to: rect)
-//        pinchGesture.gestureUpdated = rectPinched(_:)
+        let pinchGesture = PinchGestureRecognizer()
+        gestureManager.add(pinchGesture, to: rect)
+        pinchGesture.gestureUpdated = rectPinched(_:)
     }
 
 
