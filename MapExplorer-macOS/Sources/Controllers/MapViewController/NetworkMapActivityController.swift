@@ -11,7 +11,7 @@ fileprivate enum UserActivity {
 }
 
 
-let deviceID = Int32(2)
+let deviceID = Int32(1)
 
 
 protocol ActivityController: class {
@@ -175,7 +175,7 @@ class NetworkMapActivityController: ActivityController, SocketManagerDelegate {
         let data = packet.payload!
         let mapRect = data.extract(MKMapRect.self, at: 0)
 
-        //set(mapRect, packetID: packet.id)
+        set(mapRect, packetID: packet.id)
         beginActivityTimeout()
     }
 

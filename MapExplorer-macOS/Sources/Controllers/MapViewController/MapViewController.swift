@@ -277,10 +277,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             let xOrigin = Constants.initialMapOriginX + Double(mapViewID) * Constants.initialMapSizeWidth / (screens * 3.0)
             let mapOrigin = MKMapPointMake(xOrigin, Constants.initialMapOriginY)
             let mapSize = MKMapSizeMake(Constants.initialMapSizeWidth / (screens * 3.0), Constants.initialMapSizeHeight)
-            let rect = MKMapRect(origin: mapOrigin, size: mapSize)
 
-            mapView.setVisibleMapRect(rect, animated: false)
-            mapView.visibleMapRect.origin.y = Constants.initialMapOriginY
+            mapView.visibleMapRect.size = mapSize
+            mapView.visibleMapRect.origin = mapOrigin
         }
     }
 
