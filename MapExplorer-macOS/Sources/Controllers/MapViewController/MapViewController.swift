@@ -61,13 +61,13 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         gestureManager.add(tapGesture, to: mapView)
         tapGesture.gestureUpdated = didTapOnMap(_:)
 
-        let panGesture = PanGestureRecognizer(withFingers: [1, 2, 3, 4, 5])
+        let panGesture = PanGestureRecognizer(withFingers: [1, 3, 4, 5])
         gestureManager.add(panGesture, to: mapView)
         panGesture.gestureUpdated = mapViewDidPan(_:)
 
-//        let pinchGesture = PinchGestureRecognizer()
-//        gestureManager.add(pinchGesture, to: mapView)
-//        pinchGesture.gestureUpdated = mapViewDidZoom(_:)
+        let pinchGesture = PinchGestureRecognizer()
+        gestureManager.add(pinchGesture, to: mapView)
+        pinchGesture.gestureUpdated = mapViewDidZoom(_:)
     }
 
 
@@ -127,7 +127,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
 
     /// If the tap is positioned on a selectable annotation, the annotation's didSelect function is invoked.
     private func didTapOnMap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let position = tap.initialPositions.first, let container = mapView.subviews.first(where: { $0.className == Constants.annotationContainerClass }) else {
+        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position, let container = mapView.subviews.first(where: { $0.className == Constants.annotationContainerClass }) else {
             return
         }
 
@@ -137,7 +137,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             let radius = Constants.annotationHitSize.width / 2
             let hitFrame = CGRect(origin: CGPoint(x: annotation.frame.midX - radius, y: mapView.frame.height - annotation.frame.midY - radius), size: Constants.annotationHitSize)
 
-            if let selectableView = annotation as? SelectableView, hitFrame.contains(position.value) {
+            if let selectableView = annotation as? SelectableView, hitFrame.contains(position) {
                 if let cluster = selectableView as? ClusterView {
                     cluster.didSelectView()
                     return

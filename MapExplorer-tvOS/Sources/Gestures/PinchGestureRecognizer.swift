@@ -10,27 +10,33 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         static let minimumFingers = 2
         static let minimumSpreadThreshhold: CGFloat = 0.1
         static let thresholdMomentumScale: CGFloat = 0.0001
-        static let frictionFactor: CGFloat = 1.01
+        static let initialFrictionFactor: CGFloat = 1.01
         static let frictionFactorScale: CGFloat = 0.005
     }
 
-    private var momentumTimer: Timer?
-    var state = GestureState.possible
-    var lastSpread: CGFloat!
-    var lastPosition: CGPoint!
-    var scale: CGFloat = Constants.initialScale
-    var fingers: Int
     var gestureUpdated: ((GestureRecognizer) -> Void)?
-    var gestureRecognized: ((GestureRecognizer) -> Void)?
-    var delta = CGVector.zero
-    var spreads = [CGFloat?]()
-    
+    var lastPosition: CGPoint!
+    private(set) var state = GestureState.possible
+    private(set) var scale: CGFloat = Constants.initialScale
+    private(set) var delta = CGVector.zero
+    private(set) var fingers: Int
+
+    private var momentumTimer: Timer?
+    private var spreads = [CGFloat?]()
+    private var frictionFactor = Constants.initialFrictionFactor
+    private var scaleDifference: CGFloat = 0
+
+
+    // MARK: Init
 
     init(withFingers fingers: Int = Constants.minimumFingers) {
         precondition(fingers >= Constants.minimumFingers, "\(fingers) is an invalid number of fingers")
         self.fingers = fingers
         super.init()
     }
+
+
+    // MARK: API
 
     func start(_ touch: Touch, with properties: TouchProperties) {
         if state == .began {
@@ -64,27 +70,27 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func end(_ touch: Touch, with properties: TouchProperties) {
-        if !properties.touchCount.isZero {
-            state = .failed
-        }
-
-        guard let lastSpread = getLastSpreads().last, let secondLastSpread = getLastSpreads().secondLast else {
-            state = .possible
+        guard properties.touchCount.isZero else {
             return
         }
 
-        beginMomentum(lastSpread, secondLastSpread, with: properties)
+        if let lastSpread = getLastSpreads().last, let secondLastSpread = getLastSpreads().secondLast {
+            beginMomentum(lastSpread, secondLastSpread, with: properties)
+        } else {
+            reset()
+        }
     }
 
     func reset() {
-        if state != .momentum {
-            state = .possible
-            scale = Constants.initialScale
-            delta = .zero
-            lastSpread = nil
-            lastPosition = nil
-        }
+        state = .possible
+        scale = Constants.initialScale
+        delta = .zero
+        spreads.removeAll()
+        lastPosition = nil
     }
+
+
+    // MARK: Helpers
 
     private func getLastSpreads() -> (last: CGFloat?, secondLast: CGFloat?) {
         var last: CGFloat?
@@ -101,26 +107,29 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
     private func beginMomentum(_ lastSpread: CGFloat, _ secondLastSpread: CGFloat, with properties: TouchProperties) {
         state = .momentum
-
-        var frictionFactor = Constants.frictionFactor
-        var testScale = lastSpread / secondLastSpread - 1
+        frictionFactor = Constants.initialFrictionFactor
+        scaleDifference = lastSpread / secondLastSpread - 1
 
         self.momentumTimer?.invalidate()
         momentumTimer = Timer.scheduledTimer(withTimeInterval: 1 / 60, repeats: true) { _ in
-            if abs(1 - self.scale) < Constants.thresholdMomentumScale {
-                self.endMomentum()
-                return
-            }
-            self.scale = 1 + testScale
-            self.gestureUpdated?(self)
-            frictionFactor += Constants.frictionFactorScale
-            testScale /= frictionFactor
+            self.updateMomentum()
         }
+    }
+
+    private func updateMomentum() {
+        guard abs(scaleDifference) > Constants.thresholdMomentumScale else {
+            endMomentum()
+            return
+        }
+
+        scale = 1 + scaleDifference
+        frictionFactor += Constants.frictionFactorScale
+        scaleDifference /= frictionFactor
+        gestureUpdated?(self)
     }
 
     private func endMomentum() {
         self.momentumTimer?.invalidate()
-        self.state = .possible
         self.reset()
     }
 }
