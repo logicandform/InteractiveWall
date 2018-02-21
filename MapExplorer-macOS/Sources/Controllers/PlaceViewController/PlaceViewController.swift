@@ -15,6 +15,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     @IBOutlet weak var detailView: NSView!
     @IBOutlet weak var closeButtonView: NSView!
 
+    private var animationHappened = false
     weak var gestureManager: GestureManager!
     weak var viewDelegate: ViewManagerDelegate?
     var panGesture: NSPanGestureRecognizer!
@@ -86,7 +87,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
             return nil
         }
 
-        relatedItemView.alphaValue = 0.0
+        relatedItemView.alphaValue = animationHappened ? 1.0 : 0.0
         relatedItemView.didTapItem = didSelectRelatedItem
         return relatedItemView
     }
@@ -111,11 +112,19 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
             detailView.animator().alphaValue = 1.0
             detailView.animator().frame.origin.y = 0
         })
+
         animateTableViewIn(for: 0)
     }
 
     private func animateTableViewIn(for row: Int) {
         guard relatedView.rows(in: relatedView.frame).contains(row), let relatedItemView = relatedView.view(atColumn: 0, row: row, makeIfNecessary: true) as? RelatedItemView else {
+            return
+        }
+
+        // Checks if the current relatedItemView can be visibly displayed on the relatedView. If it can't, skip the animation.
+        if self.relatedView.convert(self.relatedView.frame.origin, to: relatedItemView).y - relatedItemView.frame.height > self.detailView.frame.height {
+            relatedItemView.alphaValue = 1.0
+            animateTableViewIn(for: row + 1)
             return
         }
 
@@ -126,6 +135,8 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
                 NSAnimationContext.current.duration = 0.4
                 relatedItemView.animator().alphaValue = 1.0
                 relatedItemView.animator().frame.origin.x = 20
+            }, completionHandler: {
+                self.animationHappened = true
             })
 
             self.animateTableViewIn(for: row + 1)
@@ -184,7 +195,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     }
 
     private func tableViewDidPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer else {
+        guard let pan = gesture as? PanGestureRecognizer, animationHappened else {
             return
         }
 
