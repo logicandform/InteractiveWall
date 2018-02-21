@@ -10,12 +10,14 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         static let minimumFingers = 1
     }
 
-    var fingers: Int
-    private var positionForTouch = [Touch: CGPoint]()
-    var position: CGPoint?
-
-
     var gestureUpdated: ((GestureRecognizer) -> Void)?
+    var position: CGPoint?
+    private(set) var fingers: Int
+
+    private var positionForTouch = [Touch: CGPoint]()
+
+
+    // MARK: Init
 
     init(withFingers fingers: Int = Constants.minimumFingers) {
         precondition(fingers >= Constants.minimumFingers, "\(fingers) is an invalid number of fingers, errors will occur")
@@ -23,11 +25,13 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         super.init()
     }
 
+
+    // MARK: API
+
     func start(_ touch: Touch, with properties: TouchProperties) {
         guard !positionForTouch.keys.contains(touch) else {
             return
         }
-
         positionForTouch[touch] = touch.position
     }
 
@@ -47,9 +51,8 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         guard positionForTouch.keys.contains(touch) else {
             return
         }
-
+        
         position = touch.position
-
         gestureUpdated?(self)
         if properties.touchCount.isZero {
            reset()
