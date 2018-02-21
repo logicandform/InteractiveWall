@@ -19,11 +19,11 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         static let annotationContainerClass = "MKNewAnnotationContainerView"
         static let maxZoomWidth: Double =  134217730
         static let annotationHitSize = CGSize(width: 50, height: 50)
-        static let numberOfScreens = 1
-        static let initialMapOriginX = 14768205
-        static let initialMapOriginY = 40207655
-        static let initialMapSizeWidth = 100000000
-        static let initialMapSizeHeight = 100000000
+        static let numberOfScreens = 1.0
+        static let initialMapOriginX = 6000000.0
+        static let initialMapOriginY = 62000000.0
+        static let initialMapSizeWidth = 120000000.0
+        static let initialMapSizeHeight = 0.0
     }
 
     @IBOutlet weak var mapView: MKMapView!
@@ -53,12 +53,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
 
 
     override func viewWillAppear() {
-        self.view.window!.setFrame(NSRect(x: 0, y: 0, width: 1080, height: 720), display: true)
-//        view.window?.toggleFullScreen(nil)
+        view.window?.toggleFullScreen(nil)
        // activityController?.resetMap()
         setInitialMapPositions(with: Constants.numberOfScreens)
-
-
     }
 
 
@@ -277,17 +274,22 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         mapView.addAnnotations(places)
     }
 
-    private func setInitialMapPositions(with screens: Int) {
+    private func setInitialMapPositions(with screens: Double) {
         for mapView in mapViews {
-            let mapOrigin = MKMapPointMake(Double(Constants.initialMapOriginX + mapViewIDs[mapView]! * (Constants.initialMapSizeWidth / (screens * 3))), Double(Constants.initialMapOriginY))
-            let mapSize = MKMapSizeMake(Double(Constants.initialMapSizeWidth / (screens * 3)), Double(Constants.initialMapSizeHeight))
+            guard let mapViewID = mapViewIDs[mapView] else {
+                return
+            }
+            
+            let xOrigin = Constants.initialMapOriginX + Double(mapViewID) * Constants.initialMapSizeWidth / (screens * 3.0)
+            let deviceOffset = Double(deviceID - 1) * (Constants.initialMapSizeWidth / screens)
+            let mapOrigin = MKMapPointMake(xOrigin + deviceOffset, Constants.initialMapOriginY)
+            let mapSize = MKMapSizeMake(Constants.initialMapSizeWidth / (screens * 3.0), Constants.initialMapSizeHeight)
             let rect = MKMapRect(origin: mapOrigin, size: mapSize)
-            mapView.
+
             mapView.setVisibleMapRect(rect, animated: false)
+            mapView.visibleMapRect.origin.y = Constants.initialMapOriginY
         }
     }
-
-
 
     /// Zoom into the annotations contained in the cluster
     private func didSelectAnnotationCallout(for cluster: MKClusterAnnotation) {
