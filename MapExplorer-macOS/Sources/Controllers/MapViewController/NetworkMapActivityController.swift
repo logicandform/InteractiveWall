@@ -32,8 +32,8 @@ class NetworkMapActivityController: ActivityController, SocketManagerDelegate {
         static let activityTimeoutPeriod: TimeInterval = 4
         static let longActivityTimeoutPeriod: TimeInterval = 10
         static let devicesPerColumnKey = "devicesInColumnPreference"
-        static let initialMapOrigin = MKMapPoint(x: 11435029.807890361, y: 46239458.820914999)
-        static let initialMapSize = MKMapSize(width: 105959171.60879987, height: 59602034.029949859)
+//        static let initialMapOrigin = MKMapPoint(x: 11435029.807890361, y: 46239458.820914999)
+//        static let initialMapSize = MKMapSize(width: 105959171.60879987/3, height: 59602034.029949859)
     }
 
     private let mapView: MKMapView
@@ -87,9 +87,9 @@ class NetworkMapActivityController: ActivityController, SocketManagerDelegate {
     }
 
     func resetMap() {
-        var size = Constants.initialMapSize
-        size /= Double(devicesInColumn)
-        set(MKMapRect(origin: Constants.initialMapOrigin, size: size), packetID: Constants.masterDeviceID)
+//        var size = Constants.initialMapSize
+//        size /= Double(devicesInColumn)
+//        set(MKMapRect(origin: Constants.initialMapOrigin, size: size), packetID: Constants.masterDeviceID)
     }
 
 
@@ -115,16 +115,16 @@ class NetworkMapActivityController: ActivityController, SocketManagerDelegate {
 
     // MARK: Helpers
 
-    /// Sets the map's position based on the sending packet id. If unpaired, will animate.
-    private func set(_ mapRect: MKMapRect, packetID: Int32) {
-        var newMapRect = mapRect
-        let horizontalDifference = column(forDevice: deviceID) - column(forDevice: packetID)
-        let verticalDifference = row(forDevice: deviceID) - row(forDevice: packetID)
-        newMapRect.origin.x += mapRect.size.width * Double(horizontalDifference)
-        newMapRect.origin.y += mapRect.size.height * Double(verticalDifference)
-        mapView.setVisibleMapRect(newMapRect, animated: unpaired)
-        lastMapRect = newMapRect
-    }
+//    /// Sets the map's position based on the sending packet id. If unpaired, will animate.
+//    private func set(_ mapRect: MKMapRect, packetID: Int32) {
+//        var newMapRect = mapRect
+//        let horizontalDifference = column(forDevice: deviceID) - column(forDevice: packetID)
+//        let verticalDifference = row(forDevice: deviceID) - row(forDevice: packetID)
+//        newMapRect.origin.x += mapRect.size.width * Double(horizontalDifference)
+//        newMapRect.origin.y += mapRect.size.height * Double(verticalDifference)
+//        mapView.setVisibleMapRect(newMapRect, animated: unpaired)
+//        lastMapRect = newMapRect
+//    }
 
     private func send(type: PacketType) {
         switch type {
@@ -185,7 +185,7 @@ class NetworkMapActivityController: ActivityController, SocketManagerDelegate {
         let data = packet.payload!
         let mapRect = data.extract(MKMapRect.self, at: 0)
 
-        set(mapRect, packetID: packet.id)
+        //set(mapRect, packetID: packet.id)
         beginActivityTimeout()
     }
 

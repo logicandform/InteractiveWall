@@ -3,7 +3,6 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
         <plugIn identifier="com.apple.MapKitIBPlugin" version="13771"/>
-        <capability name="Unknown constraint types" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -680,7 +679,7 @@
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="0.0"/>
+            <point key="canvasLocation" x="-555" y="-24"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
@@ -696,12 +695,12 @@
                         </connections>
                     </window>
                     <connections>
-                        <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="CRG-da-vlB"/>
+                        <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="R2z-IT-auy"/>
                     </connections>
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="250"/>
+            <point key="canvasLocation" x="-555" y="196"/>
         </scene>
         <!--Map View Controller-->
         <scene sceneID="hIz-AP-VOD">
@@ -712,25 +711,39 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <mapView mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsBuildings="NO" showsPointsOfInterest="NO" showsCompass="NO" showsZoomControls="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Wx-qs-iJq">
-                                <rect key="frame" x="0.0" y="0.0" width="915" height="605"/>
+                                <rect key="frame" x="0.0" y="0.0" width="305" height="605"/>
+                            </mapView>
+                            <mapView mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsBuildings="NO" showsPointsOfInterest="NO" showsCompass="NO" showsZoomControls="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aW8-r4-sci">
+                                <rect key="frame" x="305" y="0.0" width="305" height="605"/>
+                            </mapView>
+                            <mapView mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsBuildings="NO" showsPointsOfInterest="NO" showsCompass="NO" showsZoomControls="NO" translatesAutoresizingMaskIntoConstraints="NO" id="USC-xw-dai">
+                                <rect key="frame" x="610" y="0.0" width="305" height="605"/>
                             </mapView>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="3Wx-qs-iJq" secondAttribute="bottom" id="62t-B2-eJi"/>
-                            <constraint firstItem="3Wx-qs-iJq" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="N9H-Jy-h2d"/>
-                            <constraint firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="OUb-UL-9Xl"/>
-                            <constraint firstItem="3Wx-qs-iJq" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="hxt-lp-JRy"/>
-                            <constraint firstAttribute="trailing" secondItem="3Wx-qs-iJq" secondAttribute="trailing" id="udI-Zg-RBh"/>
-                            <constraint firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="xgX-gz-l3X"/>
+                            <constraint firstItem="USC-xw-dai" firstAttribute="width" secondItem="3Wx-qs-iJq" secondAttribute="width" id="2hZ-eW-Ix9"/>
+                            <constraint firstItem="3Wx-qs-iJq" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="5Cl-1Q-lOa"/>
+                            <constraint firstItem="3Wx-qs-iJq" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="9Dq-ud-2oq"/>
+                            <constraint firstAttribute="bottom" secondItem="USC-xw-dai" secondAttribute="bottom" id="Azi-ou-Zuo"/>
+                            <constraint firstItem="USC-xw-dai" firstAttribute="leading" secondItem="aW8-r4-sci" secondAttribute="trailing" id="GDl-sk-2wg"/>
+                            <constraint firstItem="USC-xw-dai" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="K4h-8I-fXp"/>
+                            <constraint firstItem="aW8-r4-sci" firstAttribute="width" secondItem="3Wx-qs-iJq" secondAttribute="width" id="YBh-Sh-Bif"/>
+                            <constraint firstAttribute="trailing" secondItem="USC-xw-dai" secondAttribute="trailing" id="ij5-u7-uIY"/>
+                            <constraint firstAttribute="bottom" secondItem="aW8-r4-sci" secondAttribute="bottom" id="kOR-5M-sU7"/>
+                            <constraint firstAttribute="bottom" secondItem="3Wx-qs-iJq" secondAttribute="bottom" id="pmy-cA-04m"/>
+                            <constraint firstItem="aW8-r4-sci" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="x5r-hL-FCh"/>
+                            <constraint firstItem="aW8-r4-sci" firstAttribute="leading" secondItem="3Wx-qs-iJq" secondAttribute="trailing" id="z2A-dU-dSs"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="mapView" destination="3Wx-qs-iJq" id="XB9-LP-cCx"/>
+                        <outlet property="mapView2" destination="aW8-r4-sci" id="5ng-sh-Dva"/>
+                        <outlet property="mapView3" destination="USC-xw-dai" id="niO-pc-CDY"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="76" y="926"/>
+            <point key="canvasLocation" x="-554.5" y="808.5"/>
         </scene>
         <!--Gesture Demo Controller-->
         <scene sceneID="bet-cy-fkr">
@@ -743,7 +756,7 @@
                 </viewController>
                 <customObject id="3Mv-vb-yqs" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="892" y="155"/>
+            <point key="canvasLocation" x="343" y="-345"/>
         </scene>
     </scenes>
 </document>
