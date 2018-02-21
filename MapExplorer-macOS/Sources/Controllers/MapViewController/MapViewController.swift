@@ -129,7 +129,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
 
     /// If the tap is positioned on a selectable annotation, the annotation's didSelect function is invoked.
     private func didTapOnMap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let position = tap.initialPositions.first, let mapView = gestureManager.view(for: gesture) as? MKMapView, let container = mapView.subviews.first(where: { $0.className == Constants.annotationContainerClass }) else {
+        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position, let mapView = gestureManager.view(for: gesture) as? MKMapView, let container = mapView.subviews.first(where: { $0.className == Constants.annotationContainerClass }) else {
             return
         }
 
@@ -258,21 +258,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     private func add(_ placesJSON: [[String: Any]], to mapView: MKMapView) {
         let places = placesJSON.flatMap { Place(fromJSON: $0) }
         mapView.addAnnotations(places)
-    }
-
-    private func setInitialMapPositions(with screens: Double) {
-        for mapView in mapViews {
-            guard let mapViewID = mapViewIDs[mapView] else {
-                return
-            }
-
-            let xOrigin = Constants.initialMapOriginX + Double(mapViewID) * Constants.initialMapSizeWidth / (screens * 3.0)
-            let mapOrigin = MKMapPointMake(xOrigin, Constants.initialMapOriginY)
-            let mapSize = MKMapSizeMake(Constants.initialMapSizeWidth / (screens * 3.0), Constants.initialMapSizeHeight)
-
-            mapView.visibleMapRect.size = mapSize
-            mapView.visibleMapRect.origin = mapOrigin
-        }
     }
 
     /// Zoom into the annotations contained in the cluster
