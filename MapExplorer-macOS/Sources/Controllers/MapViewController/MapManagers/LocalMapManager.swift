@@ -9,7 +9,6 @@ protocol MapActivityDelegate: class {
 
 class LocalMapManager: MapActivityDelegate {
 
-    /// A collection of mapviews, indexed by their position, left -> right across windows
     private var handlerForMapView = [MKMapView: MapHandler]()
     private weak var longActivityTimer: Foundation.Timer?
 
