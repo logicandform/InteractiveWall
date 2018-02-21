@@ -12,6 +12,7 @@ class MapHandler {
 
     let mapView: MKMapView
     let mapID: Int
+    weak var delegate: MapActivityDelegate?
 
     private var pairedIndex: Int?
     private var userState = UserActivity.idle
@@ -27,9 +28,10 @@ class MapHandler {
 
     // MARK: Init
 
-    init(mapView: MKMapView, id: Int) {
+    init(mapView: MKMapView, id: Int, delegate: MapActivityDelegate?) {
         self.mapView = mapView
         self.mapID = id
+        self.delegate = delegate
     }
 
 
@@ -43,7 +45,7 @@ class MapHandler {
             pairedIndex = fromIndex
         } else if abs(mapID - fromIndex) < abs(mapID - pairedIndex!) {
             pairedIndex = fromIndex
-        } else {
+        } else if pairedIndex != fromIndex {
             return
         }
 
@@ -51,11 +53,16 @@ class MapHandler {
     }
 
     func endUpdates() {
+        userState = .idle
         beginActivityTimeout()
     }
 
     func isActive() -> Bool {
         return userState == .active
+    }
+
+    func unpair(from index: Int) {
+        pairedIndex = pairedIndex == index ? nil : pairedIndex
     }
 
 
@@ -70,14 +77,13 @@ class MapHandler {
     private func beginActivityTimeout() {
         activityTimer?.invalidate()
         activityTimer = Timer.scheduledTimer(withTimeInterval: Constants.activityTimeoutPeriod, repeats: false) { [weak self] _ in
-            guard let strongSelf = self else {
-                return
-            }
+            self?.activityTimeoutFired()
+        }
+    }
 
-            // Ensure that user is not currently panning
-            if strongSelf.userState == .idle {
-                strongSelf.pairedIndex = nil
-            }
+    private func activityTimeoutFired() {
+        if userState == .idle {
+            delegate?.activityEnded(for: mapID)
         }
     }
 }

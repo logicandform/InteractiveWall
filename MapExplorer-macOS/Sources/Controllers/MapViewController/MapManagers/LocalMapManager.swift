@@ -3,7 +3,11 @@
 import Foundation
 import MapKit
 
-class LocalMapManager {
+protocol MapActivityDelegate: class {
+    func activityEnded(for mapIndex: Int)
+}
+
+class LocalMapManager: MapActivityDelegate {
 
     /// A collection of mapviews, indexed by their position, left -> right across windows
     private var handlerForMapView = [MKMapView: MapHandler]()
@@ -19,7 +23,7 @@ class LocalMapManager {
     func add(_ maps: [MKMapView]) {
         for mapView in maps {
             let id = handlerForMapView.count
-            handlerForMapView[mapView] = MapHandler(mapView: mapView, id: id)
+            handlerForMapView[mapView] = MapHandler(mapView: mapView, id: id, delegate: self)
         }
     }
 
@@ -31,6 +35,7 @@ class LocalMapManager {
         for handler in handlerForMapView.values {
             handler.handle(mapRect, fromIndex: index)
         }
+
         beginLongActivityTimeout()
     }
 
@@ -45,6 +50,14 @@ class LocalMapManager {
 
     }
 
+
+    // MARK: MapActivityDelegate
+
+    func activityEnded(for mapIndex: Int) {
+        for handler in handlerForMapView.values {
+            handler.unpair(from: mapIndex)
+        }
+    }
 
     // MARK: Helpers
 

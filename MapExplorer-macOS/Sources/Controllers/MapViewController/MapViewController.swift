@@ -55,7 +55,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             mapViews.append(mapView)
             mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
             mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
-            createPlaces(for: mapView)
+//            createPlaces(for: mapView)
             mapView.delegate = self
         }
     }
