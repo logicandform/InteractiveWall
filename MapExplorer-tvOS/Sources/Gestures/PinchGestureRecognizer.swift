@@ -39,25 +39,30 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     // MARK: API
 
     func start(_ touch: Touch, with properties: TouchProperties) {
-        if state == .began {
-            state = .failed
-        } else if (state == .possible || state == .momentum)  && fingers == properties.touchCount {
+        guard fingers == properties.touchCount else {
+            return
+        }
+
+        switch state {
+        case .possible, .momentum:
             self.momentumTimer?.invalidate()
             state = .began
             spreads.append(properties.spread)
             lastPosition = properties.cog
+        default:
+            return
         }
     }
 
     func move(_ touch: Touch, with properties: TouchProperties) {
-        guard let lastSpread = getLastSpreads().last, let lastPosition = lastPosition else {
+        guard let lastSpread = getLastSpreads().last, let lastPosition = lastPosition, properties.touchCount == fingers else {
             return
         }
 
         switch state {
         case .began where abs(properties.spread / lastSpread - 1.0) > Constants.minimumSpreadThreshhold:
-            gestureUpdated?(self)
             state = .recognized
+            fallthrough
         case .recognized:
             scale = properties.spread / lastSpread
             delta = CGVector(dx: properties.cog.x - lastPosition.x, dy: properties.cog.y - lastPosition.y)
