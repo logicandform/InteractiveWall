@@ -52,6 +52,9 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             return
         }
 
+        positionForTouch[touch] = touch.position
+
+
         switch state {
         case .possible, .momentum:
             state = .began
@@ -59,7 +62,6 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             fallthrough
         case .recognized:
             momentumTimer?.invalidate()
-            positionForTouch[touch] = touch.position
             lastTouchCount = properties.touchCount
         default:
             return
