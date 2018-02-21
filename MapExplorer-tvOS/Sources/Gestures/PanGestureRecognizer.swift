@@ -20,7 +20,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     private(set) var delta = CGVector.zero
     private(set) var fingers: [Int]
 
-    private var locations = [CGPoint]() 
+    private var locations = [CGPoint]()
     private var positionForTouch = [Touch: CGPoint]()
     private var momentumTimer: Timer?
     private var frictionFactor = Constants.initialFrictionFactor

@@ -42,7 +42,6 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
 
         let delta = CGVector(dx: initialPosition.x - touch.position.x, dy: initialPosition.y - touch.position.y)
         let distance = sqrt(pow(delta.dx, 2) + pow(delta.dy, 2))
-        print(distance)
         if distance > Constants.maximumDistanceMoved {
             positionForTouch.removeValue(forKey: touch)
         }
