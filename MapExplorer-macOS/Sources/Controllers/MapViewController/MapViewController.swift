@@ -19,10 +19,20 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         static let annotationContainerClass = "MKNewAnnotationContainerView"
         static let maxZoomWidth: Double =  134217730
         static let annotationHitSize = CGSize(width: 50, height: 50)
+        static let numberOfScreens = 1.0
+        static let initialMapOriginX = 6000000.0
+        static let initialMapOriginY = 62000000.0
+        static let initialMapSizeWidth = 120000000.0
+        static let initialMapSizeHeight = 0.0
     }
 
     @IBOutlet weak var mapView: MKMapView!
-    private var activityController: ActivityController?
+    @IBOutlet weak var mapView2: MKMapView!
+    @IBOutlet weak var mapView3: MKMapView!
+
+    var mapViewIDs = [MKMapView: Int]()
+    var mapViews: [MKMapView]!
+    private var activityController: NetworkMapActivityController?
     private let socketManager = SocketManager(networkConfiguration: touchNetwork)
     private var gestureManager: GestureManager!
 
@@ -38,9 +48,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     }
 
     override func viewWillAppear() {
-//        activityController = NetworkMapActivityController(map: mapView)
         view.window?.toggleFullScreen(nil)
-        activityController?.resetMap()
+        setInitialMapPositions(with: Constants.numberOfScreens)
     }
 
 
@@ -50,7 +59,12 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
         mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
         createMapPlaces()
+        mapViewIDs[mapView] = 0
+        mapViewIDs[mapView2] = 1
+        mapViewIDs[mapView3] = 2
+        mapViews = [mapView, mapView2, mapView3]
         mapView.delegate = self
+
 //        let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
 //        overlay.canReplaceMapContent = true
 //        mapView.add(overlay)
@@ -252,6 +266,21 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     private func addPlacesToMap(placesJSON: [[String: Any]]) {
         let places = placesJSON.flatMap { Place(fromJSON: $0) }
         mapView.addAnnotations(places)
+    }
+
+    private func setInitialMapPositions(with screens: Double) {
+        for mapView in mapViews {
+            guard let mapViewID = mapViewIDs[mapView] else {
+                return
+            }
+
+            let xOrigin = Constants.initialMapOriginX + Double(mapViewID) * Constants.initialMapSizeWidth / (screens * 3.0)
+            let mapOrigin = MKMapPointMake(xOrigin, Constants.initialMapOriginY)
+            let mapSize = MKMapSizeMake(Constants.initialMapSizeWidth / (screens * 3.0), Constants.initialMapSizeHeight)
+
+            mapView.visibleMapRect.size = mapSize
+            mapView.visibleMapRect.origin = mapOrigin
+        }
     }
 
     /// Zoom into the annotations contained in the cluster

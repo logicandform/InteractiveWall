@@ -22,6 +22,8 @@ protocol ActivityController: class {
 
 
 class NetworkMapActivityController: ActivityController, SocketManagerDelegate {
+
+
     static let mapNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 13333)
 
     private struct Constants {
@@ -32,8 +34,6 @@ class NetworkMapActivityController: ActivityController, SocketManagerDelegate {
         static let activityTimeoutPeriod: TimeInterval = 4
         static let longActivityTimeoutPeriod: TimeInterval = 10
         static let devicesPerColumnKey = "devicesInColumnPreference"
-        static let initialMapOrigin = MKMapPoint(x: 11435029.807890361, y: 46239458.820914999)
-        static let initialMapSize = MKMapSize(width: 105959171.60879987, height: 59602034.029949859)
     }
 
     private let mapView: MKMapView
@@ -71,6 +71,9 @@ class NetworkMapActivityController: ActivityController, SocketManagerDelegate {
 
     // MARK: API
 
+    func resetMap() {
+    }
+
     func beginSendingPosition() {
         userState = .active
         pairedDeviceID = deviceID
@@ -86,12 +89,6 @@ class NetworkMapActivityController: ActivityController, SocketManagerDelegate {
         sendPositionTimer?.invalidate()
     }
 
-    func resetMap() {
-        var size = Constants.initialMapSize
-        size /= Double(devicesInColumn)
-        set(MKMapRect(origin: Constants.initialMapOrigin, size: size), packetID: Constants.masterDeviceID)
-    }
-
 
     // MARK: SocketManagerDelegate
 
@@ -105,8 +102,6 @@ class NetworkMapActivityController: ActivityController, SocketManagerDelegate {
             handleZoomAndCenter(packet: packet)
         case .disconnection:
             handleDisconnection(packet: packet)
-        case .reset:
-            resetMap()
         default:
             break
         }
