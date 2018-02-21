@@ -57,15 +57,14 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
 
     func setupMap() {
         mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
-        mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
+        mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
         createMapPlaces()
         mapViewIDs[mapView] = 0
         mapViewIDs[mapView2] = 1
         mapViewIDs[mapView3] = 2
         mapViews = [mapView, mapView2, mapView3]
-        for mapView in mapViews {
-            mapView.delegate = self
-        }
+        mapView.delegate = self
+
 //        let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
 //        overlay.canReplaceMapContent = true
 //        mapView.add(overlay)
