@@ -35,6 +35,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     private var activityController: MapActivityController?
     private let socketManager = SocketManager(networkConfiguration: touchNetwork)
     private var gestureManager: GestureManager!
+    private var lastOrigin: MKMapPoint = MKMapPointMake(Constants.initialMapOriginX, Constants.initialMapOriginY)
 
 
     // MARK: Lifecycle
@@ -273,10 +274,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             guard let mapViewID = mapViewIDs[mapView] else {
                 return
             }
-            
+
             let xOrigin = Constants.initialMapOriginX + Double(mapViewID) * Constants.initialMapSizeWidth / (screens * 3.0)
-            let deviceOffset = Double(deviceID - 1) * (Constants.initialMapSizeWidth / screens)
-            let mapOrigin = MKMapPointMake(xOrigin + deviceOffset, Constants.initialMapOriginY)
+            let mapOrigin = MKMapPointMake(xOrigin, Constants.initialMapOriginY)
             let mapSize = MKMapSizeMake(Constants.initialMapSizeWidth / (screens * 3.0), Constants.initialMapSizeHeight)
             let rect = MKMapRect(origin: mapOrigin, size: mapSize)
 

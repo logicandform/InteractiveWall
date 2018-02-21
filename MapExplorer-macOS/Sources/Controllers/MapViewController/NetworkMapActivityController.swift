@@ -11,7 +11,7 @@ fileprivate enum UserActivity {
 }
 
 
-let deviceID = Int32(1)
+let deviceID = Int32(2)
 
 
 protocol ActivityController: class {
