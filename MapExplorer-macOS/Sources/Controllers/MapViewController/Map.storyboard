@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="TYK-5A-x82">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <plugIn identifier="com.apple.MapKitIBPlugin" version="13771"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
+    </dependencies>
+    <scenes>
+        <!--Map View Controller-->
+        <scene sceneID="3Z0-BZ-FpD">
+            <objects>
+                <viewController id="TYK-5A-x82" customClass="MapViewController" customModule="MapExplorer_macOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="qa6-7c-s1W">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="417"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <stackView distribution="fillEqually" orientation="horizontal" alignment="top" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Xn-eu-cRu">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="417"/>
+                                <subviews>
+                                    <mapView mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsBuildings="NO" showsPointsOfInterest="NO" showsCompass="NO" showsZoomControls="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6rS-Jm-7lB" userLabel="Map View 1">
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="417"/>
+                                    </mapView>
+                                    <mapView mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsBuildings="NO" showsPointsOfInterest="NO" showsCompass="NO" showsZoomControls="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2eJ-fz-7wo" userLabel="Map View 2">
+                                        <rect key="frame" x="200" y="0.0" width="200" height="417"/>
+                                    </mapView>
+                                    <mapView mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsBuildings="NO" showsPointsOfInterest="NO" showsCompass="NO" showsZoomControls="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iba-PJ-trX" userLabel="Map View 3">
+                                        <rect key="frame" x="400" y="0.0" width="200" height="417"/>
+                                    </mapView>
+                                </subviews>
+                                <visibilityPriorities>
+                                    <real value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
+                            </stackView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="4Xn-eu-cRu" firstAttribute="leading" secondItem="qa6-7c-s1W" secondAttribute="leading" id="0f1-JK-eiw"/>
+                            <constraint firstItem="4Xn-eu-cRu" firstAttribute="top" secondItem="qa6-7c-s1W" secondAttribute="top" id="2Ci-pO-fbX"/>
+                            <constraint firstAttribute="trailing" secondItem="4Xn-eu-cRu" secondAttribute="trailing" id="R0Y-fm-B6s"/>
+                            <constraint firstAttribute="bottom" secondItem="4Xn-eu-cRu" secondAttribute="bottom" id="Yan-44-nNU"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="stackView" destination="4Xn-eu-cRu" id="CXu-wU-DRH"/>
+                    </connections>
+                </viewController>
+                <customObject id="TEP-w5-kbz" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="27" y="165.5"/>
+        </scene>
+    </scenes>
+</document>

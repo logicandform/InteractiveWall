@@ -6,7 +6,8 @@ import AppKit
 class PlaceView: MKAnnotationView, SelectableView {
     static let identifier = "PlaceView"
 
-    var didSelect: ((Place) -> Void)?
+    weak var mapView: MKMapView?
+    var didSelect: ((Place, MKMapView) -> Void)?
 
     override var annotation: MKAnnotation? {
         willSet {
@@ -22,8 +23,8 @@ class PlaceView: MKAnnotationView, SelectableView {
 
     @objc
     func didSelectView() {
-        if let place = annotation as? Place {
-            didSelect?(place)
+        if let place = annotation as? Place, let mapView = mapView {
+            didSelect?(place, mapView)
         }
     }
 }

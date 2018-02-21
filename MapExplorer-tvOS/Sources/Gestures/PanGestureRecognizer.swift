@@ -103,6 +103,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             beginMomentum(with: velocity, for: touchCount)
         } else {
             reset()
+            gestureUpdated?(self)
         }
     }
 
@@ -142,5 +143,6 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     private func endMomentum() {
         momentumTimer?.invalidate()
         reset()
+        gestureUpdated?(self)
     }
 }
