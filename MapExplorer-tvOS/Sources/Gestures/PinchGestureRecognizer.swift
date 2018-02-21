@@ -83,6 +83,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             beginMomentum(lastSpread, secondLastSpread, with: properties)
         } else {
             reset()
+            gestureUpdated?(self)
         }
     }
 
@@ -123,5 +124,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private func endMomentum() {
         self.momentumTimer?.invalidate()
         self.reset()
+        gestureUpdated?(self)
     }
 }
