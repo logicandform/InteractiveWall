@@ -6,7 +6,7 @@ import AppKit
 class PanGestureRecognizer: NSObject, GestureRecognizer {
 
     private struct Constants {
-        static let recognizedThreshhold: CGFloat = 100
+        static let recognizedThreshhold: CGFloat = 20
         static let minimumFingers = 1
         static let minimumDeltaThreshold: Double = 8
         static let initialFrictionFactor = 1.05
@@ -20,7 +20,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     private(set) var delta = CGVector.zero
     private(set) var fingers: [Int]
 
-    private var locations = [CGPoint]()
+    private var locations = [CGPoint]() 
     private var positionForTouch = [Touch: CGPoint]()
     private var momentumTimer: Timer?
     private var frictionFactor = Constants.initialFrictionFactor
@@ -75,7 +75,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         lastTouchCount = properties.touchCount
 
         switch state {
-        case .began:
+        case .began where sqrt(pow(properties.cog.x - currentLocation.x, 2) + pow(properties.cog.y - currentLocation.y, 2)) > Constants.recognizedThreshhold:
             state = .recognized
             fallthrough
         case .recognized:

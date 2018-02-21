@@ -6,7 +6,7 @@ import AppKit
 class TapGestureRecognizer: NSObject, GestureRecognizer {
 
     private struct Constants {
-        static let maximumDistanceMoved: CGFloat = 100
+        static let maximumDistanceMoved: CGFloat = 20
         static let minimumFingers = 1
     }
 
@@ -42,6 +42,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
 
         let delta = CGVector(dx: initialPosition.x - touch.position.x, dy: initialPosition.y - touch.position.y)
         let distance = sqrt(pow(delta.dx, 2) + pow(delta.dy, 2))
+        print(distance)
         if distance > Constants.maximumDistanceMoved {
             positionForTouch.removeValue(forKey: touch)
         }
