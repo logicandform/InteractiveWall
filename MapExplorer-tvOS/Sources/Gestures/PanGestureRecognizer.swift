@@ -53,8 +53,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         }
 
         positionForTouch[touch] = touch.position
-
-
+        
         switch state {
         case .possible, .momentum:
             state = .began
