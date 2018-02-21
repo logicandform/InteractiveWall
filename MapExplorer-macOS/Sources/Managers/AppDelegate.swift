@@ -2,12 +2,13 @@
 
 import Cocoa
 
+struct Configuration {
+    static let numberOfWindows = 1
+    static let touchScreenSize = CGSize(width: 4095, height: 2242.5)
+}
+
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
-
-    private struct Configuration {
-        static let numberOfWindows = 1
-    }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
 

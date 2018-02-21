@@ -12,7 +12,6 @@ protocol GestureResponder: class {
 final class GestureManager {
 
     private struct Constants {
-        static let planarScreenSize = CGSize(width: 4095, height: 2242.5)
         static let indicatorRadius: CGFloat = 20
     }
 
@@ -85,11 +84,11 @@ final class GestureManager {
         return handler
     }
 
-    /// Converts a position received from a planar screen to the coordinate of the current devices bounds.
+    /// Converts a position received from a touch screen to the coordinate of the current devices bounds.
     private func convertToResponder(_ touch: Touch) {
         let screen = responder.view.bounds
-        let xPos = touch.position.x / Constants.planarScreenSize.width * CGFloat(screen.width)
-        let yPos = (1 - touch.position.y / Constants.planarScreenSize.height) * CGFloat(screen.height)
+        let xPos = touch.position.x / Configuration.touchScreenSize.width * CGFloat(screen.width)
+        let yPos = (1 - touch.position.y / Configuration.touchScreenSize.height) * CGFloat(screen.height)
         touch.position = CGPoint(x: xPos, y: yPos)
     }
 
