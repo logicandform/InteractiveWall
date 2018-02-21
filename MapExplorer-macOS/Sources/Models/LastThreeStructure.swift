@@ -2,20 +2,20 @@
 
 import Foundation
 
-class LastThreeStructure<Element> {
-    var last: Element? {
+class LastThreeStructure<RecentElement> {
+    var last: RecentElement? {
         willSet {
             intermediate = last
         }
     }
-    var intermediate: Element? {
+    var intermediate: RecentElement? {
         willSet {
             secondLast = intermediate
         }
     }
-    var secondLast: Element?
+    var secondLast: RecentElement?
 
-    func add(_ element: Element) {
+    func add(_ element: RecentElement) {
         last = element
     }
 

@@ -29,9 +29,9 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     private var currentVelocity: CGVector? {
         if let last = locations.last, let secondLast = locations.secondLast {
             return CGVector(dx: last.x - secondLast.x, dy: last.y - secondLast.y)
-        } else {
-            return nil
         }
+
+        return nil
     }
 
 
