@@ -50,6 +50,7 @@
 		22FEF1DF202CFFFA001E9596 /* Touch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1DE202CFFFA001E9596 /* Touch.swift */; };
 		22FEF1E1202D005D001E9596 /* TouchProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1E0202D005D001E9596 /* TouchProperties.swift */; };
 		67C759AB770299C488231A9D /* Pods_All_MapExplorer_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */; };
+		8F6F13C5203DF0D400891995 /* LastThreeStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F6F13C4203DF0D400891995 /* LastThreeStructure.swift */; };
 		8F717365202CECDE003480FF /* 5V Relay.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 8F717364202CECDE003480FF /* 5V Relay.pdf */; };
 		8F8AEF84202BAD9400F7970D /* PDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8AEF83202BAD9400F7970D /* PDFViewController.swift */; };
 /* End PBXBuildFile section */
@@ -102,6 +103,7 @@
 		22FEF1E0202D005D001E9596 /* TouchProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchProperties.swift; sourceTree = "<group>"; };
 		26A4912457E23A30817143A3 /* Pods-All-MapExplorer-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-macOS.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-macOS/Pods-All-MapExplorer-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		39B2384F39CC84964B0970BD /* Pods-MapExplorer-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.release.xcconfig"; sourceTree = "<group>"; };
+		8F6F13C4203DF0D400891995 /* LastThreeStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastThreeStructure.swift; sourceTree = "<group>"; };
 		8F717364202CECDE003480FF /* 5V Relay.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "5V Relay.pdf"; sourceTree = "<group>"; };
 		8F8AEF83202BAD9400F7970D /* PDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewController.swift; sourceTree = "<group>"; };
 		9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_MapExplorer_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -219,6 +221,7 @@
 				221C62A2203B4A18009493DA /* Occurance.swift */,
 				221C62A4203B4A20009493DA /* Artifact.swift */,
 				22345DAC203B61E400A39AB5 /* NewPlace.swift */,
+				8F6F13C4203DF0D400891995 /* LastThreeStructure.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -489,6 +492,7 @@
 				226EA70120296C240067B542 /* NSImage.swift in Sources */,
 				22FEF1E1202D005D001E9596 /* TouchProperties.swift in Sources */,
 				8F8AEF84202BAD9400F7970D /* PDFViewController.swift in Sources */,
+				8F6F13C5203DF0D400891995 /* LastThreeStructure.swift in Sources */,
 				221C62A8203B57F7009493DA /* URL.swift in Sources */,
 				22290C302028FA1F000E0573 /* Discipline.swift in Sources */,
 				22290C2B2028FA1F000E0573 /* PlaceView.swift in Sources */,
