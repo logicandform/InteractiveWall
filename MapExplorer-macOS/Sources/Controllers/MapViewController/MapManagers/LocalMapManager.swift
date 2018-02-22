@@ -37,7 +37,7 @@ class LocalMapManager: MapActivityDelegate {
             handler.handle(mapRect, fromIndex: index)
         }
 
-        beginLongActivityTimeout()
+//        beginLongActivityTimeout()
     }
 
     func finishedUpdating(_ mapView: MKMapView) {
