@@ -25,9 +25,9 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
 //        gestureManager.add(tapGesture, to: rect)
 //        tapGesture.gestureUpdated = rectTapped(_:)
 //
-//        let panGesture = PanGestureRecognizer(withFingers: [1, 2, 3, 4, 5])
-//        gestureManager.add(panGesture, to: rect)
-//        panGesture.gestureUpdated = rectPanned(_:)
+        let panGesture = PanGestureRecognizer(withFingers: [1, 2, 3, 4, 5])
+        gestureManager.add(panGesture, to: rect)
+        panGesture.gestureUpdated = rectPanned(_:)
 
         let pinchGesture = PinchGestureRecognizer()
         gestureManager.add(pinchGesture, to: rect)
