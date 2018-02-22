@@ -12,8 +12,8 @@ class MapHandler {
 
     let mapView: MKMapView
     let mapID: Int
-    weak var delegate: MapActivityDelegate?
 
+    private weak var delegate: MapActivityDelegate?
     private var pairedIndex: Int?
     private var userState = UserActivity.idle
     private weak var activityTimer: Foundation.Timer?
@@ -24,6 +24,9 @@ class MapHandler {
 
     private struct Constants {
         static let activityTimeoutPeriod: TimeInterval = 4
+        static let numberOfScreens = 1.0
+        static let initialMapOrigin = MKMapPointMake(6000000.0, 62000000.0)
+        static let initialMapSize = MKMapSizeMake(120000000.0 / (Constants.numberOfScreens * 3), 0.0)
     }
 
     // MARK: Init
@@ -65,19 +68,26 @@ class MapHandler {
         pairedIndex = pairedIndex == index ? nil : pairedIndex
     }
 
+    func reset() {
+        var mapRect = MKMapRect(origin: Constants.initialMapOrigin, size: Constants.initialMapSize)
+        mapRect.origin.x = Constants.initialMapOrigin.x + Double(mapID) * Constants.initialMapSize.width
+        mapView.visibleMapRect = mapRect
+    }
+
 
     // MARK: Helpers
 
     /// Sets the visble rect of self.mapView based on the current pairedIndex
     private func set(_ mapRect: MKMapRect) {
-        self.mapView.setVisibleMapRect(mapRect, animated: false)
+        guard let pairedIndex = pairedIndex else {
+            return
+        }
 
-//        let xOrigin = Constants.initialMapOriginX + Double(mapViewID) * Constants.initialMapSizeWidth / (screens * 3.0)
-//        let mapOrigin = MKMapPointMake(xOrigin, Constants.initialMapOriginY)
-//        let mapSize = MKMapSizeMake(Constants.initialMapSizeWidth / (screens * 3.0), Constants.initialMapSizeHeight)
-//
-//        mapView.visibleMapRect.size = mapSize
-//        mapView.visibleMapRect.origin = mapOrigin
+        let xOrigin = mapRect.origin.x + Double(mapID - pairedIndex) * mapRect.size.width
+        let mapOrigin = MKMapPointMake(xOrigin, mapRect.origin.y)
+
+        mapView.visibleMapRect.size = mapRect.size
+        mapView.visibleMapRect.origin = mapOrigin
     }
 
     /// Resets the pairedDeviceID after a timeout period
