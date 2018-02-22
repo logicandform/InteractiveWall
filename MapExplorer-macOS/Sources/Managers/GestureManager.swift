@@ -70,7 +70,8 @@ final class GestureManager {
     private func handleTouchDown(_ touch: Touch) {
         displayTouchIndicator(at: touch.position)
 
-        if let view = target(in: responder.view, at: touch.position), let handler = gestureHandlers[view] {
+        if let view = target(in: responder.view, at: touch.position), let handler = gestureHandlers[view], let transform = transform(for: view, from: responder.view) {
+            handler.set(transform)
             handler.handle(touch)
         }
     }
@@ -118,7 +119,7 @@ final class GestureManager {
             return nil
         }
 
-        let positionInBounds = transform(point, from: view)
+        let positionInBounds = point.transformed(to: view)
         for subview in view.subviews.reversed() {
             if let target = target(in: subview, at: positionInBounds) {
                 return target
@@ -128,8 +129,18 @@ final class GestureManager {
         return gestureHandlers.keys.contains(view) ? view : nil
     }
 
-    /// Transforms a point into the bounds of a given view.
-    private func transform(_ point: CGPoint, from parent: NSView) -> NSPoint {
-        return CGPoint(x: point.x - parent.frame.origin.x, y: point.y - parent.frame.origin.y)
+    private func transform(for target: NSView, from view: NSView, current: CGAffineTransform = CGAffineTransform.identity) -> CGAffineTransform? {
+        if view === target {
+            return current
+        }
+
+        for subview in view.subviews {
+            let t = current.translatedBy(x: -subview.frame.origin.x, y: -subview.frame.origin.y)
+            if let transform = transform(for: target, from: subview, current: t) {
+                return transform
+            }
+        }
+
+        return nil
     }
 }
