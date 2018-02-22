@@ -3,9 +3,11 @@
 import Foundation
 import MapKit
 
+
 protocol MapActivityDelegate: class {
     func activityEnded(for mapIndex: Int)
 }
+
 
 class LocalMapManager: MapActivityDelegate {
 
@@ -46,7 +48,9 @@ class LocalMapManager: MapActivityDelegate {
 
     /// Sync all maps to an initial region
     func reset() {
-
+        for handler in handlerForMapView.values {
+            handler.reset()
+        }
     }
 
 
@@ -57,6 +61,7 @@ class LocalMapManager: MapActivityDelegate {
             handler.unpair(from: mapIndex)
         }
     }
+
 
     // MARK: Helpers
 

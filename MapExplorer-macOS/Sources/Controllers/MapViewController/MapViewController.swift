@@ -11,7 +11,7 @@ protocol ViewManagerDelegate: class {
 }
 
 
-class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegate, GestureResponder, SocketManagerDelegate {
+class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegate, GestureResponder, SocketManagerDelegate, NSGestureRecognizerDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Map")
     static let touchNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12222)
 
@@ -45,9 +45,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     }
 
     override func viewWillAppear() {
-//        activityController = NetworkMapActivityController(map: mapView)
-//        view.window?.toggleFullScreen(nil)
-        mapManager?.reset()
+        view.window?.toggleFullScreen(nil)
     }
 
     func setupMaps() {
@@ -62,6 +60,15 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
 
     func setupGestures() {
         mapViews.forEach { mapView in
+            let nsPan = NSPanGestureRecognizer(target: self, action: #selector(didPanMouse(_:)))
+            nsPan.delegate = self
+            mapView.addGestureRecognizer(nsPan)
+
+            let nsPinch = NSMagnificationGestureRecognizer(target: self, action: #selector(didPinchTrackpad(_:)))
+            nsPinch.delegate = self
+            nsPinch.delaysMagnificationEvents = false
+            mapView.addGestureRecognizer(nsPinch)
+
             let tapGesture = TapGestureRecognizer()
             gestureManager.add(tapGesture, to: mapView)
             tapGesture.gestureUpdated = didTapOnMap(_:)
@@ -150,6 +157,48 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         }
 
         selected.first?.didSelectView()
+    }
+
+
+    /// Used to handle pan events recorded by a mouse
+    @objc
+    func didPanMouse(_ gesture: NSPanGestureRecognizer) {
+        guard let mapView = mapViews.first(where: { $0.gestureRecognizers.contains(gesture) }) else {
+            return
+        }
+
+        switch gesture.state {
+        case .changed:
+            mapManager?.set(mapView.visibleMapRect, of: mapView)
+        case .ended:
+            mapManager?.finishedUpdating(mapView)
+        default:
+            return
+        }
+    }
+
+    /// Used to handle pinch events recorded by a trackpad
+    @objc
+    func didPinchTrackpad(_ gesture: NSMagnificationGestureRecognizer) {
+        guard let mapView = mapViews.first(where: { $0.gestureRecognizers.contains(gesture) }) else {
+            return
+        }
+
+        switch gesture.state {
+        case .changed:
+            mapManager?.set(mapView.visibleMapRect, of: mapView)
+        case .ended:
+            mapManager?.finishedUpdating(mapView)
+        default:
+            return
+        }
+    }
+
+
+    // MARK: NSGestureRecognizerDelegate
+
+    func gestureRecognizer(_ gestureRecognizer: NSGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: NSGestureRecognizer) -> Bool {
+        return true
     }
 
 
