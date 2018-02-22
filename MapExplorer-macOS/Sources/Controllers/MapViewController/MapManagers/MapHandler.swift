@@ -70,7 +70,7 @@ class MapHandler {
 
     /// Sets the visble rect of self.mapView based on the current pairedIndex
     private func set(_ mapRect: MKMapRect) {
-        mapView.setVisibleMapRect(mapRect, animated: false)
+        self.mapView.setVisibleMapRect(mapRect, animated: false)
 
 //        let xOrigin = Constants.initialMapOriginX + Double(mapViewID) * Constants.initialMapSizeWidth / (screens * 3.0)
 //        let mapOrigin = MKMapPointMake(xOrigin, Constants.initialMapOriginY)

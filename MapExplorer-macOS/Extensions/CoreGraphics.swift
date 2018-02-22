@@ -2,8 +2,19 @@
 
 import Foundation
 import CoreGraphics
+import AppKit
 
 extension CGPoint {
+
+    /// Subtracts the given view's origin from the point.
+    func transformed(to view: NSView) -> CGPoint {
+        return CGPoint(x: x - view.frame.origin.x, y: y - view.frame.origin.y)
+    }
+
+    /// Flips the coordinate system of the point in a given view.
+    func inverted(in view: NSView) -> CGPoint {
+        return CGPoint(x: x, y: view.frame.size.height - y)
+    }
 
     static func + (lhs: CGPoint, rhs: CGPoint) -> CGVector {
         return CGVector(dx: lhs.x + rhs.x, dy: lhs.y + rhs.y)

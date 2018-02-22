@@ -55,7 +55,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             mapViews.append(mapView)
             mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
             mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
-//            createPlaces(for: mapView)
+            createPlaces(for: mapView)
             mapView.delegate = self
         }
     }
@@ -137,9 +137,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
 
         for annotation in container.subviews {
             let radius = Constants.annotationHitSize.width / 2
-            let hitFrame = CGRect(origin: CGPoint(x: annotation.frame.midX - radius, y: mapView.frame.height - annotation.frame.midY - radius), size: Constants.annotationHitSize)
+            let hitFrame = CGRect(origin: CGPoint(x: annotation.frame.midX - radius, y: annotation.frame.midY - radius), size: Constants.annotationHitSize)
 
-            if let selectableView = annotation as? SelectableView, hitFrame.contains(position) {
+            if let selectableView = annotation as? SelectableView, hitFrame.contains(position.inverted(in: mapView)) {
                 if let cluster = selectableView as? ClusterView {
                     cluster.didSelectView()
                     return

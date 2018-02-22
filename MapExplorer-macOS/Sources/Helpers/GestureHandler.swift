@@ -6,6 +6,7 @@ class GestureHandler {
 
     private var touches = Set<Touch>()
     private var gestures: [GestureRecognizer]
+    private var transform: CGAffineTransform!
     private var properties: TouchProperties {
         let c = centerOfGravity(for: touches)
         let (a, s) = angleAndSpread(of: touches)
@@ -26,7 +27,14 @@ class GestureHandler {
         gestures.append(gesture)
     }
 
+    /// Set the transform that will be applied to each handled touch.
+    func set(_ t: CGAffineTransform) {
+        transform = t
+    }
+
     func handle(_ touch: Touch) {
+        applyTransform(to: touch)
+
         switch touch.state {
         case .down:
             handleTouchDown(touch)
@@ -65,6 +73,11 @@ class GestureHandler {
         gestures.forEach { gesture in
             gesture.end(touch, with: properties)
         }
+    }
+
+    /// Apply the transform for this gesture's associated view to the position of the touch.
+    private func applyTransform(to touch: Touch) {
+        touch.position = touch.position.applying(transform)
     }
 
     /// Calculate the center of gravity of the touches involved

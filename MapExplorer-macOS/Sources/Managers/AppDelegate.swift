@@ -20,6 +20,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             let mapWindow = NSWindow(contentViewController: mapVC)
             mapWindow.title = "Map Window \(index)"
             mapWindow.makeKeyAndOrderFront(self)
+            mapWindow.canHide = false
             mapManager.add(mapVC.mapViews)
             mapVC.mapManager = mapManager
         }

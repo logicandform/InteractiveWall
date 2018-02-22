@@ -1,3 +1,4 @@
+
 //  Copyright © 2018 JABT. All rights reserved.
 
 import Foundation
@@ -70,7 +71,8 @@ final class GestureManager {
     private func handleTouchDown(_ touch: Touch) {
         displayTouchIndicator(at: touch.position)
 
-        if let view = target(in: responder.view, at: touch.position), let handler = gestureHandlers[view] {
+        if let (view, transform) = target(in: responder.view, at: touch.position), let handler = gestureHandlers[view] {
+            handler.set(transform)
             handler.handle(touch)
         }
     }
@@ -112,24 +114,20 @@ final class GestureManager {
         })
     }
 
-    /// Returns the deepest possible view for the given point that is registered with a gesture handler.
-    private func target(in view: NSView, at point: CGPoint) -> NSView? {
+    /// Returns the deepest possible view for the given point that is registered with a gesture handler along with the transform to that view.
+    private func target(in view: NSView, at point: CGPoint, current: CGAffineTransform = .identity) -> (NSView, CGAffineTransform)? {
         guard view.frame.contains(point) else {
             return nil
         }
 
-        let positionInBounds = transform(point, from: view)
+        let transform = current.translatedBy(x: -view.frame.origin.x, y: -view.frame.origin.y)
+        let positionInBounds = point.transformed(to: view)
         for subview in view.subviews.reversed() {
-            if let target = target(in: subview, at: positionInBounds) {
+            if let target = target(in: subview, at: positionInBounds, current: transform) {
                 return target
             }
         }
 
-        return gestureHandlers.keys.contains(view) ? view : nil
-    }
-
-    /// Transforms a point into the bounds of a given view.
-    private func transform(_ point: CGPoint, from parent: NSView) -> NSPoint {
-        return CGPoint(x: point.x - parent.frame.origin.x, y: point.y - parent.frame.origin.y)
+        return gestureHandlers.keys.contains(view) ? (view, transform) : nil
     }
 }

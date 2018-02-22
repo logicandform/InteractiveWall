@@ -55,9 +55,9 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         gestureManager.add(singleFingerRelatedViewPan, to: relatedView)
         singleFingerRelatedViewPan.gestureUpdated = tableViewDidPan(_:)
 
-        let singleFingerDetialViewPan = PanGestureRecognizer()
-        gestureManager.add(singleFingerDetialViewPan, to: detailView)
-        singleFingerDetialViewPan.gestureUpdated = detailViewDidPan(_:)
+        let singleFingerDetailViewPan = PanGestureRecognizer()
+        gestureManager.add(singleFingerDetailViewPan, to: detailView)
+        singleFingerDetailViewPan.gestureUpdated = detailViewDidPan(_:)
 
         let singleFingerTap = TapGestureRecognizer()
         gestureManager.add(singleFingerTap, to: closeButtonView)
@@ -234,13 +234,13 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     }
 
     private func relatedViewDidTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let touchLocation = tap.position else {
+        guard let tap = gesture as? TapGestureRecognizer, let location = tap.position else {
             return
         }
 
-        let locationInRelatedView = relatedView.convert(touchLocation, from: nil)
-        let row = relatedView.row(at: locationInRelatedView)
-
+        /// Invert coordinate system for a tableview, using detailView for its static height.
+        let invertedLocation = location.inverted(in: detailView)
+        let row = relatedView.row(at: invertedLocation)
         if let relatedItemView = relatedView.view(atColumn: 0, row: row, makeIfNecessary: false) as? RelatedItemView {
             relatedItemView.didTapView()
         }
