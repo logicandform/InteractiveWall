@@ -71,7 +71,7 @@ final class GestureManager {
     private func handleTouchDown(_ touch: Touch) {
         displayTouchIndicator(at: touch.position)
 
-        if let (view, transform) = target(in: responder.view, at: touch.position, current: .identity), let handler = gestureHandlers[view] {
+        if let (view, transform) = target(in: responder.view, at: touch.position), let handler = gestureHandlers[view] {
             handler.set(transform)
             handler.handle(touch)
         }
