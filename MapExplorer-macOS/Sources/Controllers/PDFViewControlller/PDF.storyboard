@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="L0q-Ej-7hc">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <plugIn identifier="com.apple.pdfkit.ibplugin" version="13771"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="IF2-h5-8gk">
+            <objects>
+                <viewController id="L0q-Ej-7hc" customClass="PDFViewController" customModule="MapExplorer_macOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" wantsLayer="YES" id="yUg-IS-ord">
+                        <rect key="frame" x="0.0" y="0.0" width="594" height="598"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <pdfView autoresizesSubviews="NO" wantsLayer="YES" displayMode="singlePage" translatesAutoresizingMaskIntoConstraints="NO" id="9sa-sL-uGn">
+                                <rect key="frame" x="0.0" y="0.0" width="594" height="598"/>
+                            </pdfView>
+                            <pdfThumbnailView wantsLayer="YES" canDrawConcurrently="YES" allowsDragging="NO" translatesAutoresizingMaskIntoConstraints="NO" id="34y-mn-1FQ">
+                                <rect key="frame" x="0.0" y="0.0" width="67" height="598"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="67" id="d7f-mx-1gQ"/>
+                                </constraints>
+                                <size key="thumbnailSize" width="64" height="64"/>
+                            </pdfThumbnailView>
+                            <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cDw-xO-f0r" userLabel="Close Button">
+                                <rect key="frame" x="563" y="567" width="29" height="26"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="disclosure" bezelStyle="roundedDisclosure" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="cdA-ou-9ce">
+                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="closeButtonTapped:" target="L0q-Ej-7hc" id="qHj-1S-mCf"/>
+                                </connections>
+                            </button>
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WSi-B9-yo0">
+                                <rect key="frame" x="563" y="568" width="29" height="26"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            </customView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="34y-mn-1FQ" firstAttribute="leading" secondItem="9sa-sL-uGn" secondAttribute="leading" id="5BK-Q7-1hB"/>
+                            <constraint firstItem="9sa-sL-uGn" firstAttribute="top" secondItem="yUg-IS-ord" secondAttribute="top" id="R4s-F6-PYV"/>
+                            <constraint firstAttribute="trailing" secondItem="9sa-sL-uGn" secondAttribute="trailing" id="VAU-rR-nO6"/>
+                            <constraint firstItem="34y-mn-1FQ" firstAttribute="top" secondItem="yUg-IS-ord" secondAttribute="top" id="ZWn-uc-aSC"/>
+                            <constraint firstAttribute="bottom" secondItem="34y-mn-1FQ" secondAttribute="bottom" id="Zd9-5S-78V"/>
+                            <constraint firstItem="9sa-sL-uGn" firstAttribute="leading" secondItem="yUg-IS-ord" secondAttribute="leading" id="ear-bp-PaG"/>
+                            <constraint firstAttribute="bottom" secondItem="9sa-sL-uGn" secondAttribute="bottom" id="sM8-De-EWb"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="closeButtonView" destination="WSi-B9-yo0" id="zWh-8C-xI6"/>
+                        <outlet property="pdfThumbnailView" destination="34y-mn-1FQ" id="c8y-fx-G4q"/>
+                        <outlet property="pdfView" destination="9sa-sL-uGn" id="YNl-dC-8xn"/>
+                    </connections>
+                </viewController>
+                <customObject id="UqZ-uw-oQd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="354" y="914"/>
+        </scene>
+    </scenes>
+</document>
