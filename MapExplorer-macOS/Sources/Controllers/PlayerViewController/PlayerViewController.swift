@@ -62,6 +62,10 @@ class PlayerViewController: NSViewController {
         let singleFingerPan = PanGestureRecognizer()
         gestureManager.add(singleFingerPan, to: view)
         singleFingerPan.gestureUpdated = viewDidPan(_:)
+
+        let singleFingerCloseButtonTap = TapGestureRecognizer()
+        gestureManager.add(singleFingerCloseButtonTap, to: closeButtonView)
+        singleFingerCloseButtonTap.gestureUpdated = closeButtonViewDidTap(_:)
     }
 
 
@@ -135,5 +139,13 @@ class PlayerViewController: NSViewController {
         default:
             return
         }
+    }
+
+    private func closeButtonViewDidTap(_ gesture: GestureRecognizer) {
+        guard gesture is TapGestureRecognizer else {
+            return
+        }
+
+        animateViewOut()
     }
 }
