@@ -79,6 +79,10 @@ extension CGVector {
         return CGVector(dx: lhs.dx * rhs, dy: lhs.dy * rhs)
     }
 
+    static func + (lhs: CGVector, rhs: CGVector) -> CGVector {
+        return CGVector(dx: lhs.dx + rhs.dx, dy: lhs.dy + rhs.dy)
+    }
+
     static func *= (lhs: inout CGVector, rhs: Double) {
         lhs.dx *= CGFloat(rhs)
         lhs.dy *= CGFloat(rhs)
@@ -87,6 +91,11 @@ extension CGVector {
     static func /= (lhs: inout CGVector, rhs: Double) {
         lhs.dx /= CGFloat(rhs)
         lhs.dy /= CGFloat(rhs)
+    }
+
+    static func += (lhs: inout CGVector, rhs: CGVector) {
+        lhs.dx += rhs.dx
+        lhs.dy += rhs.dy
     }
 }
 

@@ -29,7 +29,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         /// Display the DemoViewController
 //        let demoStoryboard = NSStoryboard(name: GestureDemoController.storyboard, bundle: nil)
-//        let demoVC = mapStoryboard.instantiateInitialController() as! GestureDemoController
+//        let demoVC = demoStoryboard.instantiateInitialController() as! GestureDemoController
 //        let demoWindow = NSWindow(contentViewController: demoVC)
 //        demoWindow.title = "Demo Window"
 //        demoWindow.makeKeyAndOrderFront(self)
