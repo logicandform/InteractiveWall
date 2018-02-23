@@ -34,10 +34,12 @@ class PDFViewController: NSViewController {
     // MARK: Setup
 
     private func setupPDF() {
-        pdfThumbnailView.backgroundColor = #colorLiteral(red: 0.9961728454, green: 0.9902502894, blue: 1, alpha: 0)
-        pdfView.backgroundColor = #colorLiteral(red: 0.7317136762, green: 0.81375, blue: 0.7637042526, alpha: 0.8230652265)
+        pdfThumbnailView.backgroundColor = #colorLiteral(red: 0.7317136762, green: 0.81375, blue: 0.7637042526, alpha: 0.4523822623)
+        pdfView.backgroundColor = #colorLiteral(red: 0.7317136762, green: 0.81375, blue: 0.7637042526, alpha: 0.82)
         pdfView.displayDirection = .horizontal
         pdfView.autoScales = true
+        pdfView.displayMode = .singlePage
+        pdfView.layer?.cornerRadius = 5
 
         let completeURL = Constants.url.appendingPathComponent(endURL)
         let pdfDoc = PDFDocument(url: completeURL)
@@ -70,12 +72,12 @@ class PDFViewController: NSViewController {
 
     private func animateViewIn() {
         view.alphaValue = 0.0
-        pdfView.frame.origin.x = -view.frame.size.width
+        pdfView.frame.origin.y = pdfView.frame.size.height
 
         NSAnimationContext.runAnimationGroup({_ in
             NSAnimationContext.current.duration = 0.7
             view.animator().alphaValue = 1.0
-            pdfView.animator().frame.origin.x = 0
+            pdfView.animator().frame.origin.y = 0
         })
     }
 

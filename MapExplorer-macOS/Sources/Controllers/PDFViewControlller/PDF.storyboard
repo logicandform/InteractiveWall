@@ -14,14 +14,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="594" height="598"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <pdfView autoresizesSubviews="NO" wantsLayer="YES" displayMode="singlePage" translatesAutoresizingMaskIntoConstraints="NO" id="9sa-sL-uGn">
-                                <rect key="frame" x="0.0" y="0.0" width="594" height="598"/>
+                            <pdfView autoresizesSubviews="NO" wantsLayer="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jng-ou-P9l" userLabel="PDF View">
+                                <rect key="frame" x="117" y="0.0" width="477" height="598"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </pdfView>
-                            <pdfThumbnailView wantsLayer="YES" canDrawConcurrently="YES" allowsDragging="NO" translatesAutoresizingMaskIntoConstraints="NO" id="34y-mn-1FQ">
-                                <rect key="frame" x="0.0" y="0.0" width="67" height="598"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="67" id="d7f-mx-1gQ"/>
-                                </constraints>
+                            <pdfThumbnailView wantsLayer="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Crs-wP-cLz" userLabel="PDF Thumbnail View">
+                                <rect key="frame" x="0.0" y="0.0" width="118" height="598"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <size key="thumbnailSize" width="64" height="64"/>
                             </pdfThumbnailView>
                             <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cDw-xO-f0r" userLabel="Close Button">
@@ -40,20 +39,11 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </customView>
                         </subviews>
-                        <constraints>
-                            <constraint firstItem="34y-mn-1FQ" firstAttribute="leading" secondItem="9sa-sL-uGn" secondAttribute="leading" id="5BK-Q7-1hB"/>
-                            <constraint firstItem="9sa-sL-uGn" firstAttribute="top" secondItem="yUg-IS-ord" secondAttribute="top" id="R4s-F6-PYV"/>
-                            <constraint firstAttribute="trailing" secondItem="9sa-sL-uGn" secondAttribute="trailing" id="VAU-rR-nO6"/>
-                            <constraint firstItem="34y-mn-1FQ" firstAttribute="top" secondItem="yUg-IS-ord" secondAttribute="top" id="ZWn-uc-aSC"/>
-                            <constraint firstAttribute="bottom" secondItem="34y-mn-1FQ" secondAttribute="bottom" id="Zd9-5S-78V"/>
-                            <constraint firstItem="9sa-sL-uGn" firstAttribute="leading" secondItem="yUg-IS-ord" secondAttribute="leading" id="ear-bp-PaG"/>
-                            <constraint firstAttribute="bottom" secondItem="9sa-sL-uGn" secondAttribute="bottom" id="sM8-De-EWb"/>
-                        </constraints>
                     </view>
                     <connections>
                         <outlet property="closeButtonView" destination="WSi-B9-yo0" id="zWh-8C-xI6"/>
-                        <outlet property="pdfThumbnailView" destination="34y-mn-1FQ" id="c8y-fx-G4q"/>
-                        <outlet property="pdfView" destination="9sa-sL-uGn" id="YNl-dC-8xn"/>
+                        <outlet property="pdfThumbnailView" destination="Crs-wP-cLz" id="jqg-8v-e9a"/>
+                        <outlet property="pdfView" destination="jng-ou-P9l" id="8te-MT-tk0"/>
                     </connections>
                 </viewController>
                 <customObject id="UqZ-uw-oQd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
