@@ -41,7 +41,6 @@ class PlayerViewController: NSViewController {
         setupPlayer()
         animateViewIn()
         setupGestures()
-
     }
 
 
