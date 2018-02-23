@@ -14,7 +14,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     @IBOutlet weak var relatedView: NSTableView!
     @IBOutlet weak var detailView: NSView!
     @IBOutlet weak var closeButtonView: NSView!
-    @IBOutlet weak var playerButtonView: NSTextField!
+    @IBOutlet weak var playerButtonView: NSView!
 
     private var animationHappened = false
     weak var gestureManager: GestureManager!
