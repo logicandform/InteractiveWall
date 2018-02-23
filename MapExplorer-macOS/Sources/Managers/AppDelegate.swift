@@ -27,7 +27,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         mapManager.reset()
 
-//        /// Display the DemoViewController
+        /// Display the DemoViewController
 //        let demoStoryboard = NSStoryboard(name: GestureDemoController.storyboard, bundle: nil)
 //        let demoVC = demoStoryboard.instantiateInitialController() as! GestureDemoController
 //        let demoWindow = NSWindow(contentViewController: demoVC)
