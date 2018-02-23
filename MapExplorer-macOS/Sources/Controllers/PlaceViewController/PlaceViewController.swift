@@ -14,6 +14,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     @IBOutlet weak var relatedView: NSTableView!
     @IBOutlet weak var detailView: NSView!
     @IBOutlet weak var closeButtonView: NSView!
+    @IBOutlet weak var playerButtonView: NSView!
 
     private var animationHappened = false
     weak var gestureManager: GestureManager!
@@ -61,11 +62,15 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
 
         let singleFingerTap = TapGestureRecognizer()
         gestureManager.add(singleFingerTap, to: closeButtonView)
-        singleFingerTap.gestureUpdated = detailViewDidTap(_:)
+        singleFingerTap.gestureUpdated = closeButtonViewDidTap(_:)
 
         let singleFingerRelatedViewTap = TapGestureRecognizer()
         gestureManager.add(singleFingerRelatedViewTap, to: relatedView)
         singleFingerRelatedViewTap.gestureUpdated = relatedViewDidTap(_:)
+
+        let singleFingerVideoButtonTap = TapGestureRecognizer()
+        gestureManager.add(singleFingerVideoButtonTap, to: playerButtonView)
+        singleFingerVideoButtonTap.gestureUpdated = playerButtonViewDidTap(_:)
     }
 
 
@@ -73,6 +78,10 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
 
     @IBAction func closeButtonTapped(_ sender: Any) {
         animateViewOut()
+    }
+
+    @IBAction func videoButtonTapped(_ sender: Any) {
+        viewDelegate?.displayView(for: "Test Video.mp4", from: view)
     }
 
 
@@ -225,12 +234,20 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         }
     }
 
-    private func detailViewDidTap(_ gesture: GestureRecognizer) {
+    private func closeButtonViewDidTap(_ gesture: GestureRecognizer) {
         guard gesture is TapGestureRecognizer else {
             return
         }
 
         animateViewOut()
+    }
+
+    private func playerButtonViewDidTap(_ gesture: GestureRecognizer) {
+        guard gesture is TapGestureRecognizer else {
+            return
+        }
+
+        viewDelegate?.displayView(for: "Test Video.mp4", from: view)
     }
 
     private func relatedViewDidTap(_ gesture: GestureRecognizer) {
