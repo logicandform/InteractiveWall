@@ -55,7 +55,6 @@
 		22FEF1E1202D005D001E9596 /* TouchProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1E0202D005D001E9596 /* TouchProperties.swift */; };
 		3F242BDF203F4B61009A36C6 /* Player.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F242BDE203F4B61009A36C6 /* Player.storyboard */; };
 		3F60FE82203E42A500792028 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F60FE81203E42A500792028 /* PlayerViewController.swift */; };
-		3FD0A6BC203F82390085100D /* ViewControllerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD0A6BB203F82390085100D /* ViewControllerHelper.swift */; };
 		67C759AB770299C488231A9D /* Pods_All_MapExplorer_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */; };
 		8F6F13C5203DF0D400891995 /* LastThreeStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F6F13C4203DF0D400891995 /* LastThreeStructure.swift */; };
 		8F717365202CECDE003480FF /* 5V Relay.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 8F717364202CECDE003480FF /* 5V Relay.pdf */; };
@@ -116,7 +115,6 @@
 		39B2384F39CC84964B0970BD /* Pods-MapExplorer-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		3F242BDE203F4B61009A36C6 /* Player.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Player.storyboard; sourceTree = "<group>"; };
 		3F60FE81203E42A500792028 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
-		3FD0A6BB203F82390085100D /* ViewControllerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerHelper.swift; sourceTree = "<group>"; };
 		8F6F13C4203DF0D400891995 /* LastThreeStructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastThreeStructure.swift; sourceTree = "<group>"; };
 		8F717364202CECDE003480FF /* 5V Relay.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "5V Relay.pdf"; sourceTree = "<group>"; };
 		8F8AEF83202BAD9400F7970D /* PDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewController.swift; sourceTree = "<group>"; };
@@ -211,7 +209,6 @@
 				22EF0FA7202B847200571002 /* CachingNetwork.swift */,
 				22318DDF202B984F0092937C /* ResponseHandler.swift */,
 				22FEF1DC202CFF68001E9596 /* GestureHandler.swift */,
-				3FD0A6BB203F82390085100D /* ViewControllerHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -561,7 +558,6 @@
 				221C62A1203B4A10009493DA /* Entity.swift in Sources */,
 				2220D3FF202F84A300B878D6 /* NetworkMapManager.swift in Sources */,
 				22FEF1D6202CFE8D001E9596 /* GestureDemoController.swift in Sources */,
-				3FD0A6BC203F82390085100D /* ViewControllerHelper.swift in Sources */,
 				22290C2D2028FA1F000E0573 /* Place.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

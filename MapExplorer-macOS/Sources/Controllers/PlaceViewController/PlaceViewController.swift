@@ -2,7 +2,6 @@
 
 import Cocoa
 import AppKit
-import AVKit
 
 class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Place")
@@ -83,7 +82,6 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
 
     @IBAction func videoButtonTapped(_ sender: Any) {
         viewDelegate?.displayView(for: "Test Video.mp4", from: view)
-
     }
 
 

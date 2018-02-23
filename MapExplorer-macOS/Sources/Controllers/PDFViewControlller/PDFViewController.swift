@@ -1,6 +1,5 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
-
 import Cocoa
 import Quartz
 
@@ -8,8 +7,6 @@ class PDFViewController: NSViewController {
 
     @IBOutlet weak var pdfView: PDFView!
     @IBOutlet weak var pdfThumbnailView: PDFThumbnailView!
-
-
 
 
     // MARK: Life-cycle
