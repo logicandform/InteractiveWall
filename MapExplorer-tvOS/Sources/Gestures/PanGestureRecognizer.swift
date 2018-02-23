@@ -9,6 +9,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         static let recognizedThreshhold: CGFloat = 20
         static let minimumFingers = 1
         static let minimumDeltaThreshold: Double = 8
+        static let minimumDeltaUpdateThreshold: Double = 3
         static let initialFrictionFactor = 1.05
         static let frictionFactorScale = 0.001
         static let momentiumTimeInterval: TimeInterval = 1 / 60
@@ -25,14 +26,14 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     private var momentumTimer: Timer?
     private var frictionFactor = Constants.initialFrictionFactor
     private var lastTouchCount: Int?
-
     private var currentVelocity: CGVector? {
         if let last = locations.last, let secondLast = locations.secondLast {
             return CGVector(dx: last.x - secondLast.x, dy: last.y - secondLast.y)
         }
-
         return nil
     }
+
+    private var savedDelta = CGVector.zero
 
 
     // MARK: Init
@@ -84,9 +85,18 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             var touchVector = touch.position - lastPositionOfTouch
             touchVector /= Double(properties.touchCount)
             delta = touchVector
+            print(delta)
             currentLocation += delta
             locations.add(currentLocation)
-            gestureUpdated?(self)
+            if delta.magnitude > Constants.minimumDeltaUpdateThreshold {
+                if savedDelta.magnitude > 0 {
+                    delta += savedDelta
+                }
+                gestureUpdated?(self)
+                savedDelta = CGVector.zero
+            } else {
+                savedDelta += delta
+            }
         default:
             return
         }

@@ -88,6 +88,11 @@ extension CGVector {
         lhs.dx /= CGFloat(rhs)
         lhs.dy /= CGFloat(rhs)
     }
+
+    static func += (lhs: inout CGVector, rhs: CGVector) {
+        lhs.dx += rhs.dx
+        lhs.dy += rhs.dy
+    }
 }
 
 extension CGSize {
