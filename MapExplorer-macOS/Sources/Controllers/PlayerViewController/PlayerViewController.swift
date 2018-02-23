@@ -34,8 +34,8 @@ class PlayerViewController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        detailView.wantsLayer = true
-        detailView.layer?.backgroundColor = #colorLiteral(red: 0.6899075147, green: 0.7701538212, blue: 0.7426613761, alpha: 0.8230652265)
+        view.wantsLayer = true
+        view.layer?.backgroundColor = #colorLiteral(red: 0.6899075147, green: 0.7701538212, blue: 0.7426613761, alpha: 0.8230652265)
         panGesture = NSPanGestureRecognizer(target: self, action: #selector(handlePan(gesture:)))
         view.addGestureRecognizer(panGesture)
         titleLabel.stringValue = endURL
