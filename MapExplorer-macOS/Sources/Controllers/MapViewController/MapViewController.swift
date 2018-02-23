@@ -6,6 +6,7 @@ import MONode
 import PromiseKit
 import AppKit
 
+
 protocol ViewManagerDelegate: class {
     func displayView(for: Place, from: NSView)
     func displayView(for: String, from: NSView)
@@ -71,18 +72,18 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
 
             let panGesture = PanGestureRecognizer(withFingers: [1, 2, 3, 4, 5])
             gestureManager.add(panGesture, to: mapView)
-            panGesture.gestureUpdated = mapViewDidPan(_:)
+            panGesture.gestureUpdated = didPanOnMap(_:)
 
             let pinchGesture = PinchGestureRecognizer()
             gestureManager.add(pinchGesture, to: mapView)
-            pinchGesture.gestureUpdated = mapViewDidZoom(_:)
+            pinchGesture.gestureUpdated = didZoomOnMap(_:)
         }
     }
 
 
     // MARK: Gesture handling
 
-    private func mapViewDidPan(_ gesture: GestureRecognizer) {
+    private func didPanOnMap(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer, let mapView = gestureManager.view(for: gesture) as? MKMapView else {
             return
         }
@@ -101,7 +102,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         }
     }
 
-    private func mapViewDidZoom(_ gesture: GestureRecognizer) {
+    private func didZoomOnMap(_ gesture: GestureRecognizer) {
         guard let pinch = gesture as? PinchGestureRecognizer, let mapView = gestureManager.view(for: gesture) as? MKMapView else {
             return
         }
