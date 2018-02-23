@@ -19,7 +19,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     private var locations = LastThreeStructure<CGPoint>()
     private var positionForTouch = [Touch: CGPoint]()
     private var lastTouchCount: Int?
-    private var savedDelta = CGVector.zero
+    private var cumulativeDelta = CGVector.zero
 
 
     // MARK: Init
@@ -56,7 +56,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func move(_ touch: Touch, with properties: TouchProperties) {
-        guard var currentLocation = locations.last, let lastPositionOfTouch = positionForTouch[touch] else {
+        guard let currentLocation = locations.last, let lastPositionOfTouch = positionForTouch[touch] else {
             return
         }
 
@@ -68,18 +68,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             state = .recognized
             fallthrough
         case .recognized:
-            var touchVector = touch.position - lastPositionOfTouch
-            touchVector /= Double(properties.touchCount)
-            delta = touchVector
-            currentLocation += delta
-            locations.add(currentLocation)
-            if (delta + savedDelta).magnitude  > Constants.minimumDeltaUpdateThreshold {
-                delta += savedDelta
-                savedDelta = CGVector.zero
-                gestureUpdated?(self)
-                return
-            }
-            savedDelta += delta
+            updatePosition(for: touch, with: properties, location: currentLocation, lastPosition: lastPositionOfTouch)
         default:
             return
         }
@@ -114,8 +103,24 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         return sqrt(pow(properties.cog.x - currentLocation.x, 2) + pow(properties.cog.y - currentLocation.y, 2)) > Constants.recognizedThreshhold
     }
 
-    func updatePosition() {
+    func shouldUpdate() -> Bool {
+        return (delta + cumulativeDelta).magnitude > Constants.minimumDeltaUpdateThreshold
+    }
 
+    func updatePosition(for touch: Touch, with properties: TouchProperties, location: CGPoint, lastPosition: CGPoint) {
+        var touchVector = touch.position - lastPosition
+        var currentLocation = location
+        touchVector /= Double(properties.touchCount)
+        delta = touchVector
+        currentLocation += delta
+        locations.add(currentLocation)
+        if shouldUpdate() {
+            delta += cumulativeDelta
+            cumulativeDelta = CGVector.zero
+            gestureUpdated?(self)
+            return
+        }
+        cumulativeDelta += delta
     }
     
 
