@@ -35,6 +35,7 @@ class MapHandler {
         self.mapView = mapView
         self.mapID = id
         self.delegate = delegate
+        setInitialMapPosition()
     }
 
 
@@ -76,6 +77,13 @@ class MapHandler {
 
 
     // MARK: Helpers
+
+    /// Sets the maps initial position when app is first loaded
+    private func setInitialMapPosition() {
+        var mapRect = MKMapRect(origin: Constants.initialMapOrigin, size: Constants.initialMapSize)
+        mapRect.origin.x = Constants.initialMapOrigin.x + Double(mapID) * Constants.initialMapSize.width
+        mapView.visibleMapRect = mapRect
+    }
 
     /// Sets the visble rect of self.mapView based on the current pairedIndex
     private func set(_ mapRect: MKMapRect) {

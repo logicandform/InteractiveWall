@@ -10,6 +10,8 @@ class PDFViewController: NSViewController {
     @IBOutlet weak var pdfThumbnailView: PDFThumbnailView!
 
 
+
+
     // MARK: Life-cycle
 
     override func viewDidLoad() {

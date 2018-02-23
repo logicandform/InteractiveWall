@@ -130,6 +130,26 @@
                                             <constraint firstAttribute="height" constant="30" id="DUg-an-qOr"/>
                                         </constraints>
                                     </customView>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uMm-WP-6h4">
+                                        <rect key="frame" x="30" y="175" width="244" height="24"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="TAP HERE FOR VIDEO!!!" id="jhN-rk-Chc">
+                                            <font key="font" size="20" name="LucidaGrande-Bold"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mLq-My-PVk">
+                                        <rect key="frame" x="54" y="91" width="123" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="push" title="Video Button " bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="vor-S8-bDo">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="videoButtonTapped:" target="k5b-MF-Zdf" id="AuB-oc-O7P"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="Pqy-Rw-Og1" firstAttribute="leading" secondItem="XEF-WZ-sT9" secondAttribute="leading" id="3ZF-4X-Mlo"/>
@@ -157,6 +177,8 @@
                         <outlet property="closeButton" destination="8wA-OD-SXO" id="5QL-IQ-avo"/>
                         <outlet property="closeButtonView" destination="U1m-am-vcE" id="IP8-TO-V2B"/>
                         <outlet property="detailView" destination="ldO-fp-Tec" id="aR4-sd-eIk"/>
+                        <outlet property="playerButton" destination="uMm-WP-6h4" id="HM3-Ln-9kU"/>
+                        <outlet property="playerButtonView" destination="uMm-WP-6h4" id="w3B-Qe-CSq"/>
                         <outlet property="relatedView" destination="ohw-Ux-hDf" id="RSn-s9-ecN"/>
                         <outlet property="scrollView" destination="nLk-Sj-wEx" id="723-iL-Rki"/>
                         <outlet property="titleLabel" destination="Pqy-Rw-Og1" id="L6U-Le-HIq"/>
@@ -202,7 +224,7 @@
                 </viewController>
                 <customObject id="Q8t-te-xA9" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="164" y="1044"/>
+            <point key="canvasLocation" x="362" y="1025"/>
         </scene>
     </scenes>
 </document>

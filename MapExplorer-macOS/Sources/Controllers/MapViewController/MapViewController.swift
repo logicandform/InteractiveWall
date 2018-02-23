@@ -8,6 +8,7 @@ import AppKit
 
 protocol ViewManagerDelegate: class {
     func displayView(for: Place, from: NSView)
+    func displayView(for: String, from: NSView)
 }
 
 
@@ -21,11 +22,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         static let annotationContainerClass = "MKNewAnnotationContainerView"
         static let maxZoomWidth: Double =  134217730
         static let annotationHitSize = CGSize(width: 50, height: 50)
-        static let numberOfScreens = 1.0
-        static let initialMapOriginX = 6000000.0
-        static let initialMapOriginY = 62000000.0
-        static let initialMapSizeWidth = 120000000.0
-        static let initialMapSizeHeight = 0.0
     }
 
     @IBOutlet weak var stackView: NSStackView!
@@ -283,6 +279,22 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         placeVC.viewDelegate = self
     }
 
+    /// Displays a video player view controller on the screen next to the view that provided it.
+    func displayView(for endURL: String, from focus: NSView) {
+        let storyboard = NSStoryboard(name: PlayerViewController.storyboard, bundle: nil)
+        let playerVC = storyboard.instantiateInitialController() as! PlayerViewController
+        playerVC.gestureManager = gestureManager
+        playerVC.endURL = endURL
+
+        addChildViewController(playerVC)
+        view.addSubview(playerVC.view)
+
+        var origin = focus.frame.origin
+        origin += CGVector(dx: focus.bounds.width + 20.0, dy: 0)
+        playerVC.view.frame.origin = origin
+        adjustBoundaries(of: playerVC.view)
+    }
+
 
     // MARK: Helpers
 
@@ -345,6 +357,20 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         return CLLocationCoordinate2D(latitude: centroidY, longitude: centroidX)
     }
 
+    /// Checks if the placeView currently displayed is hidden behind the screen, and adjusts it accordingly.
+    private func adjustBoundaries(of view: NSView) {
+        let origin = view.frame.origin
+        if origin.y < 0 {
+            view.frame.origin = CGPoint(x: view.frame.origin.x, y: 15)
+        }
+        if origin.x < 0 {
+            view.frame.origin = CGPoint(x: 15, y: view.frame.origin.y)
+        }
+        if view.frame.maxX > self.view.frame.maxX {
+            view.frame.origin = CGPoint(x: self.view.frame.maxX - view.frame.width, y: view.frame.origin.y)
+        }
+    }
+
     /// Checks the coordinates of each annotation and returns a span that comfortably fits all annotations within the current screen view.
     private func restrainSpan(annotations: [MKAnnotation]) -> MKCoordinateSpan {
         var minX = Double.greatestFiniteMagnitude
@@ -370,19 +396,5 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         let spanX = (maxX - minX) * 2
         let spanY = (maxY - minY) * 2
         return MKCoordinateSpan(latitudeDelta: spanY, longitudeDelta: spanX)
-    }
-
-    /// Checks if the placeView currently displayed is hidden behind the screen, and adjusts it accordingly.
-    private func adjustBoundaries(of view: NSView) {
-        let origin = view.frame.origin
-        if origin.y < 0 {
-            view.frame.origin = CGPoint(x: view.frame.origin.x, y: 15)
-        }
-        if origin.x < 0 {
-            view.frame.origin = CGPoint(x: 15, y: view.frame.origin.y)
-        }
-        if view.frame.maxX > self.view.frame.maxX {
-            view.frame.origin = CGPoint(x: self.view.frame.maxX - view.frame.width, y: view.frame.origin.y)
-        }
     }
 }
