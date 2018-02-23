@@ -21,13 +21,13 @@ class PlayerViewController: NSViewController {
     private struct Constants {
         static let url =  URL(fileURLWithPath: "/Users/Jeremy/Desktop/")
     }
-    private var playerState = PlayerState.pause
-    weak var gestureManager: GestureManager!
-    weak var viewDelegate: ViewManagerDelegate?
-    var panGesture: NSPanGestureRecognizer!
-    var initialPanningOrigin: CGPoint?
-    var endURL: String!
 
+    private var playerState = PlayerState.pause
+    private var panGesture: NSPanGestureRecognizer!
+    private var initialPanningOrigin: CGPoint?
+    private weak var viewDelegate: ViewManagerDelegate?
+    weak var gestureManager: GestureManager!
+    var endURL: String!
 
 
     // MARK: Life-cycle
@@ -36,15 +36,9 @@ class PlayerViewController: NSViewController {
         super.viewDidLoad()
         view.wantsLayer = true
         view.layer?.backgroundColor = #colorLiteral(red: 0.6899075147, green: 0.7701538212, blue: 0.7426613761, alpha: 0.8230652265)
-        panGesture = NSPanGestureRecognizer(target: self, action: #selector(handlePan(gesture:)))
-        view.addGestureRecognizer(panGesture)
         titleLabel.stringValue = endURL
 
-        let completeURL = Constants.url.appendingPathComponent(endURL)
-
-        playerView.controlsStyle = .inline
-        playerView.player = AVPlayer(url: completeURL)
-
+        setupPlayer()
         animateViewIn()
         setupGestures()
 
@@ -53,7 +47,16 @@ class PlayerViewController: NSViewController {
 
     // MARK: Setup
 
+    private func setupPlayer() {
+        let completeURL = Constants.url.appendingPathComponent(endURL)
+        playerView.player = AVPlayer(url: completeURL)
+        playerView.controlsStyle = .inline
+    }
+
     private func setupGestures() {
+        panGesture = NSPanGestureRecognizer(target: self, action: #selector(handlePan(gesture:)))
+        view.addGestureRecognizer(panGesture)
+
         let singleFingerTap = TapGestureRecognizer()
         gestureManager.add(singleFingerTap, to: playerView)
         singleFingerTap.gestureUpdated = playerViewDidTap(_:)
