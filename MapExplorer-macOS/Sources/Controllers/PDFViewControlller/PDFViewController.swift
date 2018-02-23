@@ -14,10 +14,10 @@ class PDFViewController: NSViewController {
         static let url = URL(fileURLWithPath: "/Users/Jeremy/Desktop/")
     }
 
+    private var panGesture: NSPanGestureRecognizer!
+    private var initialPanningOrigin: CGPoint?
     weak var gestureManager: GestureManager!
     weak var viewDelegate: ViewManagerDelegate?
-    var panGesture: NSPanGestureRecognizer!
-    var initialPanningOrigin: CGPoint?
     var endURL: String!
 
 
@@ -25,19 +25,7 @@ class PDFViewController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        pdfThumbnailView.backgroundColor = #colorLiteral(red: 0.9961728454, green: 0.9902502894, blue: 1, alpha: 0)
-        pdfView.backgroundColor = #colorLiteral(red: 0.7317136762, green: 0.81375, blue: 0.7637042526, alpha: 0.8230652265)
-        pdfView.displayDirection = .horizontal
-        pdfView.autoScales = true
-
-        panGesture = NSPanGestureRecognizer(target: self, action: #selector(handlePan(gesture:)))
-        view.addGestureRecognizer(panGesture)
-
-        let completeURL = Constants.url.appendingPathComponent(endURL)
-        let pdfDoc = PDFDocument(url: completeURL)
-        pdfView.document = pdfDoc
-        pdfThumbnailView.pdfView = pdfView
-
+        setupPDF()
         animateViewIn()
         setupGestures()
     }
@@ -45,7 +33,22 @@ class PDFViewController: NSViewController {
 
     // MARK: Setup
 
+    private func setupPDF() {
+        pdfThumbnailView.backgroundColor = #colorLiteral(red: 0.9961728454, green: 0.9902502894, blue: 1, alpha: 0)
+        pdfView.backgroundColor = #colorLiteral(red: 0.7317136762, green: 0.81375, blue: 0.7637042526, alpha: 0.8230652265)
+        pdfView.displayDirection = .horizontal
+        pdfView.autoScales = true
+
+        let completeURL = Constants.url.appendingPathComponent(endURL)
+        let pdfDoc = PDFDocument(url: completeURL)
+        pdfView.document = pdfDoc
+        pdfThumbnailView.pdfView = pdfView
+    }
+
     private func setupGestures() {
+        panGesture = NSPanGestureRecognizer(target: self, action: #selector(handlePan(gesture:)))
+        view.addGestureRecognizer(panGesture)
+
         let singleFingerPan = PanGestureRecognizer()
         gestureManager.add(singleFingerPan, to: view)
         singleFingerPan.gestureUpdated = viewDidPan(_:)
