@@ -54,8 +54,6 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             return
         }
 
-        positionForTouch[touch] = touch.position
-        
         switch state {
         case .possible, .momentum:
             state = .began
@@ -63,6 +61,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             fallthrough
         case .recognized:
             momentumTimer?.invalidate()
+            positionForTouch[touch] = touch.position
             lastTouchCount = properties.touchCount
         default:
             return
@@ -85,15 +84,14 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             var touchVector = touch.position - lastPositionOfTouch
             touchVector /= Double(properties.touchCount)
             delta = touchVector
-            print(delta)
-            currentLocation += delta
-            locations.add(currentLocation)
+            if savedDelta.magnitude > 0 {
+                delta += savedDelta
+            }
             if delta.magnitude > Constants.minimumDeltaUpdateThreshold {
-                if savedDelta.magnitude > 0 {
-                    delta += savedDelta
-                }
-                gestureUpdated?(self)
+                currentLocation += delta
+                locations.add(currentLocation)
                 savedDelta = CGVector.zero
+                gestureUpdated?(self)
             } else {
                 savedDelta += delta
             }
