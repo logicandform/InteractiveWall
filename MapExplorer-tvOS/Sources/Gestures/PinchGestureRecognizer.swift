@@ -4,7 +4,8 @@ import Foundation
 import AppKit
 
 
-fileprivate enum PinchBehavior: String {
+/// Used to define the behavior of a PinchGestureRecognizer as its receiving move updates.
+fileprivate enum PinchBehavior {
     case growing
     case shrinking
     case idle
@@ -21,12 +22,11 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
-    
     private(set) var lastPosition: CGPoint!
     private(set) var state = GestureState.possible
     private(set) var scale: CGFloat = Constants.initialScale
     private(set) var delta = CGVector.zero
-    private(set) var fingers: Int
+    private let fingers: Int
     private var spreads = LastThree<CGFloat>()
     private var behavior = PinchBehavior.idle
 
@@ -104,8 +104,9 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         state = .possible
         scale = Constants.initialScale
         delta = .zero
-        spreads.clear()
+        behavior = .idle
         lastPosition = nil
+        spreads.clear()
     }
 
 
@@ -126,7 +127,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         scale = lastSpread / secondLastSpread
         gestureUpdated?(self)
 
-        self.momentumTimer?.invalidate()
+        momentumTimer?.invalidate()
         momentumTimer = Timer.scheduledTimer(withTimeInterval: 1 / 60, repeats: true) { [weak self] _ in
             self?.updateMomentum()
         }
@@ -146,14 +147,15 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     private func endMomentum() {
-        self.momentumTimer?.invalidate()
-        self.reset()
+        momentumTimer?.invalidate()
+        reset()
         gestureUpdated?(self)
     }
 
 
     // MARK: Pinch behavior
 
+    /// Returns the behavior of the spread based off the current last spread.
     private func behavior(of spread: CGFloat) -> PinchBehavior {
         guard let lastSpread = spreads.last else {
             return .idle
@@ -162,10 +164,12 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         return (spread - lastSpread > 0) ? .growing : .shrinking
     }
 
+    /// Returns true if the given spread is of the same behavior type, or the current behavior is idle
     private func shouldUpdate(with newSpread: CGFloat) -> Bool {
         return behavior == behavior(of: newSpread) || behavior == .idle
     }
 
+    /// If the newSpread has a different behavior and surpasses the minimum threshold, returns true
     private func changedBehavior(from oldSpread: CGFloat, to newSpread: CGFloat) -> Bool {
         if behavior != behavior(of: newSpread), abs(oldSpread - newSpread) > Constants.minimumBehaviorChangeThreshold {
             return true

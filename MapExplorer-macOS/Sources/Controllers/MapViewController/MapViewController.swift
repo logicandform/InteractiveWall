@@ -25,11 +25,12 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         static let annotationHitSize = CGSize(width: 50, height: 50)
     }
 
-    @IBOutlet weak var stackView: NSStackView!
     var mapViews = [MKMapView]()
     var mapManager: LocalMapManager?
     private let socketManager = SocketManager(networkConfiguration: touchNetwork)
     private var gestureManager: GestureManager!
+    @IBOutlet weak var stackView: NSStackView!
+
 
     // MARK: Lifecycle
 
@@ -44,6 +45,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     override func viewWillAppear() {
         view.window?.toggleFullScreen(nil)
     }
+
+
+    // MARK: Setup
 
     func setupMaps() {
         stackView.subviews.flatMap { $0 as? MKMapView }.forEach { mapView in
@@ -155,7 +159,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
 
         selected.first?.didSelectView()
     }
-
 
     /// Used to handle pan events recorded by a mouse
     @objc
