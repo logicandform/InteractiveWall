@@ -3,17 +3,23 @@
 import Foundation
 
 class LastThree<Element> {
-    var last: Element? {
+
+    private(set) var last: Element? {
         willSet {
             intermediate = last
         }
     }
-    var intermediate: Element? {
+
+    private(set) var intermediate: Element? {
         willSet {
             secondLast = intermediate
         }
     }
-    var secondLast: Element?
+
+    private(set) var secondLast: Element?
+
+
+    // MARK: API
 
     func add(_ element: Element) {
         last = element

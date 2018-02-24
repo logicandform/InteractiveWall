@@ -50,7 +50,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     // MARK: Setup
 
     func setupMaps() {
-        stackView.subviews.flatMap { $0 as? MKMapView }.forEach { mapView in
+        for i in (0 ..< Configuration.numberOfMapsPerWindow) {
+            let mapView = MKMapView()
+            stackView.insertView(mapView, at: i, in: .trailing)
             mapViews.append(mapView)
             mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
             mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
