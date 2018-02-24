@@ -16,7 +16,8 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     private(set) var state = GestureState.possible
     private(set) var delta = CGVector.zero
     private(set) var fingers: [Int]
-    private var locations = LastThreeStructure<CGPoint>()
+
+    private var locations = LastThree<CGPoint>()
     private var positionForTouch = [Touch: CGPoint]()
     private var lastTouchCount: Int?
     private var cumulativeDelta = CGVector.zero
