@@ -182,8 +182,8 @@ class PlayerViewController: NSViewController {
                 startX += pan.delta.dx
                 let dx = pan.delta.dx / sliderView.frame.width
                 let timeChanged = duration! * Double(dx)
-                let scale = CMTimeScale()
-                let newTime = CMTime(seconds: timeChanged, preferredTimescale: scale)
+
+                let newTime = CMTimeMake(Int64(timeChanged), 1)
                 playerView.player?.seek(to: newTime)
 
             default:
