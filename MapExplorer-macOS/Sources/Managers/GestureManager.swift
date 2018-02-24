@@ -74,7 +74,7 @@ final class GestureManager {
 //        displayTouchIndicator(in: responder.view, at: touch.position)
 
         if let (view, transform) = target(in: responder.view, at: touch.position), let handler = gestureHandlers[view] {
-            handler.set(transform)
+            handler.set(transform, for: touch)
             handler.handle(touch)
             displayTouchIndicator(in: view, at: touch.position)
         }
