@@ -54,7 +54,8 @@ class MapHandler {
             return
         }
 
-        set(mapRect)
+        let info: [String: Any] = ["id": mapID, "originX": mapRect.origin.x, "originY": mapRect.origin.y, "width": mapRect.size.width, "height": mapRect.size.height]
+        DistributedNotificationCenter.default().postNotificationName(notificationName, object: nil, userInfo: info, deliverImmediately: true)
     }
 
     func endUpdates() {
