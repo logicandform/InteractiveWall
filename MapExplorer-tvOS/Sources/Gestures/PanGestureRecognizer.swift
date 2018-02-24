@@ -16,7 +16,6 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     private(set) var state = GestureState.possible
     private(set) var delta = CGVector.zero
     private(set) var fingers: [Int]
-
     private var locations = LastThree<CGPoint>()
     private var positionForTouch = [Touch: CGPoint]()
     private var lastTouchCount: Int?
@@ -136,10 +135,8 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     private var momentumTimer: Timer?
     private var frictionFactor = Momentum.initialFrictionFactor
     private var currentVelocity: CGVector? {
-        if let last = locations.last, let secondLast = locations.secondLast {
-            return CGVector(dx: last.x - secondLast.x, dy: last.y - secondLast.y)
-        }
-        return nil
+        guard let last = locations.last, let secondLast = locations.secondLast else { return nil }
+        return CGVector(dx: last.x - secondLast.x, dy: last.y - secondLast.y)
     }
 
     private func beginMomentum(with velocity: CGVector, for touchCount: Int) {

@@ -3,19 +3,21 @@
 import Foundation
 import MapKit
 
+
 enum UserActivity {
     case idle
     case active
 }
+
 
 class MapHandler {
 
     let mapView: MKMapView
     let mapID: Int
 
-    private weak var delegate: MapActivityDelegate?
     private var pairedIndex: Int?
     private var userState = UserActivity.idle
+    private weak var delegate: MapActivityDelegate?
     private weak var activityTimer: Foundation.Timer?
 
     private var unpaired: Bool {

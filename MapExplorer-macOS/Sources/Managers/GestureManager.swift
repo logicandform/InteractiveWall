@@ -12,12 +12,15 @@ protocol GestureResponder: class {
 
 final class GestureManager {
 
+    private weak var responder: GestureResponder!
+    private var gestureHandlers = [NSView: GestureHandler]()
+
     private struct Constants {
         static let indicatorRadius: CGFloat = 20
     }
 
-    private weak var responder: GestureResponder!
-    private var gestureHandlers = [NSView: GestureHandler]()
+
+    // MARK: Init
 
     init(responder: GestureResponder) {
         self.responder = responder

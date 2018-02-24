@@ -69,25 +69,18 @@ class LocalMapManager: MapActivityDelegate {
     private func beginLongActivityTimeout() {
         longActivityTimer?.invalidate()
         longActivityTimer = Timer.scheduledTimer(withTimeInterval: Constants.longActivityTimeoutPeriod, repeats: false) { [weak self] _ in
-            guard let strongSelf = self else {
-                return
-            }
-
-            // Ensure that all map handlers are idle
-            if strongSelf.isIdle() {
-                strongSelf.reset()
-            }
+            self?.longActivityFired()
         }
     }
 
-    /// Returns true if there is no current user activity
-    private func isIdle() -> Bool {
+    /// Resets all maps if there is no user activity.
+    private func longActivityFired() {
         for handler in handlerForMapView.values {
             if handler.isActive() {
-                return false
+                return
             }
         }
 
-        return true
+        reset()
     }
 }
