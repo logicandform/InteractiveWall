@@ -17,7 +17,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         static let initialScale: CGFloat = 1
         static let minimumFingers = 2
         static let minimumSpreadThreshold: CGFloat = 0.1
-        static let minimumBehaviorChangeThreshold: CGFloat = 6
+        static let minimumBehaviorChangeThreshold: CGFloat = 15
     }
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
@@ -74,12 +74,17 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
                 scale = properties.spread / lastSpread
                 delta = CGVector(dx: properties.cog.x - currentPosition.x, dy: properties.cog.y - currentPosition.y)
                 spreads.add(properties.spread)
+                print("Adding spread: \(properties.spread)")
                 lastPosition = properties.cog
                 gestureUpdated?(self)
             } else if changedBehavior(from: lastSpread, to: properties.spread) {
                 scale = Constants.initialScale
                 spreads.add(properties.spread)
-                behavior = behavior(of: properties.spread)
+                if behavior == .growing {
+                    behavior = .shrinking
+                } else if behavior == .shrinking {
+                    behavior = .growing
+                }
                 gestureUpdated?(self)
             }
         default:
@@ -93,7 +98,9 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         }
 
         if let lastSpread = spreads.last, let secondLastSpread = spreads.secondLast {
-            beginMomentum(lastSpread, secondLastSpread, with: properties)
+//            beginMomentum(lastSpread, secondLastSpread, with: properties)
+            reset()
+            gestureUpdated?(self)
         } else {
             reset()
             gestureUpdated?(self)
@@ -157,7 +164,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             return .idle
         }
 
-        return (lastSpread - spread > 0) ? .growing : .shrinking
+        return (spread - lastSpread > 0) ? .growing : .shrinking
     }
 
     private func shouldUpdate(with newSpread: CGFloat) -> Bool {

@@ -12,27 +12,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
 
-//        let mapManager = LocalMapManager()
-//        let mapStoryboard = NSStoryboard(name: MapViewController.storyboard, bundle: nil)
-//
-//        for index in (1 ... Configuration.numberOfWindows) {
-//            let mapVC = mapStoryboard.instantiateInitialController() as! MapViewController
-//            let mapWindow = NSWindow(contentViewController: mapVC)
-//            mapWindow.title = "Map Window \(index)"
-//            mapWindow.makeKeyAndOrderFront(self)
-//            mapWindow.canHide = false
-//            mapManager.add(mapVC.mapViews)
-//            mapVC.mapManager = mapManager
-//        }
-//
-//        mapManager.reset()
+        let mapManager = LocalMapManager()
+        let mapStoryboard = NSStoryboard(name: MapViewController.storyboard, bundle: nil)
+
+        for index in (1 ... Configuration.numberOfWindows) {
+            let mapVC = mapStoryboard.instantiateInitialController() as! MapViewController
+            let mapWindow = NSWindow(contentViewController: mapVC)
+            mapWindow.title = "Map Window \(index)"
+            mapWindow.makeKeyAndOrderFront(self)
+            mapWindow.canHide = false
+            mapManager.add(mapVC.mapViews)
+            mapVC.mapManager = mapManager
+        }
+
+        mapManager.reset()
 
         /// Display the DemoViewController
-        let demoStoryboard = NSStoryboard(name: GestureDemoController.storyboard, bundle: nil)
-        let demoVC = demoStoryboard.instantiateInitialController() as! GestureDemoController
-        let demoWindow = NSWindow(contentViewController: demoVC)
-        demoWindow.title = "Demo Window"
-        demoWindow.makeKeyAndOrderFront(self)
+//        let demoStoryboard = NSStoryboard(name: GestureDemoController.storyboard, bundle: nil)
+//        let demoVC = demoStoryboard.instantiateInitialController() as! GestureDemoController
+//        let demoWindow = NSWindow(contentViewController: demoVC)
+//        demoWindow.title = "Demo Window"
+//        demoWindow.makeKeyAndOrderFront(self)
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
