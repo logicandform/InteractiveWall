@@ -74,17 +74,12 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
                 scale = properties.spread / lastSpread
                 delta = CGVector(dx: properties.cog.x - currentPosition.x, dy: properties.cog.y - currentPosition.y)
                 spreads.add(properties.spread)
-                print("Adding spread: \(properties.spread)")
                 lastPosition = properties.cog
                 gestureUpdated?(self)
             } else if changedBehavior(from: lastSpread, to: properties.spread) {
                 scale = Constants.initialScale
+                behavior = behavior(of: properties.spread)
                 spreads.add(properties.spread)
-                if behavior == .growing {
-                    behavior = .shrinking
-                } else if behavior == .shrinking {
-                    behavior = .growing
-                }
                 gestureUpdated?(self)
             }
         default:
@@ -98,9 +93,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         }
 
         if let lastSpread = spreads.last, let secondLastSpread = spreads.secondLast {
-//            beginMomentum(lastSpread, secondLastSpread, with: properties)
-            reset()
-            gestureUpdated?(self)
+            beginMomentum(lastSpread, secondLastSpread, with: properties)
         } else {
             reset()
             gestureUpdated?(self)
@@ -140,13 +133,13 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     private func updateMomentum() {
-        guard abs(scale + 1) > Momentum.thresholdMomentumScale else {
+        guard abs(scale - 1) > Momentum.thresholdMomentumScale else {
             endMomentum()
             return
         }
 
-        frictionFactor += Momentum.frictionFactorScale
         scale /= frictionFactor
+        frictionFactor += Momentum.frictionFactorScale
         gestureUpdated?(self)
     }
 
