@@ -14,9 +14,10 @@ fileprivate enum PinchBehavior: String {
 class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
     private struct Constants {
-        static let initialScale: CGFloat = 1.0
+        static let initialScale: CGFloat = 1
         static let minimumFingers = 2
-        static let minimumSpreadThreshhold: CGFloat = 0.1
+        static let minimumSpreadThreshold: CGFloat = 0.1
+        static let minimumBehaviorChangeThreshold: CGFloat = 6
     }
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
@@ -64,7 +65,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         }
 
         switch state {
-        case .began where abs(properties.spread / lastSpread - 1.0) > Constants.minimumSpreadThreshhold:
+        case .began where abs(properties.spread / lastSpread - 1.0) > Constants.minimumSpreadThreshold:
             behavior = behavior(of: properties.spread)
             state = .recognized
             fallthrough
@@ -164,7 +165,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     private func changedBehavior(from oldSpread: CGFloat, to newSpread: CGFloat) -> Bool {
-        if behavior != behavior(of: newSpread), abs(oldSpread - newSpread) > 6.0  {
+        if behavior != behavior(of: newSpread), abs(oldSpread - newSpread) > Constants.minimumBehaviorChangeThreshold {
             return true
         }
 
