@@ -2,6 +2,7 @@
 
 import Foundation
 import AppKit
+import MapKit
 
 
 protocol GestureResponder: class {
@@ -71,12 +72,11 @@ final class GestureManager {
 
     /// Displays a touch indicator at the touch position and produces a view if it exists at the location with interaction enabled.
     private func handleTouchDown(_ touch: Touch) {
-//        displayTouchIndicator(in: responder.view, at: touch.position)
+        displayTouchIndicator(in: responder.view, at: touch.position)
 
         if let (view, transform) = target(in: responder.view, at: touch.position), let handler = gestureHandlers[view] {
             handler.set(transform, for: touch)
             handler.handle(touch)
-            displayTouchIndicator(in: view, at: touch.position)
         }
     }
 

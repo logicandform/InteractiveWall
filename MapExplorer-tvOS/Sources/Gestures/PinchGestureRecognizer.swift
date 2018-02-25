@@ -134,7 +134,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     private func updateMomentum() {
-        guard abs(scale) > Momentum.thresholdMomentumScale else {
+        guard abs(scale - 1) > Momentum.thresholdMomentumScale else {
             endMomentum()
             return
         }

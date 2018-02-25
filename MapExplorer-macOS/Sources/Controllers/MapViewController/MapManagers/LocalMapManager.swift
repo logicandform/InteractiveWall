@@ -8,9 +8,6 @@ protocol MapActivityDelegate: class {
     func activityEnded(for mapIndex: Int)
 }
 
-let notificationName = NSNotification.Name(rawValue: "TESTING")
-
-
 
 class LocalMapManager: MapActivityDelegate {
 
@@ -19,21 +16,6 @@ class LocalMapManager: MapActivityDelegate {
 
     private struct Constants {
         static let longActivityTimeoutPeriod: TimeInterval = 10
-    }
-
-
-    // MARK: Init
-
-    init() {
-        DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notificationName, object: nil)
-    }
-
-    @objc
-    private func handleNotification(_ notification: Notification) {
-        if let userInfo = notification.userInfo, let id = userInfo["id"] as? Int, let x = userInfo["originX"] as? Double, let y = userInfo["originY"] as? Double, let width = userInfo["width"] as? Double, let height = userInfo["height"] as? Double {
-            let rect = MKMapRect(origin: MKMapPoint(x: x, y: y), size: MKMapSize(width: width, height: height))
-            set(rect, from: id)
-        }
     }
 
 
