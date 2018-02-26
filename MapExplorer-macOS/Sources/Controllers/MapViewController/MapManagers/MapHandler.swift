@@ -53,7 +53,7 @@ class MapHandler {
         } else if pairedIndex != fromIndex {
             return
         }
-        
+
         set(mapRect)
     }
 

@@ -41,7 +41,6 @@ class LocalMapManager: MapActivityDelegate {
             return
         }
 
-
         for handler in handlerForMapView.values {
             handler.handle(mapRect, fromIndex: index)
         }
