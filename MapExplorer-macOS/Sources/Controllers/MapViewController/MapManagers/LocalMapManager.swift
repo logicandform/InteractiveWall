@@ -28,6 +28,14 @@ class LocalMapManager: MapActivityDelegate {
         }
     }
 
+    func set(_ mapRect: MKMapRect, from index: Int) {
+        for handler in handlerForMapView.values {
+            handler.handle(mapRect, fromIndex: index)
+        }
+
+        //        beginLongActivityTimeout()
+    }
+
     func set(_ mapRect: MKMapRect, of mapView: MKMapView) {
         guard let index = handlerForMapView[mapView]?.mapID else {
             return

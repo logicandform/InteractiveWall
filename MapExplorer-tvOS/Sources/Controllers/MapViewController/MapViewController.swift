@@ -32,7 +32,6 @@ class MapViewController: UniverseController, MKMapViewDelegate, UIGestureRecogni
         static let selectAnimationDuration = 0.2
         static let increaseScaleTransform = CGAffineTransform(scaleX: 1.5, y: 1.5)
         static let decreaseScaleTransform = CGAffineTransform(scaleX: 1, y: 1)
-
     }
 
     let socketManager = SocketManager(networkConfiguration: config)

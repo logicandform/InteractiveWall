@@ -1,8 +1,8 @@
-
 //  Copyright © 2018 JABT. All rights reserved.
 
 import Foundation
 import AppKit
+import MapKit
 
 
 protocol GestureResponder: class {
@@ -16,7 +16,7 @@ final class GestureManager {
     private var gestureHandlers = [NSView: GestureHandler]()
 
     private struct Constants {
-        static let indicatorRadius: CGFloat = 20
+        static let indicatorRadius: CGFloat = 10
     }
 
 
@@ -72,10 +72,10 @@ final class GestureManager {
 
     /// Displays a touch indicator at the touch position and produces a view if it exists at the location with interaction enabled.
     private func handleTouchDown(_ touch: Touch) {
-        displayTouchIndicator(at: touch.position)
+        displayTouchIndicator(in: responder.view, at: touch.position)
 
         if let (view, transform) = target(in: responder.view, at: touch.position), let handler = gestureHandlers[view] {
-            handler.set(transform)
+            handler.set(transform, for: touch)
             handler.handle(touch)
         }
     }
@@ -98,7 +98,7 @@ final class GestureManager {
     }
 
     /// Displays a touch indicator on the screen for testing
-    private func displayTouchIndicator(at position: CGPoint) {
+    private func displayTouchIndicator(in view: NSView, at position: CGPoint) {
         let radius = Constants.indicatorRadius
         let frame = CGRect(origin: CGPoint(x: position.x - radius, y: position.y - radius), size: CGSize(width: 2*radius, height: 2*radius))
         let touchIndicator = NSView(frame: frame)
@@ -106,8 +106,8 @@ final class GestureManager {
         touchIndicator.layer?.cornerRadius = radius
         touchIndicator.layer?.masksToBounds = true
         touchIndicator.layer?.borderWidth = radius / 4
-        touchIndicator.layer?.borderColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 0.802921661)
-        responder.view.addSubview(touchIndicator)
+        touchIndicator.layer?.borderColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        view.addSubview(touchIndicator)
 
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = 1.0

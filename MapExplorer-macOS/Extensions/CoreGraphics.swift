@@ -20,8 +20,16 @@ extension CGPoint {
         return CGVector(dx: lhs.x + rhs.x, dy: lhs.y + rhs.y)
     }
 
+    static func + (lhs: CGPoint, rhs: CGVector) -> CGPoint {
+        return CGPoint(x: lhs.x + rhs.dx, y: lhs.y + rhs.dy)
+    }
+
     static func - (lhs: CGPoint, rhs: CGPoint) -> CGVector {
         return CGVector(dx: lhs.x - rhs.x, dy: lhs.y - rhs.y)
+    }
+
+    static func - (lhs: CGPoint, rhs: CGVector) -> CGPoint {
+        return CGPoint(x: lhs.x - rhs.dx, y: lhs.y - rhs.dy)
     }
 
     static func += (lhs: inout CGPoint, rhs: CGVector) {
@@ -77,6 +85,10 @@ extension CGVector {
 
     static func * (lhs: CGVector, rhs: CGFloat) -> CGVector {
         return CGVector(dx: lhs.dx * rhs, dy: lhs.dy * rhs)
+    }
+
+    static func / (lhs: CGVector, rhs: CGFloat) -> CGVector {
+        return CGVector(dx: lhs.dx / rhs, dy: lhs.dy / rhs)
     }
 
     static func + (lhs: CGVector, rhs: CGVector) -> CGVector {
