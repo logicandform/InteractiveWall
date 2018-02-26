@@ -9,8 +9,7 @@ import AppKit
 
 protocol ViewManagerDelegate: class {
     func displayView(for: Place, from: NSView)
-    func displayPlayerView(for: String, from: NSView)
-    func displayPDFView(for: String, from: NSView)
+    func displayView(for: String, from: NSView)
 }
 
 
@@ -287,7 +286,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     }
 
     /// Displays a video player view controller on the screen next to the view that provided it.
-    func displayPlayerView(for endURL: String, from focus: NSView) {
+    func displayView(for endURL: String, from focus: NSView) {
         let storyboard = NSStoryboard(name: PlayerViewController.storyboard, bundle: nil)
         let playerVC = storyboard.instantiateInitialController() as! PlayerViewController
         playerVC.gestureManager = gestureManager
@@ -300,22 +299,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         origin += CGVector(dx: focus.bounds.width + 20.0, dy: 0)
         playerVC.view.frame.origin = origin
         adjustBoundaries(of: playerVC.view)
-    }
-
-    /// Displays a PDF view controller on the screen next to the view that provided it.
-    func displayPDFView(for endURL: String, from focus: NSView) {
-        let storyboard = NSStoryboard(name: PDFViewController.storyboard, bundle: nil)
-        let pdfVC = storyboard.instantiateInitialController() as! PDFViewController
-        pdfVC.gestureManager = gestureManager
-        pdfVC.endURL = endURL
-
-        addChildViewController(pdfVC)
-        view.addSubview(pdfVC.view)
-
-        var origin = focus.frame.origin
-        origin += CGVector(dx: focus.bounds.width + 20.0, dy: 0)
-        pdfVC.view.frame.origin = origin
-        adjustBoundaries(of: pdfVC.view)
     }
 
 

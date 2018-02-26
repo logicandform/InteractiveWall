@@ -4,10 +4,10 @@ import Cocoa
 import Quartz
 
 class PDFViewController: NSViewController {
-    static let storyboard = NSStoryboard.Name(rawValue: "PDF")
 
     @IBOutlet weak var pdfView: PDFView!
     @IBOutlet weak var pdfThumbnailView: PDFThumbnailView!
+<<<<<<< HEAD
     @IBOutlet weak var closeButtonView: NSView!
 
     private struct Constants {
@@ -19,12 +19,15 @@ class PDFViewController: NSViewController {
     weak var gestureManager: GestureManager!
     weak var viewDelegate: ViewManagerDelegate?
     var endURL: String!
+=======
+>>>>>>> Added WindowExplorer project with xpc target and distributed notificaitons for testing.
 
 
     // MARK: Life-cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+<<<<<<< HEAD
         setupPDF()
         animateViewIn()
         setupGestures()
@@ -101,29 +104,21 @@ class PDFViewController: NSViewController {
         if var origin = initialPanningOrigin {
             origin += gesture.translation(in: view.superview)
             view.frame.origin = origin
+=======
+        pdfThumbnailView.backgroundColor = #colorLiteral(red: 0.9961728454, green: 0.9902502894, blue: 1, alpha: 0)
+        pdfView.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        pdfView.displayDirection = .horizontal
+        pdfView.autoScales = true
+
+        if let url = Bundle.main.url(forResource: "5V Relay", withExtension: "pdf") {
+            if let pdfDoc = PDFDocument(url: url) {
+                pdfView.document = pdfDoc
+            }
+>>>>>>> Added WindowExplorer project with xpc target and distributed notificaitons for testing.
         }
     }
 
-    private func viewDidPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer else {
-            return
-        }
-
-        switch pan.state {
-        case .recognized, .momentum:
-            var origin = view.frame.origin
-            origin += pan.delta
-            view.frame.origin = origin
-        default:
-            return
-        }
-    }
-
-    private func closeButtonViewDidTap(_ gesture: GestureRecognizer) {
-        guard gesture is TapGestureRecognizer else {
-            return
-        }
-
-        animateViewOut()
+    override func viewWillAppear() {
+        pdfThumbnailView.pdfView = pdfView
     }
 }

@@ -8,6 +8,7 @@ protocol MapActivityDelegate: class {
     func activityEnded(for mapIndex: Int)
 }
 
+let notification = NSNotification.Name(rawValue: "TESTTT")
 
 class LocalMapManager: MapActivityDelegate {
 
@@ -18,12 +19,31 @@ class LocalMapManager: MapActivityDelegate {
         static let longActivityTimeoutPeriod: TimeInterval = 10
     }
 
+    init() {
+        DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleEvent(_:)), name: notification, object: nil)
+    }
+
+    @objc
+    private func handleEvent(_ notification: NSNotification) {
+        guard let info = notification.userInfo, let mapID = info["id"] as? Int, let mapX = info["x"] as? Double, let mapY = info["y"] as? Double, let width = info["width"] as? Double, let height = info["height"] as? Double else {
+            return
+        }
+
+        let mapRect = MKMapRect(origin: MKMapPoint(x: mapX, y: mapY), size: MKMapSize(width: width, height: height))
+        set(mapRect, from: mapID)
+    }
+
+    private func postRect(_ mapRect: MKMapRect, for index: Int) {
+        let info: [String: Any] = ["id": index, "x": mapRect.origin.x, "y": mapRect.origin.y, "width": mapRect.size.width, "height": mapRect.size.height]
+        DistributedNotificationCenter.default().postNotificationName(notification, object: nil, userInfo: info, deliverImmediately: true)
+    }
+
 
     // MARK: API
 
     func add(_ maps: [MKMapView]) {
         for mapView in maps {
-            let id = handlerForMapView.count
+            let id = handlerForMapView.count + 2
             handlerForMapView[mapView] = MapHandler(mapView: mapView, id: id, delegate: self)
         }
     }
@@ -41,9 +61,11 @@ class LocalMapManager: MapActivityDelegate {
             return
         }
 
-        for handler in handlerForMapView.values {
-            handler.handle(mapRect, fromIndex: index)
-        }
+//        for handler in handlerForMapView.values {
+//            handler.handle(mapRect, fromIndex: index)
+//        }
+
+        postRect(mapRect, for: index)
 
 //        beginLongActivityTimeout()
     }

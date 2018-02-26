@@ -44,6 +44,10 @@ class MapHandler {
 
     func handle(_ mapRect: MKMapRect, fromIndex: Int) {
         if fromIndex == mapID {
+            return
+        }
+
+        if fromIndex == mapID {
             userState = .active
             pairedIndex = mapID
         } else if unpaired {
