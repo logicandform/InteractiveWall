@@ -32,7 +32,6 @@ class PlayerViewController: NSViewController {
     var panningRatio: Double?
 
 
-
     // MARK: Life-cycle
 
     override func viewDidLoad() {

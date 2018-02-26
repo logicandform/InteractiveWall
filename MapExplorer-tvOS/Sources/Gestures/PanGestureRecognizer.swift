@@ -16,9 +16,6 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
     var gestureRecognized: ((GestureRecognizer) -> Void)?
-    var location: CGPoint? {
-        return locations.last
-    }
     private(set) var state = GestureState.possible
     private(set) var delta = CGVector.zero
     private(set) var fingers: [Int]
