@@ -15,6 +15,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     @IBOutlet weak var detailView: NSView!
     @IBOutlet weak var closeButtonView: NSView!
     @IBOutlet weak var playerButtonView: NSView!
+    @IBOutlet weak var pdfButtonView: NSView!
 
     private var animationHappened = false
     weak var gestureManager: GestureManager!
@@ -71,6 +72,10 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         let singleFingerVideoButtonTap = TapGestureRecognizer()
         gestureManager.add(singleFingerVideoButtonTap, to: playerButtonView)
         singleFingerVideoButtonTap.gestureUpdated = playerButtonViewDidTap(_:)
+
+        let singleFingerPdfButtonTap = TapGestureRecognizer()
+        gestureManager.add(singleFingerPdfButtonTap, to: pdfButtonView)
+        singleFingerPdfButtonTap.gestureUpdated = pdfButtonViewDidTap(_:)
     }
 
 
@@ -81,9 +86,12 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     }
 
     @IBAction func videoButtonTapped(_ sender: Any) {
-        viewDelegate?.displayView(for: "Test Video.mp4", from: view)
+        viewDelegate?.displayPlayerView(for: "Test Video.mp4", from: view)
     }
 
+    @IBAction func pdfButtonTapped(_ sender: Any) {
+        viewDelegate?.displayPDFView(for: "5V Relay.pdf", from: view)
+    }
 
     // MARK: NSTableViewDataSource & NSTableViewDelegate
 
@@ -247,7 +255,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
             return
         }
 
-        viewDelegate?.displayView(for: "Test Video.mp4", from: view)
+        viewDelegate?.displayPlayerView(for: "Test Video.mp4", from: view)
     }
 
     private func relatedViewDidTap(_ gesture: GestureRecognizer) {
@@ -261,5 +269,13 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         if let relatedItemView = relatedView.view(atColumn: 0, row: row, makeIfNecessary: false) as? RelatedItemView {
             relatedItemView.didTapView()
         }
+    }
+
+    private func pdfButtonViewDidTap(_ gesture: GestureRecognizer) {
+        guard gesture is TapGestureRecognizer else {
+            return
+        }
+
+        viewDelegate?.displayPDFView(for: "5V Relay.pdf", from: view)
     }
 }

@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="k5b-MF-Zdf">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
-        <plugIn identifier="com.apple.pdfkit.ibplugin" version="13771"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -102,16 +101,20 @@
                                         </textFieldCell>
                                     </textField>
                                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="irn-zg-xjl">
-                                        <rect key="frame" x="275" y="91" width="81" height="32"/>
+                                        <rect key="frame" x="261" y="91" width="109" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pQ6-rF-9Cm">
+                                        <buttonCell key="cell" type="push" title="PDF Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pQ6-rF-9Cm">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
                                         <connections>
-                                            <segue destination="h8q-KE-X7P" kind="popover" popoverAnchorView="irn-zg-xjl" popoverBehavior="t" preferredEdge="maxY" id="rXT-0R-bYV"/>
+                                            <action selector="pdfButtonTapped:" target="k5b-MF-Zdf" id="K2j-ab-JIz"/>
                                         </connections>
                                     </button>
+                                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vRV-KX-7qb" userLabel="PDF Button View">
+                                        <rect key="frame" x="261" y="91" width="109" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    </customView>
                                     <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8wA-OD-SXO">
                                         <rect key="frame" x="16" y="540" width="29" height="26"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -169,9 +172,12 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="PDFButton" destination="pQ6-rF-9Cm" id="Cd0-VC-xZI"/>
                         <outlet property="closeButton" destination="8wA-OD-SXO" id="5QL-IQ-avo"/>
                         <outlet property="closeButtonView" destination="U1m-am-vcE" id="IP8-TO-V2B"/>
                         <outlet property="detailView" destination="ldO-fp-Tec" id="aR4-sd-eIk"/>
+                        <outlet property="pdfButtonVie" destination="vRV-KX-7qb" id="WVj-m7-4ls"/>
+                        <outlet property="pdfButtonView" destination="vRV-KX-7qb" id="MtJ-fj-WpF"/>
                         <outlet property="playerButtonView" destination="TRM-ly-veh" id="DaK-OW-P5M"/>
                         <outlet property="relatedView" destination="ohw-Ux-hDf" id="RSn-s9-ecN"/>
                         <outlet property="scrollView" destination="nLk-Sj-wEx" id="723-iL-Rki"/>
