@@ -18,7 +18,6 @@ class PlayerControl: NSView {
     @IBOutlet weak var currentTimeLabel: NSTextField!
     @IBOutlet weak var durationLabel: NSTextField!
 
-    var gestureManager: GestureManager!
     private var state = PlayerState.paused
     private var currentDuration: CMTime?
 
@@ -31,6 +30,12 @@ class PlayerControl: NSView {
     var currentTime: CMTime = CMTime() {
         didSet {
             updateControls(for: currentTime)
+        }
+    }
+
+    var gestureManager: GestureManager! {
+        didSet {
+            setupGestures()
         }
     }
 
@@ -74,6 +79,23 @@ class PlayerControl: NSView {
         player.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1, 1), queue: DispatchQueue.main) { [weak self] time in
             self?.currentTime = time
         }
+    }
+
+    private func setupGestures() {
+        let scrubGesture = PanGestureRecognizer(withFingers: [1])
+        gestureManager.add(scrubGesture, to: contentView)
+        scrubGesture.gestureUpdated = didScrubControl(_:)
+    }
+
+
+    // MARK: Gestures
+
+    private func didScrubControl(_ gesture: GestureRecognizer) {
+        guard let pan = gesture as? PanGestureRecognizer else {
+            return
+        }
+
+
     }
 
 
