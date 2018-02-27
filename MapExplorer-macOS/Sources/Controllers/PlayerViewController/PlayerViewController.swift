@@ -46,7 +46,6 @@ class PlayerViewController: NSViewController {
         view.wantsLayer = true
         view.layer?.backgroundColor = #colorLiteral(red: 0.6899075147, green: 0.7701538212, blue: 0.7426613761, alpha: 0.8230652265)
         titleLabel.stringValue = endURL
-
         let completeURL = Constants.url.appendingPathComponent(endURL)
         playerView.player = AVPlayer(url: completeURL)
         playerView.controlsStyle = .inline
