@@ -5,27 +5,18 @@ import AVKit
 import AppKit
 
 
-fileprivate enum PlayerState {
-    case playing
-    case paused
-}
-
-
 class PlayerViewController: NSViewController {
     static let storyboard = NSStoryboard.Name(rawValue: "Player")
 
     @IBOutlet weak var playerView: AVPlayerView!
-    @IBOutlet weak var detailView: NSView!
-    @IBOutlet weak var titleLabel: NSTextField!
-    @IBOutlet weak var closeButtonView: NSView!
-    @IBOutlet weak var durationDisplay: NSTextField!
+    @IBOutlet weak var playerControl: PlayerControl!
+    @IBOutlet weak var videoTitle: NSTextField!
+    @IBOutlet weak var dismissButton: NSView!
 
     weak var gestureManager: GestureManager!
     private var panGesture: NSPanGestureRecognizer!
-    private var playerState = PlayerState.paused
     private var initialPanningOrigin: CGPoint?
     private weak var viewDelegate: ViewManagerDelegate?
-    var panningRatio: Double?
 
     private struct Constants {
         static let testVideoURL = URL(fileURLWithPath: "/Users/Tim/Downloads/test-mac.mp4")
@@ -48,12 +39,10 @@ class PlayerViewController: NSViewController {
     // MARK: Setup
 
     private func setupPlayer() {
-        titleLabel.stringValue = Constants.testVideoURL.lastPathComponent
-        playerView.player = AVPlayer(url: Constants.testVideoURL)
-        if var duration = playerView.player?.currentItem?.asset.duration.seconds {
-            duration = round(duration * 100) / 100
-            durationDisplay.stringValue = duration.description
-        }
+        videoTitle.stringValue = Constants.testVideoURL.lastPathComponent
+        let player = AVPlayer(url: Constants.testVideoURL)
+        playerView.player = player
+        playerControl.player = player
     }
 
     private func setupGestures() {
@@ -69,7 +58,7 @@ class PlayerViewController: NSViewController {
         singleFingerPan.gestureUpdated = didPanView(_:)
 
         let singleFingerCloseButtonTap = TapGestureRecognizer()
-        gestureManager.add(singleFingerCloseButtonTap, to: closeButtonView)
+        gestureManager.add(singleFingerCloseButtonTap, to: dismissButton)
         singleFingerCloseButtonTap.gestureUpdated = didTapCloseButton(_:)
     }
 
@@ -84,11 +73,11 @@ class PlayerViewController: NSViewController {
     // MARK: Gestures
 
     private func didTapVideoPlayer(_ gesture: GestureRecognizer) {
-        guard gesture is TapGestureRecognizer, let player = playerView.player else {
+        guard gesture is TapGestureRecognizer else {
             return
         }
 
-        toggle(player)
+        playerControl.toggle()
     }
 
     private func didPanView(_ gesture: GestureRecognizer) {
@@ -98,7 +87,7 @@ class PlayerViewController: NSViewController {
 
         switch pan.state {
         case .recognized, .momentum:
-            view.frame.origin = view.frame.origin + pan.delta
+            view.frame.origin += pan.delta
         default:
             return
         }
@@ -128,32 +117,22 @@ class PlayerViewController: NSViewController {
 
     // MARK: Helpers
 
-    private func toggle(_ player: AVPlayer) {
-        if playerState == .playing {
-            playerState = .paused
-            player.pause()
-        } else {
-            playerState = .playing
-            player.play()
-        }
-    }
-
     private func animateViewIn() {
-        detailView.alphaValue = 0.0
-        detailView.frame.origin.y = view.frame.size.height
+        view.alphaValue = 0.0
+        view.frame.origin.y = view.frame.size.height
 
         NSAnimationContext.runAnimationGroup({_ in
             NSAnimationContext.current.duration = 0.7
-            detailView.animator().alphaValue = 1.0
-            detailView.animator().frame.origin.y = 0
+            view.animator().alphaValue = 1.0
+            view.animator().frame.origin.y = 0
         })
     }
 
     private func animateViewOut() {
         NSAnimationContext.runAnimationGroup({_ in
             NSAnimationContext.current.duration = 1.0
-            detailView.animator().alphaValue = 0.0
-            detailView.animator().frame.origin.y = view.frame.size.height
+            view.animator().alphaValue = 0.0
+            view.animator().frame.origin.y = view.frame.size.height
         }, completionHandler: {
             self.view.removeFromSuperview()
         })
