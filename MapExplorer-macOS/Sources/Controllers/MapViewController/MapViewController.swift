@@ -18,14 +18,16 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     static let touchNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12222)
 
     private struct Constants {
-        static let numberOfMapViews = 3
         static let tileURL = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
         static let annotationContainerClass = "MKNewAnnotationContainerView"
         static let maxZoomWidth: Double =  134217730
         static let annotationHitSize = CGSize(width: 50, height: 50)
     }
 
+
     @IBOutlet weak var mapView: MKMapView!
+    var mapID: Int!
+
     private var mapHandler: MapHandler?
     private let socketManager = SocketManager(networkConfiguration: touchNetwork)
     private var gestureManager: GestureManager!
@@ -49,7 +51,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     // MARK: Setup
 
     func setupMaps() {
-        mapHandler = MapHandler(mapView: mapView)
+        mapHandler = MapHandler(mapView: mapView, id: mapID)
         mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
         mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
         createPlaces(for: mapView)

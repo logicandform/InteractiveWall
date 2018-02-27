@@ -37,9 +37,9 @@ class MapHandler {
 
     // MARK: Init
 
-    init(mapView: MKMapView) {
+    init(mapView: MKMapView, id: Int) {
         self.mapView = mapView
-        self.mapID = 2
+        self.mapID = id
         subscribeToNotifications()
     }
 
