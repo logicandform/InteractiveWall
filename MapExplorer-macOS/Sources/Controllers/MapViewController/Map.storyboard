@@ -2,8 +2,8 @@
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="TYK-5A-x82">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <plugIn identifier="com.apple.MapKitIBPlugin" version="13771"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
-        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
     </dependencies>
     <scenes>
         <!--Map View Controller-->
@@ -14,19 +14,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="417"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <stackView distribution="fillEqually" orientation="horizontal" alignment="top" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Xn-eu-cRu">
+                            <mapView mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsBuildings="NO" showsPointsOfInterest="NO" showsCompass="NO" showsZoomControls="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s1R-HV-vyu">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="417"/>
-                            </stackView>
+                                <connections>
+                                    <outlet property="delegate" destination="TYK-5A-x82" id="dxv-gV-hz1"/>
+                                </connections>
+                            </mapView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="4Xn-eu-cRu" firstAttribute="leading" secondItem="qa6-7c-s1W" secondAttribute="leading" id="0f1-JK-eiw"/>
-                            <constraint firstItem="4Xn-eu-cRu" firstAttribute="top" secondItem="qa6-7c-s1W" secondAttribute="top" id="2Ci-pO-fbX"/>
-                            <constraint firstAttribute="trailing" secondItem="4Xn-eu-cRu" secondAttribute="trailing" id="R0Y-fm-B6s"/>
-                            <constraint firstAttribute="bottom" secondItem="4Xn-eu-cRu" secondAttribute="bottom" id="Yan-44-nNU"/>
+                            <constraint firstAttribute="trailing" secondItem="s1R-HV-vyu" secondAttribute="trailing" id="Txz-yL-mWb"/>
+                            <constraint firstItem="s1R-HV-vyu" firstAttribute="leading" secondItem="qa6-7c-s1W" secondAttribute="leading" id="b1d-fn-Hmn"/>
+                            <constraint firstAttribute="bottom" secondItem="s1R-HV-vyu" secondAttribute="bottom" id="kkI-xz-pKq"/>
+                            <constraint firstItem="s1R-HV-vyu" firstAttribute="top" secondItem="qa6-7c-s1W" secondAttribute="top" id="pOP-Ow-rrj"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="stackView" destination="4Xn-eu-cRu" id="CXu-wU-DRH"/>
+                        <outlet property="mapView" destination="s1R-HV-vyu" id="Gig-cX-EII"/>
                     </connections>
                 </viewController>
                 <customObject id="TEP-w5-kbz" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

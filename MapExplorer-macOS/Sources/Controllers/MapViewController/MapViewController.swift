@@ -9,8 +9,7 @@ import AppKit
 
 protocol ViewManagerDelegate: class {
     func displayView(for: Place, from: NSView)
-    func displayPlayerView(for: String, from: NSView)
-    func displayPDFView(for: String, from: NSView)
+    func displayView(for: String, from: NSView)
 }
 
 
@@ -19,18 +18,19 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     static let touchNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12222)
 
     private struct Constants {
-        static let numberOfMapViews = 3
         static let tileURL = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
         static let annotationContainerClass = "MKNewAnnotationContainerView"
         static let maxZoomWidth: Double =  134217730
         static let annotationHitSize = CGSize(width: 50, height: 50)
     }
 
-    var mapViews = [MKMapView]()
-    var mapManager: LocalMapManager?
+
+    @IBOutlet weak var mapView: MKMapView!
+    var mapID: Int!
+
+    private var mapHandler: MapHandler?
     private let socketManager = SocketManager(networkConfiguration: touchNetwork)
     private var gestureManager: GestureManager!
-    @IBOutlet weak var stackView: NSStackView!
 
 
     // MARK: Lifecycle
@@ -44,54 +44,47 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     }
 
     override func viewWillAppear() {
-        view.window?.toggleFullScreen(nil)
+//        view.window?.toggleFullScreen(nil)
     }
 
 
     // MARK: Setup
 
     func setupMaps() {
-        for i in (0 ..< Configuration.numberOfMapsPerWindow) {
-            let mapView = MKMapView()
-            stackView.insertView(mapView, at: i, in: .trailing)
-            mapViews.append(mapView)
-            mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
-            mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
-            createPlaces(for: mapView)
-            mapView.delegate = self
-        }
+        mapHandler = MapHandler(mapView: mapView, id: mapID)
+        mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
+        mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
+        createPlaces(for: mapView)
     }
 
     func setupGestures() {
-        mapViews.forEach { mapView in
-            let nsPan = NSPanGestureRecognizer(target: self, action: #selector(didPanMouse(_:)))
-            nsPan.delegate = self
-            mapView.addGestureRecognizer(nsPan)
+        let nsPan = NSPanGestureRecognizer(target: self, action: #selector(didPanMouse(_:)))
+        nsPan.delegate = self
+        mapView.addGestureRecognizer(nsPan)
 
-            let nsPinch = NSMagnificationGestureRecognizer(target: self, action: #selector(didPinchTrackpad(_:)))
-            nsPinch.delegate = self
-            nsPinch.delaysMagnificationEvents = false
-            mapView.addGestureRecognizer(nsPinch)
+        let nsPinch = NSMagnificationGestureRecognizer(target: self, action: #selector(didPinchTrackpad(_:)))
+        nsPinch.delegate = self
+        nsPinch.delaysMagnificationEvents = false
+        mapView.addGestureRecognizer(nsPinch)
 
-            let tapGesture = TapGestureRecognizer()
-            gestureManager.add(tapGesture, to: mapView)
-            tapGesture.gestureUpdated = didTapOnMap(_:)
+        let tapGesture = TapGestureRecognizer()
+        gestureManager.add(tapGesture, to: mapView)
+        tapGesture.gestureUpdated = didTapOnMap(_:)
 
-            let panGesture = PanGestureRecognizer(withFingers: [1, 2, 3, 4, 5])
-            gestureManager.add(panGesture, to: mapView)
-            panGesture.gestureUpdated = didPanOnMap(_:)
+        let panGesture = PanGestureRecognizer(withFingers: [1, 2, 3, 4, 5])
+        gestureManager.add(panGesture, to: mapView)
+        panGesture.gestureUpdated = didPanOnMap(_:)
 
-            let pinchGesture = PinchGestureRecognizer()
-            gestureManager.add(pinchGesture, to: mapView)
-            pinchGesture.gestureUpdated = didZoomOnMap(_:)
-        }
+        let pinchGesture = PinchGestureRecognizer()
+        gestureManager.add(pinchGesture, to: mapView)
+        pinchGesture.gestureUpdated = didZoomOnMap(_:)
     }
 
 
     // MARK: Gesture handling
 
     private func didPanOnMap(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let mapView = gestureManager.view(for: gesture) as? MKMapView else {
+        guard let pan = gesture as? PanGestureRecognizer else {
             return
         }
 
@@ -101,16 +94,16 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             let translationX = Double(pan.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
             let translationY = Double(pan.delta.dy) * mapRect.size.height / Double(mapView.frame.height)
             mapRect.origin -= MKMapPoint(x: translationX, y: -translationY)
-            mapManager?.set(mapRect, of: mapView)
+            mapHandler?.send(mapRect)
         case .possible, .failed:
-            mapManager?.finishedUpdating(mapView)
+            mapHandler?.endUpdates()
         default:
             return
         }
     }
 
     private func didZoomOnMap(_ gesture: GestureRecognizer) {
-        guard let pinch = gesture as? PinchGestureRecognizer, let mapView = gestureManager.view(for: gesture) as? MKMapView else {
+        guard let pinch = gesture as? PinchGestureRecognizer else {
             return
         }
 
@@ -120,8 +113,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
             let scaledWidth = (2 - Double(pinch.scale)) * mapRect.size.width
             let scaledHeight = (2 - Double(pinch.scale)) * mapRect.size.height
             // Uncomment and delete the other two duplicate veriable below for pinch with pan gesture
-//            var translationX = -Double(pinch.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
-//            var translationY = Double(pinch.delta.dy) * mapRect.size.height / Double(mapView.frame.height)
+            //            var translationX = -Double(pinch.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
+            //            var translationY = Double(pinch.delta.dy) * mapRect.size.height / Double(mapView.frame.height)
             var translationX = 0.0
             var translationY = 0.0
             if scaledWidth <= Constants.maxZoomWidth {
@@ -130,9 +123,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
                 mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
             }
             mapRect.origin += MKMapPoint(x: translationX, y: translationY)
-            mapManager?.set(mapRect, of: mapView)
+            mapHandler?.send(mapRect)
         case .possible, .failed:
-            mapManager?.finishedUpdating(mapView)
+            mapHandler?.endUpdates()
         default:
             return
         }
@@ -140,7 +133,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
 
     /// If the tap is positioned on a selectable annotation, the annotation's didSelect function is invoked.
     private func didTapOnMap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position, let mapView = gestureManager.view(for: gesture) as? MKMapView, let container = mapView.subviews.first(where: { $0.className == Constants.annotationContainerClass }) else {
+        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position, let container = mapView.subviews.first(where: { $0.className == Constants.annotationContainerClass }) else {
             return
         }
 
@@ -166,15 +159,11 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     /// Used to handle pan events recorded by a mouse
     @objc
     func didPanMouse(_ gesture: NSPanGestureRecognizer) {
-        guard let mapView = mapViews.first(where: { $0.gestureRecognizers.contains(gesture) }) else {
-            return
-        }
-
         switch gesture.state {
         case .changed:
-            mapManager?.set(mapView.visibleMapRect, of: mapView)
+            mapHandler?.send(mapView.visibleMapRect, for: .system)
         case .ended:
-            mapManager?.finishedUpdating(mapView)
+            mapHandler?.endUpdates()
         default:
             return
         }
@@ -183,15 +172,11 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     /// Used to handle pinch events recorded by a trackpad
     @objc
     func didPinchTrackpad(_ gesture: NSMagnificationGestureRecognizer) {
-        guard let mapView = mapViews.first(where: { $0.gestureRecognizers.contains(gesture) }) else {
-            return
-        }
-
         switch gesture.state {
         case .changed:
-            mapManager?.set(mapView.visibleMapRect, of: mapView)
+            mapHandler?.send(mapView.visibleMapRect, for: .system)
         case .ended:
-            mapManager?.finishedUpdating(mapView)
+            mapHandler?.endUpdates()
         default:
             return
         }
@@ -287,7 +272,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     }
 
     /// Displays a video player view controller on the screen next to the view that provided it.
-    func displayPlayerView(for endURL: String, from focus: NSView) {
+    func displayView(for endURL: String, from focus: NSView) {
         let storyboard = NSStoryboard(name: PlayerViewController.storyboard, bundle: nil)
         let playerVC = storyboard.instantiateInitialController() as! PlayerViewController
         playerVC.gestureManager = gestureManager
@@ -300,22 +285,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         origin += CGVector(dx: focus.bounds.width + 20.0, dy: 0)
         playerVC.view.frame.origin = origin
         adjustBoundaries(of: playerVC.view)
-    }
-
-    /// Displays a PDF view controller on the screen next to the view that provided it.
-    func displayPDFView(for endURL: String, from focus: NSView) {
-        let storyboard = NSStoryboard(name: PDFViewController.storyboard, bundle: nil)
-        let pdfVC = storyboard.instantiateInitialController() as! PDFViewController
-        pdfVC.gestureManager = gestureManager
-        pdfVC.endURL = endURL
-
-        addChildViewController(pdfVC)
-        view.addSubview(pdfVC.view)
-
-        var origin = focus.frame.origin
-        origin += CGVector(dx: focus.bounds.width + 20.0, dy: 0)
-        pdfVC.view.frame.origin = origin
-        adjustBoundaries(of: pdfVC.view)
     }
 
 
