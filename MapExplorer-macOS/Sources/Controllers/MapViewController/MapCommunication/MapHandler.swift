@@ -32,6 +32,7 @@ class MapHandler {
     private struct Keys {
         static let id = "id"
         static let map = "map"
+        static let gesture = "gestureType"
     }
 
 
@@ -46,8 +47,8 @@ class MapHandler {
 
     // MARK: API
 
-    func send(_ mapRect: MKMapRect) {
-        let json: [String: Any] = [Keys.id: mapID, Keys.map: mapRect.toJSON()]
+    func send(_ mapRect: MKMapRect, for type: GestureType = .custom) {
+        let json: [String: Any] = [Keys.id: mapID, Keys.map: mapRect.toJSON(), Keys.gesture: type.rawValue]
         DistributedNotificationCenter.default().postNotificationName(MapNotifications.positionChanged.name, object: nil, userInfo: json, deliverImmediately: true)
     }
 
@@ -73,19 +74,17 @@ class MapHandler {
 
     @objc
     private func handleNotification(_ notification: NSNotification) {
-        guard let userInfo = notification.userInfo else {
+        guard let userInfo = notification.userInfo, let mapID = userInfo[Keys.id] as? Int else {
             return
         }
 
         switch notification.name {
         case MapNotifications.positionChanged.name:
-            if let mapID = userInfo[Keys.id] as? Int, let mapJSON = userInfo[Keys.map] as? [String: Any], let mapRect = MKMapRect(fromJSON: mapJSON) {
-                handle(mapRect, fromIndex: mapID)
+            if let mapJSON = userInfo[Keys.map] as? [String: Any], let mapRect = MKMapRect(fromJSON: mapJSON), let gesture = userInfo[Keys.gesture] as? String, let gestureType = GestureType(rawValue: gesture) {
+                handle(mapRect, fromIndex: mapID, from: gestureType)
             }
         case MapNotifications.endedActivity.name:
-            if let mapID = userInfo[Keys.id] as? Int {
-                unpair(from: mapID)
-            }
+            unpair(from: mapID)
         default:
             return
         }
@@ -95,12 +94,14 @@ class MapHandler {
 
     // MARK: Helpers
 
-    /// Determines how to respond to a received mapRect from another mapView
-    private func handle(_ mapRect: MKMapRect, fromIndex: Int) {
+    /// Determines how to respond to a received mapRect from another mapView and the type of gesture that triggered the event.
+    private func handle(_ mapRect: MKMapRect, fromIndex: Int, from type: GestureType) {
         if fromIndex == mapID {
             userState = .active
             pairedIndex = mapID
-            return
+            if type == .system {
+                return
+            }
         } else if unpaired {
             pairedIndex = fromIndex
         } else if abs(mapID - fromIndex) < abs(mapID - pairedIndex!) {
