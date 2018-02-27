@@ -11,20 +11,7 @@
 		22A923232044AF05003EA9BB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A923222044AF05003EA9BB /* ViewController.swift */; };
 		22A923252044AF05003EA9BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22A923242044AF05003EA9BB /* Assets.xcassets */; };
 		22A923282044AF05003EA9BB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22A923262044AF05003EA9BB /* Main.storyboard */; };
-		22A923452044B09D003EA9BB /* WindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 22A923442044B09D003EA9BB /* WindowManager.m */; };
-		22A923472044B09D003EA9BB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 22A923462044B09D003EA9BB /* main.m */; };
-		22A9234B2044B09D003EA9BB /* WindowExplorer-XPC.xpc in Embed XPC Services */ = {isa = PBXBuildFile; fileRef = 22A923402044B09D003EA9BB /* WindowExplorer-XPC.xpc */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		22A923492044B09D003EA9BB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 22A923152044AF05003EA9BB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 22A9233F2044B09D003EA9BB;
-			remoteInfo = "WindowExplorer-XPC";
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		22A9234F2044B09D003EA9BB /* Embed XPC Services */ = {
@@ -33,7 +20,6 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/XPCServices";
 			dstSubfolderSpec = 16;
 			files = (
-				22A9234B2044B09D003EA9BB /* WindowExplorer-XPC.xpc in Embed XPC Services */,
 			);
 			name = "Embed XPC Services";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -48,23 +34,10 @@
 		22A923272044AF05003EA9BB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		22A923292044AF05003EA9BB /* WindowExplorer.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = WindowExplorer.plist; sourceTree = "<group>"; };
 		22A9232A2044AF05003EA9BB /* WindowExplorer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WindowExplorer.entitlements; sourceTree = "<group>"; };
-		22A923402044B09D003EA9BB /* WindowExplorer-XPC.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = "WindowExplorer-XPC.xpc"; sourceTree = BUILT_PRODUCTS_DIR; };
-		22A923422044B09D003EA9BB /* WindowManagerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WindowManagerDelegate.h; sourceTree = "<group>"; };
-		22A923432044B09D003EA9BB /* WindowManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
-		22A923442044B09D003EA9BB /* WindowManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WindowManager.m; sourceTree = "<group>"; };
-		22A923462044B09D003EA9BB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		22A923482044B09D003EA9BB /* XPC.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = XPC.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		22A9231A2044AF05003EA9BB /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		22A9233D2044B09D003EA9BB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -82,7 +55,6 @@
 				22A923332044AF2D003EA9BB /* Metadata */,
 				22A923322044AF23003EA9BB /* Extensions */,
 				22A923312044AF1E003EA9BB /* Resources */,
-				22A923412044B09D003EA9BB /* XPC */,
 				22A9231E2044AF05003EA9BB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -91,7 +63,6 @@
 			isa = PBXGroup;
 			children = (
 				22A9231D2044AF05003EA9BB /* WindowExplorer.app */,
-				22A923402044B09D003EA9BB /* WindowExplorer-XPC.xpc */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -125,7 +96,6 @@
 			children = (
 				22A9232A2044AF05003EA9BB /* WindowExplorer.entitlements */,
 				22A923292044AF05003EA9BB /* WindowExplorer.plist */,
-				22A923482044B09D003EA9BB /* XPC.plist */,
 			);
 			path = Metadata;
 			sourceTree = "<group>";
@@ -146,17 +116,6 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
-		22A923412044B09D003EA9BB /* XPC */ = {
-			isa = PBXGroup;
-			children = (
-				22A923422044B09D003EA9BB /* WindowManagerDelegate.h */,
-				22A923432044B09D003EA9BB /* WindowManager.h */,
-				22A923442044B09D003EA9BB /* WindowManager.m */,
-				22A923462044B09D003EA9BB /* main.m */,
-			);
-			path = XPC;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -172,29 +131,11 @@
 			buildRules = (
 			);
 			dependencies = (
-				22A9234A2044B09D003EA9BB /* PBXTargetDependency */,
 			);
 			name = WindowExplorer;
 			productName = WindowExplorer;
 			productReference = 22A9231D2044AF05003EA9BB /* WindowExplorer.app */;
 			productType = "com.apple.product-type.application";
-		};
-		22A9233F2044B09D003EA9BB /* WindowExplorer-XPC */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 22A9234C2044B09D003EA9BB /* Build configuration list for PBXNativeTarget "WindowExplorer-XPC" */;
-			buildPhases = (
-				22A9233C2044B09D003EA9BB /* Sources */,
-				22A9233D2044B09D003EA9BB /* Frameworks */,
-				22A9233E2044B09D003EA9BB /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "WindowExplorer-XPC";
-			productName = "WindowExplorer-XPC";
-			productReference = 22A923402044B09D003EA9BB /* WindowExplorer-XPC.xpc */;
-			productType = "com.apple.product-type.xpc-service";
 		};
 /* End PBXNativeTarget section */
 
@@ -207,10 +148,6 @@
 				ORGANIZATIONNAME = JABT;
 				TargetAttributes = {
 					22A9231C2044AF05003EA9BB = {
-						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Automatic;
-					};
-					22A9233F2044B09D003EA9BB = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
 					};
@@ -230,7 +167,6 @@
 			projectRoot = "";
 			targets = (
 				22A9231C2044AF05003EA9BB /* WindowExplorer */,
-				22A9233F2044B09D003EA9BB /* WindowExplorer-XPC */,
 			);
 		};
 /* End PBXProject section */
@@ -242,13 +178,6 @@
 			files = (
 				22A923252044AF05003EA9BB /* Assets.xcassets in Resources */,
 				22A923282044AF05003EA9BB /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		22A9233E2044B09D003EA9BB /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,24 +193,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		22A9233C2044B09D003EA9BB /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				22A923472044B09D003EA9BB /* main.m in Sources */,
-				22A923452044B09D003EA9BB /* WindowManager.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		22A9234A2044B09D003EA9BB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 22A9233F2044B09D003EA9BB /* WindowExplorer-XPC */;
-			targetProxy = 22A923492044B09D003EA9BB /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		22A923262044AF05003EA9BB /* Main.storyboard */ = {
@@ -433,32 +345,6 @@
 			};
 			name = Release;
 		};
-		22A9234D2044B09D003EA9BB /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = M6262HME76;
-				INFOPLIST_FILE = Metadata/XPC.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "is.slant.WindowExplorer-XPC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		22A9234E2044B09D003EA9BB /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = M6262HME76;
-				INFOPLIST_FILE = Metadata/XPC.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = "is.slant.WindowExplorer-XPC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -476,15 +362,6 @@
 			buildConfigurations = (
 				22A9232E2044AF05003EA9BB /* Debug */,
 				22A9232F2044AF05003EA9BB /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		22A9234C2044B09D003EA9BB /* Build configuration list for PBXNativeTarget "WindowExplorer-XPC" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				22A9234D2044B09D003EA9BB /* Debug */,
-				22A9234E2044B09D003EA9BB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

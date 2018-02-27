@@ -10,13 +10,14 @@ struct Configuration {
     static let touchScreenSize = CGSize(width: 4095, height: 2242.5)
 }
 
+let deviceID = Int32(1)
+
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
 
-        let mapManager = LocalMapManager()
         let mapStoryboard = NSStoryboard(name: MapViewController.storyboard, bundle: nil)
         let mapVC = mapStoryboard.instantiateInitialController() as! MapViewController
         let mapWindow: NSWindow
@@ -37,9 +38,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         mapWindow.title = "Map Window"
         mapWindow.makeKeyAndOrderFront(self)
-        mapManager.add(mapVC.mapViews)
-        mapVC.mapManager = mapManager
-        mapManager.reset()
 
         /// Display the DemoViewController
 //        let demoStoryboard = NSStoryboard(name: GestureDemoController.storyboard, bundle: nil)

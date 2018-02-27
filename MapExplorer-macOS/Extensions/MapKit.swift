@@ -5,6 +5,26 @@ import MapKit
 
 extension MKMapRect: Equatable {
 
+    private struct Keys {
+        static let x = "x"
+        static let y = "y"
+        static let width = "width"
+        static let height = "height"
+    }
+
+    init?(fromJSON json: [String: Any]) {
+        guard let x = json[Keys.x] as? Double, let y = json[Keys.y] as? Double, let width = json[Keys.width] as? Double, let height = json[Keys.height] as? Double else {
+            return nil
+        }
+
+        self.origin = MKMapPoint(x: x, y: y)
+        self.size = MKMapSize(width: width, height: height)
+    }
+
+    func toJSON() -> [String: Any] {
+        return [Keys.x: origin.x, Keys.y: origin.y, Keys.width: size.width, Keys.height: size.height]
+    }
+
     static public func == (lhs: MKMapRect, rhs: MKMapRect) -> Bool {
         return lhs.origin == rhs.origin && lhs.size == rhs.size
     }

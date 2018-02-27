@@ -5,8 +5,6 @@ import MONode
 import MapKit
 
 
-let deviceID = Int32(1)
-
 class NetworkMapManager: SocketManagerDelegate {
     static let mapNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 13333)
 
