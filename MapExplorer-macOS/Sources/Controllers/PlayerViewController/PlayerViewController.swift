@@ -17,6 +17,7 @@ class PlayerViewController: NSViewController {
     @IBOutlet weak var detailView: NSView!
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var closeButtonView: NSView!
+    @IBOutlet weak var durationDisplay: NSTextField!
 
     private struct Constants {
         static let url =  URL(fileURLWithPath: "/Users/Jeremy/Desktop/")
@@ -28,6 +29,7 @@ class PlayerViewController: NSViewController {
     private weak var viewDelegate: ViewManagerDelegate?
     weak var gestureManager: GestureManager!
     var endURL: String!
+    var panningRatio: Double?
 
 
     // MARK: Life-cycle
@@ -49,6 +51,10 @@ class PlayerViewController: NSViewController {
         let completeURL = Constants.url.appendingPathComponent(endURL)
         playerView.player = AVPlayer(url: completeURL)
         playerView.controlsStyle = .inline
+        if var duration = playerView.player?.currentItem?.asset.duration.seconds {
+            duration = round(duration * 100) / 100
+            durationDisplay.stringValue = duration.description
+        }
     }
 
     private func setupGestures() {
