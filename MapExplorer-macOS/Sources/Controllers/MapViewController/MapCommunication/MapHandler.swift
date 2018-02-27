@@ -47,7 +47,7 @@ class MapHandler {
 
     // MARK: API
 
-    func send(_ mapRect: MKMapRect, for type: GestureType = .custom) {
+    func send(_ mapRect: MKMapRect, gestureType type: GestureType = .custom) {
         let json: [String: Any] = [Keys.id: mapID, Keys.map: mapRect.toJSON(), Keys.gesture: type.rawValue]
         DistributedNotificationCenter.default().postNotificationName(MapNotifications.positionChanged.name, object: nil, userInfo: json, deliverImmediately: true)
     }

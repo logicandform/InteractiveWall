@@ -19,20 +19,20 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2XJ-Bn-D2F">
-                                        <rect key="frame" x="11" y="154" width="256" height="34"/>
+                                        <rect key="frame" x="18" y="155" width="604" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="ceK-k5-rdu">
-                                            <font key="font" size="30" name="TimesNewRomanPS-BoldMT"/>
+                                            <font key="font" metaFont="systemBold" size="23"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <avPlayerView fixedFrame="YES" controlsStyle="inline" translatesAutoresizingMaskIntoConstraints="NO" id="gA4-i9-AmE">
-                                        <rect key="frame" x="5" y="191" width="630" height="360"/>
+                                    <avPlayerView fixedFrame="YES" controlsStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="gA4-i9-AmE">
+                                        <rect key="frame" x="0.0" y="191" width="640" height="362"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     </avPlayerView>
                                     <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LMj-2E-agr">
-                                        <rect key="frame" x="21" y="17" width="29" height="26"/>
+                                        <rect key="frame" x="16" y="15" width="29" height="26"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="disclosure" bezelStyle="roundedDisclosure" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2mS-GI-yVm">
                                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
@@ -43,7 +43,7 @@
                                         </connections>
                                     </button>
                                     <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tki-Wu-2RP">
-                                        <rect key="frame" x="21" y="17" width="29" height="26"/>
+                                        <rect key="frame" x="16" y="16" width="29" height="26"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     </customView>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="o5X-ga-527">

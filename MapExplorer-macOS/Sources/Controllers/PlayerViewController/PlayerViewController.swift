@@ -1,14 +1,15 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
-import Cocoa
-import Quartz
+import Foundation
 import AVKit
 import AppKit
 
-enum PlayerState {
-    case play
-    case pause
+
+fileprivate enum PlayerState {
+    case playing
+    case paused
 }
+
 
 class PlayerViewController: NSViewController {
     static let storyboard = NSStoryboard.Name(rawValue: "Player")
@@ -19,23 +20,25 @@ class PlayerViewController: NSViewController {
     @IBOutlet weak var closeButtonView: NSView!
     @IBOutlet weak var durationDisplay: NSTextField!
 
-    private struct Constants {
-        static let url =  URL(fileURLWithPath: "/Users/Jeremy/Desktop/")
-    }
-
-    private var playerState = PlayerState.pause
+    weak var gestureManager: GestureManager!
     private var panGesture: NSPanGestureRecognizer!
+    private var playerState = PlayerState.paused
     private var initialPanningOrigin: CGPoint?
     private weak var viewDelegate: ViewManagerDelegate?
-    weak var gestureManager: GestureManager!
-    var endURL: String!
     var panningRatio: Double?
+
+    private struct Constants {
+        static let testVideoURL = URL(fileURLWithPath: "/Users/Tim/Downloads/test-mac.mp4")
+    }
 
 
     // MARK: Life-cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.wantsLayer = true
+        view.layer?.backgroundColor = #colorLiteral(red: 0.6899075147, green: 0.7701538212, blue: 0.7426613761, alpha: 0.8230652265)
+
         setupPlayer()
         animateViewIn()
         setupGestures()
@@ -45,12 +48,8 @@ class PlayerViewController: NSViewController {
     // MARK: Setup
 
     private func setupPlayer() {
-        view.wantsLayer = true
-        view.layer?.backgroundColor = #colorLiteral(red: 0.6899075147, green: 0.7701538212, blue: 0.7426613761, alpha: 0.8230652265)
-        titleLabel.stringValue = endURL
-        let completeURL = Constants.url.appendingPathComponent(endURL)
-        playerView.player = AVPlayer(url: completeURL)
-        playerView.controlsStyle = .inline
+        titleLabel.stringValue = Constants.testVideoURL.lastPathComponent
+        playerView.player = AVPlayer(url: Constants.testVideoURL)
         if var duration = playerView.player?.currentItem?.asset.duration.seconds {
             duration = round(duration * 100) / 100
             durationDisplay.stringValue = duration.description
@@ -58,20 +57,20 @@ class PlayerViewController: NSViewController {
     }
 
     private func setupGestures() {
-        panGesture = NSPanGestureRecognizer(target: self, action: #selector(handlePan(gesture:)))
+        panGesture = NSPanGestureRecognizer(target: self, action: #selector(handleMousePan(_:)))
         view.addGestureRecognizer(panGesture)
 
         let singleFingerTap = TapGestureRecognizer()
         gestureManager.add(singleFingerTap, to: playerView)
-        singleFingerTap.gestureUpdated = playerViewDidTap(_:)
+        singleFingerTap.gestureUpdated = didTapVideoPlayer(_:)
 
         let singleFingerPan = PanGestureRecognizer()
         gestureManager.add(singleFingerPan, to: view)
-        singleFingerPan.gestureUpdated = viewDidPan(_:)
+        singleFingerPan.gestureUpdated = didPanView(_:)
 
         let singleFingerCloseButtonTap = TapGestureRecognizer()
         gestureManager.add(singleFingerCloseButtonTap, to: closeButtonView)
-        singleFingerCloseButtonTap.gestureUpdated = closeButtonViewDidTap(_:)
+        singleFingerCloseButtonTap.gestureUpdated = didTapCloseButton(_:)
     }
 
 
@@ -82,7 +81,62 @@ class PlayerViewController: NSViewController {
     }
 
 
+    // MARK: Gestures
+
+    private func didTapVideoPlayer(_ gesture: GestureRecognizer) {
+        guard gesture is TapGestureRecognizer, let player = playerView.player else {
+            return
+        }
+
+        toggle(player)
+    }
+
+    private func didPanView(_ gesture: GestureRecognizer) {
+        guard let pan = gesture as? PanGestureRecognizer else {
+            return
+        }
+
+        switch pan.state {
+        case .recognized, .momentum:
+            view.frame.origin = view.frame.origin + pan.delta
+        default:
+            return
+        }
+    }
+
+    private func didTapCloseButton(_ gesture: GestureRecognizer) {
+        guard gesture is TapGestureRecognizer else {
+            return
+        }
+
+        animateViewOut()
+    }
+
+    @objc
+    private func handleMousePan(_ gesture: NSPanGestureRecognizer) {
+        if gesture.state == .began {
+            initialPanningOrigin = view.frame.origin
+            return
+        }
+
+        if var origin = initialPanningOrigin {
+            origin += gesture.translation(in: view.superview)
+            view.frame.origin = origin
+        }
+    }
+
+
     // MARK: Helpers
+
+    private func toggle(_ player: AVPlayer) {
+        if playerState == .playing {
+            playerState = .paused
+            player.pause()
+        } else {
+            playerState = .playing
+            player.play()
+        }
+    }
 
     private func animateViewIn() {
         detailView.alphaValue = 0.0
@@ -103,55 +157,5 @@ class PlayerViewController: NSViewController {
         }, completionHandler: {
             self.view.removeFromSuperview()
         })
-    }
-
-    @objc
-    private func handlePan(gesture: NSPanGestureRecognizer) {
-        if gesture.state == .began {
-            initialPanningOrigin = view.frame.origin
-            return
-        }
-
-        if var origin = initialPanningOrigin {
-            origin += gesture.translation(in: view.superview)
-            view.frame.origin = origin
-        }
-    }
-
-    private func playerViewDidTap(_ gesture: GestureRecognizer) {
-        guard gesture is TapGestureRecognizer, let player = playerView.player else {
-            return
-        }
-
-        if playerState == .play {
-            player.pause()
-            playerState = .pause
-        } else {
-            player.play()
-            playerState = .play
-        }
-    }
-
-    private func viewDidPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer else {
-            return
-        }
-
-        switch pan.state {
-        case .recognized, .momentum:
-            var origin = view.frame.origin
-            origin += pan.delta
-            view.frame.origin = origin
-        default:
-            return
-        }
-    }
-
-    private func closeButtonViewDidTap(_ gesture: GestureRecognizer) {
-        guard gesture is TapGestureRecognizer else {
-            return
-        }
-
-        animateViewOut()
     }
 }

@@ -161,7 +161,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     func didPanMouse(_ gesture: NSPanGestureRecognizer) {
         switch gesture.state {
         case .changed:
-            mapHandler?.send(mapView.visibleMapRect, for: .system)
+            mapHandler?.send(mapView.visibleMapRect, gestureType: .system)
         case .ended:
             mapHandler?.endUpdates()
         default:
@@ -174,7 +174,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     func didPinchTrackpad(_ gesture: NSMagnificationGestureRecognizer) {
         switch gesture.state {
         case .changed:
-            mapHandler?.send(mapView.visibleMapRect, for: .system)
+            mapHandler?.send(mapView.visibleMapRect, gestureType: .system)
         case .ended:
             mapHandler?.endUpdates()
         default:
@@ -276,7 +276,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         let storyboard = NSStoryboard(name: PlayerViewController.storyboard, bundle: nil)
         let playerVC = storyboard.instantiateInitialController() as! PlayerViewController
         playerVC.gestureManager = gestureManager
-        playerVC.endURL = endURL
 
         addChildViewController(playerVC)
         view.addSubview(playerVC.view)
