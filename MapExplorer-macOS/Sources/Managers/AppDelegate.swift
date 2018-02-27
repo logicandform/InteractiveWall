@@ -4,8 +4,8 @@ import Cocoa
 
 
 struct Configuration {
-    static let numberOfWindows = 4
-    static let frameless = true
+    static let numberOfWindows = 2
+    static let frameless = false
     static let touchScreenSize = CGSize(width: 4095, height: 2242.5)
 }
 
