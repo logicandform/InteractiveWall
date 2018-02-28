@@ -16,12 +16,14 @@ final class WindowManager: SocketManagerDelegate {
     static let touchNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12222)
 
     private let socketManager = SocketManager(networkConfiguration: touchNetwork)
-    private var windows = [NSWindow]()
+    private var gestureManagerForWindow = [NSWindow: GestureManager]()
+    private var touchesForMapID = [Int: Set<Touch>]()
 
     private struct Keys {
         static let position = "position"
         static let place = "place"
         static let touch = "touch"
+        static let map = "mapID"
     }
 
 
@@ -73,18 +75,13 @@ final class WindowManager: SocketManagerDelegate {
         placeWindow.contentViewController = placeVC
         placeWindow.setFrame(windowFrame, display: true)
         placeWindow.makeKeyAndOrderFront(self)
-        windows.append(placeWindow)
     }
 
 
     // MARK: Sending Notifications
 
-    private func postNotification(for touch: Touch) {
-        if case .touchDown = touch.state {
-            convertPosition(of: touch)
-        }
-
-        let info = [Keys.touch: touch.toJSON()]
+    private func postNotification(for touch: Touch, to mapID: Int) {
+        let info: JSON = [Keys.map: mapID, Keys.touch: touch.toJSON()]
         DistributedNotificationCenter.default().postNotificationName(TouchNotifications.touchEvent.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
@@ -96,11 +93,15 @@ final class WindowManager: SocketManagerDelegate {
             return
         }
 
+        convertToScreen(touch)
+
         // Check if the touch landed on a window, else notify the proper MapViewController.
         if let gestureManager = gestureManager(for: touch) {
             gestureManager.handle(touch)
         } else {
-            postNotification(for: touch)
+            let map = mapOwner(of: touch) ?? calculateMap(for: touch)
+            convert(touch, to: map)
+            send(touch, to: map)
         }
     }
 
@@ -109,38 +110,84 @@ final class WindowManager: SocketManagerDelegate {
     }
 
 
+    // MARK: Touch Handling
+
+    private func send(_ touch: Touch, to map: Int) {
+        postNotification(for: touch, to: map)
+        updateTouchesForMap(with: touch, for: map)
+    }
+
+    private func updateTouchesForMap(with touch: Touch, for map: Int) {
+        switch touch.state {
+        case .down:
+            if touchesForMapID[map] != nil {
+                touchesForMapID[map]!.insert(touch)
+            } else {
+                touchesForMapID[map] = Set([touch])
+            }
+        case .up:
+            if touchesForMapID[map] != nil {
+                touchesForMapID[map]!.remove(touch)
+            }
+        case .moved:
+            return
+        }
+    }
+
+
     // MARK: Helpers
 
     private func gestureManager(for touch: Touch) -> GestureManager? {
-        for window in windows.reversed() {
-            if window.frame.contains(touch.position), let gestureManager = gestureManager(for: window) {
-                return gestureManager
-            } else {
-                // window has been closed, remove from array
+        if touch.state == .down {
+            if let (_, manager) = gestureManagerForWindow.first(where: { $0.0.frame.contains(touch.position) }) {
+                return manager
+            }
+        } else {
+            if let manager = gestureManagerForWindow.values.first(where: { $0.owns(touch) }) {
+                return manager
             }
         }
 
         return nil
     }
 
-    private func gestureManager(for window: NSWindow) -> GestureManager? {
-        guard let gestureViewController = window.contentViewController as? GestureManaging else {
-            return nil
+    /// Converts a position received from a touch screen to the coordinate of the current devices bounds.
+    private func convertToScreen(_ touch: Touch) {
+        guard let frame = NSScreen.main?.frame else {
+            return
         }
 
-        return gestureViewController.gestureManager
+        let xPos = touch.position.x / Configuration.touchScreenSize.width * CGFloat(frame.width)
+        let yPos = (1 - touch.position.y / Configuration.touchScreenSize.height) * CGFloat(frame.height)
+        touch.position = CGPoint(x: xPos, y: yPos)
     }
 
     /// Converts the touches x-position to the frame of the mapVC at that position.
-    private func convertPosition(of touch: Touch) {
+    private func convert(_ touch: Touch, to map: Int) {
         guard let frame = NSScreen.main?.frame else {
             return
         }
 
         let mapWidth = frame.width / CGFloat(Configuration.numberOfWindows)
-        let result = touch.position.x / mapWidth
-        let xPos = mapWidth * result.truncatingRemainder(dividingBy: 1.0)
-        touch.position.x = xPos
+        touch.position.x -= CGFloat(map - 1) * mapWidth
     }
 
+    private func mapOwner(of touch: Touch) -> Int? {
+        guard let (map, _) = touchesForMapID.first(where: { $0.1.contains(touch) }) else {
+            return nil
+        }
+
+        return map
+    }
+
+    private func calculateMap(for touch: Touch) -> Int {
+        precondition(touch.state == .down, "A touch with state == .moved or .down should have a map owner to use.")
+
+        guard let frame = NSScreen.main?.frame else {
+            return 1
+        }
+
+        let mapWidth = frame.width / CGFloat(Configuration.numberOfWindows)
+        return Int(touch.position.x / mapWidth) + 1
+    }
 }

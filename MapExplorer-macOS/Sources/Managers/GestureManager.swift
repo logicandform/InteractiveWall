@@ -45,8 +45,6 @@ final class GestureManager {
     }
 
     func handle(_ touch: Touch) {
-        convertToResponder(touch)
-
         switch touch.state {
         case .down:
             handleTouchDown(touch)
@@ -91,14 +89,6 @@ final class GestureManager {
         }
 
         return handler
-    }
-
-    /// Converts a position received from a touch screen to the coordinate of the current devices bounds.
-    private func convertToResponder(_ touch: Touch) {
-        let screen = responder.view.bounds
-        let xPos = touch.position.x / Configuration.touchScreenSize.width * CGFloat(screen.width)
-        let yPos = (1 - touch.position.y / Configuration.touchScreenSize.height) * CGFloat(screen.height)
-        touch.position = CGPoint(x: xPos, y: yPos)
     }
 
     /// Displays a touch indicator on the screen for testing

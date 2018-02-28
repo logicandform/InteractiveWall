@@ -24,6 +24,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     private struct Keys {
         static let touch = "touch"
+        static let map = "mapID"
     }
 
 
@@ -38,7 +39,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     override func viewWillAppear() {
-        view.window?.toggleFullScreen(nil)
+//        view.window?.toggleFullScreen(nil)
     }
 
 
@@ -196,10 +197,13 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     private func handleTouch(_ notification: NSNotification) {
-        guard let info = notification.userInfo, let touchJSON = info[Keys.touch] as? JSON, let touch = Touch(json: touchJSON) else {
+        guard let info = notification.userInfo, let mapID = info[Keys.map] as? Int, let touchJSON = info[Keys.touch] as? JSON, let touch = Touch(json: touchJSON) else {
             return
         }
 
+        if Int32(mapID) != deviceID {
+            return
+        }
         gestureManager.handle(touch)
     }
 
