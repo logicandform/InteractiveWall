@@ -16,7 +16,7 @@ class LocationItem {
         self.discipline = discipline
     }
 
-    init?(fromJSON json: [String: Any]) {
+    init?(json: JSON) {
         guard let name = json["placeName"] as? String,
             let type = json["type"] as? String,
             let discipline = Discipline(from: type),

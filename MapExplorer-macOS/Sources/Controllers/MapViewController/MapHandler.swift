@@ -48,7 +48,7 @@ class MapHandler {
     // MARK: API
 
     func send(_ mapRect: MKMapRect, gestureType type: GestureType = .custom) {
-        let json: [String: Any] = [Keys.id: mapID, Keys.map: mapRect.toJSON(), Keys.gesture: type.rawValue]
+        let json: JSON = [Keys.id: mapID, Keys.map: mapRect.toJSON(), Keys.gesture: type.rawValue]
         DistributedNotificationCenter.default().postNotificationName(MapNotifications.positionChanged.name, object: nil, userInfo: json, deliverImmediately: true)
     }
 
@@ -80,7 +80,7 @@ class MapHandler {
 
         switch notification.name {
         case MapNotifications.positionChanged.name:
-            if let mapJSON = userInfo[Keys.map] as? [String: Any], let mapRect = MKMapRect(fromJSON: mapJSON), let gesture = userInfo[Keys.gesture] as? String, let gestureType = GestureType(rawValue: gesture) {
+            if let mapJSON = userInfo[Keys.map] as? JSON, let mapRect = MKMapRect(json: mapJSON), let gesture = userInfo[Keys.gesture] as? String, let gestureType = GestureType(rawValue: gesture) {
                 handle(mapRect, fromIndex: mapID, from: gestureType)
             }
         case MapNotifications.endedActivity.name:
@@ -142,7 +142,7 @@ class MapHandler {
 
     private func activityTimeoutFired() {
         if userState == .idle {
-            let json: [String: Any] = [Keys.id: mapID]
+            let json: JSON = [Keys.id: mapID]
             DistributedNotificationCenter.default().postNotificationName(MapNotifications.endedActivity.name, object: nil, userInfo: json, deliverImmediately: true)
         }
     }

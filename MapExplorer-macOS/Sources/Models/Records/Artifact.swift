@@ -25,7 +25,7 @@ class Artifact: CustomStringConvertible {
 
     // MARK: Init
 
-    init?(fromJSON json: [String: Any]) {
+    init?(json: JSON) {
         guard let id = json[Keys.id] as? Int, let name = json[Keys.name] as? String, let type = json[Keys.type] as? String else {
             return nil
         }

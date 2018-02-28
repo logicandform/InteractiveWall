@@ -12,7 +12,7 @@ extension MKMapRect: Equatable {
         static let height = "height"
     }
 
-    init?(fromJSON json: [String: Any]) {
+    init?(json: JSON) {
         guard let x = json[Keys.x] as? Double, let y = json[Keys.y] as? Double, let width = json[Keys.width] as? Double, let height = json[Keys.height] as? Double else {
             return nil
         }
@@ -21,7 +21,7 @@ extension MKMapRect: Equatable {
         self.size = MKMapSize(width: width, height: height)
     }
 
-    func toJSON() -> [String: Any] {
+    func toJSON() -> JSON {
         return [Keys.x: origin.x, Keys.y: origin.y, Keys.width: size.width, Keys.height: size.height]
     }
 

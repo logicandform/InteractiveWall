@@ -4,26 +4,6 @@ import Foundation
 import MONode
 
 
-enum TouchState {
-    case down
-    case up
-    case moved
-
-    init?(from type: PacketType) {
-        switch type {
-        case .touchDown:
-            self = .down
-        case .touchUp:
-            self = .up
-        case .touchMove:
-            self = .moved
-        default:
-            return nil
-        }
-    }
-}
-
-
 class Touch: Hashable, CustomStringConvertible {
 
     var position: CGPoint
@@ -38,8 +18,10 @@ class Touch: Hashable, CustomStringConvertible {
         return "( [Touch] ID: \(id), Position: \(position), State: \(state) )"
     }
 
-    private struct Constants {
-        static let planarScreenRatio: CGFloat = 23.0 / 42.0
+    private struct Keys {
+        static let position = "position"
+        static let state = "state"
+        static let id = "id"
     }
 
 
@@ -70,8 +52,18 @@ class Touch: Hashable, CustomStringConvertible {
         let xPos = payload.extract(Int32.self, at: index)
         index += MemoryLayout<Int32>.size
         let yPos = payload.extract(Int32.self, at: index)
-        self.position = CGPoint(x: CGFloat(xPos), y: CGFloat(yPos) * Constants.planarScreenRatio)
+        self.position = CGPoint(x: CGFloat(xPos), y: CGFloat(yPos) * Configuration.touchScreenRatio)
         self.state = touchState
+    }
+
+    init?(json: JSON) {
+        guard let id = json[Keys.id] as? Int, let positionJSON = json[Keys.position] as? JSON, let position = CGPoint(json: positionJSON), let touchJSON = json[Keys.state] as? JSON, let state = TouchState(json: touchJSON) else {
+            return nil
+        }
+
+        self.id = id
+        self.position = position
+        self.state = state
     }
 
 
@@ -87,6 +79,10 @@ class Touch: Hashable, CustomStringConvertible {
 
     func copy() -> Touch {
         return Touch(position: position, state: state, id: id)
+    }
+
+    func toJSON() -> JSON {
+        return [Keys.id: id, Keys.position: position.toJSON(), Keys.state: state.toJSON()]
     }
 
     static func == (lhs: Touch, rhs: Touch) -> Bool {

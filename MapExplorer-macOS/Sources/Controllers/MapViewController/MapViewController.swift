@@ -7,9 +7,8 @@ import PromiseKit
 import AppKit
 
 
-class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, SocketManagerDelegate, NSGestureRecognizerDelegate {
+class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, NSGestureRecognizerDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Map")
-    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12222)
 
     private struct Constants {
         static let tileURL = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -18,12 +17,10 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let annotationHitSize = CGSize(width: 50, height: 50)
     }
 
-
     @IBOutlet weak var mapView: MKMapView!
     var mapID: Int!
 
     private var mapHandler: MapHandler?
-    private let socketManager = SocketManager(networkConfiguration: touchNetwork)
     private var gestureManager: GestureManager!
 
 
@@ -32,7 +29,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     override func viewDidLoad() {
         super.viewDidLoad()
         gestureManager = GestureManager(responder: self)
-        socketManager.delegate = self
         setupMaps()
         setupGestures()
     }
@@ -184,21 +180,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
 
-    // MARK: SocketManagerDelegate
-
-    func handlePacket(_ packet: Packet) {
-        guard let touch = Touch(from: packet) else {
-            return
-        }
-
-        gestureManager.handle(touch)
-    }
-
-    func handleError(_ message: String) {
-        print(message)
-    }
-
-
     // MARK: MKMapViewDelegate
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -241,7 +222,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             if let file = Bundle.main.url(forResource: "MapPoints", withExtension: "json") {
                 let data = try Data(contentsOf: file)
                 let json = try JSONSerialization.jsonObject(with: data, options: [])
-                if let jsonBlob = json as? [String: Any], let placesJSON = jsonBlob["locations"] as? [[String: Any]] {
+                if let jsonBlob = json as? JSON, let placesJSON = jsonBlob["locations"] as? [JSON] {
                     add(placesJSON)
                 } else {
                     print("JSON is invalid")
@@ -254,8 +235,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         }
     }
 
-    private func add(_ placesJSON: [[String: Any]]) {
-        let places = placesJSON.flatMap { Place(fromJSON: $0) }
+    private func add(_ placesJSON: [JSON]) {
+        let places = placesJSON.flatMap { Place(json: $0) }
         mapView.addAnnotations(places)
     }
 
@@ -274,7 +255,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     private func displayWindow(for place: Place) {
         let location = mapView.convert(place.coordinate, toPointTo: view)
-        let info: [String: Any] = ["position": ["x": location.x, "y": location.y], "place": place.title ?? "no title"]
+        let info: JSON = ["position": location.toJSON(), "place": place.title ?? "no title"]
         DistributedNotificationCenter.default().postNotificationName(NSNotification.Name(rawValue: "place"), object: nil, userInfo: info, deliverImmediately: true)
     }
 

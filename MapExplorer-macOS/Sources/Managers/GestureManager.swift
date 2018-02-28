@@ -67,6 +67,10 @@ final class GestureManager {
         return nil
     }
 
+    func owns(_ touch: Touch) -> Bool {
+        return handler(for: touch) == nil ? false : true
+    }
+
 
     // MARK: Helpers
 

@@ -11,13 +11,17 @@ extension CGPoint {
         static let y = "y"
     }
 
-    init?(fromJSON json: [String: Any]) {
+    init?(json: JSON) {
         guard let x = json[Keys.x] as? CGFloat, let y = json[Keys.y] as? CGFloat else {
             return nil
         }
 
         self.x = x
         self.y = y
+    }
+
+    func toJSON() -> JSON {
+        return [Keys.x: x, Keys.y: y]
     }
 
     /// Subtracts the given view's origin from the point.
