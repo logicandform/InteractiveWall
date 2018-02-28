@@ -41,11 +41,8 @@
 		22B1E2A32045E5B500BDDF14 /* PlayerControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2A22045E5B500BDDF14 /* PlayerControl.swift */; };
 		22B1E2AA2045F2EE00BDDF14 /* AVKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2A92045F2EE00BDDF14 /* AVKit.swift */; };
 		22B1E2AE20462B1800BDDF14 /* PlayerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2AD20462B1800BDDF14 /* PlayerState.swift */; };
-		22EF0FA4202ABE6C00571002 /* PlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EF0FA3202ABE6C00571002 /* PlaceViewController.swift */; };
-		22EF0FA6202ACAB400571002 /* Place.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22EF0FA5202ACAB400571002 /* Place.storyboard */; };
+		22B1E2B32046353000BDDF14 /* WindowNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2B22046353000BDDF14 /* WindowNotifications.swift */; };
 		22EF0FA8202B847200571002 /* CachingNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EF0FA7202B847200571002 /* CachingNetwork.swift */; };
-		22FEF1C4202CE7E4001E9596 /* RelatedItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22FEF1C2202CE7E4001E9596 /* RelatedItemView.xib */; };
-		22FEF1C5202CE7E4001E9596 /* RelatedItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1C3202CE7E4001E9596 /* RelatedItemView.swift */; };
 		22FEF1C9202CE8CC001E9596 /* MapPoints.json in Resources */ = {isa = PBXBuildFile; fileRef = 22FEF1C8202CE8CC001E9596 /* MapPoints.json */; };
 		22FEF1D2202CFE8D001E9596 /* RotateGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1CB202CFE8C001E9596 /* RotateGestureRecognizer.swift */; };
 		22FEF1D3202CFE8D001E9596 /* SwipeGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1CC202CFE8C001E9596 /* SwipeGestureRecognizer.swift */; };
@@ -57,12 +54,8 @@
 		22FEF1DD202CFF68001E9596 /* GestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1DC202CFF68001E9596 /* GestureHandler.swift */; };
 		22FEF1DF202CFFFA001E9596 /* Touch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1DE202CFFFA001E9596 /* Touch.swift */; };
 		22FEF1E1202D005D001E9596 /* TouchProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1E0202D005D001E9596 /* TouchProperties.swift */; };
-		3F242BDF203F4B61009A36C6 /* Player.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F242BDE203F4B61009A36C6 /* Player.storyboard */; };
-		3F60FE82203E42A500792028 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F60FE81203E42A500792028 /* PlayerViewController.swift */; };
-		3FD0A6C220447EF20085100D /* PDF.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FD0A6C120447EF20085100D /* PDF.storyboard */; };
 		67C759AB770299C488231A9D /* Pods_All_MapExplorer_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */; };
 		8F6F13C5203DF0D400891995 /* LastThree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F6F13C4203DF0D400891995 /* LastThree.swift */; };
-		8F8AEF84202BAD9400F7970D /* PDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8AEF83202BAD9400F7970D /* PDFViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -116,11 +109,8 @@
 		22B1E2A22045E5B500BDDF14 /* PlayerControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerControl.swift; sourceTree = "<group>"; };
 		22B1E2A92045F2EE00BDDF14 /* AVKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVKit.swift; sourceTree = "<group>"; };
 		22B1E2AD20462B1800BDDF14 /* PlayerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerState.swift; sourceTree = "<group>"; };
-		22EF0FA3202ABE6C00571002 /* PlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceViewController.swift; sourceTree = "<group>"; };
-		22EF0FA5202ACAB400571002 /* Place.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Place.storyboard; sourceTree = "<group>"; };
+		22B1E2B22046353000BDDF14 /* WindowNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowNotifications.swift; sourceTree = "<group>"; };
 		22EF0FA7202B847200571002 /* CachingNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachingNetwork.swift; sourceTree = "<group>"; };
-		22FEF1C2202CE7E4001E9596 /* RelatedItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RelatedItemView.xib; sourceTree = "<group>"; };
-		22FEF1C3202CE7E4001E9596 /* RelatedItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelatedItemView.swift; sourceTree = "<group>"; };
 		22FEF1C8202CE8CC001E9596 /* MapPoints.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MapPoints.json; sourceTree = "<group>"; };
 		22FEF1CB202CFE8C001E9596 /* RotateGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotateGestureRecognizer.swift; sourceTree = "<group>"; };
 		22FEF1CC202CFE8C001E9596 /* SwipeGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeGestureRecognizer.swift; sourceTree = "<group>"; };
@@ -134,11 +124,7 @@
 		22FEF1E0202D005D001E9596 /* TouchProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchProperties.swift; sourceTree = "<group>"; };
 		26A4912457E23A30817143A3 /* Pods-All-MapExplorer-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-macOS.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-macOS/Pods-All-MapExplorer-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		39B2384F39CC84964B0970BD /* Pods-MapExplorer-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.release.xcconfig"; sourceTree = "<group>"; };
-		3F242BDE203F4B61009A36C6 /* Player.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Player.storyboard; sourceTree = "<group>"; };
-		3F60FE81203E42A500792028 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
-		3FD0A6C120447EF20085100D /* PDF.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PDF.storyboard; sourceTree = "<group>"; };
 		8F6F13C4203DF0D400891995 /* LastThree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastThree.swift; sourceTree = "<group>"; };
-		8F8AEF83202BAD9400F7970D /* PDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewController.swift; sourceTree = "<group>"; };
 		9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_MapExplorer_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E45B0B207D66FC5A3CD5BEA /* Pods-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		D9FF0C65383B61E5A7A798B0 /* Pods-All-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-macOS.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-macOS/Pods-All-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -195,6 +181,7 @@
 				22290C212028FA1E000E0573 /* Helpers */,
 				22290C262028FA1E000E0573 /* Models */,
 				22FEF1CA202CFE8C001E9596 /* Gestures */,
+				22B1E2B1204634F800BDDF14 /* Notifications */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -204,9 +191,6 @@
 			children = (
 				22290C0E2028F9EC000E0573 /* Main.storyboard */,
 				22290C1D2028FA1E000E0573 /* MapViewController */,
-				22EF0FA2202ABE4F00571002 /* PlaceViewController */,
-				3F242BDA203F4857009A36C6 /* PlayerViewController */,
-				3F242BDB203F4860009A36C6 /* PDFViewControlller */,
 				22FEF1E4202D079B001E9596 /* GestureDemoController */,
 			);
 			path = Controllers;
@@ -217,7 +201,7 @@
 			children = (
 				222AB407203DF8F5002BFAF2 /* Map.storyboard */,
 				22290C1F2028FA1E000E0573 /* MapViewController.swift */,
-				222AB40D203E1540002BFAF2 /* MapCommunication */,
+				222AB40B203E150F002BFAF2 /* MapHandler.swift */,
 				22368E272037918F00D03A0E /* Views */,
 			);
 			path = MapViewController;
@@ -285,15 +269,6 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		222AB40D203E1540002BFAF2 /* MapCommunication */ = {
-			isa = PBXGroup;
-			children = (
-				222AB40B203E150F002BFAF2 /* MapHandler.swift */,
-				22B1E29D2044D45200BDDF14 /* MapNotifications.swift */,
-			);
-			path = MapCommunication;
-			sourceTree = "<group>";
-		};
 		22368E272037918F00D03A0E /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -315,14 +290,13 @@
 			sourceTree = "<group>";
 		};
 		22EF0FA2202ABE4F00571002 /* PlaceViewController */ = {
+		22B1E2B1204634F800BDDF14 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
-				22EF0FA5202ACAB400571002 /* Place.storyboard */,
-				22EF0FA3202ABE6C00571002 /* PlaceViewController.swift */,
-				22FEF1C3202CE7E4001E9596 /* RelatedItemView.swift */,
-				22FEF1C2202CE7E4001E9596 /* RelatedItemView.xib */,
+				22B1E29D2044D45200BDDF14 /* MapNotifications.swift */,
+				22B1E2B22046353000BDDF14 /* WindowNotifications.swift */,
 			);
-			path = PlaceViewController;
+			path = Notifications;
 			sourceTree = "<group>";
 		};
 		22FEF1CA202CFE8C001E9596 /* Gestures */ = {
@@ -346,25 +320,6 @@
 				22FEF1CF202CFE8C001E9596 /* GestureDemoController.swift */,
 			);
 			path = GestureDemoController;
-			sourceTree = "<group>";
-		};
-		3F242BDA203F4857009A36C6 /* PlayerViewController */ = {
-			isa = PBXGroup;
-			children = (
-				3F242BDE203F4B61009A36C6 /* Player.storyboard */,
-				3F60FE81203E42A500792028 /* PlayerViewController.swift */,
-				22B1E2A82045F19000BDDF14 /* Views */,
-			);
-			path = PlayerViewController;
-			sourceTree = "<group>";
-		};
-		3F242BDB203F4860009A36C6 /* PDFViewControlller */ = {
-			isa = PBXGroup;
-			children = (
-				3FD0A6C120447EF20085100D /* PDF.storyboard */,
-				8F8AEF83202BAD9400F7970D /* PDFViewController.swift */,
-			);
-			path = PDFViewControlller;
 			sourceTree = "<group>";
 		};
 		3F962F2A202BB01D00B608D6 /* Data */ = {
@@ -463,11 +418,9 @@
 				22B1E2A12045E4B100BDDF14 /* PlayerControl.xib in Resources */,
 				222AB400203CE9AE002BFAF2 /* Demo.storyboard in Resources */,
 				222AB408203DF8F5002BFAF2 /* Map.storyboard in Resources */,
-				3FD0A6C220447EF20085100D /* PDF.storyboard in Resources */,
 				22290C0D2028F9EC000E0573 /* Assets.xcassets in Resources */,
 				22FEF1C9202CE8CC001E9596 /* MapPoints.json in Resources */,
 				22290C102028F9EC000E0573 /* Main.storyboard in Resources */,
-				22FEF1C4202CE7E4001E9596 /* RelatedItemView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -556,16 +509,15 @@
 				22FEF1D8202CFE8D001E9596 /* PinchGestureRecognizer.swift in Sources */,
 				22290C3B2028FA35000E0573 /* PacketType.swift in Sources */,
 				22290C4220292D22000E0573 /* ClusterView.swift in Sources */,
-				22FEF1C5202CE7E4001E9596 /* RelatedItemView.swift in Sources */,
 				22B1E2AA2045F2EE00BDDF14 /* AVKit.swift in Sources */,
 				22FEF1D5202CFE8D001E9596 /* GestureRecognizer.swift in Sources */,
 				2220D3FD202F7E4200B878D6 /* GestureManager.swift in Sources */,
+				22B1E2B32046353000BDDF14 /* WindowNotifications.swift in Sources */,
 				22290C3A2028FA35000E0573 /* Int.swift in Sources */,
 				22FEF1DF202CFFFA001E9596 /* Touch.swift in Sources */,
 				22B1E2AE20462B1800BDDF14 /* PlayerState.swift in Sources */,
 				226EA70120296C240067B542 /* NSImage.swift in Sources */,
 				22FEF1E1202D005D001E9596 /* TouchProperties.swift in Sources */,
-				8F8AEF84202BAD9400F7970D /* PDFViewController.swift in Sources */,
 				8F6F13C5203DF0D400891995 /* LastThree.swift in Sources */,
 				221C62A8203B57F7009493DA /* URL.swift in Sources */,
 				22290C302028FA1F000E0573 /* Discipline.swift in Sources */,
@@ -585,10 +537,8 @@
 				22290C2C2028FA1F000E0573 /* MapViewController.swift in Sources */,
 				22FEF1D2202CFE8D001E9596 /* RotateGestureRecognizer.swift in Sources */,
 				22368E29203791A700D03A0E /* SelectableView.swift in Sources */,
-				3F60FE82203E42A500792028 /* PlayerViewController.swift in Sources */,
 				22FEF1D7202CFE8D001E9596 /* TapGestureRecognizer.swift in Sources */,
 				222AB40C203E150F002BFAF2 /* MapHandler.swift in Sources */,
-				22EF0FA4202ABE6C00571002 /* PlaceViewController.swift in Sources */,
 				22318DE0202B984F0092937C /* ResponseHandler.swift in Sources */,
 				22290C3C2028FA35000E0573 /* NetworkConfiguration.swift in Sources */,
 				22290C2E2028FA1F000E0573 /* Style.swift in Sources */,

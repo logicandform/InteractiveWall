@@ -7,12 +7,7 @@ enum MapNotifications: String {
     case endedActivity
 
     var name: Notification.Name {
-        switch self {
-        case .positionChanged:
-            return Notification.Name(rawValue: rawValue)
-        case .endedActivity:
-            return Notification.Name(rawValue: rawValue)
-        }
+        return Notification.Name(rawValue: rawValue)
     }
 
     static var allValues: [MapNotifications] {

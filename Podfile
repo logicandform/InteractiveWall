@@ -27,6 +27,14 @@ abstract_target 'All' do
         pod 'PromiseKit/Alamofire'
     end
 
+    target 'WindowExplorer' do
+        project 'WindowExplorer/WindowExplorer.xcodeproj'
+        platform :osx, '10.13'
+
+        pod 'PromiseKit', '~> 4.4'
+        pod 'PromiseKit/Alamofire'
+    end
+
 # ignore all warnings from all pods
 inhibit_all_warnings!
 

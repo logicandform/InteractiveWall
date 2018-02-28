@@ -15,15 +15,4 @@ enum Discipline: String {
             return nil
         }
     }
-
-    var color: NSColor {
-        switch self {
-        case .school:
-            return style.schoolMarkerColor
-        case .event:
-            return style.eventMarkerColor
-        case .hearing:
-            return style.hearingMarkerColor
-        }
-    }
 }

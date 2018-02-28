@@ -169,12 +169,10 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="closeButton" destination="8wA-OD-SXO" id="5QL-IQ-avo"/>
                         <outlet property="closeButtonView" destination="U1m-am-vcE" id="IP8-TO-V2B"/>
                         <outlet property="detailView" destination="ldO-fp-Tec" id="aR4-sd-eIk"/>
                         <outlet property="playerButtonView" destination="TRM-ly-veh" id="DaK-OW-P5M"/>
                         <outlet property="relatedView" destination="ohw-Ux-hDf" id="RSn-s9-ecN"/>
-                        <outlet property="scrollView" destination="nLk-Sj-wEx" id="723-iL-Rki"/>
                         <outlet property="titleLabel" destination="Pqy-Rw-Og1" id="L6U-Le-HIq"/>
                     </connections>
                 </viewController>

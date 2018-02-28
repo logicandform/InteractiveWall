@@ -6,6 +6,20 @@ import AppKit
 
 extension CGPoint {
 
+    private struct Keys {
+        static let x = "x"
+        static let y = "y"
+    }
+
+    init?(fromJSON json: [String: Any]) {
+        guard let x = json[Keys.x] as? CGFloat, let y = json[Keys.y] as? CGFloat else {
+            return nil
+        }
+
+        self.x = x
+        self.y = y
+    }
+
     /// Subtracts the given view's origin from the point.
     func transformed(to view: NSView) -> CGPoint {
         return CGPoint(x: x - view.frame.origin.x, y: y - view.frame.origin.y)

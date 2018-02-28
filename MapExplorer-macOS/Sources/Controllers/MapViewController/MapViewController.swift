@@ -7,13 +7,7 @@ import PromiseKit
 import AppKit
 
 
-protocol ViewManagerDelegate: class {
-    func displayView(for: Place, from: NSView)
-    func displayView(for: String, from: NSView)
-}
-
-
-class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegate, GestureResponder, SocketManagerDelegate, NSGestureRecognizerDelegate {
+class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, SocketManagerDelegate, NSGestureRecognizerDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Map")
     static let touchNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12222)
 
@@ -54,7 +48,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         mapHandler = MapHandler(mapView: mapView, id: mapID)
         mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
         mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
-        createPlaces(for: mapView)
+        createPlaces()
     }
 
     func setupGestures() {
@@ -210,24 +204,20 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let place = annotation as? Place {
             if let placeView = mapView.dequeueReusableAnnotationView(withIdentifier: PlaceView.identifier) as? PlaceView {
-                placeView.mapView = mapView
-                placeView.didSelect = didSelectAnnotationCallout(for:on:)
+                placeView.didSelect = didSelectAnnotationCallout(for:)
                 return placeView
             } else {
                 let placeView = PlaceView(annotation: place, reuseIdentifier: PlaceView.identifier)
-                placeView.mapView = mapView
-                placeView.didSelect = didSelectAnnotationCallout(for:on:)
+                placeView.didSelect = didSelectAnnotationCallout(for:)
                 return placeView
             }
         } else if let cluster = annotation as? MKClusterAnnotation {
             if let clusterView = mapView.dequeueReusableAnnotationView(withIdentifier: ClusterView.identifier) as? ClusterView {
-                clusterView.mapView = mapView
-                clusterView.didSelect = didSelectAnnotationCallout(for:on:)
+                clusterView.didSelect = didSelectAnnotationCallout(for:)
                 return clusterView
             } else {
                 let clusterView = ClusterView(annotation: cluster, reuseIdentifier: ClusterView.identifier)
-                clusterView.mapView = mapView
-                clusterView.didSelect = didSelectAnnotationCallout(for:on:)
+                clusterView.didSelect = didSelectAnnotationCallout(for:)
                 return clusterView
             }
         }
@@ -244,58 +234,15 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     }
 
 
-    // MARK: ViewManagerDelegate
-
-    /// Displays a child view controller on the screen with an origin offset from the providing view or nil if from an annotation.
-    func displayView(for place: Place, from focus: NSView) {
-        let storyboard = NSStoryboard(name: PlaceViewController.storyboard, bundle: nil)
-        let placeVC = storyboard.instantiateInitialController() as! PlaceViewController
-        placeVC.gestureManager = gestureManager
-        addChildViewController(placeVC)
-        view.addSubview(placeVC.view)
-        var origin: CGPoint
-
-        if let mapView = focus as? MKMapView {
-            // Displayed from a map annotation
-            origin = mapView.convert(place.coordinate, toPointTo: view)
-            origin -= CGVector(dx: placeVC.view.bounds.width / 2, dy: placeVC.view.bounds.height + 10.0)
-        } else {
-            // Displayed from subview
-            origin = focus.frame.origin
-            origin += CGVector(dx: focus.bounds.width + 20.0, dy: 0)
-        }
-
-        placeVC.view.frame.origin = origin
-        adjustBoundaries(of: placeVC.view)
-        placeVC.place = place
-        placeVC.viewDelegate = self
-    }
-
-    /// Displays a video player view controller on the screen next to the view that provided it.
-    func displayView(for endURL: String, from focus: NSView) {
-        let storyboard = NSStoryboard(name: PlayerViewController.storyboard, bundle: nil)
-        let playerVC = storyboard.instantiateInitialController() as! PlayerViewController
-        playerVC.gestureManager = gestureManager
-
-        addChildViewController(playerVC)
-        view.addSubview(playerVC.view)
-
-        var origin = focus.frame.origin
-        origin += CGVector(dx: focus.bounds.width + 20.0, dy: 0)
-        playerVC.view.frame.origin = origin
-        adjustBoundaries(of: playerVC.view)
-    }
-
-
     // MARK: Helpers
 
-    private func createPlaces(for mapView: MKMapView) {
+    private func createPlaces() {
         do {
             if let file = Bundle.main.url(forResource: "MapPoints", withExtension: "json") {
                 let data = try Data(contentsOf: file)
                 let json = try JSONSerialization.jsonObject(with: data, options: [])
                 if let jsonBlob = json as? [String: Any], let placesJSON = jsonBlob["locations"] as? [[String: Any]] {
-                    add(placesJSON, to: mapView)
+                    add(placesJSON)
                 } else {
                     print("JSON is invalid")
                 }
@@ -307,25 +254,32 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         }
     }
 
-    private func add(_ placesJSON: [[String: Any]], to mapView: MKMapView) {
+    private func add(_ placesJSON: [[String: Any]]) {
         let places = placesJSON.flatMap { Place(fromJSON: $0) }
         mapView.addAnnotations(places)
     }
 
     /// Zoom into the annotations contained in the cluster
-    private func didSelectAnnotationCallout(for cluster: MKClusterAnnotation, on mapView: MKMapView) {
+    private func didSelectAnnotationCallout(for cluster: MKClusterAnnotation) {
         let selectedAnnotations = cluster.memberAnnotations
-        show(selectedAnnotations, on: mapView)
+        show(selectedAnnotations)
     }
 
     /// Display a place view controller on top of the selected callout annotation for the associated place.
-    private func didSelectAnnotationCallout(for place: Place, on mapView: MKMapView) {
+    private func didSelectAnnotationCallout(for place: Place) {
         mapView.deselectAnnotation(place, animated: false)
-        displayView(for: place, from: mapView)
+//        displayView(for: place, from: mapView)
+        displayWindow(for: place)
+    }
+
+    private func displayWindow(for place: Place) {
+        let location = mapView.convert(place.coordinate, toPointTo: view)
+        let info: [String: Any] = ["position": ["x": location.x, "y": location.y], "place": place.title ?? "no title"]
+        DistributedNotificationCenter.default().postNotificationName(NSNotification.Name(rawValue: "place"), object: nil, userInfo: info, deliverImmediately: true)
     }
 
     /// Zooms into a cluster of annotations to make them more visible.
-    private func show(_ annotations: [MKAnnotation], on mapView: MKMapView) {
+    private func show(_ annotations: [MKAnnotation]) {
         let centroid = findCenterOfAnnotations(annotations: annotations)
         let span = restrainSpan(annotations: annotations)
         let region = MKCoordinateRegion(center: centroid, span: span)

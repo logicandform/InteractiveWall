@@ -16,7 +16,6 @@ class PDFViewController: NSViewController {
     private var panGesture: NSPanGestureRecognizer!
     private var initialPanningOrigin: CGPoint?
     weak var gestureManager: GestureManager!
-    weak var viewDelegate: ViewManagerDelegate?
     var endURL: String!
 
 

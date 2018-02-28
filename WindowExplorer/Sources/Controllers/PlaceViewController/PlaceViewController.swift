@@ -5,6 +5,7 @@ import AppKit
 
 class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Place")
+    static let size = CGSize(width: 640, height: 584)
 
     private struct Constants {
         static let tableRowHeight: CGFloat = 50
@@ -16,11 +17,10 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     @IBOutlet weak var closeButtonView: NSView!
     @IBOutlet weak var playerButtonView: NSView!
 
-    private var animationHappened = false
     weak var gestureManager: GestureManager!
-    weak var viewDelegate: ViewManagerDelegate?
-    var panGesture: NSPanGestureRecognizer!
-    var initialPanningOrigin: CGPoint?
+    private var panGesture: NSPanGestureRecognizer!
+    private var initialPanningOrigin: CGPoint?
+    private var animationHappened = false
     var place: Place! {
         didSet {
             setup(for: place)
@@ -36,12 +36,11 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         detailView.layer?.backgroundColor = #colorLiteral(red: 0.7317136762, green: 0.81375, blue: 0.7637042526, alpha: 0.8230652265)
         panGesture = NSPanGestureRecognizer(target: self, action: #selector(handlePan(gesture:)))
         detailView.addGestureRecognizer(panGesture)
-
         relatedView.register(NSNib(nibNamed: RelatedItemView.nibName, bundle: nil), forIdentifier: RelatedItemView.interfaceIdentifier)
         relatedView.backgroundColor = NSColor.clear
 
         animateViewIn()
-        setupGestures()
+//        setupGestures()
     }
 
 
@@ -81,7 +80,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     }
 
     @IBAction func videoButtonTapped(_ sender: Any) {
-        viewDelegate?.displayView(for: "Test Video.mp4", from: view)
+//        viewDelegate?.displayView(for: "Test Video.mp4", from: view)
     }
 
 
@@ -181,13 +180,14 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         }, completionHandler: {
             self.view.removeFromSuperview()
             self.removeFromParentViewController()
-            self.gestureManager.remove(views: [self.relatedView, self.detailView])
+            self.view.window?.close()
+            self.gestureManager?.remove(views: [self.relatedView, self.detailView])
         })
     }
 
     private func didSelectRelatedItem() {
         /// Display another detail view to the right of the current view.
-        viewDelegate?.displayView(for: place, from: view)
+//        viewDelegate?.displayView(for: place, from: view)
     }
 
     @objc
@@ -247,7 +247,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
             return
         }
 
-        viewDelegate?.displayView(for: "Test Video.mp4", from: view)
+//        viewDelegate?.displayView(for: "Test Video.mp4", from: view)
     }
 
     private func relatedViewDidTap(_ gesture: GestureRecognizer) {
