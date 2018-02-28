@@ -16,7 +16,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     private(set) var state = GestureState.possible
     private(set) var delta = CGVector.zero
     private(set) var fingers: [Int]
-    private var locations = LastThree<CGPoint>()
+    private(set) var locations = LastThree<CGPoint>()
     private var positionForTouch = [Touch: CGPoint]()
     private var lastTouchCount: Int!
     private var cumulativeDelta = CGVector.zero
@@ -46,6 +46,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         case .possible, .momentum:
             state = .began
             locations.add(properties.cog)
+            gestureUpdated?(self)
             fallthrough
         case .recognized:
             momentumTimer?.invalidate()

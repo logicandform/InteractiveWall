@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="PlayerControl" customModule="MapExplorer_macOS" customModuleProvider="target">
+            <connections>
+                <outlet property="contentView" destination="c22-O7-iKe" id="wDa-Gx-KAp"/>
+                <outlet property="currentTimeLabel" destination="IOp-BE-Ma6" id="l9z-jc-45f"/>
+                <outlet property="durationLabel" destination="KTF-Qn-y4E" id="hf0-TP-oDz"/>
+                <outlet property="seekBar" destination="8jO-Ld-nn0" id="dUA-Dh-Qsv"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="c22-O7-iKe">
+            <rect key="frame" x="0.0" y="0.0" width="640" height="50"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IOp-BE-Ma6">
+                    <rect key="frame" x="53" y="15" width="49" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="45" id="exT-sb-BOd"/>
+                    </constraints>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="00:00" id="QBG-u6-t2N">
+                        <font key="font" size="14" name="Menlo-Regular"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8jO-Ld-nn0">
+                    <rect key="frame" x="118" y="15" width="404" height="19"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="400" id="eEN-Ow-Ezw"/>
+                    </constraints>
+                    <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="1" tickMarkPosition="above" sliderType="linear" id="Gyh-Oz-32g"/>
+                </slider>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KTF-Qn-y4E">
+                    <rect key="frame" x="538" y="15" width="49" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="45" id="tRZ-5v-HG7"/>
+                    </constraints>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="00:00" id="dfV-WV-JQH">
+                        <font key="font" size="14" name="Menlo-Regular"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstItem="8jO-Ld-nn0" firstAttribute="leading" secondItem="IOp-BE-Ma6" secondAttribute="trailing" constant="20" id="LiS-Vm-01r"/>
+                <constraint firstItem="KTF-Qn-y4E" firstAttribute="centerY" secondItem="IOp-BE-Ma6" secondAttribute="centerY" id="RF5-8r-NGG"/>
+                <constraint firstItem="IOp-BE-Ma6" firstAttribute="centerY" secondItem="8jO-Ld-nn0" secondAttribute="centerY" id="WJB-Cd-YpO"/>
+                <constraint firstItem="8jO-Ld-nn0" firstAttribute="centerX" secondItem="c22-O7-iKe" secondAttribute="centerX" id="hAn-T1-ORI"/>
+                <constraint firstItem="8jO-Ld-nn0" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="t7z-3l-uSp"/>
+                <constraint firstItem="KTF-Qn-y4E" firstAttribute="leading" secondItem="8jO-Ld-nn0" secondAttribute="trailing" constant="20" id="wl5-6j-vQi"/>
+            </constraints>
+        </customView>
+    </objects>
+</document>
