@@ -56,6 +56,16 @@ class Touch: Hashable, CustomStringConvertible {
         self.state = touchState
     }
 
+    init?(json: JSON) {
+        guard let id = json[Keys.id] as? Int, let positionJSON = json[Keys.position] as? JSON, let position = CGPoint(json: positionJSON), let touchJSON = json[Keys.state] as? JSON, let state = TouchState(json: touchJSON) else {
+            return nil
+        }
+
+        self.id = id
+        self.position = position
+        self.state = state
+    }
+
 
     // MARK: API
 

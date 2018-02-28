@@ -21,6 +21,7 @@ final class WindowManager: SocketManagerDelegate {
     private struct Keys {
         static let position = "position"
         static let place = "place"
+        static let touch = "touch"
     }
 
 
@@ -79,8 +80,8 @@ final class WindowManager: SocketManagerDelegate {
     // MARK: Sending Notifications
 
     private func postNotification(for touch: Touch) {
-
-        let info = touch.toJSON()
+        convertPosition(of: touch)
+        let info = [Keys.touch: touch.toJSON()]
         DistributedNotificationCenter.default().postNotificationName(TouchNotifications.touchEvent.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
@@ -111,6 +112,8 @@ final class WindowManager: SocketManagerDelegate {
         for window in windows.reversed() {
             if window.frame.contains(touch.position), let gestureManager = gestureManager(for: window) {
                 return gestureManager
+            } else {
+                // window has been closed, remove from array
             }
         }
 
@@ -124,4 +127,17 @@ final class WindowManager: SocketManagerDelegate {
 
         return gestureViewController.gestureManager
     }
+
+    /// Converts the touches x-position to the frame of the mapVC at that position.
+    private func convertPosition(of touch: Touch) {
+        guard let frame = NSScreen.main?.frame else {
+            return
+        }
+
+        let mapWidth = frame.width / CGFloat(Configuration.numberOfWindows)
+        let result = touch.position.x / mapWidth
+        let xPos = mapWidth * result.truncatingRemainder(dividingBy: 1.0)
+        touch.position.x = xPos
+    }
+
 }

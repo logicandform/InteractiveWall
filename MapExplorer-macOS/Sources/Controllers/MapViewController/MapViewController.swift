@@ -10,6 +10,11 @@ import AppKit
 class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, NSGestureRecognizerDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Map")
 
+    @IBOutlet weak var mapView: MKMapView!
+    var mapID: Int!
+    private var mapHandler: MapHandler?
+    private var gestureManager: GestureManager!
+
     private struct Constants {
         static let tileURL = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
         static let annotationContainerClass = "MKNewAnnotationContainerView"
@@ -17,11 +22,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let annotationHitSize = CGSize(width: 50, height: 50)
     }
 
-    @IBOutlet weak var mapView: MKMapView!
-    var mapID: Int!
-
-    private var mapHandler: MapHandler?
-    private var gestureManager: GestureManager!
+    private struct Keys {
+        static let touch = "touch"
+    }
 
 
     // MARK: Lifecycle
@@ -31,6 +34,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         gestureManager = GestureManager(responder: self)
         setupMaps()
         setupGestures()
+        registerForNotifications()
     }
 
     override func viewWillAppear() {
@@ -40,14 +44,14 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     // MARK: Setup
 
-    func setupMaps() {
+    private func setupMaps() {
         mapHandler = MapHandler(mapView: mapView, id: mapID)
         mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
         mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
         createPlaces()
     }
 
-    func setupGestures() {
+    private func setupGestures() {
         let nsPan = NSPanGestureRecognizer(target: self, action: #selector(didPanMouse(_:)))
         nsPan.delegate = self
         mapView.addGestureRecognizer(nsPan)
@@ -68,6 +72,12 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         let pinchGesture = PinchGestureRecognizer()
         gestureManager.add(pinchGesture, to: mapView)
         pinchGesture.gestureUpdated = didZoomOnMap(_:)
+    }
+
+    private func registerForNotifications() {
+        for notification in TouchNotifications.allValues {
+            DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
+        }
     }
 
 
@@ -170,6 +180,27 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         default:
             return
         }
+    }
+
+
+    // MARK: Notification Handling
+
+    @objc
+    private func handleNotification(_ notification: NSNotification) {
+        switch notification.name {
+        case TouchNotifications.touchEvent.name:
+            handleTouch(notification)
+        default:
+            return
+        }
+    }
+
+    private func handleTouch(_ notification: NSNotification) {
+        guard let info = notification.userInfo, let touchJSON = info[Keys.touch] as? JSON, let touch = Touch(json: touchJSON) else {
+            return
+        }
+
+        gestureManager.handle(touch)
     }
 
 
