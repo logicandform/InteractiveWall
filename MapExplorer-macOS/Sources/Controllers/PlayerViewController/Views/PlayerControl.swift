@@ -4,9 +4,26 @@ import Cocoa
 import AVKit
 
 
-fileprivate enum PlayerState {
+enum PlayerState {
     case playing
     case paused
+    case finished
+
+    var image: NSImage? {
+        switch self {
+        case .playing:
+            return NSImage(named: "")
+        case .paused:
+            return NSImage(named: "")
+        case .finished:
+            return NSImage(named: "")
+        }
+    }
+}
+
+
+protocol PlayerControlDelegate: class {
+    func playerChangedState(_ state: PlayerState)
 }
 
 
@@ -18,8 +35,8 @@ class PlayerControl: NSView {
     @IBOutlet weak var currentTimeLabel: NSTextField!
     @IBOutlet weak var durationLabel: NSTextField!
 
-    private var state = PlayerState.paused
-    private var currentDuration: CMTime?
+    weak var delegate: PlayerControlDelegate?
+    private var duration = CMTime()
 
     var player: AVPlayer? {
         didSet {
@@ -27,15 +44,21 @@ class PlayerControl: NSView {
         }
     }
 
-    var currentTime: CMTime = CMTime() {
-        didSet {
-            updateControls(for: currentTime)
-        }
-    }
-
     var gestureManager: GestureManager! {
         didSet {
             setupGestures()
+        }
+    }
+
+    private var currentTime: CMTime = CMTime() {
+        didSet {
+            updateControl(for: currentTime)
+        }
+    }
+
+    private var state = PlayerState.paused {
+        didSet {
+            delegate?.playerChangedState(state)
         }
     }
 
@@ -48,18 +71,24 @@ class PlayerControl: NSView {
         Bundle.main.loadNibNamed(PlayerControl.nib, owner: self, topLevelObjects: nil)
         addSubview(contentView)
         contentView.frame = bounds
+        contentView.wantsLayer = true
+        contentView.layer?.backgroundColor = #colorLiteral(red: 0.7712750231, green: 0.8325541737, blue: 0.9246478303, alpha: 0.5)
     }
 
 
     // MARK: API
 
     func toggle() {
-        if state == .playing {
+        switch state {
+        case .playing:
             state = .paused
             player?.pause()
-        } else {
+        case .paused:
             state = .playing
             player?.play()
+        case .finished:
+            seek(to: CMTimeMake(0, duration.timescale))
+            state = .paused
         }
     }
 
@@ -71,7 +100,7 @@ class PlayerControl: NSView {
             return
         }
 
-        currentDuration = item.asset.duration
+        duration = item.asset.duration
         if let durationString = string(for: item.asset.duration) {
             durationLabel.stringValue = durationString
         }
@@ -91,15 +120,29 @@ class PlayerControl: NSView {
     // MARK: Gestures
 
     private func didScrubControl(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer else {
+        guard let pan = gesture as? PanGestureRecognizer, let position = pan.locations.last else {
             return
         }
 
-
+        switch pan.state {
+        case .began, .recognized:
+            let seekPosition = Double((position.x - seekBar.frame.minX) / seekBar.frame.width)
+            if seekBar.minValue <= seekPosition && seekPosition <= seekBar.maxValue {
+                let timeInSeconds = seekPosition * duration.seconds
+                let time = CMTime(seconds: timeInSeconds, preferredTimescale: duration.timescale)
+                seek(to: time)
+            }
+        default:
+            return
+        }
     }
 
 
     // MARK: Helpers
+
+    private func seek(to time: CMTime) {
+        player?.seek(to: time, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+    }
 
     private func string(for time: CMTime) -> String? {
         let (hours, minutes, seconds) = time.hoursMinutesSeconds
@@ -121,13 +164,16 @@ class PlayerControl: NSView {
         }
     }
 
+    private func updateControl(for time: CMTime) {
+        if currentTime == duration {
+            state = .finished
+        }
 
-    private func updateControls(for time: CMTime) {
         if let timeString = string(for: time) {
             currentTimeLabel.stringValue = timeString
         }
 
-        if let duration = currentDuration, !duration.seconds.isZero {
+        if !duration.seconds.isZero {
             seekBar.doubleValue = time.seconds / duration.seconds
         }
     }

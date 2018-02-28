@@ -44,7 +44,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     }
 
     override func viewWillAppear() {
-//        view.window?.toggleFullScreen(nil)
+        view.window?.toggleFullScreen(nil)
     }
 
 

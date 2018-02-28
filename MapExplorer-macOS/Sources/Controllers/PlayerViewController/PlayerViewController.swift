@@ -5,21 +5,23 @@ import AVKit
 import AppKit
 
 
-class PlayerViewController: NSViewController {
+class PlayerViewController: NSViewController, PlayerControlDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Player")
 
     @IBOutlet weak var playerView: AVPlayerView!
     @IBOutlet weak var playerControl: PlayerControl!
     @IBOutlet weak var videoTitle: NSTextField!
     @IBOutlet weak var dismissButton: NSView!
-
+    @IBOutlet weak var detailView: NSView!
+    
     weak var gestureManager: GestureManager!
     private var panGesture: NSPanGestureRecognizer!
     private var initialPanningOrigin: CGPoint?
     private weak var viewDelegate: ViewManagerDelegate?
 
     private struct Constants {
-        static let testVideoURL = URL(fileURLWithPath: "/Users/Tim/Downloads/test-mac.mp4")
+        static let testVideoURL = URL(fileURLWithPath: "/Users/macpro/Downloads/test-mac.mp4")
+        static let playerStateIndicatorRadius: CGFloat = 25
     }
 
 
@@ -47,6 +49,7 @@ class PlayerViewController: NSViewController {
         // Controls
         playerControl.player = player
         playerControl.gestureManager = gestureManager
+        playerControl.delegate = self
     }
 
     private func setupGestures() {
@@ -64,13 +67,6 @@ class PlayerViewController: NSViewController {
         let singleFingerCloseButtonTap = TapGestureRecognizer()
         gestureManager.add(singleFingerCloseButtonTap, to: dismissButton)
         singleFingerCloseButtonTap.gestureUpdated = didTapCloseButton(_:)
-    }
-
-
-    // MARK: IB-Actions
-
-    @IBAction func closeButtonTapped(_ sender: Any) {
-        animateViewOut()
     }
 
 
@@ -119,24 +115,52 @@ class PlayerViewController: NSViewController {
     }
 
 
+    // MARK: IB-Actions
+
+    @IBAction func closeButtonTapped(_ sender: Any) {
+        animateViewOut()
+    }
+
+
+    // MARK: PlayerControlDelegate
+
+    func playerChangedState(_ state: PlayerState) {
+        guard let image = state.image else {
+            return
+        }
+
+        let imageView = NSImageView(image: image)
+        let radius = Constants.playerStateIndicatorRadius
+        imageView.frame = CGRect(origin: CGPoint(x: playerView.frame.midX - radius, y: playerView.frame.midY - radius), size: CGSize(width: radius * 2, height: radius * 2))
+        playerView.addSubview(imageView)
+
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = 1.0
+            imageView.animator().alphaValue = 0.0
+        }, completionHandler: {
+            imageView.removeFromSuperview()
+        })
+    }
+
+
     // MARK: Helpers
 
     private func animateViewIn() {
         view.alphaValue = 0.0
-        view.frame.origin.y = view.frame.size.height
+        detailView.frame.origin.y = view.frame.size.height
 
         NSAnimationContext.runAnimationGroup({_ in
             NSAnimationContext.current.duration = 0.7
             view.animator().alphaValue = 1.0
-            view.animator().frame.origin.y = 0
+            detailView.animator().frame.origin.y = 0
         })
     }
 
     private func animateViewOut() {
         NSAnimationContext.runAnimationGroup({_ in
             NSAnimationContext.current.duration = 1.0
-            view.animator().alphaValue = 0.0
-            view.animator().frame.origin.y = view.frame.size.height
+            detailView.animator().alphaValue = 0.0
+            detailView.animator().frame.origin.y = view.frame.size.height
         }, completionHandler: {
             self.view.removeFromSuperview()
         })

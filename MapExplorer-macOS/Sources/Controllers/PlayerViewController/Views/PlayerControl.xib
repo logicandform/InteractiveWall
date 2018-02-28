@@ -35,7 +35,7 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="400" id="eEN-Ow-Ezw"/>
                     </constraints>
-                    <sliderCell key="cell" state="on" alignment="left" maxValue="1" tickMarkPosition="above" sliderType="linear" id="Gyh-Oz-32g"/>
+                    <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="1" tickMarkPosition="above" sliderType="linear" id="Gyh-Oz-32g"/>
                 </slider>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KTF-Qn-y4E">
                     <rect key="frame" x="538" y="15" width="49" height="20"/>
