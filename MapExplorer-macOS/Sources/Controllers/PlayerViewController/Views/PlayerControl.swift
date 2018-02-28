@@ -4,24 +4,6 @@ import Cocoa
 import AVKit
 
 
-enum PlayerState {
-    case playing
-    case paused
-    case finished
-
-    var image: NSImage? {
-        switch self {
-        case .playing:
-            return NSImage(named: "")
-        case .paused:
-            return NSImage(named: "")
-        case .finished:
-            return NSImage(named: "")
-        }
-    }
-}
-
-
 protocol PlayerControlDelegate: class {
     func playerChangedState(_ state: PlayerState)
 }

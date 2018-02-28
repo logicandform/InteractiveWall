@@ -41,12 +41,10 @@ class PlayerViewController: NSViewController, PlayerControlDelegate {
     // MARK: Setup
 
     private func setupPlayer() {
-        // Player
         videoTitle.stringValue = Constants.testVideoURL.lastPathComponent
         let player = AVPlayer(url: Constants.testVideoURL)
         playerView.player = player
 
-        // Controls
         playerControl.player = player
         playerControl.gestureManager = gestureManager
         playerControl.delegate = self
