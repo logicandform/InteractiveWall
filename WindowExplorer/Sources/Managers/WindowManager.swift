@@ -80,7 +80,10 @@ final class WindowManager: SocketManagerDelegate {
     // MARK: Sending Notifications
 
     private func postNotification(for touch: Touch) {
-        convertPosition(of: touch)
+        if case .touchDown = touch.state {
+            convertPosition(of: touch)
+        }
+
         let info = [Keys.touch: touch.toJSON()]
         DistributedNotificationCenter.default().postNotificationName(TouchNotifications.touchEvent.name, object: nil, userInfo: info, deliverImmediately: true)
     }
