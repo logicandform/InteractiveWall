@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2204621220472E3D0067D9FB /* MapHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204621120472E3C0067D9FB /* MapHandler.swift */; };
+		22046267204732A40067D9FB /* WindowNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046265204732A40067D9FB /* WindowNotifications.swift */; };
+		22046268204732A40067D9FB /* MapNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046266204732A40067D9FB /* MapNotifications.swift */; };
 		221C629F203B4906009493DA /* School.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C629E203B4906009493DA /* School.swift */; };
 		221C62A1203B4A10009493DA /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C62A0203B4A10009493DA /* Entity.swift */; };
 		221C62A3203B4A18009493DA /* Occurance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C62A2203B4A18009493DA /* Occurance.swift */; };
@@ -29,19 +32,13 @@
 		22290C4220292D22000E0573 /* ClusterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C4120292D22000E0573 /* ClusterView.swift */; };
 		222AB400203CE9AE002BFAF2 /* Demo.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 222AB3FF203CE9AE002BFAF2 /* Demo.storyboard */; };
 		222AB408203DF8F5002BFAF2 /* Map.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 222AB407203DF8F5002BFAF2 /* Map.storyboard */; };
-		222AB40C203E150F002BFAF2 /* MapHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222AB40B203E150F002BFAF2 /* MapHandler.swift */; };
 		22318DE0202B984F0092937C /* ResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22318DDF202B984F0092937C /* ResponseHandler.swift */; };
 		22345DAB203B5D4700A39AB5 /* EntityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22345DAA203B5D4700A39AB5 /* EntityType.swift */; };
 		22345DAD203B61E400A39AB5 /* NewPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22345DAC203B61E400A39AB5 /* NewPlace.swift */; };
 		22368E29203791A700D03A0E /* SelectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22368E28203791A700D03A0E /* SelectableView.swift */; };
 		226EA70120296C240067B542 /* NSImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226EA70020296C240067B542 /* NSImage.swift */; };
-		22B1E29E2044D45200BDDF14 /* MapNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E29D2044D45200BDDF14 /* MapNotifications.swift */; };
 		22B1E29F2044D84000BDDF14 /* NetworkMapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2220D3FE202F84A300B878D6 /* NetworkMapManager.swift */; };
-		22B1E2A12045E4B100BDDF14 /* PlayerControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22B1E2A02045E4B100BDDF14 /* PlayerControl.xib */; };
-		22B1E2A32045E5B500BDDF14 /* PlayerControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2A22045E5B500BDDF14 /* PlayerControl.swift */; };
 		22B1E2AA2045F2EE00BDDF14 /* AVKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2A92045F2EE00BDDF14 /* AVKit.swift */; };
-		22B1E2AE20462B1800BDDF14 /* PlayerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2AD20462B1800BDDF14 /* PlayerState.swift */; };
-		22B1E2B32046353000BDDF14 /* WindowNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2B22046353000BDDF14 /* WindowNotifications.swift */; };
 		22EF0FA8202B847200571002 /* CachingNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EF0FA7202B847200571002 /* CachingNetwork.swift */; };
 		22FEF1C9202CE8CC001E9596 /* MapPoints.json in Resources */ = {isa = PBXBuildFile; fileRef = 22FEF1C8202CE8CC001E9596 /* MapPoints.json */; };
 		22FEF1D2202CFE8D001E9596 /* RotateGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1CB202CFE8C001E9596 /* RotateGestureRecognizer.swift */; };
@@ -72,6 +69,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2204621120472E3C0067D9FB /* MapHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapHandler.swift; sourceTree = "<group>"; };
+		22046265204732A40067D9FB /* WindowNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowNotifications.swift; sourceTree = "<group>"; };
+		22046266204732A40067D9FB /* MapNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapNotifications.swift; sourceTree = "<group>"; };
 		221C629E203B4906009493DA /* School.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = School.swift; sourceTree = "<group>"; };
 		221C62A0203B4A10009493DA /* Entity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		221C62A2203B4A18009493DA /* Occurance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Occurance.swift; sourceTree = "<group>"; };
@@ -98,18 +98,12 @@
 		22290C4120292D22000E0573 /* ClusterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterView.swift; sourceTree = "<group>"; };
 		222AB3FF203CE9AE002BFAF2 /* Demo.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Demo.storyboard; sourceTree = "<group>"; };
 		222AB407203DF8F5002BFAF2 /* Map.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Map.storyboard; sourceTree = "<group>"; };
-		222AB40B203E150F002BFAF2 /* MapHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapHandler.swift; sourceTree = "<group>"; };
 		22318DDF202B984F0092937C /* ResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseHandler.swift; sourceTree = "<group>"; };
 		22345DAA203B5D4700A39AB5 /* EntityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityType.swift; sourceTree = "<group>"; };
 		22345DAC203B61E400A39AB5 /* NewPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlace.swift; sourceTree = "<group>"; };
 		22368E28203791A700D03A0E /* SelectableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableView.swift; sourceTree = "<group>"; };
 		226EA70020296C240067B542 /* NSImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSImage.swift; sourceTree = "<group>"; };
-		22B1E29D2044D45200BDDF14 /* MapNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapNotifications.swift; sourceTree = "<group>"; };
-		22B1E2A02045E4B100BDDF14 /* PlayerControl.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerControl.xib; sourceTree = "<group>"; };
-		22B1E2A22045E5B500BDDF14 /* PlayerControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerControl.swift; sourceTree = "<group>"; };
 		22B1E2A92045F2EE00BDDF14 /* AVKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVKit.swift; sourceTree = "<group>"; };
-		22B1E2AD20462B1800BDDF14 /* PlayerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerState.swift; sourceTree = "<group>"; };
-		22B1E2B22046353000BDDF14 /* WindowNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowNotifications.swift; sourceTree = "<group>"; };
 		22EF0FA7202B847200571002 /* CachingNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachingNetwork.swift; sourceTree = "<group>"; };
 		22FEF1C8202CE8CC001E9596 /* MapPoints.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MapPoints.json; sourceTree = "<group>"; };
 		22FEF1CB202CFE8C001E9596 /* RotateGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotateGestureRecognizer.swift; sourceTree = "<group>"; };
@@ -142,6 +136,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		220462602047327A0067D9FB /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				22046266204732A40067D9FB /* MapNotifications.swift */,
+				22046265204732A40067D9FB /* WindowNotifications.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
 		22290BFC2028F9EC000E0573 = {
 			isa = PBXGroup;
 			children = (
@@ -181,7 +184,7 @@
 				22290C212028FA1E000E0573 /* Helpers */,
 				22290C262028FA1E000E0573 /* Models */,
 				22FEF1CA202CFE8C001E9596 /* Gestures */,
-				22B1E2B1204634F800BDDF14 /* Notifications */,
+				220462602047327A0067D9FB /* Notifications */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -201,7 +204,7 @@
 			children = (
 				222AB407203DF8F5002BFAF2 /* Map.storyboard */,
 				22290C1F2028FA1E000E0573 /* MapViewController.swift */,
-				222AB40B203E150F002BFAF2 /* MapHandler.swift */,
+				2204621120472E3C0067D9FB /* MapHandler.swift */,
 				22368E272037918F00D03A0E /* Views */,
 			);
 			path = MapViewController;
@@ -277,26 +280,6 @@
 				22290C4120292D22000E0573 /* ClusterView.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		22B1E2A82045F19000BDDF14 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				22B1E2A02045E4B100BDDF14 /* PlayerControl.xib */,
-				22B1E2A22045E5B500BDDF14 /* PlayerControl.swift */,
-				22B1E2AD20462B1800BDDF14 /* PlayerState.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		22EF0FA2202ABE4F00571002 /* PlaceViewController */ = {
-		22B1E2B1204634F800BDDF14 /* Notifications */ = {
-			isa = PBXGroup;
-			children = (
-				22B1E29D2044D45200BDDF14 /* MapNotifications.swift */,
-				22B1E2B22046353000BDDF14 /* WindowNotifications.swift */,
-			);
-			path = Notifications;
 			sourceTree = "<group>";
 		};
 		22FEF1CA202CFE8C001E9596 /* Gestures */ = {
@@ -413,9 +396,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22EF0FA6202ACAB400571002 /* Place.storyboard in Resources */,
-				3F242BDF203F4B61009A36C6 /* Player.storyboard in Resources */,
-				22B1E2A12045E4B100BDDF14 /* PlayerControl.xib in Resources */,
 				222AB400203CE9AE002BFAF2 /* Demo.storyboard in Resources */,
 				222AB408203DF8F5002BFAF2 /* Map.storyboard in Resources */,
 				22290C0D2028F9EC000E0573 /* Assets.xcassets in Resources */,
@@ -505,6 +485,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22046267204732A40067D9FB /* WindowNotifications.swift in Sources */,
 				22345DAD203B61E400A39AB5 /* NewPlace.swift in Sources */,
 				22FEF1D8202CFE8D001E9596 /* PinchGestureRecognizer.swift in Sources */,
 				22290C3B2028FA35000E0573 /* PacketType.swift in Sources */,
@@ -512,10 +493,8 @@
 				22B1E2AA2045F2EE00BDDF14 /* AVKit.swift in Sources */,
 				22FEF1D5202CFE8D001E9596 /* GestureRecognizer.swift in Sources */,
 				2220D3FD202F7E4200B878D6 /* GestureManager.swift in Sources */,
-				22B1E2B32046353000BDDF14 /* WindowNotifications.swift in Sources */,
 				22290C3A2028FA35000E0573 /* Int.swift in Sources */,
 				22FEF1DF202CFFFA001E9596 /* Touch.swift in Sources */,
-				22B1E2AE20462B1800BDDF14 /* PlayerState.swift in Sources */,
 				226EA70120296C240067B542 /* NSImage.swift in Sources */,
 				22FEF1E1202D005D001E9596 /* TouchProperties.swift in Sources */,
 				8F6F13C5203DF0D400891995 /* LastThree.swift in Sources */,
@@ -538,14 +517,13 @@
 				22FEF1D2202CFE8D001E9596 /* RotateGestureRecognizer.swift in Sources */,
 				22368E29203791A700D03A0E /* SelectableView.swift in Sources */,
 				22FEF1D7202CFE8D001E9596 /* TapGestureRecognizer.swift in Sources */,
-				222AB40C203E150F002BFAF2 /* MapHandler.swift in Sources */,
+				2204621220472E3D0067D9FB /* MapHandler.swift in Sources */,
 				22318DE0202B984F0092937C /* ResponseHandler.swift in Sources */,
 				22290C3C2028FA35000E0573 /* NetworkConfiguration.swift in Sources */,
 				22290C2E2028FA1F000E0573 /* Style.swift in Sources */,
 				221C62A1203B4A10009493DA /* Entity.swift in Sources */,
-				22B1E29E2044D45200BDDF14 /* MapNotifications.swift in Sources */,
 				22FEF1D6202CFE8D001E9596 /* GestureDemoController.swift in Sources */,
-				22B1E2A32045E5B500BDDF14 /* PlayerControl.swift in Sources */,
+				22046268204732A40067D9FB /* MapNotifications.swift in Sources */,
 				22290C2D2028FA1F000E0573 /* Place.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

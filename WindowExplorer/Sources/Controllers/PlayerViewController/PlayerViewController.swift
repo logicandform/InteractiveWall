@@ -17,7 +17,6 @@ class PlayerViewController: NSViewController, PlayerControlDelegate {
     weak var gestureManager: GestureManager!
     private var panGesture: NSPanGestureRecognizer!
     private var initialPanningOrigin: CGPoint?
-    private weak var viewDelegate: ViewManagerDelegate?
 
     private struct Constants {
         static let testVideoURL = URL(fileURLWithPath: "/Users/macpro/Downloads/test-mac.mp4")

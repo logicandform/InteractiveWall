@@ -7,10 +7,38 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		22A76FDF20464756006C0AE7 /* Place.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22A76FDB20464756006C0AE7 /* Place.storyboard */; };
-		22A76FE020464756006C0AE7 /* RelatedItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A76FDC20464756006C0AE7 /* RelatedItemView.swift */; };
-		22A76FE120464756006C0AE7 /* PlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A76FDD20464756006C0AE7 /* PlaceViewController.swift */; };
-		22A76FE220464756006C0AE7 /* RelatedItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22A76FDE20464756006C0AE7 /* RelatedItemView.xib */; };
+		2204620D20472DE80067D9FB /* Place.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2204620920472DE80067D9FB /* Place.storyboard */; };
+		2204620E20472DE80067D9FB /* RelatedItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204620A20472DE80067D9FB /* RelatedItemView.swift */; };
+		2204620F20472DE80067D9FB /* PlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204620B20472DE80067D9FB /* PlaceViewController.swift */; };
+		2204621020472DE80067D9FB /* RelatedItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2204620C20472DE80067D9FB /* RelatedItemView.xib */; };
+		2204621720472F2D0067D9FB /* PlayerControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2204621420472F2D0067D9FB /* PlayerControl.xib */; };
+		2204621820472F2D0067D9FB /* PlayerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204621520472F2D0067D9FB /* PlayerState.swift */; };
+		2204621920472F2D0067D9FB /* PlayerControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204621620472F2D0067D9FB /* PlayerControl.swift */; };
+		2204623320472FDF0067D9FB /* CoreGraphics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204622B20472FDF0067D9FB /* CoreGraphics.swift */; };
+		2204623420472FDF0067D9FB /* NSImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204622C20472FDF0067D9FB /* NSImage.swift */; };
+		2204623520472FDF0067D9FB /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204622D20472FDF0067D9FB /* Int.swift */; };
+		2204623620472FDF0067D9FB /* AVKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204622E20472FDF0067D9FB /* AVKit.swift */; };
+		2204623720472FDF0067D9FB /* PacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204622F20472FDF0067D9FB /* PacketType.swift */; };
+		2204623820472FDF0067D9FB /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204623020472FDF0067D9FB /* URL.swift */; };
+		2204623920472FDF0067D9FB /* NetworkConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204623120472FDF0067D9FB /* NetworkConfiguration.swift */; };
+		2204623A20472FDF0067D9FB /* MapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204623220472FDF0067D9FB /* MapKit.swift */; };
+		22046243204730780067D9FB /* SwipeGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204623D204730780067D9FB /* SwipeGestureRecognizer.swift */; };
+		22046244204730780067D9FB /* PanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204623E204730780067D9FB /* PanGestureRecognizer.swift */; };
+		22046245204730780067D9FB /* RotateGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204623F204730780067D9FB /* RotateGestureRecognizer.swift */; };
+		22046246204730780067D9FB /* GestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046240204730780067D9FB /* GestureRecognizer.swift */; };
+		22046247204730780067D9FB /* PinchGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046241204730780067D9FB /* PinchGestureRecognizer.swift */; };
+		22046248204730780067D9FB /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046242204730780067D9FB /* TapGestureRecognizer.swift */; };
+		22046254204730C70067D9FB /* Touch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046249204730C60067D9FB /* Touch.swift */; };
+		22046255204730C70067D9FB /* NewPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624A204730C70067D9FB /* NewPlace.swift */; };
+		22046256204730C70067D9FB /* EntityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624B204730C70067D9FB /* EntityType.swift */; };
+		22046257204730C70067D9FB /* Artifact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624C204730C70067D9FB /* Artifact.swift */; };
+		22046258204730C70067D9FB /* LastThree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624D204730C70067D9FB /* LastThree.swift */; };
+		22046259204730C70067D9FB /* School.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624E204730C70067D9FB /* School.swift */; };
+		2204625A204730C70067D9FB /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624F204730C70067D9FB /* Place.swift */; };
+		2204625B204730C70067D9FB /* Discipline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046250204730C70067D9FB /* Discipline.swift */; };
+		2204625C204730C70067D9FB /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046251204730C70067D9FB /* Entity.swift */; };
+		2204625D204730C70067D9FB /* TouchProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046252204730C70067D9FB /* TouchProperties.swift */; };
+		2204625E204730C70067D9FB /* Occurance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046253204730C70067D9FB /* Occurance.swift */; };
 		22A76FE620464764006C0AE7 /* PDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A76FE420464764006C0AE7 /* PDFViewController.swift */; };
 		22A76FE720464764006C0AE7 /* PDF.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22A76FE520464764006C0AE7 /* PDF.storyboard */; };
 		22A76FEB2046477A006C0AE7 /* Player.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22A76FE92046477A006C0AE7 /* Player.storyboard */; };
@@ -18,32 +46,8 @@
 		22A923212044AF05003EA9BB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A923202044AF05003EA9BB /* AppDelegate.swift */; };
 		22A923252044AF05003EA9BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22A923242044AF05003EA9BB /* Assets.xcassets */; };
 		22A923282044AF05003EA9BB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22A923262044AF05003EA9BB /* Main.storyboard */; };
-		22B1E2C6204638A100BDDF14 /* RotateGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2C0204638A100BDDF14 /* RotateGestureRecognizer.swift */; };
-		22B1E2C7204638A100BDDF14 /* SwipeGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2C1204638A100BDDF14 /* SwipeGestureRecognizer.swift */; };
-		22B1E2C8204638A100BDDF14 /* PanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2C2204638A100BDDF14 /* PanGestureRecognizer.swift */; };
-		22B1E2C9204638A100BDDF14 /* GestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2C3204638A100BDDF14 /* GestureRecognizer.swift */; };
-		22B1E2CA204638A100BDDF14 /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2C4204638A100BDDF14 /* TapGestureRecognizer.swift */; };
-		22B1E2CB204638A100BDDF14 /* PinchGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2C5204638A100BDDF14 /* PinchGestureRecognizer.swift */; };
 		22B1E2CD204638B900BDDF14 /* GestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2CC204638B900BDDF14 /* GestureManager.swift */; };
 		22B1E2CF204638CA00BDDF14 /* GestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2CE204638CA00BDDF14 /* GestureHandler.swift */; };
-		22B1E2DE2046392000BDDF14 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2D32046392000BDDF14 /* Entity.swift */; };
-		22B1E2DF2046392000BDDF14 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2D42046392000BDDF14 /* Place.swift */; };
-		22B1E2E02046392000BDDF14 /* School.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2D52046392000BDDF14 /* School.swift */; };
-		22B1E2E12046392000BDDF14 /* LastThree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2D62046392000BDDF14 /* LastThree.swift */; };
-		22B1E2E22046392000BDDF14 /* Discipline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2D72046392000BDDF14 /* Discipline.swift */; };
-		22B1E2E32046392000BDDF14 /* TouchProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2D82046392000BDDF14 /* TouchProperties.swift */; };
-		22B1E2E42046392000BDDF14 /* Occurance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2D92046392000BDDF14 /* Occurance.swift */; };
-		22B1E2E52046392000BDDF14 /* EntityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2DA2046392000BDDF14 /* EntityType.swift */; };
-		22B1E2E62046392000BDDF14 /* NewPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2DB2046392000BDDF14 /* NewPlace.swift */; };
-		22B1E2E72046392000BDDF14 /* Touch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2DC2046392000BDDF14 /* Touch.swift */; };
-		22B1E2E82046392000BDDF14 /* Artifact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2DD2046392000BDDF14 /* Artifact.swift */; };
-		22B1E2F1204639CD00BDDF14 /* MapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2EA204639CD00BDDF14 /* MapKit.swift */; };
-		22B1E2F2204639CD00BDDF14 /* CoreGraphics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2EB204639CD00BDDF14 /* CoreGraphics.swift */; };
-		22B1E2F3204639CD00BDDF14 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2EC204639CD00BDDF14 /* Int.swift */; };
-		22B1E2F4204639CD00BDDF14 /* NSImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2ED204639CD00BDDF14 /* NSImage.swift */; };
-		22B1E2F5204639CD00BDDF14 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2EE204639CD00BDDF14 /* URL.swift */; };
-		22B1E2F6204639CD00BDDF14 /* PacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2EF204639CD00BDDF14 /* PacketType.swift */; };
-		22B1E2F7204639CD00BDDF14 /* NetworkConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2F0204639CD00BDDF14 /* NetworkConfiguration.swift */; };
 		C6DB17689F287C9826286DF2 /* Pods_All_WindowExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */; };
 /* End PBXBuildFile section */
 
@@ -61,10 +65,38 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		22A76FDB20464756006C0AE7 /* Place.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Place.storyboard; path = Sources/Controllers/PlaceViewController/Place.storyboard; sourceTree = SOURCE_ROOT; };
-		22A76FDC20464756006C0AE7 /* RelatedItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RelatedItemView.swift; path = Sources/Controllers/PlaceViewController/RelatedItemView.swift; sourceTree = SOURCE_ROOT; };
-		22A76FDD20464756006C0AE7 /* PlaceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlaceViewController.swift; path = Sources/Controllers/PlaceViewController/PlaceViewController.swift; sourceTree = SOURCE_ROOT; };
-		22A76FDE20464756006C0AE7 /* RelatedItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RelatedItemView.xib; path = Sources/Controllers/PlaceViewController/RelatedItemView.xib; sourceTree = SOURCE_ROOT; };
+		2204620920472DE80067D9FB /* Place.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Place.storyboard; sourceTree = "<group>"; };
+		2204620A20472DE80067D9FB /* RelatedItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelatedItemView.swift; sourceTree = "<group>"; };
+		2204620B20472DE80067D9FB /* PlaceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceViewController.swift; sourceTree = "<group>"; };
+		2204620C20472DE80067D9FB /* RelatedItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RelatedItemView.xib; sourceTree = "<group>"; };
+		2204621420472F2D0067D9FB /* PlayerControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerControl.xib; sourceTree = "<group>"; };
+		2204621520472F2D0067D9FB /* PlayerState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerState.swift; sourceTree = "<group>"; };
+		2204621620472F2D0067D9FB /* PlayerControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerControl.swift; sourceTree = "<group>"; };
+		2204622B20472FDF0067D9FB /* CoreGraphics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreGraphics.swift; sourceTree = "<group>"; };
+		2204622C20472FDF0067D9FB /* NSImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSImage.swift; sourceTree = "<group>"; };
+		2204622D20472FDF0067D9FB /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
+		2204622E20472FDF0067D9FB /* AVKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVKit.swift; sourceTree = "<group>"; };
+		2204622F20472FDF0067D9FB /* PacketType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PacketType.swift; sourceTree = "<group>"; };
+		2204623020472FDF0067D9FB /* URL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
+		2204623120472FDF0067D9FB /* NetworkConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkConfiguration.swift; sourceTree = "<group>"; };
+		2204623220472FDF0067D9FB /* MapKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapKit.swift; sourceTree = "<group>"; };
+		2204623D204730780067D9FB /* SwipeGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeGestureRecognizer.swift; sourceTree = "<group>"; };
+		2204623E204730780067D9FB /* PanGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanGestureRecognizer.swift; sourceTree = "<group>"; };
+		2204623F204730780067D9FB /* RotateGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotateGestureRecognizer.swift; sourceTree = "<group>"; };
+		22046240204730780067D9FB /* GestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureRecognizer.swift; sourceTree = "<group>"; };
+		22046241204730780067D9FB /* PinchGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinchGestureRecognizer.swift; sourceTree = "<group>"; };
+		22046242204730780067D9FB /* TapGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapGestureRecognizer.swift; sourceTree = "<group>"; };
+		22046249204730C60067D9FB /* Touch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Touch.swift; sourceTree = "<group>"; };
+		2204624A204730C70067D9FB /* NewPlace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPlace.swift; sourceTree = "<group>"; };
+		2204624B204730C70067D9FB /* EntityType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityType.swift; sourceTree = "<group>"; };
+		2204624C204730C70067D9FB /* Artifact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Artifact.swift; sourceTree = "<group>"; };
+		2204624D204730C70067D9FB /* LastThree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastThree.swift; sourceTree = "<group>"; };
+		2204624E204730C70067D9FB /* School.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = School.swift; sourceTree = "<group>"; };
+		2204624F204730C70067D9FB /* Place.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
+		22046250204730C70067D9FB /* Discipline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Discipline.swift; sourceTree = "<group>"; };
+		22046251204730C70067D9FB /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
+		22046252204730C70067D9FB /* TouchProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchProperties.swift; sourceTree = "<group>"; };
+		22046253204730C70067D9FB /* Occurance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Occurance.swift; sourceTree = "<group>"; };
 		22A76FE420464764006C0AE7 /* PDFViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PDFViewController.swift; sourceTree = "<group>"; };
 		22A76FE520464764006C0AE7 /* PDF.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PDF.storyboard; sourceTree = "<group>"; };
 		22A76FE92046477A006C0AE7 /* Player.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Player.storyboard; sourceTree = "<group>"; };
@@ -75,32 +107,8 @@
 		22A923272044AF05003EA9BB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		22A923292044AF05003EA9BB /* WindowExplorer.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = WindowExplorer.plist; sourceTree = "<group>"; };
 		22A9232A2044AF05003EA9BB /* WindowExplorer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WindowExplorer.entitlements; sourceTree = "<group>"; };
-		22B1E2C0204638A100BDDF14 /* RotateGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotateGestureRecognizer.swift; sourceTree = "<group>"; };
-		22B1E2C1204638A100BDDF14 /* SwipeGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeGestureRecognizer.swift; sourceTree = "<group>"; };
-		22B1E2C2204638A100BDDF14 /* PanGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanGestureRecognizer.swift; sourceTree = "<group>"; };
-		22B1E2C3204638A100BDDF14 /* GestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureRecognizer.swift; sourceTree = "<group>"; };
-		22B1E2C4204638A100BDDF14 /* TapGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapGestureRecognizer.swift; sourceTree = "<group>"; };
-		22B1E2C5204638A100BDDF14 /* PinchGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinchGestureRecognizer.swift; sourceTree = "<group>"; };
 		22B1E2CC204638B900BDDF14 /* GestureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureManager.swift; sourceTree = "<group>"; };
 		22B1E2CE204638CA00BDDF14 /* GestureHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureHandler.swift; sourceTree = "<group>"; };
-		22B1E2D32046392000BDDF14 /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
-		22B1E2D42046392000BDDF14 /* Place.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
-		22B1E2D52046392000BDDF14 /* School.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = School.swift; sourceTree = "<group>"; };
-		22B1E2D62046392000BDDF14 /* LastThree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastThree.swift; sourceTree = "<group>"; };
-		22B1E2D72046392000BDDF14 /* Discipline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Discipline.swift; sourceTree = "<group>"; };
-		22B1E2D82046392000BDDF14 /* TouchProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchProperties.swift; sourceTree = "<group>"; };
-		22B1E2D92046392000BDDF14 /* Occurance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Occurance.swift; sourceTree = "<group>"; };
-		22B1E2DA2046392000BDDF14 /* EntityType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityType.swift; sourceTree = "<group>"; };
-		22B1E2DB2046392000BDDF14 /* NewPlace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPlace.swift; sourceTree = "<group>"; };
-		22B1E2DC2046392000BDDF14 /* Touch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Touch.swift; sourceTree = "<group>"; };
-		22B1E2DD2046392000BDDF14 /* Artifact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Artifact.swift; sourceTree = "<group>"; };
-		22B1E2EA204639CD00BDDF14 /* MapKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapKit.swift; sourceTree = "<group>"; };
-		22B1E2EB204639CD00BDDF14 /* CoreGraphics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreGraphics.swift; sourceTree = "<group>"; };
-		22B1E2EC204639CD00BDDF14 /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
-		22B1E2ED204639CD00BDDF14 /* NSImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSImage.swift; sourceTree = "<group>"; };
-		22B1E2EE204639CD00BDDF14 /* URL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
-		22B1E2EF204639CD00BDDF14 /* PacketType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PacketType.swift; sourceTree = "<group>"; };
-		22B1E2F0204639CD00BDDF14 /* NetworkConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkConfiguration.swift; sourceTree = "<group>"; };
 		2B994FF43C43BAD129E83037 /* Pods-All-WindowExplorer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-WindowExplorer.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer.debug.xcconfig"; sourceTree = "<group>"; };
 		A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_WindowExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE471FCE047AE2FD1C92BA3A /* Pods-All-WindowExplorer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-WindowExplorer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer.release.xcconfig"; sourceTree = "<group>"; };
@@ -118,6 +126,73 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2204620820472DE10067D9FB /* PlaceViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2204620920472DE80067D9FB /* Place.storyboard */,
+				2204620B20472DE80067D9FB /* PlaceViewController.swift */,
+				2204620A20472DE80067D9FB /* RelatedItemView.swift */,
+				2204620C20472DE80067D9FB /* RelatedItemView.xib */,
+			);
+			path = PlaceViewController;
+			sourceTree = "<group>";
+		};
+		2204621320472F1E0067D9FB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2204621420472F2D0067D9FB /* PlayerControl.xib */,
+				2204621620472F2D0067D9FB /* PlayerControl.swift */,
+				2204621520472F2D0067D9FB /* PlayerState.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2204621A20472F840067D9FB /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2204622E20472FDF0067D9FB /* AVKit.swift */,
+				2204622B20472FDF0067D9FB /* CoreGraphics.swift */,
+				2204622D20472FDF0067D9FB /* Int.swift */,
+				2204623220472FDF0067D9FB /* MapKit.swift */,
+				2204623120472FDF0067D9FB /* NetworkConfiguration.swift */,
+				2204622C20472FDF0067D9FB /* NSImage.swift */,
+				2204622F20472FDF0067D9FB /* PacketType.swift */,
+				2204623020472FDF0067D9FB /* URL.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		2204623B20472FFD0067D9FB /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2204624C204730C70067D9FB /* Artifact.swift */,
+				22046250204730C70067D9FB /* Discipline.swift */,
+				22046251204730C70067D9FB /* Entity.swift */,
+				2204624B204730C70067D9FB /* EntityType.swift */,
+				2204624D204730C70067D9FB /* LastThree.swift */,
+				2204624A204730C70067D9FB /* NewPlace.swift */,
+				22046253204730C70067D9FB /* Occurance.swift */,
+				2204624F204730C70067D9FB /* Place.swift */,
+				2204624E204730C70067D9FB /* School.swift */,
+				22046249204730C60067D9FB /* Touch.swift */,
+				22046252204730C70067D9FB /* TouchProperties.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		2204623C204730050067D9FB /* Gestures */ = {
+			isa = PBXGroup;
+			children = (
+				22046240204730780067D9FB /* GestureRecognizer.swift */,
+				2204623E204730780067D9FB /* PanGestureRecognizer.swift */,
+				22046241204730780067D9FB /* PinchGestureRecognizer.swift */,
+				2204623F204730780067D9FB /* RotateGestureRecognizer.swift */,
+				2204623D204730780067D9FB /* SwipeGestureRecognizer.swift */,
+				22046242204730780067D9FB /* TapGestureRecognizer.swift */,
+			);
+			path = Gestures;
+			sourceTree = "<group>";
+		};
 		22A76FE320464764006C0AE7 /* PDFViewControlller */ = {
 			isa = PBXGroup;
 			children = (
@@ -132,6 +207,7 @@
 			children = (
 				22A76FE92046477A006C0AE7 /* Player.storyboard */,
 				22A76FEA2046477A006C0AE7 /* PlayerViewController.swift */,
+				2204621320472F1E0067D9FB /* Views */,
 			);
 			path = PlayerViewController;
 			sourceTree = "<group>";
@@ -142,8 +218,8 @@
 				22A923342044AF45003EA9BB /* Managers */,
 				22A923302044AF19003EA9BB /* Sources */,
 				22A923332044AF2D003EA9BB /* Metadata */,
+				2204621A20472F840067D9FB /* Extensions */,
 				22A923312044AF1E003EA9BB /* Resources */,
-				22B1E2E9204639CD00BDDF14 /* Extensions */,
 				22A9231E2044AF05003EA9BB /* Products */,
 				E7F56EE9570176C399CE51F3 /* Pods */,
 				BA7AB469DDFD237E3385F839 /* Frameworks */,
@@ -164,8 +240,8 @@
 				22A923262044AF05003EA9BB /* Main.storyboard */,
 				22A9233B2044B047003EA9BB /* Controllers */,
 				22B1E2D0204638CD00BDDF14 /* Helpers */,
-				22B1E2D22046392000BDDF14 /* Models */,
-				22B1E2BF204638A100BDDF14 /* Gestures */,
+				2204623B20472FFD0067D9FB /* Models */,
+				2204623C204730050067D9FB /* Gestures */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -199,37 +275,11 @@
 		22A9233B2044B047003EA9BB /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				22B1E2B62046386F00BDDF14 /* PlaceViewController */,
+				2204620820472DE10067D9FB /* PlaceViewController */,
 				22A76FE82046477A006C0AE7 /* PlayerViewController */,
 				22A76FE320464764006C0AE7 /* PDFViewControlller */,
 			);
 			path = Controllers;
-			sourceTree = "<group>";
-		};
-		22B1E2B62046386F00BDDF14 /* PlaceViewController */ = {
-			isa = PBXGroup;
-			children = (
-				22A76FDB20464756006C0AE7 /* Place.storyboard */,
-				22A76FDD20464756006C0AE7 /* PlaceViewController.swift */,
-				22A76FDC20464756006C0AE7 /* RelatedItemView.swift */,
-				22A76FDE20464756006C0AE7 /* RelatedItemView.xib */,
-			);
-			name = PlaceViewController;
-			path = "../../../MapExplorer-macOS/Sources/Controllers/PlaceViewController";
-			sourceTree = "<group>";
-		};
-		22B1E2BF204638A100BDDF14 /* Gestures */ = {
-			isa = PBXGroup;
-			children = (
-				22B1E2C0204638A100BDDF14 /* RotateGestureRecognizer.swift */,
-				22B1E2C1204638A100BDDF14 /* SwipeGestureRecognizer.swift */,
-				22B1E2C2204638A100BDDF14 /* PanGestureRecognizer.swift */,
-				22B1E2C3204638A100BDDF14 /* GestureRecognizer.swift */,
-				22B1E2C4204638A100BDDF14 /* TapGestureRecognizer.swift */,
-				22B1E2C5204638A100BDDF14 /* PinchGestureRecognizer.swift */,
-			);
-			name = Gestures;
-			path = "../../MapExplorer-tvOS/Sources/Gestures";
 			sourceTree = "<group>";
 		};
 		22B1E2D0204638CD00BDDF14 /* Helpers */ = {
@@ -238,40 +288,6 @@
 				22B1E2CE204638CA00BDDF14 /* GestureHandler.swift */,
 			);
 			path = Helpers;
-			sourceTree = "<group>";
-		};
-		22B1E2D22046392000BDDF14 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				22B1E2D32046392000BDDF14 /* Entity.swift */,
-				22B1E2D42046392000BDDF14 /* Place.swift */,
-				22B1E2D52046392000BDDF14 /* School.swift */,
-				22B1E2D62046392000BDDF14 /* LastThree.swift */,
-				22B1E2D72046392000BDDF14 /* Discipline.swift */,
-				22B1E2D82046392000BDDF14 /* TouchProperties.swift */,
-				22B1E2D92046392000BDDF14 /* Occurance.swift */,
-				22B1E2DA2046392000BDDF14 /* EntityType.swift */,
-				22B1E2DB2046392000BDDF14 /* NewPlace.swift */,
-				22B1E2DC2046392000BDDF14 /* Touch.swift */,
-				22B1E2DD2046392000BDDF14 /* Artifact.swift */,
-			);
-			name = Models;
-			path = "../../MapExplorer-macOS/Sources/Models";
-			sourceTree = "<group>";
-		};
-		22B1E2E9204639CD00BDDF14 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				22B1E2EA204639CD00BDDF14 /* MapKit.swift */,
-				22B1E2EB204639CD00BDDF14 /* CoreGraphics.swift */,
-				22B1E2EC204639CD00BDDF14 /* Int.swift */,
-				22B1E2ED204639CD00BDDF14 /* NSImage.swift */,
-				22B1E2EE204639CD00BDDF14 /* URL.swift */,
-				22B1E2EF204639CD00BDDF14 /* PacketType.swift */,
-				22B1E2F0204639CD00BDDF14 /* NetworkConfiguration.swift */,
-			);
-			name = Extensions;
-			path = "../MapExplorer-macOS/Extensions";
 			sourceTree = "<group>";
 		};
 		BA7AB469DDFD237E3385F839 /* Frameworks */ = {
@@ -356,9 +372,10 @@
 			files = (
 				22A76FE720464764006C0AE7 /* PDF.storyboard in Resources */,
 				22A923252044AF05003EA9BB /* Assets.xcassets in Resources */,
+				2204621020472DE80067D9FB /* RelatedItemView.xib in Resources */,
+				2204620D20472DE80067D9FB /* Place.storyboard in Resources */,
+				2204621720472F2D0067D9FB /* PlayerControl.xib in Resources */,
 				22A923282044AF05003EA9BB /* Main.storyboard in Resources */,
-				22A76FDF20464756006C0AE7 /* Place.storyboard in Resources */,
-				22A76FE220464756006C0AE7 /* RelatedItemView.xib in Resources */,
 				22A76FEB2046477A006C0AE7 /* Player.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -430,37 +447,40 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22B1E2E62046392000BDDF14 /* NewPlace.swift in Sources */,
 				22A76FEC2046477A006C0AE7 /* PlayerViewController.swift in Sources */,
-				22B1E2F3204639CD00BDDF14 /* Int.swift in Sources */,
-				22B1E2C6204638A100BDDF14 /* RotateGestureRecognizer.swift in Sources */,
-				22B1E2F5204639CD00BDDF14 /* URL.swift in Sources */,
+				2204623520472FDF0067D9FB /* Int.swift in Sources */,
+				2204620F20472DE80067D9FB /* PlaceViewController.swift in Sources */,
+				22046246204730780067D9FB /* GestureRecognizer.swift in Sources */,
+				2204625D204730C70067D9FB /* TouchProperties.swift in Sources */,
+				2204625C204730C70067D9FB /* Entity.swift in Sources */,
+				2204623420472FDF0067D9FB /* NSImage.swift in Sources */,
 				22B1E2CD204638B900BDDF14 /* GestureManager.swift in Sources */,
-				22B1E2DE2046392000BDDF14 /* Entity.swift in Sources */,
-				22B1E2E72046392000BDDF14 /* Touch.swift in Sources */,
 				22A76FE620464764006C0AE7 /* PDFViewController.swift in Sources */,
-				22B1E2F2204639CD00BDDF14 /* CoreGraphics.swift in Sources */,
-				22B1E2F1204639CD00BDDF14 /* MapKit.swift in Sources */,
-				22B1E2C7204638A100BDDF14 /* SwipeGestureRecognizer.swift in Sources */,
-				22B1E2E32046392000BDDF14 /* TouchProperties.swift in Sources */,
-				22B1E2F7204639CD00BDDF14 /* NetworkConfiguration.swift in Sources */,
-				22B1E2E82046392000BDDF14 /* Artifact.swift in Sources */,
-				22A76FE020464756006C0AE7 /* RelatedItemView.swift in Sources */,
+				22046245204730780067D9FB /* RotateGestureRecognizer.swift in Sources */,
+				2204623A20472FDF0067D9FB /* MapKit.swift in Sources */,
+				2204625A204730C70067D9FB /* Place.swift in Sources */,
+				22046254204730C70067D9FB /* Touch.swift in Sources */,
+				2204621920472F2D0067D9FB /* PlayerControl.swift in Sources */,
 				22B1E2CF204638CA00BDDF14 /* GestureHandler.swift in Sources */,
-				22B1E2E52046392000BDDF14 /* EntityType.swift in Sources */,
-				22B1E2F6204639CD00BDDF14 /* PacketType.swift in Sources */,
-				22A76FE120464756006C0AE7 /* PlaceViewController.swift in Sources */,
-				22B1E2CB204638A100BDDF14 /* PinchGestureRecognizer.swift in Sources */,
-				22B1E2C8204638A100BDDF14 /* PanGestureRecognizer.swift in Sources */,
-				22B1E2DF2046392000BDDF14 /* Place.swift in Sources */,
-				22B1E2E12046392000BDDF14 /* LastThree.swift in Sources */,
-				22B1E2E22046392000BDDF14 /* Discipline.swift in Sources */,
-				22B1E2E42046392000BDDF14 /* Occurance.swift in Sources */,
+				22046255204730C70067D9FB /* NewPlace.swift in Sources */,
+				2204623720472FDF0067D9FB /* PacketType.swift in Sources */,
+				22046258204730C70067D9FB /* LastThree.swift in Sources */,
+				22046256204730C70067D9FB /* EntityType.swift in Sources */,
+				2204625B204730C70067D9FB /* Discipline.swift in Sources */,
+				2204623320472FDF0067D9FB /* CoreGraphics.swift in Sources */,
+				2204625E204730C70067D9FB /* Occurance.swift in Sources */,
+				22046257204730C70067D9FB /* Artifact.swift in Sources */,
+				2204620E20472DE80067D9FB /* RelatedItemView.swift in Sources */,
+				22046247204730780067D9FB /* PinchGestureRecognizer.swift in Sources */,
+				22046243204730780067D9FB /* SwipeGestureRecognizer.swift in Sources */,
+				22046248204730780067D9FB /* TapGestureRecognizer.swift in Sources */,
+				2204623920472FDF0067D9FB /* NetworkConfiguration.swift in Sources */,
+				2204623620472FDF0067D9FB /* AVKit.swift in Sources */,
+				22046244204730780067D9FB /* PanGestureRecognizer.swift in Sources */,
+				2204623820472FDF0067D9FB /* URL.swift in Sources */,
+				2204621820472F2D0067D9FB /* PlayerState.swift in Sources */,
 				22A923212044AF05003EA9BB /* AppDelegate.swift in Sources */,
-				22B1E2C9204638A100BDDF14 /* GestureRecognizer.swift in Sources */,
-				22B1E2F4204639CD00BDDF14 /* NSImage.swift in Sources */,
-				22B1E2CA204638A100BDDF14 /* TapGestureRecognizer.swift in Sources */,
-				22B1E2E02046392000BDDF14 /* School.swift in Sources */,
+				22046259204730C70067D9FB /* School.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
