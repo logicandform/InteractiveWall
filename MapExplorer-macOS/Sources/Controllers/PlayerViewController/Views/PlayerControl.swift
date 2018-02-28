@@ -83,7 +83,7 @@ class PlayerControl: NSView {
         }
 
         duration = item.asset.duration
-        if let durationString = string(for: item.asset.duration) {
+        if let durationString = string(for: duration) {
             durationLabel.stringValue = durationString
         }
 
