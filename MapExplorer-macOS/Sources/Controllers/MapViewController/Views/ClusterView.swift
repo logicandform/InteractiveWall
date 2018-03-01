@@ -7,7 +7,7 @@ class ClusterView: MKAnnotationView, SelectableView {
     static let identifier = "ClusterView"
 
     weak var mapView: MKMapView?
-    var didSelect: ((MKClusterAnnotation, MKMapView) -> Void)?
+    var didSelect: ((MKClusterAnnotation) -> Void)?
 
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
@@ -31,8 +31,8 @@ class ClusterView: MKAnnotationView, SelectableView {
 
     @objc
     func didSelectView() {
-        if let cluster = annotation as? MKClusterAnnotation, let mapView = mapView {
-            didSelect?(cluster, mapView)
+        if let cluster = annotation as? MKClusterAnnotation {
+            didSelect?(cluster)
         }
     }
 }

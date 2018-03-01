@@ -5,10 +5,10 @@ import Foundation
 final class ResponseHandler {
 
     static func serializePlaces(from json: Any) throws -> [Place] {
-        guard let json = json as? [[String: Any]] else {
+        guard let json = json as? [JSON] else {
             throw NetworkError.badResponse
         }
 
-        return json.flatMap { Place(fromJSON: $0) }
+        return json.flatMap { Place(json: $0) }
     }
 }

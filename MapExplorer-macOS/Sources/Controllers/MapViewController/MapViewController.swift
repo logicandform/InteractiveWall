@@ -7,15 +7,13 @@ import PromiseKit
 import AppKit
 
 
-protocol ViewManagerDelegate: class {
-    func displayView(for: Place, from: NSView)
-    func displayView(for: String, from: NSView)
-}
-
-
-class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegate, GestureResponder, SocketManagerDelegate, NSGestureRecognizerDelegate {
+class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, NSGestureRecognizerDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Map")
-    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12222)
+
+    @IBOutlet weak var mapView: MKMapView!
+    var mapID: Int!
+    private var mapHandler: MapHandler?
+    private var gestureManager: GestureManager!
 
     private struct Constants {
         static let tileURL = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -24,13 +22,12 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         static let annotationHitSize = CGSize(width: 50, height: 50)
     }
 
-
-    @IBOutlet weak var mapView: MKMapView!
-    var mapID: Int!
-
-    private var mapHandler: MapHandler?
-    private let socketManager = SocketManager(networkConfiguration: touchNetwork)
-    private var gestureManager: GestureManager!
+    private struct Keys {
+        static let touch = "touch"
+        static let map = "mapID"
+        static let place = "place"
+        static let position = "position"
+    }
 
 
     // MARK: Lifecycle
@@ -38,26 +35,26 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         gestureManager = GestureManager(responder: self)
-        socketManager.delegate = self
         setupMaps()
         setupGestures()
+        registerForNotifications()
     }
 
     override func viewWillAppear() {
-        view.window?.toggleFullScreen(nil)
+//        view.window?.toggleFullScreen(nil)
     }
 
 
     // MARK: Setup
 
-    func setupMaps() {
+    private func setupMaps() {
         mapHandler = MapHandler(mapView: mapView, id: mapID)
         mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
         mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
-        createPlaces(for: mapView)
+        createPlaces()
     }
 
-    func setupGestures() {
+    private func setupGestures() {
         let nsPan = NSPanGestureRecognizer(target: self, action: #selector(didPanMouse(_:)))
         nsPan.delegate = self
         mapView.addGestureRecognizer(nsPan)
@@ -78,6 +75,12 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         let pinchGesture = PinchGestureRecognizer()
         gestureManager.add(pinchGesture, to: mapView)
         pinchGesture.gestureUpdated = didZoomOnMap(_:)
+    }
+
+    private func registerForNotifications() {
+        for notification in TouchNotifications.allValues {
+            DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
+        }
     }
 
 
@@ -183,25 +186,34 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     }
 
 
+    // MARK: Notification Handling
+
+    @objc
+    private func handleNotification(_ notification: NSNotification) {
+        switch notification.name {
+        case TouchNotifications.touchEvent.name:
+            handleTouch(notification)
+        default:
+            return
+        }
+    }
+
+    private func handleTouch(_ notification: NSNotification) {
+        guard let info = notification.userInfo, let mapID = info[Keys.map] as? Int, let touchJSON = info[Keys.touch] as? JSON, let touch = Touch(json: touchJSON) else {
+            return
+        }
+
+        if Int32(mapID) != deviceID {
+            return
+        }
+        gestureManager.handle(touch)
+    }
+
+
     // MARK: NSGestureRecognizerDelegate
 
     func gestureRecognizer(_ gestureRecognizer: NSGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: NSGestureRecognizer) -> Bool {
         return true
-    }
-
-
-    // MARK: SocketManagerDelegate
-
-    func handlePacket(_ packet: Packet) {
-        guard let touch = Touch(from: packet) else {
-            return
-        }
-
-        gestureManager.handle(touch)
-    }
-
-    func handleError(_ message: String) {
-        print(message)
     }
 
 
@@ -210,24 +222,20 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let place = annotation as? Place {
             if let placeView = mapView.dequeueReusableAnnotationView(withIdentifier: PlaceView.identifier) as? PlaceView {
-                placeView.mapView = mapView
-                placeView.didSelect = didSelectAnnotationCallout(for:on:)
+                placeView.didSelect = didSelectAnnotationCallout(for:)
                 return placeView
             } else {
                 let placeView = PlaceView(annotation: place, reuseIdentifier: PlaceView.identifier)
-                placeView.mapView = mapView
-                placeView.didSelect = didSelectAnnotationCallout(for:on:)
+                placeView.didSelect = didSelectAnnotationCallout(for:)
                 return placeView
             }
         } else if let cluster = annotation as? MKClusterAnnotation {
             if let clusterView = mapView.dequeueReusableAnnotationView(withIdentifier: ClusterView.identifier) as? ClusterView {
-                clusterView.mapView = mapView
-                clusterView.didSelect = didSelectAnnotationCallout(for:on:)
+                clusterView.didSelect = didSelectAnnotationCallout(for:)
                 return clusterView
             } else {
                 let clusterView = ClusterView(annotation: cluster, reuseIdentifier: ClusterView.identifier)
-                clusterView.mapView = mapView
-                clusterView.didSelect = didSelectAnnotationCallout(for:on:)
+                clusterView.didSelect = didSelectAnnotationCallout(for:)
                 return clusterView
             }
         }
@@ -244,58 +252,15 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
     }
 
 
-    // MARK: ViewManagerDelegate
-
-    /// Displays a child view controller on the screen with an origin offset from the providing view or nil if from an annotation.
-    func displayView(for place: Place, from focus: NSView) {
-        let storyboard = NSStoryboard(name: PlaceViewController.storyboard, bundle: nil)
-        let placeVC = storyboard.instantiateInitialController() as! PlaceViewController
-        placeVC.gestureManager = gestureManager
-        addChildViewController(placeVC)
-        view.addSubview(placeVC.view)
-        var origin: CGPoint
-
-        if let mapView = focus as? MKMapView {
-            // Displayed from a map annotation
-            origin = mapView.convert(place.coordinate, toPointTo: view)
-            origin -= CGVector(dx: placeVC.view.bounds.width / 2, dy: placeVC.view.bounds.height + 10.0)
-        } else {
-            // Displayed from subview
-            origin = focus.frame.origin
-            origin += CGVector(dx: focus.bounds.width + 20.0, dy: 0)
-        }
-
-        placeVC.view.frame.origin = origin
-        adjustBoundaries(of: placeVC.view)
-        placeVC.place = place
-        placeVC.viewDelegate = self
-    }
-
-    /// Displays a video player view controller on the screen next to the view that provided it.
-    func displayView(for endURL: String, from focus: NSView) {
-        let storyboard = NSStoryboard(name: PlayerViewController.storyboard, bundle: nil)
-        let playerVC = storyboard.instantiateInitialController() as! PlayerViewController
-        playerVC.gestureManager = gestureManager
-
-        addChildViewController(playerVC)
-        view.addSubview(playerVC.view)
-
-        var origin = focus.frame.origin
-        origin += CGVector(dx: focus.bounds.width + 20.0, dy: 0)
-        playerVC.view.frame.origin = origin
-        adjustBoundaries(of: playerVC.view)
-    }
-
-
     // MARK: Helpers
 
-    private func createPlaces(for mapView: MKMapView) {
+    private func createPlaces() {
         do {
             if let file = Bundle.main.url(forResource: "MapPoints", withExtension: "json") {
                 let data = try Data(contentsOf: file)
                 let json = try JSONSerialization.jsonObject(with: data, options: [])
-                if let jsonBlob = json as? [String: Any], let placesJSON = jsonBlob["locations"] as? [[String: Any]] {
-                    add(placesJSON, to: mapView)
+                if let jsonBlob = json as? JSON, let placesJSON = jsonBlob["locations"] as? [JSON] {
+                    add(placesJSON)
                 } else {
                     print("JSON is invalid")
                 }
@@ -307,25 +272,34 @@ class MapViewController: NSViewController, MKMapViewDelegate, ViewManagerDelegat
         }
     }
 
-    private func add(_ placesJSON: [[String: Any]], to mapView: MKMapView) {
-        let places = placesJSON.flatMap { Place(fromJSON: $0) }
+    private func add(_ placesJSON: [JSON]) {
+        let places = placesJSON.flatMap { Place(json: $0) }
         mapView.addAnnotations(places)
     }
 
     /// Zoom into the annotations contained in the cluster
-    private func didSelectAnnotationCallout(for cluster: MKClusterAnnotation, on mapView: MKMapView) {
+    private func didSelectAnnotationCallout(for cluster: MKClusterAnnotation) {
         let selectedAnnotations = cluster.memberAnnotations
-        show(selectedAnnotations, on: mapView)
+        show(selectedAnnotations)
     }
 
     /// Display a place view controller on top of the selected callout annotation for the associated place.
-    private func didSelectAnnotationCallout(for place: Place, on mapView: MKMapView) {
+    private func didSelectAnnotationCallout(for place: Place) {
         mapView.deselectAnnotation(place, animated: false)
-        displayView(for: place, from: mapView)
+        displayWindow(for: place)
+    }
+
+    private func displayWindow(for place: Place) {
+        var location = mapView.convert(place.coordinate, toPointTo: view)
+        if let frame = NSScreen.main?.frame {
+            location.x += (frame.size.width / CGFloat(Configuration.numberOfWindows)) * CGFloat(deviceID - 1)
+        }
+        let info: JSON = [Keys.position: location.toJSON(), Keys.place: place.title ?? "no title"]
+        DistributedNotificationCenter.default().postNotificationName(NSNotification.Name(rawValue: "place"), object: nil, userInfo: info, deliverImmediately: true)
     }
 
     /// Zooms into a cluster of annotations to make them more visible.
-    private func show(_ annotations: [MKAnnotation], on mapView: MKMapView) {
+    private func show(_ annotations: [MKAnnotation]) {
         let centroid = findCenterOfAnnotations(annotations: annotations)
         let span = restrainSpan(annotations: annotations)
         let region = MKCoordinateRegion(center: centroid, span: span)

@@ -7,10 +7,53 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2204620D20472DE80067D9FB /* Place.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2204620920472DE80067D9FB /* Place.storyboard */; };
+		2204620E20472DE80067D9FB /* RelatedItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204620A20472DE80067D9FB /* RelatedItemView.swift */; };
+		2204620F20472DE80067D9FB /* PlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204620B20472DE80067D9FB /* PlaceViewController.swift */; };
+		2204621020472DE80067D9FB /* RelatedItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2204620C20472DE80067D9FB /* RelatedItemView.xib */; };
+		2204621720472F2D0067D9FB /* PlayerControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2204621420472F2D0067D9FB /* PlayerControl.xib */; };
+		2204621820472F2D0067D9FB /* PlayerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204621520472F2D0067D9FB /* PlayerState.swift */; };
+		2204621920472F2D0067D9FB /* PlayerControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204621620472F2D0067D9FB /* PlayerControl.swift */; };
+		2204623320472FDF0067D9FB /* CoreGraphics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204622B20472FDF0067D9FB /* CoreGraphics.swift */; };
+		2204623420472FDF0067D9FB /* NSImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204622C20472FDF0067D9FB /* NSImage.swift */; };
+		2204623520472FDF0067D9FB /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204622D20472FDF0067D9FB /* Int.swift */; };
+		2204623620472FDF0067D9FB /* AVKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204622E20472FDF0067D9FB /* AVKit.swift */; };
+		2204623720472FDF0067D9FB /* PacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204622F20472FDF0067D9FB /* PacketType.swift */; };
+		2204623820472FDF0067D9FB /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204623020472FDF0067D9FB /* URL.swift */; };
+		2204623920472FDF0067D9FB /* NetworkConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204623120472FDF0067D9FB /* NetworkConfiguration.swift */; };
+		2204623A20472FDF0067D9FB /* MapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204623220472FDF0067D9FB /* MapKit.swift */; };
+		22046243204730780067D9FB /* SwipeGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204623D204730780067D9FB /* SwipeGestureRecognizer.swift */; };
+		22046244204730780067D9FB /* PanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204623E204730780067D9FB /* PanGestureRecognizer.swift */; };
+		22046245204730780067D9FB /* RotateGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204623F204730780067D9FB /* RotateGestureRecognizer.swift */; };
+		22046246204730780067D9FB /* GestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046240204730780067D9FB /* GestureRecognizer.swift */; };
+		22046247204730780067D9FB /* PinchGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046241204730780067D9FB /* PinchGestureRecognizer.swift */; };
+		22046248204730780067D9FB /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046242204730780067D9FB /* TapGestureRecognizer.swift */; };
+		22046254204730C70067D9FB /* Touch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046249204730C60067D9FB /* Touch.swift */; };
+		22046255204730C70067D9FB /* NewPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624A204730C70067D9FB /* NewPlace.swift */; };
+		22046256204730C70067D9FB /* EntityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624B204730C70067D9FB /* EntityType.swift */; };
+		22046257204730C70067D9FB /* Artifact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624C204730C70067D9FB /* Artifact.swift */; };
+		22046258204730C70067D9FB /* LastThree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624D204730C70067D9FB /* LastThree.swift */; };
+		22046259204730C70067D9FB /* School.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624E204730C70067D9FB /* School.swift */; };
+		2204625A204730C70067D9FB /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624F204730C70067D9FB /* Place.swift */; };
+		2204625B204730C70067D9FB /* Discipline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046250204730C70067D9FB /* Discipline.swift */; };
+		2204625C204730C70067D9FB /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046251204730C70067D9FB /* Entity.swift */; };
+		2204625D204730C70067D9FB /* TouchProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046252204730C70067D9FB /* TouchProperties.swift */; };
+		2204625E204730C70067D9FB /* Occurance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046253204730C70067D9FB /* Occurance.swift */; };
+		22A4985E204733770024B46C /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A4985D204733770024B46C /* WindowManager.swift */; };
+		22A498612047349C0024B46C /* WindowNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A498602047349C0024B46C /* WindowNotifications.swift */; };
+		22A4986C204743880024B46C /* TouchNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A4986B204743880024B46C /* TouchNotifications.swift */; };
+		22A498752047499B0024B46C /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A498742047499B0024B46C /* JSON.swift */; };
+		22A49878204749C30024B46C /* TouchState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A49877204749C30024B46C /* TouchState.swift */; };
+		22A76FE620464764006C0AE7 /* PDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A76FE420464764006C0AE7 /* PDFViewController.swift */; };
+		22A76FE720464764006C0AE7 /* PDF.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22A76FE520464764006C0AE7 /* PDF.storyboard */; };
+		22A76FEB2046477A006C0AE7 /* Player.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22A76FE92046477A006C0AE7 /* Player.storyboard */; };
+		22A76FEC2046477A006C0AE7 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A76FEA2046477A006C0AE7 /* PlayerViewController.swift */; };
 		22A923212044AF05003EA9BB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A923202044AF05003EA9BB /* AppDelegate.swift */; };
-		22A923232044AF05003EA9BB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A923222044AF05003EA9BB /* ViewController.swift */; };
 		22A923252044AF05003EA9BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22A923242044AF05003EA9BB /* Assets.xcassets */; };
 		22A923282044AF05003EA9BB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22A923262044AF05003EA9BB /* Main.storyboard */; };
+		22B1E2CD204638B900BDDF14 /* GestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2CC204638B900BDDF14 /* GestureManager.swift */; };
+		22B1E2CF204638CA00BDDF14 /* GestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2CE204638CA00BDDF14 /* GestureHandler.swift */; };
+		C6DB17689F287C9826286DF2 /* Pods_All_WindowExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,13 +70,58 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2204620920472DE80067D9FB /* Place.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Place.storyboard; sourceTree = "<group>"; };
+		2204620A20472DE80067D9FB /* RelatedItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelatedItemView.swift; sourceTree = "<group>"; };
+		2204620B20472DE80067D9FB /* PlaceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceViewController.swift; sourceTree = "<group>"; };
+		2204620C20472DE80067D9FB /* RelatedItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RelatedItemView.xib; sourceTree = "<group>"; };
+		2204621420472F2D0067D9FB /* PlayerControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerControl.xib; sourceTree = "<group>"; };
+		2204621520472F2D0067D9FB /* PlayerState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerState.swift; sourceTree = "<group>"; };
+		2204621620472F2D0067D9FB /* PlayerControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerControl.swift; sourceTree = "<group>"; };
+		2204622B20472FDF0067D9FB /* CoreGraphics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreGraphics.swift; sourceTree = "<group>"; };
+		2204622C20472FDF0067D9FB /* NSImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSImage.swift; sourceTree = "<group>"; };
+		2204622D20472FDF0067D9FB /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
+		2204622E20472FDF0067D9FB /* AVKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVKit.swift; sourceTree = "<group>"; };
+		2204622F20472FDF0067D9FB /* PacketType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PacketType.swift; sourceTree = "<group>"; };
+		2204623020472FDF0067D9FB /* URL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
+		2204623120472FDF0067D9FB /* NetworkConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkConfiguration.swift; sourceTree = "<group>"; };
+		2204623220472FDF0067D9FB /* MapKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapKit.swift; sourceTree = "<group>"; };
+		2204623D204730780067D9FB /* SwipeGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeGestureRecognizer.swift; sourceTree = "<group>"; };
+		2204623E204730780067D9FB /* PanGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanGestureRecognizer.swift; sourceTree = "<group>"; };
+		2204623F204730780067D9FB /* RotateGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotateGestureRecognizer.swift; sourceTree = "<group>"; };
+		22046240204730780067D9FB /* GestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureRecognizer.swift; sourceTree = "<group>"; };
+		22046241204730780067D9FB /* PinchGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinchGestureRecognizer.swift; sourceTree = "<group>"; };
+		22046242204730780067D9FB /* TapGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapGestureRecognizer.swift; sourceTree = "<group>"; };
+		22046249204730C60067D9FB /* Touch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Touch.swift; sourceTree = "<group>"; };
+		2204624A204730C70067D9FB /* NewPlace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPlace.swift; sourceTree = "<group>"; };
+		2204624B204730C70067D9FB /* EntityType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityType.swift; sourceTree = "<group>"; };
+		2204624C204730C70067D9FB /* Artifact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Artifact.swift; sourceTree = "<group>"; };
+		2204624D204730C70067D9FB /* LastThree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastThree.swift; sourceTree = "<group>"; };
+		2204624E204730C70067D9FB /* School.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = School.swift; sourceTree = "<group>"; };
+		2204624F204730C70067D9FB /* Place.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
+		22046250204730C70067D9FB /* Discipline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Discipline.swift; sourceTree = "<group>"; };
+		22046251204730C70067D9FB /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
+		22046252204730C70067D9FB /* TouchProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchProperties.swift; sourceTree = "<group>"; };
+		22046253204730C70067D9FB /* Occurance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Occurance.swift; sourceTree = "<group>"; };
+		22A4985D204733770024B46C /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
+		22A498602047349C0024B46C /* WindowNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowNotifications.swift; sourceTree = "<group>"; };
+		22A4986B204743880024B46C /* TouchNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchNotifications.swift; sourceTree = "<group>"; };
+		22A498742047499B0024B46C /* JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
+		22A49877204749C30024B46C /* TouchState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchState.swift; sourceTree = "<group>"; };
+		22A76FE420464764006C0AE7 /* PDFViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PDFViewController.swift; sourceTree = "<group>"; };
+		22A76FE520464764006C0AE7 /* PDF.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PDF.storyboard; sourceTree = "<group>"; };
+		22A76FE92046477A006C0AE7 /* Player.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Player.storyboard; sourceTree = "<group>"; };
+		22A76FEA2046477A006C0AE7 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		22A9231D2044AF05003EA9BB /* WindowExplorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WindowExplorer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22A923202044AF05003EA9BB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		22A923222044AF05003EA9BB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		22A923242044AF05003EA9BB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		22A923272044AF05003EA9BB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		22A923292044AF05003EA9BB /* WindowExplorer.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = WindowExplorer.plist; sourceTree = "<group>"; };
 		22A9232A2044AF05003EA9BB /* WindowExplorer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WindowExplorer.entitlements; sourceTree = "<group>"; };
+		22B1E2CC204638B900BDDF14 /* GestureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureManager.swift; sourceTree = "<group>"; };
+		22B1E2CE204638CA00BDDF14 /* GestureHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureHandler.swift; sourceTree = "<group>"; };
+		2B994FF43C43BAD129E83037 /* Pods-All-WindowExplorer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-WindowExplorer.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer.debug.xcconfig"; sourceTree = "<group>"; };
+		A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_WindowExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE471FCE047AE2FD1C92BA3A /* Pods-All-WindowExplorer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-WindowExplorer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,21 +129,143 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C6DB17689F287C9826286DF2 /* Pods_All_WindowExplorer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2204620820472DE10067D9FB /* PlaceViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2204620920472DE80067D9FB /* Place.storyboard */,
+				2204620B20472DE80067D9FB /* PlaceViewController.swift */,
+				2204620A20472DE80067D9FB /* RelatedItemView.swift */,
+				2204620C20472DE80067D9FB /* RelatedItemView.xib */,
+			);
+			path = PlaceViewController;
+			sourceTree = "<group>";
+		};
+		2204621320472F1E0067D9FB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2204621420472F2D0067D9FB /* PlayerControl.xib */,
+				2204621620472F2D0067D9FB /* PlayerControl.swift */,
+				2204621520472F2D0067D9FB /* PlayerState.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2204621A20472F840067D9FB /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2204622E20472FDF0067D9FB /* AVKit.swift */,
+				2204622B20472FDF0067D9FB /* CoreGraphics.swift */,
+				2204622D20472FDF0067D9FB /* Int.swift */,
+				2204623220472FDF0067D9FB /* MapKit.swift */,
+				2204623120472FDF0067D9FB /* NetworkConfiguration.swift */,
+				2204622C20472FDF0067D9FB /* NSImage.swift */,
+				2204622F20472FDF0067D9FB /* PacketType.swift */,
+				2204623020472FDF0067D9FB /* URL.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		2204623B20472FFD0067D9FB /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				22A4987A204749EA0024B46C /* Records */,
+				22A49879204749E40024B46C /* Annotations */,
+				22A49876204749B70024B46C /* Touches */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		2204623C204730050067D9FB /* Gestures */ = {
+			isa = PBXGroup;
+			children = (
+				22046240204730780067D9FB /* GestureRecognizer.swift */,
+				2204623E204730780067D9FB /* PanGestureRecognizer.swift */,
+				22046241204730780067D9FB /* PinchGestureRecognizer.swift */,
+				2204623F204730780067D9FB /* RotateGestureRecognizer.swift */,
+				2204623D204730780067D9FB /* SwipeGestureRecognizer.swift */,
+				22046242204730780067D9FB /* TapGestureRecognizer.swift */,
+			);
+			path = Gestures;
+			sourceTree = "<group>";
+		};
+		22A4985F204734790024B46C /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				22A498602047349C0024B46C /* WindowNotifications.swift */,
+				22A4986B204743880024B46C /* TouchNotifications.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
+		22A49876204749B70024B46C /* Touches */ = {
+			isa = PBXGroup;
+			children = (
+				22046249204730C60067D9FB /* Touch.swift */,
+				22A49877204749C30024B46C /* TouchState.swift */,
+				22046252204730C70067D9FB /* TouchProperties.swift */,
+			);
+			path = Touches;
+			sourceTree = "<group>";
+		};
+		22A49879204749E40024B46C /* Annotations */ = {
+			isa = PBXGroup;
+			children = (
+				2204624F204730C70067D9FB /* Place.swift */,
+				22046250204730C70067D9FB /* Discipline.swift */,
+			);
+			path = Annotations;
+			sourceTree = "<group>";
+		};
+		22A4987A204749EA0024B46C /* Records */ = {
+			isa = PBXGroup;
+			children = (
+				2204624C204730C70067D9FB /* Artifact.swift */,
+				22046251204730C70067D9FB /* Entity.swift */,
+				2204624B204730C70067D9FB /* EntityType.swift */,
+				2204624D204730C70067D9FB /* LastThree.swift */,
+				2204624A204730C70067D9FB /* NewPlace.swift */,
+				22046253204730C70067D9FB /* Occurance.swift */,
+				2204624E204730C70067D9FB /* School.swift */,
+			);
+			path = Records;
+			sourceTree = "<group>";
+		};
+		22A76FE320464764006C0AE7 /* PDFViewControlller */ = {
+			isa = PBXGroup;
+			children = (
+				22A76FE420464764006C0AE7 /* PDFViewController.swift */,
+				22A76FE520464764006C0AE7 /* PDF.storyboard */,
+			);
+			path = PDFViewControlller;
+			sourceTree = "<group>";
+		};
+		22A76FE82046477A006C0AE7 /* PlayerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				22A76FE92046477A006C0AE7 /* Player.storyboard */,
+				22A76FEA2046477A006C0AE7 /* PlayerViewController.swift */,
+				2204621320472F1E0067D9FB /* Views */,
+			);
+			path = PlayerViewController;
+			sourceTree = "<group>";
+		};
 		22A923142044AF05003EA9BB = {
 			isa = PBXGroup;
 			children = (
-				22A923342044AF45003EA9BB /* Managers */,
 				22A923302044AF19003EA9BB /* Sources */,
 				22A923332044AF2D003EA9BB /* Metadata */,
-				22A923322044AF23003EA9BB /* Extensions */,
+				2204621A20472F840067D9FB /* Extensions */,
 				22A923312044AF1E003EA9BB /* Resources */,
 				22A9231E2044AF05003EA9BB /* Products */,
+				E7F56EE9570176C399CE51F3 /* Pods */,
+				BA7AB469DDFD237E3385F839 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -71,7 +281,12 @@
 			isa = PBXGroup;
 			children = (
 				22A923262044AF05003EA9BB /* Main.storyboard */,
+				22A923342044AF45003EA9BB /* Managers */,
 				22A9233B2044B047003EA9BB /* Controllers */,
+				22B1E2D0204638CD00BDDF14 /* Helpers */,
+				2204623B20472FFD0067D9FB /* Models */,
+				2204623C204730050067D9FB /* Gestures */,
+				22A4985F204734790024B46C /* Notifications */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -82,13 +297,6 @@
 				22A923242044AF05003EA9BB /* Assets.xcassets */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		22A923322044AF23003EA9BB /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 		22A923332044AF2D003EA9BB /* Metadata */ = {
@@ -104,6 +312,8 @@
 			isa = PBXGroup;
 			children = (
 				22A923202044AF05003EA9BB /* AppDelegate.swift */,
+				22B1E2CC204638B900BDDF14 /* GestureManager.swift */,
+				22A4985D204733770024B46C /* WindowManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -111,9 +321,37 @@
 		22A9233B2044B047003EA9BB /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				22A923222044AF05003EA9BB /* ViewController.swift */,
+				2204620820472DE10067D9FB /* PlaceViewController */,
+				22A76FE82046477A006C0AE7 /* PlayerViewController */,
+				22A76FE320464764006C0AE7 /* PDFViewControlller */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		22B1E2D0204638CD00BDDF14 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				22B1E2CE204638CA00BDDF14 /* GestureHandler.swift */,
+				22A498742047499B0024B46C /* JSON.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		BA7AB469DDFD237E3385F839 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E7F56EE9570176C399CE51F3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				2B994FF43C43BAD129E83037 /* Pods-All-WindowExplorer.debug.xcconfig */,
+				CE471FCE047AE2FD1C92BA3A /* Pods-All-WindowExplorer.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -123,10 +361,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 22A9232D2044AF05003EA9BB /* Build configuration list for PBXNativeTarget "WindowExplorer" */;
 			buildPhases = (
+				EA5D45800FABF07BEC3A6B2E /* [CP] Check Pods Manifest.lock */,
 				22A923192044AF05003EA9BB /* Sources */,
 				22A9231A2044AF05003EA9BB /* Frameworks */,
 				22A9231B2044AF05003EA9BB /* Resources */,
 				22A9234F2044B09D003EA9BB /* Embed XPC Services */,
+				D706A887330181305494F3D8 /* [CP] Embed Pods Frameworks */,
+				8454E9A53B856D80A74E202D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -176,20 +417,122 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22A76FE720464764006C0AE7 /* PDF.storyboard in Resources */,
 				22A923252044AF05003EA9BB /* Assets.xcassets in Resources */,
+				2204621020472DE80067D9FB /* RelatedItemView.xib in Resources */,
+				2204620D20472DE80067D9FB /* Place.storyboard in Resources */,
+				2204621720472F2D0067D9FB /* PlayerControl.xib in Resources */,
 				22A923282044AF05003EA9BB /* Main.storyboard in Resources */,
+				22A76FEB2046477A006C0AE7 /* Player.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8454E9A53B856D80A74E202D /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D706A887330181305494F3D8 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire-macOS/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket-macOS/CocoaAsyncSocket.framework",
+				"${BUILT_PRODUCTS_DIR}/MONode-macOS/MONode.framework",
+				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MONode.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EA5D45800FABF07BEC3A6B2E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-All-WindowExplorer-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		22A923192044AF05003EA9BB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22A923232044AF05003EA9BB /* ViewController.swift in Sources */,
+				22A76FEC2046477A006C0AE7 /* PlayerViewController.swift in Sources */,
+				2204623520472FDF0067D9FB /* Int.swift in Sources */,
+				2204620F20472DE80067D9FB /* PlaceViewController.swift in Sources */,
+				22046246204730780067D9FB /* GestureRecognizer.swift in Sources */,
+				2204625D204730C70067D9FB /* TouchProperties.swift in Sources */,
+				2204625C204730C70067D9FB /* Entity.swift in Sources */,
+				2204623420472FDF0067D9FB /* NSImage.swift in Sources */,
+				22B1E2CD204638B900BDDF14 /* GestureManager.swift in Sources */,
+				22A76FE620464764006C0AE7 /* PDFViewController.swift in Sources */,
+				22A4985E204733770024B46C /* WindowManager.swift in Sources */,
+				22046245204730780067D9FB /* RotateGestureRecognizer.swift in Sources */,
+				2204623A20472FDF0067D9FB /* MapKit.swift in Sources */,
+				2204625A204730C70067D9FB /* Place.swift in Sources */,
+				22046254204730C70067D9FB /* Touch.swift in Sources */,
+				22A498612047349C0024B46C /* WindowNotifications.swift in Sources */,
+				2204621920472F2D0067D9FB /* PlayerControl.swift in Sources */,
+				22B1E2CF204638CA00BDDF14 /* GestureHandler.swift in Sources */,
+				22046255204730C70067D9FB /* NewPlace.swift in Sources */,
+				22A49878204749C30024B46C /* TouchState.swift in Sources */,
+				2204623720472FDF0067D9FB /* PacketType.swift in Sources */,
+				22046258204730C70067D9FB /* LastThree.swift in Sources */,
+				22046256204730C70067D9FB /* EntityType.swift in Sources */,
+				2204625B204730C70067D9FB /* Discipline.swift in Sources */,
+				2204623320472FDF0067D9FB /* CoreGraphics.swift in Sources */,
+				2204625E204730C70067D9FB /* Occurance.swift in Sources */,
+				22046257204730C70067D9FB /* Artifact.swift in Sources */,
+				2204620E20472DE80067D9FB /* RelatedItemView.swift in Sources */,
+				22A4986C204743880024B46C /* TouchNotifications.swift in Sources */,
+				22A498752047499B0024B46C /* JSON.swift in Sources */,
+				22046247204730780067D9FB /* PinchGestureRecognizer.swift in Sources */,
+				22046243204730780067D9FB /* SwipeGestureRecognizer.swift in Sources */,
+				22046248204730780067D9FB /* TapGestureRecognizer.swift in Sources */,
+				2204623920472FDF0067D9FB /* NetworkConfiguration.swift in Sources */,
+				2204623620472FDF0067D9FB /* AVKit.swift in Sources */,
+				22046244204730780067D9FB /* PanGestureRecognizer.swift in Sources */,
+				2204623820472FDF0067D9FB /* URL.swift in Sources */,
+				2204621820472F2D0067D9FB /* PlayerState.swift in Sources */,
 				22A923212044AF05003EA9BB /* AppDelegate.swift in Sources */,
+				22046259204730C70067D9FB /* School.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,6 +658,7 @@
 		};
 		22A9232E2044AF05003EA9BB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2B994FF43C43BAD129E83037 /* Pods-All-WindowExplorer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Metadata/WindowExplorer.entitlements;
@@ -331,6 +675,7 @@
 		};
 		22A9232F2044AF05003EA9BB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CE471FCE047AE2FD1C92BA3A /* Pods-All-WindowExplorer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Metadata/WindowExplorer.entitlements;

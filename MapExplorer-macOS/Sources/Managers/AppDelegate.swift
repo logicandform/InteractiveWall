@@ -5,11 +5,12 @@ import Cocoa
 
 struct Configuration {
     static let numberOfWindows = 4
-    static let frameless = false
+    static let frameless = true
     static let touchScreenSize = CGSize(width: 4095, height: 2242.5)
+    static let touchScreenRatio: CGFloat = 23.0 / 42.0
 }
 
-let deviceID = Int32(1)
+var deviceID = Int32(1)
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -17,6 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         let screenIndex = Int(CommandLine.arguments[1]) ?? 0
         let windowIndex = Int(CommandLine.arguments[2]) ?? 0
+        deviceID = Int32(windowIndex + 1)
 
         let mapStoryboard = NSStoryboard(name: MapViewController.storyboard, bundle: nil)
         let mapVC = mapStoryboard.instantiateInitialController() as! MapViewController
