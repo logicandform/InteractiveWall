@@ -5,7 +5,6 @@ import AppKit
 
 class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate, GestureResponder, NSGestureRecognizerDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Place")
-    static let size = CGSize(width: 640, height: 584)
 
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var relatedView: NSTableView!
@@ -123,11 +122,12 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     }
 
     private func didTapPlayerButton(_ gesture: GestureRecognizer) {
-        guard gesture is TapGestureRecognizer, let window = view.window else {
+        guard gesture is TapGestureRecognizer, let window = view.window, let screen = window.screen?.index else {
             return
         }
 
-        WindowManager.instance.displayWindow(for: place, from: window)
+        let position = window.frame.origin + CGVector(dx: window.frame.maxX + 20, dy: 0)
+        WindowManager.instance.displayWindow(for: .place(place), screen: screen, at: position)
     }
 
     private func relatedViewDidTap(_ gesture: GestureRecognizer) {
@@ -175,8 +175,9 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     }
 
     @IBAction func videoButtonTapped(_ sender: Any) {
-        if let window = view.window {
-            WindowManager.instance.displayWindow(for: place, from: window)
+        if let window = view.window, let screen = window.screen?.index {
+            let position = window.frame.origin + CGVector(dx: window.frame.maxX + 20, dy: 0)
+            WindowManager.instance.displayWindow(for: .player, screen: screen, at: position)
         }
     }
 
@@ -210,8 +211,9 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     // MARK: Helpers
 
     private func didSelectRelatedItem() {
-        if let window = view.window {
-            WindowManager.instance.displayWindow(for: place, from: window)
+        if let window = view.window, let screen = window.screen?.index {
+            let position = window.frame.origin + CGVector(dx: window.frame.maxX + 20, dy: 0)
+            WindowManager.instance.displayWindow(for: .place(place), screen: screen, at: position)
         }
     }
 

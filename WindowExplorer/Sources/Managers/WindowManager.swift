@@ -9,6 +9,12 @@ protocol GestureManaging {
     var gestureManager: GestureManager? { get }
 }
 
+enum WindowType {
+    case place(Place)
+    case player
+    case pdf
+}
+
 
 final class WindowManager: SocketManagerDelegate {
 
@@ -24,6 +30,7 @@ final class WindowManager: SocketManagerDelegate {
         static let place = "place"
         static let touch = "touch"
         static let map = "mapID"
+        static let screen = "screen"
     }
 
 
@@ -44,26 +51,16 @@ final class WindowManager: SocketManagerDelegate {
         }
     }
 
-    func displayWindow(for place: Place?, from window: NSWindow) {
-        let storyboard = NSStoryboard(name: PlayerViewController.storyboard, bundle: Bundle.main)
-        let playerVC = storyboard.instantiateInitialController() as! PlayerViewController
-
-        // get screen for the mapID displaying place
-        let screen = NSScreen.screens[0]
-        let size = PlayerViewController.size
-        let windowFrame = CGRect(origin: CGPoint(x: window.frame.maxX + 20, y: window.frame.minY), size: size)
-        let playerWindow = NSWindow(contentRect: windowFrame, styleMask: .borderless, backing: .buffered, defer: true, screen: screen)
-        playerWindow.backgroundColor = NSColor.clear
-        playerWindow.level = .statusBar
-        playerWindow.contentViewController = playerVC
-        playerWindow.setFrame(windowFrame, display: true)
-        playerWindow.makeKeyAndOrderFront(self)
-        gestureManagerForWindow[playerWindow] = playerVC.gestureManager
-    }
-
     func remove(_ window: NSWindow) {
         gestureManagerForWindow.removeValue(forKey: window)
     }
+
+    func displayWindow(for type: WindowType, screen: Int, at topMiddle: CGPoint) {
+        if let window = WindowFactory.window(for: type, screen: screen, at: topMiddle), let controller = window.contentViewController as? GestureManaging {
+            gestureManagerForWindow[window] = controller.gestureManager
+        }
+    }
+
 
 
     // MARK: SocketManagerDelegate
@@ -93,33 +90,18 @@ final class WindowManager: SocketManagerDelegate {
 
     @objc
     private func handleNotification(_ notification: NSNotification) {
+        guard let info = notification.userInfo, let screen = info[Keys.screen] as? Int, let locationJSON = info[Keys.position] as? JSON, let location = CGPoint(json: locationJSON) else {
+            return
+        }
+
         switch notification.name {
         case WindowNotifications.place.name:
-            handlePlace(notification)
+            if let placeTitle = info[Keys.place] as? String {
+                displayWindow(for: .place(place), screen: screen, at: location)
+            }
         default:
             return
         }
-    }
-
-    private func handlePlace(_ notification: NSNotification) {
-        guard let userInfo = notification.userInfo, let positionJSON = userInfo[Keys.position] as? JSON, var location = CGPoint(json: positionJSON), let place = userInfo[Keys.place] as? String else {
-            return
-        }
-
-        let storyboard = NSStoryboard(name: PlaceViewController.storyboard, bundle: Bundle.main)
-        let placeVC = storyboard.instantiateInitialController() as! PlaceViewController
-        // get screen for the mapID displaying place
-        let screen = NSScreen.screens[0]
-        let size = PlaceViewController.size
-        location -= CGVector(dx: size.width / 2, dy: size.height)
-        let windowFrame = NSRect(x: location.x, y: location.y, width: size.width, height: size.height)
-        let placeWindow = NSWindow(contentRect: windowFrame, styleMask: .borderless, backing: .buffered, defer: true, screen: screen)
-        placeWindow.backgroundColor = NSColor.clear
-        placeWindow.level = .statusBar
-        placeWindow.contentViewController = placeVC
-        placeWindow.setFrame(windowFrame, display: true)
-        placeWindow.makeKeyAndOrderFront(self)
-        gestureManagerForWindow[placeWindow] = placeVC.gestureManager
     }
 
 

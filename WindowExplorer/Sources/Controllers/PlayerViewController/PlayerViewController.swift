@@ -7,7 +7,6 @@ import AppKit
 
 class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "Player")
-    static let size = CGSize(width: 640, height: 553)
 
     @IBOutlet weak var playerView: AVPlayerView!
     @IBOutlet weak var playerControl: PlayerControl!

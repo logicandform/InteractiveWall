@@ -53,6 +53,9 @@
 		22A923282044AF05003EA9BB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22A923262044AF05003EA9BB /* Main.storyboard */; };
 		22B1E2CD204638B900BDDF14 /* GestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2CC204638B900BDDF14 /* GestureManager.swift */; };
 		22B1E2CF204638CA00BDDF14 /* GestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2CE204638CA00BDDF14 /* GestureHandler.swift */; };
+		8E4010A020487B8D00E81AAA /* WindowFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E40109F20487B8D00E81AAA /* WindowFactory.swift */; };
+		8E4010A220487E0300E81AAA /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4010A120487E0300E81AAA /* Collection.swift */; };
+		8E4010A42048869A00E81AAA /* NSApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4010A32048869A00E81AAA /* NSApplication.swift */; };
 		C6DB17689F287C9826286DF2 /* Pods_All_WindowExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */; };
 /* End PBXBuildFile section */
 
@@ -120,6 +123,9 @@
 		22B1E2CC204638B900BDDF14 /* GestureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureManager.swift; sourceTree = "<group>"; };
 		22B1E2CE204638CA00BDDF14 /* GestureHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureHandler.swift; sourceTree = "<group>"; };
 		2B994FF43C43BAD129E83037 /* Pods-All-WindowExplorer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-WindowExplorer.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer.debug.xcconfig"; sourceTree = "<group>"; };
+		8E40109F20487B8D00E81AAA /* WindowFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowFactory.swift; sourceTree = "<group>"; };
+		8E4010A120487E0300E81AAA /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
+		8E4010A32048869A00E81AAA /* NSApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSApplication.swift; sourceTree = "<group>"; };
 		A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_WindowExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE471FCE047AE2FD1C92BA3A /* Pods-All-WindowExplorer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-WindowExplorer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -168,6 +174,8 @@
 				2204622C20472FDF0067D9FB /* NSImage.swift */,
 				2204622F20472FDF0067D9FB /* PacketType.swift */,
 				2204623020472FDF0067D9FB /* URL.swift */,
+				8E4010A120487E0300E81AAA /* Collection.swift */,
+				8E4010A32048869A00E81AAA /* NSApplication.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -240,8 +248,8 @@
 		22A76FE320464764006C0AE7 /* PDFViewControlller */ = {
 			isa = PBXGroup;
 			children = (
-				22A76FE420464764006C0AE7 /* PDFViewController.swift */,
 				22A76FE520464764006C0AE7 /* PDF.storyboard */,
+				22A76FE420464764006C0AE7 /* PDFViewController.swift */,
 			);
 			path = PDFViewControlller;
 			sourceTree = "<group>";
@@ -333,6 +341,7 @@
 			children = (
 				22B1E2CE204638CA00BDDF14 /* GestureHandler.swift */,
 				22A498742047499B0024B46C /* JSON.swift */,
+				8E40109F20487B8D00E81AAA /* WindowFactory.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -501,6 +510,7 @@
 				2204625D204730C70067D9FB /* TouchProperties.swift in Sources */,
 				2204625C204730C70067D9FB /* Entity.swift in Sources */,
 				2204623420472FDF0067D9FB /* NSImage.swift in Sources */,
+				8E4010A220487E0300E81AAA /* Collection.swift in Sources */,
 				22B1E2CD204638B900BDDF14 /* GestureManager.swift in Sources */,
 				22A76FE620464764006C0AE7 /* PDFViewController.swift in Sources */,
 				22A4985E204733770024B46C /* WindowManager.swift in Sources */,
@@ -508,6 +518,7 @@
 				2204623A20472FDF0067D9FB /* MapKit.swift in Sources */,
 				2204625A204730C70067D9FB /* Place.swift in Sources */,
 				22046254204730C70067D9FB /* Touch.swift in Sources */,
+				8E4010A020487B8D00E81AAA /* WindowFactory.swift in Sources */,
 				22A498612047349C0024B46C /* WindowNotifications.swift in Sources */,
 				2204621920472F2D0067D9FB /* PlayerControl.swift in Sources */,
 				22B1E2CF204638CA00BDDF14 /* GestureHandler.swift in Sources */,
@@ -525,6 +536,7 @@
 				22A498752047499B0024B46C /* JSON.swift in Sources */,
 				22046247204730780067D9FB /* PinchGestureRecognizer.swift in Sources */,
 				22046243204730780067D9FB /* SwipeGestureRecognizer.swift in Sources */,
+				8E4010A42048869A00E81AAA /* NSApplication.swift in Sources */,
 				22046248204730780067D9FB /* TapGestureRecognizer.swift in Sources */,
 				2204623920472FDF0067D9FB /* NetworkConfiguration.swift in Sources */,
 				2204623620472FDF0067D9FB /* AVKit.swift in Sources */,

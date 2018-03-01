@@ -55,6 +55,7 @@
 		22FEF1DF202CFFFA001E9596 /* Touch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1DE202CFFFA001E9596 /* Touch.swift */; };
 		22FEF1E1202D005D001E9596 /* TouchProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1E0202D005D001E9596 /* TouchProperties.swift */; };
 		67C759AB770299C488231A9D /* Pods_All_MapExplorer_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */; };
+		8E4010A620488BF400E81AAA /* NSApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4010A520488BF400E81AAA /* NSApplication.swift */; };
 		8F6F13C5203DF0D400891995 /* LastThree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F6F13C4203DF0D400891995 /* LastThree.swift */; };
 /* End PBXBuildFile section */
 
@@ -124,6 +125,7 @@
 		22FEF1E0202D005D001E9596 /* TouchProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchProperties.swift; sourceTree = "<group>"; };
 		26A4912457E23A30817143A3 /* Pods-All-MapExplorer-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-macOS.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-macOS/Pods-All-MapExplorer-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		39B2384F39CC84964B0970BD /* Pods-MapExplorer-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.release.xcconfig"; sourceTree = "<group>"; };
+		8E4010A520488BF400E81AAA /* NSApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSApplication.swift; sourceTree = "<group>"; };
 		8F6F13C4203DF0D400891995 /* LastThree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastThree.swift; sourceTree = "<group>"; };
 		9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_MapExplorer_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E45B0B207D66FC5A3CD5BEA /* Pods-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -260,6 +262,7 @@
 				226EA70020296C240067B542 /* NSImage.swift */,
 				221C62A7203B57F7009493DA /* URL.swift */,
 				22B1E2A92045F2EE00BDDF14 /* AVKit.swift */,
+				8E4010A520488BF400E81AAA /* NSApplication.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -537,6 +540,7 @@
 				22A49873204749700024B46C /* JSON.swift in Sources */,
 				22290C302028FA1F000E0573 /* Discipline.swift in Sources */,
 				22290C2B2028FA1F000E0573 /* PlaceView.swift in Sources */,
+				8E4010A620488BF400E81AAA /* NSApplication.swift in Sources */,
 				22FEF1D4202CFE8D001E9596 /* PanGestureRecognizer.swift in Sources */,
 				22290C382028FA35000E0573 /* MapKit.swift in Sources */,
 				221C629F203B4906009493DA /* School.swift in Sources */,
