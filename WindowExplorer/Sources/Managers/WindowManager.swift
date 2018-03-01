@@ -44,6 +44,27 @@ final class WindowManager: SocketManagerDelegate {
         }
     }
 
+    func displayWindow(for place: Place?, from window: NSWindow) {
+        let storyboard = NSStoryboard(name: PlayerViewController.storyboard, bundle: Bundle.main)
+        let playerVC = storyboard.instantiateInitialController() as! PlayerViewController
+
+        // get screen for the mapID displaying place
+        let screen = NSScreen.screens[0]
+        let size = PlayerViewController.size
+        let windowFrame = CGRect(origin: CGPoint(x: window.frame.maxX + 20, y: window.frame.minY), size: size)
+        let playerWindow = NSWindow(contentRect: windowFrame, styleMask: .borderless, backing: .buffered, defer: true, screen: screen)
+        playerWindow.backgroundColor = NSColor.clear
+        playerWindow.level = .statusBar
+        playerWindow.contentViewController = playerVC
+        playerWindow.setFrame(windowFrame, display: true)
+        playerWindow.makeKeyAndOrderFront(self)
+        gestureManagerForWindow[playerWindow] = playerVC.gestureManager
+    }
+
+    func remove(_ window: NSWindow) {
+        gestureManagerForWindow.removeValue(forKey: window)
+    }
+
 
     // MARK: SocketManagerDelegate
 

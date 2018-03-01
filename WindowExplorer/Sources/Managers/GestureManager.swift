@@ -44,6 +44,10 @@ final class GestureManager {
         }
     }
 
+    func removeAll() {
+        gestureHandlers.removeAll()
+    }
+
     func handle(_ touch: Touch) {
         switch touch.state {
         case .down:

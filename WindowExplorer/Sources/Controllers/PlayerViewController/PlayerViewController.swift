@@ -5,8 +5,9 @@ import AVKit
 import AppKit
 
 
-class PlayerViewController: NSViewController, PlayerControlDelegate {
+class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "Player")
+    static let size = CGSize(width: 640, height: 553)
 
     @IBOutlet weak var playerView: AVPlayerView!
     @IBOutlet weak var playerControl: PlayerControl!
@@ -14,7 +15,7 @@ class PlayerViewController: NSViewController, PlayerControlDelegate {
     @IBOutlet weak var dismissButton: NSView!
     @IBOutlet weak var detailView: NSView!
     
-    weak var gestureManager: GestureManager!
+    private(set) var gestureManager: GestureManager!
     private var panGesture: NSPanGestureRecognizer!
     private var initialPanningOrigin: CGPoint?
 
@@ -30,6 +31,7 @@ class PlayerViewController: NSViewController, PlayerControlDelegate {
         super.viewDidLoad()
         view.wantsLayer = true
         view.layer?.backgroundColor = #colorLiteral(red: 0.6899075147, green: 0.7701538212, blue: 0.7426613761, alpha: 0.8230652265)
+        gestureManager = GestureManager(responder: self)
 
         setupPlayer()
         animateViewIn()
