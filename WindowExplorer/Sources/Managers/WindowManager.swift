@@ -45,7 +45,31 @@ final class WindowManager: SocketManagerDelegate {
     }
 
 
-    // MARK: Notification Handling
+    // MARK: SocketManagerDelegate
+
+    func handlePacket(_ packet: Packet) {
+        guard let touch = Touch(from: packet) else {
+            return
+        }
+
+        convertToScreen(touch)
+
+        // Check if the touch landed on a window, else notify the proper MapViewController.
+        if let gestureManager = gestureManager(for: touch) {
+            gestureManager.handle(touch)
+        } else {
+            let map = mapOwner(of: touch) ?? calculateMap(for: touch)
+            convert(touch, to: map)
+            send(touch, to: map)
+        }
+    }
+
+    func handleError(_ message: String) {
+        print(message)
+    }
+
+
+    // MARK: Receiving Notifications
 
     @objc
     private func handleNotification(_ notification: NSNotification) {
@@ -86,37 +110,29 @@ final class WindowManager: SocketManagerDelegate {
     }
 
 
-    // MARK: SocketManagerDelegate
+    // MARK: Helpers
 
-    func handlePacket(_ packet: Packet) {
-        guard let touch = Touch(from: packet) else {
-            return
-        }
-
-        convertToScreen(touch)
-
-        // Check if the touch landed on a window, else notify the proper MapViewController.
-        if let gestureManager = gestureManager(for: touch) {
-            gestureManager.handle(touch)
+    private func gestureManager(for touch: Touch) -> GestureManager? {
+        if touch.state == .down {
+            if let (_, manager) = gestureManagerForWindow.first(where: { $0.0.frame.contains(touch.position) }) {
+                return manager
+            }
         } else {
-            let map = mapOwner(of: touch) ?? calculateMap(for: touch)
-            convert(touch, to: map)
-            send(touch, to: map)
+            if let manager = gestureManagerForWindow.values.first(where: { $0.owns(touch) }) {
+                return manager
+            }
         }
+
+        return nil
     }
 
-    func handleError(_ message: String) {
-        print(message)
-    }
-
-
-    // MARK: Touch Handling
-
+    /// Sends a touch to the map and updates the state of the touches for map dictionary
     private func send(_ touch: Touch, to map: Int) {
         postNotification(for: touch, to: map)
         updateTouchesForMap(with: touch, for: map)
     }
 
+    /// Updates the touches for map dictionary when a touch down or up occurs.
     private func updateTouchesForMap(with touch: Touch, for map: Int) {
         switch touch.state {
         case .down:
@@ -132,23 +148,6 @@ final class WindowManager: SocketManagerDelegate {
         case .moved:
             return
         }
-    }
-
-
-    // MARK: Helpers
-
-    private func gestureManager(for touch: Touch) -> GestureManager? {
-        if touch.state == .down {
-            if let (_, manager) = gestureManagerForWindow.first(where: { $0.0.frame.contains(touch.position) }) {
-                return manager
-            }
-        } else {
-            if let manager = gestureManagerForWindow.values.first(where: { $0.owns(touch) }) {
-                return manager
-            }
-        }
-
-        return nil
     }
 
     /// Converts a position received from a touch screen to the coordinate of the current devices bounds.
@@ -180,6 +179,7 @@ final class WindowManager: SocketManagerDelegate {
         return map
     }
 
+    /// Calculates the map index based off the x-position of the touch
     private func calculateMap(for touch: Touch) -> Int {
         precondition(touch.state == .down, "A touch with state == .moved or .down should have a map owner to use.")
 

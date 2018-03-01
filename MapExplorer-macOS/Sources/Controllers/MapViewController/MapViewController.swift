@@ -25,6 +25,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private struct Keys {
         static let touch = "touch"
         static let map = "mapID"
+        static let place = "place"
+        static let position = "position"
     }
 
 
@@ -284,13 +286,15 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     /// Display a place view controller on top of the selected callout annotation for the associated place.
     private func didSelectAnnotationCallout(for place: Place) {
         mapView.deselectAnnotation(place, animated: false)
-//        displayView(for: place, from: mapView)
         displayWindow(for: place)
     }
 
     private func displayWindow(for place: Place) {
-        let location = mapView.convert(place.coordinate, toPointTo: view)
-        let info: JSON = ["position": location.toJSON(), "place": place.title ?? "no title"]
+        var location = mapView.convert(place.coordinate, toPointTo: view)
+        if let frame = NSScreen.main?.frame {
+            location.x += (frame.size.width / CGFloat(Configuration.numberOfWindows)) * CGFloat(deviceID - 1)
+        }
+        let info: JSON = [Keys.position: location.toJSON(), Keys.place: place.title ?? "no title"]
         DistributedNotificationCenter.default().postNotificationName(NSNotification.Name(rawValue: "place"), object: nil, userInfo: info, deliverImmediately: true)
     }
 
