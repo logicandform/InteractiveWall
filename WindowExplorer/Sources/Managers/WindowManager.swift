@@ -9,12 +9,6 @@ protocol GestureManaging {
     var gestureManager: GestureManager? { get }
 }
 
-enum WindowType {
-    case place(Place)
-    case player
-    case pdf
-}
-
 
 final class WindowManager: SocketManagerDelegate {
 
@@ -96,9 +90,7 @@ final class WindowManager: SocketManagerDelegate {
 
         switch notification.name {
         case WindowNotifications.place.name:
-            if let placeTitle = info[Keys.place] as? String {
-                displayWindow(for: .place(place), screen: screen, at: location)
-            }
+            displayWindow(for: .place, screen: screen, at: location)
         default:
             return
         }

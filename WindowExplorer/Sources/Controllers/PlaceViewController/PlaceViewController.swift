@@ -127,7 +127,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         }
 
         let position = window.frame.origin + CGVector(dx: window.frame.maxX + 20, dy: 0)
-        WindowManager.instance.displayWindow(for: .place(place), screen: screen, at: position)
+        WindowManager.instance.displayWindow(for: .place, screen: screen, at: position)
     }
 
     private func relatedViewDidTap(_ gesture: GestureRecognizer) {
@@ -213,7 +213,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     private func didSelectRelatedItem() {
         if let window = view.window, let screen = window.screen?.index {
             let position = window.frame.origin + CGVector(dx: window.frame.maxX + 20, dy: 0)
-            WindowManager.instance.displayWindow(for: .place(place), screen: screen, at: position)
+            WindowManager.instance.displayWindow(for: .place, screen: screen, at: position)
         }
     }
 

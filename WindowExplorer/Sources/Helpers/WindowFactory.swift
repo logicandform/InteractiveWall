@@ -3,6 +3,14 @@
 import Foundation
 import AppKit
 
+
+enum WindowType {
+    case place
+    case player
+    case pdf
+}
+
+
 final class WindowFactory {
 
     private struct Constants {
@@ -16,7 +24,7 @@ final class WindowFactory {
         guard let screen = NSScreen.screens.at(index: screen), let window = window(at: screen, at: topMiddle) else {
             return nil
         }
-
+        
         window.contentViewController = controller(for: type)
         return window
     }
@@ -26,7 +34,7 @@ final class WindowFactory {
 
     private static func controller(for type: WindowType) -> NSViewController {
         switch type {
-        case .place(_):
+        case .place:
             let storyboard = NSStoryboard(name: PlaceViewController.storyboard, bundle: Bundle.main)
             return storyboard.instantiateInitialController() as! PlaceViewController
         case .player:
