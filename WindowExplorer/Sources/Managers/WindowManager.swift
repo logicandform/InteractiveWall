@@ -54,13 +54,11 @@ final class WindowManager: SocketManagerDelegate {
 
         convertToScreen(touch)
 
-        // Check if the touch landed on a window, else notify the proper MapViewController.
-        if let (window, manager) = gestureManager(for: touch) {
-            convert(touch, to: window)
+        // Check if the touch landed on a window, else notify the proper map application.
+        if let manager = gestureManager(for: touch) {
             manager.handle(touch)
         } else {
             let map = mapOwner(of: touch) ?? calculateMap(for: touch)
-            convert(touch, to: map)
             send(touch, to: map)
         }
     }
@@ -114,14 +112,14 @@ final class WindowManager: SocketManagerDelegate {
 
     // MARK: Helpers
 
-    private func gestureManager(for touch: Touch) -> (NSWindow, GestureManager)? {
+    private func gestureManager(for touch: Touch) -> GestureManager? {
         if touch.state == .down {
-            if let result = gestureManagerForWindow.first(where: { $0.0.frame.contains(touch.position) }) {
-                return result
+            if let (_, manager) = gestureManagerForWindow.first(where: { $0.0.frame.contains(touch.position) }) {
+                return manager
             }
         } else {
-            if let result = gestureManagerForWindow.first(where: { $0.1.owns(touch) }) {
-                return result
+            if let (_, manager) = gestureManagerForWindow.first(where: { $0.1.owns(touch) }) {
+                return manager
             }
         }
 
@@ -161,21 +159,6 @@ final class WindowManager: SocketManagerDelegate {
         let xPos = touch.position.x / Configuration.touchScreenSize.width * CGFloat(frame.width)
         let yPos = (1 - touch.position.y / Configuration.touchScreenSize.height) * CGFloat(frame.height)
         touch.position = CGPoint(x: xPos, y: yPos)
-    }
-
-    /// Converts the touches x-position to the frame of the mapVC at that position.
-    private func convert(_ touch: Touch, to map: Int) {
-        guard let frame = NSScreen.main?.frame else {
-            return
-        }
-
-        let mapWidth = frame.width / CGFloat(Configuration.numberOfWindows)
-        touch.position.x -= CGFloat(map - 1) * mapWidth
-    }
-
-    /// Converts the touches x-position to the frame of the window.
-    private func convert(_ touch: Touch, to window: NSWindow) {
-        touch.position -= window.frame.origin
     }
 
     private func mapOwner(of touch: Touch) -> Int? {

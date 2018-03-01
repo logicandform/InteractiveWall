@@ -3,7 +3,7 @@
 import Cocoa
 import AppKit
 
-class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate, GestureResponder {
+class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate, GestureResponder, NSGestureRecognizerDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Place")
     static let size = CGSize(width: 640, height: 584)
 
@@ -52,6 +52,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         gestureManager = GestureManager(responder: self)
 
         nsPanGesture = NSPanGestureRecognizer(target: self, action: #selector(handleMousePan(gesture:)))
+        nsPanGesture.delegate = self
         detailView.addGestureRecognizer(nsPanGesture)
 
         let singleFingerRelatedViewPan = PanGestureRecognizer()
@@ -95,15 +96,16 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     }
 
     private func detailViewDidPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer else {
+        guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
             return
         }
 
         switch pan.state {
         case .recognized, .momentum:
-            var origin = view.frame.origin
+            var origin = window.frame.origin
             origin += pan.delta
-            view.frame.origin = origin
+            print(origin)
+            window.setFrameOrigin(origin)
         default:
             return
         }
@@ -140,15 +142,26 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
 
     @objc
     private func handleMousePan(gesture: NSPanGestureRecognizer) {
+        guard let window = view.window else {
+            return
+        }
+
         if gesture.state == .began {
-            initialPanningOrigin = view.frame.origin
+            initialPanningOrigin = window.frame.origin
             return
         }
 
         if var origin = initialPanningOrigin {
             origin += gesture.translation(in: view.superview)
-            view.frame.origin = origin
+            window.setFrameOrigin(origin)
         }
+    }
+
+
+    // MARK: NSGestureRecognizerDelegate
+
+    func gestureRecognizer(_ gestureRecognizer: NSGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: NSGestureRecognizer) -> Bool {
+        return true
     }
 
 

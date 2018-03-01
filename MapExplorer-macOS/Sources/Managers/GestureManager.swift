@@ -74,9 +74,15 @@ final class GestureManager {
 
     /// Displays a touch indicator at the touch position and produces a view if it exists at the location with interaction enabled.
     private func handleTouchDown(_ touch: Touch) {
-        displayTouchIndicator(in: responder.view, at: touch.position)
+        guard let window = responder.view.window else {
+            return
+        }
 
-        if let (view, transform) = target(in: responder.view, at: touch.position), let handler = gestureHandlers[view] {
+        let windowTransform = CGAffineTransform(translationX: -window.frame.minX, y: -window.frame.minY)
+        let positionInWindow = touch.position.applying(windowTransform)
+        displayTouchIndicator(in: responder.view, at: positionInWindow)
+
+        if let (view, transform) = target(in: responder.view, at: positionInWindow, current: windowTransform), let handler = gestureHandlers[view] {
             handler.set(transform, for: touch)
             handler.handle(touch)
         }
@@ -112,7 +118,7 @@ final class GestureManager {
     }
 
     /// Returns the deepest possible view for the given point that is registered with a gesture handler along with the transform to that view.
-    private func target(in view: NSView, at point: CGPoint, current: CGAffineTransform = .identity) -> (NSView, CGAffineTransform)? {
+    private func target(in view: NSView, at point: CGPoint, current: CGAffineTransform) -> (NSView, CGAffineTransform)? {
         guard view.frame.contains(point) else {
             return nil
         }
