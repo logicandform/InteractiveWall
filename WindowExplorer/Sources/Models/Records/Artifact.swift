@@ -3,7 +3,7 @@
 import Foundation
 import MapKit
 
-class Object {
+class Artifact {
 
     let id: Int
     let title: String
@@ -17,7 +17,7 @@ class Object {
     let themeIDs: [Int]
     let relatedSchoolIDs: [Int]
     let relatedOrganizationIDs: [Int]
-    let relatedObjectsIDs: [Int]
+    let relatedArtifactsIDs: [Int]
     let relatedEventIDs: [Int]
     let mediaPath: String?
 
@@ -34,7 +34,7 @@ class Object {
         static let themeIDs = "themeIDs"
         static let schoolIDs = "relatedSchoolIDs"
         static let organizationIDs = "relatedOrganizationIDs"
-        static let objectIDs = "relatedObjectIDs"
+        static let artifactIDs = "relatedArtifactIDs"
         static let eventIDs = "relatedEventIDs"
         static let mediaPath = "mediaPath"
     }
@@ -59,7 +59,7 @@ class Object {
         self.themeIDs = json[Keys.themeIDs] as? [Int] ?? []
         self.relatedSchoolIDs = json[Keys.schoolIDs] as? [Int] ?? []
         self.relatedOrganizationIDs = json[Keys.organizationIDs] as? [Int] ?? []
-        self.relatedObjectsIDs = json[Keys.objectIDs] as? [Int] ?? []
+        self.relatedArtifactsIDs = json[Keys.artifactIDs] as? [Int] ?? []
         self.relatedEventIDs = json[Keys.eventIDs] as? [Int] ?? []
         self.mediaPath = json[Keys.mediaPath] as? String
     }

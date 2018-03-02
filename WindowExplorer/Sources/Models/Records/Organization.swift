@@ -13,7 +13,7 @@ class Organization {
     let mediaThumbnailUrl: URL?
     let relatedSchoolIDs: [Int]
     let relatedOrganizationIDs: [Int]
-    let relatedObjectsIDs: [Int]
+    let relatedArtifactsIDs: [Int]
     let relatedEventIDs: [Int]
     let mediaPath: String?
 
@@ -26,7 +26,7 @@ class Organization {
         static let mediaThumbnailUrl = "mediaThumbnailURL"
         static let schoolIDs = "relatedSchoolIDs"
         static let organizationIDs = "relatedOrganizationIDs"
-        static let objectIDs = "relatedObjectIDs"
+        static let artifactIDs = "relatedArtifactIDs"
         static let eventIDs = "relatedEventIDs"
         static let mediaPath = "mediaPath"
     }
@@ -47,7 +47,7 @@ class Organization {
         self.mediaThumbnailUrl = URL.from(json[Keys.mediaThumbnailUrl] as? String)
         self.relatedSchoolIDs = json[Keys.schoolIDs] as? [Int] ?? []
         self.relatedOrganizationIDs = json[Keys.organizationIDs] as? [Int] ?? []
-        self.relatedObjectsIDs = json[Keys.objectIDs] as? [Int] ?? []
+        self.relatedArtifactsIDs = json[Keys.artifactIDs] as? [Int] ?? []
         self.relatedEventIDs = json[Keys.eventIDs] as? [Int] ?? []
         self.mediaPath = json[Keys.mediaPath] as? String
     }

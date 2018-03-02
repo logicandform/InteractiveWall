@@ -57,7 +57,7 @@
 		8E4010A220487E0300E81AAA /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4010A120487E0300E81AAA /* Collection.swift */; };
 		3F0902592048C96F0044F100 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0902582048C96F0044F100 /* Event.swift */; };
 		3F09025B2048D9D30044F100 /* NewPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09025A2048D9D30044F100 /* NewPlace.swift */; };
-		3F09025D2048DE5C0044F100 /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09025C2048DE5C0044F100 /* Object.swift */; };
+		3F09025D2048DE5C0044F100 /* Artifact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09025C2048DE5C0044F100 /* Artifact.swift */; };
 		3F09025F2048E0E70044F100 /* Organization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09025E2048E0E70044F100 /* Organization.swift */; };
 		3F0902612049C6B10044F100 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0902602049C6B10044F100 /* Theme.swift */; };
 		C6DB17689F287C9826286DF2 /* Pods_All_WindowExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */; };
@@ -131,7 +131,7 @@
 		8E4010A120487E0300E81AAA /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		3F0902582048C96F0044F100 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		3F09025A2048D9D30044F100 /* NewPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlace.swift; sourceTree = "<group>"; };
-		3F09025C2048DE5C0044F100 /* Object.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Object.swift; sourceTree = "<group>"; };
+		3F09025C2048DE5C0044F100 /* Artifact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artifact.swift; sourceTree = "<group>"; };
 		3F09025E2048E0E70044F100 /* Organization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Organization.swift; sourceTree = "<group>"; };
 		3F0902602049C6B10044F100 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_WindowExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -251,7 +251,7 @@
 			isa = PBXGroup;
 			children = (
 				3F0902582048C96F0044F100 /* Event.swift */,
-				3F09025C2048DE5C0044F100 /* Object.swift */,
+				3F09025C2048DE5C0044F100 /* Artifact.swift */,
 				3F09025E2048E0E70044F100 /* Organization.swift */,
 				3F09025A2048D9D30044F100 /* NewPlace.swift */,
 				2204624E204730C70067D9FB /* School.swift */,
@@ -534,6 +534,7 @@
 				22A76FE620464764006C0AE7 /* PDFViewController.swift in Sources */,
 				2276AE65204E7150001FAD8B /* BorderlessWindow.swift in Sources */,
 				3F09025D2048DE5C0044F100 /* Object.swift in Sources */,
+				3F09025D2048DE5C0044F100 /* Artifact.swift in Sources */,
 				22A4985E204733770024B46C /* WindowManager.swift in Sources */,
 				22046245204730780067D9FB /* RotateGestureRecognizer.swift in Sources */,
 				2204623A20472FDF0067D9FB /* MapKit.swift in Sources */,

@@ -10,7 +10,7 @@ class NewPlace {
     let coordinate: CLLocationCoordinate2D
     let relatedSchoolIDs: [Int]
     let relatedOrganizationIDs: [Int]
-    let relatedObjectsIDs: [Int]
+    let relatedArtifactsIDs: [Int]
     let relatedEventIDs: [Int]
 
     private struct Keys {
@@ -20,7 +20,7 @@ class NewPlace {
         static let coordinate = "coordinate"
         static let schoolIDs = "relatedSchoolIDs"
         static let organizationIDs = "relatedOrganizationIDs"
-        static let objectIDs = "relatedObjectIds"
+        static let artifactIDs = "relatedArtifactIds"
         static let eventIDs = "relatedEventIds"
     }
 
@@ -40,7 +40,7 @@ class NewPlace {
         self.coordinate = coordinate
         self.relatedSchoolIDs = json[Keys.schoolIDs] as? [Int] ?? []
         self.relatedOrganizationIDs = json[Keys.organizationIDs] as? [Int] ?? []
-        self.relatedObjectsIDs = json[Keys.objectIDs] as? [Int] ?? []
+        self.relatedArtifactsIDs = json[Keys.artifactIDs] as? [Int] ?? []
         self.relatedEventIDs = json[Keys.eventIDs] as? [Int] ?? []
     }
 }
