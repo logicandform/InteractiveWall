@@ -3,7 +3,7 @@
 import Foundation
 import MapKit
 
-class School {
+class Event {
 
     let id: Int
     let title: String
@@ -11,9 +11,8 @@ class School {
     let description: String?
     let coordinate: CLLocationCoordinate2D?
     let mediaTitle: String?
-    let mediaURL: URL?
-    let thumbnailURL: URL?
-    let themeIDs: [Int]
+    let mediaUrl: URL?
+    let mediaThumbnailUrl: URL?
     let relatedSchoolIDs: [Int]
     let relatedOrganizationIDs: [Int]
     let relatedObjectsIDs: [Int]
@@ -26,10 +25,9 @@ class School {
         static let date = "date"
         static let description = "description"
         static let coordinate = "coordinate"
-        static let mediaURL = "mediaURL"
-        static let thumbnailURL = "mediaThumbnailURL"
         static let mediaTitle = "mediaTitle"
-        static let themeIDs = "themeIDs"
+        static let mediaUrl = "mediaUrl"
+        static let mediaThumbnailUrl = "mediaThumbnailUrl"
         static let schoolIDs = "relatedSchoolIDs"
         static let organizationIDs = "relatedOrganizationIDs"
         static let objectIDs = "relatedObjectIDs"
@@ -42,18 +40,17 @@ class School {
 
     init?(json: JSON) {
         guard let id = json[Keys.id] as? Int, let title = json[Keys.title] as? String else {
-            return nil
+                return nil
         }
 
         self.id = id
         self.title = title
-        self.date = json[Keys.date] as? String
         self.description = json[Keys.description] as? String
+        self.date = json[Keys.date] as? String
         self.coordinate = CLLocationCoordinate2D(geolocation: json[Keys.coordinate] as? String)
         self.mediaTitle = json[Keys.mediaTitle] as? String
-        self.mediaURL = URL.from(json[Keys.mediaURL] as? String)
-        self.thumbnailURL = URL.from(json[Keys.thumbnailURL] as? String)
-        self.themeIDs = json[Keys.themeIDs] as? [Int] ?? []
+        self.mediaUrl = URL.from(json[Keys.mediaUrl] as? String)
+        self.mediaThumbnailUrl = URL.from(json[Keys.mediaThumbnailUrl] as? String)
         self.relatedSchoolIDs = json[Keys.schoolIDs] as? [Int] ?? []
         self.relatedOrganizationIDs = json[Keys.organizationIDs] as? [Int] ?? []
         self.relatedObjectsIDs = json[Keys.objectIDs] as? [Int] ?? []
@@ -61,3 +58,4 @@ class School {
         self.mediaPath = json[Keys.mediaPath] as? String
     }
 }
+
