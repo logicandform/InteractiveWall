@@ -289,7 +289,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     private func postNotification(for place: Place) {
-        guard let window = view.window, let screenIndex = window.screen?.index, let screen = NSScreen.screens.at(index: screenIndex) else {
+        guard let window = view.window, let screen = NSScreen.screens.at(index: screenID) else {
             return
         }
 

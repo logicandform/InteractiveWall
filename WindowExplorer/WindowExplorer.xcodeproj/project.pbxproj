@@ -39,6 +39,8 @@
 		2204625C204730C70067D9FB /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046251204730C70067D9FB /* Entity.swift */; };
 		2204625D204730C70067D9FB /* TouchProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046252204730C70067D9FB /* TouchProperties.swift */; };
 		2204625E204730C70067D9FB /* Occurance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046253204730C70067D9FB /* Occurance.swift */; };
+		22914F752049001B0000D4E1 /* TouchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22914F742049001B0000D4E1 /* TouchManager.swift */; };
+		22914F77204905230000D4E1 /* NSApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22914F76204905230000D4E1 /* NSApplication.swift */; };
 		22A4985E204733770024B46C /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A4985D204733770024B46C /* WindowManager.swift */; };
 		22A498612047349C0024B46C /* WindowNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A498602047349C0024B46C /* WindowNotifications.swift */; };
 		22A4986C204743880024B46C /* TouchNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A4986B204743880024B46C /* TouchNotifications.swift */; };
@@ -55,7 +57,6 @@
 		22B1E2CF204638CA00BDDF14 /* GestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2CE204638CA00BDDF14 /* GestureHandler.swift */; };
 		8E4010A020487B8D00E81AAA /* WindowFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E40109F20487B8D00E81AAA /* WindowFactory.swift */; };
 		8E4010A220487E0300E81AAA /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4010A120487E0300E81AAA /* Collection.swift */; };
-		8E4010A42048869A00E81AAA /* NSApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4010A32048869A00E81AAA /* NSApplication.swift */; };
 		C6DB17689F287C9826286DF2 /* Pods_All_WindowExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */; };
 /* End PBXBuildFile section */
 
@@ -105,6 +106,8 @@
 		22046251204730C70067D9FB /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		22046252204730C70067D9FB /* TouchProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchProperties.swift; sourceTree = "<group>"; };
 		22046253204730C70067D9FB /* Occurance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Occurance.swift; sourceTree = "<group>"; };
+		22914F742049001B0000D4E1 /* TouchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchManager.swift; sourceTree = "<group>"; };
+		22914F76204905230000D4E1 /* NSApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSApplication.swift; sourceTree = "<group>"; };
 		22A4985D204733770024B46C /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		22A498602047349C0024B46C /* WindowNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowNotifications.swift; sourceTree = "<group>"; };
 		22A4986B204743880024B46C /* TouchNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchNotifications.swift; sourceTree = "<group>"; };
@@ -125,7 +128,6 @@
 		2B994FF43C43BAD129E83037 /* Pods-All-WindowExplorer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-WindowExplorer.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer.debug.xcconfig"; sourceTree = "<group>"; };
 		8E40109F20487B8D00E81AAA /* WindowFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowFactory.swift; sourceTree = "<group>"; };
 		8E4010A120487E0300E81AAA /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
-		8E4010A32048869A00E81AAA /* NSApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSApplication.swift; sourceTree = "<group>"; };
 		A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_WindowExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE471FCE047AE2FD1C92BA3A /* Pods-All-WindowExplorer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-WindowExplorer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -175,7 +177,7 @@
 				2204622F20472FDF0067D9FB /* PacketType.swift */,
 				2204623020472FDF0067D9FB /* URL.swift */,
 				8E4010A120487E0300E81AAA /* Collection.swift */,
-				8E4010A32048869A00E81AAA /* NSApplication.swift */,
+				22914F76204905230000D4E1 /* NSApplication.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -322,6 +324,7 @@
 				22A923202044AF05003EA9BB /* AppDelegate.swift */,
 				22B1E2CC204638B900BDDF14 /* GestureManager.swift */,
 				22A4985D204733770024B46C /* WindowManager.swift */,
+				22914F742049001B0000D4E1 /* TouchManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -536,10 +539,11 @@
 				22A498752047499B0024B46C /* JSON.swift in Sources */,
 				22046247204730780067D9FB /* PinchGestureRecognizer.swift in Sources */,
 				22046243204730780067D9FB /* SwipeGestureRecognizer.swift in Sources */,
-				8E4010A42048869A00E81AAA /* NSApplication.swift in Sources */,
 				22046248204730780067D9FB /* TapGestureRecognizer.swift in Sources */,
+				22914F77204905230000D4E1 /* NSApplication.swift in Sources */,
 				2204623920472FDF0067D9FB /* NetworkConfiguration.swift in Sources */,
 				2204623620472FDF0067D9FB /* AVKit.swift in Sources */,
+				22914F752049001B0000D4E1 /* TouchManager.swift in Sources */,
 				22046244204730780067D9FB /* PanGestureRecognizer.swift in Sources */,
 				2204623820472FDF0067D9FB /* URL.swift in Sources */,
 				2204621820472F2D0067D9FB /* PlayerState.swift in Sources */,
