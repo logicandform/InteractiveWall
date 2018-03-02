@@ -58,4 +58,3 @@ class Event {
         self.mediaPath = json[Keys.mediaPath] as? String
     }
 }
-
