@@ -7,6 +7,7 @@ import MapKit
 
 protocol GestureResponder: class {
     var view: NSView { get }
+    var gestureManager: GestureManager! { get }
 }
 
 
@@ -74,7 +75,7 @@ final class GestureManager {
 
     /// Displays a touch indicator at the touch position and produces a view if it exists at the location with interaction enabled.
     private func handleTouchDown(_ touch: Touch) {
-        guard let window = responder.view.window else {
+        guard let screen = NSScreen.screens.at(index: touch.screen), let window = responder.view.window else {
             return
         }
 

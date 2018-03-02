@@ -2,15 +2,14 @@
 
 import Cocoa
 
+
 struct Configuration {
     static let numberOfWindows = 4
     static let frameless = false
     static let touchScreenSize = CGSize(width: 4095, height: 2242.5)
     static let touchScreenRatio: CGFloat = 23.0 / 42.0
+    static let loadMapsOnFirstScreen = false
 }
-
-
-let deviceID = Int32(1)
 
 
 @NSApplicationMain

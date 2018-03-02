@@ -5,6 +5,10 @@ import CoreGraphics
 import AppKit
 
 extension CGPoint {
+    
+    var asVector: CGVector {
+        return CGVector(dx: x, dy: y)
+    }
 
     private struct Keys {
         static let x = "x"
@@ -34,16 +38,16 @@ extension CGPoint {
         return CGPoint(x: x, y: view.frame.size.height - y)
     }
 
-    static func + (lhs: CGPoint, rhs: CGPoint) -> CGVector {
-        return CGVector(dx: lhs.x + rhs.x, dy: lhs.y + rhs.y)
+    static func + (lhs: CGPoint, rhs: CGPoint) -> CGPoint {
+        return CGPoint(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
     }
 
     static func + (lhs: CGPoint, rhs: CGVector) -> CGPoint {
         return CGPoint(x: lhs.x + rhs.dx, y: lhs.y + rhs.dy)
     }
 
-    static func - (lhs: CGPoint, rhs: CGPoint) -> CGVector {
-        return CGVector(dx: lhs.x - rhs.x, dy: lhs.y - rhs.y)
+    static func - (lhs: CGPoint, rhs: CGPoint) -> CGPoint {
+        return CGPoint(x: lhs.x - rhs.x, y: lhs.y - rhs.y)
     }
 
     static func - (lhs: CGPoint, rhs: CGVector) -> CGPoint {
@@ -92,6 +96,10 @@ extension CGPoint {
 }
 
 extension CGVector {
+    
+    var asPoint: CGPoint {
+        return CGPoint(x: dx, y: dy)
+    }
 
     var magnitude: Double {
         return Double(sqrt(pow(self.dx, 2) + pow(self.dy, 2)))

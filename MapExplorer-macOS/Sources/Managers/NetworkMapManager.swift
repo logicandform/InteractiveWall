@@ -10,7 +10,7 @@ class NetworkMapManager: SocketManagerDelegate {
 
     private struct Constants {
         static let devicesPerColumn = 1
-        static let masterDeviceID: Int32 = 2
+        static let masterDeviceID = 2
         static let availableDeviceID: Int32 = 0
         static let sendPositionInterval = 1.0 / 60.0
         static let activityTimeoutPeriod: TimeInterval = 4
@@ -34,7 +34,7 @@ class NetworkMapManager: SocketManagerDelegate {
     }
 
     private var isMasterDevice: Bool {
-        return deviceID == Constants.masterDeviceID
+        return appID == Constants.masterDeviceID
     }
 
     private var devicesInColumn: Int {
@@ -58,7 +58,7 @@ class NetworkMapManager: SocketManagerDelegate {
 
     func beginSendingPosition() {
         userState = .active
-        pairedDeviceID = deviceID
+        pairedDeviceID = Int32(appID)
         sendPositionTimer = Timer.scheduledTimer(withTimeInterval: Constants.sendPositionInterval, repeats: true) { [weak self] _ in
             self?.sendZoomAndCenter()
         }
@@ -95,8 +95,8 @@ class NetworkMapManager: SocketManagerDelegate {
     /// Sets the map's position based on the sending packet id. If unpaired, will animate.
     private func set(_ mapRect: MKMapRect, packetID: Int32) {
         var newMapRect = mapRect
-        let horizontalDifference = column(forDevice: deviceID) - column(forDevice: packetID)
-        let verticalDifference = row(forDevice: deviceID) - row(forDevice: packetID)
+        let horizontalDifference = column(forDevice: Int32(appID)) - column(forDevice: packetID)
+        let verticalDifference = row(forDevice: Int32(appID)) - row(forDevice: packetID)
         newMapRect.origin.x += mapRect.size.width * Double(horizontalDifference)
         newMapRect.origin.y += mapRect.size.height * Double(verticalDifference)
         mapView.setVisibleMapRect(newMapRect, animated: unpaired)
@@ -109,19 +109,19 @@ class NetworkMapManager: SocketManagerDelegate {
             var data = Data()
             data.append(mapView.visibleMapRect)
             socketQueue.async {
-                let packet = Packet(type: .zoomAndCenter, id: deviceID, payload: data)
+                let packet = Packet(type: .zoomAndCenter, id: Int32(appID), payload: data)
                 self.socketManager.broadcastPacket(packet)
             }
         case .disconnection:
             var data = Data()
             data.append(mapView.visibleMapRect)
             socketQueue.async {
-                let packet = Packet(type: .disconnection, id: deviceID, payload: data)
+                let packet = Packet(type: .disconnection, id: Int32(appID), payload: data)
                 self.socketManager.broadcastPacket(packet)
             }
         case .reset:
             socketQueue.async {
-                let packet = Packet(type: .reset, id: deviceID)
+                let packet = Packet(type: .reset, id: Int32(appID))
                 self.socketManager.broadcastPacket(packet)
             }
         default:
@@ -142,7 +142,7 @@ class NetworkMapManager: SocketManagerDelegate {
     }
 
     private func handleZoomAndCenter(packet: Packet) {
-        guard packet.id != deviceID else {
+        if packet.id == appID {
             return
         }
 
@@ -168,7 +168,7 @@ class NetworkMapManager: SocketManagerDelegate {
 
     /// Remove the device from the currently active device list.
     private func handleDisconnection(packet: Packet) {
-        guard packet.id != deviceID else {
+        guard packet.id != Int32(appID) else {
             return
         }
 
@@ -179,11 +179,11 @@ class NetworkMapManager: SocketManagerDelegate {
     private func shouldPair(_ packet: Packet) -> Bool {
         let pairedColumn = column(forDevice: pairedDeviceID)
         let packetColumn = column(forDevice: packet.id)
-        let deviceColumn = column(forDevice: deviceID)
+        let deviceColumn = column(forDevice: Int32(appID))
         let sameColumnDistance = abs(deviceColumn - packetColumn) == abs(deviceColumn - pairedColumn)
 
         if sameColumnDistance {
-            return packet.hasPrecedence(deviceID: deviceID, pairedID: pairedDeviceID)
+            return packet.hasPrecedence(deviceID: Int32(appID), pairedID: pairedDeviceID)
         }
 
         return abs(deviceColumn - packetColumn) < abs(deviceColumn - pairedColumn) ? true : false

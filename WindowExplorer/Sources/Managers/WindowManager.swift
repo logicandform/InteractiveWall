@@ -5,11 +5,6 @@ import AppKit
 import MONode
 
 
-protocol GestureManaging {
-    var gestureManager: GestureManager? { get }
-}
-
-
 final class WindowManager: SocketManagerDelegate {
 
     static let instance = WindowManager()
@@ -37,7 +32,7 @@ final class WindowManager: SocketManagerDelegate {
 
 
     // MARK: API
-
+ 
     /// Must be done after application launches.
     func registerForNotifications() {
         for notification in WindowNotifications.allValues {
@@ -50,14 +45,14 @@ final class WindowManager: SocketManagerDelegate {
     }
 
     func displayWindow(for type: WindowType, screen: Int, at topMiddle: CGPoint) {
-        if let window = WindowFactory.window(for: type, screen: screen, at: topMiddle), let controller = window.contentViewController as? GestureManaging {
+        if let window = WindowFactory.window(for: type, screen: screen, at: topMiddle), let controller = window.contentViewController as? GestureResponder {
             gestureManagerForWindow[window] = controller.gestureManager
         }
     }
 
 
 
-    // MARK: SocketManagerDelegate
+    // MARK: SocketManagerDelegate Y
 
     func handlePacket(_ packet: Packet) {
         guard let touch = Touch(from: packet) else {
@@ -87,6 +82,7 @@ final class WindowManager: SocketManagerDelegate {
         guard let info = notification.userInfo, let screen = info[Keys.screen] as? Int, let locationJSON = info[Keys.position] as? JSON, let location = CGPoint(json: locationJSON) else {
             return
         }
+    
 
         switch notification.name {
         case WindowNotifications.place.name:
@@ -108,8 +104,13 @@ final class WindowManager: SocketManagerDelegate {
     // MARK: Helpers
 
     private func gestureManager(for touch: Touch) -> GestureManager? {
+        guard let screen = NSScreen.screens.at(index: touch.screen) else {
+            return nil
+        }
+        
+        let positionInScreen = touch.position + screen.frame.origin
         if touch.state == .down {
-            if let (_, manager) = gestureManagerForWindow.first(where: { $0.0.frame.contains(touch.position) }) {
+            if let (_, manager) = gestureManagerForWindow.first(where: { $0.0.frame.contains(positionInScreen) }) {
                 return manager
             }
         } else {
@@ -147,12 +148,12 @@ final class WindowManager: SocketManagerDelegate {
 
     /// Converts a position received from a touch screen to the coordinate of the current devices bounds.
     private func convertToScreen(_ touch: Touch) {
-        guard let frame = NSScreen.main?.frame else {
+        guard let screen = NSScreen.screens.at(index: touch.screen) else {
             return
         }
 
-        let xPos = touch.position.x / Configuration.touchScreenSize.width * CGFloat(frame.width)
-        let yPos = (1 - touch.position.y / Configuration.touchScreenSize.height) * CGFloat(frame.height)
+        let xPos = (touch.position.x / Configuration.touchScreenSize.width * CGFloat(screen.frame.width)) + screen.frame.origin.x
+        let yPos = (1 - touch.position.y / Configuration.touchScreenSize.height) * CGFloat(screen.frame.height)
         touch.position = CGPoint(x: xPos, y: yPos)
     }
 
@@ -164,15 +165,18 @@ final class WindowManager: SocketManagerDelegate {
         return map
     }
 
-    /// Calculates the map index based off the x-position of the touch
+    /// Calculates the map index based off the x-position of the touch and the screens
     private func calculateMap(for touch: Touch) -> Int {
         precondition(touch.state == .down, "A touch with state == .moved or .down should have a map owner to use.")
 
-        guard let frame = NSScreen.main?.frame else {
-            return 1
+        guard let screen = NSScreen.screens.at(index: touch.screen) else {
+            return 0
         }
-
-        let mapWidth = frame.width / CGFloat(Configuration.numberOfWindows)
-        return Int(touch.position.x / mapWidth) + 1
+        
+        let baseMapForScreen = touch.screen * Int(Configuration.numberOfWindows)
+        let mapWidth = screen.frame.width / CGFloat(Configuration.numberOfWindows)
+        let mapForScreen = Int((touch.position.x - screen.frame.minX) / mapWidth)
+        let offset = Configuration.loadMapsOnFirstScreen ? 0 : Configuration.numberOfWindows
+        return baseMapForScreen + mapForScreen - offset
     }
 }

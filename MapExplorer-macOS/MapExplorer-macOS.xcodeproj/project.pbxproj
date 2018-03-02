@@ -57,6 +57,7 @@
 		67C759AB770299C488231A9D /* Pods_All_MapExplorer_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */; };
 		8E4010A620488BF400E81AAA /* NSApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4010A520488BF400E81AAA /* NSApplication.swift */; };
 		8F6F13C5203DF0D400891995 /* LastThree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F6F13C4203DF0D400891995 /* LastThree.swift */; };
+		D90D325E2048C2E20013AEED /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90D325D2048C2E20013AEED /* Collection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -129,6 +130,7 @@
 		8F6F13C4203DF0D400891995 /* LastThree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastThree.swift; sourceTree = "<group>"; };
 		9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_MapExplorer_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E45B0B207D66FC5A3CD5BEA /* Pods-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
+		D90D325D2048C2E20013AEED /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		D9FF0C65383B61E5A7A798B0 /* Pods-All-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-macOS.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-macOS/Pods-All-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -263,6 +265,7 @@
 				221C62A7203B57F7009493DA /* URL.swift */,
 				22B1E2A92045F2EE00BDDF14 /* AVKit.swift */,
 				8E4010A520488BF400E81AAA /* NSApplication.swift */,
+				D90D325D2048C2E20013AEED /* Collection.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -557,6 +560,7 @@
 				22FEF1D2202CFE8D001E9596 /* RotateGestureRecognizer.swift in Sources */,
 				22368E29203791A700D03A0E /* SelectableView.swift in Sources */,
 				22FEF1D7202CFE8D001E9596 /* TapGestureRecognizer.swift in Sources */,
+				D90D325E2048C2E20013AEED /* Collection.swift in Sources */,
 				2204621220472E3D0067D9FB /* MapHandler.swift in Sources */,
 				22318DE0202B984F0092937C /* ResponseHandler.swift in Sources */,
 				22290C3C2028FA35000E0573 /* NetworkConfiguration.swift in Sources */,

@@ -21,7 +21,7 @@ final class WindowFactory {
     // MARK: API
 
     static func window(for type: WindowType, screen: Int, at topMiddle: CGPoint) -> NSWindow? {
-        guard let screen = NSScreen.screens.at(index: screen), let window = window(at: screen, at: topMiddle) else {
+        guard let screen = NSScreen.screens.at(index: screen), let window = window(in: screen, at: topMiddle) else {
             return nil
         }
         
@@ -46,8 +46,8 @@ final class WindowFactory {
         }
     }
 
-    private static func window(at screen: NSScreen, at topMiddle: NSPoint) -> NSWindow? {
-        let origin = topMiddle - CGVector(dx: Constants.windowSize.width / 2, dy: Constants.windowSize.height)
+    private static func window(in screen: NSScreen, at topMiddle: CGPoint) -> NSWindow? {
+        let origin = screen.frame.origin + topMiddle - CGPoint(x: Constants.windowSize.width / 2, y: Constants.windowSize.height)
         let windowFrame = NSRect(origin: origin, size: Constants.windowSize)
         let window = NSWindow(contentRect: windowFrame, styleMask: .borderless, backing: .buffered, defer: true, screen: screen)
         window.level = .statusBar

@@ -15,7 +15,7 @@ class Place: MKPointAnnotation {
         self.coordinate = coordinate
     }
 
-    init?(json: JSON) {
+    init?(json: [String: Any]) {
         guard let subtitle = json["placeName"] as? String,
             let type = json["type"] as? String,
             let discipline = Discipline(from: type),
