@@ -14,7 +14,6 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
 
     private(set) var gestureManager: GestureManager!
     private var nsPanGesture: NSPanGestureRecognizer!
-    private var nsTapGesture: NSClickGestureRecognizer!
     private var initialPanningOrigin: CGPoint?
 
     var place: Place! {

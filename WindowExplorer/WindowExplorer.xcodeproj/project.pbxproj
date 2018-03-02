@@ -258,7 +258,6 @@
 				3F0902602049C6B10044F100 /* Theme.swift */,
 				2204624B204730C70067D9FB /* EntityType.swift */,
 				2204624D204730C70067D9FB /* LastThree.swift */,
-				22046253204730C70067D9FB /* Occurance.swift */,
 			);
 			path = Records;
 			sourceTree = "<group>";
@@ -550,7 +549,6 @@
 				22046256204730C70067D9FB /* EntityType.swift in Sources */,
 				2204625B204730C70067D9FB /* Discipline.swift in Sources */,
 				2204623320472FDF0067D9FB /* CoreGraphics.swift in Sources */,
-				2204625E204730C70067D9FB /* Occurance.swift in Sources */,
 				2204620E20472DE80067D9FB /* RelatedItemView.swift in Sources */,
 				22A4986C204743880024B46C /* TouchNotifications.swift in Sources */,
 				3F09025B2048D9D30044F100 /* NewPlace.swift in Sources */,
