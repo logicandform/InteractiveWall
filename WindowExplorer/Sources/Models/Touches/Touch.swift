@@ -8,6 +8,7 @@ class Touch: Hashable, CustomStringConvertible {
 
     var position: CGPoint
     var state: TouchState
+    let screen: Int
     let id: Int
 
     var hashValue: Int {
@@ -22,14 +23,16 @@ class Touch: Hashable, CustomStringConvertible {
         static let position = "position"
         static let state = "state"
         static let id = "id"
+        static let screen = "screen"
     }
 
 
     // MARK: Initializers
 
-    init(position: CGPoint, state: TouchState, id: Int) {
+    init(position: CGPoint, state: TouchState, id: Int, screen: Int) {
         self.position = position
         self.state = state
+        self.screen = screen
         self.id = id
     }
 
@@ -39,13 +42,7 @@ class Touch: Hashable, CustomStringConvertible {
         }
 
         var index = 0
-        let screen = payload.extract(Int32.self, at: index)
-
-        // Ensure that the packet is intended for this device
-        guard screen == deviceID else {
-            return nil
-        }
-
+        self.screen = Int(payload.extract(Int32.self, at: index))
         index += MemoryLayout<Int32>.size
         self.id = Int(payload.extract(Int32.self, at: index))
         index += MemoryLayout<Int32>.size
@@ -57,11 +54,12 @@ class Touch: Hashable, CustomStringConvertible {
     }
 
     init?(json: JSON) {
-        guard let id = json[Keys.id] as? Int, let positionJSON = json[Keys.position] as? JSON, let position = CGPoint(json: positionJSON), let touchJSON = json[Keys.state] as? JSON, let state = TouchState(json: touchJSON) else {
+        guard let id = json[Keys.id] as? Int, let screen = json[Keys.screen] as? Int, let positionJSON = json[Keys.position] as? JSON, let position = CGPoint(json: positionJSON), let touchJSON = json[Keys.state] as? JSON, let state = TouchState(json: touchJSON) else {
             return nil
         }
 
         self.id = id
+        self.screen = screen
         self.position = position
         self.state = state
     }
@@ -78,11 +76,11 @@ class Touch: Hashable, CustomStringConvertible {
     }
 
     func copy() -> Touch {
-        return Touch(position: position, state: state, id: id)
+        return Touch(position: position, state: state, id: id, screen: screen)
     }
 
     func toJSON() -> JSON {
-        return [Keys.id: id, Keys.position: position.toJSON(), Keys.state: state.toJSON()]
+        return [Keys.id: id, Keys.screen: screen, Keys.position: position.toJSON(), Keys.state: state.toJSON()]
     }
 
     static func == (lhs: Touch, rhs: Touch) -> Bool {

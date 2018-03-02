@@ -7,6 +7,7 @@ import MapKit
 
 protocol GestureResponder: class {
     var view: NSView { get }
+    var gestureManager: GestureManager! { get }
 }
 
 
@@ -42,6 +43,10 @@ final class GestureManager {
         for view in views {
             gestureHandlers.removeValue(forKey: view)
         }
+    }
+
+    func removeAll() {
+        gestureHandlers.removeAll()
     }
 
     func handle(_ touch: Touch) {
@@ -123,7 +128,7 @@ final class GestureManager {
             return nil
         }
 
-        let transform = current.translatedBy(x: -view.frame.origin.x, y: -view.frame.origin.y)
+        let transform = current.translatedBy(x: -view.frame.minX, y: -view.frame.minY)
         let positionInBounds = point.transformed(to: view)
         for subview in view.subviews.reversed() {
             if let target = target(in: subview, at: positionInBounds, current: transform) {

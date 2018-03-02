@@ -69,8 +69,8 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             state = .recognized
             fallthrough
         case .recognized:
-            let touchVector = touch.position - lastPositionOfTouch
-            update(location: currentLocation, with: touchVector)
+            let offset = touch.position - lastPositionOfTouch
+            update(location: currentLocation, with: offset.asVector)
         default:
             return
         }

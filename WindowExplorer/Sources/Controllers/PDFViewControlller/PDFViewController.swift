@@ -4,6 +4,7 @@ import Cocoa
 import Quartz
 
 class PDFViewController: NSViewController {
+    static let storyboard = NSStoryboard.Name(rawValue: "PDF")
 
     @IBOutlet weak var pdfView: PDFView!
     @IBOutlet weak var pdfThumbnailView: PDFThumbnailView!

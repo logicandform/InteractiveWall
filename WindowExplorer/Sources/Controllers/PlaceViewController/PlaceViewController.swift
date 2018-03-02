@@ -5,7 +5,6 @@ import AppKit
 
 class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate, GestureResponder, NSGestureRecognizerDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Place")
-    static let size = CGSize(width: 640, height: 584)
 
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var relatedView: NSTableView!
@@ -16,12 +15,14 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     private(set) var gestureManager: GestureManager!
     private var nsPanGesture: NSPanGestureRecognizer!
     private var initialPanningOrigin: CGPoint?
-    private var animationHappened = false
+
     var place: Place! {
         didSet {
             setup(for: place)
         }
     }
+
+    private var finishedAnimation = false
 
     private struct Constants {
         static let tableRowHeight: CGFloat = 50
@@ -73,23 +74,22 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
 
         let singleFingerVideoButtonTap = TapGestureRecognizer()
         gestureManager.add(singleFingerVideoButtonTap, to: playerButtonView)
-        singleFingerVideoButtonTap.gestureUpdated = playerButtonViewDidTap(_:)
+        singleFingerVideoButtonTap.gestureUpdated = didTapPlayerButton(_:)
     }
 
 
     // MARK: Gesture Handling
 
     private func tableViewDidPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, animationHappened else {
+        guard let pan = gesture as? PanGestureRecognizer else {
             return
         }
 
         switch pan.state {
         case .recognized, .momentum:
-            let deltaY = pan.delta.dy
-            let orginX = relatedView.visibleRect.origin.x
-            let orginY = relatedView.visibleRect.origin.y
-            relatedView.scroll(CGPoint(x: orginX, y: orginY + deltaY))
+            var position = relatedView.visibleRect.origin
+            position.y += pan.delta.dy
+            relatedView.scroll(position)
         default:
             return
         }
@@ -104,7 +104,6 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         case .recognized, .momentum:
             var origin = window.frame.origin
             origin += pan.delta
-            print(origin)
             window.setFrameOrigin(origin)
         default:
             return
@@ -119,12 +118,13 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         animateViewOut()
     }
 
-    private func playerButtonViewDidTap(_ gesture: GestureRecognizer) {
-        guard gesture is TapGestureRecognizer else {
+    private func didTapPlayerButton(_ gesture: GestureRecognizer) {
+        guard gesture is TapGestureRecognizer, let window = view.window else {
             return
         }
 
-        //        viewDelegate?.displayView(for: "Test Video.mp4", from: view)
+        let position = window.frame.origin + CGVector(dx: window.frame.size.width + 20, dy: 0)
+        WindowManager.instance.displayWindow(for: .player, at: position)
     }
 
     private func relatedViewDidTap(_ gesture: GestureRecognizer) {
@@ -132,7 +132,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
             return
         }
 
-        /// Invert coordinate system for a tableview, using detailView for its static height.
+        // Invert coordinate system for a tableview, using detailView for its static height.
         let invertedLocation = location.inverted(in: detailView)
         let row = relatedView.row(at: invertedLocation)
         if let relatedItemView = relatedView.view(atColumn: 0, row: row, makeIfNecessary: false) as? RelatedItemView {
@@ -172,7 +172,10 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     }
 
     @IBAction func videoButtonTapped(_ sender: Any) {
-        //        viewDelegate?.displayView(for: "Test Video.mp4", from: view)
+        if let window = view.window {
+            let position = window.frame.origin + CGVector(dx: window.frame.maxX + 20, dy: 0)
+            WindowManager.instance.displayWindow(for: .player, at: position)
+        }
     }
 
 
@@ -183,11 +186,11 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     }
 
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        guard let relatedItemView = tableView.makeView(withIdentifier: RelatedItemView.interfaceIdentifier, owner: self) as? RelatedItemView else {
+        guard let relatedItemView = tableView.makeView(withIdentifier: RelatedItemView.interfaceIdentifier, owner: self) as? RelatedItemView, finishedAnimation else {
             return nil
         }
 
-        relatedItemView.alphaValue = animationHappened ? 1.0 : 0.0
+        relatedItemView.alphaValue = finishedAnimation ? 1.0 : 0.0
         relatedItemView.didTapItem = didSelectRelatedItem
         return relatedItemView
     }
@@ -204,18 +207,20 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     // MARK: Helpers
 
     private func didSelectRelatedItem() {
-        /// Display another detail view to the right of the current view.
-        //        viewDelegate?.displayView(for: place, from: view)
+        if let window = view.window  {
+            let position = window.frame.origin + CGVector(dx: window.frame.maxX + 20, dy: 0)
+            WindowManager.instance.displayWindow(for: .place, at: position)
+        }
     }
 
     private func animateViewIn() {
         detailView.alphaValue = 0.0
         detailView.frame.origin.y = view.frame.size.height
 
-        NSAnimationContext.runAnimationGroup({_ in
+        NSAnimationContext.runAnimationGroup({ [weak self] _ in
             NSAnimationContext.current.duration = 0.7
-            detailView.animator().alphaValue = 1.0
-            detailView.animator().frame.origin.y = 0
+            self?.detailView.animator().alphaValue = 1.0
+            self?.detailView.animator().frame.origin.y = 0
         })
 
         animateTableViewIn(for: 0)
@@ -227,23 +232,23 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         }
 
         // Checks if the current relatedItemView can be visibly displayed on the relatedView. If it can't, skip the animation.
-        if self.relatedView.convert(self.relatedView.frame.origin, to: relatedItemView).y - relatedItemView.frame.height > self.detailView.frame.height {
+        if relatedView.convert(relatedView.frame.origin, to: relatedItemView).y - relatedItemView.frame.height > detailView.frame.height {
             relatedItemView.alphaValue = 1.0
             animateTableViewIn(for: row + 1)
             return
         }
 
         relatedItemView.frame.origin.x = -200
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.05) {
-            NSAnimationContext.runAnimationGroup({_ in
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.05) { [weak self] in
+            NSAnimationContext.runAnimationGroup({ _ in
                 NSAnimationContext.current.duration = 0.4
                 relatedItemView.animator().alphaValue = 1.0
                 relatedItemView.animator().frame.origin.x = 20
-            }, completionHandler: {
-                self.animationHappened = true
+            }, completionHandler: { [weak self] in
+                self?.finishedAnimation = true
             })
 
-            self.animateTableViewIn(for: row + 1)
+            self?.animateTableViewIn(for: row + 1)
         }
     }
 
@@ -252,14 +257,16 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
             return
         }
 
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.04) {
-            NSAnimationContext.runAnimationGroup({_ in
-                NSAnimationContext.current.duration = 0.2
-                relatedItemView.animator().alphaValue = 0.0
-                relatedItemView.animator().frame.origin.x = -self.relatedView.frame.width
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.04) { [weak self] in
+            NSAnimationContext.runAnimationGroup({ [weak self] _ in
+                if let strongSelf = self {
+                    NSAnimationContext.current.duration = 0.2
+                    relatedItemView.animator().alphaValue = 0.0
+                    relatedItemView.animator().frame.origin.x = -strongSelf.relatedView.frame.width
+                }
             })
 
-            self.animateTableViewOut(for: row - 1)
+            self?.animateTableViewOut(for: row - 1)
         }
     }
 
@@ -267,16 +274,21 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         let range = relatedView.rows(in: relatedView.visibleRect)
         animateTableViewOut(for: range.location + range.length - 1)
 
-        NSAnimationContext.runAnimationGroup({_ in
-            NSAnimationContext.current.duration = 1.3
-            detailView.animator().alphaValue = 0.0
-            detailView.animator().frame.origin.y = detailView.frame.height
+        NSAnimationContext.runAnimationGroup({ [weak self] _ in
+            if let strongSelf = self {
+                NSAnimationContext.current.duration = 1.3
+                strongSelf.detailView.animator().alphaValue = 0.0
+                strongSelf.detailView.animator().frame.origin.y = strongSelf.detailView.frame.height
+            }
 
-        }, completionHandler: {
-            self.view.removeFromSuperview()
-            self.removeFromParentViewController()
-            self.view.window?.close()
-            self.gestureManager?.remove(views: [self.relatedView, self.detailView])
+        }, completionHandler: { [weak self] in
+            if let strongSelf = self {
+                strongSelf.gestureManager.removeAll()
+                strongSelf.gestureManager = nil
+                strongSelf.view.removeFromSuperview()
+                strongSelf.view.window?.isReleasedWhenClosed = true
+                strongSelf.view.window?.close()
+            }
         })
     }
 }

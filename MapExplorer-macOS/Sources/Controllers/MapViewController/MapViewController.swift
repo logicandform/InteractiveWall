@@ -11,12 +11,11 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     static let storyboard = NSStoryboard.Name(rawValue: "Map")
 
     @IBOutlet weak var mapView: MKMapView!
-    var mapID: Int!
+    var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
-    private var gestureManager: GestureManager!
 
     private struct Constants {
-        static let tileURL = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
+        static let tileURL = "http://c.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg"
         static let annotationContainerClass = "MKNewAnnotationContainerView"
         static let maxZoomWidth: Double =  134217730
         static let annotationHitSize = CGSize(width: 50, height: 50)
@@ -48,9 +47,12 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     // MARK: Setup
 
     private func setupMaps() {
-        mapHandler = MapHandler(mapView: mapView, id: mapID)
+        mapHandler = MapHandler(mapView: mapView, id: appID)
         mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
         mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
+        let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
+        overlay.canReplaceMapContent = true
+        mapView.add(overlay)
         createPlaces()
     }
 
@@ -203,10 +205,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             return
         }
 
-        if Int32(mapID) != deviceID {
-            return
+        if mapID == appID {
+            gestureManager.handle(touch)
         }
-        gestureManager.handle(touch)
     }
 
 
@@ -286,16 +287,21 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     /// Display a place view controller on top of the selected callout annotation for the associated place.
     private func didSelectAnnotationCallout(for place: Place) {
         mapView.deselectAnnotation(place, animated: false)
-        displayWindow(for: place)
+        postNotification(for: place)
     }
 
-    private func displayWindow(for place: Place) {
-        var location = mapView.convert(place.coordinate, toPointTo: view)
-        if let frame = NSScreen.main?.frame {
-            location.x += (frame.size.width / CGFloat(Configuration.numberOfWindows)) * CGFloat(deviceID - 1)
+    private func postNotification(for place: Place) {
+        guard let window = view.window, let screen = NSScreen.screens.at(index: screenID) else {
+            return
         }
-        let info: JSON = [Keys.position: location.toJSON(), Keys.place: place.title ?? "no title"]
-        DistributedNotificationCenter.default().postNotificationName(NSNotification.Name(rawValue: "place"), object: nil, userInfo: info, deliverImmediately: true)
+
+        let mapWidth = screen.frame.width / CGFloat(Configuration.numberOfWindows)
+        var origin = window.frame.origin
+        origin += mapView.convert(place.coordinate, toPointTo: view)
+        origin.x += CGFloat(appID) * mapWidth
+
+        let info: JSON = [Keys.position: origin.toJSON(), Keys.place: place.title ?? "no title"]
+        DistributedNotificationCenter.default().postNotificationName(WindowNotifications.place.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
     /// Zooms into a cluster of annotations to make them more visible.
