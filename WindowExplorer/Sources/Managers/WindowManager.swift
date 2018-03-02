@@ -104,13 +104,8 @@ final class WindowManager: SocketManagerDelegate {
     // MARK: Helpers
 
     private func gestureManager(for touch: Touch) -> GestureManager? {
-        guard let screen = NSScreen.screens.at(index: touch.screen) else {
-            return nil
-        }
-        
-        let positionInScreen = touch.position + screen.frame.origin
         if touch.state == .down {
-            if let (_, manager) = gestureManagerForWindow.first(where: { $0.0.frame.contains(positionInScreen) }) {
+            if let (_, manager) = gestureManagerForWindow.first(where: { $0.0.frame.contains(touch.position) }) {
                 return manager
             }
         } else {

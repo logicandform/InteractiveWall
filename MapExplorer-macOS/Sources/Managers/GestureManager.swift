@@ -2,7 +2,6 @@
 
 import Foundation
 import AppKit
-import MapKit
 
 
 protocol GestureResponder: class {
@@ -75,7 +74,7 @@ final class GestureManager {
 
     /// Displays a touch indicator at the touch position and produces a view if it exists at the location with interaction enabled.
     private func handleTouchDown(_ touch: Touch) {
-        guard let screen = NSScreen.screens.at(index: touch.screen), let window = responder.view.window else {
+        guard let window = responder.view.window else {
             return
         }
 
@@ -124,7 +123,7 @@ final class GestureManager {
             return nil
         }
 
-        let transform = current.translatedBy(x: -view.frame.origin.x, y: -view.frame.origin.y)
+        let transform = current.translatedBy(x: -view.frame.minX, y: -view.frame.minY)
         let positionInBounds = point.transformed(to: view)
         for subview in view.subviews.reversed() {
             if let target = target(in: subview, at: positionInBounds, current: transform) {
