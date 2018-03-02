@@ -250,6 +250,7 @@
 		22A4987A204749EA0024B46C /* Records */ = {
 			isa = PBXGroup;
 			children = (
+				2204624D204730C70067D9FB /* LastThree.swift */,
 				3F0902582048C96F0044F100 /* Event.swift */,
 				3F09025C2048DE5C0044F100 /* Artifact.swift */,
 				3F09025E2048E0E70044F100 /* Organization.swift */,
@@ -257,7 +258,6 @@
 				2204624E204730C70067D9FB /* School.swift */,
 				3F0902602049C6B10044F100 /* Theme.swift */,
 				2204624B204730C70067D9FB /* EntityType.swift */,
-				2204624D204730C70067D9FB /* LastThree.swift */,
 			);
 			path = Records;
 			sourceTree = "<group>";
