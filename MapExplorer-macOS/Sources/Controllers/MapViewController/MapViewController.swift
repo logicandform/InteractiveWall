@@ -34,7 +34,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     override func viewDidLoad() {
         super.viewDidLoad()
         gestureManager = GestureManager(responder: self)
-        setupMaps()
+        setupMap()
         setupGestures()
         registerForNotifications()
     }
@@ -46,7 +46,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     // MARK: Setup
 
-    private func setupMaps() {
+    private func setupMap() {
         mapHandler = MapHandler(mapView: mapView, id: appID)
         mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
         mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
@@ -245,11 +245,18 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        guard let tileOverlay = overlay as? MKTileOverlay else {
-            return MKOverlayRenderer(overlay: overlay)
+        if let tileOverlay = overlay as? MKTileOverlay {
+            return MKTileOverlayRenderer(tileOverlay: tileOverlay)
         }
 
-        return MKTileOverlayRenderer(tileOverlay: tileOverlay)
+        if let circleOverlay = overlay as? MKCircle {
+            let circleRenderer = MKCircleRenderer(circle: circleOverlay)
+            circleRenderer.fillColor = NSColor.blue
+            circleRenderer.lineWidth = 1.0
+            return circleRenderer
+        }
+
+        return MKOverlayRenderer(overlay: overlay)
     }
 
 
@@ -275,7 +282,10 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     private func add(_ placesJSON: [JSON]) {
         let places = placesJSON.flatMap { Place(json: $0) }
-        mapView.addAnnotations(places)
+        places.forEach { place in
+            let circle = MKCircle(center: place.coordinate, radius: CLLocationDistance(100))
+            mapView.add(circle)
+        }
     }
 
     /// Zoom into the annotations contained in the cluster
