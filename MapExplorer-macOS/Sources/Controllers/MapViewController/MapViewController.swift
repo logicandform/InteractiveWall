@@ -15,7 +15,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private var mapHandler: MapHandler?
 
     private struct Constants {
-        static let tileURL = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
+        static let tileURL = "http://c.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg"
         static let annotationContainerClass = "MKNewAnnotationContainerView"
         static let maxZoomWidth: Double =  134217730
         static let annotationHitSize = CGSize(width: 50, height: 50)
@@ -26,7 +26,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let map = "mapID"
         static let place = "place"
         static let position = "position"
-        static let screen = "screen"
     }
 
 
@@ -51,6 +50,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         mapHandler = MapHandler(mapView: mapView, id: appID)
         mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
         mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
+        let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
+        overlay.canReplaceMapContent = true
+        mapView.add(overlay)
         createPlaces()
     }
 
@@ -294,10 +296,11 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         }
 
         let mapWidth = screen.frame.width / CGFloat(Configuration.numberOfWindows)
-        var location = mapView.convert(place.coordinate, toPointTo: view)
-        location.x += CGFloat(appID) * mapWidth
+        var origin = window.frame.origin
+        origin += mapView.convert(place.coordinate, toPointTo: view)
+        origin.x += CGFloat(appID) * mapWidth
 
-        let info: JSON = [Keys.screen: screenIndex, Keys.position: location.toJSON(), Keys.place: place.title ?? "no title"]
+        let info: JSON = [Keys.position: origin.toJSON(), Keys.place: place.title ?? "no title"]
         DistributedNotificationCenter.default().postNotificationName(WindowNotifications.place.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 

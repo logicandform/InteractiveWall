@@ -9,7 +9,7 @@
         <!--Place View Controller-->
         <scene sceneID="5LE-vP-wAv">
             <objects>
-                <viewController id="k5b-MF-Zdf" customClass="PlaceViewController" customModule="MapExplorer_macOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="k5b-MF-Zdf" customClass="PlaceViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="02T-mc-d0F">
                         <rect key="frame" x="0.0" y="0.0" width="640" height="584"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -183,7 +183,7 @@
         <!--View Controller-->
         <scene sceneID="gdI-Ne-3Yg">
             <objects>
-                <viewController id="h8q-KE-X7P" customClass="PDFViewController" customModule="MapExplorer_macOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="h8q-KE-X7P" customClass="PDFViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="ZmE-zm-Cef">
                         <rect key="frame" x="0.0" y="0.0" width="594" height="598"/>
                         <autoresizingMask key="autoresizingMask"/>

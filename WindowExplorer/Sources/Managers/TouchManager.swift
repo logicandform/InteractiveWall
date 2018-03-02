@@ -8,7 +8,7 @@ final class TouchManager: SocketManagerDelegate {
     static let instance = TouchManager()
     static let touchNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12222)
 
-    private let socketManager = SocketManager(networkConfiguration: touchNetwork)
+    private var socketManager: SocketManager?
     private var touchesForMapID = [Int: Set<Touch>]()
 
     private struct Keys {
@@ -19,8 +19,14 @@ final class TouchManager: SocketManagerDelegate {
 
     // MARK: Init
 
-    private init() {
-        socketManager.delegate = self
+    private init() { }
+    
+    
+    // MARK: API
+
+    func setupTouchSocket() {
+        socketManager = SocketManager(networkConfiguration: TouchManager.touchNetwork)
+        socketManager?.delegate = self
     }
 
 
@@ -66,7 +72,6 @@ final class TouchManager: SocketManagerDelegate {
     /// Returns a gesture manager that owns the given touch, else nil.
     private func gestureManager(for touch: Touch) -> GestureManager? {
         let windows = WindowManager.instance.windows.reversed()
-
         if touch.state == .down {
             if let (_, manager) = windows.first(where: { $0.0.frame.contains(touch.position) }) {
                 return manager

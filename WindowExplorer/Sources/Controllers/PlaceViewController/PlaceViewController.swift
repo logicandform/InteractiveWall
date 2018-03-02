@@ -22,11 +22,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         }
     }
 
-    private var finishedAnimation = false {
-        didSet {
-            setupGestures()
-        }
-    }
+    private var finishedAnimation = false
 
     private struct Constants {
         static let tableRowHeight: CGFloat = 50
@@ -41,9 +37,9 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         detailView.layer?.backgroundColor = #colorLiteral(red: 0.7317136762, green: 0.81375, blue: 0.7637042526, alpha: 0.8230652265)
         relatedView.register(NSNib(nibNamed: RelatedItemView.nibName, bundle: nil), forIdentifier: RelatedItemView.interfaceIdentifier)
         relatedView.backgroundColor = NSColor.clear
-        gestureManager = GestureManager(responder: self)
 
         animateViewIn()
+        setupGestures()
     }
 
 
@@ -54,6 +50,8 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     }
 
     private func setupGestures() {
+        gestureManager = GestureManager(responder: self)
+
         nsPanGesture = NSPanGestureRecognizer(target: self, action: #selector(handleMousePan(gesture:)))
         nsPanGesture.delegate = self
         detailView.addGestureRecognizer(nsPanGesture)
@@ -106,7 +104,6 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         case .recognized, .momentum:
             var origin = window.frame.origin
             origin += pan.delta
-            print(origin)
             window.setFrameOrigin(origin)
         default:
             return
@@ -122,12 +119,12 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     }
 
     private func didTapPlayerButton(_ gesture: GestureRecognizer) {
-        guard gesture is TapGestureRecognizer, let window = view.window, let screen = window.screen?.index else {
+        guard gesture is TapGestureRecognizer, let window = view.window else {
             return
         }
 
-        let position = window.frame.origin + CGVector(dx: window.frame.maxX + 20, dy: 0)
-        WindowManager.instance.displayWindow(for: .place, screen: screen, at: position)
+        let position = window.frame.origin + CGVector(dx: window.frame.size.width + 20, dy: 0)
+        WindowManager.instance.displayWindow(for: .player, at: position)
     }
 
     private func relatedViewDidTap(_ gesture: GestureRecognizer) {
@@ -175,9 +172,9 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     }
 
     @IBAction func videoButtonTapped(_ sender: Any) {
-        if let window = view.window, let screen = window.screen?.index {
+        if let window = view.window {
             let position = window.frame.origin + CGVector(dx: window.frame.maxX + 20, dy: 0)
-            WindowManager.instance.displayWindow(for: .player, screen: screen, at: position)
+            WindowManager.instance.displayWindow(for: .player, at: position)
         }
     }
 
@@ -189,14 +186,13 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     }
 
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-//        guard let relatedItemView = tableView.makeView(withIdentifier: RelatedItemView.interfaceIdentifier, owner: self) as? RelatedItemView else {
-//            return nil
-//        }
-//
-//        relatedItemView.alphaValue = finishedAnimation ? 1.0 : 0.0
-//        relatedItemView.didTapItem = didSelectRelatedItem
-//        return relatedItemView
-        return nil
+        guard let relatedItemView = tableView.makeView(withIdentifier: RelatedItemView.interfaceIdentifier, owner: self) as? RelatedItemView, finishedAnimation else {
+            return nil
+        }
+
+        relatedItemView.alphaValue = finishedAnimation ? 1.0 : 0.0
+        relatedItemView.didTapItem = didSelectRelatedItem
+        return relatedItemView
     }
 
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
@@ -211,9 +207,9 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     // MARK: Helpers
 
     private func didSelectRelatedItem() {
-        if let window = view.window, let screen = window.screen?.index {
+        if let window = view.window  {
             let position = window.frame.origin + CGVector(dx: window.frame.maxX + 20, dy: 0)
-            WindowManager.instance.displayWindow(for: .place, screen: screen, at: position)
+            WindowManager.instance.displayWindow(for: .place, at: position)
         }
     }
 

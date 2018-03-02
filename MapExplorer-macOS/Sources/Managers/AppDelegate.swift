@@ -4,14 +4,16 @@ import Cocoa
 
 
 struct Configuration {
-    static let numberOfWindows = 4
+    static let numberOfWindows = 1
     static let frameless = true
     static let touchScreenSize = CGSize(width: 4095, height: 2242.5)
     static let touchScreenRatio: CGFloat = 23.0 / 42.0
 }
 
+
 var screenID = 0
 var appID = 0
+
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {

@@ -8,20 +8,20 @@ enum WindowType {
     case place
     case player
     case pdf
+
+    var size: CGSize {
+        return CGSize(width: 640, height: 600)
+    }
 }
 
 
 final class WindowFactory {
 
-    private struct Constants {
-        static let windowSize = CGSize(width: 640, height: 600)
-    }
-
 
     // MARK: API
 
-    static func window(for type: WindowType, screen: Int, at topMiddle: CGPoint) -> NSWindow? {
-        guard let screen = NSScreen.screens.at(index: screen), let window = window(in: screen, at: topMiddle) else {
+    static func window(for type: WindowType, at origin: CGPoint) -> NSWindow? {
+        guard let screen = NSScreen.containing(x: origin.x), let window = window(in: screen, at: origin, size: type.size) else {
             return nil
         }
         
@@ -46,9 +46,8 @@ final class WindowFactory {
         }
     }
 
-    private static func window(in screen: NSScreen, at topMiddle: CGPoint) -> NSWindow? {
-        let origin = screen.frame.origin + topMiddle - CGPoint(x: Constants.windowSize.width / 2, y: Constants.windowSize.height)
-        let windowFrame = NSRect(origin: origin, size: Constants.windowSize)
+    private static func window(in screen: NSScreen, at origin: CGPoint, size: CGSize) -> NSWindow? {
+        let windowFrame = NSRect(origin: origin, size: size)
         let window = NSWindow(contentRect: windowFrame, styleMask: .borderless, backing: .buffered, defer: true, screen: screen)
         window.level = .statusBar
         window.setFrame(windowFrame, display: true)

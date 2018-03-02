@@ -128,7 +128,7 @@ final class GestureManager {
             return nil
         }
 
-        let transform = current.translatedBy(x: -view.frame.origin.x, y: -view.frame.origin.y)
+        let transform = current.translatedBy(x: -view.frame.minX, y: -view.frame.minY)
         let positionInBounds = point.transformed(to: view)
         for subview in view.subviews.reversed() {
             if let target = target(in: subview, at: positionInBounds, current: transform) {
