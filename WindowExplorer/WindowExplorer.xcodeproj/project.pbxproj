@@ -251,7 +251,7 @@
 			isa = PBXGroup;
 			children = (
 				2204624D204730C70067D9FB /* LastThree.swift */,
-				3F0902582048C96F0044F100 /* Event.swift */,
+				3F0254F52049F0CE004B831C /* Event.swift */,
 				3F09025C2048DE5C0044F100 /* Artifact.swift */,
 				3F09025E2048E0E70044F100 /* Organization.swift */,
 				3F09025A2048D9D30044F100 /* NewPlace.swift */,
@@ -526,7 +526,6 @@
 				2204623520472FDF0067D9FB /* Int.swift in Sources */,
 				2204620F20472DE80067D9FB /* PlaceViewController.swift in Sources */,
 				22046246204730780067D9FB /* GestureRecognizer.swift in Sources */,
-				3F0902592048C96F0044F100 /* Event.swift in Sources */,
 				2204625D204730C70067D9FB /* TouchProperties.swift in Sources */,
 				2204623420472FDF0067D9FB /* NSImage.swift in Sources */,
 				8E4010A220487E0300E81AAA /* Collection.swift in Sources */,
@@ -555,6 +554,7 @@
 				3F09025B2048D9D30044F100 /* NewPlace.swift in Sources */,
 				22A498752047499B0024B46C /* JSON.swift in Sources */,
 				22046247204730780067D9FB /* PinchGestureRecognizer.swift in Sources */,
+				3F0254F62049F0CE004B831C /* Event.swift in Sources */,
 				22046243204730780067D9FB /* SwipeGestureRecognizer.swift in Sources */,
 				22046248204730780067D9FB /* TapGestureRecognizer.swift in Sources */,
 				22914F77204905230000D4E1 /* NSApplication.swift in Sources */,

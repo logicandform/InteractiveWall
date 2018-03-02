@@ -19,6 +19,8 @@ final class CachingNetwork {
         static let baseURL = "http://34.216.252.157:3000"
         static let eventsURL = baseURL + "/events"
         static let placesURL = baseURL + "/places"
+        static let artifactsURL = baseURL + "/artifacts"
+        static let entitiesURL = baseURL + "/entities"
     }
 
     private static let credentials: [String: String] = {
@@ -35,4 +37,5 @@ final class CachingNetwork {
             try ResponseHandler.serializePlaces(from: json)
         }
     }
+
 }
