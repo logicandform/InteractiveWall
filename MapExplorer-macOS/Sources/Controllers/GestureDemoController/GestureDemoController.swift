@@ -4,7 +4,7 @@ import MONode
 
 class GestureDemoController: NSViewController, SocketManagerDelegate, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "Demo")
-    static let config = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12222)
+    static let config = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12223)
 
     let socketManager = SocketManager(networkConfiguration: config)
     var gestureManager: GestureManager!
@@ -21,13 +21,13 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
         rect.layer?.backgroundColor = NSColor.blue.cgColor
         view.addSubview(rect)
 
-        let tapGesture = TapGestureRecognizer()
-        gestureManager.add(tapGesture, to: rect)
-        tapGesture.gestureUpdated = rectTapped(_:)
+//        let tapGesture = TapGestureRecognizer()
+//        gestureManager.add(tapGesture, to: rect)
+//        tapGesture.gestureUpdated = rectTapped(_:)
 
-        let panGesture = PanGestureRecognizer(withFingers: [1, 2, 3, 4, 5])
-        gestureManager.add(panGesture, to: rect)
-        panGesture.gestureUpdated = rectPanned(_:)
+//        let panGesture = PanGestureRecognizer(withFingers: [1, 2, 3, 4, 5])
+//        gestureManager.add(panGesture, to: rect)
+//        panGesture.gestureUpdated = rectPanned(_:)
 
         let pinchGesture = PinchGestureRecognizer()
         gestureManager.add(pinchGesture, to: rect)
@@ -36,7 +36,7 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
 
     override func viewDidAppear() {
         super.viewDidAppear()
-        view.window?.toggleFullScreen(nil)
+        //view.window?.toggleFullScreen(nil)
     }
 
 
@@ -51,7 +51,20 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
             return
         }
 
+        convertToScreen(touch)
+
         gestureManager.handle(touch)
+    }
+
+    /// Converts a position received from a touch screen to the coordinate of the current devices bounds.
+    private func convertToScreen(_ touch: Touch) {
+        guard let screen = NSScreen.screens.at(index: touch.screen) else {
+            return
+        }
+
+        let xPos = (touch.position.x / Configuration.touchScreenSize.width * CGFloat(screen.frame.width)) + screen.frame.origin.x
+        let yPos = (1 - touch.position.y / Configuration.touchScreenSize.height) * CGFloat(screen.frame.height)
+        touch.position = CGPoint(x: xPos, y: yPos)
     }
 
 
@@ -145,15 +158,16 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
 
         switch pinch.state {
         case .recognized, .momentum:
-            let translationX = (1 - pinch.scale) * rect.frame.size.width / 4
-            let translationY = (1 - pinch.scale) * rect.frame.size.height / 4
+            // For scaling from the center of the rectangle
+//            let translationX = (1 - pinch.scale) * rect.frame.size.width / 4
+//            let translationY = (1 - pinch.scale) * rect.frame.size.height / 4
+//            rect.frame.origin += CGPoint(x: translationX, y: translationY)
 
-            // Uncomment for pan with the pinch gesture
-//                    translationX += pinch.delta.dx
-//                    translationY += pinch.delta.dy
 
-            rect.frame.size *= pinch.scale
-            rect.frame.origin += CGPoint(x: translationX, y: translationY)
+            let width = max(300, min(view.frame.width, rect.frame.size.width * pinch.scale))
+            let height = max(300, min(view.frame.height, rect.frame.size.height * pinch.scale))
+
+            rect.frame.size = CGSize(width: width, height: height)
         default:
             return
         }

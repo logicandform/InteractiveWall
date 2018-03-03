@@ -88,7 +88,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func end(_ touch: Touch, with properties: TouchProperties) {
-        guard properties.touchCount.isZero else {
+        guard properties.touchCount.isZero && state == .recognized else {
             return
         }
 

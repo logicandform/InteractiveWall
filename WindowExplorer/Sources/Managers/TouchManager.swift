@@ -6,7 +6,7 @@ import MONode
 final class TouchManager: SocketManagerDelegate {
 
     static let instance = TouchManager()
-    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12222)
+    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12223)
 
     private var socketManager: SocketManager?
     private var touchesForMapID = [Int: Set<Touch>]()
