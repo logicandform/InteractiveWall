@@ -6,7 +6,7 @@ import MONode
 final class TouchManager: SocketManagerDelegate {
 
     static let instance = TouchManager()
-    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12221)
+    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12223)
 
     private var socketManager: SocketManager?
     private var touchesForMapID = [Int: Set<Touch>]()
@@ -124,7 +124,7 @@ final class TouchManager: SocketManagerDelegate {
 
     /// Calculates the map index based off the x-position of the touch and the screens
     private func calculateMap(for touch: Touch) -> Int {
-        precondition(touch.state == .down, "A touch with state == .moved or .down should have a map owner to use.")
+//        precondition(touch.state == .down, "A touch with state == .moved or .down should have a map owner to use.")
 
         guard let screen = NSScreen.screens.at(index: touch.screen) else {
             return 0
