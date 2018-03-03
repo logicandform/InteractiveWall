@@ -13,6 +13,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     @IBOutlet weak var mapView: MKMapView!
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
+    private var placeForCircle = [MKCircle: Place]()
 
     private struct Constants {
         static let tileURL = "http://c.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg"
@@ -138,27 +139,20 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     /// If the tap is positioned on a selectable annotation, the annotation's didSelect function is invoked.
     private func didTapOnMap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position, let container = mapView.subviews.first(where: { $0.className == Constants.annotationContainerClass }) else {
+        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position else {
             return
         }
 
-        var selected = [SelectableView]()
+        let circleOverlays = mapView.overlays.flatMap { $0 as? MKCircle }
+        let mapCoordinate = mapView.convert(position, toCoordinateFrom: view)
+        let mapPoint = MKMapPointForCoordinate(mapCoordinate)
 
-        for annotation in container.subviews {
-            let radius = Constants.annotationHitSize.width / 2
-            let hitFrame = CGRect(origin: CGPoint(x: annotation.frame.midX - radius, y: annotation.frame.midY - radius), size: Constants.annotationHitSize)
-
-            if let selectableView = annotation as? SelectableView, hitFrame.contains(position.inverted(in: mapView)) {
-                if let cluster = selectableView as? ClusterView {
-                    cluster.didSelectView()
-                    return
-                } else {
-                    selected.append(selectableView)
-                }
+        for circle in circleOverlays {
+            if MKMapRectContainsPoint(circle.boundingMapRect, mapPoint), let place = placeForCircle[circle] {
+                postNotification(for: place)
+                return
             }
         }
-
-        selected.first?.didSelectView()
     }
 
     /// Used to handle pan events recorded by a mouse
@@ -283,7 +277,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private func add(_ placesJSON: [JSON]) {
         let places = placesJSON.flatMap { Place(json: $0) }
         places.forEach { place in
-            let circle = MKCircle(center: place.coordinate, radius: CLLocationDistance(100))
+            let circle = MKCircle(center: place.coordinate, radius: CLLocationDistance(1000))
+            placeForCircle[circle] = place
             mapView.add(circle)
         }
     }
