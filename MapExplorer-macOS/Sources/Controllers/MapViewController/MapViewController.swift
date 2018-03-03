@@ -66,17 +66,17 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         nsPinch.delaysMagnificationEvents = false
         mapView.addGestureRecognizer(nsPinch)
 
-//        let tapGesture = TapGestureRecognizer()
-//        gestureManager.add(tapGesture, to: mapView)
-//        tapGesture.gestureUpdated = didTapOnMap(_:)
+        let tapGesture = TapGestureRecognizer()
+        gestureManager.add(tapGesture, to: mapView)
+        tapGesture.gestureUpdated = didTapOnMap(_:)
 
         let panGesture = PanGestureRecognizer(withFingers: [1, 2, 3, 4, 5])
         gestureManager.add(panGesture, to: mapView)
         panGesture.gestureUpdated = didPanOnMap(_:)
 
-//        let pinchGesture = PinchGestureRecognizer()
-//        gestureManager.add(pinchGesture, to: mapView)
-//        pinchGesture.gestureUpdated = didZoomOnMap(_:)
+        let pinchGesture = PinchGestureRecognizer()
+        gestureManager.add(pinchGesture, to: mapView)
+        pinchGesture.gestureUpdated = didZoomOnMap(_:)
     }
 
     private func registerForNotifications() {
