@@ -19,6 +19,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         static let minimumFingers = 2
         static let minimumSpreadThreshold: CGFloat = 0.1
         static let minimumBehaviorChangeThreshold: CGFloat = 15
+        static let updateTimeInterval: TimeInterval = 1 / 60
     }
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
@@ -29,6 +30,9 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private let fingers: Int
     private var spreads = LastThree<CGFloat>()
     private var behavior = PinchBehavior.idle
+    private var timeOfLastUpdate: Date!
+    private var lastSpreadSinceUpdate: CGFloat!
+
 
 
     // MARK: Init
@@ -53,6 +57,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             spreads.add(properties.spread)
             lastPosition = properties.cog
             state = .began
+            timeOfLastUpdate = Date()
             gestureUpdated?(self)
         default:
             return
@@ -60,7 +65,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func move(_ touch: Touch, with properties: TouchProperties) {
-        guard let lastSpread = spreads.last, let currentPosition = lastPosition, properties.touchCount == fingers else {
+        guard let lastSpread = spreads.last, properties.touchCount == fingers else {
             return
         }
 
@@ -68,18 +73,24 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         case .began where abs(properties.spread / lastSpread - 1.0) > Constants.minimumSpreadThreshold:
             behavior = behavior(of: properties.spread)
             state = .recognized
+            lastSpreadSinceUpdate = lastSpread
             fallthrough
         case .recognized:
             if shouldUpdate(with: properties.spread) {
-                scale = properties.spread / lastSpread
-                delta = CGVector(dx: properties.cog.x - currentPosition.x, dy: properties.cog.y - currentPosition.y)
+                scale = properties.spread / lastSpreadSinceUpdate
                 spreads.add(properties.spread)
                 lastPosition = properties.cog
-                gestureUpdated?(self)
+                if abs(timeOfLastUpdate.timeIntervalSinceNow) > Constants.updateTimeInterval {
+                    lastSpreadSinceUpdate = properties.spread
+                    timeOfLastUpdate = Date()
+                    gestureUpdated?(self)
+                }
             } else if changedBehavior(from: lastSpread, to: properties.spread) {
                 scale = Constants.initialScale
                 behavior = behavior(of: properties.spread)
                 spreads.add(properties.spread)
+                lastSpreadSinceUpdate = properties.spread
+                timeOfLastUpdate = Date()
                 gestureUpdated?(self)
             }
         default:
@@ -128,7 +139,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         gestureUpdated?(self)
 
         momentumTimer?.invalidate()
-        momentumTimer = Timer.scheduledTimer(withTimeInterval: 1 / 60, repeats: true) { [weak self] _ in
+        momentumTimer = Timer.scheduledTimer(withTimeInterval: Constants.updateTimeInterval, repeats: true) { [weak self] _ in
             self?.updateMomentum()
         }
     }

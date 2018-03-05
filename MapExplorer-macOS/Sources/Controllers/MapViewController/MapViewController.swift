@@ -29,6 +29,35 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let position = "position"
     }
 
+//    static let config = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12224)
+//    let socketManager = SocketManager(networkConfiguration: config)
+//
+//    func handleError(_ message: String) {
+//        print("Socket error: \(message)")
+//    }
+//
+//    func handlePacket(_ packet: Packet) {
+//        guard let touch = Touch(from: packet) else {
+//            return
+//        }
+//
+//        convertToScreen(touch)
+//
+//        gestureManager.handle(touch)
+//    }
+//
+//    /// Converts a position received from a touch screen to the coordinate of the current devices bounds.
+//    private func convertToScreen(_ touch: Touch) {
+//        guard let screen = NSScreen.screens.at(index: touch.screen) else {
+//            return
+//        }
+//
+//        let xPos = (touch.position.x / Configuration.touchScreenSize.width * CGFloat(screen.frame.width)) + screen.frame.origin.x
+//        let yPos = (1 - touch.position.y / Configuration.touchScreenSize.height) * CGFloat(screen.frame.height)
+//        touch.position = CGPoint(x: xPos, y: yPos)
+//    }
+
+
 
     // MARK: Lifecycle
 
@@ -38,6 +67,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         setupMap()
         setupGestures()
         registerForNotifications()
+//        socketManager.delegate = self
     }
 
     override func viewWillAppear() {
@@ -49,11 +79,11 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     private func setupMap() {
         mapHandler = MapHandler(mapView: mapView, id: appID)
-        mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
-        mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
-        let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
-        overlay.canReplaceMapContent = true
-        mapView.add(overlay)
+//        mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
+//        mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
+//        let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
+//        overlay.canReplaceMapContent = true
+//        mapView.add(overlay)
         createPlaces()
     }
 
@@ -75,9 +105,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         gestureManager.add(panGesture, to: mapView)
         panGesture.gestureUpdated = didPanOnMap(_:)
 
-        let pinchGesture = PinchGestureRecognizer()
-        gestureManager.add(pinchGesture, to: mapView)
-        pinchGesture.gestureUpdated = didZoomOnMap(_:)
+//        let pinchGesture = PinchGestureRecognizer()
+//        gestureManager.add(pinchGesture, to: mapView)
+//        pinchGesture.gestureUpdated = didZoomOnMap(_:)
     }
 
     private func registerForNotifications() {
@@ -101,7 +131,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             let translationY = Double(pan.delta.dy) * mapRect.size.height / Double(mapView.frame.height)
             mapRect.origin -= MKMapPoint(x: translationX, y: -translationY)
             mapHandler?.send(mapRect)
-        case .possible, .failed:
+        case .possible:
             mapHandler?.endUpdates()
         default:
             return
@@ -118,18 +148,13 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             var mapRect = mapView.visibleMapRect
             let scaledWidth = (2 - Double(pinch.scale)) * mapRect.size.width
             let scaledHeight = (2 - Double(pinch.scale)) * mapRect.size.height
-            // Uncomment and delete the other two duplicate veriable below for pinch with pan gesture
-            //            var translationX = -Double(pinch.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
-            //            var translationY = Double(pinch.delta.dy) * mapRect.size.height / Double(mapView.frame.height)
-            var translationX = 0.0
-            var translationY = 0.0
             if scaledWidth <= Constants.maxZoomWidth {
-                translationX += (mapRect.size.width - scaledWidth) * Double(pinch.lastPosition.x / mapView.frame.width)
-                translationY += (mapRect.size.height - scaledHeight) * (1 - Double(pinch.lastPosition.y / mapView.frame.height))
+                let translationX = (mapRect.size.width - scaledWidth) * Double(pinch.lastPosition.x / mapView.frame.width)
+                let translationY = (mapRect.size.height - scaledHeight) * (1 - Double(pinch.lastPosition.y / mapView.frame.height))
                 mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
+                mapRect.origin += MKMapPoint(x: translationX, y: translationY)
+                mapHandler?.send(mapRect)
             }
-            mapRect.origin += MKMapPoint(x: translationX, y: translationY)
-            mapHandler?.send(mapRect)
         case .possible, .failed:
             mapHandler?.endUpdates()
         default:
