@@ -34,7 +34,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private var lastSpreadSinceUpdate: CGFloat!
 
 
-
     // MARK: Init
 
     init(withFingers fingers: Int = Constants.minimumFingers) {

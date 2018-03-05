@@ -34,7 +34,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private var lastSpreadSinceUpdate: CGFloat!
 
 
-
     // MARK: Init
 
     init(withFingers fingers: Int = Constants.minimumFingers) {
@@ -65,7 +64,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func move(_ touch: Touch, with properties: TouchProperties) {
-        guard let lastSpread = spreads.last, let currentPosition = lastPosition, properties.touchCount == fingers else {
+        guard let lastSpread = spreads.last, properties.touchCount == fingers else {
             return
         }
 
@@ -89,10 +88,9 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
                 scale = Constants.initialScale
                 behavior = behavior(of: properties.spread)
                 spreads.add(properties.spread)
-                if abs(timeOfLastUpdate.timeIntervalSinceNow) > Constants.updateTimeInterval {
-                    timeOfLastUpdate = Date()
-                    gestureUpdated?(self)
-                }
+                lastSpreadSinceUpdate = properties.spread
+                timeOfLastUpdate = Date()
+                gestureUpdated?(self)
             }
         default:
             return
@@ -190,3 +188,4 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         return false
     }
 }
+

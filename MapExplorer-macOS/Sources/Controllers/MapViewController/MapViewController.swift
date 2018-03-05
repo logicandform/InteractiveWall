@@ -29,35 +29,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let position = "position"
     }
 
-//    static let config = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12224)
-//    let socketManager = SocketManager(networkConfiguration: config)
-//
-//    func handleError(_ message: String) {
-//        print("Socket error: \(message)")
-//    }
-//
-//    func handlePacket(_ packet: Packet) {
-//        guard let touch = Touch(from: packet) else {
-//            return
-//        }
-//
-//        convertToScreen(touch)
-//
-//        gestureManager.handle(touch)
-//    }
-//
-//    /// Converts a position received from a touch screen to the coordinate of the current devices bounds.
-//    private func convertToScreen(_ touch: Touch) {
-//        guard let screen = NSScreen.screens.at(index: touch.screen) else {
-//            return
-//        }
-//
-//        let xPos = (touch.position.x / Configuration.touchScreenSize.width * CGFloat(screen.frame.width)) + screen.frame.origin.x
-//        let yPos = (1 - touch.position.y / Configuration.touchScreenSize.height) * CGFloat(screen.frame.height)
-//        touch.position = CGPoint(x: xPos, y: yPos)
-//    }
-
-
 
     // MARK: Lifecycle
 
@@ -67,7 +38,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         setupMap()
         setupGestures()
         registerForNotifications()
-//        socketManager.delegate = self
     }
 
     override func viewWillAppear() {
@@ -105,9 +75,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         gestureManager.add(panGesture, to: mapView)
         panGesture.gestureUpdated = didPanOnMap(_:)
 
-//        let pinchGesture = PinchGestureRecognizer()
-//        gestureManager.add(pinchGesture, to: mapView)
-//        pinchGesture.gestureUpdated = didZoomOnMap(_:)
+        let pinchGesture = PinchGestureRecognizer()
+        gestureManager.add(pinchGesture, to: mapView)
+        pinchGesture.gestureUpdated = didZoomOnMap(_:)
     }
 
     private func registerForNotifications() {

@@ -83,7 +83,6 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         }
 
         if let velocity = currentVelocity {
-
             beginMomentum(with: velocity)
         } else {
             reset()
