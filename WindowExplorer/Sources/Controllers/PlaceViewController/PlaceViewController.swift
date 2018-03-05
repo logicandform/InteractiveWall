@@ -186,7 +186,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     }
 
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        guard let relatedItemView = tableView.makeView(withIdentifier: RelatedItemView.interfaceIdentifier, owner: self) as? RelatedItemView, finishedAnimation else {
+        guard let relatedItemView = tableView.makeView(withIdentifier: RelatedItemView.interfaceIdentifier, owner: self) as? RelatedItemView else {
             return nil
         }
 
@@ -208,7 +208,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
 
     private func didSelectRelatedItem() {
         if let window = view.window  {
-            let position = window.frame.origin + CGVector(dx: window.frame.maxX + 20, dy: 0)
+            let position = window.frame.origin + CGPoint(x: window.frame.width + 20, y: -20)
             WindowManager.instance.displayWindow(for: .place, at: position)
         }
     }
