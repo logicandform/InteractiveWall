@@ -4,7 +4,7 @@ import Cocoa
 
 
 struct Configuration {
-    static let numberOfWindows = 1
+    static let numberOfWindows = 4
     static let frameless = true
     static let touchScreenSize = CGSize(width: 4095, height: 2242.5)
     static let touchScreenRatio: CGFloat = 23.0 / 42.0
@@ -22,7 +22,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let screenIndex = Int(CommandLine.arguments[1]) ?? 0
         let windowIndex = Int(CommandLine.arguments[2]) ?? 0
         screenID = screenIndex
-        appID = windowIndex
+        appID = windowIndex + (screenID - 1) * Configuration.numberOfWindows
 
         let mapStoryboard = NSStoryboard(name: MapViewController.storyboard, bundle: nil)
         let mapVC = mapStoryboard.instantiateInitialController() as! MapViewController

@@ -296,14 +296,13 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     private func postNotification(for place: Place) {
-        guard let window = view.window, let screen = NSScreen.screens.at(index: screenID) else {
+        guard let window = view.window else {
             return
         }
 
-        let mapWidth = screen.frame.width / CGFloat(Configuration.numberOfWindows)
         var origin = window.frame.origin
         origin += mapView.convert(place.coordinate, toPointTo: view)
-        origin.x += CGFloat(appID) * mapWidth
+        origin.x += CGFloat(appID) * window.frame.width
 
         let info: JSON = [Keys.position: origin.toJSON(), Keys.place: place.title ?? "no title"]
         DistributedNotificationCenter.default().postNotificationName(WindowNotifications.place.name, object: nil, userInfo: info, deliverImmediately: true)
