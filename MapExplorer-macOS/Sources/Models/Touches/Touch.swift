@@ -18,7 +18,7 @@ class Touch: Hashable, CustomStringConvertible {
     var description: String {
         return "( [Touch] ID: \(id), Position: \(position), State: \(state) )"
     }
-    
+
     private struct Keys {
         static let position = "position"
         static let state = "state"

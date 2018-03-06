@@ -15,8 +15,6 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
     @IBOutlet weak var detailView: NSView!
     
     private(set) var gestureManager: GestureManager!
-    private var panGesture: NSPanGestureRecognizer!
-    private var initialPanningOrigin: CGPoint?
 
     private struct Constants {
         static let testVideoURL = URL(fileURLWithPath: "/Users/macpro/Downloads/test-mac.mp4")
@@ -51,7 +49,7 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
     }
 
     private func setupGestures() {
-        panGesture = NSPanGestureRecognizer(target: self, action: #selector(handleMousePan(_:)))
+        let panGesture = NSPanGestureRecognizer(target: self, action: #selector(handleMousePan(_:)))
         view.addGestureRecognizer(panGesture)
 
         let singleFingerTap = TapGestureRecognizer()
@@ -101,15 +99,13 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
 
     @objc
     private func handleMousePan(_ gesture: NSPanGestureRecognizer) {
-        if gesture.state == .began {
-            initialPanningOrigin = view.frame.origin
+        guard let window = view.window else {
             return
         }
 
-        if var origin = initialPanningOrigin {
-            origin += gesture.translation(in: view.superview)
-            view.frame.origin = origin
-        }
+        var origin = window.frame.origin
+        origin += gesture.translation(in: nil)
+        window.setFrameOrigin(origin)
     }
 
 

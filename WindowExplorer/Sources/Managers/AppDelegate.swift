@@ -17,6 +17,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         WindowManager.instance.registerForNotifications()
         TouchManager.instance.setupTouchSocket()
+        WindowManager.instance.displayWindow(for: .place, at: CGPoint(x: 500, y: 500))
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

@@ -101,17 +101,6 @@
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="irn-zg-xjl">
-                                        <rect key="frame" x="275" y="91" width="81" height="32"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pQ6-rF-9Cm">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <segue destination="h8q-KE-X7P" kind="popover" popoverAnchorView="irn-zg-xjl" popoverBehavior="t" preferredEdge="maxY" id="rXT-0R-bYV"/>
-                                        </connections>
-                                    </button>
                                     <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8wA-OD-SXO">
                                         <rect key="frame" x="16" y="540" width="29" height="26"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -120,16 +109,9 @@
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
                                         <connections>
-                                            <action selector="closeButtonTapped:" target="k5b-MF-Zdf" id="6V7-LI-4bo"/>
+                                            <action selector="closeButtonTapped:" target="k5b-MF-Zdf" id="S6c-CZ-NI8"/>
                                         </connections>
                                     </button>
-                                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U1m-am-vcE">
-                                        <rect key="frame" x="16" y="540" width="29" height="26"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="30" id="2If-k6-x3X"/>
-                                            <constraint firstAttribute="height" constant="30" id="DUg-an-qOr"/>
-                                        </constraints>
-                                    </customView>
                                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mLq-My-PVk" userLabel="Player Button">
                                         <rect key="frame" x="54" y="91" width="123" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -144,6 +126,13 @@
                                     <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TRM-ly-veh" userLabel="Player Button View">
                                         <rect key="frame" x="54" y="91" width="123" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    </customView>
+                                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U1m-am-vcE">
+                                        <rect key="frame" x="16" y="541" width="29" height="26"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="30" id="2If-k6-x3X"/>
+                                            <constraint firstAttribute="height" constant="30" id="DUg-an-qOr"/>
+                                        </constraints>
                                     </customView>
                                 </subviews>
                                 <constraints>

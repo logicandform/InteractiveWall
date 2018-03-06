@@ -39,6 +39,7 @@
 		2204625C204730C70067D9FB /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046251204730C70067D9FB /* Entity.swift */; };
 		2204625D204730C70067D9FB /* TouchProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046252204730C70067D9FB /* TouchProperties.swift */; };
 		2204625E204730C70067D9FB /* Occurance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046253204730C70067D9FB /* Occurance.swift */; };
+		2276AE65204E7150001FAD8B /* BorderlessWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2276AE64204E7150001FAD8B /* BorderlessWindow.swift */; };
 		22914F752049001B0000D4E1 /* TouchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22914F742049001B0000D4E1 /* TouchManager.swift */; };
 		22914F77204905230000D4E1 /* NSApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22914F76204905230000D4E1 /* NSApplication.swift */; };
 		22A4985E204733770024B46C /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A4985D204733770024B46C /* WindowManager.swift */; };
@@ -106,6 +107,7 @@
 		22046251204730C70067D9FB /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		22046252204730C70067D9FB /* TouchProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchProperties.swift; sourceTree = "<group>"; };
 		22046253204730C70067D9FB /* Occurance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Occurance.swift; sourceTree = "<group>"; };
+		2276AE64204E7150001FAD8B /* BorderlessWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderlessWindow.swift; sourceTree = "<group>"; };
 		22914F742049001B0000D4E1 /* TouchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchManager.swift; sourceTree = "<group>"; };
 		22914F76204905230000D4E1 /* NSApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSApplication.swift; sourceTree = "<group>"; };
 		22A4985D204733770024B46C /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
@@ -205,6 +207,14 @@
 			path = Gestures;
 			sourceTree = "<group>";
 		};
+		2276AE63204E7122001FAD8B /* Windows */ = {
+			isa = PBXGroup;
+			children = (
+				2276AE64204E7150001FAD8B /* BorderlessWindow.swift */,
+			);
+			path = Windows;
+			sourceTree = "<group>";
+		};
 		22A4985F204734790024B46C /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
@@ -292,6 +302,7 @@
 			children = (
 				22A923262044AF05003EA9BB /* Main.storyboard */,
 				22A923342044AF45003EA9BB /* Managers */,
+				2276AE63204E7122001FAD8B /* Windows */,
 				22A9233B2044B047003EA9BB /* Controllers */,
 				22B1E2D0204638CD00BDDF14 /* Helpers */,
 				2204623B20472FFD0067D9FB /* Models */,
@@ -516,6 +527,7 @@
 				8E4010A220487E0300E81AAA /* Collection.swift in Sources */,
 				22B1E2CD204638B900BDDF14 /* GestureManager.swift in Sources */,
 				22A76FE620464764006C0AE7 /* PDFViewController.swift in Sources */,
+				2276AE65204E7150001FAD8B /* BorderlessWindow.swift in Sources */,
 				22A4985E204733770024B46C /* WindowManager.swift in Sources */,
 				22046245204730780067D9FB /* RotateGestureRecognizer.swift in Sources */,
 				2204623A20472FDF0067D9FB /* MapKit.swift in Sources */,
