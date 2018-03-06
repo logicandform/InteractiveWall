@@ -10,6 +10,7 @@ final class TouchManager: SocketManagerDelegate {
 
     private var socketManager: SocketManager?
     private var touchesForMapID = [Int: Set<Touch>]()
+    private var touchNeedsUpdate = [Touch: Bool]()
 
     private struct Keys {
         static let touch = "touch"
@@ -44,7 +45,9 @@ final class TouchManager: SocketManagerDelegate {
             manager.handle(touch)
         } else {
             let map = mapOwner(of: touch) ?? calculateMap(for: touch)
-            send(touch, to: map)
+            if needsUpdate(touch) {
+                send(touch, to: map)
+            }
         }
     }
 
@@ -115,7 +118,7 @@ final class TouchManager: SocketManagerDelegate {
     }
 
     private func mapOwner(of touch: Touch) -> Int? {
-        guard let (mapID, _) = touchesForMapID.first(where: { $0.1.contains(touch) }) else {
+        guard let (mapID, _) = touchesForMapID.first(where: { $0.value.contains(touch) }) else {
             return nil
         }
 
@@ -124,10 +127,8 @@ final class TouchManager: SocketManagerDelegate {
 
     /// Calculates the map index based off the x-position of the touch and the screens
     private func calculateMap(for touch: Touch) -> Int {
-//        precondition(touch.state == .down, "A touch with state == .moved or .down should have a map owner to use.")
-
         guard let screen = NSScreen.screens.at(index: touch.screen) else {
-            return 0
+            return Configuration.loadMapsOnFirstScreen ? 0 : 1
         }
 
         let baseMapForScreen = touch.screen * Int(Configuration.mapsPerScreen)
@@ -135,5 +136,22 @@ final class TouchManager: SocketManagerDelegate {
         let mapForScreen = Int((touch.position.x - screen.frame.minX) / mapWidth)
         let offset = Configuration.loadMapsOnFirstScreen ? 0 : Configuration.mapsPerScreen
         return baseMapForScreen + mapForScreen - offset
+    }
+
+    /// Determines if a touch being sent to a map needs to be sent. To reduce the number of notifications sent, we only send every second moved event.
+    private func needsUpdate(_ touch: Touch) -> Bool {
+        switch touch.state {
+        case .down:
+            touchNeedsUpdate[touch] = false
+        case .up:
+            touchNeedsUpdate.removeValue(forKey: touch)
+        case .moved:
+            if let update = touchNeedsUpdate[touch] {
+                touchNeedsUpdate[touch] = !update
+                return update
+            }
+        }
+
+        return true
     }
 }

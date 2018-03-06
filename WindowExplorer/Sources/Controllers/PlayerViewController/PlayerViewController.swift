@@ -17,7 +17,7 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
     private(set) var gestureManager: GestureManager!
 
     private struct Constants {
-        static let testVideoURL = URL(fileURLWithPath: "/Users/macpro/Downloads/test-mac.mp4")
+        static let testVideoURL = URL(fileURLWithPath: "/Users/imacpro/Desktop/test-mac.mp4")
         static let playerStateIndicatorRadius: CGFloat = 25
     }
 

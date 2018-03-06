@@ -12,11 +12,11 @@ class Touch: Hashable, CustomStringConvertible {
     let id: Int
 
     var hashValue: Int {
-        return id
+        return id ^ screen
     }
 
     var description: String {
-        return "( [Touch] ID: \(id), Position: \(position), State: \(state) )"
+        return "( [Touch] ID: \(id), Screen: \(screen), Position: \(position), State: \(state) )"
     }
 
     private struct Keys {
@@ -84,6 +84,6 @@ class Touch: Hashable, CustomStringConvertible {
     }
 
     static func == (lhs: Touch, rhs: Touch) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.id == rhs.id && lhs.screen == rhs.screen
     }
 }
