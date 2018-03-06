@@ -25,22 +25,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         appID = windowIndex + (screenID - 1) * Configuration.mapsPerScreen
 
         let mapStoryboard = NSStoryboard(name: MapViewController.storyboard, bundle: nil)
-        let mapVC = mapStoryboard.instantiateInitialController() as! MapViewController
+        let mapController = mapStoryboard.instantiateInitialController() as! MapViewController
         let mapWindow: NSWindow
 
         if Configuration.frameless {
             let screen = NSScreen.screens[screenIndex]
             let screenWidth = screen.frame.width / CGFloat(Configuration.mapsPerScreen)
-            let windowFrame = NSRect(x: screen.frame.minX + screenWidth * CGFloat(windowIndex), y: screen.frame.minY, width: screenWidth, height: screen.frame.height)
-            mapWindow = NSWindow(contentRect: windowFrame, styleMask: .borderless, backing: .buffered, defer: true, screen: screen)
-            mapWindow.level = .statusBar
-            mapWindow.contentViewController = mapVC
-            mapWindow.setFrame(windowFrame, display: true)
+            let frame = NSRect(x: screen.frame.minX + screenWidth * CGFloat(windowIndex), y: screen.frame.minY, width: screenWidth, height: screen.frame.height)
+            mapWindow = BorderlessWindow(frame: frame, controller: mapController)
+            mapWindow.setFrame(frame, display: true)
         } else {
-            mapWindow = NSWindow(contentViewController: mapVC)
+            mapWindow = NSWindow(contentViewController: mapController)
+            mapWindow.title = "Map Window"
         }
 
-        mapWindow.title = "Map Window"
         mapWindow.makeKeyAndOrderFront(self)
 
         /// Display the DemoViewController
