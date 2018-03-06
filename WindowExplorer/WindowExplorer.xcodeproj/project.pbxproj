@@ -58,6 +58,8 @@
 		8E4010A020487B8D00E81AAA /* WindowFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E40109F20487B8D00E81AAA /* WindowFactory.swift */; };
 		8E4010A220487E0300E81AAA /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4010A120487E0300E81AAA /* Collection.swift */; };
 		C6DB17689F287C9826286DF2 /* Pods_All_WindowExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */; };
+		D90151E4204E2EAD00B79E5F /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90151E3204E2EAD00B79E5F /* TestViewController.swift */; };
+		D90151E6204E2EBA00B79E5F /* Test.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D90151E5204E2EBA00B79E5F /* Test.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -130,6 +132,8 @@
 		8E4010A120487E0300E81AAA /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_WindowExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE471FCE047AE2FD1C92BA3A /* Pods-All-WindowExplorer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-WindowExplorer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer.release.xcconfig"; sourceTree = "<group>"; };
+		D90151E3204E2EAD00B79E5F /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		D90151E5204E2EBA00B79E5F /* Test.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Test.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -335,6 +339,8 @@
 				2204620820472DE10067D9FB /* PlaceViewController */,
 				22A76FE82046477A006C0AE7 /* PlayerViewController */,
 				22A76FE320464764006C0AE7 /* PDFViewControlller */,
+				D90151E3204E2EAD00B79E5F /* TestViewController.swift */,
+				D90151E5204E2EBA00B79E5F /* Test.storyboard */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -435,6 +441,7 @@
 				2204620D20472DE80067D9FB /* Place.storyboard in Resources */,
 				2204621720472F2D0067D9FB /* PlayerControl.xib in Resources */,
 				22A923282044AF05003EA9BB /* Main.storyboard in Resources */,
+				D90151E6204E2EBA00B79E5F /* Test.storyboard in Resources */,
 				22A76FEB2046477A006C0AE7 /* Player.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -508,6 +515,7 @@
 			files = (
 				22A76FEC2046477A006C0AE7 /* PlayerViewController.swift in Sources */,
 				2204623520472FDF0067D9FB /* Int.swift in Sources */,
+				D90151E4204E2EAD00B79E5F /* TestViewController.swift in Sources */,
 				2204620F20472DE80067D9FB /* PlaceViewController.swift in Sources */,
 				22046246204730780067D9FB /* GestureRecognizer.swift in Sources */,
 				2204625D204730C70067D9FB /* TouchProperties.swift in Sources */,

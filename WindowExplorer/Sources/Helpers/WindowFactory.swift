@@ -8,6 +8,7 @@ enum WindowType {
     case place
     case player
     case pdf
+    case test
 
     var size: CGSize {
         return CGSize(width: 640, height: 600)
@@ -24,7 +25,7 @@ final class WindowFactory {
         guard let screen = NSScreen.containing(x: origin.x), let window = window(in: screen, at: origin, size: type.size) else {
             return nil
         }
-        
+
         window.contentViewController = controller(for: type)
         return window
     }
@@ -43,6 +44,9 @@ final class WindowFactory {
         case .pdf:
             let storyboard = NSStoryboard(name: PDFViewController.storyboard, bundle: Bundle.main)
             return storyboard.instantiateInitialController() as! PDFViewController
+        case .test:
+            let storyboard = NSStoryboard(name: TestViewController.storyboard, bundle: Bundle.main)
+            return storyboard.instantiateInitialController() as! TestViewController
         }
     }
 
@@ -51,7 +55,8 @@ final class WindowFactory {
         let window = NSWindow(contentRect: windowFrame, styleMask: .borderless, backing: .buffered, defer: true, screen: screen)
         window.level = .statusBar
         window.setFrame(windowFrame, display: true)
-        window.backgroundColor = NSColor.clear
+        window.backgroundColor = .clear
+        window.isReleasedWhenClosed = false
         window.makeKeyAndOrderFront(self)
         return window
     }
