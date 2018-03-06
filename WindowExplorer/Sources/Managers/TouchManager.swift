@@ -130,10 +130,10 @@ final class TouchManager: SocketManagerDelegate {
             return 0
         }
 
-        let baseMapForScreen = touch.screen * Int(Configuration.numberOfWindows)
-        let mapWidth = screen.frame.width / CGFloat(Configuration.numberOfWindows)
+        let baseMapForScreen = touch.screen * Int(Configuration.mapsPerScreen)
+        let mapWidth = screen.frame.width / CGFloat(Configuration.mapsPerScreen)
         let mapForScreen = Int((touch.position.x - screen.frame.minX) / mapWidth)
-        let offset = Configuration.loadMapsOnFirstScreen ? 0 : Configuration.numberOfWindows
+        let offset = Configuration.loadMapsOnFirstScreen ? 0 : Configuration.mapsPerScreen
         return baseMapForScreen + mapForScreen - offset
     }
 }
