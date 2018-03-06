@@ -37,7 +37,7 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
         setupGestures()
     }
 
-
+ 
     // MARK: Setup
 
     private func setupPlayer() {

@@ -8,7 +8,6 @@ enum WindowType {
     case place
     case player
     case pdf
-    case test
 
     var size: CGSize {
         return CGSize(width: 640, height: 600)
@@ -44,9 +43,6 @@ final class WindowFactory {
         case .pdf:
             let storyboard = NSStoryboard(name: PDFViewController.storyboard, bundle: Bundle.main)
             return storyboard.instantiateInitialController() as! PDFViewController
-        case .test:
-            let storyboard = NSStoryboard(name: TestViewController.storyboard, bundle: Bundle.main)
-            return storyboard.instantiateInitialController() as! TestViewController
         }
     }
 
