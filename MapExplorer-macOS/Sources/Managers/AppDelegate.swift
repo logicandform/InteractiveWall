@@ -4,7 +4,7 @@ import Cocoa
 
 
 struct Configuration {
-    static let mapsPerScreen = 4
+    static let mapsPerScreen = 1
     static let frameless = true
     static let touchScreenSize = CGSize(width: 4095, height: 2242.5)
     static let touchScreenRatio: CGFloat = 23.0 / 42.0
