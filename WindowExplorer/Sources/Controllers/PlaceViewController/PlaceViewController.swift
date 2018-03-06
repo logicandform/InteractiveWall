@@ -54,21 +54,21 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         nsPanGesture = NSPanGestureRecognizer(target: self, action: #selector(handleMouseDrag(_:)))
         detailView.addGestureRecognizer(nsPanGesture)
 
-        let singleFingerRelatedViewPan = PanGestureRecognizer()
-        gestureManager.add(singleFingerRelatedViewPan, to: relatedView)
-        singleFingerRelatedViewPan.gestureUpdated = tableViewDidPan(_:)
-
         let singleFingerDetailViewPan = PanGestureRecognizer()
         gestureManager.add(singleFingerDetailViewPan, to: detailView)
-        singleFingerDetailViewPan.gestureUpdated = detailViewDidPan(_:)
+        singleFingerDetailViewPan.gestureUpdated = handleDetailViewPan(_:)
+
+        let singleFingerRelatedViewPan = PanGestureRecognizer()
+        gestureManager.add(singleFingerRelatedViewPan, to: relatedView)
+        singleFingerRelatedViewPan.gestureUpdated = handleTableViewPan(_:)
 
         let singleFingerTap = TapGestureRecognizer()
         gestureManager.add(singleFingerTap, to: closeButtonView)
-        singleFingerTap.gestureUpdated = closeButtonViewDidTap(_:)
+        singleFingerTap.gestureUpdated = didTapCloseButton(_:)
 
         let singleFingerRelatedViewTap = TapGestureRecognizer()
         gestureManager.add(singleFingerRelatedViewTap, to: relatedView)
-        singleFingerRelatedViewTap.gestureUpdated = relatedViewDidTap(_:)
+        singleFingerRelatedViewTap.gestureUpdated = didTapRelatedView(_:)
 
         let singleFingerVideoButtonTap = TapGestureRecognizer()
         gestureManager.add(singleFingerVideoButtonTap, to: playerButtonView)
@@ -78,22 +78,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
 
     // MARK: Gesture Handling
 
-    private func tableViewDidPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer else {
-            return
-        }
-
-        switch pan.state {
-        case .recognized, .momentum:
-            var position = relatedView.visibleRect.origin
-            position.y += pan.delta.dy
-            relatedView.scroll(position)
-        default:
-            return
-        }
-    }
-
-    private func detailViewDidPan(_ gesture: GestureRecognizer) {
+    private func handleDetailViewPan(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
             return
         }
@@ -108,7 +93,22 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         }
     }
 
-    private func closeButtonViewDidTap(_ gesture: GestureRecognizer) {
+    private func handleTableViewPan(_ gesture: GestureRecognizer) {
+        guard let pan = gesture as? PanGestureRecognizer else {
+            return
+        }
+
+        switch pan.state {
+        case .recognized, .momentum:
+            var position = relatedView.visibleRect.origin
+            position.y += pan.delta.dy
+            relatedView.scroll(position)
+        default:
+            return
+        }
+    }
+
+    private func didTapCloseButton(_ gesture: GestureRecognizer) {
         guard gesture is TapGestureRecognizer else {
             return
         }
@@ -125,7 +125,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         WindowManager.instance.displayWindow(for: .player, at: position)
     }
 
-    private func relatedViewDidTap(_ gesture: GestureRecognizer) {
+    private func didTapRelatedView(_ gesture: GestureRecognizer) {
         guard let tap = gesture as? TapGestureRecognizer, let location = tap.position else {
             return
         }

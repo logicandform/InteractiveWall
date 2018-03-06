@@ -14,8 +14,6 @@ class PDFViewController: NSViewController {
         static let url = URL(fileURLWithPath: "/Users/Jeremy/Desktop/")
     }
 
-    private var panGesture: NSPanGestureRecognizer!
-    private var initialPanningOrigin: CGPoint?
     weak var gestureManager: GestureManager!
     var endURL: String!
 
@@ -27,6 +25,10 @@ class PDFViewController: NSViewController {
         setupPDF()
         animateViewIn()
         setupGestures()
+    }
+
+    override func viewWillAppear() {
+        pdfThumbnailView.pdfView = pdfView
     }
 
 
@@ -47,16 +49,53 @@ class PDFViewController: NSViewController {
     }
 
     private func setupGestures() {
-        panGesture = NSPanGestureRecognizer(target: self, action: #selector(handlePan(gesture:)))
+        let panGesture = NSPanGestureRecognizer(target: self, action: #selector(handleMousePan(_:)))
         view.addGestureRecognizer(panGesture)
 
-//        let singleFingerPan = PanGestureRecognizer()
-//        gestureManager.add(singleFingerPan, to: view)
-//        singleFingerPan.gestureUpdated = handlePan(_:)
-//
-//        let singleFingerCloseButtonTap = TapGestureRecognizer()
-//        gestureManager.add(singleFingerCloseButtonTap, to: closeButtonView)
-//        singleFingerCloseButtonTap.gestureUpdated = animateViewOut(_:)
+        let singleFingerPan = PanGestureRecognizer()
+        gestureManager.add(singleFingerPan, to: view)
+        singleFingerPan.gestureUpdated = handlePan(_:)
+
+        let singleFingerCloseButtonTap = TapGestureRecognizer()
+        gestureManager.add(singleFingerCloseButtonTap, to: closeButtonView)
+        singleFingerCloseButtonTap.gestureUpdated = didTapCloseButton(_:)
+    }
+
+
+    // MARK: Gesture Handling
+
+    private func handlePan(_ gesture: GestureRecognizer) {
+        guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
+            return
+        }
+
+        switch pan.state {
+        case .recognized, .momentum:
+            var origin = window.frame.origin
+            origin += pan.delta
+            window.setFrameOrigin(origin)
+        default:
+            return
+        }
+    }
+
+    private func didTapCloseButton(_ gesture: GestureRecognizer) {
+        guard gesture is TapGestureRecognizer else {
+            return
+        }
+
+        animateViewOut()
+    }
+
+    @objc
+    private func handleMousePan(_ gesture: NSPanGestureRecognizer) {
+        guard let window = view.window else {
+            return
+        }
+
+        var origin = window.frame.origin
+        origin += gesture.translation(in: nil)
+        window.setFrameOrigin(origin)
     }
 
 
@@ -73,7 +112,7 @@ class PDFViewController: NSViewController {
         view.alphaValue = 0.0
         pdfView.frame.origin.y = pdfView.frame.size.height
 
-        NSAnimationContext.runAnimationGroup({_ in
+        NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = 0.7
             view.animator().alphaValue = 1.0
             pdfView.animator().frame.origin.y = 0
@@ -81,39 +120,14 @@ class PDFViewController: NSViewController {
     }
 
     private func animateViewOut() {
-        NSAnimationContext.runAnimationGroup({_ in
+        NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = 1.0
             view.animator().alphaValue = 0.0
             pdfView.animator().frame.origin.y = pdfView.frame.size.height
-        }, completionHandler: {
-            self.view.removeFromSuperview()
-        })
-    }
-
-    @objc
-    private func handlePan(gesture: NSPanGestureRecognizer) {
-        if gesture.state == .began {
-            initialPanningOrigin = view.frame.origin
-            return
-        }
-
-        if var origin = initialPanningOrigin {
-            origin += gesture.translation(in: view.superview)
-            view.frame.origin = origin
-            pdfThumbnailView.backgroundColor = #colorLiteral(red: 0.9961728454, green: 0.9902502894, blue: 1, alpha: 0)
-            pdfView.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
-            pdfView.displayDirection = .horizontal
-            pdfView.autoScales = true
-
-            if let url = Bundle.main.url(forResource: "5V Relay", withExtension: "pdf") {
-                if let pdfDoc = PDFDocument(url: url) {
-                    pdfView.document = pdfDoc
-                }
+        }, completionHandler: { [weak self] in
+            if let strongSelf = self {
+                // remove window
             }
-        }
-    }
-
-    override func viewWillAppear() {
-        pdfThumbnailView.pdfView = pdfView
+        })
     }
 }

@@ -58,7 +58,7 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
 
         let singleFingerPan = PanGestureRecognizer()
         gestureManager.add(singleFingerPan, to: view)
-        singleFingerPan.gestureUpdated = didPanView(_:)
+        singleFingerPan.gestureUpdated = didPanDetailView(_:)
 
         let singleFingerCloseButtonTap = TapGestureRecognizer()
         gestureManager.add(singleFingerCloseButtonTap, to: dismissButton)
@@ -76,14 +76,16 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
         playerControl.toggle()
     }
 
-    private func didPanView(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer else {
+    private func didPanDetailView(_ gesture: GestureRecognizer) {
+        guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
             return
         }
 
         switch pan.state {
         case .recognized, .momentum:
-            view.frame.origin += pan.delta
+            var origin = window.frame.origin
+            origin += pan.delta
+            window.setFrameOrigin(origin)
         default:
             return
         }
