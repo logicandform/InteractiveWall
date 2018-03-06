@@ -1,17 +1,14 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
-import Cocoa
+import Foundation
+import AppKit
 
 class BorderlessWindow: NSWindow {
-
-    private struct Constants {
-        static let windowLevelOverMap = NSWindow.Level(30)
-    }
 
     init(frame: CGRect, controller: NSViewController) {
         super.init(contentRect: frame, styleMask: .borderless, backing: .buffered, defer: true)
         self.contentViewController = controller
-        self.level = Constants.windowLevelOverMap
+        self.level = .statusBar
         self.isReleasedWhenClosed = false
         self.backgroundColor = .clear
     }

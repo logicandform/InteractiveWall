@@ -40,7 +40,9 @@ final class WindowManager {
     }
 
     func displayWindow(for type: WindowType, at origin: CGPoint) {
-        if let window = WindowFactory.window(for: type, at: origin), let controller = window.contentViewController as? GestureResponder {
+        let window = WindowFactory.window(for: type, at: origin)
+
+        if let controller = window.contentViewController as? GestureResponder {
             windows[window] = controller.gestureManager
         }
     }
