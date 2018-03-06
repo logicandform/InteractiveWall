@@ -4,7 +4,7 @@ import Cocoa
 
 
 struct Configuration {
-    static let numberOfWindows = 1
+    static let mapsPerScreen = 1
     static let frameless = true
     static let touchScreenSize = CGSize(width: 4095, height: 2242.5)
     static let touchScreenRatio: CGFloat = 23.0 / 42.0
@@ -22,7 +22,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let screenIndex = Int(CommandLine.arguments[1]) ?? 0
         let windowIndex = Int(CommandLine.arguments[2]) ?? 0
         screenID = screenIndex
-        appID = windowIndex
+        appID = windowIndex + (screenID - 1) * Configuration.mapsPerScreen
 
         let mapStoryboard = NSStoryboard(name: MapViewController.storyboard, bundle: nil)
         let mapVC = mapStoryboard.instantiateInitialController() as! MapViewController
@@ -30,7 +30,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         if Configuration.frameless {
             let screen = NSScreen.screens[screenIndex]
-            let screenWidth = screen.frame.width / CGFloat(Configuration.numberOfWindows)
+            let screenWidth = screen.frame.width / CGFloat(Configuration.mapsPerScreen)
             let windowFrame = NSRect(x: screen.frame.minX + screenWidth * CGFloat(windowIndex), y: screen.frame.minY, width: screenWidth, height: screen.frame.height)
             mapWindow = NSWindow(contentRect: windowFrame, styleMask: .borderless, backing: .buffered, defer: true, screen: screen)
             mapWindow.level = .statusBar

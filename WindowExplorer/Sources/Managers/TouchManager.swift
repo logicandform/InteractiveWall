@@ -6,7 +6,7 @@ import MONode
 final class TouchManager: SocketManagerDelegate {
 
     static let instance = TouchManager()
-    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12222)
+    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12221)
 
     private var socketManager: SocketManager?
     private var touchesForMapID = [Int: Set<Touch>]()
@@ -73,11 +73,11 @@ final class TouchManager: SocketManagerDelegate {
     private func gestureManager(for touch: Touch) -> GestureManager? {
         let windows = WindowManager.instance.windows.reversed()
         if touch.state == .down {
-            if let (_, manager) = windows.first(where: { $0.0.frame.contains(touch.position) }) {
+            if let (_, manager) = windows.first(where: { $0.key.frame.contains(touch.position) }) {
                 return manager
             }
         } else {
-            if let (_, manager) = windows.first(where: { $0.1.owns(touch) }) {
+            if let (_, manager) = windows.first(where: { $0.value.owns(touch) }) {
                 return manager
             }
         }
@@ -130,10 +130,10 @@ final class TouchManager: SocketManagerDelegate {
             return 0
         }
 
-        let baseMapForScreen = touch.screen * Int(Configuration.numberOfWindows)
-        let mapWidth = screen.frame.width / CGFloat(Configuration.numberOfWindows)
+        let baseMapForScreen = touch.screen * Int(Configuration.mapsPerScreen)
+        let mapWidth = screen.frame.width / CGFloat(Configuration.mapsPerScreen)
         let mapForScreen = Int((touch.position.x - screen.frame.minX) / mapWidth)
-        let offset = Configuration.loadMapsOnFirstScreen ? 0 : Configuration.numberOfWindows
+        let offset = Configuration.loadMapsOnFirstScreen ? 0 : Configuration.mapsPerScreen
         return baseMapForScreen + mapForScreen - offset
     }
 }

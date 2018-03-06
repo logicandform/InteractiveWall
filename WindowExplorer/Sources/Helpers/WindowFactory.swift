@@ -24,7 +24,7 @@ final class WindowFactory {
         guard let screen = NSScreen.containing(x: origin.x), let window = window(in: screen, at: origin, size: type.size) else {
             return nil
         }
-        
+
         window.contentViewController = controller(for: type)
         return window
     }
@@ -51,7 +51,8 @@ final class WindowFactory {
         let window = NSWindow(contentRect: windowFrame, styleMask: .borderless, backing: .buffered, defer: true, screen: screen)
         window.level = .statusBar
         window.setFrame(windowFrame, display: true)
-        window.backgroundColor = NSColor.clear
+        window.backgroundColor = .clear
+        window.isReleasedWhenClosed = false
         window.makeKeyAndOrderFront(self)
         return window
     }

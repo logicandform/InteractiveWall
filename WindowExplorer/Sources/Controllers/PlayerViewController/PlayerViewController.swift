@@ -37,7 +37,7 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
         setupGestures()
     }
 
-
+ 
     // MARK: Setup
 
     private func setupPlayer() {
@@ -147,20 +147,24 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
         view.alphaValue = 0.0
         detailView.frame.origin.y = view.frame.size.height
 
-        NSAnimationContext.runAnimationGroup({_ in
+        NSAnimationContext.runAnimationGroup({ [weak self] _ in
             NSAnimationContext.current.duration = 0.7
             view.animator().alphaValue = 1.0
-            detailView.animator().frame.origin.y = 0
+            self?.detailView.animator().frame.origin.y = 0
         })
     }
 
     private func animateViewOut() {
-        NSAnimationContext.runAnimationGroup({_ in
-            NSAnimationContext.current.duration = 1.0
-            detailView.animator().alphaValue = 0.0
-            detailView.animator().frame.origin.y = view.frame.size.height
-        }, completionHandler: {
-            self.view.removeFromSuperview()
+        NSAnimationContext.runAnimationGroup({ [weak self] _ in
+            if let strongSelf = self {
+                NSAnimationContext.current.duration = 1.0
+                strongSelf.detailView.animator().alphaValue = 0.0
+                strongSelf.detailView.animator().frame.origin.y = strongSelf.view.frame.size.height
+            }
+        }, completionHandler: { [weak self] in
+            if let strongSelf = self {
+                WindowManager.instance.closeWindow(for: strongSelf.gestureManager)
+            }
         })
     }
 }

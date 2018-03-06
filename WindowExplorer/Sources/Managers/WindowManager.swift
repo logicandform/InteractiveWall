@@ -32,8 +32,11 @@ final class WindowManager {
         }
     }
 
-    func remove(_ window: NSWindow) {
-        windows.removeValue(forKey: window)
+    func closeWindow(for manager: GestureManager) {
+        if let (window, _) = windows.first(where: { $0.value === manager }) {
+            windows.removeValue(forKey: window)
+            window.close()
+        }
     }
 
     func displayWindow(for type: WindowType, at origin: CGPoint) {

@@ -283,11 +283,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
 
         }, completionHandler: { [weak self] in
             if let strongSelf = self {
-                strongSelf.gestureManager.removeAll()
-                strongSelf.gestureManager = nil
-                strongSelf.view.removeFromSuperview()
-                strongSelf.view.window?.isReleasedWhenClosed = true
-                strongSelf.view.window?.close()
+                WindowManager.instance.closeWindow(for: strongSelf.gestureManager)
             }
         })
     }

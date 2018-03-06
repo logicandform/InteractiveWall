@@ -12,7 +12,7 @@ class Touch: Hashable, CustomStringConvertible {
     let id: Int
 
     var hashValue: Int {
-        return id
+        return id ^ screen
     }
 
     var description: String {
@@ -84,6 +84,6 @@ class Touch: Hashable, CustomStringConvertible {
     }
 
     static func == (lhs: Touch, rhs: Touch) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.id == rhs.id && lhs.screen == rhs.screen
     }
 }
