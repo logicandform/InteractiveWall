@@ -122,8 +122,8 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
 
     private struct Momentum {
         static let initialFrictionFactor = 1.05
-        static let frictionFactorScale = 0.001
-        static let minimumDeltaThreshold: Double = 0.8
+        static let frictionFactorScale = 0.01
+        static let minimumDeltaThreshold: Double = 8
     }
 
     private var momentumTimer: Timer?
@@ -151,6 +151,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             endMomentum()
             return
         }
+        print(delta.magnitude)
 
         frictionFactor += Momentum.frictionFactorScale
         delta /= frictionFactor

@@ -26,12 +26,12 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private(set) var lastPosition: CGPoint!
     private(set) var state = GestureState.possible
     private(set) var scale: CGFloat = Constants.initialScale
-    private(set) var delta = CGVector.zero
-    private let fingers: Int
     private var spreads = LastThree<CGFloat>()
     private var behavior = PinchBehavior.idle
     private var timeOfLastUpdate: Date!
     private var lastSpreadSinceUpdate: CGFloat!
+    private let fingers: Int
+    private var touches = Set<Touch>()
 
 
     // MARK: Init
@@ -52,6 +52,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
         switch state {
         case .possible, .momentum:
+            touches.insert(touch)
             momentumTimer?.invalidate()
             spreads.add(properties.spread)
             lastPosition = properties.cog
@@ -79,7 +80,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
                 scale = properties.spread / lastSpreadSinceUpdate
                 spreads.add(properties.spread)
                 lastPosition = properties.cog
-                if abs(timeOfLastUpdate.timeIntervalSinceNow) > Constants.updateTimeInterval {
+                if abs(timeOfLastUpdate.timeIntervalSinceNow) > 1 / 380 {
                     lastSpreadSinceUpdate = properties.spread
                     timeOfLastUpdate = Date()
                     gestureUpdated?(self)
@@ -98,11 +99,12 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func end(_ touch: Touch, with properties: TouchProperties) {
-        guard properties.touchCount.isZero && state == .recognized else {
+
+        guard properties.touchCount.isZero else {
             return
         }
 
-        if let lastSpread = spreads.last, let secondLastSpread = spreads.secondLast {
+        if let lastSpread = spreads.last, let secondLastSpread = spreads.secondLast, state == .recognized {
             beginMomentum(lastSpread, secondLastSpread, with: properties)
         } else {
             reset()
@@ -113,10 +115,10 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     func reset() {
         state = .possible
         scale = Constants.initialScale
-        delta = .zero
         behavior = .idle
         lastPosition = nil
         spreads.clear()
+        touches.removeAll()
     }
 
 
@@ -127,8 +129,8 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
     private struct Momentum {
         static let thresholdMomentumScale: CGFloat = 0.0001
-        static let initialFrictionFactor: CGFloat = 1.01
-        static let frictionFactorScale: CGFloat = 0.005
+        static let initialFrictionFactor: CGFloat = 1.06
+        static let frictionFactorScale: CGFloat = 0.004
     }
 
     private func beginMomentum(_ lastSpread: CGFloat, _ secondLastSpread: CGFloat, with properties: TouchProperties) {
