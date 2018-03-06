@@ -149,7 +149,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
         for circle in circleOverlays {
             if MKMapRectContainsPoint(circle.boundingMapRect, mapPoint), let place = placeForCircle[circle] {
-                postNotification(for: place)
+                postNotification(for: place, at: position)
                 return
             }
         }
@@ -291,20 +291,23 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     /// Display a place view controller on top of the selected callout annotation for the associated place.
     private func didSelectAnnotationCallout(for place: Place) {
-        mapView.deselectAnnotation(place, animated: false)
-        postNotification(for: place)
-    }
-
-    private func postNotification(for place: Place) {
         guard let window = view.window else {
             return
         }
 
-        var origin = window.frame.origin
-        origin += mapView.convert(place.coordinate, toPointTo: view)
-        origin.x += CGFloat(appID) * window.frame.width
+        mapView.deselectAnnotation(place, animated: false)
+        let position = mapView.convert(place.coordinate, toPointTo: view) + window.frame.origin
+        postNotification(for: place, at: position)
+    }
 
-        let info: JSON = [Keys.position: origin.toJSON(), Keys.place: place.title ?? "no title"]
+    private func postNotification(for place: Place, at position: CGPoint) {
+        guard let window = view.window else {
+            return
+        }
+
+        let location = window.frame.origin + position
+
+        let info: JSON = [Keys.position: location.toJSON(), Keys.place: place.title ?? "no title"]
         DistributedNotificationCenter.default().postNotificationName(WindowNotifications.place.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
