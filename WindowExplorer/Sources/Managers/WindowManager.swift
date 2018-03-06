@@ -32,8 +32,8 @@ final class WindowManager {
         }
     }
 
-    func closeWindow(for manager: GestureManager) {
-        if let (window, _) = windows.first(where: { $0.value === manager }) {
+    func closeWindow(for controller: NSViewController) {
+        if let responder = controller as? GestureResponder, let (window, _) = windows.first(where: { $0.value === responder.gestureManager }) {
             windows.removeValue(forKey: window)
             window.close()
         }

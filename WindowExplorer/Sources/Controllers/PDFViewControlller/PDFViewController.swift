@@ -126,7 +126,7 @@ class PDFViewController: NSViewController {
             pdfView.animator().frame.origin.y = pdfView.frame.size.height
         }, completionHandler: { [weak self] in
             if let strongSelf = self {
-                // remove window
+                WindowManager.instance.closeWindow(for: strongSelf)
             }
         })
     }

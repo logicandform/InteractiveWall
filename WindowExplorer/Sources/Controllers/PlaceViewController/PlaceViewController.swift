@@ -268,7 +268,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
 
         }, completionHandler: { [weak self] in
             if let strongSelf = self {
-                WindowManager.instance.closeWindow(for: strongSelf.gestureManager)
+                WindowManager.instance.closeWindow(for: strongSelf)
             }
         })
     }
