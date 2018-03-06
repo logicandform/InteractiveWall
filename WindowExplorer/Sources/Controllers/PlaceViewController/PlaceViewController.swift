@@ -131,7 +131,8 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         }
 
         // Invert coordinate system for a tableview, using detailView for its static height.
-        let invertedLocation = location.inverted(in: detailView)
+        var invertedLocation = location.inverted(in: detailView)
+        invertedLocation.y += relatedView.visibleRect.origin.y
         let row = relatedView.row(at: invertedLocation)
         if let relatedItemView = relatedView.view(atColumn: 0, row: row, makeIfNecessary: false) as? RelatedItemView {
             relatedItemView.didTapView()
