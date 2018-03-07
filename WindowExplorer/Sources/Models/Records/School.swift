@@ -13,12 +13,12 @@ class School {
     let mediaTitle: String?
     let mediaURL: URL?
     let thumbnailURL: URL?
-    let themeIDs: [Int]
     let mediaPath: String?
     var relatedSchools: [School]?
     var relatedOrganizations: [Organization]?
     var relatedArtifacts: [Artifact]?
     var relatedEvents: [Event]?
+    var themes: [Theme]?
 
     private struct Keys {
         static let id = "id"
@@ -29,12 +29,12 @@ class School {
         static let mediaURL = "mediaURL"
         static let thumbnailURL = "mediaThumbnailURL"
         static let mediaTitle = "mediaTitle"
-        static let themeIDs = "themeIDs"
         static let mediaPath = "mediaPath"
         static let schools = "schools"
         static let organizations = "organizations"
         static let artifacts = "artifacts"
         static let events = "events"
+        static let themes = "themes"
     }
 
 
@@ -53,7 +53,6 @@ class School {
         self.mediaTitle = json[Keys.mediaTitle] as? String
         self.mediaURL = URL.from(json[Keys.mediaURL] as? String)
         self.thumbnailURL = URL.from(json[Keys.thumbnailURL] as? String)
-        self.themeIDs = json[Keys.themeIDs] as? [Int] ?? []
         self.mediaPath = json[Keys.mediaPath] as? String
 
         if let schoolsJSON = json[Keys.schools] as? [JSON] {
@@ -71,6 +70,10 @@ class School {
         if let eventsJSON = json[Keys.events] as? [JSON] {
             let events = eventsJSON.flatMap { Event(json: $0) }
             self.relatedEvents = events
+        }
+        if let themesJSON = json[Keys.themes] as? [JSON] {
+            let themes = themesJSON.flatMap { Theme(json: $0) }
+            self.themes = themes
         }
     }
 }
