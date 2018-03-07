@@ -16,7 +16,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     private(set) var state = GestureState.possible
     private(set) var delta = CGVector.zero
     private(set) var fingers: [Int]
-    private(set) var locations = LastThree<CGPoint>()
+    private(set) var locations = LastTwo<CGPoint>()
     private var positionForTouch = [Touch: CGPoint]()
     private var lastTouchCount: Int!
     private var cumulativeDelta = CGVector.zero
@@ -76,8 +76,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func end(_ touch: Touch, with properties: TouchProperties) {
-
-        guard properties.touchCount.isZero, positionForTouch.removeValue(forKey: touch) != nil else {
+        guard positionForTouch.removeValue(forKey: touch) != nil, properties.touchCount.isZero else {
             return
         }
 
