@@ -88,7 +88,6 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
             var origin = window.frame.origin
             origin += pan.delta.round()
             window.setFrameOrigin(origin)
-            
         default:
             return
         }
