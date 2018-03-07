@@ -16,7 +16,7 @@ enum NetworkError: Error {
 final class CachingNetwork {
 
     private struct Endpoints {
-        static let baseURL = "http://34.216.252.157:3000"
+        static let baseURL = "localhost:3000"
         static let eventsURL = baseURL + "/events"
         static let placesURL = baseURL + "/places"
         static let artifactsURL = baseURL + "/artifacts"
@@ -33,9 +33,18 @@ final class CachingNetwork {
     // MARK: API
 
     static func getPlaces() throws -> Promise<[Place]> {
-        return Alamofire.request(Endpoints.placesURL, headers: credentials).responseJSON().then { json in
+        let url = Endpoints.placesURL
+
+        return Alamofire.request(url, headers: credentials).responseJSON().then { json in
             try ResponseHandler.serializePlaces(from: json)
         }
     }
 
+//    static func getPlace(by id: String) -> Promise<Place> {
+//        let url = Endpoints.placesURL + "/" + id
+//
+//        return Alamofire.request(url, headers: credentials).responseJSON().then { json in
+//            try ResponseHandler.serializePlaces(from: json).first
+//        }
+//    }
 }

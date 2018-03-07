@@ -14,11 +14,11 @@ class School {
     let mediaURL: URL?
     let thumbnailURL: URL?
     let themeIDs: [Int]
-    let relatedSchoolIDs: [Int]
-    let relatedOrganizationIDs: [Int]
-    let relatedArtifactsIDs: [Int]
-    let relatedEventIDs: [Int]
     let mediaPath: String?
+    var relatedSchools: [School]?
+    var relatedOrganizations: [Organization]?
+    var relatedArtifacts: [Artifact]?
+    var relatedEvents: [Event]?
 
     private struct Keys {
         static let id = "id"
@@ -30,11 +30,11 @@ class School {
         static let thumbnailURL = "mediaThumbnailURL"
         static let mediaTitle = "mediaTitle"
         static let themeIDs = "themeIDs"
-        static let schoolIDs = "relatedSchoolIDs"
-        static let organizationIDs = "relatedOrganizationIDs"
-        static let artifactIDs = "relatedArtifactIDs"
-        static let eventIDs = "relatedEventIDs"
         static let mediaPath = "mediaPath"
+        static let schools = "schools"
+        static let organizations = "organizations"
+        static let artifacts = "artifacts"
+        static let events = "events"
     }
 
 
@@ -54,10 +54,23 @@ class School {
         self.mediaURL = URL.from(json[Keys.mediaURL] as? String)
         self.thumbnailURL = URL.from(json[Keys.thumbnailURL] as? String)
         self.themeIDs = json[Keys.themeIDs] as? [Int] ?? []
-        self.relatedSchoolIDs = json[Keys.schoolIDs] as? [Int] ?? []
-        self.relatedOrganizationIDs = json[Keys.organizationIDs] as? [Int] ?? []
-        self.relatedArtifactsIDs = json[Keys.artifactIDs] as? [Int] ?? []
-        self.relatedEventIDs = json[Keys.eventIDs] as? [Int] ?? []
         self.mediaPath = json[Keys.mediaPath] as? String
+
+        if let schoolsJSON = json[Keys.schools] as? [JSON] {
+            let schools = schoolsJSON.flatMap { School(json: $0) }
+            self.relatedSchools = schools
+        }
+        if let organizationsJSON = json[Keys.organizations] as? [JSON] {
+            let organizations = organizationsJSON.flatMap { Organization(json: $0) }
+            self.relatedOrganizations = organizations
+        }
+        if let artifactsJSON = json[Keys.artifacts] as? [JSON] {
+            let artifacts = artifactsJSON.flatMap { Artifact(json: $0) }
+            self.relatedArtifacts = artifacts
+        }
+        if let eventsJSON = json[Keys.events] as? [JSON] {
+            let events = eventsJSON.flatMap { Event(json: $0) }
+            self.relatedEvents = events
+        }
     }
 }

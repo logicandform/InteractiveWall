@@ -32,6 +32,7 @@
 		22046258204730C70067D9FB /* LastTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624D204730C70067D9FB /* LastTwo.swift */; };
 		22046259204730C70067D9FB /* School.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624E204730C70067D9FB /* School.swift */; };
 		2204625D204730C70067D9FB /* TouchProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046252204730C70067D9FB /* TouchProperties.swift */; };
+		226D0582204FC38700D74711 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226D0581204FC38600D74711 /* Event.swift */; };
 		2276AE65204E7150001FAD8B /* BorderlessWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2276AE64204E7150001FAD8B /* BorderlessWindow.swift */; };
 		22914F752049001B0000D4E1 /* TouchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22914F742049001B0000D4E1 /* TouchManager.swift */; };
 		22914F77204905230000D4E1 /* NSApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22914F76204905230000D4E1 /* NSApplication.swift */; };
@@ -97,6 +98,7 @@
 		2204624D204730C70067D9FB /* LastTwo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LastTwo.swift; path = "../../../../MapExplorer-macOS/Sources/Models/Records/LastTwo.swift"; sourceTree = "<group>"; };
 		2204624E204730C70067D9FB /* School.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = School.swift; sourceTree = "<group>"; };
 		22046252204730C70067D9FB /* TouchProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchProperties.swift; sourceTree = "<group>"; };
+		226D0581204FC38600D74711 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		2276AE64204E7150001FAD8B /* BorderlessWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderlessWindow.swift; sourceTree = "<group>"; };
 		22914F742049001B0000D4E1 /* TouchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchManager.swift; sourceTree = "<group>"; };
 		22914F76204905230000D4E1 /* NSApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSApplication.swift; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 		22A4987A204749EA0024B46C /* Records */ = {
 			isa = PBXGroup;
 			children = (
+				226D0581204FC38600D74711 /* Event.swift */,
 				3F2FAB5A204F7D24002EDF5D /* Artifact.swift */,
 				2204624D204730C70067D9FB /* LastTwo.swift */,
 				3F09025E2048E0E70044F100 /* Organization.swift */,
@@ -541,6 +544,7 @@
 				2204621820472F2D0067D9FB /* PlayerState.swift in Sources */,
 				22A923212044AF05003EA9BB /* AppDelegate.swift in Sources */,
 				22046259204730C70067D9FB /* School.swift in Sources */,
+				226D0582204FC38700D74711 /* Event.swift in Sources */,
 				3F09025F2048E0E70044F100 /* Organization.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

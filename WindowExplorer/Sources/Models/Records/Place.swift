@@ -8,20 +8,20 @@ class Place {
     let id: Int
     let title: String
     let coordinate: CLLocationCoordinate2D
-    let relatedSchoolIDs: [Int]
-    let relatedOrganizationIDs: [Int]
-    let relatedArtifactsIDs: [Int]
-    let relatedEventIDs: [Int]
+    var relatedSchools: [School]?
+    var relatedOrganizations: [Organization]?
+    var relatedArtifacts: [Artifact]?
+    var relatedEvents: [Event]?
 
     private struct Keys {
         static let id = "id"
         static let title = "title"
         static let type = "type"
         static let coordinate = "coordinate"
-        static let schoolIDs = "relatedSchoolIDs"
-        static let organizationIDs = "relatedOrganizationIDs"
-        static let artifactIDs = "relatedArtifactIds"
-        static let eventIDs = "relatedEventIds"
+        static let schools = "schools"
+        static let organizations = "organizations"
+        static let artifacts = "artifacts"
+        static let events = "events"
     }
 
 
@@ -37,9 +37,22 @@ class Place {
         self.id = id
         self.title = title
         self.coordinate = coordinate
-        self.relatedSchoolIDs = json[Keys.schoolIDs] as? [Int] ?? []
-        self.relatedOrganizationIDs = json[Keys.organizationIDs] as? [Int] ?? []
-        self.relatedArtifactsIDs = json[Keys.artifactIDs] as? [Int] ?? []
-        self.relatedEventIDs = json[Keys.eventIDs] as? [Int] ?? []
+
+        if let schoolsJSON = json[Keys.schools] as? [JSON] {
+            let schools = schoolsJSON.flatMap { School(json: $0) }
+            self.relatedSchools = schools
+        }
+        if let organizationsJSON = json[Keys.organizations] as? [JSON] {
+            let organizations = organizationsJSON.flatMap { Organization(json: $0) }
+            self.relatedOrganizations = organizations
+        }
+        if let artifactsJSON = json[Keys.artifacts] as? [JSON] {
+            let artifacts = artifactsJSON.flatMap { Artifact(json: $0) }
+            self.relatedArtifacts = artifacts
+        }
+        if let eventsJSON = json[Keys.events] as? [JSON] {
+            let events = eventsJSON.flatMap { Event(json: $0) }
+            self.relatedEvents = events
+        }
     }
 }
