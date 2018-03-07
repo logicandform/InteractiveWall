@@ -85,7 +85,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
 
         switch pan.state {
         case .recognized, .momentum:
-            var origin: CGPoint = window.frame.origin
+            var origin = window.frame.origin
             origin += pan.delta.round()
             window.setFrameOrigin(origin)
             
