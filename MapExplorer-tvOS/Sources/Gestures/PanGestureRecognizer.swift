@@ -57,7 +57,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func move(_ touch: Touch, with properties: TouchProperties) {
-        guard let currentLocation = locations.last, let lastPositionOfTouch = positionForTouch[touch], positionForTouch.keys.contains(touch) else {
+        guard let currentLocation = locations.last, let lastPositionOfTouch = positionForTouch[touch] else {
             return
         }
 
