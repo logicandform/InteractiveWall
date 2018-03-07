@@ -31,7 +31,6 @@
 		222AB408203DF8F5002BFAF2 /* Map.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 222AB407203DF8F5002BFAF2 /* Map.storyboard */; };
 		22318DE0202B984F0092937C /* ResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22318DDF202B984F0092937C /* ResponseHandler.swift */; };
 		22368E29203791A700D03A0E /* SelectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22368E28203791A700D03A0E /* SelectableView.swift */; };
-		226D0585204FC42400D74711 /* LastThree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226D0584204FC42400D74711 /* LastThree.swift */; };
 		226EA70120296C240067B542 /* NSImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226EA70020296C240067B542 /* NSImage.swift */; };
 		2276AE68204E75C2001FAD8B /* BorderlessWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2276AE67204E75C2001FAD8B /* BorderlessWindow.swift */; };
 		22A4986E2047492B0024B46C /* TouchState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A4986D2047492B0024B46C /* TouchState.swift */; };
@@ -98,7 +97,6 @@
 		222AB407203DF8F5002BFAF2 /* Map.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Map.storyboard; sourceTree = "<group>"; };
 		22318DDF202B984F0092937C /* ResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseHandler.swift; sourceTree = "<group>"; };
 		22368E28203791A700D03A0E /* SelectableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableView.swift; sourceTree = "<group>"; };
-		226D0584204FC42400D74711 /* LastThree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastThree.swift; sourceTree = "<group>"; };
 		226EA70020296C240067B542 /* NSImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSImage.swift; sourceTree = "<group>"; };
 		2276AE67204E75C2001FAD8B /* BorderlessWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderlessWindow.swift; sourceTree = "<group>"; };
 		22A4986D2047492B0024B46C /* TouchState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchState.swift; sourceTree = "<group>"; };
@@ -239,7 +237,7 @@
 		22290C262028FA1E000E0573 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				226D0584204FC42400D74711 /* LastThree.swift */,
+				3F0254F12049D521004B831C /* LastTwo.swift */,
 				22A49871204749500024B46C /* Records */,
 				22A49870204749470024B46C /* Annotations */,
 				22A4986F2047493A0024B46C /* Touches */,
@@ -312,7 +310,6 @@
 			isa = PBXGroup;
 			children = (
 				221C629E203B4906009493DA /* School.swift */,
-				3F0254F12049D521004B831C /* LastTwo.swift */,
 			);
 			path = Records;
 			sourceTree = "<group>";
@@ -535,7 +532,6 @@
 				226EA70120296C240067B542 /* NSImage.swift in Sources */,
 				22FEF1E1202D005D001E9596 /* TouchProperties.swift in Sources */,
 				221C62A8203B57F7009493DA /* URL.swift in Sources */,
-				226D0585204FC42400D74711 /* LastThree.swift in Sources */,
 				22A49873204749700024B46C /* JSON.swift in Sources */,
 				22290C302028FA1F000E0573 /* Discipline.swift in Sources */,
 				2276AE68204E75C2001FAD8B /* BorderlessWindow.swift in Sources */,
