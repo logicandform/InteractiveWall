@@ -5,22 +5,23 @@ import Alamofire
 import PromiseKit
 import MapKit
 
+
 enum NetworkError: Error {
     case badRequest
     case unauthorized
     case notFound
     case serverError
     case badResponse
+    case serializationError
 }
+
 
 final class CachingNetwork {
 
     private struct Endpoints {
-        static let baseURL = "http://34.216.252.157:3000"
-        static let eventsURL = baseURL + "/events"
+        static let baseURL = "http://localhost:3100"
         static let placesURL = baseURL + "/places"
-        static let artifactsURL = baseURL + "/artifacts"
-        static let entitiesURL = baseURL + "/entities"
+        static let schoolsURL = baseURL + "/schools"
     }
 
     private static let credentials: [String: String] = {
@@ -30,12 +31,40 @@ final class CachingNetwork {
     }()
 
 
-    // MARK: API
+    // MARK: Places
 
     static func getPlaces() throws -> Promise<[Place]> {
-        return Alamofire.request(Endpoints.placesURL, headers: credentials).responseJSON().then { json in
+        let url = Endpoints.placesURL
+
+        return Alamofire.request(url, headers: credentials).responseJSON().then { json in
             try ResponseHandler.serializePlaces(from: json)
         }
     }
 
+    static func getPlace(by id: String) -> Promise<Place> {
+        let url = Endpoints.placesURL + "/" + id
+
+        return Alamofire.request(url, headers: credentials).responseJSON().then { json in
+            try ResponseHandler.serializePlace(from: json)
+        }
+    }
+
+
+    // MARK: Schools
+
+    static func getSchools() throws -> Promise<[School]> {
+        let url = Endpoints.schoolsURL
+
+        return Alamofire.request(url, headers: credentials).responseJSON().then { json in
+            try ResponseHandler.serializeSchools(from: json)
+        }
+    }
+
+    static func getSchool(by id: String) -> Promise<School> {
+        let url = Endpoints.schoolsURL + "/" + id
+
+        return Alamofire.request(url, headers: credentials).responseJSON().then { json in
+            try ResponseHandler.serializeSchool(from: json)
+        }
+    }
 }

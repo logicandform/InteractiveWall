@@ -237,6 +237,7 @@
 		22290C262028FA1E000E0573 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				3F0254F12049D521004B831C /* LastTwo.swift */,
 				22A49871204749500024B46C /* Records */,
 				22A49870204749470024B46C /* Annotations */,
 				22A4986F2047493A0024B46C /* Touches */,
@@ -309,7 +310,6 @@
 			isa = PBXGroup;
 			children = (
 				221C629E203B4906009493DA /* School.swift */,
-				3F0254F12049D521004B831C /* LastTwo.swift */,
 			);
 			path = Records;
 			sourceTree = "<group>";

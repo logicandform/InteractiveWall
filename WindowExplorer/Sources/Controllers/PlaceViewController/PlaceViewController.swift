@@ -47,7 +47,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
     // MARK: Setup
 
     private func setup(for place: Place) {
-        titleLabel.stringValue = place.subtitle ?? "unknown"
+
     }
 
     private func setupGestures() {

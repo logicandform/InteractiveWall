@@ -14,12 +14,12 @@ class Artifact {
     let mediaUrl: URL?
     let thumbnailUrl: URL?
     let comments: String?
-    let themeIDs: [Int]
-    let relatedSchoolIDs: [Int]
-    let relatedOrganizationIDs: [Int]
-    let relatedArtifactsIDs: [Int]
-    let relatedEventIDs: [Int]
     let mediaPath: String?
+    var relatedSchools: [School]?
+    var relatedOrganizations: [Organization]?
+    var relatedArtifacts: [Artifact]?
+    var relatedEvents: [Event]?
+    var themes: [Theme]?
 
     private struct Keys {
         static let id = "id"
@@ -31,12 +31,12 @@ class Artifact {
         static let mediaUrl = "mediaUrl"
         static let thumbnailUrl = "mediaThumbnailUrl"
         static let comments = "curatorialComments"
-        static let themeIDs = "themeIDs"
-        static let schoolIDs = "relatedSchoolIDs"
-        static let organizationIDs = "relatedOrganizationIDs"
-        static let artifactIDs = "relatedArtifactIDs"
-        static let eventIDs = "relatedEventIDs"
         static let mediaPath = "mediaPath"
+        static let schools = "schools"
+        static let organizations = "organizations"
+        static let artifacts = "artifacts"
+        static let events = "events"
+        static let themes = "themes"
     }
 
 
@@ -44,7 +44,7 @@ class Artifact {
 
     init?(json: JSON) {
         guard let id = json[Keys.id] as? Int, let title = json[Keys.title] as? String else {
-                return nil
+            return nil
         }
 
         self.id = id
@@ -56,11 +56,27 @@ class Artifact {
         self.mediaUrl = URL.from(json[Keys.mediaUrl] as? String)
         self.thumbnailUrl = URL.from(json[Keys.thumbnailUrl] as? String)
         self.comments = json[Keys.comments] as? String
-        self.themeIDs = json[Keys.themeIDs] as? [Int] ?? []
-        self.relatedSchoolIDs = json[Keys.schoolIDs] as? [Int] ?? []
-        self.relatedOrganizationIDs = json[Keys.organizationIDs] as? [Int] ?? []
-        self.relatedArtifactsIDs = json[Keys.artifactIDs] as? [Int] ?? []
-        self.relatedEventIDs = json[Keys.eventIDs] as? [Int] ?? []
         self.mediaPath = json[Keys.mediaPath] as? String
+
+        if let schoolsJSON = json[Keys.schools] as? [JSON] {
+            let schools = schoolsJSON.flatMap { School(json: $0) }
+            self.relatedSchools = schools
+        }
+        if let organizationsJSON = json[Keys.organizations] as? [JSON] {
+            let organizations = organizationsJSON.flatMap { Organization(json: $0) }
+            self.relatedOrganizations = organizations
+        }
+        if let artifactsJSON = json[Keys.artifacts] as? [JSON] {
+            let artifacts = artifactsJSON.flatMap { Artifact(json: $0) }
+            self.relatedArtifacts = artifacts
+        }
+        if let eventsJSON = json[Keys.events] as? [JSON] {
+            let events = eventsJSON.flatMap { Event(json: $0) }
+            self.relatedEvents = events
+        }
+        if let themesJSON = json[Keys.themes] as? [JSON] {
+            let themes = themesJSON.flatMap { Theme(json: $0) }
+            self.themes = themes
+        }
     }
 }

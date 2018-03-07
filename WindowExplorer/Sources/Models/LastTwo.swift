@@ -2,17 +2,11 @@
 
 import Foundation
 
-class LastThree<Element> {
+class LastTwo<Element> {
 
     private(set) var last: Element? {
         willSet {
-            intermediate = last
-        }
-    }
-
-    private(set) var intermediate: Element? {
-        willSet {
-            secondLast = intermediate
+            secondLast = last
         }
     }
 
@@ -27,7 +21,6 @@ class LastThree<Element> {
 
     func clear() {
         last = nil
-        intermediate = nil
         secondLast = nil
     }
 }

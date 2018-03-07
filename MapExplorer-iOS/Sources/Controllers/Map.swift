@@ -351,7 +351,7 @@ class Map: UniverseController, MKMapViewDelegate, UIGestureRecognizerDelegate, S
         var places = [Place]()
 
         for json in placesJSON {
-            if let place = Place(fromJSON: json) {
+            if let place = Place(json: json) {
                 places.append(place)
             }
         }
