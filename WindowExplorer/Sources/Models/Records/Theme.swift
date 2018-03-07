@@ -27,7 +27,7 @@ class Theme {
 
     init?(json: JSON) {
         guard let id = json[Keys.id] as? Int, let title = json[Keys.title] as? String else {
-                return nil
+            return nil
         }
 
         self.id = id

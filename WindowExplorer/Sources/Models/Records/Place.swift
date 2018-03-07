@@ -3,7 +3,7 @@
 import Foundation
 import MapKit
 
-class NewPlace {
+class Place {
 
     let id: Int
     let title: String
@@ -28,8 +28,7 @@ class NewPlace {
     // MARK: Init
 
     init?(json: JSON) {
-        guard
-            let id = json[Keys.id] as? Int,
+        guard let id = json[Keys.id] as? Int,
             let title = json[Keys.title] as? String,
             let coordinate = json[Keys.type] as? CLLocationCoordinate2D else {
                 return nil
