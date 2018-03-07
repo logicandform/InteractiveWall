@@ -108,12 +108,16 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         cumulativeDelta += delta
         locations.add(location + delta)
 
-        if cumulativeDelta.magnitude > Constants.minimumDeltaUpdateThreshold && abs(timeOfLastUpdate.timeIntervalSinceNow) > Constants.updateTimeInterval {
+        if passedDeltaThreshold() {
             delta = cumulativeDelta
             cumulativeDelta = .zero
             timeOfLastUpdate = Date()
             gestureUpdated?(self)
         }
+    }
+
+    private func passedDeltaThreshold() -> Bool {
+        return cumulativeDelta.magnitude > Constants.minimumDeltaUpdateThreshold && abs(timeOfLastUpdate.timeIntervalSinceNow) > Constants.updateTimeInterval
     }
 
 

@@ -76,9 +76,8 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func end(_ touch: Touch, with properties: TouchProperties) {
-        positionForTouch.removeValue(forKey: touch)
 
-        guard properties.touchCount.isZero && state == .recognized else {
+        guard properties.touchCount.isZero, positionForTouch.removeValue(forKey: touch) != nil else {
             return
         }
 
@@ -109,7 +108,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         cumulativeDelta += delta
         locations.add(location + delta)
 
-        if cumulativeDelta.magnitude > Constants.minimumDeltaUpdateThreshold && abs(timeOfLastUpdate.timeIntervalSinceNow) > Constants.updateTimeInterval {
+        if passedDeltaThreshold() {
             delta = cumulativeDelta
             cumulativeDelta = .zero
             timeOfLastUpdate = Date()
@@ -117,13 +116,17 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         }
     }
 
+    private func passedDeltaThreshold() -> Bool {
+        return cumulativeDelta.magnitude > Constants.minimumDeltaUpdateThreshold && abs(timeOfLastUpdate.timeIntervalSinceNow) > Constants.updateTimeInterval
+    }
+
 
     // MARK: Momentum
 
     private struct Momentum {
         static let initialFrictionFactor = 1.05
-        static let frictionFactorScale = 0.01
-        static let minimumDeltaThreshold: Double = 8
+        static let frictionFactorScale = 0.001
+        static let minimumDeltaThreshold: Double = 2
     }
 
     private var momentumTimer: Timer?
@@ -151,7 +154,6 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             endMomentum()
             return
         }
-        print(delta.magnitude)
 
         frictionFactor += Momentum.frictionFactorScale
         delta /= frictionFactor
@@ -164,3 +166,4 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         gestureUpdated?(self)
     }
 }
+

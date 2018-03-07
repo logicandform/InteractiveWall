@@ -19,7 +19,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         static let minimumFingers = 2
         static let minimumSpreadThreshold: CGFloat = 0.1
         static let minimumBehaviorChangeThreshold: CGFloat = 15
-        static let updateTimeInterval: TimeInterval = 1 / 60
+        static let updateTimeInterval = 1 / 380
     }
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
@@ -80,7 +80,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
                 scale = properties.spread / lastSpreadSinceUpdate
                 spreads.add(properties.spread)
                 lastPosition = properties.cog
-                if abs(timeOfLastUpdate.timeIntervalSinceNow) > 1 / 380 {
+                if shouldUpdate(for: timeOfLastUpdate) {
                     lastSpreadSinceUpdate = properties.spread
                     timeOfLastUpdate = Date()
                     gestureUpdated?(self)
@@ -131,6 +131,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         static let thresholdMomentumScale: CGFloat = 0.0001
         static let initialFrictionFactor: CGFloat = 1.06
         static let frictionFactorScale: CGFloat = 0.004
+        static let updateTimeInterval: TimeInterval = 1 / 60
     }
 
     private func beginMomentum(_ lastSpread: CGFloat, _ secondLastSpread: CGFloat, with properties: TouchProperties) {
@@ -140,7 +141,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         gestureUpdated?(self)
 
         momentumTimer?.invalidate()
-        momentumTimer = Timer.scheduledTimer(withTimeInterval: Constants.updateTimeInterval, repeats: true) { [weak self] _ in
+        momentumTimer = Timer.scheduledTimer(withTimeInterval: Momentum.updateTimeInterval, repeats: true) { [weak self] _ in
             self?.updateMomentum()
         }
     }
@@ -179,6 +180,11 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     /// Returns true if the given spread is of the same behavior type, or the current behavior is idle
     private func shouldUpdate(with newSpread: CGFloat) -> Bool {
         return behavior == behavior(of: newSpread) || behavior == .idle
+    }
+
+    /// Returns true if enough time has passed to send send the next update
+    private func shouldUpdate(for time: Date) -> Bool {
+        abs(time.timeIntervalSinceNow) > Constants.updateTimeInterval
     }
 
     /// If the newSpread has a different behavior and surpasses the minimum threshold, returns true
