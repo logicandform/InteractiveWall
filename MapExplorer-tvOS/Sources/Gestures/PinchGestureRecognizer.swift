@@ -19,7 +19,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         static let minimumFingers = 2
         static let minimumSpreadThreshold: CGFloat = 0.1
         static let minimumBehaviorChangeThreshold: CGFloat = 15
-        static let updateTimeInterval = 1 / 380
+        static let updateTimeInterval: Double = 1 / 380
     }
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
