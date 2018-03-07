@@ -8,8 +8,8 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     private struct Constants {
         static let recognizedThreshhold: CGFloat = 20
         static let minimumFingers = 1
-        static let minimumDeltaThreshold: Double = 8
         static let minimumDeltaUpdateThreshold: Double = 4
+        static let updateTimeInterval: TimeInterval = 1 / 60
     }
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
@@ -20,6 +20,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     private var positionForTouch = [Touch: CGPoint]()
     private var lastTouchCount: Int!
     private var cumulativeDelta = CGVector.zero
+    private var timeOfLastUpdate = Date()
 
 
     // MARK: Init
@@ -40,17 +41,16 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             return
         }
 
-        positionForTouch[touch] = touch.position
-
         switch state {
         case .possible, .momentum:
+            cumulativeDelta = .zero
             state = .began
             locations.add(properties.cog)
-            gestureUpdated?(self)
             fallthrough
         case .recognized:
+            positionForTouch[touch] = touch.position
             momentumTimer?.invalidate()
-            lastTouchCount = properties.touchCount
+            lastTouchCount = positionForTouch.keys.count
         default:
             return
         }
@@ -61,14 +61,13 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             return
         }
 
-        positionForTouch[touch] = touch.position
-        lastTouchCount = properties.touchCount
-
         switch state {
         case .began where shouldRecognize(properties: properties, for: currentLocation):
             state = .recognized
             fallthrough
         case .recognized:
+            lastTouchCount = positionForTouch.keys.count
+            positionForTouch[touch] = touch.position
             let offset = touch.position - lastPositionOfTouch
             update(location: currentLocation, with: offset.asVector)
         default:
@@ -77,9 +76,8 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func end(_ touch: Touch, with properties: TouchProperties) {
-        positionForTouch.removeValue(forKey: touch)
 
-        guard properties.touchCount.isZero else {
+        guard properties.touchCount.isZero, positionForTouch.removeValue(forKey: touch) != nil else {
             return
         }
 
@@ -110,20 +108,25 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         cumulativeDelta += delta
         locations.add(location + delta)
 
-        if cumulativeDelta.magnitude > Constants.minimumDeltaUpdateThreshold {
+        if passedDeltaThreshold() {
             delta = cumulativeDelta
             cumulativeDelta = .zero
+            timeOfLastUpdate = Date()
             gestureUpdated?(self)
         }
     }
-    
+
+    private func passedDeltaThreshold() -> Bool {
+        return cumulativeDelta.magnitude > Constants.minimumDeltaUpdateThreshold && abs(timeOfLastUpdate.timeIntervalSinceNow) > Constants.updateTimeInterval
+    }
+
 
     // MARK: Momentum
 
     private struct Momentum {
         static let initialFrictionFactor = 1.05
         static let frictionFactorScale = 0.001
-        static let momentiumTimeInterval: TimeInterval = 1 / 60
+        static let minimumDeltaThreshold: Double = 2
     }
 
     private var momentumTimer: Timer?
@@ -141,13 +144,13 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         gestureUpdated?(self)
 
         momentumTimer?.invalidate()
-        momentumTimer = Timer.scheduledTimer(withTimeInterval: Momentum.momentiumTimeInterval, repeats: true) { [weak self] _ in
+        momentumTimer = Timer.scheduledTimer(withTimeInterval: Constants.updateTimeInterval, repeats: true) { [weak self] _ in
             self?.updateMomentum()
         }
     }
 
     private func updateMomentum() {
-        guard delta.magnitude > Constants.minimumDeltaThreshold else {
+        guard delta.magnitude > Momentum.minimumDeltaThreshold else {
             endMomentum()
             return
         }
@@ -163,3 +166,4 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         gestureUpdated?(self)
     }
 }
+

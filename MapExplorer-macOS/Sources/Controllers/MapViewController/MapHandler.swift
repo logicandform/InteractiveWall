@@ -114,7 +114,6 @@ class MapHandler {
         set(mapRect)
     }
 
-
     /// Sets the visble rect of self.mapView based on the current pairedIndex
     private func set(_ mapRect: MKMapRect) {
         guard let pairedIndex = pairedIndex else {
