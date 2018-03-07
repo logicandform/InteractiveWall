@@ -29,16 +29,12 @@
 		22046247204730780067D9FB /* PinchGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046241204730780067D9FB /* PinchGestureRecognizer.swift */; };
 		22046248204730780067D9FB /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046242204730780067D9FB /* TapGestureRecognizer.swift */; };
 		22046254204730C70067D9FB /* Touch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046249204730C60067D9FB /* Touch.swift */; };
-		22046255204730C70067D9FB /* NewPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624A204730C70067D9FB /* NewPlace.swift */; };
 		22046256204730C70067D9FB /* EntityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624B204730C70067D9FB /* EntityType.swift */; };
-		22046257204730C70067D9FB /* Artifact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624C204730C70067D9FB /* Artifact.swift */; };
 		22046258204730C70067D9FB /* LastThree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624D204730C70067D9FB /* LastThree.swift */; };
 		22046259204730C70067D9FB /* School.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624E204730C70067D9FB /* School.swift */; };
 		2204625A204730C70067D9FB /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624F204730C70067D9FB /* Place.swift */; };
 		2204625B204730C70067D9FB /* Discipline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046250204730C70067D9FB /* Discipline.swift */; };
-		2204625C204730C70067D9FB /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046251204730C70067D9FB /* Entity.swift */; };
 		2204625D204730C70067D9FB /* TouchProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046252204730C70067D9FB /* TouchProperties.swift */; };
-		2204625E204730C70067D9FB /* Occurance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046253204730C70067D9FB /* Occurance.swift */; };
 		2276AE65204E7150001FAD8B /* BorderlessWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2276AE64204E7150001FAD8B /* BorderlessWindow.swift */; };
 		22914F752049001B0000D4E1 /* TouchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22914F742049001B0000D4E1 /* TouchManager.swift */; };
 		22914F77204905230000D4E1 /* NSApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22914F76204905230000D4E1 /* NSApplication.swift */; };
@@ -56,6 +52,10 @@
 		22A923282044AF05003EA9BB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22A923262044AF05003EA9BB /* Main.storyboard */; };
 		22B1E2CD204638B900BDDF14 /* GestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2CC204638B900BDDF14 /* GestureManager.swift */; };
 		22B1E2CF204638CA00BDDF14 /* GestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2CE204638CA00BDDF14 /* GestureHandler.swift */; };
+		3F09025B2048D9D30044F100 /* NewPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09025A2048D9D30044F100 /* NewPlace.swift */; };
+		3F09025F2048E0E70044F100 /* Organization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09025E2048E0E70044F100 /* Organization.swift */; };
+		3F0902612049C6B10044F100 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0902602049C6B10044F100 /* Theme.swift */; };
+		3F2FAB5B204F7D24002EDF5D /* Artifact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2FAB5A204F7D24002EDF5D /* Artifact.swift */; };
 		8E4010A020487B8D00E81AAA /* WindowFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E40109F20487B8D00E81AAA /* WindowFactory.swift */; };
 		8E4010A220487E0300E81AAA /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4010A120487E0300E81AAA /* Collection.swift */; };
 		C6DB17689F287C9826286DF2 /* Pods_All_WindowExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */; };
@@ -97,16 +97,12 @@
 		22046241204730780067D9FB /* PinchGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinchGestureRecognizer.swift; sourceTree = "<group>"; };
 		22046242204730780067D9FB /* TapGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapGestureRecognizer.swift; sourceTree = "<group>"; };
 		22046249204730C60067D9FB /* Touch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Touch.swift; sourceTree = "<group>"; };
-		2204624A204730C70067D9FB /* NewPlace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPlace.swift; sourceTree = "<group>"; };
 		2204624B204730C70067D9FB /* EntityType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityType.swift; sourceTree = "<group>"; };
-		2204624C204730C70067D9FB /* Artifact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Artifact.swift; sourceTree = "<group>"; };
-		2204624D204730C70067D9FB /* LastThree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastThree.swift; sourceTree = "<group>"; };
+		2204624D204730C70067D9FB /* LastThree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LastThree.swift; path = "../../../../MapExplorer-macOS/Sources/Models/Records/LastThree.swift"; sourceTree = "<group>"; };
 		2204624E204730C70067D9FB /* School.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = School.swift; sourceTree = "<group>"; };
 		2204624F204730C70067D9FB /* Place.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		22046250204730C70067D9FB /* Discipline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Discipline.swift; sourceTree = "<group>"; };
-		22046251204730C70067D9FB /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		22046252204730C70067D9FB /* TouchProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchProperties.swift; sourceTree = "<group>"; };
-		22046253204730C70067D9FB /* Occurance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Occurance.swift; sourceTree = "<group>"; };
 		2276AE64204E7150001FAD8B /* BorderlessWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderlessWindow.swift; sourceTree = "<group>"; };
 		22914F742049001B0000D4E1 /* TouchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchManager.swift; sourceTree = "<group>"; };
 		22914F76204905230000D4E1 /* NSApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSApplication.swift; sourceTree = "<group>"; };
@@ -128,6 +124,10 @@
 		22B1E2CC204638B900BDDF14 /* GestureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureManager.swift; sourceTree = "<group>"; };
 		22B1E2CE204638CA00BDDF14 /* GestureHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureHandler.swift; sourceTree = "<group>"; };
 		2B994FF43C43BAD129E83037 /* Pods-All-WindowExplorer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-WindowExplorer.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer.debug.xcconfig"; sourceTree = "<group>"; };
+		3F09025A2048D9D30044F100 /* NewPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlace.swift; sourceTree = "<group>"; };
+		3F09025E2048E0E70044F100 /* Organization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Organization.swift; sourceTree = "<group>"; };
+		3F0902602049C6B10044F100 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		3F2FAB5A204F7D24002EDF5D /* Artifact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Artifact.swift; sourceTree = "<group>"; };
 		8E40109F20487B8D00E81AAA /* WindowFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowFactory.swift; sourceTree = "<group>"; };
 		8E4010A120487E0300E81AAA /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_WindowExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -246,13 +246,13 @@
 		22A4987A204749EA0024B46C /* Records */ = {
 			isa = PBXGroup;
 			children = (
-				2204624C204730C70067D9FB /* Artifact.swift */,
-				22046251204730C70067D9FB /* Entity.swift */,
-				2204624B204730C70067D9FB /* EntityType.swift */,
+				3F2FAB5A204F7D24002EDF5D /* Artifact.swift */,
 				2204624D204730C70067D9FB /* LastThree.swift */,
-				2204624A204730C70067D9FB /* NewPlace.swift */,
-				22046253204730C70067D9FB /* Occurance.swift */,
+				3F09025E2048E0E70044F100 /* Organization.swift */,
+				3F09025A2048D9D30044F100 /* NewPlace.swift */,
 				2204624E204730C70067D9FB /* School.swift */,
+				3F0902602049C6B10044F100 /* Theme.swift */,
+				2204624B204730C70067D9FB /* EntityType.swift */,
 			);
 			path = Records;
 			sourceTree = "<group>";
@@ -522,9 +522,9 @@
 				2204620F20472DE80067D9FB /* PlaceViewController.swift in Sources */,
 				22046246204730780067D9FB /* GestureRecognizer.swift in Sources */,
 				2204625D204730C70067D9FB /* TouchProperties.swift in Sources */,
-				2204625C204730C70067D9FB /* Entity.swift in Sources */,
 				2204623420472FDF0067D9FB /* NSImage.swift in Sources */,
 				8E4010A220487E0300E81AAA /* Collection.swift in Sources */,
+				3F2FAB5B204F7D24002EDF5D /* Artifact.swift in Sources */,
 				22B1E2CD204638B900BDDF14 /* GestureManager.swift in Sources */,
 				22A76FE620464764006C0AE7 /* PDFViewController.swift in Sources */,
 				2276AE65204E7150001FAD8B /* BorderlessWindow.swift in Sources */,
@@ -537,17 +537,15 @@
 				22A498612047349C0024B46C /* WindowNotifications.swift in Sources */,
 				2204621920472F2D0067D9FB /* PlayerControl.swift in Sources */,
 				22B1E2CF204638CA00BDDF14 /* GestureHandler.swift in Sources */,
-				22046255204730C70067D9FB /* NewPlace.swift in Sources */,
 				22A49878204749C30024B46C /* TouchState.swift in Sources */,
 				2204623720472FDF0067D9FB /* PacketType.swift in Sources */,
 				22046258204730C70067D9FB /* LastThree.swift in Sources */,
 				22046256204730C70067D9FB /* EntityType.swift in Sources */,
 				2204625B204730C70067D9FB /* Discipline.swift in Sources */,
 				2204623320472FDF0067D9FB /* CoreGraphics.swift in Sources */,
-				2204625E204730C70067D9FB /* Occurance.swift in Sources */,
-				22046257204730C70067D9FB /* Artifact.swift in Sources */,
 				2204620E20472DE80067D9FB /* RelatedItemView.swift in Sources */,
 				22A4986C204743880024B46C /* TouchNotifications.swift in Sources */,
+				3F09025B2048D9D30044F100 /* NewPlace.swift in Sources */,
 				22A498752047499B0024B46C /* JSON.swift in Sources */,
 				22046247204730780067D9FB /* PinchGestureRecognizer.swift in Sources */,
 				22046243204730780067D9FB /* SwipeGestureRecognizer.swift in Sources */,
@@ -556,11 +554,13 @@
 				2204623920472FDF0067D9FB /* NetworkConfiguration.swift in Sources */,
 				2204623620472FDF0067D9FB /* AVKit.swift in Sources */,
 				22914F752049001B0000D4E1 /* TouchManager.swift in Sources */,
+				3F0902612049C6B10044F100 /* Theme.swift in Sources */,
 				22046244204730780067D9FB /* PanGestureRecognizer.swift in Sources */,
 				2204623820472FDF0067D9FB /* URL.swift in Sources */,
 				2204621820472F2D0067D9FB /* PlayerState.swift in Sources */,
 				22A923212044AF05003EA9BB /* AppDelegate.swift in Sources */,
 				22046259204730C70067D9FB /* School.swift in Sources */,
+				3F09025F2048E0E70044F100 /* Organization.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

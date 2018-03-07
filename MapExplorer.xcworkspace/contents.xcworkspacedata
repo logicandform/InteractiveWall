@@ -2,13 +2,13 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:MapExplorer-tvOS/MapExplorer-tvOS.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:MapExplorer-iOS/MapExplorer-iOS.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:MapExplorer-macOS/MapExplorer-macOS.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:MapExplorer-tvOS/MapExplorer-tvOS.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:WindowExplorer/WindowExplorer.xcodeproj">
