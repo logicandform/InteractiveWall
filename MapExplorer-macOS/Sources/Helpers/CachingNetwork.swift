@@ -16,7 +16,7 @@ enum NetworkError: Error {
 final class CachingNetwork {
 
     private struct Endpoints {
-        static let baseURL = "localhost:3000"
+        static let baseURL = "http://localhost:3100"
         static let eventsURL = baseURL + "/events"
         static let placesURL = baseURL + "/places"
         static let artifactsURL = baseURL + "/artifacts"

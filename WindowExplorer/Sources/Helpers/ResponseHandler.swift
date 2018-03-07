@@ -8,11 +8,11 @@ final class ResponseHandler {
     // MARK: Places
 
     static func serializePlaces(from json: Any) throws -> [Place] {
-        guard let json = json as? [JSON] else {
+        guard let placesJSON = json as? [JSON] else {
             throw NetworkError.badResponse
         }
 
-        return json.flatMap { Place(json: $0) }
+        return placesJSON.flatMap { Place(json: $0) }
     }
 
     static func serializePlace(from json: Any) throws -> Place {
@@ -29,6 +29,33 @@ final class ResponseHandler {
         }
 
         return place
+    }
+
+
+    // MARK: Organizations
+
+    static func serializeOrganizations(from json: Any) throws -> [Organization] {
+        guard let json = json as? [JSON] else {
+            throw NetworkError.badResponse
+        }
+
+        return json.flatMap { Organization(json: $0) }
+    }
+
+    static func serializeOrganization(from json: Any) throws -> Organization {
+        guard let json = json as? JSON else {
+            throw NetworkError.badResponse
+        }
+
+        if json.isEmpty {
+            throw NetworkError.notFound
+        }
+
+        guard let organization = Organization(json: json) else {
+            throw NetworkError.serializationError
+        }
+
+        return organization
     }
 
 
@@ -83,33 +110,6 @@ final class ResponseHandler {
         }
 
         return artifact
-    }
-
-
-    // MARK: Organizations
-
-    static func serializeOrganizations(from json: Any) throws -> [Organization] {
-        guard let json = json as? [JSON] else {
-            throw NetworkError.badResponse
-        }
-
-        return json.flatMap { Organization(json: $0) }
-    }
-
-    static func serializeOrganization(from json: Any) throws -> Organization {
-        guard let json = json as? JSON else {
-            throw NetworkError.badResponse
-        }
-
-        if json.isEmpty {
-            throw NetworkError.notFound
-        }
-
-        guard let organization = Organization(json: json) else {
-            throw NetworkError.serializationError
-        }
-
-        return organization
     }
 
 

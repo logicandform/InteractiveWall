@@ -16,7 +16,6 @@ class Place {
     private struct Keys {
         static let id = "id"
         static let title = "title"
-        static let type = "type"
         static let coordinate = "coordinate"
         static let schools = "schools"
         static let organizations = "organizations"
@@ -30,7 +29,8 @@ class Place {
     init?(json: JSON) {
         guard let id = json[Keys.id] as? Int,
             let title = json[Keys.title] as? String,
-            let coordinate = json[Keys.type] as? CLLocationCoordinate2D else {
+            let coordinateString = json[Keys.coordinate] as? String,
+            let coordinate = CLLocationCoordinate2D(string: coordinateString) else {
                 return nil
         }
 

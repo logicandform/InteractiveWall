@@ -1,7 +1,7 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
 import Cocoa
-
+import PromiseKit
 
 struct Configuration {
     static let mapsPerScreen = 1

@@ -13,7 +13,7 @@ class Event {
     let mediaTitle: String?
     let mediaUrl: URL?
     let mediaThumbnailUrl: URL?
-    var mediaPath: String?
+    let mediaPath: String?
     var relatedSchools: [School]?
     var relatedOrganizations: [Organization]?
     var relatedArtifacts: [Artifact]?
@@ -47,12 +47,12 @@ class Event {
         self.title = title
         self.description = json[Keys.description] as? String
         self.date = json[Keys.date] as? String
-        self.coordinate = CLLocationCoordinate2D(geolocation: json[Keys.coordinate] as? String)
         self.mediaTitle = json[Keys.mediaTitle] as? String
         self.mediaUrl = URL.from(json[Keys.mediaUrl] as? String)
         self.mediaThumbnailUrl = URL.from(json[Keys.mediaThumbnailUrl] as? String)
         self.mediaPath = json[Keys.mediaPath] as? String
-
+        self.coordinate = CLLocationCoordinate2D(string: json[Keys.coordinate] as? String)
+        
         if let schoolsJSON = json[Keys.schools] as? [JSON] {
             let schools = schoolsJSON.flatMap { School(json: $0) }
             self.relatedSchools = schools

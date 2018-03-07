@@ -49,7 +49,7 @@ class School {
         self.title = title
         self.date = json[Keys.date] as? String
         self.description = json[Keys.description] as? String
-        self.coordinate = CLLocationCoordinate2D(geolocation: json[Keys.coordinate] as? String)
+        self.coordinate = CLLocationCoordinate2D(string: json[Keys.coordinate] as? String)
         self.mediaTitle = json[Keys.mediaTitle] as? String
         self.mediaURL = URL.from(json[Keys.mediaURL] as? String)
         self.thumbnailURL = URL.from(json[Keys.thumbnailURL] as? String)
