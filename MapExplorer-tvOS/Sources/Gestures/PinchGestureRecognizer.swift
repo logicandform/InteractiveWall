@@ -184,7 +184,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
     /// Returns true if enough time has passed to send send the next update
     private func shouldUpdate(for time: Date) -> Bool {
-        abs(time.timeIntervalSinceNow) > Constants.updateTimeInterval
+        return abs(time.timeIntervalSinceNow) > Constants.updateTimeInterval
     }
 
     /// If the newSpread has a different behavior and surpasses the minimum threshold, returns true
