@@ -30,7 +30,7 @@
 		22046248204730780067D9FB /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046242204730780067D9FB /* TapGestureRecognizer.swift */; };
 		22046254204730C70067D9FB /* Touch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046249204730C60067D9FB /* Touch.swift */; };
 		22046256204730C70067D9FB /* EntityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624B204730C70067D9FB /* EntityType.swift */; };
-		22046258204730C70067D9FB /* LastThree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624D204730C70067D9FB /* LastThree.swift */; };
+		22046258204730C70067D9FB /* LastTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624D204730C70067D9FB /* LastTwo.swift */; };
 		22046259204730C70067D9FB /* School.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624E204730C70067D9FB /* School.swift */; };
 		2204625A204730C70067D9FB /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624F204730C70067D9FB /* Place.swift */; };
 		2204625B204730C70067D9FB /* Discipline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046250204730C70067D9FB /* Discipline.swift */; };
@@ -98,7 +98,7 @@
 		22046242204730780067D9FB /* TapGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapGestureRecognizer.swift; sourceTree = "<group>"; };
 		22046249204730C60067D9FB /* Touch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Touch.swift; sourceTree = "<group>"; };
 		2204624B204730C70067D9FB /* EntityType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityType.swift; sourceTree = "<group>"; };
-		2204624D204730C70067D9FB /* LastThree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LastThree.swift; path = "../../../../MapExplorer-macOS/Sources/Models/Records/LastThree.swift"; sourceTree = "<group>"; };
+		2204624D204730C70067D9FB /* LastTwo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LastTwo.swift; path = "../../../../MapExplorer-macOS/Sources/Models/Records/LastTwo.swift"; sourceTree = "<group>"; };
 		2204624E204730C70067D9FB /* School.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = School.swift; sourceTree = "<group>"; };
 		2204624F204730C70067D9FB /* Place.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		22046250204730C70067D9FB /* Discipline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Discipline.swift; sourceTree = "<group>"; };
@@ -247,7 +247,7 @@
 			isa = PBXGroup;
 			children = (
 				3F2FAB5A204F7D24002EDF5D /* Artifact.swift */,
-				2204624D204730C70067D9FB /* LastThree.swift */,
+				2204624D204730C70067D9FB /* LastTwo.swift */,
 				3F09025E2048E0E70044F100 /* Organization.swift */,
 				3F09025A2048D9D30044F100 /* NewPlace.swift */,
 				2204624E204730C70067D9FB /* School.swift */,
@@ -539,7 +539,7 @@
 				22B1E2CF204638CA00BDDF14 /* GestureHandler.swift in Sources */,
 				22A49878204749C30024B46C /* TouchState.swift in Sources */,
 				2204623720472FDF0067D9FB /* PacketType.swift in Sources */,
-				22046258204730C70067D9FB /* LastThree.swift in Sources */,
+				22046258204730C70067D9FB /* LastTwo.swift in Sources */,
 				22046256204730C70067D9FB /* EntityType.swift in Sources */,
 				2204625B204730C70067D9FB /* Discipline.swift in Sources */,
 				2204623320472FDF0067D9FB /* CoreGraphics.swift in Sources */,

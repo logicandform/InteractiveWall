@@ -19,20 +19,18 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         static let minimumFingers = 2
         static let minimumSpreadThreshold: CGFloat = 0.1
         static let minimumBehaviorChangeThreshold: CGFloat = 15
-        static let updateTimeInterval: Double = 1 / 380
+        static let updateTimeInterval: Double = 1 / 5000
     }
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
     private(set) var lastPosition: CGPoint!
     private(set) var state = GestureState.possible
     private(set) var scale: CGFloat = Constants.initialScale
-    private var spreads = LastThree<CGFloat>()
+    private var spreads = LastTwo<CGFloat>()
     private var behavior = PinchBehavior.idle
     private var timeOfLastUpdate: Date!
     private var lastSpreadSinceUpdate: CGFloat!
     private let fingers: Int
-    private var touches = Set<Touch>()
-
 
     // MARK: Init
 
@@ -52,7 +50,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
         switch state {
         case .possible, .momentum:
-            touches.insert(touch)
             momentumTimer?.invalidate()
             spreads.add(properties.spread)
             lastPosition = properties.cog
@@ -73,24 +70,24 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         case .began where abs(properties.spread / lastSpread - 1.0) > Constants.minimumSpreadThreshold:
             behavior = behavior(of: properties.spread)
             state = .recognized
-            lastSpreadSinceUpdate = lastSpread
+//            lastSpreadSinceUpdate = lastSpread
             fallthrough
         case .recognized:
             if shouldUpdate(with: properties.spread) {
-                scale = properties.spread / lastSpreadSinceUpdate
+                scale = properties.spread / lastSpread
                 spreads.add(properties.spread)
                 lastPosition = properties.cog
-                if shouldUpdate(for: timeOfLastUpdate) {
+//                if shouldUpdate(for: timeOfLastUpdate) {
                     lastSpreadSinceUpdate = properties.spread
                     timeOfLastUpdate = Date()
                     gestureUpdated?(self)
-                }
+//                }
             } else if changedBehavior(from: lastSpread, to: properties.spread) {
                 scale = Constants.initialScale
                 behavior = behavior(of: properties.spread)
                 spreads.add(properties.spread)
                 lastSpreadSinceUpdate = properties.spread
-                timeOfLastUpdate = Date()
+//                timeOfLastUpdate = Date()
                 gestureUpdated?(self)
             }
         default:
@@ -118,7 +115,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         behavior = .idle
         lastPosition = nil
         spreads.clear()
-        touches.removeAll()
     }
 
 

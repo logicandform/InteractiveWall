@@ -26,7 +26,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private(set) var lastPosition: CGPoint!
     private(set) var state = GestureState.possible
     private(set) var scale: CGFloat = Constants.initialScale
-    private var spreads = LastThree<CGFloat>()
+    private var spreads = LastTwo<CGFloat>()
     private var behavior = PinchBehavior.idle
     private var timeOfLastUpdate: Date!
     private var lastSpreadSinceUpdate: CGFloat!
