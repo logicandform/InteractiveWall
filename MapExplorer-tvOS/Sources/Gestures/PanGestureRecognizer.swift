@@ -50,7 +50,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         case .recognized:
             positionForTouch[touch] = touch.position
             momentumTimer?.invalidate()
-            lastTouchCount = properties.touchCount
+            lastTouchCount = positionForTouch.keys.count
         default:
             return
         }
