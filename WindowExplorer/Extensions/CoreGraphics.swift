@@ -105,6 +105,10 @@ extension CGVector {
         return Double(sqrt(pow(self.dx, 2) + pow(self.dy, 2)))
     }
 
+    func round() -> CGPoint {
+        return CGPoint(x: self.dx.rounded(), y: self.dy.rounded())
+    }
+
     static func * (lhs: CGVector, rhs: CGVector) -> CGVector {
         return CGVector(dx: lhs.dx * rhs.dx, dy: lhs.dy * rhs.dy)
     }

@@ -86,7 +86,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         switch pan.state {
         case .recognized, .momentum:
             var origin = window.frame.origin
-            origin += pan.delta
+            origin += pan.delta.round()
             window.setFrameOrigin(origin)
         case .possible:
             WindowManager.instance.dealocateWindowIfOutOfBounds(for: self)
