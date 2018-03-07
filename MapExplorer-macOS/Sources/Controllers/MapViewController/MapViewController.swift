@@ -71,9 +71,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         gestureManager.add(tapGesture, to: mapView)
         tapGesture.gestureUpdated = didTapOnMap(_:)
 
-        let panGesture = PanGestureRecognizer(withFingers: [1, 2, 3, 4, 5])
-        gestureManager.add(panGesture, to: mapView)
-        panGesture.gestureUpdated = didPanOnMap(_:)
+//        let panGesture = PanGestureRecognizer(withFingers: [1, 2, 3, 4, 5])
+//        gestureManager.add(panGesture, to: mapView)
+//        panGesture.gestureUpdated = didPanOnMap(_:)
 
         let pinchGesture = PinchGestureRecognizer()
         gestureManager.add(pinchGesture, to: mapView)
@@ -118,13 +118,18 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             var mapRect = mapView.visibleMapRect
             let scaledWidth = (2 - Double(pinch.scale)) * mapRect.size.width
             let scaledHeight = (2 - Double(pinch.scale)) * mapRect.size.height
+            // Uncomment and delete the other two duplicate veriable below for pinch with pan gesture
+            //            var translationX = -Double(pinch.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
+            //            var translationY = Double(pinch.delta.dy) * mapRect.size.height / Double(mapView.frame.height)
+            var translationX = 0.0
+            var translationY = 0.0
             if scaledWidth <= Constants.maxZoomWidth {
-                let translationX = (mapRect.size.width - scaledWidth) * Double(pinch.lastPosition.x / mapView.frame.width)
-                let translationY = (mapRect.size.height - scaledHeight) * (1 - Double(pinch.lastPosition.y / mapView.frame.height))
+                translationX += (mapRect.size.width - scaledWidth) * Double(pinch.lastPosition.x / mapView.frame.width)
+                translationY += (mapRect.size.height - scaledHeight) * (1 - Double(pinch.lastPosition.y / mapView.frame.height))
                 mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
-                mapRect.origin += MKMapPoint(x: translationX, y: translationY)
-                mapHandler?.send(mapRect)
             }
+            mapRect.origin += MKMapPoint(x: translationX, y: translationY)
+            mapHandler?.send(mapRect)
         case .possible, .failed:
             mapHandler?.endUpdates()
         default:
