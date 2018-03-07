@@ -48,7 +48,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         guard fingers == properties.touchCount else {
             return
         }
-        count = 0
 
         switch state {
         case .possible, .momentum:
@@ -60,12 +59,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             gestureUpdated?(self)
         default:
             return
-        }
-    }
-
-    var count = 0 {
-        didSet{
-            print(count)
         }
     }
 
@@ -86,7 +79,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
                 spreads.add(properties.spread)
                 lastPosition = properties.cog
                 if shouldUpdate(for: timeOfLastUpdate) {
-                    count += 1
                     lastSpreadSinceUpdate = properties.spread
                     timeOfLastUpdate = Date()
                     gestureUpdated?(self)
@@ -96,7 +88,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
                 behavior = behavior(of: properties.spread)
                 spreads.add(properties.spread)
                 lastSpreadSinceUpdate = properties.spread
-                count += 1
                 timeOfLastUpdate = Date()
                 gestureUpdated?(self)
             }
