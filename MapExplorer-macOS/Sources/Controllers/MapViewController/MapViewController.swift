@@ -16,7 +16,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private var placeForCircle = [MKCircle: Place]()
 
     private struct Constants {
-        static let tileURL = "http://c.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg"
+        static let tileURL = "http:localhost:3200/{z}/{x}/{y}.jpg"
         static let annotationContainerClass = "MKNewAnnotationContainerView"
         static let maxZoomWidth: Double =  134217730
         static let annotationHitSize = CGSize(width: 50, height: 50)

@@ -6,7 +6,7 @@ import MONode
 final class TouchManager: SocketManagerDelegate {
 
     static let instance = TouchManager()
-    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12224)
+    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12221)
 
     private var socketManager: SocketManager?
     private var touchesForMapID = [Int: Set<Touch>]()
@@ -42,10 +42,12 @@ final class TouchManager: SocketManagerDelegate {
 
         // Check if the touch landed on a window, else notify the proper map application.
         if let manager = gestureManager(for: touch) {
-            manager.handle(touch)
+            if shouldSend(touch) {
+                manager.handle(touch)
+            }
         } else {
             let map = mapOwner(of: touch) ?? calculateMap(for: touch)
-            if needsUpdate(touch) {
+            if shouldSend(touch) {
                 send(touch, to: map)
             }
         }
@@ -139,7 +141,7 @@ final class TouchManager: SocketManagerDelegate {
     }
 
     /// Determines if a touch being sent to a map needs to be sent. To reduce the number of notifications sent, we only send every second moved event.
-    private func needsUpdate(_ touch: Touch) -> Bool {
+    private func shouldSend(_ touch: Touch) -> Bool {
         switch touch.state {
         case .down:
             touchNeedsUpdate[touch] = false

@@ -50,7 +50,10 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         }
 
         switch state {
-        case .possible, .momentum:
+        case .momentum:
+            reset()
+            fallthrough
+        case .possible:
             momentumTimer?.invalidate()
             spreads.add(properties.spread)
             lastPosition = properties.cog
@@ -97,7 +100,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func end(_ touch: Touch, with properties: TouchProperties) {
-
         guard properties.touchCount.isZero else {
             return
         }
