@@ -42,7 +42,10 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         }
 
         switch state {
-        case .possible, .momentum:
+        case .momentum:
+            reset()
+            fallthrough
+        case .possible:
             cumulativeDelta = .zero
             state = .began
             locations.add(properties.cog)
@@ -69,7 +72,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             lastTouchCount = positionForTouch.keys.count
             positionForTouch[touch] = touch.position
             let offset = touch.position - lastPositionOfTouch
-            update(location: currentLocation, with: offset.asVector)
+            recognize(location: currentLocation, with: offset.asVector)
         default:
             return
         }
@@ -102,21 +105,21 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         return sqrt(pow(properties.cog.x - currentLocation.x, 2) + pow(properties.cog.y - currentLocation.y, 2)) > Constants.recognizedThreshhold
     }
 
-    private func update(location: CGPoint, with touchVector: CGVector) {
+    private func shouldUpdate() -> Bool {
+        return cumulativeDelta.magnitude > Constants.minimumDeltaUpdateThreshold && abs(timeOfLastUpdate.timeIntervalSinceNow) > Constants.updateTimeInterval
+    }
+
+    private func recognize(location: CGPoint, with touchVector: CGVector) {
         delta = touchVector / CGFloat(lastTouchCount)
         cumulativeDelta += delta
         locations.add(location + delta)
 
-        if passedDeltaThreshold() {
+        if shouldUpdate() {
             delta = cumulativeDelta
             cumulativeDelta = .zero
             timeOfLastUpdate = Date()
             gestureUpdated?(self)
         }
-    }
-
-    private func passedDeltaThreshold() -> Bool {
-        return cumulativeDelta.magnitude > Constants.minimumDeltaUpdateThreshold && abs(timeOfLastUpdate.timeIntervalSinceNow) > Constants.updateTimeInterval
     }
 
 

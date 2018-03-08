@@ -2,7 +2,7 @@
 
 import Foundation
 
-class LastTwo<Element> {
+class LastTwo<Element>: CustomStringConvertible {
 
     private(set) var last: Element? {
         willSet {
@@ -12,6 +12,9 @@ class LastTwo<Element> {
 
     private(set) var secondLast: Element?
 
+    var description: String {
+        return "( [LastTwo] last: \(String(describing: last)), secondLast: \(String(describing: secondLast)) )"
+    }
 
     // MARK: API
 
