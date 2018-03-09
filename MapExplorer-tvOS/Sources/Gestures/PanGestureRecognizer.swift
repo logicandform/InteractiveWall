@@ -85,6 +85,9 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         
         positionForTouch.removeValue(forKey: touch)
 
+        state = .ended
+        gestureUpdated?(self)
+
         if let velocity = currentVelocity {
             beginMomentum(with: velocity)
         } else {

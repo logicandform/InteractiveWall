@@ -16,10 +16,16 @@ class MapHandler {
     let mapID: Int
 
     private var pairedIndex: Int?
+    private var groupIndex: Int?
     private var userState = UserActivity.idle
     private weak var activityTimer: Foundation.Timer?
+
     private var unpaired: Bool {
         return pairedIndex == nil
+    }
+
+    private var ungrouped: Bool {
+        return groupIndex == nil
     }
 
     private struct Constants {
@@ -32,6 +38,7 @@ class MapHandler {
     private struct Keys {
         static let id = "id"
         static let map = "map"
+        static let group = "group"
         static let gesture = "gestureType"
     }
 
@@ -48,12 +55,27 @@ class MapHandler {
     // MARK: API
 
     func send(_ mapRect: MKMapRect, gestureType type: GestureType = .custom) {
-        let json: JSON = [Keys.id: mapID, Keys.map: mapRect.toJSON(), Keys.gesture: type.rawValue]
-//        handle(mapRect, fromIndex: mapID, from: type)
-        DistributedNotificationCenter.default().postNotificationName(MapNotifications.positionChanged.name, object: nil, userInfo: json, deliverImmediately: true)
+        let info: JSON
+        if let groupID = groupIndex {
+            info = [Keys.id: mapID, Keys.group: groupID, Keys.map: mapRect.toJSON(), Keys.gesture: type.rawValue]
+        } else {
+            info = [Keys.id: mapID, Keys.map: mapRect.toJSON(), Keys.gesture: type.rawValue]
+        }
+        DistributedNotificationCenter.default().postNotificationName(MapNotifications.positionChanged.name, object: nil, userInfo: info, deliverImmediately: true)
+    }
+
+    func endActivity() {
+        guard let groupID = groupIndex else {
+            return
+        }
+
+        let info: JSON = [Keys.id: mapID, Keys.group: groupID]
+        DistributedNotificationCenter.default().postNotificationName(MapNotifications.endedActivity.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
     func endUpdates() {
+        let info: JSON = [Keys.id: mapID]
+        DistributedNotificationCenter.default().postNotificationName(MapNotifications.endedUpdates.name, object: nil, userInfo: info, deliverImmediately: true)
         userState = .idle
         beginActivityTimeout()
     }
@@ -75,17 +97,22 @@ class MapHandler {
 
     @objc
     private func handleNotification(_ notification: NSNotification) {
-        guard let userInfo = notification.userInfo, let mapID = userInfo[Keys.id] as? Int else {
+        guard let userInfo = notification.userInfo, let fromID = userInfo[Keys.id] as? Int else {
             return
         }
 
         switch notification.name {
         case MapNotifications.positionChanged.name:
             if let mapJSON = userInfo[Keys.map] as? JSON, let mapRect = MKMapRect(json: mapJSON), let gesture = userInfo[Keys.gesture] as? String, let gestureType = GestureType(rawValue: gesture) {
-                handle(mapRect, fromIndex: mapID, from: gestureType)
+                let fromGroup = userInfo[Keys.group] as? Int
+                handle(mapRect, fromIndex: fromID, in: fromGroup, from: gestureType)
             }
         case MapNotifications.endedActivity.name:
-            unpair(from: mapID)
+            deactivate(from: fromID)
+        case MapNotifications.endedUpdates.name:
+            if let groupID = userInfo[Keys.group] as? Int {
+                ungroup(from: groupID)
+            }
         default:
             return
         }
@@ -96,8 +123,35 @@ class MapHandler {
     // MARK: Helpers
 
     /// Determines how to respond to a received mapRect from another mapView and the type of gesture that triggered the event.
-    private func handle(_ mapRect: MKMapRect, fromIndex: Int, from type: GestureType) {
-        if fromIndex == mapID {
+    private func handle(_ mapRect: MKMapRect, fromIndex: Int, in group: Int?, from type: GestureType) {
+
+        if ungrouped {
+            groupIndex = group
+            pairedIndex = fromIndex
+        } else if unpaired {
+
+        } else if fromIndex == mapID, unpaired {
+            pairedIndex = mapID
+            userState = .active
+            if type == .system {
+                return
+            }
+        } else if groupIndex! == group, unpaired {
+            pairedIndex = fromIndex
+        } else if groupIndex! == group, abs(mapID - fromIndex) < abs(mapID - pairedIndex!) {
+            pairedIndex = fromIndex
+        }
+
+
+
+
+
+
+
+
+        if let currentGroup = groupIndex, currentGroup == group {
+            pairedIndex = fromIndex
+        } else if fromIndex == mapID, pairedIndex == nil {
             userState = .active
             pairedIndex = mapID
             if type == .system {
@@ -105,8 +159,10 @@ class MapHandler {
             }
         } else if unpaired {
             pairedIndex = fromIndex
+            groupIndex = group
         } else if abs(mapID - fromIndex) < abs(mapID - pairedIndex!) {
             pairedIndex = fromIndex
+            groupIndex = group
         } else if pairedIndex != fromIndex {
             return
         }
@@ -128,8 +184,12 @@ class MapHandler {
     }
 
     /// If paired to the given id, will unpair else ignore
-    func unpair(from index: Int) {
+    func deactivate(from index: Int) {
         pairedIndex = pairedIndex == index ? nil : pairedIndex
+    }
+
+    func ungroup(from index: Int) {
+        groupIndex = groupIndex == index ? nil : groupIndex
     }
 
     /// Resets the pairedDeviceID after a timeout period

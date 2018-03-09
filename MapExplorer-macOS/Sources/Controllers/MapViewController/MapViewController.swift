@@ -101,6 +101,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             let translationY = Double(pan.delta.dy) * mapRect.size.height / Double(mapView.frame.height)
             mapRect.origin -= MKMapPoint(x: translationX, y: -translationY)
             mapHandler?.send(mapRect)
+        case .ended:
+            mapHandler?.endActivity()
         case .possible:
             mapHandler?.endUpdates()
         default:
@@ -125,6 +127,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                 mapRect.origin += MKMapPoint(x: translationX, y: translationY)
                 mapHandler?.send(mapRect)
             }
+        case .ended:
+            mapHandler?.endActivity()
         case .possible, .failed:
             mapHandler?.endUpdates()
         default:
