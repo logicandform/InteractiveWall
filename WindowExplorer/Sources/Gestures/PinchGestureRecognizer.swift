@@ -100,10 +100,12 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func end(_ touch: Touch, with properties: TouchProperties) {
-
         guard properties.touchCount.isZero else {
             return
         }
+
+        state = .ended
+        gestureUpdated?(self)
 
         if let lastSpread = spreads.last, let secondLastSpread = spreads.secondLast, state == .recognized {
             beginMomentum(lastSpread, secondLastSpread, with: properties)

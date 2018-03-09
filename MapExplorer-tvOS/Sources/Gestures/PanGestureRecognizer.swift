@@ -79,11 +79,11 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func end(_ touch: Touch, with properties: TouchProperties) {
+        positionForTouch.removeValue(forKey: touch)
+
         guard properties.touchCount.isZero else {
             return
         }
-        
-        positionForTouch.removeValue(forKey: touch)
 
         state = .ended
         gestureUpdated?(self)
