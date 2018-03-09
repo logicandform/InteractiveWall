@@ -4,7 +4,7 @@ import Cocoa
 import PromiseKit
 
 struct Configuration {
-    static let mapsPerScreen = 2
+    static let mapsPerScreen = 4
     static let touchScreenSize = CGSize(width: 4095, height: 2242.5)
     static let touchScreenRatio: CGFloat = 23.0 / 42.0
     static let loadMapsOnFirstScreen = false

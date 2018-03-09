@@ -112,14 +112,14 @@ class MapHandler {
 
     /// Determines how to respond to a received mapRect from another mapView and the type of gesture that triggered the event.
     private func handle(_ mapRect: MKMapRect, fromID: Int, inGroup group: Int, from state: GestureState) {
-        var pair: Int? = nil
         if ungrouped {
             pairedID = fromID
             groupID = fromID
         } else if groupID! == group, unpaired {
             if fromID != mapID {
                 if state == .momentum {
-                    pair = fromID
+                    set(mapRect, from: fromID)
+                    return
                 } else {
                     pairedID = fromID
                     groupID = fromID
@@ -132,14 +132,10 @@ class MapHandler {
             return
         }
 
-        if pair == nil {
-            pair = pairedID
-        }
-
-        set(mapRect, from: pair)
+        set(mapRect, from: pairedID)
     }
 
-    /// Sets the visble rect of self.mapView based on the current pairedID
+    /// Sets the visble rect of self.mapView based on the current pairedID, else self.mapID
     private func set(_ mapRect: MKMapRect, from pair: Int?) {
         let pairedID = pair ?? mapID
         let xOrigin = mapRect.origin.x + Double(mapID - pairedID) * mapRect.size.width
