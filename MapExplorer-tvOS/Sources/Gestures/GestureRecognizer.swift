@@ -25,7 +25,7 @@ extension GestureRecognizer {
     }
 }
 
-enum GestureState {
+enum GestureState: String {
     case possible
     case began
     case changed
@@ -34,10 +34,5 @@ enum GestureState {
     case failed
     case momentum
     case recognized
-}
-
-/// Used to differentiate between our GestureRecognizer and NSGestureRecognizer.
-enum GestureType: String {
-    case custom
     case system
 }

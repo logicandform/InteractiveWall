@@ -100,7 +100,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             let translationX = Double(pan.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
             let translationY = Double(pan.delta.dy) * mapRect.size.height / Double(mapView.frame.height)
             mapRect.origin -= MKMapPoint(x: translationX, y: -translationY)
-            mapHandler?.send(mapRect)
+            mapHandler?.send(mapRect, for: pan.state)
         case .ended:
             mapHandler?.endActivity()
         case .possible:
@@ -159,7 +159,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     func didPanMouse(_ gesture: NSPanGestureRecognizer) {
         switch gesture.state {
         case .changed:
-            mapHandler?.send(mapView.visibleMapRect, gestureType: .system)
+            mapHandler?.send(mapView.visibleMapRect, for: .system)
         case .ended:
             mapHandler?.endUpdates()
         default:
@@ -172,7 +172,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     func didPinchTrackpad(_ gesture: NSMagnificationGestureRecognizer) {
         switch gesture.state {
         case .changed:
-            mapHandler?.send(mapView.visibleMapRect, gestureType: .system)
+            mapHandler?.send(mapView.visibleMapRect, for: .system)
         case .ended:
             mapHandler?.endUpdates()
         default:
