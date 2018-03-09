@@ -5,6 +5,12 @@ import MONode
 import MapKit
 
 
+enum UserActivity {
+    case idle
+    case active
+}
+
+
 class NetworkMapManager: SocketManagerDelegate {
     static let mapNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 13333)
 

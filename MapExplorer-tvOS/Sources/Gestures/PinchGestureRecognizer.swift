@@ -104,6 +104,9 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             return
         }
 
+        state = .ended
+        gestureUpdated?(self)
+
         if let lastSpread = spreads.last, let secondLastSpread = spreads.secondLast, state == .recognized {
             beginMomentum(lastSpread, secondLastSpread, with: properties)
         } else {
