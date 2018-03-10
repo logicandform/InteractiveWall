@@ -13,7 +13,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     @IBOutlet weak var stackView: NSStackView!
     @IBOutlet weak var scrollView: NSScrollView!
     @IBOutlet weak var relatedItemsView: NSTableView!
-
+    @IBOutlet weak var hideRelatedItemsButton: NSButton!
+    
     private(set) var gestureManager: GestureManager!
     private var showingRelatedItems = false
     
@@ -45,10 +46,15 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func setupStackView() {
-        
         for _ in (1...15) {
             let label = NSTextField(string: "Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label.")
+            label.drawsBackground = false
+            label.isBordered = false
+            label.textColor = .white
+            label.isSelectable = false
+            label.lineBreakMode = .byWordWrapping
             stackView.insertView(label, at: stackView.subviews.count, in: .top)
+
         }
     }
 
@@ -56,6 +62,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         relatedItemsView.alphaValue = 0
         relatedItemsView.register(NSNib(nibNamed: RelatedItemView.nibName, bundle: nil), forIdentifier: RelatedItemView.interfaceIdentifier)
         relatedItemsView.backgroundColor = .clear
+        hideRelatedItemsButton.alphaValue = 0
     }
 
     private func setupGestures() {
@@ -164,10 +171,19 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return
         }
 
+        relatedItemsView.isHidden = false
+        hideRelatedItemsButton.isHidden = false
+
         let alpha: CGFloat = showingRelatedItems ? 0 : 1
         NSAnimationContext.runAnimationGroup({ [weak self] _ in
             NSAnimationContext.current.duration = 0.5
             self?.relatedItemsView.animator().alphaValue = alpha
+            self?.hideRelatedItemsButton.animator().alphaValue = alpha
+            }, completionHandler: { [weak self] in
+                if let strongSelf = self {
+                    strongSelf.relatedItemsView.isHidden = !strongSelf.showingRelatedItems
+                    strongSelf.hideRelatedItemsButton.isHidden = !strongSelf.showingRelatedItems
+                }
         })
 
         let diff: CGFloat = showingRelatedItems ? -200 : 200
