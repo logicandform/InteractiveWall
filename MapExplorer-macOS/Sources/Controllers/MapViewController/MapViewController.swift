@@ -25,7 +25,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private struct Keys {
         static let touch = "touch"
         static let map = "mapID"
-        static let place = "place"
+        static let record = "record"
         static let position = "position"
     }
 
@@ -306,8 +306,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
         let location = window.frame.origin + position
 
-        let info: JSON = [Keys.position: location.toJSON(), Keys.place: place.title ?? "no title"]
-        DistributedNotificationCenter.default().postNotificationName(WindowNotifications.place.name, object: nil, userInfo: info, deliverImmediately: true)
+        let info: JSON = [Keys.position: location.toJSON(), Keys.record: place.title ?? "no title"]
+        DistributedNotificationCenter.default().postNotificationName(WindowNotifications.record.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
     /// Zooms into a cluster of annotations to make them more visible.

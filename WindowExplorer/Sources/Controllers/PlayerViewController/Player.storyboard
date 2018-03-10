@@ -1,106 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="Wqm-cw-q7Q">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="ObE-0t-P64">
     <dependencies>
         <plugIn identifier="com.apple.AVKitIBPlugin" version="13771"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
-        <capability name="system font weights other than Regular or Bold" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Player View Controller-->
-        <scene sceneID="tVc-RX-qg0">
+        <scene sceneID="Hmj-dv-a6p">
             <objects>
-                <viewController id="Wqm-cw-q7Q" customClass="PlayerViewController" customModule="MapExplorer_macOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="4tJ-aE-z8E">
-                        <rect key="frame" x="0.0" y="0.0" width="640" height="553"/>
+                <viewController id="ObE-0t-P64" customClass="PlayerViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="X51-8y-Yv7">
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="409"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="9Uj-w5-Qqd" userLabel="detailView">
-                                <rect key="frame" x="0.0" y="0.0" width="640" height="553"/>
-                                <subviews>
-                                    <avPlayerView controlsStyle="none" translatesAutoresizingMaskIntoConstraints="NO" id="5d3-81-scN">
-                                        <rect key="frame" x="0.0" y="193" width="640" height="360"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="5d3-81-scN" secondAttribute="height" multiplier="16:9" id="wbo-WU-Gg4"/>
-                                        </constraints>
-                                    </avPlayerView>
-                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="79Q-ga-wiD" customClass="PlayerControl" customModule="MapExplorer_macOS" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="143" width="640" height="50"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="wgR-aC-TGC"/>
-                                        </constraints>
-                                    </customView>
-                                    <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7d0-0O-KfF" userLabel="Close Button">
-                                        <rect key="frame" x="14" y="17" width="29" height="26"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="21" id="1uq-7o-8Z3"/>
-                                            <constraint firstAttribute="width" constant="21" id="3RP-wB-BC1"/>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="GP0-p8-jLk"/>
-                                            <constraint firstAttribute="height" constant="21" id="lXb-NV-2qu"/>
-                                        </constraints>
-                                        <buttonCell key="cell" type="disclosure" bezelStyle="roundedDisclosure" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="N0S-Se-Ged">
-                                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <action selector="closeButtonTapped:" target="Wqm-cw-q7Q" id="bWw-L3-lqb"/>
-                                        </connections>
-                                    </button>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SgX-NR-AzP">
-                                        <rect key="frame" x="16" y="108" width="608" height="27"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="27" id="hbs-qH-mqn"/>
-                                        </constraints>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="c0f-GG-f1v">
-                                            <font key="font" metaFont="systemSemibold" size="22"/>
-                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
-                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="1z5-vF-SAD">
-                                        <rect key="frame" x="13" y="16" width="30" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="30" id="Smi-Mf-tGh"/>
-                                            <constraint firstAttribute="height" constant="30" id="T8X-hQ-OGU"/>
-                                        </constraints>
-                                    </customView>
-                                </subviews>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Ps0-Dg-pIZ" customClass="PlayerControl" customModule="WindowExplorer" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="640" height="50"/>
                                 <constraints>
-                                    <constraint firstItem="5d3-81-scN" firstAttribute="top" secondItem="9Uj-w5-Qqd" secondAttribute="top" id="1ZQ-sF-L2l"/>
-                                    <constraint firstItem="79Q-ga-wiD" firstAttribute="top" secondItem="5d3-81-scN" secondAttribute="bottom" id="2BB-lU-2fW"/>
-                                    <constraint firstAttribute="trailing" secondItem="5d3-81-scN" secondAttribute="trailing" id="6N5-eB-fcx"/>
-                                    <constraint firstAttribute="bottom" secondItem="7d0-0O-KfF" secondAttribute="bottom" constant="20" id="86Q-Hs-2K0"/>
-                                    <constraint firstAttribute="trailing" secondItem="79Q-ga-wiD" secondAttribute="trailing" id="9zM-Y1-ZRB"/>
-                                    <constraint firstItem="1z5-vF-SAD" firstAttribute="centerX" secondItem="7d0-0O-KfF" secondAttribute="centerX" id="AGc-6r-wBW"/>
-                                    <constraint firstItem="5d3-81-scN" firstAttribute="leading" secondItem="9Uj-w5-Qqd" secondAttribute="leading" id="Dmc-6M-1oU"/>
-                                    <constraint firstItem="SgX-NR-AzP" firstAttribute="top" secondItem="79Q-ga-wiD" secondAttribute="bottom" constant="8" id="GJ2-lv-rGO"/>
-                                    <constraint firstItem="SgX-NR-AzP" firstAttribute="leading" secondItem="9Uj-w5-Qqd" secondAttribute="leading" constant="18" id="HGw-dr-i4X"/>
-                                    <constraint firstAttribute="trailing" secondItem="SgX-NR-AzP" secondAttribute="trailing" constant="18" id="TvU-YE-Vy8"/>
-                                    <constraint firstItem="7d0-0O-KfF" firstAttribute="leading" secondItem="9Uj-w5-Qqd" secondAttribute="leading" constant="18" id="hS7-O9-a0f"/>
-                                    <constraint firstItem="79Q-ga-wiD" firstAttribute="leading" secondItem="9Uj-w5-Qqd" secondAttribute="leading" id="kbR-dY-RrJ"/>
-                                    <constraint firstItem="1z5-vF-SAD" firstAttribute="centerY" secondItem="7d0-0O-KfF" secondAttribute="centerY" id="xtF-Bh-SnE"/>
+                                    <constraint firstAttribute="height" constant="50" id="9rl-zX-x6a"/>
+                                </constraints>
+                            </customView>
+                            <avPlayerView controlsStyle="none" translatesAutoresizingMaskIntoConstraints="NO" id="0vf-bx-Jlv">
+                                <rect key="frame" x="8" y="50" width="624" height="351"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="0vf-bx-Jlv" secondAttribute="height" multiplier="16:9" id="baj-Dw-r1b"/>
+                                </constraints>
+                            </avPlayerView>
+                            <button translatesAutoresizingMaskIntoConstraints="NO" id="7W9-O9-b3K">
+                                <rect key="frame" x="592" y="361" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="OOK-cK-T1H"/>
+                                    <constraint firstAttribute="width" constant="40" id="rRz-5P-FhR"/>
+                                </constraints>
+                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="g11-zl-E95">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="zHy-N6-K3a">
+                                <rect key="frame" x="592" y="361" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="5B6-ZV-JEX"/>
+                                    <constraint firstAttribute="width" constant="40" id="ILd-TJ-OcZ"/>
                                 </constraints>
                             </customView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="9Uj-w5-Qqd" firstAttribute="leading" secondItem="4tJ-aE-z8E" secondAttribute="leading" id="003-41-FLi"/>
-                            <constraint firstItem="9Uj-w5-Qqd" firstAttribute="top" secondItem="4tJ-aE-z8E" secondAttribute="top" id="0ng-zy-g17"/>
-                            <constraint firstAttribute="trailing" secondItem="9Uj-w5-Qqd" secondAttribute="trailing" id="Qz6-zD-dGn"/>
-                            <constraint firstAttribute="bottom" secondItem="9Uj-w5-Qqd" secondAttribute="bottom" id="wmn-Dj-cPG"/>
+                            <constraint firstItem="0vf-bx-Jlv" firstAttribute="leading" secondItem="X51-8y-Yv7" secondAttribute="leading" constant="8" id="3q3-NL-IBD"/>
+                            <constraint firstItem="zHy-N6-K3a" firstAttribute="trailing" secondItem="0vf-bx-Jlv" secondAttribute="trailing" id="4Sa-A5-3Mp"/>
+                            <constraint firstItem="0vf-bx-Jlv" firstAttribute="top" secondItem="X51-8y-Yv7" secondAttribute="top" constant="8" id="6a0-d7-akl"/>
+                            <constraint firstItem="Ps0-Dg-pIZ" firstAttribute="top" secondItem="0vf-bx-Jlv" secondAttribute="bottom" id="H83-yK-FP1"/>
+                            <constraint firstItem="Ps0-Dg-pIZ" firstAttribute="leading" secondItem="X51-8y-Yv7" secondAttribute="leading" id="UMO-xU-1zs"/>
+                            <constraint firstItem="0vf-bx-Jlv" firstAttribute="width" secondItem="0vf-bx-Jlv" secondAttribute="height" multiplier="16:9" id="WXL-NG-4zx"/>
+                            <constraint firstItem="7W9-O9-b3K" firstAttribute="trailing" secondItem="0vf-bx-Jlv" secondAttribute="trailing" id="a7O-FI-L5U"/>
+                            <constraint firstAttribute="bottom" secondItem="Ps0-Dg-pIZ" secondAttribute="bottom" id="g3o-Aj-AgD"/>
+                            <constraint firstAttribute="trailing" secondItem="Ps0-Dg-pIZ" secondAttribute="trailing" id="h5O-NQ-cBk"/>
+                            <constraint firstAttribute="trailing" secondItem="0vf-bx-Jlv" secondAttribute="trailing" constant="8" id="hwI-qv-g5r"/>
+                            <constraint firstItem="zHy-N6-K3a" firstAttribute="top" secondItem="0vf-bx-Jlv" secondAttribute="top" id="naP-Jq-Xxo"/>
+                            <constraint firstItem="7W9-O9-b3K" firstAttribute="top" secondItem="0vf-bx-Jlv" secondAttribute="top" id="ygK-Na-XPy"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="detailView" destination="9Uj-w5-Qqd" id="Sjq-pL-ocq"/>
-                        <outlet property="dismissButton" destination="1z5-vF-SAD" id="53U-dg-tfE"/>
-                        <outlet property="playerControl" destination="79Q-ga-wiD" id="m3V-fc-l6M"/>
-                        <outlet property="playerView" destination="5d3-81-scN" id="lxG-hx-IKL"/>
-                        <outlet property="videoTitle" destination="SgX-NR-AzP" id="8y1-pw-o2Q"/>
+                        <outlet property="dismissButton" destination="zHy-N6-K3a" id="5MY-vH-Xld"/>
+                        <outlet property="playerControl" destination="Ps0-Dg-pIZ" id="xav-8S-1Y9"/>
+                        <outlet property="playerView" destination="0vf-bx-Jlv" id="6cP-UG-tfS"/>
                     </connections>
                 </viewController>
-                <customObject id="p1J-Xb-jWL" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <customObject id="RVz-WL-JMy" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-73" y="-391.5"/>
+            <point key="canvasLocation" x="592" y="-463"/>
         </scene>
     </scenes>
 </document>

@@ -5,12 +5,18 @@ import AppKit
 
 
 enum WindowType {
+    case record
     case place
     case player
     case pdf
 
     var size: CGSize {
-        return CGSize(width: 640, height: 600)
+        switch self {
+        case .record:
+            return CGSize(width: 416, height: 600)
+        default:
+            return CGSize(width: 640, height: 600)
+        }
     }
 }
 
@@ -22,7 +28,9 @@ final class WindowFactory {
 
     static func window(for type: WindowType, at origin: CGPoint) -> NSWindow {
         let frame = CGRect(origin: origin, size: type.size)
-        let window = BorderlessWindow(frame: frame, controller: controller(for: type))
+        let viewController = controller(for: type)
+        viewController.view.setFrameSize(frame.size)
+        let window = BorderlessWindow(frame: frame, controller: viewController)
         window.makeKeyAndOrderFront(self)
         return window
     }
@@ -32,6 +40,9 @@ final class WindowFactory {
 
     private static func controller(for type: WindowType) -> NSViewController {
         switch type {
+        case .record:
+            let storyboard = NSStoryboard(name: RecordViewController.storyboard, bundle: Bundle.main)
+            return storyboard.instantiateInitialController() as! RecordViewController
         case .place:
             let storyboard = NSStoryboard(name: PlaceViewController.storyboard, bundle: Bundle.main)
             return storyboard.instantiateInitialController() as! PlaceViewController

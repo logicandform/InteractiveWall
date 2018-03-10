@@ -59,6 +59,8 @@
 		8E4010A020487B8D00E81AAA /* WindowFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E40109F20487B8D00E81AAA /* WindowFactory.swift */; };
 		8E4010A220487E0300E81AAA /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4010A120487E0300E81AAA /* Collection.swift */; };
 		C6DB17689F287C9826286DF2 /* Pods_All_WindowExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */; };
+		D901EBE8205350CA00BBFCF2 /* RecordItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D901EBE7205350CA00BBFCF2 /* RecordItemView.swift */; };
+		D901EBEA20535A3800BBFCF2 /* RecordItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D901EBE920535A3800BBFCF2 /* RecordItemView.xib */; };
 		D992E20A20533A3A00EAB698 /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D992E20820533A3A00EAB698 /* RecordViewController.swift */; };
 		D992E20D20533A6200EAB698 /* Record.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D992E20C20533A6200EAB698 /* Record.storyboard */; };
 /* End PBXBuildFile section */
@@ -134,6 +136,8 @@
 		8E4010A120487E0300E81AAA /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_WindowExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE471FCE047AE2FD1C92BA3A /* Pods-All-WindowExplorer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-WindowExplorer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer.release.xcconfig"; sourceTree = "<group>"; };
+		D901EBE7205350CA00BBFCF2 /* RecordItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordItemView.swift; sourceTree = "<group>"; };
+		D901EBE920535A3800BBFCF2 /* RecordItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecordItemView.xib; sourceTree = "<group>"; };
 		D992E20820533A3A00EAB698 /* RecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
 		D992E20C20533A6200EAB698 /* Record.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Record.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -155,8 +159,7 @@
 			children = (
 				2204620920472DE80067D9FB /* Place.storyboard */,
 				2204620B20472DE80067D9FB /* PlaceViewController.swift */,
-				2204620A20472DE80067D9FB /* RelatedItemView.swift */,
-				2204620C20472DE80067D9FB /* RelatedItemView.xib */,
+				22E4A2792053C9BB00396D05 /* Views */,
 			);
 			path = PlaceViewController;
 			sourceTree = "<group>";
@@ -357,6 +360,15 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		22E4A2792053C9BB00396D05 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2204620C20472DE80067D9FB /* RelatedItemView.xib */,
+				2204620A20472DE80067D9FB /* RelatedItemView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		BA7AB469DDFD237E3385F839 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -365,11 +377,21 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D901EBEB20535A3E00BBFCF2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D901EBE920535A3800BBFCF2 /* RecordItemView.xib */,
+				D901EBE7205350CA00BBFCF2 /* RecordItemView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		D992E20620533A0400EAB698 /* RecordViewController */ = {
 			isa = PBXGroup;
 			children = (
 				D992E20C20533A6200EAB698 /* Record.storyboard */,
 				D992E20820533A3A00EAB698 /* RecordViewController.swift */,
+				D901EBEB20535A3E00BBFCF2 /* Views */,
 			);
 			path = RecordViewController;
 			sourceTree = "<group>";
@@ -450,6 +472,7 @@
 				22A923252044AF05003EA9BB /* Assets.xcassets in Resources */,
 				2204621020472DE80067D9FB /* RelatedItemView.xib in Resources */,
 				2204620D20472DE80067D9FB /* Place.storyboard in Resources */,
+				D901EBEA20535A3800BBFCF2 /* RecordItemView.xib in Resources */,
 				2204621720472F2D0067D9FB /* PlayerControl.xib in Resources */,
 				22A923282044AF05003EA9BB /* Main.storyboard in Resources */,
 				22A76FEB2046477A006C0AE7 /* Player.storyboard in Resources */,
@@ -548,6 +571,7 @@
 				22A49878204749C30024B46C /* TouchState.swift in Sources */,
 				2204623720472FDF0067D9FB /* PacketType.swift in Sources */,
 				223613E720509D920024145C /* LastTwo.swift in Sources */,
+				D901EBE8205350CA00BBFCF2 /* RecordItemView.swift in Sources */,
 				2204623320472FDF0067D9FB /* CoreGraphics.swift in Sources */,
 				2204620E20472DE80067D9FB /* RelatedItemView.swift in Sources */,
 				226D0589204FC7BC00D74711 /* ResponseHandler.swift in Sources */,

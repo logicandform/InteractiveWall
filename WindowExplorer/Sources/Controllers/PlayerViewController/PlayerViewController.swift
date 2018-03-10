@@ -10,10 +10,8 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
 
     @IBOutlet weak var playerView: AVPlayerView!
     @IBOutlet weak var playerControl: PlayerControl!
-    @IBOutlet weak var videoTitle: NSTextField!
     @IBOutlet weak var dismissButton: NSView!
-    @IBOutlet weak var detailView: NSView!
-    
+
     private(set) var gestureManager: GestureManager!
 
     private struct Constants {
@@ -27,11 +25,10 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
     override func viewDidLoad() {
         super.viewDidLoad()
         view.wantsLayer = true
-        view.layer?.backgroundColor = #colorLiteral(red: 0.6899075147, green: 0.7701538212, blue: 0.7426613761, alpha: 0.8230652265)
+        view.layer?.backgroundColor = #colorLiteral(red: 0.1433445513, green: 0.1544109583, blue: 0.1703726053, alpha: 0.75)
         gestureManager = GestureManager(responder: self)
 
         setupPlayer()
-        animateViewIn()
         setupGestures()
     }
 
@@ -39,7 +36,6 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
     // MARK: Setup
 
     private func setupPlayer() {
-        videoTitle.stringValue = Constants.testVideoURL.lastPathComponent
         let player = AVPlayer(url: Constants.testVideoURL)
         playerView.player = player
 
@@ -66,7 +62,7 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
     }
 
 
-    // MARK: Gestures
+    // MARK: Gesture Handling
 
     private func didTapVideoPlayer(_ gesture: GestureRecognizer) {
         guard gesture is TapGestureRecognizer else {
@@ -98,7 +94,7 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
             return
         }
 
-        animateViewOut()
+        WindowManager.instance.closeWindow(for: self)
     }
 
     @objc
@@ -117,7 +113,7 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
     // MARK: IB-Actions
 
     @IBAction func closeButtonTapped(_ sender: Any) {
-        animateViewOut()
+        WindowManager.instance.closeWindow(for: self)
     }
 
 
@@ -138,34 +134,6 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
             imageView.animator().alphaValue = 0.0
         }, completionHandler: {
             imageView.removeFromSuperview()
-        })
-    }
-
-
-    // MARK: Helpers
-
-    private func animateViewIn() {
-        view.alphaValue = 0.0
-        detailView.frame.origin.y = view.frame.size.height
-
-        NSAnimationContext.runAnimationGroup({ [weak self] _ in
-            NSAnimationContext.current.duration = 0.7
-            view.animator().alphaValue = 1.0
-            self?.detailView.animator().frame.origin.y = 0
-        })
-    }
-
-    private func animateViewOut() {
-        NSAnimationContext.runAnimationGroup({ [weak self] _ in
-            if let strongSelf = self {
-                NSAnimationContext.current.duration = 1.0
-                strongSelf.detailView.animator().alphaValue = 0.0
-                strongSelf.detailView.animator().frame.origin.y = strongSelf.view.frame.size.height
-            }
-        }, completionHandler: { [weak self] in
-            if let strongSelf = self {
-                WindowManager.instance.closeWindow(for: strongSelf)
-            }
         })
     }
 }

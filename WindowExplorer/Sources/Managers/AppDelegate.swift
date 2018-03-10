@@ -3,11 +3,12 @@
 import Cocoa
 import PromiseKit
 
+
 struct Configuration {
-    static let mapsPerScreen = 4
+    static let mapsPerScreen = 1
     static let touchScreenSize = CGSize(width: 4095, height: 2242.5)
     static let touchScreenRatio: CGFloat = 23.0 / 42.0
-    static let loadMapsOnFirstScreen = false
+    static let loadMapsOnFirstScreen = true
 }
 
 
@@ -17,9 +18,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         WindowManager.instance.registerForNotifications()
         TouchManager.instance.setupTouchSocket()
+        WindowManager.instance.displayWindow(for: .record, at: CGPoint(x: 100, y: 500))
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
 }
+

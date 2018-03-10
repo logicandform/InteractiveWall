@@ -13,7 +13,7 @@ final class WindowManager {
 
     private struct Keys {
         static let position = "position"
-        static let place = "place"
+        static let record = "record"
     }
 
 
@@ -75,9 +75,9 @@ final class WindowManager {
         }
 
         switch notification.name {
-        case WindowNotifications.place.name:
+        case WindowNotifications.record.name:
             let origin = location - CGPoint(x: WindowType.place.size.width / 2, y: WindowType.place.size.height)
-            displayWindow(for: .place, at: origin)
+            displayWindow(for: .record, at: origin)
         default:
             return
         }

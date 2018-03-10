@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="L0q-Ej-7hc">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="1Ij-Lj-j0K">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
         <plugIn identifier="com.apple.pdfkit.ibplugin" version="13771"/>
@@ -7,48 +7,65 @@
     </dependencies>
     <scenes>
         <!--View Controller-->
-        <scene sceneID="IF2-h5-8gk">
+        <scene sceneID="E2A-sj-65k">
             <objects>
-                <viewController id="L0q-Ej-7hc" customClass="PDFViewController" customModule="MapExplorer_macOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" wantsLayer="YES" id="yUg-IS-ord">
-                        <rect key="frame" x="0.0" y="0.0" width="594" height="598"/>
+                <viewController id="1Ij-Lj-j0K" customClass="PDFViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="l0O-E9-8FM">
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="522"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <pdfView autoresizesSubviews="NO" wantsLayer="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jng-ou-P9l" userLabel="PDF View">
-                                <rect key="frame" x="117" y="0.0" width="477" height="598"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <pdfView autoresizesSubviews="NO" wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LrV-6C-x9X" userLabel="PDF View">
+                                <rect key="frame" x="8" y="116" width="624" height="398"/>
                             </pdfView>
-                            <pdfThumbnailView wantsLayer="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Crs-wP-cLz" userLabel="PDF Thumbnail View">
-                                <rect key="frame" x="0.0" y="0.0" width="118" height="598"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <pdfThumbnailView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B0g-yS-hPA" userLabel="PDF Thumbnail View">
+                                <rect key="frame" x="8" y="8" width="624" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="9fY-Z5-Fcn"/>
+                                </constraints>
                                 <size key="thumbnailSize" width="64" height="64"/>
                             </pdfThumbnailView>
-                            <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cDw-xO-f0r" userLabel="Close Button">
-                                <rect key="frame" x="563" y="567" width="29" height="26"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="disclosure" bezelStyle="roundedDisclosure" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="cdA-ou-9ce">
-                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                            <button translatesAutoresizingMaskIntoConstraints="NO" id="Qqy-Lr-eU7">
+                                <rect key="frame" x="592" y="474" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="1B3-2y-eX9"/>
+                                    <constraint firstAttribute="width" constant="40" id="aBh-FU-5GM"/>
+                                </constraints>
+                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="mN3-of-VMc">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
-                                <connections>
-                                    <action selector="closeButtonTapped:" target="L0q-Ej-7hc" id="qHj-1S-mCf"/>
-                                </connections>
                             </button>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WSi-B9-yo0">
-                                <rect key="frame" x="563" y="568" width="29" height="26"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="7qF-ve-yFy">
+                                <rect key="frame" x="592" y="474" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="uOj-zf-AF7"/>
+                                    <constraint firstAttribute="width" constant="40" id="zTi-dq-EYp"/>
+                                </constraints>
                             </customView>
                         </subviews>
+                        <constraints>
+                            <constraint firstItem="Qqy-Lr-eU7" firstAttribute="top" secondItem="LrV-6C-x9X" secondAttribute="top" id="1kX-hE-Zhc"/>
+                            <constraint firstItem="7qF-ve-yFy" firstAttribute="trailing" secondItem="LrV-6C-x9X" secondAttribute="trailing" id="30d-db-Lx3"/>
+                            <constraint firstItem="B0g-yS-hPA" firstAttribute="trailing" secondItem="LrV-6C-x9X" secondAttribute="trailing" id="Dyz-2k-98z"/>
+                            <constraint firstItem="B0g-yS-hPA" firstAttribute="leading" secondItem="LrV-6C-x9X" secondAttribute="leading" id="J7C-mu-Db4"/>
+                            <constraint firstItem="LrV-6C-x9X" firstAttribute="leading" secondItem="l0O-E9-8FM" secondAttribute="leading" constant="8" id="P7A-zj-359"/>
+                            <constraint firstItem="7qF-ve-yFy" firstAttribute="top" secondItem="LrV-6C-x9X" secondAttribute="top" id="QGb-ig-3ex"/>
+                            <constraint firstItem="B0g-yS-hPA" firstAttribute="top" secondItem="LrV-6C-x9X" secondAttribute="bottom" constant="8" id="Yaf-X3-Jef"/>
+                            <constraint firstItem="LrV-6C-x9X" firstAttribute="top" secondItem="l0O-E9-8FM" secondAttribute="top" constant="8" id="dFe-Fl-hUD"/>
+                            <constraint firstAttribute="bottom" secondItem="B0g-yS-hPA" secondAttribute="bottom" constant="8" id="h7H-db-AIi"/>
+                            <constraint firstItem="Qqy-Lr-eU7" firstAttribute="trailing" secondItem="LrV-6C-x9X" secondAttribute="trailing" id="mRV-tk-aYe"/>
+                            <constraint firstAttribute="trailing" secondItem="LrV-6C-x9X" secondAttribute="trailing" constant="8" id="xha-Du-P04"/>
+                        </constraints>
                     </view>
                     <connections>
-                        <outlet property="closeButtonView" destination="WSi-B9-yo0" id="zWh-8C-xI6"/>
-                        <outlet property="pdfThumbnailView" destination="Crs-wP-cLz" id="jqg-8v-e9a"/>
-                        <outlet property="pdfView" destination="jng-ou-P9l" id="8te-MT-tk0"/>
+                        <outlet property="closeButtonView" destination="7qF-ve-yFy" id="CD9-X8-olA"/>
+                        <outlet property="pdfThumbnailView" destination="B0g-yS-hPA" id="57Y-jR-wFY"/>
+                        <outlet property="pdfView" destination="LrV-6C-x9X" id="NQR-O0-ndl"/>
                     </connections>
                 </viewController>
-                <customObject id="UqZ-uw-oQd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <customObject id="Q0f-PU-OLM" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="354" y="914"/>
+            <point key="canvasLocation" x="1007" y="876"/>
         </scene>
     </scenes>
 </document>
