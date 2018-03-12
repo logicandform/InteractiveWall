@@ -15,7 +15,7 @@ class RelatedItemView: NSView {
     override func awakeFromNib() {
         super.awakeFromNib()
         wantsLayer = true
-        layer?.backgroundColor = #colorLiteral(red: 0.1433445513, green: 0.1544109583, blue: 0.1703726053, alpha: 0.75)
+        layer?.backgroundColor = style.darkBackground.cgColor
         titleLabel?.textColor = .white
         descriptionLabel?.textColor = .white
     }

@@ -28,7 +28,7 @@ class RecordViewController: NSViewController, NSTableViewDataSource, NSTableView
     override func viewDidLoad() {
         super.viewDidLoad()
         detailView.wantsLayer = true
-        detailView.layer?.backgroundColor = #colorLiteral(red: 0.1433445513, green: 0.1544109583, blue: 0.1703726053, alpha: 0.75)
+        detailView.layer?.backgroundColor = style.darkBackground.cgColor
         gestureManager = GestureManager(responder: self)
 
         setupCollectionView()
@@ -76,7 +76,7 @@ class RecordViewController: NSViewController, NSTableViewDataSource, NSTableView
         stackViewPanGesture.gestureUpdated = handleStackViewPan(_:)
     }
 
-
+    var pageController: RecordPageViewController!
     // MARK: Segue
 
     override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
@@ -84,6 +84,7 @@ class RecordViewController: NSViewController, NSTableViewDataSource, NSTableView
             return
         }
 
+        self.pageController = pageController
         // Might have to be done after record is set
         pageController.pageObjects = mediaObjects
         pageController.gestureManager = gestureManager
@@ -118,7 +119,7 @@ class RecordViewController: NSViewController, NSTableViewDataSource, NSTableView
             origin += pan.delta.round()
             window.setFrameOrigin(origin)
         case .possible:
-            WindowManager.instance.dealocateWindowIfOutOfBounds(for: self)
+            WindowManager.instance.checkBounds(of: self)
         default:
             return
         }
@@ -133,7 +134,7 @@ class RecordViewController: NSViewController, NSTableViewDataSource, NSTableView
         var origin = window.frame.origin
         origin += gesture.translation(in: nil)
         window.setFrameOrigin(origin)
-        WindowManager.instance.dealocateWindowIfOutOfBounds(for: self)
+        WindowManager.instance.checkBounds(of: self)
     }
 
 
@@ -144,7 +145,8 @@ class RecordViewController: NSViewController, NSTableViewDataSource, NSTableView
     }
 
     @IBAction func closeWindowTapped(_ sender: Any) {
-        WindowManager.instance.closeWindow(for: self)
+//        WindowManager.instance.closeWindow(for: self)
+        pageController.scrollMe()
     }
 
 

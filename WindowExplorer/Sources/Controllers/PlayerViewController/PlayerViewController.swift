@@ -25,7 +25,7 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
     override func viewDidLoad() {
         super.viewDidLoad()
         view.wantsLayer = true
-        view.layer?.backgroundColor = #colorLiteral(red: 0.1433445513, green: 0.1544109583, blue: 0.1703726053, alpha: 0.75)
+        view.layer?.backgroundColor = style.darkBackground.cgColor
         gestureManager = GestureManager(responder: self)
 
         setupPlayer()
@@ -83,7 +83,7 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
             origin += pan.delta.round()
             window.setFrameOrigin(origin)
         case .possible:
-            WindowManager.instance.dealocateWindowIfOutOfBounds(for: self)
+            WindowManager.instance.checkBounds(of: self)
         default:
             return
         }
@@ -106,7 +106,7 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
         var origin = window.frame.origin
         origin += gesture.translation(in: nil)
         window.setFrameOrigin(origin)
-        WindowManager.instance.dealocateWindowIfOutOfBounds(for: self)
+        WindowManager.instance.checkBounds(of: self)
     }
 
 

@@ -48,7 +48,7 @@ final class WindowManager {
     }
 
     // If the none of the screens contain the detail view, dealocate it
-    func dealocateWindowIfOutOfBounds(for controller: NSViewController) {
+    func checkBounds(of controller: NSViewController) {
         guard let screenIndex = controller.view.window?.screen?.index else {
             closeWindow(for: controller)
             return

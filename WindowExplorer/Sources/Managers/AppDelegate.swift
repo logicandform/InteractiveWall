@@ -3,6 +3,7 @@
 import Cocoa
 import PromiseKit
 
+let style = Style()
 
 struct Configuration {
     static let mapsPerScreen = 1

@@ -34,6 +34,9 @@ class RecordPageViewController: NSPageController, NSPageControllerDelegate {
         panGesture.gestureUpdated = didPanView(_:)
     }
 
+    func scrollMe() {
+        view.scroll(CGPoint(x: 500, y: 0))
+    }
 
     // MARK: Gesture Handling
 
