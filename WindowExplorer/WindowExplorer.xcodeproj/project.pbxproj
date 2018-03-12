@@ -62,6 +62,7 @@
 		8E4010A020487B8D00E81AAA /* WindowFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E40109F20487B8D00E81AAA /* WindowFactory.swift */; };
 		8E4010A220487E0300E81AAA /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4010A120487E0300E81AAA /* Collection.swift */; };
 		C6DB17689F287C9826286DF2 /* Pods_All_WindowExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */; };
+		D901EBED2056EEFE00BBFCF2 /* RecordDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D901EBEC2056EEFE00BBFCF2 /* RecordDisplayable.swift */; };
 		D992E20A20533A3A00EAB698 /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D992E20820533A3A00EAB698 /* RecordViewController.swift */; };
 		D992E20D20533A6200EAB698 /* Record.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D992E20C20533A6200EAB698 /* Record.storyboard */; };
 /* End PBXBuildFile section */
@@ -140,6 +141,7 @@
 		8E4010A120487E0300E81AAA /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_WindowExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE471FCE047AE2FD1C92BA3A /* Pods-All-WindowExplorer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-WindowExplorer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer.release.xcconfig"; sourceTree = "<group>"; };
+		D901EBEC2056EEFE00BBFCF2 /* RecordDisplayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDisplayable.swift; sourceTree = "<group>"; };
 		D992E20820533A3A00EAB698 /* RecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
 		D992E20C20533A6200EAB698 /* Record.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Record.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -386,6 +388,7 @@
 			children = (
 				D992E20C20533A6200EAB698 /* Record.storyboard */,
 				D992E20820533A3A00EAB698 /* RecordViewController.swift */,
+				D901EBEC2056EEFE00BBFCF2 /* RecordDisplayable.swift */,
 				D901EBEB20535A3E00BBFCF2 /* Views */,
 			);
 			path = RecordViewController;
@@ -587,6 +590,7 @@
 				22046244204730780067D9FB /* PanGestureRecognizer.swift in Sources */,
 				2204623820472FDF0067D9FB /* URL.swift in Sources */,
 				2204621820472F2D0067D9FB /* PlayerState.swift in Sources */,
+				D901EBED2056EEFE00BBFCF2 /* RecordDisplayable.swift in Sources */,
 				22A923212044AF05003EA9BB /* AppDelegate.swift in Sources */,
 				22046259204730C70067D9FB /* School.swift in Sources */,
 				226D0582204FC38700D74711 /* Event.swift in Sources */,

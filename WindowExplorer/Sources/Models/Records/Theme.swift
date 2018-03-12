@@ -8,18 +8,16 @@ class Theme {
     let title: String
     let description: String?
     let mediaTitle: String?
-    let mediaURL: URL?
-    let thumbnailURL: URL?
-    let mediaPath: String?
+    let thumbnail: URL?
+    var media = [URL]()
 
     private struct Keys {
         static let id = "id"
         static let title = "title"
         static let description = "description"
         static let mediaTitle = "mediaTitle"
-        static let mediaURL = "mediaURL"
-        static let thumbnailURL = "mediaThumbnailURL"
-        static let mediaPath = "mediaPath"
+        static let thumbnail = "mediaThumbnailUrl"
+        static let media = "mediaPaths"
     }
 
 
@@ -34,8 +32,9 @@ class Theme {
         self.title = title
         self.description = json[Keys.description] as? String
         self.mediaTitle = json[Keys.mediaTitle] as? String
-        self.mediaURL = URL.from(json[Keys.mediaURL] as? String)
-        self.thumbnailURL = URL.from(json[Keys.thumbnailURL] as? String)
-        self.mediaPath = json[Keys.mediaPath] as? String
+        self.thumbnail = URL.from(json[Keys.thumbnail] as? String)
+        if let mediaStrings = json[Keys.media] as? [String] {
+            self.media = mediaStrings.flatMap { URL.from($0) }
+        }
     }
 }
