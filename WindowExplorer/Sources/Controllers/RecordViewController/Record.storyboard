@@ -202,7 +202,7 @@
                                             <subviews>
                                                 <collectionView id="Eaz-7m-IDm">
                                                     <rect key="frame" x="0.0" y="0.0" width="400" height="158"/>
-                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                    <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" id="dee-BC-0Jq">
                                                         <size key="itemSize" width="50" height="200"/>
                                                     </collectionViewFlowLayout>
@@ -262,10 +262,10 @@
                     </view>
                     <connections>
                         <outlet property="collectionClipView" destination="IhY-hb-dfg" id="T4r-mC-1YX"/>
-                        <outlet property="collectionView" destination="Eaz-7m-IDm" id="uEB-1C-9gL"/>
                         <outlet property="dateLabel" destination="NjJ-25-aZ3" id="FoT-1a-jiV"/>
                         <outlet property="detailView" destination="83q-cx-wcX" id="pb8-ex-weM"/>
                         <outlet property="hideRelatedItemsButton" destination="XCO-vm-Fbg" id="uj0-Ml-rkj"/>
+                        <outlet property="mediaView" destination="Eaz-7m-IDm" id="eav-Zv-2bd"/>
                         <outlet property="relatedItemsView" destination="cKY-nL-NPV" id="26r-gU-lSa"/>
                         <outlet property="scrollView" destination="FBg-bp-lkB" id="wo8-pJ-SyU"/>
                         <outlet property="stackView" destination="RgY-ah-SAv" id="N4b-iD-145"/>

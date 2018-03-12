@@ -11,9 +11,8 @@ class Event {
     let description: String?
     let coordinate: CLLocationCoordinate2D?
     let mediaTitle: String?
-    let mediaUrl: URL?
-    let mediaThumbnailUrl: URL?
-    let mediaPath: String?
+    let thumbnail: URL?
+    var media = [URL]()
     var relatedSchools: [School]?
     var relatedOrganizations: [Organization]?
     var relatedArtifacts: [Artifact]?
@@ -25,10 +24,9 @@ class Event {
         static let date = "date"
         static let description = "description"
         static let coordinate = "coordinate"
+        static let thumbnail = "mediaThumbnailUrl"
         static let mediaTitle = "mediaTitle"
-        static let mediaUrl = "mediaUrl"
-        static let mediaThumbnailUrl = "mediaThumbnailUrl"
-        static let mediaPath = "mediaPath"
+        static let media = "mediaPaths"
         static let schools = "schools"
         static let organizations = "organizations"
         static let artifacts = "artifacts"
@@ -46,13 +44,14 @@ class Event {
         self.id = id
         self.title = title
         self.description = json[Keys.description] as? String
+        self.coordinate = CLLocationCoordinate2D(string: json[Keys.coordinate] as? String)
         self.date = json[Keys.date] as? String
         self.mediaTitle = json[Keys.mediaTitle] as? String
-        self.mediaUrl = URL.from(json[Keys.mediaUrl] as? String)
-        self.mediaThumbnailUrl = URL.from(json[Keys.mediaThumbnailUrl] as? String)
-        self.mediaPath = json[Keys.mediaPath] as? String
-        self.coordinate = CLLocationCoordinate2D(string: json[Keys.coordinate] as? String)
-        
+        self.thumbnail = URL.from(json[Keys.thumbnail] as? String)
+
+        if let mediaStrings = json[Keys.media] as? [String] {
+            self.media = mediaStrings.flatMap { URL.from($0) }
+        }
         if let schoolsJSON = json[Keys.schools] as? [JSON] {
             let schools = schoolsJSON.flatMap { School(json: $0) }
             self.relatedSchools = schools

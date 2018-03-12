@@ -11,14 +11,13 @@ class School {
     let description: String?
     let coordinate: CLLocationCoordinate2D?
     let mediaTitle: String?
-    let mediaURL: URL?
-    let thumbnailURL: URL?
-    let mediaPath: String?
+    let thumbnail: URL?
+    var media = [URL]()
     var relatedSchools: [School]?
     var relatedOrganizations: [Organization]?
     var relatedArtifacts: [Artifact]?
     var relatedEvents: [Event]?
-    var themes: [Theme]?
+    var relatedThemes: [Theme]?
 
     private struct Keys {
         static let id = "id"
@@ -26,10 +25,9 @@ class School {
         static let date = "date"
         static let description = "description"
         static let coordinate = "coordinate"
-        static let mediaURL = "mediaURL"
-        static let thumbnailURL = "mediaThumbnailURL"
+        static let thumbnail = "mediaThumbnailUrl"
         static let mediaTitle = "mediaTitle"
-        static let mediaPath = "mediaPath"
+        static let media = "mediaPaths"
         static let schools = "schools"
         static let organizations = "organizations"
         static let artifacts = "artifacts"
@@ -51,10 +49,11 @@ class School {
         self.description = json[Keys.description] as? String
         self.coordinate = CLLocationCoordinate2D(string: json[Keys.coordinate] as? String)
         self.mediaTitle = json[Keys.mediaTitle] as? String
-        self.mediaURL = URL.from(json[Keys.mediaURL] as? String)
-        self.thumbnailURL = URL.from(json[Keys.thumbnailURL] as? String)
-        self.mediaPath = json[Keys.mediaPath] as? String
+        self.thumbnail = URL.from(json[Keys.thumbnail] as? String)
 
+        if let mediaStrings = json[Keys.media] as? [String] {
+            self.media = mediaStrings.flatMap { URL.from($0) }
+        }
         if let schoolsJSON = json[Keys.schools] as? [JSON] {
             let schools = schoolsJSON.flatMap { School(json: $0) }
             self.relatedSchools = schools
@@ -73,7 +72,7 @@ class School {
         }
         if let themesJSON = json[Keys.themes] as? [JSON] {
             let themes = themesJSON.flatMap { Theme(json: $0) }
-            self.themes = themes
+            self.relatedThemes = themes
         }
     }
 }
