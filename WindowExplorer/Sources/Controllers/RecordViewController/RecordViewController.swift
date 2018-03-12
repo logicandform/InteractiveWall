@@ -57,30 +57,38 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     private func setupGestures() {
         let nsPanGesture = NSPanGestureRecognizer(target: self, action: #selector(handleMouseDrag(_:)))
-        view.addGestureRecognizer(nsPanGesture)
+        detailView.addGestureRecognizer(nsPanGesture)
 
         let collectionViewPanGesture = PanGestureRecognizer()
         gestureManager.add(collectionViewPanGesture, to: mediaView)
         collectionViewPanGesture.gestureUpdated = handleCollectionViewPan(_:)
 
         let panGesture = PanGestureRecognizer()
-        gestureManager.add(panGesture, to: view)
+        gestureManager.add(panGesture, to: detailView)
         panGesture.gestureUpdated = handleWindowPan(_:)
 
         let stackViewPanGesture = PanGestureRecognizer()
         gestureManager.add(stackViewPanGesture, to: stackView)
         stackViewPanGesture.gestureUpdated = handleStackViewPan(_:)
 
+        let relatedItemTap = TapGestureRecognizer()
+        gestureManager.add(relatedItemTap, to: relatedItemsView)
+        relatedItemTap.gestureUpdated = didTapRelatedView(_:)
+
         let tapToClose = TapGestureRecognizer()
         gestureManager.add(tapToClose, to: closeWindowTapArea)
-        tapToClose.gestureUpdated = { _ in
-            WindowManager.instance.closeWindow(for: self)
+        tapToClose.gestureUpdated = { gesture in
+            if gesture.state == .ended {
+                WindowManager.instance.closeWindow(for: self)
+            }
         }
 
         let toggleRelatedItemsTap = TapGestureRecognizer()
         gestureManager.add(toggleRelatedItemsTap, to: toggleRelatedItemsArea)
-        toggleRelatedItemsTap.gestureUpdated = { [weak self] _ in
-            self?.toggleRelatedItems()
+        toggleRelatedItemsTap.gestureUpdated = { [weak self] gesture in
+            if gesture.state == .ended {
+                self?.toggleRelatedItems()
+            }
         }
     }
 
@@ -116,7 +124,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             let margin = offset.truncatingRemainder(dividingBy: 1)
             let duration = margin < 0.5 ? margin : 1 - margin
             let origin = CGPoint(x: rect.width * index, y: 0)
-
             animateCollectionView(to: origin, duration: duration)
         default:
             return
@@ -150,6 +157,38 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             window.setFrameOrigin(origin)
         case .possible:
             WindowManager.instance.checkBounds(of: self)
+        default:
+            return
+        }
+    }
+
+    var selectedRelatedItem: RelatedItemView? {
+        didSet {
+            oldValue?.highlighted = false
+            selectedRelatedItem?.highlighted = true
+        }
+    }
+
+    private func didTapRelatedView(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, let location = tap.position else {
+            return
+        }
+
+        var invertedLocation = location.inverted(in: relatedItemsView.frame)
+        invertedLocation.y += relatedItemsView.visibleRect.origin.y
+        let row = relatedItemsView.row(at: invertedLocation)
+        guard let itemAtPoint = relatedItemsView.view(atColumn: 0, row: row, makeIfNecessary: false) as? RelatedItemView else {
+            return
+        }
+
+        switch tap.state {
+        case .began:
+            selectedRelatedItem = itemAtPoint
+        case .failed:
+            selectedRelatedItem = nil
+        case .ended:
+            selectedRelatedItem?.didTapView()
+            selectedRelatedItem = nil
         default:
             return
         }

@@ -12,6 +12,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
     var position: CGPoint?
+    private(set) var state = GestureState.possible
     private(set) var fingers: Int
 
     private var positionForTouch = [Touch: CGPoint]()
@@ -29,10 +30,12 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
     // MARK: API
 
     func start(_ touch: Touch, with properties: TouchProperties) {
-        guard !positionForTouch.keys.contains(touch) else {
-            return
-        }
         positionForTouch[touch] = touch.position
+
+        if properties.touchCount == fingers {
+            state = .began
+            gestureUpdated?(self)
+        }
     }
 
     func move(_ touch: Touch, with properties: TouchProperties) {
@@ -43,7 +46,8 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         let delta = CGVector(dx: initialPosition.x - touch.position.x, dy: initialPosition.y - touch.position.y)
         let distance = sqrt(pow(delta.dx, 2) + pow(delta.dy, 2))
         if distance > Constants.maximumDistanceMoved {
-            positionForTouch.removeValue(forKey: touch)
+            state = .failed
+            end(touch, with: properties)
         }
     }
 
@@ -51,17 +55,24 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         guard positionForTouch.keys.contains(touch) else {
             return
         }
-        
+
         position = touch.position
-        gestureUpdated?(self)
-        if properties.touchCount.isZero {
-           reset()
+
+        if state == .failed {
+            gestureUpdated?(self)
+            reset()
+        } else if properties.touchCount.isZero {
+            state = .ended
+            gestureUpdated?(self)
+            reset()
         } else {
             positionForTouch.removeValue(forKey: touch)
         }
     }
 
     func reset() {
-         positionForTouch.removeAll()
+        positionForTouch.removeAll()
+        state = .possible
     }
 }
+

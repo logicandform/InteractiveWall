@@ -12,13 +12,20 @@ class RelatedItemView: NSView {
     @IBOutlet weak var descriptionLabel: NSTextField!
     @IBOutlet weak var imageView: NSImageView!
 
+    var didTapItem: (() -> Void)?
+
     var record: RecordDisplayable? {
         didSet {
             load(record)
         }
     }
 
-    var didTapItem: (() -> Void)?
+    var highlighted: Bool = false {
+        didSet {
+            updateStyle()
+        }
+    }
+
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -29,12 +36,11 @@ class RelatedItemView: NSView {
     }
 
     @IBAction func didTapView(_ sender: Any) {
-        indicateTap()
         didTapItem?()
     }
 
     func didTapView() {
-        indicateTap()
+        highlighted = false
         didTapItem?()
     }
 
@@ -58,10 +64,11 @@ class RelatedItemView: NSView {
         }
     }
 
-    private func indicateTap() {
-        layer?.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-            self?.layer?.backgroundColor = #colorLiteral(red: 0.7317136762, green: 0.81375, blue: 0.7637042526, alpha: 0.8230652265)
+    private func updateStyle() {
+        if highlighted {
+            layer?.backgroundColor = style.selectedColor.cgColor
+        } else {
+            layer?.backgroundColor = style.darkBackground.cgColor
         }
     }
 }
