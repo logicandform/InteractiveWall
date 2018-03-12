@@ -70,10 +70,10 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         let stackViewPanGesture = PanGestureRecognizer()
         gestureManager.add(stackViewPanGesture, to: stackView)
         stackViewPanGesture.gestureUpdated = handleStackViewPan(_:)
-
-        let relatedItemTap = TapGestureRecognizer()
-        gestureManager.add(relatedItemTap, to: relatedItemsView)
-        relatedItemTap.gestureUpdated = didTapRelatedView(_:)
+//
+//        let relatedItemTap = TapGestureRecognizer()
+//        gestureManager.add(relatedItemTap, to: relatedItemsView)
+//        relatedItemTap.gestureUpdated = didTapRelatedView(_:)
 
         let tapToClose = TapGestureRecognizer()
         gestureManager.add(tapToClose, to: closeWindowTapArea)
@@ -162,12 +162,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         }
     }
 
-    var selectedRelatedItem: RelatedItemView? {
-        didSet {
-            oldValue?.highlighted = false
-            selectedRelatedItem?.highlighted = true
-        }
-    }
 
     private func didTapRelatedView(_ gesture: GestureRecognizer) {
         guard let tap = gesture as? TapGestureRecognizer, let location = tap.position else {
@@ -181,17 +175,17 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return
         }
 
-        switch tap.state {
-        case .began:
-            selectedRelatedItem = itemAtPoint
-        case .failed:
-            selectedRelatedItem = nil
-        case .ended:
-            selectedRelatedItem?.didTapView()
-            selectedRelatedItem = nil
-        default:
-            return
-        }
+//        switch tap.state {
+//        case .began:
+//            selectedRelatedItem = itemAtPoint
+//        case .failed:
+//            selectedRelatedItem = nil
+//        case .ended:
+//            selectedRelatedItem?.didTapView()
+//            selectedRelatedItem = nil
+//        default:
+//            return
+//        }
     }
 
     @objc
@@ -292,6 +286,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return nil
         }
 
+        relatedItemView.gestureManager = gestureManager
         relatedItemView.record = record?.relatedRecords[row]
         return relatedItemView
     }

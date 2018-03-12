@@ -128,8 +128,18 @@ final class GestureManager {
             return nil
         }
 
-        let transform = current.translatedBy(x: -view.frame.minX, y: -view.frame.minY)
-        let positionInBounds = point.transformed(to: view)
+        let transform: CGAffineTransform
+        let positionInBounds: CGPoint
+        if let superview = view.superview, superview.isFlipped {
+            var flippedFrame = view.frame
+            flippedFrame.origin.y = view.frame.height - view.frame.minY
+            transform = current.translatedBy(x: -view.frame.minX, y: -flippedFrame.origin.y)
+            positionInBounds = point.transformed(to: flippedFrame)
+        } else {
+            transform = current.translatedBy(x: -view.frame.minX, y: -view.frame.minY)
+            positionInBounds = point.transformed(to: view)
+        }
+
         for subview in view.subviews.reversed() {
             if let target = target(in: subview, at: positionInBounds, current: transform) {
                 return target

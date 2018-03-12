@@ -14,18 +14,26 @@ class RelatedItemView: NSView {
 
     var didTapItem: (() -> Void)?
 
+    var gestureManager: GestureManager? {
+        didSet {
+            setupGestures()
+        }
+    }
+
     var record: RecordDisplayable? {
         didSet {
             load(record)
         }
     }
 
-    var highlighted: Bool = false {
+    private var highlighted: Bool = false {
         didSet {
             updateStyle()
         }
     }
 
+
+    // MARK: Init
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -35,6 +43,9 @@ class RelatedItemView: NSView {
         descriptionLabel?.textColor = .white
     }
 
+
+    // MARK: API
+
     @IBAction func didTapView(_ sender: Any) {
         didTapItem?()
     }
@@ -42,6 +53,40 @@ class RelatedItemView: NSView {
     func didTapView() {
         highlighted = false
         didTapItem?()
+    }
+
+
+    // MARK: Setup
+
+    private func setupGestures() {
+        guard let gestureManager = gestureManager else {
+            return
+        }
+
+        let tapGesture = TapGestureRecognizer()
+        gestureManager.add(tapGesture, to: self)
+        tapGesture.gestureUpdated = handleTapGesture(_:)
+    }
+
+
+    // MARK: Gesture Handling
+
+    private func handleTapGesture(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer else {
+            return
+        }
+
+        switch tap.state {
+        case .began:
+            highlighted = true
+        case .failed:
+            highlighted = false
+        case .ended:
+            didTapItem?()
+            highlighted = false
+        default:
+            return
+        }
     }
 
 
