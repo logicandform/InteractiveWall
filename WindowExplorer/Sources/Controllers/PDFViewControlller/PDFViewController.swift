@@ -3,27 +3,26 @@
 import Cocoa
 import Quartz
 
-class PDFViewController: NSViewController {
+class PDFViewController: NSViewController, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "PDF")
 
     @IBOutlet weak var pdfView: PDFView!
     @IBOutlet weak var pdfThumbnailView: PDFThumbnailView!
     @IBOutlet weak var closeButtonView: NSView!
 
-    private struct Constants {
-        static let url = URL(fileURLWithPath: "/Users/Jeremy/Desktop/")
-    }
-
-    weak var gestureManager: GestureManager!
-    var endURL: String!
+    var gestureManager: GestureManager!
+    var pdfURL: URL?
 
 
     // MARK: Life-cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.wantsLayer = true
+        view.layer?.backgroundColor = style.darkBackground.cgColor
+        gestureManager = GestureManager(responder: self)
+
         setupPDF()
-        animateViewIn()
         setupGestures()
     }
 
@@ -35,17 +34,15 @@ class PDFViewController: NSViewController {
     // MARK: Setup
 
     private func setupPDF() {
-        pdfThumbnailView.backgroundColor = #colorLiteral(red: 0.7317136762, green: 0.81375, blue: 0.7637042526, alpha: 0.4523822623)
-        pdfView.backgroundColor = #colorLiteral(red: 0.7317136762, green: 0.81375, blue: 0.7637042526, alpha: 0.82)
         pdfView.displayDirection = .horizontal
         pdfView.autoScales = true
         pdfView.displayMode = .singlePage
-        pdfView.layer?.cornerRadius = 5
 
-        let completeURL = Constants.url.appendingPathComponent(endURL)
-        let pdfDoc = PDFDocument(url: completeURL)
-        pdfView.document = pdfDoc
-        pdfThumbnailView.pdfView = pdfView
+        if let url = pdfURL {
+            let pdfDoc = PDFDocument(url: url)
+            pdfView.document = pdfDoc
+            pdfThumbnailView.pdfView = pdfView
+        }
     }
 
     private func setupGestures() {
@@ -75,7 +72,7 @@ class PDFViewController: NSViewController {
             origin += pan.delta.round()
             window.setFrameOrigin(origin)
         case .possible:
-            WindowManager.instance.dealocateWindowIfOutOfBounds(for: self)
+            WindowManager.instance.checkBounds(of: self)
         default:
             return
         }
@@ -86,7 +83,7 @@ class PDFViewController: NSViewController {
             return
         }
 
-        animateViewOut()
+        WindowManager.instance.closeWindow(for: self)
     }
 
     @objc
@@ -98,39 +95,13 @@ class PDFViewController: NSViewController {
         var origin = window.frame.origin
         origin += gesture.translation(in: nil)
         window.setFrameOrigin(origin)
-        WindowManager.instance.dealocateWindowIfOutOfBounds(for: self)
+        WindowManager.instance.checkBounds(of: self)
     }
 
 
     // MARK: IB-Actions
 
     @IBAction func closeButtonTapped(_ sender: Any) {
-        animateViewOut()
-    }
-
-
-    // MARK: Helpers
-
-    private func animateViewIn() {
-        view.alphaValue = 0.0
-        pdfView.frame.origin.y = pdfView.frame.size.height
-
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = 0.7
-            view.animator().alphaValue = 1.0
-            pdfView.animator().frame.origin.y = 0
-        })
-    }
-
-    private func animateViewOut() {
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = 1.0
-            view.animator().alphaValue = 0.0
-            pdfView.animator().frame.origin.y = pdfView.frame.size.height
-        }, completionHandler: { [weak self] in
-            if let strongSelf = self {
-                WindowManager.instance.closeWindow(for: strongSelf)
-            }
-        })
+        WindowManager.instance.closeWindow(for: self)
     }
 }

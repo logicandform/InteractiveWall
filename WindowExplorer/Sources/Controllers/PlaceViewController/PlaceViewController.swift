@@ -89,7 +89,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
             origin += pan.delta.round()
             window.setFrameOrigin(origin)
         case .possible:
-            WindowManager.instance.dealocateWindowIfOutOfBounds(for: self)
+            WindowManager.instance.checkBounds(of: self)
         default:
             return
         }
@@ -150,7 +150,7 @@ class PlaceViewController: NSViewController, NSTableViewDataSource, NSTableViewD
         var origin = window.frame.origin
         origin += gesture.translation(in: nil)
         window.setFrameOrigin(origin)
-        WindowManager.instance.dealocateWindowIfOutOfBounds(for: self)
+        WindowManager.instance.checkBounds(of: self)
     }
 
 

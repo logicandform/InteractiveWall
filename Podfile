@@ -25,6 +25,7 @@ abstract_target 'All' do
 
         pod 'PromiseKit', '~> 4.4'
         pod 'PromiseKit/Alamofire'
+        pod 'AlamofireImage'
     end
 
     target 'WindowExplorer' do
@@ -33,6 +34,7 @@ abstract_target 'All' do
 
         pod 'PromiseKit', '~> 4.4'
         pod 'PromiseKit/Alamofire'
+        pod 'AlamofireImage'
     end
 
 # ignore all warnings from all pods

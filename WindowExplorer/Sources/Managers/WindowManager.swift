@@ -13,7 +13,7 @@ final class WindowManager {
 
     private struct Keys {
         static let position = "position"
-        static let place = "place"
+        static let record = "record"
     }
 
 
@@ -48,7 +48,7 @@ final class WindowManager {
     }
 
     // If the none of the screens contain the detail view, dealocate it
-    func dealocateWindowIfOutOfBounds(for controller: NSViewController) {
+    func checkBounds(of controller: NSViewController) {
         guard let screenIndex = controller.view.window?.screen?.index else {
             closeWindow(for: controller)
             return
@@ -75,9 +75,9 @@ final class WindowManager {
         }
 
         switch notification.name {
-        case WindowNotifications.place.name:
+        case WindowNotifications.record.name:
             let origin = location - CGPoint(x: WindowType.place.size.width / 2, y: WindowType.place.size.height)
-            displayWindow(for: .place, at: origin)
+            displayWindow(for: .record, at: origin)
         default:
             return
         }

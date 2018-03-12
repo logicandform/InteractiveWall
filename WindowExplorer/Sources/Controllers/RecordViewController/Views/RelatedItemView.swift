@@ -6,8 +6,8 @@ class RelatedItemView: NSView {
     static let interfaceIdentifier = NSUserInterfaceItemIdentifier(rawValue: "RelatedItemView")
     static let nibName = NSNib.Name(rawValue: "RelatedItemView")
 
-    @IBOutlet weak var titleTextField: NSTextField!
-    @IBOutlet weak var subtitleTextField: NSTextField!
+    @IBOutlet weak var titleLabel: NSTextField!
+    @IBOutlet weak var descriptionLabel: NSTextField!
     @IBOutlet weak var imageView: NSImageView!
 
     var didTapItem: (() -> Void)?
@@ -15,9 +15,9 @@ class RelatedItemView: NSView {
     override func awakeFromNib() {
         super.awakeFromNib()
         wantsLayer = true
-        layer?.backgroundColor = #colorLiteral(red: 0.7317136762, green: 0.81375, blue: 0.7637042526, alpha: 0.8230652265)
-        layer?.cornerRadius = 5.0
-        layer?.masksToBounds = true
+        layer?.backgroundColor = style.darkBackground.cgColor
+        titleLabel?.textColor = .white
+        descriptionLabel?.textColor = .white
     }
 
     @IBAction func didTapView(_ sender: Any) {

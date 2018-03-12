@@ -13,6 +13,10 @@ class BorderlessWindow: NSWindow {
         self.backgroundColor = .clear
     }
 
+    override var acceptsFirstResponder: Bool {
+        return true
+    }
+
     override var canBecomeKey: Bool {
         return true
     }

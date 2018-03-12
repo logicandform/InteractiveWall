@@ -53,8 +53,6 @@ class PlayerControl: NSView {
         Bundle.main.loadNibNamed(PlayerControl.nib, owner: self, topLevelObjects: nil)
         addSubview(contentView)
         contentView.frame = bounds
-        contentView.wantsLayer = true
-        contentView.layer?.backgroundColor = #colorLiteral(red: 0.7712750231, green: 0.8325541737, blue: 0.9246478303, alpha: 0.5)
     }
 
 

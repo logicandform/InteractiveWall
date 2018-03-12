@@ -136,6 +136,7 @@ final class GestureManager {
             }
         }
 
-        return gestureHandlers.keys.contains(view) ? (view, transform) : nil
+        let viewCanRespond = gestureHandlers.keys.contains(view) && !view.isHidden
+        return viewCanRespond ? (view, transform) : nil
     }
 }
