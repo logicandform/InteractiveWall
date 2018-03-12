@@ -8,7 +8,6 @@ enum RecordType {
     case artifacts
     case organizations
     case schools
-    case themes
 }
 
 
@@ -32,7 +31,17 @@ protocol RecordDisplayable {
 extension Event: RecordDisplayable {
 
     var textFields: [NSTextField] {
-        return []
+        var labels = [NSTextField]()
+        for _ in (1...15) {
+            let label = NSTextField(string: "Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label.")
+            label.textColor = .white
+            label.drawsBackground = false
+            label.isBordered = false
+            label.isSelectable = false
+            label.lineBreakMode = .byWordWrapping
+            labels.append(label)
+        }
+        return labels
     }
 
     var recordGroups: [RecordGroup] {
@@ -56,7 +65,17 @@ extension Artifact: RecordDisplayable {
     }
 
     var textFields: [NSTextField] {
-        return []
+        var labels = [NSTextField]()
+        for _ in (1...5) {
+            let label = NSTextField(string: "Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label.")
+            label.textColor = .white
+            label.drawsBackground = false
+            label.isBordered = false
+            label.isSelectable = false
+            label.lineBreakMode = .byWordWrapping
+            labels.append(label)
+        }
+        return labels
     }
 
     var recordGroups: [RecordGroup] {
@@ -80,7 +99,17 @@ extension Organization: RecordDisplayable {
     }
 
     var textFields: [NSTextField] {
-        return []
+        var labels = [NSTextField]()
+        for _ in (1...5) {
+            let label = NSTextField(string: "Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label.")
+            label.textColor = .white
+            label.drawsBackground = false
+            label.isBordered = false
+            label.isSelectable = false
+            label.lineBreakMode = .byWordWrapping
+            labels.append(label)
+        }
+        return labels
     }
 
     var recordGroups: [RecordGroup] {
@@ -100,11 +129,21 @@ extension Organization: RecordDisplayable {
 extension School: RecordDisplayable {
 
     var textFields: [NSTextField] {
-        return []
+        var labels = [NSTextField]()
+        for _ in (1...5) {
+            let label = NSTextField(string: "Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label.")
+            label.textColor = .white
+            label.drawsBackground = false
+            label.isBordered = false
+            label.isSelectable = false
+            label.lineBreakMode = .byWordWrapping
+            labels.append(label)
+        }
+        return labels
     }
 
     var recordGroups: [RecordGroup] {
-        guard let schools = relatedSchools, let organizations = relatedOrganizations, let artifacts = relatedArtifacts, let events = relatedEvents, let themes = relatedThemes else {
+        guard let schools = relatedSchools, let organizations = relatedOrganizations, let artifacts = relatedArtifacts, let events = relatedEvents else {
             return []
         }
 
@@ -112,23 +151,7 @@ extension School: RecordDisplayable {
         let organizationGroup = RecordGroup(type: .organizations, records: organizations)
         let artifactGroup = RecordGroup(type: .artifacts, records: artifacts)
         let eventGroup = RecordGroup(type: .events, records: events)
-        let themeGroup = RecordGroup(type: .themes, records: themes)
 
-        return [schoolGroup, organizationGroup, artifactGroup, eventGroup, themeGroup]
-    }
-}
-
-extension Theme: RecordDisplayable {
-
-    var date: String? {
-        return nil
-    }
-
-    var textFields: [NSTextField] {
-        return []
-    }
-
-    var recordGroups: [RecordGroup] {
-        return []
+        return [schoolGroup, organizationGroup, artifactGroup, eventGroup]
     }
 }

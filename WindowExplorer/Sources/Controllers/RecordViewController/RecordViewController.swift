@@ -7,7 +7,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     static let storyboard = NSStoryboard.Name(rawValue: "Record")
 
     @IBOutlet weak var detailView: NSView!
-    @IBOutlet weak var collectionView: NSCollectionView!
+    @IBOutlet weak var mediaView: NSCollectionView!
     @IBOutlet weak var collectionClipView: NSClipView!
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var dateLabel: NSTextField!
@@ -18,6 +18,12 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     
     private(set) var gestureManager: GestureManager!
     private var showingRelatedItems = false
+
+    var record: RecordDisplayable? {
+        didSet {
+            load(record)
+        }
+    }
     
     private struct Constants {
         static let tableRowHeight: CGFloat = 60
@@ -33,7 +39,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         gestureManager = GestureManager(responder: self)
 
         setupCollectionView()
-        setupStackView()
         setupRelatedItemsView()
         setupGestures()
     }
@@ -42,19 +47,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     // MARK: Setup
 
     private func setupCollectionView() {
-        collectionView.register(MediaItemView.self, forItemWithIdentifier: MediaItemView.identifier)
-    }
-
-    private func setupStackView() {
-        for _ in (1...15) {
-            let label = NSTextField(string: "Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label.")
-            label.textColor = .white
-            label.drawsBackground = false
-            label.isBordered = false
-            label.isSelectable = false
-            label.lineBreakMode = .byWordWrapping
-            stackView.insertView(label, at: stackView.subviews.count, in: .top)
-        }
+        mediaView.register(MediaItemView.self, forItemWithIdentifier: MediaItemView.identifier)
     }
 
     private func setupRelatedItemsView() {
@@ -69,7 +62,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         view.addGestureRecognizer(nsPanGesture)
 
         let collectionViewPanGesture = PanGestureRecognizer()
-        gestureManager.add(collectionViewPanGesture, to: collectionView)
+        gestureManager.add(collectionViewPanGesture, to: mediaView)
         collectionViewPanGesture.gestureUpdated = handleCollectionViewPan(_:)
 
         let panGesture = PanGestureRecognizer()
@@ -79,6 +72,20 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         let stackViewPanGesture = PanGestureRecognizer()
         gestureManager.add(stackViewPanGesture, to: scrollView)
         stackViewPanGesture.gestureUpdated = handleStackViewPan(_:)
+    }
+
+    private func load(_ record: RecordDisplayable?) {
+        guard let record = record else {
+            return
+        }
+
+        mediaView.reloadData()
+        relatedItemsView.reloadData()
+        titleLabel.stringValue = record.title
+        dateLabel.stringValue = record.date ?? "no date"
+        for label in record.textFields {
+            stackView.insertView(label, at: stackView.subviews.count, in: .top)
+        }
     }
 
 
@@ -91,11 +98,11 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
         switch pan.state {
         case .recognized, .momentum:
-            var rect = collectionView.visibleRect
+            var rect = mediaView.visibleRect
             rect.origin.x -= pan.delta.dx
-            collectionView.scrollToVisible(rect)
+            mediaView.scrollToVisible(rect)
         case .possible:
-            let rect = collectionView.visibleRect
+            let rect = mediaView.visibleRect
             let offset = rect.origin.x / rect.width
             let index = round(offset)
             let margin = offset.truncatingRemainder(dividingBy: 1)
@@ -204,10 +211,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     // MARK: NSCollectionViewDelegate & NSCollectionViewDataSource
 
-    private let mediaObjects = ["https://images7.alphacoders.com/633/633262.png", "https://images7.alphacoders.com/633/633262.png", "https://images7.alphacoders.com/633/633262.png", "https://images7.alphacoders.com/633/633262.png"]
-
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return mediaObjects.count
+        return record?.media.count ?? 0
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
@@ -215,7 +220,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return NSCollectionViewItem()
         }
 
-        mediaItemView.imageURL = URL(string: mediaObjects[indexPath.item])!
+        mediaItemView.imageURL = record?.media[indexPath.item]
         return mediaItemView
     }
 
@@ -227,7 +232,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     // MARK: NSTableViewDataSource & NSTableViewDelegate
 
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return 12
+        return record?.recordGroups.reduce(0) { $0 + $1.records.count } ?? 0
     }
 
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
