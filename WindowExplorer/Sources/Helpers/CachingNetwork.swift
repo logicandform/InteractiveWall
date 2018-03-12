@@ -19,7 +19,7 @@ enum NetworkError: Error {
 final class CachingNetwork {
 
     private struct Endpoints {
-        static let baseURL = "http://localhost:3000"
+        static let baseURL = "http://192.168.1.93:3100"
         static let placesURL = baseURL + "/places"
         static let organizationsURL = baseURL + "/organizations"
         static let eventsURL = baseURL + "/events"
@@ -44,8 +44,8 @@ final class CachingNetwork {
         }
     }
 
-    static func getPlace(by id: String) -> Promise<Place> {
-        let url = Endpoints.placesURL + "/" + id
+    static func getPlace(by id: Int) -> Promise<Place> {
+        let url = Endpoints.placesURL + "/" + id.description
 
         return Alamofire.request(url, headers: credentials).responseJSON().then { json in
             try ResponseHandler.serializePlace(from: json)
@@ -63,8 +63,8 @@ final class CachingNetwork {
         }
     }
 
-    static func getOrganization(by id: String) -> Promise<Organization> {
-        let url = Endpoints.organizationsURL + "/" + id
+    static func getOrganization(by id: Int) -> Promise<Organization> {
+        let url = Endpoints.organizationsURL + "/" + id.description
 
         return Alamofire.request(url, headers: credentials).responseJSON().then { json in
             try ResponseHandler.serializeOrganization(from: json)
@@ -82,8 +82,8 @@ final class CachingNetwork {
         }
     }
 
-    static func getEvent(by id: String) -> Promise<Event> {
-        let url = Endpoints.eventsURL + "/" + id
+    static func getEvent(by id: Int) -> Promise<Event> {
+        let url = Endpoints.eventsURL + "/" + id.description
 
         return Alamofire.request(url, headers: credentials).responseJSON().then { json in
             try ResponseHandler.serializeEvent(from: json)
@@ -101,8 +101,8 @@ final class CachingNetwork {
         }
     }
 
-    static func getArtifact(by id: String) -> Promise<Artifact> {
-        let url = Endpoints.artifactsURL + "/" + id
+    static func getArtifact(by id: Int) -> Promise<Artifact> {
+        let url = Endpoints.artifactsURL + "/" + id.description
 
         return Alamofire.request(url, headers: credentials).responseJSON().then { json in
             try ResponseHandler.serializeArtifact(from: json)
@@ -120,8 +120,8 @@ final class CachingNetwork {
         }
     }
 
-    static func getSchool(by id: String) -> Promise<School> {
-        let url = Endpoints.schoolsURL + "/" + id
+    static func getSchool(by id: Int) -> Promise<School> {
+        let url = Endpoints.schoolsURL + "/" + id.description
 
         return Alamofire.request(url, headers: credentials).responseJSON().then { json in
             try ResponseHandler.serializeSchool(from: json)

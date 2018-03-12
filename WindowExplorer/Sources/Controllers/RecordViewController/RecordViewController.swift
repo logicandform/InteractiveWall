@@ -12,18 +12,15 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var dateLabel: NSTextField!
     @IBOutlet weak var stackView: NSStackView!
-    @IBOutlet weak var scrollView: NSScrollView!
+    @IBOutlet weak var stackClipView: NSClipView!
     @IBOutlet weak var relatedItemsView: NSTableView!
     @IBOutlet weak var hideRelatedItemsButton: NSButton!
-    
+    @IBOutlet weak var closeWindowTapArea: NSView!
+    @IBOutlet weak var toggleRelatedItemsArea: NSView!
+
+    var record: RecordDisplayable?
     private(set) var gestureManager: GestureManager!
     private var showingRelatedItems = false
-
-    var record: RecordDisplayable? {
-        didSet {
-            load(record)
-        }
-    }
     
     private struct Constants {
         static let tableRowHeight: CGFloat = 60
@@ -41,6 +38,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         setupCollectionView()
         setupRelatedItemsView()
         setupGestures()
+        loadRecord()
     }
 
 
@@ -70,17 +68,27 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         panGesture.gestureUpdated = handleWindowPan(_:)
 
         let stackViewPanGesture = PanGestureRecognizer()
-        gestureManager.add(stackViewPanGesture, to: scrollView)
+        gestureManager.add(stackViewPanGesture, to: stackView)
         stackViewPanGesture.gestureUpdated = handleStackViewPan(_:)
+
+        let tapToClose = TapGestureRecognizer()
+        gestureManager.add(tapToClose, to: closeWindowTapArea)
+        tapToClose.gestureUpdated = { _ in
+            WindowManager.instance.closeWindow(for: self)
+        }
+
+        let toggleRelatedItemsTap = TapGestureRecognizer()
+        gestureManager.add(toggleRelatedItemsTap, to: toggleRelatedItemsArea)
+        toggleRelatedItemsTap.gestureUpdated = { [weak self] _ in
+            self?.toggleRelatedItems()
+        }
     }
 
-    private func load(_ record: RecordDisplayable?) {
+    private func loadRecord() {
         guard let record = record else {
             return
         }
 
-        mediaView.reloadData()
-        relatedItemsView.reloadData()
         titleLabel.stringValue = record.title
         dateLabel.stringValue = record.date ?? "no date"
         for label in record.textFields {
@@ -122,9 +130,9 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
         switch pan.state {
         case .recognized, .momentum:
-            var point = scrollView.visibleRect.origin
+            var point = stackClipView.visibleRect.origin
             point.y -= pan.delta.dy
-            scrollView.setFrameOrigin(point)
+            stackClipView.scroll(point)
         default:
             return
         }
@@ -209,10 +217,14 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
 
+    private let testLinks = ["https://images7.alphacoders.com/633/633262.png", "https://images7.alphacoders.com/633/633262.png", "https://images7.alphacoders.com/633/633262.png", "https://images7.alphacoders.com/633/633262.png"]
+
+
     // MARK: NSCollectionViewDelegate & NSCollectionViewDataSource
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return record?.media.count ?? 0
+//        return record?.media.count ?? 0
+        return testLinks.count
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
@@ -220,7 +232,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return NSCollectionViewItem()
         }
 
-        mediaItemView.imageURL = record?.media[indexPath.item]
+//        mediaItemView.imageURL = record?.media[indexPath.item]
+        mediaItemView.imageURL = URL(string: testLinks[indexPath.item])!
         return mediaItemView
     }
 
@@ -232,7 +245,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     // MARK: NSTableViewDataSource & NSTableViewDelegate
 
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return record?.recordGroups.reduce(0) { $0 + $1.records.count } ?? 0
+        return record?.relatedRecords.count ?? 0
     }
 
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
@@ -240,6 +253,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return nil
         }
 
+        relatedItemView.record = record?.relatedRecords[row]
         return relatedItemView
     }
 

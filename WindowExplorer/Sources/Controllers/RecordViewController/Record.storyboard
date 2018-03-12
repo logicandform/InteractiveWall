@@ -206,7 +206,7 @@
                                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" id="dee-BC-0Jq">
                                                         <size key="itemSize" width="50" height="200"/>
                                                     </collectionViewFlowLayout>
-                                                    <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="primaryBackgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                                     <connections>
                                                         <outlet property="dataSource" destination="7oi-8d-QFD" id="Zd1-L4-nD8"/>
                                                         <outlet property="delegate" destination="7oi-8d-QFD" id="esy-J9-Jgy"/>
@@ -227,14 +227,31 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="uhV-2F-c5f">
+                                        <rect key="frame" x="0.0" y="559" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="79s-VE-roa"/>
+                                            <constraint firstAttribute="width" constant="40" id="Inv-Su-QOl"/>
+                                        </constraints>
+                                    </customView>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="ng9-0N-mwq">
+                                        <rect key="frame" x="376" y="559" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="0tt-mh-Wyb"/>
+                                            <constraint firstAttribute="height" constant="40" id="dkw-lq-6SS"/>
+                                        </constraints>
+                                    </customView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="FBg-bp-lkB" secondAttribute="bottom" constant="8" id="1w4-2t-1qL"/>
                                     <constraint firstAttribute="trailing" secondItem="FBg-bp-lkB" secondAttribute="trailing" constant="8" id="3e3-h1-L7H"/>
+                                    <constraint firstItem="ng9-0N-mwq" firstAttribute="top" secondItem="83q-cx-wcX" secondAttribute="top" id="5ob-yX-575"/>
                                     <constraint firstItem="ufY-Kg-vBR" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="leading" constant="8" id="CBg-hb-EdH"/>
                                     <constraint firstItem="pMP-Yg-a6e" firstAttribute="leading" secondItem="RgY-ah-SAv" secondAttribute="leading" id="Dy4-vK-Wci"/>
                                     <constraint firstItem="Suh-ao-CzL" firstAttribute="top" secondItem="83q-cx-wcX" secondAttribute="top" id="GZt-fc-XSf"/>
+                                    <constraint firstItem="uhV-2F-c5f" firstAttribute="top" secondItem="83q-cx-wcX" secondAttribute="top" id="OoM-8s-IlV"/>
                                     <constraint firstItem="RgY-ah-SAv" firstAttribute="top" secondItem="pMP-Yg-a6e" secondAttribute="bottom" constant="8" id="S3Q-5b-EbN"/>
+                                    <constraint firstItem="uhV-2F-c5f" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="leading" id="W0S-ra-bGA"/>
                                     <constraint firstItem="Gya-dz-hCa" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="leading" id="aRh-fm-jDU"/>
                                     <constraint firstItem="FBg-bp-lkB" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="leading" constant="8" id="fiA-kL-6Ij"/>
                                     <constraint firstAttribute="width" constant="416" id="gCO-Bx-Eu3"/>
@@ -243,6 +260,7 @@
                                     <constraint firstItem="NjJ-25-aZ3" firstAttribute="trailing" secondItem="RgY-ah-SAv" secondAttribute="trailing" id="ipO-rv-rlA"/>
                                     <constraint firstAttribute="trailing" secondItem="ufY-Kg-vBR" secondAttribute="trailing" constant="8" id="isU-1a-I8R"/>
                                     <constraint firstItem="ufY-Kg-vBR" firstAttribute="top" secondItem="83q-cx-wcX" secondAttribute="top" constant="48" id="ktu-Si-a2l"/>
+                                    <constraint firstAttribute="trailing" secondItem="ng9-0N-mwq" secondAttribute="trailing" id="mKO-iG-auQ"/>
                                     <constraint firstItem="RgY-ah-SAv" firstAttribute="top" secondItem="NjJ-25-aZ3" secondAttribute="bottom" constant="8" id="rER-6h-yTZ"/>
                                 </constraints>
                             </customView>
@@ -261,15 +279,18 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="clippy" destination="CkM-eN-t5N" id="NNs-h5-Hps"/>
+                        <outlet property="closeWindowTapArea" destination="uhV-2F-c5f" id="X44-7A-E7k"/>
                         <outlet property="collectionClipView" destination="IhY-hb-dfg" id="T4r-mC-1YX"/>
                         <outlet property="dateLabel" destination="NjJ-25-aZ3" id="FoT-1a-jiV"/>
                         <outlet property="detailView" destination="83q-cx-wcX" id="pb8-ex-weM"/>
                         <outlet property="hideRelatedItemsButton" destination="XCO-vm-Fbg" id="uj0-Ml-rkj"/>
                         <outlet property="mediaView" destination="Eaz-7m-IDm" id="eav-Zv-2bd"/>
                         <outlet property="relatedItemsView" destination="cKY-nL-NPV" id="26r-gU-lSa"/>
-                        <outlet property="scrollView" destination="FBg-bp-lkB" id="wo8-pJ-SyU"/>
+                        <outlet property="stackClipView" destination="CkM-eN-t5N" id="Ycr-Y2-xGv"/>
                         <outlet property="stackView" destination="RgY-ah-SAv" id="N4b-iD-145"/>
                         <outlet property="titleLabel" destination="pMP-Yg-a6e" id="GXs-dD-KCb"/>
+                        <outlet property="toggleRelatedItemsArea" destination="ng9-0N-mwq" id="Lqz-na-MLi"/>
                     </connections>
                 </viewController>
                 <customObject id="0qL-TB-rJo" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
