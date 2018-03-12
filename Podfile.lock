@@ -1,5 +1,7 @@
 PODS:
   - Alamofire (4.6.0)
+  - AlamofireImage (3.3.0):
+    - Alamofire (~> 4.5)
   - C4 (3.0.1)
   - CocoaAsyncSocket (7.6.2)
   - MONode (0.0.1):
@@ -19,6 +21,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 4.5)
+  - AlamofireImage
   - C4 (~> 3.0.1)
   - MONode (from `git@github.com:SlantDesign/mo.git`)
   - PromiseKit (~> 4.4)
@@ -35,11 +38,12 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
+  AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
   C4: 8a51425000f760d5e89ba294a8284467a1bd1231
   CocoaAsyncSocket: 3541e024f48c54b251638ef72d51dd42808de932
   MONode: 6bcc731f16d2f355b7c29da63823b95cd945b290
   PromiseKit: 743e497a5f505a470d3bbbf4ce0663c1268af0a4
 
-PODFILE CHECKSUM: 870789fee7a35245e45c74e2bad3958019eaef2a
+PODFILE CHECKSUM: a7d4e3152a447d92e3ee8c1447aa4513e6babdf1
 
 COCOAPODS: 1.4.0

@@ -85,39 +85,6 @@
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="83q-cx-wcX" userLabel="contentView">
                                 <rect key="frame" x="0.0" y="0.0" width="416" height="599"/>
                                 <subviews>
-                                    <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v1c-Wf-3a5">
-                                        <rect key="frame" x="8" y="352" width="400" height="200"/>
-                                        <clipView key="contentView" drawsBackground="NO" id="xcK-hT-XOF">
-                                            <rect key="frame" x="0.0" y="0.0" width="400" height="200"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <subviews>
-                                                <collectionView id="gR6-WL-NZO">
-                                                    <rect key="frame" x="0.0" y="0.0" width="400" height="200"/>
-                                                    <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
-                                                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" id="7Kl-aS-kpb">
-                                                        <size key="itemSize" width="50" height="50"/>
-                                                    </collectionViewFlowLayout>
-                                                    <color key="primaryBackgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
-                                                    <connections>
-                                                        <outlet property="dataSource" destination="7oi-8d-QFD" id="ujG-e2-T8D"/>
-                                                        <outlet property="delegate" destination="7oi-8d-QFD" id="dP2-RV-7hN"/>
-                                                    </connections>
-                                                </collectionView>
-                                            </subviews>
-                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                        </clipView>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="v1c-Wf-3a5" secondAttribute="height" multiplier="2:1" id="xmX-mB-9Px"/>
-                                        </constraints>
-                                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="KoC-5s-4ow">
-                                            <rect key="frame" x="0.0" y="186" width="400" height="16"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </scroller>
-                                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="iog-LR-HRQ">
-                                            <rect key="frame" x="-100" y="-100" width="15" height="143"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </scroller>
-                                    </scrollView>
                                     <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FBg-bp-lkB">
                                         <rect key="frame" x="8" y="8" width="400" height="300"/>
                                         <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="CkM-eN-t5N">
@@ -213,15 +180,22 @@
                                             <action selector="closeWindowTapped:" target="7oi-8d-QFD" id="Hls-Py-02a"/>
                                         </connections>
                                     </button>
+                                    <containerView translatesAutoresizingMaskIntoConstraints="NO" id="bIs-gt-Rch">
+                                        <rect key="frame" x="8" y="351" width="400" height="200"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="bIs-gt-Rch" secondAttribute="height" multiplier="2:1" id="cmL-G4-RYf"/>
+                                        </constraints>
+                                        <connections>
+                                            <segue destination="lTd-Fq-uZh" kind="embed" id="Pcx-bX-3x0"/>
+                                        </connections>
+                                    </containerView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="FBg-bp-lkB" secondAttribute="bottom" constant="8" id="1w4-2t-1qL"/>
                                     <constraint firstAttribute="trailing" secondItem="FBg-bp-lkB" secondAttribute="trailing" constant="8" id="3e3-h1-L7H"/>
-                                    <constraint firstItem="v1c-Wf-3a5" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="leading" constant="8" id="CVz-8A-q1A"/>
                                     <constraint firstItem="pMP-Yg-a6e" firstAttribute="leading" secondItem="RgY-ah-SAv" secondAttribute="leading" id="Dy4-vK-Wci"/>
-                                    <constraint firstAttribute="trailing" secondItem="v1c-Wf-3a5" secondAttribute="trailing" constant="8" id="Esx-J3-cXa"/>
                                     <constraint firstItem="Suh-ao-CzL" firstAttribute="top" secondItem="83q-cx-wcX" secondAttribute="top" id="GZt-fc-XSf"/>
-                                    <constraint firstItem="RgY-ah-SAv" firstAttribute="top" secondItem="gR6-WL-NZO" secondAttribute="bottom" constant="44" id="IRN-uh-Lz2"/>
+                                    <constraint firstItem="bIs-gt-Rch" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="leading" constant="8" id="LlR-FC-QjL"/>
                                     <constraint firstItem="RgY-ah-SAv" firstAttribute="top" secondItem="pMP-Yg-a6e" secondAttribute="bottom" constant="8" id="S3Q-5b-EbN"/>
                                     <constraint firstItem="Gya-dz-hCa" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="leading" id="aRh-fm-jDU"/>
                                     <constraint firstItem="FBg-bp-lkB" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="leading" constant="8" id="fiA-kL-6Ij"/>
@@ -229,8 +203,9 @@
                                     <constraint firstItem="Gya-dz-hCa" firstAttribute="top" secondItem="83q-cx-wcX" secondAttribute="top" id="gKY-kU-oF1"/>
                                     <constraint firstAttribute="trailing" secondItem="Suh-ao-CzL" secondAttribute="trailing" id="i3v-4f-JhI"/>
                                     <constraint firstItem="NjJ-25-aZ3" firstAttribute="trailing" secondItem="RgY-ah-SAv" secondAttribute="trailing" id="ipO-rv-rlA"/>
-                                    <constraint firstItem="v1c-Wf-3a5" firstAttribute="top" relation="lessThanOrEqual" secondItem="83q-cx-wcX" secondAttribute="top" constant="48" id="j1E-nF-dSF"/>
                                     <constraint firstItem="RgY-ah-SAv" firstAttribute="top" secondItem="NjJ-25-aZ3" secondAttribute="bottom" constant="8" id="rER-6h-yTZ"/>
+                                    <constraint firstItem="bIs-gt-Rch" firstAttribute="top" secondItem="83q-cx-wcX" secondAttribute="top" constant="48" id="rie-P2-pb8"/>
+                                    <constraint firstAttribute="trailing" secondItem="bIs-gt-Rch" secondAttribute="trailing" constant="8" id="trT-sK-Wxl"/>
                                 </constraints>
                             </customView>
                             <button translatesAutoresizingMaskIntoConstraints="NO" id="XCO-vm-Fbg">
@@ -262,7 +237,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="collectionView" destination="gR6-WL-NZO" id="Zb7-2q-BE2"/>
                         <outlet property="dateLabel" destination="NjJ-25-aZ3" id="FoT-1a-jiV"/>
                         <outlet property="detailView" destination="83q-cx-wcX" id="pb8-ex-weM"/>
                         <outlet property="hideRelatedItemsButton" destination="XCO-vm-Fbg" id="uj0-Ml-rkj"/>
@@ -276,18 +250,46 @@
             </objects>
             <point key="canvasLocation" x="-619.5" y="125.5"/>
         </scene>
-        <!--Page Controller-->
-        <scene sceneID="9rx-I5-mXc">
+        <!--Record Page View Controller-->
+        <scene sceneID="Csr-0P-r7G">
             <objects>
-                <pagecontroller transitionStyle="horizontalStrip" id="L12-Z3-SHw" sceneMemberID="viewController">
-                    <view key="view" id="5Y1-6o-3if">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                <pagecontroller transitionStyle="horizontalStrip" id="lTd-Fq-uZh" customClass="RecordPageViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="EXW-hu-4jc">
+                        <rect key="frame" x="0.0" y="0.0" width="490" height="200"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </view>
                 </pagecontroller>
-                <customObject id="KNV-p6-q4b" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <customObject id="l5q-AM-Wem" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="27" y="45"/>
+            <point key="canvasLocation" x="61" y="-74"/>
+        </scene>
+        <!--Image Page-->
+        <scene sceneID="CyV-bQ-tZo">
+            <objects>
+                <viewController storyboardIdentifier="ImagePage" id="ag0-Bf-EtL" customClass="ImagePage" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="L7u-QW-zmu">
+                        <rect key="frame" x="0.0" y="0.0" width="490" height="200"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mdS-9d-PMp">
+                                <rect key="frame" x="0.0" y="0.0" width="490" height="200"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="yil-HO-98F"/>
+                            </imageView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="mdS-9d-PMp" firstAttribute="leading" secondItem="L7u-QW-zmu" secondAttribute="leading" id="DN1-8z-lnD"/>
+                            <constraint firstAttribute="bottom" secondItem="mdS-9d-PMp" secondAttribute="bottom" id="VWz-Jh-aNe"/>
+                            <constraint firstItem="mdS-9d-PMp" firstAttribute="top" secondItem="L7u-QW-zmu" secondAttribute="top" id="e4D-mJ-24G"/>
+                            <constraint firstAttribute="trailing" secondItem="mdS-9d-PMp" secondAttribute="trailing" id="ufi-bd-BOd"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="mdS-9d-PMp" id="qVU-aN-HgN"/>
+                    </connections>
+                </viewController>
+                <customObject id="TiX-D4-f1T" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="61" y="219"/>
         </scene>
     </scenes>
     <resources>

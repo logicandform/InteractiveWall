@@ -3,12 +3,14 @@
 import Foundation
 import AppKit
 
+
 enum SwipeDirection {
     case up
     case down
     case left
     case right
 }
+
 
 class SwipeGestureRecognizer: NSObject, GestureRecognizer {
 
