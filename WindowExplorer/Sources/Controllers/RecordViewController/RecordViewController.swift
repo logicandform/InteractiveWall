@@ -3,10 +3,12 @@
 import Cocoa
 import AppKit
 
-class RecordViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate, GestureResponder {
+class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource, NSTableViewDataSource, NSTableViewDelegate, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "Record")
 
     @IBOutlet weak var detailView: NSView!
+    @IBOutlet weak var collectionView: NSCollectionView!
+    @IBOutlet weak var collectionClipView: NSClipView!
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var dateLabel: NSTextField!
     @IBOutlet weak var stackView: NSStackView!
@@ -16,7 +18,6 @@ class RecordViewController: NSViewController, NSTableViewDataSource, NSTableView
     
     private(set) var gestureManager: GestureManager!
     private var showingRelatedItems = false
-    private var mediaObjects = ["https://images7.alphacoders.com/633/633262.png", "https://images7.alphacoders.com/633/633262.png", "https://images7.alphacoders.com/633/633262.png"]
     
     private struct Constants {
         static let tableRowHeight: CGFloat = 60
@@ -41,15 +42,15 @@ class RecordViewController: NSViewController, NSTableViewDataSource, NSTableView
     // MARK: Setup
 
     private func setupCollectionView() {
-
+        collectionView.register(MediaItemView.self, forItemWithIdentifier: MediaItemView.identifier)
     }
 
     private func setupStackView() {
         for _ in (1...15) {
             let label = NSTextField(string: "Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label.")
+            label.textColor = .white
             label.drawsBackground = false
             label.isBordered = false
-            label.textColor = .white
             label.isSelectable = false
             label.lineBreakMode = .byWordWrapping
             stackView.insertView(label, at: stackView.subviews.count, in: .top)
@@ -67,6 +68,10 @@ class RecordViewController: NSViewController, NSTableViewDataSource, NSTableView
         let nsPanGesture = NSPanGestureRecognizer(target: self, action: #selector(handleMouseDrag(_:)))
         view.addGestureRecognizer(nsPanGesture)
 
+        let collectionViewPanGesture = PanGestureRecognizer()
+        gestureManager.add(collectionViewPanGesture, to: collectionView)
+        collectionViewPanGesture.gestureUpdated = handleCollectionViewPan(_:)
+
         let panGesture = PanGestureRecognizer()
         gestureManager.add(panGesture, to: view)
         panGesture.gestureUpdated = handleWindowPan(_:)
@@ -76,22 +81,32 @@ class RecordViewController: NSViewController, NSTableViewDataSource, NSTableView
         stackViewPanGesture.gestureUpdated = handleStackViewPan(_:)
     }
 
-    var pageController: RecordPageViewController!
-    // MARK: Segue
 
-    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
-        guard let pageController = segue.destinationController as? RecordPageViewController else {
+    // MARK: Gesture Handling
+
+    private func handleCollectionViewPan(_ gesture: GestureRecognizer) {
+        guard let pan = gesture as? PanGestureRecognizer else {
             return
         }
 
-        self.pageController = pageController
-        // Might have to be done after record is set
-        pageController.pageObjects = mediaObjects
-        pageController.gestureManager = gestureManager
+        switch pan.state {
+        case .recognized, .momentum:
+            var rect = collectionView.visibleRect
+            rect.origin.x -= pan.delta.dx
+            collectionView.scrollToVisible(rect)
+        case .possible:
+            let rect = collectionView.visibleRect
+            let offset = rect.origin.x / rect.width
+            let index = round(offset)
+            let margin = offset.truncatingRemainder(dividingBy: 1)
+            let duration = margin < 0.5 ? margin : 1 - margin
+            let origin = CGPoint(x: rect.width * index, y: 0)
+
+            animateCollectionView(to: origin, duration: duration)
+        default:
+            return
+        }
     }
-
-
-    // MARK: Gesture Handling
 
     private func handleStackViewPan(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer else {
@@ -145,12 +160,18 @@ class RecordViewController: NSViewController, NSTableViewDataSource, NSTableView
     }
 
     @IBAction func closeWindowTapped(_ sender: Any) {
-//        WindowManager.instance.closeWindow(for: self)
-        pageController.scrollMe()
+        WindowManager.instance.closeWindow(for: self)
     }
 
 
     // MARK: Helpers
+
+    private func animateCollectionView(to point: CGPoint, duration: CGFloat) {
+        NSAnimationContext.beginGrouping()
+        NSAnimationContext.current.duration = TimeInterval(duration)
+        collectionClipView.animator().setBoundsOrigin(point)
+        NSAnimationContext.endGrouping()
+    }
 
     private func toggleRelatedItems() {
         guard let window = view.window else {
@@ -178,6 +199,28 @@ class RecordViewController: NSViewController, NSTableViewDataSource, NSTableView
 
         window.setFrame(frame, display: true, animate: true)
         showingRelatedItems = !showingRelatedItems
+    }
+
+
+    // MARK: NSCollectionViewDelegate & NSCollectionViewDataSource
+
+    private let mediaObjects = ["https://images7.alphacoders.com/633/633262.png", "https://images7.alphacoders.com/633/633262.png", "https://images7.alphacoders.com/633/633262.png", "https://images7.alphacoders.com/633/633262.png"]
+
+    func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
+        return mediaObjects.count
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
+        guard let mediaItemView = collectionView.makeItem(withIdentifier: MediaItemView.identifier, for: indexPath) as? MediaItemView else {
+            return NSCollectionViewItem()
+        }
+
+        mediaItemView.imageURL = URL(string: mediaObjects[indexPath.item])!
+        return mediaItemView
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
+        return collectionClipView.frame.size
     }
 
 

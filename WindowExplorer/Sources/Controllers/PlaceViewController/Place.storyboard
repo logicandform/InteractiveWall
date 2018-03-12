@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="k5b-MF-Zdf">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
-        <plugIn identifier="com.apple.pdfkit.ibplugin" version="13771"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -168,44 +167,6 @@
                 <customObject id="Rgh-H9-W1a" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="78" y="242"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="gdI-Ne-3Yg">
-            <objects>
-                <viewController id="h8q-KE-X7P" customClass="PDFViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" wantsLayer="YES" id="ZmE-zm-Cef">
-                        <rect key="frame" x="0.0" y="0.0" width="594" height="598"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <pdfView autoresizesSubviews="NO" wantsLayer="YES" displayMode="singlePage" translatesAutoresizingMaskIntoConstraints="NO" id="ZKS-kz-G2l">
-                                <rect key="frame" x="0.0" y="0.0" width="594" height="598"/>
-                            </pdfView>
-                            <pdfThumbnailView wantsLayer="YES" canDrawConcurrently="YES" allowsDragging="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Gw-8v-svM">
-                                <rect key="frame" x="0.0" y="0.0" width="75" height="598"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="75" id="2lH-M3-rC5"/>
-                                </constraints>
-                                <size key="thumbnailSize" width="64" height="64"/>
-                            </pdfThumbnailView>
-                        </subviews>
-                        <constraints>
-                            <constraint firstAttribute="bottom" secondItem="3Gw-8v-svM" secondAttribute="bottom" id="5R3-VO-m0j"/>
-                            <constraint firstItem="3Gw-8v-svM" firstAttribute="top" secondItem="ZmE-zm-Cef" secondAttribute="top" id="5Ya-hn-B1a"/>
-                            <constraint firstItem="ZKS-kz-G2l" firstAttribute="top" secondItem="ZmE-zm-Cef" secondAttribute="top" id="FB5-FA-d92"/>
-                            <constraint firstItem="ZKS-kz-G2l" firstAttribute="leading" secondItem="ZmE-zm-Cef" secondAttribute="leading" id="HF9-b0-HyM"/>
-                            <constraint firstItem="3Gw-8v-svM" firstAttribute="leading" secondItem="ZKS-kz-G2l" secondAttribute="leading" id="bZ5-G8-Sku"/>
-                            <constraint firstAttribute="trailing" secondItem="ZKS-kz-G2l" secondAttribute="trailing" id="fBC-Ky-q2N"/>
-                            <constraint firstAttribute="bottom" secondItem="ZKS-kz-G2l" secondAttribute="bottom" id="y8V-nk-AB9"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="pdfThumbnailView" destination="3Gw-8v-svM" id="gxn-DI-69k"/>
-                        <outlet property="pdfView" destination="ZKS-kz-G2l" id="Chp-9a-4Tl"/>
-                    </connections>
-                </viewController>
-                <customObject id="Q8t-te-xA9" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="78" y="1041"/>
         </scene>
     </scenes>
 </document>
