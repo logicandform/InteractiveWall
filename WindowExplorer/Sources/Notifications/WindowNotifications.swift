@@ -3,13 +3,13 @@
 import Foundation
 
 enum WindowNotifications: String {
-    case record
+    case school
 
     var name: Notification.Name {
         return Notification.Name(rawValue: rawValue)
     }
 
     static var allValues: [WindowNotifications] {
-        return [.record]
+        return [.school]
     }
 }

@@ -13,7 +13,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     @IBOutlet weak var mapView: MKMapView!
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
-    private var placeForCircle = [MKCircle: Place]()
+    private var schoolForCircle = [MKCircle: School]()
 
     private struct Constants {
         static let tileURL = "http:localhost:3200/{z}/{x}/{y}.jpg"
@@ -25,7 +25,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private struct Keys {
         static let touch = "touch"
         static let map = "mapID"
-        static let record = "record"
+        static let school = "school"
         static let position = "position"
     }
 
@@ -147,8 +147,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         let mapPoint = MKMapPointForCoordinate(mapCoordinate)
 
         for circle in circleOverlays {
-            if MKMapRectContainsPoint(circle.boundingMapRect, mapPoint), let place = placeForCircle[circle] {
-                postNotification(for: place, at: position)
+            if MKMapRectContainsPoint(circle.boundingMapRect, mapPoint), let school = schoolForCircle[circle] {
+                postNotification(for: school, at: position)
                 return
             }
         }
@@ -213,30 +213,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     // MARK: MKMapViewDelegate
 
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        if let place = annotation as? Place {
-            if let placeView = mapView.dequeueReusableAnnotationView(withIdentifier: PlaceView.identifier) as? PlaceView {
-                placeView.didSelect = didSelectAnnotationCallout(for:)
-                return placeView
-            } else {
-                let placeView = PlaceView(annotation: place, reuseIdentifier: PlaceView.identifier)
-                placeView.didSelect = didSelectAnnotationCallout(for:)
-                return placeView
-            }
-        } else if let cluster = annotation as? MKClusterAnnotation {
-            if let clusterView = mapView.dequeueReusableAnnotationView(withIdentifier: ClusterView.identifier) as? ClusterView {
-                clusterView.didSelect = didSelectAnnotationCallout(for:)
-                return clusterView
-            } else {
-                let clusterView = ClusterView(annotation: cluster, reuseIdentifier: ClusterView.identifier)
-                clusterView.didSelect = didSelectAnnotationCallout(for:)
-                return clusterView
-            }
-        }
-
-        return nil
-    }
-
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if let tileOverlay = overlay as? MKTileOverlay {
             return MKTileOverlayRenderer(tileOverlay: tileOverlay)
@@ -256,28 +232,19 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     // MARK: Helpers
 
     private func createPlaces() {
-        do {
-            if let file = Bundle.main.url(forResource: "MapPoints", withExtension: "json") {
-                let data = try Data(contentsOf: file)
-                let json = try JSONSerialization.jsonObject(with: data, options: [])
-                if let jsonBlob = json as? JSON, let placesJSON = jsonBlob["locations"] as? [JSON] {
-                    add(placesJSON)
-                } else {
-                    print("JSON is invalid")
-                }
-            } else {
-                print("No file")
-            }
-        } catch {
-            print(error.localizedDescription)
+        firstly {
+            try CachingNetwork.getSchools()
+        }.then { [weak self] schools in
+            self?.addOverlays(for: schools)
+        }.catch { error in
+            print(error)
         }
     }
 
-    private func add(_ placesJSON: [JSON]) {
-        let places = placesJSON.flatMap { Place(json: $0) }
-        places.forEach { place in
-            let circle = MKCircle(center: place.coordinate, radius: CLLocationDistance(1000))
-            placeForCircle[circle] = place
+    private func addOverlays(for schools: [School]) {
+        schools.forEach { school in
+            let circle = MKCircle(center: school.coordinate, radius: CLLocationDistance(10000))
+            schoolForCircle[circle] = school
             mapView.add(circle)
         }
     }
@@ -289,25 +256,23 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     /// Display a place view controller on top of the selected callout annotation for the associated place.
-    private func didSelectAnnotationCallout(for place: Place) {
+    private func didSelectAnnotationCallout(for school: School) {
         guard let window = view.window else {
             return
         }
 
-        mapView.deselectAnnotation(place, animated: false)
-        let position = mapView.convert(place.coordinate, toPointTo: view) + window.frame.origin
-        postNotification(for: place, at: position)
+        let position = mapView.convert(school.coordinate, toPointTo: view) + window.frame.origin
+        postNotification(for: school, at: position)
     }
 
-    private func postNotification(for place: Place, at position: CGPoint) {
+    private func postNotification(for school: School, at position: CGPoint) {
         guard let window = view.window else {
             return
         }
 
         let location = window.frame.origin + position
-
-        let info: JSON = [Keys.position: location.toJSON(), Keys.record: place.title ?? "no title"]
-        DistributedNotificationCenter.default().postNotificationName(WindowNotifications.record.name, object: nil, userInfo: info, deliverImmediately: true)
+        let info: JSON = [Keys.position: location.toJSON(), Keys.school: school.id]
+        DistributedNotificationCenter.default().postNotificationName(WindowNotifications.school.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
     /// Zooms into a cluster of annotations to make them more visible.

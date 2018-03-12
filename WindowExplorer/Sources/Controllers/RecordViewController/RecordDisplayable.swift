@@ -27,6 +27,12 @@ protocol RecordDisplayable {
     var recordGroups: [RecordGroup] { get }
 }
 
+extension RecordDisplayable {
+    var relatedRecords: [RecordDisplayable] {
+        return recordGroups.reduce([]) { $0 + $1.records }
+    }
+}
+
 
 extension Event: RecordDisplayable {
 
@@ -66,7 +72,7 @@ extension Artifact: RecordDisplayable {
 
     var textFields: [NSTextField] {
         var labels = [NSTextField]()
-        for _ in (1...5) {
+        for _ in (1...15) {
             let label = NSTextField(string: "Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label.")
             label.textColor = .white
             label.drawsBackground = false
@@ -100,7 +106,7 @@ extension Organization: RecordDisplayable {
 
     var textFields: [NSTextField] {
         var labels = [NSTextField]()
-        for _ in (1...5) {
+        for _ in (1...15) {
             let label = NSTextField(string: "Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label.")
             label.textColor = .white
             label.drawsBackground = false
@@ -130,7 +136,7 @@ extension School: RecordDisplayable {
 
     var textFields: [NSTextField] {
         var labels = [NSTextField]()
-        for _ in (1...5) {
+        for _ in (1...15) {
             let label = NSTextField(string: "Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label.")
             label.textColor = .white
             label.drawsBackground = false

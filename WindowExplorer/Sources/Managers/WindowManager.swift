@@ -3,7 +3,7 @@
 import Foundation
 import AppKit
 import MONode
-
+import PromiseKit
 
 final class WindowManager {
 
@@ -13,7 +13,7 @@ final class WindowManager {
 
     private struct Keys {
         static let position = "position"
-        static let record = "record"
+        static let school = "school"
     }
 
 
@@ -75,11 +75,23 @@ final class WindowManager {
         }
 
         switch notification.name {
-        case WindowNotifications.record.name:
-            let origin = location - CGPoint(x: WindowType.place.size.width / 2, y: WindowType.place.size.height)
-            displayWindow(for: .record, at: origin)
+        case WindowNotifications.school.name:
+            if let schoolID = info[Keys.school] as? Int {
+                displaySchool(id: schoolID, at: location)
+            }
         default:
             return
+        }
+    }
+
+    private func displaySchool(id: Int, at location: CGPoint) {
+        firstly {
+            CachingNetwork.getSchool(by: id)
+        }.then { [weak self] school -> Void in
+            let origin = location - CGPoint(x: WindowType.place.size.width / 2, y: WindowType.place.size.height)
+            self?.displayWindow(for: .record(school), at: origin)
+        }.catch { error in
+            print(error)
         }
     }
 }
