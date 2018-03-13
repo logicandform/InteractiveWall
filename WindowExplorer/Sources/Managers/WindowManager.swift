@@ -88,8 +88,9 @@ final class WindowManager {
         firstly {
             CachingNetwork.getSchool(by: id)
         }.then { [weak self] school -> Void in
-            let origin = location - CGPoint(x: WindowType.place.size.width / 2, y: WindowType.place.size.height)
-            self?.displayWindow(for: .record(school), at: origin)
+            let type = WindowType.record(school)
+            let origin = location - CGPoint(x: type.size.width / 2, y: type.size.height)
+            self?.displayWindow(for: type, at: origin)
         }.catch { error in
             print(error)
         }

@@ -6,7 +6,6 @@ import AppKit
 
 enum WindowType {
     case record(RecordDisplayable)
-    case place
     case player
     case pdf
 
@@ -45,9 +44,6 @@ final class WindowFactory {
             let recordViewController = storyboard.instantiateInitialController() as! RecordViewController
             recordViewController.record = displayable
             return recordViewController
-        case .place:
-            let storyboard = NSStoryboard(name: PlaceViewController.storyboard, bundle: Bundle.main)
-            return storyboard.instantiateInitialController() as! PlaceViewController
         case .player:
             let storyboard = NSStoryboard(name: PlayerViewController.storyboard, bundle: Bundle.main)
             return storyboard.instantiateInitialController() as! PlayerViewController
