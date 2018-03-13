@@ -87,7 +87,7 @@ final class GestureManager {
         let positionInWindow = touch.position.applying(windowTransform)
         displayTouchIndicator(in: responder.view, at: positionInWindow)
 
-        if let (view, transform) = target(in: responder.view, at: positionInWindow, current: windowTransform), let handler = gestureHandlers[view] {
+        if let (view, transform) = target(in: responder.view, at: positionInWindow, current: windowTransform, flipped: responder.view.isFlipped), let handler = gestureHandlers[view] {
             handler.set(transform, for: touch)
             handler.handle(touch)
         }
@@ -123,25 +123,24 @@ final class GestureManager {
     }
 
     /// Returns the deepest possible view for the given point that is registered with a gesture handler along with the transform to that view.
-    private func target(in view: NSView, at point: CGPoint, current: CGAffineTransform) -> (NSView, CGAffineTransform)? {
+    private func target(in view: NSView, at point: CGPoint, current: CGAffineTransform, flipped: Bool) -> (NSView, CGAffineTransform)? {
         guard view.frame.contains(point) else {
             return nil
         }
 
-        let transform: CGAffineTransform
-        let positionInBounds: CGPoint
-        if let superview = view.superview, superview.isFlipped {
-            var flippedFrame = view.frame
-            flippedFrame.origin.y = view.frame.height - view.frame.minY
-            transform = current.translatedBy(x: -view.frame.minX, y: -flippedFrame.origin.y)
-            positionInBounds = point.transformed(to: flippedFrame)
-        } else {
-            transform = current.translatedBy(x: -view.frame.minX, y: -view.frame.minY)
-            positionInBounds = point.transformed(to: view)
+        var transform = current.translatedBy(x: -view.frame.minX, y: -view.frame.minY)
+        var positionInBounds = point.transformed(to: view)
+
+        // if coordinate geometry changes, convert point within frame
+        if view.isFlipped != flipped {
+            let yPos = view.frame.height - positionInBounds.y
+            let yDiff = positionInBounds.y - yPos
+            positionInBounds = CGPoint(x: positionInBounds.x, y: yPos)
+            transform = transform.translatedBy(x: 0, y: -yDiff)
         }
 
         for subview in view.subviews.reversed() {
-            if let target = target(in: subview, at: positionInBounds, current: transform) {
+            if let target = target(in: subview, at: positionInBounds, current: transform, flipped: view.isFlipped) {
                 return target
             }
         }

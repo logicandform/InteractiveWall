@@ -65,11 +65,13 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
     // MARK: Gesture Handling
 
     private func didTapVideoPlayer(_ gesture: GestureRecognizer) {
-        guard gesture is TapGestureRecognizer else {
+        guard let tap = gesture as? TapGestureRecognizer else {
             return
         }
 
-        playerControl.toggle()
+        if tap.state == .ended {
+            playerControl.toggle()
+        }
     }
 
     private func didPanDetailView(_ gesture: GestureRecognizer) {

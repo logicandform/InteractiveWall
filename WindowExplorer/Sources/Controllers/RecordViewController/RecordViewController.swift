@@ -70,10 +70,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         let stackViewPanGesture = PanGestureRecognizer()
         gestureManager.add(stackViewPanGesture, to: stackView)
         stackViewPanGesture.gestureUpdated = handleStackViewPan(_:)
-//
-//        let relatedItemTap = TapGestureRecognizer()
-//        gestureManager.add(relatedItemTap, to: relatedItemsView)
-//        relatedItemTap.gestureUpdated = didTapRelatedView(_:)
 
         let tapToClose = TapGestureRecognizer()
         gestureManager.add(tapToClose, to: closeWindowTapArea)
@@ -160,32 +156,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         default:
             return
         }
-    }
-
-
-    private func didTapRelatedView(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let location = tap.position else {
-            return
-        }
-
-        var invertedLocation = location.inverted(in: relatedItemsView.frame)
-        invertedLocation.y += relatedItemsView.visibleRect.origin.y
-        let row = relatedItemsView.row(at: invertedLocation)
-        guard let itemAtPoint = relatedItemsView.view(atColumn: 0, row: row, makeIfNecessary: false) as? RelatedItemView else {
-            return
-        }
-
-//        switch tap.state {
-//        case .began:
-//            selectedRelatedItem = itemAtPoint
-//        case .failed:
-//            selectedRelatedItem = nil
-//        case .ended:
-//            selectedRelatedItem?.didTapView()
-//            selectedRelatedItem = nil
-//        default:
-//            return
-//        }
     }
 
     @objc

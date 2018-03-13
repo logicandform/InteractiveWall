@@ -79,11 +79,13 @@ class PDFViewController: NSViewController, GestureResponder {
     }
 
     private func didTapCloseButton(_ gesture: GestureRecognizer) {
-        guard gesture is TapGestureRecognizer else {
+        guard let tap = gesture as? TapGestureRecognizer else {
             return
         }
 
-        WindowManager.instance.closeWindow(for: self)
+        if tap.state == .ended {
+            WindowManager.instance.closeWindow(for: self)
+        }
     }
 
     @objc

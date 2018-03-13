@@ -33,6 +33,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         positionForTouch[touch] = touch.position
 
         if properties.touchCount == fingers {
+            position = touch.position
             state = .began
             gestureUpdated?(self)
         }

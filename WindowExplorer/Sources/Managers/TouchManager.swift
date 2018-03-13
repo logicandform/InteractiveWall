@@ -73,6 +73,7 @@ final class TouchManager: SocketManagerDelegate {
     /// Returns a gesture manager that owns the given touch, else nil.
     private func gestureManager(for touch: Touch) -> GestureManager? {
         let windows = WindowManager.instance.windows.reversed()
+
         if touch.state == .down {
             if let (_, manager) = windows.first(where: { $0.key.frame.contains(touch.position) }) {
                 return manager
