@@ -100,8 +100,8 @@ class RelatedItemView: NSView {
         titleLabel.stringValue = record.title
         descriptionLabel.stringValue = record.description ?? "no description"
 
-        if let url = record.thumbnail {
-            Alamofire.request(url).responseImage { [weak self] response in
+        if let firstThumbnail = record.thumbnails.first {
+            Alamofire.request(firstThumbnail).responseImage { [weak self] response in
                 if let image = response.value {
                     self?.imageView.image = image
                 }

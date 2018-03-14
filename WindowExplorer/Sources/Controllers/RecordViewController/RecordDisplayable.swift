@@ -21,8 +21,9 @@ protocol RecordDisplayable {
     var title: String { get }
     var description: String? { get }
     var date: String? { get }
-    var thumbnail: URL? { get }
+    var mediaTitles: [String] { get }
     var media: [URL] { get }
+    var thumbnails: [URL] { get }
     var textFields: [NSTextField] { get }
     var recordGroups: [RecordGroup] { get }
 }
