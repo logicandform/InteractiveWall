@@ -5,9 +5,6 @@
       location = "group:MapExplorer-iOS/MapExplorer-iOS.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:MapExplorer-tvOS/MapExplorer-tvOS.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:MapExplorer-macOS/MapExplorer-macOS.xcodeproj">
    </FileRef>
    <FileRef
