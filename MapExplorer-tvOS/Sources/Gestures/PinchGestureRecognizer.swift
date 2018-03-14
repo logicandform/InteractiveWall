@@ -78,7 +78,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         }
     }
 
-    var count = 0
+    var cancelPanMomentumCounter = 0
 
     func move(_ touch: Touch, with properties: TouchProperties) {
 
@@ -86,17 +86,18 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             return
         }
 
+        // Tracks all touches in positionsForTouch
         positionForTouch[touch] = touch.position
 
         guard let lastSpread = spreads.last, let currentLocation = locations.last, properties.touchCount == fingers else {
-            count += 1
-            if count >= 20 {
+            cancelPanMomentumCounter += 1
+            if cancelPanMomentumCounter >= 20 {
                 locations.clearSecondLast()
             }
             return
         }
 
-        count = 0
+        cancelPanMomentumCounter = 0
 
         switch state {
         case .began:
@@ -166,10 +167,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func reset() {
-        if state != .momentum {
-            positionForTouch.removeAll()
-        }
-
+        positionForTouch.removeAll()
         state = .possible
 
         // resetting pinch
@@ -180,7 +178,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
         // resetting pan
         delta = .zero
-        count = 0
+        cancelPanMomentumCounter = 0
     }
 
 
