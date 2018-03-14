@@ -7,6 +7,7 @@ class School {
 
     let id: Int
     let title: String
+    let type = RecordType.school
     let date: String?
     let description: String?
     let coordinate: CLLocationCoordinate2D?

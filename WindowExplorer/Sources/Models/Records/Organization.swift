@@ -7,6 +7,7 @@ class Organization {
 
     let id: Int
     let title: String
+    let type = RecordType.organization
     let description: String?
     let mediaTitles: [String]
     var media = [URL]()

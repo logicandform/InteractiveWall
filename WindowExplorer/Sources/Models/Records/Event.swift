@@ -7,6 +7,7 @@ class Event {
 
     let id: Int
     let title: String
+    let type = RecordType.event
     let date: String?
     let description: String?
     let coordinate: CLLocationCoordinate2D?

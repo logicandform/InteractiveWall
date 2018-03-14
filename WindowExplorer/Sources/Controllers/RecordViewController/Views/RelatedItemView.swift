@@ -12,7 +12,7 @@ class RelatedItemView: NSView {
     @IBOutlet weak var descriptionLabel: NSTextField!
     @IBOutlet weak var imageView: NSImageView!
 
-    var didTapItem: (() -> Void)?
+    var didTapItem: ((RecordDisplayable?) -> Void)?
 
     var gestureManager: GestureManager? {
         didSet {
@@ -44,15 +44,10 @@ class RelatedItemView: NSView {
     }
 
 
-    // MARK: API
+    // MARK: IB-Actions
 
     @IBAction func didTapView(_ sender: Any) {
-        didTapItem?()
-    }
-
-    func didTapView() {
-        highlighted = false
-        didTapItem?()
+        didTapItem?(record)
     }
 
 
@@ -82,7 +77,7 @@ class RelatedItemView: NSView {
         case .failed:
             highlighted = false
         case .ended:
-            didTapItem?()
+            didTapItem?(record)
             highlighted = false
         default:
             return

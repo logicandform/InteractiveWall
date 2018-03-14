@@ -24,6 +24,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     
     private struct Constants {
         static let tableRowHeight: CGFloat = 60
+        static let windowMargins: CGFloat = 20
     }
 
 
@@ -191,7 +192,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         NSAnimationContext.endGrouping()
     }
 
-    private func toggleRelatedItems() {
+    private func toggleRelatedItems(completion: (() -> Void)? = nil) {
         guard let window = view.window else {
             return
         }
@@ -209,6 +210,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
                     strongSelf.relatedItemsView.isHidden = !strongSelf.showingRelatedItems
                     strongSelf.hideRelatedItemsButton.isHidden = !strongSelf.showingRelatedItems
                 }
+                completion?()
         })
 
         let diff: CGFloat = showingRelatedItems ? -200 : 200
@@ -220,14 +222,10 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
 
-    private let testLinks = ["https://images7.alphacoders.com/633/633262.png", "https://images7.alphacoders.com/633/633262.png", "https://images7.alphacoders.com/633/633262.png", "https://images7.alphacoders.com/633/633262.png"]
-
-
     // MARK: NSCollectionViewDelegate & NSCollectionViewDataSource
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return record?.media.count ?? 0
-        return testLinks.count
+        return record?.thumbnails.count ?? 0
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
@@ -235,8 +233,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return NSCollectionViewItem()
         }
 
-//        mediaItemView.imageURL = record?.media[indexPath.item]
-        mediaItemView.imageURL = URL(string: testLinks[indexPath.item])!
+        mediaItemView.imageURL = record?.thumbnails[indexPath.item]
         return mediaItemView
     }
 
@@ -258,6 +255,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
         relatedItemView.gestureManager = gestureManager
         relatedItemView.record = record?.relatedRecords[row]
+        relatedItemView.didTapItem = didSelectRelatedItem(for:)
         return relatedItemView
     }
 
@@ -267,5 +265,20 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
         return false
+    }
+
+    func didSelectRelatedItem(for record: RecordDisplayable?) {
+        guard let selectedRecord = record, let window = view.window else {
+            return
+        }
+
+        toggleRelatedItems(completion: {
+            let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins, y: window.frame.minY)
+            RecordFactory.record(for: selectedRecord.type, id: selectedRecord.id, completion: { newRecord in
+                if let loadedRecord = newRecord {
+                    WindowManager.instance.displayWindow(for: .record(loadedRecord), at: origin)
+                }
+            })
+        })
     }
 }

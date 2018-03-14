@@ -7,6 +7,7 @@ class Artifact {
 
     let id: Int
     let title: String
+    let type = RecordType.artifact
     let shortTitle: String?
     let subtitle: String?
     let description: String?

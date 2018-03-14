@@ -20,11 +20,16 @@ final class CachingNetwork {
     static let baseURL = "http://192.168.1.93:3000"
 
     private struct Endpoints {
-        static let placesURL = baseURL + "/places"
-        static let organizationsURL = baseURL + "/organizations"
-        static let eventsURL = baseURL + "/events"
-        static let artifactsURL = baseURL + "/artifacts"
-        static let schoolsURL = baseURL + "/schools"
+        static let places = baseURL + "/places"
+        static let placeByID = places + "/find/"
+        static let organizations = baseURL + "/organizations"
+        static let organizationByID = organizations + "/find/"
+        static let events = baseURL + "/events"
+        static let eventByID = events + "/find/"
+        static let artifacts = baseURL + "/artifacts"
+        static let artifactByID = artifacts + "/find/"
+        static let schools = baseURL + "/schools"
+        static let schoolByID = schools + "/find/"
     }
 
     private static let credentials: [String: String] = {
@@ -37,7 +42,7 @@ final class CachingNetwork {
     // MARK: Places
 
     static func getPlaces() throws -> Promise<[Place]> {
-        let url = Endpoints.placesURL
+        let url = Endpoints.places
 
         return Alamofire.request(url, headers: credentials).responseJSON().then { json in
             try ResponseHandler.serializePlaces(from: json)
@@ -45,7 +50,7 @@ final class CachingNetwork {
     }
 
     static func getPlace(by id: Int) -> Promise<Place> {
-        let url = Endpoints.placesURL + "/" + id.description
+        let url = Endpoints.placeByID + id.description
 
         return Alamofire.request(url, headers: credentials).responseJSON().then { json in
             try ResponseHandler.serializePlace(from: json)
@@ -56,7 +61,7 @@ final class CachingNetwork {
     // MARK: Organizations
 
     static func getOrganizations() throws -> Promise<[Organization]> {
-        let url = Endpoints.organizationsURL
+        let url = Endpoints.organizations
 
         return Alamofire.request(url, headers: credentials).responseJSON().then { json in
             try ResponseHandler.serializeOrganizations(from: json)
@@ -64,7 +69,7 @@ final class CachingNetwork {
     }
 
     static func getOrganization(by id: Int) -> Promise<Organization> {
-        let url = Endpoints.organizationsURL + "/" + id.description
+        let url = Endpoints.organizationByID + id.description
 
         return Alamofire.request(url, headers: credentials).responseJSON().then { json in
             try ResponseHandler.serializeOrganization(from: json)
@@ -75,7 +80,7 @@ final class CachingNetwork {
     // MARK: Events
 
     static func getEvents() throws -> Promise<[Event]> {
-        let url = Endpoints.eventsURL
+        let url = Endpoints.events
 
         return Alamofire.request(url, headers: credentials).responseJSON().then { json in
             try ResponseHandler.serializeEvents(from: json)
@@ -83,7 +88,7 @@ final class CachingNetwork {
     }
 
     static func getEvent(by id: Int) -> Promise<Event> {
-        let url = Endpoints.eventsURL + "/" + id.description
+        let url = Endpoints.eventByID + id.description
 
         return Alamofire.request(url, headers: credentials).responseJSON().then { json in
             try ResponseHandler.serializeEvent(from: json)
@@ -94,7 +99,7 @@ final class CachingNetwork {
     // MARK: Artifacts
 
     static func getArtifacts() throws -> Promise<[Artifact]> {
-        let url = Endpoints.artifactsURL
+        let url = Endpoints.artifacts
 
         return Alamofire.request(url, headers: credentials).responseJSON().then { json in
             try ResponseHandler.serializeArtifacts(from: json)
@@ -102,7 +107,7 @@ final class CachingNetwork {
     }
 
     static func getArtifact(by id: Int) -> Promise<Artifact> {
-        let url = Endpoints.artifactsURL + "/" + id.description
+        let url = Endpoints.artifactByID + id.description
 
         return Alamofire.request(url, headers: credentials).responseJSON().then { json in
             try ResponseHandler.serializeArtifact(from: json)
@@ -113,7 +118,7 @@ final class CachingNetwork {
     // MARK: Schools
 
     static func getSchools() throws -> Promise<[School]> {
-        let url = Endpoints.schoolsURL
+        let url = Endpoints.schools
 
         return Alamofire.request(url, headers: credentials).responseJSON().then { json in
             try ResponseHandler.serializeSchools(from: json)
@@ -121,7 +126,7 @@ final class CachingNetwork {
     }
 
     static func getSchool(by id: Int) -> Promise<School> {
-        let url = Endpoints.schoolsURL + "/" + id.description
+        let url = Endpoints.schoolByID + id.description
 
         return Alamofire.request(url, headers: credentials).responseJSON().then { json in
             try ResponseHandler.serializeSchool(from: json)
