@@ -18,7 +18,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         static let initialScale: CGFloat = 1
         static let minimumFingers = 2
         static let minimumSpreadUpdateThreshold: CGFloat = 0.05
-        static let minimumBehaviorChangeThreshold: CGFloat = 15
+        static let minimumBehaviorChangeThreshold: CGFloat = 0.2
         static let updateTimeInterval: Double = 1 / 60
         static let minimumDeltaUpdateThreshold: Double = 4
     }
@@ -28,7 +28,11 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private(set) var state = GestureState.possible
     private(set) var scale: CGFloat = Constants.initialScale
     private var spreads = LastTwo<CGFloat>()
-    private var behavior = PinchBehavior.idle
+    private var behavior = PinchBehavior.idle {
+        didSet {
+            print(behavior)
+        }
+    }
     private var timeOfLastUpdate: Date!
     private var lastSpreadSinceUpdate: CGFloat!
     private let fingers: Int
@@ -60,8 +64,21 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
         switch state {
         case .momentum:
-            // This may need changing, remporary fix insite of reset
-            reset()
+            // Temporary fix for reset deleting all positionsForTouch
+
+            //// This all of reset except removing all posForTouch
+            state = .possible
+
+            // resetting pinch
+            scale = Constants.initialScale
+            behavior = .idle
+            lastPosition = nil
+            spreads.clear()
+
+            // resetting pan
+            delta = .zero
+            cancelPanMomentumCounter = 0
+
             fallthrough
         case .possible:
             momentumTimer?.invalidate()
@@ -104,14 +121,16 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             behavior = behavior(of: properties.spread)
             lastSpreadSinceUpdate = lastSpread
             state = .recognized
+            //idleSpread = lastSpread
             fallthrough
         case .recognized:
             if shouldUpdate(with: properties.spread) {
                 spreads.add(properties.spread)
                 lastPosition = properties.cog
-            } else if changedBehavior(from: lastSpread, to: properties.spread) {
+            } else {
                 behavior = behavior(of: properties.spread)
                 spreads.add(properties.spread)
+                lastSpreadSinceUpdate = properties.spread
             }
 
             // updating the cumulative delta, and the locations for momentum
@@ -256,31 +275,38 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
     // MARK: Pinch behavior
 
+    var idleSpread: CGFloat = 0
+    var fromIdleThreshold: CGFloat = 20
+    var toIdleThreshold: CGFloat = 2
+
     /// Returns the behavior of the spread based off the current last spread.
     private func behavior(of spread: CGFloat) -> PinchBehavior {
         guard let lastSpread = spreads.last else {
+            idleSpread = spread
             return .idle
         }
 
-        return (spread - lastSpread > 0) ? .growing : .shrinking
+        // If it was idle and passes a threshold, set it to a non-idle behavior
+        if behavior == .idle && abs(spread - idleSpread) > fromIdleThreshold {
+            return (spread - idleSpread) > 0 ? PinchBehavior.growing : PinchBehavior.shrinking
+        }
+
+        // If the new behavior is not idle and different, and past a threshold, set it to idle
+        if behavior != .idle, ((spread - lastSpread) > 0 ? PinchBehavior.growing : PinchBehavior.shrinking) != behavior, abs(lastSpread - spread) > toIdleThreshold {
+            idleSpread = spread
+            return .idle
+        }
+
+        return behavior
     }
 
     /// Returns true if the given spread is of the same behavior type, or the current behavior is idle
     private func shouldUpdate(with newSpread: CGFloat) -> Bool {
-        return behavior == behavior(of: newSpread) || behavior == .idle
+        return behavior == behavior(of: newSpread) && behavior != .idle
     }
 
     /// Returns true if enough time has passed to send send the next update
     private func shouldUpdate(for time: Date) -> Bool {
         return abs(time.timeIntervalSinceNow) > Constants.updateTimeInterval
-    }
-
-    /// If the newSpread has a different behavior and surpasses the minimum threshold, returns true
-    private func changedBehavior(from oldSpread: CGFloat, to newSpread: CGFloat) -> Bool {
-        if behavior != behavior(of: newSpread), abs(oldSpread - newSpread) > Constants.minimumBehaviorChangeThreshold {
-            return true
-        }
-
-        return false
     }
 }
