@@ -279,7 +279,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="clippy" destination="CkM-eN-t5N" id="NNs-h5-Hps"/>
                         <outlet property="closeWindowTapArea" destination="uhV-2F-c5f" id="X44-7A-E7k"/>
                         <outlet property="collectionClipView" destination="IhY-hb-dfg" id="T4r-mC-1YX"/>
                         <outlet property="dateLabel" destination="NjJ-25-aZ3" id="FoT-1a-jiV"/>

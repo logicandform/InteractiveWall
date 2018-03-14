@@ -34,7 +34,7 @@ final class TouchManager: SocketManagerDelegate {
     // MARK: SocketManagerDelegate
 
     func handlePacket(_ packet: Packet) {
-        guard let touch = Touch(from: packet) else {
+        guard let touch = Touch(from: packet), shouldSend(touch) else {
             return
         }
 
@@ -42,14 +42,10 @@ final class TouchManager: SocketManagerDelegate {
 
         // Check if the touch landed on a window, else notify the proper map application.
         if let manager = gestureManager(for: touch) {
-            if shouldSend(touch) {
-                manager.handle(touch)
-            }
+            manager.handle(touch)
         } else {
             let map = mapOwner(of: touch) ?? calculateMap(for: touch)
-            if shouldSend(touch) {
-                send(touch, to: map)
-            }
+            send(touch, to: map)
         }
     }
 
@@ -77,6 +73,7 @@ final class TouchManager: SocketManagerDelegate {
     /// Returns a gesture manager that owns the given touch, else nil.
     private func gestureManager(for touch: Touch) -> GestureManager? {
         let windows = WindowManager.instance.windows.reversed()
+
         if touch.state == .down {
             if let (_, manager) = windows.first(where: { $0.key.frame.contains(touch.position) }) {
                 return manager

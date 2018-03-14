@@ -122,7 +122,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             let scaledHeight = (2 - Double(pinch.scale)) * mapRect.size.height
             if scaledWidth <= Constants.maxZoomWidth {
                 let translationX = (mapRect.size.width - scaledWidth) * Double(pinch.lastPosition.x / mapView.frame.width)
-                let translationY = (mapRect.size.height - scaledHeight) * (1 - Double(pinch.lastPosition.y / mapView.frame.height))
+                let translationY = (mapRect.size.height - scaledHeight) * Double(pinch.lastPosition.y / mapView.frame.height)
                 mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
                 mapRect.origin += MKMapPoint(x: translationX, y: translationY)
                 mapHandler?.send(mapRect)
@@ -142,13 +142,18 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             return
         }
 
+        guard tap.state == .ended else {
+            return
+        }
+
         let circleOverlays = mapView.overlays.flatMap { $0 as? MKCircle }
-        let mapCoordinate = mapView.convert(position, toCoordinateFrom: view)
+        let mapCoordinate = mapView.convert(position, toCoordinateFrom: mapView)
         let mapPoint = MKMapPointForCoordinate(mapCoordinate)
 
         for circle in circleOverlays {
             if MKMapRectContainsPoint(circle.boundingMapRect, mapPoint), let school = schoolForCircle[circle] {
-                postNotification(for: school, at: position)
+                let screenLocation = position.inverted(in: mapView)
+                postNotification(for: school, at: screenLocation)
                 return
             }
         }

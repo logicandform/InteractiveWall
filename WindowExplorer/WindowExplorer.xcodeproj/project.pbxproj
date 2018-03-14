@@ -7,9 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2204620D20472DE80067D9FB /* Place.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2204620920472DE80067D9FB /* Place.storyboard */; };
 		2204620E20472DE80067D9FB /* RelatedItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204620A20472DE80067D9FB /* RelatedItemView.swift */; };
-		2204620F20472DE80067D9FB /* PlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204620B20472DE80067D9FB /* PlaceViewController.swift */; };
 		2204621020472DE80067D9FB /* RelatedItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2204620C20472DE80067D9FB /* RelatedItemView.xib */; };
 		2204621720472F2D0067D9FB /* PlayerControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2204621420472F2D0067D9FB /* PlayerControl.xib */; };
 		2204621820472F2D0067D9FB /* PlayerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204621520472F2D0067D9FB /* PlayerState.swift */; };
@@ -63,6 +61,7 @@
 		8E4010A220487E0300E81AAA /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4010A120487E0300E81AAA /* Collection.swift */; };
 		C6DB17689F287C9826286DF2 /* Pods_All_WindowExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */; };
 		D901EBED2056EEFE00BBFCF2 /* RecordDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D901EBEC2056EEFE00BBFCF2 /* RecordDisplayable.swift */; };
+		D901EBF02057490400BBFCF2 /* RegularTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D901EBEF2057490400BBFCF2 /* RegularTableView.swift */; };
 		D992E20A20533A3A00EAB698 /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D992E20820533A3A00EAB698 /* RecordViewController.swift */; };
 		D992E20D20533A6200EAB698 /* Record.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D992E20C20533A6200EAB698 /* Record.storyboard */; };
 /* End PBXBuildFile section */
@@ -81,9 +80,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2204620920472DE80067D9FB /* Place.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Place.storyboard; sourceTree = "<group>"; };
 		2204620A20472DE80067D9FB /* RelatedItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelatedItemView.swift; sourceTree = "<group>"; };
-		2204620B20472DE80067D9FB /* PlaceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceViewController.swift; sourceTree = "<group>"; };
 		2204620C20472DE80067D9FB /* RelatedItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RelatedItemView.xib; sourceTree = "<group>"; };
 		2204621420472F2D0067D9FB /* PlayerControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerControl.xib; sourceTree = "<group>"; };
 		2204621520472F2D0067D9FB /* PlayerState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerState.swift; sourceTree = "<group>"; };
@@ -142,6 +139,7 @@
 		A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_WindowExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE471FCE047AE2FD1C92BA3A /* Pods-All-WindowExplorer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-WindowExplorer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer.release.xcconfig"; sourceTree = "<group>"; };
 		D901EBEC2056EEFE00BBFCF2 /* RecordDisplayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDisplayable.swift; sourceTree = "<group>"; };
+		D901EBEF2057490400BBFCF2 /* RegularTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularTableView.swift; sourceTree = "<group>"; };
 		D992E20820533A3A00EAB698 /* RecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
 		D992E20C20533A6200EAB698 /* Record.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Record.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -158,15 +156,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2204620820472DE10067D9FB /* PlaceViewController */ = {
-			isa = PBXGroup;
-			children = (
-				2204620920472DE80067D9FB /* Place.storyboard */,
-				2204620B20472DE80067D9FB /* PlaceViewController.swift */,
-			);
-			path = PlaceViewController;
-			sourceTree = "<group>";
-		};
 		2204621320472F1E0067D9FB /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -304,6 +293,7 @@
 				22A923342044AF45003EA9BB /* Managers */,
 				22A9233B2044B047003EA9BB /* Controllers */,
 				2276AE63204E7122001FAD8B /* Windows */,
+				D901EBEE205748C500BBFCF2 /* Views */,
 				22B1E2D0204638CD00BDDF14 /* Helpers */,
 				2204623B20472FFD0067D9FB /* Models */,
 				2204623C204730050067D9FB /* Gestures */,
@@ -344,7 +334,6 @@
 			isa = PBXGroup;
 			children = (
 				D992E20620533A0400EAB698 /* RecordViewController */,
-				2204620820472DE10067D9FB /* PlaceViewController */,
 				22A76FE82046477A006C0AE7 /* PlayerViewController */,
 				22A76FE320464764006C0AE7 /* PDFViewControlller */,
 			);
@@ -379,6 +368,14 @@
 				2204620A20472DE80067D9FB /* RelatedItemView.swift */,
 				224766FF20562F65003E8790 /* MediaItemView.xib */,
 				224766FE20562F65003E8790 /* MediaItemView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D901EBEE205748C500BBFCF2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D901EBEF2057490400BBFCF2 /* RegularTableView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -470,7 +467,6 @@
 				22A923252044AF05003EA9BB /* Assets.xcassets in Resources */,
 				2204621020472DE80067D9FB /* RelatedItemView.xib in Resources */,
 				2247670120562F65003E8790 /* MediaItemView.xib in Resources */,
-				2204620D20472DE80067D9FB /* Place.storyboard in Resources */,
 				2204621720472F2D0067D9FB /* PlayerControl.xib in Resources */,
 				22A923282044AF05003EA9BB /* Main.storyboard in Resources */,
 				22A76FEB2046477A006C0AE7 /* Player.storyboard in Resources */,
@@ -550,7 +546,6 @@
 				22A76FEC2046477A006C0AE7 /* PlayerViewController.swift in Sources */,
 				2204623520472FDF0067D9FB /* Int.swift in Sources */,
 				226D0587204FC78100D74711 /* CachingNetwork.swift in Sources */,
-				2204620F20472DE80067D9FB /* PlaceViewController.swift in Sources */,
 				22046246204730780067D9FB /* GestureRecognizer.swift in Sources */,
 				2204625D204730C70067D9FB /* TouchProperties.swift in Sources */,
 				2204623420472FDF0067D9FB /* NSImage.swift in Sources */,
@@ -580,6 +575,7 @@
 				22A498752047499B0024B46C /* JSON.swift in Sources */,
 				22046247204730780067D9FB /* PinchGestureRecognizer.swift in Sources */,
 				22046243204730780067D9FB /* SwipeGestureRecognizer.swift in Sources */,
+				D901EBF02057490400BBFCF2 /* RegularTableView.swift in Sources */,
 				22046248204730780067D9FB /* TapGestureRecognizer.swift in Sources */,
 				2247670020562F65003E8790 /* MediaItemView.swift in Sources */,
 				22914F77204905230000D4E1 /* NSApplication.swift in Sources */,
