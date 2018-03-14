@@ -31,6 +31,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        detailView.alphaValue = 0.0
         detailView.wantsLayer = true
         detailView.layer?.backgroundColor = style.darkBackground.cgColor
         gestureManager = GestureManager(responder: self)
@@ -39,6 +40,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         setupRelatedItemsView()
         setupGestures()
         loadRecord()
+        animateRecordViewIn()
     }
 
 
@@ -183,6 +185,13 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
 
     // MARK: Helpers
+
+    private func animateRecordViewIn() {
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = 0.5
+            self.detailView.animator().alphaValue = 1.0
+        })
+    }
 
     private func animateCollectionView(to point: CGPoint, duration: CGFloat) {
         NSAnimationContext.beginGrouping()
