@@ -16,6 +16,7 @@ class LastTwo<Element>: CustomStringConvertible {
         return "( [LastTwo] last: \(String(describing: last)), secondLast: \(String(describing: secondLast)) )"
     }
 
+
     // MARK: API
 
     func add(_ element: Element) {
@@ -26,4 +27,9 @@ class LastTwo<Element>: CustomStringConvertible {
         last = nil
         secondLast = nil
     }
+
+    func clearSecondLast() {
+        secondLast = nil
+    }
 }
+

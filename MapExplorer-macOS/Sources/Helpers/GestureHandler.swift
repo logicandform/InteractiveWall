@@ -33,7 +33,10 @@ class GestureHandler {
     }
 
     func handle(_ touch: Touch) {
-        applyTransform(to: touch)
+        //applyTransform(to: touch)
+
+       // print(touch.position.x)
+        touch.position.x -= 1440
 
         switch touch.state {
         case .down:
