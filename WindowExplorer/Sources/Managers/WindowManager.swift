@@ -39,7 +39,7 @@ final class WindowManager {
         }
     }
 
-    func displayWindow(for type: WindowType, at origin: CGPoint) {
+    func display(_ type: WindowType, at origin: CGPoint) {
         let window = WindowFactory.window(for: type, at: origin)
 
         if let controller = window.contentViewController as? GestureResponder {
@@ -88,9 +88,9 @@ final class WindowManager {
         firstly {
             CachingNetwork.getSchool(by: id)
         }.then { [weak self] school -> Void in
-            let type = WindowType.record(school)
-            let origin = location - CGPoint(x: type.size.width / 2, y: type.size.height)
-            self?.displayWindow(for: type, at: origin)
+            let windowType = WindowType.record(school)
+            let origin = location - CGPoint(x: windowType.size.width / 2, y: windowType.size.height)
+            self?.display(windowType, at: origin)
         }.catch { error in
             print(error)
         }

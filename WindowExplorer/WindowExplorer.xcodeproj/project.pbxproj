@@ -65,6 +65,8 @@
 		D992E20A20533A3A00EAB698 /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D992E20820533A3A00EAB698 /* RecordViewController.swift */; };
 		D992E20D20533A6200EAB698 /* Record.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D992E20C20533A6200EAB698 /* Record.storyboard */; };
 		D9F24E5B2059DD1900B9FCB8 /* RecordFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F24E5A2059DD1900B9FCB8 /* RecordFactory.swift */; };
+		D9F24E5D205AFE2900B9FCB8 /* MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F24E5C205AFE2900B9FCB8 /* MediaType.swift */; };
+		D9F24E5F205B01A000B9FCB8 /* WindowType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F24E5E205B01A000B9FCB8 /* WindowType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -144,6 +146,8 @@
 		D992E20820533A3A00EAB698 /* RecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
 		D992E20C20533A6200EAB698 /* Record.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Record.storyboard; sourceTree = "<group>"; };
 		D9F24E5A2059DD1900B9FCB8 /* RecordFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFactory.swift; sourceTree = "<group>"; };
+		D9F24E5C205AFE2900B9FCB8 /* MediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
+		D9F24E5E205B01A000B9FCB8 /* WindowType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -346,12 +350,14 @@
 			isa = PBXGroup;
 			children = (
 				227B5E10205611BB00F403B3 /* Style.swift */,
-				22B1E2CE204638CA00BDDF14 /* GestureHandler.swift */,
 				22A498742047499B0024B46C /* JSON.swift */,
-				8E40109F20487B8D00E81AAA /* WindowFactory.swift */,
+				22B1E2CE204638CA00BDDF14 /* GestureHandler.swift */,
 				226D0586204FC78100D74711 /* CachingNetwork.swift */,
 				226D0588204FC7BC00D74711 /* ResponseHandler.swift */,
 				D9F24E5A2059DD1900B9FCB8 /* RecordFactory.swift */,
+				8E40109F20487B8D00E81AAA /* WindowFactory.swift */,
+				D9F24E5E205B01A000B9FCB8 /* WindowType.swift */,
+				D9F24E5C205AFE2900B9FCB8 /* MediaType.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -556,6 +562,7 @@
 				8E4010A220487E0300E81AAA /* Collection.swift in Sources */,
 				3F2FAB5B204F7D24002EDF5D /* Artifact.swift in Sources */,
 				22B1E2CD204638B900BDDF14 /* GestureManager.swift in Sources */,
+				D9F24E5D205AFE2900B9FCB8 /* MediaType.swift in Sources */,
 				22A76FE620464764006C0AE7 /* PDFViewController.swift in Sources */,
 				2276AE65204E7150001FAD8B /* BorderlessWindow.swift in Sources */,
 				D992E20A20533A3A00EAB698 /* RecordViewController.swift in Sources */,
@@ -585,6 +592,7 @@
 				22914F77204905230000D4E1 /* NSApplication.swift in Sources */,
 				2204623920472FDF0067D9FB /* NetworkConfiguration.swift in Sources */,
 				2204623620472FDF0067D9FB /* AVKit.swift in Sources */,
+				D9F24E5F205B01A000B9FCB8 /* WindowType.swift in Sources */,
 				22914F752049001B0000D4E1 /* TouchManager.swift in Sources */,
 				3F0902612049C6B10044F100 /* Theme.swift in Sources */,
 				22046244204730780067D9FB /* PanGestureRecognizer.swift in Sources */,

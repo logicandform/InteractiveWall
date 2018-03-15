@@ -13,6 +13,7 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
     @IBOutlet weak var dismissButton: NSView!
 
     private(set) var gestureManager: GestureManager!
+    var videoURL: URL?
 
     private struct Constants {
         static let testVideoURL = URL(fileURLWithPath: "/Users/imacpro/Desktop/test-mac.mp4")
@@ -36,7 +37,8 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
     // MARK: Setup
 
     private func setupPlayer() {
-        let player = AVPlayer(url: Constants.testVideoURL)
+        let url = videoURL ?? Constants.testVideoURL
+        let player = AVPlayer(url: url)
         playerView.player = player
 
         playerControl.player = player
@@ -53,7 +55,7 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
         singleFingerTap.gestureUpdated = didTapVideoPlayer(_:)
 
         let singleFingerPan = PanGestureRecognizer()
-        gestureManager.add(singleFingerPan, to: view)
+        gestureManager.add(singleFingerPan, to: playerView)
         singleFingerPan.gestureUpdated = didPanDetailView(_:)
 
         let singleFingerCloseButtonTap = TapGestureRecognizer()
