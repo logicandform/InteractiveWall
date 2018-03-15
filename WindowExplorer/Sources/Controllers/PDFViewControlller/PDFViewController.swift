@@ -11,7 +11,7 @@ class PDFViewController: NSViewController, GestureResponder {
     @IBOutlet weak var closeButtonView: NSView!
 
     var gestureManager: GestureManager!
-    var pdfURL: URL?
+    var media: Media!
 
 
     // MARK: Life-cycle
@@ -34,15 +34,17 @@ class PDFViewController: NSViewController, GestureResponder {
     // MARK: Setup
 
     private func setupPDF() {
+        guard media.type == .pdf else {
+            return
+        }
+
         pdfView.displayDirection = .horizontal
         pdfView.autoScales = true
         pdfView.displayMode = .singlePage
 
-        if let url = pdfURL {
-            let pdfDoc = PDFDocument(url: url)
-            pdfView.document = pdfDoc
-            pdfThumbnailView.pdfView = pdfView
-        }
+        let pdfDoc = PDFDocument(url: media.url)
+        pdfView.document = pdfDoc
+        pdfThumbnailView.pdfView = pdfView
     }
 
     private func setupGestures() {

@@ -13,7 +13,7 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
     @IBOutlet weak var dismissButton: NSView!
 
     private(set) var gestureManager: GestureManager!
-    var videoURL: URL?
+    var media: Media!
 
     private struct Constants {
         static let testVideoURL = URL(fileURLWithPath: "/Users/imacpro/Desktop/test-mac.mp4")
@@ -37,8 +37,11 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
     // MARK: Setup
 
     private func setupPlayer() {
-        let url = videoURL ?? Constants.testVideoURL
-        let player = AVPlayer(url: url)
+        guard media.type == .video else {
+            return
+        }
+
+        let player = AVPlayer(url: media.url)
         playerView.player = player
 
         playerControl.player = player

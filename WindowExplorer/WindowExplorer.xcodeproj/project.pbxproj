@@ -65,7 +65,7 @@
 		D992E20A20533A3A00EAB698 /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D992E20820533A3A00EAB698 /* RecordViewController.swift */; };
 		D992E20D20533A6200EAB698 /* Record.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D992E20C20533A6200EAB698 /* Record.storyboard */; };
 		D9F24E5B2059DD1900B9FCB8 /* RecordFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F24E5A2059DD1900B9FCB8 /* RecordFactory.swift */; };
-		D9F24E5D205AFE2900B9FCB8 /* MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F24E5C205AFE2900B9FCB8 /* MediaType.swift */; };
+		D9F24E5D205AFE2900B9FCB8 /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F24E5C205AFE2900B9FCB8 /* Media.swift */; };
 		D9F24E5F205B01A000B9FCB8 /* WindowType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F24E5E205B01A000B9FCB8 /* WindowType.swift */; };
 		D9F24E62205B040700B9FCB8 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F24E61205B040700B9FCB8 /* ImageViewController.swift */; };
 		D9F24E64205B041200B9FCB8 /* Image.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9F24E63205B041200B9FCB8 /* Image.storyboard */; };
@@ -148,7 +148,7 @@
 		D992E20820533A3A00EAB698 /* RecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
 		D992E20C20533A6200EAB698 /* Record.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Record.storyboard; sourceTree = "<group>"; };
 		D9F24E5A2059DD1900B9FCB8 /* RecordFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFactory.swift; sourceTree = "<group>"; };
-		D9F24E5C205AFE2900B9FCB8 /* MediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
+		D9F24E5C205AFE2900B9FCB8 /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		D9F24E5E205B01A000B9FCB8 /* WindowType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowType.swift; sourceTree = "<group>"; };
 		D9F24E61205B040700B9FCB8 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		D9F24E63205B041200B9FCB8 /* Image.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Image.storyboard; sourceTree = "<group>"; };
@@ -196,9 +196,10 @@
 		2204623B20472FFD0067D9FB /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				223613E620509D920024145C /* LastTwo.swift */,
-				22A4987A204749EA0024B46C /* Records */,
 				22A49876204749B70024B46C /* Touches */,
+				22A4987A204749EA0024B46C /* Records */,
+				223613E620509D920024145C /* LastTwo.swift */,
+				D9F24E5C205AFE2900B9FCB8 /* Media.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -359,10 +360,10 @@
 				22B1E2CE204638CA00BDDF14 /* GestureHandler.swift */,
 				226D0586204FC78100D74711 /* CachingNetwork.swift */,
 				226D0588204FC7BC00D74711 /* ResponseHandler.swift */,
-				D9F24E5A2059DD1900B9FCB8 /* RecordFactory.swift */,
-				8E40109F20487B8D00E81AAA /* WindowFactory.swift */,
 				D9F24E5E205B01A000B9FCB8 /* WindowType.swift */,
-				D9F24E5C205AFE2900B9FCB8 /* MediaType.swift */,
+				8E40109F20487B8D00E81AAA /* WindowFactory.swift */,
+				D9F24E5A2059DD1900B9FCB8 /* RecordFactory.swift */,
+				D901EBEC2056EEFE00BBFCF2 /* RecordDisplayable.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -399,7 +400,6 @@
 			children = (
 				D992E20C20533A6200EAB698 /* Record.storyboard */,
 				D992E20820533A3A00EAB698 /* RecordViewController.swift */,
-				D901EBEC2056EEFE00BBFCF2 /* RecordDisplayable.swift */,
 				D901EBEB20535A3E00BBFCF2 /* Views */,
 			);
 			path = RecordViewController;
@@ -578,7 +578,7 @@
 				8E4010A220487E0300E81AAA /* Collection.swift in Sources */,
 				3F2FAB5B204F7D24002EDF5D /* Artifact.swift in Sources */,
 				22B1E2CD204638B900BDDF14 /* GestureManager.swift in Sources */,
-				D9F24E5D205AFE2900B9FCB8 /* MediaType.swift in Sources */,
+				D9F24E5D205AFE2900B9FCB8 /* Media.swift in Sources */,
 				22A76FE620464764006C0AE7 /* PDFViewController.swift in Sources */,
 				2276AE65204E7150001FAD8B /* BorderlessWindow.swift in Sources */,
 				D992E20A20533A3A00EAB698 /* RecordViewController.swift in Sources */,

@@ -4,18 +4,18 @@ import Foundation
 
 enum WindowType {
     case record(RecordDisplayable)
-    case image(URL)
-    case player(URL)
-    case pdf(URL)
+    case image(Media)
+    case player(Media)
+    case pdf(Media)
 
-    init(for type: MediaType) {
-        switch type {
-        case .image(let url):
-            self = .image(url)
-        case .video(let url):
-            self = .player(url)
-        case .pdf(let url):
-            self = .pdf(url)
+    init(for media: Media) {
+        switch media.type {
+        case .image:
+            self = .image(media)
+        case .video:
+            self = .player(media)
+        case .pdf:
+            self = .pdf(media)
         }
     }
 

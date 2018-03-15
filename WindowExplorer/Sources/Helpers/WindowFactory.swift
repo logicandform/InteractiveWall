@@ -28,20 +28,20 @@ final class WindowFactory {
             let recordViewController = storyboard.instantiateInitialController() as! RecordViewController
             recordViewController.record = displayable
             return recordViewController
-        case let .image(url):
+        case let .image(media):
             let storyboard = NSStoryboard(name: ImageViewController.storyboard, bundle: Bundle.main)
             let imageViewController = storyboard.instantiateInitialController() as! ImageViewController
-            imageViewController.imageURL = url
+            imageViewController.media = media
             return imageViewController
-        case let .player(url):
+        case let .player(media):
             let storyboard = NSStoryboard(name: PlayerViewController.storyboard, bundle: Bundle.main)
             let playerViewController = storyboard.instantiateInitialController() as! PlayerViewController
-            playerViewController.videoURL = url
+            playerViewController.media = media
             return playerViewController
-        case let .pdf(url):
+        case let .pdf(media):
             let storyboard = NSStoryboard(name: PDFViewController.storyboard, bundle: Bundle.main)
             let pdfViewController = storyboard.instantiateInitialController() as! PDFViewController
-            pdfViewController.pdfURL = url
+            pdfViewController.media = media
             return pdfViewController
         }
     }

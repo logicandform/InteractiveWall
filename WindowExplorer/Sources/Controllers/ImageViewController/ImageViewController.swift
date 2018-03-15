@@ -9,10 +9,11 @@ class ImageViewController: NSViewController, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "Image")
 
     @IBOutlet weak var imageView: NSImageView!
+    @IBOutlet weak var titleTextField: NSTextField!
     @IBOutlet weak var dismissButton: NSView!
 
     private(set) var gestureManager: GestureManager!
-    var imageURL: URL?
+    var media: Media!
 
     private struct Constants {
 
@@ -26,6 +27,7 @@ class ImageViewController: NSViewController, GestureResponder {
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
         gestureManager = GestureManager(responder: self)
+        titleTextField.stringValue = media.title ?? ""
 
         setupImageView()
         setupGestures()
@@ -35,11 +37,11 @@ class ImageViewController: NSViewController, GestureResponder {
     // MARK: Setup
 
     private func setupImageView() {
-        guard let url = imageURL else {
+        guard media.type == .image else {
             return
         }
 
-        Alamofire.request(url).responseImage { [weak self] response in
+        Alamofire.request(media.url).responseImage { [weak self] response in
             if let image = response.value {
                 self?.imageView.image = image
             }

@@ -109,7 +109,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         }
 
         titleLabel.stringValue = record.title
-        dateLabel.stringValue = record.date ?? "no date"
+        dateLabel.stringValue = record.date ?? ""
         for label in record.textFields {
             stackView.insertView(label, at: stackView.subviews.count, in: .top)
         }
@@ -142,7 +142,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func handleCollectionViewTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let window = view.window else {
+        guard let tap = gesture as? TapGestureRecognizer, let window = view.window, let record = record else {
             return
         }
 
@@ -150,7 +150,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             let rect = mediaView.visibleRect
             let offset = rect.origin.x / rect.width
             let visibleItem = Int(round(offset))
-            if let url = record?.thumbnails.at(index: visibleItem), let media = MediaType(for: url) {
+            if let url = record.thumbnails.at(index: visibleItem), let media = Media(url: url, title: record.mediaTitles.at(index: visibleItem)) {
                 let windowType = WindowType(for: media)
                 let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins, y: window.frame.maxY - windowType.size.height)
                 WindowManager.instance.display(windowType, at: origin)
