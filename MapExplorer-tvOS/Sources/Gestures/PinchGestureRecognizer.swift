@@ -54,7 +54,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     // MARK: API
 
     func start(_ touch: Touch, with properties: TouchProperties) {
-
         positionForTouch[touch] = touch.position
 
         guard fingers == properties.touchCount else {
@@ -98,7 +97,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             }
             return
         }
-
         cancelPanMomentumCounter = 0
 
         switch state {
@@ -120,7 +118,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func end(_ touch: Touch, with properties: TouchProperties) {
-
         positionForTouch.removeValue(forKey: touch)
 
         guard properties.touchCount.isZero else {
