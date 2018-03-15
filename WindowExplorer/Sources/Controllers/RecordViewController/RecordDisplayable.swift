@@ -42,7 +42,8 @@ extension Event: RecordDisplayable {
     var textFields: [NSTextField] {
         var labels = [NSTextField]()
         for _ in (1...15) {
-            let label = NSTextField(string: "Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label.")
+            let text = NSAttributedString(string: "Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label.")
+            let label = NSTextField(labelWithAttributedString: text)
             label.textColor = .white
             label.drawsBackground = false
             label.isBordered = false
@@ -76,7 +77,8 @@ extension Artifact: RecordDisplayable {
     var textFields: [NSTextField] {
         var labels = [NSTextField]()
         for _ in (1...15) {
-            let label = NSTextField(string: "Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label.")
+            let text = NSAttributedString(string: "Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label.")
+            let label = NSTextField(labelWithAttributedString: text)
             label.textColor = .white
             label.drawsBackground = false
             label.isBordered = false
@@ -110,7 +112,8 @@ extension Organization: RecordDisplayable {
     var textFields: [NSTextField] {
         var labels = [NSTextField]()
         for _ in (1...15) {
-            let label = NSTextField(string: "Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label.")
+            let text = NSAttributedString(string: "Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label.")
+            let label = NSTextField(labelWithAttributedString: text)
             label.textColor = .white
             label.drawsBackground = false
             label.isBordered = false
@@ -140,7 +143,8 @@ extension School: RecordDisplayable {
     var textFields: [NSTextField] {
         var labels = [NSTextField]()
         for _ in (1...15) {
-            let label = NSTextField(string: "Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label.")
+            let text = NSAttributedString(string: "Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label.")
+            let label = NSTextField(labelWithAttributedString: text)
             label.textColor = .white
             label.drawsBackground = false
             label.isBordered = false
