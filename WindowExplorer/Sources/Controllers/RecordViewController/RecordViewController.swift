@@ -66,6 +66,10 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         gestureManager.add(collectionViewPanGesture, to: mediaView)
         collectionViewPanGesture.gestureUpdated = handleCollectionViewPan(_:)
 
+        let collectionViewTapGesture = TapGestureRecognizer()
+        gestureManager.add(collectionViewTapGesture, to: mediaView)
+        collectionViewTapGesture.gestureUpdated = handleCollectionViewTap(_:)
+
         let relatedViewPan = PanGestureRecognizer()
         gestureManager.add(relatedViewPan, to: relatedItemsView)
         relatedViewPan.gestureUpdated = handleRelatedViewPan(_:)
@@ -105,7 +109,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         }
 
         titleLabel.stringValue = record.title
-        dateLabel.stringValue = record.date ?? "no date"
+        dateLabel.stringValue = record.date ?? ""
         for label in record.textFields {
             stackView.insertView(label, at: stackView.subviews.count, in: .top)
         }
@@ -134,6 +138,23 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             animateCollectionView(to: origin, duration: duration)
         default:
             return
+        }
+    }
+
+    private func handleCollectionViewTap(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, let window = view.window, let record = record else {
+            return
+        }
+
+        if tap.state == .ended {
+            let rect = mediaView.visibleRect
+            let offset = rect.origin.x / rect.width
+            let visibleItem = Int(round(offset))
+            if let url = record.thumbnails.at(index: visibleItem), let media = Media(url: url, title: record.mediaTitles.at(index: visibleItem)) {
+                let windowType = WindowType(for: media)
+                let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins, y: window.frame.maxY - windowType.size.height)
+                WindowManager.instance.display(windowType, at: origin)
+            }
         }
     }
 
@@ -296,7 +317,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins, y: window.frame.minY)
             RecordFactory.record(for: record.type, id: record.id, completion: { newRecord in
                 if let loadedRecord = newRecord {
-                    WindowManager.instance.displayWindow(for: .record(loadedRecord), at: origin)
+                    WindowManager.instance.display(.record(loadedRecord), at: origin)
                 }
             })
         })

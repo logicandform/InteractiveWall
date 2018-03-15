@@ -4,22 +4,6 @@ import Foundation
 import AppKit
 
 
-enum WindowType {
-    case record(RecordDisplayable)
-    case player
-    case pdf
-
-    var size: CGSize {
-        switch self {
-        case .record:
-            return CGSize(width: 416, height: 600)
-        default:
-            return CGSize(width: 640, height: 600)
-        }
-    }
-}
-
-
 final class WindowFactory {
 
 
@@ -39,17 +23,26 @@ final class WindowFactory {
 
     private static func controller(for type: WindowType) -> NSViewController {
         switch type {
-        case .record(let displayable):
+        case let .record(displayable):
             let storyboard = NSStoryboard(name: RecordViewController.storyboard, bundle: Bundle.main)
             let recordViewController = storyboard.instantiateInitialController() as! RecordViewController
             recordViewController.record = displayable
             return recordViewController
-        case .player:
+        case let .image(media):
+            let storyboard = NSStoryboard(name: ImageViewController.storyboard, bundle: Bundle.main)
+            let imageViewController = storyboard.instantiateInitialController() as! ImageViewController
+            imageViewController.media = media
+            return imageViewController
+        case let .player(media):
             let storyboard = NSStoryboard(name: PlayerViewController.storyboard, bundle: Bundle.main)
-            return storyboard.instantiateInitialController() as! PlayerViewController
-        case .pdf:
+            let playerViewController = storyboard.instantiateInitialController() as! PlayerViewController
+            playerViewController.media = media
+            return playerViewController
+        case let .pdf(media):
             let storyboard = NSStoryboard(name: PDFViewController.storyboard, bundle: Bundle.main)
-            return storyboard.instantiateInitialController() as! PDFViewController
+            let pdfViewController = storyboard.instantiateInitialController() as! PDFViewController
+            pdfViewController.media = media
+            return pdfViewController
         }
     }
 }

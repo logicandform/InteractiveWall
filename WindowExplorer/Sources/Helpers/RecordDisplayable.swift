@@ -3,6 +3,7 @@
 import Foundation
 import AppKit
 
+
 enum RecordType {
     case event
     case artifact
@@ -29,6 +30,7 @@ protocol RecordDisplayable {
     var textFields: [NSTextField] { get }
     var recordGroups: [RecordGroup] { get }
 }
+
 
 extension RecordDisplayable {
     var relatedRecords: [RecordDisplayable] {

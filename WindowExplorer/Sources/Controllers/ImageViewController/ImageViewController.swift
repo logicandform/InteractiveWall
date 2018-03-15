@@ -1,17 +1,23 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
 import Cocoa
-import Quartz
+import AppKit
+import Alamofire
+import AlamofireImage
 
-class PDFViewController: NSViewController, GestureResponder {
-    static let storyboard = NSStoryboard.Name(rawValue: "PDF")
+class ImageViewController: NSViewController, GestureResponder {
+    static let storyboard = NSStoryboard.Name(rawValue: "Image")
 
-    @IBOutlet weak var pdfView: PDFView!
-    @IBOutlet weak var pdfThumbnailView: PDFThumbnailView!
-    @IBOutlet weak var closeButtonView: NSView!
+    @IBOutlet weak var imageView: NSImageView!
+    @IBOutlet weak var titleTextField: NSTextField!
+    @IBOutlet weak var dismissButton: NSView!
 
-    var gestureManager: GestureManager!
+    private(set) var gestureManager: GestureManager!
     var media: Media!
+
+    private struct Constants {
+
+    }
 
 
     // MARK: Life-cycle
@@ -21,30 +27,25 @@ class PDFViewController: NSViewController, GestureResponder {
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
         gestureManager = GestureManager(responder: self)
+        titleTextField.stringValue = media.title ?? ""
 
-        setupPDF()
+        setupImageView()
         setupGestures()
-    }
-
-    override func viewWillAppear() {
-        pdfThumbnailView.pdfView = pdfView
     }
 
 
     // MARK: Setup
 
-    private func setupPDF() {
-        guard media.type == .pdf else {
+    private func setupImageView() {
+        guard media.type == .image else {
             return
         }
 
-        pdfView.displayDirection = .horizontal
-        pdfView.autoScales = true
-        pdfView.displayMode = .singlePage
-
-        let pdfDoc = PDFDocument(url: media.url)
-        pdfView.document = pdfDoc
-        pdfThumbnailView.pdfView = pdfView
+        Alamofire.request(media.url).responseImage { [weak self] response in
+            if let image = response.value {
+                self?.imageView.image = image
+            }
+        }
     }
 
     private func setupGestures() {
@@ -52,18 +53,19 @@ class PDFViewController: NSViewController, GestureResponder {
         view.addGestureRecognizer(panGesture)
 
         let singleFingerPan = PanGestureRecognizer()
-        gestureManager.add(singleFingerPan, to: view)
-        singleFingerPan.gestureUpdated = handlePan(_:)
+        gestureManager.add(singleFingerPan, to: imageView)
+        singleFingerPan.gestureUpdated = didPanDetailView(_:)
 
         let singleFingerCloseButtonTap = TapGestureRecognizer()
-        gestureManager.add(singleFingerCloseButtonTap, to: closeButtonView)
+        gestureManager.add(singleFingerCloseButtonTap, to: dismissButton)
         singleFingerCloseButtonTap.gestureUpdated = didTapCloseButton(_:)
     }
 
 
     // MARK: Gesture Handling
 
-    private func handlePan(_ gesture: GestureRecognizer) {
+
+    private func didPanDetailView(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
             return
         }
@@ -81,13 +83,11 @@ class PDFViewController: NSViewController, GestureResponder {
     }
 
     private func didTapCloseButton(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer else {
+        guard gesture is TapGestureRecognizer else {
             return
         }
 
-        if tap.state == .ended {
-            WindowManager.instance.closeWindow(for: self)
-        }
+        WindowManager.instance.closeWindow(for: self)
     }
 
     @objc
@@ -109,3 +109,4 @@ class PDFViewController: NSViewController, GestureResponder {
         WindowManager.instance.closeWindow(for: self)
     }
 }
+
