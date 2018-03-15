@@ -12,23 +12,11 @@ class RelatedItemView: NSView {
     @IBOutlet weak var descriptionLabel: NSTextField!
     @IBOutlet weak var imageView: NSImageView!
 
-    var didTapItem: ((RecordDisplayable?) -> Void)?
-
-    var gestureManager: GestureManager? {
-        didSet {
-            setupGestures()
-        }
-    }
+    var didTapItem: ((RecordDisplayable) -> Void)?
 
     var record: RecordDisplayable? {
         didSet {
             load(record)
-        }
-    }
-
-    private var highlighted: Bool = false {
-        didSet {
-            updateStyle()
         }
     }
 
@@ -38,49 +26,29 @@ class RelatedItemView: NSView {
     override func awakeFromNib() {
         super.awakeFromNib()
         wantsLayer = true
-        layer?.backgroundColor = style.darkBackground.cgColor
+        set(highlighted: false)
+
         titleLabel?.textColor = .white
         descriptionLabel?.textColor = .white
+    }
+
+
+    // MARK: API
+
+    func set(highlighted: Bool) {
+        if highlighted {
+            layer?.backgroundColor = style.selectedColor.cgColor
+        } else {
+            layer?.backgroundColor = style.darkBackground.cgColor
+        }
     }
 
 
     // MARK: IB-Actions
 
     @IBAction func didTapView(_ sender: Any) {
-        didTapItem?(record)
-    }
-
-
-    // MARK: Setup
-
-    private func setupGestures() {
-        guard let gestureManager = gestureManager else {
-            return
-        }
-
-        let tapGesture = TapGestureRecognizer()
-        gestureManager.add(tapGesture, to: self)
-        tapGesture.gestureUpdated = handleTapGesture(_:)
-    }
-
-
-    // MARK: Gesture Handling
-
-    private func handleTapGesture(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer else {
-            return
-        }
-
-        switch tap.state {
-        case .began:
-            highlighted = true
-        case .failed:
-            highlighted = false
-        case .ended:
+        if let record = record {
             didTapItem?(record)
-            highlighted = false
-        default:
-            return
         }
     }
 
@@ -101,14 +69,6 @@ class RelatedItemView: NSView {
                     self?.imageView.image = image
                 }
             }
-        }
-    }
-
-    private func updateStyle() {
-        if highlighted {
-            layer?.backgroundColor = style.selectedColor.cgColor
-        } else {
-            layer?.backgroundColor = style.darkBackground.cgColor
         }
     }
 }

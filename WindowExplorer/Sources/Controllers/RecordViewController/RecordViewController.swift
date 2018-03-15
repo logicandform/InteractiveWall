@@ -64,6 +64,14 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         gestureManager.add(collectionViewPanGesture, to: mediaView)
         collectionViewPanGesture.gestureUpdated = handleCollectionViewPan(_:)
 
+        let relatedViewPan = PanGestureRecognizer()
+        gestureManager.add(relatedViewPan, to: relatedItemsView)
+        relatedViewPan.gestureUpdated = handleRelatedViewPan(_:)
+
+        let relatedItemTap = TapGestureRecognizer()
+        gestureManager.add(relatedItemTap, to: relatedItemsView)
+        relatedItemTap.gestureUpdated = handleRelatedItemTap(_:)
+
         let panGesture = PanGestureRecognizer()
         gestureManager.add(panGesture, to: detailView)
         panGesture.gestureUpdated = handleWindowPan(_:)
@@ -122,6 +130,55 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             let duration = margin < 0.5 ? margin : 1 - margin
             let origin = CGPoint(x: rect.width * index, y: 0)
             animateCollectionView(to: origin, duration: duration)
+        default:
+            return
+        }
+    }
+
+    private func handleRelatedViewPan(_ gesture: GestureRecognizer) {
+        guard let pan = gesture as? PanGestureRecognizer else {
+            return
+        }
+
+        switch pan.state {
+        case .recognized, .momentum:
+            var rect = relatedItemsView.visibleRect
+            rect.origin.y += pan.delta.dy
+            relatedItemsView.scrollToVisible(rect)
+        default:
+            return
+        }
+    }
+
+    var selectedRelatedItem: RelatedItemView? {
+        didSet {
+            oldValue?.set(highlighted: false)
+            selectedRelatedItem?.set(highlighted: true)
+        }
+    }
+
+    private func handleRelatedItemTap(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, let location = tap.position else {
+            return
+        }
+
+
+        let locationInTable = location + relatedItemsView.visibleRect.origin
+        let row = relatedItemsView.row(at: locationInTable)
+        guard row >= 0, let relatedItemView = relatedItemsView.view(atColumn: 0, row: row, makeIfNecessary: false) as? RelatedItemView else {
+            return
+        }
+
+        switch tap.state {
+        case .began:
+            selectedRelatedItem = relatedItemView
+        case .failed:
+            selectedRelatedItem = nil
+        case .ended:
+            if let selectedRecord = selectedRelatedItem?.record {
+                selectRelatedItem(selectedRecord)
+                selectedRelatedItem = nil
+            }
         default:
             return
         }
@@ -221,6 +278,21 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         showingRelatedItems = !showingRelatedItems
     }
 
+    private func selectRelatedItem(_ record: RecordDisplayable) {
+        guard let window = view.window else {
+            return
+        }
+
+        toggleRelatedItems(completion: {
+            let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins, y: window.frame.minY)
+            RecordFactory.record(for: record.type, id: record.id, completion: { newRecord in
+                if let loadedRecord = newRecord {
+                    WindowManager.instance.displayWindow(for: .record(loadedRecord), at: origin)
+                }
+            })
+        })
+    }
+
 
     // MARK: NSCollectionViewDelegate & NSCollectionViewDataSource
 
@@ -253,9 +325,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return nil
         }
 
-        relatedItemView.gestureManager = gestureManager
+        relatedItemView.didTapItem = selectRelatedItem(_:)
         relatedItemView.record = record?.relatedRecords[row]
-        relatedItemView.didTapItem = didSelectRelatedItem(for:)
         return relatedItemView
     }
 
@@ -265,20 +336,5 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
         return false
-    }
-
-    func didSelectRelatedItem(for record: RecordDisplayable?) {
-        guard let selectedRecord = record, let window = view.window else {
-            return
-        }
-
-        toggleRelatedItems(completion: {
-            let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins, y: window.frame.minY)
-            RecordFactory.record(for: selectedRecord.type, id: selectedRecord.id, completion: { newRecord in
-                if let loadedRecord = newRecord {
-                    WindowManager.instance.displayWindow(for: .record(loadedRecord), at: origin)
-                }
-            })
-        })
     }
 }
