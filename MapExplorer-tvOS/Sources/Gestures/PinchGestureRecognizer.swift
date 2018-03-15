@@ -54,7 +54,9 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     // MARK: API
 
     func start(_ touch: Touch, with properties: TouchProperties) {
+
         positionForTouch[touch] = touch.position
+
         guard fingers == properties.touchCount else {
             return
         }
@@ -85,6 +87,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         guard let lastPositionOfTouch = positionForTouch[touch] else {
             return
         }
+
         // Tracks all touches in positionsForTouch
         positionForTouch[touch] = touch.position
 
@@ -95,6 +98,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             }
             return
         }
+
         cancelPanMomentumCounter = 0
 
         switch state {
@@ -105,17 +109,59 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             state = .recognized
             fallthrough
         case .recognized:
-            updatePinch(with: properties)
-            //updatePan(touch, with: currentLocation, lastPositionOfTouch)
-            if shouldUpdate(for: timeOfLastUpdate) {
-                sendUpdate(with: properties)
+            // spreads MUST be added after behavior is set
+            behavior = behavior(of: properties.spread)
+            if behavior != .idle {
+                spreads.add(properties.spread)
+                lastPosition = properties.cog
+            } else {
+                lastSpreadSinceUpdate = properties.spread
             }
+
+            // updating the cumulative delta, and the locations for momentum
+            let touchVector = (touch.position - lastPositionOfTouch).asVector
+            cumulativeDelta += touchVector / 2
+            locations.add(currentLocation + touchVector / CGFloat(fingers))
+
+
+
+            if shouldUpdate(for: timeOfLastUpdate) {
+                // update the spread
+                scale = properties.spread / lastSpreadSinceUpdate
+                // Filters out small tremors, if it is in the growing state, it can only grow and vise versa, also ignores very small spreads where fingers are close together
+                if (scale > 1 && behavior == .growing) || (scale < 1 && behavior == .shrinking) && properties.spread > 30{
+                    lastSpreadSinceUpdate = properties.spread
+                } else {
+                    scale = Constants.initialScale
+                }
+
+                // update the delta
+                if cumulativeDelta.magnitude > Constants.minimumDeltaUpdateThreshold {
+                    delta = cumulativeDelta
+                    cumulativeDelta = .zero
+                }
+
+                // update time and send update
+                timeOfLastUpdate = Date()
+                gestureUpdated?(self)
+
+                // Restting for the next one
+                delta = .zero
+                scale = Constants.initialScale
+            }
+
+            recognize(with: spread)
         default:
             return
         }
     }
 
+    private func recognize() {
+
+    }
+
     func end(_ touch: Touch, with properties: TouchProperties) {
+
         positionForTouch.removeValue(forKey: touch)
 
         guard properties.touchCount.isZero else {
@@ -196,6 +242,26 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         gestureUpdated?(self)
     }
 
+    private func updatePinchMomentum() {
+        if abs(scale - 1) < Momentum.pinchThresholdMomentumScale {
+            scale = Constants.initialScale
+        } else {
+            scale -= 1
+            scale /= pinchFrictionFactor
+            scale += 1
+            pinchFrictionFactor += Momentum.pinchFrictionFactorScale
+        }
+    }
+
+    private func updatePanMomentum() {
+        if delta.magnitude < Momentum.panThresholdMomentumDelta {
+            delta = .zero
+        } else {
+            panFrictionFactor += Momentum.panFrictionFactorScale
+            delta /= panFrictionFactor
+        }
+    }
+
     private func endMomentum() {
         momentumTimer?.invalidate()
         reset()
@@ -234,65 +300,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             }
         }
         return behavior
-    }
-
-
-    // MARK: Helpers
-
-    private func updatePinch(with properties: TouchProperties) {
-        // spreads MUST be added after behavior is set
-        behavior = behavior(of: properties.spread)
-        if behavior != .idle {
-            spreads.add(properties.spread)
-            lastPosition = properties.cog
-        } else {
-            lastSpreadSinceUpdate = properties.spread
-        }
-    }
-
-    private func updatePan(_ touch: Touch, with currentLocation: CGPoint, _ lastPostion: CGPoint) {
-        let touchVector = (touch.position - lastPosition).asVector
-        cumulativeDelta += touchVector / 2
-        locations.add(currentLocation + touchVector / CGFloat(fingers))
-    }
-
-    private func sendUpdate(with properties: TouchProperties) {
-        scale = properties.spread / lastSpreadSinceUpdate
-
-        // Filters out small tremors, if it is in the growing state, it can only grow and vise versa, ignores very small spreads where fingers are close together
-        if (scale > 1 && behavior == .growing) || (scale < 1 && behavior == .shrinking) && properties.spread > 30{
-            lastSpreadSinceUpdate = properties.spread
-        } else {
-            scale = Constants.initialScale
-        }
-        if cumulativeDelta.magnitude > Constants.minimumDeltaUpdateThreshold {
-            delta = cumulativeDelta
-            cumulativeDelta = .zero
-        }
-        timeOfLastUpdate = Date()
-        gestureUpdated?(self)
-        delta = .zero
-        scale = Constants.initialScale
-    }
-
-    private func updatePinchMomentum() {
-        if abs(scale - 1) < Momentum.pinchThresholdMomentumScale {
-            scale = Constants.initialScale
-        } else {
-            scale -= 1
-            scale /= pinchFrictionFactor
-            scale += 1
-            pinchFrictionFactor += Momentum.pinchFrictionFactorScale
-        }
-    }
-
-    private func updatePanMomentum() {
-        if delta.magnitude < Momentum.panThresholdMomentumDelta {
-            delta = .zero
-        } else {
-            panFrictionFactor += Momentum.panFrictionFactorScale
-            delta /= panFrictionFactor
-        }
     }
 
     /// If the pinch continued in the direction of the gesture, clear the activeSpread
