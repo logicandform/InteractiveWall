@@ -7,10 +7,11 @@ class Organization {
 
     let id: Int
     let title: String
+    let type = RecordType.organization
     let description: String?
-    let mediaTitle: String?
-    let thumbnail: URL?
+    let mediaTitles: [String]
     var media = [URL]()
+    var thumbnails = [URL]()
     var relatedSchools: [School]?
     var relatedOrganizations: [Organization]?
     var relatedArtifacts: [Artifact]?
@@ -20,9 +21,9 @@ class Organization {
         static let id = "id"
         static let title = "title"
         static let description = "description"
-        static let mediaTitle = "mediaTitle"
-        static let thumbnail = "mediaThumbnailUrl"
+        static let mediaTitles = "mediaTitles"
         static let media = "mediaPaths"
+        static let thumbnails = "thumbnailPaths"
         static let schools = "schools"
         static let organizations = "organizations"
         static let artifacts = "artifacts"
@@ -40,11 +41,13 @@ class Organization {
         self.id = id
         self.title = title
         self.description = json[Keys.description] as? String
-        self.mediaTitle = json[Keys.mediaTitle] as? String
-        self.thumbnail = URL.from(json[Keys.thumbnail] as? String)
+        self.mediaTitles = json[Keys.mediaTitles] as? [String] ?? []
 
         if let mediaStrings = json[Keys.media] as? [String] {
-            self.media = mediaStrings.flatMap { URL.from($0) }
+            self.media = mediaStrings.flatMap { URL.from(CachingNetwork.baseURL + $0) }
+        }
+        if let thumbnailStrings = json[Keys.thumbnails] as? [String] {
+            self.thumbnails = thumbnailStrings.flatMap { URL.from(CachingNetwork.baseURL + $0) }
         }
         if let schoolsJSON = json[Keys.schools] as? [JSON] {
             let schools = schoolsJSON.flatMap { School(json: $0) }

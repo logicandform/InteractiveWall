@@ -4,10 +4,10 @@ import Foundation
 import AppKit
 
 enum RecordType {
-    case events
-    case artifacts
-    case organizations
-    case schools
+    case event
+    case artifact
+    case organization
+    case school
 }
 
 
@@ -18,11 +18,14 @@ struct RecordGroup {
 
 
 protocol RecordDisplayable {
+    var id: Int { get }
     var title: String { get }
+    var type: RecordType { get }
     var description: String? { get }
     var date: String? { get }
-    var thumbnail: URL? { get }
+    var mediaTitles: [String] { get }
     var media: [URL] { get }
+    var thumbnails: [URL] { get }
     var textFields: [NSTextField] { get }
     var recordGroups: [RecordGroup] { get }
 }
@@ -55,10 +58,10 @@ extension Event: RecordDisplayable {
             return []
         }
 
-        let schoolGroup = RecordGroup(type: .schools, records: schools)
-        let organizationGroup = RecordGroup(type: .organizations, records: organizations)
-        let artifactGroup = RecordGroup(type: .artifacts, records: artifacts)
-        let eventGroup = RecordGroup(type: .events, records: events)
+        let schoolGroup = RecordGroup(type: .school, records: schools)
+        let organizationGroup = RecordGroup(type: .organization, records: organizations)
+        let artifactGroup = RecordGroup(type: .artifact, records: artifacts)
+        let eventGroup = RecordGroup(type: .event, records: events)
 
         return [schoolGroup, organizationGroup, artifactGroup, eventGroup]
     }
@@ -89,10 +92,10 @@ extension Artifact: RecordDisplayable {
             return []
         }
 
-        let schoolGroup = RecordGroup(type: .schools, records: schools)
-        let organizationGroup = RecordGroup(type: .organizations, records: organizations)
-        let artifactGroup = RecordGroup(type: .artifacts, records: artifacts)
-        let eventGroup = RecordGroup(type: .events, records: events)
+        let schoolGroup = RecordGroup(type: .school, records: schools)
+        let organizationGroup = RecordGroup(type: .organization, records: organizations)
+        let artifactGroup = RecordGroup(type: .artifact, records: artifacts)
+        let eventGroup = RecordGroup(type: .event, records: events)
 
         return [schoolGroup, organizationGroup, artifactGroup, eventGroup]
     }
@@ -123,10 +126,10 @@ extension Organization: RecordDisplayable {
             return []
         }
 
-        let schoolGroup = RecordGroup(type: .schools, records: schools)
-        let organizationGroup = RecordGroup(type: .organizations, records: organizations)
-        let artifactGroup = RecordGroup(type: .artifacts, records: artifacts)
-        let eventGroup = RecordGroup(type: .events, records: events)
+        let schoolGroup = RecordGroup(type: .school, records: schools)
+        let organizationGroup = RecordGroup(type: .organization, records: organizations)
+        let artifactGroup = RecordGroup(type: .artifact, records: artifacts)
+        let eventGroup = RecordGroup(type: .event, records: events)
 
         return [schoolGroup, organizationGroup, artifactGroup, eventGroup]
     }
@@ -153,10 +156,10 @@ extension School: RecordDisplayable {
             return []
         }
 
-        let schoolGroup = RecordGroup(type: .schools, records: schools)
-        let organizationGroup = RecordGroup(type: .organizations, records: organizations)
-        let artifactGroup = RecordGroup(type: .artifacts, records: artifacts)
-        let eventGroup = RecordGroup(type: .events, records: events)
+        let schoolGroup = RecordGroup(type: .school, records: schools)
+        let organizationGroup = RecordGroup(type: .organization, records: organizations)
+        let artifactGroup = RecordGroup(type: .artifact, records: artifacts)
+        let eventGroup = RecordGroup(type: .event, records: events)
 
         return [schoolGroup, organizationGroup, artifactGroup, eventGroup]
     }

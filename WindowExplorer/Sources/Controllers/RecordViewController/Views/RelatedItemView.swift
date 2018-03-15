@@ -12,23 +12,11 @@ class RelatedItemView: NSView {
     @IBOutlet weak var descriptionLabel: NSTextField!
     @IBOutlet weak var imageView: NSImageView!
 
-    var didTapItem: (() -> Void)?
-
-    var gestureManager: GestureManager? {
-        didSet {
-            setupGestures()
-        }
-    }
+    var didTapItem: ((RecordDisplayable) -> Void)?
 
     var record: RecordDisplayable? {
         didSet {
             load(record)
-        }
-    }
-
-    private var highlighted: Bool = false {
-        didSet {
-            updateStyle()
         }
     }
 
@@ -38,7 +26,8 @@ class RelatedItemView: NSView {
     override func awakeFromNib() {
         super.awakeFromNib()
         wantsLayer = true
-        layer?.backgroundColor = style.darkBackground.cgColor
+        set(highlighted: false)
+
         titleLabel?.textColor = .white
         descriptionLabel?.textColor = .white
     }
@@ -46,46 +35,20 @@ class RelatedItemView: NSView {
 
     // MARK: API
 
+    func set(highlighted: Bool) {
+        if highlighted {
+            layer?.backgroundColor = style.selectedColor.cgColor
+        } else {
+            layer?.backgroundColor = style.darkBackground.cgColor
+        }
+    }
+
+
+    // MARK: IB-Actions
+
     @IBAction func didTapView(_ sender: Any) {
-        didTapItem?()
-    }
-
-    func didTapView() {
-        highlighted = false
-        didTapItem?()
-    }
-
-
-    // MARK: Setup
-
-    private func setupGestures() {
-        guard let gestureManager = gestureManager else {
-            return
-        }
-
-        let tapGesture = TapGestureRecognizer()
-        gestureManager.add(tapGesture, to: self)
-        tapGesture.gestureUpdated = handleTapGesture(_:)
-    }
-
-
-    // MARK: Gesture Handling
-
-    private func handleTapGesture(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer else {
-            return
-        }
-
-        switch tap.state {
-        case .began:
-            highlighted = true
-        case .failed:
-            highlighted = false
-        case .ended:
-            didTapItem?()
-            highlighted = false
-        default:
-            return
+        if let record = record {
+            didTapItem?(record)
         }
     }
 
@@ -100,20 +63,12 @@ class RelatedItemView: NSView {
         titleLabel.stringValue = record.title
         descriptionLabel.stringValue = record.description ?? "no description"
 
-        if let url = record.thumbnail {
-            Alamofire.request(url).responseImage { [weak self] response in
+        if let firstThumbnail = record.thumbnails.first {
+            Alamofire.request(firstThumbnail).responseImage { [weak self] response in
                 if let image = response.value {
                     self?.imageView.image = image
                 }
             }
-        }
-    }
-
-    private func updateStyle() {
-        if highlighted {
-            layer?.backgroundColor = style.selectedColor.cgColor
-        } else {
-            layer?.backgroundColor = style.darkBackground.cgColor
         }
     }
 }

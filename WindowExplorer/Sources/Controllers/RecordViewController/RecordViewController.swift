@@ -24,6 +24,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     
     private struct Constants {
         static let tableRowHeight: CGFloat = 60
+        static let windowMargins: CGFloat = 20
     }
 
 
@@ -62,6 +63,14 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         let collectionViewPanGesture = PanGestureRecognizer()
         gestureManager.add(collectionViewPanGesture, to: mediaView)
         collectionViewPanGesture.gestureUpdated = handleCollectionViewPan(_:)
+
+        let relatedViewPan = PanGestureRecognizer()
+        gestureManager.add(relatedViewPan, to: relatedItemsView)
+        relatedViewPan.gestureUpdated = handleRelatedViewPan(_:)
+
+        let relatedItemTap = TapGestureRecognizer()
+        gestureManager.add(relatedItemTap, to: relatedItemsView)
+        relatedItemTap.gestureUpdated = handleRelatedItemTap(_:)
 
         let panGesture = PanGestureRecognizer()
         gestureManager.add(panGesture, to: detailView)
@@ -121,6 +130,55 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             let duration = margin < 0.5 ? margin : 1 - margin
             let origin = CGPoint(x: rect.width * index, y: 0)
             animateCollectionView(to: origin, duration: duration)
+        default:
+            return
+        }
+    }
+
+    private func handleRelatedViewPan(_ gesture: GestureRecognizer) {
+        guard let pan = gesture as? PanGestureRecognizer else {
+            return
+        }
+
+        switch pan.state {
+        case .recognized, .momentum:
+            var rect = relatedItemsView.visibleRect
+            rect.origin.y += pan.delta.dy
+            relatedItemsView.scrollToVisible(rect)
+        default:
+            return
+        }
+    }
+
+    var selectedRelatedItem: RelatedItemView? {
+        didSet {
+            oldValue?.set(highlighted: false)
+            selectedRelatedItem?.set(highlighted: true)
+        }
+    }
+
+    private func handleRelatedItemTap(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, let location = tap.position else {
+            return
+        }
+
+
+        let locationInTable = location + relatedItemsView.visibleRect.origin
+        let row = relatedItemsView.row(at: locationInTable)
+        guard row >= 0, let relatedItemView = relatedItemsView.view(atColumn: 0, row: row, makeIfNecessary: false) as? RelatedItemView else {
+            return
+        }
+
+        switch tap.state {
+        case .began:
+            selectedRelatedItem = relatedItemView
+        case .failed:
+            selectedRelatedItem = nil
+        case .ended:
+            if let selectedRecord = selectedRelatedItem?.record {
+                selectRelatedItem(selectedRecord)
+                selectedRelatedItem = nil
+            }
         default:
             return
         }
@@ -191,7 +249,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         NSAnimationContext.endGrouping()
     }
 
-    private func toggleRelatedItems() {
+    private func toggleRelatedItems(completion: (() -> Void)? = nil) {
         guard let window = view.window else {
             return
         }
@@ -209,6 +267,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
                     strongSelf.relatedItemsView.isHidden = !strongSelf.showingRelatedItems
                     strongSelf.hideRelatedItemsButton.isHidden = !strongSelf.showingRelatedItems
                 }
+                completion?()
         })
 
         let diff: CGFloat = showingRelatedItems ? -200 : 200
@@ -219,15 +278,26 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         showingRelatedItems = !showingRelatedItems
     }
 
+    private func selectRelatedItem(_ record: RecordDisplayable) {
+        guard let window = view.window else {
+            return
+        }
 
-    private let testLinks = ["https://images7.alphacoders.com/633/633262.png", "https://images7.alphacoders.com/633/633262.png", "https://images7.alphacoders.com/633/633262.png", "https://images7.alphacoders.com/633/633262.png"]
+        toggleRelatedItems(completion: {
+            let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins, y: window.frame.minY)
+            RecordFactory.record(for: record.type, id: record.id, completion: { newRecord in
+                if let loadedRecord = newRecord {
+                    WindowManager.instance.displayWindow(for: .record(loadedRecord), at: origin)
+                }
+            })
+        })
+    }
 
 
     // MARK: NSCollectionViewDelegate & NSCollectionViewDataSource
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return record?.media.count ?? 0
-        return testLinks.count
+        return record?.thumbnails.count ?? 0
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
@@ -235,8 +305,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return NSCollectionViewItem()
         }
 
-//        mediaItemView.imageURL = record?.media[indexPath.item]
-        mediaItemView.imageURL = URL(string: testLinks[indexPath.item])!
+        mediaItemView.imageURL = record?.thumbnails[indexPath.item]
         return mediaItemView
     }
 
@@ -256,7 +325,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return nil
         }
 
-        relatedItemView.gestureManager = gestureManager
+        relatedItemView.didTapItem = selectRelatedItem(_:)
         relatedItemView.record = record?.relatedRecords[row]
         return relatedItemView
     }

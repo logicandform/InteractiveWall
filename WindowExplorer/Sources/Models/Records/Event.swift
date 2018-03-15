@@ -7,12 +7,13 @@ class Event {
 
     let id: Int
     let title: String
+    let type = RecordType.event
     let date: String?
     let description: String?
     let coordinate: CLLocationCoordinate2D?
-    let mediaTitle: String?
-    let thumbnail: URL?
+    let mediaTitles: [String]
     var media = [URL]()
+    var thumbnails = [URL]()
     var relatedSchools: [School]?
     var relatedOrganizations: [Organization]?
     var relatedArtifacts: [Artifact]?
@@ -24,9 +25,9 @@ class Event {
         static let date = "date"
         static let description = "description"
         static let coordinate = "coordinate"
-        static let thumbnail = "mediaThumbnailUrl"
-        static let mediaTitle = "mediaTitle"
+        static let mediaTitles = "mediaTitles"
         static let media = "mediaPaths"
+        static let thumbnails = "thumbnailPaths"
         static let schools = "schools"
         static let organizations = "organizations"
         static let artifacts = "artifacts"
@@ -46,11 +47,13 @@ class Event {
         self.description = json[Keys.description] as? String
         self.coordinate = CLLocationCoordinate2D(string: json[Keys.coordinate] as? String)
         self.date = json[Keys.date] as? String
-        self.mediaTitle = json[Keys.mediaTitle] as? String
-        self.thumbnail = URL.from(json[Keys.thumbnail] as? String)
+        self.mediaTitles = json[Keys.mediaTitles] as? [String] ?? []
 
         if let mediaStrings = json[Keys.media] as? [String] {
-            self.media = mediaStrings.flatMap { URL.from($0) }
+            self.media = mediaStrings.flatMap { URL.from(CachingNetwork.baseURL + $0) }
+        }
+        if let thumbnailStrings = json[Keys.thumbnails] as? [String] {
+            self.thumbnails = thumbnailStrings.flatMap { URL.from(CachingNetwork.baseURL + $0) }
         }
         if let schoolsJSON = json[Keys.schools] as? [JSON] {
             let schools = schoolsJSON.flatMap { School(json: $0) }

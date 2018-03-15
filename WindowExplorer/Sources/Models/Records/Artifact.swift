@@ -7,13 +7,14 @@ class Artifact {
 
     let id: Int
     let title: String
+    let type = RecordType.artifact
     let shortTitle: String?
     let subtitle: String?
     let description: String?
-    let mediaTitle: String?
-    let thumbnail: URL?
     let comments: String?
+    let mediaTitles: [String]
     var media = [URL]()
+    var thumbnails = [URL]()
     var relatedSchools: [School]?
     var relatedOrganizations: [Organization]?
     var relatedArtifacts: [Artifact]?
@@ -26,10 +27,10 @@ class Artifact {
         static let shortTitle = "shortTitle"
         static let subtitle = "subtitle"
         static let description = "description"
-        static let mediaTitle = "mediaTitle"
-        static let thumbnail = "mediaThumbnailUrl"
-        static let comments = "curatorialComments"
+        static let mediaTitles = "mediaTitles"
         static let media = "mediaPaths"
+        static let thumbnails = "thumbnailPaths"
+        static let comments = "curatorialComments"
         static let schools = "schools"
         static let organizations = "organizations"
         static let artifacts = "artifacts"
@@ -50,12 +51,14 @@ class Artifact {
         self.shortTitle = json[Keys.shortTitle] as? String
         self.subtitle = json[Keys.subtitle] as? String
         self.description = json[Keys.description] as? String
-        self.mediaTitle = json[Keys.mediaTitle] as? String
-        self.thumbnail = URL.from(json[Keys.thumbnail] as? String)
         self.comments = json[Keys.comments] as? String
+        self.mediaTitles = json[Keys.mediaTitles] as? [String] ?? []
 
         if let mediaStrings = json[Keys.media] as? [String] {
-            self.media = mediaStrings.flatMap { URL.from($0) }
+            self.media = mediaStrings.flatMap { URL.from(CachingNetwork.baseURL + $0) }
+        }
+        if let thumbnailStrings = json[Keys.thumbnails] as? [String] {
+            self.thumbnails = thumbnailStrings.flatMap { URL.from(CachingNetwork.baseURL + $0) }
         }
         if let schoolsJSON = json[Keys.schools] as? [JSON] {
             let schools = schoolsJSON.flatMap { School(json: $0) }
