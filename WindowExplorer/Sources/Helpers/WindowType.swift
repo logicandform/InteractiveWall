@@ -23,6 +23,8 @@ enum WindowType {
         switch self {
         case .record:
             return CGSize(width: 416, height: 600)
+        case .image:
+            return CGSize(width: 640, height: 410)
         default:
             return CGSize(width: 640, height: 600)
         }

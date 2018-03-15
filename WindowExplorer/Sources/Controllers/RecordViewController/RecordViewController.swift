@@ -152,7 +152,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             let visibleItem = Int(round(offset))
             if let url = record?.thumbnails.at(index: visibleItem), let media = MediaType(for: url) {
                 let windowType = WindowType(for: media)
-                let origin = CGPoint(x: window.frame.minX, y: window.frame.maxY + Constants.windowMargins)
+                let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins, y: window.frame.maxY - windowType.size.height)
                 WindowManager.instance.display(windowType, at: origin)
             }
         }

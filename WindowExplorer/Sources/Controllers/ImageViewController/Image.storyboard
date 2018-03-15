@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="stH-E5-D9l">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Image View Controller-->
+        <scene sceneID="ga2-ht-WES">
+            <objects>
+                <viewController id="stH-E5-D9l" customClass="ImageViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="sSn-s5-6HM">
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="410"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EiL-xh-zgx">
+                                <rect key="frame" x="8" y="8" width="624" height="394"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" id="z2q-nY-EnU"/>
+                            </imageView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Kbv-Qb-kGl">
+                                <rect key="frame" x="592" y="362" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="JNh-tg-at3"/>
+                                    <constraint firstAttribute="height" constant="40" id="JzI-Ny-clx"/>
+                                    <constraint firstAttribute="width" constant="40" id="oTX-7V-WH0"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="zbp-68-bpi"/>
+                                </constraints>
+                            </customView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="EiL-xh-zgx" secondAttribute="bottom" constant="8" id="7Da-n4-ZAI"/>
+                            <constraint firstAttribute="trailing" secondItem="EiL-xh-zgx" secondAttribute="trailing" constant="8" id="OOn-uc-ghw"/>
+                            <constraint firstAttribute="trailing" secondItem="Kbv-Qb-kGl" secondAttribute="trailing" constant="8" id="c5V-YH-7YC"/>
+                            <constraint firstItem="EiL-xh-zgx" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="8" id="ip3-GX-msw"/>
+                            <constraint firstItem="EiL-xh-zgx" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" constant="8" id="wYK-M9-H08"/>
+                            <constraint firstItem="Kbv-Qb-kGl" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" constant="8" id="xwL-kD-Kw8"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="dismissButton" destination="Kbv-Qb-kGl" id="zX2-Io-uxz"/>
+                        <outlet property="imageView" destination="EiL-xh-zgx" id="uBq-ab-qPH"/>
+                    </connections>
+                </viewController>
+                <customObject id="ApF-HA-SvK" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-51" y="-495"/>
+        </scene>
+    </scenes>
+</document>

@@ -67,6 +67,8 @@
 		D9F24E5B2059DD1900B9FCB8 /* RecordFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F24E5A2059DD1900B9FCB8 /* RecordFactory.swift */; };
 		D9F24E5D205AFE2900B9FCB8 /* MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F24E5C205AFE2900B9FCB8 /* MediaType.swift */; };
 		D9F24E5F205B01A000B9FCB8 /* WindowType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F24E5E205B01A000B9FCB8 /* WindowType.swift */; };
+		D9F24E62205B040700B9FCB8 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F24E61205B040700B9FCB8 /* ImageViewController.swift */; };
+		D9F24E64205B041200B9FCB8 /* Image.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9F24E63205B041200B9FCB8 /* Image.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -148,6 +150,8 @@
 		D9F24E5A2059DD1900B9FCB8 /* RecordFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFactory.swift; sourceTree = "<group>"; };
 		D9F24E5C205AFE2900B9FCB8 /* MediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
 		D9F24E5E205B01A000B9FCB8 /* WindowType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowType.swift; sourceTree = "<group>"; };
+		D9F24E61205B040700B9FCB8 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
+		D9F24E63205B041200B9FCB8 /* Image.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Image.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -340,6 +344,7 @@
 			isa = PBXGroup;
 			children = (
 				D992E20620533A0400EAB698 /* RecordViewController */,
+				D9F24E60205B03AA00B9FCB8 /* ImageViewController */,
 				22A76FE82046477A006C0AE7 /* PlayerViewController */,
 				22A76FE320464764006C0AE7 /* PDFViewControlller */,
 			);
@@ -398,6 +403,15 @@
 				D901EBEB20535A3E00BBFCF2 /* Views */,
 			);
 			path = RecordViewController;
+			sourceTree = "<group>";
+		};
+		D9F24E60205B03AA00B9FCB8 /* ImageViewController */ = {
+			isa = PBXGroup;
+			children = (
+				D9F24E63205B041200B9FCB8 /* Image.storyboard */,
+				D9F24E61205B040700B9FCB8 /* ImageViewController.swift */,
+			);
+			path = ImageViewController;
 			sourceTree = "<group>";
 		};
 		E7F56EE9570176C399CE51F3 /* Pods */ = {
@@ -480,6 +494,7 @@
 				22A923282044AF05003EA9BB /* Main.storyboard in Resources */,
 				22A76FEB2046477A006C0AE7 /* Player.storyboard in Resources */,
 				D992E20D20533A6200EAB698 /* Record.storyboard in Resources */,
+				D9F24E64205B041200B9FCB8 /* Image.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -558,6 +573,7 @@
 				22046246204730780067D9FB /* GestureRecognizer.swift in Sources */,
 				2204625D204730C70067D9FB /* TouchProperties.swift in Sources */,
 				2204623420472FDF0067D9FB /* NSImage.swift in Sources */,
+				D9F24E62205B040700B9FCB8 /* ImageViewController.swift in Sources */,
 				227B5E11205611BB00F403B3 /* Style.swift in Sources */,
 				8E4010A220487E0300E81AAA /* Collection.swift in Sources */,
 				3F2FAB5B204F7D24002EDF5D /* Artifact.swift in Sources */,

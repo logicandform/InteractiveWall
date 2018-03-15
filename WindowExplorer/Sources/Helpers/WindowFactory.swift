@@ -28,9 +28,11 @@ final class WindowFactory {
             let recordViewController = storyboard.instantiateInitialController() as! RecordViewController
             recordViewController.record = displayable
             return recordViewController
-        case .image(_):
-            // FIX
-            return NSViewController()
+        case let .image(url):
+            let storyboard = NSStoryboard(name: ImageViewController.storyboard, bundle: Bundle.main)
+            let imageViewController = storyboard.instantiateInitialController() as! ImageViewController
+            imageViewController.imageURL = url
+            return imageViewController
         case let .player(url):
             let storyboard = NSStoryboard(name: PlayerViewController.storyboard, bundle: Bundle.main)
             let playerViewController = storyboard.instantiateInitialController() as! PlayerViewController
