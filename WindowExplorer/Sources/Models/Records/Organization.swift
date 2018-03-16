@@ -9,9 +9,7 @@ class Organization {
     let title: String
     let type = RecordType.organization
     let description: String?
-    let mediaTitles: [String]
-    var media = [URL]()
-    var thumbnails = [URL]()
+    var media = [Media]()
     var relatedSchools: [School]?
     var relatedOrganizations: [Organization]?
     var relatedArtifacts: [Artifact]?
@@ -41,13 +39,14 @@ class Organization {
         self.id = id
         self.title = title
         self.description = json[Keys.description] as? String
-        self.mediaTitles = json[Keys.mediaTitles] as? [String] ?? []
 
-        if let mediaStrings = json[Keys.media] as? [String] {
-            self.media = mediaStrings.flatMap { URL.from(CachingNetwork.baseURL + $0) }
-        }
-        if let thumbnailStrings = json[Keys.thumbnails] as? [String] {
-            self.thumbnails = thumbnailStrings.flatMap { URL.from(CachingNetwork.baseURL + $0) }
+        if let urlStrings = json[Keys.media] as? [String], let thumbnailStrings = json[Keys.thumbnails] as? [String] {
+            let urls = urlStrings.flatMap { URL.from(CachingNetwork.baseURL + $0) }
+            let thumbnails = thumbnailStrings.flatMap { URL.from(CachingNetwork.baseURL + $0) }
+            let titles = json[Keys.mediaTitles] as? [String] ?? []
+            for (url, thumbnail) in zip(urls, thumbnails) {
+                media.append(Media(url: url, thumbnail: thumbnail, title: titles.at(index: media.count)))
+            }
         }
         if let schoolsJSON = json[Keys.schools] as? [JSON] {
             let schools = schoolsJSON.flatMap { School(json: $0) }

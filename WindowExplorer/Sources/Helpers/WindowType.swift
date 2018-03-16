@@ -8,7 +8,7 @@ enum WindowType {
     case player(Media)
     case pdf(Media)
 
-    init(for media: Media) {
+    init?(for media: Media) {
         switch media.type {
         case .image:
             self = .image(media)
@@ -16,6 +16,8 @@ enum WindowType {
             self = .player(media)
         case .pdf:
             self = .pdf(media)
+        case .unknown:
+            return nil
         }
     }
 

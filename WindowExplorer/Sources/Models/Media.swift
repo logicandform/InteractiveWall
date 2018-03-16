@@ -6,10 +6,11 @@ enum MediaType {
     case image
     case video
     case pdf
+    case unknown
 
-    init?(for url: URL) {
+    init(for url: URL) {
         if url.pathExtension.isEmpty {
-            return nil
+            self = .unknown
         }
 
         switch url.pathExtension {
@@ -20,24 +21,21 @@ enum MediaType {
         case "pdf":
             self = .pdf
         default:
-            return nil
+            self = .unknown
         }
     }
 }
 
 struct Media {
-    let title: String?
     let url: URL
+    let thumbnail: URL
+    let title: String?
     let type: MediaType
 
-
-    init?(url: URL, title: String?) {
-        guard let type = MediaType(for: url) else {
-            return nil
-        }
-
+    init(url: URL, thumbnail: URL, title: String?) {
         self.url = url
+        self.thumbnail = thumbnail
         self.title = title
-        self.type = type
+        self.type = MediaType(for: url)
     }
 }

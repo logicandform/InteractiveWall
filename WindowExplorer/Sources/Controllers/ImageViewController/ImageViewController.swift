@@ -41,6 +41,14 @@ class ImageViewController: NSViewController, GestureResponder {
             return
         }
 
+        // Load thumbnail first
+        Alamofire.request(media.thumbnail).responseImage { [weak self] response in
+            if let strongSelf = self, let image = response.value, strongSelf.imageView.image == nil {
+                strongSelf.imageView.image = image
+            }
+        }
+
+        // Load large media object in background
         Alamofire.request(media.url).responseImage { [weak self] response in
             if let image = response.value {
                 self?.imageView.image = image

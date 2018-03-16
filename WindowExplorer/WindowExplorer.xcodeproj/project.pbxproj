@@ -747,7 +747,6 @@
 			baseConfigurationReference = 2B994FF43C43BAD129E83037 /* Pods-All-WindowExplorer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Metadata/WindowExplorer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = M6262HME76;
@@ -764,7 +763,6 @@
 			baseConfigurationReference = CE471FCE047AE2FD1C92BA3A /* Pods-All-WindowExplorer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Metadata/WindowExplorer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = M6262HME76;
