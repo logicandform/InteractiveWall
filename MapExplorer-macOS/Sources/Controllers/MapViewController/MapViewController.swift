@@ -145,22 +145,17 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     /// If the tap is positioned on a selectable annotation, the annotation's didSelect function is invoked.
     private func didTapOnMap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position else {
-            return
-        }
-
-        guard tap.state == .ended else {
+        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position, tap.state == .ended else {
             return
         }
 
         let circleOverlays = mapView.overlays.flatMap { $0 as? MKCircle }
-        let mapCoordinate = mapView.convert(position, toCoordinateFrom: mapView)
+        let mapCoordinate = mapView.convert(position.inverted(in: mapView), toCoordinateFrom: mapView)
         let mapPoint = MKMapPointForCoordinate(mapCoordinate)
 
         for circle in circleOverlays {
             if MKMapRectContainsPoint(circle.boundingMapRect, mapPoint), let school = schoolForCircle[circle] {
-                let screenLocation = position.inverted(in: mapView)
-                postNotification(for: school, at: screenLocation)
+                postNotification(for: school, at: position)
                 return
             }
         }

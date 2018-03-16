@@ -22,7 +22,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         static let fromIdleBehaviorChangeThreshold: CGFloat = 20
         static let toIdleBehaviorChangeThreshold: CGFloat = 10
         static let cancelPanMomentumCounterThreshold = 20
-        static let resetActiveSpreadThreshold = 3
+        static let resetActiveSpreadThreshold: CGFloat = 3
     }
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
