@@ -52,6 +52,8 @@
 		22FEF1E1202D005D001E9596 /* TouchProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1E0202D005D001E9596 /* TouchProperties.swift */; };
 		3F0254F22049D521004B831C /* LastTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0254F12049D521004B831C /* LastTwo.swift */; };
 		3F2FAB5D204F7D9E002EDF5D /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2FAB5C204F7D9E002EDF5D /* Collection.swift */; };
+		3F3A401B205B469600270A91 /* CustomPathOverlayRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3A401A205B469600270A91 /* CustomPathOverlayRenderer.swift */; };
+		3F3A401D205C2F7700270A91 /* LocationOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3A401C205C2F7700270A91 /* LocationOverlay.swift */; };
 		67C759AB770299C488231A9D /* Pods_All_MapExplorer_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */; };
 		8F1A1CBB205B41AC00A59A84 /* FlippedMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1A1CBA205B41AC00A59A84 /* FlippedMapView.swift */; };
 /* End PBXBuildFile section */
@@ -121,6 +123,8 @@
 		3F0254F12049D521004B831C /* LastTwo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastTwo.swift; sourceTree = "<group>"; };
 		3F2FAB5C204F7D9E002EDF5D /* Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		8F1A1CBA205B41AC00A59A84 /* FlippedMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlippedMapView.swift; sourceTree = "<group>"; };
+		3F3A401A205B469600270A91 /* CustomPathOverlayRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPathOverlayRenderer.swift; sourceTree = "<group>"; };
+		3F3A401C205C2F7700270A91 /* LocationOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationOverlay.swift; sourceTree = "<group>"; };
 		9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_MapExplorer_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E45B0B207D66FC5A3CD5BEA /* Pods-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		D9FF0C65383B61E5A7A798B0 /* Pods-All-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-macOS.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-macOS/Pods-All-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -209,6 +213,8 @@
 				222AB407203DF8F5002BFAF2 /* Map.storyboard */,
 				22290C1F2028FA1E000E0573 /* MapViewController.swift */,
 				2204621120472E3C0067D9FB /* MapHandler.swift */,
+				3F3A401A205B469600270A91 /* CustomPathOverlayRenderer.swift */,
+				3F3A401C205C2F7700270A91 /* LocationOverlay.swift */,
 				22368E272037918F00D03A0E /* Views */,
 			);
 			path = MapViewController;
@@ -546,6 +552,7 @@
 				221C629F203B4906009493DA /* School.swift in Sources */,
 				8F1A1CBB205B41AC00A59A84 /* FlippedMapView.swift in Sources */,
 				22FEF1D3202CFE8D001E9596 /* SwipeGestureRecognizer.swift in Sources */,
+				3F3A401D205C2F7700270A91 /* LocationOverlay.swift in Sources */,
 				22EF0FA8202B847200571002 /* CachingNetwork.swift in Sources */,
 				22290C092028F9EC000E0573 /* AppDelegate.swift in Sources */,
 				22290C392028FA35000E0573 /* CoreGraphics.swift in Sources */,
@@ -557,6 +564,7 @@
 				3F2FAB5D204F7D9E002EDF5D /* Collection.swift in Sources */,
 				22FEF1D7202CFE8D001E9596 /* TapGestureRecognizer.swift in Sources */,
 				2204621220472E3D0067D9FB /* MapHandler.swift in Sources */,
+				3F3A401B205B469600270A91 /* CustomPathOverlayRenderer.swift in Sources */,
 				22318DE0202B984F0092937C /* ResponseHandler.swift in Sources */,
 				22290C3C2028FA35000E0573 /* NetworkConfiguration.swift in Sources */,
 				22290C2E2028FA1F000E0573 /* Style.swift in Sources */,

@@ -5,6 +5,7 @@ import MapKit
 import MONode
 import PromiseKit
 import AppKit
+import Quartz
 
 
 class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, NSGestureRecognizerDelegate {
@@ -13,9 +14,10 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     @IBOutlet weak var mapView: FlippedMapView!
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
-    private var schoolForCircle = [MKCircle: School]()
+
     private var timeOfLastPan = Date()
     private var timeOfLastPinch = Date()
+    private var schoolForCircle = [LocationOverlay: School]()
 
     private struct Constants {
         static let tileURL = "http:localhost:3200/{z}/{x}/{y}.pbf"
@@ -149,13 +151,16 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             return
         }
 
-        let circleOverlays = mapView.overlays.flatMap { $0 as? MKCircle }
-        let mapCoordinate = mapView.convert(position.inverted(in: mapView), toCoordinateFrom: mapView)
+        let locationOverlays = mapView.overlays.flatMap { $0 as? LocationOverlay }
+        let mapCoordinate = mapView.convert(position, toCoordinateFrom: mapView)
         let mapPoint = MKMapPointForCoordinate(mapCoordinate)
 
         for circle in circleOverlays {
             if MKMapRectContainsPoint(circle.boundingMapRect, mapPoint), let school = schoolForCircle[circle] {
                 postNotification(for: school, at: position)
+        for location in locationOverlays {
+            if MKMapRectContainsPoint(location.boundingMapRect, mapPoint), let school = schoolForCircle[location] {
+                postNotification(for: school, at: screenLocation)
                 return
             }
         }
@@ -225,12 +230,21 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             return MKTileOverlayRenderer(tileOverlay: tileOverlay)
         }
 
-        if let circleOverlay = overlay as? MKCircle {
-            let circleRenderer = MKCircleRenderer(circle: circleOverlay)
-            circleRenderer.fillColor = NSColor.blue
-            circleRenderer.lineWidth = 1.0
-            return circleRenderer
+//        if let circleOverlay = overlay as? MKCircle {
+//            let circleRenderer = MKCircleRenderer(circle: circleOverlay)
+//            circleRenderer.fillColor = NSColor.blue
+//            circleRenderer.lineWidth = 1.0
+//            return circleRenderer
+//        }
+
+
+
+        if let pathOverlay = overlay as? LocationOverlay {
+            let circlePath = CustomPathOverlayRenderer(overlay: pathOverlay)
+            
+            return circlePath
         }
+
 
         return MKOverlayRenderer(overlay: overlay)
     }
@@ -250,9 +264,10 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     private func addOverlays(for schools: [School]) {
         schools.forEach { school in
-            let circle = MKCircle(center: school.coordinate, radius: CLLocationDistance(10000))
-            schoolForCircle[circle] = school
-            mapView.add(circle)
+            let location = LocationOverlay(coordinate: school.coordinate, mapRect: MKMapRect(origin: MKMapPointForCoordinate(school.coordinate), size: MKMapSize(width: 1000000, height: 1000000)))
+            //let circle = MKCircle(center: school.coordinate, radius: CLLocationDistance(10000))
+            schoolForCircle[location] = school
+            mapView.add(location)
         }
     }
 
