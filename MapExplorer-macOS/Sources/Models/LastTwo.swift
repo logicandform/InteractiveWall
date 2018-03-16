@@ -27,4 +27,8 @@ class LastTwo<Element>: CustomStringConvertible {
         last = nil
         secondLast = nil
     }
+
+    func clearSecondLast() {
+        secondLast = nil
+    }
 }

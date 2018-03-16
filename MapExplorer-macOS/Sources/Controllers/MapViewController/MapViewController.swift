@@ -10,16 +10,19 @@ import AppKit
 class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, NSGestureRecognizerDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Map")
 
-    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var mapView: FlippedMapView!
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
     private var schoolForCircle = [MKCircle: School]()
+    private var timeOfLastPan = Date()
+    private var timeOfLastPinch = Date()
 
     private struct Constants {
         static let tileURL = "http:localhost:3200/{z}/{x}/{y}.jpg"
         static let annotationContainerClass = "MKNewAnnotationContainerView"
         static let maxZoomWidth: Double =  134217730
         static let annotationHitSize = CGSize(width: 50, height: 50)
+        static let changeGestureTime: Double = 0.05
     }
 
     private struct Keys {
@@ -90,7 +93,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     // MARK: Gesture handling
 
     private func didPanOnMap(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer else {
+        guard let pan = gesture as? PanGestureRecognizer, pan.lastTouchCount != 2, abs(timeOfLastPinch.timeIntervalSinceNow) > Constants.changeGestureTime else {
             return
         }
 
@@ -100,6 +103,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             let translationX = Double(pan.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
             let translationY = Double(pan.delta.dy) * mapRect.size.height / Double(mapView.frame.height)
             mapRect.origin -= MKMapPoint(x: translationX, y: -translationY)
+            timeOfLastPan = Date()
             mapHandler?.send(mapRect, for: pan.state)
         case .ended:
             mapHandler?.endActivity()
@@ -111,7 +115,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     private func didZoomOnMap(_ gesture: GestureRecognizer) {
-        guard let pinch = gesture as? PinchGestureRecognizer else {
+        guard let pinch = gesture as? PinchGestureRecognizer, abs(timeOfLastPan.timeIntervalSinceNow) > Constants.changeGestureTime else {
             return
         }
 
@@ -120,13 +124,16 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             var mapRect = mapView.visibleMapRect
             let scaledWidth = (2 - Double(pinch.scale)) * mapRect.size.width
             let scaledHeight = (2 - Double(pinch.scale)) * mapRect.size.height
+            var translationX = -Double(pinch.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
+            var translationY = Double(pinch.delta.dy) * mapRect.size.height / Double(mapView.frame.height)
             if scaledWidth <= Constants.maxZoomWidth {
-                let translationX = (mapRect.size.width - scaledWidth) * Double(pinch.lastPosition.x / mapView.frame.width)
-                let translationY = (mapRect.size.height - scaledHeight) * Double(pinch.lastPosition.y / mapView.frame.height)
+                translationX += (mapRect.size.width - scaledWidth) * Double(pinch.lastPosition.x / mapView.frame.width)
+                translationY += (mapRect.size.height - scaledHeight) * (1 - Double(pinch.lastPosition.y / mapView.frame.height))
                 mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
-                mapRect.origin += MKMapPoint(x: translationX, y: translationY)
-                mapHandler?.send(mapRect)
             }
+            mapRect.origin += MKMapPoint(x: translationX, y: translationY)
+            timeOfLastPinch = Date()
+            mapHandler?.send(mapRect)
         case .ended:
             mapHandler?.endActivity()
         case .possible, .failed:

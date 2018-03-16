@@ -14,7 +14,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="417"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <mapView mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsBuildings="NO" showsPointsOfInterest="NO" showsCompass="NO" showsZoomControls="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s1R-HV-vyu">
+                            <mapView mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsBuildings="NO" showsPointsOfInterest="NO" showsCompass="NO" showsZoomControls="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s1R-HV-vyu" customClass="FlippedMapView" customModule="MapExplorer_macOS" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="417"/>
                                 <connections>
                                     <outlet property="delegate" destination="TYK-5A-x82" id="dxv-gV-hz1"/>

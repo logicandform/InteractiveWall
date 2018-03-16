@@ -17,8 +17,8 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     private(set) var delta = CGVector.zero
     private(set) var fingers: [Int]
     private(set) var locations = LastTwo<CGPoint>()
+    private(set) var lastTouchCount: Int!
     private var positionForTouch = [Touch: CGPoint]()
-    private var lastTouchCount: Int!
     private var cumulativeDelta = CGVector.zero
     private var timeOfLastUpdate = Date()
 
@@ -50,7 +50,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             state = .began
             locations.add(properties.cog)
             fallthrough
-        case .recognized:
+        case .recognized, .began:
             positionForTouch[touch] = touch.position
             momentumTimer?.invalidate()
             lastTouchCount = positionForTouch.keys.count
@@ -60,7 +60,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func move(_ touch: Touch, with properties: TouchProperties) {
-        guard let currentLocation = locations.last, let lastPositionOfTouch = positionForTouch[touch] else {
+        guard let currentLocation = locations.last, let lastPositionOfTouch = positionForTouch[touch], fingers.contains(properties.touchCount) else {
             return
         }
 
@@ -161,7 +161,6 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             endMomentum()
             return
         }
-
         frictionFactor += Momentum.frictionFactorScale
         delta /= frictionFactor
         gestureUpdated?(self)
@@ -173,4 +172,3 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         gestureUpdated?(self)
     }
 }
-
