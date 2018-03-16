@@ -43,9 +43,10 @@ extension Event: RecordDisplayable {
 
     var textFields: [NSTextField] {
         var labels = [NSTextField]()
-        for _ in (1...15) {
-            let text = NSAttributedString(string: "Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label.")
-            let label = NSTextField(labelWithAttributedString: text)
+
+        if let description = description {
+            let descriptionText = NSAttributedString(string: description)
+            let label = NSTextField(labelWithAttributedString: descriptionText)
             label.textColor = .white
             label.drawsBackground = false
             label.isBordered = false
@@ -53,6 +54,7 @@ extension Event: RecordDisplayable {
             label.lineBreakMode = .byWordWrapping
             labels.append(label)
         }
+
         return labels
     }
 
@@ -78,9 +80,21 @@ extension Artifact: RecordDisplayable {
 
     var textFields: [NSTextField] {
         var labels = [NSTextField]()
-        for _ in (1...15) {
-            let text = NSAttributedString(string: "Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label.")
-            let label = NSTextField(labelWithAttributedString: text)
+
+        if let description = description {
+            let descriptionText = NSAttributedString(string: description)
+            let label = NSTextField(labelWithAttributedString: descriptionText)
+            label.textColor = .white
+            label.drawsBackground = false
+            label.isBordered = false
+            label.isSelectable = false
+            label.lineBreakMode = .byWordWrapping
+            labels.append(label)
+        }
+
+        if let comments = comments {
+            let commentText = NSAttributedString(string: comments)
+            let label = NSTextField(labelWithAttributedString: commentText)
             label.textColor = .white
             label.drawsBackground = false
             label.isBordered = false
@@ -113,9 +127,10 @@ extension Organization: RecordDisplayable {
 
     var textFields: [NSTextField] {
         var labels = [NSTextField]()
-        for _ in (1...15) {
-            let text = NSAttributedString(string: "Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label.")
-            let label = NSTextField(labelWithAttributedString: text)
+
+        if let description = description {
+            let descriptionText = NSAttributedString(string: description)
+            let label = NSTextField(labelWithAttributedString: descriptionText)
             label.textColor = .white
             label.drawsBackground = false
             label.isBordered = false
@@ -123,6 +138,7 @@ extension Organization: RecordDisplayable {
             label.lineBreakMode = .byWordWrapping
             labels.append(label)
         }
+
         return labels
     }
 
@@ -144,9 +160,10 @@ extension School: RecordDisplayable {
 
     var textFields: [NSTextField] {
         var labels = [NSTextField]()
-        for _ in (1...15) {
-            let text = NSAttributedString(string: "Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label. Hello this is a testing label.")
-            let label = NSTextField(labelWithAttributedString: text)
+
+        if let description = description {
+            let descriptionText = NSAttributedString(string: description)
+            let label = NSTextField(labelWithAttributedString: descriptionText)
             label.textColor = .white
             label.drawsBackground = false
             label.isBordered = false
@@ -154,6 +171,7 @@ extension School: RecordDisplayable {
             label.lineBreakMode = .byWordWrapping
             labels.append(label)
         }
+
         return labels
     }
 
