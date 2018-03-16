@@ -154,13 +154,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         let locationOverlays = mapView.overlays.flatMap { $0 as? LocationOverlay }
         let mapCoordinate = mapView.convert(position, toCoordinateFrom: mapView)
         let mapPoint = MKMapPointForCoordinate(mapCoordinate)
-
-        for circle in circleOverlays {
-            if MKMapRectContainsPoint(circle.boundingMapRect, mapPoint), let school = schoolForCircle[circle] {
-                postNotification(for: school, at: position)
         for location in locationOverlays {
             if MKMapRectContainsPoint(location.boundingMapRect, mapPoint), let school = schoolForCircle[location] {
-                postNotification(for: school, at: screenLocation)
+                postNotification(for: school, at: position)
                 return
             }
         }
@@ -230,21 +226,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             return MKTileOverlayRenderer(tileOverlay: tileOverlay)
         }
 
-//        if let circleOverlay = overlay as? MKCircle {
-//            let circleRenderer = MKCircleRenderer(circle: circleOverlay)
-//            circleRenderer.fillColor = NSColor.blue
-//            circleRenderer.lineWidth = 1.0
-//            return circleRenderer
-//        }
-
-
-
         if let pathOverlay = overlay as? LocationOverlay {
-            let circlePath = CustomPathOverlayRenderer(overlay: pathOverlay)
-            
-            return circlePath
+            return CustomPathOverlayRenderer(overlay: pathOverlay)
         }
-
 
         return MKOverlayRenderer(overlay: overlay)
     }
@@ -264,8 +248,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     private func addOverlays(for schools: [School]) {
         schools.forEach { school in
-            let location = LocationOverlay(coordinate: school.coordinate, mapRect: MKMapRect(origin: MKMapPointForCoordinate(school.coordinate), size: MKMapSize(width: 1000000, height: 1000000)))
-            //let circle = MKCircle(center: school.coordinate, radius: CLLocationDistance(10000))
+            let mapRect = MKMapRect(origin: MKMapPointForCoordinate(school.coordinate), size: MKMapSize(width: 300000, height: 300000))
+            let location = LocationOverlay(coordinate: school.coordinate, mapRect: mapRect)
             schoolForCircle[location] = school
             mapView.add(location)
         }

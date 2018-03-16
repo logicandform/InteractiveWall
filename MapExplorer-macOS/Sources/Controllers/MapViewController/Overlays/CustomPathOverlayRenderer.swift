@@ -1,13 +1,8 @@
-//
-//  MKPathOverlay.swift
-//  MapExplorer-macOS
-//
-//  Created by Jeremy Voldeng on 2018-03-15.
 //  Copyright © 2018 JABT. All rights reserved.
-//
 
 import Foundation
 import MapKit
+
 
 class CustomPathOverlayRenderer: MKOverlayRenderer {
 

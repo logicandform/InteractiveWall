@@ -122,9 +122,9 @@
 		39B2384F39CC84964B0970BD /* Pods-MapExplorer-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		3F0254F12049D521004B831C /* LastTwo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastTwo.swift; sourceTree = "<group>"; };
 		3F2FAB5C204F7D9E002EDF5D /* Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
-		8F1A1CBA205B41AC00A59A84 /* FlippedMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlippedMapView.swift; sourceTree = "<group>"; };
 		3F3A401A205B469600270A91 /* CustomPathOverlayRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPathOverlayRenderer.swift; sourceTree = "<group>"; };
 		3F3A401C205C2F7700270A91 /* LocationOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationOverlay.swift; sourceTree = "<group>"; };
+		8F1A1CBA205B41AC00A59A84 /* FlippedMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlippedMapView.swift; sourceTree = "<group>"; };
 		9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_MapExplorer_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E45B0B207D66FC5A3CD5BEA /* Pods-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		D9FF0C65383B61E5A7A798B0 /* Pods-All-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-macOS.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-macOS/Pods-All-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -213,8 +213,7 @@
 				222AB407203DF8F5002BFAF2 /* Map.storyboard */,
 				22290C1F2028FA1E000E0573 /* MapViewController.swift */,
 				2204621120472E3C0067D9FB /* MapHandler.swift */,
-				3F3A401A205B469600270A91 /* CustomPathOverlayRenderer.swift */,
-				3F3A401C205C2F7700270A91 /* LocationOverlay.swift */,
+				3F946244205C59750056933C /* Overlays */,
 				22368E272037918F00D03A0E /* Views */,
 			);
 			path = MapViewController;
@@ -344,6 +343,15 @@
 				22FEF1CF202CFE8C001E9596 /* GestureDemoController.swift */,
 			);
 			path = GestureDemoController;
+			sourceTree = "<group>";
+		};
+		3F946244205C59750056933C /* Overlays */ = {
+			isa = PBXGroup;
+			children = (
+				3F3A401C205C2F7700270A91 /* LocationOverlay.swift */,
+				3F3A401A205B469600270A91 /* CustomPathOverlayRenderer.swift */,
+			);
+			path = Overlays;
 			sourceTree = "<group>";
 		};
 		3F962F2A202BB01D00B608D6 /* Data */ = {
