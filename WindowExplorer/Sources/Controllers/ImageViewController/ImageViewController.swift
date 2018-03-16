@@ -13,11 +13,9 @@ class ImageViewController: NSViewController, GestureResponder {
     @IBOutlet weak var dismissButton: NSView!
 
     private(set) var gestureManager: GestureManager!
+    private var thumbnailRequest: DataRequest?
+    private var urlRequest: DataRequest?
     var media: Media!
-
-    private struct Constants {
-
-    }
 
 
     // MARK: Life-cycle
@@ -33,6 +31,12 @@ class ImageViewController: NSViewController, GestureResponder {
         setupGestures()
     }
 
+    override func viewDidDisappear() {
+        super.viewDidDisappear()
+        thumbnailRequest?.cancel()
+        urlRequest?.cancel()
+    }
+
 
     // MARK: Setup
 
@@ -41,7 +45,15 @@ class ImageViewController: NSViewController, GestureResponder {
             return
         }
 
-        Alamofire.request(media.url).responseImage { [weak self] response in
+        // Load thumbnail first
+        thumbnailRequest = Alamofire.request(media.thumbnail).responseImage { [weak self] response in
+            if let strongSelf = self, let image = response.value, strongSelf.imageView.image == nil {
+                strongSelf.imageView.image = image
+            }
+        }
+
+        // Load large media object in background
+        urlRequest = Alamofire.request(media.url).responseImage { [weak self] response in
             if let image = response.value {
                 self?.imageView.image = image
             }

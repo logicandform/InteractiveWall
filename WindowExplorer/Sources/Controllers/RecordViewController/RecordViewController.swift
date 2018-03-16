@@ -150,8 +150,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             let rect = mediaView.visibleRect
             let offset = rect.origin.x / rect.width
             let visibleItem = Int(round(offset))
-            if let url = record.thumbnails.at(index: visibleItem), let media = Media(url: url, title: record.mediaTitles.at(index: visibleItem)) {
-                let windowType = WindowType(for: media)
+            if let media = record.media.at(index: visibleItem), let windowType = WindowType(for: media) {
                 let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins, y: window.frame.maxY - windowType.size.height)
                 WindowManager.instance.display(windowType, at: origin)
             }
@@ -327,7 +326,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     // MARK: NSCollectionViewDelegate & NSCollectionViewDataSource
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return record?.thumbnails.count ?? 0
+        return record?.media.count ?? 0
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
@@ -335,7 +334,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return NSCollectionViewItem()
         }
 
-        mediaItemView.imageURL = record?.thumbnails[indexPath.item]
+        mediaItemView.media = record?.media[indexPath.item]
         return mediaItemView
     }
 

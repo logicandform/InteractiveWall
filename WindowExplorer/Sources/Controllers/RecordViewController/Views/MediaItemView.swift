@@ -9,9 +9,9 @@ class MediaItemView: NSCollectionViewItem {
 
     @IBOutlet weak var mediaImageView: NSImageView!
 
-    var imageURL: URL? {
+    var media: Media? {
         didSet {
-            load(imageURL)
+            load(media)
         }
     }
 
@@ -25,12 +25,12 @@ class MediaItemView: NSCollectionViewItem {
 
     // MARK: Helpers
 
-    private func load(_ url: URL?) {
-        guard let url = url else {
+    private func load(_ url: Media?) {
+        guard let media = media else {
             return
         }
 
-        Alamofire.request(url).responseImage { [weak self] response in
+        Alamofire.request(media.thumbnail).responseImage { [weak self] response in
             if let image = response.value {
                 self?.mediaImageView.image = image
             }

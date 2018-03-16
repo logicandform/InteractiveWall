@@ -15,6 +15,10 @@
                         <subviews>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EiL-xh-zgx">
                                 <rect key="frame" x="8" y="33" width="624" height="361"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="624" id="LGK-Gm-0du"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="361" id="SQN-0p-4XV"/>
+                                </constraints>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" id="z2q-nY-EnU"/>
                             </imageView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="Kbv-Qb-kGl">
