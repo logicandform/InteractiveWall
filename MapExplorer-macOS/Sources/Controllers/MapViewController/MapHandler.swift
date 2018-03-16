@@ -13,6 +13,7 @@ class MapHandler {
     private var groupID: Int?
     private var state = UserActivity.idle
     private weak var ungroupTimer: Foundation.Timer?
+    private var groupForMap = [Int: Int?]()
 
     private var unpaired: Bool {
         return pairedID == nil
@@ -96,13 +97,16 @@ class MapHandler {
         switch notification.name {
         case MapNotifications.position.name:
             if let mapJSON = info[Keys.map] as? JSON, let fromGroup = info[Keys.group] as? Int, let mapRect = MKMapRect(json: mapJSON), let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture) {
+                groupForMap[fromID] = fromGroup
                 handle(mapRect, fromID: fromID, inGroup: fromGroup, from: state)
             }
         case MapNotifications.unpair.name:
             unpair(from: fromID)
         case MapNotifications.ungroup.name:
             if let groupID = info[Keys.group] as? Int {
+                ungroupMappings(from: groupID)
                 ungroup(from: groupID)
+                findGroupIfNeeded()
             }
         default:
             return
@@ -149,12 +153,40 @@ class MapHandler {
     }
 
     /// If paired to the given id, will unpair else ignore
-    func unpair(from id: Int) {
+    private func unpair(from id: Int) {
         pairedID = pairedID == id ? nil : pairedID
     }
 
-    func ungroup(from id: Int) {
+    private func ungroup(from id: Int) {
         groupID = groupID == id ? nil : groupID
+    }
+
+    private func ungroupMappings(from id: Int) {
+        for (map, group) in groupForMap {
+            if group == id {
+                groupForMap[map] = nil
+            }
+        }
+    }
+
+    private func findGroupIfNeeded() {
+        if groupID != nil {
+            return
+        }
+
+        let maps = Configuration.mapsPerScreen * Configuration.numberOfScreens
+        let checks = maps - mapID
+        for offset in (1...checks) {
+            let lhs = mapID - offset
+            let rhs = mapID + offset
+            if lhs >= 0, let lhsGroup = groupForMap[lhs] {
+                groupID = lhsGroup
+                return
+            } else if rhs < maps, let rhsGroup = groupForMap[rhs] {
+                groupID = rhsGroup
+                return
+            }
+        }
     }
 
     /// Resets the pairedDeviceID after a timeout period
