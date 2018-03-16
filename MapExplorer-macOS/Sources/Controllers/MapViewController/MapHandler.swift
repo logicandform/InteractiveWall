@@ -11,7 +11,9 @@ class MapHandler {
 
     private var pairedID: Int?
     private var groupID: Int?
-    private weak var activityTimer: Foundation.Timer?
+    private var state = UserActivity.idle
+    private weak var ungroupTimer: Foundation.Timer?
+    private var groupForMap = [Int: Int?]()
 
     private var unpaired: Bool {
         return pairedID == nil
@@ -22,7 +24,7 @@ class MapHandler {
     }
 
     private struct Constants {
-        static let activityTimeoutPeriod: TimeInterval = 4
+        static let ungroupTimeoutPeriod: TimeInterval = 5
         static let numberOfScreens = 1.0
         static let initialMapOrigin = MKMapPointMake(6000000.0, 62000000.0)
         static let initialMapSize = MKMapSizeMake(120000000.0 / (Constants.numberOfScreens * 3), 0.0)
@@ -47,27 +49,28 @@ class MapHandler {
 
     // MARK: API
 
-    func send(_ mapRect: MKMapRect, for state: GestureState = .recognized) {
+    func send(_ mapRect: MKMapRect, for gestureState: GestureState = .recognized) {
         let group = groupID ?? mapID
-        if state != .momentum {
+        if gestureState != .momentum {
             pairedID = mapID
             groupID = mapID
         }
 
         if unpaired || groupID == mapID {
-            let info: JSON = [Keys.id: mapID, Keys.group: group, Keys.map: mapRect.toJSON(), Keys.gesture: state.rawValue]
-            DistributedNotificationCenter.default().postNotificationName(MapNotifications.positionChanged.name, object: nil, userInfo: info, deliverImmediately: true)
+            let info: JSON = [Keys.id: mapID, Keys.group: group, Keys.map: mapRect.toJSON(), Keys.gesture: gestureState.rawValue]
+            DistributedNotificationCenter.default().postNotificationName(MapNotifications.position.name, object: nil, userInfo: info, deliverImmediately: true)
         }
     }
 
     func endActivity() {
         pairedID = nil
         let info: JSON = [Keys.id: mapID]
-        DistributedNotificationCenter.default().postNotificationName(MapNotifications.endedActivity.name, object: nil, userInfo: info, deliverImmediately: true)
+        DistributedNotificationCenter.default().postNotificationName(MapNotifications.unpair.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
     func endUpdates() {
-        beginActivityTimeout()
+        state = .idle
+        beginUngroupTimer()
     }
 
     func reset() {
@@ -92,15 +95,18 @@ class MapHandler {
         }
 
         switch notification.name {
-        case MapNotifications.positionChanged.name:
+        case MapNotifications.position.name:
             if let mapJSON = info[Keys.map] as? JSON, let fromGroup = info[Keys.group] as? Int, let mapRect = MKMapRect(json: mapJSON), let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture) {
+                groupForMap[fromID] = fromGroup
                 handle(mapRect, fromID: fromID, inGroup: fromGroup, from: state)
             }
-        case MapNotifications.endedActivity.name:
+        case MapNotifications.unpair.name:
             unpair(from: fromID)
-        case MapNotifications.endedUpdates.name:
+        case MapNotifications.ungroup.name:
             if let groupID = info[Keys.group] as? Int {
+                ungroupMappings(from: groupID)
                 ungroup(from: groupID)
+                findGroupIfNeeded()
             }
         default:
             return
@@ -111,13 +117,13 @@ class MapHandler {
     // MARK: Helpers
 
     /// Determines how to respond to a received mapRect from another mapView and the type of gesture that triggered the event.
-    private func handle(_ mapRect: MKMapRect, fromID: Int, inGroup group: Int, from state: GestureState) {
+    private func handle(_ mapRect: MKMapRect, fromID: Int, inGroup group: Int, from gestureState: GestureState) {
         if ungrouped {
             pairedID = fromID
             groupID = fromID
         } else if groupID! == group, unpaired {
             if fromID != mapID {
-                if state == .momentum {
+                if gestureState == .momentum {
                     set(mapRect, from: fromID)
                     return
                 } else {
@@ -132,6 +138,7 @@ class MapHandler {
             return
         }
 
+        state = .active
         set(mapRect, from: pairedID)
     }
 
@@ -146,28 +153,58 @@ class MapHandler {
     }
 
     /// If paired to the given id, will unpair else ignore
-    func unpair(from id: Int) {
+    private func unpair(from id: Int) {
         pairedID = pairedID == id ? nil : pairedID
     }
 
-    func ungroup(from id: Int) {
+    private func ungroup(from id: Int) {
         groupID = groupID == id ? nil : groupID
     }
 
-    /// Resets the pairedDeviceID after a timeout period
-    private func beginActivityTimeout() {
-        activityTimer?.invalidate()
-        activityTimer = Timer.scheduledTimer(withTimeInterval: Constants.activityTimeoutPeriod, repeats: false) { [weak self] _ in
-            self?.activityTimeoutFired()
+    private func ungroupMappings(from id: Int) {
+        for (map, group) in groupForMap {
+            if group == id {
+                groupForMap[map] = nil
+            }
         }
     }
 
-    private func activityTimeoutFired() {
+    private func findGroupIfNeeded() {
+        if groupID != nil {
+            return
+        }
+
+        let maps = Configuration.mapsPerScreen * Configuration.numberOfScreens
+        let checks = maps - mapID
+        for offset in (1...checks) {
+            let lhs = mapID - offset
+            let rhs = mapID + offset
+            if lhs >= 0, let lhsGroup = groupForMap[lhs] {
+                groupID = lhsGroup
+                return
+            } else if rhs < maps, let rhsGroup = groupForMap[rhs] {
+                groupID = rhsGroup
+                return
+            }
+        }
+    }
+
+    /// Resets the pairedDeviceID after a timeout period
+    private func beginUngroupTimer() {
+        ungroupTimer?.invalidate()
+        ungroupTimer = Timer.scheduledTimer(withTimeInterval: Constants.ungroupTimeoutPeriod, repeats: false) { [weak self] _ in
+            self?.ungroupTimerFired()
+        }
+    }
+
+    private func ungroupTimerFired() {
         guard let groupID = groupID, groupID == mapID else {
             return
         }
 
-        let info: JSON = [Keys.id: mapID, Keys.group: groupID]
-        DistributedNotificationCenter.default().postNotificationName(MapNotifications.endedUpdates.name, object: nil, userInfo: info, deliverImmediately: true)
+        if state == .idle {
+            let info: JSON = [Keys.id: mapID, Keys.group: groupID]
+            DistributedNotificationCenter.default().postNotificationName(MapNotifications.ungroup.name, object: nil, userInfo: info, deliverImmediately: true)
+        }
     }
 }
