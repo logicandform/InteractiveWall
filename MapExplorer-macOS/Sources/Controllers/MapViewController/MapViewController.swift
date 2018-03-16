@@ -10,7 +10,7 @@ import AppKit
 class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, NSGestureRecognizerDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Map")
 
-    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var mapView: FlippedMapView!
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
     private var schoolForCircle = [MKCircle: School]()
