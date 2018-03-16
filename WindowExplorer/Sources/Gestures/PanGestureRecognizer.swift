@@ -161,7 +161,6 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             endMomentum()
             return
         }
-
         frictionFactor += Momentum.frictionFactorScale
         delta /= frictionFactor
         gestureUpdated?(self)
