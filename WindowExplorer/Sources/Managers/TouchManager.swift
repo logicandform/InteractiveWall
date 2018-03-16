@@ -41,7 +41,8 @@ final class TouchManager: SocketManagerDelegate {
         convertToScreen(touch)
 
         // Check if the touch landed on a window, else notify the proper map application.
-        if let manager = gestureManager(for: touch) {
+        if let (window, manager) = windowOwner(of: touch) {
+            window.makeKeyAndOrderFront(self)
             manager.handle(touch)
         } else {
             let map = mapOwner(of: touch) ?? calculateMap(for: touch)
@@ -71,16 +72,16 @@ final class TouchManager: SocketManagerDelegate {
     // MARK: Helpers
 
     /// Returns a gesture manager that owns the given touch, else nil.
-    private func gestureManager(for touch: Touch) -> GestureManager? {
-        let windows = WindowManager.instance.windows.reversed()
+    private func windowOwner(of touch: Touch) -> (NSWindow, GestureManager)? {
+        let windows = WindowManager.instance.windows.sorted(by: { $0.key.orderedIndex < $1.key.orderedIndex })
 
         if touch.state == .down {
-            if let (_, manager) = windows.first(where: { $0.key.frame.contains(touch.position) }) {
-                return manager
+            if let (window, manager) = windows.first(where: { $0.key.frame.contains(touch.position) }) {
+                return (window, manager)
             }
         } else {
-            if let (_, manager) = windows.first(where: { $0.value.owns(touch) }) {
-                return manager
+            if let (window, manager) = windows.first(where: { $0.value.owns(touch) }) {
+                return (window, manager)
             }
         }
 
