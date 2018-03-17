@@ -40,7 +40,7 @@ class PDFViewController: NSViewController, GestureResponder {
 
         pdfView.displayDirection = .horizontal
         pdfView.autoScales = true
-        pdfView.displayMode = .singlePage
+        pdfView.backgroundColor = .clear
 
         let pdfDoc = PDFDocument(url: media.url)
         pdfView.document = pdfDoc
@@ -51,9 +51,17 @@ class PDFViewController: NSViewController, GestureResponder {
         let panGesture = NSPanGestureRecognizer(target: self, action: #selector(handleMousePan(_:)))
         view.addGestureRecognizer(panGesture)
 
-        let singleFingerPan = PanGestureRecognizer()
-        gestureManager.add(singleFingerPan, to: view)
-        singleFingerPan.gestureUpdated = handlePan(_:)
+        let windowPan = PanGestureRecognizer()
+        gestureManager.add(windowPan, to: view)
+        windowPan.gestureUpdated = handleWindowPan(_:)
+
+        let thumbnailViewPan = PanGestureRecognizer()
+        gestureManager.add(thumbnailViewPan, to: pdfThumbnailView)
+        thumbnailViewPan.gestureUpdated = handleThumbnailViewPan(_:)
+
+        let thumbnailViewTap = TapGestureRecognizer()
+        gestureManager.add(thumbnailViewTap, to: closeButtonView)
+        thumbnailViewTap.gestureUpdated = didTapThumbnailView(_:)
 
         let singleFingerCloseButtonTap = TapGestureRecognizer()
         gestureManager.add(singleFingerCloseButtonTap, to: closeButtonView)
@@ -63,7 +71,7 @@ class PDFViewController: NSViewController, GestureResponder {
 
     // MARK: Gesture Handling
 
-    private func handlePan(_ gesture: GestureRecognizer) {
+    private func handleWindowPan(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
             return
         }
@@ -77,6 +85,33 @@ class PDFViewController: NSViewController, GestureResponder {
             WindowManager.instance.checkBounds(of: self)
         default:
             return
+        }
+    }
+
+    private func handleThumbnailViewPan(_ gesture: GestureRecognizer) {
+        guard let pan = gesture as? PanGestureRecognizer else {
+            return
+        }
+
+        switch pan.state {
+        case .recognized, .momentum:
+            if let scrollView = pdfThumbnailView.subviews.last as? NSScrollView, let clipView = scrollView.subviews.first(where: { $0 is NSClipView }) {
+                var origin = clipView.visibleRect.origin
+                origin += pan.delta.dy
+                clipView.scroll(origin)
+            }
+        default:
+            return
+        }
+    }
+
+    private func didTapThumbnailView(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer else {
+            return
+        }
+
+        if tap.state == .ended {
+            // todo
         }
     }
 
