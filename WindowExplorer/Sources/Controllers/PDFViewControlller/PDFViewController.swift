@@ -42,6 +42,11 @@ class PDFViewController: NSViewController, GestureResponder {
         setupGestures()
     }
 
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        // Causes the clipview to layout and eliminates strange subview offsets.
+        thumbnailClipView.scroll(CGPoint(x: 0, y: 1))
+    }
 
     // MARK: Setup
 
