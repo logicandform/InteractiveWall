@@ -18,7 +18,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private var timeOfLastPinch = Date()
 
     private struct Constants {
-        static let tileURL = "http:localhost:3200/{z}/{x}/{y}.jpg"
+        static let tileURL = "http:localhost:3200/{z}/{x}/{y}.pbf"
         static let annotationContainerClass = "MKNewAnnotationContainerView"
         static let maxZoomWidth: Double =  134217730
         static let annotationHitSize = CGSize(width: 50, height: 50)
@@ -54,9 +54,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         mapHandler = MapHandler(mapView: mapView, id: appID)
 //        mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
 //        mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
-//        let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
-//        overlay.canReplaceMapContent = true
-//        mapView.add(overlay)
+        let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
+        overlay.canReplaceMapContent = true
+        mapView.add(overlay)
         createPlaces()
     }
 
