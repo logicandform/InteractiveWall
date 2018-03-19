@@ -62,6 +62,8 @@
 		C6DB17689F287C9826286DF2 /* Pods_All_WindowExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */; };
 		D901EBED2056EEFE00BBFCF2 /* RecordDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D901EBEC2056EEFE00BBFCF2 /* RecordDisplayable.swift */; };
 		D901EBF02057490400BBFCF2 /* RegularTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D901EBEF2057490400BBFCF2 /* RegularTableView.swift */; };
+		D92E0EFE20604BDB00C1C9A7 /* PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92E0EFD20604BDB00C1C9A7 /* PageControl.swift */; };
+		D92E0F00206052C900C1C9A7 /* ArrowControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92E0EFF206052C900C1C9A7 /* ArrowControl.swift */; };
 		D992E20A20533A3A00EAB698 /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D992E20820533A3A00EAB698 /* RecordViewController.swift */; };
 		D992E20D20533A6200EAB698 /* Record.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D992E20C20533A6200EAB698 /* Record.storyboard */; };
 		D9F24E5B2059DD1900B9FCB8 /* RecordFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F24E5A2059DD1900B9FCB8 /* RecordFactory.swift */; };
@@ -145,6 +147,8 @@
 		CE471FCE047AE2FD1C92BA3A /* Pods-All-WindowExplorer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-WindowExplorer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer.release.xcconfig"; sourceTree = "<group>"; };
 		D901EBEC2056EEFE00BBFCF2 /* RecordDisplayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDisplayable.swift; sourceTree = "<group>"; };
 		D901EBEF2057490400BBFCF2 /* RegularTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularTableView.swift; sourceTree = "<group>"; };
+		D92E0EFD20604BDB00C1C9A7 /* PageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageControl.swift; sourceTree = "<group>"; };
+		D92E0EFF206052C900C1C9A7 /* ArrowControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowControl.swift; sourceTree = "<group>"; };
 		D992E20820533A3A00EAB698 /* RecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
 		D992E20C20533A6200EAB698 /* Record.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Record.storyboard; sourceTree = "<group>"; };
 		D9F24E5A2059DD1900B9FCB8 /* RecordFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFactory.swift; sourceTree = "<group>"; };
@@ -391,6 +395,8 @@
 			isa = PBXGroup;
 			children = (
 				D901EBEF2057490400BBFCF2 /* RegularTableView.swift */,
+				D92E0EFD20604BDB00C1C9A7 /* PageControl.swift */,
+				D92E0EFF206052C900C1C9A7 /* ArrowControl.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -568,6 +574,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				22A76FEC2046477A006C0AE7 /* PlayerViewController.swift in Sources */,
+				D92E0F00206052C900C1C9A7 /* ArrowControl.swift in Sources */,
 				2204623520472FDF0067D9FB /* Int.swift in Sources */,
 				226D0587204FC78100D74711 /* CachingNetwork.swift in Sources */,
 				22046246204730780067D9FB /* GestureRecognizer.swift in Sources */,
@@ -584,6 +591,7 @@
 				D992E20A20533A3A00EAB698 /* RecordViewController.swift in Sources */,
 				22A4985E204733770024B46C /* WindowManager.swift in Sources */,
 				22046245204730780067D9FB /* RotateGestureRecognizer.swift in Sources */,
+				D92E0EFE20604BDB00C1C9A7 /* PageControl.swift in Sources */,
 				2204623A20472FDF0067D9FB /* MapKit.swift in Sources */,
 				22046254204730C70067D9FB /* Touch.swift in Sources */,
 				8E4010A020487B8D00E81AAA /* WindowFactory.swift in Sources */,
