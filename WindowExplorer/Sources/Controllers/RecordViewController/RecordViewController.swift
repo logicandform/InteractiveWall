@@ -51,7 +51,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private func setupMediaView() {
         mediaView.register(MediaItemView.self, forItemWithIdentifier: MediaItemView.identifier)
 
-        pageControl.color = .white
+        pageControl.color = style.selectedColor
         pageControl.numberOfPages = UInt(record?.media.count ?? 0)
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.wantsLayer = true
