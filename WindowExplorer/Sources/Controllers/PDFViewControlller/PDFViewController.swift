@@ -16,6 +16,14 @@ class PDFViewController: NSViewController, GestureResponder {
     var gestureManager: GestureManager!
     var media: Media!
     var document: PDFDocument!
+    let leftArrow = ArrowControl()
+    let rightArrow = ArrowControl()
+
+    private struct Constants {
+        static let arrowInsetMargin: CGFloat = 10
+        static let arrowWidth: CGFloat = 20
+        static let arrowHeight: CGFloat = 40
+    }
 
 
     // MARK: Life-cycle
@@ -30,6 +38,7 @@ class PDFViewController: NSViewController, GestureResponder {
         }
 
         setupPDF()
+        setupArrows()
         setupGestures()
     }
 
@@ -48,6 +57,30 @@ class PDFViewController: NSViewController, GestureResponder {
 
         document = PDFDocument(url: media.url)
         pdfView.document = document
+    }
+
+    private func setupArrows() {
+        leftArrow.direction = .left
+        leftArrow.color = style.selectedColor
+        leftArrow.translatesAutoresizingMaskIntoConstraints = false
+        leftArrow.wantsLayer = true
+        view.addSubview(leftArrow)
+        leftArrow.leadingAnchor.constraint(equalTo: pdfView.leadingAnchor, constant: Constants.arrowInsetMargin).isActive = true
+        leftArrow.centerYAnchor.constraint(equalTo: pdfView.centerYAnchor).isActive = true
+        leftArrow.widthAnchor.constraint(equalToConstant: Constants.arrowWidth).isActive = true
+        leftArrow.heightAnchor.constraint(equalToConstant: Constants.arrowHeight).isActive = true
+
+        rightArrow.direction = .right
+        rightArrow.color = style.selectedColor
+        rightArrow.translatesAutoresizingMaskIntoConstraints = false
+        rightArrow.wantsLayer = true
+        view.addSubview(rightArrow)
+        rightArrow.trailingAnchor.constraint(equalTo: pdfView.trailingAnchor, constant: -Constants.arrowInsetMargin).isActive = true
+        rightArrow.centerYAnchor.constraint(equalTo: pdfView.centerYAnchor).isActive = true
+        rightArrow.widthAnchor.constraint(equalToConstant: Constants.arrowWidth).isActive = true
+        rightArrow.heightAnchor.constraint(equalToConstant: Constants.arrowHeight).isActive = true
+
+        updateArrows()
     }
 
     private func setupGestures() {
@@ -71,6 +104,7 @@ class PDFViewController: NSViewController, GestureResponder {
         previousPageTap.gestureUpdated = { [weak self] tap in
             if tap.state == .ended {
                 self?.pdfView.goToPreviousPage(self)
+                self?.updateArrows()
             }
         }
 
@@ -79,6 +113,7 @@ class PDFViewController: NSViewController, GestureResponder {
         nextPageTap.gestureUpdated = { [weak self] tap in
             if tap.state == .ended {
                 self?.pdfView.goToNextPage(self)
+                self?.updateArrows()
             }
         }
 
@@ -132,6 +167,7 @@ class PDFViewController: NSViewController, GestureResponder {
             let location = position + thumbnailClipView.visibleRect.origin
             if let thumbnail = thumbnailPages.first(where: { $0.frame.contains(location) }), let index = thumbnailPages.index(of: thumbnail), let page = document.page(at: index) {
                 pdfView.go(to: page)
+                updateArrows()
             }
         }
     }
@@ -163,5 +199,13 @@ class PDFViewController: NSViewController, GestureResponder {
 
     @IBAction func closeButtonTapped(_ sender: Any) {
         WindowManager.instance.closeWindow(for: self)
+    }
+
+
+    // MARK: Helpers
+
+    private func updateArrows() {
+        leftArrow.isHidden = !pdfView.canGoToPreviousPage
+        rightArrow.isHidden = !pdfView.canGoToNextPage
     }
 }

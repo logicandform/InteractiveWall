@@ -36,15 +36,15 @@
                                 <size key="thumbnailSize" width="64" height="64"/>
                             </pdfThumbnailView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="u0A-Yb-xpw">
-                                <rect key="frame" x="532" y="8" width="100" height="506"/>
+                                <rect key="frame" x="572" y="8" width="60" height="506"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="QXt-Ii-RKt"/>
+                                    <constraint firstAttribute="width" constant="60" id="QXt-Ii-RKt"/>
                                 </constraints>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="dYk-YZ-F2X">
-                                <rect key="frame" x="116" y="8" width="100" height="506"/>
+                                <rect key="frame" x="116" y="8" width="60" height="506"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="ZwZ-51-X0L"/>
+                                    <constraint firstAttribute="width" constant="60" id="ZwZ-51-X0L"/>
                                 </constraints>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="7qF-ve-yFy">
