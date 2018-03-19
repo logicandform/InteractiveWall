@@ -9,9 +9,13 @@ class PDFViewController: NSViewController, GestureResponder {
     @IBOutlet weak var pdfView: PDFView!
     @IBOutlet weak var pdfThumbnailView: PDFThumbnailView!
     @IBOutlet weak var closeButtonView: NSView!
+    @IBOutlet weak var backTapArea: NSView!
+    @IBOutlet weak var forwardTapArea: NSView!
+    private var thumbnailClipView: NSClipView!
 
     var gestureManager: GestureManager!
     var media: Media!
+    var document: PDFDocument!
 
 
     // MARK: Life-cycle
@@ -21,6 +25,9 @@ class PDFViewController: NSViewController, GestureResponder {
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
         gestureManager = GestureManager(responder: self)
+        if let scrollView = pdfThumbnailView.subviews.last as? NSScrollView, let clipView = scrollView.subviews.first(where: { $0 is NSClipView }) as? NSClipView {
+            thumbnailClipView = clipView
+        }
 
         setupPDF()
         setupGestures()
@@ -42,8 +49,8 @@ class PDFViewController: NSViewController, GestureResponder {
         pdfView.autoScales = true
         pdfView.backgroundColor = .clear
 
-        let pdfDoc = PDFDocument(url: media.url)
-        pdfView.document = pdfDoc
+        document = PDFDocument(url: media.url)
+        pdfView.document = document
         pdfThumbnailView.pdfView = pdfView
     }
 
@@ -56,12 +63,28 @@ class PDFViewController: NSViewController, GestureResponder {
         windowPan.gestureUpdated = handleWindowPan(_:)
 
         let thumbnailViewPan = PanGestureRecognizer()
-        gestureManager.add(thumbnailViewPan, to: pdfThumbnailView)
+        gestureManager.add(thumbnailViewPan, to: thumbnailClipView)
         thumbnailViewPan.gestureUpdated = handleThumbnailViewPan(_:)
 
         let thumbnailViewTap = TapGestureRecognizer()
-        gestureManager.add(thumbnailViewTap, to: closeButtonView)
+        gestureManager.add(thumbnailViewTap, to: thumbnailClipView)
         thumbnailViewTap.gestureUpdated = didTapThumbnailView(_:)
+
+        let goBackTap = TapGestureRecognizer()
+        gestureManager.add(goBackTap, to: backTapArea)
+        goBackTap.gestureUpdated = { [weak self] tap in
+            if tap.state == .ended {
+                self?.pdfView.goToPreviousPage(self)
+            }
+        }
+
+        let goForwardTap = TapGestureRecognizer()
+        gestureManager.add(goForwardTap, to: forwardTapArea)
+        goForwardTap.gestureUpdated = { [weak self] tap in
+            if tap.state == .ended {
+                self?.pdfView.goToNextPage(self)
+            }
+        }
 
         let singleFingerCloseButtonTap = TapGestureRecognizer()
         gestureManager.add(singleFingerCloseButtonTap, to: closeButtonView)
@@ -95,23 +118,25 @@ class PDFViewController: NSViewController, GestureResponder {
 
         switch pan.state {
         case .recognized, .momentum:
-            if let scrollView = pdfThumbnailView.subviews.last as? NSScrollView, let clipView = scrollView.subviews.first(where: { $0 is NSClipView }) {
-                var origin = clipView.visibleRect.origin
-                origin += pan.delta.dy
-                clipView.scroll(origin)
-            }
+            var origin = thumbnailClipView.visibleRect.origin
+            origin += pan.delta.dy
+            thumbnailClipView.scroll(origin)
         default:
             return
         }
     }
 
     private func didTapThumbnailView(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer else {
+        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position else {
             return
         }
 
         if tap.state == .ended {
-            // todo
+            let thumbnailPages = thumbnailClipView.subviews.last?.subviews ?? []
+            let location = position + thumbnailClipView.visibleRect.origin
+            if let thumbnail = thumbnailPages.first(where: { $0.frame.contains(location) }), let index = thumbnailPages.index(of: thumbnail), let page = document.page(at: index) {
+                pdfView.go(to: page)
+            }
         }
     }
 

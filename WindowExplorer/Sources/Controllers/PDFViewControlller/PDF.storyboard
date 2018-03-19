@@ -42,15 +42,33 @@
                                 </constraints>
                                 <size key="thumbnailSize" width="64" height="64"/>
                             </pdfThumbnailView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="u0A-Yb-xpw">
+                                <rect key="frame" x="532" y="8" width="100" height="506"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="QXt-Ii-RKt"/>
+                                </constraints>
+                            </customView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="dYk-YZ-F2X">
+                                <rect key="frame" x="116" y="8" width="100" height="506"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="ZwZ-51-X0L"/>
+                                </constraints>
+                            </customView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="Qqy-Lr-eU7" firstAttribute="top" secondItem="LrV-6C-x9X" secondAttribute="top" id="1kX-hE-Zhc"/>
                             <constraint firstItem="7qF-ve-yFy" firstAttribute="trailing" secondItem="LrV-6C-x9X" secondAttribute="trailing" id="30d-db-Lx3"/>
+                            <constraint firstItem="dYk-YZ-F2X" firstAttribute="leading" secondItem="LrV-6C-x9X" secondAttribute="leading" id="HuI-op-lpm"/>
+                            <constraint firstItem="dYk-YZ-F2X" firstAttribute="bottom" secondItem="LrV-6C-x9X" secondAttribute="bottom" id="KSR-bh-laj"/>
+                            <constraint firstItem="dYk-YZ-F2X" firstAttribute="top" secondItem="LrV-6C-x9X" secondAttribute="top" id="Psp-IG-v9j"/>
                             <constraint firstItem="7qF-ve-yFy" firstAttribute="top" secondItem="LrV-6C-x9X" secondAttribute="top" id="QGb-ig-3ex"/>
                             <constraint firstItem="LrV-6C-x9X" firstAttribute="top" secondItem="l0O-E9-8FM" secondAttribute="top" constant="8" id="dFe-Fl-hUD"/>
                             <constraint firstItem="B0g-yS-hPA" firstAttribute="leading" secondItem="l0O-E9-8FM" secondAttribute="leading" constant="8" id="foc-ly-BUs"/>
+                            <constraint firstItem="u0A-Yb-xpw" firstAttribute="trailing" secondItem="LrV-6C-x9X" secondAttribute="trailing" id="gm1-r5-qsP"/>
                             <constraint firstAttribute="bottom" secondItem="B0g-yS-hPA" secondAttribute="bottom" constant="8" id="hRV-jg-Rrk"/>
+                            <constraint firstItem="u0A-Yb-xpw" firstAttribute="bottom" secondItem="LrV-6C-x9X" secondAttribute="bottom" id="koF-vG-L1b"/>
                             <constraint firstItem="B0g-yS-hPA" firstAttribute="top" secondItem="l0O-E9-8FM" secondAttribute="top" constant="8" id="l2n-Pk-sRj"/>
+                            <constraint firstItem="u0A-Yb-xpw" firstAttribute="top" secondItem="LrV-6C-x9X" secondAttribute="top" id="lOW-zZ-A4b"/>
                             <constraint firstItem="Qqy-Lr-eU7" firstAttribute="trailing" secondItem="LrV-6C-x9X" secondAttribute="trailing" id="mRV-tk-aYe"/>
                             <constraint firstItem="LrV-6C-x9X" firstAttribute="leading" secondItem="B0g-yS-hPA" secondAttribute="trailing" constant="8" id="raV-0L-4w8"/>
                             <constraint firstAttribute="bottom" secondItem="LrV-6C-x9X" secondAttribute="bottom" constant="8" id="sBf-uK-f9l"/>
@@ -58,7 +76,9 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="backTapArea" destination="dYk-YZ-F2X" id="wua-SK-glp"/>
                         <outlet property="closeButtonView" destination="7qF-ve-yFy" id="CD9-X8-olA"/>
+                        <outlet property="forwardTapArea" destination="u0A-Yb-xpw" id="ViX-oa-hXe"/>
                         <outlet property="pdfThumbnailView" destination="B0g-yS-hPA" id="57Y-jR-wFY"/>
                         <outlet property="pdfView" destination="LrV-6C-x9X" id="NQR-O0-ndl"/>
                     </connections>

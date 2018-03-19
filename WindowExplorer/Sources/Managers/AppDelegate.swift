@@ -22,7 +22,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         TouchManager.instance.setupTouchSocket()
         RecordFactory.record(for: .artifact, id: 284) { record in
             if let record = record {
-                WindowManager.instance.display(.record(record), at: CGPoint(x: 2000, y: 200))
+                WindowManager.instance.display(.record(record), at: CGPoint(x: 3000, y: 200))
             }
         }
     }
