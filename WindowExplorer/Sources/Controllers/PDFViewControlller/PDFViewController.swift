@@ -33,12 +33,6 @@ class PDFViewController: NSViewController, GestureResponder {
         setupGestures()
     }
 
-    override func viewWillAppear() {
-        // This is to force the selection of the first page in the thumbnailView
-        pdfView.goToLastPage(self)
-        pdfView.goToFirstPage(self)
-    }
-
 
     // MARK: Setup
 
@@ -50,10 +44,10 @@ class PDFViewController: NSViewController, GestureResponder {
         pdfView.displayDirection = .horizontal
         pdfView.autoScales = true
         pdfView.backgroundColor = .clear
+        pdfThumbnailView.pdfView = pdfView
 
         document = PDFDocument(url: media.url)
         pdfView.document = document
-        pdfThumbnailView.pdfView = pdfView
     }
 
     private func setupGestures() {
