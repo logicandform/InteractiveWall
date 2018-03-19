@@ -141,19 +141,40 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         }
     }
 
+    private var selectedMediaItem: MediaItemView? {
+        didSet {
+            oldValue?.set(highlighted: false)
+            selectedMediaItem?.set(highlighted: true)
+        }
+    }
+
     private func handleCollectionViewTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let window = view.window, let record = record else {
+        guard let tap = gesture as? TapGestureRecognizer else {
             return
         }
 
-        if tap.state == .ended {
-            let rect = mediaView.visibleRect
-            let offset = rect.origin.x / rect.width
-            let visibleItem = Int(round(offset))
-            if let media = record.media.at(index: visibleItem), let windowType = WindowType(for: media) {
-                let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins, y: window.frame.maxY - windowType.size.height)
-                WindowManager.instance.display(windowType, at: origin)
+        let rect = mediaView.visibleRect
+        let offset = rect.origin.x / rect.width
+        let index = Int(round(offset))
+        let indexPath = IndexPath(item: index, section: 0)
+
+        guard let mediaItem = mediaView.item(at: indexPath) as? MediaItemView else {
+            return
+        }
+
+
+        switch tap.state {
+        case .began:
+            selectedMediaItem = mediaItem
+        case .failed:
+            selectedMediaItem = nil
+        case .ended:
+            if let selectedMedia = selectedMediaItem?.media {
+                selectMediaItem(selectedMedia)
+                selectedMediaItem = nil
             }
+        default:
+            return
         }
     }
 
@@ -172,7 +193,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         }
     }
 
-    var selectedRelatedItem: RelatedItemView? {
+    private var selectedRelatedItem: RelatedItemView? {
         didSet {
             oldValue?.set(highlighted: false)
             selectedRelatedItem?.set(highlighted: true)
@@ -320,6 +341,15 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
                 }
             })
         })
+    }
+
+    private func selectMediaItem(_ media: Media) {
+        guard let window = view.window, let windowType = WindowType(for: media) else {
+            return
+        }
+
+        let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins, y: window.frame.maxY - windowType.size.height)
+        WindowManager.instance.display(windowType, at: origin)
     }
 
 
