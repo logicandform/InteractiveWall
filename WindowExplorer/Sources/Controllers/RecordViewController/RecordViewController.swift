@@ -21,6 +21,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     var record: RecordDisplayable?
     private(set) var gestureManager: GestureManager!
     private var showingRelatedItems = false
+    private var pageControl = PageControl()
     
     private struct Constants {
         static let tableRowHeight: CGFloat = 60
@@ -37,7 +38,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         detailView.layer?.backgroundColor = style.darkBackground.cgColor
         gestureManager = GestureManager(responder: self)
 
-        setupCollectionView()
+        setupMediaView()
         setupRelatedItemsView()
         setupGestures()
         loadRecord()
@@ -47,8 +48,19 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     // MARK: Setup
 
-    private func setupCollectionView() {
+    private func setupMediaView() {
         mediaView.register(MediaItemView.self, forItemWithIdentifier: MediaItemView.identifier)
+
+        pageControl.color = .white
+        pageControl.numberOfPages = UInt(record?.media.count ?? 0)
+        pageControl.translatesAutoresizingMaskIntoConstraints = false
+        pageControl.wantsLayer = true
+        detailView.addSubview(pageControl)
+
+        pageControl.leadingAnchor.constraint(equalTo: detailView.leadingAnchor).isActive = true
+        pageControl.trailingAnchor.constraint(equalTo: detailView.trailingAnchor).isActive = true
+        pageControl.topAnchor.constraint(equalTo: mediaView.bottomAnchor).isActive = true
+        pageControl.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
 
     private func setupRelatedItemsView() {
@@ -135,25 +147,46 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             let margin = offset.truncatingRemainder(dividingBy: 1)
             let duration = margin < 0.5 ? margin : 1 - margin
             let origin = CGPoint(x: rect.width * index, y: 0)
-            animateCollectionView(to: origin, duration: duration)
+            animateCollectionView(to: origin, duration: duration, for: Int(index))
         default:
             return
         }
     }
 
+    private var selectedMediaItem: MediaItemView? {
+        didSet {
+            oldValue?.set(highlighted: false)
+            selectedMediaItem?.set(highlighted: true)
+        }
+    }
+
     private func handleCollectionViewTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let window = view.window, let record = record else {
+        guard let tap = gesture as? TapGestureRecognizer else {
             return
         }
 
-        if tap.state == .ended {
-            let rect = mediaView.visibleRect
-            let offset = rect.origin.x / rect.width
-            let visibleItem = Int(round(offset))
-            if let media = record.media.at(index: visibleItem), let windowType = WindowType(for: media) {
-                let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins, y: window.frame.maxY - windowType.size.height)
-                WindowManager.instance.display(windowType, at: origin)
+        let rect = mediaView.visibleRect
+        let offset = rect.origin.x / rect.width
+        let index = Int(round(offset))
+        let indexPath = IndexPath(item: index, section: 0)
+
+        guard let mediaItem = mediaView.item(at: indexPath) as? MediaItemView else {
+            return
+        }
+
+
+        switch tap.state {
+        case .began:
+            selectedMediaItem = mediaItem
+        case .failed:
+            selectedMediaItem = nil
+        case .ended:
+            if let selectedMedia = selectedMediaItem?.media {
+                selectMediaItem(selectedMedia)
+                selectedMediaItem = nil
             }
+        default:
+            return
         }
     }
 
@@ -172,7 +205,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         }
     }
 
-    var selectedRelatedItem: RelatedItemView? {
+    private var selectedRelatedItem: RelatedItemView? {
         didSet {
             oldValue?.set(highlighted: false)
             selectedRelatedItem?.set(highlighted: true)
@@ -271,11 +304,13 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         })
     }
 
-    private func animateCollectionView(to point: CGPoint, duration: CGFloat) {
-        NSAnimationContext.beginGrouping()
-        NSAnimationContext.current.duration = TimeInterval(duration)
-        collectionClipView.animator().setBoundsOrigin(point)
-        NSAnimationContext.endGrouping()
+    private func animateCollectionView(to point: CGPoint, duration: CGFloat, for index: Int) {
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = TimeInterval(duration)
+            collectionClipView.animator().setBoundsOrigin(point)
+            }, completionHandler: { [weak self] in
+                self?.pageControl.selectedPage = UInt(index)
+        })
     }
 
     private func toggleRelatedItems(completion: (() -> Void)? = nil) {
@@ -320,6 +355,15 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
                 }
             })
         })
+    }
+
+    private func selectMediaItem(_ media: Media) {
+        guard let window = view.window, let windowType = WindowType(for: media) else {
+            return
+        }
+
+        let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins, y: window.frame.maxY - windowType.size.height)
+        WindowManager.instance.display(windowType, at: origin)
     }
 
 

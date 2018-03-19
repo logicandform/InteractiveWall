@@ -20,6 +20,20 @@ class MediaItemView: NSCollectionViewItem {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.wantsLayer = true
+        view.layer?.borderWidth = 1
+        set(highlighted: false)
+    }
+
+
+    // MARK: API
+
+    func set(highlighted: Bool) {
+        if highlighted {
+            view.layer?.borderColor = style.selectedColor.cgColor
+        } else {
+            view.layer?.borderColor = style.clear.cgColor
+        }
     }
 
 
