@@ -8,14 +8,18 @@ import AlamofireImage
 class ImageViewController: NSViewController, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "Image")
 
-    @IBOutlet weak var imageView: NSImageView!
+    @IBOutlet weak var imageScrollView: NSScrollView!
     @IBOutlet weak var titleTextField: NSTextField!
     @IBOutlet weak var dismissButton: NSView!
+    var imageView: NSImageView!
 
     private(set) var gestureManager: GestureManager!
     private var thumbnailRequest: DataRequest?
     private var urlRequest: DataRequest?
     var media: Media!
+
+    var singleFingerPan: PanGestureRecognizer!
+
 
 
     // MARK: Life-cycle
@@ -45,10 +49,12 @@ class ImageViewController: NSViewController, GestureResponder {
             return
         }
 
+        imageView = NSImageView(image: NSImage())
+
         // Load thumbnail first
         thumbnailRequest = Alamofire.request(media.thumbnail).responseImage { [weak self] response in
             if let strongSelf = self, let image = response.value, strongSelf.imageView.image == nil {
-                strongSelf.imageView.image = image
+                self?.imageView.image = image
             }
         }
 
@@ -58,15 +64,25 @@ class ImageViewController: NSViewController, GestureResponder {
                 self?.imageView.image = image
             }
         }
+
+        imageView.layer?.backgroundColor = #colorLiteral(red: 0.09019608051, green: 0, blue: 0.3019607961, alpha: 1)
+
+        imageScrollView.documentView = imageView
+
+        print("test")
     }
 
     private func setupGestures() {
         let panGesture = NSPanGestureRecognizer(target: self, action: #selector(handleMousePan(_:)))
         view.addGestureRecognizer(panGesture)
 
-        let singleFingerPan = PanGestureRecognizer()
-        gestureManager.add(singleFingerPan, to: imageView)
-        singleFingerPan.gestureUpdated = didPanDetailView(_:)
+//        singleFingerPan = PanGestureRecognizer()
+//        gestureManager.add(singleFingerPan, to: imageView)
+//        singleFingerPan.gestureUpdated = didPanDetailView(_:)
+
+//        let pinchGesture = PinchGestureRecognizer()
+//        gestureManager.add(pinchGesture, to: imageView)
+//        pinchGesture.gestureUpdated = didPinchDetailView(_:)
 
         let singleFingerCloseButtonTap = TapGestureRecognizer()
         gestureManager.add(singleFingerCloseButtonTap, to: dismissButton)
@@ -75,7 +91,6 @@ class ImageViewController: NSViewController, GestureResponder {
 
 
     // MARK: Gesture Handling
-
 
     private func didPanDetailView(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
@@ -89,6 +104,38 @@ class ImageViewController: NSViewController, GestureResponder {
             window.setFrameOrigin(origin)
         case .possible:
             WindowManager.instance.checkBounds(of: self)
+        default:
+            return
+        }
+    }
+
+    private func didPinchDetailView(_ gesture: GestureRecognizer) {
+        guard let pinch = gesture as? PinchGestureRecognizer else {
+            return
+        }
+
+        singleFingerPan.reset()
+
+//        translationX += (mapRect.size.width - scaledWidth) * Double(pinch.lastPosition.x / mapView.frame.width)
+//        translationY += (mapRect.size.height - scaledHeight) * (1 - Double(pinch.lastPosition.y / mapView.frame.height))
+
+        switch pinch.state {
+        case .recognized:
+//
+//            let scaledWidth = (2 - pinch.scale) * imageView.bounds.width
+//            let scaledHeight = (2 - pinch.scale) * imageView.bounds.height
+//////            var translationX = -pinch.delta.dx * imageView.frame.width / initialRect.width
+//////            var translationY = pinch.delta.dy * imageView.frame.height / initialRect.height
+//            if scaledWidth <= initialRect.width {
+//                let translationX =  (imageView.bounds.width - scaledWidth) * pinch.lastPosition.x / initialRect.width
+//                let translationY =  (imageView.bounds.height - scaledHeight) * pinch.lastPosition.y / initialRect.height
+//
+//                imageView.setBoundsSize(CGSize(width: scaledWidth, height: scaledHeight))
+//                imageView.setBoundsOrigin(CGPoint(x: translationX + imageView.bounds.origin.x, y: translationY + imageView.bounds.origin.y))
+//            }
+            return
+        case .possible:
+            imageView.sizeToFit()
         default:
             return
         }
