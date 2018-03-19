@@ -34,7 +34,9 @@ class PDFViewController: NSViewController, GestureResponder {
     }
 
     override func viewWillAppear() {
-        pdfThumbnailView.pdfView = pdfView
+        // This is to force the selection of the first page in the thumbnailView
+        pdfView.goToLastPage(self)
+        pdfView.goToFirstPage(self)
     }
 
 
@@ -70,17 +72,17 @@ class PDFViewController: NSViewController, GestureResponder {
         gestureManager.add(thumbnailViewTap, to: thumbnailClipView)
         thumbnailViewTap.gestureUpdated = didTapThumbnailView(_:)
 
-        let goBackTap = TapGestureRecognizer()
-        gestureManager.add(goBackTap, to: backTapArea)
-        goBackTap.gestureUpdated = { [weak self] tap in
+        let previousPageTap = TapGestureRecognizer()
+        gestureManager.add(previousPageTap, to: backTapArea)
+        previousPageTap.gestureUpdated = { [weak self] tap in
             if tap.state == .ended {
                 self?.pdfView.goToPreviousPage(self)
             }
         }
 
-        let goForwardTap = TapGestureRecognizer()
-        gestureManager.add(goForwardTap, to: forwardTapArea)
-        goForwardTap.gestureUpdated = { [weak self] tap in
+        let nextPageTap = TapGestureRecognizer()
+        gestureManager.add(nextPageTap, to: forwardTapArea)
+        nextPageTap.gestureUpdated = { [weak self] tap in
             if tap.state == .ended {
                 self?.pdfView.goToNextPage(self)
             }
