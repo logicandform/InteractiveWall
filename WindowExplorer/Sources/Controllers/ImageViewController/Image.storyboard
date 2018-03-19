@@ -30,7 +30,7 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WTp-wA-9SL">
+                            <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" allowsMagnification="YES" maxMagnification="5" minMagnification="1" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WTp-wA-9SL" customClass="RegularScrollView" customModule="WindowExplorer" customModuleProvider="target">
                                 <rect key="frame" x="8" y="33" width="624" height="361"/>
                                 <clipView key="contentView" id="SUf-jl-Y0i">
                                     <rect key="frame" x="1" y="1" width="622" height="359"/>
@@ -47,12 +47,12 @@
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="361" id="Ged-ru-Hrf"/>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="624" id="hUL-Dt-u34"/>
                                 </constraints>
-                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="vQy-Dv-4a6">
-                                    <rect key="frame" x="1" y="344" width="622" height="16"/>
+                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="vQy-Dv-4a6">
+                                    <rect key="frame" x="-100" y="-100" width="622" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="nVi-Xv-HAv">
-                                    <rect key="frame" x="607" y="1" width="16" height="359"/>
+                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="nVi-Xv-HAv">
+                                    <rect key="frame" x="-100" y="-100" width="16" height="359"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>

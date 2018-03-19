@@ -8,18 +8,18 @@ import AlamofireImage
 class ImageViewController: NSViewController, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "Image")
 
-    @IBOutlet weak var imageScrollView: NSScrollView!
+    @IBOutlet weak var imageScrollView: RegularScrollView!
     @IBOutlet weak var titleTextField: NSTextField!
     @IBOutlet weak var dismissButton: NSView!
     var imageView: NSImageView!
 
-    private(set) var gestureManager: GestureManager!
     private var thumbnailRequest: DataRequest?
     private var urlRequest: DataRequest?
+    private var initialRect: NSRect!
+    private(set) var gestureManager: GestureManager!
     var media: Media!
 
-    var singleFingerPan: PanGestureRecognizer!
-
+    private var singleFingerPan: PanGestureRecognizer!
 
 
     // MARK: Life-cycle
@@ -49,7 +49,7 @@ class ImageViewController: NSViewController, GestureResponder {
             return
         }
 
-        imageView = NSImageView(image: NSImage())
+        imageView = NSImageView()
 
         // Load thumbnail first
         thumbnailRequest = Alamofire.request(media.thumbnail).responseImage { [weak self] response in
@@ -65,24 +65,23 @@ class ImageViewController: NSViewController, GestureResponder {
             }
         }
 
-        imageView.layer?.backgroundColor = #colorLiteral(red: 0.09019608051, green: 0, blue: 0.3019607961, alpha: 1)
-
+        imageView.setFrameSize(imageScrollView.frame.size)
+        imageView.imageScaling = NSImageScaling.scaleProportionallyUpOrDown
         imageScrollView.documentView = imageView
-
-        print("test")
+        initialRect = imageScrollView.contentView.bounds
     }
 
     private func setupGestures() {
         let panGesture = NSPanGestureRecognizer(target: self, action: #selector(handleMousePan(_:)))
         view.addGestureRecognizer(panGesture)
 
-//        singleFingerPan = PanGestureRecognizer()
-//        gestureManager.add(singleFingerPan, to: imageView)
-//        singleFingerPan.gestureUpdated = didPanDetailView(_:)
+        singleFingerPan = PanGestureRecognizer()
+        gestureManager.add(singleFingerPan, to: imageScrollView)
+        singleFingerPan.gestureUpdated = didPanDetailView(_:)
 
-//        let pinchGesture = PinchGestureRecognizer()
-//        gestureManager.add(pinchGesture, to: imageView)
-//        pinchGesture.gestureUpdated = didPinchDetailView(_:)
+        let pinchGesture = PinchGestureRecognizer()
+        gestureManager.add(pinchGesture, to: imageScrollView)
+        pinchGesture.gestureUpdated = didPinchDetailView(_:)
 
         let singleFingerCloseButtonTap = TapGestureRecognizer()
         gestureManager.add(singleFingerCloseButtonTap, to: dismissButton)
@@ -114,28 +113,20 @@ class ImageViewController: NSViewController, GestureResponder {
             return
         }
 
+        // TODO: Figure out if resetting this will work
         singleFingerPan.reset()
-
-//        translationX += (mapRect.size.width - scaledWidth) * Double(pinch.lastPosition.x / mapView.frame.width)
-//        translationY += (mapRect.size.height - scaledHeight) * (1 - Double(pinch.lastPosition.y / mapView.frame.height))
 
         switch pinch.state {
         case .recognized:
-//
-//            let scaledWidth = (2 - pinch.scale) * imageView.bounds.width
-//            let scaledHeight = (2 - pinch.scale) * imageView.bounds.height
-//////            var translationX = -pinch.delta.dx * imageView.frame.width / initialRect.width
-//////            var translationY = pinch.delta.dy * imageView.frame.height / initialRect.height
-//            if scaledWidth <= initialRect.width {
-//                let translationX =  (imageView.bounds.width - scaledWidth) * pinch.lastPosition.x / initialRect.width
-//                let translationY =  (imageView.bounds.height - scaledHeight) * pinch.lastPosition.y / initialRect.height
-//
-//                imageView.setBoundsSize(CGSize(width: scaledWidth, height: scaledHeight))
-//                imageView.setBoundsOrigin(CGPoint(x: translationX + imageView.bounds.origin.x, y: translationY + imageView.bounds.origin.y))
-//            }
-            return
+            let newMagnification = imageScrollView.magnification + (pinch.scale - 1)
+            imageScrollView.setMagnification(newMagnification, centeredAt: pinch.lastPosition)
+            let currentRect = imageScrollView.contentView.bounds
+            let newOriginX = min(initialRect.origin.x + initialRect.width - currentRect.width, max(initialRect.origin.x, currentRect.origin.x - pinch.delta.dx / newMagnification))
+            let newOriginY = min(initialRect.origin.y + initialRect.height - currentRect.height, max(initialRect.origin.y, currentRect.origin.y - pinch.delta.dy / newMagnification))
+            imageScrollView.contentView.scroll(to: NSPoint(x: newOriginX, y: newOriginY))
         case .possible:
-            imageView.sizeToFit()
+            // TODO: try to change this so that it uses initialRect to reset
+            imageScrollView.setMagnification(1, centeredAt: NSPoint(x: 0, y: 0))
         default:
             return
         }
