@@ -97,15 +97,16 @@ class MapHandler {
         switch notification.name {
         case MapNotifications.position.name:
             if let mapJSON = info[Keys.map] as? JSON, let fromGroup = info[Keys.group] as? Int, let mapRect = MKMapRect(json: mapJSON), let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture) {
-                groupForMap[fromID] = fromGroup
+                updateMappings(fromGroup: fromGroup, to: fromID)
                 handle(mapRect, fromID: fromID, inGroup: fromGroup, from: state)
             }
         case MapNotifications.unpair.name:
             unpair(from: fromID)
         case MapNotifications.ungroup.name:
-            if let groupID = info[Keys.group] as? Int {
-                ungroupMappings(from: groupID)
-                ungroup(from: groupID)
+            if let fromGroup = info[Keys.group] as? Int {
+                print("ungroup from \(fromGroup)")
+                updateMappings(fromGroup: fromGroup, to: nil)
+                ungroup(from: fromGroup)
                 findGroupIfNeeded()
             }
         default:
@@ -161,10 +162,17 @@ class MapHandler {
         groupID = groupID == id ? nil : groupID
     }
 
-    private func ungroupMappings(from id: Int) {
-        for (map, group) in groupForMap {
-            if group == id {
-                groupForMap[map] = nil
+    private func updateMappings(fromGroup: Int, to id: Int?) {
+        let maps = Configuration.mapsPerScreen * Configuration.numberOfScreens
+        for map in (0..<maps) {
+            if let id = id, id == map {
+                groupForMap[map] = id
+            } else if let group = groupForMap[map] {
+                if group == fromGroup {
+                    groupForMap[map] = id
+                }
+            } else {
+                groupForMap[map] = id
             }
         }
     }
@@ -179,10 +187,10 @@ class MapHandler {
         for offset in (1...checks) {
             let lhs = mapID - offset
             let rhs = mapID + offset
-            if lhs >= 0, let lhsGroup = groupForMap[lhs] {
+            if lhs >= 0, let lhsGroup = groupForMap[lhs], lhsGroup != nil {
                 groupID = lhsGroup
                 return
-            } else if rhs < maps, let rhsGroup = groupForMap[rhs] {
+            } else if rhs < maps, let rhsGroup = groupForMap[rhs], rhsGroup != nil {
                 groupID = rhsGroup
                 return
             }
