@@ -10,12 +10,14 @@ class ImageViewController: NSViewController, GestureResponder {
 
     @IBOutlet weak var imageScrollView: RegularScrollView!
     @IBOutlet weak var titleTextField: NSTextField!
+    @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var dismissButton: NSView!
     var imageView: NSImageView!
 
     private var thumbnailRequest: DataRequest?
     private var urlRequest: DataRequest?
-    private var initialRect: NSRect!
+    private var contentViewFrame: NSRect!
     private(set) var gestureManager: GestureManager!
     var media: Media!
 
@@ -53,8 +55,8 @@ class ImageViewController: NSViewController, GestureResponder {
 
         // Load thumbnail first
         thumbnailRequest = Alamofire.request(media.thumbnail).responseImage { [weak self] response in
-            if let strongSelf = self, let image = response.value, strongSelf.imageView.image == nil {
-                self?.imageView.image = image
+            if let image = response.value {
+                self?.addImage(image)
             }
         }
 
@@ -65,10 +67,18 @@ class ImageViewController: NSViewController, GestureResponder {
             }
         }
 
-        imageView.setFrameSize(imageScrollView.frame.size)
-        imageView.imageScaling = NSImageScaling.scaleProportionallyUpOrDown
+    }
+
+    private func addImage(_ image: NSImage) {
+        imageView.image = image
+        let scaleRatio = min(imageScrollView.frame.width / image.size.width, imageScrollView.frame.height / image.size.height)
+        let frameSize = NSSize(width: round(image.size.width * scaleRatio), height: round(image.size.height * scaleRatio))
+        print(frameSize)
+        imageView.setFrameSize(frameSize)
+        scrollViewHeightConstraint.constant = frameSize.height
+        scrollViewWidthConstraint.constant = frameSize.width
+        imageView.imageScaling = NSImageScaling.scaleAxesIndependently
         imageScrollView.documentView = imageView
-        initialRect = imageScrollView.contentView.bounds
     }
 
     private func setupGestures() {
@@ -113,19 +123,20 @@ class ImageViewController: NSViewController, GestureResponder {
             return
         }
 
-        // TODO: Figure out if resetting this will work
+        // For now this is necessairy, UBC-212 will look into invalidating gestures
         singleFingerPan.reset()
 
         switch pinch.state {
+        case .began:
+            contentViewFrame = imageScrollView.contentView.frame
         case .recognized:
             let newMagnification = imageScrollView.magnification + (pinch.scale - 1)
             imageScrollView.setMagnification(newMagnification, centeredAt: pinch.lastPosition)
             let currentRect = imageScrollView.contentView.bounds
-            let newOriginX = min(initialRect.origin.x + initialRect.width - currentRect.width, max(initialRect.origin.x, currentRect.origin.x - pinch.delta.dx / newMagnification))
-            let newOriginY = min(initialRect.origin.y + initialRect.height - currentRect.height, max(initialRect.origin.y, currentRect.origin.y - pinch.delta.dy / newMagnification))
+            let newOriginX = min(contentViewFrame.origin.x + contentViewFrame.width - currentRect.width, max(contentViewFrame.origin.x, currentRect.origin.x - pinch.delta.dx / newMagnification))
+            let newOriginY = min(contentViewFrame.origin.y + contentViewFrame.height - currentRect.height, max(contentViewFrame.origin.y, currentRect.origin.y - pinch.delta.dy / newMagnification))
             imageScrollView.contentView.scroll(to: NSPoint(x: newOriginX, y: newOriginY))
         case .possible:
-            // TODO: try to change this so that it uses initialRect to reset
             imageScrollView.setMagnification(1, centeredAt: NSPoint(x: 0, y: 0))
         default:
             return
