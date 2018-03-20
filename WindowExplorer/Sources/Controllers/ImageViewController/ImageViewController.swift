@@ -70,7 +70,6 @@ class ImageViewController: NSViewController, GestureResponder {
         imageView.image = image
         let scaleRatio = min(imageScrollView.frame.width / image.size.width, imageScrollView.frame.height / image.size.height)
         let frameSize = NSSize(width: round(image.size.width * scaleRatio), height: round(image.size.height * scaleRatio))
-        print(frameSize)
         imageView.setFrameSize(frameSize)
         scrollViewHeightConstraint.constant = frameSize.height
         scrollViewWidthConstraint.constant = frameSize.width
