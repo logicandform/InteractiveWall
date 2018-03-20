@@ -13,15 +13,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="640" height="410"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Kbv-Qb-kGl">
-                                <rect key="frame" x="592" y="362" width="40" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="JNh-tg-at3"/>
-                                    <constraint firstAttribute="height" constant="40" id="JzI-Ny-clx"/>
-                                    <constraint firstAttribute="width" constant="40" id="oTX-7V-WH0"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="zbp-68-bpi"/>
-                                </constraints>
-                            </customView>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Xxw-S7-yBy">
                                 <rect key="frame" x="14" y="8" width="37" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Label" id="9Bb-zt-Gma">
@@ -41,7 +32,7 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         </view>
                                     </subviews>
-                                    <color key="backgroundColor" red="0.025183623656630516" green="0.93838995695114136" blue="0.11515399068593979" alpha="0.10394370719178082" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" red="0.025183623656630516" green="0.93838995695114136" blue="0.11515399068593979" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 </clipView>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="750" constant="361" id="6a5-LM-pyk"/>
@@ -56,16 +47,36 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
+                            <button ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Eov-6a-Ava">
+                                <rect key="frame" x="600" y="370" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="Zum-Mq-Ouc"/>
+                                    <constraint firstAttribute="width" constant="40" id="i5N-Dk-Hg3"/>
+                                </constraints>
+                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="close-record" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="9nQ-2c-hpY">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Kbv-Qb-kGl">
+                                <rect key="frame" x="600" y="370" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="JzI-Ny-clx"/>
+                                    <constraint firstAttribute="width" constant="40" id="oTX-7V-WH0"/>
+                                </constraints>
+                            </customView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="WTp-wA-9SL" firstAttribute="top" relation="greaterThanOrEqual" secondItem="sSn-s5-6HM" secondAttribute="top" constant="16" id="10V-YT-T1W"/>
+                            <constraint firstItem="Kbv-Qb-kGl" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="323-rI-eXP"/>
                             <constraint firstItem="WTp-wA-9SL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="8" id="X9j-4u-6FB"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="WTp-wA-9SL" secondAttribute="bottom" constant="33" id="Z1e-N5-aTr"/>
-                            <constraint firstAttribute="trailing" secondItem="Kbv-Qb-kGl" secondAttribute="trailing" constant="8" id="c5V-YH-7YC"/>
+                            <constraint firstAttribute="trailing" secondItem="Kbv-Qb-kGl" secondAttribute="trailing" id="d3K-20-L63"/>
                             <constraint firstItem="WTp-wA-9SL" firstAttribute="centerX" secondItem="sSn-s5-6HM" secondAttribute="centerX" id="eGb-ih-uVc"/>
+                            <constraint firstItem="Kbv-Qb-kGl" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="gli-yy-1FB"/>
                             <constraint firstAttribute="bottom" secondItem="Xxw-S7-yBy" secondAttribute="bottom" constant="8" id="irH-aF-J8T"/>
+                            <constraint firstAttribute="trailing" secondItem="Kbv-Qb-kGl" secondAttribute="trailing" id="oEZ-Pn-EuB"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="WTp-wA-9SL" secondAttribute="trailing" constant="8" id="xkr-jy-BVF"/>
-                            <constraint firstItem="Kbv-Qb-kGl" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" constant="8" id="xwL-kD-Kw8"/>
                             <constraint firstItem="Xxw-S7-yBy" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="16" id="zgZ-lc-gaV"/>
                         </constraints>
                     </view>
@@ -82,4 +93,7 @@
             <point key="canvasLocation" x="-51" y="-495"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="close-record" width="15" height="15"/>
+    </resources>
 </document>
