@@ -9,6 +9,7 @@ final class TouchManager: SocketManagerDelegate {
     static let touchNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12221)
 
     private var socketManager: SocketManager?
+    private var managersForTouch = [Touch: (NSWindow, GestureManager)]()
     private var touchesForMapID = [Int: Set<Touch>]()
     private var touchNeedsUpdate = [Touch: Bool]()
 
@@ -41,8 +42,7 @@ final class TouchManager: SocketManagerDelegate {
         convertToScreen(touch)
 
         // Check if the touch landed on a window, else notify the proper map application.
-        if let (window, manager) = windowOwner(of: touch) {
-            window.makeKeyAndOrderFront(self)
+        if let manager = manager(of: touch) {
             manager.handle(touch)
         } else {
             let map = mapOwner(of: touch) ?? calculateMap(for: touch)
@@ -71,8 +71,31 @@ final class TouchManager: SocketManagerDelegate {
 
     // MARK: Helpers
 
+    /// Calculates the manager and stores it locally for fast access to windows in the hierarchy
+    private func manager(of touch: Touch) -> GestureManager? {
+        switch touch.state {
+        case .down:
+            if let (window, manager) = calculateWindow(of: touch) {
+                window.makeKeyAndOrderFront(self)
+                managersForTouch[touch] = (window, manager)
+                return manager
+            }
+        case .moved:
+            if let (_, manager) = managersForTouch[touch] {
+                return manager
+            }
+        case .up:
+            if let (_, manager) = managersForTouch[touch] {
+                managersForTouch.removeValue(forKey: touch)
+                return manager
+            }
+        }
+
+        return nil
+    }
+
     /// Returns a gesture manager that owns the given touch, else nil.
-    private func windowOwner(of touch: Touch) -> (NSWindow, GestureManager)? {
+    private func calculateWindow(of touch: Touch) -> (NSWindow, GestureManager)? {
         let windows = WindowManager.instance.windows.sorted(by: { $0.key.orderedIndex < $1.key.orderedIndex })
 
         if touch.state == .down {
