@@ -8,14 +8,20 @@ import AlamofireImage
 class ImageViewController: NSViewController, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "Image")
 
-    @IBOutlet weak var imageView: NSImageView!
+    @IBOutlet weak var imageScrollView: RegularScrollView!
     @IBOutlet weak var titleTextField: NSTextField!
+    @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var dismissButton: NSView!
+    var imageView: NSImageView!
 
-    private(set) var gestureManager: GestureManager!
     private var thumbnailRequest: DataRequest?
     private var urlRequest: DataRequest?
+    private var contentViewFrame: NSRect!
+    private(set) var gestureManager: GestureManager!
     var media: Media!
+
+    private var singleFingerPan: PanGestureRecognizer!
 
 
     // MARK: Life-cycle
@@ -26,7 +32,6 @@ class ImageViewController: NSViewController, GestureResponder {
         view.layer?.backgroundColor = style.darkBackground.cgColor
         gestureManager = GestureManager(responder: self)
         titleTextField.stringValue = media.title ?? ""
-
         setupImageView()
         setupGestures()
     }
@@ -44,11 +49,12 @@ class ImageViewController: NSViewController, GestureResponder {
         guard media.type == .image else {
             return
         }
+        imageView = NSImageView()
 
         // Load thumbnail first
         thumbnailRequest = Alamofire.request(media.thumbnail).responseImage { [weak self] response in
-            if let strongSelf = self, let image = response.value, strongSelf.imageView.image == nil {
-                strongSelf.imageView.image = image
+            if let image = response.value {
+                self?.addImage(image)
             }
         }
 
@@ -60,13 +66,28 @@ class ImageViewController: NSViewController, GestureResponder {
         }
     }
 
+    private func addImage(_ image: NSImage) {
+        imageView.image = image
+        let scaleRatio = min(imageScrollView.frame.width / image.size.width, imageScrollView.frame.height / image.size.height)
+        let frameSize = NSSize(width: round(image.size.width * scaleRatio), height: round(image.size.height * scaleRatio))
+        imageView.setFrameSize(frameSize)
+        scrollViewHeightConstraint.constant = frameSize.height
+        scrollViewWidthConstraint.constant = frameSize.width
+        imageView.imageScaling = NSImageScaling.scaleAxesIndependently
+        imageScrollView.documentView = imageView
+    }
+
     private func setupGestures() {
         let panGesture = NSPanGestureRecognizer(target: self, action: #selector(handleMousePan(_:)))
         view.addGestureRecognizer(panGesture)
 
-        let singleFingerPan = PanGestureRecognizer()
-        gestureManager.add(singleFingerPan, to: imageView)
+        singleFingerPan = PanGestureRecognizer()
+        gestureManager.add(singleFingerPan, to: imageScrollView)
         singleFingerPan.gestureUpdated = didPanDetailView(_:)
+
+        let pinchGesture = PinchGestureRecognizer()
+        gestureManager.add(pinchGesture, to: imageScrollView)
+        pinchGesture.gestureUpdated = didPinchDetailView(_:)
 
         let singleFingerCloseButtonTap = TapGestureRecognizer()
         gestureManager.add(singleFingerCloseButtonTap, to: dismissButton)
@@ -75,7 +96,6 @@ class ImageViewController: NSViewController, GestureResponder {
 
 
     // MARK: Gesture Handling
-
 
     private func didPanDetailView(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
@@ -89,6 +109,31 @@ class ImageViewController: NSViewController, GestureResponder {
             window.setFrameOrigin(origin)
         case .possible:
             WindowManager.instance.checkBounds(of: self)
+        default:
+            return
+        }
+    }
+
+    private func didPinchDetailView(_ gesture: GestureRecognizer) {
+        guard let pinch = gesture as? PinchGestureRecognizer else {
+            return
+        }
+
+        // For now this is necessairy, UBC-212 will look into invalidating gestures
+        singleFingerPan.reset()
+
+        switch pinch.state {
+        case .began:
+            contentViewFrame = imageScrollView.contentView.frame
+        case .recognized:
+            let newMagnification = imageScrollView.magnification + (pinch.scale - 1)
+            imageScrollView.setMagnification(newMagnification, centeredAt: pinch.lastPosition)
+            let currentRect = imageScrollView.contentView.bounds
+            let newOriginX = min(contentViewFrame.origin.x + contentViewFrame.width - currentRect.width, max(contentViewFrame.origin.x, currentRect.origin.x - pinch.delta.dx / newMagnification))
+            let newOriginY = min(contentViewFrame.origin.y + contentViewFrame.height - currentRect.height, max(contentViewFrame.origin.y, currentRect.origin.y - pinch.delta.dy / newMagnification))
+            imageScrollView.contentView.scroll(to: NSPoint(x: newOriginX, y: newOriginY))
+        case .possible:
+            imageScrollView.setMagnification(1, centeredAt: NSPoint(x: 0, y: 0))
         default:
             return
         }
@@ -121,4 +166,3 @@ class ImageViewController: NSViewController, GestureResponder {
         WindowManager.instance.closeWindow(for: self)
     }
 }
-
