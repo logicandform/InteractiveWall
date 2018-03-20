@@ -32,7 +32,6 @@ class ImageViewController: NSViewController, GestureResponder {
         view.layer?.backgroundColor = style.darkBackground.cgColor
         gestureManager = GestureManager(responder: self)
         titleTextField.stringValue = media.title ?? ""
-
         setupImageView()
         setupGestures()
     }
@@ -50,7 +49,6 @@ class ImageViewController: NSViewController, GestureResponder {
         guard media.type == .image else {
             return
         }
-
         imageView = NSImageView()
 
         // Load thumbnail first
@@ -66,7 +64,6 @@ class ImageViewController: NSViewController, GestureResponder {
                 self?.imageView.image = image
             }
         }
-
     }
 
     private func addImage(_ image: NSImage) {
@@ -170,4 +167,3 @@ class ImageViewController: NSViewController, GestureResponder {
         WindowManager.instance.closeWindow(for: self)
     }
 }
-
