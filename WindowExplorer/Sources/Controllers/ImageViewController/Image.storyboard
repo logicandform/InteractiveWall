@@ -47,7 +47,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
-                            <button ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Eov-6a-Ava">
+                            <button translatesAutoresizingMaskIntoConstraints="NO" id="Eov-6a-Ava">
                                 <rect key="frame" x="600" y="370" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="Zum-Mq-Ouc"/>
@@ -69,6 +69,7 @@
                         <constraints>
                             <constraint firstItem="WTp-wA-9SL" firstAttribute="top" relation="greaterThanOrEqual" secondItem="sSn-s5-6HM" secondAttribute="top" constant="16" id="10V-YT-T1W"/>
                             <constraint firstItem="Kbv-Qb-kGl" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="323-rI-eXP"/>
+                            <constraint firstAttribute="trailing" secondItem="Eov-6a-Ava" secondAttribute="trailing" id="GzN-aU-Pwc"/>
                             <constraint firstItem="WTp-wA-9SL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="8" id="X9j-4u-6FB"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="WTp-wA-9SL" secondAttribute="bottom" constant="33" id="Z1e-N5-aTr"/>
                             <constraint firstAttribute="trailing" secondItem="Kbv-Qb-kGl" secondAttribute="trailing" id="d3K-20-L63"/>
@@ -76,6 +77,7 @@
                             <constraint firstItem="Kbv-Qb-kGl" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="gli-yy-1FB"/>
                             <constraint firstAttribute="bottom" secondItem="Xxw-S7-yBy" secondAttribute="bottom" constant="8" id="irH-aF-J8T"/>
                             <constraint firstAttribute="trailing" secondItem="Kbv-Qb-kGl" secondAttribute="trailing" id="oEZ-Pn-EuB"/>
+                            <constraint firstItem="Eov-6a-Ava" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="vkh-Yi-L2Q"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="WTp-wA-9SL" secondAttribute="trailing" constant="8" id="xkr-jy-BVF"/>
                             <constraint firstItem="Xxw-S7-yBy" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="16" id="zgZ-lc-gaV"/>
                         </constraints>
