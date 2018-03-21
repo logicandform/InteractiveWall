@@ -52,8 +52,6 @@
 		22FEF1E1202D005D001E9596 /* TouchProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1E0202D005D001E9596 /* TouchProperties.swift */; };
 		3F0254F22049D521004B831C /* LastTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0254F12049D521004B831C /* LastTwo.swift */; };
 		3F2FAB5D204F7D9E002EDF5D /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2FAB5C204F7D9E002EDF5D /* Collection.swift */; };
-		3F3A401B205B469600270A91 /* CustomPathOverlayRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3A401A205B469600270A91 /* CustomPathOverlayRenderer.swift */; };
-		3F3A401D205C2F7700270A91 /* LocationOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3A401C205C2F7700270A91 /* LocationOverlay.swift */; };
 		3F5FAAAC206043D700CF275B /* CircleAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FAAAB206043D700CF275B /* CircleAnnotation.swift */; };
 		3F5FAAAE206043E600CF275B /* CircleAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FAAAD206043E600CF275B /* CircleAnnotationView.swift */; };
 		67C759AB770299C488231A9D /* Pods_All_MapExplorer_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */; };
@@ -124,8 +122,6 @@
 		39B2384F39CC84964B0970BD /* Pods-MapExplorer-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		3F0254F12049D521004B831C /* LastTwo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastTwo.swift; sourceTree = "<group>"; };
 		3F2FAB5C204F7D9E002EDF5D /* Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
-		3F3A401A205B469600270A91 /* CustomPathOverlayRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPathOverlayRenderer.swift; sourceTree = "<group>"; };
-		3F3A401C205C2F7700270A91 /* LocationOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationOverlay.swift; sourceTree = "<group>"; };
 		3F5FAAAB206043D700CF275B /* CircleAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleAnnotation.swift; sourceTree = "<group>"; };
 		3F5FAAAD206043E600CF275B /* CircleAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleAnnotationView.swift; sourceTree = "<group>"; };
 		8F1A1CBA205B41AC00A59A84 /* FlippedMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlippedMapView.swift; sourceTree = "<group>"; };
@@ -217,7 +213,7 @@
 				222AB407203DF8F5002BFAF2 /* Map.storyboard */,
 				22290C1F2028FA1E000E0573 /* MapViewController.swift */,
 				2204621120472E3C0067D9FB /* MapHandler.swift */,
-				3F946244205C59750056933C /* Overlays */,
+				3F946244205C59750056933C /* Annotations */,
 				22368E272037918F00D03A0E /* Views */,
 			);
 			path = MapViewController;
@@ -349,15 +345,13 @@
 			path = GestureDemoController;
 			sourceTree = "<group>";
 		};
-		3F946244205C59750056933C /* Overlays */ = {
+		3F946244205C59750056933C /* Annotations */ = {
 			isa = PBXGroup;
 			children = (
-				3F3A401C205C2F7700270A91 /* LocationOverlay.swift */,
-				3F3A401A205B469600270A91 /* CustomPathOverlayRenderer.swift */,
 				3F5FAAAB206043D700CF275B /* CircleAnnotation.swift */,
 				3F5FAAAD206043E600CF275B /* CircleAnnotationView.swift */,
 			);
-			path = Overlays;
+			path = Annotations;
 			sourceTree = "<group>";
 		};
 		3F962F2A202BB01D00B608D6 /* Data */ = {
@@ -568,7 +562,6 @@
 				221C629F203B4906009493DA /* School.swift in Sources */,
 				8F1A1CBB205B41AC00A59A84 /* FlippedMapView.swift in Sources */,
 				22FEF1D3202CFE8D001E9596 /* SwipeGestureRecognizer.swift in Sources */,
-				3F3A401D205C2F7700270A91 /* LocationOverlay.swift in Sources */,
 				22EF0FA8202B847200571002 /* CachingNetwork.swift in Sources */,
 				22290C092028F9EC000E0573 /* AppDelegate.swift in Sources */,
 				22290C392028FA35000E0573 /* CoreGraphics.swift in Sources */,
@@ -580,7 +573,6 @@
 				3F2FAB5D204F7D9E002EDF5D /* Collection.swift in Sources */,
 				22FEF1D7202CFE8D001E9596 /* TapGestureRecognizer.swift in Sources */,
 				2204621220472E3D0067D9FB /* MapHandler.swift in Sources */,
-				3F3A401B205B469600270A91 /* CustomPathOverlayRenderer.swift in Sources */,
 				22318DE0202B984F0092937C /* ResponseHandler.swift in Sources */,
 				22290C3C2028FA35000E0573 /* NetworkConfiguration.swift in Sources */,
 				22290C2E2028FA1F000E0573 /* Style.swift in Sources */,

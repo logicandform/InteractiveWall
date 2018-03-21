@@ -15,7 +15,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private var mapHandler: MapHandler?
     private var timeOfLastPan = Date()
     private var timeOfLastPinch = Date()
-    private var schoolForCircle = [CircleAnnotation: School]()
+    private var schoolForAnnotation = [CircleAnnotation: School]()
 
     private struct Constants {
         static let tileURL = "http:localhost:3200/{z}/{x}/{y}.pbf"
@@ -23,6 +23,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let maxZoomWidth: Double =  134217730
         static let annotationHitSize = CGSize(width: 50, height: 50)
         static let changeGestureTime: Double = 0.05
+        static let touchRect = CGRect(x: position.x - 20, y: position.y - 20, width: 40, height: 40)
+
     }
 
     private struct Keys {
@@ -149,15 +151,14 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             return
         }
 
-        let touchRect = CGRect(x: position.x - 20, y: position.y - 20, width: 40, height: 40)
         for annotation in mapView.annotations {
             let annotationPoint = mapView.convert(annotation.coordinate, toPointTo: mapView)
-            if touchRect.contains(annotationPoint) {
+            if Constants.touchRect.contains(annotationPoint) {
                 if tap.state == .began {
                     if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
-                        annotationView.wasTapped()
+                        annotationView.runAnimation()
                     }
-                } else if tap.state == .ended || tap.state == .possible, let annotation = annotation as? CircleAnnotation, let school = schoolForCircle[annotation] {
+                } else if tap.state == .ended || tap.state == .possible, let annotation = annotation as? CircleAnnotation, let school = schoolForAnnotation[annotation] {
                     postNotification(for: school, at: annotationPoint)
                 }
             }
@@ -229,8 +230,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         }
 
         if let pathOverlay = overlay as? LocationOverlay {
-            let renderer = CustomPathOverlayRenderer(overlay: pathOverlay)
-            return renderer
+            return CustomPathOverlayRenderer(overlay: pathOverlay)
         }
 
         return MKOverlayRenderer(overlay: overlay)
@@ -260,7 +260,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private func addAnnotations(for schools: [School]) {
         schools.forEach { school in
             let annotation = CircleAnnotation(coordinate: school.coordinate)
-            schoolForCircle[annotation] = school
+            schoolForAnnotation[annotation] = school
             mapView.addAnnotation(annotation)
         }
     }

@@ -41,12 +41,11 @@ class CircleAnnotationView: MKAnnotationView {
         }
     }
 
-    func wasTapped() {
+    func runAnimation() {
         animateCenter()
         animateInnerCircle()
         animateMiddleCircle()
         animateOuterCircle()
-
     }
 
     private func animateCenter() {
