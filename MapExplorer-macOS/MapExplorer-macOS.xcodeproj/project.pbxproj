@@ -54,7 +54,7 @@
 		3F2FAB5D204F7D9E002EDF5D /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2FAB5C204F7D9E002EDF5D /* Collection.swift */; };
 		3F3A401B205B469600270A91 /* CustomPathOverlayRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3A401A205B469600270A91 /* CustomPathOverlayRenderer.swift */; };
 		3F3A401D205C2F7700270A91 /* LocationOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3A401C205C2F7700270A91 /* LocationOverlay.swift */; };
-		3F5FAAAC206043D700CF275B /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FAAAB206043D700CF275B /* CustomAnnotation.swift */; };
+		3F5FAAAC206043D700CF275B /* CircleAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FAAAB206043D700CF275B /* CircleAnnotation.swift */; };
 		3F5FAAAE206043E600CF275B /* CircleAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FAAAD206043E600CF275B /* CircleAnnotationView.swift */; };
 		67C759AB770299C488231A9D /* Pods_All_MapExplorer_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */; };
 		8F1A1CBB205B41AC00A59A84 /* FlippedMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1A1CBA205B41AC00A59A84 /* FlippedMapView.swift */; };
@@ -126,7 +126,7 @@
 		3F2FAB5C204F7D9E002EDF5D /* Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		3F3A401A205B469600270A91 /* CustomPathOverlayRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPathOverlayRenderer.swift; sourceTree = "<group>"; };
 		3F3A401C205C2F7700270A91 /* LocationOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationOverlay.swift; sourceTree = "<group>"; };
-		3F5FAAAB206043D700CF275B /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
+		3F5FAAAB206043D700CF275B /* CircleAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleAnnotation.swift; sourceTree = "<group>"; };
 		3F5FAAAD206043E600CF275B /* CircleAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleAnnotationView.swift; sourceTree = "<group>"; };
 		8F1A1CBA205B41AC00A59A84 /* FlippedMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlippedMapView.swift; sourceTree = "<group>"; };
 		9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_MapExplorer_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -354,7 +354,7 @@
 			children = (
 				3F3A401C205C2F7700270A91 /* LocationOverlay.swift */,
 				3F3A401A205B469600270A91 /* CustomPathOverlayRenderer.swift */,
-				3F5FAAAB206043D700CF275B /* CustomAnnotation.swift */,
+				3F5FAAAB206043D700CF275B /* CircleAnnotation.swift */,
 				3F5FAAAD206043E600CF275B /* CircleAnnotationView.swift */,
 			);
 			path = Overlays;
@@ -557,7 +557,7 @@
 				226EA70120296C240067B542 /* NSImage.swift in Sources */,
 				22FEF1E1202D005D001E9596 /* TouchProperties.swift in Sources */,
 				221C62A8203B57F7009493DA /* URL.swift in Sources */,
-				3F5FAAAC206043D700CF275B /* CustomAnnotation.swift in Sources */,
+				3F5FAAAC206043D700CF275B /* CircleAnnotation.swift in Sources */,
 				3F5FAAAE206043E600CF275B /* CircleAnnotationView.swift in Sources */,
 				22A49873204749700024B46C /* JSON.swift in Sources */,
 				22290C302028FA1F000E0573 /* Discipline.swift in Sources */,
