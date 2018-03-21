@@ -119,11 +119,9 @@ class ImageViewController: NSViewController, GestureResponder {
             return
         }
 
-        // For now this is necessairy, UBC-212 will look into invalidating gestures
-        singleFingerPan.reset()
-
         switch pinch.state {
         case .began:
+            singleFingerPan.reset()
             contentViewFrame = imageScrollView.contentView.frame
         case .recognized:
             let newMagnification = imageScrollView.magnification + (pinch.scale - 1)
