@@ -120,11 +120,24 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return
         }
 
+        var currentHeight: CGFloat = 0
         titleLabel.stringValue = record.title
         dateLabel.stringValue = record.date ?? ""
-        for label in record.textFields {
+        let blankView = NSView(frame: stackView.frame)
+        blankView.wantsLayer = true
+        blankView.layer?.backgroundColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
+        blankView.needsDisplay = true
+        stackView.insertView(blankView, at: 0, in: .top)
+       for label in record.textFields {
             stackView.insertView(label, at: stackView.subviews.count, in: .top)
+            currentHeight += stackView.subviews[stackView.subviews.count - 1].frame.height
         }
+
+//        if currentHeight < stackView.frame.height {
+//
+//
+//            let blankView = NSView(frame: NSRect(x: 0, y: 0, width: 200, height: stackView.frame.height - currentHeight))
+//        }
     }
 
 
