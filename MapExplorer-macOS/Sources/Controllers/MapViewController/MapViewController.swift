@@ -5,7 +5,6 @@ import MapKit
 import MONode
 import PromiseKit
 import AppKit
-import Quartz
 
 
 class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, NSGestureRecognizerDelegate {
@@ -14,7 +13,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     @IBOutlet weak var mapView: FlippedMapView!
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
-
     private var timeOfLastPan = Date()
     private var timeOfLastPinch = Date()
     private var schoolForCircle = [CircleAnnotation: School]()
@@ -147,7 +145,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     /// If the tap is positioned on a selectable annotation, the annotation's didSelect function is invoked.
     private func didTapOnMap(_ gesture: GestureRecognizer) {
-
         guard let tap = gesture as? TapGestureRecognizer, let position = tap.position else {
             return
         }
