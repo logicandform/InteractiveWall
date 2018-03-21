@@ -13,15 +13,17 @@ class ImageViewController: NSViewController, GestureResponder {
     @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var dismissButton: NSView!
+    @IBOutlet weak var rotateButton: NSView!
     var imageView: NSImageView!
 
     private var thumbnailRequest: DataRequest?
     private var urlRequest: DataRequest?
     private var contentViewFrame: NSRect!
+    private var singleFingerPan: PanGestureRecognizer!
+    private var frameSize: NSSize!
+    private var imageIsRotated = false
     private(set) var gestureManager: GestureManager!
     var media: Media!
-
-    private var singleFingerPan: PanGestureRecognizer!
 
 
     // MARK: Life-cycle
@@ -68,12 +70,12 @@ class ImageViewController: NSViewController, GestureResponder {
 
     private func addImage(_ image: NSImage) {
         imageView.image = image
-        let scaleRatio = min(imageScrollView.frame.width / image.size.width, imageScrollView.frame.height / image.size.height)
-        let frameSize = NSSize(width: round(image.size.width * scaleRatio), height: round(image.size.height * scaleRatio))
+        imageView.imageScaling = NSImageScaling.scaleAxesIndependently
+        let scaleRatio =  min(imageScrollView.frame.width / image.size.width, imageScrollView.frame.height / image.size.height)
+        frameSize = NSSize(width: round(image.size.width * scaleRatio), height: round(image.size.height * scaleRatio))
         imageView.setFrameSize(frameSize)
         scrollViewHeightConstraint.constant = frameSize.height
         scrollViewWidthConstraint.constant = frameSize.width
-        imageView.imageScaling = NSImageScaling.scaleAxesIndependently
         imageScrollView.documentView = imageView
     }
 
@@ -92,6 +94,10 @@ class ImageViewController: NSViewController, GestureResponder {
         let singleFingerCloseButtonTap = TapGestureRecognizer()
         gestureManager.add(singleFingerCloseButtonTap, to: dismissButton)
         singleFingerCloseButtonTap.gestureUpdated = didTapCloseButton(_:)
+
+        let singleFingerRotateButtonTap = TapGestureRecognizer()
+        gestureManager.add(singleFingerRotateButtonTap, to: rotateButton)
+        singleFingerRotateButtonTap.gestureUpdated = didTapRotateButton(_:)
     }
 
 
@@ -132,19 +138,31 @@ class ImageViewController: NSViewController, GestureResponder {
             let newOriginX = min(contentViewFrame.origin.x + contentViewFrame.width - currentRect.width, max(contentViewFrame.origin.x, currentRect.origin.x - pinch.delta.dx / newMagnification))
             let newOriginY = min(contentViewFrame.origin.y + contentViewFrame.height - currentRect.height, max(contentViewFrame.origin.y, currentRect.origin.y - pinch.delta.dy / newMagnification))
             imageScrollView.contentView.scroll(to: NSPoint(x: newOriginX, y: newOriginY))
-        case .possible:
-            imageScrollView.setMagnification(1, centeredAt: NSPoint(x: 0, y: 0))
         default:
             return
         }
     }
 
     private func didTapCloseButton(_ gesture: GestureRecognizer) {
-        guard gesture is TapGestureRecognizer else {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
             return
         }
 
         WindowManager.instance.closeWindow(for: self)
+    }
+
+    private func didTapRotateButton(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
+            return
+        }
+
+        let tempWidth = frameSize.width
+        frameSize.width = frameSize.height
+        frameSize.height = tempWidth
+        scrollViewHeightConstraint.constant = frameSize.height
+        scrollViewWidthConstraint.constant = frameSize.width
+        imageView.setFrameSize(frameSize)
+        imageView.rotate(byDegrees: 90)
     }
 
     @objc

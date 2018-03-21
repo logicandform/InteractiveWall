@@ -65,14 +65,36 @@
                                     <constraint firstAttribute="width" constant="40" id="oTX-7V-WH0"/>
                                 </constraints>
                             </customView>
+                            <button translatesAutoresizingMaskIntoConstraints="NO" id="3fU-4f-ODM">
+                                <rect key="frame" x="0.0" y="370" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="0lq-Uc-ekV"/>
+                                    <constraint firstAttribute="height" constant="40" id="faw-sI-Tpy"/>
+                                </constraints>
+                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="rotate" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="8jt-jJ-NjK">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="1Fq-0s-pMM">
+                                <rect key="frame" x="0.0" y="370" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="N1P-FX-92G"/>
+                                    <constraint firstAttribute="height" constant="40" id="Zav-Ek-dcX"/>
+                                </constraints>
+                            </customView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="WTp-wA-9SL" firstAttribute="top" relation="greaterThanOrEqual" secondItem="sSn-s5-6HM" secondAttribute="top" constant="16" id="10V-YT-T1W"/>
+                            <constraint firstItem="WTp-wA-9SL" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" constant="16" id="10V-YT-T1W"/>
                             <constraint firstItem="Kbv-Qb-kGl" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="323-rI-eXP"/>
+                            <constraint firstItem="1Fq-0s-pMM" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="BKy-4Q-KEI"/>
                             <constraint firstAttribute="trailing" secondItem="Eov-6a-Ava" secondAttribute="trailing" id="GzN-aU-Pwc"/>
+                            <constraint firstItem="1Fq-0s-pMM" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" id="REg-yQ-W82"/>
                             <constraint firstItem="WTp-wA-9SL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="8" id="X9j-4u-6FB"/>
-                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="WTp-wA-9SL" secondAttribute="bottom" constant="33" id="Z1e-N5-aTr"/>
+                            <constraint firstItem="3fU-4f-ODM" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="XbG-Pl-t6P"/>
+                            <constraint firstAttribute="bottom" secondItem="WTp-wA-9SL" secondAttribute="bottom" constant="33" id="Z1e-N5-aTr"/>
                             <constraint firstAttribute="trailing" secondItem="Kbv-Qb-kGl" secondAttribute="trailing" id="d3K-20-L63"/>
+                            <constraint firstItem="3fU-4f-ODM" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" id="dLL-Xf-K3v"/>
                             <constraint firstItem="WTp-wA-9SL" firstAttribute="centerX" secondItem="sSn-s5-6HM" secondAttribute="centerX" id="eGb-ih-uVc"/>
                             <constraint firstItem="Kbv-Qb-kGl" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="gli-yy-1FB"/>
                             <constraint firstAttribute="bottom" secondItem="Xxw-S7-yBy" secondAttribute="bottom" constant="8" id="irH-aF-J8T"/>
@@ -85,6 +107,7 @@
                     <connections>
                         <outlet property="dismissButton" destination="Kbv-Qb-kGl" id="zX2-Io-uxz"/>
                         <outlet property="imageScrollView" destination="WTp-wA-9SL" id="ycY-PS-kHc"/>
+                        <outlet property="rotateButton" destination="1Fq-0s-pMM" id="Fyx-fz-xid"/>
                         <outlet property="scrollViewHeightConstraint" destination="6a5-LM-pyk" id="ezs-l7-7J3"/>
                         <outlet property="scrollViewWidthConstraint" destination="9p9-PZ-3bB" id="Qjd-UD-csq"/>
                         <outlet property="titleTextField" destination="Xxw-S7-yBy" id="cRy-et-eb1"/>
@@ -97,5 +120,6 @@
     </scenes>
     <resources>
         <image name="close-record" width="15" height="15"/>
+        <image name="rotate" width="512" height="512"/>
     </resources>
 </document>
