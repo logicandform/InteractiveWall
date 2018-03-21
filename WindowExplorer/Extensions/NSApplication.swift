@@ -14,4 +14,3 @@ extension NSScreen {
         return NSScreen.screens.first(where: { $0.frame.contains(CGPoint(x: x, y: 0)) })
     }
 }
-

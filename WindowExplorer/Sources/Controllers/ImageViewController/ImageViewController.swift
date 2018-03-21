@@ -162,7 +162,7 @@ class ImageViewController: NSViewController, GestureResponder {
         scrollViewHeightConstraint.constant = frameSize.height
         scrollViewWidthConstraint.constant = frameSize.width
         imageView.setFrameSize(frameSize)
-        imageView.rotate(byDegrees: 90)
+        imageView.rotate(byDegrees: -90)
     }
 
     @objc
