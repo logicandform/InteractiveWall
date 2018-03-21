@@ -22,6 +22,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         static let fromIdleBehaviorChangeThreshold: CGFloat = 20
         static let toIdleBehaviorChangeThreshold: CGFloat = 10
         static let cancelPanMomentumCounterThreshold = 20
+        static let resetActiveSpreadThreshold: CGFloat = 3
     }
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
@@ -124,11 +125,11 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             return
         }
 
-        let stateBeforeEnded = state
+        let shouldStartMomentum = state == .recognized
         state = .ended
         gestureUpdated?(self)
 
-        if let velocity = panVelocity, let scale = pinchScale, stateBeforeEnded == .recognized {
+        if let velocity = panVelocity, let scale = pinchScale, shouldStartMomentum {
             beginMomentum(velocity, scale)
         } else {
             reset()
@@ -306,11 +307,11 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private func updateIfSpreadContinued(with spread: CGFloat) {
         if let activeSpread = activeSpread {
             if behavior == .growing {
-                if spread - activeSpread > 3 {
+                if spread - activeSpread > Constants.resetActiveSpreadThreshold {
                     self.activeSpread = nil
                 }
             } else {
-                if activeSpread - spread > 3 {
+                if activeSpread - spread > Constants.resetActiveSpreadThreshold {
                     self.activeSpread = nil
                 }
             }
@@ -327,4 +328,3 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         return abs(time.timeIntervalSinceNow) > Constants.updateTimeInterval
     }
 }
-

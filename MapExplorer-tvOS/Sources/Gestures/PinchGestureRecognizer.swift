@@ -125,11 +125,11 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             return
         }
 
-        let stateBeforeEnded = state
+        let shouldStartMomentum = state == .recognized
         state = .ended
         gestureUpdated?(self)
 
-        if let velocity = panVelocity, let scale = pinchScale, stateBeforeEnded == .recognized {
+        if let velocity = panVelocity, let scale = pinchScale, shouldStartMomentum {
             beginMomentum(velocity, scale)
         } else {
             reset()
