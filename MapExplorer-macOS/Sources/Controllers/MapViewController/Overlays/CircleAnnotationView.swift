@@ -45,14 +45,14 @@ class CircleAnnotationView: MKAnnotationView {
         animateCenter()
         animateInnerCircle()
         animateMiddleCircle()
-        animatedOuterCircle()
+        animateOuterCircle()
 
     }
 
     private func animateCenter() {
         let animateScale = CABasicAnimation(keyPath: "transform.scale")
         animateScale.autoreverses = true
-        animateScale.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        animateScale.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         animateScale.fromValue = 0
         animateScale.toValue = 1
         animateScale.duration = 0.8
@@ -60,7 +60,7 @@ class CircleAnnotationView: MKAnnotationView {
 
         let animateCenter = CABasicAnimation(keyPath: "position")
         animateCenter.autoreverses = true
-        animateCenter.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        animateCenter.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         animateCenter.fromValue = [-0, -0]
         animateCenter.toValue = [-8, -8]
         animateCenter.duration = 0.8
@@ -68,64 +68,64 @@ class CircleAnnotationView: MKAnnotationView {
 
         let animateAlpha = CABasicAnimation(keyPath: "opacity")
         animateAlpha.autoreverses = true
-        animateAlpha.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        animateAlpha.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         animateAlpha.fromValue = 0
         animateAlpha.toValue = 1
         animateAlpha.duration = 0.8
         center.layer?.add(animateAlpha, forKey: "opacity")
     }
 
-    private func animatedOuterCircle() {
+    private func animateInnerCircle() {
         let animateScale = CABasicAnimation(keyPath: "transform.scale")
         animateScale.autoreverses = true
-        animateScale.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        animateScale.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         animateScale.fromValue = 1
         animateScale.toValue = 1.25
-        animateScale.duration = 0.25
+        animateScale.duration = 0.1
         circle3.layer?.add(animateScale, forKey: "transform.scale")
 
         let animateCenter = CABasicAnimation(keyPath: "position")
         animateCenter.autoreverses = true
-        animateCenter.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        animateCenter.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         animateCenter.fromValue = [-10, -10]
         animateCenter.toValue = [-12.5, -12.5]
-        animateCenter.duration = 0.25
+        animateCenter.duration = 0.1
         circle3.layer?.add(animateCenter, forKey: "position")
     }
 
     private func animateMiddleCircle() {
         let animateScale = CABasicAnimation(keyPath: "transform.scale")
         animateScale.autoreverses = true
-        animateScale.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        animateScale.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         animateScale.fromValue = 1
         animateScale.toValue = 1.333
-        animateScale.duration = 0.5
+        animateScale.duration = 0.2
         circle2.layer?.add(animateScale, forKey: "transform.scale")
 
         let animateCenter = CABasicAnimation(keyPath: "position")
         animateCenter.autoreverses = true
-        animateCenter.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        animateCenter.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         animateCenter.fromValue = [-15, -15]
         animateCenter.toValue = [-20, -20]
-        animateCenter.duration = 0.5
+        animateCenter.duration = 0.2
         circle2.layer?.add(animateCenter, forKey: "position")
     }
 
-    private func animateInnerCircle() {
+    private func animateOuterCircle() {
         let animateScale = CABasicAnimation(keyPath: "transform.scale")
         animateScale.autoreverses = true
-        animateScale.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        animateScale.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         animateScale.fromValue = 1
         animateScale.toValue = 1.25
-        animateScale.duration = 0.75
+        animateScale.duration = 0.3
         circle1.layer?.add(animateScale, forKey: "transform.scale")
 
         let animateCenter = CABasicAnimation(keyPath: "position")
         animateCenter.autoreverses = true
-        animateCenter.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        animateCenter.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         animateCenter.fromValue = [-20, -20]
         animateCenter.toValue = [-25, -25]
-        animateCenter.duration = 0.75
+        animateCenter.duration = 0.3
         circle1.layer?.add(animateCenter, forKey: "position")
     }
 }
