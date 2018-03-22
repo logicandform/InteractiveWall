@@ -23,6 +23,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let maxZoomWidth: Double =  134217730
         static let annotationHitSize = CGSize(width: 50, height: 50)
         static let changeGestureTime: Double = 0.05
+        static let touchRadius = 20
     }
 
     private struct Keys {
@@ -149,7 +150,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             return
         }
         
-        let touchRect = CGRect(x: position.x - 20, y: position.y - 20, width: 40, height: 40)
+        let touchRect = CGRect(x: position.x - Constants.touchRadius, y: position.y - Constants.touchRadius , width: Constants.touchRadius * 2, height: Constants.touchRadius * 2)
         for annotation in mapView.annotations {
             let annotationPoint = mapView.convert(annotation.coordinate, toPointTo: mapView)
             if touchRect.contains(annotationPoint) {
