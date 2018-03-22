@@ -100,6 +100,7 @@ extension Artifact: RecordDisplayable {
             label.lineBreakMode = .byWordWrapping
             labels.append(label)
         }
+
         return labels
     }
 
