@@ -4,7 +4,7 @@ import MONode
 
 class GestureDemoController: NSViewController, SocketManagerDelegate, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "Demo")
-    static let config = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12224)
+    static let config = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12221)
 
     let socketManager = SocketManager(networkConfiguration: config)
     var gestureManager: GestureManager!
@@ -77,12 +77,6 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
         rect.frame.size.height *= 1.1
     }
 
-    // For bouncing
-//    var hitTop = false
-//    var hitBottom = false
-//    var hitLeft = false
-//    var hitRight = false
-
     func rectPanned(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer else {
             return
@@ -96,61 +90,6 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
         default:
             return
         }
-
-        // This makes the object bounce off the edges when it hits, has some bugs, may be used for collisions later? must uncoment the hits about this func aswell
-//        switch pan.state {
-//        case .recognized:
-//            let newFrameOriginX = min(view.frame.origin.x + view.frame.width - rect.frame.width, max(view.frame.origin.x, rect.frame.origin.x + pan.delta.dx))
-//            let newFrameOriginY = min(view.frame.origin.y + view.frame.height - rect.frame.height, max(view.frame.origin.y, rect.frame.origin.y + pan.delta.dy))
-//            rect.frame.origin = CGPoint(x: newFrameOriginX, y: newFrameOriginY)
-//
-//            displayTouchIndicator(at: pan.centerOfGravity)
-//        case .momentum:
-//            var delta = pan.delta
-//
-//            if hitTop || hitBottom {
-//                delta.dy = -delta.dy
-//            }
-//
-//            if hitLeft || hitRight {
-//                delta.dx = -delta.dx
-//            }
-//
-//            if view.frame.origin.y + view.frame.height - rect.frame.height <= rect.frame.origin.y + delta.dy {
-//                if !hitBottom {
-//                    hitTop = true
-//                }
-//                delta.dy = -delta.dy
-//                hitBottom = false
-//            } else if view.frame.origin.y >= rect.frame.origin.y + pan.delta.dy {
-//                if !hitTop {
-//                    hitBottom = true
-//                }
-//                delta.dy = -delta.dy
-//                hitTop = false
-//            }
-//
-//            if view.frame.origin.x + view.frame.width - rect.frame.width <= rect.frame.origin.x + delta.dx {
-//                if !hitLeft {
-//                    hitRight = true
-//                }
-//                delta.dx = -delta.dx
-//                hitLeft = false
-//            } else if view.frame.origin.x >= rect.frame.origin.x + pan.delta.dx {
-//                if !hitRight {
-//                    hitLeft = true
-//                }
-//                delta.dx = -delta.dx
-//                hitRight = false
-//            }
-//
-//            let newFrameOriginX = rect.frame.origin.x + delta.dx
-//            let newFrameOriginY = rect.frame.origin.y + delta.dy
-//            rect.frame.origin = CGPoint(x: newFrameOriginX, y: newFrameOriginY)
-//
-//        default:
-//            return
-//        }
     }
 
     func rectPinched(_ gesture: GestureRecognizer) {
@@ -160,15 +99,15 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
 
         switch pinch.state {
         case .recognized, .momentum:
-            // For scaling from the center of the rectangle
-//            let translationX = (1 - pinch.scale) * rect.frame.size.width / 4
-//            let translationY = (1 - pinch.scale) * rect.frame.size.height / 4
-//            rect.frame.origin += CGPoint(x: translationX, y: translationY)
-
-
+            if pinch.scale > 2 {
+                
+            }
             let width = max(300, min(view.frame.width, rect.frame.size.width * pinch.scale))
             let height = max(300, min(view.frame.height, rect.frame.size.height * pinch.scale))
+            let newFrameOriginX = min(view.frame.origin.x + view.frame.width - rect.frame.width, max(view.frame.origin.x, rect.frame.origin.x + pinch.delta.dx))
+            let newFrameOriginY = min(view.frame.origin.y + view.frame.height - rect.frame.height, max(view.frame.origin.y, rect.frame.origin.y + pinch.delta.dy))
 
+            rect.frame.origin = CGPoint(x: newFrameOriginX, y: newFrameOriginY)
             rect.frame.size = CGSize(width: width, height: height)
         default:
             return

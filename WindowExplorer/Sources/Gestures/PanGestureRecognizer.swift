@@ -110,7 +110,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         return sqrt(pow(properties.cog.x - currentLocation.x, 2) + pow(properties.cog.y - currentLocation.y, 2)) > Constants.recognizedThreshhold
     }
 
-    private func shouldUpdateForPan() -> Bool {
+    private func shouldUpdate() -> Bool {
         return cumulativeDelta.magnitude > Constants.minimumDeltaUpdateThreshold && abs(timeOfLastUpdate.timeIntervalSinceNow) > Constants.updateTimeInterval
     }
 

@@ -16,14 +16,15 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
     private struct Pinch {
         static let initialScale: CGFloat = 1
+        static let numberOfFingers = 2
         static let minimumBehaviorChangeThreshold: CGFloat = 15
-        static let updateTimeInterval: Double = 1 / 60
     }
 
     private struct Pan {
         static let recognizedThreshhold: CGFloat = 20
         static let minimumFingers = 1
         static let minimumDeltaUpdateThreshold: Double = 4
+        static let updateTimeInterval: Double = 1 / 60
     }
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
@@ -36,6 +37,8 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private var spreads = LastTwo<CGFloat>()
     private var lastSpreadSinceUpdate: CGFloat!
     private var behavior = PinchBehavior.idle
+    private var currentSpread: CGFloat?
+    private var touchesForSpread: (Touch, Touch)?
 
     // Pan
     private var positionForTouch = [Touch: CGPoint]()
@@ -69,6 +72,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             momentumTimer?.invalidate()
             positionForTouch[touch] = touch.position
             lastTouchCount = positionForTouch.keys.count
+            setTouchesForPinch()
         default:
             return
         }
@@ -80,28 +84,36 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         }
 
         positionForTouch[touch] = touch.position
+        updateTouchesForSpread(with: touch)
 
         switch state {
         case .began:
             // Pinch
-            behavior = behavior(of: properties.spread)
+            if let touches = touchesForSpread {
+                let touchSpread = spread(for: touches)
+                behavior = behavior(of: touchSpread)
+            }
+
             state = .recognized
             fallthrough
         case .recognized:
             var update = shouldUpdate(for: timeOfLastUpdate)
 
             // Pinch
-            scale = properties.spread / lastSpreadSinceUpdate
-            if shouldRecognize(properties.spread) {
-                scale = properties.spread / lastSpreadSinceUpdate
-                spreads.add(properties.spread)
-                update = true
-            } else if changedBehavior(from: lastSpread, to: properties.spread) {
-                scale = Pinch.initialScale
-                behavior = behavior(of: properties.spread)
-                spreads.add(properties.spread)
-                lastSpreadSinceUpdate = properties.spread
-                update = true
+            if let touches = touchesForSpread {
+                let touchSpread = spread(for: touches)
+                if shouldRecognize(touchSpread) {
+                    scale = touchSpread / lastSpreadSinceUpdate
+                    spreads.add(touchSpread)
+                    lastSpreadSinceUpdate = touchSpread
+                    update = true
+                } else if changedBehavior(from: lastSpread, to: touchSpread) {
+                    scale = Pinch.initialScale
+                    behavior = behavior(of: touchSpread)
+                    spreads.add(touchSpread)
+                    lastSpreadSinceUpdate = touchSpread
+                    update = true
+                }
             }
 
             // Pan
@@ -114,15 +126,12 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             update = update || shouldUpdateForPan()
 
             if update {
-                // Pinch
-                lastSpreadSinceUpdate = properties.spread
-
                 // Pan
                 delta = cumulativeDelta
                 cumulativeDelta = .zero
 
-                timeOfLastUpdate = Date()
                 gestureUpdated?(self)
+                timeOfLastUpdate = Date()
             }
         default:
             return
@@ -131,6 +140,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
     func end(_ touch: Touch, with properties: TouchProperties) {
         positionForTouch.removeValue(forKey: touch)
+        setTouchesForPinch()
 
         guard properties.touchCount.isZero else {
             return
@@ -140,7 +150,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         state = .ended
         gestureUpdated?(self)
 
-        if shouldStartMomentum {
+        if shouldStartMomentum && false {
             let velocity = panVelocity ?? .zero
             let scale = pinchScale ?? Pinch.initialScale
             beginMomentum(velocity, scale)
@@ -203,7 +213,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         state = .momentum
         gestureUpdated?(self)
         momentumTimer?.invalidate()
-        momentumTimer = Timer.scheduledTimer(withTimeInterval: Pinch.updateTimeInterval, repeats: true) { [weak self] _ in
+        momentumTimer = Timer.scheduledTimer(withTimeInterval: Pan.updateTimeInterval, repeats: true) { [weak self] _ in
             self?.updateMomentum()
         }
     }
@@ -247,7 +257,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     }
 
 
-    // MARK: Helpers
+    // MARK: Pinch Helpers
 
     /// Returns the behavior of the spread based off the current last spread.
     private func behavior(of spread: CGFloat) -> PinchBehavior {
@@ -258,22 +268,43 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         return (spread - lastSpread > 0) ? .growing : .shrinking
     }
 
+    /// Returns true if the given spread is of the same behavior type, or the current behavior is idle
+    private func shouldRecognize(_ spread: CGFloat) -> Bool {
+        return behavior == behavior(of: spread) || behavior == .idle
+    }
+
     private func followsBehavior(scale: CGFloat) -> Bool {
         return (scale > 1 && behavior == .growing) || (scale < 1 && behavior == .shrinking)
     }
 
-    private func shouldUpdateForPan() -> Bool {
-        return cumulativeDelta.magnitude > Pan.minimumDeltaUpdateThreshold && abs(timeOfLastUpdate.timeIntervalSinceNow) > Pinch.updateTimeInterval
+    private func setTouchesForPinch() {
+        guard positionForTouch.keys.count == Pinch.numberOfFingers else {
+            touchesForSpread = nil
+            scale = Pinch.initialScale
+            return
+        }
+
+        let touches = positionForTouch.keys.sorted(by: { $0.id < $1.id })
+        let first = touches.first!
+        let last = touches.last!
+        touchesForSpread = (first, last)
+        let touchSpread = spread(for: (first, last))
+        lastSpreadSinceUpdate = touchSpread
+        behavior = .idle
     }
 
-    /// Returns true if the given spread is of the same behavior type, or the current behavior is idle
-    private func shouldRecognize(_ spread: CGFloat) -> Bool {
-        return behavior == behavior(of: spread) && behavior != .idle
+    private func updateTouchesForSpread(with touch: Touch) {
+        if let touches = touchesForSpread {
+            if touches.0 == touch {
+                touches.0.update(with: touch)
+            } else if touches.1 == touch {
+                touches.1.update(with: touch)
+            }
+        }
     }
 
-    /// Returns true if enough time has passed to send send the next update
-    private func shouldUpdate(for time: Date) -> Bool {
-        return abs(time.timeIntervalSinceNow) > Pinch.updateTimeInterval
+    private func spread(for touches: (first: Touch, second: Touch)) -> CGFloat {
+        return sqrt(pow(touches.first.position.x - touches.second.position.x, 2) + pow(touches.first.position.y - touches.second.position.y, 2))
     }
 
     /// If the newSpread has a different behavior and surpasses the minimum threshold, returns true
@@ -283,5 +314,17 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         }
 
         return false
+    }
+
+
+    // MARK: Pan Helpers
+
+    private func shouldUpdateForPan() -> Bool {
+        return cumulativeDelta.magnitude > Pan.minimumDeltaUpdateThreshold && abs(timeOfLastUpdate.timeIntervalSinceNow) > Pan.updateTimeInterval
+    }
+
+    /// Returns true if enough time has passed to send send the next update
+    private func shouldUpdate(for time: Date) -> Bool {
+        return abs(time.timeIntervalSinceNow) > Pan.updateTimeInterval
     }
 }
