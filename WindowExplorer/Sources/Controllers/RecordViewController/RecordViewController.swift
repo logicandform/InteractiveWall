@@ -17,7 +17,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     @IBOutlet weak var hideRelatedItemsButton: NSButton!
     @IBOutlet weak var closeWindowTapArea: NSView!
     @IBOutlet weak var toggleRelatedItemsArea: NSView!
-
+    
     var record: RecordDisplayable?
     private(set) var gestureManager: GestureManager!
     private var showingRelatedItems = false
@@ -123,11 +123,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         var currentHeight: CGFloat = 0
         titleLabel.stringValue = record.title
         dateLabel.stringValue = record.date ?? ""
-        let blankView = NSView(frame: stackView.frame)
-        blankView.wantsLayer = true
-        blankView.layer?.backgroundColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
-        blankView.needsDisplay = true
-        stackView.insertView(blankView, at: 0, in: .top)
+
        for label in record.textFields {
             stackView.insertView(label, at: stackView.subviews.count, in: .top)
             currentHeight += stackView.subviews[stackView.subviews.count - 1].frame.height
