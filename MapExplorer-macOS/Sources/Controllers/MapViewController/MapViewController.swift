@@ -23,7 +23,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let maxZoomWidth: Double =  134217730
         static let annotationHitSize = CGSize(width: 50, height: 50)
         static let changeGestureTime: Double = 0.05
-        static let touchRadius = 20
+        static let touchRadius: CGFloat = 20
     }
 
     private struct Keys {
