@@ -8,6 +8,7 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
 
     let socketManager = SocketManager(networkConfiguration: config)
     var gestureManager: GestureManager!
+    var updateForTouch = [Touch: Bool]()
     var rect: NSView!
 
     override func viewDidLoad() {
@@ -32,13 +33,8 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
 //        panGesture.gestureUpdated = rectPanned(_:)
 
         let pinchGesture = PinchGestureRecognizer()
-        gestureManager.add(pinchGesture, to: rect)
+        gestureManager.add(pinchGesture, to: view)
         pinchGesture.gestureUpdated = rectPinched(_:)
-    }
-
-    override func viewDidAppear() {
-        super.viewDidAppear()
-        //view.window?.toggleFullScreen(nil)
     }
 
 
@@ -49,24 +45,12 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
     }
 
     func handlePacket(_ packet: Packet) {
-        guard let touch = Touch(from: packet) else {
+        guard let touch = Touch(from: packet), shouldUpdate(touch) else {
             return
         }
 
         convertToScreen(touch)
-
         gestureManager.handle(touch)
-    }
-
-    /// Converts a position received from a touch screen to the coordinate of the current devices bounds.
-    private func convertToScreen(_ touch: Touch) {
-        guard let screen = NSScreen.screens.at(index: touch.screen) else {
-            return
-        }
-
-        let xPos = (touch.position.x / Configuration.touchScreenSize.width * CGFloat(screen.frame.width)) + screen.frame.origin.x
-        let yPos = (1 - touch.position.y / Configuration.touchScreenSize.height) * CGFloat(screen.frame.height)
-        touch.position = CGPoint(x: xPos, y: yPos)
     }
 
 
@@ -99,18 +83,49 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
 
         switch pinch.state {
         case .recognized, .momentum:
-            if pinch.scale > 2 {
-                
-            }
             let width = max(300, min(view.frame.width, rect.frame.size.width * pinch.scale))
             let height = max(300, min(view.frame.height, rect.frame.size.height * pinch.scale))
-            let newFrameOriginX = min(view.frame.origin.x + view.frame.width - rect.frame.width, max(view.frame.origin.x, rect.frame.origin.x + pinch.delta.dx))
-            let newFrameOriginY = min(view.frame.origin.y + view.frame.height - rect.frame.height, max(view.frame.origin.y, rect.frame.origin.y + pinch.delta.dy))
+            let translationX = (rect.frame.width - width) / 2
+            let translationY = (rect.frame.height - height) / 2
+            var originX = min(view.frame.origin.x + view.frame.width - rect.frame.width, max(view.frame.origin.x, rect.frame.origin.x + pinch.delta.dx))
+            var originY = min(view.frame.origin.y + view.frame.height - rect.frame.height, max(view.frame.origin.y, rect.frame.origin.y + pinch.delta.dy))
+            originX += translationX
+            originY += translationY
 
-            rect.frame.origin = CGPoint(x: newFrameOriginX, y: newFrameOriginY)
+            rect.frame.origin = CGPoint(x: originX, y: originY)
             rect.frame.size = CGSize(width: width, height: height)
         default:
             return
         }
     }
+
+
+    // MARK: Helpers
+
+    private func shouldUpdate(_ touch: Touch) -> Bool {
+        switch touch.state {
+        case .down:
+            updateForTouch[touch] = false
+        case .up:
+            updateForTouch.removeValue(forKey: touch)
+        case .moved:
+            let update = updateForTouch[touch]!
+            updateForTouch[touch] = !update
+            return update
+        }
+
+        return true
+    }
+
+    /// Converts a position received from a touch screen to the coordinate of the current devices bounds.
+    private func convertToScreen(_ touch: Touch) {
+        guard let screen = NSScreen.screens.at(index: touch.screen) else {
+            return
+        }
+
+        let xPos = (touch.position.x / Configuration.touchScreenSize.width * CGFloat(screen.frame.width)) + screen.frame.origin.x
+        let yPos = (1 - touch.position.y / Configuration.touchScreenSize.height) * CGFloat(screen.frame.height)
+        touch.position = CGPoint(x: xPos, y: yPos)
+    }
+
 }

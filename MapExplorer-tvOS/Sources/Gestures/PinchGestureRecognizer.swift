@@ -150,7 +150,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         state = .ended
         gestureUpdated?(self)
 
-        if shouldStartMomentum && false {
+        if shouldStartMomentum {
             let velocity = panVelocity ?? .zero
             let scale = pinchScale ?? Pinch.initialScale
             beginMomentum(velocity, scale)
@@ -175,6 +175,79 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     }
 
 
+    // MARK: Pinch Helpers
+
+    /// Returns the behavior of the spread based off the current last spread.
+    private func behavior(of spread: CGFloat) -> PinchBehavior {
+        guard let lastSpread = spreads.last else {
+            return .idle
+        }
+
+        return (spread - lastSpread > 0) ? .growing : .shrinking
+    }
+
+    /// Returns true if the given spread is of the same behavior type, or the current behavior is idle
+    private func shouldRecognize(_ spread: CGFloat) -> Bool {
+        return behavior == behavior(of: spread) || behavior == .idle
+    }
+
+    private func followsBehavior(scale: CGFloat) -> Bool {
+        return (scale > 1 && behavior == .growing) || (scale < 1 && behavior == .shrinking)
+    }
+
+    private func setTouchesForPinch() {
+        guard positionForTouch.keys.count == Pinch.numberOfFingers else {
+            touchesForSpread = nil
+            scale = Pinch.initialScale
+            behavior = .idle
+            return
+        }
+
+        let touches = positionForTouch.keys.sorted(by: { $0.id < $1.id })
+        let first = touches.first!
+        let last = touches.last!
+        touchesForSpread = (first, last)
+        let touchSpread = spread(for: (first, last))
+        lastSpreadSinceUpdate = touchSpread
+        behavior = .idle
+    }
+
+    private func updateTouchesForSpread(with touch: Touch) {
+        if let touches = touchesForSpread {
+            if touches.0 == touch {
+                touches.0.update(with: touch)
+            } else if touches.1 == touch {
+                touches.1.update(with: touch)
+            }
+        }
+    }
+
+    private func spread(for touches: (first: Touch, second: Touch)) -> CGFloat {
+        return sqrt(pow(touches.first.position.x - touches.second.position.x, 2) + pow(touches.first.position.y - touches.second.position.y, 2))
+    }
+
+    /// If the newSpread has a different behavior and surpasses the minimum threshold, returns true
+    private func changedBehavior(from oldSpread: CGFloat, to newSpread: CGFloat) -> Bool {
+        if behavior != behavior(of: newSpread), abs(oldSpread - newSpread) > Pinch.minimumBehaviorChangeThreshold {
+            return true
+        }
+
+        return false
+    }
+
+
+    // MARK: Pan Helpers
+
+    private func shouldUpdateForPan() -> Bool {
+        return cumulativeDelta.magnitude > Pan.minimumDeltaUpdateThreshold
+    }
+
+    /// Returns true if enough time has passed to send send the next update
+    private func shouldUpdate(for time: Date) -> Bool {
+        return abs(time.timeIntervalSinceNow) > Pan.updateTimeInterval
+    }
+
+
     // MARK: Momentum
 
     private struct Momentum {
@@ -194,13 +267,13 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         guard let last = locations.last, let secondLast = locations.secondLast else { return nil }
         return CGVector(dx: last.x - secondLast.x, dy: last.y - secondLast.y)
     }
-    
+
     private var pinchScale: CGFloat? {
         guard let last = spreads.last, let secondLast = spreads.secondLast else { return nil }
         let momentumScale = last / secondLast
         return followsBehavior(scale: momentumScale) ? momentumScale : Pinch.initialScale
     }
-    
+
     private func beginMomentum(_ velocity: CGVector, _ scale: CGFloat) {
         // Pinch
         pinchFrictionFactor = Momentum.pinchInitialFrictionFactor
@@ -254,77 +327,5 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         momentumTimer?.invalidate()
         reset()
         gestureUpdated?(self)
-    }
-
-
-    // MARK: Pinch Helpers
-
-    /// Returns the behavior of the spread based off the current last spread.
-    private func behavior(of spread: CGFloat) -> PinchBehavior {
-        guard let lastSpread = spreads.last else {
-            return .idle
-        }
-
-        return (spread - lastSpread > 0) ? .growing : .shrinking
-    }
-
-    /// Returns true if the given spread is of the same behavior type, or the current behavior is idle
-    private func shouldRecognize(_ spread: CGFloat) -> Bool {
-        return behavior == behavior(of: spread) || behavior == .idle
-    }
-
-    private func followsBehavior(scale: CGFloat) -> Bool {
-        return (scale > 1 && behavior == .growing) || (scale < 1 && behavior == .shrinking)
-    }
-
-    private func setTouchesForPinch() {
-        guard positionForTouch.keys.count == Pinch.numberOfFingers else {
-            touchesForSpread = nil
-            scale = Pinch.initialScale
-            return
-        }
-
-        let touches = positionForTouch.keys.sorted(by: { $0.id < $1.id })
-        let first = touches.first!
-        let last = touches.last!
-        touchesForSpread = (first, last)
-        let touchSpread = spread(for: (first, last))
-        lastSpreadSinceUpdate = touchSpread
-        behavior = .idle
-    }
-
-    private func updateTouchesForSpread(with touch: Touch) {
-        if let touches = touchesForSpread {
-            if touches.0 == touch {
-                touches.0.update(with: touch)
-            } else if touches.1 == touch {
-                touches.1.update(with: touch)
-            }
-        }
-    }
-
-    private func spread(for touches: (first: Touch, second: Touch)) -> CGFloat {
-        return sqrt(pow(touches.first.position.x - touches.second.position.x, 2) + pow(touches.first.position.y - touches.second.position.y, 2))
-    }
-
-    /// If the newSpread has a different behavior and surpasses the minimum threshold, returns true
-    private func changedBehavior(from oldSpread: CGFloat, to newSpread: CGFloat) -> Bool {
-        if behavior != behavior(of: newSpread), abs(oldSpread - newSpread) > Pinch.minimumBehaviorChangeThreshold {
-            return true
-        }
-
-        return false
-    }
-
-
-    // MARK: Pan Helpers
-
-    private func shouldUpdateForPan() -> Bool {
-        return cumulativeDelta.magnitude > Pan.minimumDeltaUpdateThreshold && abs(timeOfLastUpdate.timeIntervalSinceNow) > Pan.updateTimeInterval
-    }
-
-    /// Returns true if enough time has passed to send send the next update
-    private func shouldUpdate(for time: Date) -> Bool {
-        return abs(time.timeIntervalSinceNow) > Pan.updateTimeInterval
     }
 }
