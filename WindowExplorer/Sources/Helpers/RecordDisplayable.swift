@@ -160,6 +160,26 @@ extension School: RecordDisplayable {
     var textFields: [NSTextField] {
         var labels = [NSTextField]()
 
+        let titleText = NSAttributedString(string: title)
+        let label = NSTextField(labelWithAttributedString: titleText)
+        label.textColor = NSColor.white
+        label.drawsBackground = false
+        label.isBordered = false
+        label.isSelectable = false
+        label.font = NSFont.systemFont(ofSize: 24.0, weight: .semibold)
+        labels.append(label)
+
+        if let date = date {
+            let dateText = NSAttributedString(string: date)
+            let label = NSTextField(labelWithAttributedString: dateText)
+            label.textColor = style.selectedColor
+            label.drawsBackground = false
+            label.isBordered = false
+            label.isSelectable = false
+            label.font = NSFont.systemFont(ofSize: 17.0)
+            labels.append(label)
+        }
+
         if let description = description {
             let descriptionText = NSAttributedString(string: description)
             let label = NSTextField(labelWithAttributedString: descriptionText)
@@ -186,4 +206,13 @@ extension School: RecordDisplayable {
 
         return [schoolGroup, organizationGroup, artifactGroup, eventGroup]
     }
+
+
+    // MARK: Helpers
+
+//    private func formatText(String: label) {
+//        label.drawsBackground = false
+//        label.isBordered = false
+//        label.isSelectable = false
+//    }
 }

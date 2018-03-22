@@ -51,7 +51,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private func setupMediaView() {
         mediaView.register(MediaItemView.self, forItemWithIdentifier: MediaItemView.identifier)
 
-        pageControl.color = style.selectedColor
+        pageControl.color = NSColor.white
         pageControl.numberOfPages = UInt(record?.media.count ?? 0)
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.wantsLayer = true
@@ -120,8 +120,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return
         }
 
-        titleLabel.stringValue = record.title
-        dateLabel.stringValue = record.date ?? ""
         for label in record.textFields {
             stackView.insertView(label, at: stackView.subviews.count, in: .top)
         }

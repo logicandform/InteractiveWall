@@ -73,7 +73,7 @@ extension CLLocationCoordinate2D {
 
     // Example geolocation string: "Tofino [49.2761659,-126.0563673]"
     init?(string: String?) {
-        guard let location = string, let openingBracket = location.index(of: "["), let comma = location.index(of: ","), let closingBracket = location.index(of: "]") else {
+        guard let location = string, let openingBracket = location.index(of: "["), let comma = location.range(of: ",", options: String.CompareOptions.backwards, range: nil, locale: nil)?.lowerBound, let closingBracket = location.index(of: "]") else {
             return nil
         }
 
