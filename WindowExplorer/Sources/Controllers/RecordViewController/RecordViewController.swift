@@ -17,7 +17,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     @IBOutlet weak var hideRelatedItemsButton: NSButton!
     @IBOutlet weak var closeWindowTapArea: NSView!
     @IBOutlet weak var toggleRelatedItemsArea: NSView!
-    
     var record: RecordDisplayable?
     private(set) var gestureManager: GestureManager!
     private var showingRelatedItems = false
@@ -120,20 +119,11 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return
         }
 
-        var currentHeight: CGFloat = 0
         titleLabel.stringValue = record.title
         dateLabel.stringValue = record.date ?? ""
-
-       for label in record.textFields {
+        for label in record.textFields {
             stackView.insertView(label, at: stackView.subviews.count, in: .top)
-            currentHeight += stackView.subviews[stackView.subviews.count - 1].frame.height
         }
-
-//        if currentHeight < stackView.frame.height {
-//
-//
-//            let blankView = NSView(frame: NSRect(x: 0, y: 0, width: 200, height: stackView.frame.height - currentHeight))
-//        }
     }
 
 
