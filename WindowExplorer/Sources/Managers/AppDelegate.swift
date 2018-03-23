@@ -25,7 +25,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         WindowManager.instance.registerForNotifications()
         TouchManager.instance.setupTouchSocket()
-        WindowManager.instance.displayArtifact(id: 1587, at: CGPoint(x: 3000, y: 500))
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

@@ -54,9 +54,9 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
         let panGesture = NSPanGestureRecognizer(target: self, action: #selector(handleMousePan(_:)))
         view.addGestureRecognizer(panGesture)
 
-        let singleFingerTap = TapGestureRecognizer()
-        super.gestureManager.add(singleFingerTap, to: playerView)
-        singleFingerTap.gestureUpdated = didTapVideoPlayer(_:)
+        let singleFingerPlayerTap = TapGestureRecognizer()
+        gestureManager.add(singleFingerPlayerTap, to: playerView)
+        singleFingerPlayerTap.gestureUpdated = didTapVideoPlayer(_:)
 
         let singleFingerPlayerControlTap = TapGestureRecognizer()
         gestureManager.add(singleFingerPlayerControlTap, to: playerControl.smallPlayerStateImageView)
