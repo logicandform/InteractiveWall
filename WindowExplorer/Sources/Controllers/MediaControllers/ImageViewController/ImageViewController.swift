@@ -19,6 +19,10 @@ class ImageViewController: MediaViewController, GestureResponder {
     private var thumbnailRequest: DataRequest?
     private var urlRequest: DataRequest?
     private var contentViewFrame: NSRect!
+    private var frameSize: NSSize!
+    
+    // This is needed here to work until Tim fixes the gestures so only 1 will fire
+    private var singleFingerPan: PanGestureRecognizer!
 
 
     // MARK: Life-cycle
