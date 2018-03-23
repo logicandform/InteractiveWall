@@ -23,7 +23,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let maxZoomWidth: Double =  134217730
         static let annotationHitSize = CGSize(width: 50, height: 50)
         static let changeGestureTime: Double = 0.05
-        static let touchRadius: CGFloat = 20
     }
 
     private struct Keys {
@@ -149,11 +148,15 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         guard let tap = gesture as? TapGestureRecognizer, let position = tap.position else {
             return
         }
-        
-        let touchRect = CGRect(x: position.x - Constants.touchRadius, y: position.y - Constants.touchRadius , width: Constants.touchRadius * 2, height: Constants.touchRadius * 2)
+
+        //let touchRect = CGRect(x: position.x - Constants.touchRadius, y: position.y - Constants.touchRadius , width: Constants.touchRadius * 2, height: Constants.touchRadius * 2)
         for annotation in mapView.annotations {
-            let annotationPoint = mapView.convert(annotation.coordinate, toPointTo: mapView)
-            if touchRect.contains(annotationPoint) {
+
+            var annotationPoint = mapView.convert(annotation.coordinate, toPointTo: mapView)
+            annotationPoint.y = (view.window?.frame.height)! - annotationPoint.y
+            let point = CGPoint(x: annotationPoint.x - Constants.annotationHitSize.width / 2.0, y: annotationPoint.y - Constants.annotationHitSize.width / 2.0)
+            let annotationSize = NSRect(origin: point, size: Constants.annotationHitSize)
+            if annotationSize.contains(position) {
                 if tap.state == .began {
                     if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
                         annotationView.runAnimation()
