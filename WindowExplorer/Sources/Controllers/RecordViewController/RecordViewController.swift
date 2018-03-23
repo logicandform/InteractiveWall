@@ -361,14 +361,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func selectMediaItem(_ media: Media) {
-        guard let window = view.window, let windowType = WindowType(for: media) else {
+        guard let window = view.window, let windowType = WindowType(for: media), !positionsForMediaControllers.keys.contains(where: {$0.media == media}) else {
             return
-        }
-
-        for controller in positionsForMediaControllers.keys {
-            if controller.media! == media {
-                return
-            }
         }
 
         let position = positionsForMediaControllers.values.max() != nil ? positionsForMediaControllers.values.max()! + 1 : 0
@@ -376,7 +370,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         let offsetY = position * Constants.offsetY
 
         let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins + CGFloat(offsetX), y: window.frame.maxY - windowType.size.height + CGFloat(offsetY))
-        if let mediaController = WindowManager.instance.display(windowType, at: origin) {
+        if let mediaController = WindowManager.instance.display(windowType, at: origin) as? MediaViewController {
             positionsForMediaControllers[mediaController] = position
             mediaController.delegate = self
         }

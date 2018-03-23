@@ -40,7 +40,7 @@ final class WindowManager {
     }
 
     @discardableResult
-    func display(_ type: WindowType, at origin: CGPoint) -> MediaViewController? {
+    func display(_ type: WindowType, at origin: CGPoint) -> NSViewController? {
         let window = WindowFactory.window(for: type, at: origin)
 
         if let controller = window.contentViewController {
@@ -48,7 +48,7 @@ final class WindowManager {
                 windows[window] = responder.gestureManager
             }
 
-            return controller as? MediaViewController
+            return controller
         }
 
         return nil
@@ -58,11 +58,7 @@ final class WindowManager {
     func checkBounds(of controller: NSViewController) {
 
         guard let screenIndex = controller.view.window?.screen?.index else {
-            if let mediaController = controller as? MediaViewController {
-                mediaController.close()
-            } else{
-                closeWindow(for: controller)
-            }
+            dismissWindow(for: controller)
             return
         }
 
@@ -73,11 +69,15 @@ final class WindowManager {
         }
 
         if !indicies.contains(screenIndex) {
-            if let mediaController = controller as? MediaViewController {
-                mediaController.close()
-            } else{
-                closeWindow(for: controller)
-            }
+            dismissWindow(for: controller)
+        }
+    }
+
+    private func dismissWindow(for controller: NSViewController) {
+        if let mediaController = controller as? MediaViewController {
+            mediaController.close()
+        } else{
+            closeWindow(for: controller)
         }
     }
 
