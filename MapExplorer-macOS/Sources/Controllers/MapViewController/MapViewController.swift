@@ -15,15 +15,13 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private var mapHandler: MapHandler?
     private let touchListener = TouchListener()
     private var recordForAnnotation = [CircleAnnotation: Record]()
-    private var timeOfLastPan = Date()
-    private var timeOfLastPinch = Date()
 
     private struct Constants {
         static let tileURL = "http://localhost:3200/v2/tiles/{z}/{x}/{y}.pbf"
         static let annotationContainerClass = "MKNewAnnotationContainerView"
         static let maxZoomWidth: Double =  134217730
         static let touchRadius: CGFloat = 20.0
-        static let changeGestureTime: Double = 0.05
+        static let annotationHitSize = CGSize(width: 50, height: 50)
     }
 
     private struct Keys {
@@ -87,24 +85,24 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     // MARK: Gesture handling
 
     private func didPinchOnMap(_ gesture: GestureRecognizer) {
-        guard let pinch = gesture as? PinchGestureRecognizer, abs(timeOfLastPan.timeIntervalSinceNow) > Constants.changeGestureTime else {
+        guard let pinch = gesture as? PinchGestureRecognizer else {
             return
         }
 
         switch pinch.state {
         case .recognized, .momentum:
             var mapRect = mapView.visibleMapRect
+            print(pinch.spreads.last)
             let scaledWidth = (2 - Double(pinch.scale)) * mapRect.size.width
             let scaledHeight = (2 - Double(pinch.scale)) * mapRect.size.height
             var translationX = -Double(pinch.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
             var translationY = Double(pinch.delta.dy) * mapRect.size.height / Double(mapView.frame.height)
             if scaledWidth <= Constants.maxZoomWidth {
-                translationX += (mapRect.size.width - scaledWidth) * Double(pinch.locations.last!.x / mapView.frame.width)
-                translationY += (mapRect.size.height - scaledHeight) * (1 - Double(pinch.locations.last!.y / mapView.frame.height))
+                translationX += (mapRect.size.width - scaledWidth) * Double(pinch.center.x / mapView.frame.width)
+                translationY += (mapRect.size.height - scaledHeight) * (1 - Double(pinch.center.y / mapView.frame.height))
                 mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
             }
             mapRect.origin += MKMapPoint(x: translationX, y: translationY)
-            timeOfLastPinch = Date()
             mapHandler?.send(mapRect)
         case .ended:
             mapHandler?.endActivity()
