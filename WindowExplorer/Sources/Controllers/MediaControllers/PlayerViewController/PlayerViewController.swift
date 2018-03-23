@@ -11,6 +11,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
     @IBOutlet weak var playerView: AVPlayerView!
     @IBOutlet weak var playerControl: PlayerControl!
     @IBOutlet weak var dismissButton: NSView!
+    @IBOutlet weak var playerStateImageView: NSImageView!
 
     private struct Constants {
         static let playerStateIndicatorRadius: CGFloat = 25
@@ -43,6 +44,10 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
         playerControl.player = player
         playerControl.gestureManager = super.gestureManager
         playerControl.delegate = self
+
+        playerStateImageView.wantsLayer = true
+        playerStateImageView.layer?.cornerRadius = playerStateImageView.frame.width / 2
+        playerStateImageView.layer?.backgroundColor = style.darkBackground.cgColor
     }
 
     private func setupGestures() {
@@ -52,6 +57,10 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
         let singleFingerTap = TapGestureRecognizer()
         super.gestureManager.add(singleFingerTap, to: playerView)
         singleFingerTap.gestureUpdated = didTapVideoPlayer(_:)
+
+        let singleFingerPlayerControlTap = TapGestureRecognizer()
+        gestureManager.add(singleFingerPlayerControlTap, to: playerControl.smallPlayerStateImageView)
+        singleFingerPlayerControlTap.gestureUpdated = didTapVideoPlayer(_:)
 
         let singleFingerPan = PanGestureRecognizer()
         super.gestureManager.add(singleFingerPan, to: playerView)
@@ -123,20 +132,21 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
     // MARK: PlayerControlDelegate
 
     func playerChangedState(_ state: PlayerState) {
-        guard let image = state.image else {
-            return
+        let alpha: CGFloat!
+        if let image = state.image {
+            playerStateImageView.image = image
+            alpha = 1.0
+        } else {
+            alpha = 0.0
         }
 
-        let imageView = NSImageView(image: image)
-        let radius = Constants.playerStateIndicatorRadius
-        imageView.frame = CGRect(origin: CGPoint(x: playerView.frame.midX - radius, y: playerView.frame.midY - radius), size: CGSize(width: radius * 2, height: radius * 2))
-        playerView.addSubview(imageView)
+        if let smallImage = state.smallImage {
+            playerControl.smallPlayerStateImageView.image = smallImage
+        }
 
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = 1.0
-            imageView.animator().alphaValue = 0.0
-        }, completionHandler: {
-            imageView.removeFromSuperview()
+            playerStateImageView.animator().alphaValue = alpha
         })
     }
 }

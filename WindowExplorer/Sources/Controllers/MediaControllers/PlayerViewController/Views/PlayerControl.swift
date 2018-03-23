@@ -12,6 +12,7 @@ protocol PlayerControlDelegate: class {
 class PlayerControl: NSView {
     static let nib = NSNib.Name(rawValue: "PlayerControl")
 
+    @IBOutlet weak var smallPlayerStateImageView: NSImageView!
     @IBOutlet var contentView: NSView!
     @IBOutlet weak var seekBar: NSSlider!
     @IBOutlet weak var currentTimeLabel: NSTextField!

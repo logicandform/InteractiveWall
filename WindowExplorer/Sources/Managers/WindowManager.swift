@@ -111,4 +111,16 @@ final class WindowManager {
             print(error)
         }
     }
+
+    func displayArtifact(id: Int, at location: CGPoint) {
+        firstly {
+            CachingNetwork.getArtifact(by: id)
+            }.then { [weak self] artifact -> Void in
+                let windowType = WindowType.record(artifact)
+                let origin = location - CGPoint(x: windowType.size.width / 2, y: windowType.size.height)
+                self?.display(windowType, at: origin)
+            }.catch { error in
+                print(error)
+        }
+    }
 }

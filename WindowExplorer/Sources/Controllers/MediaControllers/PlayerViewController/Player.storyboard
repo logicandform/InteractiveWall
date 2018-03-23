@@ -28,42 +28,53 @@
                                 </constraints>
                             </avPlayerView>
                             <button translatesAutoresizingMaskIntoConstraints="NO" id="7W9-O9-b3K">
-                                <rect key="frame" x="592" y="361" width="40" height="40"/>
+                                <rect key="frame" x="610" y="379" width="20" height="20"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="OOK-cK-T1H"/>
-                                    <constraint firstAttribute="width" constant="40" id="rRz-5P-FhR"/>
+                                    <constraint firstAttribute="width" constant="20" id="0yE-Wj-5vU"/>
+                                    <constraint firstAttribute="height" constant="20" id="DJk-8i-wOB"/>
                                 </constraints>
-                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="g11-zl-E95">
+                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="enlarge-icon" imagePosition="overlaps" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="g11-zl-E95">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                             </button>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="zHy-N6-K3a">
-                                <rect key="frame" x="592" y="361" width="40" height="40"/>
+                                <rect key="frame" x="600" y="369" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="5B6-ZV-JEX"/>
                                     <constraint firstAttribute="width" constant="40" id="ILd-TJ-OcZ"/>
                                 </constraints>
                             </customView>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rpo-GW-82A">
+                                <rect key="frame" x="280" y="186" width="80" height="80"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="YaW-r6-WrD"/>
+                                    <constraint firstAttribute="width" constant="80" id="q58-RC-Xym"/>
+                                </constraints>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="play-icon" id="2FP-9r-ptl"/>
+                            </imageView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="0vf-bx-Jlv" firstAttribute="leading" secondItem="X51-8y-Yv7" secondAttribute="leading" constant="8" id="3q3-NL-IBD"/>
-                            <constraint firstItem="zHy-N6-K3a" firstAttribute="trailing" secondItem="0vf-bx-Jlv" secondAttribute="trailing" id="4Sa-A5-3Mp"/>
+                            <constraint firstItem="7W9-O9-b3K" firstAttribute="top" secondItem="X51-8y-Yv7" secondAttribute="top" constant="10" id="5ed-Z6-UDy"/>
                             <constraint firstItem="0vf-bx-Jlv" firstAttribute="top" secondItem="X51-8y-Yv7" secondAttribute="top" constant="8" id="6a0-d7-akl"/>
                             <constraint firstItem="Ps0-Dg-pIZ" firstAttribute="top" secondItem="0vf-bx-Jlv" secondAttribute="bottom" id="H83-yK-FP1"/>
+                            <constraint firstItem="zHy-N6-K3a" firstAttribute="centerX" secondItem="7W9-O9-b3K" secondAttribute="centerX" id="KT8-JS-NBB"/>
                             <constraint firstItem="Ps0-Dg-pIZ" firstAttribute="leading" secondItem="X51-8y-Yv7" secondAttribute="leading" id="UMO-xU-1zs"/>
                             <constraint firstItem="0vf-bx-Jlv" firstAttribute="width" secondItem="0vf-bx-Jlv" secondAttribute="height" multiplier="16:9" id="WXL-NG-4zx"/>
-                            <constraint firstItem="7W9-O9-b3K" firstAttribute="trailing" secondItem="0vf-bx-Jlv" secondAttribute="trailing" id="a7O-FI-L5U"/>
+                            <constraint firstItem="Rpo-GW-82A" firstAttribute="centerX" secondItem="0vf-bx-Jlv" secondAttribute="centerX" id="YLU-P8-n3W"/>
                             <constraint firstAttribute="bottom" secondItem="Ps0-Dg-pIZ" secondAttribute="bottom" id="g3o-Aj-AgD"/>
                             <constraint firstAttribute="trailing" secondItem="Ps0-Dg-pIZ" secondAttribute="trailing" id="h5O-NQ-cBk"/>
                             <constraint firstAttribute="trailing" secondItem="0vf-bx-Jlv" secondAttribute="trailing" constant="8" id="hwI-qv-g5r"/>
-                            <constraint firstItem="zHy-N6-K3a" firstAttribute="top" secondItem="0vf-bx-Jlv" secondAttribute="top" id="naP-Jq-Xxo"/>
-                            <constraint firstItem="7W9-O9-b3K" firstAttribute="top" secondItem="0vf-bx-Jlv" secondAttribute="top" id="ygK-Na-XPy"/>
+                            <constraint firstItem="Rpo-GW-82A" firstAttribute="centerY" secondItem="0vf-bx-Jlv" secondAttribute="centerY" id="i73-AD-mUX"/>
+                            <constraint firstItem="zHy-N6-K3a" firstAttribute="centerY" secondItem="7W9-O9-b3K" secondAttribute="centerY" id="sJI-xm-v2I"/>
+                            <constraint firstAttribute="trailing" secondItem="7W9-O9-b3K" secondAttribute="trailing" constant="10" id="yyN-Fl-FDr"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="dismissButton" destination="zHy-N6-K3a" id="5MY-vH-Xld"/>
                         <outlet property="playerControl" destination="Ps0-Dg-pIZ" id="xav-8S-1Y9"/>
+                        <outlet property="playerStateImageView" destination="Rpo-GW-82A" id="adX-N3-pbR"/>
                         <outlet property="playerView" destination="0vf-bx-Jlv" id="6cP-UG-tfS"/>
                     </connections>
                 </viewController>
@@ -72,4 +83,8 @@
             <point key="canvasLocation" x="592" y="-463"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="enlarge-icon" width="41" height="42"/>
+        <image name="play-icon" width="21" height="21"/>
+    </resources>
 </document>

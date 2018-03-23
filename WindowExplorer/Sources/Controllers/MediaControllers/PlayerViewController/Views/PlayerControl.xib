@@ -11,6 +11,7 @@
                 <outlet property="currentTimeLabel" destination="IOp-BE-Ma6" id="l9z-jc-45f"/>
                 <outlet property="durationLabel" destination="KTF-Qn-y4E" id="hf0-TP-oDz"/>
                 <outlet property="seekBar" destination="8jO-Ld-nn0" id="dUA-Dh-Qsv"/>
+                <outlet property="smallPlayerStateImageView" destination="Ubj-9h-laa" id="cHS-6f-XKy"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
@@ -48,8 +49,19 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <imageView translatesAutoresizingMaskIntoConstraints="NO" id="Ubj-9h-laa">
+                    <rect key="frame" x="0.0" y="0.0" width="47" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="PjM-np-IE3"/>
+                        <constraint firstAttribute="width" constant="47" id="sYy-w1-whJ"/>
+                    </constraints>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="play-icon-small" id="vWK-aG-IuH"/>
+                </imageView>
             </subviews>
             <constraints>
+                <constraint firstItem="Ubj-9h-laa" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="58z-hK-91m"/>
+                <constraint firstAttribute="bottom" secondItem="Ubj-9h-laa" secondAttribute="bottom" id="EGg-g1-VnU"/>
+                <constraint firstItem="Ubj-9h-laa" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="KT2-Xu-XQH"/>
                 <constraint firstItem="8jO-Ld-nn0" firstAttribute="leading" secondItem="IOp-BE-Ma6" secondAttribute="trailing" constant="20" id="LiS-Vm-01r"/>
                 <constraint firstItem="KTF-Qn-y4E" firstAttribute="centerY" secondItem="IOp-BE-Ma6" secondAttribute="centerY" id="RF5-8r-NGG"/>
                 <constraint firstItem="IOp-BE-Ma6" firstAttribute="centerY" secondItem="8jO-Ld-nn0" secondAttribute="centerY" id="WJB-Cd-YpO"/>
@@ -59,4 +71,7 @@
             </constraints>
         </customView>
     </objects>
+    <resources>
+        <image name="play-icon-small" width="11" height="11"/>
+    </resources>
 </document>
