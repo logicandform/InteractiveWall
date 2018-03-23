@@ -18,7 +18,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private var schoolForAnnotation = [CircleAnnotation: School]()
 
     private struct Constants {
-        static let tileURL = "http:localhost:3200/{z}/{x}/{y}.pbf"
+        static let tileURL = "http://localhost:3200/v2/tiles/{z}/{x}/{y}.pbf"
         static let annotationContainerClass = "MKNewAnnotationContainerView"
         static let maxZoomWidth: Double =  134217730
         static let touchRadius: CGFloat = 20.0
@@ -54,9 +54,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         mapHandler = MapHandler(mapView: mapView, id: appID)
 //        mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
 //        mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
-//        let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
-//        overlay.canReplaceMapContent = true
-//        mapView.add(overlay)
+        let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
+        overlay.canReplaceMapContent = true
+        mapView.add(overlay)
         createPlaces()
     }
 
@@ -157,9 +157,11 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                 if tap.state == .began {
                     if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
                         annotationView.runAnimation()
+                        return
                     }
                 } else if tap.state == .ended || tap.state == .possible, let annotation = annotation as? CircleAnnotation, let school = schoolForAnnotation[annotation] {
-                    postNotification(for: school, at: annotationPoint)
+                    postNotification(for: school, at: CGPoint(x: annotationPoint.x, y: annotationPoint.y - 20.0))
+                    return
                 }
             }
         }
