@@ -36,7 +36,6 @@ class CircleAnnotationView: MKAnnotationView {
         circle3.layer?.cornerRadius = 10
         center.layer?.cornerRadius = 8
         center.alphaValue = 0
-
         addSubview(circle1)
         addSubview(circle2)
         addSubview(circle3)

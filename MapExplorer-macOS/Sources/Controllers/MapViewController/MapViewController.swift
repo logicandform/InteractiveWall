@@ -21,7 +21,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let tileURL = "http:localhost:3200/{z}/{x}/{y}.pbf"
         static let annotationContainerClass = "MKNewAnnotationContainerView"
         static let maxZoomWidth: Double =  134217730
-        static let annotationHitSize = CGSize(width: 50, height: 50)
+        static let touchRadius: CGFloat = 20.0
         static let changeGestureTime: Double = 0.05
     }
 
@@ -149,14 +149,11 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             return
         }
 
-        //let touchRect = CGRect(x: position.x - Constants.touchRadius, y: position.y - Constants.touchRadius , width: Constants.touchRadius * 2, height: Constants.touchRadius * 2)
+        let touchRect = CGRect(x: position.x - Constants.touchRadius, y: position.y - Constants.touchRadius, width: Constants.touchRadius * 2, height: Constants.touchRadius * 2)
         for annotation in mapView.annotations {
-
             var annotationPoint = mapView.convert(annotation.coordinate, toPointTo: mapView)
             annotationPoint.y = (view.window?.frame.height)! - annotationPoint.y
-            let point = CGPoint(x: annotationPoint.x - Constants.annotationHitSize.width / 2.0, y: annotationPoint.y - Constants.annotationHitSize.width / 2.0)
-            let annotationSize = NSRect(origin: point, size: Constants.annotationHitSize)
-            if annotationSize.contains(position) {
+            if touchRect.contains(annotationPoint) {
                 if tap.state == .began {
                     if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
                         annotationView.runAnimation()
