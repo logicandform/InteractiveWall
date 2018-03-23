@@ -100,16 +100,6 @@ extension Event: RecordDisplayable {
 
 extension Artifact: RecordDisplayable {
 
-    private func removeHtml(text: String) -> String {
-        guard let arrowLeft = text.index(of: "<"), let arrowRight = text.index(of: ">") else {
-            return text
-        }
-        var textParse = text
-        let range = arrowLeft...arrowRight
-        textParse.removeSubrange(range)
-        return removeHtml(text: textParse)
-    }
-
     var date: String? {
         return nil
     }
@@ -183,8 +173,6 @@ extension Organization: RecordDisplayable {
     var date: String? {
         return nil
     }
-
-    
 
     var textFields: [NSTextField] {
         var labels = [NSTextField]()
