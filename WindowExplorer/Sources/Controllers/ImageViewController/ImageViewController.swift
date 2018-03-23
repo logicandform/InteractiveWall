@@ -21,7 +21,6 @@ class ImageViewController: NSViewController, GestureResponder {
     private var contentViewFrame: NSRect!
     private var singleFingerPan: PanGestureRecognizer!
     private var frameSize: NSSize!
-    private var imageIsRotated = false
     private(set) var gestureManager: GestureManager!
     var media: Media!
 
