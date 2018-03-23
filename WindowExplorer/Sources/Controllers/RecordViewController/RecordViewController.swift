@@ -3,7 +3,7 @@
 import Cocoa
 import AppKit
 
-class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource, NSTableViewDataSource, NSTableViewDelegate, GestureResponder {
+class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource, NSTableViewDataSource, NSTableViewDelegate, GestureResponder, MediaControllerDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Record")
 
     @IBOutlet weak var detailView: NSView!
@@ -22,10 +22,12 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private(set) var gestureManager: GestureManager!
     private var showingRelatedItems = false
     private var pageControl = PageControl()
+    private var positionsForMediaControllers = [MediaViewController: Int]()
     
     private struct Constants {
         static let tableRowHeight: CGFloat = 60
         static let windowMargins: CGFloat = 20
+        static let offsetX = 50
     }
 
 
@@ -362,8 +364,20 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return
         }
 
-        let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins, y: window.frame.maxY - windowType.size.height)
-        WindowManager.instance.display(windowType, at: origin)
+        for controller in positionsForMediaControllers.keys {
+            if controller.media! == media {
+                return
+            }
+        }
+
+        let position = positionsForMediaControllers.values.max() != nil ? positionsForMediaControllers.values.max()! + 1 : 0
+        let offsetX = position * Constants.offsetX
+
+        let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins + CGFloat(offsetX), y: window.frame.maxY - windowType.size.height)
+        if let mediaController = WindowManager.instance.display(windowType, at: origin) {
+            positionsForMediaControllers[mediaController] = position
+            mediaController.delegate = self
+        }
     }
 
 
@@ -409,5 +423,12 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
         return false
+    }
+
+
+    // MARK: MediaControllerDelegate
+
+    func closeWindow(for mediaController: MediaViewController) {
+        positionsForMediaControllers.removeValue(forKey: mediaController)
     }
 }

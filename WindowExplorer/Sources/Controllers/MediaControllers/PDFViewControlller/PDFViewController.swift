@@ -3,7 +3,7 @@
 import Cocoa
 import Quartz
 
-class PDFViewController: NSViewController, GestureResponder {
+class PDFViewController: MediaViewController, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "PDF")
 
     @IBOutlet weak var pdfView: PDFView!
@@ -13,8 +13,6 @@ class PDFViewController: NSViewController, GestureResponder {
     @IBOutlet weak var forwardTapArea: NSView!
     private var thumbnailClipView: NSClipView!
 
-    var gestureManager: GestureManager!
-    var media: Media!
     var document: PDFDocument!
     let leftArrow = ArrowControl()
     let rightArrow = ArrowControl()
@@ -32,7 +30,7 @@ class PDFViewController: NSViewController, GestureResponder {
         super.viewDidLoad()
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
-        gestureManager = GestureManager(responder: self)
+        super.gestureManager = GestureManager(responder: self)
         if let scrollView = pdfThumbnailView.subviews.last as? NSScrollView, let clipView = scrollView.subviews.first(where: { $0 is NSClipView }) as? NSClipView {
             thumbnailClipView = clipView
         }
@@ -51,7 +49,7 @@ class PDFViewController: NSViewController, GestureResponder {
     // MARK: Setup
 
     private func setupPDF() {
-        guard media.type == .pdf else {
+        guard super.media.type == .pdf else {
             return
         }
 
@@ -60,7 +58,7 @@ class PDFViewController: NSViewController, GestureResponder {
         pdfView.backgroundColor = .clear
         pdfThumbnailView.pdfView = pdfView
 
-        document = PDFDocument(url: media.url)
+        document = PDFDocument(url: super.media.url)
         pdfView.document = document
     }
 
@@ -93,19 +91,19 @@ class PDFViewController: NSViewController, GestureResponder {
         view.addGestureRecognizer(panGesture)
 
         let windowPan = PanGestureRecognizer()
-        gestureManager.add(windowPan, to: view)
+        super.gestureManager.add(windowPan, to: view)
         windowPan.gestureUpdated = handleWindowPan(_:)
 
         let thumbnailViewPan = PanGestureRecognizer()
-        gestureManager.add(thumbnailViewPan, to: thumbnailClipView)
+        super.gestureManager.add(thumbnailViewPan, to: thumbnailClipView)
         thumbnailViewPan.gestureUpdated = handleThumbnailViewPan(_:)
 
         let thumbnailViewTap = TapGestureRecognizer()
-        gestureManager.add(thumbnailViewTap, to: thumbnailClipView)
+        super.gestureManager.add(thumbnailViewTap, to: thumbnailClipView)
         thumbnailViewTap.gestureUpdated = didTapThumbnailView(_:)
 
         let previousPageTap = TapGestureRecognizer()
-        gestureManager.add(previousPageTap, to: backTapArea)
+        super.gestureManager.add(previousPageTap, to: backTapArea)
         previousPageTap.gestureUpdated = { [weak self] tap in
             if tap.state == .ended {
                 self?.pdfView.goToPreviousPage(self)
@@ -114,7 +112,7 @@ class PDFViewController: NSViewController, GestureResponder {
         }
 
         let nextPageTap = TapGestureRecognizer()
-        gestureManager.add(nextPageTap, to: forwardTapArea)
+        super.gestureManager.add(nextPageTap, to: forwardTapArea)
         nextPageTap.gestureUpdated = { [weak self] tap in
             if tap.state == .ended {
                 self?.pdfView.goToNextPage(self)
@@ -123,7 +121,7 @@ class PDFViewController: NSViewController, GestureResponder {
         }
 
         let singleFingerCloseButtonTap = TapGestureRecognizer()
-        gestureManager.add(singleFingerCloseButtonTap, to: closeButtonView)
+        super.gestureManager.add(singleFingerCloseButtonTap, to: closeButtonView)
         singleFingerCloseButtonTap.gestureUpdated = didTapCloseButton(_:)
     }
 
@@ -178,13 +176,11 @@ class PDFViewController: NSViewController, GestureResponder {
     }
 
     private func didTapCloseButton(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer else {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
             return
         }
 
-        if tap.state == .ended {
-            WindowManager.instance.closeWindow(for: self)
-        }
+        super.close()
     }
 
     @objc
@@ -203,7 +199,7 @@ class PDFViewController: NSViewController, GestureResponder {
     // MARK: IB-Actions
 
     @IBAction func closeButtonTapped(_ sender: Any) {
-        WindowManager.instance.closeWindow(for: self)
+        super.close()
     }
 
 

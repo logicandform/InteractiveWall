@@ -39,18 +39,30 @@ final class WindowManager {
         }
     }
 
-    func display(_ type: WindowType, at origin: CGPoint) {
+    @discardableResult
+    func display(_ type: WindowType, at origin: CGPoint) -> MediaViewController? {
         let window = WindowFactory.window(for: type, at: origin)
 
-        if let controller = window.contentViewController as? GestureResponder {
-            windows[window] = controller.gestureManager
+        if let controller = window.contentViewController {
+            if let responder = controller as? GestureResponder {
+                windows[window] = responder.gestureManager
+            }
+
+            return controller as? MediaViewController
         }
+
+        return nil
     }
 
     // If the none of the screens contain the detail view, dealocate it
     func checkBounds(of controller: NSViewController) {
+
         guard let screenIndex = controller.view.window?.screen?.index else {
-            closeWindow(for: controller)
+            if let mediaController = controller as? MediaViewController {
+                mediaController.close()
+            } else{
+                closeWindow(for: controller)
+            }
             return
         }
 
@@ -61,7 +73,11 @@ final class WindowManager {
         }
 
         if !indicies.contains(screenIndex) {
-            closeWindow(for: controller)
+            if let mediaController = controller as? MediaViewController {
+                mediaController.close()
+            } else{
+                closeWindow(for: controller)
+            }
         }
     }
 

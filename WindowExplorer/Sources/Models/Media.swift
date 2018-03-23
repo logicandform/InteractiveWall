@@ -26,7 +26,7 @@ enum MediaType {
     }
 }
 
-struct Media {
+struct Media: Equatable {
     let url: URL
     let thumbnail: URL
     let title: String?
@@ -37,5 +37,13 @@ struct Media {
         self.thumbnail = thumbnail
         self.title = title
         self.type = MediaType(for: url)
+    }
+
+    static func ==(lhs: Media, rhs: Media) -> Bool {
+        return
+            lhs.url == rhs.url &&
+            lhs.thumbnail == rhs.thumbnail &&
+            lhs.title == rhs.title &&
+            lhs.type == rhs.type
     }
 }

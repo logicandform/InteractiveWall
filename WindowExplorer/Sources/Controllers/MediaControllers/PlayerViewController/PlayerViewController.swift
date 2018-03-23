@@ -5,15 +5,12 @@ import AVKit
 import AppKit
 
 
-class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResponder {
+class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "Player")
 
     @IBOutlet weak var playerView: AVPlayerView!
     @IBOutlet weak var playerControl: PlayerControl!
     @IBOutlet weak var dismissButton: NSView!
-
-    private(set) var gestureManager: GestureManager!
-    var media: Media!
 
     private struct Constants {
         static let playerStateIndicatorRadius: CGFloat = 25
@@ -26,7 +23,7 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
         super.viewDidLoad()
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
-        gestureManager = GestureManager(responder: self)
+        super.gestureManager = GestureManager(responder: self)
 
         setupPlayer()
         setupGestures()
@@ -36,15 +33,15 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
     // MARK: Setup
 
     private func setupPlayer() {
-        guard media.type == .video else {
+        guard super.media.type == .video else {
             return
         }
 
-        let player = AVPlayer(url: media.url)
+        let player = AVPlayer(url: super.media.url)
         playerView.player = player
 
         playerControl.player = player
-        playerControl.gestureManager = gestureManager
+        playerControl.gestureManager = super.gestureManager
         playerControl.delegate = self
     }
 
@@ -53,15 +50,15 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
         view.addGestureRecognizer(panGesture)
 
         let singleFingerTap = TapGestureRecognizer()
-        gestureManager.add(singleFingerTap, to: playerView)
+        super.gestureManager.add(singleFingerTap, to: playerView)
         singleFingerTap.gestureUpdated = didTapVideoPlayer(_:)
 
         let singleFingerPan = PanGestureRecognizer()
-        gestureManager.add(singleFingerPan, to: playerView)
+        super.gestureManager.add(singleFingerPan, to: playerView)
         singleFingerPan.gestureUpdated = didPanDetailView(_:)
 
         let singleFingerCloseButtonTap = TapGestureRecognizer()
-        gestureManager.add(singleFingerCloseButtonTap, to: dismissButton)
+        super.gestureManager.add(singleFingerCloseButtonTap, to: dismissButton)
         singleFingerCloseButtonTap.gestureUpdated = didTapCloseButton(_:)
     }
 
@@ -96,11 +93,11 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
     }
 
     private func didTapCloseButton(_ gesture: GestureRecognizer) {
-        guard gesture is TapGestureRecognizer else {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
             return
         }
 
-        WindowManager.instance.closeWindow(for: self)
+        super.close()
     }
 
     @objc
@@ -119,7 +116,7 @@ class PlayerViewController: NSViewController, PlayerControlDelegate, GestureResp
     // MARK: IB-Actions
 
     @IBAction func closeButtonTapped(_ sender: Any) {
-        WindowManager.instance.closeWindow(for: self)
+        super.close()
     }
 
 
