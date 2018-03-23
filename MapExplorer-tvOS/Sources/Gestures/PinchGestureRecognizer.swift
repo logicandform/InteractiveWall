@@ -5,7 +5,7 @@ import AppKit
 
 
 /// Used to define the behavior of a PinchGestureRecognizer as its receiving move updates.
-fileprivate enum PinchBehavior {
+fileprivate enum PinchBehavior: String {
     case growing
     case shrinking
     case idle
@@ -17,7 +17,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private struct Pinch {
         static let initialScale: CGFloat = 1
         static let numberOfFingers = 2
-        static let minimumBehaviorChangeThreshold: CGFloat = 15
+        static let minimumBehaviorChangeThreshold: CGFloat = 20
     }
 
     private struct Pan {
@@ -97,22 +97,19 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             state = .recognized
             fallthrough
         case .recognized:
-            var update = shouldUpdate(for: timeOfLastUpdate)
-
             // Pinch
             if let touches = touchesForSpread {
                 let touchSpread = spread(for: touches)
                 if shouldRecognize(touchSpread) {
                     scale = touchSpread / lastSpreadSinceUpdate
+                    behavior = behavior(of: touchSpread)
                     spreads.add(touchSpread)
-                    lastSpreadSinceUpdate = touchSpread
-                    update = true
                 } else if changedBehavior(from: lastSpread, to: touchSpread) {
                     scale = Pinch.initialScale
                     behavior = behavior(of: touchSpread)
                     spreads.add(touchSpread)
-                    lastSpreadSinceUpdate = touchSpread
-                    update = true
+                } else {
+                    scale = Pinch.initialScale
                 }
             }
 
@@ -123,14 +120,16 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             delta = offset.asVector / CGFloat(lastTouchCount)
             cumulativeDelta += delta
             locations.add(currentLocation + delta)
-            update = update || shouldUpdateForPan()
 
-            if update {
+            if shouldUpdate(for: timeOfLastUpdate) {
                 // Pan
                 delta = cumulativeDelta
                 cumulativeDelta = .zero
 
                 gestureUpdated?(self)
+                if let touchSpread = touchesForSpread {
+                    lastSpreadSinceUpdate = spread(for: touchSpread)
+                }
                 timeOfLastUpdate = Date()
             }
         default:
@@ -199,7 +198,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         guard positionForTouch.keys.count == Pinch.numberOfFingers else {
             touchesForSpread = nil
             scale = Pinch.initialScale
-            behavior = .idle
             return
         }
 
@@ -209,7 +207,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         touchesForSpread = (first, last)
         let touchSpread = spread(for: (first, last))
         lastSpreadSinceUpdate = touchSpread
-        behavior = .idle
     }
 
     private func updateTouchesForSpread(with touch: Touch) {

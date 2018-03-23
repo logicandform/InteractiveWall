@@ -106,7 +106,7 @@ class MapHandler {
             if let fromGroup = info[Keys.group] as? Int {
                 updateMappings(fromGroup: fromGroup, to: nil)
                 ungroup(from: fromGroup)
-                findGroupIfNeeded()
+//                findGroupIfNeeded()
             }
         default:
             return

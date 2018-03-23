@@ -45,6 +45,10 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
         setupMap()
         setupGestures()
+<<<<<<< HEAD
+=======
+        registerForNotifications()
+>>>>>>> Updated pinch gesture.
     }
 
 
@@ -74,41 +78,15 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         gestureManager.add(tapGesture, to: mapView)
         tapGesture.gestureUpdated = didTapOnMap(_:)
 
-//        let panGesture = PanGestureRecognizer(withFingers: [1, 2, 3, 4, 5])
-//        gestureManager.add(panGesture, to: mapView)
-//        panGesture.gestureUpdated = didPanOnMap(_:)
-
         let pinchGesture = PinchGestureRecognizer()
         gestureManager.add(pinchGesture, to: mapView)
-        pinchGesture.gestureUpdated = didZoomOnMap(_:)
+        pinchGesture.gestureUpdated = didPinchOnMap(_:)
     }
 
 
     // MARK: Gesture handling
 
-    private func didPanOnMap(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, pan.lastTouchCount != 2, abs(timeOfLastPinch.timeIntervalSinceNow) > Constants.changeGestureTime else {
-            return
-        }
-
-        switch pan.state {
-        case .recognized, .momentum:
-            var mapRect = mapView.visibleMapRect
-            let translationX = Double(pan.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
-            let translationY = Double(pan.delta.dy) * mapRect.size.height / Double(mapView.frame.height)
-            mapRect.origin -= MKMapPoint(x: translationX, y: -translationY)
-            timeOfLastPan = Date()
-            mapHandler?.send(mapRect, for: pan.state)
-        case .ended:
-            mapHandler?.endActivity()
-        case .possible:
-            mapHandler?.endUpdates()
-        default:
-            return
-        }
-    }
-
-    private func didZoomOnMap(_ gesture: GestureRecognizer) {
+    private func didPinchOnMap(_ gesture: GestureRecognizer) {
         guard let pinch = gesture as? PinchGestureRecognizer, abs(timeOfLastPan.timeIntervalSinceNow) > Constants.changeGestureTime else {
             return
         }
