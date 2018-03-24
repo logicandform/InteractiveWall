@@ -5,19 +5,22 @@ import Foundation
 /// Implementation of a listener that uses a message port
 ///
 /// This class is derived from NSObject so that the Objective-C-based callback function can use it.
-public class TouchListener: NSObject {
+class TouchListener: NSObject {
+
+    var receivedTouch: ((Touch) -> Void)?
+
 
     /// Create the local message port then register an input source for it
-    public func addSourceForNewLocalMessagePort(name: String, toRunLoop runLoop: RunLoop) {
+    func listenToPort(named name: String) {
         if let messagePort = createMessagePort(name: name) {
-            addSource(messagePort: messagePort, toRunLoop: runLoop)
+            addSource(messagePort: messagePort, toRunLoop: RunLoop.current)
         }
     }
 
     /// Create a local message port with the specified name
     ///
     /// Incoming messages will be routed to this object's handleMessageWithID(,data:) method.
-    public func createMessagePort(name: String) -> CFMessagePort? {
+    private func createMessagePort(name: String) -> CFMessagePort? {
         let callback = GetListenerCallback()
         var context = CFMessagePortContext(
             version: 0,
@@ -36,17 +39,18 @@ public class TouchListener: NSObject {
     }
 
     /// Create an input source for the specified message port and add it to the specified run loop
-    public func addSource(messagePort: CFMessagePort, toRunLoop runLoop: RunLoop) {
+    private func addSource(messagePort: CFMessagePort, toRunLoop runLoop: RunLoop) {
         let source = CFMessagePortCreateRunLoopSource(nil, messagePort, 0)
         CFRunLoopAddSource(runLoop.getCFRunLoop(), source, CFRunLoopMode.commonModes)
     }
 
     /// Called by the message port callback function
-    public func handleTouch(data: Data) {
-//        if let touch = Touch(data: data) {
-//            print(touch)
-//        } else {
-//            print("FAILED")
-//        }
+    @objc
+    func handleTouch(data: Data) {
+        if let touch = Touch(data: data) {
+            receivedTouch?(touch)
+        } else {
+            print("FAILED")
+        }
     }
 }

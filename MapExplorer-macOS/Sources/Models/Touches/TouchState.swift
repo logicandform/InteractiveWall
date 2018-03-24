@@ -3,7 +3,7 @@
 import Foundation
 import MONode
 
-enum TouchState: String {
+enum TouchState: Int {
     case down
     case up
     case moved
@@ -26,7 +26,7 @@ enum TouchState: String {
     }
 
     init?(json: JSON) {
-        guard let rawValue = json[Keys.rawValue] as? String, let type = TouchState(rawValue: rawValue) else {
+        guard let rawValue = json[Keys.rawValue] as? Int, let type = TouchState(rawValue: rawValue) else {
             return nil
         }
 

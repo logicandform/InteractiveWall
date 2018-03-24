@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		220329092066F20900FFD9E2 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220329082066F20900FFD9E2 /* Data.swift */; };
 		2204621220472E3D0067D9FB /* MapHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204621120472E3C0067D9FB /* MapHandler.swift */; };
 		22046267204732A40067D9FB /* WindowNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046265204732A40067D9FB /* WindowNotifications.swift */; };
 		22046268204732A40067D9FB /* MapNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046266204732A40067D9FB /* MapNotifications.swift */; };
@@ -74,6 +75,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		220329082066F20900FFD9E2 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		2204621120472E3C0067D9FB /* MapHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapHandler.swift; sourceTree = "<group>"; };
 		22046265204732A40067D9FB /* WindowNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowNotifications.swift; sourceTree = "<group>"; };
 		22046266204732A40067D9FB /* MapNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapNotifications.swift; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 				226EA70020296C240067B542 /* NSImage.swift */,
 				221C62A7203B57F7009493DA /* URL.swift */,
 				22B1E2A92045F2EE00BDDF14 /* AVKit.swift */,
+				220329082066F20900FFD9E2 /* Data.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -564,6 +567,7 @@
 				221C62A8203B57F7009493DA /* URL.swift in Sources */,
 				3F5FAAAC206043D700CF275B /* CircleAnnotation.swift in Sources */,
 				3F5FAAAE206043E600CF275B /* CircleAnnotationView.swift in Sources */,
+				220329092066F20900FFD9E2 /* Data.swift in Sources */,
 				22A49873204749700024B46C /* JSON.swift in Sources */,
 				22290C302028FA1F000E0573 /* Discipline.swift in Sources */,
 				22F0EDFD2066DA1E0075E467 /* ListenerCallback.m in Sources */,

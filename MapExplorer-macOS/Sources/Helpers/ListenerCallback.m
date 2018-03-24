@@ -7,7 +7,7 @@
 /// Calls listener.handleMessageWithID(,data:)
 static CFDataRef ListenerCallback(CFMessagePortRef local, SInt32 msgid, CFDataRef data, void *info) {
     TouchListener *listener = (__bridge TouchListener *)info;
-    // How to call [listener handleTouch]
+    [listener handleTouchWithData:(__bridge NSData *) data];
     return NULL;
 }
 

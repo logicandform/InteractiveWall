@@ -64,6 +64,29 @@ class Touch: Hashable, CustomStringConvertible {
         self.state = state
     }
 
+    init?(data: Data) {
+        var index = 0
+        let packetSize = data.extract(UInt32.self, at: index)
+        if data.count < Int(packetSize) {
+            return nil
+        }
+        index += MemoryLayout.size(ofValue: packetSize)
+        self.id = Int(data.extract(Int32.self, at: index))
+        index += MemoryLayout<Int32>.size
+        self.screen = Int(data.extract(Int32.self, at: index))
+        index += MemoryLayout<Int32>.size
+        let stateRawValue = Int(data.extract(Int8.self, at: index))
+        guard let touchState = TouchState(rawValue: stateRawValue) else {
+            return nil
+        }
+        self.state = touchState
+        index += MemoryLayout<Int8>.size
+        let x = data.extract(CGFloat.self, at: index)
+        index += MemoryLayout<CGFloat>.size
+        let y = data.extract(CGFloat.self, at: index)
+        position = CGPoint(x: x, y: y)
+    }
+
 
     // MARK: API
 
@@ -81,6 +104,20 @@ class Touch: Hashable, CustomStringConvertible {
 
     func toJSON() -> JSON {
         return [Keys.id: id, Keys.screen: screen, Keys.position: position.toJSON(), Keys.state: state.toJSON()]
+    }
+
+    func toData() -> Data {
+        let basePacketSize = MemoryLayout<UInt32>.size * 3 + MemoryLayout<UInt8>.size + MemoryLayout<CGFloat>.size * 2
+        let packetSize = UInt32(basePacketSize)
+        var packetData = Data(capacity: Int(packetSize))
+
+        packetData.append(packetSize)
+        packetData.append(Int32(id))
+        packetData.append(Int32(screen))
+        packetData.append(Int8(state.rawValue))
+        packetData.append(position.x)
+        packetData.append(position.y)
+        return packetData
     }
 
     static func == (lhs: Touch, rhs: Touch) -> Bool {

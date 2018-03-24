@@ -13,6 +13,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     @IBOutlet weak var mapView: FlippedMapView!
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
+    private let touchListener = TouchListener()
     private var timeOfLastPan = Date()
     private var timeOfLastPinch = Date()
     private var schoolForAnnotation = [CircleAnnotation: School]()
@@ -38,9 +39,13 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     override func viewDidLoad() {
         super.viewDidLoad()
         gestureManager = GestureManager(responder: self)
+        touchListener.listenToPort(named: "MapListener\(appID)")
+        touchListener.receivedTouch = { [weak self] touch in
+            self?.gestureManager.handle(touch)
+        }
+
         setupMap()
         setupGestures()
-        registerForNotifications()
     }
 
 
@@ -77,12 +82,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         let pinchGesture = PinchGestureRecognizer()
         gestureManager.add(pinchGesture, to: mapView)
         pinchGesture.gestureUpdated = didZoomOnMap(_:)
-    }
-
-    private func registerForNotifications() {
-        for notification in TouchNotifications.allValues {
-            DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
-        }
     }
 
 
@@ -186,29 +185,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             mapHandler?.endUpdates()
         default:
             return
-        }
-    }
-
-
-    // MARK: Notification Handling
-
-    @objc
-    private func handleNotification(_ notification: NSNotification) {
-        switch notification.name {
-        case TouchNotifications.touchEvent.name:
-            handleTouch(notification)
-        default:
-            return
-        }
-    }
-
-    private func handleTouch(_ notification: NSNotification) {
-        guard let info = notification.userInfo, let mapID = info[Keys.map] as? Int, let touchJSON = info[Keys.touch] as? JSON, let touch = Touch(json: touchJSON) else {
-            return
-        }
-
-        if mapID == appID {
-            gestureManager.handle(touch)
         }
     }
 
