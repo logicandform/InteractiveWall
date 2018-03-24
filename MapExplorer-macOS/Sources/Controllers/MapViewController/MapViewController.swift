@@ -92,7 +92,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         switch pinch.state {
         case .recognized, .momentum:
             var mapRect = mapView.visibleMapRect
-            print(pinch.spreads.last)
             let scaledWidth = (2 - Double(pinch.scale)) * mapRect.size.width
             let scaledHeight = (2 - Double(pinch.scale)) * mapRect.size.height
             var translationX = -Double(pinch.delta.dx) * mapRect.size.width / Double(mapView.frame.width)

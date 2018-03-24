@@ -19,6 +19,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         static let numberOfFingers = 2
         static let minimumBehaviorChangeThreshold: CGFloat = 20
         static let minimumSpreadDistance: CGFloat = 60
+        static let initialFactor: CGFloat = 1
     }
 
     private struct Pan {
@@ -327,7 +328,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
         if delta == .zero && scale == Pinch.initialScale {
             endMomentum()
-            print("ENDED MOMENTUM")
             return
         }
 

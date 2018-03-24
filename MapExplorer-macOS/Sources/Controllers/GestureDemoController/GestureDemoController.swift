@@ -83,7 +83,6 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
 
         switch pinch.state {
         case .recognized, .momentum:
-//            print(pinch.scale)
             let width = max(300, rect.frame.size.width * pinch.scale)
             let height = max(300, min(view.frame.height, rect.frame.size.height * pinch.scale))
             var originX = min(view.frame.origin.x + view.frame.width - rect.frame.width, max(view.frame.origin.x, rect.frame.origin.x + pinch.delta.dx))
