@@ -59,13 +59,19 @@ final class TouchManager: SocketManagerDelegate {
 
     /// Sends a touch to the map and updates the state of the touches for map dictionary
     private func send(_ touch: Touch, to map: Int) {
-        postNotification(for: touch, to: map)
+        let name = "MapListener\(map)"
+        if let serverPort = CFMessagePortCreateRemote(nil, name as CFString) {
+            let touchData = touch.toData()
+            let sendResult = CFMessagePortSendRequest(serverPort, 1, touchData as CFData, 1.0, 1.0, nil, nil)
+            if sendResult == Int32(kCFMessagePortSuccess) {
+                print("Client: success!")
+            } else {
+                print("Client error: \(sendResult)")
+            }
+        } else {
+            print("Client: Unable to open server port")
+        }
         updateTouchesForMap(with: touch, for: map)
-    }
-
-    private func postNotification(for touch: Touch, to mapID: Int) {
-        let info: JSON = [Keys.map: mapID, Keys.touch: touch.toJSON()]
-        DistributedNotificationCenter.default().postNotificationName(TouchNotifications.touchEvent.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
 

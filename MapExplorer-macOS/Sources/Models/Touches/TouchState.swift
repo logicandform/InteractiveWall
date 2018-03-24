@@ -8,10 +8,6 @@ enum TouchState: Int {
     case up
     case moved
 
-    private struct Keys {
-        static let rawValue = "rawValue"
-    }
-
     init?(from type: PacketType) {
         switch type {
         case .touchDown:
@@ -23,17 +19,5 @@ enum TouchState: Int {
         default:
             return nil
         }
-    }
-
-    init?(json: JSON) {
-        guard let rawValue = json[Keys.rawValue] as? Int, let type = TouchState(rawValue: rawValue) else {
-            return nil
-        }
-
-        self = type
-    }
-
-    func toJSON() -> JSON {
-        return [Keys.rawValue: rawValue]
     }
 }

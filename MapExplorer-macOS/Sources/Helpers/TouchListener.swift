@@ -28,8 +28,8 @@ class TouchListener: NSObject {
             retain: nil,
             release: nil,
             copyDescription: nil)
-        var shouldFreeInfo: DarwinBoolean = false
 
+        var shouldFreeInfo: DarwinBoolean = false
         return CFMessagePortCreateLocal(
             nil,
             name as CFString,

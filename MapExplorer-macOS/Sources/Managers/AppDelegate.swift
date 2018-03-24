@@ -8,6 +8,7 @@ struct Configuration {
     static let numberOfScreens = 1
     static let touchScreenSize = CGSize(width: 4095, height: 2242.5)
     static let touchScreenRatio: CGFloat = 23.0 / 42.0
+    static let frameless = false
 }
 
 
@@ -27,12 +28,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let mapStoryboard = NSStoryboard(name: MapViewController.storyboard, bundle: nil)
         let mapController = mapStoryboard.instantiateInitialController() as! MapViewController
         let mapWindow: NSWindow
-        let screen = NSScreen.screens[screenIndex]
-        let screenWidth = screen.frame.width / CGFloat(Configuration.mapsPerScreen)
-        let frame = NSRect(x: screen.frame.minX + screenWidth * CGFloat(windowIndex), y: screen.frame.minY, width: screenWidth, height: screen.frame.height)
-        mapWindow = BorderlessWindow(frame: frame, controller: mapController)
-        mapWindow.setFrame(frame, display: true)
-        mapWindow.makeKeyAndOrderFront(self)
+
+        if Configuration.frameless {
+            let screen = NSScreen.screens[screenIndex]
+            let screenWidth = screen.frame.width / CGFloat(Configuration.mapsPerScreen)
+            let frame = NSRect(x: screen.frame.minX + screenWidth * CGFloat(windowIndex), y: screen.frame.minY, width: screenWidth, height: screen.frame.height)
+            mapWindow = BorderlessWindow(frame: frame, controller: mapController)
+            mapWindow.setFrame(frame, display: true)
+        } else {
+            mapWindow = NSWindow(contentViewController: mapController)
+            mapWindow.title = "Map Window"
+        }
 
         /// Display the DemoViewController
 //        let demoStoryboard = NSStoryboard(name: GestureDemoController.storyboard, bundle: nil)

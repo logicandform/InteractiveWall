@@ -19,13 +19,6 @@ class Touch: Hashable, CustomStringConvertible {
         return "( [Touch] ID: \(id), Position: \(position), State: \(state) )"
     }
 
-    private struct Keys {
-        static let position = "position"
-        static let state = "state"
-        static let id = "id"
-        static let screen = "screen"
-    }
-
 
     // MARK: Initializers
 
@@ -51,17 +44,6 @@ class Touch: Hashable, CustomStringConvertible {
         let yPos = payload.extract(Int32.self, at: index)
         self.position = CGPoint(x: CGFloat(xPos), y: CGFloat(yPos) * Configuration.touchScreenRatio)
         self.state = touchState
-    }
-
-    init?(json: JSON) {
-        guard let id = json[Keys.id] as? Int, let screen = json[Keys.screen] as? Int, let positionJSON = json[Keys.position] as? JSON, let position = CGPoint(json: positionJSON), let touchJSON = json[Keys.state] as? JSON, let state = TouchState(json: touchJSON) else {
-            return nil
-        }
-
-        self.id = id
-        self.screen = screen
-        self.position = position
-        self.state = state
     }
 
     init?(data: Data) {
@@ -100,10 +82,6 @@ class Touch: Hashable, CustomStringConvertible {
 
     func copy() -> Touch {
         return Touch(position: position, state: state, id: id, screen: screen)
-    }
-
-    func toJSON() -> JSON {
-        return [Keys.id: id, Keys.screen: screen, Keys.position: position.toJSON(), Keys.state: state.toJSON()]
     }
 
     func toData() -> Data {
