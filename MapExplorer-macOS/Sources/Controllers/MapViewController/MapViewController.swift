@@ -43,10 +43,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         registerForNotifications()
     }
 
-    override func viewWillAppear() {
-//        view.window?.toggleFullScreen(nil)
-    }
-
 
     // MARK: Setup
 
