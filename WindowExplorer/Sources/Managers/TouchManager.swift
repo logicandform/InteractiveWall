@@ -6,7 +6,7 @@ import MONode
 final class TouchManager: SocketManagerDelegate {
 
     static let instance = TouchManager()
-    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12224)
+    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12221)
 
     private var socketManager: SocketManager?
     private var managersForTouch = [Touch: (NSWindow, GestureManager)]()
@@ -59,17 +59,10 @@ final class TouchManager: SocketManagerDelegate {
 
     /// Sends a touch to the map and updates the state of the touches for map dictionary
     private func send(_ touch: Touch, to map: Int) {
-        let name = "MapListener\(map)"
-        if let serverPort = CFMessagePortCreateRemote(nil, name as CFString) {
+        let portName = "MapListener\(map)"
+        if let serverPort = CFMessagePortCreateRemote(nil, portName as CFString) {
             let touchData = touch.toData()
-            let sendResult = CFMessagePortSendRequest(serverPort, 1, touchData as CFData, 1.0, 1.0, nil, nil)
-            if sendResult == Int32(kCFMessagePortSuccess) {
-                print("Client: success!")
-            } else {
-                print("Client error: \(sendResult)")
-            }
-        } else {
-            print("Client: Unable to open server port")
+            CFMessagePortSendRequest(serverPort, 1, touchData as CFData, 1.0, 1.0, nil, nil)
         }
         updateTouchesForMap(with: touch, for: map)
     }

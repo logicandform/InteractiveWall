@@ -2,13 +2,16 @@
 
 import Foundation
 
+
 /// Implementation of a listener that uses a message port
 ///
 /// This class is derived from NSObject so that the Objective-C-based callback function can use it.
-class TouchListener: NSObject {
+final class TouchListener: NSObject {
 
     var receivedTouch: ((Touch) -> Void)?
 
+
+    // MARK: API
 
     /// Create the local message port then register an input source for it
     func listenToPort(named name: String) {
@@ -17,9 +20,20 @@ class TouchListener: NSObject {
         }
     }
 
+    /// Called by the message port callback function
+    @objc
+    func handleTouch(data: Data) {
+        if let touch = Touch(data: data) {
+            receivedTouch?(touch)
+        }
+    }
+
+
+    // MARK: Helpers
+
     /// Create a local message port with the specified name
     ///
-    /// Incoming messages will be routed to this object's handleMessageWithID(,data:) method.
+    /// Incoming messages will be routed to this object's handleTouch(:) method.
     private func createMessagePort(name: String) -> CFMessagePort? {
         let callback = GetListenerCallback()
         var context = CFMessagePortContext(
@@ -42,15 +56,5 @@ class TouchListener: NSObject {
     private func addSource(messagePort: CFMessagePort, toRunLoop runLoop: RunLoop) {
         let source = CFMessagePortCreateRunLoopSource(nil, messagePort, 0)
         CFRunLoopAddSource(runLoop.getCFRunLoop(), source, CFRunLoopMode.commonModes)
-    }
-
-    /// Called by the message port callback function
-    @objc
-    func handleTouch(data: Data) {
-        if let touch = Touch(data: data) {
-            receivedTouch?(touch)
-        } else {
-            print("FAILED")
-        }
     }
 }
