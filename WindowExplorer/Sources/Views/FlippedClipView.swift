@@ -3,7 +3,7 @@
 import Cocoa
 import AppKit
 
-class FlipClipView: NSClipView {
+class FlippedClipView: NSClipView {
 
     override var isFlipped: Bool {
         return true

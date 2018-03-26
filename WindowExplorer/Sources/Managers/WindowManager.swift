@@ -101,14 +101,12 @@ final class WindowManager {
     }
 
     private func displaySchool(id: Int, at location: CGPoint) {
-        firstly {
-            CachingNetwork.getSchool(by: id)
-        }.then { [weak self] school -> Void in
-            let windowType = WindowType.record(school)
-            let origin = location - CGPoint(x: windowType.size.width / 2, y: windowType.size.height)
-            self?.display(windowType, at: origin)
-        }.catch { error in
-            print(error)
+        RecordFactory.record(for: .school, id: id) { [weak self] school in
+            if let school = school {
+                let windowType = WindowType.record(school)
+                let origin = location - CGPoint(x: windowType.size.width / 2, y: windowType.size.height)
+                self?.display(.record(school), at: origin)
+            }
         }
     }
 }

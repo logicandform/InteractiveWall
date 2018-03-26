@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		220329092066F20900FFD9E2 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220329082066F20900FFD9E2 /* Data.swift */; };
 		2204621220472E3D0067D9FB /* MapHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204621120472E3C0067D9FB /* MapHandler.swift */; };
 		22046267204732A40067D9FB /* WindowNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046265204732A40067D9FB /* WindowNotifications.swift */; };
 		22046268204732A40067D9FB /* MapNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046266204732A40067D9FB /* MapNotifications.swift */; };
@@ -39,6 +40,8 @@
 		22B1E29F2044D84000BDDF14 /* NetworkMapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2220D3FE202F84A300B878D6 /* NetworkMapManager.swift */; };
 		22B1E2AA2045F2EE00BDDF14 /* AVKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2A92045F2EE00BDDF14 /* AVKit.swift */; };
 		22EF0FA8202B847200571002 /* CachingNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EF0FA7202B847200571002 /* CachingNetwork.swift */; };
+		22F0EDF82066D9500075E467 /* TouchListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F0EDF72066D9500075E467 /* TouchListener.swift */; };
+		22F0EDFD2066DA1E0075E467 /* ListenerCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F0EDFB2066DA1E0075E467 /* ListenerCallback.m */; };
 		22FEF1C9202CE8CC001E9596 /* MapPoints.json in Resources */ = {isa = PBXBuildFile; fileRef = 22FEF1C8202CE8CC001E9596 /* MapPoints.json */; };
 		22FEF1D2202CFE8D001E9596 /* RotateGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1CB202CFE8C001E9596 /* RotateGestureRecognizer.swift */; };
 		22FEF1D3202CFE8D001E9596 /* SwipeGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1CC202CFE8C001E9596 /* SwipeGestureRecognizer.swift */; };
@@ -72,6 +75,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		220329082066F20900FFD9E2 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		2204621120472E3C0067D9FB /* MapHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapHandler.swift; sourceTree = "<group>"; };
 		22046265204732A40067D9FB /* WindowNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowNotifications.swift; sourceTree = "<group>"; };
 		22046266204732A40067D9FB /* MapNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapNotifications.swift; sourceTree = "<group>"; };
@@ -107,6 +111,10 @@
 		22A4987B20474F390024B46C /* TouchNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchNotifications.swift; sourceTree = "<group>"; };
 		22B1E2A92045F2EE00BDDF14 /* AVKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVKit.swift; sourceTree = "<group>"; };
 		22EF0FA7202B847200571002 /* CachingNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachingNetwork.swift; sourceTree = "<group>"; };
+		22F0EDF72066D9500075E467 /* TouchListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchListener.swift; sourceTree = "<group>"; };
+		22F0EDFA2066DA1D0075E467 /* MapExplorer-macOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MapExplorer-macOS-Bridging-Header.h"; sourceTree = "<group>"; };
+		22F0EDFB2066DA1E0075E467 /* ListenerCallback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListenerCallback.m; sourceTree = "<group>"; };
+		22F0EDFC2066DA1E0075E467 /* ListenerCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListenerCallback.h; sourceTree = "<group>"; };
 		22FEF1C8202CE8CC001E9596 /* MapPoints.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MapPoints.json; sourceTree = "<group>"; };
 		22FEF1CB202CFE8C001E9596 /* RotateGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotateGestureRecognizer.swift; sourceTree = "<group>"; };
 		22FEF1CC202CFE8C001E9596 /* SwipeGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeGestureRecognizer.swift; sourceTree = "<group>"; };
@@ -179,6 +187,7 @@
 			children = (
 				22290C112028F9EC000E0573 /* Info.plist */,
 				22290C122028F9EC000E0573 /* MapExplorer_macOS.entitlements */,
+				22F0EDFA2066DA1D0075E467 /* MapExplorer-macOS-Bridging-Header.h */,
 			);
 			path = Metadata;
 			sourceTree = "<group>";
@@ -227,6 +236,9 @@
 				22318DDF202B984F0092937C /* ResponseHandler.swift */,
 				22FEF1DC202CFF68001E9596 /* GestureHandler.swift */,
 				22A49872204749700024B46C /* JSON.swift */,
+				22F0EDF72066D9500075E467 /* TouchListener.swift */,
+				22F0EDFC2066DA1E0075E467 /* ListenerCallback.h */,
+				22F0EDFB2066DA1E0075E467 /* ListenerCallback.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -264,6 +276,7 @@
 				226EA70020296C240067B542 /* NSImage.swift */,
 				221C62A7203B57F7009493DA /* URL.swift */,
 				22B1E2A92045F2EE00BDDF14 /* AVKit.swift */,
+				220329082066F20900FFD9E2 /* Data.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -418,6 +431,7 @@
 				TargetAttributes = {
 					22290C042028F9EC000E0573 = {
 						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -553,8 +567,10 @@
 				221C62A8203B57F7009493DA /* URL.swift in Sources */,
 				3F5FAAAC206043D700CF275B /* CircleAnnotation.swift in Sources */,
 				3F5FAAAE206043E600CF275B /* CircleAnnotationView.swift in Sources */,
+				220329092066F20900FFD9E2 /* Data.swift in Sources */,
 				22A49873204749700024B46C /* JSON.swift in Sources */,
 				22290C302028FA1F000E0573 /* Discipline.swift in Sources */,
+				22F0EDFD2066DA1E0075E467 /* ListenerCallback.m in Sources */,
 				2276AE68204E75C2001FAD8B /* BorderlessWindow.swift in Sources */,
 				22290C2B2028FA1F000E0573 /* PlaceView.swift in Sources */,
 				22FEF1D4202CFE8D001E9596 /* PanGestureRecognizer.swift in Sources */,
@@ -579,6 +595,7 @@
 				22FEF1D6202CFE8D001E9596 /* GestureDemoController.swift in Sources */,
 				22046268204732A40067D9FB /* MapNotifications.swift in Sources */,
 				22290C2D2028FA1F000E0573 /* Place.swift in Sources */,
+				22F0EDF82066D9500075E467 /* TouchListener.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -628,6 +645,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -685,6 +703,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -707,14 +726,18 @@
 			baseConfigurationReference = D9FF0C65383B61E5A7A798B0 /* Pods-All-MapExplorer-macOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Metadata/MapExplorer_macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = M6262HME76;
 				INFOPLIST_FILE = Metadata/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "is.jabt.MapExplorer-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Metadata/MapExplorer-macOS-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
@@ -724,14 +747,17 @@
 			baseConfigurationReference = 26A4912457E23A30817143A3 /* Pods-All-MapExplorer-macOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Metadata/MapExplorer_macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = M6262HME76;
 				INFOPLIST_FILE = Metadata/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "is.jabt.MapExplorer-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Metadata/MapExplorer-macOS-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 			};
 			name = Release;

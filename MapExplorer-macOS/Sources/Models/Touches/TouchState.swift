@@ -3,14 +3,10 @@
 import Foundation
 import MONode
 
-enum TouchState: String {
+enum TouchState: Int {
     case down
     case up
     case moved
-
-    private struct Keys {
-        static let rawValue = "rawValue"
-    }
 
     init?(from type: PacketType) {
         switch type {
@@ -23,17 +19,5 @@ enum TouchState: String {
         default:
             return nil
         }
-    }
-
-    init?(json: JSON) {
-        guard let rawValue = json[Keys.rawValue] as? String, let type = TouchState(rawValue: rawValue) else {
-            return nil
-        }
-
-        self = type
-    }
-
-    func toJSON() -> JSON {
-        return [Keys.rawValue: rawValue]
     }
 }

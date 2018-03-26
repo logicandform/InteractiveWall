@@ -6,17 +6,12 @@ import MONode
 final class TouchManager: SocketManagerDelegate {
 
     static let instance = TouchManager()
-    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12224)
+    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 12001)
 
     private var socketManager: SocketManager?
     private var managersForTouch = [Touch: (NSWindow, GestureManager)]()
     private var touchesForMapID = [Int: Set<Touch>]()
     private var touchNeedsUpdate = [Touch: Bool]()
-
-    private struct Keys {
-        static let touch = "touch"
-        static let map = "mapID"
-    }
 
 
     // MARK: Init
@@ -59,13 +54,12 @@ final class TouchManager: SocketManagerDelegate {
 
     /// Sends a touch to the map and updates the state of the touches for map dictionary
     private func send(_ touch: Touch, to map: Int) {
-        postNotification(for: touch, to: map)
+        let portName = "MapListener\(map)"
+        if let serverPort = CFMessagePortCreateRemote(nil, portName as CFString) {
+            let touchData = touch.toData()
+            CFMessagePortSendRequest(serverPort, 1, touchData as CFData, 1.0, 1.0, nil, nil)
+        }
         updateTouchesForMap(with: touch, for: map)
-    }
-
-    private func postNotification(for touch: Touch, to mapID: Int) {
-        let info: JSON = [Keys.map: mapID, Keys.touch: touch.toJSON()]
-        DistributedNotificationCenter.default().postNotificationName(TouchNotifications.touchEvent.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
 
