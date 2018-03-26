@@ -43,10 +43,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
         setupMap()
         setupGestures()
-<<<<<<< HEAD
-=======
-        registerForNotifications()
->>>>>>> Updated pinch gesture.
     }
 
 
