@@ -95,7 +95,7 @@ class ImageViewController: MediaViewController, GestureResponder {
         singleFingerCloseButtonTap.gestureUpdated = didTapCloseButton(_:)
 
         let singleFingerRotateButtonTap = TapGestureRecognizer()
-        gestureManager.add(singleFingerRotateButtonTap, to: rotateButton)
+        super.gestureManager.add(singleFingerRotateButtonTap, to: rotateButton)
         singleFingerRotateButtonTap.gestureUpdated = didTapRotateButton(_:)
     }
 
