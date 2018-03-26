@@ -11,11 +11,22 @@ enum PlayerState {
     var image: NSImage? {
         switch self {
         case .playing:
-            return NSImage(named: "")
+            return nil
         case .paused:
-            return NSImage(named: "")
+            return NSImage(named: "play-icon")
         case .finished:
-            return NSImage(named: "")
+            return NSImage(named: "backward-icon")
+        }
+    }
+
+    var smallImage: NSImage? {
+        switch self {
+        case .playing:
+            return NSImage(named: "pause-icon-small")
+        case .paused:
+            return NSImage(named: "play-icon-small")
+        case .finished:
+            return  nil
         }
     }
 }
