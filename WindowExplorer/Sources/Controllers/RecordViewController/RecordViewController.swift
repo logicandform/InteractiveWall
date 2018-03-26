@@ -27,8 +27,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private struct Constants {
         static let tableRowHeight: CGFloat = 60
         static let windowMargins: CGFloat = 20
-        static let offsetX = 100
-        static let offsetY = -50
+        static let mediaControllerOffsetX = 100
+        static let mediaControllerOffsetY = -50
     }
 
 
@@ -366,8 +366,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         }
 
         let position = positionsForMediaControllers.values.max() != nil ? positionsForMediaControllers.values.max()! + 1 : 0
-        let offsetX = position * Constants.offsetX
-        let offsetY = position * Constants.offsetY
+        let offsetX = position * Constants.mediaControllerOffsetX
+        let offsetY = position * Constants.mediaControllerOffsetY
 
         let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins + CGFloat(offsetX), y: window.frame.maxY - windowType.size.height + CGFloat(offsetY))
         if let mediaController = WindowManager.instance.display(windowType, at: origin) as? MediaViewController {
