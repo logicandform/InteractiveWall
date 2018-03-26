@@ -20,9 +20,6 @@ class ImageViewController: MediaViewController, GestureResponder {
     private var urlRequest: DataRequest?
     private var contentViewFrame: NSRect!
     private var frameSize: NSSize!
-    
-    // This is needed here to work until Tim fixes the gestures so only 1 will fire
-    private var singleFingerPan: PanGestureRecognizer!
 
 
     // MARK: Life-cycle
@@ -82,7 +79,7 @@ class ImageViewController: MediaViewController, GestureResponder {
         let panGesture = NSPanGestureRecognizer(target: self, action: #selector(handleMousePan(_:)))
         view.addGestureRecognizer(panGesture)
 
-        singleFingerPan = PanGestureRecognizer()
+        let singleFingerPan = PanGestureRecognizer()
         super.gestureManager.add(singleFingerPan, to: imageScrollView)
         singleFingerPan.gestureUpdated = didPanDetailView(_:)
 
@@ -126,7 +123,6 @@ class ImageViewController: MediaViewController, GestureResponder {
 
         switch pinch.state {
         case .began:
-            singleFingerPan.reset()
             contentViewFrame = imageScrollView.contentView.frame
         case .recognized, .momentum:
             let newMagnification = imageScrollView.magnification + (pinch.scale - 1)

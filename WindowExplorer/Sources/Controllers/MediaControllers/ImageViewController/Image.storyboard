@@ -10,7 +10,7 @@
             <objects>
                 <viewController id="stH-E5-D9l" customClass="ImageViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="sSn-s5-6HM">
-                        <rect key="frame" x="0.0" y="0.0" width="640" height="410"/>
+                        <rect key="frame" x="0.0" y="0.0" width="704" height="410"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Xxw-S7-yBy">
@@ -22,7 +22,7 @@
                                 </textFieldCell>
                             </textField>
                             <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" allowsMagnification="YES" maxMagnification="5" minMagnification="1" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="WTp-wA-9SL" customClass="RegularScrollView" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="8" y="33" width="624" height="361"/>
+                                <rect key="frame" x="40" y="33" width="624" height="361"/>
                                 <clipView key="contentView" id="SUf-jl-Y0i">
                                     <rect key="frame" x="1" y="1" width="622" height="359"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -59,7 +59,7 @@
                                 </buttonCell>
                             </button>
                             <button translatesAutoresizingMaskIntoConstraints="NO" id="Eov-6a-Ava">
-                                <rect key="frame" x="610" y="380" width="20" height="20"/>
+                                <rect key="frame" x="674" y="380" width="20" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="ewx-VM-wbf"/>
                                     <constraint firstAttribute="height" constant="20" id="nkk-jN-5BY"/>
@@ -70,7 +70,7 @@
                                 </buttonCell>
                             </button>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="Kbv-Qb-kGl">
-                                <rect key="frame" x="600" y="370" width="40" height="40"/>
+                                <rect key="frame" x="664" y="370" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="Kgt-DR-Wf8"/>
                                     <constraint firstAttribute="width" constant="40" id="kLy-bz-FNK"/>
@@ -100,7 +100,7 @@
                             <constraint firstItem="Eov-6a-Ava" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" constant="10" id="BiJ-YK-ed1"/>
                             <constraint firstItem="Kbv-Qb-kGl" firstAttribute="centerY" secondItem="Eov-6a-Ava" secondAttribute="centerY" id="CGu-aZ-Xmz"/>
                             <constraint firstItem="Kbv-Qb-kGl" firstAttribute="centerX" secondItem="Eov-6a-Ava" secondAttribute="centerX" id="Ona-Cl-Ujh"/>
-                            <constraint firstItem="WTp-wA-9SL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="8" id="X9j-4u-6FB"/>
+                            <constraint firstItem="WTp-wA-9SL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="40" id="X9j-4u-6FB"/>
                             <constraint firstItem="3fU-4f-ODM" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="XbG-Pl-t6P"/>
                             <constraint firstAttribute="bottom" secondItem="WTp-wA-9SL" secondAttribute="bottom" constant="33" id="Z1e-N5-aTr"/>
                             <constraint firstAttribute="trailing" secondItem="Eov-6a-Ava" secondAttribute="trailing" constant="10" id="aus-14-iuQ"/>
@@ -111,7 +111,7 @@
                             <constraint firstItem="K3q-Ow-PY3" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="erE-8I-cGU"/>
                             <constraint firstAttribute="bottom" secondItem="Xxw-S7-yBy" secondAttribute="bottom" constant="8" id="irH-aF-J8T"/>
                             <constraint firstItem="K3q-Ow-PY3" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" id="pyh-3z-Sjz"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="WTp-wA-9SL" secondAttribute="trailing" constant="8" id="xkr-jy-BVF"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="WTp-wA-9SL" secondAttribute="trailing" constant="40" id="xkr-jy-BVF"/>
                             <constraint firstItem="Xxw-S7-yBy" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="16" id="zgZ-lc-gaV"/>
                         </constraints>
                     </view>
