@@ -39,10 +39,10 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     override func viewDidLoad() {
         super.viewDidLoad()
         gestureManager = GestureManager(responder: self)
-        touchListener.listenToPort(named: "MapListener\(appID)")
-        touchListener.receivedTouch = { [weak self] touch in
-            self?.gestureManager.handle(touch)
-        }
+//        touchListener.listenToPort(named: "MapListener\(appID)")
+//        touchListener.receivedTouch = { [weak self] touch in
+//            self?.gestureManager.handle(touch)
+//        }
 
         setupMap()
         setupGestures()
