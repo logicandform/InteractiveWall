@@ -128,9 +128,9 @@ class ImageViewController: MediaViewController, GestureResponder {
         case .began:
             singleFingerPan.reset()
             contentViewFrame = imageScrollView.contentView.frame
-        case .recognized:
+        case .recognized, .momentum:
             let newMagnification = imageScrollView.magnification + (pinch.scale - 1)
-            imageScrollView.setMagnification(newMagnification, centeredAt: pinch.lastPosition)
+            imageScrollView.setMagnification(newMagnification, centeredAt: pinch.center)
             let currentRect = imageScrollView.contentView.bounds
             let newOriginX = min(contentViewFrame.origin.x + contentViewFrame.width - currentRect.width, max(contentViewFrame.origin.x, currentRect.origin.x - pinch.delta.dx / newMagnification))
             let newOriginY = min(contentViewFrame.origin.y + contentViewFrame.height - currentRect.height, max(contentViewFrame.origin.y, currentRect.origin.y - pinch.delta.dy / newMagnification))
