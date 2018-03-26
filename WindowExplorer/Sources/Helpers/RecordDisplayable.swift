@@ -4,7 +4,7 @@ import Foundation
 import AppKit
 
 
-enum RecordType {
+enum RecordType: String {
     case event
     case artifact
     case organization

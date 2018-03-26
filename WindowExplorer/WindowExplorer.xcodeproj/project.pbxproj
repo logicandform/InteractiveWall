@@ -41,7 +41,6 @@
 		22914F77204905230000D4E1 /* NSApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22914F76204905230000D4E1 /* NSApplication.swift */; };
 		22A4985E204733770024B46C /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A4985D204733770024B46C /* WindowManager.swift */; };
 		22A498612047349C0024B46C /* WindowNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A498602047349C0024B46C /* WindowNotifications.swift */; };
-		22A4986C204743880024B46C /* TouchNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A4986B204743880024B46C /* TouchNotifications.swift */; };
 		22A498752047499B0024B46C /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A498742047499B0024B46C /* JSON.swift */; };
 		22A49878204749C30024B46C /* TouchState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A49877204749C30024B46C /* TouchState.swift */; };
 		22A76FE620464764006C0AE7 /* PDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A76FE420464764006C0AE7 /* PDFViewController.swift */; };
@@ -125,7 +124,6 @@
 		22914F76204905230000D4E1 /* NSApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSApplication.swift; sourceTree = "<group>"; };
 		22A4985D204733770024B46C /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		22A498602047349C0024B46C /* WindowNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowNotifications.swift; sourceTree = "<group>"; };
-		22A4986B204743880024B46C /* TouchNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchNotifications.swift; sourceTree = "<group>"; };
 		22A498742047499B0024B46C /* JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		22A49877204749C30024B46C /* TouchState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchState.swift; sourceTree = "<group>"; };
 		22A76FE420464764006C0AE7 /* PDFViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PDFViewController.swift; sourceTree = "<group>"; };
@@ -242,7 +240,6 @@
 			isa = PBXGroup;
 			children = (
 				22A498602047349C0024B46C /* WindowNotifications.swift */,
-				22A4986B204743880024B46C /* TouchNotifications.swift */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -627,7 +624,6 @@
 				2204623320472FDF0067D9FB /* CoreGraphics.swift in Sources */,
 				2204620E20472DE80067D9FB /* RelatedItemView.swift in Sources */,
 				226D0589204FC7BC00D74711 /* ResponseHandler.swift in Sources */,
-				22A4986C204743880024B46C /* TouchNotifications.swift in Sources */,
 				3F09025B2048D9D30044F100 /* Place.swift in Sources */,
 				22A498752047499B0024B46C /* JSON.swift in Sources */,
 				22046247204730780067D9FB /* PinchGestureRecognizer.swift in Sources */,

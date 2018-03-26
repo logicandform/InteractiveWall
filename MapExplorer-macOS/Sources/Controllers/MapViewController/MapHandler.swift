@@ -58,14 +58,14 @@ class MapHandler {
 
         if unpaired || groupID == mapID {
             let info: JSON = [Keys.id: mapID, Keys.group: group, Keys.map: mapRect.toJSON(), Keys.gesture: gestureState.rawValue]
-            DistributedNotificationCenter.default().postNotificationName(MapNotifications.position.name, object: nil, userInfo: info, deliverImmediately: true)
+            DistributedNotificationCenter.default().postNotificationName(MapNotification.position.name, object: nil, userInfo: info, deliverImmediately: true)
         }
     }
 
     func endActivity() {
         pairedID = nil
         let info: JSON = [Keys.id: mapID]
-        DistributedNotificationCenter.default().postNotificationName(MapNotifications.unpair.name, object: nil, userInfo: info, deliverImmediately: true)
+        DistributedNotificationCenter.default().postNotificationName(MapNotification.unpair.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
     func endUpdates() {
@@ -83,7 +83,7 @@ class MapHandler {
     // MARK: Notifications
 
     private func subscribeToNotifications() {
-        for notification in MapNotifications.allValues {
+        for notification in MapNotification.allValues {
             DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
         }
     }
@@ -95,14 +95,14 @@ class MapHandler {
         }
 
         switch notification.name {
-        case MapNotifications.position.name:
+        case MapNotification.position.name:
             if let mapJSON = info[Keys.map] as? JSON, let fromGroup = info[Keys.group] as? Int, let mapRect = MKMapRect(json: mapJSON), let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture) {
                 updateMappings(fromGroup: fromGroup, to: fromID)
                 handle(mapRect, fromID: fromID, inGroup: fromGroup, from: state)
             }
-        case MapNotifications.unpair.name:
+        case MapNotification.unpair.name:
             unpair(from: fromID)
-        case MapNotifications.ungroup.name:
+        case MapNotification.ungroup.name:
             if let fromGroup = info[Keys.group] as? Int {
                 updateMappings(fromGroup: fromGroup, to: nil)
                 ungroup(from: fromGroup)
@@ -211,7 +211,7 @@ class MapHandler {
 
         if state == .idle {
             let info: JSON = [Keys.id: mapID, Keys.group: groupID]
-            DistributedNotificationCenter.default().postNotificationName(MapNotifications.ungroup.name, object: nil, userInfo: info, deliverImmediately: true)
+            DistributedNotificationCenter.default().postNotificationName(MapNotification.ungroup.name, object: nil, userInfo: info, deliverImmediately: true)
         }
     }
 }

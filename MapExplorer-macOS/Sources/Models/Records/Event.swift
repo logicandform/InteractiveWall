@@ -3,10 +3,10 @@
 import Foundation
 import MapKit
 
-class School: Record {
+class Event: Record {
 
     let id: Int
-    let type = RecordType.school
+    let type = RecordType.event
     let title: String
     let coordinate: CLLocationCoordinate2D
 
@@ -20,7 +20,7 @@ class School: Record {
     // MARK: Init
 
     init?(json: JSON) {
-        guard let id = json[Keys.id] as? Int, let title = json[Keys.title] as? String, let coordinateString = json[Keys.coordinate] as? String, let coordinate = CLLocationCoordinate2D(string: coordinateString) else {
+        guard let id = json[Keys.id] as? Int, let title = json[Keys.title] as? String, let coordinate = CLLocationCoordinate2D(string: json[Keys.coordinate] as? String) else {
             return nil
         }
 

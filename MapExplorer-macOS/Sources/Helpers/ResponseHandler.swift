@@ -15,22 +15,6 @@ final class ResponseHandler {
         return placesJSON.flatMap { Place(json: $0) }
     }
 
-    static func serializePlace(from json: Any) throws -> Place {
-        guard let json = json as? JSON else {
-            throw NetworkError.badResponse
-        }
-
-        if json.isEmpty {
-            throw NetworkError.notFound
-        }
-
-        guard let place = Place(json: json) else {
-            throw NetworkError.serializationError
-        }
-
-        return place
-    }
-
 
     // MARK: Schools
 
@@ -42,19 +26,14 @@ final class ResponseHandler {
         return json.flatMap { School(json: $0) }
     }
 
-    static func serializeSchool(from json: Any) throws -> School {
-        guard let json = json as? JSON else {
+
+    // MARK: Events
+
+    static func serializeEvents(from json: Any) throws -> [Event] {
+        guard let json = json as? [JSON] else {
             throw NetworkError.badResponse
         }
 
-        if json.isEmpty {
-            throw NetworkError.notFound
-        }
-
-        guard let school = School(json: json) else {
-            throw NetworkError.serializationError
-        }
-
-        return school
+        return json.flatMap { Event(json: $0) }
     }
 }
