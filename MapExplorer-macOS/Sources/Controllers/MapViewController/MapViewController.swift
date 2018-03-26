@@ -268,7 +268,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
         let location = window.frame.origin + position
         let info: JSON = [Keys.map: screenID, Keys.id: record.id, Keys.position: location.toJSON()]
-        DistributedNotificationCenter.default().postNotificationName(WindowNotification.with(record).name, object: nil, userInfo: info, deliverImmediately: true)
+        DistributedNotificationCenter.default().postNotificationName(WindowNotification.with(record.type).name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
     /// Zooms into a cluster of annotations to make them more visible.

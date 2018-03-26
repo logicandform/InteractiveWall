@@ -10,8 +10,8 @@ enum WindowNotification: String {
         return Notification.Name(rawValue: rawValue)
     }
 
-    static func with(_ record: Record) -> WindowNotification {
-        switch record.type {
+    static func with(_ type: RecordType) -> WindowNotification {
+        switch type {
         case .school:
             return .school
         case .event:
