@@ -57,10 +57,8 @@ extension Event: RecordDisplayable {
         label.font = NSFont.systemFont(ofSize: Constants.titleFontSize, weight: .semibold)
         labels.append(label)
 
-        if let date = date {
-            let dates = date.split(separator: "|")
-            let date = dates[0].description
-            let dateText = NSAttributedString(string: date)
+        if let date = date, let first = date.split(separator: "|").first?.description {
+            let dateText = NSAttributedString(string: first)
             let label = NSTextField(labelWithAttributedString: dateText)
             label.textColor = style.selectedColor
             label.drawsBackground = false
@@ -71,7 +69,7 @@ extension Event: RecordDisplayable {
         }
 
         if let description = description {
-            let descriptionText = NSAttributedString(string: description.removeHtml())
+            let descriptionText = NSAttributedString(string: description)
             let label = NSTextField(labelWithAttributedString: descriptionText)
             label.textColor = .white
             label.drawsBackground = false
@@ -116,10 +114,8 @@ extension Artifact: RecordDisplayable {
         label.font = NSFont.systemFont(ofSize: Constants.titleFontSize, weight: .semibold)
         labels.append(label)
 
-        if let date = date {
-            let dates = date.split(separator: "|")
-            let date = dates[0].description
-            let dateText = NSAttributedString(string: date)
+        if let date = date, let first = date.split(separator: "|").first?.description {
+            let dateText = NSAttributedString(string: first)
             let label = NSTextField(labelWithAttributedString: dateText)
             label.textColor = style.selectedColor
             label.drawsBackground = false
@@ -130,7 +126,7 @@ extension Artifact: RecordDisplayable {
         }
 
         if let description = description {
-            let descriptionText = NSAttributedString(string: description.removeHtml())
+            let descriptionText = NSAttributedString(string: description)
             let label = NSTextField(labelWithAttributedString: descriptionText)
             label.textColor = .white
             label.drawsBackground = false
@@ -186,10 +182,8 @@ extension Organization: RecordDisplayable {
         label.font = NSFont.systemFont(ofSize: Constants.titleFontSize, weight: .semibold)
         labels.append(label)
 
-        if let date = date {
-            let dates = date.split(separator: "|")
-            let date = dates[0].description
-            let dateText = NSAttributedString(string: date)
+        if let date = date, let first = date.split(separator: "|").first?.description {
+            let dateText = NSAttributedString(string: first)
             let label = NSTextField(labelWithAttributedString: dateText)
             label.textColor = style.selectedColor
             label.drawsBackground = false
@@ -200,7 +194,7 @@ extension Organization: RecordDisplayable {
         }
 
         if let description = description {
-            let descriptionText = NSAttributedString(string: description.removeHtml())
+            let descriptionText = NSAttributedString(string: description)
             let label = NSTextField(labelWithAttributedString: descriptionText)
             label.textColor = .white
             label.drawsBackground = false
@@ -241,10 +235,8 @@ extension School: RecordDisplayable {
         label.font = NSFont.systemFont(ofSize: Constants.titleFontSize, weight: .semibold)
         labels.append(label)
 
-        if let date = date {
-            let dateParse = date.components(separatedBy: "|")
-            let date = dateParse[0]
-            let dateText = NSAttributedString(string: date)
+        if let date = date, let first = date.split(separator: "|").first?.description {
+            let dateText = NSAttributedString(string: first)
             let label = NSTextField(labelWithAttributedString: dateText)
             label.textColor = style.selectedColor
             label.drawsBackground = false
@@ -255,8 +247,7 @@ extension School: RecordDisplayable {
         }
 
         if let description = description {
-
-            let descriptionText = NSAttributedString(string: description.removeHtml())
+            let descriptionText = NSAttributedString(string: description)
             let label = NSTextField(labelWithAttributedString: descriptionText)
             label.textColor = .white
             label.drawsBackground = false

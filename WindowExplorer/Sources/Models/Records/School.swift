@@ -45,7 +45,7 @@ class School {
         self.id = id
         self.title = title
         self.date = json[Keys.date] as? String
-        self.description = json[Keys.description] as? String
+        self.description = (json[Keys.description] as? String)?.removingHtml()
         self.coordinate = CLLocationCoordinate2D(string: json[Keys.coordinate] as? String)
 
         if let urlStrings = json[Keys.media] as? [String], let thumbnailStrings = json[Keys.thumbnails] as? [String] {

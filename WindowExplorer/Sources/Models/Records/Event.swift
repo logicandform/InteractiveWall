@@ -42,7 +42,7 @@ class Event {
 
         self.id = id
         self.title = title
-        self.description = json[Keys.description] as? String
+        self.description = (json[Keys.description] as? String)?.removingHtml()
         self.coordinate = CLLocationCoordinate2D(string: json[Keys.coordinate] as? String)
         self.date = json[Keys.date] as? String
 

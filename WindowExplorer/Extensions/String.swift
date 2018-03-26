@@ -4,7 +4,7 @@ import Foundation
 
 extension String {
     
-    func removeHtml() -> String {
+    func removingHtml() -> String {
         guard let arrowLeft = self.index(of: "<"), let arrowRight = self.index(of: ">") else {
             return self
         }
@@ -12,6 +12,6 @@ extension String {
         var copy = self
         let range = arrowLeft...arrowRight
         copy.removeSubrange(range)
-        return copy.removeHtml()
+        return copy.removingHtml()
     }
 }
