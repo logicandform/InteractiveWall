@@ -5,7 +5,7 @@ import AppKit
 import Alamofire
 import AlamofireImage
 
-class ImageViewController: NSViewController, GestureResponder {
+class ImageViewController: MediaViewController, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "Image")
 
     @IBOutlet weak var imageScrollView: RegularScrollView!
@@ -19,10 +19,10 @@ class ImageViewController: NSViewController, GestureResponder {
     private var thumbnailRequest: DataRequest?
     private var urlRequest: DataRequest?
     private var contentViewFrame: NSRect!
-    private var singleFingerPan: PanGestureRecognizer!
     private var frameSize: NSSize!
-    private(set) var gestureManager: GestureManager!
-    var media: Media!
+    
+    // This is needed here to work until Tim fixes the gestures so only 1 will fire
+    private var singleFingerPan: PanGestureRecognizer!
 
 
     // MARK: Life-cycle
@@ -31,8 +31,8 @@ class ImageViewController: NSViewController, GestureResponder {
         super.viewDidLoad()
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
-        gestureManager = GestureManager(responder: self)
-        titleTextField.stringValue = media.title ?? ""
+        super.gestureManager = GestureManager(responder: self)
+        titleTextField.stringValue = super.media.title ?? ""
         setupImageView()
         setupGestures()
     }
@@ -47,20 +47,20 @@ class ImageViewController: NSViewController, GestureResponder {
     // MARK: Setup
 
     private func setupImageView() {
-        guard media.type == .image else {
+        guard super.media.type == .image else {
             return
         }
         imageView = NSImageView()
 
         // Load thumbnail first
-        thumbnailRequest = Alamofire.request(media.thumbnail).responseImage { [weak self] response in
+        thumbnailRequest = Alamofire.request(super.media.thumbnail).responseImage { [weak self] response in
             if let image = response.value {
                 self?.addImage(image)
             }
         }
 
         // Load large media object in background
-        urlRequest = Alamofire.request(media.url).responseImage { [weak self] response in
+        urlRequest = Alamofire.request(super.media.url).responseImage { [weak self] response in
             if let image = response.value {
                 self?.imageView.image = image
             }
@@ -83,15 +83,15 @@ class ImageViewController: NSViewController, GestureResponder {
         view.addGestureRecognizer(panGesture)
 
         singleFingerPan = PanGestureRecognizer()
-        gestureManager.add(singleFingerPan, to: imageScrollView)
+        super.gestureManager.add(singleFingerPan, to: imageScrollView)
         singleFingerPan.gestureUpdated = didPanDetailView(_:)
 
         let pinchGesture = PinchGestureRecognizer()
-        gestureManager.add(pinchGesture, to: imageScrollView)
+        super.gestureManager.add(pinchGesture, to: imageScrollView)
         pinchGesture.gestureUpdated = didPinchDetailView(_:)
 
         let singleFingerCloseButtonTap = TapGestureRecognizer()
-        gestureManager.add(singleFingerCloseButtonTap, to: dismissButton)
+        super.gestureManager.add(singleFingerCloseButtonTap, to: dismissButton)
         singleFingerCloseButtonTap.gestureUpdated = didTapCloseButton(_:)
 
         let singleFingerRotateButtonTap = TapGestureRecognizer()
@@ -145,7 +145,7 @@ class ImageViewController: NSViewController, GestureResponder {
             return
         }
 
-        WindowManager.instance.closeWindow(for: self)
+        super.close()
     }
 
     private func didTapRotateButton(_ gesture: GestureRecognizer) {
@@ -178,6 +178,6 @@ class ImageViewController: NSViewController, GestureResponder {
     // MARK: IB-Actions
 
     @IBAction func closeButtonTapped(_ sender: Any) {
-        WindowManager.instance.closeWindow(for: self)
+        super.close()
     }
 }

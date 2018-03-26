@@ -3,7 +3,7 @@
 import Cocoa
 import AppKit
 
-class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource, NSTableViewDataSource, NSTableViewDelegate, GestureResponder {
+class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource, NSTableViewDataSource, NSTableViewDelegate, GestureResponder, MediaControllerDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Record")
 
     @IBOutlet weak var detailView: NSView!
@@ -20,10 +20,13 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private(set) var gestureManager: GestureManager!
     private var showingRelatedItems = false
     private var pageControl = PageControl()
+    private var positionsForMediaControllers = [MediaViewController: Int]()
     
     private struct Constants {
         static let tableRowHeight: CGFloat = 60
         static let windowMargins: CGFloat = 20
+        static let mediaControllerOffsetX = 100
+        static let mediaControllerOffsetY = -50
     }
 
 
@@ -354,12 +357,19 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func selectMediaItem(_ media: Media) {
-        guard let window = view.window, let windowType = WindowType(for: media) else {
+        guard let window = view.window, let windowType = WindowType(for: media), !positionsForMediaControllers.keys.contains(where: {$0.media == media}) else {
             return
         }
 
-        let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins, y: window.frame.maxY - windowType.size.height)
-        WindowManager.instance.display(windowType, at: origin)
+        let position = positionsForMediaControllers.values.max() != nil ? positionsForMediaControllers.values.max()! + 1 : 0
+        let offsetX = position * Constants.mediaControllerOffsetX
+        let offsetY = position * Constants.mediaControllerOffsetY
+
+        let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins + CGFloat(offsetX), y: window.frame.maxY - windowType.size.height + CGFloat(offsetY))
+        if let mediaController = WindowManager.instance.display(windowType, at: origin) as? MediaViewController {
+            positionsForMediaControllers[mediaController] = position
+            mediaController.delegate = self
+        }
     }
 
 
@@ -405,5 +415,12 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
         return false
+    }
+
+
+    // MARK: MediaControllerDelegate
+
+    func closeWindow(for mediaController: MediaViewController) {
+        positionsForMediaControllers.removeValue(forKey: mediaController)
     }
 }
