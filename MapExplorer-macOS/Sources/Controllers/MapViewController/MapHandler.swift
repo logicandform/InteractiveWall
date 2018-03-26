@@ -104,7 +104,6 @@ class MapHandler {
             unpair(from: fromID)
         case MapNotifications.ungroup.name:
             if let fromGroup = info[Keys.group] as? Int {
-                print("ungroup from \(fromGroup)")
                 updateMappings(fromGroup: fromGroup, to: nil)
                 ungroup(from: fromGroup)
                 findGroupIfNeeded()

@@ -9,8 +9,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     @IBOutlet weak var detailView: NSView!
     @IBOutlet weak var mediaView: NSCollectionView!
     @IBOutlet weak var collectionClipView: NSClipView!
-    @IBOutlet weak var titleLabel: NSTextField!
-    @IBOutlet weak var dateLabel: NSTextField!
     @IBOutlet weak var stackView: NSStackView!
     @IBOutlet weak var stackClipView: NSClipView!
     @IBOutlet weak var relatedItemsView: NSTableView!
@@ -51,7 +49,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private func setupMediaView() {
         mediaView.register(MediaItemView.self, forItemWithIdentifier: MediaItemView.identifier)
 
-        pageControl.color = style.selectedColor
+        pageControl.color = NSColor.white
         pageControl.numberOfPages = UInt(record?.media.count ?? 0)
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.wantsLayer = true
@@ -120,8 +118,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return
         }
 
-        titleLabel.stringValue = record.title
-        dateLabel.stringValue = record.date ?? ""
         for label in record.textFields {
             stackView.insertView(label, at: stackView.subviews.count, in: .top)
         }
@@ -247,7 +243,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         switch pan.state {
         case .recognized, .momentum:
             var point = stackClipView.visibleRect.origin
-            point.y -= pan.delta.dy
+            point.y += pan.delta.dy
             stackClipView.scroll(point)
         default:
             return
