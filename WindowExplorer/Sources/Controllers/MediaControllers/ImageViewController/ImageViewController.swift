@@ -32,6 +32,7 @@ class ImageViewController: MediaViewController, GestureResponder {
         titleTextField.stringValue = super.media.title ?? ""
         setupImageView()
         setupGestures()
+        animateViewIn()
     }
 
     override func viewDidDisappear() {
@@ -141,7 +142,7 @@ class ImageViewController: MediaViewController, GestureResponder {
             return
         }
 
-        super.close()
+        animateViewOut()
     }
 
     private func didTapRotateButton(_ gesture: GestureRecognizer) {
@@ -174,6 +175,26 @@ class ImageViewController: MediaViewController, GestureResponder {
     // MARK: IB-Actions
 
     @IBAction func closeButtonTapped(_ sender: Any) {
-        super.close()
+        animateViewOut()
+    }
+
+
+    // MARK: Helper
+
+    private func animateViewIn() {
+        view.alphaValue = 0.0
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = 0.5
+            view.animator().alphaValue = 1.0
+        })
+    }
+
+    private func animateViewOut() {
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = 0.5
+            view.animator().alphaValue = 0.0
+        }, completionHandler: {
+            super.close()
+        })
     }
 }

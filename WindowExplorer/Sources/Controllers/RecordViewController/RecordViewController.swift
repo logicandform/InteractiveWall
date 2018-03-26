@@ -43,7 +43,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         setupRelatedItemsView()
         setupGestures()
         loadRecord()
-        animateRecordViewIn()
+        animateViewIn()
     }
 
 
@@ -103,7 +103,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         gestureManager.add(tapToClose, to: closeWindowTapArea)
         tapToClose.gestureUpdated = { gesture in
             if gesture.state == .ended {
-                WindowManager.instance.closeWindow(for: self)
+                self.animateViewOut()
             }
         }
 
@@ -290,16 +290,25 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     @IBAction func closeWindowTapped(_ sender: Any) {
-        WindowManager.instance.closeWindow(for: self)
+        animateViewOut()
     }
 
 
     // MARK: Helpers
 
-    private func animateRecordViewIn() {
+    private func animateViewIn() {
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = 0.5
             self.detailView.animator().alphaValue = 1.0
+        })
+    }
+
+    private func animateViewOut() {
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = 0.5
+            self.detailView.animator().alphaValue = 0.0
+        }, completionHandler: {
+            WindowManager.instance.closeWindow(for: self)
         })
     }
 

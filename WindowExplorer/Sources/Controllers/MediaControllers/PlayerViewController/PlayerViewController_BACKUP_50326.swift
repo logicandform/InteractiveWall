@@ -107,7 +107,11 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
             return
         }
 
+<<<<<<< HEAD:WindowExplorer/Sources/Controllers/MediaControllers/PlayerViewController/PlayerViewController.swift
+        super.close()
+=======
         animateViewOut()
+>>>>>>> Added fade animations:WindowExplorer/Sources/Controllers/PlayerViewController/PlayerViewController.swift
     }
 
     @objc
@@ -126,7 +130,11 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
     // MARK: IB-Actions
 
     @IBAction func closeButtonTapped(_ sender: Any) {
+<<<<<<< HEAD:WindowExplorer/Sources/Controllers/MediaControllers/PlayerViewController/PlayerViewController.swift
+        super.close()
+=======
         animateViewOut()
+>>>>>>> Added fade animations:WindowExplorer/Sources/Controllers/PlayerViewController/PlayerViewController.swift
     }
 
 
@@ -152,22 +160,22 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
     }
 
 
-    // MARK: Helper
+    // MARK: Helpers
 
     private func animateViewIn() {
         view.alphaValue = 0.0
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = 0.5
+        NSAnimationContext.runAnimationGroup({_ in
+            NSAnimationContext.current.duration = 1.0
             view.animator().alphaValue = 1.0
         })
     }
 
     private func animateViewOut() {
         NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = 0.5
+            NSAnimationContext.current.duration = 3.0
             view.animator().alphaValue = 0.0
         }, completionHandler: {
-            super.close()
+            WindowManager.instance.closeWindow(for: self)
         })
     }
 }
