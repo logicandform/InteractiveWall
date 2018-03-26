@@ -39,10 +39,10 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     override func viewDidLoad() {
         super.viewDidLoad()
         gestureManager = GestureManager(responder: self)
-//        touchListener.listenToPort(named: "MapListener\(appID)")
-//        touchListener.receivedTouch = { [weak self] touch in
-//            self?.gestureManager.handle(touch)
-//        }
+        touchListener.listenToPort(named: "MapListener\(appID)")
+        touchListener.receivedTouch = { [weak self] touch in
+            self?.gestureManager.handle(touch)
+        }
 
         setupMap()
         setupGestures()
@@ -55,9 +55,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         mapHandler = MapHandler(mapView: mapView, id: appID)
 //        mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
 //        mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
-        let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
-        overlay.canReplaceMapContent = true
-        mapView.add(overlay)
+//        let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
+//        overlay.canReplaceMapContent = true
+//        mapView.add(overlay)
         createPlaces()
     }
 

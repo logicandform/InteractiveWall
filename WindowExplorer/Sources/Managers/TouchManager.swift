@@ -13,11 +13,6 @@ final class TouchManager: SocketManagerDelegate {
     private var touchesForMapID = [Int: Set<Touch>]()
     private var touchNeedsUpdate = [Touch: Bool]()
 
-    private struct Keys {
-        static let touch = "touch"
-        static let map = "mapID"
-    }
-
 
     // MARK: Init
 

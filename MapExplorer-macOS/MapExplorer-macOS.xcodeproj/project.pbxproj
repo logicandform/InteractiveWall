@@ -730,6 +730,7 @@
 				CODE_SIGN_ENTITLEMENTS = Metadata/MapExplorer_macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = M6262HME76;
 				INFOPLIST_FILE = Metadata/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -750,6 +751,7 @@
 				CODE_SIGN_ENTITLEMENTS = Metadata/MapExplorer_macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = M6262HME76;
 				INFOPLIST_FILE = Metadata/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";

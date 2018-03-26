@@ -32,6 +32,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let frame = NSRect(x: screen.frame.minX + screenWidth * CGFloat(windowIndex), y: screen.frame.minY, width: screenWidth, height: screen.frame.height)
         mapWindow = BorderlessWindow(frame: frame, controller: mapController)
         mapWindow.setFrame(frame, display: true)
+        mapWindow.makeKeyAndOrderFront(self)
 
         /// Display the DemoViewController
 //        let demoStoryboard = NSStoryboard(name: GestureDemoController.storyboard, bundle: nil)
