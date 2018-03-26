@@ -13,15 +13,15 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     @IBOutlet weak var mapView: FlippedMapView!
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
-    private var schoolForCircle = [MKCircle: School]()
     private var timeOfLastPan = Date()
     private var timeOfLastPinch = Date()
+    private var schoolForAnnotation = [CircleAnnotation: School]()
 
     private struct Constants {
-        static let tileURL = "http:localhost:3200/{z}/{x}/{y}.pbf"
+        static let tileURL = "http://localhost:3200/v2/tiles/{z}/{x}/{y}.pbf"
         static let annotationContainerClass = "MKNewAnnotationContainerView"
         static let maxZoomWidth: Double =  134217730
-        static let annotationHitSize = CGSize(width: 50, height: 50)
+        static let touchRadius: CGFloat = 20.0
         static let changeGestureTime: Double = 0.05
     }
 
@@ -54,9 +54,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         mapHandler = MapHandler(mapView: mapView, id: appID)
 //        mapView.register(PlaceView.self, forAnnotationViewWithReuseIdentifier: PlaceView.identifier)
 //        mapView.register(ClusterView.self, forAnnotationViewWithReuseIdentifier: ClusterView.identifier)
-//        let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
-//        overlay.canReplaceMapContent = true
-//        mapView.add(overlay)
+        let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
+        overlay.canReplaceMapContent = true
+        mapView.add(overlay)
         createPlaces()
     }
 
@@ -145,18 +145,24 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     /// If the tap is positioned on a selectable annotation, the annotation's didSelect function is invoked.
     private func didTapOnMap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position, tap.state == .ended else {
+        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position else {
             return
         }
 
-        let circleOverlays = mapView.overlays.flatMap { $0 as? MKCircle }
-        let mapCoordinate = mapView.convert(position.inverted(in: mapView), toCoordinateFrom: mapView)
-        let mapPoint = MKMapPointForCoordinate(mapCoordinate)
-
-        for circle in circleOverlays {
-            if MKMapRectContainsPoint(circle.boundingMapRect, mapPoint), let school = schoolForCircle[circle] {
-                postNotification(for: school, at: position)
-                return
+        let touchRect = CGRect(x: position.x - Constants.touchRadius, y: position.y - Constants.touchRadius, width: Constants.touchRadius * 2, height: Constants.touchRadius * 2)
+        for annotation in mapView.annotations {
+            var annotationPoint = mapView.convert(annotation.coordinate, toPointTo: mapView)
+            annotationPoint.y = (view.window?.frame.height)! - annotationPoint.y
+            if touchRect.contains(annotationPoint) {
+                if tap.state == .began {
+                    if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
+                        annotationView.runAnimation()
+                        return
+                    }
+                } else if tap.state == .ended || tap.state == .possible, let annotation = annotation as? CircleAnnotation, let school = schoolForAnnotation[annotation] {
+                    postNotification(for: school, at: CGPoint(x: annotationPoint.x, y: annotationPoint.y - 20.0))
+                    return
+                }
             }
         }
     }
@@ -225,14 +231,15 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             return MKTileOverlayRenderer(tileOverlay: tileOverlay)
         }
 
-        if let circleOverlay = overlay as? MKCircle {
-            let circleRenderer = MKCircleRenderer(circle: circleOverlay)
-            circleRenderer.fillColor = NSColor.blue
-            circleRenderer.lineWidth = 1.0
-            return circleRenderer
+        return MKOverlayRenderer(overlay: overlay)
+    }
+
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if let annotation = annotation as? CircleAnnotation {
+            return CircleAnnotationView(annotation: annotation, reuseIdentifier: "CircleAnnotationView")
         }
 
-        return MKOverlayRenderer(overlay: overlay)
+        return MKAnnotationView()
     }
 
 
@@ -242,17 +249,17 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         firstly {
             try CachingNetwork.getSchools()
         }.then { [weak self] schools in
-            self?.addOverlays(for: schools)
+            self?.addAnnotations(for: schools)
         }.catch { error in
             print(error)
         }
     }
 
-    private func addOverlays(for schools: [School]) {
+    private func addAnnotations(for schools: [School]) {
         schools.forEach { school in
-            let circle = MKCircle(center: school.coordinate, radius: CLLocationDistance(10000))
-            schoolForCircle[circle] = school
-            mapView.add(circle)
+            let annotation = CircleAnnotation(coordinate: school.coordinate)
+            schoolForAnnotation[annotation] = school
+            mapView.addAnnotation(annotation)
         }
     }
 

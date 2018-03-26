@@ -48,6 +48,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         let distance = sqrt(pow(delta.dx, 2) + pow(delta.dy, 2))
         if distance > Constants.maximumDistanceMoved {
             state = .failed
+            gestureUpdated?(self)
             end(touch, with: properties)
         }
     }
@@ -60,8 +61,8 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         position = touch.position
 
         if state == .failed {
-            gestureUpdated?(self)
             reset()
+            gestureUpdated?(self)
         } else if properties.touchCount.isZero {
             state = .ended
             gestureUpdated?(self)
