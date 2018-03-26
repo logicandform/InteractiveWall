@@ -15,12 +15,15 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private var mapHandler: MapHandler?
     private let touchListener = TouchListener()
     private var recordForAnnotation = [CircleAnnotation: Record]()
+    private var timeOfLastPan = Date()
+    private var timeOfLastPinch = Date()
 
     private struct Constants {
         static let tileURL = "http://localhost:3200/v2/tiles/{z}/{x}/{y}.pbf"
         static let annotationContainerClass = "MKNewAnnotationContainerView"
         static let maxZoomWidth: Double =  134217730
         static let touchRadius: CGFloat = 20.0
+        static let changeGestureTime: Double = 0.05
     }
 
     private struct Keys {
@@ -216,13 +219,13 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private func createAnnotations() {
 
         // Schools
-//        firstly {
-//            try CachingNetwork.getSchools()
-//        }.then { [weak self] schools in
-//            self?.addAnnotations(for: schools)
-//        }.catch { error in
-//            print(error)
-//        }
+        firstly {
+            try CachingNetwork.getSchools()
+        }.then { [weak self] schools in
+            self?.addAnnotations(for: schools)
+        }.catch { error in
+            print(error)
+        }
 
         // Events
         firstly {
