@@ -2,7 +2,7 @@
 
 import Foundation
 
-enum MapNotifications: String {
+enum MapNotification: String {
     case position
     case unpair
     case ungroup
@@ -11,7 +11,7 @@ enum MapNotifications: String {
         return Notification.Name(rawValue: rawValue)
     }
 
-    static var allValues: [MapNotifications] {
+    static var allValues: [MapNotification] {
         return [.position, .unpair, .ungroup]
     }
 }

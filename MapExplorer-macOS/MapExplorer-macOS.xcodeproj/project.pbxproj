@@ -14,6 +14,8 @@
 		221C629F203B4906009493DA /* School.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C629E203B4906009493DA /* School.swift */; };
 		221C62A8203B57F7009493DA /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C62A7203B57F7009493DA /* URL.swift */; };
 		2220D3FD202F7E4200B878D6 /* GestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2220D3FC202F7E4200B878D6 /* GestureManager.swift */; };
+		222694C020699B10007DA6FA /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222694BF20699B10007DA6FA /* Record.swift */; };
+		222694C220699B53007DA6FA /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222694C120699B53007DA6FA /* Event.swift */; };
 		22290C092028F9EC000E0573 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C082028F9EC000E0573 /* AppDelegate.swift */; };
 		22290C0D2028F9EC000E0573 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22290C0C2028F9EC000E0573 /* Assets.xcassets */; };
 		22290C102028F9EC000E0573 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22290C0E2028F9EC000E0573 /* Main.storyboard */; };
@@ -36,7 +38,6 @@
 		2276AE68204E75C2001FAD8B /* BorderlessWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2276AE67204E75C2001FAD8B /* BorderlessWindow.swift */; };
 		22A4986E2047492B0024B46C /* TouchState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A4986D2047492B0024B46C /* TouchState.swift */; };
 		22A49873204749700024B46C /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A49872204749700024B46C /* JSON.swift */; };
-		22A4987C20474F390024B46C /* TouchNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A4987B20474F390024B46C /* TouchNotifications.swift */; };
 		22B1E29F2044D84000BDDF14 /* NetworkMapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2220D3FE202F84A300B878D6 /* NetworkMapManager.swift */; };
 		22B1E2AA2045F2EE00BDDF14 /* AVKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2A92045F2EE00BDDF14 /* AVKit.swift */; };
 		22EF0FA8202B847200571002 /* CachingNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EF0FA7202B847200571002 /* CachingNetwork.swift */; };
@@ -83,6 +84,8 @@
 		221C62A7203B57F7009493DA /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		2220D3FC202F7E4200B878D6 /* GestureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureManager.swift; sourceTree = "<group>"; };
 		2220D3FE202F84A300B878D6 /* NetworkMapManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMapManager.swift; sourceTree = "<group>"; };
+		222694BF20699B10007DA6FA /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
+		222694C120699B53007DA6FA /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		22290C052028F9EC000E0573 /* MapExplorer-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MapExplorer-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22290C082028F9EC000E0573 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22290C0C2028F9EC000E0573 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -108,7 +111,6 @@
 		2276AE67204E75C2001FAD8B /* BorderlessWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderlessWindow.swift; sourceTree = "<group>"; };
 		22A4986D2047492B0024B46C /* TouchState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchState.swift; sourceTree = "<group>"; };
 		22A49872204749700024B46C /* JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
-		22A4987B20474F390024B46C /* TouchNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchNotifications.swift; sourceTree = "<group>"; };
 		22B1E2A92045F2EE00BDDF14 /* AVKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVKit.swift; sourceTree = "<group>"; };
 		22EF0FA7202B847200571002 /* CachingNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachingNetwork.swift; sourceTree = "<group>"; };
 		22F0EDF72066D9500075E467 /* TouchListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchListener.swift; sourceTree = "<group>"; };
@@ -155,7 +157,6 @@
 			children = (
 				22046266204732A40067D9FB /* MapNotifications.swift */,
 				22046265204732A40067D9FB /* WindowNotifications.swift */,
-				22A4987B20474F390024B46C /* TouchNotifications.swift */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -330,7 +331,9 @@
 		22A49871204749500024B46C /* Records */ = {
 			isa = PBXGroup;
 			children = (
+				222694BF20699B10007DA6FA /* Record.swift */,
 				221C629E203B4906009493DA /* School.swift */,
+				222694C120699B53007DA6FA /* Event.swift */,
 			);
 			path = Records;
 			sourceTree = "<group>";
@@ -552,7 +555,6 @@
 			files = (
 				22A4986E2047492B0024B46C /* TouchState.swift in Sources */,
 				22046267204732A40067D9FB /* WindowNotifications.swift in Sources */,
-				22A4987C20474F390024B46C /* TouchNotifications.swift in Sources */,
 				22FEF1D8202CFE8D001E9596 /* PinchGestureRecognizer.swift in Sources */,
 				22290C3B2028FA35000E0573 /* PacketType.swift in Sources */,
 				22290C4220292D22000E0573 /* ClusterView.swift in Sources */,
@@ -571,11 +573,13 @@
 				22A49873204749700024B46C /* JSON.swift in Sources */,
 				22290C302028FA1F000E0573 /* Discipline.swift in Sources */,
 				22F0EDFD2066DA1E0075E467 /* ListenerCallback.m in Sources */,
+				222694C020699B10007DA6FA /* Record.swift in Sources */,
 				2276AE68204E75C2001FAD8B /* BorderlessWindow.swift in Sources */,
 				22290C2B2028FA1F000E0573 /* PlaceView.swift in Sources */,
 				22FEF1D4202CFE8D001E9596 /* PanGestureRecognizer.swift in Sources */,
 				22290C382028FA35000E0573 /* MapKit.swift in Sources */,
 				221C629F203B4906009493DA /* School.swift in Sources */,
+				222694C220699B53007DA6FA /* Event.swift in Sources */,
 				8F1A1CBB205B41AC00A59A84 /* FlippedMapView.swift in Sources */,
 				22FEF1D3202CFE8D001E9596 /* SwipeGestureRecognizer.swift in Sources */,
 				22EF0FA8202B847200571002 /* CachingNetwork.swift in Sources */,

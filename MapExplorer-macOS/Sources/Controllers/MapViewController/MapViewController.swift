@@ -14,9 +14,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
     private let touchListener = TouchListener()
+    private var recordForAnnotation = [CircleAnnotation: Record]()
     private var timeOfLastPan = Date()
     private var timeOfLastPinch = Date()
-    private var schoolForAnnotation = [CircleAnnotation: School]()
 
     private struct Constants {
         static let tileURL = "http://localhost:3200/v2/tiles/{z}/{x}/{y}.pbf"
@@ -27,9 +27,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     private struct Keys {
-        static let touch = "touch"
-        static let map = "mapID"
-        static let school = "school"
+        static let map = "map"
+        static let id = "id"
         static let position = "position"
     }
 
@@ -58,7 +57,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 //        let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
 //        overlay.canReplaceMapContent = true
 //        mapView.add(overlay)
-        createPlaces()
+        createAnnotations()
     }
 
     private func setupGestures() {
@@ -154,8 +153,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                         annotationView.runAnimation()
                         return
                     }
-                } else if tap.state == .ended || tap.state == .possible, let annotation = annotation as? CircleAnnotation, let school = schoolForAnnotation[annotation] {
-                    postNotification(for: school, at: CGPoint(x: annotationPoint.x, y: annotationPoint.y - 20.0))
+                } else if tap.state == .ended || tap.state == .possible, let annotation = annotation as? CircleAnnotation, let record = recordForAnnotation[annotation] {
+                    postWindowNotification(for: record, at: CGPoint(x: annotationPoint.x, y: annotationPoint.y - 20.0))
                     return
                 }
             }
@@ -217,7 +216,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     // MARK: Helpers
 
-    private func createPlaces() {
+    private func createAnnotations() {
+
+        // Schools
         firstly {
             try CachingNetwork.getSchools()
         }.then { [weak self] schools in
@@ -225,12 +226,21 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         }.catch { error in
             print(error)
         }
+
+        // Events
+        firstly {
+            try CachingNetwork.getEvents()
+        }.then { [weak self] events in
+            self?.addAnnotations(for: events)
+        }.catch { error in
+            print(error)
+        }
     }
 
-    private func addAnnotations(for schools: [School]) {
-        schools.forEach { school in
-            let annotation = CircleAnnotation(coordinate: school.coordinate)
-            schoolForAnnotation[annotation] = school
+    private func addAnnotations(for records: [Record]) {
+        records.forEach { record in
+            let annotation = CircleAnnotation(coordinate: record.coordinate)
+            recordForAnnotation[annotation] = record
             mapView.addAnnotation(annotation)
         }
     }
@@ -242,23 +252,23 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     /// Display a place view controller on top of the selected callout annotation for the associated place.
-    private func didSelectAnnotationCallout(for school: School) {
+    private func didSelectAnnotationCallout(for record: Record) {
         guard let window = view.window else {
             return
         }
 
-        let position = mapView.convert(school.coordinate, toPointTo: view) + window.frame.origin
-        postNotification(for: school, at: position)
+        let position = mapView.convert(record.coordinate, toPointTo: view) + window.frame.origin
+        postWindowNotification(for: record, at: position)
     }
 
-    private func postNotification(for school: School, at position: CGPoint) {
+    private func postWindowNotification(for record: Record, at position: CGPoint) {
         guard let window = view.window else {
             return
         }
 
         let location = window.frame.origin + position
-        let info: JSON = [Keys.position: location.toJSON(), Keys.school: school.id]
-        DistributedNotificationCenter.default().postNotificationName(WindowNotifications.school.name, object: nil, userInfo: info, deliverImmediately: true)
+        let info: JSON = [Keys.map: screenID, Keys.id: record.id, Keys.position: location.toJSON()]
+        DistributedNotificationCenter.default().postNotificationName(WindowNotification.with(record.type).name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
     /// Zooms into a cluster of annotations to make them more visible.
