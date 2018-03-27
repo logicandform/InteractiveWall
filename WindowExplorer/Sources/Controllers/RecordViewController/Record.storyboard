@@ -94,8 +94,8 @@
                                                 <view translatesAutoresizingMaskIntoConstraints="NO" id="Bws-Xv-6hl">
                                                     <rect key="frame" x="0.0" y="0.0" width="400" height="320"/>
                                                     <subviews>
-                                                        <stackView distribution="fillProportionally" orientation="vertical" alignment="leading" spacing="20" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" placeholderIntrinsicWidth="404" placeholderIntrinsicHeight="320" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RgY-ah-SAv">
-                                                            <rect key="frame" x="0.0" y="0.0" width="400" height="320"/>
+                                                        <stackView distribution="equalSpacing" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" placeholderIntrinsicWidth="404" placeholderIntrinsicHeight="320" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RgY-ah-SAv">
+                                                            <rect key="frame" x="0.0" y="0.0" width="400" height="340"/>
                                                         </stackView>
                                                     </subviews>
                                                     <constraints>
@@ -103,6 +103,7 @@
                                                         <constraint firstItem="RgY-ah-SAv" firstAttribute="top" secondItem="Bws-Xv-6hl" secondAttribute="top" id="k17-RU-shj"/>
                                                         <constraint firstAttribute="trailing" secondItem="RgY-ah-SAv" secondAttribute="trailing" id="lHq-h7-0b9"/>
                                                         <constraint firstItem="RgY-ah-SAv" firstAttribute="leading" secondItem="Bws-Xv-6hl" secondAttribute="leading" id="x6m-kL-q2x"/>
+                                                        <constraint firstItem="RgY-ah-SAv" firstAttribute="top" secondItem="Bws-Xv-6hl" secondAttribute="top" id="zLd-H8-bd5"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
