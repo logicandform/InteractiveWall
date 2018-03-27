@@ -299,14 +299,14 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private func animateViewIn() {
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = 0.5
-            self.detailView.animator().alphaValue = 1.0
+            detailView.animator().alphaValue = 1.0
         })
     }
 
     private func animateViewOut() {
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = 0.5
-            self.detailView.animator().alphaValue = 0.0
+            detailView.animator().alphaValue = 0.0
         }, completionHandler: {
             WindowManager.instance.closeWindow(for: self)
         })
