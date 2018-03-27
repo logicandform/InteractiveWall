@@ -22,6 +22,7 @@ final class CachingNetwork {
         static let baseURL = "http://localhost:3000"
         static let placesURL = baseURL + "/places"
         static let schoolsURL = baseURL + "/schools"
+        static let eventsURL = baseURL + "/events"
     }
 
     private static let credentials: [String: String] = {
@@ -34,7 +35,7 @@ final class CachingNetwork {
     // MARK: Places
 
     static func getPlaces() throws -> Promise<[Place]> {
-        let url = Endpoints.places
+        let url = Endpoints.placesURL
 
         return Alamofire.request(url, headers: credentials).responseJSON().then { json in
             try ResponseHandler.serializePlaces(from: json)
@@ -45,7 +46,7 @@ final class CachingNetwork {
     // MARK: Schools
 
     static func getSchools() throws -> Promise<[School]> {
-        let url = Endpoints.schools
+        let url = Endpoints.schoolsURL
 
         return Alamofire.request(url, headers: credentials).responseJSON().then { json in
             try ResponseHandler.serializeSchools(from: json)
@@ -56,7 +57,7 @@ final class CachingNetwork {
     // MARK: Events
 
     static func getEvents() throws -> Promise<[Event]> {
-        let url = Endpoints.events
+        let url = Endpoints.eventsURL
 
         return Alamofire.request(url, headers: credentials).responseJSON().then { json in
             try ResponseHandler.serializeEvents(from: json)
