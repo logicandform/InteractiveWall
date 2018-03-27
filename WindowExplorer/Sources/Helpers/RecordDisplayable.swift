@@ -22,6 +22,24 @@ protocol RecordDisplayable {
 }
 
 
+struct RecordInfo: Hashable {
+    var hashValue: Int {
+        return recordId.hashValue + type.hashValue + mapId.hashValue
+    }
+
+    static func ==(lhs: RecordInfo, rhs: RecordInfo) -> Bool {
+        return
+            lhs.recordId == rhs.recordId &&
+            lhs.type == rhs.type &&
+            lhs.mapId == rhs.mapId
+    }
+
+    let recordId: Int
+    let mapId: Int
+    let type: RecordType
+}
+
+
 struct RecordGroup {
     let type: RecordType
     let records: [RecordDisplayable]

@@ -10,6 +10,7 @@ final class WindowManager {
     static let instance = WindowManager()
 
     private(set) var windows = [NSWindow: GestureManager]()
+    private var controllersForRecordInfo = [RecordInfo: NSViewController]()
 
     private struct Keys {
         static let map = "map"
@@ -37,6 +38,14 @@ final class WindowManager {
         if let responder = controller as? GestureResponder, let (window, _) = windows.first(where: { $0.value === responder.gestureManager }) {
             windows.removeValue(forKey: window)
             window.close()
+
+            if controller is RecordViewController {
+                for (recordInfo, dictionaryController) in controllersForRecordInfo {
+                    if dictionaryController == controller {
+                        controllersForRecordInfo.removeValue(forKey: recordInfo)
+                    }
+                }
+            }
         }
     }
 
@@ -88,15 +97,43 @@ final class WindowManager {
     @objc
     private func handleNotification(_ notification: NSNotification) {
         guard let windowNotification = WindowNotification.with(notification.name), let info = notification.userInfo, let map = info[Keys.map] as? Int, let id = info[Keys.id] as? Int, let locationJSON = info[Keys.position] as? JSON, let location = CGPoint(json: locationJSON) else {
-            return
+            return  
         }
 
         RecordFactory.record(for: windowNotification.type, id: id) { [weak self] record in
             if let record = record {
                 let windowType = WindowType.record(record)
                 let origin = location - CGPoint(x: windowType.size.width / 2, y: windowType.size.height)
-                self?.display(.record(record), at: origin)
+
+                self?.handleDisplayingRecord(for: record, with: id, on: map, at: origin)
             }
         }
+    }
+
+    private func handleDisplayingRecord(for record: RecordDisplayable, with recordId: Int, on mapId: Int, at origin: CGPoint) {
+
+        let recordInfo = RecordInfo(recordId: recordId, mapId: mapId, type: record.type)
+
+        if let controller = controllersForRecordInfo[recordInfo] {
+            animate(controller, to: origin)
+            return
+        }
+
+        if let controller = display(.record(record), at: origin) {
+            controllersForRecordInfo[recordInfo] = controller
+        }
+    }
+
+    private func animate(_ controller: NSViewController, to origin: NSPoint) {
+        let window = controller.view.window!
+        var frame = window.frame
+        frame.origin = origin
+
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = 0.75
+            NSAnimationContext.current.allowsImplicitAnimation = true
+            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+            window.animator().setFrame(frame, display: true, animate: true)
+        })
     }
 }

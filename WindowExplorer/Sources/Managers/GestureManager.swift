@@ -86,6 +86,10 @@ final class GestureManager {
             return
         }
 
+        window.animator()
+
+
+
         let windowTransform = CGAffineTransform(translationX: -window.frame.minX, y: -window.frame.minY)
         let positionInWindow = touch.position.applying(windowTransform)
         displayTouchIndicator(in: responder.view, at: positionInWindow)
