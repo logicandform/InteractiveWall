@@ -97,14 +97,13 @@ final class WindowManager {
     @objc
     private func handleNotification(_ notification: NSNotification) {
         guard let windowNotification = WindowNotification.with(notification.name), let info = notification.userInfo, let map = info[Keys.map] as? Int, let id = info[Keys.id] as? Int, let locationJSON = info[Keys.position] as? JSON, let location = CGPoint(json: locationJSON) else {
-            return  
+            return
         }
 
         RecordFactory.record(for: windowNotification.type, id: id) { [weak self] record in
             if let record = record {
                 let windowType = WindowType.record(record)
                 let origin = location - CGPoint(x: windowType.size.width / 2, y: windowType.size.height)
-
                 self?.handleDisplayingRecord(for: record, with: id, on: map, at: origin)
             }
         }
@@ -131,7 +130,6 @@ final class WindowManager {
 
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = 0.75
-            NSAnimationContext.current.allowsImplicitAnimation = true
             NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
             window.animator().setFrame(frame, display: true, animate: true)
         })
