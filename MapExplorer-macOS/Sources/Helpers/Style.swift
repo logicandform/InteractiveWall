@@ -15,4 +15,5 @@ final class Style {
     let eventOuterColor = NSColor(calibratedRed: 162/255, green: 169/255, blue: 1, alpha: 0.5)
     let organizationColor = NSColor(calibratedRed: 193/255, green: 79/255, blue: 231/255, alpha: 1)
     let relatedItemColor = NSColor(calibratedRed: 75/255, green: 91/255, blue: 100/255, alpha: 1)
+    let outerAnnotationColor = NSColor(calibratedRed: 223/255, green: 239/255, blue: 243/255, alpha: 0.2)
 }
