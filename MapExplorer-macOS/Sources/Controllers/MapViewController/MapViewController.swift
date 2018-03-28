@@ -55,7 +55,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 //        let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
 //        overlay.canReplaceMapContent = true
 //        mapView.add(overlay)
-        createAnnotations()
+//        createAnnotations()
     }
 
     private func setupGestures() {
@@ -98,7 +98,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                 mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
             }
             mapRect.origin += MKMapPoint(x: translationX, y: translationY)
-            mapHandler?.send(mapRect)
+            mapHandler?.send(mapRect, for: pinch.state)
         case .ended:
             mapHandler?.endActivity()
         case .possible, .failed:
