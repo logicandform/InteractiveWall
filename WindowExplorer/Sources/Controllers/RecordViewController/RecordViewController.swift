@@ -26,6 +26,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private var pageControl = PageControl()
     private var positionsForMediaControllers = [MediaViewController: Int]()
     private weak var closeWindowTimer: Foundation.Timer?
+    var animating: Bool = false
     
     private struct Constants {
         static let tableRowHeight: CGFloat = 80
@@ -156,7 +157,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     // MARK: Gesture Handling
 
     private func handleCollectionViewPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer else {
+        guard let pan = gesture as? PanGestureRecognizer, !animating else {
             return
         }
 
@@ -186,7 +187,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func handleCollectionViewTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer else {
+        guard let tap = gesture as? TapGestureRecognizer, !animating else {
             return
         }
 
@@ -214,7 +215,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func handleRelatedViewPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer else {
+        guard let pan = gesture as? PanGestureRecognizer, !animating else {
             return
         }
 
@@ -244,7 +245,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func handleRelatedItemTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let location = tap.position else {
+        guard let tap = gesture as? TapGestureRecognizer, let location = tap.position, !animating else {
             return
         }
 
@@ -270,7 +271,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func handleStackViewPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer else {
+        guard let pan = gesture as? PanGestureRecognizer, !animating else {
             return
         }
 
@@ -285,7 +286,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func handleWindowPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
+        guard let pan = gesture as? PanGestureRecognizer, let window = view.window, !animating else {
             return
         }
 
@@ -303,7 +304,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     @objc
     private func handleMouseDrag(_ gesture: NSPanGestureRecognizer) {
-        guard let window = view.window else {
+        guard let window = view.window, !animating else {
             return
         }
 
