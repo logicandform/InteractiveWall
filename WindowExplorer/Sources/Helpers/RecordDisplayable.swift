@@ -4,20 +4,6 @@ import Foundation
 import AppKit
 
 
-enum RecordType: String {
-    case event
-    case artifact
-    case organization
-    case school
-}
-
-
-struct RecordGroup {
-    let type: RecordType
-    let records: [RecordDisplayable]
-}
-
-
 private struct Constants {
     static let titleFontSize: CGFloat = 24.0
     static let dateFontSize: CGFloat = 17.0
@@ -33,6 +19,12 @@ protocol RecordDisplayable {
     var media: [Media] { get }
     var textFields: [NSTextField] { get }
     var recordGroups: [RecordGroup] { get }
+}
+
+
+struct RecordGroup {
+    let type: RecordType
+    let records: [RecordDisplayable]
 }
 
 
