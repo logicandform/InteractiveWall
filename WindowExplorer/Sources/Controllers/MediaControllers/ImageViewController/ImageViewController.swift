@@ -80,13 +80,17 @@ class ImageViewController: MediaViewController, GestureResponder {
         let panGesture = NSPanGestureRecognizer(target: self, action: #selector(handleMousePan(_:)))
         view.addGestureRecognizer(panGesture)
 
-        let singleFingerPan = PanGestureRecognizer()
-        super.gestureManager.add(singleFingerPan, to: imageScrollView)
-        singleFingerPan.gestureUpdated = didPanDetailView(_:)
+        let singleFingerWindowPan = PanGestureRecognizer()
+        super.gestureManager.add(singleFingerWindowPan, to: view)
+        singleFingerWindowPan.gestureUpdated = didPanView(_:)
+
+        let singleFinderImagePan = PanGestureRecognizer()
+        super.gestureManager.add(singleFinderImagePan, to: imageScrollView)
+        singleFinderImagePan.gestureUpdated = didPanImageView(_:)
 
         let pinchGesture = PinchGestureRecognizer()
         super.gestureManager.add(pinchGesture, to: imageScrollView)
-        pinchGesture.gestureUpdated = didPinchDetailView(_:)
+        pinchGesture.gestureUpdated = didPinchImageView(_:)
 
         let singleFingerCloseButtonTap = TapGestureRecognizer()
         super.gestureManager.add(singleFingerCloseButtonTap, to: dismissButton)
@@ -100,7 +104,7 @@ class ImageViewController: MediaViewController, GestureResponder {
 
     // MARK: Gesture Handling
 
-    private func didPanDetailView(_ gesture: GestureRecognizer) {
+    private func didPanView(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
             return
         }
@@ -117,7 +121,25 @@ class ImageViewController: MediaViewController, GestureResponder {
         }
     }
 
-    private func didPinchDetailView(_ gesture: GestureRecognizer) {
+    private func didPanImageView(_ gesture: GestureRecognizer) {
+        guard let pan = gesture as? PanGestureRecognizer else {
+            return
+        }
+
+        switch pan.state {
+        case .began:
+            contentViewFrame = imageScrollView.contentView.frame
+        case .recognized, .momentum:
+            let currentRect = imageScrollView.contentView.bounds
+            let newOriginX = min(contentViewFrame.origin.x + contentViewFrame.width - currentRect.width, max(contentViewFrame.origin.x, currentRect.origin.x))
+            let newOriginY = min(contentViewFrame.origin.y + contentViewFrame.height - currentRect.height, max(contentViewFrame.origin.y, currentRect.origin.y))
+            imageScrollView.contentView.scroll(to: NSPoint(x: newOriginX, y: newOriginY))
+        default:
+            return
+        }
+    }
+
+    private func didPinchImageView(_ gesture: GestureRecognizer) {
         guard let pinch = gesture as? PinchGestureRecognizer else {
             return
         }
