@@ -60,6 +60,13 @@
 		3F2FAB5B204F7D24002EDF5D /* Artifact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2FAB5A204F7D24002EDF5D /* Artifact.swift */; };
 		3F47D52F206420C6001E86E3 /* FlippedClipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F47D52E206420C6001E86E3 /* FlippedClipView.swift */; };
 		3F8436E420647F9F00AAAB55 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8436E320647F9E00AAAB55 /* String.swift */; };
+		618F0C292069F8F000762C20 /* AKPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618F0C282069F8F000762C20 /* AKPlayer.swift */; };
+		618F0C2F2069F98900762C20 /* MultiChannelPanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618F0C2B2069F98900762C20 /* MultiChannelPanner.swift */; };
+		618F0C322069FFD600762C20 /* AudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618F0C312069FFD600762C20 /* AudioController.swift */; };
+		618F0C33206A058900762C20 /* MultiChannelPanAudioUnit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 61767FD0206883A900970640 /* MultiChannelPanAudioUnit.mm */; };
+		618F0C35206A08CE00762C20 /* AudioComponentDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618F0C34206A08CE00762C20 /* AudioComponentDescription.swift */; };
+		618F0C37206A113B00762C20 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 618F0C36206A113B00762C20 /* Accelerate.framework */; };
+		618F0C38206A114100762C20 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61767FF620688A0200970640 /* AVFoundation.framework */; };
 		8E4010A020487B8D00E81AAA /* WindowFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E40109F20487B8D00E81AAA /* WindowFactory.swift */; };
 		8E4010A220487E0300E81AAA /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4010A120487E0300E81AAA /* Collection.swift */; };
 		8FA62A08206BFAFC004E6092 /* RecordInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA62A07206BFAFC004E6092 /* RecordInfo.swift */; };
@@ -150,6 +157,16 @@
 		3F2FAB5A204F7D24002EDF5D /* Artifact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Artifact.swift; sourceTree = "<group>"; };
 		3F47D52E206420C6001E86E3 /* FlippedClipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlippedClipView.swift; sourceTree = "<group>"; };
 		3F8436E320647F9E00AAAB55 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		61767FCF206883A900970640 /* MultiChannelPanAudioUnit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MultiChannelPanAudioUnit.h; sourceTree = "<group>"; };
+		61767FD0206883A900970640 /* MultiChannelPanAudioUnit.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MultiChannelPanAudioUnit.mm; sourceTree = "<group>"; };
+		61767FE12068883F00970640 /* BufferedAudioBus.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BufferedAudioBus.hpp; sourceTree = "<group>"; };
+		61767FF620688A0200970640 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		61767FFA20688A3700970640 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		618F0C282069F8F000762C20 /* AKPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AKPlayer.swift; sourceTree = "<group>"; };
+		618F0C2B2069F98900762C20 /* MultiChannelPanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiChannelPanner.swift; sourceTree = "<group>"; };
+		618F0C312069FFD600762C20 /* AudioController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioController.swift; sourceTree = "<group>"; };
+		618F0C34206A08CE00762C20 /* AudioComponentDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioComponentDescription.swift; sourceTree = "<group>"; };
+		618F0C36206A113B00762C20 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		8E40109F20487B8D00E81AAA /* WindowFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowFactory.swift; sourceTree = "<group>"; };
 		8E4010A120487E0300E81AAA /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		8FA62A07206BFAFC004E6092 /* RecordInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordInfo.swift; sourceTree = "<group>"; };
@@ -175,6 +192,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				618F0C38206A114100762C20 /* AVFoundation.framework in Frameworks */,
+				618F0C37206A113B00762C20 /* Accelerate.framework in Frameworks */,
 				C6DB17689F287C9826286DF2 /* Pods_All_WindowExplorer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -325,6 +344,7 @@
 				2204623B20472FFD0067D9FB /* Models */,
 				2204623C204730050067D9FB /* Gestures */,
 				22A4985F204734790024B46C /* Notifications */,
+				61767FFD206895EE00970640 /* Audio */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -395,9 +415,26 @@
 			path = MediaControllers;
 			sourceTree = "<group>";
 		};
+		61767FFD206895EE00970640 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				61767FE12068883F00970640 /* BufferedAudioBus.hpp */,
+				61767FCF206883A900970640 /* MultiChannelPanAudioUnit.h */,
+				61767FD0206883A900970640 /* MultiChannelPanAudioUnit.mm */,
+				618F0C282069F8F000762C20 /* AKPlayer.swift */,
+				618F0C34206A08CE00762C20 /* AudioComponentDescription.swift */,
+				618F0C312069FFD600762C20 /* AudioController.swift */,
+				618F0C2B2069F98900762C20 /* MultiChannelPanner.swift */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
 		BA7AB469DDFD237E3385F839 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				618F0C36206A113B00762C20 /* Accelerate.framework */,
+				61767FFA20688A3700970640 /* AudioToolbox.framework */,
+				61767FF620688A0200970640 /* AVFoundation.framework */,
 				A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */,
 			);
 			name = Frameworks;
@@ -491,6 +528,7 @@
 				TargetAttributes = {
 					22A9231C2044AF05003EA9BB = {
 						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -606,11 +644,13 @@
 				2204623520472FDF0067D9FB /* Int.swift in Sources */,
 				226D0587204FC78100D74711 /* CachingNetwork.swift in Sources */,
 				22046246204730780067D9FB /* GestureRecognizer.swift in Sources */,
+				618F0C322069FFD600762C20 /* AudioController.swift in Sources */,
 				2204625D204730C70067D9FB /* TouchProperties.swift in Sources */,
 				2204623420472FDF0067D9FB /* NSImage.swift in Sources */,
 				D9F24E62205B040700B9FCB8 /* ImageViewController.swift in Sources */,
 				227B5E11205611BB00F403B3 /* Style.swift in Sources */,
 				8E4010A220487E0300E81AAA /* Collection.swift in Sources */,
+				618F0C2F2069F98900762C20 /* MultiChannelPanner.swift in Sources */,
 				3F2FAB5B204F7D24002EDF5D /* Artifact.swift in Sources */,
 				22B1E2CD204638B900BDDF14 /* GestureManager.swift in Sources */,
 				D9F24E5D205AFE2900B9FCB8 /* Media.swift in Sources */,
@@ -625,6 +665,7 @@
 				3F47D52F206420C6001E86E3 /* FlippedClipView.swift in Sources */,
 				8E4010A020487B8D00E81AAA /* WindowFactory.swift in Sources */,
 				22A498612047349C0024B46C /* WindowNotifications.swift in Sources */,
+				618F0C292069F8F000762C20 /* AKPlayer.swift in Sources */,
 				2204621920472F2D0067D9FB /* PlayerControl.swift in Sources */,
 				22B1E2CF204638CA00BDDF14 /* GestureHandler.swift in Sources */,
 				22A49878204749C30024B46C /* TouchState.swift in Sources */,
@@ -635,12 +676,14 @@
 				8FA62A08206BFAFC004E6092 /* RecordInfo.swift in Sources */,
 				2204620E20472DE80067D9FB /* RelatedItemView.swift in Sources */,
 				226D0589204FC7BC00D74711 /* ResponseHandler.swift in Sources */,
+				618F0C33206A058900762C20 /* MultiChannelPanAudioUnit.mm in Sources */,
 				3F09025B2048D9D30044F100 /* Place.swift in Sources */,
 				22A498752047499B0024B46C /* JSON.swift in Sources */,
 				22046247204730780067D9FB /* PinchGestureRecognizer.swift in Sources */,
 				8FEABDA12064702600612C84 /* MediaViewController.swift in Sources */,
 				22046243204730780067D9FB /* SwipeGestureRecognizer.swift in Sources */,
 				D901EBF02057490400BBFCF2 /* RegularTableView.swift in Sources */,
+				618F0C35206A08CE00762C20 /* AudioComponentDescription.swift in Sources */,
 				22046248204730780067D9FB /* TapGestureRecognizer.swift in Sources */,
 				8FE6467B2060553100E6116A /* RegularScrollView.swift in Sources */,
 				2247670020562F65003E8790 /* MediaItemView.swift in Sources */,

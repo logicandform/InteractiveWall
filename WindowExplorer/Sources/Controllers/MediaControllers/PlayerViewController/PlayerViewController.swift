@@ -13,6 +13,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     @IBOutlet weak var dismissButton: NSView!
     @IBOutlet weak var playerStateImageView: AspectFillImageView!
 
+    var audioPlayer: AKPlayer?
 
     // MARK: Life-cycle
 
@@ -26,7 +27,10 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         super.animateViewIn()
     }
 
- 
+    deinit {
+        audioPlayer?.disconnect()
+    }
+
     // MARK: Setup
 
     private func setupPlayer() {
@@ -34,7 +38,11 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
             return
         }
 
-        let player = AVPlayer(url: super.media.url)
+        let contoller = AudioController.shared
+        audioPlayer = contoller.play(url: media.url)
+
+        let player = AVPlayer(url: media.url)
+        player.isMuted = true
         playerView.player = player
 
         playerControl.player = player
@@ -67,6 +75,12 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         singleFingerCloseButtonTap.gestureUpdated = didTapCloseButton(_:)
     }
 
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        if let window = view.window, let screen = window.screen {
+            audioPlayer?.location = Double(window.frame.midX / screen.visibleFrame.width)
+        }
+    }
 
     // MARK: Gesture Handling
 
@@ -90,6 +104,8 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
             var origin = window.frame.origin
             origin += pan.delta.round()
             window.setFrameOrigin(origin)
+            // TODO: Figure out absolute location for multiple screens
+            audioPlayer?.location = Double(window.frame.midX / window.screen!.visibleFrame.width)
         case .possible:
             WindowManager.instance.checkBounds(of: self)
         default:
