@@ -99,4 +99,16 @@ final class WindowManager {
             }
         }
     }
+
+    func displayVideo() {
+        firstly {
+            CachingNetwork.getArtifact(by: 1587)
+            }.then { [weak self] artifact -> Void in
+                let windowType = WindowType.record(artifact)
+                let origin = CGPoint(x: 2000, y: 300)
+                self?.display(windowType, at: origin)
+            }.catch { error in
+                print(error)
+        }
+    }
 }

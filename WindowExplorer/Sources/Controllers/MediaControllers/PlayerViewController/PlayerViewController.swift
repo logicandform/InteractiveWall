@@ -13,10 +13,6 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
     @IBOutlet weak var dismissButton: NSView!
     @IBOutlet weak var playerStateImageView: NSImageView!
 
-    private struct Constants {
-        static let playerStateIndicatorRadius: CGFloat = 25
-    }
-
 
     // MARK: Life-cycle
 
@@ -28,7 +24,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
 
         setupPlayer()
         setupGestures()
-        animateViewIn()
+        super.animateViewIn()
     }
 
  
@@ -92,6 +88,9 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
 
         switch pan.state {
         case .recognized, .momentum:
+            if playerControl.state != .playing {
+                super.resetCloseWindowTimer()
+            }
             var origin = window.frame.origin
             origin += pan.delta.round()
             window.setFrameOrigin(origin)
@@ -107,13 +106,17 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
             return
         }
 
-        animateViewOut()
+        super.animateViewOut()
     }
 
     @objc
     private func handleMousePan(_ gesture: NSPanGestureRecognizer) {
         guard let window = view.window else {
             return
+        }
+
+        if playerControl.state != .playing {
+            super.resetCloseWindowTimer()
         }
 
         var origin = window.frame.origin
@@ -126,7 +129,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
     // MARK: IB-Actions
 
     @IBAction func closeButtonTapped(_ sender: Any) {
-        animateViewOut()
+        super.animateViewOut()
     }
 
 
@@ -149,25 +152,12 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
             NSAnimationContext.current.duration = 1.0
             playerStateImageView.animator().alphaValue = alpha
         })
-    }
 
-
-    // MARK: Helper
-
-    private func animateViewIn() {
-        view.alphaValue = 0.0
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = 0.5
-            view.animator().alphaValue = 1.0
-        })
-    }
-
-    private func animateViewOut() {
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = 0.5
-            view.animator().alphaValue = 0.0
-        }, completionHandler: {
-            super.close()
-        })
+        switch state {
+        case .playing:
+            super.closeWindowTimer?.invalidate()
+        case .paused, .finished:
+            super.resetCloseWindowTimer()
+        }
     }
 }

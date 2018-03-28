@@ -21,12 +21,14 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private var showingRelatedItems = false
     private var pageControl = PageControl()
     private var positionsForMediaControllers = [MediaViewController: Int]()
+    private weak var closeWindowTimer: Foundation.Timer?
     
     private struct Constants {
         static let tableRowHeight: CGFloat = 60
         static let windowMargins: CGFloat = 20
         static let mediaControllerOffsetX = 100
         static let mediaControllerOffsetY = -50
+        static let closeWindowTimeoutPeriod: TimeInterval = 60
     }
 
 
@@ -44,6 +46,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         setupGestures()
         loadRecord()
         animateViewIn()
+        resetCloseWindowTimer()
     }
 
 
@@ -134,6 +137,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return
         }
 
+        resetCloseWindowTimer()
+
         switch pan.state {
         case .recognized, .momentum:
             var rect = mediaView.visibleRect
@@ -163,6 +168,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         guard let tap = gesture as? TapGestureRecognizer else {
             return
         }
+
+        resetCloseWindowTimer()
 
         let rect = mediaView.visibleRect
         let offset = rect.origin.x / rect.width
@@ -194,6 +201,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return
         }
 
+        resetCloseWindowTimer()
+
         switch pan.state {
         case .recognized, .momentum:
             var rect = relatedItemsView.visibleRect
@@ -216,6 +225,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return
         }
 
+        resetCloseWindowTimer()
 
         let locationInTable = location + relatedItemsView.visibleRect.origin
         let row = relatedItemsView.row(at: locationInTable)
@@ -243,6 +253,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return
         }
 
+        resetCloseWindowTimer()
+
         switch pan.state {
         case .recognized, .momentum:
             var point = stackClipView.visibleRect.origin
@@ -257,6 +269,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
             return
         }
+
+        resetCloseWindowTimer()
 
         switch pan.state {
         case .recognized, .momentum:
@@ -275,6 +289,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         guard let window = view.window else {
             return
         }
+
+        resetCloseWindowTimer()
 
         var origin = window.frame.origin
         origin += gesture.translation(in: nil)
@@ -381,6 +397,20 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         }
     }
 
+    private func resetCloseWindowTimer() {
+        closeWindowTimer?.invalidate()
+        closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Constants.closeWindowTimeoutPeriod, repeats: false) { [weak self] _ in
+            self?.closeTimerFired()
+
+        }
+    }
+
+    private func closeTimerFired() {
+        if positionsForMediaControllers.keys.isEmpty {
+            WindowManager.instance.closeWindow(for: self)
+        } 
+    }
+
 
     // MARK: NSCollectionViewDelegate & NSCollectionViewDataSource
 
@@ -431,5 +461,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     func closeWindow(for mediaController: MediaViewController) {
         positionsForMediaControllers.removeValue(forKey: mediaController)
+        resetCloseWindowTimer()
     }
 }

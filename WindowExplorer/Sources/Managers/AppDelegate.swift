@@ -25,6 +25,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 //                WindowManager.instance.display(.record(artifact), at: CGPoint(x: 2000, y: 400))
 //            }
 //        }
+
+        WindowManager.instance.displayVideo()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
