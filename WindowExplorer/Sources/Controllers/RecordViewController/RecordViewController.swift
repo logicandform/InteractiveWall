@@ -40,6 +40,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         detailView.wantsLayer = true
         detailView.layer?.backgroundColor = style.darkBackground.cgColor
         gestureManager = GestureManager(responder: self)
+        gestureManager.touchReceived = recievedTouch(touch:)
 
         setupMediaView()
         setupRelatedItemsView()
@@ -169,7 +170,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return
         }
 
-        resetCloseWindowTimer()
         let rect = mediaView.visibleRect
         let offset = rect.origin.x / rect.width
         let index = Int(round(offset))
@@ -200,8 +200,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return
         }
 
-        resetCloseWindowTimer()
-
         switch pan.state {
         case .recognized, .momentum:
             var rect = relatedItemsView.visibleRect
@@ -224,7 +222,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return
         }
 
-        resetCloseWindowTimer()
         let locationInTable = location + relatedItemsView.visibleRect.origin
         let row = relatedItemsView.row(at: locationInTable)
         guard row >= 0, let relatedItemView = relatedItemsView.view(atColumn: 0, row: row, makeIfNecessary: false) as? RelatedItemView else {
@@ -251,8 +248,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return
         }
 
-        resetCloseWindowTimer()
-
         switch pan.state {
         case .recognized, .momentum:
             var point = stackClipView.visibleRect.origin
@@ -267,8 +262,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
             return
         }
-
-        resetCloseWindowTimer()
 
         switch pan.state {
         case .recognized, .momentum:
@@ -288,7 +281,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return
         }
 
-        resetCloseWindowTimer()
         var origin = window.frame.origin
         origin += gesture.translation(in: nil)
         window.setFrameOrigin(origin)
@@ -405,6 +397,10 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             animateViewOut()
         }
         // reset timer gets recalled once a child MediaViewContoller gets closed
+    }
+
+    private func recievedTouch(touch: Touch) {
+        resetCloseWindowTimer()
     }
 
 
