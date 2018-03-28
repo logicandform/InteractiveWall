@@ -21,12 +21,14 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private var showingRelatedItems = false
     private var pageControl = PageControl()
     private var positionsForMediaControllers = [MediaViewController: Int]()
+    private weak var closeWindowTimer: Foundation.Timer?
     
     private struct Constants {
         static let tableRowHeight: CGFloat = 60
         static let windowMargins: CGFloat = 20
         static let mediaControllerOffsetX = 100
         static let mediaControllerOffsetY = -50
+        static let closeWindowTimeoutPeriod: TimeInterval = 60
     }
 
 
@@ -38,12 +40,14 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         detailView.wantsLayer = true
         detailView.layer?.backgroundColor = style.darkBackground.cgColor
         gestureManager = GestureManager(responder: self)
+        gestureManager.touchReceived = recievedTouch(touch:)
 
         setupMediaView()
         setupRelatedItemsView()
         setupGestures()
         loadRecord()
         animateViewIn()
+        resetCloseWindowTimer()
     }
 
 
@@ -216,7 +220,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return
         }
 
-
         let locationInTable = location + relatedItemsView.visibleRect.origin
         let row = relatedItemsView.row(at: locationInTable)
         guard row >= 0, let relatedItemView = relatedItemsView.view(atColumn: 0, row: row, makeIfNecessary: false) as? RelatedItemView else {
@@ -373,12 +376,29 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         let position = positionsForMediaControllers.values.max() != nil ? positionsForMediaControllers.values.max()! + 1 : 0
         let offsetX = position * Constants.mediaControllerOffsetX
         let offsetY = position * Constants.mediaControllerOffsetY
-
         let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins + CGFloat(offsetX), y: window.frame.maxY - windowType.size.height + CGFloat(offsetY))
         if let mediaController = WindowManager.instance.display(windowType, at: origin) as? MediaViewController {
             positionsForMediaControllers[mediaController] = position
             mediaController.delegate = self
         }
+    }
+
+    private func resetCloseWindowTimer() {
+        closeWindowTimer?.invalidate()
+        closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Constants.closeWindowTimeoutPeriod, repeats: false) { [weak self] _ in
+            self?.closeTimerFired()
+        }
+    }
+
+    private func closeTimerFired() {
+        if positionsForMediaControllers.keys.isEmpty {
+            animateViewOut()
+        }
+        // reset timer gets recalled once a child MediaViewContoller gets closed
+    }
+
+    private func recievedTouch(touch: Touch) {
+        resetCloseWindowTimer()
     }
 
 
@@ -431,5 +451,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     func closeWindow(for mediaController: MediaViewController) {
         positionsForMediaControllers.removeValue(forKey: mediaController)
+        resetCloseWindowTimer()
     }
 }

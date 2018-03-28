@@ -5,17 +5,13 @@ import AVKit
 import AppKit
 
 
-class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureResponder {
+class PlayerViewController: MediaViewController, PlayerControlDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Player")
 
     @IBOutlet weak var playerView: AVPlayerView!
     @IBOutlet weak var playerControl: PlayerControl!
     @IBOutlet weak var dismissButton: NSView!
     @IBOutlet weak var playerStateImageView: NSImageView!
-
-    private struct Constants {
-        static let playerStateIndicatorRadius: CGFloat = 25
-    }
 
 
     // MARK: Life-cycle
@@ -24,11 +20,10 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
         super.viewDidLoad()
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
-        super.gestureManager = GestureManager(responder: self)
-
+        
         setupPlayer()
         setupGestures()
-        animateViewIn()
+        super.animateViewIn()
     }
 
  
@@ -107,7 +102,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
             return
         }
 
-        animateViewOut()
+        super.animateViewOut()
     }
 
     @objc
@@ -116,6 +111,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
             return
         }
 
+        resetCloseWindowTimer()
         var origin = window.frame.origin
         origin += gesture.translation(in: nil)
         window.setFrameOrigin(origin)
@@ -126,7 +122,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
     // MARK: IB-Actions
 
     @IBAction func closeButtonTapped(_ sender: Any) {
-        animateViewOut()
+        super.animateViewOut()
     }
 
 
@@ -149,25 +145,16 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
             NSAnimationContext.current.duration = 1.0
             playerStateImageView.animator().alphaValue = alpha
         })
+
+        resetCloseWindowTimer()
     }
 
-
-    // MARK: Helper
-
-    private func animateViewIn() {
-        view.alphaValue = 0.0
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = 0.5
-            view.animator().alphaValue = 1.0
-        })
-    }
-
-    private func animateViewOut() {
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = 0.5
-            view.animator().alphaValue = 0.0
-        }, completionHandler: {
-            super.close()
-        })
+    override func resetCloseWindowTimer() {
+        closeWindowTimer?.invalidate()
+        if playerControl.state != .playing {
+            closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Constants.closeWindowTimeoutPeriod, repeats: false) { [weak self] _ in
+                self?.animateViewOut()
+            }
+        }
     }
 }

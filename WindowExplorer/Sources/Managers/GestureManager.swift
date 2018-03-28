@@ -13,6 +13,7 @@ protocol GestureResponder: class {
 
 final class GestureManager {
 
+    var touchReceived: ((Touch) -> Void)?
     private weak var responder: GestureResponder!
     private var gestureHandlers = [NSView: GestureHandler]()
 
@@ -58,6 +59,8 @@ final class GestureManager {
                 handler.handle(touch)
             }
         }
+
+        touchReceived?(touch)
     }
 
     func view(for gesture: GestureRecognizer) -> NSView? {

@@ -5,7 +5,7 @@ import AppKit
 import Alamofire
 import AlamofireImage
 
-class ImageViewController: MediaViewController, GestureResponder {
+class ImageViewController: MediaViewController {
     static let storyboard = NSStoryboard.Name(rawValue: "Image")
 
     @IBOutlet weak var imageScrollView: RegularScrollView!
@@ -28,11 +28,10 @@ class ImageViewController: MediaViewController, GestureResponder {
         super.viewDidLoad()
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
-        super.gestureManager = GestureManager(responder: self)
         titleTextField.stringValue = super.media.title ?? ""
         setupImageView()
         setupGestures()
-        animateViewIn()
+        super.animateViewIn()
     }
 
     override func viewDidDisappear() {
@@ -164,7 +163,7 @@ class ImageViewController: MediaViewController, GestureResponder {
             return
         }
 
-        animateViewOut()
+        super.animateViewOut()
     }
 
     private func didTapRotateButton(_ gesture: GestureRecognizer) {
@@ -187,6 +186,7 @@ class ImageViewController: MediaViewController, GestureResponder {
             return
         }
 
+        super.resetCloseWindowTimer()
         var origin = window.frame.origin
         origin += gesture.translation(in: nil)
         window.setFrameOrigin(origin)
@@ -197,26 +197,6 @@ class ImageViewController: MediaViewController, GestureResponder {
     // MARK: IB-Actions
 
     @IBAction func closeButtonTapped(_ sender: Any) {
-        animateViewOut()
-    }
-
-
-    // MARK: Helper
-
-    private func animateViewIn() {
-        view.alphaValue = 0.0
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = 0.5
-            view.animator().alphaValue = 1.0
-        })
-    }
-
-    private func animateViewOut() {
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = 0.5
-            view.animator().alphaValue = 0.0
-        }, completionHandler: {
-            super.close()
-        })
+        super.animateViewOut()
     }
 }

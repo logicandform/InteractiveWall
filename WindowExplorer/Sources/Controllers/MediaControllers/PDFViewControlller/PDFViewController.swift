@@ -3,7 +3,7 @@
 import Cocoa
 import Quartz
 
-class PDFViewController: MediaViewController, GestureResponder {
+class PDFViewController: MediaViewController {
     static let storyboard = NSStoryboard.Name(rawValue: "PDF")
 
     @IBOutlet weak var pdfView: PDFView!
@@ -30,7 +30,6 @@ class PDFViewController: MediaViewController, GestureResponder {
         super.viewDidLoad()
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
-        super.gestureManager = GestureManager(responder: self)
         if let scrollView = pdfThumbnailView.subviews.last as? NSScrollView, let clipView = scrollView.subviews.first(where: { $0 is NSClipView }) as? NSClipView {
             thumbnailClipView = clipView
         }
@@ -38,7 +37,7 @@ class PDFViewController: MediaViewController, GestureResponder {
         setupPDF()
         setupArrows()
         setupGestures()
-        animateViewIn()
+        super.animateViewIn()
     }
 
     override func viewDidAppear() {
@@ -181,7 +180,7 @@ class PDFViewController: MediaViewController, GestureResponder {
             return
         }
 
-        animateViewOut()
+        super.animateViewOut()
     }
 
     @objc
@@ -190,6 +189,7 @@ class PDFViewController: MediaViewController, GestureResponder {
             return
         }
 
+        super.resetCloseWindowTimer()
         var origin = window.frame.origin
         origin += gesture.translation(in: nil)
         window.setFrameOrigin(origin)
@@ -200,7 +200,7 @@ class PDFViewController: MediaViewController, GestureResponder {
     // MARK: IB-Actions
 
     @IBAction func closeButtonTapped(_ sender: Any) {
-        animateViewOut()
+        super.animateViewOut()
     }
 
 
@@ -209,22 +209,5 @@ class PDFViewController: MediaViewController, GestureResponder {
     private func updateArrows() {
         leftArrow.isHidden = !pdfView.canGoToPreviousPage
         rightArrow.isHidden = !pdfView.canGoToNextPage
-    }
-
-    private func animateViewIn() {
-        view.alphaValue = 0.0
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = 0.5
-            view.animator().alphaValue = 1.0
-        })
-    }
-
-    private func animateViewOut() {
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = 0.5
-            view.animator().alphaValue = 0.0
-        }, completionHandler: {
-            super.close()
-        })
     }
 }

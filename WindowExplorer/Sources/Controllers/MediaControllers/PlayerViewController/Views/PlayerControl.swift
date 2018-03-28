@@ -39,7 +39,7 @@ class PlayerControl: NSView {
         }
     }
 
-    private var state = PlayerState.paused {
+    private(set) var state = PlayerState.paused {
         didSet {
             delegate?.playerChangedState(state)
         }
