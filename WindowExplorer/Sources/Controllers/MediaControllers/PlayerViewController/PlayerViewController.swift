@@ -5,7 +5,7 @@ import AVKit
 import AppKit
 
 
-class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureResponder {
+class PlayerViewController: MediaViewController, PlayerControlDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Player")
 
     @IBOutlet weak var playerView: AVPlayerView!
@@ -20,8 +20,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
         super.viewDidLoad()
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
-        super.gestureManager = GestureManager(responder: self)
-
+        
         setupPlayer()
         setupGestures()
         super.animateViewIn()
@@ -88,9 +87,6 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
 
         switch pan.state {
         case .recognized, .momentum:
-            if playerControl.state != .playing {
-                super.resetCloseWindowTimer()
-            }
             var origin = window.frame.origin
             origin += pan.delta.round()
             window.setFrameOrigin(origin)
@@ -115,10 +111,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
             return
         }
 
-        if playerControl.state != .playing {
-            super.resetCloseWindowTimer()
-        }
-        
+        resetCloseWindowTimer()
         var origin = window.frame.origin
         origin += gesture.translation(in: nil)
         window.setFrameOrigin(origin)
@@ -153,11 +146,15 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
             playerStateImageView.animator().alphaValue = alpha
         })
 
-        switch state {
-        case .playing:
-            super.closeWindowTimer?.invalidate()
-        case .paused, .finished:
-            super.resetCloseWindowTimer()
+        resetCloseWindowTimer()
+    }
+
+    override func resetCloseWindowTimer() {
+        closeWindowTimer?.invalidate()
+        if playerControl.state != .playing {
+            closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Constants.closeWindowTimeoutPeriod, repeats: false) { [weak self] _ in
+                self?.animateViewOut()
+            }
         }
     }
 }

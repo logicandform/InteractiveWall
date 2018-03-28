@@ -3,7 +3,7 @@
 import Cocoa
 import Quartz
 
-class PDFViewController: MediaViewController, GestureResponder {
+class PDFViewController: MediaViewController {
     static let storyboard = NSStoryboard.Name(rawValue: "PDF")
 
     @IBOutlet weak var pdfView: PDFView!
@@ -30,7 +30,6 @@ class PDFViewController: MediaViewController, GestureResponder {
         super.viewDidLoad()
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
-        super.gestureManager = GestureManager(responder: self)
         if let scrollView = pdfThumbnailView.subviews.last as? NSScrollView, let clipView = scrollView.subviews.first(where: { $0 is NSClipView }) as? NSClipView {
             thumbnailClipView = clipView
         }
@@ -136,7 +135,6 @@ class PDFViewController: MediaViewController, GestureResponder {
 
         switch pan.state {
         case .recognized, .momentum:
-            super.resetCloseWindowTimer()
             var origin = window.frame.origin
             origin += pan.delta.round()
             window.setFrameOrigin(origin)
@@ -154,7 +152,6 @@ class PDFViewController: MediaViewController, GestureResponder {
 
         switch pan.state {
         case .recognized, .momentum:
-            super.resetCloseWindowTimer()
             var origin = thumbnailClipView.visibleRect.origin
             origin += pan.delta.dy
             thumbnailClipView.scroll(origin)
@@ -167,8 +164,6 @@ class PDFViewController: MediaViewController, GestureResponder {
         guard let tap = gesture as? TapGestureRecognizer, let position = tap.position else {
             return
         }
-
-        super.resetCloseWindowTimer()
 
         if tap.state == .ended {
             let thumbnailPages = thumbnailClipView.subviews.last?.subviews ?? []
@@ -194,6 +189,7 @@ class PDFViewController: MediaViewController, GestureResponder {
             return
         }
 
+        super.resetCloseWindowTimer()
         var origin = window.frame.origin
         origin += gesture.translation(in: nil)
         window.setFrameOrigin(origin)

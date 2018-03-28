@@ -6,18 +6,20 @@ protocol MediaControllerDelegate: class {
     func closeWindow(for mediaController: MediaViewController)
 }
 
-class MediaViewController: NSViewController {
+class MediaViewController: NSViewController, GestureResponder {
     var gestureManager: GestureManager!
     var media: Media!
     weak var closeWindowTimer: Foundation.Timer?
     weak var delegate: MediaControllerDelegate?
 
     struct Constants {
-        static let closeWindowTimeoutPeriod: TimeInterval = 60
+        static let closeWindowTimeoutPeriod: TimeInterval = 5
     }
 
     override func viewDidLoad() {
         resetCloseWindowTimer()
+        gestureManager = GestureManager(responder: self)
+        gestureManager.touchReceived = recievedTouch(touch:)
     }
     
     func close() {
@@ -44,8 +46,12 @@ class MediaViewController: NSViewController {
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = 0.5
             view.animator().alphaValue = 0.0
-        }, completionHandler: {
-            self.close()
+        }, completionHandler: { [weak self] in
+            self?.close()
         })
+    }
+
+    private func recievedTouch(touch: Touch) {
+        resetCloseWindowTimer()
     }
 }

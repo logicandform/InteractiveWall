@@ -5,7 +5,7 @@ import AppKit
 import Alamofire
 import AlamofireImage
 
-class ImageViewController: MediaViewController, GestureResponder {
+class ImageViewController: MediaViewController {
     static let storyboard = NSStoryboard.Name(rawValue: "Image")
 
     @IBOutlet weak var imageScrollView: RegularScrollView!
@@ -28,7 +28,6 @@ class ImageViewController: MediaViewController, GestureResponder {
         super.viewDidLoad()
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
-        super.gestureManager = GestureManager(responder: self)
         titleTextField.stringValue = super.media.title ?? ""
         setupImageView()
         setupGestures()
@@ -107,7 +106,6 @@ class ImageViewController: MediaViewController, GestureResponder {
 
         switch pan.state {
         case .recognized, .momentum:
-            super.resetCloseWindowTimer()
             var origin = window.frame.origin
             origin += pan.delta.round()
             window.setFrameOrigin(origin)
@@ -127,7 +125,6 @@ class ImageViewController: MediaViewController, GestureResponder {
         case .began:
             contentViewFrame = imageScrollView.contentView.frame
         case .recognized, .momentum:
-            super.resetCloseWindowTimer()
             let newMagnification = imageScrollView.magnification + (pinch.scale - 1)
             imageScrollView.setMagnification(newMagnification, centeredAt: pinch.center)
             let currentRect = imageScrollView.contentView.bounds
@@ -152,7 +149,6 @@ class ImageViewController: MediaViewController, GestureResponder {
             return
         }
 
-        super.resetCloseWindowTimer()
         let tempWidth = frameSize.width
         frameSize.width = frameSize.height
         frameSize.height = tempWidth

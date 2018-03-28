@@ -28,7 +28,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         static let windowMargins: CGFloat = 20
         static let mediaControllerOffsetX = 100
         static let mediaControllerOffsetY = -50
-        static let closeWindowTimeoutPeriod: TimeInterval = 60
+        static let closeWindowTimeoutPeriod: TimeInterval = 5
     }
 
 
@@ -402,8 +402,9 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     private func closeTimerFired() {
         if positionsForMediaControllers.keys.isEmpty {
-            WindowManager.instance.closeWindow(for: self)
+            animateViewOut()
         }
+        // reset timer gets recalled once a child MediaViewContoller gets closed
     }
 
 
