@@ -16,6 +16,10 @@ class MapHandler {
     private var stateForMap: [MapState]
     private weak var ungroupTimer: Foundation.Timer?
 
+    private var mapState: MapState {
+        return stateForMap[mapID]
+    }
+
 
     private struct Constants {
         static let ungroupTimeoutPeriod: TimeInterval = 5
@@ -47,21 +51,18 @@ class MapHandler {
     // MARK: API
 
     func send(_ mapRect: MKMapRect, for gestureState: GestureState = .recognized) {
-        let state = stateForMap[mapID]
-
         // If sent from momentum, check if another map has interrupted
-        if gestureState == .momentum && state.pair != nil {
+        if gestureState == .momentum && mapState.pair != nil {
             return
         }
 
-        let group = state.group ?? mapID
+        let group = mapState.group ?? mapID
         let info: JSON = [Keys.id: mapID, Keys.group: group, Keys.map: mapRect.toJSON(), Keys.gesture: gestureState.rawValue]
         DistributedNotificationCenter.default().postNotificationName(MapNotification.position.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
     func endActivity() {
-        let state = stateForMap[mapID]
-        stateForMap[mapID] = MapState(pair: nil, group: state.group)
+        stateForMap[mapID] = MapState(pair: nil, group: mapState.group)
         let info: JSON = [Keys.id: mapID]
         DistributedNotificationCenter.default().postNotificationName(MapNotification.unpair.name, object: nil, userInfo: info, deliverImmediately: true)
     }
@@ -114,14 +115,12 @@ class MapHandler {
 
     /// Determines how to respond to a received mapRect from another mapView and the type of gesture that triggered the event.
     private func handle(_ mapRect: MKMapRect, from id: Int, group: Int) {
-        let state = stateForMap[mapID]
-
-        guard let currentGroup = state.group, currentGroup == group else {
+        guard let currentGroup = mapState.group, currentGroup == group else {
             return
         }
 
         // State will be nil receiving when receiving from momentum, else make sure id matches pair
-        if state.pair == nil || state.pair! == id {
+        if mapState.pair == nil || mapState.pair! == id {
             activityState = .active
             set(mapRect, from: id)
         }
@@ -199,9 +198,7 @@ class MapHandler {
     }
 
     private func ungroupTimerFired() {
-        let state = stateForMap[mapID]
-
-        guard let group = state.group, group == mapID else {
+        guard let group = mapState.group, group == mapID else {
             return
         }
 
