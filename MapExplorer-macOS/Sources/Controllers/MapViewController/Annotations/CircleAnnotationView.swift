@@ -27,9 +27,9 @@ class CircleAnnotationView: MKAnnotationView {
         circle2.wantsLayer = true
         circle3.wantsLayer = true
         center.wantsLayer = true
-        circle3.layer?.backgroundColor = annotation.record.color.cgColor
-        circle2.layer?.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 0.35)
-        circle1.layer?.backgroundColor = #colorLiteral(red: 0.8745098039, green: 0.937254902, blue: 0.9529411765, alpha: 0.1)
+        circle3.layer?.backgroundColor = annotation.record.colors[0].cgColor
+        circle2.layer?.backgroundColor = annotation.record.colors[1].cgColor
+        circle1.layer?.backgroundColor = #colorLiteral(red: 0.8745098039, green: 0.937254902, blue: 0.9529411765, alpha: 0.2)
         center.layer?.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         circle1.layer?.cornerRadius = 18
         circle2.layer?.cornerRadius = 13

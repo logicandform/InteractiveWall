@@ -13,22 +13,12 @@ enum RecordType: String {
     case school
     case event
 
-//    init?(from stringValue: String) {
-//        if let discipline = Discipline(rawValue: stringValue) {
-//            self = discipline
-//        } else {
-//            return nil
-//        }
-//    }
-
-    var color: NSColor {
+    var colors: [NSColor] {
         switch self {
         case .school:
-            return .blue
+            return [style.schoolInnerColor, style.schoolOuterColor]
         case .event:
-            return .yellow
+            return [style.eventInnerColor, style.eventOuterColor]
         }
     }
 }
-
-
