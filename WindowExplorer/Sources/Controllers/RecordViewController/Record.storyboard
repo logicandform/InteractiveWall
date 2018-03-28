@@ -95,7 +95,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="400" height="320"/>
                                                     <subviews>
                                                         <stackView distribution="equalSpacing" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" placeholderIntrinsicWidth="404" placeholderIntrinsicHeight="320" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RgY-ah-SAv">
-                                                            <rect key="frame" x="0.0" y="0.0" width="380" height="320"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="400" height="320"/>
                                                         </stackView>
                                                     </subviews>
                                                     <constraints>
@@ -141,6 +141,14 @@
                                             <action selector="closeWindowTapped:" target="7oi-8d-QFD" id="Hls-Py-02a"/>
                                         </connections>
                                     </button>
+                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Zeo-g9-VHC">
+                                        <rect key="frame" x="148" y="391" width="120" height="120"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="120" id="GOM-cU-2Yu"/>
+                                            <constraint firstAttribute="height" constant="120" id="hyV-MM-jAu"/>
+                                        </constraints>
+                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" id="w1x-h8-M1p"/>
+                                    </imageView>
                                     <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ufY-Kg-vBR">
                                         <rect key="frame" x="0.0" y="351" width="416" height="210"/>
                                         <clipView key="contentView" drawsBackground="NO" id="IhY-hb-dfg">
@@ -207,11 +215,13 @@
                                     <constraint firstItem="uhV-2F-c5f" firstAttribute="centerX" secondItem="Gya-dz-hCa" secondAttribute="centerX" id="8JL-H1-mR4"/>
                                     <constraint firstAttribute="trailing" secondItem="5qz-4l-1Hr" secondAttribute="trailing" constant="10" id="8bI-vY-boV"/>
                                     <constraint firstItem="ng9-0N-mwq" firstAttribute="centerX" secondItem="5qz-4l-1Hr" secondAttribute="centerX" id="9eX-tT-geU"/>
-                                    <constraint firstItem="ufY-Kg-vBR" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="leading" id="CBg-hb-EdH"/>
+                                    <constraint firstItem="ufY-Kg-vBR" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="leading" constant="8" id="CBg-hb-EdH"/>
+                                    <constraint firstItem="Zeo-g9-VHC" firstAttribute="centerY" secondItem="ufY-Kg-vBR" secondAttribute="centerY" id="EcY-KO-d8G"/>
                                     <constraint firstItem="Gya-dz-hCa" firstAttribute="top" secondItem="83q-cx-wcX" secondAttribute="top" constant="10" id="Hgu-Oa-4zd"/>
                                     <constraint firstItem="ng9-0N-mwq" firstAttribute="centerY" secondItem="5qz-4l-1Hr" secondAttribute="centerY" id="KIL-FP-e61"/>
                                     <constraint firstItem="Gya-dz-hCa" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="leading" constant="10" id="bmm-m9-tt9"/>
-                                    <constraint firstItem="FBg-bp-lkB" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="leading" constant="18" id="fiA-kL-6Ij"/>
+                                    <constraint firstItem="Zeo-g9-VHC" firstAttribute="centerX" secondItem="ufY-Kg-vBR" secondAttribute="centerX" id="e06-73-OD5"/>
+                                    <constraint firstItem="FBg-bp-lkB" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="leading" constant="8" id="fiA-kL-6Ij"/>
                                     <constraint firstAttribute="width" constant="416" id="gCO-Bx-Eu3"/>
                                     <constraint firstAttribute="trailing" secondItem="ufY-Kg-vBR" secondAttribute="trailing" id="isU-1a-I8R"/>
                                     <constraint firstItem="ufY-Kg-vBR" firstAttribute="top" secondItem="83q-cx-wcX" secondAttribute="top" constant="38" id="ktu-Si-a2l"/>
@@ -250,6 +260,7 @@
                         <outlet property="detailView" destination="83q-cx-wcX" id="pb8-ex-weM"/>
                         <outlet property="hideRelatedItemsButton" destination="XCO-vm-Fbg" id="uj0-Ml-rkj"/>
                         <outlet property="mediaView" destination="Eaz-7m-IDm" id="eav-Zv-2bd"/>
+                        <outlet property="placeHolderImage" destination="Zeo-g9-VHC" id="YQF-Yz-VuJ"/>
                         <outlet property="relatedItemsView" destination="cKY-nL-NPV" id="26r-gU-lSa"/>
                         <outlet property="stackClipView" destination="CkM-eN-t5N" id="Ycr-Y2-xGv"/>
                         <outlet property="stackView" destination="RgY-ah-SAv" id="N4b-iD-145"/>
