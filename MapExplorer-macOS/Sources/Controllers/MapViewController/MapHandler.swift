@@ -13,15 +13,14 @@ class MapHandler {
     let mapID: Int
 
     private var activityState = UserActivity.idle
+    private var stateForMap: [MapState]
     private weak var ungroupTimer: Foundation.Timer?
-    private var stateForMap = [Int: MapState]()
 
 
     private struct Constants {
         static let ungroupTimeoutPeriod: TimeInterval = 5
-        static let numberOfScreens = 1.0
         static let initialMapOrigin = MKMapPointMake(6000000.0, 62000000.0)
-        static let initialMapSize = MKMapSizeMake(120000000.0 / (Constants.numberOfScreens * 3), 0.0)
+        static let initialMapSize = MKMapSizeMake(120000000.0 / (Double(Configuration.numberOfScreens) * 3), 0.0)
     }
 
     private struct Keys {
@@ -37,9 +36,10 @@ class MapHandler {
     init(mapView: MKMapView, id: Int) {
         self.mapView = mapView
         self.mapID = id
-        for map in (0 ..< Configuration.mapsPerScreen * Configuration.numberOfScreens) {
-            stateForMap[map] = (nil, nil)
-        }
+        let numberOfMaps = Configuration.mapsPerScreen * Configuration.numberOfScreens
+        let initialState = MapState(pair: nil, group: nil)
+        self.stateForMap = Array(repeating: initialState, count: numberOfMaps)
+
         subscribeToNotifications()
     }
 
@@ -47,9 +47,7 @@ class MapHandler {
     // MARK: API
 
     func send(_ mapRect: MKMapRect, for gestureState: GestureState = .recognized) {
-        guard let state = stateForMap[mapID] else {
-            return
-        }
+        let state = stateForMap[mapID]
 
         // If sent from momentum, check if another map has interrupted
         if gestureState == .momentum && state.pair != nil {
@@ -62,9 +60,8 @@ class MapHandler {
     }
 
     func endActivity() {
-        if let state = stateForMap[mapID] {
-            stateForMap[mapID] = MapState(pair: nil, group: state.group)
-        }
+        let state = stateForMap[mapID]
+        stateForMap[mapID] = MapState(pair: nil, group: state.group)
         let info: JSON = [Keys.id: mapID]
         DistributedNotificationCenter.default().postNotificationName(MapNotification.unpair.name, object: nil, userInfo: info, deliverImmediately: true)
     }
@@ -106,7 +103,6 @@ class MapHandler {
         case MapNotification.ungroup.name:
             if let fromGroup = info[Keys.group] as? Int {
                 ungroup(from: fromGroup)
-//                findGroupIfNeeded()
             }
         default:
             return
@@ -118,11 +114,13 @@ class MapHandler {
 
     /// Determines how to respond to a received mapRect from another mapView and the type of gesture that triggered the event.
     private func handle(_ mapRect: MKMapRect, from id: Int, group: Int) {
-        guard let state = stateForMap[mapID], let currentGroup = state.group, currentGroup == group else {
+        let state = stateForMap[mapID]
+
+        guard let currentGroup = state.group, currentGroup == group else {
             return
         }
 
-        // If state is nil receiving from momentum, else make sure id matches pair
+        // State will be nil receiving when receiving from momentum, else make sure id matches pair
         if state.pair == nil || state.pair! == id {
             activityState = .active
             set(mapRect, from: id)
@@ -141,25 +139,33 @@ class MapHandler {
 
     /// If paired to the given id, will unpair else ignore
     private func unpair(from id: Int) {
-        print("Unpairing from id: \(id)")
-        for (map, state) in stateForMap {
+        for (map, state) in stateForMap.enumerated() {
             if let currentPair = state.pair, currentPair == id {
                 stateForMap[map] = MapState(pair: nil, group: state.group)
             }
         }
     }
 
+    /// Ungroup all maps from group with given id
     private func ungroup(from id: Int) {
-        print("Un-grouping from id: \(id)")
-        for (map, state) in stateForMap {
+        // Clear groups with given id
+        for (map, state) in stateForMap.enumerated() {
             if let currentGroup = state.group, currentGroup == id {
                 stateForMap[map] = MapState(pair: nil, group: nil)
             }
         }
+        // Find the closest group for all ungrouped maps
+        for (map, state) in stateForMap.enumerated() {
+            if state.group == nil {
+                let group = findGroupForMap(id: map)
+                stateForMap[map] = MapState(pair: nil, group: group)
+            }
+        }
     }
 
+    /// Set all map states accordingly when a map sends its position
     private func setMapState(from id: Int, group: Int, momentum: Bool = false) {
-        for (map, state) in stateForMap {
+        for (map, state) in stateForMap.enumerated() {
             // Check for current group
             if let currentGroup = state.group, currentGroup == group {
                 // Check for current pair
@@ -169,7 +175,7 @@ class MapHandler {
                         stateForMap[map] = MapState(pair: id, group: id)
                     }
                 } else if !momentum {
-                    stateForMap[map] = MapState(pair: id, group: state.group)
+                    stateForMap[map] = MapState(pair: id, group: id)
                 }
             } else if state.group == nil {
                 stateForMap[map] = MapState(pair: id, group: id)
@@ -177,24 +183,11 @@ class MapHandler {
         }
     }
 
-    private func findGroupIfNeeded() {
-//        if groupID != nil {
-//            return
-//        }
-//
-//        let maps = Configuration.mapsPerScreen * Configuration.numberOfScreens
-//        let checks = maps - mapID
-//        for offset in (1...checks) {
-//            let lhs = mapID - offset
-//            let rhs = mapID + offset
-//            if lhs >= 0, let lhsGroup = groupForMap[lhs], lhsGroup != nil {
-//                groupID = lhsGroup
-//                return
-//            } else if rhs < maps, let rhsGroup = groupForMap[rhs], rhsGroup != nil {
-//                groupID = rhsGroup
-//                return
-//            }
-//        }
+    /// Find the closest group to a given map
+    private func findGroupForMap(id: Int) -> Int? {
+        let sortedMapStates = stateForMap.enumerated().sorted { abs(id - $0.0) < abs(id - $1.0) }
+        let externalMaps = sortedMapStates.dropFirst()
+        return externalMaps.flatMap({ $0.1.group }).first
     }
 
     /// Resets the pairedDeviceID after a timeout period
@@ -206,7 +199,9 @@ class MapHandler {
     }
 
     private func ungroupTimerFired() {
-        guard let state = stateForMap[mapID], let group = state.group, group == mapID else {
+        let state = stateForMap[mapID]
+
+        guard let group = state.group, group == mapID else {
             return
         }
 
