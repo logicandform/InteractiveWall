@@ -153,7 +153,6 @@ class ImageViewController: MediaViewController, GestureResponder {
         }
 
         super.resetCloseWindowTimer()
-
         let tempWidth = frameSize.width
         frameSize.width = frameSize.height
         frameSize.height = tempWidth
@@ -170,7 +169,6 @@ class ImageViewController: MediaViewController, GestureResponder {
         }
 
         super.resetCloseWindowTimer()
-
         var origin = window.frame.origin
         origin += gesture.translation(in: nil)
         window.setFrameOrigin(origin)

@@ -118,7 +118,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate, GestureR
         if playerControl.state != .playing {
             super.resetCloseWindowTimer()
         }
-
+        
         var origin = window.frame.origin
         origin += gesture.translation(in: nil)
         window.setFrameOrigin(origin)

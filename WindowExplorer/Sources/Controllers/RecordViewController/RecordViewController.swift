@@ -170,7 +170,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         }
 
         resetCloseWindowTimer()
-
         let rect = mediaView.visibleRect
         let offset = rect.origin.x / rect.width
         let index = Int(round(offset))
@@ -226,7 +225,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         }
 
         resetCloseWindowTimer()
-
         let locationInTable = location + relatedItemsView.visibleRect.origin
         let row = relatedItemsView.row(at: locationInTable)
         guard row >= 0, let relatedItemView = relatedItemsView.view(atColumn: 0, row: row, makeIfNecessary: false) as? RelatedItemView else {
@@ -291,7 +289,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         }
 
         resetCloseWindowTimer()
-
         var origin = window.frame.origin
         origin += gesture.translation(in: nil)
         window.setFrameOrigin(origin)
@@ -389,7 +386,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         let position = positionsForMediaControllers.values.max() != nil ? positionsForMediaControllers.values.max()! + 1 : 0
         let offsetX = position * Constants.mediaControllerOffsetX
         let offsetY = position * Constants.mediaControllerOffsetY
-
         let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins + CGFloat(offsetX), y: window.frame.maxY - windowType.size.height + CGFloat(offsetY))
         if let mediaController = WindowManager.instance.display(windowType, at: origin) as? MediaViewController {
             positionsForMediaControllers[mediaController] = position
@@ -401,14 +397,13 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         closeWindowTimer?.invalidate()
         closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Constants.closeWindowTimeoutPeriod, repeats: false) { [weak self] _ in
             self?.closeTimerFired()
-
         }
     }
 
     private func closeTimerFired() {
         if positionsForMediaControllers.keys.isEmpty {
             WindowManager.instance.closeWindow(for: self)
-        } 
+        }
     }
 
 

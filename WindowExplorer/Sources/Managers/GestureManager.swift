@@ -11,7 +11,7 @@ protocol GestureResponder: class {
 }
 
 
-class GestureManager {
+final class GestureManager {
 
     private weak var responder: GestureResponder!
     private var gestureHandlers = [NSView: GestureHandler]()
