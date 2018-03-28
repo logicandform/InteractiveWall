@@ -7,7 +7,7 @@ let style = Style()
 
 
 struct Configuration {
-    static let mapsPerScreen = 4
+    static let mapsPerScreen = 3
     static let touchScreenSize = CGSize(width: 4095, height: 2242.5)
     static let touchScreenRatio: CGFloat = 23.0 / 42.0
     static let loadMapsOnFirstScreen = false
@@ -20,11 +20,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         WindowManager.instance.registerForNotifications()
         TouchManager.instance.setupTouchSocket()
-//        RecordFactory.record(for: .artifact, id: 1587) { artifact in
-//            if let artifact = artifact {
-//                WindowManager.instance.display(.record(artifact), at: CGPoint(x: 2000, y: 400))
-//            }
-//        }
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
