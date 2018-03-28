@@ -8,7 +8,12 @@ let style = Style()
 final class Style {
 
     // Map Annotation Markers
-    let schoolMarkerColor = NSColor(red: 0.93, green: 0.00, blue: 0.18, alpha: 1.0)
-    let eventMarkerColor = NSColor(red: 0.24, green: 0.07, blue: 0.69, alpha: 1.0)
-    let hearingMarkerColor = NSColor(red: 0.58, green: 0.01, blue: 0.65, alpha: 1.0)
+    let artifactColor = NSColor(calibratedRed: 41/255, green: 205/255, blue: 168/255, alpha: 1)
+    let schoolInnerColor = NSColor(calibratedRed: 0, green: 201/255, blue: 255/255, alpha: 1)
+    let schoolOuterColor = NSColor(calibratedRed: 121/255, green: 214/255, blue: 249/255, alpha: 0.5)
+    let eventInnerColor = NSColor(calibratedRed: 108/255, green: 136/255, blue: 255/255, alpha: 1)
+    let eventOuterColor = NSColor(calibratedRed: 162/255, green: 169/255, blue: 1, alpha: 0.5)
+    let organizationColor = NSColor(calibratedRed: 193/255, green: 79/255, blue: 231/255, alpha: 1)
+    let relatedItemColor = NSColor(calibratedRed: 75/255, green: 91/255, blue: 100/255, alpha: 1)
+    let outerAnnotationColor = NSColor(calibratedRed: 223/255, green: 239/255, blue: 243/255, alpha: 0.2)
 }

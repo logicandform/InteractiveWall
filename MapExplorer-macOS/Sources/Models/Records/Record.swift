@@ -12,4 +12,13 @@ protocol Record {
 enum RecordType: String {
     case school
     case event
+
+    var colors: [NSColor] {
+        switch self {
+        case .school:
+            return [style.schoolInnerColor, style.schoolOuterColor]
+        case .event:
+            return [style.eventInnerColor, style.eventOuterColor]
+        }
+    }
 }

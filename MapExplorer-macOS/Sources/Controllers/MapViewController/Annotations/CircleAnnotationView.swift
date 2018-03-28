@@ -14,23 +14,23 @@ class CircleAnnotationView: MKAnnotationView {
 
     override var annotation: MKAnnotation? {
         willSet {
-            guard (newValue as? CircleAnnotation) != nil else {
+            guard let annotation = newValue as? CircleAnnotation else {
                 return
             }
 
-            setupAnnotations()
+            setupAnnotations(annotation: annotation)
         }
     }
 
-    private func setupAnnotations() {
+    private func setupAnnotations(annotation: CircleAnnotation) {
         circle1.wantsLayer = true
         circle2.wantsLayer = true
         circle3.wantsLayer = true
         center.wantsLayer = true
-        circle3.layer?.backgroundColor = #colorLiteral(red: 0, green: 0.7882352941, blue: 1, alpha: 1)
-        circle2.layer?.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 0.35)
-        circle1.layer?.backgroundColor = #colorLiteral(red: 0.8745098039, green: 0.937254902, blue: 0.9529411765, alpha: 0.1)
-        center.layer?.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        circle3.layer?.backgroundColor = annotation.record.colors[0].cgColor
+        circle2.layer?.backgroundColor = annotation.record.colors[1].cgColor
+        circle1.layer?.backgroundColor = style.outerAnnotationColor.cgColor
+        center.layer?.backgroundColor = CGColor.white
         circle1.layer?.cornerRadius = 18
         circle2.layer?.cornerRadius = 13
         circle3.layer?.cornerRadius = 8
