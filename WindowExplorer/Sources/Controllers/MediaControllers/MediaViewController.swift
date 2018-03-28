@@ -13,7 +13,7 @@ class MediaViewController: NSViewController, GestureResponder {
     weak var delegate: MediaControllerDelegate?
 
     struct Constants {
-        static let closeWindowTimeoutPeriod: TimeInterval = 5
+        static let closeWindowTimeoutPeriod: TimeInterval = 60
     }
 
     override func viewDidLoad() {

@@ -28,7 +28,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         static let windowMargins: CGFloat = 20
         static let mediaControllerOffsetX = 100
         static let mediaControllerOffsetY = -50
-        static let closeWindowTimeoutPeriod: TimeInterval = 5
+        static let closeWindowTimeoutPeriod: TimeInterval = 60
     }
 
 

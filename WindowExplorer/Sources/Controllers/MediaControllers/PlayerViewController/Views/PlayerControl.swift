@@ -19,7 +19,7 @@ class PlayerControl: NSView {
     @IBOutlet weak var durationLabel: NSTextField!
 
     weak var delegate: PlayerControlDelegate?
-    private(set) var duration = CMTime()
+    private var duration = CMTime()
 
     var player: AVPlayer? {
         didSet {
@@ -33,7 +33,7 @@ class PlayerControl: NSView {
         }
     }
 
-    private(set) var currentTime: CMTime = CMTime() {
+    private var currentTime: CMTime = CMTime() {
         didSet {
             updateControl(for: currentTime)
         }
