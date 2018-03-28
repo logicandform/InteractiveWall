@@ -10,10 +10,7 @@ struct RecordInfo: Hashable {
     }
 
     static func ==(lhs: RecordInfo, rhs: RecordInfo) -> Bool {
-        return
-            lhs.recordId == rhs.recordId &&
-                lhs.type == rhs.type &&
-                lhs.mapId == rhs.mapId
+        return lhs.recordId == rhs.recordId && lhs.type == rhs.type && lhs.mapId == rhs.mapId
     }
 
     let recordId: Int

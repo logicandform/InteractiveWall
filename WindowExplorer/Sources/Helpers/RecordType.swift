@@ -3,6 +3,7 @@
 import Foundation
 import AppKit
 
+
 enum RecordType: String {
     case event
     case artifact
