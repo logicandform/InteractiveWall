@@ -138,8 +138,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return
         }
 
-        resetCloseWindowTimer()
-
         switch pan.state {
         case .recognized, .momentum:
             var rect = mediaView.visibleRect
