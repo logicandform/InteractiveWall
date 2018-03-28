@@ -47,17 +47,24 @@ class MapHandler {
     // MARK: API
 
     func send(_ mapRect: MKMapRect, for gestureState: GestureState = .recognized) {
-
-        let group = stateForMap[mapID]?.group ?? mapID
-        if gestureState == .momentum && group != mapID {
+        guard let state = stateForMap[mapID] else {
             return
         }
 
+        // If sent from momentum, check if another map has interrupted
+        if gestureState == .momentum && state.pair != nil {
+            return
+        }
+
+        let group = state.group ?? mapID
         let info: JSON = [Keys.id: mapID, Keys.group: group, Keys.map: mapRect.toJSON(), Keys.gesture: gestureState.rawValue]
         DistributedNotificationCenter.default().postNotificationName(MapNotification.position.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
     func endActivity() {
+        if let state = stateForMap[mapID] {
+            stateForMap[mapID] = MapState(pair: nil, group: state.group)
+        }
         let info: JSON = [Keys.id: mapID]
         DistributedNotificationCenter.default().postNotificationName(MapNotification.unpair.name, object: nil, userInfo: info, deliverImmediately: true)
     }
@@ -153,9 +160,6 @@ class MapHandler {
 
     private func setMapState(from id: Int, group: Int, momentum: Bool = false) {
         for (map, state) in stateForMap {
-            if map == 0 {
-
-            }
             // Check for current group
             if let currentGroup = state.group, currentGroup == group {
                 // Check for current pair
