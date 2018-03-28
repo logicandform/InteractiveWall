@@ -12,4 +12,23 @@ protocol Record {
 enum RecordType: String {
     case school
     case event
+
+//    init?(from stringValue: String) {
+//        if let discipline = Discipline(rawValue: stringValue) {
+//            self = discipline
+//        } else {
+//            return nil
+//        }
+//    }
+
+    var color: NSColor {
+        switch self {
+        case .school:
+            return .blue
+        case .event:
+            return .yellow
+        }
+    }
 }
+
+
