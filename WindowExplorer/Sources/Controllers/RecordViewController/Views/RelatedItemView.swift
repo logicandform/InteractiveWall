@@ -64,7 +64,6 @@ class RelatedItemView: NSView {
         descriptionLabel.stringValue = record.description ?? ""
         imageView.image = record.type.placeholder.tinted(with: NSColor.gray)
 
-
         if let media = record.media.first {
             Alamofire.request(media.thumbnail).responseImage { [weak self] response in
                 if let image = response.value {
