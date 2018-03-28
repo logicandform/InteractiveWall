@@ -10,7 +10,7 @@ class RelatedItemView: NSView {
 
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var descriptionLabel: NSTextField!
-    @IBOutlet weak var imageView: NSImageView!
+    @IBOutlet weak var imageView: AspectFillImageView!
 
     var didTapItem: ((RecordDisplayable) -> Void)?
 
