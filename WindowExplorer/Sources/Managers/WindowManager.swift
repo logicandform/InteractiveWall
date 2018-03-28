@@ -40,10 +40,8 @@ final class WindowManager {
             window.close()
 
             if controller is RecordViewController {
-                for (recordInfo, dictionaryController) in controllersForRecordInfo {
-                    if dictionaryController == controller {
-                        controllersForRecordInfo.removeValue(forKey: recordInfo)
-                    }
+                if let first = controllersForRecordInfo.first(where: { $0.value == controller }) {
+                    controllersForRecordInfo.removeValue(forKey: first.key)
                 }
             }
         }
@@ -124,7 +122,10 @@ final class WindowManager {
     }
 
     private func animate(_ controller: NSViewController, to origin: NSPoint) {
-        let window = controller.view.window!
+        guard let window = controller.view.window else {
+            return
+        }
+
         var frame = window.frame
         frame.origin = origin
 

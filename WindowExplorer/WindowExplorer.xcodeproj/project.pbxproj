@@ -61,6 +61,7 @@
 		3F8436E420647F9F00AAAB55 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8436E320647F9E00AAAB55 /* String.swift */; };
 		8E4010A020487B8D00E81AAA /* WindowFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E40109F20487B8D00E81AAA /* WindowFactory.swift */; };
 		8E4010A220487E0300E81AAA /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4010A120487E0300E81AAA /* Collection.swift */; };
+		8FA62A08206BFAFC004E6092 /* RecordInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA62A07206BFAFC004E6092 /* RecordInfo.swift */; };
 		8FE6467B2060553100E6116A /* RegularScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE6467A2060553100E6116A /* RegularScrollView.swift */; };
 		8FEABDA12064702600612C84 /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEABD9F2064702600612C84 /* MediaViewController.swift */; };
 		C6DB17689F287C9826286DF2 /* Pods_All_WindowExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */; };
@@ -149,6 +150,7 @@
 		3F8436E320647F9E00AAAB55 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		8E40109F20487B8D00E81AAA /* WindowFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowFactory.swift; sourceTree = "<group>"; };
 		8E4010A120487E0300E81AAA /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
+		8FA62A07206BFAFC004E6092 /* RecordInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordInfo.swift; sourceTree = "<group>"; };
 		8FE6467A2060553100E6116A /* RegularScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularScrollView.swift; sourceTree = "<group>"; };
 		8FEABD9F2064702600612C84 /* MediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaViewController.swift; sourceTree = "<group>"; };
 		A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_WindowExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -375,6 +377,7 @@
 				D9F24E5A2059DD1900B9FCB8 /* RecordFactory.swift */,
 				D901EBEC2056EEFE00BBFCF2 /* RecordDisplayable.swift */,
 				2224125D206BFE9F008E7A9D /* RecordType.swift */,
+				8FA62A07206BFAFC004E6092 /* RecordInfo.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -625,6 +628,7 @@
 				D9F24E5B2059DD1900B9FCB8 /* RecordFactory.swift in Sources */,
 				223613E720509D920024145C /* LastTwo.swift in Sources */,
 				2204623320472FDF0067D9FB /* CoreGraphics.swift in Sources */,
+				8FA62A08206BFAFC004E6092 /* RecordInfo.swift in Sources */,
 				2204620E20472DE80067D9FB /* RelatedItemView.swift in Sources */,
 				226D0589204FC7BC00D74711 /* ResponseHandler.swift in Sources */,
 				3F09025B2048D9D30044F100 /* Place.swift in Sources */,
