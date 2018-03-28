@@ -11,6 +11,7 @@ final class WindowManager {
 
     private(set) var windows = [NSWindow: GestureManager]()
     private var controllersForRecordInfo = [RecordInfo: NSViewController]()
+    let animationDistanceThreshold: CGFloat = 20
 
     private struct Keys {
         static let map = "map"
@@ -144,7 +145,6 @@ final class WindowManager {
         }
 
         let originDifference = currentOrigin - origin
-        print(originDifference)
-        return abs(originDifference.x) > 20 || abs(originDifference.y) > 20 ? true: false
+        return abs(originDifference.x) > animationDistanceThreshold || abs(originDifference.y) > animationDistanceThreshold ? true: false
     }
 }
