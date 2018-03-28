@@ -85,23 +85,23 @@
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="83q-cx-wcX" userLabel="contentView">
                                 <rect key="frame" x="0.0" y="0.0" width="416" height="599"/>
                                 <subviews>
-                                    <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FBg-bp-lkB">
-                                        <rect key="frame" x="8" y="8" width="400" height="320"/>
-                                        <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="CkM-eN-t5N" customClass="FlippedClipView" customModule="WindowExplorer" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="400" height="320"/>
+                                    <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FBg-bp-lkB">
+                                        <rect key="frame" x="18" y="18" width="380" height="320"/>
+                                        <clipView key="contentView" ambiguous="YES" drawsBackground="NO" copiesOnScroll="NO" id="CkM-eN-t5N" customClass="FlippedClipView" customModule="WindowExplorer" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="380" height="320"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <view translatesAutoresizingMaskIntoConstraints="NO" id="Bws-Xv-6hl">
                                                     <rect key="frame" x="0.0" y="0.0" width="400" height="320"/>
                                                     <subviews>
                                                         <stackView distribution="equalSpacing" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" placeholderIntrinsicWidth="404" placeholderIntrinsicHeight="320" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RgY-ah-SAv">
-                                                            <rect key="frame" x="0.0" y="0.0" width="400" height="340"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="380" height="320"/>
                                                         </stackView>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstAttribute="bottom" secondItem="RgY-ah-SAv" secondAttribute="bottom" id="JOA-OM-fl4"/>
                                                         <constraint firstItem="RgY-ah-SAv" firstAttribute="top" secondItem="Bws-Xv-6hl" secondAttribute="top" id="k17-RU-shj"/>
-                                                        <constraint firstAttribute="trailing" secondItem="RgY-ah-SAv" secondAttribute="trailing" id="lHq-h7-0b9"/>
+                                                        <constraint firstAttribute="trailing" secondItem="RgY-ah-SAv" secondAttribute="trailing" constant="20" id="lHq-h7-0b9"/>
                                                         <constraint firstItem="RgY-ah-SAv" firstAttribute="leading" secondItem="Bws-Xv-6hl" secondAttribute="leading" id="x6m-kL-q2x"/>
                                                         <constraint firstItem="RgY-ah-SAv" firstAttribute="top" secondItem="Bws-Xv-6hl" secondAttribute="top" id="zLd-H8-bd5"/>
                                                     </constraints>
@@ -115,15 +115,15 @@
                                         </clipView>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="320" id="7MU-L4-Pkj"/>
-                                            <constraint firstItem="Bws-Xv-6hl" firstAttribute="width" secondItem="FBg-bp-lkB" secondAttribute="width" id="Ecb-5f-mPL"/>
+                                            <constraint firstItem="Bws-Xv-6hl" firstAttribute="width" secondItem="FBg-bp-lkB" secondAttribute="width" constant="20" id="Ecb-5f-mPL"/>
                                             <constraint firstItem="RgY-ah-SAv" firstAttribute="width" secondItem="FBg-bp-lkB" secondAttribute="width" id="sbk-ad-9k7"/>
                                         </constraints>
-                                        <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="yG8-DL-w2k">
-                                            <rect key="frame" x="0.0" y="304" width="400" height="16"/>
+                                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="yG8-DL-w2k">
+                                            <rect key="frame" x="-100" y="-100" width="380" height="16"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="WJp-14-XQg">
-                                            <rect key="frame" x="384" y="0.0" width="16" height="320"/>
+                                            <rect key="frame" x="364" y="0.0" width="16" height="320"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
@@ -142,13 +142,13 @@
                                         </connections>
                                     </button>
                                     <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ufY-Kg-vBR">
-                                        <rect key="frame" x="8" y="351" width="400" height="200"/>
+                                        <rect key="frame" x="0.0" y="351" width="416" height="210"/>
                                         <clipView key="contentView" drawsBackground="NO" id="IhY-hb-dfg">
-                                            <rect key="frame" x="0.0" y="0.0" width="400" height="200"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="416" height="210"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <collectionView id="Eaz-7m-IDm">
-                                                    <rect key="frame" x="0.0" y="0.0" width="400" height="158"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="416" height="210"/>
                                                     <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" id="dee-BC-0Jq">
                                                         <size key="itemSize" width="50" height="200"/>
@@ -163,10 +163,10 @@
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </clipView>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="ufY-Kg-vBR" secondAttribute="height" multiplier="2:1" id="kgg-HG-bJk"/>
+                                            <constraint firstAttribute="width" secondItem="ufY-Kg-vBR" secondAttribute="height" multiplier="2:1" constant="-4" id="kgg-HG-bJk"/>
                                         </constraints>
                                         <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="yUc-lw-Iqm">
-                                            <rect key="frame" x="1" y="143" width="248" height="16"/>
+                                            <rect key="frame" x="0.0" y="184" width="398" height="16"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="JyZ-2O-BFj">
@@ -202,19 +202,19 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="5qz-4l-1Hr" firstAttribute="top" secondItem="83q-cx-wcX" secondAttribute="top" constant="10" id="0jx-Lv-UHm"/>
-                                    <constraint firstAttribute="bottom" secondItem="FBg-bp-lkB" secondAttribute="bottom" constant="8" id="1w4-2t-1qL"/>
-                                    <constraint firstAttribute="trailing" secondItem="FBg-bp-lkB" secondAttribute="trailing" constant="8" id="3e3-h1-L7H"/>
+                                    <constraint firstAttribute="bottom" secondItem="FBg-bp-lkB" secondAttribute="bottom" constant="18" id="1w4-2t-1qL"/>
+                                    <constraint firstAttribute="trailing" secondItem="FBg-bp-lkB" secondAttribute="trailing" constant="18" id="3e3-h1-L7H"/>
                                     <constraint firstItem="uhV-2F-c5f" firstAttribute="centerX" secondItem="Gya-dz-hCa" secondAttribute="centerX" id="8JL-H1-mR4"/>
                                     <constraint firstAttribute="trailing" secondItem="5qz-4l-1Hr" secondAttribute="trailing" constant="10" id="8bI-vY-boV"/>
                                     <constraint firstItem="ng9-0N-mwq" firstAttribute="centerX" secondItem="5qz-4l-1Hr" secondAttribute="centerX" id="9eX-tT-geU"/>
-                                    <constraint firstItem="ufY-Kg-vBR" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="leading" constant="8" id="CBg-hb-EdH"/>
+                                    <constraint firstItem="ufY-Kg-vBR" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="leading" id="CBg-hb-EdH"/>
                                     <constraint firstItem="Gya-dz-hCa" firstAttribute="top" secondItem="83q-cx-wcX" secondAttribute="top" constant="10" id="Hgu-Oa-4zd"/>
                                     <constraint firstItem="ng9-0N-mwq" firstAttribute="centerY" secondItem="5qz-4l-1Hr" secondAttribute="centerY" id="KIL-FP-e61"/>
                                     <constraint firstItem="Gya-dz-hCa" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="leading" constant="10" id="bmm-m9-tt9"/>
-                                    <constraint firstItem="FBg-bp-lkB" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="leading" constant="8" id="fiA-kL-6Ij"/>
+                                    <constraint firstItem="FBg-bp-lkB" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="leading" constant="18" id="fiA-kL-6Ij"/>
                                     <constraint firstAttribute="width" constant="416" id="gCO-Bx-Eu3"/>
-                                    <constraint firstAttribute="trailing" secondItem="ufY-Kg-vBR" secondAttribute="trailing" constant="8" id="isU-1a-I8R"/>
-                                    <constraint firstItem="ufY-Kg-vBR" firstAttribute="top" secondItem="83q-cx-wcX" secondAttribute="top" constant="48" id="ktu-Si-a2l"/>
+                                    <constraint firstAttribute="trailing" secondItem="ufY-Kg-vBR" secondAttribute="trailing" id="isU-1a-I8R"/>
+                                    <constraint firstItem="ufY-Kg-vBR" firstAttribute="top" secondItem="83q-cx-wcX" secondAttribute="top" constant="38" id="ktu-Si-a2l"/>
                                     <constraint firstItem="uhV-2F-c5f" firstAttribute="centerY" secondItem="Gya-dz-hCa" secondAttribute="centerY" id="u5P-gQ-IRj"/>
                                 </constraints>
                             </customView>
@@ -262,8 +262,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="close-record" width="15" height="15"/>
+        <image name="close-record" width="40" height="40"/>
         <image name="hide-related-items" width="136" height="34"/>
-        <image name="plus-icon" width="18" height="18"/>
+        <image name="plus-icon" width="40" height="40"/>
     </resources>
 </document>
