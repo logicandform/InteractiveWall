@@ -15,7 +15,6 @@ public final class AudioController {
         guard let player = AKPlayer(url: url) else {
             return nil
         }
-        player.isLooping = true
         engine.connect(player.avAudioNode, to: engine.outputNode, format: nil)
         try! engine.start()
         player.start()

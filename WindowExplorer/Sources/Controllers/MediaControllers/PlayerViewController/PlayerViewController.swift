@@ -49,13 +49,6 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         playerView.player = player
         scheduleAudioSegment()
 
-        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 2) {
-            player.pause()
-            DispatchQueue.main.asyncAfter(wallDeadline: .now() + 2) {
-                player.play()
-            }
-        }
-
         playerControl.player = player
         playerControl.gestureManager = super.gestureManager
         playerControl.delegate = self
