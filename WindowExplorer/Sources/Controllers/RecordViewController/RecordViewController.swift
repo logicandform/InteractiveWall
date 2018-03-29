@@ -26,7 +26,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private var pageControl = PageControl()
     private var positionsForMediaControllers = [MediaViewController: Int]()
     private weak var closeWindowTimer: Foundation.Timer?
-    var animating: Bool = false
+    private var animating: Bool = false
     
     private struct Constants {
         static let tableRowHeight: CGFloat = 80
@@ -34,6 +34,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         static let mediaControllerOffsetX = 100
         static let mediaControllerOffsetY = -50
         static let closeWindowTimeoutPeriod: TimeInterval = 60
+        static let animationDistanceThreshold: CGFloat = 20
         static let fontName = "Soleil"
         static let fontSize: CGFloat = 13
         static let fontColor: NSColor = .white
@@ -354,6 +355,24 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         })
     }
 
+    func animate(to origin: NSPoint) {
+        guard let window = self.view.window, shouldAnimate(to: origin) else {
+            return
+        }
+
+        var frame = window.frame
+        frame.origin = origin
+        animating = true
+
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = 0.75
+            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+            window.animator().setFrame(frame, display: true, animate: true)
+        }, completionHandler: {
+            self.animating = false
+        })
+    }
+
     private func toggleRelatedItems(completion: (() -> Void)? = nil) {
         guard let window = view.window else {
             return
@@ -433,6 +452,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func closeTimerFired() {
+        // reset timer gets recalled once a child MediaViewContoller gets closed
         if positionsForMediaControllers.keys.isEmpty {
             animateViewOut()
         }
@@ -440,6 +460,15 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     private func recievedTouch(touch: Touch) {
         resetCloseWindowTimer()
+    }
+
+    private func shouldAnimate(to origin: NSPoint) -> Bool {
+        guard let currentOrigin = self.view.window?.frame.origin else {
+            return false
+        }
+
+        let originDifference = currentOrigin - origin
+        return abs(originDifference.x) > Constants.animationDistanceThreshold || abs(originDifference.y) > Constants.animationDistanceThreshold ? true: false
     }
 
 

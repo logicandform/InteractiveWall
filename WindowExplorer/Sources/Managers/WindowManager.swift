@@ -11,7 +11,6 @@ final class WindowManager {
 
     private(set) var windows = [NSWindow: GestureManager]()
     private var controllersForRecordInfo = [RecordInfo: NSViewController]()
-    let animationDistanceThreshold: CGFloat = 20
 
     private struct Keys {
         static let map = "map"
@@ -108,43 +107,15 @@ final class WindowManager {
     }
 
     private func handleDisplayingRecord(for record: RecordDisplayable, with recordId: Int, on mapId: Int, at origin: CGPoint) {
-
         let recordInfo = RecordInfo(recordId: recordId, mapId: mapId, type: record.type)
 
-        if let controller = controllersForRecordInfo[recordInfo] {
-            animate(controller, to: origin)
+        if let controller = controllersForRecordInfo[recordInfo] as? RecordViewController{
+            controller.animate(to: origin)
             return
         }
 
         if let controller = display(.record(record), at: origin) {
             controllersForRecordInfo[recordInfo] = controller
         }
-    }
-
-    private func animate(_ controller: NSViewController, to origin: NSPoint) {
-        guard let window = controller.view.window, shouldAnimate(controller, to: origin), let controller = controller as? RecordViewController else {
-            return
-        }
-
-        var frame = window.frame
-        frame.origin = origin
-        controller.animating = true
-
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = 0.75
-            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-            window.animator().setFrame(frame, display: true, animate: true)
-        }, completionHandler: {
-            controller.animating = false
-        })
-    }
-
-    private func shouldAnimate(_ controller: NSViewController, to origin: NSPoint) -> Bool {
-        guard let currentOrigin = controller.view.window?.frame.origin else {
-            return false
-        }
-
-        let originDifference = currentOrigin - origin
-        return abs(originDifference.x) > animationDistanceThreshold || abs(originDifference.y) > animationDistanceThreshold ? true: false
     }
 }
