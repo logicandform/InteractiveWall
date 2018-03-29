@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F910718206C2973008F9513 /* AspectFillImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F910717206C2973008F9513 /* AspectFillImageView.swift */; };
 		2204620E20472DE80067D9FB /* RelatedItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204620A20472DE80067D9FB /* RelatedItemView.swift */; };
 		2204621020472DE80067D9FB /* RelatedItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2204620C20472DE80067D9FB /* RelatedItemView.xib */; };
 		2204621720472F2D0067D9FB /* PlayerControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2204621420472F2D0067D9FB /* PlayerControl.xib */; };
@@ -92,6 +93,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1F910717206C2973008F9513 /* AspectFillImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectFillImageView.swift; sourceTree = "<group>"; };
 		2204620A20472DE80067D9FB /* RelatedItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelatedItemView.swift; sourceTree = "<group>"; };
 		2204620C20472DE80067D9FB /* RelatedItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RelatedItemView.xib; sourceTree = "<group>"; };
 		2204621420472F2D0067D9FB /* PlayerControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerControl.xib; sourceTree = "<group>"; };
@@ -429,6 +431,7 @@
 			children = (
 				D992E20C20533A6200EAB698 /* Record.storyboard */,
 				D992E20820533A3A00EAB698 /* RecordViewController.swift */,
+				1F910717206C2973008F9513 /* AspectFillImageView.swift */,
 				D901EBEB20535A3E00BBFCF2 /* Views */,
 			);
 			path = RecordViewController;
@@ -596,6 +599,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F910718206C2973008F9513 /* AspectFillImageView.swift in Sources */,
 				3F8436E420647F9F00AAAB55 /* String.swift in Sources */,
 				22A76FEC2046477A006C0AE7 /* PlayerViewController.swift in Sources */,
 				D92E0F00206052C900C1C9A7 /* ArrowControl.swift in Sources */,

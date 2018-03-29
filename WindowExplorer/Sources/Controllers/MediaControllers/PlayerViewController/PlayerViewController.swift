@@ -11,7 +11,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     @IBOutlet weak var playerView: AVPlayerView!
     @IBOutlet weak var playerControl: PlayerControl!
     @IBOutlet weak var dismissButton: NSView!
-    @IBOutlet weak var playerStateImageView: NSImageView!
+    @IBOutlet weak var playerStateImageView: AspectFillImageView!
 
 
     // MARK: Life-cycle

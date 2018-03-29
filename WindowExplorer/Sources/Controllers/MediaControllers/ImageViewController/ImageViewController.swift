@@ -14,7 +14,7 @@ class ImageViewController: MediaViewController {
     @IBOutlet weak var scrollViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var dismissButton: NSView!
     @IBOutlet weak var rotateButton: NSView!
-    var imageView: NSImageView!
+    var imageView: AspectFillImageView!
 
     private var thumbnailRequest: DataRequest?
     private var urlRequest: DataRequest?
@@ -47,7 +47,7 @@ class ImageViewController: MediaViewController {
         guard super.media.type == .image else {
             return
         }
-        imageView = NSImageView()
+        imageView = AspectFillImageView()
 
         // Load thumbnail first
         thumbnailRequest = Alamofire.request(super.media.thumbnail).responseImage { [weak self] response in
