@@ -10,8 +10,8 @@
 // Number of channels to pan across
 const UInt32 channels = 6;
 
-// Define parameter addresses.
-const AudioUnitParameterID locationParameterID = 0;
+const AudioUnitParameterID gainParameterID = 0;
+const AudioUnitParameterID locationParameterID = 1;
 
 @interface MultiChannelPanAudioUnit ()
 
@@ -37,6 +37,12 @@ const AudioUnitParameterID locationParameterID = 0;
     }
 
     // Create parameter objects.
+    AUParameter *gain = [AUParameterTree
+                             createParameterWithIdentifier:@"gain" name:@"Gain"
+                             address:gainParameterID
+                             min:0 max:1 unit:kAudioUnitParameterUnit_LinearGain unitName:nil
+                             flags:kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+                             valueStrings:nil dependentParameters:nil];
     AUParameter *location = [AUParameterTree
                              createParameterWithIdentifier:@"location" name:@"Location"
                              address:locationParameterID
@@ -45,10 +51,11 @@ const AudioUnitParameterID locationParameterID = 0;
                              valueStrings:nil dependentParameters:nil];
 
     // Initialize the parameter values.
+    gain.value = 1;
     location.value = 0.5;
     
     // Create the parameter tree.
-    _parameterTree = [AUParameterTree createTreeWithChildren:@[ location ]];
+    _parameterTree = [AUParameterTree createTreeWithChildren:@[ gain, location ]];
     
     // Create the input bus
     AVAudioFormat *inputFormat = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:44100.0 channels:1];
@@ -78,24 +85,32 @@ const AudioUnitParameterID locationParameterID = 0;
     // implementorValueObserver is called when a parameter changes value.
     typeof(self) __weak weakSelf = self;
     _parameterTree.implementorValueObserver = ^(AUParameter *param, AUValue value) {
-        weakSelf.location = value;
+        switch (param.address) {
+        case gainParameterID:
+            weakSelf.gain = value;
+            break;
+        case locationParameterID:
+            weakSelf.location = value;
+            break;
+        }
     };
 
     // implementorValueProvider is called when the value needs to be refreshed.
     _parameterTree.implementorValueProvider = ^(AUParameter *param) {
-        return weakSelf.location;
+        switch (param.address) {
+        case gainParameterID:
+            return weakSelf.gain;
+        case locationParameterID:
+            return weakSelf.location;
+        default:
+            return Float32(0);
+        }
     };
 
     // A function to provide string representations of parameter values.
     _parameterTree.implementorStringFromValueCallback = ^(AUParameter *param, const AUValue *__nullable valuePtr) {
         AUValue value = valuePtr == nil ? param.value : *valuePtr;
-        
-        switch (param.address) {
-            case locationParameterID:
-                return [NSString stringWithFormat:@"%.f", value];
-            default:
-                return @"?";
-        }
+        return [NSString stringWithFormat:@"%.f", value];
     };
     
     self.maximumFramesToRender = 512;
@@ -141,7 +156,9 @@ const AudioUnitParameterID locationParameterID = 0;
 - (AUInternalRenderBlock)internalRenderBlock {
     // Capture in locals to avoid ObjC member lookups. If "self" is captured in render, we're doing it wrong. See sample code.
     __block BufferedInputBus *input = &_inputBus;
-    
+    __block Float32 gain = self.gain;
+    __block Float32 location = self.location;
+
     return ^AUAudioUnitStatus(AudioUnitRenderActionFlags *actionFlags, const AudioTimeStamp *timestamp, AVAudioFrameCount frameCount, NSInteger outputBusNumber, AudioBufferList *outputData, const AURenderEvent *realtimeEventListHead, AURenderPullInputBlock pullInputBlock) {
         AudioUnitRenderActionFlags pullFlags = 0;
 
@@ -153,7 +170,6 @@ const AudioUnitParameterID locationParameterID = 0;
         AudioBufferList *inAudioBufferList = input->mutableAudioBufferList;
         AudioBufferList *outAudioBufferList = outputData;
 
-        Float32 location = self.location;
         for (UInt32 channel = 0; channel < outAudioBufferList->mNumberBuffers; channel += 1) {
             Float32 channelLocation = Float32(2*channel + 1) / Float32(2 * channels);
 
@@ -166,6 +182,7 @@ const AudioUnitParameterID locationParameterID = 0;
             if (channelGain < 0) {
                 channelGain = 0;
             }
+            channelGain *= gain;
 
             vDSP_vsmul((float *)inAudioBufferList->mBuffers[0].mData, 1, &channelGain, (float *)outAudioBufferList->mBuffers[channel].mData, 1, inAudioBufferList->mBuffers[0].mDataByteSize / sizeof(Float32));
         }
