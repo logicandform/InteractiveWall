@@ -18,7 +18,7 @@ public final class AudioController {
         player.isLooping = true
         engine.connect(player.avAudioNode, to: engine.outputNode, format: nil)
         try! engine.start()
-        player.play()
+        player.start()
 
         return player
     }

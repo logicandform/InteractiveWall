@@ -56,11 +56,12 @@ public class AKPlayer {
     // MARK: - Private Parts
 
     // The underlying player node
-    private let playerNode = AVAudioPlayerNode()
+    let playerNode = AVAudioPlayerNode()
     private var mixer = AVAudioMixerNode()
     private var panner = MultiChannelPanner()
     private var startingFrame: AVAudioFramePosition?
     private var endingFrame: AVAudioFramePosition?
+    private var nextRenderFrame: AVAudioFramePosition = 0
 
     // these timers will go away when AudioKit is built for 10.13
     // in that case the real completion handlers of the scheduling can be used.
@@ -76,6 +77,7 @@ public class AKPlayer {
         return 0
     }
 
+    var sampleRate: Double = 44100
     private var _startTime: Double = 0
     private var _endTime: Double = 0
 
@@ -222,6 +224,7 @@ public class AKPlayer {
 
         let format = AVAudioFormat(standardFormatWithSampleRate: audioFile.fileFormat.sampleRate,
                                    channels: audioFile.fileFormat.channelCount)
+        sampleRate = audioFile.fileFormat.sampleRate
 
         AudioController.shared.engine.connect(playerNode, to: mixer, format: format)
         AudioController.shared.engine.connect(mixer, to: panner.audioNode!, format: format)
@@ -263,49 +266,15 @@ public class AKPlayer {
 
     // MARK: - Playback
 
-    /// Play entire file right now
-    public func play() {
-        play(from: startTime, to: endTime, at: nil, hostTime: nil)
-    }
-
-    /// Play segments of a file
-    public func play(from startingTime: Double, to endingTime: Double = 0) {
-        var to = endingTime
-        if to == 0 {
-            to = endTime
-        }
-        play(from: startingTime, to: to, at: nil, hostTime: nil)
-    }
-
-    /// Play file using previously set startTime and endTime at some point in the future
-    public func play(at audioTime: AVAudioTime?) {
-        play(at: audioTime, hostTime: nil)
-    }
-
-    /// Play file using previously set startTime and endTime at some point in the future with a hostTime reference
-    public func play(at audioTime: AVAudioTime?, hostTime: UInt64?) {
-        play(from: startTime, to: endTime, at: audioTime, hostTime: hostTime)
-    }
-
-    /// Play file using previously set startTime and endTime at some point in the future specified in seconds
-    /// with a hostTime reference
-    public func play(when scheduledTime: Double, hostTime: UInt64?) {
-        play(from: startTime, to: endTime, when: scheduledTime, hostTime: hostTime)
-    }
-
-    public func play(from startingTime: Double,
-                     to endingTime: Double,
-                     when scheduledTime: Double,
-                     hostTime: UInt64? = nil) {
-        let refTime = hostTime ?? mach_absolute_time()
-        let avTime = AVAudioTime.secondsToAudioTime(hostTime: refTime, time: scheduledTime)
-        play(from: startingTime, to: endingTime, at: avTime, hostTime: refTime)
+    public func start() {
+        preroll(from: startTime, to: endTime)
+        playerNode.play()
     }
 
     /// Play using full options. Last in the convenience play chain, all play() commands will end up here
-    public func play(from startingTime: Double, to endingTime: Double, at audioTime: AVAudioTime?, hostTime: UInt64?) {
+    public func play(from startingTime: Double, to endingTime: Double, at audioTime: AVAudioTime?) {
         preroll(from: startingTime, to: endingTime)
-        schedule(at: audioTime, hostTime: hostTime)
+        scheduleSegment(from: 0, frameCount: frameCount, at: audioTime, completion: nil)
         playerNode.play()
     }
 
@@ -344,29 +313,30 @@ public class AKPlayer {
                                                repeats: false)
     }
 
-    func schedule(at audioTime: AVAudioTime?, hostTime: UInt64? = nil) {
-        if isBuffered {
-            scheduleBuffer(at: audioTime)
-        } else {
-            scheduleSegment(at: audioTime)
-        }
+    func schedule(at time: CMTime, duration: Double, completion: (() -> Void)?) {
+        let seekThreshold = AVAudioFramePosition(1 * sampleRate)
+        let frameCount = AVAudioFrameCount(duration * sampleRate) - 1
+        let newFrame = AVAudioFramePosition(time.seconds * sampleRate)
 
-        if #available(iOS 11, macOS 10.13, tvOS 11, *) {
-            // nothing further is needed as the completion is specified in the scheduler
-        } else {
-            completionTimer?.invalidate()
-            prerollTimer?.invalidate()
-
-            if let audioTime = audioTime, let hostTime = hostTime {
-                let prerollTime = audioTime.toSeconds(hostTime: hostTime)
-                startPrerollTimer(prerollTime)
-            } else {
-                startCompletionTimer()
+        if abs(newFrame - nextRenderFrame) >= seekThreshold {
+            // If the difference is too large it's probably a seek operation
+            nextRenderFrame = newFrame
+        } else if newFrame < nextRenderFrame {
+            // If running too fast just skip scheduling this segment
+            DispatchQueue.main.asyncAfter(wallDeadline: .now() + duration) {
+                completion?()
             }
+            return
         }
+        // Missing `else` here because we don't want to reschedule audio, it causes audible glitches. This works
+        // beacause it is a lot more common that video runs slower and if the opposite happens we'll eventually
+        // correct it with the first case above (seek).
+
+        scheduleSegment(from: nextRenderFrame, frameCount: frameCount, at: nil, completion: completion)
+        nextRenderFrame = nextRenderFrame + AVAudioFramePosition(frameCount)
     }
 
-    private func scheduleBuffer(at audioTime: AVAudioTime?) {
+    func scheduleBuffer(at audioTime: AVAudioTime) {
         guard let buffer = buffer else { return }
 
         if playerNode.outputFormat(forBus: 0) != buffer.format {
@@ -394,42 +364,10 @@ public class AKPlayer {
     }
 
     // play from disk rather than ram
-    private func scheduleSegment(at audioTime: AVAudioTime?) {
+    func scheduleSegment(from start: AVAudioFramePosition, frameCount: AVAudioFrameCount, at time: AVAudioTime?, completion: (() -> Void)? = nil) {
         guard let audioFile = audioFile else { return }
 
-        let startFrame = AVAudioFramePosition(startTime * audioFile.fileFormat.sampleRate)
-        var endFrame = AVAudioFramePosition(endTime * audioFile.fileFormat.sampleRate)
-
-        if endFrame == 0 {
-            endFrame = audioFile.length
-        }
-
-        let totalFrames = (audioFile.length - startFrame) - (audioFile.length - endFrame)
-        guard totalFrames > 0 else {
-            print("totalFrames to play is \(totalFrames). Bailing.")
-            return
-        }
-
-        frameCount = AVAudioFrameCount(totalFrames)
-
-        // print("startFrame: \(startFrame) frameCount: \(frameCount)")
-
-        if #available(iOS 11, macOS 10.13, tvOS 11, *) {
-            playerNode.scheduleSegment(audioFile,
-                                       startingFrame: startFrame,
-                                       frameCount: frameCount,
-                                       at: audioTime,
-                                       completionCallbackType: .dataPlayedBack,
-                                       completionHandler: completionHandler != nil ? handleCallbackComplete : nil)
-        } else {
-            // Fallback on earlier version
-            playerNode.scheduleSegment(audioFile,
-                                       startingFrame: startFrame,
-                                       frameCount: frameCount,
-                                       at: audioTime,
-                                       completionHandler: nil) // these completionHandlers are inaccurate pre 10.13
-        }
-
+        playerNode.scheduleSegment(audioFile, startingFrame: start, frameCount: frameCount, at: time, completionHandler: completion)
         playerNode.prepare(withFrameCount: frameCount)
     }
 
@@ -454,7 +392,7 @@ public class AKPlayer {
         if isLooping {
             startTime = loop.start
             endTime = loop.end
-            play()
+            play(from: startTime, to: endTime, at: nil)
             return
         }
         completionHandler?()
@@ -535,7 +473,7 @@ public class AKPlayer {
 
 extension AKPlayer {
     public func start(at audioTime: AVAudioTime?) {
-        play(at: audioTime)
+        play(from: startTime, to: endTime, at: audioTime)
     }
 
     public var isStarted: Bool {
@@ -546,7 +484,7 @@ extension AKPlayer {
         startTime = position
         if isPlaying {
             stop()
-            play()
+            play(from: startTime, to: endTime, at: nil)
         }
     }
 

@@ -40,10 +40,21 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
 
         let contoller = AudioController.shared
         audioPlayer = contoller.play(url: media.url)
+        if let window = view.window {
+            audioPlayer?.location = Double(window.frame.midX / window.screen!.visibleFrame.width)
+        }
 
         let player = AVPlayer(url: media.url)
         player.isMuted = true
         playerView.player = player
+        scheduleAudioSegment()
+
+        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 2) {
+            player.pause()
+            DispatchQueue.main.asyncAfter(wallDeadline: .now() + 2) {
+                player.play()
+            }
+        }
 
         playerControl.player = player
         playerControl.gestureManager = super.gestureManager
@@ -52,6 +63,20 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         playerStateImageView.wantsLayer = true
         playerStateImageView.layer?.cornerRadius = playerStateImageView.frame.width / 2
         playerStateImageView.layer?.backgroundColor = style.darkBackground.cgColor
+    }
+
+    private func scheduleAudioSegment() {
+        guard let player = playerView.player else {
+            return
+        }
+
+        let syncInterval = 1.0 / 30.0
+        let time = player.currentTime()
+        audioPlayer?.schedule(at: time, duration: syncInterval) { [weak self] in
+            DispatchQueue.global(qos: .default).async {
+                self?.scheduleAudioSegment()
+            }
+        }
     }
 
     private func setupGestures() {

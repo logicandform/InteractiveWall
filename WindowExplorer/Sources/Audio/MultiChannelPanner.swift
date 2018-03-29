@@ -12,7 +12,6 @@ final class MultiChannelPanner {
 
     var audioNode: AVAudioNode!
     private var internalAU: MultiChannelPanAudioUnit?
-    private var token: AUParameterObserverToken?
     private var locationParameter: AUParameter?
 
     /// Location
@@ -22,8 +21,8 @@ final class MultiChannelPanner {
                 return
             }
 
-            if let token = token, let locationParameter = locationParameter {
-                locationParameter.setValue(Float(newValue), originator: token)
+            if let locationParameter = locationParameter {
+                locationParameter.setValue(Float(newValue), originator: nil)
             }
         }
     }
@@ -48,10 +47,6 @@ final class MultiChannelPanner {
         }
 
         self.locationParameter = tree["location"]
-        self.token = tree.token(byAddingParameterObserver: { [weak self] _, _ in
-            // Ignore, audio unit doesn't change any values
-        })
-
         self.location = location
     }
 }

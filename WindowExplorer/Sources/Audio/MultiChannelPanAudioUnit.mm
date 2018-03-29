@@ -138,7 +138,6 @@ const AudioUnitParameterID locationParameterID = 0;
 
 #pragma mark - AUAudioUnit (AUAudioUnitImplementation)
 
-// Block which subclassers must provide to implement rendering.
 - (AUInternalRenderBlock)internalRenderBlock {
     // Capture in locals to avoid ObjC member lookups. If "self" is captured in render, we're doing it wrong. See sample code.
     __block BufferedInputBus *input = &_inputBus;
