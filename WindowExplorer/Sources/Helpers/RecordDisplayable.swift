@@ -18,7 +18,6 @@ private struct Constants {
     static let kern: CGFloat = 0.5
 }
 
-
 protocol RecordDisplayable {
     var id: Int { get }
     var title: String { get }
@@ -41,6 +40,40 @@ extension RecordDisplayable {
     var relatedRecords: [RecordDisplayable] {
         return recordGroups.reduce([]) { $0 + $1.records }
     }
+    
+    var titleAttributes: [NSAttributedStringKey:Any] {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = Constants.titleLineSpacing
+        let font = NSFont(name: Constants.fontName, size: Constants.titleFontSize) ?? NSFont.systemFont(ofSize: Constants.titleFontSize)
+        return [.paragraphStyle : paragraphStyle,
+                .font : font,
+                .foregroundColor : Constants.titleForegroundColor,
+                .kern : Constants.kern
+        ]
+    }
+    
+    var dateAttributes: [NSAttributedStringKey:Any] {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = Constants.dateLineSpacing
+        let font = NSFont(name: Constants.fontName, size: Constants.dateFontSize) ?? NSFont.systemFont(ofSize: Constants.dateFontSize)
+        return [.paragraphStyle : paragraphStyle,
+                .font : font,
+                .foregroundColor : Constants.dateForegroundColor,
+                .kern : Constants.kern
+        ]
+    }
+    
+    var descriptionAttributes: [NSAttributedStringKey:Any] {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = Constants.descriptionLineSpacing
+        paragraphStyle.lineBreakMode = .byWordWrapping
+        let font = NSFont(name: Constants.fontName, size: Constants.descriptionFontSize) ?? NSFont.systemFont(ofSize: Constants.descriptionFontSize)
+        return [.paragraphStyle : paragraphStyle,
+                .font : font,
+                .foregroundColor : Constants.descriptionForegroundColor,
+                .kern : Constants.kern
+        ]
+    }
 }
 
 
@@ -51,32 +84,26 @@ extension Event: RecordDisplayable {
 
         let titleText = NSAttributedString(string: title)
         let label = NSTextField(labelWithAttributedString: titleText)
-        label.textColor = NSColor.white
         label.drawsBackground = false
         label.isBordered = false
         label.isSelectable = false
-        label.font = NSFont.systemFont(ofSize: Constants.titleFontSize, weight: .semibold)
         labels.append(label)
 
         if let date = date, let first = date.split(separator: "|").first?.description {
-            let dateText = NSAttributedString(string: first)
+            let dateText = NSMutableAttributedString(string: first, attributes: dateAttributes)
             let label = NSTextField(labelWithAttributedString: dateText)
-            label.textColor = style.selectedColor
             label.drawsBackground = false
             label.isBordered = false
             label.isSelectable = false
-            label.font = NSFont.systemFont(ofSize: Constants.dateFontSize)
             labels.append(label)
         }
 
         if let description = description {
-            let descriptionText = NSAttributedString(string: description)
+            let descriptionText = NSAttributedString(string: description, attributes: descriptionAttributes)
             let label = NSTextField(labelWithAttributedString: descriptionText)
-            label.textColor = .white
             label.drawsBackground = false
             label.isBordered = false
             label.isSelectable = false
-            label.lineBreakMode = .byWordWrapping
             labels.append(label)
         }
 
@@ -106,28 +133,24 @@ extension Artifact: RecordDisplayable {
     var textFields: [NSTextField] {
         var labels = [NSTextField]()
 
-        let titleText = NSAttributedString(string: title)
+        let titleText = NSAttributedString(string: title, attributes: titleAttributes)
         let label = NSTextField(labelWithAttributedString: titleText)
-        label.textColor = NSColor.white
         label.drawsBackground = false
         label.isBordered = false
         label.isSelectable = false
-        label.font = NSFont.systemFont(ofSize: Constants.titleFontSize, weight: .semibold)
         labels.append(label)
 
         if let date = date, let first = date.split(separator: "|").first?.description {
-            let dateText = NSAttributedString(string: first)
+            let dateText = NSAttributedString(string: first, attributes: dateAttributes)
             let label = NSTextField(labelWithAttributedString: dateText)
-            label.textColor = style.selectedColor
             label.drawsBackground = false
             label.isBordered = false
             label.isSelectable = false
-            label.font = NSFont.systemFont(ofSize: Constants.dateFontSize)
             labels.append(label)
         }
 
         if let description = description {
-            let descriptionText = NSAttributedString(string: description)
+            let descriptionText = NSAttributedString(string: description, attributes: descriptionAttributes)
             let label = NSTextField(labelWithAttributedString: descriptionText)
             label.textColor = .white
             label.drawsBackground = false
@@ -184,24 +207,20 @@ extension Organization: RecordDisplayable {
         labels.append(label)
 
         if let date = date, let first = date.split(separator: "|").first?.description {
-            let dateText = NSAttributedString(string: first)
+            let dateText = NSAttributedString(string: first, attributes: dateAttributes)
             let label = NSTextField(labelWithAttributedString: dateText)
-            label.textColor = style.selectedColor
             label.drawsBackground = false
             label.isBordered = false
             label.isSelectable = false
-            label.font = NSFont.systemFont(ofSize: Constants.dateFontSize)
             labels.append(label)
         }
 
         if let description = description {
-            let descriptionText = NSAttributedString(string: description)
+            let descriptionText = NSAttributedString(string: description, attributes: descriptionAttributes)
             let label = NSTextField(labelWithAttributedString: descriptionText)
-            label.textColor = .white
             label.drawsBackground = false
             label.isBordered = false
             label.isSelectable = false
-            label.lineBreakMode = .byWordWrapping
             labels.append(label)
         }
 
@@ -227,34 +246,28 @@ extension School: RecordDisplayable {
     var textFields: [NSTextField] {
         var labels = [NSTextField]()
 
-        let titleText = NSAttributedString(string: title)
+        let titleText = NSAttributedString(string: title, attributes: titleAttributes)
         let label = NSTextField(labelWithAttributedString: titleText)
-        label.textColor = NSColor.white
         label.drawsBackground = false
         label.isBordered = false
         label.isSelectable = false
-        label.font = NSFont.systemFont(ofSize: Constants.titleFontSize, weight: .semibold)
         labels.append(label)
 
         if let date = date, let first = date.split(separator: "|").first?.description {
-            let dateText = NSAttributedString(string: first)
+            let dateText = NSAttributedString(string: first, attributes: dateAttributes)
             let label = NSTextField(labelWithAttributedString: dateText)
-            label.textColor = style.selectedColor
             label.drawsBackground = false
             label.isBordered = false
             label.isSelectable = false
-            label.font = NSFont.systemFont(ofSize: Constants.dateFontSize)
             labels.append(label)
         }
 
         if let description = description {
-            let descriptionText = NSAttributedString(string: description)
+            let descriptionText = NSAttributedString(string: description, attributes: descriptionAttributes)
             let label = NSTextField(labelWithAttributedString: descriptionText)
-            label.textColor = .white
             label.drawsBackground = false
             label.isBordered = false
             label.isSelectable = false
-            label.lineBreakMode = .byWordWrapping
             labels.append(label)
         }
 
