@@ -157,6 +157,7 @@
 		3F2FAB5A204F7D24002EDF5D /* Artifact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Artifact.swift; sourceTree = "<group>"; };
 		3F47D52E206420C6001E86E3 /* FlippedClipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlippedClipView.swift; sourceTree = "<group>"; };
 		3F8436E320647F9E00AAAB55 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		6154D53B206DDC140078F0AA /* BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BridgingHeader.h; sourceTree = "<group>"; };
 		61767FCF206883A900970640 /* MultiChannelPanAudioUnit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MultiChannelPanAudioUnit.h; sourceTree = "<group>"; };
 		61767FD0206883A900970640 /* MultiChannelPanAudioUnit.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MultiChannelPanAudioUnit.mm; sourceTree = "<group>"; };
 		61767FE12068883F00970640 /* BufferedAudioBus.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BufferedAudioBus.hpp; sourceTree = "<group>"; };
@@ -345,6 +346,7 @@
 				2204623C204730050067D9FB /* Gestures */,
 				22A4985F204734790024B46C /* Notifications */,
 				61767FFD206895EE00970640 /* Audio */,
+				6154D53B206DDC140078F0AA /* BridgingHeader.h */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -404,17 +406,6 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		8FEABD9E20646FF600612C84 /* MediaControllers */ = {
-			isa = PBXGroup;
-			children = (
-				8FEABD9F2064702600612C84 /* MediaViewController.swift */,
-				D9F24E60205B03AA00B9FCB8 /* ImageViewController */,
-				22A76FE82046477A006C0AE7 /* PlayerViewController */,
-				22A76FE320464764006C0AE7 /* PDFViewControlller */,
-			);
-			path = MediaControllers;
-			sourceTree = "<group>";
-		};
 		61767FFD206895EE00970640 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
@@ -427,6 +418,17 @@
 				618F0C2B2069F98900762C20 /* MultiChannelPanner.swift */,
 			);
 			path = Audio;
+			sourceTree = "<group>";
+		};
+		8FEABD9E20646FF600612C84 /* MediaControllers */ = {
+			isa = PBXGroup;
+			children = (
+				8FEABD9F2064702600612C84 /* MediaViewController.swift */,
+				D9F24E60205B03AA00B9FCB8 /* ImageViewController */,
+				22A76FE82046477A006C0AE7 /* PlayerViewController */,
+				22A76FE320464764006C0AE7 /* PDFViewControlller */,
+			);
+			path = MediaControllers;
 			sourceTree = "<group>";
 		};
 		BA7AB469DDFD237E3385F839 /* Frameworks */ = {
@@ -837,6 +839,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = is.slant.WindowExplorer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = Sources/BridgingHeader.h;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
@@ -853,6 +856,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = is.slant.WindowExplorer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = Sources/BridgingHeader.h;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Release;

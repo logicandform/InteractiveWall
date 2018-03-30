@@ -2,11 +2,15 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 
-// Define parameter addresses.
+extern const AudioUnitParameterID gainParameterID;
 extern const AudioUnitParameterID locationParameterID;
 
 @interface MultiChannelPanAudioUnit : AUAudioUnit
 
+/// Overall gain (volume), between 0 and 1.
+@property (nonatomic) Float32 gain;
+
+/// Audio location between 0 and 1.
 @property (nonatomic) Float32 location;
 
 @end
