@@ -63,3 +63,6 @@ Pods/
 
 Carthage/Checkouts
 Carthage/Build
+
+# Redis Server
+dump.rdb

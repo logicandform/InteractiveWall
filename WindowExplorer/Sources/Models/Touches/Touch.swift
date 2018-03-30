@@ -42,7 +42,7 @@ class Touch: Hashable, CustomStringConvertible {
         let xPos = payload.extract(Int32.self, at: index)
         index += MemoryLayout<Int32>.size
         let yPos = payload.extract(Int32.self, at: index)
-        self.position = CGPoint(x: CGFloat(xPos), y: CGFloat(yPos) * Configuration.touchScreenRatio)
+        self.position = CGPoint(x: CGFloat(xPos), y: CGFloat(yPos))
         self.state = touchState
     }
 
