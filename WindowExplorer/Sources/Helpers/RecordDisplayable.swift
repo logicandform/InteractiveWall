@@ -5,8 +5,17 @@ import AppKit
 
 
 private struct Constants {
-    static let titleFontSize: CGFloat = 24.0
-    static let dateFontSize: CGFloat = 17.0
+    static let titleFontSize: CGFloat = 28.0
+    static let titleLineSpacing: CGFloat = 30.0
+    static let titleForegroundColor: NSColor = NSColor.white
+    static let dateFontSize: CGFloat = 14.0
+    static let dateLineSpacing: CGFloat = 19.0
+    static let dateForegroundColor: NSColor = style.selectedColor
+    static let descriptionFontSize: CGFloat = 16.0
+    static let descriptionLineSpacing: CGFloat = 22.0
+    static let descriptionForegroundColor: NSColor = NSColor.white
+    static let fontName: String = "Soleil"
+    static let kern: CGFloat = 0.5
 }
 
 
