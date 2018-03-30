@@ -14,8 +14,8 @@ class PDFViewController: MediaViewController {
     private var thumbnailClipView: NSClipView!
 
     var document: PDFDocument!
-    let leftArrow = ArrowControl()
-    let rightArrow = ArrowControl()
+    private let leftArrow = ArrowControl()
+    private let rightArrow = ArrowControl()
 
     private struct Constants {
         static let arrowInsetMargin: CGFloat = 10
@@ -28,8 +28,6 @@ class PDFViewController: MediaViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.wantsLayer = true
-        view.layer?.backgroundColor = style.darkBackground.cgColor
         if let scrollView = pdfThumbnailView.subviews.last as? NSScrollView, let clipView = scrollView.subviews.first(where: { $0 is NSClipView }) as? NSClipView {
             thumbnailClipView = clipView
         }
@@ -37,7 +35,7 @@ class PDFViewController: MediaViewController {
         setupPDF()
         setupArrows()
         setupGestures()
-        super.animateViewIn()
+        animateViewIn()
     }
 
     override func viewDidAppear() {
@@ -49,7 +47,7 @@ class PDFViewController: MediaViewController {
     // MARK: Setup
 
     private func setupPDF() {
-        guard super.media.type == .pdf else {
+        guard media.type == .pdf else {
             return
         }
 
@@ -58,7 +56,7 @@ class PDFViewController: MediaViewController {
         pdfView.backgroundColor = .clear
         pdfThumbnailView.pdfView = pdfView
 
-        document = PDFDocument(url: super.media.url)
+        document = PDFDocument(url: media.url)
         pdfView.document = document
     }
 
@@ -91,19 +89,19 @@ class PDFViewController: MediaViewController {
         view.addGestureRecognizer(panGesture)
 
         let windowPan = PanGestureRecognizer()
-        super.gestureManager.add(windowPan, to: view)
+        gestureManager.add(windowPan, to: view)
         windowPan.gestureUpdated = handleWindowPan(_:)
 
         let thumbnailViewPan = PanGestureRecognizer()
-        super.gestureManager.add(thumbnailViewPan, to: thumbnailClipView)
+        gestureManager.add(thumbnailViewPan, to: thumbnailClipView)
         thumbnailViewPan.gestureUpdated = handleThumbnailViewPan(_:)
 
         let thumbnailViewTap = TapGestureRecognizer()
-        super.gestureManager.add(thumbnailViewTap, to: thumbnailClipView)
+        gestureManager.add(thumbnailViewTap, to: thumbnailClipView)
         thumbnailViewTap.gestureUpdated = didTapThumbnailView(_:)
 
         let previousPageTap = TapGestureRecognizer()
-        super.gestureManager.add(previousPageTap, to: backTapArea)
+        gestureManager.add(previousPageTap, to: backTapArea)
         previousPageTap.gestureUpdated = { [weak self] tap in
             if tap.state == .ended {
                 self?.pdfView.goToPreviousPage(self)
@@ -112,7 +110,7 @@ class PDFViewController: MediaViewController {
         }
 
         let nextPageTap = TapGestureRecognizer()
-        super.gestureManager.add(nextPageTap, to: forwardTapArea)
+        gestureManager.add(nextPageTap, to: forwardTapArea)
         nextPageTap.gestureUpdated = { [weak self] tap in
             if tap.state == .ended {
                 self?.pdfView.goToNextPage(self)
@@ -121,7 +119,7 @@ class PDFViewController: MediaViewController {
         }
 
         let singleFingerCloseButtonTap = TapGestureRecognizer()
-        super.gestureManager.add(singleFingerCloseButtonTap, to: closeButtonView)
+        gestureManager.add(singleFingerCloseButtonTap, to: closeButtonView)
         singleFingerCloseButtonTap.gestureUpdated = didTapCloseButton(_:)
     }
 
@@ -180,7 +178,7 @@ class PDFViewController: MediaViewController {
             return
         }
 
-        super.animateViewOut()
+        animateViewOut()
     }
 
     @objc
@@ -189,7 +187,7 @@ class PDFViewController: MediaViewController {
             return
         }
 
-        super.resetCloseWindowTimer()
+        resetCloseWindowTimer()
         var origin = window.frame.origin
         origin += gesture.translation(in: nil)
         window.setFrameOrigin(origin)
@@ -200,7 +198,7 @@ class PDFViewController: MediaViewController {
     // MARK: IB-Actions
 
     @IBAction func closeButtonTapped(_ sender: Any) {
-        super.animateViewOut()
+        animateViewOut()
     }
 
 
