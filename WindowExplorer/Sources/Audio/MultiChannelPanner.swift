@@ -1,7 +1,6 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
 import AVFoundation
-import MultiChannelPan
 
 /// MultiChannelPanner
 final class MultiChannelPanner {
