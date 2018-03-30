@@ -11,9 +11,15 @@ struct Configuration {
     static let numberOfScreens = 1
     static let touchScreenSize = CGSize(width: 4095, height: 2242.5)
     static let touchScreenRatio: CGFloat = 23.0 / 42.0
-    static let loadMapsOnFirstScreen = false
+    static let loadMapsOnFirstScreen = true
 }
 
+struct LaunchAndKillMapConstants {
+    static let openLaunchPath = "/usr/bin/open"
+    static let openMapsBaseArg = ["-n", "-a", "/Users/spencerperkins/Library/Developer/Xcode/DerivedData/MapExplorer-dttmkubbxpmqnkgcnmtskfqjhfbq/Build/Products/Debug/MapExplorer-macOS.app", "--args"]
+    static let killallLaunchPath = "/usr/bin/killall"
+    static let killallArgs = ["MapExplorer-macOS"]
+}
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -24,27 +30,35 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         launchMapExplorer()
     }
 
-    func applicationWillTerminate(_ aNotification: Notification) {
+    func applicationWillTerminate(_ notification: Notification) {
         // Insert code here to tear down your application
+        killallMaps()
+        print("terminate")
     }
 }
 
 private func launchMapExplorer() {
-    let firstScreen = loadMapsOnFirstScreen ? 0 : 1
+    let firstScreen = Configuration.loadMapsOnFirstScreen ? 0 : 1
 
-    for screen in firstScreen ... numberOfScreen {
-        for map in 0 ..< mapPerScreen {
-            shell(screen, map)
+    for screen in firstScreen ... Configuration.numberOfScreens {
+        for map in 0 ..< Configuration.mapsPerScreen {
+            let args = LaunchAndKillMapConstants.openMapsBaseArg + [String(screen), String(map)]
+            shell(LaunchAndKillMapConstants.openLaunchPath, args)
         }
     }
 }
 
-private func shell(_ screen: Int, _ map: Int) {
+private func killallMaps() {
+    shell(LaunchAndKillMapConstants.killallLaunchPath, LaunchAndKillMapConstants.killallArgs)
+}
+
+private func shell(_ launchPath: String, _ args: [String])  {
     let task = Process()
-    task.launchPath = "/usr/bin/open"
-    task.arguments = ["-n", "-a", "/Users/spencerperkins/Library/Developer/Xcode/DerivedData/MapExplorer-dttmkubbxpmqnkgcnmtskfqjhfbq/Build/Products/Debug/MapExplorer-macOS.app", "--args", screen, map]
+    task.launchPath = launchPath
+    task.arguments = args
     task.launch()
     task.waitUntilExit()
 }
+
 
 
