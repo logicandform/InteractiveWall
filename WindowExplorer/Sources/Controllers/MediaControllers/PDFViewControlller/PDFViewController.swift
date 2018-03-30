@@ -44,6 +44,7 @@ class PDFViewController: MediaViewController {
         thumbnailClipView.scroll(CGPoint(x: 0, y: 1))
     }
 
+
     // MARK: Setup
 
     private func setupPDF() {
@@ -54,7 +55,7 @@ class PDFViewController: MediaViewController {
         pdfView.displayDirection = .horizontal
         pdfView.autoScales = true
         pdfView.backgroundColor = .clear
-        pdfThumbnailView.pdfView = pdfView
+//        pdfThumbnailView.pdfView = pdfView
 
         document = PDFDocument(url: media.url)
         pdfView.document = document
