@@ -1,16 +1,14 @@
-//
-//  AspectFillImageView.swift
-//  WindowExplorer
-//
-//  Created by Travis on 2018-03-28.
 //  Copyright © 2018 JABT. All rights reserved.
-//
 
 import Cocoa
 
 class AspectFillImageView: NSImageView {
-    var _image: NSImage?
+    private var aspectFillImage: NSImage?
+
     override var image: NSImage? {
+        get {
+            return aspectFillImage
+        }
         set {
             self.layer = CALayer()
             if let image = newValue {
@@ -20,11 +18,7 @@ class AspectFillImageView: NSImageView {
             }
             self.layer?.contents = newValue
             self.wantsLayer = true
-            _image = image
-        }
-
-        get {
-            return _image
+            aspectFillImage = image
         }
     }
 }

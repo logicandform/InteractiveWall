@@ -456,6 +456,7 @@
 		D901EBEE205748C500BBFCF2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1F910717206C2973008F9513 /* AspectFillImageView.swift */,
 				D901EBEF2057490400BBFCF2 /* RegularTableView.swift */,
 				8FE6467A2060553100E6116A /* RegularScrollView.swift */,
 				3F47D52E206420C6001E86E3 /* FlippedClipView.swift */,
@@ -470,7 +471,6 @@
 			children = (
 				D992E20C20533A6200EAB698 /* Record.storyboard */,
 				D992E20820533A3A00EAB698 /* RecordViewController.swift */,
-				1F910717206C2973008F9513 /* AspectFillImageView.swift */,
 				D901EBEB20535A3E00BBFCF2 /* Views */,
 			);
 			path = RecordViewController;
