@@ -16,7 +16,7 @@ class ImageViewController: MediaViewController {
     @IBOutlet weak var rotateButton: NSView!
 
     private var urlRequest: DataRequest?
-    private var imageView: AspectFillImageView!
+    private var imageView: NSImageView!
     private var contentViewFrame: NSRect!
     private var frameSize: NSSize!
 
@@ -45,7 +45,7 @@ class ImageViewController: MediaViewController {
             return
         }
 
-        imageView = AspectFillImageView()
+        imageView = NSImageView()
 
         urlRequest = Alamofire.request(media.url).responseImage { [weak self] response in
             if let image = response.value {
@@ -56,6 +56,7 @@ class ImageViewController: MediaViewController {
 
     private func addImage(_ image: NSImage) {
         imageView.image = image
+        imageView.imageScaling = NSImageScaling.scaleAxesIndependently
         let scaleRatio =  min(imageScrollView.frame.width / image.size.width, imageScrollView.frame.height / image.size.height)
         frameSize = NSSize(width: round(image.size.width * scaleRatio), height: round(image.size.height * scaleRatio))
         imageView.setFrameSize(frameSize)
