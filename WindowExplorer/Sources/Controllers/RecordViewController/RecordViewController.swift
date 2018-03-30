@@ -391,10 +391,10 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func closeTimerFired() {
+        // reset timer gets recalled once a child MediaViewContoller gets closed
         if positionsForMediaControllers.keys.isEmpty {
             animateViewOut()
         }
-        // reset timer gets recalled once a child MediaViewContoller gets closed
     }
 
     private func recievedTouch(touch: Touch) {
