@@ -15,7 +15,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     @IBOutlet weak var hideRelatedItemsButton: NSButton!
     @IBOutlet weak var closeWindowTapArea: NSView!
     @IBOutlet weak var toggleRelatedItemsArea: NSView!
-
+    @IBOutlet weak var placeHolderImage: NSImageView!
+    
     var record: RecordDisplayable?
     private(set) var gestureManager: GestureManager!
     private var showingRelatedItems = false
@@ -55,6 +56,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     private func setupMediaView() {
         mediaView.register(MediaItemView.self, forItemWithIdentifier: MediaItemView.identifier)
+
+        placeHolderImage.image = record?.type.placeholder
 
         pageControl.color = NSColor.white
         pageControl.numberOfPages = UInt(record?.media.count ?? 0)
@@ -413,6 +416,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return NSCollectionViewItem()
         }
 
+        placeHolderImage.isHidden = true
         mediaItemView.media = record?.media[indexPath.item]
         return mediaItemView
     }

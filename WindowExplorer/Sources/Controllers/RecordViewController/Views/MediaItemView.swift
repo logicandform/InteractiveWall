@@ -57,5 +57,4 @@ class MediaItemView: NSCollectionViewItem {
             mediaImageView.addSubview(imageView)
         }
     }
-
 }
