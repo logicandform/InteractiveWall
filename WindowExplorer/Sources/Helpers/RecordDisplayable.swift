@@ -6,14 +6,28 @@ import AppKit
 
 private struct Constants {
     static let titleFontSize: CGFloat = 28.0
-    static let titleLineSpacing: CGFloat = 30.0
+    static let titleLineSpacing: CGFloat = 0.0
+    static let titleMaximumLineheight: CGFloat = titleFontSize + 2.0
     static let titleForegroundColor: NSColor = NSColor.white
     static let dateFontSize: CGFloat = 14.0
-    static let dateLineSpacing: CGFloat = 19.0
+    static let dateLineSpacing: CGFloat = 0.0
+    static let dateParagraphSpacingBefore: CGFloat = 0.0
     static let dateForegroundColor: NSColor = style.selectedColor
     static let descriptionFontSize: CGFloat = 16.0
-    static let descriptionLineSpacing: CGFloat = 22.0
+    static let descriptionLineSpacing: CGFloat = 0.0
+    static let descriptionMaximumLineHeight: CGFloat = descriptionFontSize + 5.0
+    static let descriptionParagraphSpacing: CGFloat = 8.0
     static let descriptionForegroundColor: NSColor = NSColor.white
+    static let commentsFontSize: CGFloat = 16.0
+    static let commentsLineSpacing: CGFloat = 0.0
+    static let commentsMaximumLineHeight: CGFloat = commentsFontSize + 5.0
+    static let commentsParagraphSpacing: CGFloat = 8.0
+    static let commentsForegroundColor: NSColor = NSColor.white
+    static let smallHeaderFontSize: CGFloat = 12.0
+    static let smallHeaderLineSpacing: CGFloat = 0.0
+    static let smallHeaderForegroundColor: NSColor = NSColor.white
+    static let smallHeaderParagraphSpacing: CGFloat = 0.0
+    static let smallHeaderParagraphSpacingBefore: CGFloat = 20.0
     static let fontName: String = "Soleil"
     static let kern: CGFloat = 0.5
 }
