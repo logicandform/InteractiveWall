@@ -16,6 +16,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     @IBOutlet weak var closeWindowTapArea: NSView!
     @IBOutlet weak var toggleRelatedItemsArea: NSView!
     @IBOutlet weak var placeHolderImage: NSImageView!
+    @IBOutlet weak var showHideRelatedItemsView: NSImageView!
+    @IBOutlet weak var relatedItemsViewButton: NSButton!
     
     var record: RecordDisplayable?
     private(set) var gestureManager: GestureManager!
@@ -23,6 +25,15 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private var pageControl = PageControl()
     private var positionsForMediaControllers = [MediaViewController: Int]()
     private weak var closeWindowTimer: Foundation.Timer?
+    private var relatedItemsColor: NSColor = NSColor.clear {
+        didSet {
+            toggleRelatedItemsArea.layer?.backgroundColor = relatedItemsColor.cgColor
+            guard let cell = relatedItemsViewButton.cell as? NSButtonCell else {
+                return
+            }
+            cell.backgroundColor = relatedItemsColor
+        }
+    }
     
     private struct Constants {
         static let tableRowHeight: CGFloat = 60
@@ -30,6 +41,9 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         static let mediaControllerOffsetX = 100
         static let mediaControllerOffsetY = -50
         static let closeWindowTimeoutPeriod: TimeInterval = 60
+        static let fontName: String = "Soleil"
+        static let fontSize: CGFloat = 13
+        static let fontColor: NSColor = NSColor.white
     }
 
 
@@ -51,7 +65,10 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         resetCloseWindowTimer()
     }
 
-
+    override func viewDidAppear() {
+        toggleRelatedItems()
+    }
+    
     // MARK: Setup
 
     private func setupMediaView() {
@@ -75,6 +92,28 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         relatedItemsView.register(NSNib(nibNamed: RelatedItemView.nibName, bundle: nil), forIdentifier: RelatedItemView.interfaceIdentifier)
         relatedItemsView.backgroundColor = .clear
         hideRelatedItemsButton.alphaValue = 0
+        toggleRelatedItemsArea.wantsLayer = true
+        
+        relatedItemsViewButton.font = NSFont(name: Constants.fontName, size: Constants.fontSize) ?? NSFont.systemFont(ofSize: Constants.fontSize)
+        relatedItemsViewButton.attributedTitle = NSAttributedString(string: relatedItemsViewButton.title, attributes: [.foregroundColor : Constants.fontColor])
+        
+        guard let record = record, record.relatedRecords.count > 0 else {
+            relatedItemsColor = style.noRelatedItemsColor
+            return
+        }
+        
+        switch record.type {
+        case .artifact:
+            relatedItemsColor = style.artifactColor
+        case .event:
+            relatedItemsColor = style.eventColor
+        case .organization:
+            relatedItemsColor = style.organizationColor
+        case .school:
+            relatedItemsColor = style.schoolColor
+        default:
+            relatedItemsColor = NSColor.clear
+        }
     }
 
     private func setupGestures() {
@@ -339,6 +378,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             NSAnimationContext.current.duration = 0.5
             self?.relatedItemsView.animator().alphaValue = alpha
             self?.hideRelatedItemsButton.animator().alphaValue = alpha
+            self?.showHideRelatedItemsView.image = showingRelatedItems ? NSImage(named: "plus-icon") : NSImage(named: "close button")
+
             }, completionHandler: { [weak self] in
                 if let strongSelf = self {
                     strongSelf.relatedItemsView.isHidden = !strongSelf.showingRelatedItems
