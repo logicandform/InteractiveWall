@@ -56,9 +56,12 @@ extension RecordDisplayable {
     }
     
     var titleAttributes: [NSAttributedStringKey:Any] {
+        let font = NSFont(name: Constants.fontName, size: Constants.titleFontSize) ?? NSFont.systemFont(ofSize: Constants.titleFontSize)
+
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Constants.titleLineSpacing
-        let font = NSFont(name: Constants.fontName, size: Constants.titleFontSize) ?? NSFont.systemFont(ofSize: Constants.titleFontSize)
+        paragraphStyle.maximumLineHeight = Constants.titleMaximumLineheight
+        
         return [.paragraphStyle : paragraphStyle,
                 .font : font,
                 .foregroundColor : Constants.titleForegroundColor,
@@ -69,6 +72,7 @@ extension RecordDisplayable {
     var dateAttributes: [NSAttributedStringKey:Any] {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Constants.dateLineSpacing
+        paragraphStyle.paragraphSpacingBefore = Constants.dateParagraphSpacingBefore
         let font = NSFont(name: Constants.fontName, size: Constants.dateFontSize) ?? NSFont.systemFont(ofSize: Constants.dateFontSize)
         return [.paragraphStyle : paragraphStyle,
                 .font : font,
@@ -80,6 +84,8 @@ extension RecordDisplayable {
     var descriptionAttributes: [NSAttributedStringKey:Any] {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Constants.descriptionLineSpacing
+        paragraphStyle.paragraphSpacing = Constants.descriptionParagraphSpacing
+        paragraphStyle.maximumLineHeight = Constants.descriptionMaximumLineHeight
         paragraphStyle.lineBreakMode = .byWordWrapping
         let font = NSFont(name: Constants.fontName, size: Constants.descriptionFontSize) ?? NSFont.systemFont(ofSize: Constants.descriptionFontSize)
         return [.paragraphStyle : paragraphStyle,
