@@ -88,6 +88,44 @@ extension RecordDisplayable {
                 .kern : Constants.kern
         ]
     }
+    
+    var commentAttributes: [NSAttributedStringKey:Any] {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = Constants.commentsLineSpacing
+        paragraphStyle.paragraphSpacing = Constants.commentsParagraphSpacing
+        paragraphStyle.maximumLineHeight = Constants.commentsMaximumLineHeight
+        paragraphStyle.lineBreakMode = .byWordWrapping
+        let font = NSFont(name: Constants.fontName, size: Constants.commentsFontSize) ?? NSFont.systemFont(ofSize: Constants.commentsFontSize)
+        return [.paragraphStyle : paragraphStyle,
+                .font : font,
+                .foregroundColor : Constants.commentsForegroundColor,
+                .kern : Constants.kern
+        ]
+    }
+    
+    var smallHeaderAttributes: [NSAttributedStringKey:Any] {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = Constants.smallHeaderLineSpacing
+        paragraphStyle.lineBreakMode = .byWordWrapping
+        paragraphStyle.paragraphSpacing = Constants.smallHeaderParagraphSpacing
+        paragraphStyle.paragraphSpacingBefore = Constants.smallHeaderParagraphSpacingBefore
+        let font = NSFont(name: Constants.fontName, size: Constants.smallHeaderFontSize) ?? NSFont.systemFont(ofSize: Constants.smallHeaderFontSize)
+        return [.paragraphStyle : paragraphStyle,
+                .font : font,
+                .foregroundColor : Constants.smallHeaderForegroundColor,
+                .kern : Constants.kern
+        ]
+    }
+    
+    func smallHeader(named headerName: String) -> NSTextField {
+        let header = NSMutableAttributedString(string: "\n"+headerName, attributes: smallHeaderAttributes)
+        let label = NSTextField(labelWithAttributedString: header)
+        label.drawsBackground = false
+        label.isBordered = false
+        label.isSelectable = false
+        label.sizeToFit()
+        return label
+    }
 }
 
 
