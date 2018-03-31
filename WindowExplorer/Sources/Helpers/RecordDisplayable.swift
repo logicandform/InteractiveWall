@@ -162,6 +162,7 @@ extension Event: RecordDisplayable {
             label.drawsBackground = false
             label.isBordered = false
             label.isSelectable = false
+            labels.append(smallHeader(named: "Description"))
             labels.append(label)
         }
 
@@ -223,6 +224,7 @@ extension Artifact: RecordDisplayable {
             label.drawsBackground = false
             label.isBordered = false
             label.isSelectable = false
+            labels.append(smallHeader(named: "\nCurator Comments"))
             labels.append(label)
         }
 
@@ -276,6 +278,7 @@ extension Organization: RecordDisplayable {
             label.drawsBackground = false
             label.isBordered = false
             label.isSelectable = false
+            labels.append(smallHeader(named: "Description"))
             labels.append(label)
         }
 
@@ -323,6 +326,7 @@ extension School: RecordDisplayable {
             label.drawsBackground = false
             label.isBordered = false
             label.isSelectable = false
+            labels.append(smallHeader(named: "Description"))
             labels.append(label)
         }
 
