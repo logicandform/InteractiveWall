@@ -12,17 +12,17 @@
             <objects>
                 <viewController id="7oi-8d-QFD" customClass="RecordViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="i2Z-RE-f6z">
-                        <rect key="frame" x="0.0" y="0.0" width="625" height="599"/>
+                        <rect key="frame" x="0.0" y="0.0" width="625" height="646"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="18" horizontalPageScroll="10" verticalLineScroll="18" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="vNQ-tt-E3O" userLabel="Scroll View">
-                                <rect key="frame" x="425" y="8" width="192" height="541"/>
+                                <rect key="frame" x="425" y="8" width="192" height="588"/>
                                 <clipView key="contentView" drawsBackground="NO" id="c7X-hu-wk8">
-                                    <rect key="frame" x="0.0" y="0.0" width="192" height="541"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="192" height="588"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="8" viewBased="YES" id="cKY-nL-NPV">
-                                            <rect key="frame" x="0.0" y="0.0" width="192" height="541"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="192" height="588"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="30" height="10"/>
                                             <color key="backgroundColor" name="scrollBarColor" catalog="System" colorSpace="catalog"/>
@@ -83,7 +83,7 @@
                                 </scroller>
                             </scrollView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="83q-cx-wcX" userLabel="contentView">
-                                <rect key="frame" x="0.0" y="0.0" width="416" height="599"/>
+                                <rect key="frame" x="0.0" y="0.0" width="416" height="646"/>
                                 <subviews>
                                     <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FBg-bp-lkB">
                                         <rect key="frame" x="18" y="18" width="380" height="320"/>
@@ -120,13 +120,13 @@
                                             <rect key="frame" x="-100" y="-100" width="380" height="16"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
-                                        <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="WJp-14-XQg">
-                                            <rect key="frame" x="364" y="0.0" width="16" height="320"/>
+                                        <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="0.30000000000000004" horizontal="NO" id="WJp-14-XQg">
+                                            <rect key="frame" x="365" y="0.0" width="15" height="300"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
                                     <button translatesAutoresizingMaskIntoConstraints="NO" id="Gya-dz-hCa">
-                                        <rect key="frame" x="10" y="569" width="20" height="20"/>
+                                        <rect key="frame" x="10" y="616" width="20" height="20"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="20" id="8Xf-0i-YLe"/>
                                             <constraint firstAttribute="height" constant="20" id="g9u-QV-Pp7"/>
@@ -140,7 +140,7 @@
                                         </connections>
                                     </button>
                                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Zeo-g9-VHC">
-                                        <rect key="frame" x="148" y="397" width="120" height="120"/>
+                                        <rect key="frame" x="148" y="420" width="120" height="120"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="120" id="GOM-cU-2Yu"/>
                                             <constraint firstAttribute="height" constant="120" id="hyV-MM-jAu"/>
@@ -148,13 +148,13 @@
                                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" id="w1x-h8-M1p"/>
                                     </imageView>
                                     <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ufY-Kg-vBR">
-                                        <rect key="frame" x="0.0" y="353" width="416" height="208"/>
+                                        <rect key="frame" x="0.0" y="353" width="416" height="255"/>
                                         <clipView key="contentView" drawsBackground="NO" id="IhY-hb-dfg">
-                                            <rect key="frame" x="0.0" y="0.0" width="416" height="208"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="416" height="255"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <collectionView id="Eaz-7m-IDm">
-                                                    <rect key="frame" x="0.0" y="0.0" width="416" height="208"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="416" height="255"/>
                                                     <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" id="dee-BC-0Jq">
                                                         <size key="itemSize" width="50" height="200"/>
@@ -169,7 +169,7 @@
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </clipView>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="ufY-Kg-vBR" secondAttribute="height" multiplier="2:1" id="kgg-HG-bJk"/>
+                                            <constraint firstAttribute="width" secondItem="ufY-Kg-vBR" secondAttribute="height" multiplier="1.63:1" id="kgg-HG-bJk"/>
                                         </constraints>
                                         <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="yUc-lw-Iqm">
                                             <rect key="frame" x="0.0" y="188" width="408" height="16"/>
@@ -181,14 +181,14 @@
                                         </scroller>
                                     </scrollView>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="uhV-2F-c5f">
-                                        <rect key="frame" x="0.0" y="559" width="40" height="40"/>
+                                        <rect key="frame" x="0.0" y="606" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="79s-VE-roa"/>
                                             <constraint firstAttribute="width" constant="40" id="Inv-Su-QOl"/>
                                         </constraints>
                                     </customView>
                                     <button translatesAutoresizingMaskIntoConstraints="NO" id="5qz-4l-1Hr">
-                                        <rect key="frame" x="386" y="569" width="20" height="20"/>
+                                        <rect key="frame" x="386" y="616" width="20" height="20"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="20" id="OyM-v5-Nes"/>
                                             <constraint firstAttribute="height" constant="20" id="Q5o-Ba-NQS"/>
@@ -199,7 +199,7 @@
                                         </buttonCell>
                                     </button>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="ng9-0N-mwq">
-                                        <rect key="frame" x="376" y="559" width="40" height="40"/>
+                                        <rect key="frame" x="376" y="606" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="40" id="FMQ-2A-Qlq"/>
                                             <constraint firstAttribute="height" constant="40" id="kNH-V9-h1s"/>
@@ -222,12 +222,13 @@
                                     <constraint firstItem="FBg-bp-lkB" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="leading" constant="18" id="fiA-kL-6Ij"/>
                                     <constraint firstAttribute="width" constant="416" id="gCO-Bx-Eu3"/>
                                     <constraint firstAttribute="trailing" secondItem="ufY-Kg-vBR" secondAttribute="trailing" id="isU-1a-I8R"/>
+                                    <constraint firstItem="FBg-bp-lkB" firstAttribute="top" secondItem="ufY-Kg-vBR" secondAttribute="bottom" constant="35" id="k29-Sr-2Ry"/>
                                     <constraint firstItem="ufY-Kg-vBR" firstAttribute="top" secondItem="83q-cx-wcX" secondAttribute="top" constant="38" id="ktu-Si-a2l"/>
                                     <constraint firstItem="uhV-2F-c5f" firstAttribute="centerY" secondItem="Gya-dz-hCa" secondAttribute="centerY" id="u5P-gQ-IRj"/>
                                 </constraints>
                             </customView>
                             <button translatesAutoresizingMaskIntoConstraints="NO" id="XCO-vm-Fbg">
-                                <rect key="frame" x="416" y="559" width="140" height="40"/>
+                                <rect key="frame" x="416" y="606" width="140" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="Y6K-Mr-ied"/>
                                     <constraint firstAttribute="width" constant="140" id="eQ7-Ii-eJG"/>
