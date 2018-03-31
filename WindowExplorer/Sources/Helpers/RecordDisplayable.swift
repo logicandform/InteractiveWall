@@ -140,7 +140,7 @@ extension Event: RecordDisplayable {
     var textFields: [NSTextField] {
         var labels = [NSTextField]()
 
-        let titleText = NSAttributedString(string: title)
+        let titleText = NSMutableAttributedString(string: title, attributes: titleAttributes)
         let label = NSTextField(labelWithAttributedString: titleText)
         label.drawsBackground = false
         label.isBordered = false
@@ -210,22 +210,19 @@ extension Artifact: RecordDisplayable {
         if let description = description {
             let descriptionText = NSAttributedString(string: description, attributes: descriptionAttributes)
             let label = NSTextField(labelWithAttributedString: descriptionText)
-            label.textColor = .white
             label.drawsBackground = false
             label.isBordered = false
             label.isSelectable = false
-            label.lineBreakMode = .byWordWrapping
+            labels.append(smallHeader(named: "Description"))
             labels.append(label)
         }
 
         if let comments = comments {
-            let commentText = NSAttributedString(string: comments)
+            let commentText = NSAttributedString(string: comments, attributes: commentAttributes)
             let label = NSTextField(labelWithAttributedString: commentText)
-            label.textColor = .white
             label.drawsBackground = false
             label.isBordered = false
             label.isSelectable = false
-            label.lineBreakMode = .byWordWrapping
             labels.append(label)
         }
 
