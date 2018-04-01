@@ -11,7 +11,7 @@
                 <outlet property="currentTimeLabel" destination="IOp-BE-Ma6" id="l9z-jc-45f"/>
                 <outlet property="durationLabel" destination="KTF-Qn-y4E" id="hf0-TP-oDz"/>
                 <outlet property="seekBar" destination="8jO-Ld-nn0" id="dUA-Dh-Qsv"/>
-                <outlet property="toggleButton" destination="Ubj-9h-laa" id="wGf-kz-c6o"/>
+                <outlet property="toggleButton" destination="Ubj-9h-laa" id="PDD-Hq-HSs"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
@@ -49,7 +49,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <imageView translatesAutoresizingMaskIntoConstraints="NO" id="Ubj-9h-laa" customClass="AspectFillImageView" customModule="WindowExplorer" customModuleProvider="target">
+                <imageView translatesAutoresizingMaskIntoConstraints="NO" id="Ubj-9h-laa">
                     <rect key="frame" x="0.0" y="0.0" width="47" height="50"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="PjM-np-IE3"/>

@@ -19,6 +19,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         WindowManager.instance.registerForNotifications()
         TouchManager.instance.setupTouchSocket()
+        RecordFactory.record(for: .artifact, id: 2279) { artifact in
+            if let artifact = artifact {
+                WindowManager.instance.display(.record(artifact), at: CGPoint(x: 1500, y: 1000))
+            }
+        }
+
+        RecordFactory.record(for: .artifact, id: 2278) { artifact in
+            if let artifact = artifact {
+                WindowManager.instance.display(.record(artifact), at: CGPoint(x: 2000, y: 1000))
+            }
+        }
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
