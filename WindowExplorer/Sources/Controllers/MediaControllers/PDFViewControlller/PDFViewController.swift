@@ -11,11 +11,13 @@ class PDFViewController: MediaViewController {
     @IBOutlet weak var closeButtonView: NSView!
     @IBOutlet weak var backTapArea: NSView!
     @IBOutlet weak var forwardTapArea: NSView!
-    private var thumbnailClipView: NSClipView!
 
     var document: PDFDocument!
     private let leftArrow = ArrowControl()
     private let rightArrow = ArrowControl()
+    private var thumbnailClipView: NSClipView!
+    private var thumbnailCollectionView: NSView!
+
 
     private struct Constants {
         static let arrowInsetMargin: CGFloat = 10
@@ -30,8 +32,9 @@ class PDFViewController: MediaViewController {
         super.viewDidLoad()
         if let scrollView = pdfThumbnailView.subviews.last as? NSScrollView, let clipView = scrollView.subviews.first(where: { $0 is NSClipView }) as? NSClipView {
             thumbnailClipView = clipView
+            thumbnailCollectionView = thumbnailClipView.subviews.last
         }
-
+        
         setupPDF()
         setupArrows()
         setupGestures()
@@ -51,14 +54,14 @@ class PDFViewController: MediaViewController {
         guard media.type == .pdf else {
             return
         }
-
+        
         pdfView.displayDirection = .horizontal
         pdfView.autoScales = true
         pdfView.backgroundColor = .clear
-//        pdfThumbnailView.pdfView = pdfView
-
         document = PDFDocument(url: media.url)
         pdfView.document = document
+        pdfThumbnailView.pdfView = pdfView
+        NotificationCenter.default.removeObserver(thumbnailCollectionView, name: NSNotification.Name.PDFViewPageChanged, object: nil)
     }
 
     private func setupArrows() {
@@ -165,7 +168,7 @@ class PDFViewController: MediaViewController {
         }
 
         if tap.state == .ended {
-            let thumbnailPages = thumbnailClipView.subviews.last?.subviews ?? []
+            let thumbnailPages = thumbnailCollectionView.subviews
             let location = position + thumbnailClipView.visibleRect.origin
             if let thumbnail = thumbnailPages.first(where: { $0.frame.contains(location) }), let index = thumbnailPages.index(of: thumbnail), let page = document.page(at: index) {
                 pdfView.go(to: page)
@@ -204,7 +207,7 @@ class PDFViewController: MediaViewController {
 
 
     // MARK: Helpers
-
+    
     private func updateArrows() {
         leftArrow.isHidden = !pdfView.canGoToPreviousPage
         rightArrow.isHidden = !pdfView.canGoToNextPage

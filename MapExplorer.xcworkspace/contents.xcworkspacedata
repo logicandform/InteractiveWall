@@ -13,4 +13,7 @@
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:MapExplorer-tvOS/MapExplorer-tvOS.xcodeproj">
+   </FileRef>
 </Workspace>
