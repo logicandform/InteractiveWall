@@ -25,15 +25,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private var pageControl = PageControl()
     private var positionsForMediaControllers = [MediaViewController: Int]()
     private weak var closeWindowTimer: Foundation.Timer?
-    private var relatedItemsColor: NSColor = NSColor.clear {
-        didSet {
-            toggleRelatedItemsArea.layer?.backgroundColor = relatedItemsColor.cgColor
-            guard let cell = relatedItemsViewButton.cell as? NSButtonCell else {
-                return
-            }
-            cell.backgroundColor = relatedItemsColor
-        }
-    }
     
     private struct Constants {
         static let tableRowHeight: CGFloat = 60
@@ -98,22 +89,11 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         relatedItemsViewButton.attributedTitle = NSAttributedString(string: relatedItemsViewButton.title, attributes: [.foregroundColor : Constants.fontColor])
         
         guard let record = record, record.relatedRecords.count > 0 else {
-            relatedItemsColor = style.noRelatedItemsColor
+            setRecordColor(color: style.noRelatedItemsColor)
             return
         }
         
-        switch record.type {
-        case .artifact:
-            relatedItemsColor = style.artifactColor
-        case .event:
-            relatedItemsColor = style.eventColor
-        case .organization:
-            relatedItemsColor = style.organizationColor
-        case .school:
-            relatedItemsColor = style.schoolColor
-        default:
-            relatedItemsColor = NSColor.clear
-        }
+        setRecordColor(color: record.type.color)
     }
 
     private func setupGestures() {
@@ -171,6 +151,13 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         }
     }
 
+    private func setRecordColor(color: NSColor){
+        toggleRelatedItemsArea.layer?.backgroundColor = color.cgColor
+        guard let cell = relatedItemsViewButton.cell as? NSButtonCell else {
+            return
+        }
+        cell.backgroundColor = color
+    }
 
     // MARK: Gesture Handling
 
