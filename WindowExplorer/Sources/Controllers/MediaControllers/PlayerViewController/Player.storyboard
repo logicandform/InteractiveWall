@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="ObE-0t-P64">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="ObE-0t-P64">
     <dependencies>
-        <plugIn identifier="com.apple.AVKitIBPlugin" version="13771"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <plugIn identifier="com.apple.AVKitIBPlugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -12,63 +12,65 @@
             <objects>
                 <viewController id="ObE-0t-P64" customClass="PlayerViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="X51-8y-Yv7">
-                        <rect key="frame" x="0.0" y="0.0" width="640" height="409"/>
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="440"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="Ps0-Dg-pIZ" customClass="PlayerControl" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="640" height="50"/>
+                                <rect key="frame" x="0.0" y="0.0" width="640" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="9rl-zX-x6a"/>
+                                    <constraint firstAttribute="height" constant="40" id="hf1-Pw-L9a"/>
+                                    <constraint firstAttribute="width" constant="640" id="nrt-FI-tep"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="640" id="xPh-S6-5yP"/>
                                 </constraints>
                             </customView>
                             <avPlayerView controlsStyle="none" translatesAutoresizingMaskIntoConstraints="NO" id="0vf-bx-Jlv">
-                                <rect key="frame" x="8" y="50" width="624" height="351"/>
+                                <rect key="frame" x="0.0" y="40" width="640" height="360"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="0vf-bx-Jlv" secondAttribute="height" multiplier="16:9" id="baj-Dw-r1b"/>
                                 </constraints>
                             </avPlayerView>
-                            <button translatesAutoresizingMaskIntoConstraints="NO" id="7W9-O9-b3K">
-                                <rect key="frame" x="610" y="379" width="20" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="20" id="0yE-Wj-5vU"/>
-                                    <constraint firstAttribute="height" constant="20" id="DJk-8i-wOB"/>
-                                </constraints>
-                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="enlarge-icon" imagePosition="overlaps" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="g11-zl-E95">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                            </button>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="zHy-N6-K3a">
-                                <rect key="frame" x="600" y="369" width="40" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="5B6-ZV-JEX"/>
-                                    <constraint firstAttribute="width" constant="40" id="ILd-TJ-OcZ"/>
-                                </constraints>
-                            </customView>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rpo-GW-82A">
-                                <rect key="frame" x="280" y="186" width="80" height="80"/>
+                                <rect key="frame" x="280" y="180" width="80" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="YaW-r6-WrD"/>
                                     <constraint firstAttribute="width" constant="80" id="q58-RC-Xym"/>
                                 </constraints>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="play-icon" id="2FP-9r-ptl"/>
                             </imageView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="zHy-N6-K3a">
+                                <rect key="frame" x="0.0" y="400" width="40" height="40"/>
+                                <subviews>
+                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5qH-I7-LXA">
+                                        <rect key="frame" x="10" y="10" width="20" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="OQA-bP-bQN"/>
+                                            <constraint firstAttribute="width" constant="20" id="QVR-7t-Ofp"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="TS7-22-R5s"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="Yot-w9-nxU"/>
+                                        </constraints>
+                                        <imageCell key="cell" enabled="NO" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="close button" id="b3K-sW-ked"/>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="5B6-ZV-JEX"/>
+                                    <constraint firstItem="5qH-I7-LXA" firstAttribute="centerY" secondItem="zHy-N6-K3a" secondAttribute="centerY" id="Eee-ej-are"/>
+                                    <constraint firstAttribute="width" constant="40" id="ILd-TJ-OcZ"/>
+                                    <constraint firstItem="5qH-I7-LXA" firstAttribute="centerX" secondItem="zHy-N6-K3a" secondAttribute="centerX" id="Qcf-av-kzb"/>
+                                </constraints>
+                            </customView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="0vf-bx-Jlv" firstAttribute="leading" secondItem="X51-8y-Yv7" secondAttribute="leading" constant="8" id="3q3-NL-IBD"/>
-                            <constraint firstItem="7W9-O9-b3K" firstAttribute="top" secondItem="X51-8y-Yv7" secondAttribute="top" constant="10" id="5ed-Z6-UDy"/>
-                            <constraint firstItem="0vf-bx-Jlv" firstAttribute="top" secondItem="X51-8y-Yv7" secondAttribute="top" constant="8" id="6a0-d7-akl"/>
-                            <constraint firstItem="Ps0-Dg-pIZ" firstAttribute="top" secondItem="0vf-bx-Jlv" secondAttribute="bottom" id="H83-yK-FP1"/>
-                            <constraint firstItem="zHy-N6-K3a" firstAttribute="centerX" secondItem="7W9-O9-b3K" secondAttribute="centerX" id="KT8-JS-NBB"/>
-                            <constraint firstItem="Ps0-Dg-pIZ" firstAttribute="leading" secondItem="X51-8y-Yv7" secondAttribute="leading" id="UMO-xU-1zs"/>
+                            <constraint firstItem="0vf-bx-Jlv" firstAttribute="leading" secondItem="X51-8y-Yv7" secondAttribute="leading" id="3q3-NL-IBD"/>
+                            <constraint firstItem="Ps0-Dg-pIZ" firstAttribute="leading" secondItem="X51-8y-Yv7" secondAttribute="leading" id="4wE-OL-iU5"/>
+                            <constraint firstItem="Ps0-Dg-pIZ" firstAttribute="top" secondItem="0vf-bx-Jlv" secondAttribute="bottom" id="Fi3-0Y-1DW"/>
+                            <constraint firstItem="zHy-N6-K3a" firstAttribute="leading" secondItem="X51-8y-Yv7" secondAttribute="leading" id="Ov8-Bt-44C"/>
                             <constraint firstItem="0vf-bx-Jlv" firstAttribute="width" secondItem="0vf-bx-Jlv" secondAttribute="height" multiplier="16:9" id="WXL-NG-4zx"/>
                             <constraint firstItem="Rpo-GW-82A" firstAttribute="centerX" secondItem="0vf-bx-Jlv" secondAttribute="centerX" id="YLU-P8-n3W"/>
-                            <constraint firstAttribute="bottom" secondItem="Ps0-Dg-pIZ" secondAttribute="bottom" id="g3o-Aj-AgD"/>
-                            <constraint firstAttribute="trailing" secondItem="Ps0-Dg-pIZ" secondAttribute="trailing" id="h5O-NQ-cBk"/>
-                            <constraint firstAttribute="trailing" secondItem="0vf-bx-Jlv" secondAttribute="trailing" constant="8" id="hwI-qv-g5r"/>
+                            <constraint firstAttribute="trailing" secondItem="0vf-bx-Jlv" secondAttribute="trailing" id="hwI-qv-g5r"/>
                             <constraint firstItem="Rpo-GW-82A" firstAttribute="centerY" secondItem="0vf-bx-Jlv" secondAttribute="centerY" id="i73-AD-mUX"/>
-                            <constraint firstItem="zHy-N6-K3a" firstAttribute="centerY" secondItem="7W9-O9-b3K" secondAttribute="centerY" id="sJI-xm-v2I"/>
-                            <constraint firstAttribute="trailing" secondItem="7W9-O9-b3K" secondAttribute="trailing" constant="10" id="yyN-Fl-FDr"/>
+                            <constraint firstAttribute="bottom" secondItem="Ps0-Dg-pIZ" secondAttribute="bottom" id="iOf-J1-XwZ"/>
+                            <constraint firstItem="zHy-N6-K3a" firstAttribute="top" secondItem="X51-8y-Yv7" secondAttribute="top" id="vfu-8G-szr"/>
+                            <constraint firstItem="0vf-bx-Jlv" firstAttribute="top" secondItem="zHy-N6-K3a" secondAttribute="bottom" id="xQU-xw-f94"/>
                         </constraints>
                     </view>
                     <connections>
@@ -84,7 +86,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="enlarge-icon" width="41" height="42"/>
+        <image name="close button" width="15" height="15"/>
         <image name="play-icon" width="21" height="21"/>
     </resources>
 </document>
