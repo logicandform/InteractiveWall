@@ -12,7 +12,8 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     @IBOutlet weak var playerControl: PlayerControl!
     @IBOutlet weak var dismissButton: NSView!
     @IBOutlet weak var playerStateImageView: AspectFillImageView!
-
+    @IBOutlet weak var titleLabel: NSTextField!
+    
     var audioPlayer: AKPlayer?
 
 
@@ -75,6 +76,13 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         playerStateImageView.wantsLayer = true
         playerStateImageView.layer?.cornerRadius = playerStateImageView.frame.width / 2
         playerStateImageView.layer?.backgroundColor = style.darkBackground.cgColor
+        
+        guard let title = media.title else {
+            titleLabel.stringValue = ""
+            return
+        }
+        
+        titleLabel.attributedStringValue = NSAttributedString(string: title, attributes: titleAttributes)
     }
 
     private func scheduleAudioSegment() {

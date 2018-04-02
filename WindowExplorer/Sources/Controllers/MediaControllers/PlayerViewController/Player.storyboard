@@ -26,6 +26,7 @@
                             <avPlayerView controlsStyle="none" translatesAutoresizingMaskIntoConstraints="NO" id="0vf-bx-Jlv">
                                 <rect key="frame" x="0.0" y="40" width="640" height="360"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" constant="640" id="Siq-rt-Wpd"/>
                                     <constraint firstAttribute="width" secondItem="0vf-bx-Jlv" secondAttribute="height" multiplier="16:9" id="baj-Dw-r1b"/>
                                 </constraints>
                             </avPlayerView>
@@ -58,17 +59,32 @@
                                     <constraint firstItem="5qH-I7-LXA" firstAttribute="centerX" secondItem="zHy-N6-K3a" secondAttribute="centerX" id="Qcf-av-kzb"/>
                                 </constraints>
                             </customView>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ml-Y1-izE">
+                                <rect key="frame" x="48" y="400" width="574" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="570" id="pfl-hW-FMx"/>
+                                    <constraint firstAttribute="height" constant="29" id="xMt-aB-HMi"/>
+                                </constraints>
+                                <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="This is a title with a j and a g and a p." usesSingleLineMode="YES" id="Tzu-z0-dav">
+                                    <font key="font" size="16" name="Soleil"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                         <constraints>
                             <constraint firstItem="0vf-bx-Jlv" firstAttribute="leading" secondItem="X51-8y-Yv7" secondAttribute="leading" id="3q3-NL-IBD"/>
                             <constraint firstItem="Ps0-Dg-pIZ" firstAttribute="leading" secondItem="X51-8y-Yv7" secondAttribute="leading" id="4wE-OL-iU5"/>
+                            <constraint firstItem="2ml-Y1-izE" firstAttribute="top" secondItem="X51-8y-Yv7" secondAttribute="top" constant="11" id="9sw-C8-sjd"/>
                             <constraint firstItem="Ps0-Dg-pIZ" firstAttribute="top" secondItem="0vf-bx-Jlv" secondAttribute="bottom" id="Fi3-0Y-1DW"/>
+                            <constraint firstItem="2ml-Y1-izE" firstAttribute="leading" secondItem="zHy-N6-K3a" secondAttribute="trailing" constant="10" id="NqM-If-Z5W"/>
                             <constraint firstItem="zHy-N6-K3a" firstAttribute="leading" secondItem="X51-8y-Yv7" secondAttribute="leading" id="Ov8-Bt-44C"/>
                             <constraint firstItem="0vf-bx-Jlv" firstAttribute="width" secondItem="0vf-bx-Jlv" secondAttribute="height" multiplier="16:9" id="WXL-NG-4zx"/>
                             <constraint firstItem="Rpo-GW-82A" firstAttribute="centerX" secondItem="0vf-bx-Jlv" secondAttribute="centerX" id="YLU-P8-n3W"/>
                             <constraint firstAttribute="trailing" secondItem="0vf-bx-Jlv" secondAttribute="trailing" id="hwI-qv-g5r"/>
                             <constraint firstItem="Rpo-GW-82A" firstAttribute="centerY" secondItem="0vf-bx-Jlv" secondAttribute="centerY" id="i73-AD-mUX"/>
                             <constraint firstAttribute="bottom" secondItem="Ps0-Dg-pIZ" secondAttribute="bottom" id="iOf-J1-XwZ"/>
+                            <constraint firstAttribute="trailing" secondItem="2ml-Y1-izE" secondAttribute="trailing" constant="20" id="lKH-lU-5wq"/>
                             <constraint firstItem="zHy-N6-K3a" firstAttribute="top" secondItem="X51-8y-Yv7" secondAttribute="top" id="vfu-8G-szr"/>
                             <constraint firstItem="0vf-bx-Jlv" firstAttribute="top" secondItem="zHy-N6-K3a" secondAttribute="bottom" id="xQU-xw-f94"/>
                         </constraints>
@@ -78,6 +94,7 @@
                         <outlet property="playerControl" destination="Ps0-Dg-pIZ" id="xav-8S-1Y9"/>
                         <outlet property="playerStateImageView" destination="Rpo-GW-82A" id="adX-N3-pbR"/>
                         <outlet property="playerView" destination="0vf-bx-Jlv" id="6cP-UG-tfS"/>
+                        <outlet property="titleLabel" destination="2ml-Y1-izE" id="Qi5-8k-2UX"/>
                     </connections>
                 </viewController>
                 <customObject id="RVz-WL-JMy" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
