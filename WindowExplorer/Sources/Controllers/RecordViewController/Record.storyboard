@@ -87,12 +87,12 @@
                                 <subviews>
                                     <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FBg-bp-lkB">
                                         <rect key="frame" x="18" y="18" width="380" height="320"/>
-                                        <clipView key="contentView" ambiguous="YES" drawsBackground="NO" copiesOnScroll="NO" id="CkM-eN-t5N" customClass="FlippedClipView" customModule="WindowExplorer" customModuleProvider="target">
+                                        <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="CkM-eN-t5N" customClass="FlippedClipView" customModule="WindowExplorer" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="380" height="320"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <view translatesAutoresizingMaskIntoConstraints="NO" id="Bws-Xv-6hl">
-                                                    <rect key="frame" x="0.0" y="0.0" width="400" height="320"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="380" height="320"/>
                                                     <subviews>
                                                         <stackView distribution="equalSpacing" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" placeholderIntrinsicWidth="404" placeholderIntrinsicHeight="320" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RgY-ah-SAv">
                                                             <rect key="frame" x="0.0" y="0.0" width="380" height="320"/>
@@ -101,7 +101,6 @@
                                                     <constraints>
                                                         <constraint firstAttribute="bottom" secondItem="RgY-ah-SAv" secondAttribute="bottom" id="JOA-OM-fl4"/>
                                                         <constraint firstItem="RgY-ah-SAv" firstAttribute="top" secondItem="Bws-Xv-6hl" secondAttribute="top" id="k17-RU-shj"/>
-                                                        <constraint firstAttribute="trailing" secondItem="RgY-ah-SAv" secondAttribute="trailing" constant="20" id="lHq-h7-0b9"/>
                                                         <constraint firstItem="RgY-ah-SAv" firstAttribute="leading" secondItem="Bws-Xv-6hl" secondAttribute="leading" id="x6m-kL-q2x"/>
                                                         <constraint firstItem="RgY-ah-SAv" firstAttribute="top" secondItem="Bws-Xv-6hl" secondAttribute="top" id="zLd-H8-bd5"/>
                                                     </constraints>
@@ -115,7 +114,6 @@
                                         </clipView>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="320" id="7MU-L4-Pkj"/>
-                                            <constraint firstItem="Bws-Xv-6hl" firstAttribute="width" secondItem="FBg-bp-lkB" secondAttribute="width" constant="20" id="Ecb-5f-mPL"/>
                                             <constraint firstItem="RgY-ah-SAv" firstAttribute="width" secondItem="FBg-bp-lkB" secondAttribute="width" id="sbk-ad-9k7"/>
                                         </constraints>
                                         <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="yG8-DL-w2k">

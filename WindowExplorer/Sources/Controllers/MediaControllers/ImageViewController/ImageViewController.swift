@@ -14,10 +14,9 @@ class ImageViewController: MediaViewController {
     @IBOutlet weak var scrollViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var dismissButton: NSView!
     @IBOutlet weak var rotateButton: NSView!
-    var imageView: AspectFillImageView!
 
-    private var thumbnailRequest: DataRequest?
     private var urlRequest: DataRequest?
+    private var imageView: NSImageView!
     private var contentViewFrame: NSRect!
     private var frameSize: NSSize!
 
@@ -26,17 +25,15 @@ class ImageViewController: MediaViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.wantsLayer = true
-        view.layer?.backgroundColor = style.darkBackground.cgColor
-        titleTextField.stringValue = super.media.title ?? ""
+        titleTextField.stringValue = media.title ?? ""
+
         setupImageView()
         setupGestures()
-        super.animateViewIn()
+        animateViewIn()
     }
 
     override func viewDidDisappear() {
         super.viewDidDisappear()
-        thumbnailRequest?.cancel()
         urlRequest?.cancel()
     }
 
@@ -44,22 +41,14 @@ class ImageViewController: MediaViewController {
     // MARK: Setup
 
     private func setupImageView() {
-        guard super.media.type == .image else {
+        guard media.type == .image else {
             return
         }
-        imageView = AspectFillImageView()
 
-        // Load thumbnail first
-        thumbnailRequest = Alamofire.request(super.media.thumbnail).responseImage { [weak self] response in
+        imageView = NSImageView()
+        urlRequest = Alamofire.request(media.url).responseImage { [weak self] response in
             if let image = response.value {
                 self?.addImage(image)
-            }
-        }
-
-        // Load large media object in background
-        urlRequest = Alamofire.request(super.media.url).responseImage { [weak self] response in
-            if let image = response.value {
-                self?.imageView.image = image
             }
         }
     }
@@ -80,23 +69,19 @@ class ImageViewController: MediaViewController {
         view.addGestureRecognizer(panGesture)
 
         let singleFingerWindowPan = PanGestureRecognizer()
-        super.gestureManager.add(singleFingerWindowPan, to: view)
+        gestureManager.add(singleFingerWindowPan, to: view)
         singleFingerWindowPan.gestureUpdated = didPanView(_:)
 
-        let singleFinderImagePan = PanGestureRecognizer()
-        super.gestureManager.add(singleFinderImagePan, to: imageScrollView)
-        singleFinderImagePan.gestureUpdated = didPanImageView(_:)
-
         let pinchGesture = PinchGestureRecognizer()
-        super.gestureManager.add(pinchGesture, to: imageScrollView)
+        gestureManager.add(pinchGesture, to: imageScrollView)
         pinchGesture.gestureUpdated = didPinchImageView(_:)
 
         let singleFingerCloseButtonTap = TapGestureRecognizer()
-        super.gestureManager.add(singleFingerCloseButtonTap, to: dismissButton)
+        gestureManager.add(singleFingerCloseButtonTap, to: dismissButton)
         singleFingerCloseButtonTap.gestureUpdated = didTapCloseButton(_:)
 
         let singleFingerRotateButtonTap = TapGestureRecognizer()
-        super.gestureManager.add(singleFingerRotateButtonTap, to: rotateButton)
+        gestureManager.add(singleFingerRotateButtonTap, to: rotateButton)
         singleFingerRotateButtonTap.gestureUpdated = didTapRotateButton(_:)
     }
 
@@ -163,7 +148,7 @@ class ImageViewController: MediaViewController {
             return
         }
 
-        super.animateViewOut()
+        animateViewOut()
     }
 
     private func didTapRotateButton(_ gesture: GestureRecognizer) {
@@ -186,7 +171,7 @@ class ImageViewController: MediaViewController {
             return
         }
 
-        super.resetCloseWindowTimer()
+        resetCloseWindowTimer()
         var origin = window.frame.origin
         origin += gesture.translation(in: nil)
         window.setFrameOrigin(origin)
@@ -197,6 +182,6 @@ class ImageViewController: MediaViewController {
     // MARK: IB-Actions
 
     @IBAction func closeButtonTapped(_ sender: Any) {
-        super.animateViewOut()
+        animateViewOut()
     }
 }

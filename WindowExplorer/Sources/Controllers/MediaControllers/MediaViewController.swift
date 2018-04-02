@@ -9,18 +9,27 @@ protocol MediaControllerDelegate: class {
 class MediaViewController: NSViewController, GestureResponder {
     var gestureManager: GestureManager!
     var media: Media!
-    weak var closeWindowTimer: Foundation.Timer?
     weak var delegate: MediaControllerDelegate?
 
-    struct Constants {
+    private weak var closeWindowTimer: Foundation.Timer?
+
+    private struct Constants {
         static let closeWindowTimeoutPeriod: TimeInterval = 60
     }
 
+
+    // MARK: Life-Cycle
+
     override func viewDidLoad() {
         resetCloseWindowTimer()
+        view.wantsLayer = true
+        view.layer?.backgroundColor = style.darkBackground.cgColor
         gestureManager = GestureManager(responder: self)
-        gestureManager.touchReceived = recievedTouch(touch:)
+        gestureManager.touchReceived = receivedTouch(_:)
     }
+
+
+    // MARK: API
     
     func close() {
         delegate?.closeWindow(for: self)
@@ -51,7 +60,10 @@ class MediaViewController: NSViewController, GestureResponder {
         })
     }
 
-    private func recievedTouch(touch: Touch) {
+
+    // MARK: Helpers
+
+    private func receivedTouch(_ touch: Touch) {
         resetCloseWindowTimer()
     }
 }

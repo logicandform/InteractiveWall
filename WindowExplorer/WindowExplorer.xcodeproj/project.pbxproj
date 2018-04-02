@@ -73,6 +73,8 @@
 		8FE6467B2060553100E6116A /* RegularScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE6467A2060553100E6116A /* RegularScrollView.swift */; };
 		8FEABDA12064702600612C84 /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEABD9F2064702600612C84 /* MediaViewController.swift */; };
 		C6DB17689F287C9826286DF2 /* Pods_All_WindowExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */; };
+		D5384CF52071A74300A157AE /* PDFTableViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5384CF42071A74300A157AE /* PDFTableViewItem.swift */; };
+		D5384CF72071A7FD00A157AE /* PDFTableViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5384CF62071A7FD00A157AE /* PDFTableViewItem.xib */; };
 		D901EBED2056EEFE00BBFCF2 /* RecordDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D901EBEC2056EEFE00BBFCF2 /* RecordDisplayable.swift */; };
 		D901EBF02057490400BBFCF2 /* RegularTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D901EBEF2057490400BBFCF2 /* RegularTableView.swift */; };
 		D92E0EFE20604BDB00C1C9A7 /* PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92E0EFD20604BDB00C1C9A7 /* PageControl.swift */; };
@@ -175,6 +177,8 @@
 		8FEABD9F2064702600612C84 /* MediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaViewController.swift; sourceTree = "<group>"; };
 		A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_WindowExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE471FCE047AE2FD1C92BA3A /* Pods-All-WindowExplorer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-WindowExplorer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer.release.xcconfig"; sourceTree = "<group>"; };
+		D5384CF42071A74300A157AE /* PDFTableViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFTableViewItem.swift; sourceTree = "<group>"; };
+		D5384CF62071A7FD00A157AE /* PDFTableViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PDFTableViewItem.xib; sourceTree = "<group>"; };
 		D901EBEC2056EEFE00BBFCF2 /* RecordDisplayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDisplayable.swift; sourceTree = "<group>"; };
 		D901EBEF2057490400BBFCF2 /* RegularTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularTableView.swift; sourceTree = "<group>"; };
 		D92E0EFD20604BDB00C1C9A7 /* PageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageControl.swift; sourceTree = "<group>"; };
@@ -298,6 +302,7 @@
 			children = (
 				22A76FE520464764006C0AE7 /* PDF.storyboard */,
 				22A76FE420464764006C0AE7 /* PDFViewController.swift */,
+				D5384CF32071A6BE00A157AE /* Views */,
 			);
 			path = PDFViewControlller;
 			sourceTree = "<group>";
@@ -442,6 +447,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D5384CF32071A6BE00A157AE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D5384CF62071A7FD00A157AE /* PDFTableViewItem.xib */,
+				D5384CF42071A74300A157AE /* PDFTableViewItem.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		D901EBEB20535A3E00BBFCF2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -559,6 +573,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				22A76FE720464764006C0AE7 /* PDF.storyboard in Resources */,
+				D5384CF72071A7FD00A157AE /* PDFTableViewItem.xib in Resources */,
 				22A923252044AF05003EA9BB /* Assets.xcassets in Resources */,
 				2204621020472DE80067D9FB /* RelatedItemView.xib in Resources */,
 				2247670120562F65003E8790 /* MediaItemView.xib in Resources */,
@@ -678,6 +693,7 @@
 				8FA62A08206BFAFC004E6092 /* RecordInfo.swift in Sources */,
 				2204620E20472DE80067D9FB /* RelatedItemView.swift in Sources */,
 				226D0589204FC7BC00D74711 /* ResponseHandler.swift in Sources */,
+				D5384CF52071A74300A157AE /* PDFTableViewItem.swift in Sources */,
 				618F0C33206A058900762C20 /* MultiChannelPanAudioUnit.mm in Sources */,
 				3F09025B2048D9D30044F100 /* Place.swift in Sources */,
 				22A498752047499B0024B46C /* JSON.swift in Sources */,

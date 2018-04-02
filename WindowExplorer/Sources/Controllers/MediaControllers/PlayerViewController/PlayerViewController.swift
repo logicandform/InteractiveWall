@@ -15,26 +15,45 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
 
     var audioPlayer: AKPlayer?
 
-    // MARK: Life-cycle
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.wantsLayer = true
-        view.layer?.backgroundColor = style.darkBackground.cgColor
-        
-        setupPlayer()
-        setupGestures()
-        super.animateViewIn()
-    }
+    // MARK: Init
 
     deinit {
         audioPlayer?.disconnect()
     }
 
+
+    // MARK: Life-cycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setupPlayer()
+        setupGestures()
+        animateViewIn()
+    }
+
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        if let window = view.window, let screen = window.screen {
+            audioPlayer?.location = Double(window.frame.midX / screen.visibleFrame.width)
+        }
+    }
+
+
+    // MARK: Overrides
+
+    override func resetCloseWindowTimer() {
+        if playerControl.state != .playing {
+            super.resetCloseWindowTimer()
+        }
+    }
+
+
     // MARK: Setup
 
     private func setupPlayer() {
-        guard super.media.type == .video else {
+        guard media.type == .video else {
             return
         }
 
@@ -50,7 +69,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         scheduleAudioSegment()
 
         playerControl.player = player
-        playerControl.gestureManager = super.gestureManager
+        playerControl.gestureManager = gestureManager
         playerControl.delegate = self
 
         playerStateImageView.wantsLayer = true
@@ -81,24 +100,18 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         singleFingerPlayerTap.gestureUpdated = didTapVideoPlayer(_:)
 
         let singleFingerPlayerControlTap = TapGestureRecognizer()
-        gestureManager.add(singleFingerPlayerControlTap, to: playerControl.smallPlayerStateImageView)
+        gestureManager.add(singleFingerPlayerControlTap, to: playerControl.toggleButton)
         singleFingerPlayerControlTap.gestureUpdated = didTapVideoPlayer(_:)
 
         let singleFingerPan = PanGestureRecognizer()
-        super.gestureManager.add(singleFingerPan, to: playerView)
+        gestureManager.add(singleFingerPan, to: playerView)
         singleFingerPan.gestureUpdated = didPanDetailView(_:)
 
         let singleFingerCloseButtonTap = TapGestureRecognizer()
-        super.gestureManager.add(singleFingerCloseButtonTap, to: dismissButton)
+        gestureManager.add(singleFingerCloseButtonTap, to: dismissButton)
         singleFingerCloseButtonTap.gestureUpdated = didTapCloseButton(_:)
     }
 
-    override func viewDidAppear() {
-        super.viewDidAppear()
-        if let window = view.window, let screen = window.screen {
-            audioPlayer?.location = Double(window.frame.midX / screen.visibleFrame.width)
-        }
-    }
 
     // MARK: Gesture Handling
 
@@ -136,7 +149,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
             return
         }
 
-        super.animateViewOut()
+        animateViewOut()
     }
 
     @objc
@@ -156,39 +169,22 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     // MARK: IB-Actions
 
     @IBAction func closeButtonTapped(_ sender: Any) {
-        super.animateViewOut()
+        animateViewOut()
     }
 
 
     // MARK: PlayerControlDelegate
 
     func playerChangedState(_ state: PlayerState) {
-        let alpha: CGFloat!
-        if let image = state.image {
-            playerStateImageView.image = image
-            alpha = 1.0
-        } else {
-            alpha = 0.0
-        }
-
-        if let smallImage = state.smallImage {
-            playerControl.smallPlayerStateImageView.image = smallImage
-        }
+        playerStateImageView.image = state.image
+        playerControl.toggleButton.image = state.smallImage
+        let playerStateAlpha: CGFloat = state == .playing ? 0 : 1
 
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = 1.0
-            playerStateImageView.animator().alphaValue = alpha
+            playerStateImageView.animator().alphaValue = playerStateAlpha
         })
 
         resetCloseWindowTimer()
-    }
-
-    override func resetCloseWindowTimer() {
-        closeWindowTimer?.invalidate()
-        if playerControl.state != .playing {
-            closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Constants.closeWindowTimeoutPeriod, repeats: false) { [weak self] _ in
-                self?.animateViewOut()
-            }
-        }
     }
 }
