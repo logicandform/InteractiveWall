@@ -15,7 +15,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
     var document: PDFDocument!
     private let leftArrow = ArrowControl()
     private let rightArrow = ArrowControl()
-    
+
     private var selectedThumbnailItem: PDFTableViewItem? {
         didSet {
             oldValue?.set(highlighted: false)
@@ -35,14 +35,14 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupPDF()
         setupArrows()
         setupThumbnailView()
         setupGestures()
         animateViewIn()
     }
-    
+
     override func viewDidAppear() {
         super.viewDidAppear()
         updateViewsForCurrentPage()
@@ -55,14 +55,14 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         guard media.type == .pdf else {
             return
         }
-        
+
         pdfView.displayDirection = .horizontal
         pdfView.autoScales = true
         pdfView.backgroundColor = .clear
         document = PDFDocument(url: media.url)
         pdfView.document = document
     }
-    
+
     private func setupThumbnailView() {
         thumbnailView.register(NSNib(nibNamed: PDFTableViewItem.nibName, bundle: nil), forIdentifier: PDFTableViewItem.interfaceIdentifier)
     }
@@ -96,15 +96,15 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         let windowPan = PanGestureRecognizer()
         gestureManager.add(windowPan, to: view)
         windowPan.gestureUpdated = handleWindowPan(_:)
-        
+
         let thumbnailViewPan = PanGestureRecognizer()
         gestureManager.add(thumbnailViewPan, to: thumbnailView)
         thumbnailViewPan.gestureUpdated = handleThumbnailPan(_:)
-        
+
         let thumbnailViewTap = TapGestureRecognizer()
         gestureManager.add(thumbnailViewTap, to: thumbnailView)
         thumbnailViewTap.gestureUpdated = handleThumbnailItemTap(_:)
-        
+
         let previousPageTap = TapGestureRecognizer()
         gestureManager.add(previousPageTap, to: backTapArea)
         previousPageTap.gestureUpdated = handleLeftArrowTap(_:)
@@ -137,7 +137,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
             return
         }
     }
-    
+
     private func handleThumbnailPan(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer else {
             return
@@ -152,25 +152,25 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
             return
         }
     }
-    
+
     private func handleLeftArrowTap(_ gesture: GestureRecognizer) {
         guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
             return
         }
-    
+
         pdfView.goToPreviousPage(self)
         updateViewsForCurrentPage()
     }
-    
+
     private func handleRightArrowTap(_ gesture: GestureRecognizer) {
         guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
             return
         }
-        
+
         pdfView.goToNextPage(self)
         updateViewsForCurrentPage()
     }
-    
+
     private func handleThumbnailItemTap(_ gesture: GestureRecognizer) {
         guard let tap = gesture as? TapGestureRecognizer, let location = tap.position, tap.state == .ended else {
             return
@@ -204,27 +204,27 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         window.setFrameOrigin(origin)
         WindowManager.instance.checkBounds(of: self)
     }
-    
-    
+
+
     // MARK: NSTableViewDelegate & NSTableViewDataSource
-    
+
     func numberOfRows(in tableView: NSTableView) -> Int {
         return document?.pageCount ?? 0
     }
-    
+
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         guard let pdfItemView = tableView.makeView(withIdentifier: PDFTableViewItem.interfaceIdentifier, owner: self) as? PDFTableViewItem else {
             return nil
         }
-        
+
         pdfItemView.page = document.page(at: row)
         return pdfItemView
     }
-    
+
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
         return Constants.tableRowHeight
     }
-    
+
     func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
         return false
     }
@@ -238,7 +238,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
 
 
     // MARK: Helpers
-    
+
     private func updateViewsForCurrentPage() {
         leftArrow.isHidden = !pdfView.canGoToPreviousPage
         rightArrow.isHidden = !pdfView.canGoToNextPage
