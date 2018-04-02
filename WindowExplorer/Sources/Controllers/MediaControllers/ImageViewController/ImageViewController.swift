@@ -24,6 +24,8 @@ class ImageViewController: MediaViewController {
         static let maxWidth: CGFloat = 640.0
         static let minWidth: CGFloat = 416.0
     }
+
+
     // MARK: Life-cycle
 
     override func viewDidLoad() {
