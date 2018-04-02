@@ -8,6 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		1F910718206C2973008F9513 /* AspectFillImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F910717206C2973008F9513 /* AspectFillImageView.swift */; };
+		1FAFF018206EDD93005DC68B /* Soleil-03.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF00C206EDD92005DC68B /* Soleil-03.otf */; };
+		1FAFF019206EDD93005DC68B /* Soleil-05.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF00D206EDD92005DC68B /* Soleil-05.otf */; };
+		1FAFF01A206EDD93005DC68B /* Soleil-00.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF00E206EDD92005DC68B /* Soleil-00.otf */; };
+		1FAFF01B206EDD93005DC68B /* Soleil-04.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF00F206EDD92005DC68B /* Soleil-04.otf */; };
+		1FAFF01C206EDD93005DC68B /* Soleil-09.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF010206EDD93005DC68B /* Soleil-09.otf */; };
+		1FAFF01D206EDD93005DC68B /* Soleil-10.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF011206EDD93005DC68B /* Soleil-10.otf */; };
+		1FAFF01E206EDD93005DC68B /* Soleil-11.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF012206EDD93005DC68B /* Soleil-11.otf */; };
+		1FAFF01F206EDD93005DC68B /* Soleil-08.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF013206EDD93005DC68B /* Soleil-08.otf */; };
+		1FAFF020206EDD93005DC68B /* Soleil-01.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF014206EDD93005DC68B /* Soleil-01.otf */; };
+		1FAFF021206EDD93005DC68B /* Soleil-07.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF015206EDD93005DC68B /* Soleil-07.otf */; };
+		1FAFF022206EDD93005DC68B /* Soleil-02.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF016206EDD93005DC68B /* Soleil-02.otf */; };
+		1FAFF023206EDD93005DC68B /* Soleil-06.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF017206EDD93005DC68B /* Soleil-06.otf */; };
 		2204620E20472DE80067D9FB /* RelatedItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204620A20472DE80067D9FB /* RelatedItemView.swift */; };
 		2204621020472DE80067D9FB /* RelatedItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2204620C20472DE80067D9FB /* RelatedItemView.xib */; };
 		2204621720472F2D0067D9FB /* PlayerControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2204621420472F2D0067D9FB /* PlayerControl.xib */; };
@@ -103,6 +115,18 @@
 
 /* Begin PBXFileReference section */
 		1F910717206C2973008F9513 /* AspectFillImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectFillImageView.swift; sourceTree = "<group>"; };
+		1FAFF00C206EDD92005DC68B /* Soleil-03.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-03.otf"; sourceTree = "<group>"; };
+		1FAFF00D206EDD92005DC68B /* Soleil-05.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-05.otf"; sourceTree = "<group>"; };
+		1FAFF00E206EDD92005DC68B /* Soleil-00.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-00.otf"; sourceTree = "<group>"; };
+		1FAFF00F206EDD92005DC68B /* Soleil-04.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-04.otf"; sourceTree = "<group>"; };
+		1FAFF010206EDD93005DC68B /* Soleil-09.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-09.otf"; sourceTree = "<group>"; };
+		1FAFF011206EDD93005DC68B /* Soleil-10.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-10.otf"; sourceTree = "<group>"; };
+		1FAFF012206EDD93005DC68B /* Soleil-11.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-11.otf"; sourceTree = "<group>"; };
+		1FAFF013206EDD93005DC68B /* Soleil-08.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-08.otf"; sourceTree = "<group>"; };
+		1FAFF014206EDD93005DC68B /* Soleil-01.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-01.otf"; sourceTree = "<group>"; };
+		1FAFF015206EDD93005DC68B /* Soleil-07.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-07.otf"; sourceTree = "<group>"; };
+		1FAFF016206EDD93005DC68B /* Soleil-02.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-02.otf"; sourceTree = "<group>"; };
+		1FAFF017206EDD93005DC68B /* Soleil-06.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-06.otf"; sourceTree = "<group>"; };
 		2204620A20472DE80067D9FB /* RelatedItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelatedItemView.swift; sourceTree = "<group>"; };
 		2204620C20472DE80067D9FB /* RelatedItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RelatedItemView.xib; sourceTree = "<group>"; };
 		2204621420472F2D0067D9FB /* PlayerControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerControl.xib; sourceTree = "<group>"; };
@@ -206,6 +230,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1FAFF024206EDD9C005DC68B /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				1FAFF00E206EDD92005DC68B /* Soleil-00.otf */,
+				1FAFF014206EDD93005DC68B /* Soleil-01.otf */,
+				1FAFF016206EDD93005DC68B /* Soleil-02.otf */,
+				1FAFF00C206EDD92005DC68B /* Soleil-03.otf */,
+				1FAFF00F206EDD92005DC68B /* Soleil-04.otf */,
+				1FAFF00D206EDD92005DC68B /* Soleil-05.otf */,
+				1FAFF017206EDD93005DC68B /* Soleil-06.otf */,
+				1FAFF015206EDD93005DC68B /* Soleil-07.otf */,
+				1FAFF013206EDD93005DC68B /* Soleil-08.otf */,
+				1FAFF010206EDD93005DC68B /* Soleil-09.otf */,
+				1FAFF011206EDD93005DC68B /* Soleil-10.otf */,
+				1FAFF012206EDD93005DC68B /* Soleil-11.otf */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
 		2204621320472F1E0067D9FB /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -359,6 +402,7 @@
 		22A923312044AF1E003EA9BB /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				1FAFF024206EDD9C005DC68B /* Font */,
 				22A923242044AF05003EA9BB /* Assets.xcassets */,
 			);
 			path = Resources;
@@ -572,15 +616,27 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1FAFF01C206EDD93005DC68B /* Soleil-09.otf in Resources */,
 				22A76FE720464764006C0AE7 /* PDF.storyboard in Resources */,
 				D5384CF72071A7FD00A157AE /* PDFTableViewItem.xib in Resources */,
+				1FAFF021206EDD93005DC68B /* Soleil-07.otf in Resources */,
+				1FAFF023206EDD93005DC68B /* Soleil-06.otf in Resources */,
 				22A923252044AF05003EA9BB /* Assets.xcassets in Resources */,
 				2204621020472DE80067D9FB /* RelatedItemView.xib in Resources */,
+				1FAFF01B206EDD93005DC68B /* Soleil-04.otf in Resources */,
 				2247670120562F65003E8790 /* MediaItemView.xib in Resources */,
+				1FAFF020206EDD93005DC68B /* Soleil-01.otf in Resources */,
 				2204621720472F2D0067D9FB /* PlayerControl.xib in Resources */,
 				22A923282044AF05003EA9BB /* Main.storyboard in Resources */,
+				1FAFF019206EDD93005DC68B /* Soleil-05.otf in Resources */,
+				1FAFF01D206EDD93005DC68B /* Soleil-10.otf in Resources */,
 				22A76FEB2046477A006C0AE7 /* Player.storyboard in Resources */,
+				1FAFF01E206EDD93005DC68B /* Soleil-11.otf in Resources */,
+				1FAFF01F206EDD93005DC68B /* Soleil-08.otf in Resources */,
+				1FAFF022206EDD93005DC68B /* Soleil-02.otf in Resources */,
 				D992E20D20533A6200EAB698 /* Record.storyboard in Resources */,
+				1FAFF01A206EDD93005DC68B /* Soleil-00.otf in Resources */,
+				1FAFF018206EDD93005DC68B /* Soleil-03.otf in Resources */,
 				D9F24E64205B041200B9FCB8 /* Image.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

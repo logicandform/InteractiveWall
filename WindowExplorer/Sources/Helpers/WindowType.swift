@@ -24,11 +24,13 @@ enum WindowType {
     var size: CGSize {
         switch self {
         case .record:
-            return CGSize(width: 416, height: 600)
+            return CGSize(width: 416, height: 640)
         case .image:
             return CGSize(width: 640, height: 410)
-        default:
+        case .player:
             return CGSize(width: 640, height: 600)
+        case .pdf:
+            return CGSize(width: 600, height: 640)
         }
     }
 }

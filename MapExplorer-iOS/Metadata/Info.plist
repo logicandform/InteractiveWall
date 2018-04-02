@@ -41,5 +41,20 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Soleil-00.otf</string>
+		<string>Soleil-01.otf</string>
+		<string>Soleil-02.otf</string>
+		<string>Soleil-03.otf</string>
+		<string>Soleil-04.otf</string>
+		<string>Soleil-05.otf</string>
+		<string>Soleil-06.otf</string>
+		<string>Soleil-07.otf</string>
+		<string>Soleil-08.otf</string>
+		<string>Soleil-09.otf</string>
+		<string>Soleil-10.otf</string>
+		<string>Soleil-11.otf</string>
+	</array>
 </dict>
 </plist>

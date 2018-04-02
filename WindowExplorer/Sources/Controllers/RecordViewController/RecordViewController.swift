@@ -16,8 +16,10 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     @IBOutlet weak var closeWindowTapArea: NSView!
     @IBOutlet weak var toggleRelatedItemsArea: NSView!
     @IBOutlet weak var placeHolderImage: NSImageView!
+    @IBOutlet weak var showHideRelatedItemsView: NSImageView!
+    @IBOutlet weak var relatedItemsViewButton: NSButton!
     
-    var record: RecordDisplayable?
+    var record: RecordDisplayable!
     private(set) var gestureManager: GestureManager!
     private var showingRelatedItems = false
     private var pageControl = PageControl()
@@ -30,6 +32,9 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         static let mediaControllerOffsetX = 100
         static let mediaControllerOffsetY = -50
         static let closeWindowTimeoutPeriod: TimeInterval = 60
+        static let fontName = "Soleil"
+        static let fontSize: CGFloat = 13
+        static let fontColor: NSColor = .white
     }
 
 
@@ -57,17 +62,16 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private func setupMediaView() {
         mediaView.register(MediaItemView.self, forItemWithIdentifier: MediaItemView.identifier)
         placeHolderImage.image = record?.type.placeholder
-
-        pageControl.color = NSColor.white
-        pageControl.numberOfPages = UInt(record?.media.count ?? 0)
+        pageControl.color = .white
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.wantsLayer = true
         detailView.addSubview(pageControl)
 
-        pageControl.leadingAnchor.constraint(equalTo: detailView.leadingAnchor).isActive = true
-        pageControl.trailingAnchor.constraint(equalTo: detailView.trailingAnchor).isActive = true
+        pageControl.centerXAnchor.constraint(equalTo: detailView.centerXAnchor).isActive = true
+        pageControl.widthAnchor.constraint(equalTo: detailView.widthAnchor).isActive = true
         pageControl.topAnchor.constraint(equalTo: mediaView.bottomAnchor).isActive = true
         pageControl.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        pageControl.numberOfPages = UInt(record?.media.count ?? 0)
     }
 
     private func setupRelatedItemsView() {
@@ -75,6 +79,15 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         relatedItemsView.register(NSNib(nibNamed: RelatedItemView.nibName, bundle: nil), forIdentifier: RelatedItemView.interfaceIdentifier)
         relatedItemsView.backgroundColor = .clear
         hideRelatedItemsButton.alphaValue = 0
+        toggleRelatedItemsArea.wantsLayer = true
+        relatedItemsViewButton.font = NSFont(name: Constants.fontName, size: Constants.fontSize) ?? NSFont.systemFont(ofSize: Constants.fontSize)
+        relatedItemsViewButton.attributedTitle = NSAttributedString(string: relatedItemsViewButton.title, attributes: [.foregroundColor : Constants.fontColor])
+
+        if let buttonCell = relatedItemsViewButton.cell as? NSButtonCell {
+            let color = record.relatedRecords.isEmpty ? style.noRelatedItemsColor : record.type.color
+            buttonCell.backgroundColor = color
+            toggleRelatedItemsArea.layer?.backgroundColor = color.cgColor
+        }
     }
 
     private func setupGestures() {
@@ -107,9 +120,9 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
         let tapToClose = TapGestureRecognizer()
         gestureManager.add(tapToClose, to: closeWindowTapArea)
-        tapToClose.gestureUpdated = { gesture in
+        tapToClose.gestureUpdated = { [weak self] gesture in
             if gesture.state == .ended {
-                self.animateViewOut()
+                self?.animateViewOut()
             }
         }
 
@@ -123,10 +136,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func loadRecord() {
-        guard let record = record else {
-            return
-        }
-
         for label in record.textFields {
             stackView.insertView(label, at: stackView.subviews.count, in: .top)
         }
@@ -174,11 +183,9 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         let offset = rect.origin.x / rect.width
         let index = Int(round(offset))
         let indexPath = IndexPath(item: index, section: 0)
-
         guard let mediaItem = mediaView.item(at: indexPath) as? MediaItemView else {
             return
         }
-
 
         switch tap.state {
         case .began:
@@ -333,12 +340,13 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
         relatedItemsView.isHidden = false
         hideRelatedItemsButton.isHidden = false
-
         let alpha: CGFloat = showingRelatedItems ? 0 : 1
+
         NSAnimationContext.runAnimationGroup({ [weak self] _ in
             NSAnimationContext.current.duration = 0.5
             self?.relatedItemsView.animator().alphaValue = alpha
             self?.hideRelatedItemsButton.animator().alphaValue = alpha
+            self?.showHideRelatedItemsView.image = showingRelatedItems ? NSImage(named: "plus-icon") : NSImage(named: "close button")
             }, completionHandler: { [weak self] in
                 if let strongSelf = self {
                     strongSelf.relatedItemsView.isHidden = !strongSelf.showingRelatedItems
@@ -350,7 +358,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         let diff: CGFloat = showingRelatedItems ? -200 : 200
         var frame = window.frame
         frame.size.width += diff
-
         window.setFrame(frame, display: true, animate: true)
         showingRelatedItems = !showingRelatedItems
     }
@@ -393,7 +400,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func closeTimerFired() {
-        // reset timer gets recalled once a child MediaViewContoller gets closed
         if positionsForMediaControllers.keys.isEmpty {
             animateViewOut()
         }
@@ -436,7 +442,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return nil
         }
 
-        relatedItemView.didTapItem = selectRelatedItem(_:)
         relatedItemView.record = record?.relatedRecords[row]
         return relatedItemView
     }

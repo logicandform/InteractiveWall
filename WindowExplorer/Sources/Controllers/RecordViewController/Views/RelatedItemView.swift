@@ -12,8 +12,6 @@ class RelatedItemView: NSView {
     @IBOutlet weak var descriptionLabel: NSTextField!
     @IBOutlet weak var imageView: AspectFillImageView!
 
-    var didTapItem: ((RecordDisplayable) -> Void)?
-
     var record: RecordDisplayable? {
         didSet {
             load(record)
@@ -40,15 +38,6 @@ class RelatedItemView: NSView {
             layer?.backgroundColor = style.selectedColor.cgColor
         } else {
             layer?.backgroundColor = style.darkBackground.cgColor
-        }
-    }
-
-
-    // MARK: IB-Actions
-
-    @IBAction func didTapView(_ sender: Any) {
-        if let record = record {
-            didTapItem?(record)
         }
     }
 

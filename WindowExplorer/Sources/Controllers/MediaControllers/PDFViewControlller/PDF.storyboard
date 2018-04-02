@@ -11,33 +11,33 @@
             <objects>
                 <viewController id="1Ij-Lj-j0K" customClass="PDFViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="l0O-E9-8FM">
-                        <rect key="frame" x="0.0" y="0.0" width="640" height="522"/>
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="640"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <pdfView autoresizesSubviews="NO" wantsLayer="YES" focusRingType="none" displayMode="singlePage" translatesAutoresizingMaskIntoConstraints="NO" id="LrV-6C-x9X" userLabel="PDF View">
-                                <rect key="frame" x="116" y="8" width="516" height="506"/>
+                                <rect key="frame" x="116" y="8" width="516" height="624"/>
                             </pdfView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="u0A-Yb-xpw">
-                                <rect key="frame" x="572" y="8" width="60" height="506"/>
+                                <rect key="frame" x="572" y="8" width="60" height="624"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="QXt-Ii-RKt"/>
                                 </constraints>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="dYk-YZ-F2X">
-                                <rect key="frame" x="116" y="8" width="60" height="506"/>
+                                <rect key="frame" x="116" y="8" width="60" height="624"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="ZwZ-51-X0L"/>
                                 </constraints>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="7qF-ve-yFy">
-                                <rect key="frame" x="600" y="482" width="40" height="40"/>
+                                <rect key="frame" x="600" y="600" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="uOj-zf-AF7"/>
                                     <constraint firstAttribute="width" constant="40" id="zTi-dq-EYp"/>
                                 </constraints>
                             </customView>
                             <button translatesAutoresizingMaskIntoConstraints="NO" id="Qqy-Lr-eU7">
-                                <rect key="frame" x="610" y="492" width="20" height="20"/>
+                                <rect key="frame" x="610" y="610" width="20" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="1B3-2y-eX9"/>
                                     <constraint firstAttribute="width" constant="20" id="aBh-FU-5GM"/>
@@ -48,13 +48,13 @@
                                 </buttonCell>
                             </button>
                             <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="110" horizontalPageScroll="10" verticalLineScroll="110" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" scrollerKnobStyle="dark" translatesAutoresizingMaskIntoConstraints="NO" id="aNn-xH-yEO">
-                                <rect key="frame" x="8" y="8" width="100" height="506"/>
+                                <rect key="frame" x="8" y="8" width="100" height="624"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="K8G-DR-c0g">
-                                    <rect key="frame" x="0.0" y="0.0" width="100" height="506"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="100" height="624"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="100" rowSizeStyle="automatic" viewBased="YES" id="jmI-PA-kXC">
-                                            <rect key="frame" x="0.0" y="0.0" width="100" height="506"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="100" height="624"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="0.0" height="10"/>
                                             <color key="backgroundColor" red="0.90063423409999999" green="0.90063423409999999" blue="0.90063423409999999" alpha="0.0" colorSpace="custom" customColorSpace="displayP3"/>
