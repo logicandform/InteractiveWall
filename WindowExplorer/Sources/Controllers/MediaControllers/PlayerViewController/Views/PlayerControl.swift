@@ -33,6 +33,12 @@ class PlayerControl: NSView {
         }
     }
 
+    var tintColor: NSColor? {
+        didSet {
+            seekBar?.trackFillColor = tintColor
+        }
+    }
+
     private var currentTime: CMTime = CMTime() {
         didSet {
             updateControl(for: currentTime)

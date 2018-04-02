@@ -9,7 +9,8 @@ class PDFTableViewItem: NSView {
     
     @IBOutlet weak var imageView: NSImageView!
     @IBOutlet weak var textField: NSTextField!
-    
+
+    var tintColor = style.selectedColor
     var page: PDFPage? {
         didSet {
             load(page)
@@ -30,7 +31,7 @@ class PDFTableViewItem: NSView {
     
     func set(highlighted: Bool) {
         if highlighted {
-            layer?.backgroundColor = style.selectedColor.cgColor
+            layer?.backgroundColor = tintColor.cgColor
             textField.textColor = style.darkBackground
         } else {
             layer?.backgroundColor = style.clear.cgColor

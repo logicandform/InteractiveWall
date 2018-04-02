@@ -75,7 +75,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
 
     private func setupArrows() {
         leftArrow.direction = .left
-        leftArrow.color = style.selectedColor
+        leftArrow.color = media.tintColor
         leftArrow.translatesAutoresizingMaskIntoConstraints = false
         leftArrow.wantsLayer = true
         view.addSubview(leftArrow)
@@ -85,7 +85,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         leftArrow.heightAnchor.constraint(equalToConstant: Constants.arrowHeight).isActive = true
 
         rightArrow.direction = .right
-        rightArrow.color = style.selectedColor
+        rightArrow.color = media.tintColor
         rightArrow.translatesAutoresizingMaskIntoConstraints = false
         rightArrow.wantsLayer = true
         view.addSubview(rightArrow)
@@ -224,6 +224,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         }
 
         pdfItemView.page = document.page(at: row)
+        pdfItemView.tintColor = media.tintColor
         return pdfItemView
     }
 

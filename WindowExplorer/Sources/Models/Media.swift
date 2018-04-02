@@ -1,6 +1,7 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
 import Foundation
+import AppKit
 
 enum MediaType {
     case image
@@ -31,19 +32,17 @@ struct Media: Equatable {
     let thumbnail: URL
     let title: String?
     let type: MediaType
+    let tintColor: NSColor
 
-    init(url: URL, thumbnail: URL, title: String?) {
+    init(url: URL, thumbnail: URL, title: String?, color: NSColor) {
         self.url = url
         self.thumbnail = thumbnail
         self.title = title
         self.type = MediaType(for: url)
+        self.tintColor = color
     }
 
-    static func ==(lhs: Media, rhs: Media) -> Bool {
-        return
-            lhs.url == rhs.url &&
-            lhs.thumbnail == rhs.thumbnail &&
-            lhs.title == rhs.title &&
-            lhs.type == rhs.type
+    static func == (lhs: Media, rhs: Media) -> Bool {
+        return lhs.url == rhs.url && lhs.thumbnail == rhs.thumbnail && lhs.title == rhs.title && lhs.type == rhs.type
     }
 }
