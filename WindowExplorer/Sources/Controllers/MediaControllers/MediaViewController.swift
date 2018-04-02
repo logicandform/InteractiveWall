@@ -58,6 +58,10 @@ class MediaViewController: NSViewController, GestureResponder {
         }
     }
 
+    func cancelCloseWindowTime() {
+        closeWindowTimer?.invalidate()
+    }
+
     func animateViewIn() {
         view.alphaValue = 0.0
         NSAnimationContext.runAnimationGroup({ _ in

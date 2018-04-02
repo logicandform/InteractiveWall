@@ -17,6 +17,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     var audioPlayer: AKPlayer?
 
 
+
     // MARK: Init
 
     deinit {
@@ -46,6 +47,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     // MARK: Overrides
 
     override func resetCloseWindowTimer() {
+        cancelCloseWindowTime()
         if playerControl.state != .playing {
             super.resetCloseWindowTimer()
         }
