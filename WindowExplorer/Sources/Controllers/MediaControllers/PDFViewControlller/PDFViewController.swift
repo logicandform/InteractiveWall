@@ -37,6 +37,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         super.viewDidLoad()
 
         setupPDF()
+        resizeToFirstPage()
         setupArrows()
         setupThumbnailView()
         setupGestures()
@@ -62,7 +63,24 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         document = PDFDocument(url: media.url)
         pdfView.document = document
     }
+    
+    @IBOutlet var widthConstraint: NSLayoutConstraint!
+    @IBOutlet var heightConstraint: NSLayoutConstraint!
 
+    private func resizeToFirstPage() {
+        guard let page = document.page(at: 0) else {
+            return
+        }
+        let mediaBox = page.bounds(for: .artBox)
+        let scale = mediaBox.height / mediaBox.width
+        let width = min(mediaBox.size.width, 800.0)
+        let height = width * scale
+        widthConstraint.constant = width
+        heightConstraint.constant = height
+        view.needsLayout = true
+        view.layout()
+    }
+    
     private func setupThumbnailView() {
         thumbnailView.register(NSNib(nibNamed: PDFTableViewItem.nibName, bundle: nil), forIdentifier: PDFTableViewItem.interfaceIdentifier)
     }
