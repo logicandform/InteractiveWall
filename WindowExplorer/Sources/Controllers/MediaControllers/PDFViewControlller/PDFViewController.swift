@@ -8,9 +8,12 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
 
     @IBOutlet weak var pdfView: PDFView!
     @IBOutlet weak var thumbnailView: NSTableView!
+    @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var closeButtonView: NSView!
     @IBOutlet weak var backTapArea: NSView!
     @IBOutlet weak var forwardTapArea: NSView!
+    @IBOutlet weak var pdfWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var pdfHeightConstraint: NSLayoutConstraint!
 
     var document: PDFDocument!
     private let leftArrow = ArrowControl()
@@ -28,6 +31,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         static let arrowWidth: CGFloat = 20
         static let arrowHeight: CGFloat = 40
         static let tableRowHeight: CGFloat = 100
+        static let pdfMinWidth: CGFloat = 640
     }
 
 
@@ -35,6 +39,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        titleLabel.attributedStringValue = NSAttributedString(string: media.title ?? "", attributes: titleAttributes)
 
         setupPDF()
         setupArrows()
@@ -61,8 +66,9 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         pdfView.backgroundColor = .clear
         document = PDFDocument(url: media.url)
         pdfView.document = document
+        resizeToFirstPage()
     }
-
+    
     private func setupThumbnailView() {
         thumbnailView.register(NSNib(nibNamed: PDFTableViewItem.nibName, bundle: nil), forIdentifier: PDFTableViewItem.interfaceIdentifier)
     }
@@ -247,5 +253,20 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
             selectedThumbnailItem = thumbnailItem
             thumbnailView.scrollRowToVisible(pageNumber - 1)
         }
+    }
+
+    private func resizeToFirstPage() {
+        guard let page = pdfView.currentPage else {
+            return
+        }
+
+        let mediaBox = page.bounds(for: .artBox)
+        let scale = mediaBox.height / mediaBox.width
+        let width = min(mediaBox.size.width, Constants.pdfMinWidth)
+        let height = width * scale
+        pdfWidthConstraint.constant = width
+        pdfHeightConstraint.constant = height
+        view.needsLayout = true
+        view.layout()
     }
 }

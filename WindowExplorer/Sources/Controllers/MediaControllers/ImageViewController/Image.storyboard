@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="stH-E5-D9l">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="stH-E5-D9l">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -10,33 +10,46 @@
             <objects>
                 <viewController id="stH-E5-D9l" customClass="ImageViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="sSn-s5-6HM">
-                        <rect key="frame" x="0.0" y="0.0" width="704" height="410"/>
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="400"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Xxw-S7-yBy">
-                                <rect key="frame" x="14" y="8" width="37" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Label" id="9Bb-zt-Gma">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="NkP-e9-NC4">
+                                <rect key="frame" x="0.0" y="360" width="40" height="40"/>
+                                <subviews>
+                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jwW-9F-wrk">
+                                        <rect key="frame" x="10" y="10" width="20" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="2qf-Xi-XGD"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="Eet-0W-6fL"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="WBN-1S-blJ"/>
+                                            <constraint firstAttribute="width" constant="20" id="tqe-NP-PC1"/>
+                                        </constraints>
+                                        <imageCell key="cell" enabled="NO" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="close button" id="e8y-MB-0zd"/>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="jwW-9F-wrk" firstAttribute="centerY" secondItem="NkP-e9-NC4" secondAttribute="centerY" id="3qw-28-wIL"/>
+                                    <constraint firstAttribute="width" constant="40" id="G1e-yk-XVe"/>
+                                    <constraint firstItem="jwW-9F-wrk" firstAttribute="centerX" secondItem="NkP-e9-NC4" secondAttribute="centerX" id="T9D-TI-NYM"/>
+                                    <constraint firstAttribute="height" constant="40" id="XNF-RS-0px"/>
+                                </constraints>
+                            </customView>
                             <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" allowsMagnification="YES" maxMagnification="5" minMagnification="1" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="WTp-wA-9SL" customClass="RegularScrollView" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="40" y="33" width="624" height="361"/>
+                                <rect key="frame" x="0.0" y="0.0" width="640" height="360"/>
                                 <clipView key="contentView" id="SUf-jl-Y0i">
-                                    <rect key="frame" x="1" y="1" width="622" height="359"/>
+                                    <rect key="frame" x="1" y="1" width="638" height="358"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r8h-aE-aJ5">
-                                            <rect key="frame" x="0.0" y="0.0" width="607" height="344"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="623" height="343"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         </view>
                                     </subviews>
                                     <color key="backgroundColor" red="0.025183623656630516" green="0.93838995695114136" blue="0.11515399068593979" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 </clipView>
                                 <constraints>
-                                    <constraint firstAttribute="height" priority="750" constant="361" id="6a5-LM-pyk"/>
-                                    <constraint firstAttribute="width" priority="750" constant="624" id="9p9-PZ-3bB"/>
+                                    <constraint firstAttribute="height" priority="750" constant="360" id="6a5-LM-pyk"/>
+                                    <constraint firstAttribute="width" priority="750" constant="640" id="9p9-PZ-3bB"/>
                                 </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="vQy-Dv-4a6">
                                     <rect key="frame" x="-100" y="-100" width="622" height="16"/>
@@ -47,90 +60,73 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
-                            <button translatesAutoresizingMaskIntoConstraints="NO" id="3fU-4f-ODM">
-                                <rect key="frame" x="0.0" y="370" width="40" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="0lq-Uc-ekV"/>
-                                    <constraint firstAttribute="height" constant="40" id="faw-sI-Tpy"/>
-                                </constraints>
-                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="rotate" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="8jt-jJ-NjK">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                            </button>
-                            <button translatesAutoresizingMaskIntoConstraints="NO" id="Eov-6a-Ava">
-                                <rect key="frame" x="674" y="380" width="20" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="20" id="ewx-VM-wbf"/>
-                                    <constraint firstAttribute="height" constant="20" id="nkk-jN-5BY"/>
-                                </constraints>
-                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="enlarge-icon" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="9nQ-2c-hpY">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                            </button>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Kbv-Qb-kGl">
-                                <rect key="frame" x="664" y="370" width="40" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="Kgt-DR-Wf8"/>
-                                    <constraint firstAttribute="width" constant="40" id="kLy-bz-FNK"/>
-                                </constraints>
-                            </customView>
-                            <button translatesAutoresizingMaskIntoConstraints="NO" id="K3q-Ow-PY3">
-                                <rect key="frame" x="0.0" y="370" width="40" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="RAD-ND-Z2z"/>
-                                    <constraint firstAttribute="width" constant="40" id="d5s-yW-Cmk"/>
-                                </constraints>
-                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="rotate" imagePosition="overlaps" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="dxV-ex-QS0">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                            </button>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="1Fq-0s-pMM">
-                                <rect key="frame" x="0.0" y="370" width="40" height="40"/>
+                                <rect key="frame" x="600" y="360" width="40" height="40"/>
+                                <subviews>
+                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="v6p-jH-gar">
+                                        <rect key="frame" x="10" y="10" width="20" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="20" id="7vH-3o-Esc"/>
+                                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="20" id="8c5-LN-CI6"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="CaY-Vw-R1D"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="Mrc-m8-pMk"/>
+                                            <constraint firstAttribute="height" constant="20" id="rcn-Nf-G59"/>
+                                            <constraint firstAttribute="width" constant="20" id="yza-B1-QLQ"/>
+                                        </constraints>
+                                        <imageCell key="cell" enabled="NO" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="rotateIcon" id="sUu-rh-vcd"/>
+                                    </imageView>
+                                </subviews>
                                 <constraints>
+                                    <constraint firstItem="v6p-jH-gar" firstAttribute="centerY" secondItem="1Fq-0s-pMM" secondAttribute="centerY" id="Fao-0x-X6Q"/>
                                     <constraint firstAttribute="width" constant="40" id="N1P-FX-92G"/>
                                     <constraint firstAttribute="height" constant="40" id="Zav-Ek-dcX"/>
+                                    <constraint firstItem="v6p-jH-gar" firstAttribute="centerX" secondItem="1Fq-0s-pMM" secondAttribute="centerX" id="bS2-NF-r62"/>
                                 </constraints>
                             </customView>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1GK-FO-lwr">
+                                <rect key="frame" x="46" y="360" width="548" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="29" id="Yzx-5b-BOO"/>
+                                    <constraint firstAttribute="width" constant="544" id="f0v-iM-BWg"/>
+                                    <constraint firstAttribute="height" constant="29" id="g5g-AP-8FI"/>
+                                </constraints>
+                                <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="This is a title with a j and a g and a p." usesSingleLineMode="YES" id="HlC-v9-VHL">
+                                    <font key="font" size="16" name="Soleil"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="WTp-wA-9SL" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" constant="16" id="10V-YT-T1W"/>
-                            <constraint firstItem="Eov-6a-Ava" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" constant="10" id="BiJ-YK-ed1"/>
-                            <constraint firstItem="Kbv-Qb-kGl" firstAttribute="centerY" secondItem="Eov-6a-Ava" secondAttribute="centerY" id="CGu-aZ-Xmz"/>
-                            <constraint firstItem="Kbv-Qb-kGl" firstAttribute="centerX" secondItem="Eov-6a-Ava" secondAttribute="centerX" id="Ona-Cl-Ujh"/>
-                            <constraint firstItem="WTp-wA-9SL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="40" id="X9j-4u-6FB"/>
-                            <constraint firstItem="3fU-4f-ODM" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="XbG-Pl-t6P"/>
-                            <constraint firstAttribute="bottom" secondItem="WTp-wA-9SL" secondAttribute="bottom" constant="33" id="Z1e-N5-aTr"/>
-                            <constraint firstAttribute="trailing" secondItem="Eov-6a-Ava" secondAttribute="trailing" constant="10" id="aus-14-iuQ"/>
-                            <constraint firstItem="1Fq-0s-pMM" firstAttribute="centerX" secondItem="K3q-Ow-PY3" secondAttribute="centerX" id="bhU-ZW-YCO"/>
-                            <constraint firstItem="3fU-4f-ODM" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" id="dLL-Xf-K3v"/>
-                            <constraint firstItem="1Fq-0s-pMM" firstAttribute="centerY" secondItem="K3q-Ow-PY3" secondAttribute="centerY" id="ds1-NS-tUh"/>
+                            <constraint firstItem="WTp-wA-9SL" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" constant="40" id="10V-YT-T1W"/>
+                            <constraint firstItem="NkP-e9-NC4" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="E2X-0d-8js"/>
+                            <constraint firstItem="1GK-FO-lwr" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" constant="11" id="Uab-UM-qDh"/>
+                            <constraint firstItem="WTp-wA-9SL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sSn-s5-6HM" secondAttribute="leading" id="X9j-4u-6FB"/>
+                            <constraint firstItem="1Fq-0s-pMM" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="YyK-TS-wf5"/>
+                            <constraint firstAttribute="bottom" secondItem="WTp-wA-9SL" secondAttribute="bottom" id="Z1e-N5-aTr"/>
+                            <constraint firstItem="NkP-e9-NC4" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" id="ZrV-8D-Dan"/>
+                            <constraint firstItem="1Fq-0s-pMM" firstAttribute="leading" secondItem="1GK-FO-lwr" secondAttribute="trailing" constant="8" id="crs-95-4dD"/>
                             <constraint firstItem="WTp-wA-9SL" firstAttribute="centerX" secondItem="sSn-s5-6HM" secondAttribute="centerX" id="eGb-ih-uVc"/>
-                            <constraint firstItem="K3q-Ow-PY3" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="erE-8I-cGU"/>
-                            <constraint firstAttribute="bottom" secondItem="Xxw-S7-yBy" secondAttribute="bottom" constant="8" id="irH-aF-J8T"/>
-                            <constraint firstItem="K3q-Ow-PY3" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" id="pyh-3z-Sjz"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="WTp-wA-9SL" secondAttribute="trailing" constant="40" id="xkr-jy-BVF"/>
-                            <constraint firstItem="Xxw-S7-yBy" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="16" id="zgZ-lc-gaV"/>
+                            <constraint firstAttribute="trailing" secondItem="1Fq-0s-pMM" secondAttribute="trailing" id="snJ-MF-wyp"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="WTp-wA-9SL" secondAttribute="trailing" id="xkr-jy-BVF"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="dismissButton" destination="Kbv-Qb-kGl" id="zX2-Io-uxz"/>
+                        <outlet property="dismissButton" destination="NkP-e9-NC4" id="xmX-pw-hGC"/>
                         <outlet property="imageScrollView" destination="WTp-wA-9SL" id="ycY-PS-kHc"/>
                         <outlet property="rotateButton" destination="1Fq-0s-pMM" id="Fyx-fz-xid"/>
                         <outlet property="scrollViewHeightConstraint" destination="6a5-LM-pyk" id="ezs-l7-7J3"/>
                         <outlet property="scrollViewWidthConstraint" destination="9p9-PZ-3bB" id="Qjd-UD-csq"/>
-                        <outlet property="titleTextField" destination="Xxw-S7-yBy" id="cRy-et-eb1"/>
+                        <outlet property="titleLabel" destination="1GK-FO-lwr" id="HfV-8T-rGp"/>
                     </connections>
                 </viewController>
                 <customObject id="ApF-HA-SvK" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-51" y="-495"/>
+            <point key="canvasLocation" x="-52" y="-499"/>
         </scene>
     </scenes>
     <resources>
-        <image name="enlarge-icon" width="41" height="42"/>
-        <image name="rotate" width="512" height="512"/>
+        <image name="close button" width="15" height="15"/>
+        <image name="rotateIcon" width="204" height="196"/>
     </resources>
 </document>

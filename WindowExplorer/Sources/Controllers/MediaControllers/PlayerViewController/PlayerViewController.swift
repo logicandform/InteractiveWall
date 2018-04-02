@@ -28,7 +28,8 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        titleLabel.attributedStringValue = NSAttributedString(string: media.title ?? "", attributes: titleAttributes)
+
         setupPlayer()
         setupGestures()
         animateViewIn()
@@ -76,13 +77,6 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         playerStateImageView.wantsLayer = true
         playerStateImageView.layer?.cornerRadius = playerStateImageView.frame.width / 2
         playerStateImageView.layer?.backgroundColor = style.darkBackground.cgColor
-        
-        guard let title = media.title else {
-            titleLabel.stringValue = ""
-            return
-        }
-        
-        titleLabel.attributedStringValue = NSAttributedString(string: title, attributes: titleAttributes)
     }
 
     private func scheduleAudioSegment() {
