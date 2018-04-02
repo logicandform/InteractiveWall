@@ -18,6 +18,31 @@ class RelatedItemView: NSView {
         }
     }
 
+    private struct Constants {
+        static let fontName = "Soleil"
+        static let fontColor: NSColor = .white
+        static let kern: CGFloat = 0.5
+        static let titleFontSize: CGFloat = 11
+        static let descriptionFontSize: CGFloat = 9
+    }
+    
+    private var titleLabelAttributes : [NSAttributedStringKey : Any] {
+        get {
+            let font = NSFont(name: Constants.fontName, size: Constants.titleFontSize) ?? NSFont.systemFont(ofSize: Constants.titleFontSize)
+            return [.kern : Constants.kern,
+                    .foregroundColor : Constants.fontColor,
+                    .font : font]
+        }
+    }
+    
+    private var descriptionLabelAttributes : [NSAttributedStringKey : Any] {
+        get {
+            let font = NSFont(name: Constants.fontName, size: Constants.descriptionFontSize) ?? NSFont.systemFont(ofSize: Constants.descriptionFontSize)
+            return [.kern : Constants.kern,
+                    .foregroundColor : Constants.fontColor,
+                    .font : font]
+        }
+    }
 
     // MARK: Init
 
@@ -30,9 +55,7 @@ class RelatedItemView: NSView {
         descriptionLabel?.textColor = .white
     }
 
-
     // MARK: API
-
     func set(highlighted: Bool) {
         if highlighted {
             layer?.backgroundColor = style.selectedColor.cgColor
@@ -41,7 +64,6 @@ class RelatedItemView: NSView {
         }
     }
 
-
     // MARK: Helpers
 
     private func load(_ record: RecordDisplayable?) {
@@ -49,8 +71,8 @@ class RelatedItemView: NSView {
             return
         }
 
-        titleLabel.stringValue = record.title
-        descriptionLabel.stringValue = record.description ?? ""
+        titleLabel.attributedStringValue = NSAttributedString(string: record.title, attributes: titleLabelAttributes)
+        descriptionLabel.attributedStringValue = NSAttributedString(string: record.description ?? "", attributes: descriptionLabelAttributes)
         imageView.image = record.type.placeholder.tinted(with: style.relatedItemColor)
 
         if let media = record.media.first {
