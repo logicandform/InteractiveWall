@@ -25,11 +25,11 @@ class ImageViewController: MediaViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        titleLabel.attributedStringValue = NSAttributedString(string: media.title ?? "", attributes: titleAttributes)
 
         setupImageView()
         setupGestures()
         animateViewIn()
-        loadTitle()
     }
 
     override func viewDidDisappear() {
@@ -85,14 +85,6 @@ class ImageViewController: MediaViewController {
         singleFingerRotateButtonTap.gestureUpdated = didTapRotateButton(_:)
     }
 
-    private func loadTitle() {
-        guard let title = media.title else {
-            titleLabel.stringValue = ""
-            return
-        }
-        
-        titleLabel.attributedStringValue = NSAttributedString(string: title, attributes: titleAttributes)
-    }
 
     // MARK: Gesture Handling
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="1Ij-Lj-j0K">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="1Ij-Lj-j0K">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
-        <plugIn identifier="com.apple.pdfkit.ibplugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <plugIn identifier="com.apple.pdfkit.ibplugin" version="13771"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -121,8 +121,8 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="29" id="zkM-Nh-jSx"/>
                                 </constraints>
-                                <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="This is a title with a j and a g and a p." usesSingleLineMode="YES" id="748-1L-Vho">
-                                    <font key="font" size="16" name="Soleil"/>
+                                <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" usesSingleLineMode="YES" id="748-1L-Vho">
+                                    <font key="font" metaFont="system" size="16"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -160,10 +160,11 @@
                         <outlet property="backTapArea" destination="dYk-YZ-F2X" id="wua-SK-glp"/>
                         <outlet property="closeButtonView" destination="ty9-rb-Gm3" id="Qm1-Jl-MHA"/>
                         <outlet property="forwardTapArea" destination="u0A-Yb-xpw" id="ViX-oa-hXe"/>
-                        <outlet property="heightConstraint" destination="i6W-KX-XGF" id="RaL-BC-edm"/>
+                        <outlet property="pdfHeightConstraint" destination="i6W-KX-XGF" id="nfg-KT-I5J"/>
                         <outlet property="pdfView" destination="LrV-6C-x9X" id="NQR-O0-ndl"/>
+                        <outlet property="pdfWidthConstraint" destination="Jjz-fV-fMy" id="1Pp-vJ-TXi"/>
                         <outlet property="thumbnailView" destination="jmI-PA-kXC" id="5An-LJ-yQA"/>
-                        <outlet property="widthConstraint" destination="Jjz-fV-fMy" id="7A1-Ll-3gz"/>
+                        <outlet property="titleLabel" destination="FZL-O2-tAp" id="yf7-TD-EXc"/>
                     </connections>
                 </viewController>
                 <customObject id="Q0f-PU-OLM" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
