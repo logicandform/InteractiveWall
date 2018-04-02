@@ -3,11 +3,11 @@
 import Cocoa
 import Quartz
 
-class PDFViewController: MediaViewController {
+class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDataSource {
     static let storyboard = NSStoryboard.Name(rawValue: "PDF")
 
     @IBOutlet weak var pdfView: PDFView!
-    @IBOutlet weak var pdfThumbnailView: PDFThumbnailView!
+    @IBOutlet weak var thumbnailView: NSTableView!
     @IBOutlet weak var closeButtonView: NSView!
     @IBOutlet weak var backTapArea: NSView!
     @IBOutlet weak var forwardTapArea: NSView!
@@ -15,14 +15,19 @@ class PDFViewController: MediaViewController {
     var document: PDFDocument!
     private let leftArrow = ArrowControl()
     private let rightArrow = ArrowControl()
-    private var thumbnailClipView: NSClipView!
-    private var thumbnailCollectionView: NSView!
-
+    
+    private var selectedThumbnailItem: PDFTableViewItem? {
+        didSet {
+            oldValue?.set(highlighted: false)
+            selectedThumbnailItem?.set(highlighted: true)
+        }
+    }
 
     private struct Constants {
         static let arrowInsetMargin: CGFloat = 10
         static let arrowWidth: CGFloat = 20
         static let arrowHeight: CGFloat = 40
+        static let tableRowHeight: CGFloat = 100
     }
 
 
@@ -30,21 +35,17 @@ class PDFViewController: MediaViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let scrollView = pdfThumbnailView.subviews.last as? NSScrollView, let clipView = scrollView.subviews.first(where: { $0 is NSClipView }) as? NSClipView {
-            thumbnailClipView = clipView
-            thumbnailCollectionView = thumbnailClipView.subviews.last
-        }
         
         setupPDF()
         setupArrows()
+        setupThumbnailView()
         setupGestures()
         animateViewIn()
     }
-
+    
     override func viewDidAppear() {
         super.viewDidAppear()
-        // Causes the clipview to layout and eliminates strange subview offsets.
-        thumbnailClipView.scroll(CGPoint(x: 0, y: 1))
+        updateViewsForCurrentPage()
     }
 
 
@@ -60,8 +61,10 @@ class PDFViewController: MediaViewController {
         pdfView.backgroundColor = .clear
         document = PDFDocument(url: media.url)
         pdfView.document = document
-        pdfThumbnailView.pdfView = pdfView
-        NotificationCenter.default.removeObserver(thumbnailCollectionView, name: NSNotification.Name.PDFViewPageChanged, object: nil)
+    }
+    
+    private func setupThumbnailView() {
+        thumbnailView.register(NSNib(nibNamed: PDFTableViewItem.nibName, bundle: nil), forIdentifier: PDFTableViewItem.interfaceIdentifier)
     }
 
     private func setupArrows() {
@@ -84,8 +87,6 @@ class PDFViewController: MediaViewController {
         rightArrow.centerYAnchor.constraint(equalTo: pdfView.centerYAnchor).isActive = true
         rightArrow.widthAnchor.constraint(equalToConstant: Constants.arrowWidth).isActive = true
         rightArrow.heightAnchor.constraint(equalToConstant: Constants.arrowHeight).isActive = true
-
-        updateArrows()
     }
 
     private func setupGestures() {
@@ -95,32 +96,22 @@ class PDFViewController: MediaViewController {
         let windowPan = PanGestureRecognizer()
         gestureManager.add(windowPan, to: view)
         windowPan.gestureUpdated = handleWindowPan(_:)
-
+        
         let thumbnailViewPan = PanGestureRecognizer()
-        gestureManager.add(thumbnailViewPan, to: thumbnailClipView)
-        thumbnailViewPan.gestureUpdated = handleThumbnailViewPan(_:)
-
+        gestureManager.add(thumbnailViewPan, to: thumbnailView)
+        thumbnailViewPan.gestureUpdated = handleThumbnailPan(_:)
+        
         let thumbnailViewTap = TapGestureRecognizer()
-        gestureManager.add(thumbnailViewTap, to: thumbnailClipView)
-        thumbnailViewTap.gestureUpdated = didTapThumbnailView(_:)
-
+        gestureManager.add(thumbnailViewTap, to: thumbnailView)
+        thumbnailViewTap.gestureUpdated = handleThumbnailItemTap(_:)
+        
         let previousPageTap = TapGestureRecognizer()
         gestureManager.add(previousPageTap, to: backTapArea)
-        previousPageTap.gestureUpdated = { [weak self] tap in
-            if tap.state == .ended {
-                self?.pdfView.goToPreviousPage(self)
-                self?.updateArrows()
-            }
-        }
+        previousPageTap.gestureUpdated = handleLeftArrowTap(_:)
 
         let nextPageTap = TapGestureRecognizer()
         gestureManager.add(nextPageTap, to: forwardTapArea)
-        nextPageTap.gestureUpdated = { [weak self] tap in
-            if tap.state == .ended {
-                self?.pdfView.goToNextPage(self)
-                self?.updateArrows()
-            }
-        }
+        nextPageTap.gestureUpdated = handleRightArrowTap(_:)
 
         let singleFingerCloseButtonTap = TapGestureRecognizer()
         gestureManager.add(singleFingerCloseButtonTap, to: closeButtonView)
@@ -146,34 +137,50 @@ class PDFViewController: MediaViewController {
             return
         }
     }
-
-    private func handleThumbnailViewPan(_ gesture: GestureRecognizer) {
+    
+    private func handleThumbnailPan(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer else {
             return
         }
-
+        
         switch pan.state {
         case .recognized, .momentum:
-            var origin = thumbnailClipView.visibleRect.origin
-            origin += pan.delta.dy
-            thumbnailClipView.scroll(origin)
+            var rect = thumbnailView.visibleRect
+            rect.origin.y += pan.delta.dy
+            thumbnailView.scrollToVisible(rect)
         default:
             return
         }
     }
-
-    private func didTapThumbnailView(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position else {
+    
+    private func handleLeftArrowTap(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
             return
         }
-
-        if tap.state == .ended {
-            let thumbnailPages = thumbnailCollectionView.subviews
-            let location = position + thumbnailClipView.visibleRect.origin
-            if let thumbnail = thumbnailPages.first(where: { $0.frame.contains(location) }), let index = thumbnailPages.index(of: thumbnail), let page = document.page(at: index) {
-                pdfView.go(to: page)
-                updateArrows()
-            }
+    
+        pdfView.goToPreviousPage(self)
+        updateViewsForCurrentPage()
+    }
+    
+    private func handleRightArrowTap(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
+            return
+        }
+        
+        pdfView.goToNextPage(self)
+        updateViewsForCurrentPage()
+    }
+    
+    private func handleThumbnailItemTap(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, let location = tap.position, tap.state == .ended else {
+            return
+        }
+        
+        let locationInTable = location + thumbnailView.visibleRect.origin
+        let row = thumbnailView.row(at: locationInTable)
+        if row >= 0, let thumbnailItem = thumbnailView.view(atColumn: 0, row: row, makeIfNecessary: false) as? PDFTableViewItem, let selectedPage = thumbnailItem.page {
+            pdfView.go(to: selectedPage)
+            updateViewsForCurrentPage()
         }
     }
 
@@ -197,6 +204,30 @@ class PDFViewController: MediaViewController {
         window.setFrameOrigin(origin)
         WindowManager.instance.checkBounds(of: self)
     }
+    
+    
+    // MARK: NSTableViewDelegate & NSTableViewDataSource
+    
+    func numberOfRows(in tableView: NSTableView) -> Int {
+        return document?.pageCount ?? 0
+    }
+    
+    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        guard let pdfItemView = tableView.makeView(withIdentifier: PDFTableViewItem.interfaceIdentifier, owner: self) as? PDFTableViewItem else {
+            return nil
+        }
+        
+        pdfItemView.page = document.page(at: row)
+        return pdfItemView
+    }
+    
+    func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+        return Constants.tableRowHeight
+    }
+    
+    func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
+        return false
+    }
 
 
     // MARK: IB-Actions
@@ -208,8 +239,13 @@ class PDFViewController: MediaViewController {
 
     // MARK: Helpers
     
-    private func updateArrows() {
+    private func updateViewsForCurrentPage() {
         leftArrow.isHidden = !pdfView.canGoToPreviousPage
         rightArrow.isHidden = !pdfView.canGoToNextPage
+        
+        if let page = pdfView.currentPage, let pageNumber = page.pageRef?.pageNumber, let thumbnailItem = thumbnailView.view(atColumn: 0, row: pageNumber - 1, makeIfNecessary: false) as? PDFTableViewItem {
+            selectedThumbnailItem = thumbnailItem
+            thumbnailView.scrollRowToVisible(pageNumber - 1)
+        }
     }
 }

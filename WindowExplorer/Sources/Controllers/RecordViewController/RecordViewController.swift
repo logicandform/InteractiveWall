@@ -56,7 +56,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     private func setupMediaView() {
         mediaView.register(MediaItemView.self, forItemWithIdentifier: MediaItemView.identifier)
-
         placeHolderImage.image = record?.type.placeholder
 
         pageControl.color = NSColor.white
