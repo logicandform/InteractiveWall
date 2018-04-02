@@ -9,7 +9,7 @@ class ImageViewController: MediaViewController {
     static let storyboard = NSStoryboard.Name(rawValue: "Image")
 
     @IBOutlet weak var imageScrollView: RegularScrollView!
-    @IBOutlet weak var titleTextField: NSTextField!
+    @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var dismissButton: NSView!
@@ -25,11 +25,11 @@ class ImageViewController: MediaViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        titleTextField.stringValue = media.title ?? ""
 
         setupImageView()
         setupGestures()
         animateViewIn()
+        loadTitle()
     }
 
     override func viewDidDisappear() {
@@ -85,6 +85,14 @@ class ImageViewController: MediaViewController {
         singleFingerRotateButtonTap.gestureUpdated = didTapRotateButton(_:)
     }
 
+    private func loadTitle() {
+        guard let title = media.title else {
+            titleLabel.stringValue = ""
+            return
+        }
+        
+        titleLabel.attributedStringValue = NSAttributedString(string: title, attributes: titleAttributes)
+    }
 
     // MARK: Gesture Handling
 
