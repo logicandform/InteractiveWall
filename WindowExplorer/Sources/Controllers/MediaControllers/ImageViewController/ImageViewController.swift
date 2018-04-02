@@ -20,6 +20,11 @@ class ImageViewController: MediaViewController {
     private var contentViewFrame: NSRect!
     private var frameSize: NSSize!
 
+    private struct Constants {
+        static let maxWidth: CGFloat = 640.0
+        static let minWidth: CGFloat = 416.0
+    }
+
 
     // MARK: Life-cycle
 
@@ -56,8 +61,11 @@ class ImageViewController: MediaViewController {
     private func addImage(_ image: NSImage) {
         imageView.image = image
         imageView.imageScaling = NSImageScaling.scaleAxesIndependently
-        let scaleRatio =  min(imageScrollView.frame.width / image.size.width, imageScrollView.frame.height / image.size.height)
-        frameSize = NSSize(width: round(image.size.width * scaleRatio), height: round(image.size.height * scaleRatio))
+        
+        let imageRatio = image.size.height / image.size.width
+        let width = clamp(image.size.width, min: Constants.minWidth, max: Constants.maxWidth)        
+        let height = width * imageRatio
+        frameSize = NSSize(width: width, height: height)
         imageView.setFrameSize(frameSize)
         scrollViewHeightConstraint.constant = frameSize.height
         scrollViewWidthConstraint.constant = frameSize.width
