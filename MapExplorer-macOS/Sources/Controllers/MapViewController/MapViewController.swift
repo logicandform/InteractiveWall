@@ -11,6 +11,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     static let storyboard = NSStoryboard.Name(rawValue: "Map")
 
     @IBOutlet weak var mapView: FlippedMapView!
+
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
     private let touchListener = TouchListener()
@@ -18,9 +19,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     private struct Constants {
         static let tileURL = "http://localhost:3200/v2/tiles/{z}/{x}/{y}.pbf"
-        static let annotationContainerClass = "MKNewAnnotationContainerView"
         static let maxZoomWidth: Double =  134217730
-        static let touchRadius: CGFloat = 20.0
+        static let touchRadius: CGFloat = 20
         static let annotationHitSize = CGSize(width: 50, height: 50)
     }
 
@@ -122,7 +122,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                         annotationView.runAnimation()
                         return
                     }
-                } else if tap.state == .ended || tap.state == .possible, let annotation = annotation as? CircleAnnotation, let record = recordForAnnotation[annotation] {
+                } else if tap.state == .ended, let annotation = annotation as? CircleAnnotation, let record = recordForAnnotation[annotation] {
                     postWindowNotification(for: record, at: CGPoint(x: annotationPoint.x, y: annotationPoint.y - 20.0))
                     return
                 }
@@ -176,7 +176,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let annotation = annotation as? CircleAnnotation {
-            return CircleAnnotationView(annotation: annotation, reuseIdentifier: "CircleAnnotationView")
+            return CircleAnnotationView(annotation: annotation, reuseIdentifier: CircleAnnotationView.identifier)
         }
 
         return MKAnnotationView()

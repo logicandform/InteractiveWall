@@ -72,6 +72,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
 
         playerControl.player = player
         playerControl.gestureManager = gestureManager
+        playerControl.tintColor = media.tintColor
         playerControl.delegate = self
 
         playerStateImageView.wantsLayer = true

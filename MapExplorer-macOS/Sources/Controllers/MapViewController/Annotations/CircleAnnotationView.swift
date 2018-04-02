@@ -22,6 +22,19 @@ class CircleAnnotationView: MKAnnotationView {
         }
     }
 
+
+    // MARK: API
+
+    func runAnimation() {
+        animateCenter()
+        animateInnerCircle()
+        animateMiddleCircle()
+        animateOuterCircle()
+    }
+
+
+    // MARK: Setup
+
     private func setupAnnotations(annotation: CircleAnnotation) {
         circle1.wantsLayer = true
         circle2.wantsLayer = true
@@ -40,13 +53,6 @@ class CircleAnnotationView: MKAnnotationView {
         addSubview(circle2)
         addSubview(circle3)
         addSubview(center)
-    }
-
-    func runAnimation() {
-        animateCenter()
-        animateInnerCircle()
-        animateMiddleCircle()
-        animateOuterCircle()
     }
 
 
@@ -131,6 +137,4 @@ class CircleAnnotationView: MKAnnotationView {
         animateCenter.duration = 0.3
         circle1.layer?.add(animateCenter, forKey: "position")
     }
-
-
 }

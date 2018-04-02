@@ -51,7 +51,7 @@ class Event {
             let thumbnails = thumbnailStrings.flatMap { URL.from(CachingNetwork.baseURL + $0) }
             let titles = json[Keys.mediaTitles] as? [String] ?? []
             for (url, thumbnail) in zip(urls, thumbnails) {
-                media.append(Media(url: url, thumbnail: thumbnail, title: titles.at(index: media.count)))
+                media.append(Media(url: url, thumbnail: thumbnail, title: titles.at(index: media.count), color: type.color))
             }
         }
         if let schoolsJSON = json[Keys.schools] as? [JSON] {

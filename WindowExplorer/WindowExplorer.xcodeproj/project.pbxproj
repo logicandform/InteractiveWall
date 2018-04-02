@@ -87,6 +87,7 @@
 		C6DB17689F287C9826286DF2 /* Pods_All_WindowExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */; };
 		D5384CF52071A74300A157AE /* PDFTableViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5384CF42071A74300A157AE /* PDFTableViewItem.swift */; };
 		D5384CF72071A7FD00A157AE /* PDFTableViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5384CF62071A7FD00A157AE /* PDFTableViewItem.xib */; };
+		D59DAA092072C8A300908164 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59DAA082072C8A300908164 /* Math.swift */; };
 		D901EBED2056EEFE00BBFCF2 /* RecordDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D901EBEC2056EEFE00BBFCF2 /* RecordDisplayable.swift */; };
 		D901EBF02057490400BBFCF2 /* RegularTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D901EBEF2057490400BBFCF2 /* RegularTableView.swift */; };
 		D92E0EFE20604BDB00C1C9A7 /* PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92E0EFD20604BDB00C1C9A7 /* PageControl.swift */; };
@@ -203,6 +204,7 @@
 		CE471FCE047AE2FD1C92BA3A /* Pods-All-WindowExplorer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-WindowExplorer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer.release.xcconfig"; sourceTree = "<group>"; };
 		D5384CF42071A74300A157AE /* PDFTableViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFTableViewItem.swift; sourceTree = "<group>"; };
 		D5384CF62071A7FD00A157AE /* PDFTableViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PDFTableViewItem.xib; sourceTree = "<group>"; };
+		D59DAA082072C8A300908164 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Math.swift; path = Extensions/Math.swift; sourceTree = SOURCE_ROOT; };
 		D901EBEC2056EEFE00BBFCF2 /* RecordDisplayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDisplayable.swift; sourceTree = "<group>"; };
 		D901EBEF2057490400BBFCF2 /* RegularTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularTableView.swift; sourceTree = "<group>"; };
 		D92E0EFD20604BDB00C1C9A7 /* PageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageControl.swift; sourceTree = "<group>"; };
@@ -440,6 +442,7 @@
 		22B1E2D0204638CD00BDDF14 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				D59DAA082072C8A300908164 /* Math.swift */,
 				227B5E10205611BB00F403B3 /* Style.swift */,
 				22A498742047499B0024B46C /* JSON.swift */,
 				22B1E2CE204638CA00BDDF14 /* GestureHandler.swift */,
@@ -723,6 +726,7 @@
 				D9F24E62205B040700B9FCB8 /* ImageViewController.swift in Sources */,
 				227B5E11205611BB00F403B3 /* Style.swift in Sources */,
 				8E4010A220487E0300E81AAA /* Collection.swift in Sources */,
+				D59DAA092072C8A300908164 /* Math.swift in Sources */,
 				618F0C2F2069F98900762C20 /* MultiChannelPanner.swift in Sources */,
 				3F2FAB5B204F7D24002EDF5D /* Artifact.swift in Sources */,
 				22B1E2CD204638B900BDDF14 /* GestureManager.swift in Sources */,
