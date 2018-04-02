@@ -7,11 +7,22 @@ protocol MediaControllerDelegate: class {
 }
 
 class MediaViewController: NSViewController, GestureResponder {
+
     var gestureManager: GestureManager!
     var media: Media!
     weak var delegate: MediaControllerDelegate?
-
     private weak var closeWindowTimer: Foundation.Timer?
+
+    var titleAttributes: [NSAttributedStringKey: Any] {
+        let font = NSFont(name: Constants.fontName, size: Constants.titleFontSize) ?? NSFont.systemFont(ofSize: Constants.titleFontSize)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineBreakMode = .byTruncatingTail
+        
+        return [.paragraphStyle : paragraphStyle,
+                .font : font,
+                .foregroundColor : Constants.titleForegroundColor,
+                .kern : Constants.kern]
+    }
 
     private struct Constants {
         static let closeWindowTimeoutPeriod: TimeInterval = 60
@@ -21,18 +32,8 @@ class MediaViewController: NSViewController, GestureResponder {
         static let fontName: String = "Soleil"
     }
 
-    var titleAttributes: [NSAttributedStringKey: Any] {
-        let font = NSFont(name: Constants.fontName, size: Constants.titleFontSize) ?? NSFont.systemFont(ofSize: Constants.titleFontSize)
-        
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineBreakMode = .byTruncatingTail
-        
-        return [.paragraphStyle : paragraphStyle,
-                .font : font,
-                .foregroundColor : Constants.titleForegroundColor,
-                .kern : Constants.kern]
-    }
-    
+    // MARK: Life-Cycle
+
     override func viewDidLoad() {
         resetCloseWindowTimer()
         view.wantsLayer = true

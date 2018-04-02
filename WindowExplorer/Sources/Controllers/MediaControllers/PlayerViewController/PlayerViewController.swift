@@ -124,13 +124,11 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     // MARK: Gesture Handling
 
     private func didTapVideoPlayer(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer else {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
             return
         }
 
-        if tap.state == .ended {
-            playerControl.toggle()
-        }
+        playerControl.toggle()
     }
 
     private func didPanDetailView(_ gesture: GestureRecognizer) {
