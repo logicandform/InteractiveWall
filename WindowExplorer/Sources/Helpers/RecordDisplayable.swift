@@ -55,7 +55,7 @@ extension RecordDisplayable {
         return recordGroups.reduce([]) { $0 + $1.records }
     }
     
-    var titleAttributes: [NSAttributedStringKey:Any] {
+    var titleAttributes: [NSAttributedStringKey: Any] {
         let font = NSFont(name: Constants.fontName, size: Constants.titleFontSize) ?? NSFont.systemFont(ofSize: Constants.titleFontSize)
 
         let paragraphStyle = NSMutableParagraphStyle()
@@ -69,19 +69,19 @@ extension RecordDisplayable {
         ]
     }
     
-    var dateAttributes: [NSAttributedStringKey:Any] {
+    var dateAttributes: [NSAttributedStringKey: Any] {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Constants.dateLineSpacing
         paragraphStyle.paragraphSpacingBefore = Constants.dateParagraphSpacingBefore
         let font = NSFont(name: Constants.fontName, size: Constants.dateFontSize) ?? NSFont.systemFont(ofSize: Constants.dateFontSize)
         return [.paragraphStyle : paragraphStyle,
                 .font : font,
-                .foregroundColor : Constants.dateForegroundColor,
+                .foregroundColor : type.color,
                 .kern : Constants.kern
         ]
     }
     
-    var descriptionAttributes: [NSAttributedStringKey:Any] {
+    var descriptionAttributes: [NSAttributedStringKey: Any] {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Constants.descriptionLineSpacing
         paragraphStyle.paragraphSpacing = Constants.descriptionParagraphSpacing
@@ -95,7 +95,7 @@ extension RecordDisplayable {
         ]
     }
     
-    var commentAttributes: [NSAttributedStringKey:Any] {
+    var commentAttributes: [NSAttributedStringKey: Any] {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Constants.commentsLineSpacing
         paragraphStyle.paragraphSpacing = Constants.commentsParagraphSpacing
@@ -109,7 +109,7 @@ extension RecordDisplayable {
         ]
     }
     
-    var smallHeaderAttributes: [NSAttributedStringKey:Any] {
+    var smallHeaderAttributes: [NSAttributedStringKey: Any] {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Constants.smallHeaderLineSpacing
         paragraphStyle.lineBreakMode = .byWordWrapping
