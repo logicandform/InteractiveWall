@@ -28,7 +28,7 @@ enum WindowType {
         case .image:
             return CGSize(width: 640, height: 410)
         case .player:
-            return CGSize(width: 640, height: 600)
+            return CGSize(width: 640, height: 440)
         case .pdf:
             return CGSize(width: 600, height: 640)
         }

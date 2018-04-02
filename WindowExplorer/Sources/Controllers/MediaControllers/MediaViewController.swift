@@ -25,7 +25,7 @@ class MediaViewController: NSViewController, GestureResponder {
     }
 
     private struct Constants {
-        static let closeWindowTimeoutPeriod: TimeInterval = 00
+        static let closeWindowTimeoutPeriod: TimeInterval = 600
         static let titleFontSize: CGFloat = 16
         static let titleForegroundColor: NSColor = .white
         static let kern: CGFloat = 1.5
