@@ -132,42 +132,35 @@ extension RecordDisplayable {
         label.sizeToFit()
         return label
     }
-}
-
-
-extension Event: RecordDisplayable {
-
-    var textFields: [NSTextField] {
-        var labels = [NSTextField]()
-
-        let titleText = NSMutableAttributedString(string: title, attributes: titleAttributes)
-        let label = NSTextField(labelWithAttributedString: titleText)
+    
+    func textFieldFor(string: String, attributes: [NSAttributedStringKey : Any]) -> NSTextField {
+        let attributedString = NSMutableAttributedString(string: string, attributes: attributes)
+        let label = NSTextField(labelWithAttributedString: attributedString)
         label.drawsBackground = false
         label.isBordered = false
         label.isSelectable = false
-        labels.append(label)
-
+        return label
+    }
+    
+    var textFields: [NSTextField] {
+        var labels = [NSTextField]()
+        
+        labels.append(textFieldFor(string: title, attributes: titleAttributes))
+        
         if let date = date, let first = date.split(separator: "|").first?.description {
-            let dateText = NSMutableAttributedString(string: first, attributes: dateAttributes)
-            let label = NSTextField(labelWithAttributedString: dateText)
-            label.drawsBackground = false
-            label.isBordered = false
-            label.isSelectable = false
-            labels.append(label)
+            labels.append(textFieldFor(string: first, attributes: dateAttributes))
         }
-
+        
         if let description = description {
-            let descriptionText = NSAttributedString(string: description, attributes: descriptionAttributes)
-            let label = NSTextField(labelWithAttributedString: descriptionText)
-            label.drawsBackground = false
-            label.isBordered = false
-            label.isSelectable = false
             labels.append(smallHeader(named: "Description"))
-            labels.append(label)
+            labels.append(textFieldFor(string: description, attributes: descriptionAttributes))
         }
-
+        
         return labels
     }
+}
+
+extension Event: RecordDisplayable {
 
     var recordGroups: [RecordGroup] {
         guard let schools = relatedSchools, let organizations = relatedOrganizations, let artifacts = relatedArtifacts, let events = relatedEvents else {
@@ -188,46 +181,26 @@ extension Artifact: RecordDisplayable {
     var date: String? {
         return nil
     }
-
+    
     var textFields: [NSTextField] {
         var labels = [NSTextField]()
-
-        let titleText = NSAttributedString(string: title, attributes: titleAttributes)
-        let label = NSTextField(labelWithAttributedString: titleText)
-        label.drawsBackground = false
-        label.isBordered = false
-        label.isSelectable = false
-        labels.append(label)
-
+        
+        labels.append(textFieldFor(string: title, attributes: titleAttributes))
+        
         if let date = date, let first = date.split(separator: "|").first?.description {
-            let dateText = NSAttributedString(string: first, attributes: dateAttributes)
-            let label = NSTextField(labelWithAttributedString: dateText)
-            label.drawsBackground = false
-            label.isBordered = false
-            label.isSelectable = false
-            labels.append(label)
+            labels.append(textFieldFor(string: first, attributes: dateAttributes))
         }
-
+        
         if let description = description {
-            let descriptionText = NSAttributedString(string: description, attributes: descriptionAttributes)
-            let label = NSTextField(labelWithAttributedString: descriptionText)
-            label.drawsBackground = false
-            label.isBordered = false
-            label.isSelectable = false
             labels.append(smallHeader(named: "Description"))
-            labels.append(label)
+            labels.append(textFieldFor(string: description, attributes: descriptionAttributes))
         }
-
+        
         if let comments = comments {
-            let commentText = NSAttributedString(string: comments, attributes: commentAttributes)
-            let label = NSTextField(labelWithAttributedString: commentText)
-            label.drawsBackground = false
-            label.isBordered = false
-            label.isSelectable = false
-            labels.append(smallHeader(named: "\nCurator Comments"))
-            labels.append(label)
+            labels.append(smallHeader(named: "Curatorial Comments"))
+            labels.append(textFieldFor(string: comments, attributes: commentAttributes))
         }
-
+        
         return labels
     }
 
@@ -251,40 +224,6 @@ extension Organization: RecordDisplayable {
         return nil
     }
 
-    var textFields: [NSTextField] {
-        var labels = [NSTextField]()
-
-        let titleText = NSAttributedString(string: title)
-        let label = NSTextField(labelWithAttributedString: titleText)
-        label.textColor = NSColor.white
-        label.drawsBackground = false
-        label.isBordered = false
-        label.isSelectable = false
-        label.font = NSFont.systemFont(ofSize: Constants.titleFontSize, weight: .semibold)
-        labels.append(label)
-
-        if let date = date, let first = date.split(separator: "|").first?.description {
-            let dateText = NSAttributedString(string: first, attributes: dateAttributes)
-            let label = NSTextField(labelWithAttributedString: dateText)
-            label.drawsBackground = false
-            label.isBordered = false
-            label.isSelectable = false
-            labels.append(label)
-        }
-
-        if let description = description {
-            let descriptionText = NSAttributedString(string: description, attributes: descriptionAttributes)
-            let label = NSTextField(labelWithAttributedString: descriptionText)
-            label.drawsBackground = false
-            label.isBordered = false
-            label.isSelectable = false
-            labels.append(smallHeader(named: "Description"))
-            labels.append(label)
-        }
-
-        return labels
-    }
-
     var recordGroups: [RecordGroup] {
         guard let schools = relatedSchools, let organizations = relatedOrganizations, let artifacts = relatedArtifacts, let events = relatedEvents else {
             return []
@@ -300,38 +239,6 @@ extension Organization: RecordDisplayable {
 }
 
 extension School: RecordDisplayable {
-
-    var textFields: [NSTextField] {
-        var labels = [NSTextField]()
-
-        let titleText = NSAttributedString(string: title, attributes: titleAttributes)
-        let label = NSTextField(labelWithAttributedString: titleText)
-        label.drawsBackground = false
-        label.isBordered = false
-        label.isSelectable = false
-        labels.append(label)
-
-        if let date = date, let first = date.split(separator: "|").first?.description {
-            let dateText = NSAttributedString(string: first, attributes: dateAttributes)
-            let label = NSTextField(labelWithAttributedString: dateText)
-            label.drawsBackground = false
-            label.isBordered = false
-            label.isSelectable = false
-            labels.append(label)
-        }
-
-        if let description = description {
-            let descriptionText = NSAttributedString(string: description, attributes: descriptionAttributes)
-            let label = NSTextField(labelWithAttributedString: descriptionText)
-            label.drawsBackground = false
-            label.isBordered = false
-            label.isSelectable = false
-            labels.append(smallHeader(named: "Description"))
-            labels.append(label)
-        }
-
-        return labels
-    }
 
     var recordGroups: [RecordGroup] {
         guard let schools = relatedSchools, let organizations = relatedOrganizations, let artifacts = relatedArtifacts, let events = relatedEvents else {
