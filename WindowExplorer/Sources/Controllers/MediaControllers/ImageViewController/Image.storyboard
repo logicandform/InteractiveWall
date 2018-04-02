@@ -35,21 +35,21 @@
                                 </constraints>
                             </customView>
                             <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" allowsMagnification="YES" maxMagnification="5" minMagnification="1" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="WTp-wA-9SL" customClass="RegularScrollView" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="640" height="360"/>
+                                <rect key="frame" x="8" y="8" width="624" height="352"/>
                                 <clipView key="contentView" id="SUf-jl-Y0i">
-                                    <rect key="frame" x="1" y="1" width="638" height="358"/>
+                                    <rect key="frame" x="1" y="1" width="622" height="350"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r8h-aE-aJ5">
-                                            <rect key="frame" x="0.0" y="0.0" width="623" height="343"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="607" height="335"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         </view>
                                     </subviews>
                                     <color key="backgroundColor" red="0.025183623656630516" green="0.93838995695114136" blue="0.11515399068593979" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 </clipView>
                                 <constraints>
-                                    <constraint firstAttribute="height" priority="750" constant="360" id="6a5-LM-pyk"/>
-                                    <constraint firstAttribute="width" priority="750" constant="640" id="9p9-PZ-3bB"/>
+                                    <constraint firstAttribute="width" constant="624" id="etP-mP-7KU"/>
+                                    <constraint firstAttribute="height" constant="352" id="qA2-gP-fqc"/>
                                 </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="vQy-Dv-4a6">
                                     <rect key="frame" x="-100" y="-100" width="622" height="16"/>
@@ -86,8 +86,6 @@
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1GK-FO-lwr">
                                 <rect key="frame" x="46" y="360" width="548" height="29"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="29" id="Yzx-5b-BOO"/>
-                                    <constraint firstAttribute="width" constant="544" id="f0v-iM-BWg"/>
                                     <constraint firstAttribute="height" constant="29" id="g5g-AP-8FI"/>
                                 </constraints>
                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="This is a title with a j and a g and a p." usesSingleLineMode="YES" id="HlC-v9-VHL">
@@ -98,25 +96,25 @@
                             </textField>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="WTp-wA-9SL" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" constant="40" id="10V-YT-T1W"/>
+                            <constraint firstItem="WTp-wA-9SL" firstAttribute="top" secondItem="NkP-e9-NC4" secondAttribute="bottom" id="BmA-2z-XNq"/>
                             <constraint firstItem="NkP-e9-NC4" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="E2X-0d-8js"/>
                             <constraint firstItem="1GK-FO-lwr" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" constant="11" id="Uab-UM-qDh"/>
-                            <constraint firstItem="WTp-wA-9SL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sSn-s5-6HM" secondAttribute="leading" id="X9j-4u-6FB"/>
+                            <constraint firstAttribute="trailing" secondItem="WTp-wA-9SL" secondAttribute="trailing" constant="8" id="Uvu-Og-omp"/>
+                            <constraint firstItem="1GK-FO-lwr" firstAttribute="leading" secondItem="NkP-e9-NC4" secondAttribute="trailing" constant="8" id="VEN-Ga-Dsc"/>
+                            <constraint firstAttribute="bottom" secondItem="WTp-wA-9SL" secondAttribute="bottom" constant="8" id="VgE-4i-fHq"/>
                             <constraint firstItem="1Fq-0s-pMM" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="YyK-TS-wf5"/>
-                            <constraint firstAttribute="bottom" secondItem="WTp-wA-9SL" secondAttribute="bottom" id="Z1e-N5-aTr"/>
                             <constraint firstItem="NkP-e9-NC4" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" id="ZrV-8D-Dan"/>
                             <constraint firstItem="1Fq-0s-pMM" firstAttribute="leading" secondItem="1GK-FO-lwr" secondAttribute="trailing" constant="8" id="crs-95-4dD"/>
-                            <constraint firstItem="WTp-wA-9SL" firstAttribute="centerX" secondItem="sSn-s5-6HM" secondAttribute="centerX" id="eGb-ih-uVc"/>
+                            <constraint firstItem="WTp-wA-9SL" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="8" id="dsS-3c-P65"/>
                             <constraint firstAttribute="trailing" secondItem="1Fq-0s-pMM" secondAttribute="trailing" id="snJ-MF-wyp"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="WTp-wA-9SL" secondAttribute="trailing" id="xkr-jy-BVF"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="dismissButton" destination="NkP-e9-NC4" id="xmX-pw-hGC"/>
                         <outlet property="imageScrollView" destination="WTp-wA-9SL" id="ycY-PS-kHc"/>
                         <outlet property="rotateButton" destination="1Fq-0s-pMM" id="Fyx-fz-xid"/>
-                        <outlet property="scrollViewHeightConstraint" destination="6a5-LM-pyk" id="ezs-l7-7J3"/>
-                        <outlet property="scrollViewWidthConstraint" destination="9p9-PZ-3bB" id="Qjd-UD-csq"/>
+                        <outlet property="scrollViewHeightConstraint" destination="qA2-gP-fqc" id="sD3-Vj-Qus"/>
+                        <outlet property="scrollViewWidthConstraint" destination="etP-mP-7KU" id="aKz-kx-Oe4"/>
                         <outlet property="titleLabel" destination="1GK-FO-lwr" id="HfV-8T-rGp"/>
                     </connections>
                 </viewController>
