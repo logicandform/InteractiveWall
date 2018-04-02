@@ -164,7 +164,6 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
             return
         }
 
-        resetCloseWindowTimer()
         var origin = window.frame.origin
         origin += gesture.translation(in: nil)
         window.setFrameOrigin(origin)
