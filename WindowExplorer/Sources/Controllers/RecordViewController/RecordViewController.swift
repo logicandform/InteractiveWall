@@ -63,15 +63,15 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         mediaView.register(MediaItemView.self, forItemWithIdentifier: MediaItemView.identifier)
         placeHolderImage.image = record?.type.placeholder
         pageControl.color = .white
-        pageControl.numberOfPages = UInt(record?.media.count ?? 0)
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.wantsLayer = true
         detailView.addSubview(pageControl)
 
-        pageControl.leadingAnchor.constraint(equalTo: detailView.leadingAnchor).isActive = true
-        pageControl.trailingAnchor.constraint(equalTo: detailView.trailingAnchor).isActive = true
+        pageControl.centerXAnchor.constraint(equalTo: detailView.centerXAnchor).isActive = true
+        pageControl.widthAnchor.constraint(equalTo: detailView.widthAnchor).isActive = true
         pageControl.topAnchor.constraint(equalTo: mediaView.bottomAnchor).isActive = true
         pageControl.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        pageControl.numberOfPages = UInt(record?.media.count ?? 0)
     }
 
     private func setupRelatedItemsView() {
@@ -82,11 +82,11 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         toggleRelatedItemsArea.wantsLayer = true
         relatedItemsViewButton.font = NSFont(name: Constants.fontName, size: Constants.fontSize) ?? NSFont.systemFont(ofSize: Constants.fontSize)
         relatedItemsViewButton.attributedTitle = NSAttributedString(string: relatedItemsViewButton.title, attributes: [.foregroundColor : Constants.fontColor])
-        
+
         if let buttonCell = relatedItemsViewButton.cell as? NSButtonCell {
             let color = record.relatedRecords.isEmpty ? style.noRelatedItemsColor : record.type.color
-            toggleRelatedItemsArea.layer?.backgroundColor = color.cgColor
             buttonCell.backgroundColor = color
+            toggleRelatedItemsArea.layer?.backgroundColor = color.cgColor
         }
     }
 
@@ -340,8 +340,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
         relatedItemsView.isHidden = false
         hideRelatedItemsButton.isHidden = false
-
         let alpha: CGFloat = showingRelatedItems ? 0 : 1
+
         NSAnimationContext.runAnimationGroup({ [weak self] _ in
             NSAnimationContext.current.duration = 0.5
             self?.relatedItemsView.animator().alphaValue = alpha
@@ -358,7 +358,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         let diff: CGFloat = showingRelatedItems ? -200 : 200
         var frame = window.frame
         frame.size.width += diff
-
         window.setFrame(frame, display: true, animate: true)
         showingRelatedItems = !showingRelatedItems
     }
@@ -443,7 +442,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return nil
         }
 
-        relatedItemView.didTapItem = selectRelatedItem(_:)
         relatedItemView.record = record?.relatedRecords[row]
         return relatedItemView
     }

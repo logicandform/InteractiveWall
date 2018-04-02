@@ -10,10 +10,9 @@ final class WindowFactory {
     // MARK: API
 
     static func window(for type: WindowType, at origin: CGPoint) -> NSWindow {
-        let frame = CGRect(origin: origin, size: type.size)
         let viewController = controller(for: type)
-        viewController.view.setFrameSize(frame.size)
-        let window = BorderlessWindow(frame: frame, controller: viewController)
+        viewController.view.setFrameSize(type.size)
+        let window = BorderlessWindow(frame: CGRect(origin: origin, size: type.size), controller: viewController)
         window.makeKeyAndOrderFront(self)
         return window
     }
