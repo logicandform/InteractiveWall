@@ -25,21 +25,22 @@ class MediaViewController: NSViewController, GestureResponder {
     }
 
     private struct Constants {
-        static let closeWindowTimeoutPeriod: TimeInterval = 60
-        static let titleFontSize: CGFloat = 16.0
-        static let titleForegroundColor: NSColor = NSColor.white
-        static let kern = 1.5
-        static let fontName: String = "Soleil"
+        static let closeWindowTimeoutPeriod: TimeInterval = 00
+        static let titleFontSize: CGFloat = 16
+        static let titleForegroundColor: NSColor = .white
+        static let kern: CGFloat = 1.5
+        static let fontName = "Soleil"
     }
 
     // MARK: Life-Cycle
 
     override func viewDidLoad() {
-        resetCloseWindowTimer()
+        super.viewDidLoad()
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
         gestureManager = GestureManager(responder: self)
         gestureManager.touchReceived = receivedTouch(_:)
+        resetCloseWindowTimer()
     }
 
 
@@ -78,6 +79,11 @@ class MediaViewController: NSViewController, GestureResponder {
     // MARK: Helpers
 
     private func receivedTouch(_ touch: Touch) {
-        resetCloseWindowTimer()
+        switch touch.state {
+        case .down, .up:
+            resetCloseWindowTimer()
+        case .moved:
+            return
+        }
     }
 }
