@@ -57,11 +57,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         resetCloseWindowTimer()
     }
 
-    // MARK: Testing
-    override func viewDidAppear() {
-        toggleRelatedItems()
-    }
-    
+
     // MARK: Setup
 
     private func setupMediaView() {
@@ -95,8 +91,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         hideRelatedItemsButton.alphaValue = 0
         toggleRelatedItemsArea.wantsLayer = true
         relatedItemsViewButton.font = NSFont(name: Constants.fontName, size: Constants.fontSize) ?? NSFont.systemFont(ofSize: Constants.fontSize)
-        relatedItemsViewButton.attributedTitle = NSAttributedString(string:
-            relatedItemsViewButton.title, attributes: titleBarAttributes)
+        relatedItemsViewButton.attributedTitle = NSAttributedString(string: relatedItemsViewButton.title, attributes: titleBarAttributes)
 
         if let buttonCell = relatedItemsViewButton.cell as? NSButtonCell {
             let color = record.relatedRecords.isEmpty ? style.noRelatedItemsColor : record.type.color
