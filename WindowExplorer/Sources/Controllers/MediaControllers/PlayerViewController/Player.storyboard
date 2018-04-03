@@ -72,7 +72,7 @@
                                     <constraint firstAttribute="height" constant="29" id="xMt-aB-HMi"/>
                                 </constraints>
                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="This is a title with a j and a g and a p." usesSingleLineMode="YES" id="Tzu-z0-dav">
-                                    <font key="font" metaFont="system" size="16"/>
+                                    <font key="font" size="16" name="Soleil"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
