@@ -33,4 +33,17 @@ enum WindowType {
             return CGSize(width: 600, height: 640)
         }
     }
+
+    var canAdjustOrigin: Bool {
+        switch self {
+        case .record:
+            return false
+        case .image:
+            return true
+        case .player:
+            return true
+        case .pdf:
+            return true
+        }
+    }
 }
