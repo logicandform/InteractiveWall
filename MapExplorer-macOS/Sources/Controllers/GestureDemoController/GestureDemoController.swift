@@ -4,7 +4,7 @@ import MONode
 
 class GestureDemoController: NSViewController, SocketManagerDelegate, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "Demo")
-    static let config = NetworkConfiguration(broadcastHost: "10.0.0.255", nodePort: 12221)
+    static let config = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 12222)
 
     let socketManager = SocketManager(networkConfiguration: config)
     var gestureManager: GestureManager!
@@ -49,6 +49,8 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
             return
         }
 
+        print(touch.velocity)
+
         convertToScreen(touch)
         gestureManager.handle(touch)
     }
@@ -83,15 +85,15 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
 
         switch pinch.state {
         case .recognized, .momentum:
-            let width = max(300, rect.frame.size.width * pinch.scale)
-            let height = max(300, min(view.frame.height, rect.frame.size.height * pinch.scale))
+//            let width = max(300, rect.frame.size.width * pinch.scale)
+//            let height = max(300, min(view.frame.height, rect.frame.size.height * pinch.scale))
             var originX = min(view.frame.origin.x + view.frame.width - rect.frame.width, max(view.frame.origin.x, rect.frame.origin.x + pinch.delta.dx))
             var originY = min(view.frame.origin.y + view.frame.height - rect.frame.height, max(view.frame.origin.y, rect.frame.origin.y + pinch.delta.dy))
-            originX += (rect.frame.width - width) / 2
-            originY += (rect.frame.height - height) / 2
+//            originX += (rect.frame.width - width) / 2
+//            originY += (rect.frame.height - height) / 2
 
             rect.frame.origin = CGPoint(x: originX, y: originY)
-            rect.frame.size = CGSize(width: width, height: height)
+//            rect.frame.size = CGSize(width: width, height: height)
         default:
             return
         }

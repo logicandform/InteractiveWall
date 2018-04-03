@@ -3,30 +3,57 @@
 import Foundation
 import MONode
 
+struct PositionAndTime: Hashable {
+    var hashValue: Int {
+        //return position.x.hashValue + position.y.hashValue + Int(time)
+        return 1
+    }
+
+    var position: CGPoint
+    var time: CGFloat
+}
 
 class Touch: Hashable, CustomStringConvertible {
 
     var position: CGPoint
     var state: TouchState
+    var time: CGFloat {
+        didSet {
+            if positionsAndTimes.count == 4 {
+                positionsAndTimes.removeFirst()
+            }
+            positionsAndTimes.append(PositionAndTime(position: position, time: time))
+        }
+    }
     let screen: Int
     let id: Int
+
+    private var positionsAndTimes = [PositionAndTime]()
+
+    var velocity: CGVector? {
+        guard positionsAndTimes.count == 4, let last = positionsAndTimes.last, let secondLast = positionsAndTimes.first else {
+            return nil
+        }
+        return ((last.position - secondLast.position) / (last.time - secondLast.time)).asVector
+    }
 
     var hashValue: Int {
         return id ^ screen
     }
 
     var description: String {
-        return "( [Touch] ID: \(id), Position: \(position), State: \(state) )"
+        return "( [Touch] ID: \(id), Position: \(position), State: \(state), Time: \(time) )"
     }
 
 
     // MARK: Initializers
 
-    init(position: CGPoint, state: TouchState, id: Int, screen: Int) {
+    init(position: CGPoint, state: TouchState, id: Int, screen: Int, time: CGFloat) {
         self.position = position
         self.state = state
         self.screen = screen
         self.id = id
+        self.time = time
     }
 
     init?(from packet: Packet) {
@@ -42,6 +69,8 @@ class Touch: Hashable, CustomStringConvertible {
         let xPos = payload.extract(Int32.self, at: index)
         index += MemoryLayout<Int32>.size
         let yPos = payload.extract(Int32.self, at: index)
+        index += MemoryLayout<Int32>.size
+        self.time = CGFloat(payload.extract(Float32.self, at: index))
         self.position = CGPoint(x: CGFloat(xPos), y: CGFloat(yPos))
         self.state = touchState
     }
@@ -66,6 +95,8 @@ class Touch: Hashable, CustomStringConvertible {
         let x = data.extract(CGFloat.self, at: index)
         index += MemoryLayout<CGFloat>.size
         let y = data.extract(CGFloat.self, at: index)
+        index += MemoryLayout<CGFloat>.size
+        self.time = CGFloat(data.extract(Float32.self, at: index))
         position = CGPoint(x: x, y: y)
     }
 
@@ -77,11 +108,12 @@ class Touch: Hashable, CustomStringConvertible {
         if self == touch {
             self.position = touch.position
             self.state = touch.state
+            self.time = touch.time
         }
     }
 
     func copy() -> Touch {
-        return Touch(position: position, state: state, id: id, screen: screen)
+        return Touch(position: position, state: state, id: id, screen: screen, time: time)
     }
 
     func toData() -> Data {
@@ -95,6 +127,7 @@ class Touch: Hashable, CustomStringConvertible {
         packetData.append(Int8(state.rawValue))
         packetData.append(position.x)
         packetData.append(position.y)
+        packetData.append(time)
         return packetData
     }
 

@@ -89,6 +89,8 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             return
         }
 
+        print(touch.position)
+
         positionForTouch[touch] = touch.position
         updateTouchesForSpread(with: touch)
 
@@ -129,6 +131,8 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     func end(_ touch: Touch, with properties: TouchProperties) {
         positionForTouch.removeValue(forKey: touch)
         setTouchesForPinch()
+
+        print("up: ", touch.position)
 
         guard properties.touchCount.isZero else {
             return
@@ -285,8 +289,12 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         static let pinchThresholdMomentumScale: CGFloat = 0.0001
         static let pinchInitialFrictionFactor: CGFloat = 1.04
         static let pinchFrictionFactorScale: CGFloat = 0.002
-        static let panInitialFrictionFactor = 1.05
-        static let panFrictionFactorScale = 0.001
+//        static let panInitialFrictionFactor = 1.05
+//        static let panFrictionFactorScale = 0.001
+
+        static let panInitialFrictionFactor = 1.0
+        static let panFrictionFactorScale = 0.0
+
         static let panThresholdMomentumDelta: Double = 2
     }
 
@@ -295,8 +303,10 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private var pinchFrictionFactor = Momentum.pinchInitialFrictionFactor
 
     private var panVelocity: CGVector? {
-        guard let last = locations.last, let secondLast = locations.secondLast else { return nil }
-        return CGVector(dx: last.x - secondLast.x, dy: last.y - secondLast.y)
+        guard let last = locations.last, let secondLast = locations.secondLast else {
+            return nil
+        }
+        return CGVector(dx: last.x - secondLast.x, dy: last.y - secondLast.y) * 2
     }
 
     private var pinchScale: CGFloat? {
