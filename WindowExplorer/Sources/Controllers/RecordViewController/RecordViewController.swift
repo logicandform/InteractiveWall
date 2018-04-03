@@ -442,7 +442,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return nil
         }
 
-        relatedItemView.record = record?.relatedRecords[row]
+        relatedItemView.record = record.relatedRecords[row]
+        relatedItemView.tintColor = record.type.color
         return relatedItemView
     }
 

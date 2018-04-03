@@ -9,6 +9,7 @@ class ImageViewController: MediaViewController {
     static let storyboard = NSStoryboard.Name(rawValue: "Image")
 
     @IBOutlet weak var imageScrollView: RegularScrollView!
+    @IBOutlet weak var windowDragArea: NSView!
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollViewWidthConstraint: NSLayoutConstraint!
@@ -76,9 +77,9 @@ class ImageViewController: MediaViewController {
         let panGesture = NSPanGestureRecognizer(target: self, action: #selector(handleMousePan(_:)))
         view.addGestureRecognizer(panGesture)
 
-        let singleFingerWindowPan = PanGestureRecognizer()
-        gestureManager.add(singleFingerWindowPan, to: view)
-        singleFingerWindowPan.gestureUpdated = didPanView(_:)
+        let windowPan = PanGestureRecognizer()
+        gestureManager.add(windowPan, to: windowDragArea)
+        windowPan.gestureUpdated = handleWindowPan(_:)
 
         let pinchGesture = PinchGestureRecognizer()
         gestureManager.add(pinchGesture, to: imageScrollView)
@@ -96,7 +97,7 @@ class ImageViewController: MediaViewController {
 
     // MARK: Gesture Handling
 
-    private func didPanView(_ gesture: GestureRecognizer) {
+    private func handleWindowPan(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
             return
         }

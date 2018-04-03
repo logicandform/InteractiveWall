@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="1Ij-Lj-j0K">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="1Ij-Lj-j0K">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
-        <plugIn identifier="com.apple.pdfkit.ibplugin" version="13771"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <plugIn identifier="com.apple.pdfkit.ibplugin" version="14109"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -14,6 +14,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="640" height="730"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="QK0-JK-wDg">
+                                <rect key="frame" x="0.0" y="690" width="640" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="LRm-zF-CLJ"/>
+                                </constraints>
+                            </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="u0A-Yb-xpw">
                                 <rect key="frame" x="572" y="8" width="60" height="674"/>
                                 <constraints>
@@ -140,6 +146,7 @@
                             <constraint firstAttribute="trailing" secondItem="LrV-6C-x9X" secondAttribute="trailing" constant="8" id="DGl-vk-8K5"/>
                             <constraint firstAttribute="trailing" secondItem="u0A-Yb-xpw" secondAttribute="trailing" constant="8" id="DI9-rv-WwS"/>
                             <constraint firstItem="u0A-Yb-xpw" firstAttribute="top" secondItem="FZL-O2-tAp" secondAttribute="bottom" constant="8" id="GYo-vU-eL2"/>
+                            <constraint firstItem="QK0-JK-wDg" firstAttribute="leading" secondItem="l0O-E9-8FM" secondAttribute="leading" id="Jcs-sa-mcD"/>
                             <constraint firstItem="LrV-6C-x9X" firstAttribute="leading" secondItem="aNn-xH-yEO" secondAttribute="trailing" constant="8" id="KMZ-e4-ARa"/>
                             <constraint firstItem="LrV-6C-x9X" firstAttribute="leading" secondItem="dYk-YZ-F2X" secondAttribute="leading" id="LU6-up-Lbc"/>
                             <constraint firstAttribute="bottom" secondItem="aNn-xH-yEO" secondAttribute="bottom" id="RqS-p3-6tb"/>
@@ -148,7 +155,9 @@
                             <constraint firstItem="LrV-6C-x9X" firstAttribute="top" secondItem="aNn-xH-yEO" secondAttribute="top" id="g9O-2M-jSc"/>
                             <constraint firstAttribute="trailing" secondItem="FZL-O2-tAp" secondAttribute="trailing" constant="20" id="hs0-xf-LOa"/>
                             <constraint firstItem="ty9-rb-Gm3" firstAttribute="leading" secondItem="l0O-E9-8FM" secondAttribute="leading" id="khX-1d-Wcj"/>
+                            <constraint firstItem="QK0-JK-wDg" firstAttribute="top" secondItem="l0O-E9-8FM" secondAttribute="top" id="lXy-yL-FM9"/>
                             <constraint firstItem="ty9-rb-Gm3" firstAttribute="top" secondItem="l0O-E9-8FM" secondAttribute="top" id="ldi-k1-DbP"/>
+                            <constraint firstAttribute="trailing" secondItem="QK0-JK-wDg" secondAttribute="trailing" id="og7-JT-nYV"/>
                             <constraint firstItem="dYk-YZ-F2X" firstAttribute="top" secondItem="FZL-O2-tAp" secondAttribute="bottom" constant="8" id="qpi-05-N9m"/>
                             <constraint firstItem="aNn-xH-yEO" firstAttribute="top" secondItem="ty9-rb-Gm3" secondAttribute="bottom" id="rhL-Sz-O6O"/>
                             <constraint firstAttribute="bottom" secondItem="LrV-6C-x9X" secondAttribute="bottom" constant="8" id="u7I-op-AM2"/>
@@ -165,6 +174,7 @@
                         <outlet property="pdfWidthConstraint" destination="Jjz-fV-fMy" id="1Pp-vJ-TXi"/>
                         <outlet property="thumbnailView" destination="jmI-PA-kXC" id="5An-LJ-yQA"/>
                         <outlet property="titleLabel" destination="FZL-O2-tAp" id="yf7-TD-EXc"/>
+                        <outlet property="windowDragArea" destination="QK0-JK-wDg" id="1cZ-cg-FeL"/>
                     </connections>
                 </viewController>
                 <customObject id="Q0f-PU-OLM" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

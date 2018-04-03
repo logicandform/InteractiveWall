@@ -12,6 +12,7 @@ class RelatedItemView: NSView {
     @IBOutlet weak var descriptionLabel: NSTextField!
     @IBOutlet weak var imageView: AspectFillImageView!
 
+    var tintColor = style.selectedColor
     var record: RecordDisplayable? {
         didSet {
             load(record)
@@ -35,9 +36,13 @@ class RelatedItemView: NSView {
 
     func set(highlighted: Bool) {
         if highlighted {
-            layer?.backgroundColor = style.selectedColor.cgColor
+            layer?.backgroundColor = tintColor.cgColor
+            titleLabel.textColor = .black
+            descriptionLabel.textColor = .black
         } else {
             layer?.backgroundColor = style.darkBackground.cgColor
+            titleLabel.textColor = .white
+            descriptionLabel.textColor = .white
         }
     }
 

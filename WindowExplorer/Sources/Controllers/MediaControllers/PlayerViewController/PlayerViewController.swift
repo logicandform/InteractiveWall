@@ -9,6 +9,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Player")
 
     @IBOutlet weak var playerView: AVPlayerView!
+    @IBOutlet weak var windowDragArea: NSView!
     @IBOutlet weak var playerControl: PlayerControl!
     @IBOutlet weak var dismissButton: NSView!
     @IBOutlet weak var playerStateImageView: AspectFillImageView!
@@ -107,9 +108,9 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         gestureManager.add(singleFingerPlayerControlTap, to: playerControl.toggleButton)
         singleFingerPlayerControlTap.gestureUpdated = didTapVideoPlayer(_:)
 
-        let singleFingerPan = PanGestureRecognizer()
-        gestureManager.add(singleFingerPan, to: playerView)
-        singleFingerPan.gestureUpdated = didPanDetailView(_:)
+        let windowPan = PanGestureRecognizer()
+        gestureManager.add(windowPan, to: windowDragArea)
+        windowPan.gestureUpdated = handleWindowPan(_:)
 
         let singleFingerCloseButtonTap = TapGestureRecognizer()
         gestureManager.add(singleFingerCloseButtonTap, to: dismissButton)
@@ -127,7 +128,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         playerControl.toggle()
     }
 
-    private func didPanDetailView(_ gesture: GestureRecognizer) {
+    private func handleWindowPan(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
             return
         }
