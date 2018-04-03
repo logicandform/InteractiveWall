@@ -17,7 +17,6 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     var audioPlayer: AKPlayer?
 
 
-
     // MARK: Init
 
     deinit {

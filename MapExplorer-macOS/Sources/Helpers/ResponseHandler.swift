@@ -12,7 +12,7 @@ final class ResponseHandler {
             throw NetworkError.badResponse
         }
 
-        return placesJSON.flatMap { Place(json: $0) }
+        return placesJSON.compactMap { Place(json: $0) }
     }
 
 
@@ -23,7 +23,7 @@ final class ResponseHandler {
             throw NetworkError.badResponse
         }
 
-        return json.flatMap { School(json: $0) }
+        return json.compactMap { School(json: $0) }
     }
 
 
@@ -34,6 +34,6 @@ final class ResponseHandler {
             throw NetworkError.badResponse
         }
 
-        return json.flatMap { Event(json: $0) }
+        return json.compactMap { Event(json: $0) }
     }
 }

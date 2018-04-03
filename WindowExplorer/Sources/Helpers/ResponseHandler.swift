@@ -12,7 +12,7 @@ final class ResponseHandler {
             throw NetworkError.badResponse
         }
 
-        return placesJSON.flatMap { Place(json: $0) }
+        return placesJSON.compactMap { Place(json: $0) }
     }
 
     static func serializePlace(from json: Any) throws -> Place {
@@ -39,7 +39,7 @@ final class ResponseHandler {
             throw NetworkError.badResponse
         }
 
-        return json.flatMap { Organization(json: $0) }
+        return json.compactMap { Organization(json: $0) }
     }
 
     static func serializeOrganization(from json: Any) throws -> Organization {
@@ -66,7 +66,7 @@ final class ResponseHandler {
             throw NetworkError.badResponse
         }
 
-        return json.flatMap { Event(json: $0) }
+        return json.compactMap { Event(json: $0) }
     }
 
     static func serializeEvent(from json: Any) throws -> Event {
@@ -93,7 +93,7 @@ final class ResponseHandler {
             throw NetworkError.badResponse
         }
 
-        return json.flatMap { Artifact(json: $0) }
+        return json.compactMap { Artifact(json: $0) }
     }
 
     static func serializeArtifact(from json: Any) throws -> Artifact {
@@ -120,7 +120,7 @@ final class ResponseHandler {
             throw NetworkError.badResponse
         }
 
-        return json.flatMap { School(json: $0) }
+        return json.compactMap { School(json: $0) }
     }
 
     static func serializeSchool(from json: Any) throws -> School {
@@ -147,7 +147,7 @@ final class ResponseHandler {
             throw NetworkError.badResponse
         }
 
-        return json.flatMap { Theme(json: $0) }
+        return json.compactMap { Theme(json: $0) }
     }
 
     static func serializeTheme(from json: Any) throws -> Theme {

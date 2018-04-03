@@ -20,6 +20,7 @@ extension CGPoint {
             return nil
         }
 
+        self.init()
         self.x = x
         self.y = y
     }
