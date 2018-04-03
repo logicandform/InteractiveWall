@@ -9,6 +9,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
     @IBOutlet weak var pdfView: PDFView!
     @IBOutlet weak var thumbnailView: NSTableView!
     @IBOutlet weak var titleLabel: NSTextField!
+    @IBOutlet weak var windowDragArea: NSView!
     @IBOutlet weak var closeButtonView: NSView!
     @IBOutlet weak var backTapArea: NSView!
     @IBOutlet weak var forwardTapArea: NSView!
@@ -100,7 +101,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         view.addGestureRecognizer(panGesture)
 
         let windowPan = PanGestureRecognizer()
-        gestureManager.add(windowPan, to: view)
+        gestureManager.add(windowPan, to: windowDragArea)
         windowPan.gestureUpdated = handleWindowPan(_:)
 
         let thumbnailViewPan = PanGestureRecognizer()

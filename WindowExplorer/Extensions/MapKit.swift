@@ -13,6 +13,7 @@ extension MKMapRect: Equatable {
     }
 
     init?(json: JSON) {
+        self.init()
         guard let x = json[Keys.x] as? Double, let y = json[Keys.y] as? Double, let width = json[Keys.width] as? Double, let height = json[Keys.height] as? Double else {
             return nil
         }
@@ -77,6 +78,7 @@ extension CLLocationCoordinate2D {
             return nil
         }
 
+        self.init()
         let latitudeStart = location.index(after: openingBracket)
         let latitudeEnd = location.index(before: comma)
         let longitudeStart = location.index(after: comma)

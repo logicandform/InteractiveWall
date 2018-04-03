@@ -35,7 +35,9 @@ class PlayerControl: NSView {
 
     var tintColor: NSColor? {
         didSet {
-            seekBar?.trackFillColor = tintColor
+            if let color = tintColor, let cell = seekBar.cell as? ColoredSliderCell {
+                cell.leadingColor = color
+            }
         }
     }
 

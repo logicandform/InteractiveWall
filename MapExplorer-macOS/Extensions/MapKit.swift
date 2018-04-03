@@ -13,6 +13,7 @@ extension MKMapRect: Equatable {
     }
 
     init?(json: JSON) {
+        self.init()
         guard let x = json[Keys.x] as? Double, let y = json[Keys.y] as? Double, let width = json[Keys.width] as? Double, let height = json[Keys.height] as? Double else {
             return nil
         }
@@ -73,6 +74,7 @@ extension CLLocationCoordinate2D {
 
     // Example geolocation string: "Tofino [49.2761659,-126.0563673]"
     init?(string: String?) {
+        self.init()
         guard let location = string, let openingBracket = location.index(of: "["), let comma = location.range(of: ",", options: String.CompareOptions.backwards, range: nil, locale: nil)?.lowerBound, let closingBracket = location.index(of: "]") else {
             return nil
         }

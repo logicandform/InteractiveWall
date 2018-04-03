@@ -39,19 +39,19 @@ class Place {
         self.coordinate = coordinate
 
         if let schoolsJSON = json[Keys.schools] as? [JSON] {
-            let schools = schoolsJSON.flatMap { School(json: $0) }
+            let schools = schoolsJSON.compactMap { School(json: $0) }
             self.relatedSchools = schools
         }
         if let organizationsJSON = json[Keys.organizations] as? [JSON] {
-            let organizations = organizationsJSON.flatMap { Organization(json: $0) }
+            let organizations = organizationsJSON.compactMap { Organization(json: $0) }
             self.relatedOrganizations = organizations
         }
         if let artifactsJSON = json[Keys.artifacts] as? [JSON] {
-            let artifacts = artifactsJSON.flatMap { Artifact(json: $0) }
+            let artifacts = artifactsJSON.compactMap { Artifact(json: $0) }
             self.relatedArtifacts = artifacts
         }
         if let eventsJSON = json[Keys.events] as? [JSON] {
-            let events = eventsJSON.flatMap { Event(json: $0) }
+            let events = eventsJSON.compactMap { Event(json: $0) }
             self.relatedEvents = events
         }
     }

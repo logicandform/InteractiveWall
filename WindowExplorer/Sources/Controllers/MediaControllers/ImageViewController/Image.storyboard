@@ -13,6 +13,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="640" height="400"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="529-pd-R3M">
+                                <rect key="frame" x="0.0" y="360" width="640" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="fwT-XL-vNP"/>
+                                </constraints>
+                            </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="NkP-e9-NC4">
                                 <rect key="frame" x="0.0" y="360" width="40" height="40"/>
                                 <subviews>
@@ -89,23 +95,26 @@
                                     <constraint firstAttribute="height" constant="29" id="g5g-AP-8FI"/>
                                 </constraints>
                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="This is a title with a j and a g and a p." usesSingleLineMode="YES" id="HlC-v9-VHL">
-                                    <font key="font" size="16" name="Soleil"/>
+                                    <font key="font" metaFont="system" size="16"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="529-pd-R3M" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" id="6Jt-qE-li2"/>
                             <constraint firstItem="WTp-wA-9SL" firstAttribute="top" secondItem="NkP-e9-NC4" secondAttribute="bottom" id="BmA-2z-XNq"/>
                             <constraint firstItem="NkP-e9-NC4" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="E2X-0d-8js"/>
                             <constraint firstItem="1GK-FO-lwr" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" constant="11" id="Uab-UM-qDh"/>
                             <constraint firstAttribute="trailing" secondItem="WTp-wA-9SL" secondAttribute="trailing" constant="8" id="Uvu-Og-omp"/>
                             <constraint firstItem="1GK-FO-lwr" firstAttribute="leading" secondItem="NkP-e9-NC4" secondAttribute="trailing" constant="8" id="VEN-Ga-Dsc"/>
                             <constraint firstAttribute="bottom" secondItem="WTp-wA-9SL" secondAttribute="bottom" constant="8" id="VgE-4i-fHq"/>
+                            <constraint firstItem="529-pd-R3M" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="WnV-SU-5jv"/>
                             <constraint firstItem="1Fq-0s-pMM" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="YyK-TS-wf5"/>
                             <constraint firstItem="NkP-e9-NC4" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" id="ZrV-8D-Dan"/>
                             <constraint firstItem="1Fq-0s-pMM" firstAttribute="leading" secondItem="1GK-FO-lwr" secondAttribute="trailing" constant="8" id="crs-95-4dD"/>
                             <constraint firstItem="WTp-wA-9SL" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="8" id="dsS-3c-P65"/>
+                            <constraint firstAttribute="trailing" secondItem="529-pd-R3M" secondAttribute="trailing" id="qKh-TI-HmK"/>
                             <constraint firstAttribute="trailing" secondItem="1Fq-0s-pMM" secondAttribute="trailing" id="snJ-MF-wyp"/>
                         </constraints>
                     </view>
@@ -116,6 +125,7 @@
                         <outlet property="scrollViewHeightConstraint" destination="qA2-gP-fqc" id="sD3-Vj-Qus"/>
                         <outlet property="scrollViewWidthConstraint" destination="etP-mP-7KU" id="aKz-kx-Oe4"/>
                         <outlet property="titleLabel" destination="1GK-FO-lwr" id="HfV-8T-rGp"/>
+                        <outlet property="windowDragArea" destination="529-pd-R3M" id="oDk-Ab-kF4"/>
                     </connections>
                 </viewController>
                 <customObject id="ApF-HA-SvK" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
