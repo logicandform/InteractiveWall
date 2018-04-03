@@ -31,16 +31,24 @@ class RelatedItemView: NSView {
             let font = NSFont(name: Constants.fontName, size: Constants.titleFontSize) ?? NSFont.systemFont(ofSize: Constants.titleFontSize)
             return [.kern : Constants.kern,
                     .foregroundColor : Constants.fontColor,
-                    .font : font]
+                    .font : font,
+                    .baselineOffset : font.fontName == Constants.fontName ? 6.0 : 0.0]
         }
     }
     
     private var descriptionLabelAttributes : [NSAttributedStringKey : Any] {
         get {
             let font = NSFont(name: Constants.fontName, size: Constants.descriptionFontSize) ?? NSFont.systemFont(ofSize: Constants.descriptionFontSize)
-            return [.kern : Constants.kern,
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineBreakMode = .byWordWrapping
+            paragraphStyle.lineSpacing = 0.0
+            paragraphStyle.paragraphSpacing = 0.0
+            paragraphStyle.paragraphSpacingBefore = 0.0
+            return [.paragraphStyle : paragraphStyle,
+                    .kern : Constants.kern,
                     .foregroundColor : Constants.fontColor,
-                    .font : font]
+                    .font : font,
+                    .baselineOffset : 0.0]
         }
     }
 
@@ -50,9 +58,6 @@ class RelatedItemView: NSView {
         super.awakeFromNib()
         wantsLayer = true
         set(highlighted: false)
-
-        titleLabel?.textColor = .white
-        descriptionLabel?.textColor = .white
     }
 
     // MARK: API

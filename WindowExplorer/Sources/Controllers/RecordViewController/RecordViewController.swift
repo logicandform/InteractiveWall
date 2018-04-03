@@ -27,7 +27,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private weak var closeWindowTimer: Foundation.Timer?
     
     private struct Constants {
-        static let tableRowHeight: CGFloat = 60
+        static let tableRowHeight: CGFloat = 80
         static let windowMargins: CGFloat = 20
         static let mediaControllerOffsetX = 100
         static let mediaControllerOffsetY = -50
@@ -57,7 +57,11 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         resetCloseWindowTimer()
     }
 
-
+    // MARK: Testing
+    override func viewDidAppear() {
+        toggleRelatedItems()
+    }
+    
     // MARK: Setup
 
     private func setupMediaView() {
@@ -366,7 +370,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
                 completion?()
         })
 
-        let diff: CGFloat = showingRelatedItems ? -200 : 200
+        let diff: CGFloat = showingRelatedItems ? -256 : 256
         var frame = window.frame
         frame.size.width += diff
         window.setFrame(frame, display: true, animate: true)
