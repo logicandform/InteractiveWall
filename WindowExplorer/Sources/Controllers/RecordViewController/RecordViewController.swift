@@ -27,7 +27,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private weak var closeWindowTimer: Foundation.Timer?
     
     private struct Constants {
-        static let tableRowHeight: CGFloat = 60
+        static let tableRowHeight: CGFloat = 80
         static let windowMargins: CGFloat = 20
         static let mediaControllerOffsetX = 100
         static let mediaControllerOffsetY = -50
@@ -35,6 +35,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         static let fontName = "Soleil"
         static let fontSize: CGFloat = 13
         static let fontColor: NSColor = .white
+        static let kern: CGFloat = 0.5
     }
 
 
@@ -73,6 +74,15 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         pageControl.heightAnchor.constraint(equalToConstant: 20).isActive = true
         pageControl.numberOfPages = UInt(record?.media.count ?? 0)
     }
+    
+    private var titleBarAttributes : [NSAttributedStringKey : Any] {
+        let font = NSFont(name: Constants.fontName, size: Constants.fontSize) ?? NSFont.systemFont(ofSize: Constants.fontSize)
+        
+        return [.font : font,
+                .foregroundColor : Constants.fontColor,
+                .kern : Constants.kern,
+                .baselineOffset : font.fontName == Constants.fontName ? 1.0 : 0.0]
+    }
 
     private func setupRelatedItemsView() {
         relatedItemsView.alphaValue = 0
@@ -81,7 +91,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         hideRelatedItemsButton.alphaValue = 0
         toggleRelatedItemsArea.wantsLayer = true
         relatedItemsViewButton.font = NSFont(name: Constants.fontName, size: Constants.fontSize) ?? NSFont.systemFont(ofSize: Constants.fontSize)
-        relatedItemsViewButton.attributedTitle = NSAttributedString(string: relatedItemsViewButton.title, attributes: [.foregroundColor : Constants.fontColor])
+        relatedItemsViewButton.attributedTitle = NSAttributedString(string: relatedItemsViewButton.title, attributes: titleBarAttributes)
 
         if let buttonCell = relatedItemsViewButton.cell as? NSButtonCell {
             let color = record.relatedRecords.isEmpty ? style.noRelatedItemsColor : record.type.color
@@ -355,7 +365,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
                 completion?()
         })
 
-        let diff: CGFloat = showingRelatedItems ? -200 : 200
+        let diff: CGFloat = showingRelatedItems ? -256 : 256
         var frame = window.frame
         frame.size.width += diff
         window.setFrame(frame, display: true, animate: true)
