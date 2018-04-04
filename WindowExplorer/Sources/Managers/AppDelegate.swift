@@ -7,7 +7,7 @@ let style = Style()
 
 
 struct Configuration {
-    static let mapsPerScreen = 4
+    static let mapsPerScreen = 1
     static let numberOfScreens = 1
     static let touchScreenSize = CGSize(width: 21564, height: 12116)
     static let loadMapsOnFirstScreen = false
@@ -15,7 +15,7 @@ struct Configuration {
 
 struct ShellCommands {
     static let openLaunchPath = "/usr/bin/open"
-    static let openMapsBaseArg = ["-n", "-a", "/Users/spencerperkins/Library/Developer/Xcode/DerivedData/MapExplorer-dttmkubbxpmqnkgcnmtskfqjhfbq/Build/Products/Debug/MapExplorer-macOS.app", "--args"]
+    static let openMapsBaseArg = ["-n", "-a", "/Users/\(NSUserName())/Library/Developer/Xcode/DerivedData/MapExplorer-dttmkubbxpmqnkgcnmtskfqjhfbq/Build/Products/Debug/MapExplorer-macOS.app", "--args"]
     static let killallLaunchPath = "/usr/bin/killall"
     static let killallArgs = ["MapExplorer-macOS"]
 }
@@ -31,8 +31,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationWillTerminate(_ notification: Notification) {
         // Insert code here to tear down your application
-        killallMaps()
-        print("terminate")
+        killSubProcesses()
     }
 }
 
@@ -47,7 +46,7 @@ private func launchMapExplorer() {
     }
 }
 
-private func killallMaps() {
+private func killSubProcesses() {
     shell(ShellCommands.killallLaunchPath, ShellCommands.killallArgs)
 }
 
