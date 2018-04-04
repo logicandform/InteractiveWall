@@ -36,6 +36,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         static let fontSize: CGFloat = 13
         static let fontColor: NSColor = .white
         static let kern: CGFloat = 0.5
+        static let screenEdgeBuffer: CGFloat = 40
     }
 
 
@@ -392,11 +393,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return
         }
 
-        var screenWidth: CGFloat = 0.0
-        for screen in NSScreen.screens {
-            screenWidth += screen.frame.width
-        }
-
+        let totalWidth = NSScreen.screens.reduce(0) { $0 + $1.frame.width }
         let position = positionsForMediaControllers.values.max() != nil ? positionsForMediaControllers.values.max()! + 1 : 0
         let offsetX = position * Constants.mediaControllerOffsetX
         let offsetY = position * Constants.mediaControllerOffsetY
@@ -404,11 +401,11 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         let y = window.frame.maxY - windowType.size.height + CGFloat(offsetY)
         var origin = CGPoint(x: x, y: y)
 
-        if x > screenWidth - 40, windowType.canAdjustOrigin {
+        if x > totalWidth - Constants.screenEdgeBuffer, windowType.canAdjustOrigin {
             if lastScreen.frame.height - window.frame.maxY < windowType.size.height {
-                origin = NSPoint(x: screenWidth - windowType.size.width - Constants.windowMargins, y: y - view.frame.height - Constants.windowMargins)
+                origin = NSPoint(x: totalWidth - windowType.size.width - Constants.windowMargins, y: y - view.frame.height - Constants.windowMargins)
             } else {
-                origin = NSPoint(x: screenWidth - windowType.size.width - Constants.windowMargins, y: y + windowType.size.height + Constants.windowMargins)
+                origin = NSPoint(x: totalWidth - windowType.size.width - Constants.windowMargins, y: y + windowType.size.height + Constants.windowMargins)
             }
         }
 

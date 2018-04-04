@@ -34,15 +34,12 @@ enum WindowType {
         }
     }
 
+    /// Used for checking if the specific media can be move above or below the record it was called from.
     var canAdjustOrigin: Bool {
         switch self {
         case .record:
             return false
-        case .image:
-            return true
-        case .player:
-            return true
-        case .pdf:
+        case .image, .player, .pdf:
             return true
         }
     }
