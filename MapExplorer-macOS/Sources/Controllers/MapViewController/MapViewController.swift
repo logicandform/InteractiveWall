@@ -18,7 +18,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private var recordForAnnotation = [CircleAnnotation: Record]()
 
     private struct Constants {
-        static let tileURL = "http://localhost:3200/v2/tiles/{z}/{x}/{y}.pbf"
+        static let tileURL = "http://10.58.73.164:3200/v2/tiles/{z}/{x}/{y}.pbf"
         static let maxZoomWidth: Double =  134217730
         static let touchRadius: CGFloat = 20
         static let annotationHitSize = CGSize(width: 50, height: 50)
@@ -111,6 +111,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         guard let tap = gesture as? TapGestureRecognizer, let position = tap.position else {
             return
         }
+
+        print(mapView.visibleMapRect.origin)
 
         let touchRect = CGRect(x: position.x - Constants.touchRadius, y: position.y - Constants.touchRadius, width: Constants.touchRadius * 2, height: Constants.touchRadius * 2)
         for annotation in mapView.annotations {

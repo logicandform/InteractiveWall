@@ -25,6 +25,7 @@ class MapHandler {
         static let ungroupTimeoutPeriod: TimeInterval = 5
         static let initialMapOrigin = MKMapPointMake(6000000.0, 62000000.0)
         static let initialMapSize = MKMapSizeMake(120000000.0 / (Double(Configuration.numberOfScreens) * 3), 0.0)
+        static let canada = MKMapRect(origin: MKMapPoint(x: 28436487, y: 12621158), size: MKMapSize(width: 70000000, height: 90000000))
     }
 
     private struct Keys {
@@ -130,10 +131,15 @@ class MapHandler {
     private func set(_ mapRect: MKMapRect, from pair: Int?) {
         let pairedID = pair ?? mapID
         let xOrigin = mapRect.origin.x + Double(mapID - pairedID) * mapRect.size.width
-        let mapOrigin = MKMapPointMake(xOrigin, mapRect.origin.y)
+        var yOrigin = mapRect.origin.y
+        if mapRect.origin.y + mapRect.size.height > 141205215 {
+            yOrigin = 141205215 - mapRect.size.height
+        }
+        let mapOrigin = MKMapPointMake(xOrigin, yOrigin)
 
         mapView.visibleMapRect.size = mapRect.size
         mapView.visibleMapRect.origin = mapOrigin
+        returnToCanada()
     }
 
     /// If paired to the given id, will unpair else ignore
@@ -205,6 +211,18 @@ class MapHandler {
         if activityState == .idle {
             let info: JSON = [Keys.id: mapID, Keys.group: mapID]
             DistributedNotificationCenter.default().postNotificationName(MapNotification.ungroup.name, object: nil, userInfo: info, deliverImmediately: true)
+        }
+    }
+
+    private func returnToCanada() {
+        if mapView.visibleMapRect.origin.x > Constants.canada.origin.x + Constants.canada.size.width, mapView.visibleMapRect.origin.x < MKMapSizeWorld.width - mapView.visibleMapRect.size.width {
+            let newOrigin = MKMapPoint(x: Constants.canada.origin.x - mapView.visibleMapRect.size.width  + 10000000, y: mapView.visibleMapRect.origin.y)
+            let newMapRect = MKMapRect(origin: newOrigin, size: mapView.visibleMapRect.size)
+            mapView.visibleMapRect = newMapRect
+        } else if mapView.visibleMapRect.origin.x + mapView.visibleMapRect.size.width < Constants.canada.origin.x || MKMapSizeWorld.width + Constants.canada.origin.x - mapView.visibleMapRect.size.width > mapView.visibleMapRect.origin.x, MKMapSizeWorld.width - mapView.visibleMapRect.size.width < mapView.visibleMapRect.origin.x {
+            let newOrigin = MKMapPoint(x: Constants.canada.origin.x + Constants.canada.size.width - 10000000, y: mapView.visibleMapRect.origin.y)
+            let newMapRect = MKMapRect(origin: newOrigin, size: mapView.visibleMapRect.size)
+            mapView.visibleMapRect = newMapRect
         }
     }
 }
