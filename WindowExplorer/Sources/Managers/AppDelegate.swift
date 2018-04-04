@@ -10,10 +10,10 @@ struct Configuration {
     static let mapsPerScreen = 4
     static let numberOfScreens = 1
     static let touchScreenSize = CGSize(width: 21564, height: 12116)
-    static let loadMapsOnFirstScreen = true
+    static let loadMapsOnFirstScreen = false
 }
 
-struct LaunchAndKillMapConstants {
+struct ShellCommands {
     static let openLaunchPath = "/usr/bin/open"
     static let openMapsBaseArg = ["-n", "-a", "/Users/spencerperkins/Library/Developer/Xcode/DerivedData/MapExplorer-dttmkubbxpmqnkgcnmtskfqjhfbq/Build/Products/Debug/MapExplorer-macOS.app", "--args"]
     static let killallLaunchPath = "/usr/bin/killall"
@@ -41,14 +41,14 @@ private func launchMapExplorer() {
 
     for screen in firstScreen ... Configuration.numberOfScreens {
         for map in 0 ..< Configuration.mapsPerScreen {
-            let args = LaunchAndKillMapConstants.openMapsBaseArg + [String(screen), String(map)]
-            shell(LaunchAndKillMapConstants.openLaunchPath, args)
+            let args = ShellCommands.openMapsBaseArg + [String(screen), String(map)]
+            shell(ShellCommands.openLaunchPath, args)
         }
     }
 }
 
 private func killallMaps() {
-    shell(LaunchAndKillMapConstants.killallLaunchPath, LaunchAndKillMapConstants.killallArgs)
+    shell(ShellCommands.killallLaunchPath, ShellCommands.killallArgs)
 }
 
 private func shell(_ launchPath: String, _ args: [String])  {
@@ -58,6 +58,3 @@ private func shell(_ launchPath: String, _ args: [String])  {
     task.launch()
     task.waitUntilExit()
 }
-
-
-
