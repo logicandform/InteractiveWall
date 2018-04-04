@@ -36,6 +36,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         static let fontSize: CGFloat = 13
         static let fontColor: NSColor = .white
         static let kern: CGFloat = 0.5
+        static let screenEdgeBuffer: CGFloat = 40
     }
 
 
@@ -388,14 +389,26 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func selectMediaItem(_ media: Media) {
-        guard let window = view.window, let windowType = WindowType(for: media), !positionsForMediaControllers.keys.contains(where: {$0.media == media}) else {
+        guard let window = view.window, let windowType = WindowType(for: media), !positionsForMediaControllers.keys.contains(where: {$0.media == media}), let lastScreen = NSScreen.screens.last else {
             return
         }
 
+        let totalWidth = NSScreen.screens.reduce(0) { $0 + $1.frame.width }
         let position = positionsForMediaControllers.values.max() != nil ? positionsForMediaControllers.values.max()! + 1 : 0
         let offsetX = position * Constants.mediaControllerOffsetX
         let offsetY = position * Constants.mediaControllerOffsetY
-        let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins + CGFloat(offsetX), y: window.frame.maxY - windowType.size.height + CGFloat(offsetY))
+        let x = window.frame.maxX + Constants.windowMargins + CGFloat(offsetX)
+        let y = window.frame.maxY - windowType.size.height + CGFloat(offsetY)
+        var origin = CGPoint(x: x, y: y)
+
+        if x > totalWidth - Constants.screenEdgeBuffer, windowType.canAdjustOrigin {
+            if lastScreen.frame.height - window.frame.maxY < windowType.size.height {
+                origin = NSPoint(x: totalWidth - windowType.size.width - Constants.windowMargins, y: y - view.frame.height - Constants.windowMargins)
+            } else {
+                origin = NSPoint(x: totalWidth - windowType.size.width - Constants.windowMargins, y: y + windowType.size.height + Constants.windowMargins)
+            }
+        }
+
         if let mediaController = WindowManager.instance.display(windowType, at: origin) as? MediaViewController {
             positionsForMediaControllers[mediaController] = position
             mediaController.delegate = self

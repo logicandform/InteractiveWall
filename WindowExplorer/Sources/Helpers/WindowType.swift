@@ -33,4 +33,14 @@ enum WindowType {
             return CGSize(width: 600, height: 640)
         }
     }
+
+    /// Used for checking if the specific media can be move above or below the record it was called from.
+    var canAdjustOrigin: Bool {
+        switch self {
+        case .record:
+            return false
+        case .image, .player, .pdf:
+            return true
+        }
+    }
 }
