@@ -7,6 +7,7 @@ struct Configuration {
     static let mapsPerScreen = 1
     static let numberOfScreens = 1
     static let touchScreenSize = CGSize(width: 21564, height: 12116)
+    static let refreshRate: Double = 1 / 60
 }
 
 
@@ -18,11 +19,11 @@ var appID = 0
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-//        let screenIndex = Int(CommandLine.arguments[1]) ?? 0
-//        let windowIndex = Int(CommandLine.arguments[2]) ?? 0
-//        screenID = screenIndex
-//        appID = windowIndex + (screenID - 1) * Configuration.mapsPerScreen
-//
+        let screenIndex = Int(CommandLine.arguments[1]) ?? 0
+        let windowIndex = Int(CommandLine.arguments[2]) ?? 0
+        screenID = screenIndex
+        appID = windowIndex + (screenID - 1) * Configuration.mapsPerScreen
+
 //        let mapStoryboard = NSStoryboard(name: MapViewController.storyboard, bundle: nil)
 //        let mapController = mapStoryboard.instantiateInitialController() as! MapViewController
 //        let mapWindow: NSWindow

@@ -3,38 +3,22 @@
 import Foundation
 import MONode
 
-struct PositionAndTime: Hashable {
-    var hashValue: Int {
-        //return position.x.hashValue + position.y.hashValue + Int(time)
-        return 1
-    }
-
-    var position: CGPoint
-    var time: CGFloat
-}
 
 class Touch: Hashable, CustomStringConvertible {
 
     var position: CGPoint
     var state: TouchState
-    var time: CGFloat {
-        didSet {
-            if positionsAndTimes.count == 4 {
-                positionsAndTimes.removeFirst()
-            }
-            positionsAndTimes.append(PositionAndTime(position: position, time: time))
-        }
-    }
+    var time: CGFloat
     let screen: Int
     let id: Int
 
-    private var positionsAndTimes = [PositionAndTime]()
+    var positionsAndTimes = [PositionAndTime]()
 
     var velocity: CGVector? {
-        guard positionsAndTimes.count == 4, let last = positionsAndTimes.last, let secondLast = positionsAndTimes.first else {
+        guard positionsAndTimes.count == 5, let last = positionsAndTimes.last, let secondLast = positionsAndTimes.first else {
             return nil
         }
-        return ((last.position - secondLast.position) / (last.time - secondLast.time)).asVector
+        return ((last.position - secondLast.position) / (last.time - secondLast.time)).asVector * CGFloat(Configuration.refreshRate)
     }
 
     var hashValue: Int {
@@ -109,6 +93,12 @@ class Touch: Hashable, CustomStringConvertible {
             self.position = touch.position
             self.state = touch.state
             self.time = touch.time
+
+            if positionsAndTimes.count == 5 {
+                positionsAndTimes.removeFirst()
+            }
+
+            positionsAndTimes.append(PositionAndTime(position: self.position, time: self.time))
         }
     }
 
@@ -134,4 +124,13 @@ class Touch: Hashable, CustomStringConvertible {
     static func == (lhs: Touch, rhs: Touch) -> Bool {
         return lhs.id == rhs.id && lhs.screen == rhs.screen
     }
+}
+
+struct PositionAndTime: Hashable {
+    var hashValue: Int {
+        return position.x.hashValue + position.y.hashValue + Int(time)
+    }
+
+    var position: CGPoint
+    var time: CGFloat
 }
