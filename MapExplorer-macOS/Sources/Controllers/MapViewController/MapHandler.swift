@@ -15,7 +15,6 @@ class MapHandler {
     private var activityState = UserActivity.idle
     private var stateForMap: [MapState]
     private weak var ungroupTimer: Foundation.Timer?
-    private var mapRectBeforeJump: MKMapRect!
 
     private var mapState: MapState {
         return stateForMap[mapID]
@@ -136,19 +135,19 @@ class MapHandler {
         if xOrigin < 0 {
             xOrigin += MKMapSizeWorld.width
         }
-        print(xOrigin)
-        print(MKMapSizeWorld.width)
+
         var yOrigin = mapRect.origin.y
         if xOrigin > Constants.canada.origin.x + Constants.canada.size.width, xOrigin < MKMapSizeWorld.width - mapView.visibleMapRect.size.width {
             xOrigin -= (Constants.canada.size.width + mapView.visibleMapRect.size.width)
         } else if xOrigin + mapView.visibleMapRect.size.width < Constants.canada.origin.x || MKMapSizeWorld.width + Constants.canada.origin.x - mapView.visibleMapRect.size.width > xOrigin, MKMapSizeWorld.width - mapView.visibleMapRect.size.width < xOrigin {
             xOrigin += Constants.canada.size.width + mapView.visibleMapRect.size.width
         }
+
         if mapRect.origin.y + mapRect.size.height > Constants.verticalPanLimit {
             yOrigin = Constants.verticalPanLimit - mapRect.size.height
         }
-        let mapOrigin = MKMapPointMake(xOrigin, yOrigin)
 
+        let mapOrigin = MKMapPointMake(xOrigin, yOrigin)
         mapView.visibleMapRect.size = mapRect.size
         mapView.visibleMapRect.origin = mapOrigin
     }

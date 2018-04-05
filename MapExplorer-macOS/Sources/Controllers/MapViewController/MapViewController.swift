@@ -112,7 +112,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             return
         }
 
-
         let touchRect = CGRect(x: position.x - Constants.touchRadius, y: position.y - Constants.touchRadius, width: Constants.touchRadius * 2, height: Constants.touchRadius * 2)
         for annotation in mapView.annotations {
             var annotationPoint = mapView.convert(annotation.coordinate, toPointTo: mapView)
