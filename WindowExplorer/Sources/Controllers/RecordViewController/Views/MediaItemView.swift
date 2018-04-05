@@ -9,6 +9,7 @@ class MediaItemView: NSCollectionViewItem {
 
     @IBOutlet weak var mediaImageView: NSImageView!
 
+    var tintColor = style.selectedColor
     var media: Media? {
         didSet {
             load(media)
@@ -30,7 +31,7 @@ class MediaItemView: NSCollectionViewItem {
 
     func set(highlighted: Bool) {
         if highlighted {
-            view.layer?.borderColor = style.selectedColor.cgColor
+            view.layer?.borderColor = tintColor.cgColor
         } else {
             view.layer?.borderColor = style.clear.cgColor
         }

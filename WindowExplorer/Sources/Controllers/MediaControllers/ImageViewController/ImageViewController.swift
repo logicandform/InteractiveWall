@@ -22,8 +22,10 @@ class ImageViewController: MediaViewController {
     private var frameSize: NSSize!
 
     private struct Constants {
-        static let maxWidth: CGFloat = 640.0
-        static let minWidth: CGFloat = 416.0
+        static let maxImageWidth: CGFloat = 640.0
+        static let minImageWidth: CGFloat = 416.0
+        static let initialMagnification: CGFloat = 1
+        static let maximumMagnification: CGFloat = 5
     }
 
 
@@ -53,7 +55,10 @@ class ImageViewController: MediaViewController {
             return
         }
 
+        imageScrollView.minMagnification = Constants.initialMagnification
+        imageScrollView.maxMagnification = Constants.maximumMagnification
         imageView = NSImageView()
+
         urlRequest = Alamofire.request(media.url).responseImage { [weak self] response in
             if let image = response.value {
                 self?.addImage(image)
@@ -66,7 +71,7 @@ class ImageViewController: MediaViewController {
         imageView.imageScaling = NSImageScaling.scaleAxesIndependently
         
         let imageRatio = image.size.height / image.size.width
-        let width = clamp(image.size.width, min: Constants.minWidth, max: Constants.maxWidth)        
+        let width = clamp(image.size.width, min: Constants.minImageWidth, max: Constants.maxImageWidth)
         let height = width * imageRatio
         frameSize = NSSize(width: width, height: height)
         imageView.setFrameSize(frameSize)
@@ -116,24 +121,6 @@ class ImageViewController: MediaViewController {
         }
     }
 
-    private func didPanImageView(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer else {
-            return
-        }
-
-        switch pan.state {
-        case .began:
-            contentViewFrame = imageScrollView.contentView.frame
-        case .recognized, .momentum:
-            let currentRect = imageScrollView.contentView.bounds
-            let newOriginX = min(contentViewFrame.origin.x + contentViewFrame.width - currentRect.width, max(contentViewFrame.origin.x, currentRect.origin.x))
-            let newOriginY = min(contentViewFrame.origin.y + contentViewFrame.height - currentRect.height, max(contentViewFrame.origin.y, currentRect.origin.y))
-            imageScrollView.contentView.scroll(to: NSPoint(x: newOriginX, y: newOriginY))
-        default:
-            return
-        }
-    }
-
     private func didPinchImageView(_ gesture: GestureRecognizer) {
         guard let pinch = gesture as? PinchGestureRecognizer else {
             return
@@ -143,7 +130,7 @@ class ImageViewController: MediaViewController {
         case .began:
             contentViewFrame = imageScrollView.contentView.frame
         case .recognized, .momentum:
-            let newMagnification = imageScrollView.magnification + (pinch.scale - 1)
+            let newMagnification = clamp(imageScrollView.magnification + (pinch.scale - 1), min: Constants.initialMagnification, max: Constants.maximumMagnification)
             imageScrollView.setMagnification(newMagnification, centeredAt: pinch.center)
             let currentRect = imageScrollView.contentView.bounds
             let newOriginX = min(contentViewFrame.origin.x + contentViewFrame.width - currentRect.width, max(contentViewFrame.origin.x, currentRect.origin.x - pinch.delta.dx / newMagnification))

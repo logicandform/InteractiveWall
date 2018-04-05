@@ -50,6 +50,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         detailView.layer?.backgroundColor = style.darkBackground.cgColor
         windowDragArea.wantsLayer = true
         windowDragArea.layer?.backgroundColor = style.dragAreaBackground.cgColor
+        placeHolderImage.isHidden = !record.media.isEmpty
         gestureManager = GestureManager(responder: self)
         gestureManager.touchReceived = recievedTouch(touch:)
 
@@ -447,8 +448,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return NSCollectionViewItem()
         }
 
-        placeHolderImage.isHidden = true
-        mediaItemView.media = record?.media[indexPath.item]
+        mediaItemView.media = record.media[indexPath.item]
+        mediaItemView.tintColor = record.type.color
         return mediaItemView
     }
 

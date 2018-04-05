@@ -40,14 +40,14 @@
                                     <constraint firstAttribute="height" constant="40" id="XNF-RS-0px"/>
                                 </constraints>
                             </customView>
-                            <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" allowsMagnification="YES" maxMagnification="5" minMagnification="1" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="WTp-wA-9SL" customClass="RegularScrollView" customModule="WindowExplorer" customModuleProvider="target">
+                            <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" allowsMagnification="YES" maxMagnification="5" minMagnification="1" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="WTp-wA-9SL" customClass="RegularScrollView" customModule="WindowExplorer" customModuleProvider="target">
                                 <rect key="frame" x="8" y="8" width="624" height="352"/>
-                                <clipView key="contentView" id="SUf-jl-Y0i">
-                                    <rect key="frame" x="1" y="1" width="622" height="350"/>
+                                <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="SUf-jl-Y0i">
+                                    <rect key="frame" x="0.0" y="0.0" width="624" height="352"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r8h-aE-aJ5">
-                                            <rect key="frame" x="0.0" y="0.0" width="607" height="335"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="609" height="337"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         </view>
                                     </subviews>

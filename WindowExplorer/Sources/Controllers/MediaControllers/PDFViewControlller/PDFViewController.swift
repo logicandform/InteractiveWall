@@ -7,18 +7,20 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
     static let storyboard = NSStoryboard.Name(rawValue: "PDF")
 
     @IBOutlet weak var pdfView: PDFView!
+    @IBOutlet weak var pdfScrollView: NSScrollView!
     @IBOutlet weak var thumbnailView: NSTableView!
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var windowDragArea: NSView!
     @IBOutlet weak var closeButtonView: NSView!
     @IBOutlet weak var backTapArea: NSView!
     @IBOutlet weak var forwardTapArea: NSView!
-    @IBOutlet weak var pdfWidthConstraint: NSLayoutConstraint!
-    @IBOutlet weak var pdfHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollViewWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
 
     var document: PDFDocument!
     private let leftArrow = ArrowControl()
     private let rightArrow = ArrowControl()
+    private var contentViewFrame: NSRect!
 
     private var selectedThumbnailItem: PDFTableViewItem? {
         didSet {
@@ -33,6 +35,8 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         static let arrowHeight: CGFloat = 40
         static let tableRowHeight: CGFloat = 100
         static let pdfMinWidth: CGFloat = 640
+        static let initialMagnification: CGFloat = 1
+        static let maximumMagnification: CGFloat = 5
     }
 
 
@@ -69,6 +73,8 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         pdfView.backgroundColor = .clear
         document = PDFDocument(url: media.url)
         pdfView.document = document
+        pdfScrollView.minMagnification = Constants.initialMagnification
+        pdfScrollView.maxMagnification = Constants.maximumMagnification
         resizeToFirstPage()
     }
     
@@ -109,6 +115,10 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         let thumbnailViewPan = PanGestureRecognizer()
         gestureManager.add(thumbnailViewPan, to: thumbnailView)
         thumbnailViewPan.gestureUpdated = handleThumbnailPan(_:)
+
+        let pinchGesture = PinchGestureRecognizer()
+        gestureManager.add(pinchGesture, to: pdfView)
+        pinchGesture.gestureUpdated = handlePinch(_:)
 
         let thumbnailViewTap = TapGestureRecognizer()
         gestureManager.add(thumbnailViewTap, to: thumbnailView)
@@ -162,8 +172,30 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         }
     }
 
+    private func handlePinch(_ gesture: GestureRecognizer) {
+        guard let pinch = gesture as? PinchGestureRecognizer else {
+            return
+        }
+
+        switch pinch.state {
+        case .began:
+            contentViewFrame = pdfScrollView.contentView.frame
+        case .recognized, .momentum:
+            let magnification = clamp(pdfScrollView.magnification + (pinch.scale - 1), min: Constants.initialMagnification, max: Constants.maximumMagnification)
+            pdfScrollView.setMagnification(magnification, centeredAt: pinch.center)
+            leftArrow.isHidden = magnification != Constants.initialMagnification
+            rightArrow.isHidden = magnification != Constants.initialMagnification
+            let currentRect = pdfScrollView.contentView.bounds
+            let newOriginX = min(contentViewFrame.origin.x + contentViewFrame.width - currentRect.width, max(contentViewFrame.origin.x, currentRect.origin.x - pinch.delta.dx / magnification))
+            let newOriginY = min(contentViewFrame.origin.y + contentViewFrame.height - currentRect.height, max(contentViewFrame.origin.y, currentRect.origin.y - pinch.delta.dy / magnification))
+            pdfScrollView.contentView.scroll(to: NSPoint(x: newOriginX, y: newOriginY))
+        default:
+            return
+        }
+    }
+
     private func handleLeftArrowTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, !leftArrow.isHidden else {
             return
         }
 
@@ -172,7 +204,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
     }
 
     private func handleRightArrowTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, !rightArrow.isHidden else {
             return
         }
 
@@ -252,6 +284,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
     private func updateViewsForCurrentPage() {
         leftArrow.isHidden = !pdfView.canGoToPreviousPage
         rightArrow.isHidden = !pdfView.canGoToNextPage
+        pdfScrollView.magnification = Constants.initialMagnification
         
         if let page = pdfView.currentPage, let pageNumber = page.pageRef?.pageNumber, let thumbnailItem = thumbnailView.view(atColumn: 0, row: pageNumber - 1, makeIfNecessary: false) as? PDFTableViewItem {
             selectedThumbnailItem = thumbnailItem
@@ -268,8 +301,8 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         let scale = mediaBox.height / mediaBox.width
         let width = min(mediaBox.size.width, Constants.pdfMinWidth)
         let height = width * scale
-        pdfWidthConstraint.constant = width
-        pdfHeightConstraint.constant = height
+        scrollViewWidthConstraint.constant = width
+        scrollViewHeightConstraint.constant = height
         view.needsLayout = true
         view.layout()
     }
