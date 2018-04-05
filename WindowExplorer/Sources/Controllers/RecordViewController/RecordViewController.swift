@@ -7,6 +7,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     static let storyboard = NSStoryboard.Name(rawValue: "Record")
 
     @IBOutlet weak var detailView: NSView!
+    @IBOutlet weak var windowDragArea: NSView!
     @IBOutlet weak var mediaView: NSCollectionView!
     @IBOutlet weak var collectionClipView: NSClipView!
     @IBOutlet weak var stackView: NSStackView!
@@ -47,6 +48,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         detailView.alphaValue = 0.0
         detailView.wantsLayer = true
         detailView.layer?.backgroundColor = style.darkBackground.cgColor
+        windowDragArea.wantsLayer = true
+        windowDragArea.layer?.backgroundColor = style.dragAreaBackground.cgColor
         gestureManager = GestureManager(responder: self)
         gestureManager.touchReceived = recievedTouch(touch:)
 
@@ -122,7 +125,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         relatedItemTap.gestureUpdated = handleRelatedItemTap(_:)
 
         let panGesture = PanGestureRecognizer()
-        gestureManager.add(panGesture, to: detailView)
+        gestureManager.add(panGesture, to: windowDragArea)
         panGesture.gestureUpdated = handleWindowPan(_:)
 
         let stackViewPanGesture = PanGestureRecognizer()

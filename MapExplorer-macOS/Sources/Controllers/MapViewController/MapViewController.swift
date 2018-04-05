@@ -20,6 +20,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private struct Constants {
         static let tileURL = "http://localhost:3200/v2/tiles/{z}/{x}/{y}.pbf"
         static let maxZoomWidth: Double =  134217730
+        static let minZoomWidth: Double = 424500
         static let touchRadius: CGFloat = 20
         static let annotationHitSize = CGSize(width: 50, height: 50)
     }
@@ -79,6 +80,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     // MARK: Gesture handling
 
     private func didPinchOnMap(_ gesture: GestureRecognizer) {
+
         guard let pinch = gesture as? PinchGestureRecognizer else {
             return
         }
@@ -90,7 +92,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             let scaledHeight = (2 - Double(pinch.scale)) * mapRect.size.height
             var translationX = -Double(pinch.delta.dx) * mapRect.size.width / Double(mapView.frame.width)
             var translationY = Double(pinch.delta.dy) * mapRect.size.height / Double(mapView.frame.height)
-            if scaledWidth <= Constants.maxZoomWidth {
+            if scaledWidth >= Constants.minZoomWidth && scaledWidth <= Constants.maxZoomWidth {
                 translationX += (mapRect.size.width - scaledWidth) * Double(pinch.center.x / mapView.frame.width)
                 translationY += (mapRect.size.height - scaledHeight) * (1 - Double(pinch.center.y / mapView.frame.height))
                 mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)

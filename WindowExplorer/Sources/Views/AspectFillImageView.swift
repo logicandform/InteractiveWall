@@ -10,10 +10,11 @@ class AspectFillImageView: NSImageView {
             return aspectFillImage
         }
         set {
-            self.layer = CALayer()
             if let image = newValue {
                 if image.size.width > image.size.height {
                     self.layer?.contentsGravity = kCAGravityResizeAspectFill
+                } else {
+                    self.layer?.contentsGravity = kCAGravityResizeAspect
                 }
             }
             self.layer?.contents = newValue

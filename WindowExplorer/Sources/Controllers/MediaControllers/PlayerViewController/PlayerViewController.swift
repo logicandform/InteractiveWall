@@ -30,6 +30,8 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         titleLabel.attributedStringValue = NSAttributedString(string: media.title ?? "", attributes: titleAttributes)
+        windowDragArea.wantsLayer = true
+        windowDragArea.layer?.backgroundColor = style.dragAreaBackground.cgColor
 
         setupPlayer()
         setupGestures()

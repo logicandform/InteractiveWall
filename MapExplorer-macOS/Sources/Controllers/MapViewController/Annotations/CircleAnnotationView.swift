@@ -5,12 +5,17 @@ import Foundation
 import MapKit
 
 class CircleAnnotationView: MKAnnotationView {
+
+    private struct Constants {
+        static let radii: (CGFloat, CGFloat, CGFloat, CGFloat) = (14, 11, 8, 5)
+    }
+
     static let identifier = "CircleAnnotationView"
 
-    private let circle1 = NSView(frame: CGRect(origin: CGPoint(x: -18, y: -18), size: CGSize(width: 36, height: 36)))
-    private let circle2 = NSView(frame: CGRect(origin: CGPoint(x: -13, y: -13), size: CGSize(width: 26, height: 26)))
-    private let circle3 = NSView(frame: CGRect(origin: CGPoint(x: -8, y: -8), size: CGSize(width: 16, height: 16)))
-    private let center = NSView(frame: CGRect(origin: CGPoint(x: -7, y: -7), size: CGSize(width: 14, height: 14)))
+    private let circle1 = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.0, y: -Constants.radii.0), size: CGSize(width: Constants.radii.0*2.0, height: Constants.radii.0*2.0)))
+    private let circle2 = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.1, y: -Constants.radii.1), size: CGSize(width: Constants.radii.1*2.0, height: Constants.radii.1*2.0)))
+    private let circle3 = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.2, y: -Constants.radii.2), size: CGSize(width: Constants.radii.2*2.0, height: Constants.radii.2*2.0)))
+    private let center = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.3, y: -Constants.radii.3), size: CGSize(width: Constants.radii.3*2.0, height: Constants.radii.3*2.0)))
 
     override var annotation: MKAnnotation? {
         willSet {
@@ -22,7 +27,6 @@ class CircleAnnotationView: MKAnnotationView {
         }
     }
 
-
     // MARK: API
 
     func runAnimation() {
@@ -31,7 +35,6 @@ class CircleAnnotationView: MKAnnotationView {
         animateMiddleCircle()
         animateOuterCircle()
     }
-
 
     // MARK: Setup
 
@@ -44,15 +47,22 @@ class CircleAnnotationView: MKAnnotationView {
         circle2.layer?.backgroundColor = annotation.record.colors[1].cgColor
         circle1.layer?.backgroundColor = style.outerAnnotationColor.cgColor
         center.layer?.backgroundColor = CGColor.white
-        circle1.layer?.cornerRadius = 18
-        circle2.layer?.cornerRadius = 13
-        circle3.layer?.cornerRadius = 8
-        center.layer?.cornerRadius = 7
+        circle1.layer?.cornerRadius = Constants.radii.0
+        circle2.layer?.cornerRadius = Constants.radii.1
+        circle3.layer?.cornerRadius = Constants.radii.2
+        center.layer?.cornerRadius = Constants.radii.3
         center.alphaValue = 0
         addSubview(circle1)
         addSubview(circle2)
         addSubview(circle3)
         addSubview(center)
+
+        self.wantsLayer = true
+        layer?.shadowColor = NSColor.black.cgColor
+        layer?.shadowOpacity = 0.85
+        layer?.shadowRadius = 4.0
+        layer?.shadowOffset = CGSize(width: 0, height: 4)
+        layer?.masksToBounds = false
     }
 
 
@@ -71,7 +81,7 @@ class CircleAnnotationView: MKAnnotationView {
         animateCenter.autoreverses = true
         animateCenter.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         animateCenter.fromValue = [-0, -0]
-        animateCenter.toValue = [-7, -7]
+        animateCenter.toValue = [-Constants.radii.3, -Constants.radii.3]
         animateCenter.duration = 0.3
         center.layer?.add(animateCenter, forKey: "position")
 
@@ -85,42 +95,45 @@ class CircleAnnotationView: MKAnnotationView {
     }
 
     private func animateInnerCircle() {
+        let scale: CGFloat = 0.25
         let animateScale = CABasicAnimation(keyPath: "transform.scale")
         animateScale.autoreverses = true
         animateScale.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         animateScale.fromValue = 1
-        animateScale.toValue = 1.25
+        animateScale.toValue = 1 + scale
         animateScale.duration = 0.1
         circle3.layer?.add(animateScale, forKey: "transform.scale")
 
         let animateCenter = CABasicAnimation(keyPath: "position")
         animateCenter.autoreverses = true
         animateCenter.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-        animateCenter.fromValue = [-8, -8]
-        animateCenter.toValue = [-10, -10]
+        animateCenter.fromValue = [-Constants.radii.2, -Constants.radii.2]
+        animateCenter.toValue = [-Constants.radii.2-Constants.radii.2*scale, -Constants.radii.2-Constants.radii.2*scale]
         animateCenter.duration = 0.1
         circle3.layer?.add(animateCenter, forKey: "position")
     }
 
     private func animateMiddleCircle() {
+        let scale: CGFloat = 0.3
         let animateScale = CABasicAnimation(keyPath: "transform.scale")
         animateScale.autoreverses = true
         animateScale.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         animateScale.fromValue = 1
-        animateScale.toValue = 1.3
+        animateScale.toValue = 1.0 + scale
         animateScale.duration = 0.2
         circle2.layer?.add(animateScale, forKey: "transform.scale")
 
         let animateCenter = CABasicAnimation(keyPath: "position")
         animateCenter.autoreverses = true
         animateCenter.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-        animateCenter.fromValue = [-13, -13]
-        animateCenter.toValue = [-16.9, -16.9]
+        animateCenter.fromValue = [-Constants.radii.1, -Constants.radii.1]
+        animateCenter.toValue = [-Constants.radii.1-(Constants.radii.1*scale), (-Constants.radii.1-(Constants.radii.1*scale))]
         animateCenter.duration = 0.2
         circle2.layer?.add(animateCenter, forKey: "position")
     }
 
     private func animateOuterCircle() {
+        let scale: CGFloat = 0.25
         let animateScale = CABasicAnimation(keyPath: "transform.scale")
         animateScale.autoreverses = true
         animateScale.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
@@ -132,8 +145,8 @@ class CircleAnnotationView: MKAnnotationView {
         let animateCenter = CABasicAnimation(keyPath: "position")
         animateCenter.autoreverses = true
         animateCenter.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-        animateCenter.fromValue = [-18, -18]
-        animateCenter.toValue = [-22.5, -22.5]
+        animateCenter.fromValue = [-Constants.radii.0, -Constants.radii.0]
+        animateCenter.toValue = [-Constants.radii.0-(Constants.radii.0*scale), -Constants.radii.0-(Constants.radii.0*scale)]
         animateCenter.duration = 0.3
         circle1.layer?.add(animateCenter, forKey: "position")
     }

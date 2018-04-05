@@ -15,7 +15,7 @@
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="YQD-s2-RG2" userLabel="Content View">
                     <rect key="frame" x="0.0" y="0.0" width="240" height="80"/>
                     <subviews>
-                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="a6t-6i-E3B">
+                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="a6t-6i-E3B" customClass="AspectFillImageView" customModule="WindowExplorer" customModuleProvider="target">
                             <rect key="frame" x="10" y="10" width="60" height="60"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="60" id="2xm-bf-HAJ"/>
@@ -31,26 +31,45 @@
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="Uzj-7w-Xe0">
-                            <rect key="frame" x="78" y="5" width="154" height="50"/>
-                            <textFieldCell key="cell" truncatesLastVisibleLine="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Label" id="mdF-3h-ybF">
-                                <font key="font" size="9" name="Soleil"/>
-                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                            </textFieldCell>
-                        </textField>
+                        <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PLs-By-PJe">
+                            <rect key="frame" x="76" y="4" width="156" height="48"/>
+                            <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="3Gd-au-x14">
+                                <rect key="frame" x="0.0" y="0.0" width="156" height="48"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <textView autoresizesSubviews="NO" editable="NO" selectable="NO" drawsBackground="NO" importsGraphics="NO" verticallyResizable="NO" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" id="tzF-dV-bDK">
+                                        <rect key="frame" x="0.0" y="0.0" width="156" height="48"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <size key="minSize" width="156" height="48"/>
+                                        <size key="maxSize" width="463" height="10000000"/>
+                                        <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </textView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </clipView>
+                            <edgeInsets key="contentInsets" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
+                            <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="zD2-nk-u3s">
+                                <rect key="frame" x="-100" y="-100" width="87" height="18"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                            </scroller>
+                            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="KXE-U4-A2V">
+                                <rect key="frame" x="-100" y="-100" width="16" height="48"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                            </scroller>
+                        </scrollView>
                     </subviews>
                     <constraints>
                         <constraint firstItem="oFi-RG-9Vw" firstAttribute="leading" secondItem="a6t-6i-E3B" secondAttribute="trailing" constant="10" id="4YR-uT-2b6"/>
                         <constraint firstItem="a6t-6i-E3B" firstAttribute="top" secondItem="YQD-s2-RG2" secondAttribute="top" constant="10" id="4ez-iU-TBH"/>
-                        <constraint firstItem="Uzj-7w-Xe0" firstAttribute="trailing" secondItem="oFi-RG-9Vw" secondAttribute="trailing" id="5nJ-ws-eVw"/>
+                        <constraint firstAttribute="bottom" secondItem="PLs-By-PJe" secondAttribute="bottom" constant="4" id="7dL-HV-4hW"/>
                         <constraint firstAttribute="bottom" secondItem="a6t-6i-E3B" secondAttribute="bottom" constant="10" id="C6O-xu-rET"/>
-                        <constraint firstItem="Uzj-7w-Xe0" firstAttribute="top" secondItem="oFi-RG-9Vw" secondAttribute="bottom" constant="-3" id="GG1-dj-IOX"/>
+                        <constraint firstItem="PLs-By-PJe" firstAttribute="leading" secondItem="oFi-RG-9Vw" secondAttribute="leading" constant="-4" id="ET4-Jd-G7p"/>
                         <constraint firstItem="oFi-RG-9Vw" firstAttribute="top" secondItem="a6t-6i-E3B" secondAttribute="top" id="HHT-tt-1EM"/>
-                        <constraint firstItem="Uzj-7w-Xe0" firstAttribute="leading" secondItem="oFi-RG-9Vw" secondAttribute="leading" id="cw8-IS-yVa"/>
+                        <constraint firstItem="PLs-By-PJe" firstAttribute="top" secondItem="oFi-RG-9Vw" secondAttribute="bottom" id="dqZ-4K-KKY"/>
                         <constraint firstAttribute="trailing" secondItem="oFi-RG-9Vw" secondAttribute="trailing" constant="10" id="jfK-7i-bsF"/>
-                        <constraint firstAttribute="bottom" secondItem="Uzj-7w-Xe0" secondAttribute="bottom" constant="5" id="lM7-a1-cdH"/>
                         <constraint firstItem="a6t-6i-E3B" firstAttribute="leading" secondItem="YQD-s2-RG2" secondAttribute="leading" constant="10" id="v8C-Ay-bDk"/>
+                        <constraint firstAttribute="trailing" secondItem="PLs-By-PJe" secondAttribute="trailing" constant="8" id="wok-NW-kwF"/>
                     </constraints>
                 </customView>
             </subviews>
@@ -61,7 +80,7 @@
                 <constraint firstItem="YQD-s2-RG2" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="zdw-gO-wIC"/>
             </constraints>
             <connections>
-                <outlet property="descriptionLabel" destination="Uzj-7w-Xe0" id="pSR-K0-rBF"/>
+                <outlet property="descriptionView" destination="tzF-dV-bDK" id="OE1-9X-hSq"/>
                 <outlet property="imageView" destination="a6t-6i-E3B" id="AEd-Oo-ynO"/>
                 <outlet property="titleLabel" destination="oFi-RG-9Vw" id="Q9s-Ic-0cw"/>
             </connections>

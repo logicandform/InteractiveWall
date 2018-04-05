@@ -5,7 +5,7 @@ import AppKit
 
 final class Style {
 
-    let darkBackground = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.7475356544)
+    let darkBackground = NSColor.black.withAlphaComponent(0.9)
     let selectedColor = NSColor(calibratedRed: 0, green: 200/255, blue: 1, alpha: 1)
     let clear = NSColor.clear
 
@@ -17,4 +17,6 @@ final class Style {
 
     let relatedItemColor = NSColor(calibratedRed: 75/255, green: 91/255, blue: 100/255, alpha: 1)
     let noRelatedItemsColor = NSColor(calibratedRed: 33/255, green: 33/255, blue: 33/255, alpha: 1)
+
+    let dragAreaBackground = NSColor.lightGray.withAlphaComponent(0.33)
 }
