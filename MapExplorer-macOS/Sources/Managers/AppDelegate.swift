@@ -4,7 +4,7 @@ import Cocoa
 
 
 struct Configuration {
-    static let mapsPerScreen = 4
+    static let mapsPerScreen = 3
     static let numberOfScreens = 1
     static let touchScreenSize = CGSize(width: 21564, height: 12116)
 }

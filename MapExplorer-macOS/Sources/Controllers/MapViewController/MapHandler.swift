@@ -15,6 +15,7 @@ class MapHandler {
     private var activityState = UserActivity.idle
     private var stateForMap: [MapState]
     private weak var ungroupTimer: Foundation.Timer?
+    private var mapRectBeforeJump: MKMapRect!
 
     private var mapState: MapState {
         return stateForMap[mapID]
@@ -25,7 +26,8 @@ class MapHandler {
         static let ungroupTimeoutPeriod: TimeInterval = 5
         static let initialMapOrigin = MKMapPointMake(6000000.0, 62000000.0)
         static let initialMapSize = MKMapSizeMake(120000000.0 / (Double(Configuration.numberOfScreens) * 3), 0.0)
-        static let canada = MKMapRect(origin: MKMapPoint(x: 28436487, y: 12621158), size: MKMapSize(width: 70000000, height: 90000000))
+        static let canada = MKMapRect(origin: MKMapPoint(x: 24000000, y: 12621158), size: MKMapSize(width: 78000000, height: 90000000))
+        static let bufferDistance: Double = 5000000
     }
 
     private struct Keys {
@@ -130,8 +132,12 @@ class MapHandler {
     /// Sets the visble rect of self.mapView based on the current pairedID, else self.mapID
     private func set(_ mapRect: MKMapRect, from pair: Int?) {
         let pairedID = pair ?? mapID
-        let xOrigin = mapRect.origin.x + Double(mapID - pairedID) * mapRect.size.width
+        print(pairedID)
+        var xOrigin = mapRect.origin.x + Double(mapID - pairedID) * mapRect.size.width
         var yOrigin = mapRect.origin.y
+        if xOrigin > Constants.canada.origin.x + Constants.canada.size.width, xOrigin < MKMapSizeWorld.width - mapView.visibleMapRect.size.width {
+            xOrigin -= (Constants.canada.size.width - Constants.bufferDistance + mapView.visibleMapRect.size.width)
+        }
         if mapRect.origin.y + mapRect.size.height > 141205215 {
             yOrigin = 141205215 - mapRect.size.height
         }
@@ -139,7 +145,7 @@ class MapHandler {
 
         mapView.visibleMapRect.size = mapRect.size
         mapView.visibleMapRect.origin = mapOrigin
-        returnToCanada()
+        //returnToCanada()
     }
 
     /// If paired to the given id, will unpair else ignore
@@ -216,12 +222,15 @@ class MapHandler {
 
     private func returnToCanada() {
         if mapView.visibleMapRect.origin.x > Constants.canada.origin.x + Constants.canada.size.width, mapView.visibleMapRect.origin.x < MKMapSizeWorld.width - mapView.visibleMapRect.size.width {
-            let newOrigin = MKMapPoint(x: Constants.canada.origin.x - mapView.visibleMapRect.size.width  + 10000000, y: mapView.visibleMapRect.origin.y)
+            let newOrigin = MKMapPoint(x: Constants.canada.origin.x - mapView.visibleMapRect.size.width  + Constants.bufferDistance, y: mapView.visibleMapRect.origin.y)
             let newMapRect = MKMapRect(origin: newOrigin, size: mapView.visibleMapRect.size)
+            mapRectBeforeJump = mapView.visibleMapRect
             mapView.visibleMapRect = newMapRect
+
         } else if mapView.visibleMapRect.origin.x + mapView.visibleMapRect.size.width < Constants.canada.origin.x || MKMapSizeWorld.width + Constants.canada.origin.x - mapView.visibleMapRect.size.width > mapView.visibleMapRect.origin.x, MKMapSizeWorld.width - mapView.visibleMapRect.size.width < mapView.visibleMapRect.origin.x {
-            let newOrigin = MKMapPoint(x: Constants.canada.origin.x + Constants.canada.size.width - 10000000, y: mapView.visibleMapRect.origin.y)
+            let newOrigin = MKMapPoint(x: Constants.canada.origin.x + Constants.canada.size.width - Constants.bufferDistance, y: mapView.visibleMapRect.origin.y)
             let newMapRect = MKMapRect(origin: newOrigin, size: mapView.visibleMapRect.size)
+            mapRectBeforeJump = mapView.visibleMapRect
             mapView.visibleMapRect = newMapRect
         }
     }
