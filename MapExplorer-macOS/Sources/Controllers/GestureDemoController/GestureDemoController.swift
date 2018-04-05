@@ -4,7 +4,7 @@ import MONode
 
 class GestureDemoController: NSViewController, SocketManagerDelegate, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "Demo")
-    static let config = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 12222)
+    static let config = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 12221)
 
     let socketManager = SocketManager(networkConfiguration: config)
     var gestureManager: GestureManager!
@@ -19,7 +19,7 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
         view.wantsLayer = true
         view.layer?.backgroundColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
 
-        rect = NSView(frame: CGRect(x: 300, y: 300, width: 400, height: 400))
+        rect = NSView(frame: CGRect(x: 2500, y: 300, width: 400, height: 400))
         rect.wantsLayer = true
         rect.layer?.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
         view.addSubview(rect)
@@ -85,12 +85,12 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
         case .recognized, .momentum:
             let width = max(300, rect.frame.size.width * pinch.scale)
             let height = max(300, min(view.frame.height, rect.frame.size.height * pinch.scale))
-//            var originX = min(view.frame.origin.x + view.frame.width - rect.frame.width, max(view.frame.origin.x, rect.frame.origin.x + pinch.delta.dx))
-//            var originY = min(view.frame.origin.y + view.frame.height - rect.frame.height, max(view.frame.origin.y, rect.frame.origin.y + pinch.delta.dy))
-//            originX += (rect.frame.width - width) / 2
-//            originY += (rect.frame.height - height) / 2
-//
-//            rect.frame.origin = CGPoint(x: originX, y: originY)
+            var originX = min(view.frame.origin.x + view.frame.width - rect.frame.width, max(view.frame.origin.x, rect.frame.origin.x + pinch.delta.dx))
+            var originY = min(view.frame.origin.y + view.frame.height - rect.frame.height, max(view.frame.origin.y, rect.frame.origin.y + pinch.delta.dy))
+            originX += (rect.frame.width - width) / 2
+            originY += (rect.frame.height - height) / 2
+
+            rect.frame.origin = CGPoint(x: originX, y: originY)
             rect.frame.size = CGSize(width: width, height: height)
         default:
             return

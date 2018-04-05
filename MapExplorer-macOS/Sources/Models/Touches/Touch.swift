@@ -15,7 +15,7 @@ class Touch: Hashable, CustomStringConvertible {
     var positionsAndTimes = [PositionAndTime]()
 
     var velocity: CGVector? {
-        guard positionsAndTimes.count == 5, let last = positionsAndTimes.last, let secondLast = positionsAndTimes.first else {
+        guard positionsAndTimes.count == 3, let last = positionsAndTimes.last, let secondLast = positionsAndTimes.first else {
             return nil
         }
         return ((last.position - secondLast.position) / (last.time - secondLast.time)).asVector * CGFloat(Configuration.refreshRate)
@@ -94,7 +94,7 @@ class Touch: Hashable, CustomStringConvertible {
             self.state = touch.state
             self.time = touch.time
 
-            if positionsAndTimes.count == 5 {
+            if positionsAndTimes.count == 3 {
                 positionsAndTimes.removeFirst()
             }
 
