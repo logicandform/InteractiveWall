@@ -360,6 +360,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return
         }
 
+        resetCloseWindowTimer()
         var frame = window.frame
         frame.origin = origin
         animating = true
@@ -368,8 +369,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             NSAnimationContext.current.duration = 0.75
             NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
             window.animator().setFrame(frame, display: true, animate: true)
-        }, completionHandler: {
-            self.animating = false
+        }, completionHandler: { [weak self] in
+            self?.animating = false
         })
     }
 

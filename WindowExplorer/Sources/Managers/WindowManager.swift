@@ -111,10 +111,7 @@ final class WindowManager {
 
         if let controller = controllersForRecordInfo[recordInfo] as? RecordViewController{
             controller.animate(to: origin)
-            return
-        }
-
-        if let controller = display(.record(record), at: origin) {
+        } else if let controller = display(.record(record), at: origin) {
             controllersForRecordInfo[recordInfo] = controller
         }
     }
