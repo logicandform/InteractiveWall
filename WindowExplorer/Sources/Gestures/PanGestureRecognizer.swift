@@ -9,6 +9,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         static let recognizedThreshhold: CGFloat = 20
         static let minimumFingers = 1
         static let minimumDeltaUpdateThreshold: Double = 4
+        static let gesturePausedTime = 0.1
     }
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
@@ -30,7 +31,6 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         case .possible:
             momentumTimer?.invalidate()
 
-            // Pan
             cumulativeDelta = .zero
             lastLocation = properties.cog
 
@@ -89,7 +89,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         state = .ended
         gestureUpdated?(self)
 
-        if shouldStartMomentum, timeOfLastUpdate.timeIntervalSinceNow < 0.1 {
+        if shouldStartMomentum, timeOfLastUpdate.timeIntervalSinceNow < Constants.gesturePausedTime {
             beginMomentum()
         } else {
             reset()
@@ -181,3 +181,4 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         gestureUpdated?(self)
     }
 }
+

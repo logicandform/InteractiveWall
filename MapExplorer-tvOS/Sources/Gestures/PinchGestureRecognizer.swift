@@ -23,6 +23,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private struct Pan {
         static let recognizedThreshhold: CGFloat = 20
         static let minimumDeltaUpdateThreshold: Double = 4
+        static let gesturePausedTime = 0.1
     }
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
@@ -101,7 +102,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         }
     }
 
-
     /// Sets gesture properties during a move event and calls `gestureUpdated` callback
     private func updateForMove(with properties: TouchProperties) {
         // Pinch
@@ -136,7 +136,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         state = .ended
         gestureUpdated?(self)
 
-        if shouldStartMomentum, timeOfLastUpdate.timeIntervalSinceNow < 0.1 {
+        if shouldStartMomentum, timeOfLastUpdate.timeIntervalSinceNow < Pan.gesturePausedTime {
             beginMomentum()
         } else {
             reset()
