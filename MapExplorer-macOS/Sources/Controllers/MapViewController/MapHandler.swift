@@ -80,6 +80,7 @@ class MapHandler {
         mapView.visibleMapRect = mapRect
     }
 
+    
     // MARK: Notifications
 
     private func subscribeToNotifications() {
