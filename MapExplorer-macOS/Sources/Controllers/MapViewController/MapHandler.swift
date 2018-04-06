@@ -25,6 +25,8 @@ class MapHandler {
         static let ungroupTimeoutPeriod: TimeInterval = 5
         static let initialMapOrigin = MKMapPointMake(6000000.0, 62000000.0)
         static let initialMapSize = MKMapSizeMake(120000000.0 / (Double(Configuration.numberOfScreens) * 3), 0.0)
+        static let canada = MKMapRect(origin: MKMapPoint(x: 23000000, y: 13000000), size: MKMapSize(width: 80000000, height: 90000000))
+        static let verticalPanLimit: Double = 140000000
     }
 
     private struct Keys {
@@ -129,9 +131,23 @@ class MapHandler {
     /// Sets the visble rect of self.mapView based on the current pairedID, else self.mapID
     private func set(_ mapRect: MKMapRect, from pair: Int?) {
         let pairedID = pair ?? mapID
-        let xOrigin = mapRect.origin.x + Double(mapID - pairedID) * mapRect.size.width
-        let mapOrigin = MKMapPointMake(xOrigin, mapRect.origin.y)
+        var xOrigin = mapRect.origin.x + Double(mapID - pairedID) * mapRect.size.width
+        if xOrigin < 0 {
+            xOrigin += MKMapSizeWorld.width
+        }
 
+        var yOrigin = mapRect.origin.y
+        if xOrigin > Constants.canada.origin.x + Constants.canada.size.width, xOrigin < MKMapSizeWorld.width - mapView.visibleMapRect.size.width {
+            xOrigin -= (Constants.canada.size.width + mapView.visibleMapRect.size.width)
+        } else if xOrigin + mapView.visibleMapRect.size.width < Constants.canada.origin.x || MKMapSizeWorld.width + Constants.canada.origin.x - mapView.visibleMapRect.size.width > xOrigin, MKMapSizeWorld.width - mapView.visibleMapRect.size.width < xOrigin {
+            xOrigin += Constants.canada.size.width + mapView.visibleMapRect.size.width
+        }
+
+        if mapRect.origin.y + mapRect.size.height > Constants.verticalPanLimit {
+            yOrigin = Constants.verticalPanLimit - mapRect.size.height
+        }
+
+        let mapOrigin = MKMapPointMake(xOrigin, yOrigin)
         mapView.visibleMapRect.size = mapRect.size
         mapView.visibleMapRect.origin = mapOrigin
     }
