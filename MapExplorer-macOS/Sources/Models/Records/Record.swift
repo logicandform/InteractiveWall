@@ -13,12 +13,12 @@ enum RecordType: String {
     case school
     case event
 
-    var colors: [NSColor] {
+    var color: NSColor {
         switch self {
         case .school:
-            return [style.schoolInnerColor, style.schoolOuterColor]
+            return style.schoolColor
         case .event:
-            return [style.eventInnerColor, style.eventOuterColor]
+            return style.eventColor
         }
     }
 }

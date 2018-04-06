@@ -10,6 +10,7 @@ class ImageViewController: MediaViewController {
 
     @IBOutlet weak var imageScrollView: RegularScrollView!
     @IBOutlet weak var windowDragArea: NSView!
+    @IBOutlet weak var windowDragAreaHighlight: NSView!
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollViewWidthConstraint: NSLayoutConstraint!
@@ -34,12 +35,11 @@ class ImageViewController: MediaViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         titleLabel.attributedStringValue = NSAttributedString(string: media.title ?? "", attributes: titleAttributes)
-        windowDragArea.wantsLayer = true
-        windowDragArea.layer?.backgroundColor = style.dragAreaBackground.cgColor
 
         setupImageView()
         setupGestures()
         animateViewIn()
+        setupWindowDragArea()
     }
 
     override func viewDidDisappear() {
@@ -101,6 +101,12 @@ class ImageViewController: MediaViewController {
         singleFingerRotateButtonTap.gestureUpdated = didTapRotateButton(_:)
     }
 
+    private func setupWindowDragArea() {
+        windowDragArea.wantsLayer = true
+        windowDragArea.layer?.backgroundColor = style.dragAreaBackground.cgColor
+        windowDragAreaHighlight.wantsLayer = true
+        windowDragAreaHighlight.layer?.backgroundColor = media.tintColor.cgColor
+    }
 
     // MARK: Gesture Handling
 

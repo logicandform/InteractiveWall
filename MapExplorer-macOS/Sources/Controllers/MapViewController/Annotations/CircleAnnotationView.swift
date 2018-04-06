@@ -7,7 +7,7 @@ import MapKit
 class CircleAnnotationView: MKAnnotationView {
 
     private struct Constants {
-        static let radii: (CGFloat, CGFloat, CGFloat, CGFloat) = (14, 11, 8, 5)
+        static let radii: (CGFloat, CGFloat, CGFloat, CGFloat) = (18, 14, 10, 6)
     }
 
     static let identifier = "CircleAnnotationView"
@@ -43,9 +43,9 @@ class CircleAnnotationView: MKAnnotationView {
         circle2.wantsLayer = true
         circle3.wantsLayer = true
         center.wantsLayer = true
-        circle3.layer?.backgroundColor = annotation.record.colors[0].cgColor
-        circle2.layer?.backgroundColor = annotation.record.colors[1].cgColor
-        circle1.layer?.backgroundColor = style.outerAnnotationColor.cgColor
+        circle3.layer?.backgroundColor = annotation.record.color.cgColor
+        circle2.layer?.backgroundColor = annotation.record.color.withAlphaComponent(0.4).cgColor
+        circle1.layer?.backgroundColor = annotation.record.color.withAlphaComponent(0.2).cgColor
         center.layer?.backgroundColor = CGColor.white
         circle1.layer?.cornerRadius = Constants.radii.0
         circle2.layer?.cornerRadius = Constants.radii.1

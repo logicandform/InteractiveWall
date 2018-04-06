@@ -12,12 +12,8 @@ final class Style {
     let clear = NSColor.clear
 
     // Map Annotation Markers
-    let artifactColor = NSColor(calibratedRed: 41/255, green: 205/255, blue: 168/255, alpha: 1)
-    let schoolInnerColor = NSColor(calibratedRed: 0, green: 201/255, blue: 255/255, alpha: 1)
-    let schoolOuterColor = NSColor(calibratedRed: 0, green: 201/255, blue: 255/255, alpha: 0.66)
-    let eventInnerColor = NSColor(calibratedRed: 108/255, green: 136/255, blue: 255/255, alpha: 1)
-    let eventOuterColor = NSColor(calibratedRed: 108/255, green: 136/255, blue: 255/255, alpha: 0.66)
-    let organizationColor = NSColor(calibratedRed: 193/255, green: 79/255, blue: 231/255, alpha: 1)
-    let relatedItemColor = NSColor(calibratedRed: 75/255, green: 91/255, blue: 100/255, alpha: 1)
-    let outerAnnotationColor = NSColor.white
+    let artifactColor = NSColor(calibratedRed: 128/255, green: 1/255, blue: 206/255, alpha: 1)
+    let schoolColor = NSColor(calibratedRed: 78/255, green: 106/255, blue: 200/255, alpha: 1)
+    let eventColor = NSColor(calibratedRed: 145/255, green: 18/255, blue: 88/255, alpha: 1)
+    let organizationColor = NSColor(calibratedRed: 16/255, green: 147/255, blue: 79/255, alpha: 1)
 }

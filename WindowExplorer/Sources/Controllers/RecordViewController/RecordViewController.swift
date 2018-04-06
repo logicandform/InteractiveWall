@@ -8,18 +8,18 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     @IBOutlet weak var detailView: NSView!
     @IBOutlet weak var windowDragArea: NSView!
+    @IBOutlet weak var windowDragAreaHighlight: NSView!
     @IBOutlet weak var mediaView: NSCollectionView!
     @IBOutlet weak var collectionClipView: NSClipView!
     @IBOutlet weak var stackView: NSStackView!
     @IBOutlet weak var stackClipView: NSClipView!
     @IBOutlet weak var relatedItemsView: NSTableView!
-    @IBOutlet weak var hideRelatedItemsButton: NSButton!
     @IBOutlet weak var closeWindowTapArea: NSView!
     @IBOutlet weak var toggleRelatedItemsArea: NSView!
+    @IBOutlet weak var showRelatedItemsView: NSImageView!
+    @IBOutlet weak var hideRelatedItemsButton: NSButton!
     @IBOutlet weak var placeHolderImage: NSImageView!
-    @IBOutlet weak var showHideRelatedItemsView: NSImageView!
-    @IBOutlet weak var relatedItemsViewButton: NSButton!
-    
+
     var record: RecordDisplayable!
     private(set) var gestureManager: GestureManager!
     private var showingRelatedItems = false
@@ -60,6 +60,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         loadRecord()
         animateViewIn()
         resetCloseWindowTimer()
+        setupWindowDragArea()
     }
 
 
@@ -94,15 +95,10 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         relatedItemsView.register(NSNib(nibNamed: RelatedItemView.nibName, bundle: nil), forIdentifier: RelatedItemView.interfaceIdentifier)
         relatedItemsView.backgroundColor = .clear
         hideRelatedItemsButton.alphaValue = 0
-        toggleRelatedItemsArea.wantsLayer = true
-        relatedItemsViewButton.font = NSFont(name: Constants.fontName, size: Constants.fontSize) ?? NSFont.systemFont(ofSize: Constants.fontSize)
-        relatedItemsViewButton.attributedTitle = NSAttributedString(string: relatedItemsViewButton.title, attributes: titleBarAttributes)
+        showRelatedItemsView.isHidden = record.relatedRecords.isEmpty
+        hideRelatedItemsButton.font = NSFont(name: Constants.fontName, size: Constants.fontSize) ?? NSFont.systemFont(ofSize: Constants.fontSize)
+        hideRelatedItemsButton.attributedTitle = NSAttributedString(string: hideRelatedItemsButton.title, attributes: titleBarAttributes)
 
-        if let buttonCell = relatedItemsViewButton.cell as? NSButtonCell {
-            let color = record.relatedRecords.isEmpty ? style.noRelatedItemsColor : record.type.color
-            buttonCell.backgroundColor = color
-            toggleRelatedItemsArea.layer?.backgroundColor = color.cgColor
-        }
     }
 
     private func setupGestures() {
@@ -133,19 +129,15 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         gestureManager.add(stackViewPanGesture, to: stackView)
         stackViewPanGesture.gestureUpdated = handleStackViewPan(_:)
 
+        let toggleRelatedItemsTap = TapGestureRecognizer()
+        gestureManager.add(toggleRelatedItemsTap, to: toggleRelatedItemsArea)
+        toggleRelatedItemsTap.gestureUpdated = handleRelatedItemsToggle(_:)
+
         let tapToClose = TapGestureRecognizer()
         gestureManager.add(tapToClose, to: closeWindowTapArea)
         tapToClose.gestureUpdated = { [weak self] gesture in
             if gesture.state == .ended {
                 self?.animateViewOut()
-            }
-        }
-
-        let toggleRelatedItemsTap = TapGestureRecognizer()
-        gestureManager.add(toggleRelatedItemsTap, to: toggleRelatedItemsArea)
-        toggleRelatedItemsTap.gestureUpdated = { [weak self] gesture in
-            if gesture.state == .ended {
-                self?.toggleRelatedItems()
             }
         }
     }
@@ -156,6 +148,10 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         }
     }
 
+    private func setupWindowDragArea() {
+        windowDragAreaHighlight.wantsLayer = true
+        windowDragAreaHighlight.layer?.backgroundColor = record.type.color.cgColor
+    }
 
     // MARK: Gesture Handling
 
@@ -230,6 +226,14 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         default:
             return
         }
+    }
+
+    private func handleRelatedItemsToggle(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, !record.relatedRecords.isEmpty else {
+            return
+        }
+
+        toggleRelatedItems()
     }
 
     private var selectedRelatedItem: RelatedItemView? {
@@ -362,7 +366,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             NSAnimationContext.current.duration = 0.5
             self?.relatedItemsView.animator().alphaValue = alpha
             self?.hideRelatedItemsButton.animator().alphaValue = alpha
-            self?.showHideRelatedItemsView.image = showingRelatedItems ? NSImage(named: "plus-icon") : NSImage(named: "close button")
+            self?.showRelatedItemsView.image = showingRelatedItems ? NSImage(named: "plus-icon") : NSImage(named: "close button")
             }, completionHandler: { [weak self] in
                 if let strongSelf = self {
                     strongSelf.relatedItemsView.isHidden = !strongSelf.showingRelatedItems

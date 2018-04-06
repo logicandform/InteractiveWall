@@ -88,6 +88,19 @@
                                 <subviews>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="4OT-12-Vbx">
                                         <rect key="frame" x="0.0" y="600" width="416" height="40"/>
+                                        <subviews>
+                                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="e2P-UJ-8Oj">
+                                                <rect key="frame" x="0.0" y="0.0" width="416" height="1"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="1" id="Z2i-R5-Prf"/>
+                                                </constraints>
+                                            </customView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="e2P-UJ-8Oj" secondAttribute="trailing" id="Nu3-ra-y2y"/>
+                                            <constraint firstItem="e2P-UJ-8Oj" firstAttribute="leading" secondItem="4OT-12-Vbx" secondAttribute="leading" id="hg6-FN-XHO"/>
+                                            <constraint firstAttribute="bottom" secondItem="e2P-UJ-8Oj" secondAttribute="bottom" id="r0W-QX-3id"/>
+                                        </constraints>
                                     </customView>
                                     <scrollView verticalCompressionResistancePriority="250" placeholderIntrinsicWidth="380" placeholderIntrinsicHeight="300" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FBg-bp-lkB">
                                         <rect key="frame" x="18" y="10" width="380" height="310"/>
@@ -265,15 +278,21 @@
                         <outlet property="mediaView" destination="Eaz-7m-IDm" id="eav-Zv-2bd"/>
                         <outlet property="placeHolderImage" destination="Zeo-g9-VHC" id="YQF-Yz-VuJ"/>
                         <outlet property="relatedItemsView" destination="cKY-nL-NPV" id="26r-gU-lSa"/>
-                        <outlet property="relatedItemsViewButton" destination="XCO-vm-Fbg" id="vTe-Ua-SCo"/>
-                        <outlet property="showHideRelatedItemsView" destination="l8D-t2-1Ll" id="lDy-xT-Yp8"/>
+                        <outlet property="showRelatedItemsView" destination="l8D-t2-1Ll" id="n1Z-0N-NFt"/>
                         <outlet property="stackClipView" destination="CkM-eN-t5N" id="Ycr-Y2-xGv"/>
                         <outlet property="stackView" destination="RgY-ah-SAv" id="N4b-iD-145"/>
                         <outlet property="toggleRelatedItemsArea" destination="ng9-0N-mwq" id="Lqz-na-MLi"/>
                         <outlet property="windowDragArea" destination="4OT-12-Vbx" id="tfW-rT-7ol"/>
+                        <outlet property="windowDragAreaHighlight" destination="e2P-UJ-8Oj" id="G5o-1g-657"/>
                     </connections>
                 </viewController>
                 <customObject id="0qL-TB-rJo" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="hTR-1o-Mb7">
+                    <rect key="frame" x="0.0" y="0.0" width="416" height="1"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="LWe-HG-GHj"/>
+                    </constraints>
+                </customView>
             </objects>
             <point key="canvasLocation" x="-657.5" y="118"/>
         </scene>

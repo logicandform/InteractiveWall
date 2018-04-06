@@ -8,7 +8,6 @@ class Artifact {
     let id: Int
     let title: String
     let type = RecordType.artifact
-    let shortTitle: String?
     let subtitle: String?
     let date: String?
     let description: String?
@@ -23,7 +22,6 @@ class Artifact {
     private struct Keys {
         static let id = "id"
         static let title = "title"
-        static let shortTitle = "shortTitle"
         static let subtitle = "subtitle"
         static let date = "date"
         static let description = "description"
@@ -48,7 +46,6 @@ class Artifact {
 
         self.id = id
         self.title = title
-        self.shortTitle = (json[Keys.shortTitle] as? String)?.removingHtml()
         self.subtitle = (json[Keys.subtitle] as? String)?.removingHtml()
         self.date = (json[Keys.date] as? String)?.removingHtml()
         self.description = (json[Keys.description] as? String)?.removingHtml()
