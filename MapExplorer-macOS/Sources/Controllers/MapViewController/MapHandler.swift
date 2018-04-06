@@ -23,8 +23,8 @@ class MapHandler {
 
     private struct Constants {
         static let ungroupTimeoutPeriod: TimeInterval = 5
-        static let initialMapOrigin = MKMapPointMake(6000000.0, 62000000.0)
-        static let initialMapSize = MKMapSizeMake(120000000.0 / (Double(Configuration.numberOfScreens) * 3), 0.0)
+        static let initialMapOrigin = MKMapPointMake(5250000, 70000000)
+        static let initialMapSize = MKMapSizeMake(110000000.0 / Double(Configuration.numberOfScreens), 0)
         static let canada = MKMapRect(origin: MKMapPoint(x: 23000000, y: 13000000), size: MKMapSize(width: 80000000, height: 90000000))
         static let verticalPanLimit: Double = 140000000
     }
