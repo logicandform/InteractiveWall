@@ -46,6 +46,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         setupGestures()
     }
 
+    override func viewDidAppear() {
+        mapHandler?.reset()
+    }
 
     // MARK: Setup
 

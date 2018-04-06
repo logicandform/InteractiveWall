@@ -23,8 +23,8 @@ class MapHandler {
 
     private struct Constants {
         static let ungroupTimeoutPeriod: TimeInterval = 5
-        static let initialMapOrigin = MKMapPointMake(6000000.0, 62000000.0)
-        static let initialMapSize = MKMapSizeMake(120000000.0 / (Double(Configuration.numberOfScreens) * 3), 0.0)
+        static let initialMapOrigin = MKMapPointMake(5250000, 70000000)
+        static let initialMapSize = MKMapSizeMake(110000000.0 / 3, 0)
         static let canada = MKMapRect(origin: MKMapPoint(x: 23000000, y: 13000000), size: MKMapSize(width: 80000000, height: 90000000))
         static let verticalPanLimit: Double = 140000000
     }
@@ -45,10 +45,15 @@ class MapHandler {
         let numberOfMaps = Configuration.mapsPerScreen * Configuration.numberOfScreens
         let initialState = MapState(pair: nil, group: nil)
         self.stateForMap = Array(repeating: initialState, count: numberOfMaps)
-
         subscribeToNotifications()
     }
 
+    func reset() {
+        var mapRect = MKMapRect(origin: Constants.initialMapOrigin, size: Constants.initialMapSize)
+        mapRect.origin.x = Constants.initialMapOrigin.x + Double(mapID) * Constants.initialMapSize.width
+        mapView.visibleMapRect = mapRect
+
+    }
 
     // MARK: API
 
@@ -72,12 +77,6 @@ class MapHandler {
     func endUpdates() {
         activityState = .idle
         beginUngroupTimer()
-    }
-
-    func reset() {
-        var mapRect = MKMapRect(origin: Constants.initialMapOrigin, size: Constants.initialMapSize)
-        mapRect.origin.x = Constants.initialMapOrigin.x + Double(mapID) * Constants.initialMapSize.width
-        mapView.visibleMapRect = mapRect
     }
 
 
@@ -130,6 +129,7 @@ class MapHandler {
 
     /// Sets the visble rect of self.mapView based on the current pairedID, else self.mapID
     private func set(_ mapRect: MKMapRect, from pair: Int?) {
+        print(mapRect.size)
         let pairedID = pair ?? mapID
         var xOrigin = mapRect.origin.x + Double(mapID - pairedID) * mapRect.size.width
         if xOrigin < 0 {
