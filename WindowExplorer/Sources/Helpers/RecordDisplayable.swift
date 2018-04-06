@@ -177,10 +177,6 @@ extension Event: RecordDisplayable {
 }
 
 extension Artifact: RecordDisplayable {
-
-    var date: String? {
-        return nil
-    }
     
     var textFields: [NSTextField] {
         var labels = [NSTextField]()

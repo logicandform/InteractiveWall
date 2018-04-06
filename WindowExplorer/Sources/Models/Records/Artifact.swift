@@ -10,6 +10,7 @@ class Artifact {
     let type = RecordType.artifact
     let shortTitle: String?
     let subtitle: String?
+    let date: String?
     let description: String?
     let comments: String?
     var media = [Media]()
@@ -24,6 +25,7 @@ class Artifact {
         static let title = "title"
         static let shortTitle = "shortTitle"
         static let subtitle = "subtitle"
+        static let date = "date"
         static let description = "description"
         static let mediaTitles = "mediaTitles"
         static let media = "mediaPaths"
@@ -46,10 +48,11 @@ class Artifact {
 
         self.id = id
         self.title = title
-        self.shortTitle = (json[Keys.description] as? String)?.removingHtml()
-        self.subtitle = (json[Keys.description] as? String)?.removingHtml()
+        self.shortTitle = (json[Keys.shortTitle] as? String)?.removingHtml()
+        self.subtitle = (json[Keys.subtitle] as? String)?.removingHtml()
+        self.date = (json[Keys.date] as? String)?.removingHtml()
         self.description = (json[Keys.description] as? String)?.removingHtml()
-        self.comments = (json[Keys.description] as? String)?.removingHtml()
+        self.comments = (json[Keys.comments] as? String)?.removingHtml()
 
         if let urlStrings = json[Keys.media] as? [String], let thumbnailStrings = json[Keys.thumbnails] as? [String] {
             let urls = urlStrings.compactMap { URL.from(CachingNetwork.baseURL + $0) }
