@@ -334,6 +334,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = 0.5
             detailView.animator().alphaValue = 0.0
+            relatedItemsView.animator().alphaValue = 0.0
         }, completionHandler: {
             WindowManager.instance.closeWindow(for: self)
         })
