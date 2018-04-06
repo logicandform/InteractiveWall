@@ -12,6 +12,7 @@
                 <outlet property="durationLabel" destination="KTF-Qn-y4E" id="hf0-TP-oDz"/>
                 <outlet property="seekBar" destination="8jO-Ld-nn0" id="dUA-Dh-Qsv"/>
                 <outlet property="toggleButton" destination="Ubj-9h-laa" id="PDD-Hq-HSs"/>
+                <outlet property="volumeButton" destination="Zw9-9M-z75" id="Gnh-aT-JFb"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
@@ -21,7 +22,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IOp-BE-Ma6">
-                    <rect key="frame" x="38" y="13" width="60" height="14"/>
+                    <rect key="frame" x="38" y="15" width="60" height="14"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="14" id="0a7-O9-FEI"/>
                         <constraint firstAttribute="width" constant="56" id="DLx-ZI-TvE"/>
@@ -33,11 +34,11 @@
                     </textFieldCell>
                 </textField>
                 <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8jO-Ld-nn0">
-                    <rect key="frame" x="102" y="10" width="466" height="19"/>
+                    <rect key="frame" x="102" y="10" width="428" height="19"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="15" id="sRP-hR-Myv"/>
                     </constraints>
-                    <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="1" tickMarkPosition="above" sliderType="linear" id="Gyh-Oz-32g" customClass="ColoredSliderCell" customModule="WindowExplorer" customModuleProvider="target"/>
+                    <sliderCell key="cell" continuous="YES" alignment="left" maxValue="1" tickMarkPosition="above" sliderType="linear" id="Gyh-Oz-32g" customClass="ColoredSliderCell" customModule="WindowExplorer" customModuleProvider="target"/>
                 </slider>
                 <imageView translatesAutoresizingMaskIntoConstraints="NO" id="Ubj-9h-laa">
                     <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -48,33 +49,47 @@
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="play-icon-small" id="vWK-aG-IuH"/>
                 </imageView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KTF-Qn-y4E">
-                    <rect key="frame" x="572" y="13" width="60" height="14"/>
+                    <rect key="frame" x="534" y="15" width="60" height="14"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="56" id="HEf-kR-HvO"/>
                         <constraint firstAttribute="height" constant="14" id="QyU-ZY-k1K"/>
                     </constraints>
-                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="00:00:00" usesSingleLineMode="YES" id="dfV-WV-JQH">
+                    <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="00:00" usesSingleLineMode="YES" id="dfV-WV-JQH">
                         <font key="font" metaFont="cellTitle"/>
                         <color key="textColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <imageView translatesAutoresizingMaskIntoConstraints="NO" id="Zw9-9M-z75">
+                    <rect key="frame" x="600" y="0.0" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="5zs-BF-AZg"/>
+                        <constraint firstAttribute="height" constant="40" id="By0-YR-DA4"/>
+                        <constraint firstAttribute="width" constant="40" id="JNa-5Z-UcE"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="pOm-Y9-ikL"/>
+                    </constraints>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageAlignment="left" imageScaling="proportionallyDown" image="sound-1-icon" id="hhb-C9-Uas"/>
+                </imageView>
             </subviews>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="Ubj-9h-laa" secondAttribute="bottom" id="30g-Yl-J1Y"/>
-                <constraint firstItem="8jO-Ld-nn0" firstAttribute="centerY" secondItem="IOp-BE-Ma6" secondAttribute="centerY" id="3JQ-qW-OJP"/>
-                <constraint firstItem="KTF-Qn-y4E" firstAttribute="centerY" secondItem="IOp-BE-Ma6" secondAttribute="centerY" id="8eJ-kF-XTZ"/>
+                <constraint firstItem="Zw9-9M-z75" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="DEZ-Z4-hzH"/>
                 <constraint firstItem="KTF-Qn-y4E" firstAttribute="leading" secondItem="8jO-Ld-nn0" secondAttribute="trailing" constant="8" id="Mpo-lc-fGc"/>
-                <constraint firstItem="IOp-BE-Ma6" firstAttribute="centerY" secondItem="Ubj-9h-laa" secondAttribute="centerY" id="Zkj-J4-XUJ"/>
-                <constraint firstAttribute="trailing" secondItem="KTF-Qn-y4E" secondAttribute="trailing" constant="10" id="fc7-Gw-uNn"/>
+                <constraint firstItem="Zw9-9M-z75" firstAttribute="leading" secondItem="KTF-Qn-y4E" secondAttribute="trailing" constant="8" id="PVm-7c-GEE"/>
+                <constraint firstItem="KTF-Qn-y4E" firstAttribute="centerY" secondItem="8jO-Ld-nn0" secondAttribute="centerY" constant="-2" id="RET-vy-GLn"/>
+                <constraint firstAttribute="bottom" secondItem="Zw9-9M-z75" secondAttribute="bottom" id="Xeu-E9-ZDu"/>
                 <constraint firstItem="8jO-Ld-nn0" firstAttribute="leading" secondItem="IOp-BE-Ma6" secondAttribute="trailing" constant="8" id="ghk-Bi-JGg"/>
                 <constraint firstItem="Ubj-9h-laa" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="ktW-qX-vTq"/>
+                <constraint firstItem="IOp-BE-Ma6" firstAttribute="centerY" secondItem="KTF-Qn-y4E" secondAttribute="centerY" id="l52-sU-IeQ"/>
+                <constraint firstItem="8jO-Ld-nn0" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="mpj-vC-gqH"/>
                 <constraint firstItem="IOp-BE-Ma6" firstAttribute="leading" secondItem="Ubj-9h-laa" secondAttribute="trailing" id="tZy-Jn-Bie"/>
+                <constraint firstAttribute="trailing" secondItem="Zw9-9M-z75" secondAttribute="trailing" id="u2x-7m-dBt"/>
                 <constraint firstItem="Ubj-9h-laa" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="uES-EM-2Nd"/>
             </constraints>
         </customView>
     </objects>
     <resources>
         <image name="play-icon-small" width="40" height="40"/>
+        <image name="sound-1-icon" width="22" height="20"/>
     </resources>
 </document>

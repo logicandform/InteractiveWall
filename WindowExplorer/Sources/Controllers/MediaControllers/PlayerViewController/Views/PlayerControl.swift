@@ -6,6 +6,7 @@ import AVKit
 
 protocol PlayerControlDelegate: class {
     func playerChangedState(_ state: PlayerState)
+    func playerChangedVolume(_ state: VolumeLevel)
 }
 
 
@@ -13,13 +14,15 @@ class PlayerControl: NSView {
     static let nib = NSNib.Name(rawValue: "PlayerControl")
 
     @IBOutlet weak var toggleButton: NSImageView!
-    @IBOutlet var contentView: NSView!
+    @IBOutlet weak var volumeButton: NSImageView!
+    @IBOutlet weak var contentView: NSView!
     @IBOutlet weak var seekBar: NSSlider!
     @IBOutlet weak var currentTimeLabel: NSTextField!
     @IBOutlet weak var durationLabel: NSTextField!
 
     weak var delegate: PlayerControlDelegate?
     private var duration = CMTime()
+    private var volume = VolumeLevel.low
 
     var player: AVPlayer? {
         didSet {
@@ -94,6 +97,9 @@ class PlayerControl: NSView {
             durationLabel.stringValue = durationString
         }
 
+        volumeButton.image = volume.image
+        delegate?.playerChangedVolume(volume)
+
         player.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1, 1), queue: DispatchQueue.main) { [weak self] time in
             self?.currentTime = time
         }
@@ -103,6 +109,14 @@ class PlayerControl: NSView {
         let scrubGesture = PanGestureRecognizer(withFingers: [1])
         gestureManager.add(scrubGesture, to: contentView)
         scrubGesture.gestureUpdated = didScrubControl(_:)
+
+        let toggleButtonTap = TapGestureRecognizer()
+        gestureManager.add(toggleButtonTap, to: toggleButton)
+        toggleButtonTap.gestureUpdated = didTapToggleButton(_:)
+
+        let volumeButtonTap = TapGestureRecognizer()
+        gestureManager.add(volumeButtonTap, to: volumeButton)
+        volumeButtonTap.gestureUpdated = didTapVolumeButton(_:)
     }
 
 
@@ -126,11 +140,43 @@ class PlayerControl: NSView {
         }
     }
 
+    private func didTapToggleButton(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
+            return
+        }
+
+        toggle()
+    }
+
+    private func didTapVolumeButton(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
+            return
+        }
+
+        toggleVolume()
+    }
+
 
     // MARK: Helpers
 
     private func seek(to time: CMTime) {
         player?.seek(to: time, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+    }
+
+    private func toggleVolume() {
+        switch volume {
+        case .mute:
+            volume = .low
+        case .low:
+            volume = .medium
+        case .medium:
+            volume = .high
+        case .high:
+            volume = .mute
+        }
+
+        volumeButton.image = volume.image
+        delegate?.playerChangedVolume(volume)
     }
 
     private func string(for time: CMTime) -> String? {
@@ -148,9 +194,9 @@ class PlayerControl: NSView {
 
         if let date = dateFormatter.date(from: dateString) {
             return dateFormatter.string(from: date)
-        } else {
-            return nil
         }
+
+        return nil
     }
 
     private func updateControl(for time: CMTime) {

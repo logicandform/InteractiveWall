@@ -15,7 +15,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     @IBOutlet weak var playerStateImageView: AspectFillImageView!
     @IBOutlet weak var titleLabel: NSTextField!
     
-    var audioPlayer: AKPlayer?
+    private var audioPlayer: AKPlayer?
 
 
     // MARK: Init
@@ -106,10 +106,6 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         gestureManager.add(singleFingerPlayerTap, to: playerView)
         singleFingerPlayerTap.gestureUpdated = didTapVideoPlayer(_:)
 
-        let singleFingerPlayerControlTap = TapGestureRecognizer()
-        gestureManager.add(singleFingerPlayerControlTap, to: playerControl.toggleButton)
-        singleFingerPlayerControlTap.gestureUpdated = didTapVideoPlayer(_:)
-
         let windowPan = PanGestureRecognizer()
         gestureManager.add(windowPan, to: windowDragArea)
         windowPan.gestureUpdated = handleWindowPan(_:)
@@ -121,14 +117,6 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
 
 
     // MARK: Gesture Handling
-
-    private func didTapVideoPlayer(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
-            return
-        }
-
-        playerControl.toggle()
-    }
 
     private func handleWindowPan(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
@@ -169,6 +157,14 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         WindowManager.instance.checkBounds(of: self)
     }
 
+    private func didTapVideoPlayer(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
+            return
+        }
+
+        playerControl.toggle()
+    }
+
 
     // MARK: IB-Actions
 
@@ -190,5 +186,9 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         })
 
         resetCloseWindowTimer()
+    }
+
+    func playerChangedVolume(_ state: VolumeLevel) {
+        audioPlayer?.volume = state.gain
     }
 }
