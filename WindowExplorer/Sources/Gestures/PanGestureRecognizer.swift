@@ -107,8 +107,6 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
 
     // MARK: Helpers
 
-    // MARK: Pan Helpers
-
     /// Updates pan properties during a move event when in the recognized state
     private func recognizePanMove(with touch: Touch, lastPosition: CGPoint) {
         guard let currentLocation = lastLocation else {

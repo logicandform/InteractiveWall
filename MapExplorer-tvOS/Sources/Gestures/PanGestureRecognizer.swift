@@ -7,15 +7,16 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
 
     private struct Constants {
         static let recognizedThreshhold: CGFloat = 20
+        static let minimumFingers = 1
         static let minimumDeltaUpdateThreshold: Double = 4
     }
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
     private(set) var state = GestureState.possible
     private(set) var delta = CGVector.zero
+    private(set) var lastLocation: CGPoint?
     private var timeOfLastUpdate = Date()
     private var positionForTouch = [Touch: CGPoint]()
-    private var lastLocation: CGPoint?
     private var cumulativeDelta = CGVector.zero
 
 
@@ -106,8 +107,6 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
 
     // MARK: Helpers
 
-    // MARK: Pan Helpers
-
     /// Updates pan properties during a move event when in the recognized state
     private func recognizePanMove(with touch: Touch, lastPosition: CGPoint) {
         guard let currentLocation = lastLocation else {
@@ -134,8 +133,8 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     // MARK: Momentum
 
     private struct Momentum {
-        static let panInitialFrictionFactor = 1.01
-        static let panFrictionFactorScale = 0.004
+        static let panInitialFrictionFactor = 1.04
+        static let panFrictionFactorScale = 0.003
         static let panThresholdMomentumDelta: Double = 2
     }
 

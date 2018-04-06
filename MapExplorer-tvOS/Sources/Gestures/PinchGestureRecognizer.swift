@@ -37,6 +37,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private var lastSpreadSinceUpdate: CGFloat!
     private var behavior = PinchBehavior.idle
     private var touchesForSpread: (Touch, Touch)?
+    private var pinchStartTime: Date?
 
     // Pan
     private var positionForTouch = [Touch: CGPoint]()
@@ -122,7 +123,10 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
     func end(_ touch: Touch, with properties: TouchProperties) {
         positionForTouch.removeValue(forKey: touch)
+
+        let tempPinchStartTime = pinchStartTime
         setTouchesForPinch()
+        pinchStartTime = pinchStartTime != nil ? pinchStartTime : tempPinchStartTime
 
         guard properties.touchCount.isZero else {
             return
@@ -210,9 +214,11 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         guard positionForTouch.keys.count == Pinch.numberOfFingers else {
             touchesForSpread = nil
             scale = Pinch.initialScale
+            pinchStartTime = nil
             return
         }
 
+        pinchStartTime = Date()
         let touches = positionForTouch.keys.sorted(by: { $0.id < $1.id })
         let first = touches.first!
         let last = touches.last!
@@ -276,6 +282,8 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         static let pinchThresholdMomentumScale: CGFloat = 0.0001
         static let pinchInitialFrictionFactor: CGFloat = 1.15
         static let pinchFrictionFactorScale: CGFloat = 0.003
+        static let minimumPinchTimeToStart = 0.1
+        static let maximumPinchScaleAboutZero: CGFloat = 0.2
         static let panInitialFrictionFactor = 1.05
         static let panFrictionFactorScale = 0.002
         static let panThresholdMomentumDelta: Double = 2
@@ -289,22 +297,29 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private var panMomentumDelta = CGVector.zero
 
     private func beginMomentum() {
+
         // Pinch
         pinchFrictionFactor = Momentum.pinchInitialFrictionFactor
-        scale = pinchMomentumScale
+        setMomentumScale()
 
         // Pan
         panFrictionFactor = Momentum.panInitialFrictionFactor
         delta = panMomentumDelta.magnitude > 5 ? panMomentumDelta : .zero
-
-        print("Delta: ", delta.magnitude)
-        print("Scale: ", scale)
 
         state = .momentum
         gestureUpdated?(self)
         momentumTimer?.invalidate()
         momentumTimer = Timer.scheduledTimer(withTimeInterval: Configuration.refreshRate, repeats: true) { [weak self] _ in
             self?.updateMomentum()
+        }
+    }
+
+    /// Gets the momentum scale, filtering out pinches that are too short in time, and clamping it
+    private func setMomentumScale() {
+        if let startTime = pinchStartTime, abs(startTime.timeIntervalSinceNow) > Momentum.minimumPinchTimeToStart {
+           scale = clamp(pinchMomentumScale, min: Pinch.initialScale - Momentum.maximumPinchScaleAboutZero, max: Pinch.initialScale + Momentum.maximumPinchScaleAboutZero)
+        } else {
+            scale = Pinch.initialScale
         }
     }
 
