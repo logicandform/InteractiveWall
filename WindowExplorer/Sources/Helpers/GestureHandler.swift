@@ -4,7 +4,7 @@ import Foundation
 
 class GestureHandler {
 
-    private var touches = Set<Touch>()
+    private(set) var touches = Set<Touch>()
     private var gestures: [GestureRecognizer]
     private var transformForTouch = [Touch: CGAffineTransform]()
     private var properties: TouchProperties {

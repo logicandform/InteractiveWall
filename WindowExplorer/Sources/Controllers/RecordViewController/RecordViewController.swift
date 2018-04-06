@@ -356,7 +356,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     func animate(to origin: NSPoint) {
-        guard let window = self.view.window, shouldAnimate(to: origin) else {
+        guard let window = self.view.window, shouldAnimate(to: origin), !gestureManager.isActive() else {
             return
         }
 
