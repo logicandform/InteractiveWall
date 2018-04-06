@@ -34,6 +34,11 @@ extension CGPoint {
         return CGPoint(x: x - view.frame.origin.x, y: y - view.frame.origin.y)
     }
 
+    /// Subtracts the given view's origin from the point.
+    func transformed(to frame: CGRect) -> CGPoint {
+        return CGPoint(x: x - frame.minX, y: y - frame.minY)
+    }
+
     /// Flips the coordinate system of the point in a given view.
     func inverted(in view: NSView) -> CGPoint {
         return CGPoint(x: x, y: view.frame.size.height - y)

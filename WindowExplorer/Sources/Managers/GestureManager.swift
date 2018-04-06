@@ -17,10 +17,6 @@ final class GestureManager {
     private weak var responder: GestureResponder!
     private var gestureHandlers = [NSView: GestureHandler]()
 
-    private struct Constants {
-        static let indicatorRadius: CGFloat = 10
-    }
-
 
     // MARK: Init
 
@@ -54,7 +50,7 @@ final class GestureManager {
         switch touch.state {
         case .down:
             handleTouchDown(touch)
-        case .up, .moved:
+        case .moved, .up:
             if let handler = handler(for: touch) {
                 handler.handle(touch)
             }
@@ -88,7 +84,6 @@ final class GestureManager {
 
         let windowTransform = CGAffineTransform(translationX: -window.frame.minX, y: -window.frame.minY)
         let positionInWindow = touch.position.applying(windowTransform)
-        displayTouchIndicator(in: responder.view, at: positionInWindow)
 
         if let (view, transform) = target(in: responder.view, at: positionInWindow, current: windowTransform, flipped: responder.view.isFlipped), let handler = gestureHandlers[view] {
             handler.set(transform, for: touch)
@@ -105,25 +100,6 @@ final class GestureManager {
         return handler
     }
 
-    /// Displays a touch indicator on the screen for testing
-    private func displayTouchIndicator(in view: NSView, at position: CGPoint) {
-        let radius = Constants.indicatorRadius
-        let frame = CGRect(origin: CGPoint(x: position.x - radius, y: position.y - radius), size: CGSize(width: 2*radius, height: 2*radius))
-        let touchIndicator = NSView(frame: frame)
-        touchIndicator.wantsLayer = true
-        touchIndicator.layer?.cornerRadius = radius
-        touchIndicator.layer?.masksToBounds = true
-        touchIndicator.layer?.borderWidth = radius / 4
-        touchIndicator.layer?.borderColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
-        view.addSubview(touchIndicator)
-
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = 1.0
-            touchIndicator.animator().alphaValue = 0.0
-        }, completionHandler: {
-            touchIndicator.removeFromSuperview()
-        })
-    }
 
     /// Returns the deepest possible view for the given point that is registered with a gesture handler along with the transform to that view.
     private func target(in view: NSView, at point: CGPoint, current: CGAffineTransform, flipped: Bool) -> (NSView, CGAffineTransform)? {

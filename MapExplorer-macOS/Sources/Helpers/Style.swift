@@ -7,6 +7,10 @@ let style = Style()
 
 final class Style {
 
+    let darkBackground = NSColor.black.withAlphaComponent(0.9)
+    let selectedColor = NSColor(calibratedRed: 0, green: 200/255, blue: 1, alpha: 1)
+    let clear = NSColor.clear
+
     // Map Annotation Markers
     let artifactColor = NSColor(calibratedRed: 41/255, green: 205/255, blue: 168/255, alpha: 1)
     let schoolInnerColor = NSColor(calibratedRed: 0, green: 201/255, blue: 255/255, alpha: 1)

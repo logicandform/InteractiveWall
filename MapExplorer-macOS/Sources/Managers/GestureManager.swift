@@ -16,9 +16,11 @@ final class GestureManager {
     private var gestureHandlers = [NSView: GestureHandler]()
 
     private struct Constants {
-        static let indicatorRadius: CGFloat = 10
+        static let indicatorRadius: CGFloat = 4
+        static let indicatorDuration: Double = 0.6
     }
 
+    var path: NSBezierPath?
 
     // MARK: Init
 
@@ -48,7 +50,13 @@ final class GestureManager {
         switch touch.state {
         case .down:
             handleTouchDown(touch)
-        case .up, .moved:
+        case .moved:
+            let position = touch.position.transformed(to: responder.view.window!.frame)
+            displayTouchIndicator(in: responder.view, at: position)
+            if let handler = handler(for: touch) {
+                handler.handle(touch)
+            }
+        case .up:
             if let handler = handler(for: touch) {
                 handler.handle(touch)
             }
@@ -97,6 +105,7 @@ final class GestureManager {
         return handler
     }
 
+
     /// Displays a touch indicator on the screen for testing
     private func displayTouchIndicator(in view: NSView, at position: CGPoint) {
         let radius = Constants.indicatorRadius
@@ -105,13 +114,14 @@ final class GestureManager {
         touchIndicator.wantsLayer = true
         touchIndicator.layer?.cornerRadius = radius
         touchIndicator.layer?.masksToBounds = true
-        touchIndicator.layer?.borderWidth = radius / 4
-        touchIndicator.layer?.borderColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        touchIndicator.layer?.backgroundColor = style.selectedColor.cgColor
         view.addSubview(touchIndicator)
 
         NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = 1.0
+            NSAnimationContext.current.duration = Constants.indicatorDuration
             touchIndicator.animator().alphaValue = 0.0
+            touchIndicator.animator().frame.size = .zero
+            touchIndicator.animator().frame.origin = CGPoint(x: touchIndicator.frame.origin.x + radius, y: touchIndicator.frame.origin.y + radius)
         }, completionHandler: {
             touchIndicator.removeFromSuperview()
         })
