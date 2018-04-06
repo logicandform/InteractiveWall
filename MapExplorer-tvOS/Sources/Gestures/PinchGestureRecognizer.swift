@@ -11,7 +11,6 @@ fileprivate enum PinchBehavior: String {
     case idle
 }
 
-
 class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
     private struct Pinch {
@@ -23,9 +22,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
     private struct Pan {
         static let recognizedThreshhold: CGFloat = 20
-        static let minimumFingers = 1
         static let minimumDeltaUpdateThreshold: Double = 4
-        static let updateTimeInterval = Configuration.refreshRate
     }
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
@@ -33,20 +30,18 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private(set) var scale: CGFloat = Pinch.initialScale
     private(set) var delta = CGVector.zero
     private(set) var center: CGPoint!
-    private var gestureVelocity: CGVector?
+    private var timeOfLastUpdate: Date!
 
     // Pinch
     private(set) var lastSpread: CGFloat?
     private var lastSpreadSinceUpdate: CGFloat!
     private var behavior = PinchBehavior.idle
     private var touchesForSpread: (Touch, Touch)?
-    private var momentumPinchTouches: (Touch, Touch)?
 
     // Pan
     private var positionForTouch = [Touch: CGPoint]()
     private var lastLocation: CGPoint?
     private var cumulativeDelta = CGVector.zero
-    private var timeOfLastUpdate: Date!
 
 
     // MARK: API
@@ -69,8 +64,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             fallthrough
         case .recognized, .began:
             momentumTimer?.invalidate()
-
-            // Pan
             positionForTouch[touch] = touch.position
 
             // Pinch
@@ -89,7 +82,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
         positionForTouch[touch] = touch.position
         updateTouchesForSpread(with: touch)
-        gestureVelocity = getGestureVelocity()
 
         switch state {
         case .began:
@@ -108,29 +100,27 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         }
     }
 
+
     /// Sets gesture properties during a move event and calls `gestureUpdated` callback
     private func updateForMove(with properties: TouchProperties) {
         // Pinch
         center = properties.cog
+        pinchMomentumScale = scale
 
         // Pan
         delta = cumulativeDelta
+        panMomentumDelta = delta
         cumulativeDelta = .zero
 
-        print(scale)
         gestureUpdated?(self)
+        timeOfLastUpdate = Date()
         if let touches = touchesForSpread {
             let touchSpread = spread(for: touches)
             lastSpreadSinceUpdate = touchSpread
         }
-        timeOfLastUpdate = Date()
     }
 
     func end(_ touch: Touch, with properties: TouchProperties) {
-        if positionForTouch.count == 2 {
-            momentumPinchTouches = touchesForSpread
-        }
-
         positionForTouch.removeValue(forKey: touch)
         setTouchesForPinch()
 
@@ -142,10 +132,8 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         state = .ended
         gestureUpdated?(self)
 
-        if shouldStartMomentum {
-            let velocity = gestureVelocity ?? .zero
-            let scale = pinchScale ?? Pinch.initialScale
-            beginMomentum(velocity, scale)
+        if shouldStartMomentum, timeOfLastUpdate.timeIntervalSinceNow < 0.1 {
+            beginMomentum()
         } else {
             reset()
             gestureUpdated?(self)
@@ -181,7 +169,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     /// Updates pinch properties during a move event when in the recognized state
     private func recognizePinchMove() {
         guard let touches = touchesForSpread else {
-            momentumPinchTouches = nil
             return
         }
 
@@ -248,10 +235,6 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         return sqrt(pow(touches.first.position.x - touches.second.position.x, 2) + pow(touches.first.position.y - touches.second.position.y, 2))
     }
 
-    private func spread(for positions: (first: CGPoint, second: CGPoint)) -> CGFloat {
-        return sqrt(pow(positions.first.x - positions.second.x, 2) + pow(positions.first.y - positions.second.y, 2))
-    }
-
     /// If the newSpread has a different behavior and surpasses the minimum threshold, returns true
     private func changedBehavior(from oldSpread: CGFloat, to newSpread: CGFloat) -> Bool {
         if behavior != behavior(of: newSpread), abs(oldSpread - newSpread) > Pinch.minimumBehaviorChangeThreshold {
@@ -283,7 +266,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
     /// Returns true if enough time has passed to send send the next update
     private func shouldUpdate(for time: Date) -> Bool {
-        return abs(time.timeIntervalSinceNow) > Pan.updateTimeInterval
+        return abs(time.timeIntervalSinceNow) > Configuration.refreshRate
     }
 
 
@@ -291,10 +274,10 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
     private struct Momentum {
         static let pinchThresholdMomentumScale: CGFloat = 0.0001
-        static let pinchInitialFrictionFactor: CGFloat = 1.0
-        static let pinchFrictionFactorScale: CGFloat = 0.0
-        static let panInitialFrictionFactor = 1.01
-        static let panFrictionFactorScale = 0.001
+        static let pinchInitialFrictionFactor: CGFloat = 1.15
+        static let pinchFrictionFactorScale: CGFloat = 0.003
+        static let panInitialFrictionFactor = 1.05
+        static let panFrictionFactorScale = 0.002
         static let panThresholdMomentumDelta: Double = 2
     }
 
@@ -302,43 +285,25 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private var panFrictionFactor = Momentum.panInitialFrictionFactor
     private var pinchFrictionFactor = Momentum.pinchInitialFrictionFactor
 
-    private var pinchScale: CGFloat? {
-        guard let touches = momentumPinchTouches, let velocity0 = touches.0.velocity, let velocity1 = touches.1.velocity else {
-            return nil
-        }
+    private var pinchMomentumScale = Pinch.initialScale
+    private var panMomentumDelta = CGVector.zero
 
-        let lastSpread = spread(for: (touches.0, touches.1))
-
-        let position0 = touches.0.position + velocity0 * CGFloat(Configuration.refreshRate)
-        let position1 = touches.1.position + velocity1 * CGFloat(Configuration.refreshRate)
-        let newSpreadFromVelocity = spread(for: (position0, position1))
-
-        return newSpreadFromVelocity / lastSpread
-    }
-
-    private func getGestureVelocity() -> CGVector? {
-        let velocities = positionForTouch.keys.compactMap({$0.velocity})
-
-        guard !velocities.isEmpty else {
-            return nil
-        }
-
-        return velocities.reduce(.zero, +) / CGFloat(velocities.count)
-    }
-
-    private func beginMomentum(_ velocity: CGVector, _ scale: CGFloat) {
+    private func beginMomentum() {
         // Pinch
         pinchFrictionFactor = Momentum.pinchInitialFrictionFactor
-        self.scale = scale
+        scale = pinchMomentumScale
 
         // Pan
         panFrictionFactor = Momentum.panInitialFrictionFactor
-        delta = velocity
+        delta = panMomentumDelta.magnitude > 5 ? panMomentumDelta : .zero
+
+        print("Delta: ", delta.magnitude)
+        print("Scale: ", scale)
 
         state = .momentum
         gestureUpdated?(self)
         momentumTimer?.invalidate()
-        momentumTimer = Timer.scheduledTimer(withTimeInterval: Pan.updateTimeInterval, repeats: true) { [weak self] _ in
+        momentumTimer = Timer.scheduledTimer(withTimeInterval: Configuration.refreshRate, repeats: true) { [weak self] _ in
             self?.updateMomentum()
         }
     }

@@ -54,7 +54,7 @@ final class RecordFactory {
         }
     }
 
-    private static func organization(id: Int, completion: @escaping ((RecordDisplayable?) -> Void)) {
+    static func organization(id: Int, completion: @escaping ((RecordDisplayable?) -> Void)) {
         firstly {
             CachingNetwork.getOrganization(by: id)
         }.then { organization -> Void in
