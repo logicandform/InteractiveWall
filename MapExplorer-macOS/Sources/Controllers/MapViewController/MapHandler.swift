@@ -45,6 +45,7 @@ class MapHandler {
         let numberOfMaps = Configuration.mapsPerScreen * Configuration.numberOfScreens
         let initialState = MapState(pair: nil, group: nil)
         self.stateForMap = Array(repeating: initialState, count: numberOfMaps)
+
         subscribeToNotifications()
     }
 
@@ -77,7 +78,6 @@ class MapHandler {
         var mapRect = MKMapRect(origin: Constants.initialMapOrigin, size: Constants.initialMapSize)
         mapRect.origin.x = Constants.initialMapOrigin.x + Double(mapID) * Constants.initialMapSize.width
         mapView.visibleMapRect = mapRect
-
     }
 
     // MARK: Notifications
