@@ -176,7 +176,9 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     // MARK: PlayerControlDelegate
 
     func playerChangedState(_ state: PlayerState) {
-        playerStateImageView.image = state.image
+        if let image = state.image {
+            playerStateImageView.image = image
+        }
         playerControl.toggleButton.image = state.smallImage
         let playerStateAlpha: CGFloat = state == .playing ? 0 : 1
 
