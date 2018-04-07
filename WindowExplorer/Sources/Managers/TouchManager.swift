@@ -6,7 +6,7 @@ import MONode
 final class TouchManager: SocketManagerDelegate {
 
     static let instance = TouchManager()
-    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 12223)
+    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 12220)
 
     private var socketManager: SocketManager?
     private var managersForTouch = [Touch: (NSWindow, GestureManager)]()
@@ -34,7 +34,10 @@ final class TouchManager: SocketManagerDelegate {
             return
         }
 
+        print("Tocuh befroe", touch)
         convertToScreen(touch)
+
+        print(touch)
 
         // Check if the touch landed on a window, else notify the proper map application.
         if let manager = manager(of: touch) {
