@@ -15,6 +15,7 @@ class MapHandler {
     private var activityState = UserActivity.idle
     private var stateForMap: [MapState]
     private weak var ungroupTimer: Foundation.Timer?
+    private weak var resetTimer: Foundation.Timer?
 
     private var mapState: MapState {
         return stateForMap[mapID]
@@ -23,10 +24,12 @@ class MapHandler {
 
     private struct Constants {
         static let ungroupTimeoutPeriod: TimeInterval = 5
+        static let resetTimeoutPeriod: TimeInterval = 5
         static let initialMapOrigin = MKMapPointMake(5250000, 70000000)
-        static let initialMapSize = MKMapSizeMake(110000000.0 / Double(Configuration.numberOfScreens), 0)
+        static let initialMapSize = MKMapSizeMake(110000000.0 / Double(Configuration.mapsPerScreen), 0)
         static let canada = MKMapRect(origin: MKMapPoint(x: 23000000, y: 13000000), size: MKMapSize(width: 80000000, height: 90000000))
         static let verticalPanLimit: Double = 140000000
+        static let masterID = 0
     }
 
     private struct Keys {
@@ -77,7 +80,7 @@ class MapHandler {
     func reset() {
         var mapRect = MKMapRect(origin: Constants.initialMapOrigin, size: Constants.initialMapSize)
         mapRect.origin.x = Constants.initialMapOrigin.x + Double(mapID) * Constants.initialMapSize.width
-        mapView.visibleMapRect = mapRect
+        mapView.setVisibleMapRect(mapRect, animated: true)
     }
 
 
@@ -97,6 +100,7 @@ class MapHandler {
 
         switch notification.name {
         case MapNotification.position.name:
+            resetTimer?.invalidate()
             if let mapJSON = info[Keys.map] as? JSON, let fromGroup = info[Keys.group] as? Int, let mapRect = MKMapRect(json: mapJSON), let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture) {
                 setMapState(from: fromID, group: fromGroup, momentum: state == .momentum)
                 handle(mapRect, from: fromID, group: fromGroup)
@@ -104,9 +108,12 @@ class MapHandler {
         case MapNotification.unpair.name:
             unpair(from: fromID)
         case MapNotification.ungroup.name:
+            beginResetTimer()
             if let fromGroup = info[Keys.group] as? Int {
                 ungroup(from: fromGroup)
             }
+        case MapNotification.reset.name:
+            reset()
         default:
             return
         }
@@ -210,6 +217,15 @@ class MapHandler {
         ungroupTimer?.invalidate()
         ungroupTimer = Timer.scheduledTimer(withTimeInterval: Constants.ungroupTimeoutPeriod, repeats: false) { [weak self] _ in
             self?.ungroupTimerFired()
+        }
+    }
+
+    private func beginResetTimer() {
+        if mapID == Constants.masterID {
+            resetTimer = Timer.scheduledTimer(withTimeInterval: Constants.resetTimeoutPeriod, repeats: false) { [weak self] _ in
+                let info: JSON = [Keys.id: self?.mapID]
+                DistributedNotificationCenter.default().postNotificationName(MapNotification.reset.name, object: nil, userInfo: info, deliverImmediately: true)
+            }
         }
     }
 
