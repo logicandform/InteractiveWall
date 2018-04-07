@@ -27,6 +27,7 @@ class ImageViewController: MediaViewController {
         static let minImageWidth: CGFloat = 416.0
         static let initialMagnification: CGFloat = 1
         static let maximumMagnification: CGFloat = 5
+        static let rotationBuffer: CGFloat = 32
     }
 
 
@@ -156,7 +157,7 @@ class ImageViewController: MediaViewController {
     }
 
     private func didTapRotateButton(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, let window = view.window else {
             return
         }
 
@@ -166,6 +167,8 @@ class ImageViewController: MediaViewController {
         scrollViewHeightConstraint.constant = frameSize.height
         scrollViewWidthConstraint.constant = frameSize.width
         imageView.setFrameSize(frameSize)
+        let origin = NSPoint(x: window.frame.origin.x + window.frame.width - window.frame.height + Constants.rotationBuffer, y: window.frame.origin.y)
+        window.setFrameOrigin(origin)
         imageView.rotate(byDegrees: -90)
     }
 
