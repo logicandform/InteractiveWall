@@ -1,4 +1,4 @@
-///  Copyright © 2018 JABT. All rights reserved.
+// Copyright © 2018 JABT. All rights reserved.
 
 import Cocoa
 import PromiseKit
@@ -28,11 +28,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         WindowManager.instance.registerForNotifications()
         TouchManager.instance.setupTouchSocket()
-        //        launchMapExplorer()
+//        launchMapExplorer()
     }
 
     func applicationWillTerminate(_ notification: Notification) {
-        //        killSubProcesses()
+//        killSubProcesses()
     }
 
 
@@ -61,5 +61,4 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         task.waitUntilExit()
     }
 }
-
 
