@@ -27,7 +27,7 @@ class MapHandler {
         static let resetTimeoutPeriod: TimeInterval = 5
         static let initialMapOrigin = MKMapPointMake(5250000, 70000000)
         static let initialMapSize = MKMapSizeMake(110000000.0 / Double(Configuration.mapsPerScreen), 0)
-        static let canada = MKMapRect(origin: MKMapPoint(x: 23000000, y: 13000000), size: MKMapSize(width: 80000000, height: 90000000))
+        static let canada = MKMapRect(origin: MKMapPoint(x: 23000000, y: 13000000), size: MKMapSize(width: 80000000, height: 0))
         static let verticalPanLimit: Double = 140000000
         static let masterID = 0
     }
@@ -78,8 +78,8 @@ class MapHandler {
     }
 
     func reset() {
-        var mapRect = MKMapRect(origin: Constants.initialMapOrigin, size: Constants.initialMapSize)
-        mapRect.origin.x = Constants.initialMapOrigin.x + Double(mapID) * Constants.initialMapSize.width
+        var mapRect = MKMapRect(origin: Constants.canada.origin, size: MKMapSize(width: Constants.canada.size.width / Configuration.mapsPerScreen, height: 0.0))
+        mapRect.origin.x = Constants.canada.origin.x + Double(mapID).truncatingRemainder(dividingBy: Configuration.mapsPerScreen) * Constants.canada.size.width / Configuration.mapsPerScreen
         mapView.setVisibleMapRect(mapRect, animated: true)
     }
 
@@ -137,18 +137,23 @@ class MapHandler {
 
     /// Sets the visble rect of self.mapView based on the current pairedID, else self.mapID
     private func set(_ mapRect: MKMapRect, from pair: Int?) {
+        var xOrigin = 0.0
         let pairedID = pair ?? mapID
-        var xOrigin = mapRect.origin.x + Double(mapID - pairedID) * mapRect.size.width
-        if xOrigin < 0 {
-            xOrigin += MKMapSizeWorld.width
+        if mapRect.origin.x > MKMapSizeWorld.width - mapRect.size.width {
+            xOrigin = mapRect.origin.x - MKMapSizeWorld.width + Double(mapID - pairedID) * mapRect.size.width
+        } else {
+            xOrigin = mapRect.origin.x + Double(mapID - pairedID) * mapRect.size.width
+
         }
 
         var yOrigin = mapRect.origin.y
-        if xOrigin > Constants.canada.origin.x + Constants.canada.size.width, xOrigin < MKMapSizeWorld.width - mapView.visibleMapRect.size.width {
-            xOrigin -= (Constants.canada.size.width + mapView.visibleMapRect.size.width)
-        } else if xOrigin + mapView.visibleMapRect.size.width < Constants.canada.origin.x || MKMapSizeWorld.width + Constants.canada.origin.x - mapView.visibleMapRect.size.width > xOrigin, MKMapSizeWorld.width - mapView.visibleMapRect.size.width < xOrigin {
-            xOrigin += Constants.canada.size.width + mapView.visibleMapRect.size.width
-        }
+        if xOrigin > Constants.canada.origin.x + Constants.canada.size.width {
+            let distance = xOrigin - Constants.canada.origin.x + mapRect.size.width
+            xOrigin = distance.truncatingRemainder(dividingBy: Constants.canada.size.width + mapRect.size.width) - mapRect.size.width + Constants.canada.origin.x
+        } else if xOrigin + mapRect.size.width < Constants.canada.origin.x {
+            let distance = Constants.canada.size.width + Constants.canada.origin.x - xOrigin
+            xOrigin = Constants.canada.origin.x + Constants.canada.size.width - distance.truncatingRemainder(dividingBy: Constants.canada.size.width + mapRect.size.width)
+        } 
 
         if mapRect.origin.y + mapRect.size.height > Constants.verticalPanLimit {
             yOrigin = Constants.verticalPanLimit - mapRect.size.height

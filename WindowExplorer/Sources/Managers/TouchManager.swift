@@ -6,7 +6,7 @@ import MONode
 final class TouchManager: SocketManagerDelegate {
 
     static let instance = TouchManager()
-    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 12222)
+    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 12223)
 
     private var socketManager: SocketManager?
     private var managersForTouch = [Touch: (NSWindow, GestureManager)]()
@@ -125,10 +125,7 @@ final class TouchManager: SocketManagerDelegate {
 
     /// Converts a position received from a touch screen to the coordinate of the current devices bounds.
     private func convertToScreen(_ touch: Touch) {
-        guard let screen = NSScreen.screens.at(index: touch.screen) else {
-            return
-        }
-
+        let screen = NSScreen.at(position: touch.screen)
         let xPos = (touch.position.x / Configuration.touchScreenSize.width * CGFloat(screen.frame.width)) + screen.frame.origin.x
         let yPos = (1 - touch.position.y / Configuration.touchScreenSize.height) * CGFloat(screen.frame.height)
         touch.position = CGPoint(x: xPos, y: yPos)
@@ -144,15 +141,11 @@ final class TouchManager: SocketManagerDelegate {
 
     /// Calculates the map index based off the x-position of the touch and the screens
     private func calculateMap(for touch: Touch) -> Int {
-        guard let screen = NSScreen.screens.at(index: touch.screen) else {
-            return Configuration.loadMapsOnFirstScreen ? 0 : 1
-        }
-
-        let baseMapForScreen = touch.screen * Int(Configuration.mapsPerScreen)
+        let screen = NSScreen.at(position: touch.screen)
+        let baseMapForScreen = (touch.screen - 1) * Int(Configuration.mapsPerScreen)
         let mapWidth = screen.frame.width / CGFloat(Configuration.mapsPerScreen)
         let mapForScreen = Int((touch.position.x - screen.frame.minX) / mapWidth)
-        let offset = Configuration.loadMapsOnFirstScreen ? 0 : Configuration.mapsPerScreen
-        return baseMapForScreen + mapForScreen - offset
+        return baseMapForScreen + mapForScreen
     }
 
     /// Determines if a touch being sent to a map needs to be sent. To reduce the number of notifications sent, we only send every second moved event.

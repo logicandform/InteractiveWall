@@ -51,10 +51,9 @@ final class GestureManager {
         case .down:
             handleTouchDown(touch)
         case .moved:
-            let position = touch.position.transformed(to: responder.view.window!.frame)
-            displayTouchIndicator(in: responder.view, at: position)
             if let handler = handler(for: touch) {
                 handler.handle(touch)
+                displayTouchIndicator(in: responder.view, at: touch.position)
             }
         case .up:
             if let handler = handler(for: touch) {
@@ -86,7 +85,8 @@ final class GestureManager {
             return
         }
 
-        let windowTransform = CGAffineTransform(translationX: -window.frame.minX, y: -window.frame.minY)
+        let xTranslation = touch.position.x.truncatingRemainder(dividingBy: window.frame.width) - touch.position.x
+        let windowTransform = CGAffineTransform(translationX: xTranslation, y: -window.frame.minY)
         let positionInWindow = touch.position.applying(windowTransform)
         displayTouchIndicator(in: responder.view, at: positionInWindow)
 

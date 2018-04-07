@@ -4,8 +4,8 @@ import Cocoa
 
 
 struct Configuration {
-    static let mapsPerScreen = 1
-    static let numberOfScreens = 1
+    static let mapsPerScreen = 3
+    static let numberOfScreens = 3
     static let touchScreenSize = CGSize(width: 21564, height: 12116)
     static let refreshRate: Double = 1 / 60
 }
@@ -20,25 +20,26 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         let screenIndex = Int(CommandLine.arguments[1]) ?? 0
-        let windowIndex = Int(CommandLine.arguments[2]) ?? 0
+        let appIndex = Int(CommandLine.arguments[2]) ?? 0
+
+        let screen = NSScreen.at(position: screenIndex)
         screenID = screenIndex
-        appID = windowIndex + (screenID - 1) * Configuration.mapsPerScreen
+        appID = appIndex + ((screenIndex - 1) * Configuration.mapsPerScreen)
 
         let mapStoryboard = NSStoryboard(name: MapViewController.storyboard, bundle: nil)
         let mapController = mapStoryboard.instantiateInitialController() as! MapViewController
         let mapWindow: NSWindow
-        let screen = NSScreen.screens[screenIndex]
         let screenWidth = screen.frame.width / CGFloat(Configuration.mapsPerScreen)
-        let frame = NSRect(x: screen.frame.minX + screenWidth * CGFloat(windowIndex), y: screen.frame.minY, width: screenWidth, height: screen.frame.height)
+        let frame = NSRect(x: screen.frame.minX + screenWidth * CGFloat(appIndex), y: screen.frame.minY, width: screenWidth, height: screen.frame.height)
         mapWindow = BorderlessWindow(frame: frame, controller: mapController)
         mapWindow.setFrame(frame, display: true)
         mapWindow.makeKeyAndOrderFront(self)
 
         /// Display the DemoViewController
 //        let demoStoryboard = NSStoryboard(name: GestureDemoController.storyboard, bundle: nil)
-//        let demoVC = demoStoryboard.instantiateInitialController() as! GestureDemoController
+//        let demoVC = demoStoryboard.instantiateIni5tialController() as! GestureDemoController
 //        let demoWindow = NSWindow(contentViewController: demoVC)
-//        demoWindow.title = "Demo Window"
+//        demoWindow.title = "Demo Window"Ø
 //        demoWindow.makeKeyAndOrderFront(self)
     }
 

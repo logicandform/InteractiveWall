@@ -96,7 +96,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         relatedItemsView.alphaValue = 0
         relatedItemsView.register(NSNib(nibNamed: RelatedItemView.nibName, bundle: nil), forIdentifier: RelatedItemView.interfaceIdentifier)
         relatedItemsView.backgroundColor = .clear
-        hideRelatedItemsButton.alphaValue = 0
         showRelatedItemsView.isHidden = record.relatedRecords.isEmpty
         hideRelatedItemsButton.font = NSFont(name: Constants.fontName, size: Constants.fontSize) ?? NSFont.systemFont(ofSize: Constants.fontSize)
         hideRelatedItemsButton.attributedTitle = NSAttributedString(string: hideRelatedItemsButton.title, attributes: titleBarAttributes)

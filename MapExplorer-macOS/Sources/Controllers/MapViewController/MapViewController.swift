@@ -18,7 +18,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private var recordForAnnotation = [CircleAnnotation: Record]()
 
     private struct Constants {
-        static let tileURL = "http://10.58.73.164:3200/v2/tiles/{z}/{x}/{y}.pbf"
+        static let tileURL = "http://localhost:3200/v2/tiles/{z}/{x}/{y}.pbf"
         static let maxZoomWidth: Double =  44739244
         static let minZoomWidth: Double = 424500
         static let touchRadius: CGFloat = 20
