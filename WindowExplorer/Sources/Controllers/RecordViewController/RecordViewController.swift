@@ -463,13 +463,14 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         resetCloseWindowTimer()
     }
 
+    /// If the position of the controller is close enough to the origin of animation, don't animate
     private func shouldAnimate(to origin: NSPoint) -> Bool {
         guard let currentOrigin = self.view.window?.frame.origin else {
             return false
         }
 
         let originDifference = currentOrigin - origin
-        return abs(originDifference.x) > Constants.animationDistanceThreshold || abs(originDifference.y) > Constants.animationDistanceThreshold ? true: false
+        return abs(originDifference.x) > Constants.animationDistanceThreshold || abs(originDifference.y) > Constants.animationDistanceThreshold ? true : false
     }
 
 
