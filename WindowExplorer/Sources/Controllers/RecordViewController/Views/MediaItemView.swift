@@ -51,11 +51,11 @@ class MediaItemView: NSCollectionViewItem {
             }
         }
 
-        displayIconIfNecessairy(for: media)
+        displayIconIfNecessary(for: media)
     }
 
     /// Displays the play icon over video media items
-    private func displayIconIfNecessairy(for media: Media) {
+    private func displayIconIfNecessary(for media: Media) {
         if media.type == .video, let image = media.type.icon  {
             let imageView = NSImageView(image: image)
             let radius: CGFloat = 40
