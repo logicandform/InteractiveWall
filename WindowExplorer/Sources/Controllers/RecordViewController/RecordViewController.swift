@@ -24,22 +24,21 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private(set) var gestureManager: GestureManager!
     private var showingRelatedItems = false
     private var pageControl = PageControl()
-    private var positionsForMediaControllers = [MediaViewController: Int]()
+    private var positionsForMediaControllers = [MediaViewController: Int?]()
     private weak var closeWindowTimer: Foundation.Timer?
     private var animating: Bool = false
     
     private struct Constants {
         static let tableRowHeight: CGFloat = 80
         static let windowMargins: CGFloat = 20
-        static let mediaControllerOffsetX = 100
-        static let mediaControllerOffsetY = -50
+        static let mediaControllerOffset = 50
         static let closeWindowTimeoutPeriod: TimeInterval = 60
         static let animationDistanceThreshold: CGFloat = 20
         static let fontName = "Soleil"
         static let fontSize: CGFloat = 13
         static let fontColor: NSColor = .white
         static let kern: CGFloat = 0.5
-        static let screenEdgeBuffer: CGFloat = 40
+        static let screenEdgeBuffer: CGFloat = 80
     }
 
 
@@ -290,6 +289,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return
         }
 
+        recordMoved()
+
         switch pan.state {
         case .recognized, .momentum:
             var origin = window.frame.origin
@@ -362,6 +363,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         resetCloseWindowTimer()
         var frame = window.frame
         frame.origin = origin
+        window.makeKeyAndOrderFront(self)
         animating = true
 
         NSAnimationContext.runAnimationGroup({ _ in
@@ -418,30 +420,68 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func selectMediaItem(_ media: Media) {
-        guard let window = view.window, let windowType = WindowType(for: media), !positionsForMediaControllers.keys.contains(where: {$0.media == media}), let lastScreen = NSScreen.screens.last else {
+        guard let window = view.window, let windowType = WindowType(for: media), let lastScreen = NSScreen.screens.last else {
             return
         }
 
-        let totalWidth = NSScreen.screens.reduce(0) { $0 + $1.frame.width }
-        let position = positionsForMediaControllers.values.max() != nil ? positionsForMediaControllers.values.max()! + 1 : 0
-        let offsetX = position * Constants.mediaControllerOffsetX
-        let offsetY = position * Constants.mediaControllerOffsetY
-        let x = window.frame.maxX + Constants.windowMargins + CGFloat(offsetX)
-        let y = window.frame.maxY - windowType.size.height + CGFloat(offsetY)
-        var origin = CGPoint(x: x, y: y)
+        var controller: MediaViewController?
 
-        if x > totalWidth - Constants.screenEdgeBuffer, windowType.canAdjustOrigin {
-            if lastScreen.frame.height - window.frame.maxY < windowType.size.height {
-                origin = NSPoint(x: totalWidth - windowType.size.width - Constants.windowMargins, y: y - view.frame.height - Constants.windowMargins)
+        if let mediaController = positionsForMediaControllers.keys.first(where: {$0.media == media}) {
+            if positionsForMediaControllers[mediaController]! == nil as Int? {
+                controller = mediaController
             } else {
-                origin = NSPoint(x: totalWidth - windowType.size.width - Constants.windowMargins, y: y + windowType.size.height + Constants.windowMargins)
+                mediaController.view.window?.makeKeyAndOrderFront(self)
+                return
             }
         }
 
-        if let mediaController = WindowManager.instance.display(windowType, at: origin) as? MediaViewController {
+        let position = getMediaControllerPosition()
+        let offsetX = position * Constants.mediaControllerOffset
+        let offsetY = position * -Constants.mediaControllerOffset
+        let windowHeight = controller == nil ? windowType.size.height : controller!.view.frame.height
+        let originX = window.frame.maxX + Constants.windowMargins + CGFloat(offsetX)
+        let originY = window.frame.maxY - windowHeight + CGFloat(offsetY)
+        let origin = getAdjustedOrigin(CGPoint(x: originX, y: originY), on: window, and: lastScreen, with: windowType)
+
+        if let mediaController = controller {
+            mediaController.animate(to: origin)
+            positionsForMediaControllers[mediaController] = position
+            mediaController.moved = false
+        } else if let mediaController = WindowManager.instance.display(windowType, at: origin) as? MediaViewController {
             positionsForMediaControllers[mediaController] = position
             mediaController.delegate = self
         }
+    }
+
+    /// Returns the origin, adjusting if it will be displaying a record off the map
+    private func getAdjustedOrigin(_ origin: CGPoint, on window: NSWindow, and lastScreen: NSScreen, with windowType: WindowType) -> NSPoint {
+        let totalWidth = NSScreen.screens.reduce(0) { $0 + $1.frame.width }
+        if origin.x > totalWidth - Constants.screenEdgeBuffer, windowType.canAdjustOrigin {
+            if lastScreen.frame.height - window.frame.maxY < windowType.size.height {
+                return NSPoint(x: totalWidth - windowType.size.width - Constants.windowMargins, y: origin.y - view.frame.height - Constants.windowMargins)
+            } else {
+                return NSPoint(x: totalWidth - windowType.size.width - Constants.windowMargins, y: origin.y + windowType.size.height + Constants.windowMargins)
+            }
+        }
+
+        return origin
+    }
+
+    /// Gets the position that is missing from 0 to the largestPosition
+    private func getMediaControllerPosition() -> Int {
+        let sortedPosition = positionsForMediaControllers.values.compactMap{$0}.sorted(by: { $0 < $1 })
+
+        guard let lastPosition = sortedPosition.last else {
+            return 0
+        }
+
+        for index in 0...lastPosition {
+            if index != sortedPosition[index] {
+                return index
+            }
+        }
+
+        return lastPosition + 1
     }
 
     private func resetCloseWindowTimer() {
@@ -470,6 +510,10 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
         let originDifference = currentOrigin - origin
         return abs(originDifference.x) > Constants.animationDistanceThreshold || abs(originDifference.y) > Constants.animationDistanceThreshold ? true : false
+    }
+
+    private func recordMoved() {
+        positionsForMediaControllers.keys.forEach { positionsForMediaControllers[$0] = nil as Int? }
     }
 
 
@@ -524,5 +568,9 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     func closeWindow(for mediaController: MediaViewController) {
         positionsForMediaControllers.removeValue(forKey: mediaController)
         resetCloseWindowTimer()
+    }
+
+    func moved(for mediaController: MediaViewController) {
+        positionsForMediaControllers[mediaController] = nil as Int?
     }
 }

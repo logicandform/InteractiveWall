@@ -112,9 +112,11 @@ class ImageViewController: MediaViewController {
     // MARK: Gesture Handling
 
     private func handleWindowPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
+        guard let pan = gesture as? PanGestureRecognizer, let window = view.window, !super.animating else {
             return
         }
+
+        super.moved = true
 
         switch pan.state {
         case .recognized, .momentum:
@@ -129,7 +131,7 @@ class ImageViewController: MediaViewController {
     }
 
     private func didPinchImageView(_ gesture: GestureRecognizer) {
-        guard let pinch = gesture as? PinchGestureRecognizer else {
+        guard let pinch = gesture as? PinchGestureRecognizer, !super.animating else {
             return
         }
 
@@ -149,7 +151,7 @@ class ImageViewController: MediaViewController {
     }
 
     private func didTapCloseButton(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, !super.animating else {
             return
         }
 
@@ -157,7 +159,7 @@ class ImageViewController: MediaViewController {
     }
 
     private func didTapRotateButton(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, let window = view.window else {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, let window = view.window, !super.animating else {
             return
         }
 
@@ -174,7 +176,7 @@ class ImageViewController: MediaViewController {
 
     @objc
     private func handleMousePan(_ gesture: NSPanGestureRecognizer) {
-        guard let window = view.window else {
+        guard let window = view.window, !super.animating else {
             return
         }
 

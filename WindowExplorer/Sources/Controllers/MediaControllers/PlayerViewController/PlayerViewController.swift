@@ -119,9 +119,11 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     // MARK: Gesture Handling
 
     private func handleWindowPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
+        guard let pan = gesture as? PanGestureRecognizer, let window = view.window, !super.animating else {
             return
         }
+
+        super.moved = true
 
         switch pan.state {
         case .recognized, .momentum:
@@ -138,7 +140,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     }
 
     private func didTapCloseButton(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, !super.animating else {
             return
         }
 
@@ -158,7 +160,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     }
 
     private func didTapVideoPlayer(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, !super.animating else {
             return
         }
 
