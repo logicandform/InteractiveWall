@@ -24,7 +24,6 @@ class MediaItemView: NSCollectionViewItem {
         view.wantsLayer = true
         view.layer?.borderWidth = 1
         set(highlighted: false)
-        mediaImageView.layer?.zPosition = 10
     }
 
 
@@ -51,7 +50,7 @@ class MediaItemView: NSCollectionViewItem {
                 self?.mediaImageView.image = image
             }
         }
-        
+
         displayIconIfNecessairy(for: media)
     }
 
