@@ -26,7 +26,12 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private var pageControl = PageControl()
     private var positionsForMediaControllers = [MediaViewController: Int?]()
     private weak var closeWindowTimer: Foundation.Timer?
+<<<<<<< HEAD
     private var animating = false
+=======
+    private var animating: Bool = false
+    private var selectedRelatedItemHighlightTimer: Timer?
+>>>>>>> Fixed the change in color when scrolling related items
     
     private struct Constants {
         static let tableRowHeight: CGFloat = 80
@@ -38,7 +43,12 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         static let fontSize: CGFloat = 13
         static let fontColor: NSColor = .white
         static let kern: CGFloat = 0.5
+<<<<<<< HEAD
         static let screenEdgeBuffer: CGFloat = 80
+=======
+        static let screenEdgeBuffer: CGFloat = 40
+        static let relatedItemHightlightTime: TimeInterval = 0.15
+>>>>>>> Fixed the change in color when scrolling related items
     }
 
 
@@ -220,6 +230,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
         switch pan.state {
         case .recognized, .momentum:
+            selectedRelatedItemHighlightTimer?.invalidate()
             var rect = relatedItemsView.visibleRect
             rect.origin.y += pan.delta.dy
             relatedItemsView.scrollToVisible(rect)
@@ -239,7 +250,9 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private var selectedRelatedItem: RelatedItemView? {
         didSet {
             oldValue?.set(highlighted: false)
-            selectedRelatedItem?.set(highlighted: true)
+            selectedRelatedItemHighlightTimer = Timer.scheduledTimer(withTimeInterval: Constants.relatedItemHightlightTime, repeats: false) { [weak self] _ in
+                self?.selectedRelatedItem?.set(highlighted: true)
+            }
         }
     }
 
@@ -261,6 +274,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             selectedRelatedItem = nil
         case .ended:
             if let selectedRecord = selectedRelatedItem?.record {
+                selectedRelatedItemHighlightTimer?.fire()
                 selectRelatedItem(selectedRecord)
                 selectedRelatedItem = nil
             }
