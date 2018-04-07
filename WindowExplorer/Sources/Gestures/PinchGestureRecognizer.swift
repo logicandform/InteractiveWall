@@ -11,7 +11,6 @@ fileprivate enum PinchBehavior: String {
     case idle
 }
 
-
 class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
     private struct Pinch {
@@ -19,14 +18,12 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         static let numberOfFingers = 2
         static let minimumBehaviorChangeThreshold: CGFloat = 20
         static let minimumSpreadDistance: CGFloat = 60
-        static let initialFactor: CGFloat = 1
     }
 
     private struct Pan {
         static let recognizedThreshhold: CGFloat = 20
-        static let minimumFingers = 1
         static let minimumDeltaUpdateThreshold: Double = 4
-        static let updateTimeInterval: Double = 1 / 60
+        static let gesturePausedTime = 0.1
     }
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
@@ -34,20 +31,19 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private(set) var scale: CGFloat = Pinch.initialScale
     private(set) var delta = CGVector.zero
     private(set) var center: CGPoint!
+    private var timeOfLastUpdate: Date!
 
     // Pinch
-    private(set) var spreads = LastTwo<CGFloat>()
+    private(set) var lastSpread: CGFloat?
     private var lastSpreadSinceUpdate: CGFloat!
     private var behavior = PinchBehavior.idle
-    private var currentSpread: CGFloat?
     private var touchesForSpread: (Touch, Touch)?
+    private var pinchStartTime: Date?
 
     // Pan
     private var positionForTouch = [Touch: CGPoint]()
-    private var locations = LastTwo<CGPoint>()
+    private var lastLocation: CGPoint?
     private var cumulativeDelta = CGVector.zero
-    private var lastTouchCount: Int!
-    private var timeOfLastUpdate: Date!
 
 
     // MARK: API
@@ -62,7 +58,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
             // Pan
             cumulativeDelta = .zero
-            locations.add(properties.cog)
+            lastLocation = properties.cog
 
             state = .began
             gestureUpdated?(self)
@@ -70,10 +66,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             fallthrough
         case .recognized, .began:
             momentumTimer?.invalidate()
-
-            // Pan
             positionForTouch[touch] = touch.position
-            lastTouchCount = positionForTouch.keys.count
 
             // Pinch
             center = properties.cog
@@ -113,22 +106,27 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private func updateForMove(with properties: TouchProperties) {
         // Pinch
         center = properties.cog
+        pinchMomentumScale = scale
 
         // Pan
         delta = cumulativeDelta
+        panMomentumDelta = delta
         cumulativeDelta = .zero
 
         gestureUpdated?(self)
+        timeOfLastUpdate = Date()
         if let touches = touchesForSpread {
             let touchSpread = spread(for: touches)
             lastSpreadSinceUpdate = touchSpread
         }
-        timeOfLastUpdate = Date()
     }
 
     func end(_ touch: Touch, with properties: TouchProperties) {
         positionForTouch.removeValue(forKey: touch)
+
+        let tempPinchStartTime = pinchStartTime
         setTouchesForPinch()
+        pinchStartTime = pinchStartTime != nil ? pinchStartTime : tempPinchStartTime
 
         guard properties.touchCount.isZero else {
             return
@@ -138,10 +136,8 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         state = .ended
         gestureUpdated?(self)
 
-        if shouldStartMomentum {
-            let velocity = panVelocity ?? .zero
-            let scale = pinchScale ?? Pinch.initialScale
-            beginMomentum(velocity, scale)
+        if shouldStartMomentum, timeOfLastUpdate.timeIntervalSinceNow < Pan.gesturePausedTime {
+            beginMomentum()
         } else {
             reset()
             gestureUpdated?(self)
@@ -152,14 +148,14 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         state = .possible
 
         // Pinch
-        spreads.clear()
+        lastSpread = nil
         scale = Pinch.initialScale
         behavior = .idle
         center = nil
 
         // Pan
         positionForTouch.removeAll()
-        locations.clear()
+        lastLocation = nil
         delta = .zero
     }
 
@@ -181,16 +177,16 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         }
 
         let touchSpread = spread(for: touches)
-        let lastSpread = spreads.last ?? touchSpread
+        let lastSpread = self.lastSpread ?? touchSpread
 
         if shouldRecognize(touchSpread), touchSpread > Pinch.minimumSpreadDistance {
             scale = touchSpread / lastSpreadSinceUpdate
             behavior = behavior(of: touchSpread)
-            spreads.add(touchSpread)
+            self.lastSpread = touchSpread
         } else if changedBehavior(from: lastSpread, to: touchSpread), touchSpread > Pinch.minimumSpreadDistance {
             scale = Pinch.initialScale
             behavior = behavior(of: touchSpread)
-            spreads.add(touchSpread)
+            self.lastSpread = touchSpread
         } else {
             scale = Pinch.initialScale
         }
@@ -198,7 +194,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
     /// Returns the behavior of the spread based off the current last spread.
     private func behavior(of spread: CGFloat) -> PinchBehavior {
-        guard let lastSpread = spreads.last else {
+        guard let lastSpread = lastSpread else {
             return .idle
         }
 
@@ -218,9 +214,11 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         guard positionForTouch.keys.count == Pinch.numberOfFingers else {
             touchesForSpread = nil
             scale = Pinch.initialScale
+            pinchStartTime = nil
             return
         }
 
+        pinchStartTime = Date()
         let touches = positionForTouch.keys.sorted(by: { $0.id < $1.id })
         let first = touches.first!
         let last = touches.last!
@@ -257,16 +255,15 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
     /// Updates pan properties during a move event when in the recognized state
     private func recognizePanMove(with touch: Touch, lastPosition: CGPoint) {
-        guard let currentLocation = locations.last else {
+        guard let currentLocation = lastLocation else {
             return
         }
 
-        lastTouchCount = positionForTouch.keys.count
         positionForTouch[touch] = touch.position
         let offset = touch.position - lastPosition
-        delta = offset.asVector / CGFloat(lastTouchCount)
+        delta = offset.asVector / CGFloat(positionForTouch.keys.count)
         cumulativeDelta += delta
-        locations.add(currentLocation + delta)
+        lastLocation = currentLocation + delta
     }
 
     private func shouldUpdateForPan() -> Bool {
@@ -275,7 +272,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
     /// Returns true if enough time has passed to send send the next update
     private func shouldUpdate(for time: Date) -> Bool {
-        return abs(time.timeIntervalSinceNow) > Pan.updateTimeInterval
+        return abs(time.timeIntervalSinceNow) > Configuration.refreshRate
     }
 
 
@@ -283,10 +280,12 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
     private struct Momentum {
         static let pinchThresholdMomentumScale: CGFloat = 0.0001
-        static let pinchInitialFrictionFactor: CGFloat = 1.04
-        static let pinchFrictionFactorScale: CGFloat = 0.002
+        static let pinchInitialFrictionFactor: CGFloat = 1.15
+        static let pinchFrictionFactorScale: CGFloat = 0.003
+        static let minimumPinchTimeToStart = 0.1
+        static let maximumPinchScaleAboutZero: CGFloat = 0.2
         static let panInitialFrictionFactor = 1.05
-        static let panFrictionFactorScale = 0.001
+        static let panFrictionFactorScale = 0.002
         static let panThresholdMomentumDelta: Double = 2
     }
 
@@ -294,31 +293,33 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private var panFrictionFactor = Momentum.panInitialFrictionFactor
     private var pinchFrictionFactor = Momentum.pinchInitialFrictionFactor
 
-    private var panVelocity: CGVector? {
-        guard let last = locations.last, let secondLast = locations.secondLast else { return nil }
-        return CGVector(dx: last.x - secondLast.x, dy: last.y - secondLast.y)
-    }
+    private var pinchMomentumScale = Pinch.initialScale
+    private var panMomentumDelta = CGVector.zero
 
-    private var pinchScale: CGFloat? {
-        guard let last = spreads.last, let secondLast = spreads.secondLast else { return nil }
-        let momentumScale = last / secondLast
-        return followsBehavior(scale: momentumScale) ? momentumScale : Pinch.initialScale
-    }
+    private func beginMomentum() {
 
-    private func beginMomentum(_ velocity: CGVector, _ scale: CGFloat) {
         // Pinch
         pinchFrictionFactor = Momentum.pinchInitialFrictionFactor
-        self.scale = scale
+        setMomentumScale()
 
         // Pan
         panFrictionFactor = Momentum.panInitialFrictionFactor
-        delta = velocity * CGFloat(lastTouchCount)
+        delta = panMomentumDelta.magnitude > 5 ? panMomentumDelta : .zero
 
         state = .momentum
         gestureUpdated?(self)
         momentumTimer?.invalidate()
-        momentumTimer = Timer.scheduledTimer(withTimeInterval: Pan.updateTimeInterval, repeats: true) { [weak self] _ in
+        momentumTimer = Timer.scheduledTimer(withTimeInterval: Configuration.refreshRate, repeats: true) { [weak self] _ in
             self?.updateMomentum()
+        }
+    }
+
+    /// Gets the momentum scale, filtering out pinches that are too short in time, and clamping it
+    private func setMomentumScale() {
+        if let startTime = pinchStartTime, abs(startTime.timeIntervalSinceNow) > Momentum.minimumPinchTimeToStart {
+            scale = clamp(pinchMomentumScale, min: Pinch.initialScale - Momentum.maximumPinchScaleAboutZero, max: Pinch.initialScale + Momentum.maximumPinchScaleAboutZero)
+        } else {
+            scale = Pinch.initialScale
         }
     }
 

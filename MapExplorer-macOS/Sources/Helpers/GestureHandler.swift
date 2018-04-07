@@ -64,14 +64,16 @@ class GestureHandler {
     private func handleTouchMoved(_ touch: Touch) {
         if let match = touches.first(where: { $0 == touch }) {
             match.update(with: touch)
-            gestures.forEach { $0.move(touch, with: properties) }
+            gestures.forEach { $0.move(match, with: properties) }
         }
     }
 
     private func handleTouchUp(_ touch: Touch) {
-        touches.remove(touch)
+        guard let thisTouch = touches.remove(touch) else {
+            return
+        }
         gestures.forEach { gesture in
-            gesture.end(touch, with: properties)
+            gesture.end(thisTouch, with: properties)
         }
         transformForTouch.removeValue(forKey: touch)
     }

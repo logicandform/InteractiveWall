@@ -9,73 +9,73 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         static let recognizedThreshhold: CGFloat = 20
         static let minimumFingers = 1
         static let minimumDeltaUpdateThreshold: Double = 4
-        static let updateTimeInterval: TimeInterval = 1 / 60
+        static let gesturePausedTime = 0.1
     }
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
     private(set) var state = GestureState.possible
     private(set) var delta = CGVector.zero
-    private(set) var fingers: [Int]
-    private(set) var locations = LastTwo<CGPoint>()
-    private(set) var lastTouchCount: Int!
+    private(set) var lastLocation: CGPoint?
+    private var timeOfLastUpdate = Date()
     private var positionForTouch = [Touch: CGPoint]()
     private var cumulativeDelta = CGVector.zero
-    private var timeOfLastUpdate = Date()
-
-
-    // MARK: Init
-
-    init(withFingers fingers: [Int] = [Constants.minimumFingers]) {
-        for finger in fingers {
-            precondition(finger >= Constants.minimumFingers, "\(finger) is an invalid number of fingers, errors will occur")
-        }
-        self.fingers = fingers
-        super.init()
-    }
 
 
     // MARK: API
 
     func start(_ touch: Touch, with properties: TouchProperties) {
-        guard fingers.contains(properties.touchCount) else {
-            return
-        }
-
         switch state {
         case .momentum:
             reset()
             fallthrough
         case .possible:
+            momentumTimer?.invalidate()
+
             cumulativeDelta = .zero
+            lastLocation = properties.cog
+
             state = .began
-            locations.add(properties.cog)
+            gestureUpdated?(self)
+            timeOfLastUpdate = Date()
             fallthrough
         case .recognized, .began:
-            positionForTouch[touch] = touch.position
             momentumTimer?.invalidate()
-            lastTouchCount = positionForTouch.keys.count
+            positionForTouch[touch] = touch.position
         default:
             return
         }
     }
 
     func move(_ touch: Touch, with properties: TouchProperties) {
-        guard let currentLocation = locations.last, let lastPositionOfTouch = positionForTouch[touch], fingers.contains(properties.touchCount) else {
+        guard let lastPositionOfTouch = positionForTouch[touch] else {
             return
         }
 
+        positionForTouch[touch] = touch.position
+
         switch state {
-        case .began where shouldRecognize(properties: properties, for: currentLocation):
+        case .began:
             state = .recognized
             fallthrough
         case .recognized:
-            lastTouchCount = positionForTouch.keys.count
-            positionForTouch[touch] = touch.position
-            let offset = touch.position - lastPositionOfTouch
-            recognize(location: currentLocation, with: offset.asVector)
+            recognizePanMove(with: touch, lastPosition: lastPositionOfTouch)
+
+            if shouldUpdate(for: timeOfLastUpdate) {
+                updateForMove(with: properties)
+            }
         default:
             return
         }
+    }
+
+    /// Sets gesture properties during a move event and calls `gestureUpdated` callback
+    private func updateForMove(with properties: TouchProperties) {
+        delta = cumulativeDelta
+        panMomentumDelta = delta
+        cumulativeDelta = .zero
+
+        gestureUpdated?(self)
+        timeOfLastUpdate = Date()
     }
 
     func end(_ touch: Touch, with properties: TouchProperties) {
@@ -85,11 +85,12 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             return
         }
 
+        let shouldStartMomentum = state == .recognized
         state = .ended
         gestureUpdated?(self)
 
-        if let velocity = currentVelocity {
-            beginMomentum(with: velocity)
+        if shouldStartMomentum, timeOfLastUpdate.timeIntervalSinceNow < Constants.gesturePausedTime {
+            beginMomentum()
         } else {
             reset()
             gestureUpdated?(self)
@@ -98,72 +99,80 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
 
     func reset() {
         state = .possible
-        locations.clear()
         positionForTouch.removeAll()
+        lastLocation = nil
         delta = .zero
     }
 
 
     // MARK: Helpers
 
-    private func shouldRecognize(properties: TouchProperties, for currentLocation: CGPoint) -> Bool {
-        return sqrt(pow(properties.cog.x - currentLocation.x, 2) + pow(properties.cog.y - currentLocation.y, 2)) > Constants.recognizedThreshhold
-    }
-
-    private func shouldUpdate() -> Bool {
-        return cumulativeDelta.magnitude > Constants.minimumDeltaUpdateThreshold && abs(timeOfLastUpdate.timeIntervalSinceNow) > Constants.updateTimeInterval
-    }
-
-    private func recognize(location: CGPoint, with touchVector: CGVector) {
-        delta = touchVector / CGFloat(lastTouchCount)
-        cumulativeDelta += delta
-        locations.add(location + delta)
-
-        if shouldUpdate() {
-            delta = cumulativeDelta
-            cumulativeDelta = .zero
-            timeOfLastUpdate = Date()
-            gestureUpdated?(self)
+    /// Updates pan properties during a move event when in the recognized state
+    private func recognizePanMove(with touch: Touch, lastPosition: CGPoint) {
+        guard let currentLocation = lastLocation else {
+            return
         }
+
+        positionForTouch[touch] = touch.position
+        let offset = touch.position - lastPosition
+        delta = offset.asVector / CGFloat(positionForTouch.keys.count)
+        cumulativeDelta += delta
+        lastLocation = currentLocation + delta
+    }
+
+    private func shouldUpdateForPan() -> Bool {
+        return cumulativeDelta.magnitude > Constants.minimumDeltaUpdateThreshold
+    }
+
+    /// Returns true if enough time has passed to send send the next update
+    private func shouldUpdate(for time: Date) -> Bool {
+        return abs(time.timeIntervalSinceNow) > Configuration.refreshRate
     }
 
 
     // MARK: Momentum
 
     private struct Momentum {
-        static let initialFrictionFactor = 1.05
-        static let frictionFactorScale = 0.001
-        static let minimumDeltaThreshold: Double = 2
+        static let panInitialFrictionFactor = 1.04
+        static let panFrictionFactorScale = 0.003
+        static let panThresholdMomentumDelta: Double = 2
     }
 
     private var momentumTimer: Timer?
-    private var frictionFactor = Momentum.initialFrictionFactor
+    private var panFrictionFactor = Momentum.panInitialFrictionFactor
 
-    private var currentVelocity: CGVector? {
-        guard let last = locations.last, let secondLast = locations.secondLast else { return nil }
-        return CGVector(dx: last.x - secondLast.x, dy: last.y - secondLast.y)
-    }
+    private var panMomentumDelta = CGVector.zero
 
-    private func beginMomentum(with velocity: CGVector) {
+    private func beginMomentum() {
+        panFrictionFactor = Momentum.panInitialFrictionFactor
+        delta = panMomentumDelta
+
         state = .momentum
-        frictionFactor = Momentum.initialFrictionFactor
-        delta = velocity * CGFloat(lastTouchCount)
         gestureUpdated?(self)
-
         momentumTimer?.invalidate()
-        momentumTimer = Timer.scheduledTimer(withTimeInterval: Constants.updateTimeInterval, repeats: true) { [weak self] _ in
+        momentumTimer = Timer.scheduledTimer(withTimeInterval: Configuration.refreshRate, repeats: true) { [weak self] _ in
             self?.updateMomentum()
         }
     }
 
     private func updateMomentum() {
-        guard delta.magnitude > Momentum.minimumDeltaThreshold else {
+        updatePanMomentum()
+
+        if delta == .zero {
             endMomentum()
             return
         }
-        frictionFactor += Momentum.frictionFactorScale
-        delta /= frictionFactor
+
         gestureUpdated?(self)
+    }
+
+    private func updatePanMomentum() {
+        if delta.magnitude < Momentum.panThresholdMomentumDelta {
+            delta = .zero
+        } else {
+            panFrictionFactor += Momentum.panFrictionFactorScale
+            delta /= panFrictionFactor
+        }
     }
 
     private func endMomentum() {
@@ -172,3 +181,4 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         gestureUpdated?(self)
     }
 }
+

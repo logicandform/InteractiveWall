@@ -106,7 +106,7 @@ class PlayerControl: NSView {
     }
 
     private func setupGestures() {
-        let scrubGesture = PanGestureRecognizer(withFingers: [1])
+        let scrubGesture = PanGestureRecognizer()
         gestureManager.add(scrubGesture, to: contentView)
         scrubGesture.gestureUpdated = didScrubControl(_:)
 
@@ -123,7 +123,7 @@ class PlayerControl: NSView {
     // MARK: Gestures
 
     private func didScrubControl(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let position = pan.locations.last else {
+        guard let pan = gesture as? PanGestureRecognizer, let position = pan.lastLocation else {
             return
         }
 
