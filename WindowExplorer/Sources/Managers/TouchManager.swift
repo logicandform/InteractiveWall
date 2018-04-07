@@ -34,10 +34,7 @@ final class TouchManager: SocketManagerDelegate {
             return
         }
 
-        print("Tocuh befroe", touch)
         convertToScreen(touch)
-
-        print(touch)
 
         // Check if the touch landed on a window, else notify the proper map application.
         if let manager = manager(of: touch) {

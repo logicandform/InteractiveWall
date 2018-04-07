@@ -51,13 +51,16 @@ class MediaItemView: NSCollectionViewItem {
                 self?.mediaImageView.image = image
             }
         }
+        
+        displayIconIfNecessairy(for: media)
+    }
 
-        if media.type == .video, let image = NSImage(named: "play-icon")  {
-//            let imageView = NSImageView(image: image)
-            let imageView = AspectFillImageView(image: image)
+    /// Displays the play icon over video media items
+    private func displayIconIfNecessairy(for media: Media) {
+        if media.type == .video, let image = media.type.icon  {
+            let imageView = NSImageView(image: image)
             let radius: CGFloat = 40
             imageView.frame = CGRect(origin: CGPoint(x: view.frame.midX - radius, y: view.frame.midY - radius), size: CGSize(width: radius * 2, height: radius * 2))
-            imageView.layer?.backgroundColor = #colorLiteral(red: 0.06188751757, green: 0.8903339505, blue: 0.05143425614, alpha: 1)
             mediaImageView.addSubview(imageView)
         }
     }
