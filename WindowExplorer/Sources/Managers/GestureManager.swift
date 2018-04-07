@@ -73,6 +73,10 @@ final class GestureManager {
         return handler(for: touch) == nil ? false : true
     }
 
+    func isActive() -> Bool {
+        return gestureHandlers.values.contains(where: {!$0.touches.isEmpty})
+    }
+
 
     // MARK: Helpers
 

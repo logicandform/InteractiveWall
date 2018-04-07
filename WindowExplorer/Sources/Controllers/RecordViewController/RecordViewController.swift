@@ -26,6 +26,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private var pageControl = PageControl()
     private var positionsForMediaControllers = [MediaViewController: Int]()
     private weak var closeWindowTimer: Foundation.Timer?
+    private var animating: Bool = false
     
     private struct Constants {
         static let tableRowHeight: CGFloat = 80
@@ -33,6 +34,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         static let mediaControllerOffsetX = 100
         static let mediaControllerOffsetY = -50
         static let closeWindowTimeoutPeriod: TimeInterval = 60
+        static let animationDistanceThreshold: CGFloat = 20
         static let fontName = "Soleil"
         static let fontSize: CGFloat = 13
         static let fontColor: NSColor = .white
@@ -156,7 +158,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     // MARK: Gesture Handling
 
     private func handleCollectionViewPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer else {
+        guard let pan = gesture as? PanGestureRecognizer, !animating else {
             return
         }
 
@@ -186,7 +188,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func handleCollectionViewTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer else {
+        guard let tap = gesture as? TapGestureRecognizer, !animating else {
             return
         }
 
@@ -214,7 +216,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func handleRelatedViewPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer else {
+        guard let pan = gesture as? PanGestureRecognizer, !animating else {
             return
         }
 
@@ -244,7 +246,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func handleRelatedItemTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let location = tap.position else {
+        guard let tap = gesture as? TapGestureRecognizer, let location = tap.position, !animating else {
             return
         }
 
@@ -270,7 +272,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func handleStackViewPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer else {
+        guard let pan = gesture as? PanGestureRecognizer, !animating else {
             return
         }
 
@@ -285,7 +287,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func handleWindowPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
+        guard let pan = gesture as? PanGestureRecognizer, let window = view.window, !animating else {
             return
         }
 
@@ -303,7 +305,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     @objc
     private func handleMouseDrag(_ gesture: NSPanGestureRecognizer) {
-        guard let window = view.window else {
+        guard let window = view.window, !animating else {
             return
         }
 
@@ -350,6 +352,25 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             collectionClipView.animator().setBoundsOrigin(point)
             }, completionHandler: { [weak self] in
                 self?.pageControl.selectedPage = UInt(index)
+        })
+    }
+
+    func animate(to origin: NSPoint) {
+        guard let window = self.view.window, shouldAnimate(to: origin), !gestureManager.isActive() else {
+            return
+        }
+
+        resetCloseWindowTimer()
+        var frame = window.frame
+        frame.origin = origin
+        animating = true
+
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = 0.75
+            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+            window.animator().setFrame(frame, display: true, animate: true)
+        }, completionHandler: { [weak self] in
+            self?.animating = false
         })
     }
 
@@ -432,6 +453,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func closeTimerFired() {
+        // reset timer gets recalled once a child MediaViewContoller gets closed
         if positionsForMediaControllers.keys.isEmpty {
             animateViewOut()
         }
@@ -439,6 +461,16 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     private func recievedTouch(touch: Touch) {
         resetCloseWindowTimer()
+    }
+
+    /// If the position of the controller is close enough to the origin of animation, don't animate
+    private func shouldAnimate(to origin: NSPoint) -> Bool {
+        guard let currentOrigin = self.view.window?.frame.origin else {
+            return false
+        }
+
+        let originDifference = currentOrigin - origin
+        return abs(originDifference.x) > Constants.animationDistanceThreshold || abs(originDifference.y) > Constants.animationDistanceThreshold ? true : false
     }
 
 

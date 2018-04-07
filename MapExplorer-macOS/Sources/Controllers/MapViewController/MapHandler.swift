@@ -202,7 +202,7 @@ class MapHandler {
     private func findGroupForMap(id: Int) -> Int? {
         let sortedMapStates = stateForMap.enumerated().sorted { abs(id - $0.0) < abs(id - $1.0) }
         let externalMaps = sortedMapStates.dropFirst()
-        return externalMaps.flatMap({ $0.1.group }).first
+        return externalMaps.compactMap({ $0.1.group }).first
     }
 
     /// Resets the pairedDeviceID after a timeout period

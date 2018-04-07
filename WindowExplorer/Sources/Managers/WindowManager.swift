@@ -107,31 +107,12 @@ final class WindowManager {
     }
 
     private func handleDisplayingRecord(for record: RecordDisplayable, with recordId: Int, on mapId: Int, at origin: CGPoint) {
-
         let recordInfo = RecordInfo(recordId: recordId, mapId: mapId, type: record.type)
 
-        if let controller = controllersForRecordInfo[recordInfo] {
-            animate(controller, to: origin)
-            return
-        }
-
-        if let controller = display(.record(record), at: origin) {
+        if let controller = controllersForRecordInfo[recordInfo] as? RecordViewController{
+            controller.animate(to: origin)
+        } else if let controller = display(.record(record), at: origin) {
             controllersForRecordInfo[recordInfo] = controller
         }
-    }
-
-    private func animate(_ controller: NSViewController, to origin: NSPoint) {
-        guard let window = controller.view.window else {
-            return
-        }
-
-        var frame = window.frame
-        frame.origin = origin
-
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = 0.75
-            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-            window.animator().setFrame(frame, display: true, animate: true)
-        })
     }
 }
