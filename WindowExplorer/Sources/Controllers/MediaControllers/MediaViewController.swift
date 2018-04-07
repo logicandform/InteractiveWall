@@ -13,7 +13,7 @@ class MediaViewController: NSViewController, GestureResponder {
     var media: Media!
     weak var delegate: MediaControllerDelegate?
     private weak var closeWindowTimer: Foundation.Timer?
-    var animating: Bool = false
+    var animating = false
 
     var titleAttributes: [NSAttributedStringKey: Any] {
         let font = NSFont(name: Constants.fontName, size: Constants.titleFontSize) ?? NSFont.systemFont(ofSize: Constants.titleFontSize)

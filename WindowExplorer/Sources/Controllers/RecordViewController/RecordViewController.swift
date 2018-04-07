@@ -26,7 +26,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private var pageControl = PageControl()
     private var positionsForMediaControllers = [MediaViewController: Int?]()
     private weak var closeWindowTimer: Foundation.Timer?
-    private var animating: Bool = false
+    private var animating = false
     
     private struct Constants {
         static let tableRowHeight: CGFloat = 80
