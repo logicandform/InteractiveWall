@@ -21,8 +21,12 @@ final class CachingNetwork {
     private struct Endpoints {
         static let baseURL = "http://localhost:3000"
         static let places = baseURL + "/places"
-        static let schools = baseURL + "/schools"
+        static let schools = baseURL + "/schools/all/%d"
         static let events = baseURL + "/events"
+    }
+
+    private struct Constants {
+        static let batchSize = 20
     }
 
     private static let credentials: [String: String] = {
@@ -45,11 +49,17 @@ final class CachingNetwork {
 
     // MARK: Schools
 
-    static func getSchools() throws -> Promise<[School]> {
-        let url = Endpoints.schools
+    static func getSchools(page: Int = 0, load: [School] = []) throws -> Promise<[School]> {
+        let url = String(format: Endpoints.schools, page)
 
         return Alamofire.request(url).responseJSON().then { json in
-            try ResponseHandler.serializeSchools(from: json)
+            guard let schools = try? ResponseHandler.serializeSchools(from: json), !schools.isEmpty else {
+                return Promise(value: load)
+            }
+
+            let next = page + Constants.batchSize
+            let result = load + schools
+            return try getSchools(page: next, load: result)
         }
     }
 
