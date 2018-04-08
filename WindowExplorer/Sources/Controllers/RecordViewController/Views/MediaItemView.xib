@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MediaItemView" customModule="WindowExplorer" customModuleProvider="target">
             <connections>
                 <outlet property="mediaImageView" destination="HQG-s5-ca4" id="a5S-9j-63J"/>
+                <outlet property="videoIconImageView" destination="MCi-Na-Q3u" id="wr2-ky-Npx"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -21,13 +22,26 @@
                     <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" id="0nl-mF-9UI"/>
                 </imageView>
+                <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MCi-Na-Q3u">
+                    <rect key="frame" x="203" y="99" width="74" height="74"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="74" id="DBL-Kx-L1M"/>
+                        <constraint firstAttribute="height" constant="74" id="fGn-VW-Tzf"/>
+                    </constraints>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="play-icon" id="jUQ-um-tF5"/>
+                </imageView>
             </subviews>
             <constraints>
                 <constraint firstItem="HQG-s5-ca4" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="0cw-Ma-FKM"/>
                 <constraint firstAttribute="trailing" secondItem="HQG-s5-ca4" secondAttribute="trailing" id="1hY-EL-S1w"/>
+                <constraint firstItem="MCi-Na-Q3u" firstAttribute="centerX" secondItem="HQG-s5-ca4" secondAttribute="centerX" id="4Fg-oz-D9m"/>
+                <constraint firstItem="MCi-Na-Q3u" firstAttribute="centerY" secondItem="HQG-s5-ca4" secondAttribute="centerY" id="SPu-Mz-HGK"/>
                 <constraint firstAttribute="bottom" secondItem="HQG-s5-ca4" secondAttribute="bottom" id="X1H-8C-8Pd"/>
                 <constraint firstItem="HQG-s5-ca4" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="gkX-hk-Tn9"/>
             </constraints>
         </customView>
     </objects>
+    <resources>
+        <image name="play-icon" width="21" height="21"/>
+    </resources>
 </document>
