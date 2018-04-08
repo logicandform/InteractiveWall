@@ -9,6 +9,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     @IBOutlet weak var detailView: NSView!
     @IBOutlet weak var windowDragArea: NSView!
     @IBOutlet weak var windowDragAreaHighlight: NSView!
+    @IBOutlet weak var relatedRecordsLabel: NSTextField!
     @IBOutlet weak var mediaView: NSCollectionView!
     @IBOutlet weak var collectionClipView: NSClipView!
     @IBOutlet weak var stackView: NSStackView!
@@ -17,7 +18,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     @IBOutlet weak var closeWindowTapArea: NSView!
     @IBOutlet weak var toggleRelatedItemsArea: NSView!
     @IBOutlet weak var showRelatedItemsView: NSImageView!
-    @IBOutlet weak var hideRelatedItemsButton: NSButton!
     @IBOutlet weak var placeHolderImage: NSImageView!
 
     var record: RecordDisplayable!
@@ -29,6 +29,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private var animating = false
     
     private struct Constants {
+        static let relatedRecordsTitle = "RELATED RECORDS"
+        static let animationDuration = 0.5
         static let tableRowHeight: CGFloat = 80
         static let windowMargins: CGFloat = 20
         static let mediaControllerOffset = 50
@@ -49,8 +51,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         detailView.alphaValue = 0.0
         detailView.wantsLayer = true
         detailView.layer?.backgroundColor = style.darkBackground.cgColor
-        windowDragArea.wantsLayer = true
-        windowDragArea.layer?.backgroundColor = style.dragAreaBackground.cgColor
         placeHolderImage.isHidden = !record.media.isEmpty
         gestureManager = GestureManager(responder: self)
         gestureManager.touchReceived = recievedTouch(touch:)
@@ -96,9 +96,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         relatedItemsView.register(NSNib(nibNamed: RelatedItemView.nibName, bundle: nil), forIdentifier: RelatedItemView.interfaceIdentifier)
         relatedItemsView.backgroundColor = .clear
         showRelatedItemsView.isHidden = record.relatedRecords.isEmpty
-        hideRelatedItemsButton.font = NSFont(name: Constants.fontName, size: Constants.fontSize) ?? NSFont.systemFont(ofSize: Constants.fontSize)
-        hideRelatedItemsButton.attributedTitle = NSAttributedString(string: hideRelatedItemsButton.title, attributes: titleBarAttributes)
-
+        relatedRecordsLabel.attributedStringValue = NSAttributedString(string: Constants.relatedRecordsTitle, attributes: titleBarAttributes)
+        relatedRecordsLabel.alphaValue = 0
     }
 
     private func setupGestures() {
@@ -149,6 +148,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func setupWindowDragArea() {
+        windowDragArea.wantsLayer = true
+        windowDragArea.layer?.backgroundColor = style.dragAreaBackground.cgColor
         windowDragAreaHighlight.wantsLayer = true
         windowDragAreaHighlight.layer?.backgroundColor = record.type.color.cgColor
     }
@@ -331,16 +332,17 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     private func animateViewIn() {
         NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = 0.5
+            NSAnimationContext.current.duration = Constants.animationDuration
             detailView.animator().alphaValue = 1.0
         })
     }
 
     private func animateViewOut() {
         NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = 0.5
+            NSAnimationContext.current.duration = Constants.animationDuration
             detailView.animator().alphaValue = 0.0
             relatedItemsView.animator().alphaValue = 0.0
+            windowDragArea.animator().alphaValue = 0.0
         }, completionHandler: {
             WindowManager.instance.closeWindow(for: self)
         })
@@ -381,18 +383,16 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         }
 
         relatedItemsView.isHidden = false
-        hideRelatedItemsButton.isHidden = false
         let alpha: CGFloat = showingRelatedItems ? 0 : 1
 
         NSAnimationContext.runAnimationGroup({ [weak self] _ in
-            NSAnimationContext.current.duration = 0.5
+            NSAnimationContext.current.duration = Constants.animationDuration
             self?.relatedItemsView.animator().alphaValue = alpha
-            self?.hideRelatedItemsButton.animator().alphaValue = alpha
+            self?.relatedRecordsLabel.animator().alphaValue = alpha
             self?.showRelatedItemsView.image = showingRelatedItems ? NSImage(named: "plus-icon") : NSImage(named: "close button")
             }, completionHandler: { [weak self] in
                 if let strongSelf = self {
                     strongSelf.relatedItemsView.isHidden = !strongSelf.showingRelatedItems
-                    strongSelf.hideRelatedItemsButton.isHidden = !strongSelf.showingRelatedItems
                 }
                 completion?()
         })

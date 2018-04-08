@@ -18,5 +18,5 @@ final class Style {
     let relatedItemColor = NSColor(calibratedRed: 75/255, green: 91/255, blue: 100/255, alpha: 1)
     let noRelatedItemsColor = NSColor(calibratedRed: 33/255, green: 33/255, blue: 33/255, alpha: 1)
 
-    let dragAreaBackground = NSColor.clear
+    let dragAreaBackground = NSColor.black.withAlphaComponent(0.85)
 }

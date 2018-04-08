@@ -10,8 +10,8 @@ struct Configuration {
     static let mapsPerScreen = 3
     static let numberOfScreens = 2
     static let touchScreenSize = CGSize(width: 21564, height: 12116)
-    static let loadMapsOnFirstScreen = false
     static let refreshRate: Double = 1 / 60
+    static let loadMapsOnFirstScreen = false
 }
 
 

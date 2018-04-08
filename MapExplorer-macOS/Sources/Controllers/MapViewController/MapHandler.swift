@@ -23,7 +23,7 @@ class MapHandler {
 
 
     private struct Constants {
-        static let ungroupTimeoutPeriod: TimeInterval = 60
+        static let ungroupTimeoutPeriod: TimeInterval = 30
         static let resetTimeoutPeriod: TimeInterval = 180
         static let canadaOrigin = MKMapPoint(x: 23000000, y: 70000000)
         static let canadaSize = MKMapSize(width: 80000000, height: 0)
