@@ -15,7 +15,6 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
     var position: CGPoint?
     private(set) var state = GestureState.possible
     private(set) var fingers: Int
-    private var startTapTimer: Timer?
 
     private var positionForTouch = [Touch: CGPoint]()
 
@@ -38,7 +37,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
             position = touch.position
             state = .began
 
-            startTapTimer = Timer.scheduledTimer(withTimeInterval: Constants.startTapThresholdTime, repeats: false) { [weak self] _ in
+            Timer.scheduledTimer(withTimeInterval: Constants.startTapThresholdTime, repeats: false) { [weak self] _ in
                 guard let strongSelf = self else {
                     return
                 }

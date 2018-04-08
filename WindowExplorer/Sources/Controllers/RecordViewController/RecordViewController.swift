@@ -28,8 +28,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private weak var closeWindowTimer: Foundation.Timer?
     private var animating: Bool = false
     private var selectedRelatedItemHighlightTimer: Timer?
->>>>>>> Fixed the change in color when scrolling related items
-    
+
     private struct Constants {
         static let tableRowHeight: CGFloat = 80
         static let windowMargins: CGFloat = 20
@@ -40,7 +39,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         static let fontSize: CGFloat = 13
         static let fontColor: NSColor = .white
         static let kern: CGFloat = 0.5
-        static let screenEdgeBuffer: CGFloat = 40
+        static let screenEdgeBuffer: CGFloat = 80
         static let flashHighlightTime = 0.15
     }
 
