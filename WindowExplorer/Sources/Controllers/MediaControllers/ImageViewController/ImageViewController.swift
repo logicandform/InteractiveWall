@@ -15,7 +15,6 @@ class ImageViewController: MediaViewController {
     @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var dismissButton: NSView!
-    @IBOutlet weak var rotateButton: NSView!
 
     private var urlRequest: DataRequest?
     private var imageView: NSImageView!
@@ -27,8 +26,6 @@ class ImageViewController: MediaViewController {
         static let minImageWidth: CGFloat = 416.0
         static let initialMagnification: CGFloat = 1
         static let maximumMagnification: CGFloat = 5
-        static let rotationBuffer: CGFloat = 32
-        static let percentToDeallocateWindow: CGFloat = 40
     }
 
 
@@ -97,10 +94,6 @@ class ImageViewController: MediaViewController {
         let singleFingerCloseButtonTap = TapGestureRecognizer()
         gestureManager.add(singleFingerCloseButtonTap, to: dismissButton)
         singleFingerCloseButtonTap.gestureUpdated = didTapCloseButton(_:)
-
-        let singleFingerRotateButtonTap = TapGestureRecognizer()
-        gestureManager.add(singleFingerRotateButtonTap, to: rotateButton)
-        singleFingerRotateButtonTap.gestureUpdated = didTapRotateButton(_:)
     }
 
     private func setupWindowDragArea() {
@@ -157,22 +150,6 @@ class ImageViewController: MediaViewController {
         }
 
         animateViewOut()
-    }
-
-    private func didTapRotateButton(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, let window = view.window, !animating else {
-            return
-        }
-
-        let tempWidth = frameSize.width
-        frameSize.width = frameSize.height
-        frameSize.height = tempWidth
-        scrollViewHeightConstraint.constant = frameSize.height
-        scrollViewWidthConstraint.constant = frameSize.width
-        imageView.setFrameSize(frameSize)
-        let origin = NSPoint(x: window.frame.origin.x + window.frame.width - window.frame.height + Constants.rotationBuffer, y: window.frame.origin.y)
-        window.setFrameOrigin(origin)
-        imageView.rotate(byDegrees: -90)
     }
 
     @objc
