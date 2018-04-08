@@ -3,8 +3,8 @@
 import Cocoa
 
 protocol MediaControllerDelegate: class {
-    func closeWindow(for mediaController: MediaViewController)
-    func moved(for mediaController: MediaViewController)
+    func controllerDidClose(_ controller: MediaViewController)
+    func controllerDidMove(_ controller: MediaViewController)
 }
 
 class MediaViewController: NSViewController, GestureResponder {
@@ -24,14 +24,6 @@ class MediaViewController: NSViewController, GestureResponder {
                 .font : font,
                 .foregroundColor : Constants.titleForegroundColor,
                 .kern : Constants.kern]
-    }
-
-    var moved = false {
-        willSet {
-            if moved == false, newValue != moved {
-                delegate?.moved(for: self)
-            }
-        }
     }
 
     private struct Constants {
@@ -57,7 +49,7 @@ class MediaViewController: NSViewController, GestureResponder {
     // MARK: API
     
     func close() {
-        delegate?.closeWindow(for: self)
+        delegate?.controllerDidClose(self)
         WindowManager.instance.closeWindow(for: self)
     }
 

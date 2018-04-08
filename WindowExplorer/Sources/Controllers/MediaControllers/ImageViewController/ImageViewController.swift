@@ -112,13 +112,13 @@ class ImageViewController: MediaViewController {
     // MARK: Gesture Handling
 
     private func handleWindowPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let window = view.window, !super.animating else {
+        guard let pan = gesture as? PanGestureRecognizer, let window = view.window, !animating else {
             return
         }
 
-        super.moved = true
-
         switch pan.state {
+        case .began:
+            delegate?.controllerDidMove(self)
         case .recognized, .momentum:
             var origin = window.frame.origin
             origin += pan.delta.round()
@@ -131,7 +131,7 @@ class ImageViewController: MediaViewController {
     }
 
     private func didPinchImageView(_ gesture: GestureRecognizer) {
-        guard let pinch = gesture as? PinchGestureRecognizer, !super.animating else {
+        guard let pinch = gesture as? PinchGestureRecognizer, !animating else {
             return
         }
 
@@ -151,7 +151,7 @@ class ImageViewController: MediaViewController {
     }
 
     private func didTapCloseButton(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, !super.animating else {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, !animating else {
             return
         }
 
@@ -159,7 +159,7 @@ class ImageViewController: MediaViewController {
     }
 
     private func didTapRotateButton(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, let window = view.window, !super.animating else {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, let window = view.window, !animating else {
             return
         }
 
@@ -176,7 +176,7 @@ class ImageViewController: MediaViewController {
 
     @objc
     private func handleMousePan(_ gesture: NSPanGestureRecognizer) {
-        guard let window = view.window, !super.animating else {
+        guard let window = view.window, !animating else {
             return
         }
 
