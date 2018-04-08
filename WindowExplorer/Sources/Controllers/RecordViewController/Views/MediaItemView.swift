@@ -8,6 +8,7 @@ class MediaItemView: NSCollectionViewItem {
     static let identifier = NSUserInterfaceItemIdentifier("MediaItemView")
 
     @IBOutlet weak var mediaImageView: NSImageView!
+    @IBOutlet weak var videoIconImageView: NSImageView!
 
     var tintColor = style.selectedColor
     var media: Media? {
@@ -56,11 +57,11 @@ class MediaItemView: NSCollectionViewItem {
 
     /// Displays the play icon over video media items
     private func displayIconIfNecessary(for media: Media) {
-        if media.type == .video, let image = media.type.icon  {
-            let imageView = NSImageView(image: image)
-            let radius: CGFloat = 40
-            imageView.frame = CGRect(origin: CGPoint(x: view.frame.midX - radius, y: view.frame.midY - radius), size: CGSize(width: radius * 2, height: radius * 2))
-            mediaImageView.addSubview(imageView)
+        if media.type == .video {
+            videoIconImageView.wantsLayer = true
+            videoIconImageView.layer?.cornerRadius = videoIconImageView.frame.width / 2
+            videoIconImageView.layer?.backgroundColor = style.darkBackground.cgColor
+            videoIconImageView.isHidden = false
         }
     }
 }
