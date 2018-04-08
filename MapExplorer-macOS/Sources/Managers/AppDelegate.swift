@@ -5,7 +5,7 @@ import Cocoa
 
 struct Configuration {
     static let mapsPerScreen = 3
-    static let numberOfScreens = 2
+    static let numberOfScreens = 1
     static let touchScreenSize = CGSize(width: 21564, height: 12116)
     static let refreshRate: Double = 1 / 60
 }
