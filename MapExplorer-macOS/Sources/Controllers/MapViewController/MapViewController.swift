@@ -17,8 +17,12 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private let touchListener = TouchListener()
     private var recordForAnnotation = [CircleAnnotation: Record]()
 
+    private var tileURL: String {
+        let tileID = screenID > 0 ? screenID : 1
+        return "http://localhost:4\(tileID)00/v2/tiles/{z}/{x}/{y}.pbf"
+    }
+
     private struct Constants {
-        static let tileURL = "http://localhost:4200/v2/tiles/{z}/{x}/{y}.pbf"
         static let maxZoomWidth: Double =  44739244
         static let minZoomWidth: Double = 424500
         static let touchRadius: CGFloat = 20
@@ -54,7 +58,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     private func setupMap() {
         mapHandler = MapHandler(mapView: mapView, id: appID)
-        let overlay = MKTileOverlay(urlTemplate: Constants.tileURL)
+        let overlay = MKTileOverlay(urlTemplate: tileURL)
         overlay.canReplaceMapContent = true
         mapView.add(overlay)
         createAnnotations()
@@ -191,7 +195,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     // MARK: Helpers
 
     private func createAnnotations() {
-
         // Schools
         firstly {
             try CachingNetwork.getSchools()

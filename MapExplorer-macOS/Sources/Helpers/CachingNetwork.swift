@@ -37,7 +37,7 @@ final class CachingNetwork {
     static func getPlaces() throws -> Promise<[Place]> {
         let url = Endpoints.places
 
-        return Alamofire.request(url, headers: credentials).responseJSON().then { json in
+        return Alamofire.request(url).responseJSON().then { json in
             try ResponseHandler.serializePlaces(from: json)
         }
     }
@@ -48,7 +48,7 @@ final class CachingNetwork {
     static func getSchools() throws -> Promise<[School]> {
         let url = Endpoints.schools
 
-        return Alamofire.request(url, headers: credentials).responseJSON().then { json in
+        return Alamofire.request(url).responseJSON().then { json in
             try ResponseHandler.serializeSchools(from: json)
         }
     }
@@ -59,7 +59,7 @@ final class CachingNetwork {
     static func getEvents() throws -> Promise<[Event]> {
         let url = Endpoints.events
 
-        return Alamofire.request(url, headers: credentials).responseJSON().then { json in
+        return Alamofire.request(url).responseJSON().then { json in
             try ResponseHandler.serializeEvents(from: json)
         }
     }
