@@ -62,27 +62,17 @@ final class WindowManager {
         return nil
     }
 
-    // If the none of the screens contain the detail view, dealocate it
+    /// If the controller is not draggable within the applications bounds, dismiss the window.
     func checkBounds(of controller: NSViewController) {
-        guard let screen = controller.view.window?.screen, let responder = controller as? GestureResponder else {
+        guard let responder = controller as? GestureResponder else {
             dismissWindow(for: controller)
             return
         }
 
-        let applicationFrame = NSScreen.screens.dropFirst().reduce(CGRect.zero) { $0.union($1.frame) }
-        if !responder.inside(bounds: applicationFrame) {
-            dismissWindow(for: controller)
-        }
-
-
-
-        var indicies = NSScreen.screens.indices
-
-        if !Configuration.loadMapsOnFirstScreen {
-            indicies.removeFirst()
-        }
-
-        if !indicies.contains(screen.index) {
+        let applicationScreens = NSScreen.screens.dropFirst()
+        let first = applicationScreens.first?.frame ?? .zero
+        let applicationFrame = applicationScreens.reduce(first) { $0.union($1.frame) }
+        if !responder.draggableInside(bounds: applicationFrame) {
             dismissWindow(for: controller)
         }
     }
@@ -90,7 +80,7 @@ final class WindowManager {
     private func dismissWindow(for controller: NSViewController) {
         if let mediaController = controller as? MediaViewController {
             mediaController.close()
-        } else{
+        } else {
             closeWindow(for: controller)
         }
     }
@@ -116,7 +106,7 @@ final class WindowManager {
     private func handleDisplayingRecord(for record: RecordDisplayable, with recordId: Int, on mapId: Int, at origin: CGPoint) {
         let recordInfo = RecordInfo(recordId: recordId, mapId: mapId, type: record.type)
 
-        if let controller = controllersForRecordInfo[recordInfo] as? RecordViewController{
+        if let controller = controllersForRecordInfo[recordInfo] as? RecordViewController {
             controller.animate(to: origin)
         } else if let controller = display(.record(record), at: origin) {
             controllersForRecordInfo[recordInfo] = controller

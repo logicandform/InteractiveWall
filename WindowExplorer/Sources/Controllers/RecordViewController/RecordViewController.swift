@@ -568,20 +568,23 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         resetCloseWindowTimer()
     }
 
-<<<<<<< HEAD
     func controllerDidMove(_ controller: MediaViewController) {
         positionsForMediaControllers[controller] = nil as Int?
-=======
+    }
+
 
     // MARK: GestureResponder
 
-    internal func inside(bounds: CGRect) -> Bool {
+    /// Determines if the bounds of the draggable area is inside a given rect
+    func draggableInside(bounds: CGRect) -> Bool {
         guard let window = view.window else {
             return false
         }
 
+        // Calculate the center box of the drag area in the window's coordinate system
         let dragAreaInWindow = windowDragArea.frame.transformed(from: view.frame).transformed(from: window.frame)
-        return bounds.contains(dragAreaInWindow)
->>>>>>> Windows now deallocate when their drag views are outside of the screen bounds.
+        let adjustedWidth = dragAreaInWindow.width / 2
+        let smallDragArea = CGRect(x: dragAreaInWindow.minX + adjustedWidth / 2, y: dragAreaInWindow.minY, width: adjustedWidth, height: dragAreaInWindow.height)
+        return bounds.contains(smallDragArea)
     }
 }

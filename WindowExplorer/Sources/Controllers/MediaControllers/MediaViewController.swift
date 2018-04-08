@@ -2,10 +2,12 @@
 
 import Cocoa
 
+
 protocol MediaControllerDelegate: class {
     func controllerDidClose(_ controller: MediaViewController)
     func controllerDidMove(_ controller: MediaViewController)
 }
+
 
 class MediaViewController: NSViewController, GestureResponder {
 
@@ -100,7 +102,11 @@ class MediaViewController: NSViewController, GestureResponder {
         })
     }
 
-    func inside(bounds: CGRect) -> Bool {
+
+    // MARK: GestureResponder
+
+    /// Determines if the bounds of the draggable area is inside a given rect
+    func draggableInside(bounds: CGRect) -> Bool {
         return true
     }
 

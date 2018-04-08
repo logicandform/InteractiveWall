@@ -80,7 +80,7 @@ class MapHandler {
     func reset() {
         let newWidth = Constants.canadaSize.width / 2
         let newXOrigin = ((Double(mapID).truncatingRemainder(dividingBy: Double(Configuration.mapsPerScreen)) * newWidth) - (newWidth / 2)) + Constants.canadaOrigin.x
-        var mapRect = MKMapRect(origin: MKMapPoint(x: newXOrigin, y: Constants.canadaOrigin.y), size: MKMapSize(width: newWidth, height: 0.0))
+        let mapRect = MKMapRect(origin: MKMapPoint(x: newXOrigin, y: Constants.canadaOrigin.y), size: MKMapSize(width: newWidth, height: 0.0))
         mapView.setVisibleMapRect(mapRect, animated: true)
     }
 
@@ -154,7 +154,7 @@ class MapHandler {
         } else if xOrigin + mapRect.size.width < Constants.canadaOrigin.x {
             let distance = Constants.canadaSize.width + Constants.canadaOrigin.x - xOrigin
             xOrigin = Constants.canadaOrigin.x + Constants.canadaSize.width - distance.truncatingRemainder(dividingBy: Constants.canadaSize.width + mapRect.size.width)
-        } 
+        }
 
         if mapRect.origin.y + mapRect.size.height > Constants.verticalPanLimit {
             yOrigin = Constants.verticalPanLimit - mapRect.size.height
@@ -229,10 +229,14 @@ class MapHandler {
     private func beginResetTimer() {
         if mapID == Constants.masterID {
             resetTimer = Timer.scheduledTimer(withTimeInterval: Constants.resetTimeoutPeriod, repeats: false) { [weak self] _ in
-                let info: JSON = [Keys.id: self?.mapID]
-                DistributedNotificationCenter.default().postNotificationName(MapNotification.reset.name, object: nil, userInfo: info, deliverImmediately: true)
+                self?.resetTimerFired()
             }
         }
+    }
+
+    private func resetTimerFired() {
+        let info: JSON = [Keys.id: mapID]
+        DistributedNotificationCenter.default().postNotificationName(MapNotification.reset.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
     private func ungroupTimerFired() {
