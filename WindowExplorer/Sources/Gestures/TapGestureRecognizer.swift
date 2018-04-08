@@ -38,11 +38,9 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
             state = .began
 
             Timer.scheduledTimer(withTimeInterval: Constants.startTapThresholdTime, repeats: false) { [weak self] _ in
-                guard let strongSelf = self else {
-                    return
+                if let strongSelf = self {
+                    strongSelf.gestureUpdated?(strongSelf)
                 }
-
-                strongSelf.gestureUpdated?(strongSelf)
             }
         }
     }
