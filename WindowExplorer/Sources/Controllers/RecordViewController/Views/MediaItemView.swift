@@ -51,8 +51,13 @@ class MediaItemView: NSCollectionViewItem {
             }
         }
 
-        if media.type == .video, let image = NSImage(named: "play-icon")  {
-            let imageView = AspectFillImageView(image: image)
+        displayIconIfNecessary(for: media)
+    }
+
+    /// Displays the play icon over video media items
+    private func displayIconIfNecessary(for media: Media) {
+        if media.type == .video, let image = media.type.icon  {
+            let imageView = NSImageView(image: image)
             let radius: CGFloat = 40
             imageView.frame = CGRect(origin: CGPoint(x: view.frame.midX - radius, y: view.frame.midY - radius), size: CGSize(width: radius * 2, height: radius * 2))
             mediaImageView.addSubview(imageView)

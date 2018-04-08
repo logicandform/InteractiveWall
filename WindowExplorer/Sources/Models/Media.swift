@@ -25,6 +25,15 @@ enum MediaType {
             self = .unknown
         }
     }
+
+    var icon: NSImage? {
+        switch self {
+        case .video:
+            return NSImage(named: "play-icon")
+        default:
+            return nil
+        }
+    }
 }
 
 struct Media: Equatable {
