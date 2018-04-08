@@ -571,7 +571,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     func controllerDidMove(_ controller: MediaViewController) {
         positionsForMediaControllers[controller] = nil as Int?
     }
-
+    
 
     // MARK: GestureResponder
 

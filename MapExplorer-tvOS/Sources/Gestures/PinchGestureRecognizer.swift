@@ -136,7 +136,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         state = .ended
         gestureUpdated?(self)
 
-        if shouldStartMomentum, timeOfLastUpdate.timeIntervalSinceNow < Pan.gesturePausedTime {
+        if shouldStartMomentum, abs(timeOfLastUpdate.timeIntervalSinceNow) < Pan.gesturePausedTime {
             beginMomentum()
         } else {
             reset()
