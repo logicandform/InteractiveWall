@@ -29,7 +29,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         WindowManager.instance.registerForNotifications()
         TouchManager.instance.setupTouchSocket()
-        //launchMapExplorer()
+        launchMapExplorer()
     }
 
     func applicationWillTerminate(_ notification: Notification) {
