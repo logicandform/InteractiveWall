@@ -326,7 +326,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     @IBAction func toggleRelatedItems(_ sender: Any) {
         toggleRelatedItems()
-        selectedRelatedItem = nil
     }
 
     @IBAction func closeWindowTapped(_ sender: Any) {
