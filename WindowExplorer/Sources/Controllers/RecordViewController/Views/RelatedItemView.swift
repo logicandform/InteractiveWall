@@ -72,6 +72,13 @@ class RelatedItemView: NSView {
         }
     }
 
+    func flashHightlight() {
+        set(highlighted: true)
+        Timer.scheduledTimer(withTimeInterval: 0.15, repeats: false) { [weak self] _ in
+            self?.set(highlighted: false)
+        }
+    }
+
     // MARK: Helpers
 
     private func load(_ record: RecordDisplayable?) {

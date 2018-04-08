@@ -27,7 +27,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private var positionsForMediaControllers = [MediaViewController: Int?]()
     private weak var closeWindowTimer: Foundation.Timer?
     private var animating = false
-    private var selectedRelatedItemHighlightTimer: Timer?
 
     private struct Constants {
         static let tableRowHeight: CGFloat = 80
@@ -40,7 +39,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         static let fontColor: NSColor = .white
         static let kern: CGFloat = 0.5
         static let screenEdgeBuffer: CGFloat = 80
-        static let flashHighlightTime = 0.15
     }
 
 
@@ -210,10 +208,9 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
             if let selectedMedia = selectedMediaItem?.media {
                 selectMediaItem(selectedMedia)
-                Timer.scheduledTimer(withTimeInterval: Constants.flashHighlightTime, repeats: false) { [weak self] _ in
-                    self?.selectedMediaItem = nil
-                }
             }
+
+            selectedMediaItem = nil
         default:
             return
         }
@@ -270,10 +267,9 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
             if let selectedRecord = selectedRelatedItem?.record {
                 selectRelatedItem(selectedRecord)
-                Timer.scheduledTimer(withTimeInterval: Constants.flashHighlightTime, repeats: false) { [weak self] _ in
-                    self?.selectedRelatedItem = nil
-                }
             }
+
+            selectedRelatedItem = nil
         default:
             return
         }
@@ -330,6 +326,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     @IBAction func toggleRelatedItems(_ sender: Any) {
         toggleRelatedItems()
+        selectedRelatedItem = nil
     }
 
     @IBAction func closeWindowTapped(_ sender: Any) {
