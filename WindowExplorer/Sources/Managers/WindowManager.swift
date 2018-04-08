@@ -64,10 +64,17 @@ final class WindowManager {
 
     // If the none of the screens contain the detail view, dealocate it
     func checkBounds(of controller: NSViewController) {
-        guard let screenIndex = controller.view.window?.screen?.index else {
+        guard let screen = controller.view.window?.screen, let responder = controller as? GestureResponder else {
             dismissWindow(for: controller)
             return
         }
+
+        let applicationFrame = NSScreen.screens.dropFirst().reduce(CGRect.zero) { $0.union($1.frame) }
+        if !responder.inside(bounds: applicationFrame) {
+            dismissWindow(for: controller)
+        }
+
+
 
         var indicies = NSScreen.screens.indices
 
@@ -75,7 +82,7 @@ final class WindowManager {
             indicies.removeFirst()
         }
 
-        if !indicies.contains(screenIndex) {
+        if !indicies.contains(screen.index) {
             dismissWindow(for: controller)
         }
     }

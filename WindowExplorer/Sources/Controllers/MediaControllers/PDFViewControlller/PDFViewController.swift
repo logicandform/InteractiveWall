@@ -37,6 +37,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         static let pdfMinWidth: CGFloat = 640
         static let initialMagnification: CGFloat = 1
         static let maximumMagnification: CGFloat = 5
+        static let percentToDeallocateWindow: CGFloat = 40
     }
 
 
@@ -308,5 +309,17 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         scrollViewHeightConstraint.constant = height
         view.needsLayout = true
         view.layout()
+    }
+
+    
+    // MARK: GestureResponder
+
+    override func inside(bounds: CGRect) -> Bool {
+        guard let window = view.window else {
+            return false
+        }
+
+        let dragAreaInWindow = windowDragArea.frame.transformed(from: view.frame).transformed(from: window.frame)
+        return bounds.contains(dragAreaInWindow)
     }
 }

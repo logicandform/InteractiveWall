@@ -4,6 +4,13 @@ import Foundation
 import CoreGraphics
 import AppKit
 
+extension CGRect {
+
+    func transformed(from rect: CGRect) -> CGRect {
+        return CGRect(origin: origin.transformed(from: rect), size: size)
+    }
+}
+
 extension CGPoint {
     
     var asVector: CGVector {
@@ -37,6 +44,11 @@ extension CGPoint {
     /// Subtracts the given view's origin from the point.
     func transformed(to frame: CGRect) -> CGPoint {
         return CGPoint(x: x - frame.minX, y: y - frame.minY)
+    }
+
+    /// Adds the given view's origin from the point.
+    func transformed(from frame: CGRect) -> CGPoint {
+        return CGPoint(x: x + frame.minX, y: y + frame.minY)
     }
 
     /// Flips the coordinate system of the point in a given frame.

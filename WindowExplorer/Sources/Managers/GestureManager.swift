@@ -8,6 +8,7 @@ import MapKit
 protocol GestureResponder: class {
     var view: NSView { get }
     var gestureManager: GestureManager! { get }
+    func inside(bounds: CGRect) -> Bool
 }
 
 

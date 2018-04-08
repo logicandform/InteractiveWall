@@ -100,6 +100,10 @@ class MediaViewController: NSViewController, GestureResponder {
         })
     }
 
+    func inside(bounds: CGRect) -> Bool {
+        return true
+    }
+
 
     // MARK: Helpers
 

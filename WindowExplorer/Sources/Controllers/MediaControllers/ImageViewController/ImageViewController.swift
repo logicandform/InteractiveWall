@@ -28,6 +28,7 @@ class ImageViewController: MediaViewController {
         static let initialMagnification: CGFloat = 1
         static let maximumMagnification: CGFloat = 5
         static let rotationBuffer: CGFloat = 32
+        static let percentToDeallocateWindow: CGFloat = 40
     }
 
 
@@ -184,7 +185,6 @@ class ImageViewController: MediaViewController {
         var origin = window.frame.origin
         origin += gesture.translation(in: nil)
         window.setFrameOrigin(origin)
-        WindowManager.instance.checkBounds(of: self)
     }
 
 
@@ -192,5 +192,17 @@ class ImageViewController: MediaViewController {
 
     @IBAction func closeButtonTapped(_ sender: Any) {
         animateViewOut()
+    }
+
+    
+    // MARK: GestureResponder
+
+    override func inside(bounds: CGRect) -> Bool {
+        guard let window = view.window else {
+            return false
+        }
+
+        let dragAreaInWindow = windowDragArea.frame.transformed(from: view.frame).transformed(from: window.frame)
+        return bounds.contains(dragAreaInWindow)
     }
 }

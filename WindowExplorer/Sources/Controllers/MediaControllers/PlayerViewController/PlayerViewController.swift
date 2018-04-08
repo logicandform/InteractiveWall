@@ -17,6 +17,10 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     
     private var audioPlayer: AKPlayer?
 
+    private struct Constants {
+        static let percentToDeallocateWindow: CGFloat = 40
+    }
+
 
     // MARK: Init
 
@@ -194,5 +198,17 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
 
     func playerChangedVolume(_ state: VolumeLevel) {
         audioPlayer?.volume = state.gain
+    }
+
+    
+    // MARK: GestureResponder
+
+    override func inside(bounds: CGRect) -> Bool {
+        guard let window = view.window else {
+            return false
+        }
+
+        let dragAreaInWindow = windowDragArea.frame.transformed(from: view.frame).transformed(from: window.frame)
+        return bounds.contains(dragAreaInWindow)
     }
 }
