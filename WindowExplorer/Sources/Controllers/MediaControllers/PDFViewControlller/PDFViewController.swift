@@ -141,11 +141,14 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
     // MARK: Gesture Handling
 
     private func handleWindowPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
+        guard let pan = gesture as? PanGestureRecognizer, let window = view.window, !animating else {
             return
         }
 
+
         switch pan.state {
+        case .began:
+            delegate?.controllerDidMove(self)
         case .recognized, .momentum:
             var origin = window.frame.origin
             origin += pan.delta.round()
@@ -158,7 +161,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
     }
 
     private func handleThumbnailPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer else {
+        guard let pan = gesture as? PanGestureRecognizer, !animating else {
             return
         }
         
@@ -173,7 +176,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
     }
 
     private func handlePinch(_ gesture: GestureRecognizer) {
-        guard let pinch = gesture as? PinchGestureRecognizer else {
+        guard let pinch = gesture as? PinchGestureRecognizer, !animating else {
             return
         }
 
@@ -195,7 +198,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
     }
 
     private func handleLeftArrowTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, !leftArrow.isHidden else {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, !leftArrow.isHidden, !animating else {
             return
         }
 
@@ -204,7 +207,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
     }
 
     private func handleRightArrowTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, !rightArrow.isHidden else {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, !rightArrow.isHidden, !animating else {
             return
         }
 
@@ -213,7 +216,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
     }
 
     private func handleThumbnailItemTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let location = tap.position, tap.state == .ended else {
+        guard let tap = gesture as? TapGestureRecognizer, let location = tap.position, tap.state == .ended, !animating else {
             return
         }
         
@@ -226,7 +229,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
     }
 
     private func didTapCloseButton(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, !animating else {
             return
         }
 
@@ -235,7 +238,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
 
     @objc
     private func handleMousePan(_ gesture: NSPanGestureRecognizer) {
-        guard let window = view.window else {
+        guard let window = view.window, !animating else {
             return
         }
 

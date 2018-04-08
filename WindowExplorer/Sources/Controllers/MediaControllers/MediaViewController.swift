@@ -3,7 +3,8 @@
 import Cocoa
 
 protocol MediaControllerDelegate: class {
-    func closeWindow(for mediaController: MediaViewController)
+    func controllerDidClose(_ controller: MediaViewController)
+    func controllerDidMove(_ controller: MediaViewController)
 }
 
 class MediaViewController: NSViewController, GestureResponder {
@@ -12,6 +13,7 @@ class MediaViewController: NSViewController, GestureResponder {
     var media: Media!
     weak var delegate: MediaControllerDelegate?
     private weak var closeWindowTimer: Foundation.Timer?
+    var animating = false
 
     var titleAttributes: [NSAttributedStringKey: Any] {
         let font = NSFont(name: Constants.fontName, size: Constants.titleFontSize) ?? NSFont.systemFont(ofSize: Constants.titleFontSize)
@@ -47,7 +49,7 @@ class MediaViewController: NSViewController, GestureResponder {
     // MARK: API
     
     func close() {
-        delegate?.closeWindow(for: self)
+        delegate?.controllerDidClose(self)
         WindowManager.instance.closeWindow(for: self)
     }
 
@@ -60,6 +62,25 @@ class MediaViewController: NSViewController, GestureResponder {
 
     func cancelCloseWindowTime() {
         closeWindowTimer?.invalidate()
+    }
+
+    func animate(to origin: NSPoint) {
+        guard let window = self.view.window, !gestureManager.isActive() else {
+            return
+        }
+
+        var frame = window.frame
+        frame.origin = origin
+        window.makeKeyAndOrderFront(self)
+        animating = true
+
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = 0.75
+            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+            window.animator().setFrame(frame, display: true, animate: true)
+        }, completionHandler: { [weak self] in
+            self?.animating = false
+        })
     }
 
     func animateViewIn() {

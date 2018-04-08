@@ -78,8 +78,8 @@ class MapHandler {
     }
 
     func reset() {
-        var mapRect = MKMapRect(origin: Constants.canada.origin, size: MKMapSize(width: Constants.canada.size.width / Configuration.mapsPerScreen, height: 0.0))
-        mapRect.origin.x = Constants.canada.origin.x + Double(mapID).truncatingRemainder(dividingBy: Configuration.mapsPerScreen) * Constants.canada.size.width / Configuration.mapsPerScreen
+        var mapRect = MKMapRect(origin: Constants.canada.origin, size: MKMapSize(width: Constants.canada.size.width / Double(Configuration.mapsPerScreen), height: 0.0))
+        mapRect.origin.x = Constants.canada.origin.x + Double(mapID).truncatingRemainder(dividingBy: Double(Configuration.mapsPerScreen)) * Double(Constants.canada.size.width) / Double(Configuration.mapsPerScreen)
         mapView.setVisibleMapRect(mapRect, animated: true)
     }
 
