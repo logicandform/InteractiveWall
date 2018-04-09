@@ -72,6 +72,7 @@ class RelatedItemView: NSView {
         }
     }
 
+
     // MARK: Helpers
 
     private func load(_ record: RecordDisplayable?) {

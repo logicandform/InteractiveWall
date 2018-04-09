@@ -8,6 +8,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
     private struct Constants {
         static let maximumDistanceMoved: CGFloat = 20
         static let minimumFingers = 1
+        static let startTapThresholdTime = 0.15
     }
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
@@ -35,7 +36,12 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         if properties.touchCount == fingers {
             position = touch.position
             state = .began
-            gestureUpdated?(self)
+
+            Timer.scheduledTimer(withTimeInterval: Constants.startTapThresholdTime, repeats: false) { [weak self] _ in
+                if let strongSelf = self {
+                    strongSelf.gestureUpdated?(strongSelf)
+                }
+            }
         }
     }
 

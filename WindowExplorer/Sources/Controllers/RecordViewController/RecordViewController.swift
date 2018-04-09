@@ -27,7 +27,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private var positionsForMediaControllers = [MediaViewController: Int?]()
     private weak var closeWindowTimer: Foundation.Timer?
     private var animating = false
-    
+
     private struct Constants {
         static let relatedRecordsTitle = "RELATED RECORDS"
         static let animationDuration = 0.5
@@ -205,10 +205,13 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         case .failed:
             selectedMediaItem = nil
         case .ended:
+            selectedMediaItem = mediaItem
+
             if let selectedMedia = selectedMediaItem?.media {
                 selectMediaItem(selectedMedia)
-                selectedMediaItem = nil
             }
+
+            selectedMediaItem = nil
         default:
             return
         }
@@ -261,10 +264,13 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         case .failed:
             selectedRelatedItem = nil
         case .ended:
+            selectedRelatedItem = relatedItemView
+
             if let selectedRecord = selectedRelatedItem?.record {
                 selectRelatedItem(selectedRecord)
-                selectedRelatedItem = nil
             }
+
+            selectedRelatedItem = nil
         default:
             return
         }
