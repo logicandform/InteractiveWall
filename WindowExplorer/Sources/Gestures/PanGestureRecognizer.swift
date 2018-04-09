@@ -89,7 +89,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         state = .ended
         gestureUpdated?(self)
 
-        if shouldStartMomentum, timeOfLastUpdate.timeIntervalSinceNow < Constants.gesturePausedTime {
+        if shouldStartMomentum, abs(timeOfLastUpdate.timeIntervalSinceNow) < Constants.gesturePausedTime {
             beginMomentum()
         } else {
             reset()
@@ -133,8 +133,8 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     // MARK: Momentum
 
     private struct Momentum {
-        static let panInitialFrictionFactor = 1.04
-        static let panFrictionFactorScale = 0.003
+        static let panInitialFrictionFactor = 1.15
+        static let panFrictionFactorScale = 0.01
         static let panThresholdMomentumDelta: Double = 2
     }
 
@@ -181,4 +181,3 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         gestureUpdated?(self)
     }
 }
-

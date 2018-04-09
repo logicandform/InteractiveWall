@@ -89,7 +89,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         state = .ended
         gestureUpdated?(self)
 
-        if shouldStartMomentum, timeOfLastUpdate.timeIntervalSinceNow < Constants.gesturePausedTime {
+        if shouldStartMomentum, abs(timeOfLastUpdate.timeIntervalSinceNow) < Constants.gesturePausedTime {
             beginMomentum()
         } else {
             reset()
