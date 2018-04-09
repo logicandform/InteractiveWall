@@ -41,7 +41,6 @@ final class TouchManager: SocketManagerDelegate {
             manager.handle(touch)
         } else {
             let map = mapOwner(of: touch) ?? calculateMap(for: touch)
-            convertToMap(touch)
             send(touch, to: map)
         }
     }
@@ -51,7 +50,7 @@ final class TouchManager: SocketManagerDelegate {
     }
 
 
-    // MARK: Sending Notifications
+    // MARK: Sending CF Messages
 
     /// Sends a touch to the map and updates the state of the touches for map dictionary
     private func send(_ touch: Touch, to map: Int) {
@@ -130,13 +129,6 @@ final class TouchManager: SocketManagerDelegate {
         let xPos = (touch.position.x / Configuration.touchScreenSize.width * CGFloat(screen.frame.width)) + screen.frame.origin.x
         let yPos = (1 - touch.position.y / Configuration.touchScreenSize.height) * CGFloat(screen.frame.height)
         touch.position = CGPoint(x: xPos, y: yPos)
-    }
-
-    /// Convert the touch's x-position to the coordinate space of a map application
-    private func convertToMap(_ touch: Touch) {
-        let screen = NSScreen.at(position: touch.screen)
-        let mapWidth = screen.frame.width / CGFloat(Configuration.mapsPerScreen)
-        touch.position.x = touch.position.x.truncatingRemainder(dividingBy: mapWidth)
     }
 
     private func mapOwner(of touch: Touch) -> Int? {

@@ -47,7 +47,6 @@ class MapHandler {
         let numberOfMaps = Configuration.mapsPerScreen * Configuration.numberOfScreens
         let initialState = MapState(pair: nil, group: nil)
         self.stateForMap = Array(repeating: initialState, count: numberOfMaps)
-
         subscribeToNotifications()
     }
 
@@ -143,7 +142,6 @@ class MapHandler {
             xOrigin = mapRect.origin.x - MKMapSizeWorld.width + Double(mapID - pairedID) * mapRect.size.width
         } else {
             xOrigin = mapRect.origin.x + Double(mapID - pairedID) * mapRect.size.width
-
         }
 
         var yOrigin = mapRect.origin.y
