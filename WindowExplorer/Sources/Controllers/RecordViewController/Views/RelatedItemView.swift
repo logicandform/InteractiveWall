@@ -10,7 +10,7 @@ class RelatedItemView: NSView {
 
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var descriptionView: NSTextView!
-    @IBOutlet weak var imageView: AspectFillImageView!
+    @IBOutlet weak var imageView: NSImageView!
 
     var tintColor = style.selectedColor
     var record: RecordDisplayable? {
@@ -79,18 +79,30 @@ class RelatedItemView: NSView {
         guard let record = record else {
             return
         }
+
         descriptionView.drawsBackground = false
         descriptionView.textContainer?.maximumNumberOfLines = 3
         titleLabel.attributedStringValue = NSAttributedString(string: record.title, attributes: titleLabelAttributes)
         descriptionView.textStorage?.setAttributedString(NSAttributedString(string: record.description ?? "", attributes: descriptionLabelAttributes))
-        imageView.image = record.type.placeholder.tinted(with: style.relatedItemColor)
+        imageView.image = record.type.placeholder.tinted(with: record.type.color)
 
         if let media = record.media.first {
             Alamofire.request(media.thumbnail).responseImage { [weak self] response in
                 if let image = response.value {
-                    self?.imageView.image = image
+                    self?.setImage(image)
                 }
             }
         }
+    }
+
+    private func setImage(_ image: NSImage) {
+        imageView.image = nil
+
+        if image.size.width > image.size.height {
+            imageView.layer?.contentsGravity = kCAGravityResizeAspectFill
+        } else {
+            imageView.layer?.contentsGravity = kCAGravityResizeAspect
+        }
+        imageView.layer?.contents = image
     }
 }
