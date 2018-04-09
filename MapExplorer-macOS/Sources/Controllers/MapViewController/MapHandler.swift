@@ -76,7 +76,7 @@ class MapHandler {
     }
 
     func reset() {
-        let newWidth = Constants.canadaSize.width / 2
+        let newWidth = Constants.canadaSize.width / (Double(Configuration.mapsPerScreen) - 1.0)
         let newXOrigin = ((Double(mapID).truncatingRemainder(dividingBy: Double(Configuration.mapsPerScreen)) * newWidth) - (newWidth / 2)) + Constants.canadaOrigin.x
         let mapRect = MKMapRect(origin: MKMapPoint(x: newXOrigin, y: Constants.canadaOrigin.y), size: MKMapSize(width: newWidth, height: 0.0))
         mapView.setVisibleMapRect(mapRect, animated: true)
