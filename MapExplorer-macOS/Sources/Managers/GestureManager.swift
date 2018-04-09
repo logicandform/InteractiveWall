@@ -85,12 +85,9 @@ final class GestureManager {
             return
         }
 
-        let xTranslation = touch.position.x.truncatingRemainder(dividingBy: window.frame.width) - touch.position.x
-        let windowTransform = CGAffineTransform(translationX: xTranslation, y: -window.frame.minY)
-        let positionInWindow = touch.position.applying(windowTransform)
-        displayTouchIndicator(in: responder.view, at: positionInWindow)
+        displayTouchIndicator(in: responder.view, at: touch.position)
 
-        if let (view, transform) = target(in: responder.view, at: positionInWindow, current: windowTransform, flipped: responder.view.isFlipped), let handler = gestureHandlers[view] {
+        if let (view, transform) = target(in: responder.view, at: touch.position, current: .identity, flipped: responder.view.isFlipped), let handler = gestureHandlers[view] {
             handler.set(transform, for: touch)
             handler.handle(touch)
         }

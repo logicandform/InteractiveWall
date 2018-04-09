@@ -27,8 +27,8 @@ class MapHandler {
         static let resetTimeoutPeriod: TimeInterval = 180
         static let canadaOrigin = MKMapPoint(x: 23000000, y: 70000000)
         static let canadaSize = MKMapSize(width: 80000000, height: 0)
-        static let verticalPanLimit: Double = 92200000
-        static let verticalVisibleMapRatio = 0.25
+        static let canada = MKMapRect(origin: MKMapPoint(x: 23000000, y: 13000000), size: MKMapSize(width: 80000000, height: 0))
+        static let verticalPanLimit: Double = 140000000
         static let masterID = 0
     }
 
@@ -156,8 +156,8 @@ class MapHandler {
             xOrigin = Constants.canadaOrigin.x + Constants.canadaSize.width - distance.truncatingRemainder(dividingBy: Constants.canadaSize.width + mapRect.size.width)
         }
 
-        if mapRect.origin.y + mapRect.size.height / Constants.verticalVisibleMapRatio > Constants.verticalPanLimit {
-            yOrigin = Constants.verticalPanLimit - mapRect.size.height / Constants.verticalVisibleMapRatio
+        if mapRect.origin.y + mapRect.size.height > Constants.verticalPanLimit {
+            yOrigin = Constants.verticalPanLimit - mapRect.size.height
         }
 
         let mapOrigin = MKMapPointMake(xOrigin, yOrigin)

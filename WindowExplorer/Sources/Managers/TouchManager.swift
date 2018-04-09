@@ -6,7 +6,7 @@ import MONode
 final class TouchManager: SocketManagerDelegate {
 
     static let instance = TouchManager()
-    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 12225)
+    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 12223)
 
     private var socketManager: SocketManager?
     private var managersForTouch = [Touch: (NSWindow, GestureManager)]()
@@ -34,13 +34,14 @@ final class TouchManager: SocketManagerDelegate {
             return
         }
 
-        convertToScreen(touch)
+        convert(touch, toScreen: touch.screen)
 
         // Check if the touch landed on a window, else notify the proper map application.
         if let manager = manager(of: touch) {
             manager.handle(touch)
         } else {
             let map = mapOwner(of: touch) ?? calculateMap(for: touch)
+            convertToMap(touch)
             send(touch, to: map)
         }
     }
@@ -124,11 +125,18 @@ final class TouchManager: SocketManagerDelegate {
     }
 
     /// Converts a position received from a touch screen to the coordinate of the current devices bounds.
-    private func convertToScreen(_ touch: Touch) {
-        let screen = NSScreen.at(position: touch.screen)
+    private func convert(_ touch: Touch, toScreen screen: Int) {
+        let screen = NSScreen.at(position: screen)
         let xPos = (touch.position.x / Configuration.touchScreenSize.width * CGFloat(screen.frame.width)) + screen.frame.origin.x
         let yPos = (1 - touch.position.y / Configuration.touchScreenSize.height) * CGFloat(screen.frame.height)
         touch.position = CGPoint(x: xPos, y: yPos)
+    }
+
+    /// Convert the touch's x-position to the coordinate space of a map application
+    private func convertToMap(_ touch: Touch) {
+        let screen = NSScreen.at(position: touch.screen)
+        let mapWidth = screen.frame.width / CGFloat(Configuration.mapsPerScreen)
+        touch.position.x = touch.position.x.truncatingRemainder(dividingBy: mapWidth)
     }
 
     private func mapOwner(of touch: Touch) -> Int? {

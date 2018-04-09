@@ -87,7 +87,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     // MARK: Gesture handling
 
     private func didPinchOnMap(_ gesture: GestureRecognizer) {
-
         guard let pinch = gesture as? PinchGestureRecognizer else {
             return
         }
@@ -123,16 +122,15 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
         let touchRect = CGRect(x: position.x - Constants.touchRadius, y: position.y - Constants.touchRadius, width: Constants.touchRadius * 2, height: Constants.touchRadius * 2)
         for annotation in mapView.annotations {
-            var annotationPoint = mapView.convert(annotation.coordinate, toPointTo: mapView)
-            annotationPoint.y = (view.window?.frame.height)! - annotationPoint.y
-            if touchRect.contains(annotationPoint) {
+            let positionInView = mapView.convert(annotation.coordinate, toPointTo: mapView).inverted(in: view)
+            if touchRect.contains(positionInView) {
                 if tap.state == .began {
                     if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
                         annotationView.runAnimation()
                         return
                     }
                 } else if tap.state == .ended, let annotation = annotation as? CircleAnnotation, let record = recordForAnnotation[annotation] {
-                    postWindowNotification(for: record, at: CGPoint(x: annotationPoint.x, y: annotationPoint.y - 20.0))
+                    postWindowNotification(for: record, at: CGPoint(x: positionInView.x, y: positionInView.y - 20.0))
                     return
                 }
             }
