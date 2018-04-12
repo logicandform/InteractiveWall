@@ -10,6 +10,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
 
     @IBOutlet weak var playerView: AVPlayerView!
     @IBOutlet weak var windowDragArea: NSView!
+    @IBOutlet weak var windowDragAreaHighlight: NSView!
     @IBOutlet weak var playerControl: PlayerControl!
     @IBOutlet weak var dismissButton: NSView!
     @IBOutlet weak var playerStateImageView: AspectFillImageView!
@@ -34,11 +35,10 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         titleLabel.attributedStringValue = NSAttributedString(string: media.title ?? "", attributes: titleAttributes)
-        windowDragArea.wantsLayer = true
-        windowDragArea.layer?.backgroundColor = style.dragAreaBackground.cgColor
 
         setupPlayer()
         setupGestures()
+        setupWindowDragArea()
         animateViewIn()
     }
 
@@ -119,6 +119,13 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         singleFingerCloseButtonTap.gestureUpdated = didTapCloseButton(_:)
     }
 
+    private func setupWindowDragArea() {
+        windowDragArea.wantsLayer = true
+        windowDragArea.layer?.backgroundColor = style.dragAreaBackground.cgColor
+        windowDragAreaHighlight.wantsLayer = true
+        windowDragAreaHighlight.layer?.backgroundColor = media.tintColor.cgColor
+    }
+
 
     // MARK: Gesture Handling
 
@@ -160,7 +167,6 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         var origin = window.frame.origin
         origin += gesture.translation(in: nil)
         window.setFrameOrigin(origin)
-        WindowManager.instance.checkBounds(of: self)
     }
 
     private func didTapVideoPlayer(_ gesture: GestureRecognizer) {
@@ -176,6 +182,22 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
 
     @IBAction func closeButtonTapped(_ sender: Any) {
         animateViewOut()
+    }
+
+
+    // MARK: GestureResponder
+
+    /// Determines if the bounds of the draggable area is inside a given rect
+    override func draggableInside(bounds: CGRect) -> Bool {
+        guard let window = view.window else {
+            return false
+        }
+
+        // Calculate the center box of the drag area in the window's coordinate system
+        let dragAreaInWindow = windowDragArea.frame.transformed(from: view.frame).transformed(from: window.frame)
+        let adjustedWidth = dragAreaInWindow.width / 2
+        let smallDragArea = CGRect(x: dragAreaInWindow.minX + adjustedWidth / 2, y: dragAreaInWindow.minY, width: adjustedWidth, height: dragAreaInWindow.height)
+        return bounds.contains(smallDragArea)
     }
 
 
@@ -198,21 +220,5 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
 
     func playerChangedVolume(_ state: VolumeLevel) {
         audioPlayer?.volume = state.gain
-    }
-
-    
-    // MARK: GestureResponder
-
-    /// Determines if the bounds of the draggable area is inside a given rect
-    override func draggableInside(bounds: CGRect) -> Bool {
-        guard let window = view.window else {
-            return false
-        }
-
-        // Calculate the center box of the drag area in the window's coordinate system
-        let dragAreaInWindow = windowDragArea.frame.transformed(from: view.frame).transformed(from: window.frame)
-        let adjustedWidth = dragAreaInWindow.width / 2
-        let smallDragArea = CGRect(x: dragAreaInWindow.minX + adjustedWidth / 2, y: dragAreaInWindow.minY, width: adjustedWidth, height: dragAreaInWindow.height)
-        return bounds.contains(smallDragArea)
     }
 }

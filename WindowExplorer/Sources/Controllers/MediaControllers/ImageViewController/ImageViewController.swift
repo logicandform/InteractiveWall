@@ -37,8 +37,8 @@ class ImageViewController: MediaViewController {
 
         setupImageView()
         setupGestures()
-        animateViewIn()
         setupWindowDragArea()
+        animateViewIn()
     }
 
     override func viewDidDisappear() {
@@ -103,6 +103,7 @@ class ImageViewController: MediaViewController {
         windowDragAreaHighlight.layer?.backgroundColor = media.tintColor.cgColor
     }
 
+    
     // MARK: Gesture Handling
 
     private func handleWindowPan(_ gesture: GestureRecognizer) {

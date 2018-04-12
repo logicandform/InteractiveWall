@@ -16,39 +16,53 @@
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="529-pd-R3M">
                                 <rect key="frame" x="0.0" y="368" width="640" height="40"/>
                                 <subviews>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="NkP-e9-NC4">
+                                        <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                        <subviews>
+                                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jwW-9F-wrk">
+                                                <rect key="frame" x="10" y="10" width="20" height="20"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="20" id="2qf-Xi-XGD"/>
+                                                    <constraint firstAttribute="width" constant="20" id="tqe-NP-PC1"/>
+                                                </constraints>
+                                                <imageCell key="cell" enabled="NO" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="close button" id="e8y-MB-0zd"/>
+                                            </imageView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="jwW-9F-wrk" firstAttribute="centerY" secondItem="NkP-e9-NC4" secondAttribute="centerY" id="3qw-28-wIL"/>
+                                            <constraint firstAttribute="width" constant="40" id="G1e-yk-XVe"/>
+                                            <constraint firstItem="jwW-9F-wrk" firstAttribute="centerX" secondItem="NkP-e9-NC4" secondAttribute="centerX" id="T9D-TI-NYM"/>
+                                            <constraint firstAttribute="height" constant="40" id="XNF-RS-0px"/>
+                                        </constraints>
+                                    </customView>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="CLy-R4-WR0">
                                         <rect key="frame" x="0.0" y="0.0" width="640" height="1"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="Of4-Vh-d8P"/>
                                         </constraints>
                                     </customView>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1GK-FO-lwr">
+                                        <rect key="frame" x="46" y="0.0" width="588" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="g5g-AP-8FI"/>
+                                        </constraints>
+                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" usesSingleLineMode="YES" id="HlC-v9-VHL">
+                                            <font key="font" size="16" name="Soleil"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="1GK-FO-lwr" firstAttribute="leading" secondItem="NkP-e9-NC4" secondAttribute="trailing" constant="8" id="0B4-eH-V77"/>
                                     <constraint firstItem="CLy-R4-WR0" firstAttribute="leading" secondItem="529-pd-R3M" secondAttribute="leading" id="5zL-TU-iIC"/>
                                     <constraint firstAttribute="bottom" secondItem="CLy-R4-WR0" secondAttribute="bottom" id="8Yr-aK-Vqd"/>
+                                    <constraint firstItem="NkP-e9-NC4" firstAttribute="leading" secondItem="529-pd-R3M" secondAttribute="leading" id="N2c-XN-sdy"/>
+                                    <constraint firstItem="NkP-e9-NC4" firstAttribute="top" secondItem="529-pd-R3M" secondAttribute="top" id="f5g-dx-4cY"/>
                                     <constraint firstAttribute="height" constant="40" id="fwT-XL-vNP"/>
                                     <constraint firstAttribute="trailing" secondItem="CLy-R4-WR0" secondAttribute="trailing" id="iBy-PR-Kju"/>
-                                </constraints>
-                            </customView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="NkP-e9-NC4">
-                                <rect key="frame" x="0.0" y="368" width="40" height="40"/>
-                                <subviews>
-                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jwW-9F-wrk">
-                                        <rect key="frame" x="10" y="10" width="20" height="20"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="2qf-Xi-XGD"/>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="Eet-0W-6fL"/>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="WBN-1S-blJ"/>
-                                            <constraint firstAttribute="width" constant="20" id="tqe-NP-PC1"/>
-                                        </constraints>
-                                        <imageCell key="cell" enabled="NO" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="close button" id="e8y-MB-0zd"/>
-                                    </imageView>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="jwW-9F-wrk" firstAttribute="centerY" secondItem="NkP-e9-NC4" secondAttribute="centerY" id="3qw-28-wIL"/>
-                                    <constraint firstAttribute="width" constant="40" id="G1e-yk-XVe"/>
-                                    <constraint firstItem="jwW-9F-wrk" firstAttribute="centerX" secondItem="NkP-e9-NC4" secondAttribute="centerX" id="T9D-TI-NYM"/>
-                                    <constraint firstAttribute="height" constant="40" id="XNF-RS-0px"/>
+                                    <constraint firstAttribute="bottom" secondItem="1GK-FO-lwr" secondAttribute="bottom" id="ptd-aS-BrU"/>
+                                    <constraint firstAttribute="trailing" secondItem="1GK-FO-lwr" secondAttribute="trailing" constant="8" id="xas-Zt-nVk"/>
                                 </constraints>
                             </customView>
                             <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" allowsMagnification="YES" maxMagnification="5" minMagnification="1" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="WTp-wA-9SL" customClass="RegularScrollView" customModule="WindowExplorer" customModuleProvider="target">
@@ -77,28 +91,12 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1GK-FO-lwr">
-                                <rect key="frame" x="46" y="368" width="4" height="29"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="29" id="g5g-AP-8FI"/>
-                                </constraints>
-                                <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" usesSingleLineMode="YES" id="HlC-v9-VHL">
-                                    <font key="font" metaFont="system" size="16"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
                         </subviews>
                         <constraints>
                             <constraint firstItem="529-pd-R3M" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" id="6Jt-qE-li2"/>
-                            <constraint firstItem="WTp-wA-9SL" firstAttribute="top" secondItem="NkP-e9-NC4" secondAttribute="bottom" constant="8" id="BmA-2z-XNq"/>
-                            <constraint firstItem="NkP-e9-NC4" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="E2X-0d-8js"/>
-                            <constraint firstItem="1GK-FO-lwr" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" constant="11" id="Uab-UM-qDh"/>
                             <constraint firstAttribute="trailing" secondItem="WTp-wA-9SL" secondAttribute="trailing" constant="8" id="Uvu-Og-omp"/>
-                            <constraint firstItem="1GK-FO-lwr" firstAttribute="leading" secondItem="NkP-e9-NC4" secondAttribute="trailing" constant="8" id="VEN-Ga-Dsc"/>
                             <constraint firstAttribute="bottom" secondItem="WTp-wA-9SL" secondAttribute="bottom" constant="8" id="VgE-4i-fHq"/>
                             <constraint firstItem="529-pd-R3M" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="WnV-SU-5jv"/>
-                            <constraint firstItem="NkP-e9-NC4" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" id="ZrV-8D-Dan"/>
                             <constraint firstItem="WTp-wA-9SL" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="8" id="dsS-3c-P65"/>
                             <constraint firstAttribute="trailing" secondItem="529-pd-R3M" secondAttribute="trailing" id="qKh-TI-HmK"/>
                         </constraints>

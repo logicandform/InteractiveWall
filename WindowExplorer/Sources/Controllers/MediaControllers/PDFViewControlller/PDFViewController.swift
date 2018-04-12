@@ -11,6 +11,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
     @IBOutlet weak var thumbnailView: NSTableView!
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var windowDragArea: NSView!
+    @IBOutlet weak var windowDragAreaHighlight: NSView!
     @IBOutlet weak var closeButtonView: NSView!
     @IBOutlet weak var backTapArea: NSView!
     @IBOutlet weak var forwardTapArea: NSView!
@@ -46,13 +47,12 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
         titleLabel.attributedStringValue = NSAttributedString(string: media.title ?? "", attributes: titleAttributes)
-        windowDragArea.wantsLayer = true
-        windowDragArea.layer?.backgroundColor = style.dragAreaBackground.cgColor
 
         setupPDF()
         setupArrows()
         setupThumbnailView()
         setupGestures()
+        setupWindowDragArea()
         animateViewIn()
     }
 
@@ -136,6 +136,13 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         let singleFingerCloseButtonTap = TapGestureRecognizer()
         gestureManager.add(singleFingerCloseButtonTap, to: closeButtonView)
         singleFingerCloseButtonTap.gestureUpdated = didTapCloseButton(_:)
+    }
+
+    private func setupWindowDragArea() {
+        windowDragArea.wantsLayer = true
+        windowDragArea.layer?.backgroundColor = style.dragAreaBackground.cgColor
+        windowDragAreaHighlight.wantsLayer = true
+        windowDragAreaHighlight.layer?.backgroundColor = media.tintColor.cgColor
     }
 
 
@@ -247,7 +254,6 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         var origin = window.frame.origin
         origin += gesture.translation(in: nil)
         window.setFrameOrigin(origin)
-        WindowManager.instance.checkBounds(of: self)
     }
 
 
@@ -283,6 +289,22 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
     }
 
 
+    // MARK: GestureResponder
+
+    /// Determines if the bounds of the draggable area is inside a given rect
+    override func draggableInside(bounds: CGRect) -> Bool {
+        guard let window = view.window else {
+            return false
+        }
+
+        // Calculate the center box of the drag area in the window's coordinate system
+        let dragAreaInWindow = windowDragArea.frame.transformed(from: view.frame).transformed(from: window.frame)
+        let adjustedWidth = dragAreaInWindow.width / 2
+        let smallDragArea = CGRect(x: dragAreaInWindow.minX + adjustedWidth / 2, y: dragAreaInWindow.minY, width: adjustedWidth, height: dragAreaInWindow.height)
+        return bounds.contains(smallDragArea)
+    }
+
+
     // MARK: Helpers
 
     private func updateViewsForCurrentPage() {
@@ -309,21 +331,5 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         scrollViewHeightConstraint.constant = height
         view.needsLayout = true
         view.layout()
-    }
-
-    
-    // MARK: GestureResponder
-
-    /// Determines if the bounds of the draggable area is inside a given rect
-    override func draggableInside(bounds: CGRect) -> Bool {
-        guard let window = view.window else {
-            return false
-        }
-
-        // Calculate the center box of the drag area in the window's coordinate system
-        let dragAreaInWindow = windowDragArea.frame.transformed(from: view.frame).transformed(from: window.frame)
-        let adjustedWidth = dragAreaInWindow.width / 2
-        let smallDragArea = CGRect(x: dragAreaInWindow.minX + adjustedWidth / 2, y: dragAreaInWindow.minY, width: adjustedWidth, height: dragAreaInWindow.height)
-        return bounds.contains(smallDragArea)
     }
 }
