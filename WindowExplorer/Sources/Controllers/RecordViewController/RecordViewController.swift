@@ -34,7 +34,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         static let tableRowHeight: CGFloat = 80
         static let windowMargins: CGFloat = 20
         static let mediaControllerOffset = 50
-        static let closeWindowTimeoutPeriod: TimeInterval = 60
+        static let closeWindowTimeoutPeriod: TimeInterval = 300
         static let animationDistanceThreshold: CGFloat = 20
         static let fontName = "Soleil"
         static let fontSize: CGFloat = 13
