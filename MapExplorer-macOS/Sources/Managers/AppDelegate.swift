@@ -4,8 +4,8 @@ import Cocoa
 
 
 struct Configuration {
-    static let mapsPerScreen = 4
-    static let numberOfScreens = 1
+    static let mapsPerScreen = 2
+    static let numberOfScreens = 3
     static let touchScreenSize = CGSize(width: 21564, height: 12116)
     static let refreshRate: Double = 1 / 60
 }
@@ -24,7 +24,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         let screen = NSScreen.at(position: screenIndex)
         screenID = screenIndex
-        appID = appIndex + ((screenIndex) * Configuration.mapsPerScreen)
+        appID = appIndex + ((screenIndex - 1) * Configuration.mapsPerScreen)
 
         let mapStoryboard = NSStoryboard(name: MapViewController.storyboard, bundle: nil)
         let mapController = mapStoryboard.instantiateInitialController() as! MapViewController
