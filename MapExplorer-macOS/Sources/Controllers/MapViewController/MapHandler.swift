@@ -225,6 +225,7 @@ class MapHandler {
 
     private func beginResetTimer() {
         if mapID == Constants.masterID {
+            resetTimer?.invalidate()
             resetTimer = Timer.scheduledTimer(withTimeInterval: Constants.resetTimeoutPeriod, repeats: false) { [weak self] _ in
                 self?.resetTimerFired()
             }
