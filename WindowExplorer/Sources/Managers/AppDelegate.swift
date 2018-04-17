@@ -8,9 +8,9 @@ let style = Style()
 
 
 struct Configuration {
-    static let mapsPerScreen = 2
-    static let numberOfScreens = 3
-    static let touchScreenSize = CGSize(width: 21564, height: 12116)
+    static let mapsPerScreen = 1
+    static let numberOfScreens = 1
+    static let touchScreenSize = CGSize(width: 4095, height: 4095)
     static let refreshRate: Double = 1 / 60
     static let loadMapsOnFirstScreen = false
 }
@@ -30,6 +30,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         WindowManager.instance.registerForNotifications()
         TouchManager.instance.setupTouchSocket()
+//        RecordFactory.record(for: .school, id: 40, completion: { newRecord in
+//            if let loadedRecord = newRecord {
+//                WindowManager.instance.display(.record(loadedRecord), at: NSPoint(x: 100, y: 100))
+//            }
+//        })
         launchMapExplorer()
     }
 

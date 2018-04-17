@@ -35,7 +35,6 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         static let arrowWidth: CGFloat = 20
         static let arrowHeight: CGFloat = 40
         static let tableRowHeight: CGFloat = 100
-        static let pdfMinWidth: CGFloat = 640
         static let initialMagnification: CGFloat = 1
         static let maximumMagnification: CGFloat = 5
         static let percentToDeallocateWindow: CGFloat = 40
@@ -325,7 +324,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
 
         let mediaBox = page.bounds(for: .artBox)
         let scale = mediaBox.height / mediaBox.width
-        let width = min(mediaBox.size.width, Constants.pdfMinWidth)
+        let width = clamp(mediaBox.size.width, min: style.minMediaWindowWidth, max: style.maxMediaWindowWdith)
         let height = width * scale
         scrollViewWidthConstraint.constant = width
         scrollViewHeightConstraint.constant = height
