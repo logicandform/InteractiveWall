@@ -68,7 +68,7 @@ class ImageViewController: MediaViewController {
         imageView.imageScaling = NSImageScaling.scaleAxesIndependently
         
         let imageRatio = image.size.height / image.size.width
-        let width = clamp(image.size.width, min: style.minMediaWindowWidth, max: style.maxMediaWindowWdith)
+        let width = clamp(image.size.width, min: style.minMediaWindowWidth, max: style.maxMediaWindowWidth)
         let height = width * imageRatio
         frameSize = NSSize(width: width, height: height)
         imageView.setFrameSize(frameSize)

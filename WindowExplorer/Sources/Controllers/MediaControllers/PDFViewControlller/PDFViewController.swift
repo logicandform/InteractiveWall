@@ -324,7 +324,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
 
         let mediaBox = page.bounds(for: .artBox)
         let scale = mediaBox.height / mediaBox.width
-        let width = clamp(mediaBox.size.width, min: style.minMediaWindowWidth, max: style.maxMediaWindowWdith)
+        let width = clamp(mediaBox.size.width, min: style.minMediaWindowWidth, max: style.maxMediaWindowWidth)
         let height = width * scale
         scrollViewWidthConstraint.constant = width
         scrollViewHeightConstraint.constant = height

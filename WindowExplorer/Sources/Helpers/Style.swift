@@ -27,5 +27,5 @@ final class Style {
     let playerWindowSize = CGSize(width: 640, height: 440)
     
     let minMediaWindowWidth: CGFloat = 550.0
-    let maxMediaWindowWdith: CGFloat = 700.0
+    let maxMediaWindowWidth: CGFloat = 700.0
 }
