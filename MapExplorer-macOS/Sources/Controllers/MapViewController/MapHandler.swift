@@ -12,8 +12,9 @@ class MapHandler {
     let mapView: MKMapView
     let mapID: Int
 
-    private var activityState = UserActivity.idle
+    /// The state for a map indexed by it's mapID
     private var stateForMap: [MapState]
+    private var activityState = UserActivity.idle
     private weak var ungroupTimer: Foundation.Timer?
     private weak var resetTimer: Foundation.Timer?
 
@@ -54,7 +55,7 @@ class MapHandler {
     // MARK: API
 
     func send(_ mapRect: MKMapRect, for gestureState: GestureState = .recognized) {
-        // If sent from momentum, check if another map has interrupted
+        // If sending from momentum but another map has interrupted, ignore
         if gestureState == .momentum && mapState.pair != nil {
             return
         }
@@ -127,7 +128,7 @@ class MapHandler {
             return
         }
 
-        // State will be nil receiving when receiving from momentum, else make sure id matches pair
+        // Filter position updates; state will be nil receiving when receiving from momentum, else id must match pair
         if mapState.pair == nil || mapState.pair! == id {
             activityState = .active
             set(mapRect, from: id)
@@ -193,6 +194,10 @@ class MapHandler {
         for (map, state) in stateForMap.enumerated() {
             // Check for current group
             if let currentGroup = state.group, currentGroup == group {
+                // Once paired with own screen, don't group to other screens
+                if screen(of: currentGroup) == screen(of: mapID) && screen(of: mapID) != screen(of: id) {
+                    return
+                }
                 // Check for current pair
                 if let currentPair = state.pair {
                     // Check if incoming id is closer than current pair
@@ -213,6 +218,11 @@ class MapHandler {
         let sortedMapStates = stateForMap.enumerated().sorted { abs(id - $0.0) < abs(id - $1.0) }
         let externalMaps = sortedMapStates.dropFirst()
         return externalMaps.compactMap({ $0.1.group }).first
+    }
+
+    // Returns the screen id of the given map id
+    private func screen(of id: Int) -> Int {
+        return (id / Configuration.mapsPerScreen) + 1
     }
 
     /// Resets the pairedDeviceID after a timeout period
