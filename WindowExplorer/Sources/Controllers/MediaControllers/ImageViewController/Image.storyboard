@@ -99,6 +99,7 @@
                             <constraint firstItem="529-pd-R3M" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="WnV-SU-5jv"/>
                             <constraint firstItem="WTp-wA-9SL" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="8" id="dsS-3c-P65"/>
                             <constraint firstAttribute="trailing" secondItem="529-pd-R3M" secondAttribute="trailing" id="qKh-TI-HmK"/>
+                            <constraint firstItem="WTp-wA-9SL" firstAttribute="top" secondItem="529-pd-R3M" secondAttribute="bottom" constant="8" id="yIW-4a-jsl"/>
                         </constraints>
                     </view>
                     <connections>

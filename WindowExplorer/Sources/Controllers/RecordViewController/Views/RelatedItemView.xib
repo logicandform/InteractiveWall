@@ -15,14 +15,13 @@
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="YQD-s2-RG2" userLabel="Content View">
                     <rect key="frame" x="0.0" y="0.0" width="240" height="80"/>
                     <subviews>
-                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="a6t-6i-E3B">
+                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="GPP-LU-OnZ" customClass="AspectFillImage" customModule="WindowExplorer" customModuleProvider="target">
                             <rect key="frame" x="10" y="10" width="60" height="60"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="60" id="2xm-bf-HAJ"/>
-                                <constraint firstAttribute="height" constant="60" id="CvW-MH-mDt"/>
+                                <constraint firstAttribute="width" constant="60" id="M5H-B8-xpK"/>
+                                <constraint firstAttribute="height" constant="60" id="ow4-03-tXC"/>
                             </constraints>
-                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" id="By6-B9-23y"/>
-                        </imageView>
+                        </customView>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oFi-RG-9Vw">
                             <rect key="frame" x="78" y="52" width="154" height="18"/>
                             <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Title" usesSingleLineMode="YES" id="DZc-6H-bXz">
@@ -60,15 +59,15 @@
                         </scrollView>
                     </subviews>
                     <constraints>
-                        <constraint firstItem="oFi-RG-9Vw" firstAttribute="leading" secondItem="a6t-6i-E3B" secondAttribute="trailing" constant="10" id="4YR-uT-2b6"/>
-                        <constraint firstItem="a6t-6i-E3B" firstAttribute="top" secondItem="YQD-s2-RG2" secondAttribute="top" constant="10" id="4ez-iU-TBH"/>
                         <constraint firstAttribute="bottom" secondItem="PLs-By-PJe" secondAttribute="bottom" constant="4" id="7dL-HV-4hW"/>
-                        <constraint firstAttribute="bottom" secondItem="a6t-6i-E3B" secondAttribute="bottom" constant="10" id="C6O-xu-rET"/>
+                        <constraint firstAttribute="bottom" secondItem="GPP-LU-OnZ" secondAttribute="bottom" constant="10" id="BzF-VA-i9M"/>
                         <constraint firstItem="PLs-By-PJe" firstAttribute="leading" secondItem="oFi-RG-9Vw" secondAttribute="leading" constant="-4" id="ET4-Jd-G7p"/>
-                        <constraint firstItem="oFi-RG-9Vw" firstAttribute="top" secondItem="a6t-6i-E3B" secondAttribute="top" id="HHT-tt-1EM"/>
+                        <constraint firstItem="GPP-LU-OnZ" firstAttribute="top" secondItem="oFi-RG-9Vw" secondAttribute="top" id="JKp-4t-hHD"/>
+                        <constraint firstItem="oFi-RG-9Vw" firstAttribute="leading" secondItem="GPP-LU-OnZ" secondAttribute="trailing" constant="10" id="QqD-jt-rK6"/>
+                        <constraint firstItem="GPP-LU-OnZ" firstAttribute="top" secondItem="YQD-s2-RG2" secondAttribute="top" constant="10" id="SlW-57-NqM"/>
+                        <constraint firstItem="GPP-LU-OnZ" firstAttribute="leading" secondItem="YQD-s2-RG2" secondAttribute="leading" constant="10" id="cpg-vy-ORO"/>
                         <constraint firstItem="PLs-By-PJe" firstAttribute="top" secondItem="oFi-RG-9Vw" secondAttribute="bottom" id="dqZ-4K-KKY"/>
                         <constraint firstAttribute="trailing" secondItem="oFi-RG-9Vw" secondAttribute="trailing" constant="10" id="jfK-7i-bsF"/>
-                        <constraint firstItem="a6t-6i-E3B" firstAttribute="leading" secondItem="YQD-s2-RG2" secondAttribute="leading" constant="10" id="v8C-Ay-bDk"/>
                         <constraint firstAttribute="trailing" secondItem="PLs-By-PJe" secondAttribute="trailing" constant="8" id="wok-NW-kwF"/>
                     </constraints>
                 </customView>
@@ -81,7 +80,7 @@
             </constraints>
             <connections>
                 <outlet property="descriptionView" destination="tzF-dV-bDK" id="OE1-9X-hSq"/>
-                <outlet property="imageView" destination="a6t-6i-E3B" id="AEd-Oo-ynO"/>
+                <outlet property="imageView" destination="GPP-LU-OnZ" id="Gmt-o8-1ey"/>
                 <outlet property="titleLabel" destination="oFi-RG-9Vw" id="Q9s-Ic-0cw"/>
             </connections>
             <point key="canvasLocation" x="160" y="186"/>

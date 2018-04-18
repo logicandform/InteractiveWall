@@ -13,7 +13,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     @IBOutlet weak var windowDragAreaHighlight: NSView!
     @IBOutlet weak var playerControl: PlayerControl!
     @IBOutlet weak var dismissButton: NSView!
-    @IBOutlet weak var playerStateImageView: AspectFillImageView!
+    @IBOutlet weak var playerStateImageView: NSImageView!
     @IBOutlet weak var titleLabel: NSTextField!
     
     private var audioPlayer: AKPlayer?

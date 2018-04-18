@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1F910718206C2973008F9513 /* AspectFillImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F910717206C2973008F9513 /* AspectFillImageView.swift */; };
+		1F910718206C2973008F9513 /* AspectFillImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F910717206C2973008F9513 /* AspectFillImage.swift */; };
 		1FAFF018206EDD93005DC68B /* Soleil-03.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF00C206EDD92005DC68B /* Soleil-03.otf */; };
 		1FAFF019206EDD93005DC68B /* Soleil-05.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF00D206EDD92005DC68B /* Soleil-05.otf */; };
 		1FAFF01A206EDD93005DC68B /* Soleil-00.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF00E206EDD92005DC68B /* Soleil-00.otf */; };
@@ -117,7 +117,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1F910717206C2973008F9513 /* AspectFillImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectFillImageView.swift; sourceTree = "<group>"; };
+		1F910717206C2973008F9513 /* AspectFillImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectFillImage.swift; sourceTree = "<group>"; };
 		1FAFF00C206EDD92005DC68B /* Soleil-03.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-03.otf"; sourceTree = "<group>"; };
 		1FAFF00D206EDD92005DC68B /* Soleil-05.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-05.otf"; sourceTree = "<group>"; };
 		1FAFF00E206EDD92005DC68B /* Soleil-00.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-00.otf"; sourceTree = "<group>"; };
@@ -523,7 +523,7 @@
 		D901EBEE205748C500BBFCF2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				1F910717206C2973008F9513 /* AspectFillImageView.swift */,
+				1F910717206C2973008F9513 /* AspectFillImage.swift */,
 				D901EBEF2057490400BBFCF2 /* RegularTableView.swift */,
 				8FE6467A2060553100E6116A /* RegularScrollView.swift */,
 				3F47D52E206420C6001E86E3 /* FlippedClipView.swift */,
@@ -719,7 +719,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1F910718206C2973008F9513 /* AspectFillImageView.swift in Sources */,
+				1F910718206C2973008F9513 /* AspectFillImage.swift in Sources */,
 				3F8436E420647F9F00AAAB55 /* String.swift in Sources */,
 				22A76FEC2046477A006C0AE7 /* PlayerViewController.swift in Sources */,
 				D92E0F00206052C900C1C9A7 /* ArrowControl.swift in Sources */,

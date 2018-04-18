@@ -10,7 +10,7 @@ class RelatedItemView: NSView {
 
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var descriptionView: NSTextView!
-    @IBOutlet weak var imageView: NSImageView!
+    @IBOutlet weak var imageView: AspectFillImage!
 
     var tintColor = style.selectedColor
     var record: RecordDisplayable? {
@@ -51,7 +51,7 @@ class RelatedItemView: NSView {
                     .kern : Constants.kern,
                     .foregroundColor : Constants.fontColor,
                     .font : font,
-                    .baselineOffset : 0.0,]
+                    .baselineOffset : 0.0]
         }
     }
 
@@ -63,7 +63,9 @@ class RelatedItemView: NSView {
         set(highlighted: false)
     }
 
+
     // MARK: API
+
     func set(highlighted: Bool) {
         if highlighted {
             layer?.backgroundColor = tintColor.cgColor
@@ -84,25 +86,14 @@ class RelatedItemView: NSView {
         descriptionView.textContainer?.maximumNumberOfLines = 3
         titleLabel.attributedStringValue = NSAttributedString(string: record.title, attributes: titleLabelAttributes)
         descriptionView.textStorage?.setAttributedString(NSAttributedString(string: record.description ?? "", attributes: descriptionLabelAttributes))
-        imageView.image = record.type.placeholder.tinted(with: record.type.color)
+        imageView.set(record.type.placeholder.tinted(with: record.type.color), scaling: .resize)
 
         if let media = record.media.first {
             Alamofire.request(media.thumbnail).responseImage { [weak self] response in
                 if let image = response.value {
-                    self?.setImage(image)
+                    self?.imageView.set(image)
                 }
             }
         }
-    }
-
-    private func setImage(_ image: NSImage) {
-        imageView.image = nil
-
-        if image.size.width > image.size.height {
-            imageView.layer?.contentsGravity = kCAGravityResizeAspectFill
-        } else {
-            imageView.layer?.contentsGravity = kCAGravityResizeAspect
-        }
-        imageView.layer?.contents = image
     }
 }

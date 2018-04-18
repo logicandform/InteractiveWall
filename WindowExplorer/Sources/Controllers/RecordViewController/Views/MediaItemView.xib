@@ -7,7 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MediaItemView" customModule="WindowExplorer" customModuleProvider="target">
             <connections>
-                <outlet property="mediaImageView" destination="HQG-s5-ca4" id="a5S-9j-63J"/>
+                <outlet property="mediaImageView" destination="qFx-mJ-ye3" id="wSN-K9-1ET"/>
                 <outlet property="videoIconImageView" destination="MCi-Na-Q3u" id="wr2-ky-Npx"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
@@ -18,10 +18,9 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HQG-s5-ca4" customClass="AspectFillImageView" customModule="WindowExplorer" customModuleProvider="target">
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="qFx-mJ-ye3" customClass="AspectFillImage" customModule="WindowExplorer" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
-                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" id="0nl-mF-9UI"/>
-                </imageView>
+                </customView>
                 <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MCi-Na-Q3u">
                     <rect key="frame" x="203" y="99" width="74" height="74"/>
                     <constraints>
@@ -32,12 +31,12 @@
                 </imageView>
             </subviews>
             <constraints>
-                <constraint firstItem="HQG-s5-ca4" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="0cw-Ma-FKM"/>
-                <constraint firstAttribute="trailing" secondItem="HQG-s5-ca4" secondAttribute="trailing" id="1hY-EL-S1w"/>
-                <constraint firstItem="MCi-Na-Q3u" firstAttribute="centerX" secondItem="HQG-s5-ca4" secondAttribute="centerX" id="4Fg-oz-D9m"/>
-                <constraint firstItem="MCi-Na-Q3u" firstAttribute="centerY" secondItem="HQG-s5-ca4" secondAttribute="centerY" id="SPu-Mz-HGK"/>
-                <constraint firstAttribute="bottom" secondItem="HQG-s5-ca4" secondAttribute="bottom" id="X1H-8C-8Pd"/>
-                <constraint firstItem="HQG-s5-ca4" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="gkX-hk-Tn9"/>
+                <constraint firstItem="qFx-mJ-ye3" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="DmH-u1-Hcn"/>
+                <constraint firstItem="MCi-Na-Q3u" firstAttribute="centerX" secondItem="qFx-mJ-ye3" secondAttribute="centerX" id="G09-hi-1cD"/>
+                <constraint firstItem="qFx-mJ-ye3" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="adS-uJ-ORb"/>
+                <constraint firstAttribute="trailing" secondItem="qFx-mJ-ye3" secondAttribute="trailing" id="jH1-0a-Bbi"/>
+                <constraint firstAttribute="bottom" secondItem="qFx-mJ-ye3" secondAttribute="bottom" id="taM-Zw-BYt"/>
+                <constraint firstItem="MCi-Na-Q3u" firstAttribute="centerY" secondItem="qFx-mJ-ye3" secondAttribute="centerY" id="vqI-6F-r2m"/>
             </constraints>
         </customView>
     </objects>

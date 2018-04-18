@@ -193,15 +193,15 @@ class MapHandler {
     private func setMapState(from id: Int, group: Int, momentum: Bool = false) {
         for (map, state) in stateForMap.enumerated() {
             // Check for current group
-            if let currentGroup = state.group, currentGroup == group {
+            if let mapGroup = state.group, mapGroup == group {
                 // Once paired with own screen, don't group to other screens
-                if screen(of: currentGroup) == screen(of: mapID) && screen(of: mapID) != screen(of: id) {
+                if screen(of: mapGroup) == screen(of: map) && screen(of: map) != screen(of: id) {
                     return
                 }
                 // Check for current pair
-                if let currentPair = state.pair {
+                if let mapPair = state.pair {
                     // Check if incoming id is closer than current pair
-                    if abs(map - id) < abs(map - currentPair) {
+                    if abs(map - id) < abs(map - mapPair) {
                         stateForMap[map] = MapState(pair: id, group: id)
                     }
                 } else if !momentum {
@@ -220,7 +220,7 @@ class MapHandler {
         return externalMaps.compactMap({ $0.1.group }).first
     }
 
-    // Returns the screen id of the given map id
+    /// Returns the screen id of the given map id
     private func screen(of id: Int) -> Int {
         return (id / Configuration.mapsPerScreen) + 1
     }

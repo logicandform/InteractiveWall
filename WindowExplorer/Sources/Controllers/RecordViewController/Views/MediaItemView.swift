@@ -7,7 +7,7 @@ import AlamofireImage
 class MediaItemView: NSCollectionViewItem {
     static let identifier = NSUserInterfaceItemIdentifier("MediaItemView")
 
-    @IBOutlet weak var mediaImageView: NSImageView!
+    @IBOutlet weak var mediaImageView: AspectFillImage!
     @IBOutlet weak var videoIconImageView: NSImageView!
 
     var tintColor = style.selectedColor
@@ -48,7 +48,7 @@ class MediaItemView: NSCollectionViewItem {
 
         Alamofire.request(media.thumbnail).responseImage { [weak self] response in
             if let image = response.value {
-                self?.mediaImageView.image = image
+                self?.mediaImageView.set(image)
             }
         }
 
