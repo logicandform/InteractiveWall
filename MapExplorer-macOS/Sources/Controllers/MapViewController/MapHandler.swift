@@ -128,7 +128,7 @@ class MapHandler {
 
     /// Determines how to respond to a received mapRect from another mapView and the type of gesture that triggered the event.
     private func handle(_ mapRect: MKMapRect, from id: Int, group: Int) {
-        guard let currentGroup = mapState.group, currentGroup == group else {
+        guard let currentGroup = mapState.group, currentGroup == group, currentGroup == id else {
             return
         }
 
@@ -200,8 +200,13 @@ class MapHandler {
             if let mapGroup = state.group, mapGroup == group {
                 // Once paired with own screen, don't group to other screens
                 if screen(of: mapGroup) == screen(of: map) && screen(of: map) != screen(of: id) {
-                    return
+                    continue
                 }
+                // Only listen to the closest screen once paired
+                if abs(screen(of: map) - screen(of: id)) >= abs(screen(of: map) - screen(of: mapGroup)), screen(of: id) != screen(of: group) {
+                    continue
+                }
+
                 // Check for current pair
                 if let mapPair = state.pair {
                     // Check if incoming id is closer than current pair
@@ -219,7 +224,13 @@ class MapHandler {
 
     /// Find the closest group to a given map
     private func findGroupForMap(id: Int) -> Int? {
-        let sortedMapStates = stateForMap.enumerated().sorted { abs(id - $0.0) < abs(id - $1.0) }
+        let sortedMapStates = stateForMap.enumerated().sorted {
+            if screen(of: $0.0) == screen(of: $1.0) {
+                return abs(id - $0.0) < abs(id - $1.0)
+            }
+            return abs(screen(of: id) - screen(of: $0.0)) < abs(screen(of: id) - screen(of: $1.0))
+        }
+
         let externalMaps = sortedMapStates.dropFirst()
         return externalMaps.compactMap({ $0.1.group }).first
     }
