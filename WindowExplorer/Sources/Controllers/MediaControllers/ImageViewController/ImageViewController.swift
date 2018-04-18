@@ -22,8 +22,6 @@ class ImageViewController: MediaViewController {
     private var frameSize: NSSize!
 
     private struct Constants {
-        static let maxImageWidth: CGFloat = 640.0
-        static let minImageWidth: CGFloat = 416.0
         static let initialMagnification: CGFloat = 1
         static let maximumMagnification: CGFloat = 5
     }
@@ -70,7 +68,7 @@ class ImageViewController: MediaViewController {
         imageView.imageScaling = NSImageScaling.scaleAxesIndependently
         
         let imageRatio = image.size.height / image.size.width
-        let width = clamp(image.size.width, min: Constants.minImageWidth, max: Constants.maxImageWidth)
+        let width = clamp(image.size.width, min: style.minMediaWindowWidth, max: style.maxMediaWindowWidth)
         let height = width * imageRatio
         frameSize = NSSize(width: width, height: height)
         imageView.setFrameSize(frameSize)
