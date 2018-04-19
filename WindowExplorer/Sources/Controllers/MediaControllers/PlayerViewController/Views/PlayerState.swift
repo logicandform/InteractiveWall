@@ -26,7 +26,7 @@ enum PlayerState {
         case .paused:
             return NSImage(named: "play-icon-small")
         case .finished:
-            return  nil
+            return NSImage(named: "play-icon-small")
         }
     }
 }

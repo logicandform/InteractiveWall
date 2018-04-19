@@ -30,10 +30,8 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             fallthrough
         case .possible:
             momentumTimer?.invalidate()
-
             cumulativeDelta = .zero
             lastLocation = properties.cog
-
             state = .began
             gestureUpdated?(self)
             timeOfLastUpdate = Date()
@@ -59,7 +57,6 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             fallthrough
         case .recognized:
             recognizePanMove(with: touch, lastPosition: lastPositionOfTouch)
-
             if shouldUpdate(for: timeOfLastUpdate) {
                 updateForMove(with: properties)
             }
@@ -140,13 +137,11 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
 
     private var momentumTimer: Timer?
     private var panFrictionFactor = Momentum.panInitialFrictionFactor
-
     private var panMomentumDelta = CGVector.zero
 
     private func beginMomentum() {
         panFrictionFactor = Momentum.panInitialFrictionFactor
         delta = panMomentumDelta
-
         state = .momentum
         gestureUpdated?(self)
         momentumTimer?.invalidate()
@@ -157,7 +152,6 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
 
     private func updateMomentum() {
         updatePanMomentum()
-
         if delta == .zero {
             endMomentum()
             return

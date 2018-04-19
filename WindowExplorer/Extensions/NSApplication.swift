@@ -5,8 +5,10 @@ import AppKit
 
 extension NSScreen {
 
-    var index: Int {
-        return NSScreen.screens.index(of: self) ?? 0
+    /// Returns index of screen based on origin location; low -> high
+    var orderedIndex: Int? {
+        let screens = NSScreen.screens.sorted { $0.frame.minX < $1.frame.minX }
+        return screens.index(of: self)
     }
 
     static func at(position index: Int) -> NSScreen {

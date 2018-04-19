@@ -24,6 +24,10 @@ class PlayerControl: NSView {
     private var duration = CMTime()
     private var volume = VolumeLevel.low
 
+    private struct Constants {
+        static let seekBarInsetMargin: CGFloat = 15
+    }
+
     var player: AVPlayer? {
         didSet {
             setup(for: player)
@@ -122,6 +126,7 @@ class PlayerControl: NSView {
 
     // MARK: Gestures
 
+    var seekValue = 0
     private func didScrubControl(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer, let position = pan.lastLocation else {
             return
@@ -129,8 +134,11 @@ class PlayerControl: NSView {
 
         switch pan.state {
         case .began, .recognized:
-            let seekPosition = Double((position.x - seekBar.frame.minX) / seekBar.frame.width)
-            if seekBar.minValue <= seekPosition && seekPosition <= seekBar.maxValue {
+            let margin = Constants.seekBarInsetMargin
+            let positionInSeekBar = Double((position.x - seekBar.frame.minX - margin) / (seekBar.frame.width - (margin * 2)))
+            let seekPosition = clamp(positionInSeekBar, min: 0, max: 1)
+
+            if seekBar.frame.minX <= position.x && seekBar.frame.maxX >= position.x {
                 let timeInSeconds = seekPosition * duration.seconds
                 let time = CMTime(seconds: timeInSeconds, preferredTimescale: duration.timescale)
                 seek(to: time)
@@ -202,6 +210,9 @@ class PlayerControl: NSView {
     private func updateControl(for time: CMTime) {
         if currentTime == duration {
             state = .finished
+        } else if state == .finished {
+            // If user drags out from end of video, set to paused
+            state = .paused
         }
 
         if let timeString = string(for: time) {

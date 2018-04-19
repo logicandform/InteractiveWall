@@ -20,6 +20,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
 
     private struct Constants {
         static let percentToDeallocateWindow: CGFloat = 40
+        static let audioSyncInterval = 1.0 / 30.0
     }
 
 
@@ -70,7 +71,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         let contoller = AudioController.shared
         audioPlayer = contoller.play(url: media.url)
         if let window = view.window {
-            audioPlayer?.location = Double(window.frame.midX / window.screen!.visibleFrame.width)
+            audioPlayer?.location = horizontalPosition(of: window)
         }
 
         let player = AVPlayer(url: media.url)
@@ -93,9 +94,8 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
             return
         }
 
-        let syncInterval = 1.0 / 30.0
         let time = player.currentTime()
-        audioPlayer?.schedule(at: time, duration: syncInterval) { [weak self] in
+        audioPlayer?.schedule(at: time, duration: Constants.audioSyncInterval) { [weak self] in
             DispatchQueue.global(qos: .default).async {
                 self?.scheduleAudioSegment()
             }
@@ -141,8 +141,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
             var origin = window.frame.origin
             origin += pan.delta.round()
             window.setFrameOrigin(origin)
-            // TODO: Figure out absolute location for multiple screens
-            audioPlayer?.location = Double(window.frame.midX / window.screen!.visibleFrame.width)
+            audioPlayer?.location = horizontalPosition(of: window)
         case .possible:
             WindowManager.instance.checkBounds(of: self)
         default:
@@ -207,6 +206,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         if let image = state.image {
             playerStateImageView.image = image
         }
+
         playerControl.toggleButton.image = state.smallImage
         let playerStateAlpha: CGFloat = state == .playing ? 0 : 1
 
@@ -220,5 +220,15 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
 
     func playerChangedVolume(_ state: VolumeLevel) {
         audioPlayer?.volume = state.gain
+    }
+
+
+    // MARK: Helpers
+
+    /// Returns the player's horizontal location inside the application's frame from 0 -> 1
+    func horizontalPosition(of window: NSWindow) -> Double {
+        let minX = NSScreen.screens.dropFirst().map { $0.frame.minX }.min()!
+        let maxX = NSScreen.screens.map { $0.frame.maxX }.max()!
+        return Double((window.frame.midX - minX) / (maxX - minX))
     }
 }

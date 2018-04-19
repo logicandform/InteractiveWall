@@ -33,7 +33,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8jO-Ld-nn0">
+                <slider horizontalHuggingPriority="210" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="8jO-Ld-nn0">
                     <rect key="frame" x="102" y="10" width="428" height="19"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="15" id="sRP-hR-Myv"/>
