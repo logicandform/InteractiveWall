@@ -42,6 +42,8 @@ class GestureHandler {
             handleTouchUp(touch)
         case .moved:
             handleTouchMoved(touch)
+        case .indicator:
+            return
         }
     }
 
@@ -69,11 +71,11 @@ class GestureHandler {
     }
 
     private func handleTouchUp(_ touch: Touch) {
-        guard let thisTouch = touches.remove(touch) else {
+        guard let match = touches.remove(touch) else {
             return
         }
         gestures.forEach { gesture in
-            gesture.end(thisTouch, with: properties)
+            gesture.end(match, with: properties)
         }
         transformForTouch.removeValue(forKey: touch)
     }

@@ -42,6 +42,8 @@ class GestureHandler {
             handleTouchUp(touch)
         case .moved:
             handleTouchMoved(touch)
+        case .indicator:
+            return
         }
     }
 

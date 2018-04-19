@@ -54,6 +54,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         mapHandler?.reset()
     }
 
+
     // MARK: Setup
 
     private func setupMap() {
@@ -218,22 +219,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             recordForAnnotation[annotation] = record
             mapView.addAnnotation(annotation)
         }
-    }
-
-    /// Zoom into the annotations contained in the cluster
-    private func didSelectAnnotationCallout(for cluster: MKClusterAnnotation) {
-        let selectedAnnotations = cluster.memberAnnotations
-        show(selectedAnnotations)
-    }
-
-    /// Display a place view controller on top of the selected callout annotation for the associated place.
-    private func didSelectAnnotationCallout(for record: Record) {
-        guard let window = view.window else {
-            return
-        }
-
-        let position = mapView.convert(record.coordinate, toPointTo: view) + window.frame.origin
-        postWindowNotification(for: record, at: position)
     }
 
     private func postWindowNotification(for record: Record, at position: CGPoint) {

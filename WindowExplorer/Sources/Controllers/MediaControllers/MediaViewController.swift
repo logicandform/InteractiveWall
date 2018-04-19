@@ -117,7 +117,7 @@ class MediaViewController: NSViewController, GestureResponder {
         switch touch.state {
         case .down, .up:
             resetCloseWindowTimer()
-        case .moved:
+        case .moved, .indicator:
             return
         }
     }

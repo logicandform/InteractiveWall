@@ -17,8 +17,8 @@ final class TouchManager: SocketManagerDelegate {
     // MARK: Init
 
     private init() { }
-    
-    
+
+
     // MARK: API
 
     func setupTouchSocket() {
@@ -39,8 +39,17 @@ final class TouchManager: SocketManagerDelegate {
         // Check if the touch landed on a window, else notify the proper map application.
         if let manager = manager(of: touch) {
             manager.handle(touch)
+        } else if let owner = mapOwner(of: touch) {
+            send(touch, to: owner)
+
+            // If touch is outside map, send indicator touch to underlying map
+            if !map(owner, contains: touch) {
+                let underlyingMap = calculateMap(for: touch)
+                touch.state = .indicator
+                send(touch, to: underlyingMap)
+            }
         } else {
-            let map = mapOwner(of: touch) ?? calculateMap(for: touch)
+            let map = calculateMap(for: touch)
             send(touch, to: map)
         }
     }
@@ -83,6 +92,8 @@ final class TouchManager: SocketManagerDelegate {
                 managersForTouch.removeValue(forKey: touch)
                 return manager
             }
+        case .indicator:
+            return nil
         }
 
         return nil
@@ -120,6 +131,8 @@ final class TouchManager: SocketManagerDelegate {
             }
         case .moved:
             return
+        case .indicator:
+            return
         }
     }
 
@@ -148,6 +161,15 @@ final class TouchManager: SocketManagerDelegate {
         return baseMapForScreen + mapForScreen
     }
 
+    private func map(_ map: Int, contains touch: Touch) -> Bool {
+        let screen = NSScreen.at(position: touch.screen)
+        let mapWidth = screen.frame.width / CGFloat(Configuration.mapsPerScreen)
+        let mapInScreen = CGFloat(map % Configuration.mapsPerScreen)
+        let minX = screen.frame.minX + (mapInScreen * mapWidth)
+        let maxX = minX + mapWidth
+        return touch.position.x >= minX && touch.position.x <= maxX
+    }
+
     /// Determines if a touch being sent to a map needs to be sent. To reduce the number of notifications sent, we only send every second moved event.
     private func shouldSend(_ touch: Touch) -> Bool {
         switch touch.state {
@@ -160,6 +182,8 @@ final class TouchManager: SocketManagerDelegate {
                 touchNeedsUpdate[touch] = !update
                 return update
             }
+        case .indicator:
+            return true
         }
 
         return true

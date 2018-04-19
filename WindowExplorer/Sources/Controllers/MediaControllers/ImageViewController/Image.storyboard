@@ -10,11 +10,11 @@
             <objects>
                 <viewController id="stH-E5-D9l" customClass="ImageViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="sSn-s5-6HM">
-                        <rect key="frame" x="0.0" y="0.0" width="640" height="408"/>
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="400"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="529-pd-R3M">
-                                <rect key="frame" x="0.0" y="368" width="640" height="40"/>
+                                <rect key="frame" x="0.0" y="360" width="640" height="40"/>
                                 <subviews>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="NkP-e9-NC4">
                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -99,7 +99,7 @@
                             <constraint firstItem="529-pd-R3M" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="WnV-SU-5jv"/>
                             <constraint firstItem="WTp-wA-9SL" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="8" id="dsS-3c-P65"/>
                             <constraint firstAttribute="trailing" secondItem="529-pd-R3M" secondAttribute="trailing" id="qKh-TI-HmK"/>
-                            <constraint firstItem="WTp-wA-9SL" firstAttribute="top" secondItem="529-pd-R3M" secondAttribute="bottom" constant="8" id="yIW-4a-jsl"/>
+                            <constraint firstItem="WTp-wA-9SL" firstAttribute="top" secondItem="529-pd-R3M" secondAttribute="bottom" id="yIW-4a-jsl"/>
                         </constraints>
                     </view>
                     <connections>

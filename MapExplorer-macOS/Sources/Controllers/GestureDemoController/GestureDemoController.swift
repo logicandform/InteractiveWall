@@ -110,6 +110,8 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
             let update = updateForTouch[touch]!
             updateForTouch[touch] = !update
             return update
+        case .indicator:
+            return false
         }
 
         return true
@@ -125,5 +127,4 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
         let yPos = (1 - touch.position.y / Configuration.touchScreenSize.height) * CGFloat(screen.frame.height)
         touch.position = CGPoint(x: xPos, y: yPos)
     }
-
 }

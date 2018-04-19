@@ -20,7 +20,6 @@ final class GestureManager {
         static let indicatorDuration: Double = 0.6
     }
 
-    var path: NSBezierPath?
 
     // MARK: Init
 
@@ -60,6 +59,8 @@ final class GestureManager {
             if let handler = handler(for: touch) {
                 handler.handle(touch)
             }
+        case .indicator:
+            handleTouchIndicator(touch)
         }
     }
 
@@ -95,6 +96,16 @@ final class GestureManager {
         }
     }
 
+    private func handleTouchIndicator(_ touch: Touch) {
+        guard let window = responder.view.window else {
+            return
+        }
+
+        let windowTransform = CGAffineTransform(translationX: -window.frame.minX, y: -window.frame.minY)
+        touch.position = touch.position.applying(windowTransform)
+        displayTouchIndicator(in: responder.view, at: touch.position)
+    }
+
     /// Returns a handler from the gestures dictionary if it exists for the given view
     private func handler(for touch: Touch) -> GestureHandler? {
         guard let handler = gestureHandlers.values.first(where: { $0.owns(touch) }) else {
@@ -103,7 +114,6 @@ final class GestureManager {
 
         return handler
     }
-
 
     /// Displays a touch indicator on the screen for testing
     private func displayTouchIndicator(in view: NSView, at position: CGPoint) {
