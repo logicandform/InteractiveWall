@@ -62,8 +62,8 @@ class MediaViewController: NSViewController, GestureResponder {
     // MARK: Setup
 
     private func setupGestures() {
-        let panGesture = NSPanGestureRecognizer(target: self, action: #selector(handleMousePan(_:)))
-        windowDragArea.addGestureRecognizer(panGesture)
+        let mousePan = NSPanGestureRecognizer(target: self, action: #selector(handleMousePan(_:)))
+        windowDragArea.addGestureRecognizer(mousePan)
 
         let windowPan = PanGestureRecognizer()
         gestureManager.add(windowPan, to: windowDragArea)
@@ -101,18 +101,20 @@ class MediaViewController: NSViewController, GestureResponder {
     }
 
     func animate(to origin: NSPoint) {
-        guard let window = self.view.window, !gestureManager.isActive() else {
+        guard let window = self.view.window, let screen = window.screen, !gestureManager.isActive() else {
             return
         }
 
-        var frame = window.frame
-        frame.origin = origin
-        window.makeKeyAndOrderFront(self)
+        resetCloseWindowTimer()
         animating = true
+        window.makeKeyAndOrderFront(self)
+
+        let frame = CGRect(origin: origin, size: window.frame.size)
+        let offset = abs(window.frame.minX - origin.x) / screen.frame.width
+        let duration = max(Double(offset), Constants.animationDuration)
 
         NSAnimationContext.runAnimationGroup({ _ in
-            // TODO: Set duration as a factor of new origin vector
-            NSAnimationContext.current.duration = 0.75
+            NSAnimationContext.current.duration = duration
             NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
             window.animator().setFrame(frame, display: true, animate: true)
         }, completionHandler: { [weak self] in

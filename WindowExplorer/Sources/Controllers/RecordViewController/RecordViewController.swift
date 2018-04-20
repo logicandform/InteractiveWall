@@ -105,8 +105,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func setupGestures() {
-        let nsPanGesture = NSPanGestureRecognizer(target: self, action: #selector(handleMouseDrag(_:)))
-        detailView.addGestureRecognizer(nsPanGesture)
+        let mousePan = NSPanGestureRecognizer(target: self, action: #selector(handleMouseDrag(_:)))
+        windowDragArea.addGestureRecognizer(mousePan)
 
         let nsToggleRelatedItemClickGesture = NSClickGestureRecognizer(target: self, action: #selector(handleRelatedItemToggleClick(_:)))
         toggleRelatedItemsArea.addGestureRecognizer(nsToggleRelatedItemClickGesture)
@@ -323,7 +323,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         var origin = window.frame.origin
         origin += gesture.translation(in: nil)
         window.setFrameOrigin(origin)
-        WindowManager.instance.checkBounds(of: self)
     }
 
     @objc
@@ -373,18 +372,20 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     func animate(to origin: NSPoint) {
-        guard let window = self.view.window, shouldAnimate(to: origin), !gestureManager.isActive() else {
+        guard let window = self.view.window, let screen = window.screen, shouldAnimate(to: origin), !gestureManager.isActive() else {
             return
         }
 
         resetCloseWindowTimer()
-        var frame = window.frame
-        frame.origin = origin
-        window.makeKeyAndOrderFront(self)
         animating = true
+        window.makeKeyAndOrderFront(self)
+
+        let frame = CGRect(origin: origin, size: window.frame.size)
+        let offset = abs(window.frame.minX - origin.x) / screen.frame.width
+        let duration = max(Double(offset), Constants.animationDuration)
 
         NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = 0.75
+            NSAnimationContext.current.duration = duration
             NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
             window.animator().setFrame(frame, display: true, animate: true)
         }, completionHandler: { [weak self] in
@@ -518,12 +519,12 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     /// If the position of the controller is close enough to the origin of animation, don't animate
     private func shouldAnimate(to origin: NSPoint) -> Bool {
-        guard let currentOrigin = self.view.window?.frame.origin else {
+        guard let currentOrigin = view.window?.frame.origin else {
             return false
         }
 
-        let originDifference = currentOrigin - origin
-        return abs(originDifference.x) > Constants.animationDistanceThreshold || abs(originDifference.y) > Constants.animationDistanceThreshold ? true : false
+        let diff = currentOrigin - origin
+        return abs(diff.x) > Constants.animationDistanceThreshold || abs(diff.y) > Constants.animationDistanceThreshold ? true : false
     }
 
     private func recordMoved() {
