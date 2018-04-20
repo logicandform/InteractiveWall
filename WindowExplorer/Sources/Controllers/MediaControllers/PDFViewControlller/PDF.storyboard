@@ -27,6 +27,9 @@
                                                     <constraint firstAttribute="height" constant="20" id="k8r-rg-Cm2"/>
                                                 </constraints>
                                                 <imageCell key="cell" enabled="NO" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="close button" id="gp8-sK-WJC"/>
+                                                <connections>
+                                                    <action selector="closeButtonTapped:" target="1Ij-Lj-j0K" id="r5d-dD-9wv"/>
+                                                </connections>
                                             </imageView>
                                         </subviews>
                                         <constraints>
@@ -91,6 +94,7 @@
                                         <constraint firstItem="cLp-fS-4Xz" firstAttribute="leading" secondItem="RFH-Z2-VKt" secondAttribute="leading" id="sJc-DN-5RZ"/>
                                         <constraint firstItem="cLp-fS-4Xz" firstAttribute="top" secondItem="RFH-Z2-VKt" secondAttribute="top" id="xJC-gu-cz1"/>
                                     </constraints>
+                                    <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                 </clipView>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="516" id="0K0-ri-bML"/>
@@ -212,16 +216,16 @@
                     </view>
                     <connections>
                         <outlet property="backTapArea" destination="dYk-YZ-F2X" id="wua-SK-glp"/>
-                        <outlet property="closeButtonView" destination="ty9-rb-Gm3" id="Qm1-Jl-MHA"/>
+                        <outlet property="dismissButton" destination="ty9-rb-Gm3" id="gln-hZ-tQ0"/>
                         <outlet property="forwardTapArea" destination="u0A-Yb-xpw" id="ViX-oa-hXe"/>
                         <outlet property="pdfScrollView" destination="MNf-ca-Rd2" id="vMe-VD-4EO"/>
                         <outlet property="pdfView" destination="LrV-6C-x9X" id="NQR-O0-ndl"/>
                         <outlet property="scrollViewHeightConstraint" destination="pM5-pO-hv8" id="1o1-n8-MR3"/>
                         <outlet property="scrollViewWidthConstraint" destination="0K0-ri-bML" id="otH-yh-edU"/>
                         <outlet property="thumbnailView" destination="jmI-PA-kXC" id="5An-LJ-yQA"/>
-                        <outlet property="titleLabel" destination="FZL-O2-tAp" id="yf7-TD-EXc"/>
-                        <outlet property="windowDragArea" destination="QK0-JK-wDg" id="1cZ-cg-FeL"/>
-                        <outlet property="windowDragAreaHighlight" destination="ARk-O2-Nsv" id="0Yl-Nx-jlB"/>
+                        <outlet property="titleLabel" destination="FZL-O2-tAp" id="idt-KW-H9k"/>
+                        <outlet property="windowDragArea" destination="QK0-JK-wDg" id="n2f-41-2DI"/>
+                        <outlet property="windowDragAreaHighlight" destination="ARk-O2-Nsv" id="1S5-j0-waj"/>
                     </connections>
                 </viewController>
                 <customObject id="Q0f-PU-OLM" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

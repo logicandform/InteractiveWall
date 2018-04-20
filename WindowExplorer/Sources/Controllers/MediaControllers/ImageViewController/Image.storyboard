@@ -26,6 +26,9 @@
                                                     <constraint firstAttribute="width" constant="20" id="tqe-NP-PC1"/>
                                                 </constraints>
                                                 <imageCell key="cell" enabled="NO" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="close button" id="e8y-MB-0zd"/>
+                                                <connections>
+                                                    <action selector="closeButtonTapped:" target="stH-E5-D9l" id="W9j-M0-syr"/>
+                                                </connections>
                                             </imageView>
                                         </subviews>
                                         <constraints>
@@ -103,13 +106,13 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="dismissButton" destination="NkP-e9-NC4" id="xmX-pw-hGC"/>
+                        <outlet property="dismissButton" destination="NkP-e9-NC4" id="ZRu-Fa-ZLo"/>
                         <outlet property="imageScrollView" destination="WTp-wA-9SL" id="ycY-PS-kHc"/>
                         <outlet property="scrollViewHeightConstraint" destination="qA2-gP-fqc" id="sD3-Vj-Qus"/>
                         <outlet property="scrollViewWidthConstraint" destination="etP-mP-7KU" id="aKz-kx-Oe4"/>
                         <outlet property="titleLabel" destination="1GK-FO-lwr" id="HfV-8T-rGp"/>
-                        <outlet property="windowDragArea" destination="529-pd-R3M" id="oDk-Ab-kF4"/>
-                        <outlet property="windowDragAreaHighlight" destination="CLy-R4-WR0" id="9FG-xu-xiY"/>
+                        <outlet property="windowDragArea" destination="529-pd-R3M" id="0Uh-J3-F0B"/>
+                        <outlet property="windowDragAreaHighlight" destination="CLy-R4-WR0" id="B9L-SG-7QD"/>
                     </connections>
                 </viewController>
                 <customObject id="ApF-HA-SvK" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

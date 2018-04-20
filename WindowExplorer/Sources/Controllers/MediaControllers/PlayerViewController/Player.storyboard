@@ -28,6 +28,9 @@
                                                     <constraint firstAttribute="width" constant="20" id="QVR-7t-Ofp"/>
                                                 </constraints>
                                                 <imageCell key="cell" enabled="NO" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="close button" id="b3K-sW-ked"/>
+                                                <connections>
+                                                    <action selector="closeButtonTapped:" target="ObE-0t-P64" id="Ky2-36-lz4"/>
+                                                </connections>
                                             </imageView>
                                         </subviews>
                                         <constraints>
@@ -105,12 +108,12 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="dismissButton" destination="zHy-N6-K3a" id="5MY-vH-Xld"/>
+                        <outlet property="dismissButton" destination="zHy-N6-K3a" id="lfA-v8-LMs"/>
                         <outlet property="playerControl" destination="Ps0-Dg-pIZ" id="xav-8S-1Y9"/>
                         <outlet property="playerStateImageView" destination="Rpo-GW-82A" id="adX-N3-pbR"/>
                         <outlet property="playerView" destination="0vf-bx-Jlv" id="6cP-UG-tfS"/>
                         <outlet property="titleLabel" destination="2ml-Y1-izE" id="Qi5-8k-2UX"/>
-                        <outlet property="windowDragArea" destination="5eT-b4-flP" id="Ida-6G-NVh"/>
+                        <outlet property="windowDragArea" destination="5eT-b4-flP" id="Rsd-mt-bQX"/>
                         <outlet property="windowDragAreaHighlight" destination="aSf-NN-EXu" id="rVu-DI-VZ7"/>
                     </connections>
                 </viewController>

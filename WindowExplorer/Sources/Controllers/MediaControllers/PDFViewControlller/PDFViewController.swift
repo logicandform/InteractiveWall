@@ -9,16 +9,12 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
     @IBOutlet weak var pdfView: PDFView!
     @IBOutlet weak var pdfScrollView: NSScrollView!
     @IBOutlet weak var thumbnailView: NSTableView!
-    @IBOutlet weak var titleLabel: NSTextField!
-    @IBOutlet weak var windowDragArea: NSView!
-    @IBOutlet weak var windowDragAreaHighlight: NSView!
-    @IBOutlet weak var closeButtonView: NSView!
     @IBOutlet weak var backTapArea: NSView!
     @IBOutlet weak var forwardTapArea: NSView!
     @IBOutlet weak var scrollViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
 
-    var document: PDFDocument!
+    private var document: PDFDocument!
     private let leftArrow = ArrowControl()
     private let rightArrow = ArrowControl()
     private var contentViewFrame: NSRect!
@@ -45,13 +41,11 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        titleLabel.attributedStringValue = NSAttributedString(string: media.title ?? "", attributes: titleAttributes)
 
         setupPDF()
         setupArrows()
         setupThumbnailView()
         setupGestures()
-        setupWindowDragArea()
         animateViewIn()
     }
 
@@ -105,13 +99,6 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
     }
 
     private func setupGestures() {
-        let panGesture = NSPanGestureRecognizer(target: self, action: #selector(handleMousePan(_:)))
-        view.addGestureRecognizer(panGesture)
-
-        let windowPan = PanGestureRecognizer()
-        gestureManager.add(windowPan, to: windowDragArea)
-        windowPan.gestureUpdated = handleWindowPan(_:)
-
         let thumbnailViewPan = PanGestureRecognizer()
         gestureManager.add(thumbnailViewPan, to: thumbnailView)
         thumbnailViewPan.gestureUpdated = handleThumbnailPan(_:)
@@ -131,41 +118,10 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         let nextPageTap = TapGestureRecognizer()
         gestureManager.add(nextPageTap, to: forwardTapArea)
         nextPageTap.gestureUpdated = handleRightArrowTap(_:)
-
-        let singleFingerCloseButtonTap = TapGestureRecognizer()
-        gestureManager.add(singleFingerCloseButtonTap, to: closeButtonView)
-        singleFingerCloseButtonTap.gestureUpdated = didTapCloseButton(_:)
-    }
-
-    private func setupWindowDragArea() {
-        windowDragArea.wantsLayer = true
-        windowDragArea.layer?.backgroundColor = style.dragAreaBackground.cgColor
-        windowDragAreaHighlight.wantsLayer = true
-        windowDragAreaHighlight.layer?.backgroundColor = media.tintColor.cgColor
     }
 
 
     // MARK: Gesture Handling
-
-    private func handleWindowPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let window = view.window, !animating else {
-            return
-        }
-
-
-        switch pan.state {
-        case .began:
-            delegate?.controllerDidMove(self)
-        case .recognized, .momentum:
-            var origin = window.frame.origin
-            origin += pan.delta.round()
-            window.setFrameOrigin(origin)
-        case .possible:
-            WindowManager.instance.checkBounds(of: self)
-        default:
-            return
-        }
-    }
 
     private func handleThumbnailPan(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer, !animating else {
@@ -235,26 +191,6 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         }
     }
 
-    private func didTapCloseButton(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, !animating else {
-            return
-        }
-
-        animateViewOut()
-    }
-
-    @objc
-    private func handleMousePan(_ gesture: NSPanGestureRecognizer) {
-        guard let window = view.window, !animating else {
-            return
-        }
-
-        resetCloseWindowTimer()
-        var origin = window.frame.origin
-        origin += gesture.translation(in: nil)
-        window.setFrameOrigin(origin)
-    }
-
 
     // MARK: NSTableViewDelegate & NSTableViewDataSource
 
@@ -285,22 +221,6 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
 
     @IBAction func closeButtonTapped(_ sender: Any) {
         animateViewOut()
-    }
-
-
-    // MARK: GestureResponder
-
-    /// Determines if the bounds of the draggable area is inside a given rect
-    override func draggableInside(bounds: CGRect) -> Bool {
-        guard let window = view.window else {
-            return false
-        }
-
-        // Calculate the center box of the drag area in the window's coordinate system
-        let dragAreaInWindow = windowDragArea.frame.transformed(from: view.frame).transformed(from: window.frame)
-        let adjustedWidth = dragAreaInWindow.width / 2
-        let smallDragArea = CGRect(x: dragAreaInWindow.minX + adjustedWidth / 2, y: dragAreaInWindow.minY, width: adjustedWidth, height: dragAreaInWindow.height)
-        return bounds.contains(smallDragArea)
     }
 
 
