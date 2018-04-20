@@ -17,7 +17,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     @IBOutlet weak var relatedItemsView: NSTableView!
     @IBOutlet weak var closeWindowTapArea: NSView!
     @IBOutlet weak var toggleRelatedItemsArea: NSView!
-    @IBOutlet weak var showRelatedItemsView: NSImageView!
+    @IBOutlet weak var toggleRelatedItemsImage: NSImageView!
     @IBOutlet weak var placeHolderImage: NSImageView!
 
     var record: RecordDisplayable!
@@ -41,6 +41,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         static let fontColor: NSColor = .white
         static let kern: CGFloat = 0.5
         static let screenEdgeBuffer: CGFloat = 80
+        static let showRelatedItemViewRotation: CGFloat = 45
+        static let relatedItemsViewMargin: CGFloat = 8
     }
 
 
@@ -95,14 +97,19 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         relatedItemsView.alphaValue = 0
         relatedItemsView.register(NSNib(nibNamed: RelatedItemView.nibName, bundle: nil), forIdentifier: RelatedItemView.interfaceIdentifier)
         relatedItemsView.backgroundColor = .clear
-        showRelatedItemsView.isHidden = record.relatedRecords.isEmpty
         relatedRecordsLabel.attributedStringValue = NSAttributedString(string: Constants.relatedRecordsTitle, attributes: titleBarAttributes)
         relatedRecordsLabel.alphaValue = 0
+
+        toggleRelatedItemsImage.isHidden = record.relatedRecords.isEmpty
+        toggleRelatedItemsImage.frameCenterRotation = Constants.showRelatedItemViewRotation
     }
 
     private func setupGestures() {
         let nsPanGesture = NSPanGestureRecognizer(target: self, action: #selector(handleMouseDrag(_:)))
         detailView.addGestureRecognizer(nsPanGesture)
+
+        let nsToggleRelatedItemClickGesture = NSClickGestureRecognizer(target: self, action: #selector(handleRelatedItemToggleClick(_:)))
+        toggleRelatedItemsArea.addGestureRecognizer(nsToggleRelatedItemClickGesture)
 
         let collectionViewPanGesture = PanGestureRecognizer()
         gestureManager.add(collectionViewPanGesture, to: mediaView)
@@ -153,6 +160,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         windowDragAreaHighlight.wantsLayer = true
         windowDragAreaHighlight.layer?.backgroundColor = record.type.color.cgColor
     }
+
 
     // MARK: Gesture Handling
 
@@ -206,11 +214,9 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             selectedMediaItem = nil
         case .ended:
             selectedMediaItem = mediaItem
-
             if let selectedMedia = selectedMediaItem?.media {
                 selectMediaItem(selectedMedia)
             }
-
             selectedMediaItem = nil
         default:
             return
@@ -265,11 +271,9 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             selectedRelatedItem = nil
         case .ended:
             selectedRelatedItem = relatedItemView
-
             if let selectedRecord = selectedRelatedItem?.record {
                 selectRelatedItem(selectedRecord)
             }
-
             selectedRelatedItem = nil
         default:
             return
@@ -320,6 +324,11 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         origin += gesture.translation(in: nil)
         window.setFrameOrigin(origin)
         WindowManager.instance.checkBounds(of: self)
+    }
+
+    @objc
+    private func handleRelatedItemToggleClick(_ gesture: NSClickGestureRecognizer) {
+        toggleRelatedItems()
     }
 
 
@@ -395,7 +404,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             NSAnimationContext.current.duration = Constants.animationDuration
             self?.relatedItemsView.animator().alphaValue = alpha
             self?.relatedRecordsLabel.animator().alphaValue = alpha
-            self?.showRelatedItemsView.image = showingRelatedItems ? NSImage(named: "plus-icon") : NSImage(named: "close button")
+            self?.toggleRelatedItemsImage.animator().frameCenterRotation = showingRelatedItems ? Constants.showRelatedItemViewRotation : 0
             }, completionHandler: { [weak self] in
                 if let strongSelf = self {
                     strongSelf.relatedItemsView.isHidden = !strongSelf.showingRelatedItems
@@ -403,9 +412,10 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
                 completion?()
         })
 
-        let diff: CGFloat = showingRelatedItems ? -256 : 256
+        let relatedItemsWidth = relatedItemsView.frame.width + Constants.relatedItemsViewMargin * 2
+        let offset = showingRelatedItems ? -relatedItemsWidth : relatedItemsWidth
         var frame = window.frame
-        frame.size.width += diff
+        frame.size.width += offset
         window.setFrame(frame, display: true, animate: true)
         showingRelatedItems = !showingRelatedItems
     }

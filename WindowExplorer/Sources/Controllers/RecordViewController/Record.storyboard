@@ -207,20 +207,20 @@
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="ng9-0N-mwq">
                                         <rect key="frame" x="560" y="0.0" width="40" height="40"/>
                                         <subviews>
-                                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="l8D-t2-1Ll">
+                                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dyM-5a-uST">
                                                 <rect key="frame" x="10" y="10" width="20" height="20"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="20" id="Bgm-Df-p8a"/>
-                                                    <constraint firstAttribute="width" constant="20" id="YLP-Uo-d7a"/>
+                                                    <constraint firstAttribute="width" constant="20" id="aPm-UJ-psY"/>
+                                                    <constraint firstAttribute="height" constant="20" id="hl7-7M-gsL"/>
                                                 </constraints>
-                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="plus-icon" id="86h-gD-rXe"/>
+                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="close button" id="Fdd-gz-MAk"/>
                                             </imageView>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="l8D-t2-1Ll" firstAttribute="centerY" secondItem="ng9-0N-mwq" secondAttribute="centerY" id="0ik-8o-4uP"/>
                                             <constraint firstAttribute="width" constant="40" id="FMQ-2A-Qlq"/>
+                                            <constraint firstItem="dyM-5a-uST" firstAttribute="centerY" secondItem="ng9-0N-mwq" secondAttribute="centerY" placeholder="YES" id="RO1-vh-dzg"/>
                                             <constraint firstAttribute="height" constant="40" id="kNH-V9-h1s"/>
-                                            <constraint firstItem="l8D-t2-1Ll" firstAttribute="centerX" secondItem="ng9-0N-mwq" secondAttribute="centerX" id="nYe-07-d8M"/>
+                                            <constraint firstItem="dyM-5a-uST" firstAttribute="centerX" secondItem="ng9-0N-mwq" secondAttribute="centerX" placeholder="YES" id="lLM-9g-YbA"/>
                                         </constraints>
                                     </customView>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="e2P-UJ-8Oj">
@@ -274,10 +274,10 @@
                         <outlet property="placeHolderImage" destination="Zeo-g9-VHC" id="YQF-Yz-VuJ"/>
                         <outlet property="relatedItemsView" destination="cKY-nL-NPV" id="26r-gU-lSa"/>
                         <outlet property="relatedRecordsLabel" destination="79v-3B-4jX" id="egP-qv-zjo"/>
-                        <outlet property="showRelatedItemsView" destination="l8D-t2-1Ll" id="n1Z-0N-NFt"/>
                         <outlet property="stackClipView" destination="CkM-eN-t5N" id="Ycr-Y2-xGv"/>
                         <outlet property="stackView" destination="RgY-ah-SAv" id="N4b-iD-145"/>
                         <outlet property="toggleRelatedItemsArea" destination="ng9-0N-mwq" id="Lqz-na-MLi"/>
+                        <outlet property="toggleRelatedItemsImage" destination="dyM-5a-uST" id="8hh-6N-sqR"/>
                         <outlet property="windowDragArea" destination="4OT-12-Vbx" id="tfW-rT-7ol"/>
                         <outlet property="windowDragAreaHighlight" destination="e2P-UJ-8Oj" id="G5o-1g-657"/>
                     </connections>
@@ -295,6 +295,5 @@
     </scenes>
     <resources>
         <image name="close button" width="15" height="15"/>
-        <image name="plus-icon" width="40" height="40"/>
     </resources>
 </document>
