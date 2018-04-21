@@ -4,8 +4,8 @@ import Foundation
 
 class GestureHandler {
 
-    private var touches = Set<Touch>()
-    private var gestures: [GestureRecognizer]
+    private(set) var touches = Set<Touch>()
+    private(set) var gestures: [GestureRecognizer]
     private var transformForTouch = [Touch: CGAffineTransform]()
     private var properties: TouchProperties {
         let c = centerOfGravity(for: touches)

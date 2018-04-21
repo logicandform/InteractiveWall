@@ -16,6 +16,8 @@ protocol GestureRecognizer: class {
     func end(_ touch: Touch, with properties: TouchProperties)
 
     func reset()
+
+    func invalidate()
 }
 
 extension GestureRecognizer {
@@ -23,6 +25,8 @@ extension GestureRecognizer {
     var state: GestureState {
         return .possible
     }
+
+    func invalidate() {}
 }
 
 enum GestureState {

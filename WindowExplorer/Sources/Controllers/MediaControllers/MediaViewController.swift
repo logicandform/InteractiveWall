@@ -105,6 +105,7 @@ class MediaViewController: NSViewController, GestureResponder {
             return
         }
 
+        gestureManager.invalidateAllGestures()
         resetCloseWindowTimer()
         animating = true
         window.makeKeyAndOrderFront(self)

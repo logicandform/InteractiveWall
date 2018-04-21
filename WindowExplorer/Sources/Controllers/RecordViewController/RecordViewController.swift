@@ -376,6 +376,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return
         }
 
+        gestureManager.invalidateAllGestures()
         resetCloseWindowTimer()
         animating = true
         window.makeKeyAndOrderFront(self)

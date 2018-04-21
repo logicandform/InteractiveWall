@@ -80,6 +80,10 @@ final class GestureManager {
         return gestureHandlers.values.contains(where: {!$0.touches.isEmpty})
     }
 
+    func invalidateAllGestures() {
+        gestureHandlers.values.forEach({ $0.gestures.forEach({ $0.invalidate() }) })
+    }
+
 
     // MARK: Helpers
 

@@ -25,7 +25,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
 
     func start(_ touch: Touch, with properties: TouchProperties) {
         switch state {
-        case .momentum:
+        case .momentum, .failed:
             reset()
             fallthrough
         case .possible:
@@ -47,7 +47,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func move(_ touch: Touch, with properties: TouchProperties) {
-        guard let lastPositionOfTouch = positionForTouch[touch] else {
+        guard state != .failed, let lastPositionOfTouch = positionForTouch[touch] else {
             return
         }
 
@@ -81,7 +81,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     func end(_ touch: Touch, with properties: TouchProperties) {
         positionForTouch.removeValue(forKey: touch)
 
-        guard properties.touchCount.isZero else {
+        guard state != .failed, properties.touchCount.isZero else {
             return
         }
 
@@ -102,6 +102,12 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         positionForTouch.removeAll()
         lastLocation = nil
         delta = .zero
+    }
+
+    func invalidate() {
+        momentumTimer?.invalidate()
+        state = .failed
+        gestureUpdated?(self)
     }
 
 
