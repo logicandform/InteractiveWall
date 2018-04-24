@@ -2,7 +2,6 @@
 
 import Cocoa
 import AppKit
-import Quartz
 import Alamofire
 import AlamofireImage
 
