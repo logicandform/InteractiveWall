@@ -27,6 +27,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let minZoomWidth = 424500.0
         static let touchRadius: CGFloat = 20
         static let annotationHitSize = CGSize(width: 50, height: 50)
+        static let showTitleZoomLevel: Double = Double(36000000 / Configuration.mapsPerScreen)
     }
 
     private struct Keys {
@@ -67,9 +68,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     private func setupMap() {
         mapHandler = MapHandler(mapView: mapView, id: appID)
-        let overlay = MKTileOverlay(urlTemplate: tileURL)
-        overlay.canReplaceMapContent = true
-        mapView.add(overlay)
+//        let overlay = MKTileOverlay(urlTemplate: tileURL)
+//        overlay.canReplaceMapContent = true
+//        mapView.add(overlay)
         createAnnotations()
     }
 
@@ -98,6 +99,20 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private func didPinchOnMap(_ gesture: GestureRecognizer) {
         guard let pinch = gesture as? PinchGestureRecognizer else {
             return
+        }
+
+        if mapView.visibleMapRect.size.width < Constants.showTitleZoomLevel {
+            for annotation in mapView.annotations {
+                if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
+                    annotationView.showTitle()
+                }
+            }
+        } else {
+            for annotation in mapView.annotations {
+                if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
+                    annotationView.hideTitle()
+                }
+            }
         }
 
         switch pinch.state {
@@ -199,6 +214,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
 
+
     // MARK: Helpers
 
     private func createAnnotations() {
@@ -223,7 +239,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     private func addAnnotations(for records: [Record]) {
         records.forEach { record in
-            let annotation = CircleAnnotation(coordinate: record.coordinate, record: record.type)
+            let annotation = CircleAnnotation(coordinate: record.coordinate, record: record.type, title: record.title)
             recordForAnnotation[annotation] = record
             mapView.addAnnotation(annotation)
         }

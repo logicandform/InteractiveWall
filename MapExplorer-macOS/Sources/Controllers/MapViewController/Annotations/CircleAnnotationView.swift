@@ -8,6 +8,13 @@ class CircleAnnotationView: MKAnnotationView {
 
     private struct Constants {
         static let radii: (CGFloat, CGFloat, CGFloat, CGFloat) = (18, 14, 10, 6)
+        static let titleFontSize: CGFloat = 11.0
+        static let titleLineSpacing: CGFloat = 0.0
+        static let titleMaximumLineHeight: CGFloat = titleFontSize + 5.0
+        static let titleParagraphSpacing: CGFloat = 8.0
+        static let titleForegroundColor: NSColor = NSColor.white
+        static let fontName: String = "Soleil"
+        static let kern: CGFloat = 0.5
     }
 
     static let identifier = "CircleAnnotationView"
@@ -16,6 +23,22 @@ class CircleAnnotationView: MKAnnotationView {
     private let circle2 = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.1, y: -Constants.radii.1), size: CGSize(width: Constants.radii.1*2.0, height: Constants.radii.1*2.0)))
     private let circle3 = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.2, y: -Constants.radii.2), size: CGSize(width: Constants.radii.2*2.0, height: Constants.radii.2*2.0)))
     private let center = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.3, y: -Constants.radii.3), size: CGSize(width: Constants.radii.3*2.0, height: Constants.radii.3*2.0)))
+//    private let title = NSTextView(frame: CGRect(x: 13, y: -7, width: 500, height: 15))
+    private let title = NSTextField(frame: NSRect(x: 18, y: -8, width: 500, height: 15))
+
+    var titleAttributes: [NSAttributedStringKey: Any] {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = Constants.titleLineSpacing
+        paragraphStyle.paragraphSpacing = Constants.titleParagraphSpacing
+        paragraphStyle.maximumLineHeight = Constants.titleMaximumLineHeight
+        paragraphStyle.lineBreakMode = .byWordWrapping
+        let font = NSFont(name: Constants.fontName, size: Constants.titleFontSize) ?? NSFont.systemFont(ofSize: Constants.titleFontSize)
+        return [.paragraphStyle : paragraphStyle,
+                .font : font,
+                .foregroundColor : Constants.titleForegroundColor,
+                .kern : Constants.kern
+        ]
+    }
 
     override var annotation: MKAnnotation? {
         willSet {
@@ -36,6 +59,32 @@ class CircleAnnotationView: MKAnnotationView {
         animateOuterCircle()
     }
 
+    func showTitle() {
+        if title.alphaValue == 0.0 {
+            let animateAlpha = CABasicAnimation(keyPath: "opacity")
+            animateAlpha.isRemovedOnCompletion = true
+            animateAlpha.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+            animateAlpha.fromValue = 0
+            animateAlpha.toValue = 1
+            animateAlpha.duration = 1.0
+            title.layer?.add(animateAlpha, forKey: "opacity")
+            title.alphaValue = 1.0
+        }
+    }
+
+    func hideTitle() {
+        if title.alphaValue == 1.0 {
+            let animateAlpha = CABasicAnimation(keyPath: "opacity")
+            animateAlpha.isRemovedOnCompletion = true
+            animateAlpha.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+            animateAlpha.fromValue = 1
+            animateAlpha.toValue = 0
+            animateAlpha.duration = 1.0
+            title.layer?.add(animateAlpha, forKey: "opacity")
+            title.alphaValue = 0.0
+        }
+    }
+
     // MARK: Setup
 
     private func setupAnnotations(annotation: CircleAnnotation) {
@@ -43,6 +92,14 @@ class CircleAnnotationView: MKAnnotationView {
         circle2.wantsLayer = true
         circle3.wantsLayer = true
         center.wantsLayer = true
+        title.isEditable = false
+        title.isSelectable = false
+        title.backgroundColor = NSColor.clear
+        title.isBezeled = false
+        title.textColor = NSColor.white
+        title.font = NSFont(name: "Soleil", size: 11)
+        title.alphaValue = 0.0
+        title.attributedStringValue = NSMutableAttributedString(string: annotation.title!, attributes: titleAttributes)
         circle3.layer?.backgroundColor = annotation.record.color.cgColor
         circle2.layer?.backgroundColor = annotation.record.color.withAlphaComponent(0.4).cgColor
         circle1.layer?.backgroundColor = annotation.record.color.withAlphaComponent(0.2).cgColor
@@ -56,6 +113,7 @@ class CircleAnnotationView: MKAnnotationView {
         addSubview(circle2)
         addSubview(circle3)
         addSubview(center)
+        addSubview(title)
 
         self.wantsLayer = true
         layer?.shadowColor = NSColor.black.cgColor
