@@ -27,7 +27,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let minZoomWidth = 424500.0
         static let touchRadius: CGFloat = 20
         static let annotationHitSize = CGSize(width: 50, height: 50)
-        static let showTitleZoomLevel: Double = Double(36000000 / Configuration.mapsPerScreen)
+        static let annotationTitleZoomLevel: Double = Double(36000000 / Configuration.mapsPerScreen)
     }
 
     private struct Keys {
@@ -68,9 +68,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     private func setupMap() {
         mapHandler = MapHandler(mapView: mapView, id: appID)
-//        let overlay = MKTileOverlay(urlTemplate: tileURL)
-//        overlay.canReplaceMapContent = true
-//        mapView.add(overlay)
+        let overlay = MKTileOverlay(urlTemplate: tileURL)
+        overlay.canReplaceMapContent = true
+        mapView.add(overlay)
         createAnnotations()
     }
 
@@ -101,7 +101,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             return
         }
 
-        if mapView.visibleMapRect.size.width < Constants.showTitleZoomLevel {
+        if mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel {
             for annotation in mapView.annotations {
                 if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
                     annotationView.showTitle()
@@ -212,7 +212,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
         return MKAnnotationView()
     }
-
 
 
     // MARK: Helpers

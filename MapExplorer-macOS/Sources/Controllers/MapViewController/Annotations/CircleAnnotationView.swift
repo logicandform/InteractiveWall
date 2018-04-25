@@ -23,7 +23,6 @@ class CircleAnnotationView: MKAnnotationView {
     private let circle2 = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.1, y: -Constants.radii.1), size: CGSize(width: Constants.radii.1*2.0, height: Constants.radii.1*2.0)))
     private let circle3 = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.2, y: -Constants.radii.2), size: CGSize(width: Constants.radii.2*2.0, height: Constants.radii.2*2.0)))
     private let center = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.3, y: -Constants.radii.3), size: CGSize(width: Constants.radii.3*2.0, height: Constants.radii.3*2.0)))
-//    private let title = NSTextView(frame: CGRect(x: 13, y: -7, width: 500, height: 15))
     private let title = NSTextField(frame: NSRect(x: 18, y: -8, width: 500, height: 15))
 
     var titleAttributes: [NSAttributedStringKey: Any] {
@@ -94,10 +93,8 @@ class CircleAnnotationView: MKAnnotationView {
         center.wantsLayer = true
         title.isEditable = false
         title.isSelectable = false
-        title.backgroundColor = NSColor.clear
         title.isBezeled = false
-        title.textColor = NSColor.white
-        title.font = NSFont(name: "Soleil", size: 11)
+        title.backgroundColor = NSColor.clear
         title.alphaValue = 0.0
         title.attributedStringValue = NSMutableAttributedString(string: annotation.title!, attributes: titleAttributes)
         circle3.layer?.backgroundColor = annotation.record.color.cgColor
