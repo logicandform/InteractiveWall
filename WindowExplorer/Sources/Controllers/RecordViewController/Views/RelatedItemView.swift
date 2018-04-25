@@ -28,7 +28,7 @@ class RelatedItemView: NSView {
         static let descriptionFontSize: CGFloat = 10
     }
     
-    private var titleLabelAttributes : [NSAttributedStringKey : Any] {
+    private var titleLabelAttributes: [NSAttributedStringKey : Any] {
         get {
             let font = NSFont(name: Constants.titleFontName, size: Constants.titleFontSize) ?? NSFont.systemFont(ofSize: Constants.titleFontSize)
             let paragraphStyle = NSMutableParagraphStyle()

@@ -8,6 +8,7 @@ final class Style {
     let darkBackground = NSColor.black.withAlphaComponent(0.85)
     let selectedColor = NSColor(calibratedRed: 0, green: 200/255, blue: 1, alpha: 1)
     let clear = NSColor.clear
+    let unselectedRecordIcon = NSColor.gray
 
     // Records
     let artifactColor = NSColor(calibratedRed: 128/255, green: 1/255, blue: 206/255, alpha: 1)

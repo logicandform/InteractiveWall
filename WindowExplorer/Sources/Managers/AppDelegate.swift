@@ -30,11 +30,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         WindowManager.instance.registerForNotifications()
         TouchManager.instance.setupTouchSocket()
-        launchMapExplorer()
     }
 
     func applicationWillTerminate(_ notification: Notification) {
-        killSubProcesses()
+        
     }
 
 

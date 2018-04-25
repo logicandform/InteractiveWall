@@ -35,4 +35,8 @@ enum RecordType: String {
             return NSImage(named: "school-icon")!
         }
     }
+
+    static var allValues: [RecordType] {
+        return [.event, .artifact, .organization, .school]
+    }
 }

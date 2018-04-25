@@ -51,8 +51,17 @@ struct RecordGroup {
 
 
 extension RecordDisplayable {
+
     var relatedRecords: [RecordDisplayable] {
         return recordGroups.reduce([]) { $0 + $1.records }
+    }
+
+    func relatedRecords(of type: RecordType) -> [RecordDisplayable] {
+        if let recordGroup = recordGroups.first(where: { $0.type == type }) {
+            return recordGroup.records
+        }
+
+        return []
     }
     
     var titleAttributes: [NSAttributedStringKey: Any] {

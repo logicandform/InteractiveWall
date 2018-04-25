@@ -19,6 +19,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     @IBOutlet weak var toggleRelatedItemsArea: NSView!
     @IBOutlet weak var toggleRelatedItemsImage: NSImageView!
     @IBOutlet weak var placeHolderImage: NSImageView!
+    @IBOutlet weak var recordTypeSelectionView: RecordTypeSelectionView!
 
     var record: RecordDisplayable!
     private(set) var gestureManager: GestureManager!
@@ -27,6 +28,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private var positionsForMediaControllers = [MediaViewController: Int?]()
     private weak var closeWindowTimer: Foundation.Timer?
     private var animating = false
+    private var relatedItemsType: RecordType?
+    private var hiddenRelatedItems = IndexSet()
 
     private struct Constants {
         static let relatedRecordsTitle = "RELATED RECORDS"
@@ -99,9 +102,10 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         relatedItemsView.backgroundColor = .clear
         relatedRecordsLabel.attributedStringValue = NSAttributedString(string: Constants.relatedRecordsTitle, attributes: titleBarAttributes)
         relatedRecordsLabel.alphaValue = 0
-
         toggleRelatedItemsImage.isHidden = record.relatedRecords.isEmpty
         toggleRelatedItemsImage.frameCenterRotation = Constants.showRelatedItemViewRotation
+        recordTypeSelectionView.initialize(with: record, manager: gestureManager)
+        recordTypeSelectionView.selectionCallback = didSelectRelatedItemsType(_:)
     }
 
     private func setupGestures() {
@@ -557,7 +561,11 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     // MARK: NSTableViewDataSource & NSTableViewDelegate
 
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return record?.relatedRecords.count ?? 0
+        guard let type = relatedItemsType else {
+            return record.relatedRecords.count
+        }
+
+        return record.relatedRecords(of: type).count
     }
 
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
@@ -565,7 +573,13 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return nil
         }
 
-        relatedItemView.record = record.relatedRecords[row]
+        if let type = relatedItemsType {
+            let relatedRecords = record.relatedRecords(of: type)
+            relatedItemView.record = relatedRecords[row]
+        } else {
+            relatedItemView.record = record.relatedRecords[row]
+        }
+
         relatedItemView.tintColor = record.type.color
         return relatedItemView
     }
@@ -604,5 +618,28 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         let adjustedWidth = dragAreaInWindow.width / 2
         let smallDragArea = CGRect(x: dragAreaInWindow.minX + adjustedWidth / 2, y: dragAreaInWindow.minY, width: adjustedWidth, height: dragAreaInWindow.height)
         return bounds.contains(smallDragArea)
+    }
+
+    /// Handle a change of record type from the RelatedItemsHeaderView
+    private func didSelectRelatedItemsType(_ type: RecordType?) {
+        var itemsToRemove = IndexSet()
+
+        if let type = type {
+            for (index, record) in record.relatedRecords.enumerated() {
+                if record.type != type {
+                    itemsToRemove.insert(index)
+                }
+            }
+        }
+
+        // Separate insert and remove batch for visual effect
+        relatedItemsType = type
+        relatedItemsView.beginUpdates()
+        relatedItemsView.insertRows(at: hiddenRelatedItems, withAnimation: .effectFade)
+        relatedItemsView.endUpdates()
+        relatedItemsView.beginUpdates()
+        relatedItemsView.removeRows(at: itemsToRemove, withAnimation: .effectFade)
+        relatedItemsView.endUpdates()
+        hiddenRelatedItems = itemsToRemove
     }
 }
