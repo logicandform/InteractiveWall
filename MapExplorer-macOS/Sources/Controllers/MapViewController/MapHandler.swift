@@ -37,6 +37,7 @@ class MapHandler {
         static let map = "map"
         static let group = "group"
         static let gesture = "gestureType"
+        static let animated = "amimated"
     }
 
 
@@ -54,14 +55,14 @@ class MapHandler {
 
     // MARK: API
 
-    func send(_ mapRect: MKMapRect, for gestureState: GestureState = .recognized) {
+    func send(_ mapRect: MKMapRect, for gestureState: GestureState = .recognized, animated: Bool = false) {
         // If sending from momentum but another map has interrupted, ignore
         if gestureState == .momentum && mapState.pair != nil {
             return
         }
 
         let group = mapState.group ?? mapID
-        let info: JSON = [Keys.id: mapID, Keys.group: group, Keys.map: mapRect.toJSON(), Keys.gesture: gestureState.rawValue]
+        let info: JSON = [Keys.id: mapID, Keys.group: group, Keys.map: mapRect.toJSON(), Keys.gesture: gestureState.rawValue, Keys.animated: animated]
         DistributedNotificationCenter.default().postNotificationName(MapNotification.position.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
@@ -105,9 +106,9 @@ class MapHandler {
         switch notification.name {
         case MapNotification.position.name:
             resetTimer?.invalidate()
-            if let mapJSON = info[Keys.map] as? JSON, let fromGroup = info[Keys.group] as? Int, let mapRect = MKMapRect(json: mapJSON), let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture) {
+            if let mapJSON = info[Keys.map] as? JSON, let fromGroup = info[Keys.group] as? Int, let mapRect = MKMapRect(json: mapJSON), let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture), let animated = info[Keys.animated] as? Bool {
                 setMapState(from: fromID, group: fromGroup, momentum: state == .momentum)
-                handle(mapRect, from: fromID, group: fromGroup)
+                handle(mapRect, from: fromID, group: fromGroup, animated: animated)
             }
         case MapNotification.unpair.name:
             unpair(from: fromID)
@@ -127,7 +128,7 @@ class MapHandler {
     // MARK: Helpers
 
     /// Determines how to respond to a received mapRect from another mapView and the type of gesture that triggered the event.
-    private func handle(_ mapRect: MKMapRect, from id: Int, group: Int) {
+    private func handle(_ mapRect: MKMapRect, from id: Int, group: Int, animated: Bool) {
         guard let currentGroup = mapState.group, currentGroup == group, currentGroup == id else {
             return
         }
@@ -135,12 +136,12 @@ class MapHandler {
         // Filter position updates; state will be nil receiving when receiving from momentum, else id must match pair
         if mapState.pair == nil || mapState.pair! == id {
             activityState = .active
-            set(mapRect, from: id)
+            set(mapRect, from: id, animated: animated)
         }
     }
 
     /// Sets the visble rect of self.mapView based on the current pairedID, else self.mapID
-    private func set(_ mapRect: MKMapRect, from pair: Int?) {
+    private func set(_ mapRect: MKMapRect, from pair: Int?, animated: Bool) {
         var xOrigin = 0.0
         let pairedID = pair ?? mapID
         if mapRect.origin.x > MKMapSizeWorld.width - mapRect.size.width {
@@ -163,8 +164,7 @@ class MapHandler {
         }
 
         let mapOrigin = MKMapPointMake(xOrigin, yOrigin)
-        mapView.visibleMapRect.size = mapRect.size
-        mapView.visibleMapRect.origin = mapOrigin
+        mapView.setVisibleMapRect(MKMapRect(origin: mapOrigin, size: mapRect.size), animated: animated)
     }
 
     /// If paired to the given id, will unpair else ignore

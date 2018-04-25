@@ -28,6 +28,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let touchRadius: CGFloat = 20
         static let annotationHitSize = CGSize(width: 50, height: 50)
         static let annotationTitleZoomLevel = Double(36000000 / Configuration.mapsPerScreen)
+        static let doubleTapScale = 0.6
     }
 
     private struct Keys {
@@ -144,6 +145,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                     postWindowNotification(for: record, at: CGPoint(x: positionInView.x, y: positionInView.y - 20.0))
                     return
                 }
+            } else if tap.doubleTapped {
+                handleDoubleTap(at: position)
             }
         }
     }
@@ -254,6 +257,20 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                     annotationView.hideTitle()
                 }
             }
+        }
+    }
+
+    private func handleDoubleTap(at position: CGPoint) {
+        var mapRect = mapView.visibleMapRect
+        let scaledWidth = Constants.doubleTapScale * mapRect.size.width
+        let scaledHeight = Constants.doubleTapScale * mapRect.size.height
+        if scaledWidth <= Constants.maxZoomWidth {
+            let translationX = (mapRect.size.width - scaledWidth) * Double(position.x / mapView.frame.width)
+            let translationY = (mapRect.size.height - scaledHeight) * (1 - Double(position.y / mapView.frame.height))
+            mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
+            mapRect.origin += MKMapPoint(x: translationX, y: translationY)
+            mapHandler?.send(mapRect, animated: true)
+            mapHandler?.endActivity()
         }
     }
 }
