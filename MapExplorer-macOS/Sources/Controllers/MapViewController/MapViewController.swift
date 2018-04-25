@@ -264,7 +264,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         var mapRect = mapView.visibleMapRect
         let scaledWidth = Constants.doubleTapScale * mapRect.size.width
         let scaledHeight = Constants.doubleTapScale * mapRect.size.height
-        if scaledWidth <= Constants.maxZoomWidth {
+        if scaledWidth >= Constants.minZoomWidth {
             let translationX = (mapRect.size.width - scaledWidth) * Double(position.x / mapView.frame.width)
             let translationY = (mapRect.size.height - scaledHeight) * (1 - Double(position.y / mapView.frame.height))
             mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
