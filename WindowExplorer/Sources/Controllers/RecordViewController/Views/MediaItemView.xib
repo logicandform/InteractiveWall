@@ -8,6 +8,8 @@
         <customObject id="-2" userLabel="File's Owner" customClass="MediaItemView" customModule="WindowExplorer" customModuleProvider="target">
             <connections>
                 <outlet property="mediaImageView" destination="qFx-mJ-ye3" id="wSN-K9-1ET"/>
+                <outlet property="titleLabelBackgroundView" destination="a5X-zo-zhB" id="HTS-rz-czM"/>
+                <outlet property="titleLabelBackgroundWidth" destination="3Oz-H8-hiB" id="pel-XH-wFD"/>
                 <outlet property="videoIconImageView" destination="MCi-Na-Q3u" id="wr2-ky-Npx"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
@@ -20,6 +22,20 @@
             <subviews>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="qFx-mJ-ye3" customClass="ImageView" customModule="WindowExplorer" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
+                    <subviews>
+                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="a5X-zo-zhB">
+                            <rect key="frame" x="235" y="252" width="10" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="10" id="3Oz-H8-hiB"/>
+                                <constraint firstAttribute="height" constant="20" id="zWD-jR-AWQ"/>
+                            </constraints>
+                        </customView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="a5X-zo-zhB" firstAttribute="centerX" secondItem="qFx-mJ-ye3" secondAttribute="centerX" id="Hfp-Vr-D4m"/>
+                        <constraint firstItem="a5X-zo-zhB" firstAttribute="top" secondItem="qFx-mJ-ye3" secondAttribute="top" id="Q5M-ia-Ojb"/>
+                        <constraint firstItem="a5X-zo-zhB" firstAttribute="width" relation="lessThanOrEqual" secondItem="qFx-mJ-ye3" secondAttribute="width" id="ycT-Yp-fM7"/>
+                    </constraints>
                 </customView>
                 <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MCi-Na-Q3u">
                     <rect key="frame" x="203" y="99" width="74" height="74"/>
