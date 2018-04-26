@@ -30,7 +30,7 @@ enum WindowType {
         case .player:
             return style.playerWindowSize
         case .pdf:
-            return Style().pdfWindowSize
+            return style.pdfWindowSize
         }
     }
 

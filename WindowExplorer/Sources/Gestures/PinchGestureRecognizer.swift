@@ -13,20 +13,8 @@ fileprivate enum PinchBehavior: String {
 
 class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
-    private struct Pinch {
-        static let initialScale: CGFloat = 1
-        static let numberOfFingers = 2
-        static let minimumBehaviorChangeThreshold: CGFloat = 20
-        static let minimumSpreadDistance: CGFloat = 60
-    }
-
-    private struct Pan {
-        static let recognizedThreshhold: CGFloat = 20
-        static let minimumDeltaUpdateThreshold: Double = 4
-        static let gesturePausedTime = 0.1
-    }
-
     var gestureUpdated: ((GestureRecognizer) -> Void)?
+
     private(set) var state = GestureState.possible
     private(set) var scale: CGFloat = Pinch.initialScale
     private(set) var delta = CGVector.zero
@@ -45,6 +33,28 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private var lastLocation: CGPoint?
     private var cumulativeDelta = CGVector.zero
 
+    private struct Pinch {
+        static let initialScale: CGFloat = 1
+        static let numberOfFingers = 2
+        static let minimumBehaviorChangeThreshold: CGFloat = 20
+        static let minimumSpreadDistance: CGFloat = 60
+    }
+
+    private struct Pan {
+        static let recognizedThreshhold: CGFloat = 20
+        static let minimumDeltaUpdateThreshold: Double = 4
+        static let gesturePausedTime = 0.1
+    }
+
+
+    // MARK: Init
+
+    override init() {
+        super.init()
+        let miliseconds = Int(round(Configuration.refreshRate * 1000))
+        self.momentumTimer = DispatchTimer(interval: .milliseconds(miliseconds), handler: updateMomentum)
+    }
+
 
     // MARK: API
 
@@ -54,7 +64,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             reset()
             fallthrough
         case .possible:
-            momentumTimer?.invalidate()
+            momentumTimer.suspend()
 
             // Pan
             cumulativeDelta = .zero
@@ -65,7 +75,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             timeOfLastUpdate = Date()
             fallthrough
         case .recognized, .began:
-            momentumTimer?.invalidate()
+            momentumTimer.suspend()
             positionForTouch[touch] = touch.position
 
             // Pinch
@@ -160,7 +170,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func invalidate() {
-        momentumTimer?.invalidate()
+        momentumTimer.suspend()
         state = .failed
         gestureUpdated?(self)
     }
@@ -296,15 +306,13 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         static let panStartMinimumMomentumDelta: Double = 5
     }
 
-    private var momentumTimer: Timer?
+    private var momentumTimer: DispatchTimer!
     private var panFrictionFactor = Momentum.panInitialFrictionFactor
     private var pinchFrictionFactor = Momentum.pinchInitialFrictionFactor
-
     private var pinchMomentumScale = Pinch.initialScale
     private var panMomentumDelta = CGVector.zero
 
     private func beginMomentum() {
-
         // Pinch
         pinchFrictionFactor = Momentum.pinchInitialFrictionFactor
         setMomentumScale()
@@ -315,10 +323,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
         state = .momentum
         gestureUpdated?(self)
-        momentumTimer?.invalidate()
-        momentumTimer = Timer.scheduledTimer(withTimeInterval: Configuration.refreshRate, repeats: true) { [weak self] _ in
-            self?.updateMomentum()
-        }
+        momentumTimer.resume()
     }
 
     /// Gets the momentum scale, filtering out pinches that are too short in time, and clamping it
@@ -363,7 +368,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     private func endMomentum() {
-        momentumTimer?.invalidate()
+        momentumTimer.suspend()
         reset()
         gestureUpdated?(self)
     }

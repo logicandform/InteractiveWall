@@ -5,6 +5,15 @@ import AppKit
 
 class PanGestureRecognizer: NSObject, GestureRecognizer {
 
+    var gestureUpdated: ((GestureRecognizer) -> Void)?
+
+    private(set) var state = GestureState.possible
+    private(set) var delta = CGVector.zero
+    private(set) var lastLocation: CGPoint?
+    private var timeOfLastUpdate = Date()
+    private var positionForTouch = [Touch: CGPoint]()
+    private var cumulativeDelta = CGVector.zero
+
     private struct Constants {
         static let recognizedThreshhold: CGFloat = 20
         static let minimumFingers = 1
@@ -12,13 +21,14 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         static let gesturePausedTime = 0.1
     }
 
-    var gestureUpdated: ((GestureRecognizer) -> Void)?
-    private(set) var state = GestureState.possible
-    private(set) var delta = CGVector.zero
-    private(set) var lastLocation: CGPoint?
-    private var timeOfLastUpdate = Date()
-    private var positionForTouch = [Touch: CGPoint]()
-    private var cumulativeDelta = CGVector.zero
+
+    // MARK: Init
+
+    override init() {
+        super.init()
+        let miliseconds = Int(round(Configuration.refreshRate * 1000))
+        self.momentumTimer = DispatchTimer(interval: .milliseconds(miliseconds), handler: updateMomentum)
+    }
 
 
     // MARK: API
@@ -29,7 +39,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             reset()
             fallthrough
         case .possible:
-            momentumTimer?.invalidate()
+            momentumTimer.suspend()
             cumulativeDelta = .zero
             lastLocation = properties.cog
             state = .began
@@ -37,7 +47,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             timeOfLastUpdate = Date()
             fallthrough
         case .recognized, .began:
-            momentumTimer?.invalidate()
+            momentumTimer.suspend()
             positionForTouch[touch] = touch.position
         default:
             return
@@ -102,7 +112,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func invalidate() {
-        momentumTimer?.invalidate()
+        momentumTimer.suspend()
         state = .failed
         gestureUpdated?(self)
     }
@@ -136,12 +146,12 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     // MARK: Momentum
 
     private struct Momentum {
-        static let panInitialFrictionFactor = 1.15
-        static let panFrictionFactorScale = 0.01
+        static let panInitialFrictionFactor = 1.01
+        static let panFrictionFactorScale = 0.001
         static let panThresholdMomentumDelta: Double = 2
     }
 
-    private var momentumTimer: Timer?
+    private var momentumTimer: DispatchTimer!
     private var panFrictionFactor = Momentum.panInitialFrictionFactor
     private var panMomentumDelta = CGVector.zero
 
@@ -150,10 +160,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         delta = panMomentumDelta
         state = .momentum
         gestureUpdated?(self)
-        momentumTimer?.invalidate()
-        momentumTimer = Timer.scheduledTimer(withTimeInterval: Configuration.refreshRate, repeats: true) { [weak self] _ in
-            self?.updateMomentum()
-        }
+        momentumTimer.resume()
     }
 
     private func updateMomentum() {
@@ -176,7 +183,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     private func endMomentum() {
-        momentumTimer?.invalidate()
+        momentumTimer.suspend()
         reset()
         gestureUpdated?(self)
     }

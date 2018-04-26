@@ -101,7 +101,7 @@ class MediaViewController: NSViewController, GestureResponder {
     }
 
     func animate(to origin: NSPoint) {
-        guard let window = self.view.window, let screen = window.screen, !gestureManager.isActive() else {
+        guard let window = view.window, let screen = window.screen, !gestureManager.isActive() else {
             return
         }
 

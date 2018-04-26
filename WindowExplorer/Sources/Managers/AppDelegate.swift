@@ -16,11 +16,8 @@ struct Configuration {
 }
 
 
-struct ShellCommands {
-    static let openLaunchPath = "/usr/bin/open"
-    static let openMapsBaseArg = ["-n", "-a", "/Users/\(NSUserName())/Library/Developer/Xcode/DerivedData/MapExplorer-cebdevedrroybgdstwjueirgqasq/Build/Products/Debug/MapExplorer-macOS.app", "--args"]
-    static let killallLaunchPath = "/usr/bin/killall"
-    static let killallArgs = ["MapExplorer-macOS"]
+struct Paths {
+    static let mapExplorer = "/Users/Tim/Library/Developer/Xcode/DerivedData/MapExplorer-btnxiobgycwlwddqfdkwxqhmpeum/Build/Products/Debug/MapExplorer-macOS.app"
 }
 
 
@@ -30,34 +27,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         WindowManager.instance.registerForNotifications()
         TouchManager.instance.setupTouchSocket()
+        MasterViewController.instantiate()
     }
 
     func applicationWillTerminate(_ notification: Notification) {
-        
-    }
-
-
-    // MARK: Helpers
-
-    private func launchMapExplorer() {
-        for screen in 1 ... Configuration.numberOfScreens {
-            for map in 0 ..< Configuration.mapsPerScreen {
-                let args = ShellCommands.openMapsBaseArg + [String(screen), String(map)]
-                shell(ShellCommands.openLaunchPath, args)
-            }
-        }
-    }
-
-    private func killSubProcesses() {
-        shell(ShellCommands.killallLaunchPath, ShellCommands.killallArgs)
-    }
-
-    private func shell(_ launchPath: String, _ args: [String])  {
-        let task = Process()
-        task.launchPath = launchPath
-        task.arguments = args
-        task.launch()
-        task.waitUntilExit()
+        MasterViewController.instance?.close()
     }
 }
-

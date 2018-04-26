@@ -10,7 +10,7 @@ class RelatedItemView: NSView {
 
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var descriptionView: NSTextView!
-    @IBOutlet weak var imageView: AspectFillImage!
+    @IBOutlet weak var imageView: ImageView!
 
     var tintColor = style.selectedColor
     var record: RecordDisplayable? {
@@ -26,6 +26,7 @@ class RelatedItemView: NSView {
         static let kern: CGFloat = 1.0
         static let titleFontSize: CGFloat = 11
         static let descriptionFontSize: CGFloat = 10
+        static let imageTransitionDuration = 0.3
     }
     
     private var titleLabelAttributes: [NSAttributedStringKey : Any] {
@@ -74,6 +75,11 @@ class RelatedItemView: NSView {
         }
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.set(nil)
+    }
+
 
     // MARK: Helpers
 
@@ -86,14 +92,22 @@ class RelatedItemView: NSView {
         descriptionView.textContainer?.maximumNumberOfLines = 3
         titleLabel.attributedStringValue = NSAttributedString(string: record.title, attributes: titleLabelAttributes)
         descriptionView.textStorage?.setAttributedString(NSAttributedString(string: record.description ?? "", attributes: descriptionLabelAttributes))
-        imageView.set(record.type.placeholder.tinted(with: record.type.color), scaling: .resize)
+        let placeholder = record.type.placeholder.tinted(with: record.type.color)
 
         if let media = record.media.first {
             Alamofire.request(media.thumbnail).responseImage { [weak self] response in
                 if let image = response.value {
-                    self?.imageView.set(image)
+                    self?.setImage(image, scaling: .aspectFill)
+                } else {
+                    self?.setImage(placeholder, scaling: .resize)
                 }
             }
+        } else {
+            setImage(placeholder, scaling: .resize)
         }
+    }
+
+    private func setImage(_ image: NSImage, scaling: ImageScaling) {
+        imageView.transition(image, duration: Constants.imageTransitionDuration, scaling: scaling)
     }
 }

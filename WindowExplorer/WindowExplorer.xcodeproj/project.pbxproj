@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1F910718206C2973008F9513 /* AspectFillImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F910717206C2973008F9513 /* AspectFillImage.swift */; };
+		1F910718206C2973008F9513 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F910717206C2973008F9513 /* ImageView.swift */; };
 		1FAFF018206EDD93005DC68B /* Soleil-03.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF00C206EDD92005DC68B /* Soleil-03.otf */; };
 		1FAFF019206EDD93005DC68B /* Soleil-05.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF00D206EDD92005DC68B /* Soleil-05.otf */; };
 		1FAFF01A206EDD93005DC68B /* Soleil-00.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF00E206EDD92005DC68B /* Soleil-00.otf */; };
@@ -47,6 +47,9 @@
 		2247670020562F65003E8790 /* MediaItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224766FE20562F65003E8790 /* MediaItemView.swift */; };
 		2247670120562F65003E8790 /* MediaItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 224766FF20562F65003E8790 /* MediaItemView.xib */; };
 		224D9A6B207606E30041F1C6 /* VolumeLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224D9A6A207606E30041F1C6 /* VolumeLevel.swift */; };
+		225FBBA1208E89BA00B2CD3E /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225FBBA0208E89BA00B2CD3E /* MasterViewController.swift */; };
+		225FBBA3208E89C200B2CD3E /* Master.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 225FBBA2208E89C200B2CD3E /* Master.storyboard */; };
+		225FBBA5208EAF9400B2CD3E /* ControlAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225FBBA4208EAF9400B2CD3E /* ControlAction.swift */; };
 		2256D293208FEF5D009DEADE /* RecordTypeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2256D292208FEF5D009DEADE /* RecordTypeSelectionView.swift */; };
 		2256D2992090CF3B009DEADE /* NSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2256D2982090CF3B009DEADE /* NSView.swift */; };
 		226D0582204FC38700D74711 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226D0581204FC38600D74711 /* Event.swift */; };
@@ -56,6 +59,7 @@
 		227B5E11205611BB00F403B3 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227B5E10205611BB00F403B3 /* Style.swift */; };
 		22914F752049001B0000D4E1 /* TouchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22914F742049001B0000D4E1 /* TouchManager.swift */; };
 		22914F77204905230000D4E1 /* NSApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22914F76204905230000D4E1 /* NSApplication.swift */; };
+		22927912208E531C005E2036 /* BackgroundTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22927911208E531C005E2036 /* BackgroundTimer.swift */; };
 		22A4985E204733770024B46C /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A4985D204733770024B46C /* WindowManager.swift */; };
 		22A498612047349C0024B46C /* WindowNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A498602047349C0024B46C /* WindowNotifications.swift */; };
 		22A498752047499B0024B46C /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A498742047499B0024B46C /* JSON.swift */; };
@@ -119,7 +123,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1F910717206C2973008F9513 /* AspectFillImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectFillImage.swift; sourceTree = "<group>"; };
+		1F910717206C2973008F9513 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		1FAFF00C206EDD92005DC68B /* Soleil-03.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-03.otf"; sourceTree = "<group>"; };
 		1FAFF00D206EDD92005DC68B /* Soleil-05.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-05.otf"; sourceTree = "<group>"; };
 		1FAFF00E206EDD92005DC68B /* Soleil-00.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-00.otf"; sourceTree = "<group>"; };
@@ -159,6 +163,9 @@
 		224766FE20562F65003E8790 /* MediaItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaItemView.swift; sourceTree = "<group>"; };
 		224766FF20562F65003E8790 /* MediaItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MediaItemView.xib; sourceTree = "<group>"; };
 		224D9A6A207606E30041F1C6 /* VolumeLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeLevel.swift; sourceTree = "<group>"; };
+		225FBBA0208E89BA00B2CD3E /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
+		225FBBA2208E89C200B2CD3E /* Master.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Master.storyboard; sourceTree = "<group>"; };
+		225FBBA4208EAF9400B2CD3E /* ControlAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlAction.swift; sourceTree = "<group>"; };
 		2256D292208FEF5D009DEADE /* RecordTypeSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordTypeSelectionView.swift; sourceTree = "<group>"; };
 		2256D2982090CF3B009DEADE /* NSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSView.swift; sourceTree = "<group>"; };
 		226D0581204FC38600D74711 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
@@ -168,6 +175,7 @@
 		227B5E10205611BB00F403B3 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		22914F742049001B0000D4E1 /* TouchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchManager.swift; sourceTree = "<group>"; };
 		22914F76204905230000D4E1 /* NSApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSApplication.swift; sourceTree = "<group>"; };
+		22927911208E531C005E2036 /* BackgroundTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTimer.swift; sourceTree = "<group>"; };
 		22A4985D204733770024B46C /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		22A498602047349C0024B46C /* WindowNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowNotifications.swift; sourceTree = "<group>"; };
 		22A498742047499B0024B46C /* JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
@@ -264,8 +272,6 @@
 			children = (
 				2204621420472F2D0067D9FB /* PlayerControl.xib */,
 				2204621620472F2D0067D9FB /* PlayerControl.swift */,
-				2204621520472F2D0067D9FB /* PlayerState.swift */,
-				224D9A6A207606E30041F1C6 /* VolumeLevel.swift */,
 				D507D33A2072FD2B0003CEA7 /* ColoredSliderCell.swift */,
 			);
 			path = Views;
@@ -312,6 +318,16 @@
 				22046242204730780067D9FB /* TapGestureRecognizer.swift */,
 			);
 			path = Gestures;
+			sourceTree = "<group>";
+		};
+		225FBB9F208E899900B2CD3E /* MasterViewController */ = {
+			isa = PBXGroup;
+			children = (
+				225FBBA2208E89C200B2CD3E /* Master.storyboard */,
+				225FBBA0208E89BA00B2CD3E /* MasterViewController.swift */,
+				225FBBA4208EAF9400B2CD3E /* ControlAction.swift */,
+			);
+			path = MasterViewController;
 			sourceTree = "<group>";
 		};
 		2276AE63204E7122001FAD8B /* Windows */ = {
@@ -368,6 +384,8 @@
 			children = (
 				22A76FE92046477A006C0AE7 /* Player.storyboard */,
 				22A76FEA2046477A006C0AE7 /* PlayerViewController.swift */,
+				2204621520472F2D0067D9FB /* PlayerState.swift */,
+				224D9A6A207606E30041F1C6 /* VolumeLevel.swift */,
 				2204621320472F1E0067D9FB /* Views */,
 			);
 			path = PlayerViewController;
@@ -402,8 +420,8 @@
 				22A9233B2044B047003EA9BB /* Controllers */,
 				2276AE63204E7122001FAD8B /* Windows */,
 				D901EBEE205748C500BBFCF2 /* Views */,
-				22B1E2D0204638CD00BDDF14 /* Helpers */,
 				2204623B20472FFD0067D9FB /* Models */,
+				22B1E2D0204638CD00BDDF14 /* Helpers */,
 				2204623C204730050067D9FB /* Gestures */,
 				22A4985F204734790024B46C /* Notifications */,
 				61767FFD206895EE00970640 /* Audio */,
@@ -444,6 +462,7 @@
 		22A9233B2044B047003EA9BB /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				225FBB9F208E899900B2CD3E /* MasterViewController */,
 				D992E20620533A0400EAB698 /* RecordViewController */,
 				8FEABD9E20646FF600612C84 /* MediaControllers */,
 			);
@@ -465,6 +484,7 @@
 				D901EBEC2056EEFE00BBFCF2 /* RecordDisplayable.swift */,
 				2224125D206BFE9F008E7A9D /* RecordType.swift */,
 				8FA62A07206BFAFC004E6092 /* RecordInfo.swift */,
+				22927911208E531C005E2036 /* BackgroundTimer.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -529,7 +549,7 @@
 		D901EBEE205748C500BBFCF2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				1F910717206C2973008F9513 /* AspectFillImage.swift */,
+				1F910717206C2973008F9513 /* ImageView.swift */,
 				D901EBEF2057490400BBFCF2 /* RegularTableView.swift */,
 				8FE6467A2060553100E6116A /* RegularScrollView.swift */,
 				3F47D52E206420C6001E86E3 /* FlippedClipView.swift */,
@@ -631,6 +651,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				225FBBA3208E89C200B2CD3E /* Master.storyboard in Resources */,
 				1FAFF01C206EDD93005DC68B /* Soleil-09.otf in Resources */,
 				22A76FE720464764006C0AE7 /* PDF.storyboard in Resources */,
 				D5384CF72071A7FD00A157AE /* PDFTableViewItem.xib in Resources */,
@@ -725,7 +746,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1F910718206C2973008F9513 /* AspectFillImage.swift in Sources */,
+				1F910718206C2973008F9513 /* ImageView.swift in Sources */,
 				3F8436E420647F9F00AAAB55 /* String.swift in Sources */,
 				22A76FEC2046477A006C0AE7 /* PlayerViewController.swift in Sources */,
 				D92E0F00206052C900C1C9A7 /* ArrowControl.swift in Sources */,
@@ -743,6 +764,7 @@
 				3F2FAB5B204F7D24002EDF5D /* Artifact.swift in Sources */,
 				22B1E2CD204638B900BDDF14 /* GestureManager.swift in Sources */,
 				D9F24E5D205AFE2900B9FCB8 /* Media.swift in Sources */,
+				225FBBA1208E89BA00B2CD3E /* MasterViewController.swift in Sources */,
 				22A76FE620464764006C0AE7 /* PDFViewController.swift in Sources */,
 				2276AE65204E7150001FAD8B /* BorderlessWindow.swift in Sources */,
 				D992E20A20533A3A00EAB698 /* RecordViewController.swift in Sources */,
@@ -778,6 +800,7 @@
 				618F0C35206A08CE00762C20 /* AudioComponentDescription.swift in Sources */,
 				22046248204730780067D9FB /* TapGestureRecognizer.swift in Sources */,
 				8FE6467B2060553100E6116A /* RegularScrollView.swift in Sources */,
+				225FBBA5208EAF9400B2CD3E /* ControlAction.swift in Sources */,
 				2247670020562F65003E8790 /* MediaItemView.swift in Sources */,
 				22914F77204905230000D4E1 /* NSApplication.swift in Sources */,
 				2204623920472FDF0067D9FB /* NetworkConfiguration.swift in Sources */,
@@ -788,6 +811,7 @@
 				2256D2992090CF3B009DEADE /* NSView.swift in Sources */,
 				3F0902612049C6B10044F100 /* Theme.swift in Sources */,
 				22046244204730780067D9FB /* PanGestureRecognizer.swift in Sources */,
+				22927912208E531C005E2036 /* BackgroundTimer.swift in Sources */,
 				2204623820472FDF0067D9FB /* URL.swift in Sources */,
 				2204621820472F2D0067D9FB /* PlayerState.swift in Sources */,
 				D901EBED2056EEFE00BBFCF2 /* RecordDisplayable.swift in Sources */,

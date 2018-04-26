@@ -15,7 +15,7 @@
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="YQD-s2-RG2" userLabel="Content View">
                     <rect key="frame" x="0.0" y="0.0" width="240" height="80"/>
                     <subviews>
-                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="GPP-LU-OnZ" customClass="AspectFillImage" customModule="WindowExplorer" customModuleProvider="target">
+                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="GPP-LU-OnZ" customClass="ImageView" customModule="WindowExplorer" customModuleProvider="target">
                             <rect key="frame" x="10" y="10" width="60" height="60"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="60" id="M5H-B8-xpK"/>

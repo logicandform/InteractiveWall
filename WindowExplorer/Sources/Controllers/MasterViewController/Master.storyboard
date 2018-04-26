@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="aqO-32-87F">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
+    </dependencies>
+    <scenes>
+        <!--Master View Controller-->
+        <scene sceneID="LO9-fm-Wdm">
+            <objects>
+                <viewController id="aqO-32-87F" customClass="MasterViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" wantsLayer="YES" id="Wc8-TP-M8l">
+                        <rect key="frame" x="0.0" y="0.0" width="1200" height="695"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <stackView distribution="fillEqually" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vLa-9A-hBT">
+                                <rect key="frame" x="8" y="447" width="1184" height="240"/>
+                                <subviews>
+                                    <customView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ysD-uU-Q8p">
+                                        <rect key="frame" x="0.0" y="0.0" width="389" height="240"/>
+                                        <shadow key="shadow" blurRadius="6">
+                                            <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </shadow>
+                                    </customView>
+                                    <customView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4v1-sN-DHB">
+                                        <rect key="frame" x="397" y="0.0" width="390" height="240"/>
+                                        <shadow key="shadow" blurRadius="6">
+                                            <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </shadow>
+                                    </customView>
+                                    <customView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="txO-Qp-bMV">
+                                        <rect key="frame" x="795" y="0.0" width="389" height="240"/>
+                                        <shadow key="shadow" blurRadius="6">
+                                            <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </shadow>
+                                    </customView>
+                                </subviews>
+                                <shadow key="shadow">
+                                    <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </shadow>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="1184" id="6cb-Pz-Otb"/>
+                                    <constraint firstItem="ysD-uU-Q8p" firstAttribute="width" secondItem="4v1-sN-DHB" secondAttribute="width" id="dKn-UZ-7oa"/>
+                                    <constraint firstAttribute="height" constant="240" id="dU4-QS-vO1"/>
+                                    <constraint firstItem="4v1-sN-DHB" firstAttribute="height" secondItem="vLa-9A-hBT" secondAttribute="height" id="f8V-5G-5qk"/>
+                                    <constraint firstItem="ysD-uU-Q8p" firstAttribute="height" secondItem="vLa-9A-hBT" secondAttribute="height" id="h9a-oh-1Fr"/>
+                                    <constraint firstItem="ysD-uU-Q8p" firstAttribute="width" secondItem="txO-Qp-bMV" secondAttribute="width" id="l6g-Hd-KBM"/>
+                                    <constraint firstItem="txO-Qp-bMV" firstAttribute="height" secondItem="vLa-9A-hBT" secondAttribute="height" id="pMs-Yc-X1t"/>
+                                </constraints>
+                                <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
+                            </stackView>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="VWY-Gp-y8C">
+                                <rect key="frame" x="562" y="291" width="76" height="18"/>
+                                <buttonCell key="cell" type="check" title="Screen 2" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="sUF-36-rY3">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BgP-hO-0dR">
+                                <rect key="frame" x="692" y="291" width="76" height="18"/>
+                                <buttonCell key="cell" type="check" title="Screen 2" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="MmH-zr-Htb">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fxL-Bx-4ub">
+                                <rect key="frame" x="450" y="291" width="74" height="18"/>
+                                <buttonCell key="cell" type="check" title="Screen 1" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="2zE-dp-Gi1">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
+                            <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mSd-7i-Rsz">
+                                <rect key="frame" x="450" y="224" width="319" height="26"/>
+                                <popUpButtonCell key="cell" type="push" title="Load MapExplorer" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="IrS-xj-ACc" id="iaA-2B-sif">
+                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="menu"/>
+                                    <menu key="menu" id="yMn-Be-8VP">
+                                        <items>
+                                            <menuItem title="Load MapExplorer" state="on" id="IrS-xj-ACc"/>
+                                            <menuItem title="Close Application" id="Fe2-Cm-6eF"/>
+                                        </items>
+                                    </menu>
+                                </popUpButtonCell>
+                            </popUpButton>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="o2b-t2-z8m">
+                                <rect key="frame" x="452" y="158" width="314" height="25"/>
+                                <buttonCell key="cell" type="roundTextured" title="Apply" bezelStyle="texturedRounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="smM-v4-yy2">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="applyButtonClicked:" target="aqO-32-87F" id="pGg-UM-W3e"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="VWY-Gp-y8C" firstAttribute="leading" secondItem="fxL-Bx-4ub" secondAttribute="trailing" constant="42" id="7rF-a2-4ce"/>
+                            <constraint firstItem="BgP-hO-0dR" firstAttribute="leading" secondItem="VWY-Gp-y8C" secondAttribute="trailing" constant="58" id="7sU-AV-3Jf"/>
+                            <constraint firstItem="VWY-Gp-y8C" firstAttribute="centerY" secondItem="BgP-hO-0dR" secondAttribute="centerY" id="9zp-sA-euw"/>
+                            <constraint firstAttribute="trailing" secondItem="vLa-9A-hBT" secondAttribute="trailing" constant="8" id="ArX-hj-plD"/>
+                            <constraint firstItem="mSd-7i-Rsz" firstAttribute="trailing" secondItem="BgP-hO-0dR" secondAttribute="trailing" id="DYN-fJ-HsU"/>
+                            <constraint firstItem="VWY-Gp-y8C" firstAttribute="centerX" secondItem="Wc8-TP-M8l" secondAttribute="centerX" id="Iad-QH-MgH"/>
+                            <constraint firstItem="o2b-t2-z8m" firstAttribute="leading" secondItem="mSd-7i-Rsz" secondAttribute="leading" id="KuM-9e-E1L"/>
+                            <constraint firstItem="vLa-9A-hBT" firstAttribute="top" secondItem="Wc8-TP-M8l" secondAttribute="top" constant="8" id="PoE-hS-fFg"/>
+                            <constraint firstItem="VWY-Gp-y8C" firstAttribute="top" secondItem="vLa-9A-hBT" secondAttribute="bottom" constant="140" id="ROw-k1-otv"/>
+                            <constraint firstItem="o2b-t2-z8m" firstAttribute="trailing" secondItem="mSd-7i-Rsz" secondAttribute="trailing" id="SJY-S9-Sie"/>
+                            <constraint firstItem="mSd-7i-Rsz" firstAttribute="top" secondItem="VWY-Gp-y8C" secondAttribute="bottom" constant="45" id="UZs-QJ-E9v"/>
+                            <constraint firstItem="mSd-7i-Rsz" firstAttribute="leading" secondItem="fxL-Bx-4ub" secondAttribute="leading" id="gYL-6x-lrA"/>
+                            <constraint firstItem="o2b-t2-z8m" firstAttribute="top" secondItem="mSd-7i-Rsz" secondAttribute="bottom" constant="45" id="j8Q-op-X7O"/>
+                            <constraint firstItem="vLa-9A-hBT" firstAttribute="leading" secondItem="Wc8-TP-M8l" secondAttribute="leading" constant="8" id="nIy-sN-Uve"/>
+                            <constraint firstItem="VWY-Gp-y8C" firstAttribute="centerY" secondItem="fxL-Bx-4ub" secondAttribute="centerY" id="pPg-Bs-L53"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="actionSelectionButton" destination="mSd-7i-Rsz" id="DMA-Vr-zNR"/>
+                        <outlet property="leftScreen" destination="ysD-uU-Q8p" id="2IX-EL-1cA"/>
+                        <outlet property="leftScreenCheckbox" destination="fxL-Bx-4ub" id="gWS-et-Gpq"/>
+                        <outlet property="middleScreen" destination="4v1-sN-DHB" id="EI9-dg-N31"/>
+                        <outlet property="middleScreenCheckbox" destination="VWY-Gp-y8C" id="iNa-YN-n1j"/>
+                        <outlet property="rightScreen" destination="txO-Qp-bMV" id="G1H-8H-CGQ"/>
+                        <outlet property="rightScreenCheckbox" destination="BgP-hO-0dR" id="6e7-Jm-3x5"/>
+                    </connections>
+                </viewController>
+                <customObject id="l4p-uW-eK2" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-962" y="134.5"/>
+        </scene>
+    </scenes>
+</document>

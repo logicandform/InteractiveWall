@@ -26,20 +26,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         screenID = screenIndex
         appID = appIndex + ((screenIndex - 1) * Configuration.mapsPerScreen)
 
-        let mapStoryboard = NSStoryboard(name: MapViewController.storyboard, bundle: nil)
-        let mapController = mapStoryboard.instantiateInitialController() as! MapViewController
-        let mapWindow: NSWindow
+        let controller = MapViewController.instance()
         let screenWidth = screen.frame.width / CGFloat(Configuration.mapsPerScreen)
         let frame = NSRect(x: screen.frame.minX + screenWidth * CGFloat(appIndex), y: screen.frame.minY, width: screenWidth, height: screen.frame.height)
-        mapWindow = BorderlessWindow(frame: frame, controller: mapController)
-        mapWindow.setFrame(frame, display: true)
-        mapWindow.makeKeyAndOrderFront(self)
+        let window = BorderlessWindow(frame: frame, controller: controller)
+        window.setFrame(frame, display: true)
+        window.makeKeyAndOrderFront(self)
 
         /// Display the DemoViewController
 //        let demoStoryboard = NSStoryboard(name: GestureDemoController.storyboard, bundle: nil)
 //        let demoVC = demoStoryboard.instantiateIni5tialController() as! GestureDemoController
 //        let demoWindow = NSWindow(contentViewController: demoVC)
-//        demoWindow.title = "Demo Window"Ø
+//        demoWindow.title = "Demo Window"
 //        demoWindow.makeKeyAndOrderFront(self)
     }
 

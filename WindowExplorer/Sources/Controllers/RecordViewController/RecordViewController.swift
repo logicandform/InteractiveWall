@@ -23,11 +23,11 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     var record: RecordDisplayable!
     private(set) var gestureManager: GestureManager!
-    private var showingRelatedItems = false
     private var pageControl = PageControl()
-    private var positionsForMediaControllers = [MediaViewController: Int?]()
-    private weak var closeWindowTimer: Foundation.Timer?
+    private var positionForMediaController = [MediaViewController: Int?]()
     private var animating = false
+    private var showingRelatedItems = false
+    private weak var closeWindowTimer: Foundation.Timer?
     private var relatedItemsType: RecordType?
     private var hiddenRelatedItems = IndexSet()
 
@@ -163,6 +163,32 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         windowDragArea.layer?.backgroundColor = style.dragAreaBackground.cgColor
         windowDragAreaHighlight.wantsLayer = true
         windowDragAreaHighlight.layer?.backgroundColor = record.type.color.cgColor
+    }
+
+
+    // MARK: API
+
+    func animate(to origin: NSPoint) {
+        guard let window = self.view.window, let screen = window.screen, shouldAnimate(to: origin), !gestureManager.isActive() else {
+            return
+        }
+
+        gestureManager.invalidateAllGestures()
+        resetCloseWindowTimer()
+        animating = true
+        window.makeKeyAndOrderFront(self)
+
+        let frame = CGRect(origin: origin, size: window.frame.size)
+        let offset = abs(window.frame.minX - origin.x) / screen.frame.width
+        let duration = max(Double(offset), Constants.animationDuration)
+
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = duration
+            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+            window.animator().setFrame(frame, display: true, animate: true)
+        }, completionHandler: { [weak self] in
+            self?.animating = false
+        })
     }
 
 
@@ -304,8 +330,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return
         }
 
-        recordMoved()
-
         switch pan.state {
         case .recognized, .momentum:
             var origin = window.frame.origin
@@ -313,6 +337,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             window.setFrameOrigin(origin)
         case .possible:
             WindowManager.instance.checkBounds(of: self)
+        case .began, .ended:
+            resetMediaControllerPositions()
         default:
             return
         }
@@ -346,201 +372,10 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
 
-    // MARK: Helpers
-
-    private func animateViewIn() {
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = Constants.animationDuration
-            detailView.animator().alphaValue = 1.0
-        })
-    }
-
-    private func animateViewOut() {
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = Constants.animationDuration
-            detailView.animator().alphaValue = 0.0
-            relatedItemsView.animator().alphaValue = 0.0
-            windowDragArea.animator().alphaValue = 0.0
-        }, completionHandler: {
-            WindowManager.instance.closeWindow(for: self)
-        })
-    }
-
-    private func animateCollectionView(to point: CGPoint, duration: CGFloat, for index: Int) {
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = TimeInterval(duration)
-            collectionClipView.animator().setBoundsOrigin(point)
-            }, completionHandler: { [weak self] in
-                self?.pageControl.selectedPage = UInt(index)
-        })
-    }
-
-    func animate(to origin: NSPoint) {
-        guard let window = self.view.window, let screen = window.screen, shouldAnimate(to: origin), !gestureManager.isActive() else {
-            return
-        }
-
-        gestureManager.invalidateAllGestures()
-        resetCloseWindowTimer()
-        animating = true
-        window.makeKeyAndOrderFront(self)
-
-        let frame = CGRect(origin: origin, size: window.frame.size)
-        let offset = abs(window.frame.minX - origin.x) / screen.frame.width
-        let duration = max(Double(offset), Constants.animationDuration)
-
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = duration
-            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-            window.animator().setFrame(frame, display: true, animate: true)
-        }, completionHandler: { [weak self] in
-            self?.animating = false
-        })
-    }
-
-    private func toggleRelatedItems(completion: (() -> Void)? = nil) {
-        guard let window = view.window else {
-            return
-        }
-
-        relatedItemsView.isHidden = false
-        let alpha: CGFloat = showingRelatedItems ? 0 : 1
-
-        NSAnimationContext.runAnimationGroup({ [weak self] _ in
-            NSAnimationContext.current.duration = Constants.animationDuration
-            self?.relatedItemsView.animator().alphaValue = alpha
-            self?.relatedRecordsLabel.animator().alphaValue = alpha
-            self?.toggleRelatedItemsImage.animator().frameCenterRotation = showingRelatedItems ? Constants.showRelatedItemViewRotation : 0
-            }, completionHandler: { [weak self] in
-                if let strongSelf = self {
-                    strongSelf.relatedItemsView.isHidden = !strongSelf.showingRelatedItems
-                }
-                completion?()
-        })
-
-        let relatedItemsWidth = relatedItemsView.frame.width + Constants.relatedItemsViewMargin * 2
-        let offset = showingRelatedItems ? -relatedItemsWidth : relatedItemsWidth
-        var frame = window.frame
-        frame.size.width += offset
-        window.setFrame(frame, display: true, animate: true)
-        showingRelatedItems = !showingRelatedItems
-    }
-
-    private func selectRelatedItem(_ record: RecordDisplayable) {
-        guard let window = view.window else {
-            return
-        }
-
-        toggleRelatedItems(completion: {
-            let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins, y: window.frame.minY)
-            RecordFactory.record(for: record.type, id: record.id, completion: { newRecord in
-                if let loadedRecord = newRecord {
-                    WindowManager.instance.display(.record(loadedRecord), at: origin)
-                }
-            })
-        })
-    }
-
-    private func selectMediaItem(_ media: Media) {
-        guard let window = view.window, let windowType = WindowType(for: media) else {
-            return
-        }
-
-        var controller: MediaViewController?
-
-        if let mediaController = positionsForMediaControllers.keys.first(where: {$0.media == media}) {
-            controller = mediaController
-        }
-
-        let position = getMediaControllerPosition()
-        let offsetX = position * Constants.mediaControllerOffset
-        let offsetY = position * -Constants.mediaControllerOffset
-        let windowHeight = controller == nil ? windowType.size.height : controller!.view.frame.height
-        let originX = window.frame.maxX + Constants.windowMargins + CGFloat(offsetX)
-        let originY = window.frame.maxY - windowHeight + CGFloat(offsetY)
-        let origin = getAdjustedOrigin(CGPoint(x: originX, y: originY), on: window, with: windowType)
-
-        if let mediaController = controller {
-            if let oldPosition = positionsForMediaControllers[mediaController], oldPosition != nil, oldPosition! < position {
-                mediaController.view.window?.makeKeyAndOrderFront(self)
-                return
-            }
-            mediaController.animate(to: origin)
-            positionsForMediaControllers[mediaController] = position
-        } else if let mediaController = WindowManager.instance.display(windowType, at: origin) as? MediaViewController {
-            positionsForMediaControllers[mediaController] = position
-            mediaController.delegate = self
-        }
-    }
-
-    /// Returns the origin, adjusting if it will be displaying a record off the map
-    private func getAdjustedOrigin(_ origin: CGPoint, on window: NSWindow, with windowType: WindowType) -> NSPoint {
-        let totalWidth = NSScreen.screens.reduce(0) { $0 + $1.frame.width }
-        if origin.x > totalWidth - Constants.screenEdgeBuffer, windowType.canAdjustOrigin {
-            if NSScreen.screens.last!.frame.height - window.frame.maxY < windowType.size.height {
-                return NSPoint(x: totalWidth - windowType.size.width - Constants.windowMargins, y: origin.y - view.frame.height - Constants.windowMargins)
-            } else {
-                return NSPoint(x: totalWidth - windowType.size.width - Constants.windowMargins, y: origin.y + windowType.size.height + Constants.windowMargins)
-            }
-        }
-
-        return origin
-    }
-
-    /// Gets the position that is missing from 0 to the largestPosition
-    private func getMediaControllerPosition() -> Int {
-        let sortedPosition = positionsForMediaControllers.values.compactMap{$0}.sorted(by: { $0 < $1 })
-
-        guard let lastPosition = sortedPosition.last else {
-            return 0
-        }
-
-        for index in 0...lastPosition {
-            if index != sortedPosition[index] {
-                return index
-            }
-        }
-
-        return lastPosition + 1
-    }
-
-    private func resetCloseWindowTimer() {
-        closeWindowTimer?.invalidate()
-        closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Constants.closeWindowTimeoutPeriod, repeats: false) { [weak self] _ in
-            self?.closeTimerFired()
-        }
-    }
-
-    private func closeTimerFired() {
-        // reset timer gets recalled once a child MediaViewContoller gets closed
-        if positionsForMediaControllers.keys.isEmpty {
-            animateViewOut()
-        }
-    }
-
-    private func recievedTouch(touch: Touch) {
-        resetCloseWindowTimer()
-    }
-
-    /// If the position of the controller is close enough to the origin of animation, don't animate
-    private func shouldAnimate(to origin: NSPoint) -> Bool {
-        guard let currentOrigin = view.window?.frame.origin else {
-            return false
-        }
-
-        let diff = currentOrigin - origin
-        return abs(diff.x) > Constants.animationDistanceThreshold || abs(diff.y) > Constants.animationDistanceThreshold ? true : false
-    }
-
-    private func recordMoved() {
-        positionsForMediaControllers.keys.forEach { positionsForMediaControllers[$0] = nil as Int? }
-    }
-
-
     // MARK: NSCollectionViewDelegate & NSCollectionViewDataSource
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return record?.media.count ?? 0
+        return record.media.count
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
@@ -596,14 +431,14 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     // MARK: MediaControllerDelegate
 
     func controllerDidClose(_ controller: MediaViewController) {
-        positionsForMediaControllers.removeValue(forKey: controller)
+        positionForMediaController.removeValue(forKey: controller)
         resetCloseWindowTimer()
     }
 
     func controllerDidMove(_ controller: MediaViewController) {
-        positionsForMediaControllers[controller] = nil as Int?
+        positionForMediaController[controller] = nil as Int?
     }
-    
+
 
     // MARK: GestureResponder
 
@@ -618,6 +453,168 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         let adjustedWidth = dragAreaInWindow.width / 2
         let smallDragArea = CGRect(x: dragAreaInWindow.minX + adjustedWidth / 2, y: dragAreaInWindow.minY, width: adjustedWidth, height: dragAreaInWindow.height)
         return bounds.contains(smallDragArea)
+    }
+
+
+    // MARK: Helpers
+
+    private func animateViewIn() {
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = Constants.animationDuration
+            detailView.animator().alphaValue = 1.0
+        })
+    }
+
+    private func animateViewOut() {
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = Constants.animationDuration
+            detailView.animator().alphaValue = 0.0
+            relatedItemsView.animator().alphaValue = 0.0
+            windowDragArea.animator().alphaValue = 0.0
+        }, completionHandler: {
+            WindowManager.instance.closeWindow(for: self)
+        })
+    }
+
+    private func animateCollectionView(to point: CGPoint, duration: CGFloat, for index: Int) {
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = TimeInterval(duration)
+            collectionClipView.animator().setBoundsOrigin(point)
+            }, completionHandler: { [weak self] in
+                self?.pageControl.selectedPage = UInt(index)
+        })
+    }
+
+    private func toggleRelatedItems(completion: (() -> Void)? = nil) {
+        guard let window = view.window else {
+            return
+        }
+
+        relatedItemsView.isHidden = false
+        let alpha: CGFloat = showingRelatedItems ? 0 : 1
+
+        NSAnimationContext.runAnimationGroup({ [weak self] _ in
+            NSAnimationContext.current.duration = Constants.animationDuration
+            self?.relatedItemsView.animator().alphaValue = alpha
+            self?.relatedRecordsLabel.animator().alphaValue = alpha
+            self?.toggleRelatedItemsImage.animator().frameCenterRotation = showingRelatedItems ? Constants.showRelatedItemViewRotation : 0
+            }, completionHandler: { [weak self] in
+                if let strongSelf = self {
+                    strongSelf.relatedItemsView.isHidden = !strongSelf.showingRelatedItems
+                }
+                completion?()
+        })
+
+        let relatedItemsWidth = relatedItemsView.frame.width + Constants.relatedItemsViewMargin * 2
+        let offset = showingRelatedItems ? -relatedItemsWidth : relatedItemsWidth
+        var frame = window.frame
+        frame.size.width += offset
+        window.setFrame(frame, display: true, animate: true)
+        showingRelatedItems = !showingRelatedItems
+    }
+
+    private func selectRelatedItem(_ record: RecordDisplayable) {
+        guard let window = view.window else {
+            return
+        }
+
+        toggleRelatedItems(completion: {
+            let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins, y: window.frame.minY)
+            RecordFactory.record(for: record.type, id: record.id, completion: { newRecord in
+                if let loadedRecord = newRecord {
+                    WindowManager.instance.display(.record(loadedRecord), at: origin)
+                }
+            })
+        })
+    }
+
+    private func selectMediaItem(_ media: Media) {
+        guard let window = view.window, let windowType = WindowType(for: media) else {
+            return
+        }
+
+        let controller = positionForMediaController.keys.first(where: { $0.media == media })
+        let position = getMediaControllerPosition()
+        let offset = CGVector(dx: position * Constants.mediaControllerOffset, dy: position * -Constants.mediaControllerOffset)
+        var origin = CGPoint(x: window.frame.maxX + Constants.windowMargins + offset.dx, y: window.frame.maxY + offset.dy)
+        origin.y -= controller?.view.frame.height ?? windowType.size.height
+        if windowType.canAdjustOrigin {
+            origin = constrainedToApplication(origin, for: window, type: windowType)
+        }
+
+        if let controller = controller {
+            // If the controller is in the correct position, bring it to the front, else animate to point
+            if let position = positionForMediaController[controller], position != nil {
+                controller.view.window?.makeKeyAndOrderFront(self)
+            } else {
+                controller.animate(to: origin)
+                positionForMediaController[controller] = position
+            }
+        } else if let controller = WindowManager.instance.display(windowType, at: origin) as? MediaViewController {
+            positionForMediaController[controller] = position
+            controller.delegate = self
+        }
+    }
+
+    /// Returns the given origin translated to the application frame if necessary
+    private func constrainedToApplication(_ origin: CGPoint, for window: NSWindow, type: WindowType) -> CGPoint {
+        let lastScreen = NSScreen.at(position: Configuration.numberOfScreens)
+
+        if origin.x > lastScreen.frame.maxX - Constants.screenEdgeBuffer {
+            // TODO: What is this check doing?
+            if lastScreen.frame.height - window.frame.maxY < type.size.height {
+                return CGPoint(x: lastScreen.frame.maxX - type.size.width - Constants.windowMargins, y: origin.y - view.frame.height - Constants.windowMargins)
+            } else {
+                return CGPoint(x: lastScreen.frame.maxX - type.size.width - Constants.windowMargins, y: origin.y + type.size.height + Constants.windowMargins)
+            }
+        }
+
+        return origin
+    }
+
+    /// Gets the first available media controller position
+    private func getMediaControllerPosition() -> Int {
+        let currentPositions = positionForMediaController.values
+
+        for position in 0 ..< record.media.count {
+            if !currentPositions.contains(position) {
+                return position
+            }
+        }
+
+        return record.media.count
+    }
+
+    private func resetCloseWindowTimer() {
+        closeWindowTimer?.invalidate()
+        closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Constants.closeWindowTimeoutPeriod, repeats: false) { [weak self] _ in
+            self?.closeTimerFired()
+        }
+    }
+
+    private func closeTimerFired() {
+        // Reset timer gets recalled once a child MediaViewContoller gets closed
+        if positionForMediaController.keys.isEmpty {
+            animateViewOut()
+        }
+    }
+
+    private func recievedTouch(touch: Touch) {
+        resetCloseWindowTimer()
+    }
+
+    /// If the position of the controller is close enough to the origin of animation returns false
+    private func shouldAnimate(to origin: NSPoint) -> Bool {
+        guard let currentOrigin = view.window?.frame.origin else {
+            return false
+        }
+
+        let diff = currentOrigin - origin
+        return abs(diff.x) > Constants.animationDistanceThreshold || abs(diff.y) > Constants.animationDistanceThreshold ? true : false
+    }
+
+    private func resetMediaControllerPositions() {
+        positionForMediaController.keys.forEach { positionForMediaController[$0] = nil as Int? }
     }
 
     /// Handle a change of record type from the RelatedItemsHeaderView
@@ -636,8 +633,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         relatedItemsType = type
         relatedItemsView.beginUpdates()
         relatedItemsView.insertRows(at: hiddenRelatedItems, withAnimation: .effectFade)
-        relatedItemsView.endUpdates()
-        relatedItemsView.beginUpdates()
         relatedItemsView.removeRows(at: itemsToRemove, withAnimation: .effectFade)
         relatedItemsView.endUpdates()
         hiddenRelatedItems = itemsToRemove

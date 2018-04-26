@@ -10,7 +10,7 @@ final class WindowManager {
     static let instance = WindowManager()
 
     private(set) var windows = [NSWindow: GestureManager]()
-    private var controllersForRecordInfo = [RecordInfo: NSViewController]()
+    private var controllerForRecord = [RecordInfo: NSViewController]()
 
     private struct Keys {
         static let map = "map"
@@ -40,8 +40,8 @@ final class WindowManager {
             window.close()
 
             if controller is RecordViewController {
-                if let first = controllersForRecordInfo.first(where: { $0.value == controller }) {
-                    controllersForRecordInfo.removeValue(forKey: first.key)
+                if let first = controllerForRecord.first(where: { $0.value == controller }) {
+                    controllerForRecord.removeValue(forKey: first.key)
                 }
             }
         }
@@ -98,18 +98,18 @@ final class WindowManager {
             if let record = record {
                 let windowType = WindowType.record(record)
                 let origin = location - CGPoint(x: windowType.size.width / 2, y: windowType.size.height)
-                self?.handleDisplayingRecord(for: record, with: id, on: map, at: origin)
+                self?.display(record, at: origin, forMap: map)
             }
         }
     }
 
-    private func handleDisplayingRecord(for record: RecordDisplayable, with recordId: Int, on mapId: Int, at origin: CGPoint) {
-        let recordInfo = RecordInfo(recordId: recordId, mapId: mapId, type: record.type)
+    private func display(_ record: RecordDisplayable, at origin: CGPoint, forMap map: Int) {
+        let info = RecordInfo(id: record.id, map: map, type: record.type)
 
-        if let controller = controllersForRecordInfo[recordInfo] as? RecordViewController {
+        if let controller = controllerForRecord[info] as? RecordViewController {
             controller.animate(to: origin)
         } else if let controller = display(.record(record), at: origin) {
-            controllersForRecordInfo[recordInfo] = controller
+            controllerForRecord[info] = controller
         }
     }
 }

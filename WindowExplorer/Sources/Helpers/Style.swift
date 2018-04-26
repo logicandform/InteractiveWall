@@ -26,7 +26,7 @@ final class Style {
     let imageWindowSize = CGSize(width: 640, height: 410)
     let pdfWindowSize = CGSize(width: 600, height: 640)
     let playerWindowSize = CGSize(width: 640, height: 440)
-    
+
     let minMediaWindowWidth: CGFloat = 550.0
     let maxMediaWindowWidth: CGFloat = 700.0
 }

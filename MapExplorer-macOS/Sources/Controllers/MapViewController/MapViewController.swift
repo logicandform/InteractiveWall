@@ -19,7 +19,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     private var tileURL: String {
         let tileID = max(screenID, 1)
-        return "http://localhost:4\(tileID)00/v2/tiles/{z}/{x}/{y}.pbf"
+        return "http://10.58.73.164:4\(tileID)00/v2/tiles/{z}/{x}/{y}.pbf"
     }
 
     private struct Constants {
@@ -33,6 +33,14 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let map = "map"
         static let id = "id"
         static let position = "position"
+    }
+
+
+    // MARK: Init
+
+    static func instance() -> MapViewController {
+        let storyboard = NSStoryboard(name: MapViewController.storyboard, bundle: nil)
+        return storyboard.instantiateInitialController() as! MapViewController
     }
 
 
@@ -229,70 +237,5 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         let location = window.frame.origin + position
         let info: JSON = [Keys.map: appID, Keys.id: record.id, Keys.position: location.toJSON()]
         DistributedNotificationCenter.default().postNotificationName(WindowNotification.with(record.type).name, object: nil, userInfo: info, deliverImmediately: true)
-    }
-
-    /// Zooms into a cluster of annotations to make them more visible.
-    private func show(_ annotations: [MKAnnotation]) {
-        let centroid = findCenterOfAnnotations(annotations: annotations)
-        let span = restrainSpan(annotations: annotations)
-        let region = MKCoordinateRegion(center: centroid, span: span)
-        mapView.setRegion(region, animated: true)
-    }
-
-    /// Finds the centroid of a group of annotations.
-    private func findCenterOfAnnotations(annotations: [MKAnnotation]) -> CLLocationCoordinate2D {
-        var centroidX = 0.0
-        var centroidY = 0.0
-        var count = 0.0
-        for annotation in annotations {
-            centroidX += annotation.coordinate.longitude
-            centroidY += annotation.coordinate.latitude
-            count += 1.0
-        }
-
-        centroidX /= count
-        centroidY /= count
-        return CLLocationCoordinate2D(latitude: centroidY, longitude: centroidX)
-    }
-
-    /// Checks if the placeView currently displayed is hidden behind the screen, and adjusts it accordingly.
-    private func adjustBoundaries(of view: NSView) {
-        let origin = view.frame.origin
-        if origin.y < 0 {
-            view.frame.origin = CGPoint(x: view.frame.origin.x, y: 15)
-        }
-        if origin.x < 0 {
-            view.frame.origin = CGPoint(x: 15, y: view.frame.origin.y)
-        }
-        if view.frame.maxX > self.view.frame.maxX {
-            view.frame.origin = CGPoint(x: self.view.frame.maxX - view.frame.width, y: view.frame.origin.y)
-        }
-    }
-
-    /// Checks the coordinates of each annotation and returns a span that comfortably fits all annotations within the current screen view.
-    private func restrainSpan(annotations: [MKAnnotation]) -> MKCoordinateSpan {
-        var minX = Double.greatestFiniteMagnitude
-        var minY = Double.greatestFiniteMagnitude
-        var maxX = -Double.greatestFiniteMagnitude
-        var maxY = -Double.greatestFiniteMagnitude
-
-        for annotation in annotations {
-            if annotation.coordinate.longitude < minX {
-                minX = annotation.coordinate.longitude
-            }
-            if annotation.coordinate.longitude > maxX {
-                maxX = annotation.coordinate.longitude
-            }
-            if annotation.coordinate.latitude < minY {
-                minY = annotation.coordinate.latitude
-            }
-            if annotation.coordinate.latitude > maxY {
-                maxY = annotation.coordinate.latitude
-            }
-        }
-
-        let spanX = (maxX - minX) * 2
-        let spanY = (maxY - minY) * 2
-        return MKCoordinateSpan(latitudeDelta: spanY, longitudeDelta: spanX)
     }
 }
