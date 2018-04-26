@@ -28,7 +28,7 @@ class MediaItemView: NSCollectionViewItem {
             load(media)
         }
     }
-    var displaysTitle: Bool!
+    var displaysTitle = false
     private var titleAttributes : [NSAttributedStringKey : Any] {
         let font = NSFont(name: Constants.fontName, size: Constants.fontSize) ?? NSFont.systemFont(ofSize: Constants.fontSize)
 
