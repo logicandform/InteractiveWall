@@ -147,14 +147,22 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         case .began:
             contentViewFrame = pdfScrollView.contentView.frame
         case .recognized, .momentum:
-            let magnification = clamp(pdfScrollView.magnification + (pinch.scale - 1), min: Constants.initialMagnification, max: Constants.maximumMagnification)
-            pdfScrollView.setMagnification(magnification, centeredAt: pinch.center)
-            leftArrow.isHidden = magnification != Constants.initialMagnification
-            rightArrow.isHidden = magnification != Constants.initialMagnification
-            let currentRect = pdfScrollView.contentView.bounds
-            let newOriginX = min(contentViewFrame.origin.x + contentViewFrame.width - currentRect.width, max(contentViewFrame.origin.x, currentRect.origin.x - pinch.delta.dx / magnification))
-            let newOriginY = min(contentViewFrame.origin.y + contentViewFrame.height - currentRect.height, max(contentViewFrame.origin.y, currentRect.origin.y - pinch.delta.dy / magnification))
-            pdfScrollView.contentView.scroll(to: NSPoint(x: newOriginX, y: newOriginY))
+            var pdfRect = pdfScrollView.contentView.bounds
+            let scaledWidth = (2.0 - pinch.scale) * pdfRect.size.width
+            let scaledHeight = (2.0 - pinch.scale) * pdfRect.size.height
+            if scaledWidth <= contentViewFrame.width{
+                var translationX = pinch.delta.dx * pdfRect.size.width / contentViewFrame.width
+                var translationY = pinch.delta.dy * pdfRect.size.height / contentViewFrame.height
+                if scaledWidth >= contentViewFrame.width / Constants.maximumMagnification {
+                    translationX -= (pdfRect.size.width - scaledWidth) * (pinch.center.x / contentViewFrame.width)
+                    translationY -= (pdfRect.size.height - scaledHeight) * (pinch.center.y / contentViewFrame.height)
+                    pdfRect.size = CGSize(width: scaledWidth, height: scaledHeight)
+                }
+                pdfRect.origin = CGPoint(x: pdfRect.origin.x - translationX, y: pdfRect.origin.y - translationY)
+            }
+            leftArrow.isHidden = !pdfView.canGoToPreviousPage || contentViewFrame.width / pdfRect.width >= Constants.initialMagnification + 0.1
+            rightArrow.isHidden = !pdfView.canGoToNextPage || contentViewFrame.width / pdfRect.width >= Constants.initialMagnification + 0.1
+            pdfScrollView.contentView.bounds = pdfRect
         default:
             return
         }

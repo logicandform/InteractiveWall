@@ -89,12 +89,20 @@ class ImageViewController: MediaViewController {
         case .began:
             contentViewFrame = imageScrollView.contentView.frame
         case .recognized, .momentum:
-            let newMagnification = clamp(imageScrollView.magnification + (pinch.scale - 1), min: Constants.initialMagnification, max: Constants.maximumMagnification)
-            imageScrollView.setMagnification(newMagnification, centeredAt: pinch.center)
-            let currentRect = imageScrollView.contentView.bounds
-            let newOriginX = min(contentViewFrame.origin.x + contentViewFrame.width - currentRect.width, max(contentViewFrame.origin.x, currentRect.origin.x - pinch.delta.dx / newMagnification))
-            let newOriginY = min(contentViewFrame.origin.y + contentViewFrame.height - currentRect.height, max(contentViewFrame.origin.y, currentRect.origin.y - pinch.delta.dy / newMagnification))
-            imageScrollView.contentView.scroll(to: NSPoint(x: newOriginX, y: newOriginY))
+            var imageRect = imageScrollView.contentView.bounds
+            let scaledWidth = (2.0 - pinch.scale) * imageRect.size.width
+            let scaledHeight = (2.0 - pinch.scale) * imageRect.size.height
+            if scaledWidth <= contentViewFrame.width{
+                var translationX = pinch.delta.dx * imageRect.size.width / contentViewFrame.width
+                var translationY = pinch.delta.dy * imageRect.size.height / contentViewFrame.height
+                if scaledWidth >= contentViewFrame.width / Constants.maximumMagnification {
+                    translationX -= (imageRect.size.width - scaledWidth) * (pinch.center.x / contentViewFrame.width)
+                    translationY -= (imageRect.size.height - scaledHeight) * (pinch.center.y / contentViewFrame.height)
+                    imageRect.size = CGSize(width: scaledWidth, height: scaledHeight)
+                }
+                imageRect.origin = CGPoint(x: imageRect.origin.x - translationX, y: imageRect.origin.y - translationY)
+            }
+            imageScrollView.contentView.bounds = imageRect
         default:
             return
         }
