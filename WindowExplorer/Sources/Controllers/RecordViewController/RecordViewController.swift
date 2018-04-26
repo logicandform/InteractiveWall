@@ -30,6 +30,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private var animating = false
     private var relatedItemsType: RecordType?
     private var hiddenRelatedItems = IndexSet()
+    private var panGesture: PanGestureRecognizer!
 
     private struct Constants {
         static let relatedRecordsTitle = "RELATED RECORDS"
@@ -131,7 +132,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         gestureManager.add(relatedItemTap, to: relatedItemsView)
         relatedItemTap.gestureUpdated = handleRelatedItemTap(_:)
 
-        let panGesture = PanGestureRecognizer()
+        panGesture = PanGestureRecognizer()
         gestureManager.add(panGesture, to: windowDragArea)
         panGesture.gestureUpdated = handleWindowPan(_:)
 
@@ -519,7 +520,15 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func recievedTouch(touch: Touch) {
-        resetCloseWindowTimer()
+        switch touch.state {
+        case .down, .up:
+            resetCloseWindowTimer()
+            if panGesture.state == .momentum {
+                panGesture.invalidate()
+            }
+        case .moved, .indicator:
+            return
+        }
     }
 
     /// If the position of the controller is close enough to the origin of animation, don't animate
