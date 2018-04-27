@@ -23,8 +23,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     private struct Constants {
-        static let maxZoomWidth = Double(175000000 / Configuration.mapsPerScreen)
-        static let minZoomWidth = 424500.0
+        static let maxZoomWidth: Double =  Double(134207500 / Configuration.mapsPerScreen)
+        static let minZoomWidth: Double = 424500
         static let touchRadius: CGFloat = 20
         static let annotationHitSize = CGSize(width: 50, height: 50)
         static let annotationTitleZoomLevel = Double(36000000 / Configuration.mapsPerScreen)
@@ -145,9 +145,11 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                     postWindowNotification(for: record, at: CGPoint(x: positionInView.x, y: positionInView.y - 20.0))
                     return
                 }
-            } else if tap.doubleTapped {
-                handleDoubleTap(at: position)
             }
+        }
+
+        if tap.state == .doubleTapped {
+            handleDoubleTap(at: position)
         }
     }
 

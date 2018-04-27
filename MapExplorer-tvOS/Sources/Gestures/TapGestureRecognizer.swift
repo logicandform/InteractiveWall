@@ -16,34 +16,23 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
     var gestureUpdated: ((GestureRecognizer) -> Void)?
     var position: CGPoint?
     private(set) var state = GestureState.possible
-    private(set) var fingers: Int
-    private(set) var doubleTapped = false
 
     private var positionAndStartTimeForTouch = [Touch: (position: CGPoint, time: Date)]()
-
-
-    // MARK: Init
-
-    init(withFingers fingers: Int = Constants.minimumFingers) {
-        precondition(fingers >= Constants.minimumFingers, "\(fingers) is an invalid number of fingers, errors will occur")
-        self.fingers = fingers
-        super.init()
-    }
 
 
     // MARK: API
 
     func start(_ touch: Touch, with properties: TouchProperties) {
         positionAndStartTimeForTouch[touch] = (touch.position, Date())
+        removeExpiredTouches()
 
-        if properties.touchCount == fingers {
-            position = touch.position
-            state = .began
+        position = touch.position
+        state = .began
 
-            Timer.scheduledTimer(withTimeInterval: Constants.startTapThresholdTime, repeats: false) { [weak self] _ in
-                if let strongSelf = self {
-                    strongSelf.gestureUpdated?(strongSelf)
-                }
+        // Dont update with began until startTapThresholdTime has passed
+        Timer.scheduledTimer(withTimeInterval: Constants.startTapThresholdTime, repeats: false) { [weak self] _ in
+            if let strongSelf = self, strongSelf.state == .began {
+                strongSelf.gestureUpdated?(strongSelf)
             }
         }
     }
@@ -70,45 +59,32 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
 
         if state == .failed {
             gestureUpdated?(self)
+            positionAndStartTimeForTouch.removeValue(forKey: touch)
             reset()
-        } else if properties.touchCount.isZero {
-            checkForDoubleTap(with: touch)
+        } else {
             state = .ended
+            checkForDoubleTap(with: touch)
             gestureUpdated?(self)
             reset()
         }
-
-        remove(touch)
     }
 
     func reset() {
         state = .possible
-        doubleTapped = false
     }
 
 
     // MARK: Helpers
 
-    /// Removes the touch only after the time since it began is longer than double tap threshold
-    private func remove(_ touch: Touch) {
-        guard let time = positionAndStartTimeForTouch[touch]?.time else {
-            return
-        }
-
-        let timeInterval = Constants.recognizeDoubleTapMaxTime - abs(time.timeIntervalSinceNow)
-        if timeInterval.sign == .minus {
-            positionAndStartTimeForTouch.removeValue(forKey: touch)
-        } else {
-            Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: false) { [weak self] _ in
-                self?.positionAndStartTimeForTouch.removeValue(forKey: touch)
-            }
-        }
+    /// Removes the touch only after the time since it began is longer than double tap threshold, and it has ended
+    private func removeExpiredTouches() {
+        positionAndStartTimeForTouch = positionAndStartTimeForTouch.filter { abs($0.value.time.timeIntervalSinceNow) < Constants.recognizeDoubleTapMaxTime }
     }
 
     private func checkForDoubleTap(with touch: Touch) {
         for (initialPosition, time) in positionAndStartTimeForTouch.filter({ $0.key != touch }).values {
             if abs(time.timeIntervalSinceNow) < Constants.recognizeDoubleTapMaxTime && initialPosition.distance(to: touch.position) < Constants.recognizeDoubleTapMaxDistance {
-                doubleTapped = true
+                state = .doubleTapped
                 return
             }
         }
