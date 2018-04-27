@@ -28,15 +28,15 @@ class MediaItemView: NSCollectionViewItem {
             load(media)
         }
     }
-    private var titleAttributes : [NSAttributedStringKey : Any] {
+    private var titleAttributes: [NSAttributedStringKey: Any] {
         let font = NSFont(name: Constants.fontName, size: Constants.fontSize) ?? NSFont.systemFont(ofSize: Constants.fontSize)
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byTruncatingTail
-        return [.paragraphStyle : paragraphStyle,
-                .font : font,
-                .foregroundColor : Constants.fontColor,
-                .kern : Constants.kern]
+        return [.paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: Constants.fontColor,
+                .kern: Constants.kern]
     }
 
 
