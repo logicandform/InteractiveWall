@@ -28,7 +28,6 @@ class MediaItemView: NSCollectionViewItem {
             load(media)
         }
     }
-    var displaysTitle = false
     private var titleAttributes : [NSAttributedStringKey : Any] {
         let font = NSFont(name: Constants.fontName, size: Constants.fontSize) ?? NSFont.systemFont(ofSize: Constants.fontSize)
 
@@ -76,7 +75,7 @@ class MediaItemView: NSCollectionViewItem {
         }
 
         displayIconIfNecessary(for: media)
-        displayTitleIfNecessary()
+        displayTitle()
     }
 
     /// Displays the play icon over video media items
@@ -89,8 +88,8 @@ class MediaItemView: NSCollectionViewItem {
         }
     }
 
-    private func displayTitleIfNecessary() {
-        guard displaysTitle == true, let mediaTitle = media?.title, !mediaTitle.isEmpty else {
+    private func displayTitle() {
+        guard let mediaTitle = media?.title, !mediaTitle.isEmpty else {
             return
         }
 

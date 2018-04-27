@@ -33,8 +33,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 <<<<<<< HEAD
     private var windowPanGesture: PanGestureRecognizer!
 =======
-    private var mediaItemsDisplayTitle = false
->>>>>>> gradient almost ready
+>>>>>>> suggested changes
 
     private struct Constants {
         static let relatedRecordsTitle = "RELATED RECORDS"
@@ -78,7 +77,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     // MARK: Setup
 
     private func setupMediaView() {
-        if record.media.count > 1 { mediaItemsDisplayTitle = true }
         mediaView.register(MediaItemView.self, forItemWithIdentifier: MediaItemView.identifier)
         placeHolderImage.image = record.type.placeholder.tinted(with: record.type.color)
         pageControl.color = .white
@@ -647,7 +645,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return NSCollectionViewItem()
         }
 
-        mediaItemView.displaysTitle = mediaItemsDisplayTitle
         mediaItemView.media = record.media[indexPath.item]
         mediaItemView.tintColor = record.type.color
         return mediaItemView
@@ -718,7 +715,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         let adjustedWidth = dragAreaInWindow.width / 2
         let smallDragArea = CGRect(x: dragAreaInWindow.minX + adjustedWidth / 2, y: dragAreaInWindow.minY, width: adjustedWidth, height: dragAreaInWindow.height)
         return bounds.contains(smallDragArea)
->>>>>>> gradient almost ready
+>>>>>>> suggested changes
     }
 
     /// Handle a change of record type from the RelatedItemsHeaderView
