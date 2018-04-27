@@ -21,7 +21,7 @@ class MediaViewController: NSViewController, GestureResponder {
     var animating = false
     weak var delegate: MediaControllerDelegate?
     private weak var closeWindowTimer: Foundation.Timer?
-    private var panGesture: PanGestureRecognizer!
+    private var windowPanGesture: PanGestureRecognizer!
 
     var titleAttributes: [NSAttributedStringKey: Any] {
         let font = NSFont(name: Constants.fontName, size: Constants.titleFontSize) ?? NSFont.systemFont(ofSize: Constants.titleFontSize)
@@ -66,9 +66,9 @@ class MediaViewController: NSViewController, GestureResponder {
         let mousePan = NSPanGestureRecognizer(target: self, action: #selector(handleMousePan(_:)))
         windowDragArea.addGestureRecognizer(mousePan)
 
-        panGesture = PanGestureRecognizer()
-        gestureManager.add(panGesture, to: windowDragArea)
-        panGesture.gestureUpdated = handleWindowPan(_:)
+        windowPanGesture = PanGestureRecognizer()
+        gestureManager.add(windowPanGesture, to: windowDragArea)
+        windowPanGesture.gestureUpdated = handleWindowPan(_:)
 
         let singleFingerCloseButtonTap = TapGestureRecognizer()
         gestureManager.add(singleFingerCloseButtonTap, to: dismissButton)
@@ -206,8 +206,8 @@ class MediaViewController: NSViewController, GestureResponder {
         switch touch.state {
         case .down, .up:
             resetCloseWindowTimer()
-            if panGesture.state == .momentum {
-                panGesture.invalidate()
+            if windowPanGesture.state == .momentum {
+                windowPanGesture.invalidate()
             }
         case .moved, .indicator:
             return
