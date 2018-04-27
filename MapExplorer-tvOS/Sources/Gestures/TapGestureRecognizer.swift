@@ -78,7 +78,9 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
 
     /// Removes the touch only after the time since it began is longer than double tap threshold, and it has ended
     private func removeExpiredTouches() {
-        positionAndStartTimeForTouch = positionAndStartTimeForTouch.filter { abs($0.value.time.timeIntervalSinceNow) < Constants.recognizeDoubleTapMaxTime }
+        if state == .possible {
+            positionAndStartTimeForTouch = positionAndStartTimeForTouch.filter { abs($0.value.time.timeIntervalSinceNow) < Constants.recognizeDoubleTapMaxTime }
+        }
     }
 
     private func checkForDoubleTap(with touch: Touch) {
