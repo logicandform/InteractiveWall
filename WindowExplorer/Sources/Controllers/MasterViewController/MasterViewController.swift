@@ -71,6 +71,7 @@ class MasterViewController: NSViewController {
         
         setupScreens()
         setupActionButton()
+        registerForNotifications()
     }
 
 
@@ -87,27 +88,32 @@ class MasterViewController: NSViewController {
     // MARK: Setup
 
     private func setupScreens() {
-        leftScreen.layer?.backgroundColor = Constants.screenBackgroundColor
-        leftScreen.layer?.borderWidth = Constants.screenBorderWidth
-        leftScreen.layer?.borderColor = CGColor.black
-        leftScreen.layer?.contents = ControlAction.closeApplication.image
+        screens.enumerated().forEach { screen, screenView in
+            screenView.layer?.backgroundColor = Constants.screenBackgroundColor
+            screenView.layer?.borderWidth = Constants.screenBorderWidth
+            screenView.layer?.borderColor = CGColor.black
+            let action = connected(screen: screen) ? ControlAction.closeApplication : ControlAction.disconnected
+            apply(action, toScreen: screen)
+        }
+    }
 
-        middleScreen.layer?.backgroundColor = Constants.screenBackgroundColor
-        middleScreen.layer?.borderWidth = Constants.screenBorderWidth
-        middleScreen.layer?.borderColor = CGColor.black
-        middleScreen.layer?.contents = ControlAction.closeApplication.image
-
-        rightScreen.layer?.backgroundColor = Constants.screenBackgroundColor
-        rightScreen.layer?.borderWidth = Constants.screenBorderWidth
-        rightScreen.layer?.borderColor = CGColor.black
-        rightScreen.layer?.contents = ControlAction.closeApplication.image
+    private func setupCheckboxes() {
+        checkboxes.enumerated().forEach { index, checkbox in
+            let screenIsConnected = connected(screen: index)
+            checkbox.isEnabled = screenIsConnected
+            checkbox.state = screenIsConnected ? .on : .off
+        }
     }
 
     private func setupActionButton() {
         actionSelectionButton.removeAllItems()
-        ControlAction.allValues.forEach { action in
+        ControlAction.allActions.forEach { action in
             actionSelectionButton.addItem(withTitle: action.title)
         }
+    }
+
+    private func registerForNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(screensDidChange(_:)), name: NSApplication.didChangeScreenParametersNotification, object: nil)
     }
 
 
@@ -129,7 +135,7 @@ class MasterViewController: NSViewController {
     // MARK: Helpers
 
     private func apply(_ action: ControlAction, toScreen screen: Int) {
-        // Ignore action if it's already current
+        // Ignore action if it's current
         if let currentInfo = infoForScreen[screen], currentInfo.action == action {
             return
         }
@@ -141,27 +147,11 @@ class MasterViewController: NSViewController {
         switch action {
         case .launchMapExplorer:
             launchMaps(screen: screen)
-        case .launchTimeline:
-            infoForScreen[screen] = ApplicationInfo(action: .launchTimeline, applications: [])
-        case .closeApplication:
-            break
+        case .launchTimeline, .closeApplication, .disconnected:
+            infoForScreen[screen] = ApplicationInfo(action: action, applications: [])
         }
 
         transition(screen: screen, to: action)
-    }
-
-    /// Execute a shell command, returns the created process
-    @discardableResult
-    private func execute(path: String, args: [String]) -> NSRunningApplication? {
-        do {
-            let url = URL(fileURLWithPath: path)
-            let config = [NSWorkspace.LaunchConfigurationKey.arguments: args]
-            let application = try NSWorkspace.shared.launchApplication(at: url, options: .newInstance, configuration: config)
-            return application
-        } catch {
-            print("Failed to execute: \(path).")
-            return nil
-        }
     }
 
     /// Terminate the processes associated with the given screen
@@ -173,8 +163,6 @@ class MasterViewController: NSViewController {
         info.applications.forEach { application in
             application.terminate()
         }
-
-        infoForScreen[screen] = ApplicationInfo(action: .closeApplication, applications: [])
     }
 
     /// Launch MapExplorer on the given screen
@@ -182,7 +170,7 @@ class MasterViewController: NSViewController {
         var applications = [NSRunningApplication]()
 
         for map in 0 ..< Configuration.mapsPerScreen {
-            if let application = execute(path: Paths.mapExplorer, args: [String(screen + 1), String(map)]) {
+            if let application = open(.mapExplorer, screenID: screen + 1, appID: map) {
                 applications.append(application)
             }
         }
@@ -190,9 +178,44 @@ class MasterViewController: NSViewController {
         infoForScreen[screen] = ApplicationInfo(action: .launchMapExplorer, applications: applications)
     }
 
+    /// Open a known application type with the required parameters
+    @discardableResult
+    private func open(_ application: ApplicationType, screenID: Int, appID: Int) -> NSRunningApplication? {
+        let args = [String(screenID), String(appID)]
+
+        do {
+            let url = URL(fileURLWithPath: application.path)
+            let config = [NSWorkspace.LaunchConfigurationKey.arguments: args]
+            let application = try NSWorkspace.shared.launchApplication(at: url, options: .newInstance, configuration: config)
+            return application
+        } catch {
+            print("Failed to execute: \(application.path).")
+            return nil
+        }
+    }
+
     private func transition(screen: Int, to action: ControlAction) {
         if let screenView = screens.at(index: screen), let image = action.image {
             screenView.transition(to: image, duration: Constants.imageTransitionDuration)
         }
+    }
+
+    /// Returns true of the given screen is currently connected
+    private func connected(screen: Int) -> Bool {
+        return NSScreen.screens.count > screen + 1
+    }
+
+    @objc
+    private func screensDidChange(_ notification: NSNotification) {
+        infoForScreen.forEach { screen, info in
+            if connected(screen: screen) && info.action == .disconnected {
+                apply(.closeApplication, toScreen: screen)
+            } else if !connected(screen: screen) {
+                apply(.disconnected, toScreen: screen)
+            }
+        }
+
+        // Update the state of the checkboxes
+        setupCheckboxes()
     }
 }

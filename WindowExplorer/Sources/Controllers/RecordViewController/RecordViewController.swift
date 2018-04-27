@@ -10,6 +10,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     @IBOutlet weak var windowDragArea: NSView!
     @IBOutlet weak var windowDragAreaHighlight: NSView!
     @IBOutlet weak var relatedRecordsLabel: NSTextField!
+    @IBOutlet weak var relatedRecordsTypeLabel: NSTextField!
     @IBOutlet weak var mediaView: NSCollectionView!
     @IBOutlet weak var collectionClipView: NSClipView!
     @IBOutlet weak var stackView: NSStackView!
@@ -33,7 +34,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private var windowPanGesture: PanGestureRecognizer!
 
     private struct Constants {
-        static let relatedRecordsTitle = "RELATED RECORDS"
+        static let relatedRecordsTitle = "RELATED"
+        static let allRecordsTitle = "RECORDS"
         static let animationDuration = 0.5
         static let tableRowHeight: CGFloat = 80
         static let windowMargins: CGFloat = 20
@@ -47,6 +49,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         static let screenEdgeBuffer: CGFloat = 80
         static let showRelatedItemViewRotation: CGFloat = 45
         static let relatedItemsViewMargin: CGFloat = 8
+        static let relatedRecordsTitleAnimationDuration = 0.15
+        static let pageControlHeight: CGFloat = 20
     }
 
 
@@ -54,7 +58,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        detailView.alphaValue = 0.0
+        detailView.alphaValue = 0
         detailView.wantsLayer = true
         detailView.layer?.backgroundColor = style.darkBackground.cgColor
         placeHolderImage.isHidden = !record.media.isEmpty
@@ -63,11 +67,11 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
         setupMediaView()
         setupRelatedItemsView()
+        setupWindowDragArea()
         setupGestures()
         loadRecord()
         animateViewIn()
         resetCloseWindowTimer()
-        setupWindowDragArea()
     }
 
 
@@ -84,27 +88,30 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         pageControl.centerXAnchor.constraint(equalTo: detailView.centerXAnchor).isActive = true
         pageControl.widthAnchor.constraint(equalTo: detailView.widthAnchor).isActive = true
         pageControl.topAnchor.constraint(equalTo: mediaView.bottomAnchor).isActive = true
-        pageControl.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        pageControl.heightAnchor.constraint(equalToConstant: Constants.pageControlHeight).isActive = true
         pageControl.numberOfPages = UInt(record?.media.count ?? 0)
     }
     
     private var titleBarAttributes : [NSAttributedStringKey : Any] {
         let font = NSFont(name: Constants.fontName, size: Constants.fontSize) ?? NSFont.systemFont(ofSize: Constants.fontSize)
         
-        return [.font : font,
-                .foregroundColor : Constants.fontColor,
-                .kern : Constants.kern,
-                .baselineOffset : font.fontName == Constants.fontName ? 1.0 : 0.0]
+        return [.font: font,
+                .foregroundColor: Constants.fontColor,
+                .kern: Constants.kern,
+                .baselineOffset: font.fontName == Constants.fontName ? 1 : 0]
     }
 
     private func setupRelatedItemsView() {
         relatedItemsView.alphaValue = 0
         relatedItemsView.register(NSNib(nibNamed: RelatedItemView.nibName, bundle: nil), forIdentifier: RelatedItemView.interfaceIdentifier)
         relatedItemsView.backgroundColor = .clear
-        relatedRecordsLabel.attributedStringValue = NSAttributedString(string: Constants.relatedRecordsTitle, attributes: titleBarAttributes)
         relatedRecordsLabel.alphaValue = 0
+        relatedRecordsLabel.attributedStringValue = NSAttributedString(string: Constants.relatedRecordsTitle, attributes: titleBarAttributes)
+        relatedRecordsTypeLabel.alphaValue = 0
+        relatedRecordsTypeLabel.attributedStringValue = NSAttributedString(string: Constants.allRecordsTitle, attributes: titleBarAttributes)
         toggleRelatedItemsImage.isHidden = record.relatedRecords.isEmpty
         toggleRelatedItemsImage.frameCenterRotation = Constants.showRelatedItemViewRotation
+        recordTypeSelectionView.stackview.alphaValue = 0
         recordTypeSelectionView.initialize(with: record, manager: gestureManager)
         recordTypeSelectionView.selectionCallback = didSelectRelatedItemsType(_:)
     }
@@ -462,16 +469,17 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private func animateViewIn() {
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration
-            detailView.animator().alphaValue = 1.0
+            detailView.animator().alphaValue = 1
         })
     }
 
     private func animateViewOut() {
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration
-            detailView.animator().alphaValue = 0.0
-            relatedItemsView.animator().alphaValue = 0.0
-            windowDragArea.animator().alphaValue = 0.0
+            detailView.animator().alphaValue = 0
+            relatedItemsView.animator().alphaValue = 0
+            windowDragArea.animator().alphaValue = 0
+            recordTypeSelectionView.stackview.animator().alphaValue = 0
         }, completionHandler: {
             WindowManager.instance.closeWindow(for: self)
         })
@@ -498,6 +506,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             NSAnimationContext.current.duration = Constants.animationDuration
             self?.relatedItemsView.animator().alphaValue = alpha
             self?.relatedRecordsLabel.animator().alphaValue = alpha
+            self?.relatedRecordsTypeLabel.animator().alphaValue = alpha
+            self?.recordTypeSelectionView.stackview.animator().alphaValue = alpha
             self?.toggleRelatedItemsImage.animator().frameCenterRotation = showingRelatedItems ? Constants.showRelatedItemViewRotation : 0
             }, completionHandler: { [weak self] in
                 if let strongSelf = self {
@@ -628,6 +638,9 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     /// Handle a change of record type from the RelatedItemsHeaderView
     private func didSelectRelatedItemsType(_ type: RecordType?) {
+        relatedItemsType = type
+        let titleForType = type?.title ?? Constants.allRecordsTitle
+        transitionRelatedRecordsTitle(to: titleForType)
         var itemsToRemove = IndexSet()
 
         if let type = type {
@@ -638,12 +651,31 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             }
         }
 
-        // Separate insert and remove batch for visual effect
-        relatedItemsType = type
         relatedItemsView.beginUpdates()
         relatedItemsView.insertRows(at: hiddenRelatedItems, withAnimation: .effectFade)
         relatedItemsView.removeRows(at: itemsToRemove, withAnimation: .effectFade)
         relatedItemsView.endUpdates()
         hiddenRelatedItems = itemsToRemove
+    }
+
+    /// Transitions the related records title by fading out & in
+    private func transitionRelatedRecordsTitle(to title: String) {
+        fadeRelatedRecordsTitle(out: true) { [weak self] in
+            if let strongSelf = self {
+                strongSelf.relatedRecordsTypeLabel.attributedStringValue = NSAttributedString(string: title, attributes: strongSelf.titleBarAttributes)
+                strongSelf.fadeRelatedRecordsTitle(out: false, completion: {})
+            }
+        }
+    }
+
+    private func fadeRelatedRecordsTitle(out: Bool, completion: @escaping () -> Void) {
+        let alpha: CGFloat = out ? 0 : 1
+
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = Constants.relatedRecordsTitleAnimationDuration
+            relatedRecordsTypeLabel.animator().alphaValue = alpha
+        }, completionHandler: {
+            completion()
+        })
     }
 }

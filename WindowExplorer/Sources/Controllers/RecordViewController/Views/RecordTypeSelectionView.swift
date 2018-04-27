@@ -8,7 +8,14 @@ class RecordTypeSelectionView: NSView {
 
     var selectionCallback: ((RecordType?) -> Void)?
 
-    @IBOutlet weak var stackview: NSStackView!
+    @IBOutlet weak var stackview: NSStackView! {
+        didSet {
+            stackview.wantsLayer = true
+            stackview.layer?.backgroundColor = style.darkBackground.cgColor
+            stackview.edgeInsets = Constants.stackviewEdgeInsets
+        }
+    }
+
     private var selectedView: NSView? {
         didSet {
             unselect(oldValue)
@@ -17,15 +24,8 @@ class RecordTypeSelectionView: NSView {
 
     private struct Constants {
         static let imageTransitionDuration = 0.5
-    }
-
-
-    // MARK: Init
-
-    required init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        wantsLayer = true
-        layer?.backgroundColor = CGColor.clear
+        static let imageHeight: CGFloat = 24
+        static let stackviewEdgeInsets = NSEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     }
 
 
@@ -39,9 +39,8 @@ class RecordTypeSelectionView: NSView {
             let view = NSView()
             view.wantsLayer = true
             view.layer?.contents = type.placeholder.tinted(with: style.unselectedRecordIcon)
-            stackview.addView(view, in: .center)
+            stackview.addView(view, in: .leading)
             view.translatesAutoresizingMaskIntoConstraints = false
-            view.heightAnchor.constraint(equalTo: stackview.heightAnchor).isActive = true
             view.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
             addGesture(to: view, in: manager, for: type)
         }
@@ -55,19 +54,20 @@ class RecordTypeSelectionView: NSView {
         manager.add(tapGesture, to: view)
 
         tapGesture.gestureUpdated = { [weak self] tap in
-            if let strongSelf = self, tap.state == .ended {
-                // If already selected, deselect
-                guard strongSelf.selectedView != view else {
-                    strongSelf.selectedView = nil
-                    strongSelf.selectionCallback?(nil)
-                    return
-                }
-
-                // Select the view
-                view.transition(to: type.placeholder.tinted(with: type.color), duration: Constants.imageTransitionDuration)
-                strongSelf.selectedView = view
-                strongSelf.selectionCallback?(type)
+            if tap.state == .ended {
+                self?.didTap(view, for: type)
             }
+        }
+    }
+
+    private func didTap(_ view: NSView, for type: RecordType) {
+        if view == selectedView {
+            selectedView = nil
+            selectionCallback?(nil)
+        } else {
+            view.transition(to: type.placeholder.tinted(with: type.color), duration: Constants.imageTransitionDuration)
+            selectedView = view
+            selectionCallback?(type)
         }
     }
 

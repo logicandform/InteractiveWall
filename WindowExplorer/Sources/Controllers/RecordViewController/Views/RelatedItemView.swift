@@ -23,7 +23,7 @@ class RelatedItemView: NSView {
         static let fontName = "Soleil"
         static let titleFontName = "Soleil-Bold"
         static let fontColor: NSColor = .white
-        static let kern: CGFloat = 1.0
+        static let kern: CGFloat = 1
         static let titleFontSize: CGFloat = 11
         static let descriptionFontSize: CGFloat = 10
         static let imageTransitionDuration = 0.3
@@ -46,13 +46,13 @@ class RelatedItemView: NSView {
             let font = NSFont(name: Constants.fontName, size: Constants.descriptionFontSize) ?? NSFont.systemFont(ofSize: Constants.descriptionFontSize)
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.lineBreakMode = .byCharWrapping
-            paragraphStyle.paragraphSpacing = 0.0
-            paragraphStyle.paragraphSpacingBefore = 0.0
-            return [.paragraphStyle : paragraphStyle,
-                    .kern : Constants.kern,
-                    .foregroundColor : Constants.fontColor,
-                    .font : font,
-                    .baselineOffset : 0.0]
+            paragraphStyle.paragraphSpacing = 0
+            paragraphStyle.paragraphSpacingBefore = 0
+            return [.paragraphStyle: paragraphStyle,
+                    .kern: Constants.kern,
+                    .foregroundColor: Constants.fontColor,
+                    .font: font,
+                    .baselineOffset: 0]
         }
     }
 

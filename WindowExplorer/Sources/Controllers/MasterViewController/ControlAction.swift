@@ -8,6 +8,7 @@ enum ControlAction {
     case launchMapExplorer
     case launchTimeline
     case closeApplication
+    case disconnected
 
     init?(title: String) {
         switch title {
@@ -30,6 +31,8 @@ enum ControlAction {
             return "Launch Timeline"
         case .closeApplication:
             return "Close Application"
+        case .disconnected:
+            return ""
         }
     }
 
@@ -40,11 +43,13 @@ enum ControlAction {
         case .launchTimeline:
             return NSImage(named: "timeline_background")
         case .closeApplication:
-            return NSImage(named: "planar_background")
+            return NSImage(named: "connected_background")
+        case .disconnected:
+            return NSImage(named: "disconnected_background")
         }
     }
 
-    static var allValues: [ControlAction] {
+    static var allActions: [ControlAction] {
         return [.launchMapExplorer, .launchTimeline, .closeApplication]
     }
 }

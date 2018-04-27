@@ -23,8 +23,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     private struct Constants {
-        static let maxZoomWidth: Double =  Double(175000000 / Configuration.mapsPerScreen)
-        static let minZoomWidth: Double = 424500
+        static let maxZoomWidth =  Double(175000000 / Configuration.mapsPerScreen)
+        static let minZoomWidth = 424500.0
         static let touchRadius: CGFloat = 20
         static let annotationHitSize = CGSize(width: 50, height: 50)
     }

@@ -10,6 +10,19 @@ enum RecordType: String {
     case organization
     case school
 
+    var title: String {
+        switch self {
+        case .event:
+            return "EVENTS"
+        case .artifact:
+            return "ARTIFACTS"
+        case .organization:
+            return "ORGANIZATIONS"
+        case .school:
+            return "SCHOOLS"
+        }
+    }
+
     var color: NSColor {
         switch self {
         case .event:

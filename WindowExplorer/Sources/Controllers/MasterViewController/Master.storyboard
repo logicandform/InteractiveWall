@@ -68,7 +68,7 @@
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BgP-hO-0dR">
                                 <rect key="frame" x="692" y="291" width="76" height="18"/>
-                                <buttonCell key="cell" type="check" title="Screen 2" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="MmH-zr-Htb">
+                                <buttonCell key="cell" type="check" title="Screen 3" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="MmH-zr-Htb">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
