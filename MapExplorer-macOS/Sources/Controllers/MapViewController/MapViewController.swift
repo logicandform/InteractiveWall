@@ -27,7 +27,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let minZoomWidth = 424500.0
         static let touchRadius: CGFloat = 20
         static let annotationHitSize = CGSize(width: 50, height: 50)
-        static let annotationTitleZoomLevel: Double = Double(36000000 / Configuration.mapsPerScreen)
+        static let annotationTitleZoomLevel = Double(36000000 / Configuration.mapsPerScreen)
     }
 
     private struct Keys {
@@ -68,9 +68,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     private func setupMap() {
         mapHandler = MapHandler(mapView: mapView, id: appID)
-        let overlay = MKTileOverlay(urlTemplate: tileURL)
-        overlay.canReplaceMapContent = true
-        mapView.add(overlay)
+//        let overlay = MKTileOverlay(urlTemplate: tileURL)
+//        overlay.canReplaceMapContent = true
+//        mapView.add(overlay)
         createAnnotations()
     }
 
@@ -101,20 +101,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             return
         }
 
-        if mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel {
-            for annotation in mapView.annotations {
-                if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
-                    annotationView.showTitle()
-                }
-            }
-        } else {
-            for annotation in mapView.annotations {
-                if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
-                    annotationView.hideTitle()
-                }
-            }
-        }
-
         switch pinch.state {
         case .recognized, .momentum:
             var mapRect = mapView.visibleMapRect
@@ -128,6 +114,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                 mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
             }
             mapRect.origin += MKMapPoint(x: translationX, y: translationY)
+            updateAnnotationIfNeeded(to: mapRect, from: mapView.visibleMapRect)
             mapHandler?.send(mapRect, for: pinch.state)
         case .ended:
             mapHandler?.endActivity()
@@ -252,5 +239,21 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         let location = window.frame.origin + position
         let info: JSON = [Keys.map: appID, Keys.id: record.id, Keys.position: location.toJSON()]
         DistributedNotificationCenter.default().postNotificationName(WindowNotification.with(record.type).name, object: nil, userInfo: info, deliverImmediately: true)
+    }
+
+    private func updateAnnotationIfNeeded(to mapRect1: MKMapRect, from mapRect2: MKMapRect) {
+        if mapRect1.size.width < Constants.annotationTitleZoomLevel && mapRect2.size.width > Constants.annotationTitleZoomLevel {
+            for annotation in mapView.annotations {
+                if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
+                    annotationView.showTitle()
+                }
+            }
+        } else if mapRect1.size.width > Constants.annotationTitleZoomLevel && mapRect2.size.width < Constants.annotationTitleZoomLevel {
+            for annotation in mapView.annotations {
+                if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
+                    annotationView.hideTitle()
+                }
+            }
+        }
     }
 }

@@ -12,9 +12,10 @@ class CircleAnnotationView: MKAnnotationView {
         static let titleLineSpacing: CGFloat = 0.0
         static let titleMaximumLineHeight: CGFloat = titleFontSize + 5.0
         static let titleParagraphSpacing: CGFloat = 8.0
-        static let titleForegroundColor: NSColor = NSColor.white
-        static let fontName: String = "Soleil"
+        static let titleForegroundColor = NSColor.white
+        static let fontName = "Soleil"
         static let kern: CGFloat = 0.5
+        static let animationDuration = 1.0
     }
 
     static let identifier = "CircleAnnotationView"
@@ -65,7 +66,7 @@ class CircleAnnotationView: MKAnnotationView {
             animateAlpha.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
             animateAlpha.fromValue = 0
             animateAlpha.toValue = 1
-            animateAlpha.duration = 1.0
+            animateAlpha.duration = Constants.animationDuration
             title.layer?.add(animateAlpha, forKey: "opacity")
             title.alphaValue = 1.0
         }
@@ -78,7 +79,7 @@ class CircleAnnotationView: MKAnnotationView {
             animateAlpha.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
             animateAlpha.fromValue = 1
             animateAlpha.toValue = 0
-            animateAlpha.duration = 1.0
+            animateAlpha.duration = Constants.animationDuration
             title.layer?.add(animateAlpha, forKey: "opacity")
             title.alphaValue = 0.0
         }
