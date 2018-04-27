@@ -48,6 +48,8 @@ final class GestureManager {
     }
 
     func handle(_ touch: Touch) {
+        touchReceived?(touch)
+
         switch touch.state {
         case .down:
             handleTouchDown(touch)
@@ -58,8 +60,6 @@ final class GestureManager {
         case .indicator:
             return
         }
-
-        touchReceived?(touch)
     }
 
     func view(for gesture: GestureRecognizer) -> NSView? {

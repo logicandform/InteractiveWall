@@ -30,6 +30,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private weak var closeWindowTimer: Foundation.Timer?
     private var relatedItemsType: RecordType?
     private var hiddenRelatedItems = IndexSet()
+    private var windowPanGesture: PanGestureRecognizer!
 
     private struct Constants {
         static let relatedRecordsTitle = "RELATED RECORDS"
@@ -131,9 +132,9 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         gestureManager.add(relatedItemTap, to: relatedItemsView)
         relatedItemTap.gestureUpdated = handleRelatedItemTap(_:)
 
-        let panGesture = PanGestureRecognizer()
-        gestureManager.add(panGesture, to: windowDragArea)
-        panGesture.gestureUpdated = handleWindowPan(_:)
+        windowPanGesture = PanGestureRecognizer()
+        gestureManager.add(windowPanGesture, to: windowDragArea)
+        windowPanGesture.gestureUpdated = handleWindowPan(_:)
 
         let stackViewPanGesture = PanGestureRecognizer()
         gestureManager.add(stackViewPanGesture, to: stackView)
@@ -600,7 +601,15 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func recievedTouch(touch: Touch) {
-        resetCloseWindowTimer()
+        switch touch.state {
+        case .down, .up:
+            resetCloseWindowTimer()
+            if windowPanGesture.state == .momentum {
+                windowPanGesture.invalidate()
+            }
+        case .moved, .indicator:
+            return
+        }
     }
 
     /// If the position of the controller is close enough to the origin of animation returns false

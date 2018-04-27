@@ -4,7 +4,7 @@ import MONode
 
 class GestureDemoController: NSViewController, SocketManagerDelegate, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "Demo")
-    static let config = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 12221)
+    static let config = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 13002)
 
     let socketManager = SocketManager(networkConfiguration: config)
     var gestureManager: GestureManager!
@@ -28,13 +28,13 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
 //        gestureManager.add(tapGesture, to: rect)
 //        tapGesture.gestureUpdated = rectTapped(_:)
 //
-//        let panGesture = PanGestureRecognizer(withFingers: [1, 2, 3, 4, 5])
-//        gestureManager.add(panGesture, to: rect)
-//        panGesture.gestureUpdated = rectPanned(_:)
+        let panGesture = PanGestureRecognizer()
+        gestureManager.add(panGesture, to: rect)
+        panGesture.gestureUpdated = rectPanned(_:)
 
-        let pinchGesture = PinchGestureRecognizer()
-        gestureManager.add(pinchGesture, to: view)
-        pinchGesture.gestureUpdated = rectPinched(_:)
+//        let pinchGesture = PinchGestureRecognizer()
+//        gestureManager.add(pinchGesture, to: view)
+//        pinchGesture.gestureUpdated = rectPinched(_:)
     }
 
 
