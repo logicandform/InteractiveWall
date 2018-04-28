@@ -23,11 +23,12 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     private struct Constants {
-        static let maxZoomWidth = Double(175000000 / Configuration.mapsPerScreen)
-        static let minZoomWidth = 424500.0
+        static let maxZoomWidth: Double =  Double(134207500 / Configuration.mapsPerScreen)
+        static let minZoomWidth: Double = 424500
         static let touchRadius: CGFloat = 20
         static let annotationHitSize = CGSize(width: 50, height: 50)
         static let annotationTitleZoomLevel = Double(36000000 / Configuration.mapsPerScreen)
+        static let doubleTapScale = 0.5
     }
 
     private struct Keys {
@@ -146,6 +147,10 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                 }
             }
         }
+
+        if tap.state == .doubleTapped {
+            handleDoubleTap(at: position)
+        }
     }
 
     /// Used to handle pan events recorded by a mouse
@@ -254,6 +259,20 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                     annotationView.hideTitle()
                 }
             }
+        }
+    }
+
+    private func handleDoubleTap(at position: CGPoint) {
+        var mapRect = mapView.visibleMapRect
+        let scaledWidth = Constants.doubleTapScale * mapRect.size.width
+        let scaledHeight = Constants.doubleTapScale * mapRect.size.height
+        if scaledWidth >= Constants.minZoomWidth {
+            let translationX = (mapRect.size.width - scaledWidth) * Double(position.x / mapView.frame.width)
+            let translationY = (mapRect.size.height - scaledHeight) * (1 - Double(position.y / mapView.frame.height))
+            mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
+            mapRect.origin += MKMapPoint(x: translationX, y: translationY)
+            mapHandler?.send(mapRect, animated: true)
+            mapHandler?.endActivity()
         }
     }
 }

@@ -39,4 +39,5 @@ enum GestureState: String {
     case momentum
     case recognized
     case system
+    case doubleTapped
 }
