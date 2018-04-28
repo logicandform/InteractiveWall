@@ -40,7 +40,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func move(_ touch: Touch, with properties: TouchProperties) {
-        guard let initialPosition = positionAndStartTimeForTouch[touch]?.position else {
+        guard let initialPosition = positionForTouch[touch] else {
             return
         }
 
