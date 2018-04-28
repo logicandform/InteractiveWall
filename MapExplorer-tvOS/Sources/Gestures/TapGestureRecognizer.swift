@@ -17,14 +17,16 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
     var position: CGPoint?
     private(set) var state = GestureState.possible
 
-    private var positionAndStartTimeForTouch = [Touch: (position: CGPoint, time: Date)]()
+    private var positionForTouch = [Touch: CGPoint]()
+    private var doubleTapPositionAndTimeForTouch = [Touch: (position: CGPoint, time: Date)]()
 
 
     // MARK: API
 
     func start(_ touch: Touch, with properties: TouchProperties) {
-        positionAndStartTimeForTouch[touch] = (touch.position, Date())
-        removeExpiredTouches()
+        positionForTouch[touch] = touch.position
+        doubleTapPositionAndTimeForTouch[touch] = (touch.position, Date())
+        removeExpiredDoubleTapTouches()
 
         position = touch.position
         state = .began
@@ -51,7 +53,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func end(_ touch: Touch, with properties: TouchProperties) {
-        guard positionAndStartTimeForTouch.keys.contains(touch) else {
+        guard positionForTouch.keys.contains(touch) else {
             return
         }
 
@@ -59,7 +61,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
 
         if state == .failed {
             gestureUpdated?(self)
-            positionAndStartTimeForTouch.removeValue(forKey: touch)
+            doubleTapPositionAndTimeForTouch.removeValue(forKey: touch)
             reset()
         } else {
             state = .ended
@@ -67,6 +69,8 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
             gestureUpdated?(self)
             reset()
         }
+
+        positionForTouch.removeValue(forKey: touch)
     }
 
     func reset() {
@@ -76,15 +80,13 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
 
     // MARK: Helpers
 
-    /// Removes the touch only after the time since it began is longer than double tap threshold, and it has ended
-    private func removeExpiredTouches() {
-        if state == .possible {
-            positionAndStartTimeForTouch = positionAndStartTimeForTouch.filter { abs($0.value.time.timeIntervalSinceNow) < Constants.recognizeDoubleTapMaxTime }
-        }
+    /// Removes touchs that have gone past the time to be recognized in a double tap
+    private func removeExpiredDoubleTapTouches() {
+        doubleTapPositionAndTimeForTouch = doubleTapPositionAndTimeForTouch.filter { abs($0.value.time.timeIntervalSinceNow) < Constants.recognizeDoubleTapMaxTime }
     }
 
     private func checkForDoubleTap(with touch: Touch) {
-        for (initialPosition, time) in positionAndStartTimeForTouch.filter({ $0.key != touch }).values {
+        for (initialPosition, time) in doubleTapPositionAndTimeForTouch.filter({ $0.key != touch }).values {
             if abs(time.timeIntervalSinceNow) < Constants.recognizeDoubleTapMaxTime && initialPosition.distance(to: touch.position) < Constants.recognizeDoubleTapMaxDistance {
                 state = .doubleTapped
                 return
