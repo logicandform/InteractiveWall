@@ -28,7 +28,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let touchRadius: CGFloat = 20
         static let annotationHitSize = CGSize(width: 50, height: 50)
         static let annotationTitleZoomLevel = Double(36000000 / Configuration.mapsPerScreen)
-        static let doubleTapScale = 0.6
+        static let doubleTapScale = 0.5
     }
 
     private struct Keys {
