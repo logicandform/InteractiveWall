@@ -146,7 +146,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     // MARK: Momentum
 
     private struct Momentum {
-        static let panInitialFrictionFactor = 1.01
+        static let panInitialFrictionFactor = 1.1
         static let panFrictionFactorScale = 0.001
         static let panThresholdMomentumDelta: Double = 2
     }
