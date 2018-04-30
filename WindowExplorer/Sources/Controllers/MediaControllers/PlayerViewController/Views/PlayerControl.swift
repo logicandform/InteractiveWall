@@ -23,6 +23,7 @@ class PlayerControl: NSView {
     weak var delegate: PlayerControlDelegate?
     private var duration = CMTime()
     private var volume = VolumeLevel.low
+    private var scrubbing = false
 
     private struct Constants {
         static let seekBarInsetMargin: CGFloat = 15
@@ -75,6 +76,10 @@ class PlayerControl: NSView {
     // MARK: API
 
     func toggle() {
+        guard !scrubbing else {
+            return
+        }
+
         switch state {
         case .playing:
             state = .paused
@@ -126,14 +131,18 @@ class PlayerControl: NSView {
 
     // MARK: Gestures
 
-    var seekValue = 0
     private func didScrubControl(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer, let position = pan.lastLocation else {
             return
         }
 
         switch pan.state {
-        case .began, .recognized:
+        case .began:
+            scrubbing = true
+            if state == .playing {
+                player?.pause()
+            }
+        case .recognized:
             let margin = Constants.seekBarInsetMargin
             let positionInSeekBar = Double((position.x - seekBar.frame.minX - margin) / (seekBar.frame.width - (margin * 2)))
             let seekPosition = clamp(positionInSeekBar, min: 0, max: 1)
@@ -143,6 +152,11 @@ class PlayerControl: NSView {
                 let time = CMTime(seconds: timeInSeconds, preferredTimescale: duration.timescale)
                 seek(to: time)
             }
+        case .ended:
+            if state == .playing {
+                player?.play()
+            }
+            scrubbing = false
         default:
             return
         }

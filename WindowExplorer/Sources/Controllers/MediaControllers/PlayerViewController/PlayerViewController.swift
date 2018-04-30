@@ -70,6 +70,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
 
         let player = AVPlayer(url: media.url)
         player.isMuted = true
+        player.automaticallyWaitsToMinimizeStalling = true
         playerView.player = player
         scheduleAudioSegment()
 
