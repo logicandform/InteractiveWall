@@ -6,18 +6,18 @@ import AppKit
 
 class RecordTypeSelectionView: NSView {
 
-    var selectionCallback: ((RecordType?) -> Void)?
-
     @IBOutlet weak var stackview: NSStackView! {
         didSet {
             stackview.wantsLayer = true
             stackview.layer?.backgroundColor = style.darkBackground.cgColor
-            stackview.edgeInsets = Constants.stackviewEdgeInsets
         }
     }
 
-    private var selectedView: NSView? {
+    var selectionCallback: ((RecordType?) -> Void)?
+    private var imageForType = [RecordType: NSView]()
+    private var selectedType: RecordType? {
         didSet {
+            selectionCallback?(selectedType)
             unselect(oldValue)
         }
     }
@@ -25,7 +25,6 @@ class RecordTypeSelectionView: NSView {
     private struct Constants {
         static let imageTransitionDuration = 0.5
         static let imageHeight: CGFloat = 24
-        static let stackviewEdgeInsets = NSEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     }
 
 
@@ -36,12 +35,22 @@ class RecordTypeSelectionView: NSView {
         let relatedTypesForRecord = record.recordGroups.filter { !$0.records.isEmpty }.map { $0.type }
 
         relatedTypesForRecord.forEach { type in
+            // Use two views to increase hit area of image while image is centered
             let view = NSView()
-            view.wantsLayer = true
-            view.layer?.contents = type.placeholder.tinted(with: style.unselectedRecordIcon)
+            let image = NSView()
+            view.addSubview(image)
+            image.wantsLayer = true
+            image.layer?.contents = type.placeholder.tinted(with: style.unselectedRecordIcon)
             stackview.addView(view, in: .leading)
             view.translatesAutoresizingMaskIntoConstraints = false
+            view.heightAnchor.constraint(equalTo: stackview.heightAnchor).isActive = true
             view.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
+            image.translatesAutoresizingMaskIntoConstraints = false
+            image.widthAnchor.constraint(equalToConstant: Constants.imageHeight).isActive = true
+            image.heightAnchor.constraint(equalToConstant: Constants.imageHeight).isActive = true
+            image.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+            image.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+            imageForType[type] = image
             addGesture(to: view, in: manager, for: type)
         }
     }
@@ -55,27 +64,25 @@ class RecordTypeSelectionView: NSView {
 
         tapGesture.gestureUpdated = { [weak self] tap in
             if tap.state == .ended {
-                self?.didTap(view, for: type)
+                self?.didSelect(type: type)
             }
         }
     }
 
-    private func didTap(_ view: NSView, for type: RecordType) {
-        if view == selectedView {
-            selectedView = nil
-            selectionCallback?(nil)
-        } else {
-            view.transition(to: type.placeholder.tinted(with: type.color), duration: Constants.imageTransitionDuration)
-            selectedView = view
-            selectionCallback?(type)
+    private func didSelect(type: RecordType) {
+        if type == selectedType {
+            selectedType = nil
+        } else if let image = imageForType[type] {
+            selectedType = type
+            image.transition(to: type.placeholder.tinted(with: type.color), duration: Constants.imageTransitionDuration)
         }
     }
 
-    private func unselect(_ view: NSView?) {
-        guard let view = view, let image = view.layer?.contents as? NSImage else {
+    private func unselect(_ type: RecordType?) {
+        guard let type = type, let image = imageForType[type], let currentImage = image.layer?.contents as? NSImage else {
             return
         }
 
-        view.transition(to: image.tinted(with: style.unselectedRecordIcon), duration: Constants.imageTransitionDuration)
+        image.transition(to: currentImage.tinted(with: style.unselectedRecordIcon), duration: Constants.imageTransitionDuration)
     }
 }

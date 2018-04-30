@@ -5,6 +5,13 @@ import Foundation
 import MapKit
 
 class CircleAnnotationView: MKAnnotationView {
+    static let identifier = "CircleAnnotationView"
+
+    private let circle1 = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.0, y: -Constants.radii.0), size: CGSize(width: Constants.radii.0*2.0, height: Constants.radii.0*2.0)))
+    private let circle2 = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.1, y: -Constants.radii.1), size: CGSize(width: Constants.radii.1*2.0, height: Constants.radii.1*2.0)))
+    private let circle3 = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.2, y: -Constants.radii.2), size: CGSize(width: Constants.radii.2*2.0, height: Constants.radii.2*2.0)))
+    private let center = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.3, y: -Constants.radii.3), size: CGSize(width: Constants.radii.3*2.0, height: Constants.radii.3*2.0)))
+    private let title = NSTextField(frame: NSRect(x: 18, y: -8, width: 500, height: 15))
 
     private struct Constants {
         static let radii: (CGFloat, CGFloat, CGFloat, CGFloat) = (18, 14, 10, 6)
@@ -18,14 +25,6 @@ class CircleAnnotationView: MKAnnotationView {
         static let animationDuration = 1.0
     }
 
-    static let identifier = "CircleAnnotationView"
-
-    private let circle1 = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.0, y: -Constants.radii.0), size: CGSize(width: Constants.radii.0*2.0, height: Constants.radii.0*2.0)))
-    private let circle2 = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.1, y: -Constants.radii.1), size: CGSize(width: Constants.radii.1*2.0, height: Constants.radii.1*2.0)))
-    private let circle3 = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.2, y: -Constants.radii.2), size: CGSize(width: Constants.radii.2*2.0, height: Constants.radii.2*2.0)))
-    private let center = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.3, y: -Constants.radii.3), size: CGSize(width: Constants.radii.3*2.0, height: Constants.radii.3*2.0)))
-    private let title = NSTextField(frame: NSRect(x: 18, y: -8, width: 500, height: 15))
-
     var titleAttributes: [NSAttributedStringKey: Any] {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Constants.titleLineSpacing
@@ -33,10 +32,10 @@ class CircleAnnotationView: MKAnnotationView {
         paragraphStyle.maximumLineHeight = Constants.titleMaximumLineHeight
         paragraphStyle.lineBreakMode = .byWordWrapping
         let font = NSFont(name: Constants.fontName, size: Constants.titleFontSize) ?? NSFont.systemFont(ofSize: Constants.titleFontSize)
-        return [.paragraphStyle : paragraphStyle,
-                .font : font,
-                .foregroundColor : Constants.titleForegroundColor,
-                .kern : Constants.kern
+        return [.paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: Constants.titleForegroundColor,
+                .kern: Constants.kern
         ]
     }
 
@@ -49,6 +48,7 @@ class CircleAnnotationView: MKAnnotationView {
             setupAnnotations(annotation: annotation)
         }
     }
+
 
     // MARK: API
 

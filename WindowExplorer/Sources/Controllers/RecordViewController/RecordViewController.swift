@@ -68,8 +68,8 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         setupMediaView()
         setupRelatedItemsView()
         setupWindowDragArea()
+        setupStackview()
         setupGestures()
-        loadRecord()
         animateViewIn()
         resetCloseWindowTimer()
     }
@@ -160,17 +160,17 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         }
     }
 
-    private func loadRecord() {
-        for label in record.textFields {
-            stackView.insertView(label, at: stackView.subviews.count, in: .top)
-        }
-    }
-
     private func setupWindowDragArea() {
         windowDragArea.wantsLayer = true
         windowDragArea.layer?.backgroundColor = style.dragAreaBackground.cgColor
         windowDragAreaHighlight.wantsLayer = true
         windowDragAreaHighlight.layer?.backgroundColor = record.type.color.cgColor
+    }
+
+    private func setupStackview() {
+        for label in record.textFields {
+            stackView.insertView(label, at: stackView.subviews.count, in: .top)
+        }
     }
 
 
@@ -310,7 +310,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         case .ended:
             selectedRelatedItem = relatedItemView
             if let selectedRecord = selectedRelatedItem?.record {
-                selectRelatedItem(selectedRecord)
+                selectRelatedRecord(selectedRecord)
             }
             selectedRelatedItem = nil
         default:
@@ -524,7 +524,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         showingRelatedItems = !showingRelatedItems
     }
 
-    private func selectRelatedItem(_ record: RecordDisplayable) {
+    private func selectRelatedRecord(_ record: RecordDisplayable) {
         guard let window = view.window else {
             return
         }
@@ -572,7 +572,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         let lastScreen = NSScreen.at(position: Configuration.numberOfScreens)
 
         if origin.x > lastScreen.frame.maxX - Constants.screenEdgeBuffer {
-            // TODO: What is this check doing?
             if lastScreen.frame.height - window.frame.maxY < type.size.height {
                 return CGPoint(x: lastScreen.frame.maxX - type.size.width - Constants.windowMargins, y: origin.y - view.frame.height - Constants.windowMargins)
             } else {
@@ -638,11 +637,10 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     /// Handle a change of record type from the RelatedItemsHeaderView
     private func didSelectRelatedItemsType(_ type: RecordType?) {
-        relatedItemsType = type
         let titleForType = type?.title ?? Constants.allRecordsTitle
         transitionRelatedRecordsTitle(to: titleForType)
-        var itemsToRemove = IndexSet()
 
+        var itemsToRemove = IndexSet()
         if let type = type {
             for (index, record) in record.relatedRecords.enumerated() {
                 if record.type != type {
@@ -651,6 +649,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             }
         }
 
+        relatedItemsType = type
         relatedItemsView.beginUpdates()
         relatedItemsView.insertRows(at: hiddenRelatedItems, withAnimation: .effectFade)
         relatedItemsView.removeRows(at: itemsToRemove, withAnimation: .effectFade)

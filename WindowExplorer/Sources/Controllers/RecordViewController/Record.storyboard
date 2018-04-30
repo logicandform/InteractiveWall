@@ -86,7 +86,7 @@
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="pwG-Vb-Cze" customClass="RecordTypeSelectionView" customModule="WindowExplorer" customModuleProvider="target">
                                 <rect key="frame" x="424" y="552" width="300" height="40"/>
                                 <subviews>
-                                    <stackView orientation="horizontal" alignment="centerY" spacing="16" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" placeholderIntrinsicWidth="300" placeholderIntrinsicHeight="40" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YiS-is-wdH">
+                                    <stackView orientation="horizontal" alignment="centerY" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" placeholderIntrinsicWidth="300" placeholderIntrinsicHeight="40" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YiS-is-wdH">
                                         <rect key="frame" x="0.0" y="0.0" width="300" height="40"/>
                                     </stackView>
                                 </subviews>
