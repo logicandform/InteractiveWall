@@ -97,8 +97,9 @@ final class WindowManager {
         RecordFactory.record(for: windowNotification.type, id: id) { [weak self] record in
             if let record = record {
                 let windowType = WindowType.record(record)
-                let origin = location - CGPoint(x: windowType.size.width / 2, y: windowType.size.height)
-                self?.display(record, at: origin, forMap: map)
+                let originX = location.x - windowType.size.width / 2
+                let originY = max(style.windowMargins, location.y - windowType.size.height)
+                self?.display(record, at: CGPoint(x: originX, y: originY), forMap: map)
             }
         }
     }
