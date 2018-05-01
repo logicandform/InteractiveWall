@@ -47,8 +47,6 @@ class ImageViewController: MediaViewController {
         }
 
         imageView = NSImageView()
-        imageScrollView.scrollerStyle = .overlay
-        imageScrollView.autohidesScrollers = true
 
         urlRequest = Alamofire.request(media.url).responseImage { [weak self] response in
             if let image = response.value {
