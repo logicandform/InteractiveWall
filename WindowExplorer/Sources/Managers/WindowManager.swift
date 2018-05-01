@@ -11,16 +11,11 @@ final class WindowManager {
 
     private(set) var windows = [NSWindow: GestureManager]()
     private var controllerForRecord = [RecordInfo: NSViewController]()
-    private var windowPlayerCount = 0
 
     private struct Keys {
         static let map = "map"
         static let id = "id"
         static let position = "position"
-    }
-
-    private struct Constants {
-        static let maxPlayersAllowedOpen = 9
     }
 
 
@@ -54,10 +49,6 @@ final class WindowManager {
 
     @discardableResult
     func display(_ type: WindowType, at origin: CGPoint) -> NSViewController? {
-        if case .player(_) = type, windowPlayerCount > Constants.maxPlayersAllowedOpen {
-            return nil
-        }
-
         let window = WindowFactory.window(for: type, at: origin)
 
         if let controller = window.contentViewController {
