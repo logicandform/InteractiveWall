@@ -38,7 +38,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         static let allRecordsTitle = "RECORDS"
         static let animationDuration = 0.5
         static let tableRowHeight: CGFloat = 80
-        static let windowMargins: CGFloat = 20
         static let mediaControllerOffset = 50
         static let closeWindowTimeoutPeriod: TimeInterval = 300
         static let animationDistanceThreshold: CGFloat = 20
@@ -530,7 +529,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         }
 
         toggleRelatedItems(completion: {
-            let origin = CGPoint(x: window.frame.maxX + Constants.windowMargins, y: window.frame.minY)
+            let origin = CGPoint(x: window.frame.maxX + style.windowMargins, y: window.frame.minY)
             RecordFactory.record(for: record.type, id: record.id, completion: { newRecord in
                 if let loadedRecord = newRecord {
                     WindowManager.instance.display(.record(loadedRecord), at: origin)
@@ -547,7 +546,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         let controller = positionForMediaController.keys.first(where: { $0.media == media })
         let position = getMediaControllerPosition()
         let offset = CGVector(dx: position * Constants.mediaControllerOffset, dy: position * -Constants.mediaControllerOffset)
-        var origin = CGPoint(x: window.frame.maxX + Constants.windowMargins + offset.dx, y: window.frame.maxY + offset.dy)
+        var origin = CGPoint(x: window.frame.maxX + style.windowMargins + offset.dx, y: window.frame.maxY + offset.dy)
         origin.y -= controller?.view.frame.height ?? windowType.size.height
         if windowType.canAdjustOrigin {
             origin = constrainedToApplication(origin, for: window, type: windowType)
@@ -573,9 +572,9 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
         if origin.x > lastScreen.frame.maxX - Constants.screenEdgeBuffer {
             if lastScreen.frame.height - window.frame.maxY < type.size.height {
-                return CGPoint(x: lastScreen.frame.maxX - type.size.width - Constants.windowMargins, y: origin.y - view.frame.height - Constants.windowMargins)
+                return CGPoint(x: lastScreen.frame.maxX - type.size.width - style.windowMargins, y: origin.y - view.frame.height - style.windowMargins)
             } else {
-                return CGPoint(x: lastScreen.frame.maxX - type.size.width - Constants.windowMargins, y: origin.y + type.size.height + Constants.windowMargins)
+                return CGPoint(x: lastScreen.frame.maxX - type.size.width - style.windowMargins, y: origin.y + type.size.height + style.windowMargins)
             }
         }
 
