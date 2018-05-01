@@ -24,10 +24,8 @@ class PlayerControl: NSView {
     private var duration = CMTime()
     private var volume = VolumeLevel.low
     private var scrubbing = false
-
-    private struct Constants {
-        static let seekBarInsetMargin: CGFloat = 15
-    }
+    private var currentScrubImageUpdateNumber: Double = 0
+    lazy private var scrubImageUpdateTimeInterval = duration.seconds / Constants.scrubImageUpdatesPerVideo
 
     var player: AVPlayer? {
         didSet {
@@ -59,6 +57,11 @@ class PlayerControl: NSView {
         didSet {
             delegate?.playerChangedState(state)
         }
+    }
+
+    private struct Constants {
+        static let seekBarInsetMargin: CGFloat = 15
+        static let scrubImageUpdatesPerVideo: Double = 20
     }
 
 
@@ -149,10 +152,16 @@ class PlayerControl: NSView {
 
             if seekBar.frame.minX <= position.x && seekBar.frame.maxX >= position.x {
                 let timeInSeconds = seekPosition * duration.seconds
-                let time = CMTime(seconds: timeInSeconds, preferredTimescale: duration.timescale)
-                seek(to: time)
+                currentTime = CMTime(seconds: timeInSeconds, preferredTimescale: duration.timescale)
+
+                let imageUpdateNumber = round(timeInSeconds / scrubImageUpdateTimeInterval)
+                if  imageUpdateNumber != currentScrubImageUpdateNumber {
+                    currentScrubImageUpdateNumber = imageUpdateNumber
+                    seek(to: currentTime)
+                }
             }
-        case .ended:
+        case .ended, .failed:
+            seek(to: currentTime)
             if state == .playing {
                 player?.play()
             }
