@@ -24,7 +24,7 @@ class PlayerControl: NSView {
     private var duration = CMTime()
     private var volume = VolumeLevel.low
     private var scrubbing = false
-    private var currentScrubImageUpdateNumber: Double = 0
+    private var currentScrubImageUpdateNumber = 0.0
     lazy private var scrubImageUpdateTimeInterval = duration.seconds / Constants.scrubImageUpdatesPerVideo
 
     var player: AVPlayer? {
@@ -61,7 +61,7 @@ class PlayerControl: NSView {
 
     private struct Constants {
         static let seekBarInsetMargin: CGFloat = 15
-        static let scrubImageUpdatesPerVideo: Double = 20
+        static let scrubImageUpdatesPerVideo = 20.0
     }
 
 
@@ -79,7 +79,7 @@ class PlayerControl: NSView {
     // MARK: API
 
     func toggle() {
-        guard !scrubbing else {
+        if scrubbing {
             return
         }
 
@@ -142,9 +142,7 @@ class PlayerControl: NSView {
         switch pan.state {
         case .began:
             scrubbing = true
-            if state == .playing {
-                player?.pause()
-            }
+            player?.pause()
         case .recognized:
             let margin = Constants.seekBarInsetMargin
             let positionInSeekBar = Double((position.x - seekBar.frame.minX - margin) / (seekBar.frame.width - (margin * 2)))
@@ -154,8 +152,9 @@ class PlayerControl: NSView {
                 let timeInSeconds = seekPosition * duration.seconds
                 currentTime = CMTime(seconds: timeInSeconds, preferredTimescale: duration.timescale)
 
+                // This is an Int b/t 0 and scrubImageUpdatesPerVideo which gives the time that should be seeked when multipled by scrubImageUpdateTimeInterval
                 let imageUpdateNumber = round(timeInSeconds / scrubImageUpdateTimeInterval)
-                if  imageUpdateNumber != currentScrubImageUpdateNumber {
+                if imageUpdateNumber != currentScrubImageUpdateNumber {
                     currentScrubImageUpdateNumber = imageUpdateNumber
                     seek(to: currentTime)
                 }
