@@ -372,7 +372,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     @objc
     private func handleCollectionViewClick(_ gesture: NSClickGestureRecognizer) {
-        guard !animating else {
+        if animating {
             return
         }
 
