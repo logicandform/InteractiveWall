@@ -23,10 +23,9 @@ class PlayerControl: NSView {
     weak var delegate: PlayerControlDelegate?
     private var duration = CMTime()
     private var volume = VolumeLevel.low
-
-    private struct Constants {
-        static let seekBarInsetMargin: CGFloat = 15
-    }
+    private var scrubbing = false
+    private var currentScrubImageUpdateNumber = 0.0
+    lazy private var scrubImageUpdateTimeInterval = duration.seconds / Constants.scrubImageUpdatesPerVideo
 
     var player: AVPlayer? {
         didSet {
@@ -60,6 +59,11 @@ class PlayerControl: NSView {
         }
     }
 
+    private struct Constants {
+        static let seekBarInsetMargin: CGFloat = 15
+        static let scrubImageUpdatesPerVideo = 20.0
+    }
+
 
     // MARK: Init
 
@@ -75,6 +79,10 @@ class PlayerControl: NSView {
     // MARK: API
 
     func toggle() {
+        if scrubbing {
+            return
+        }
+
         switch state {
         case .playing:
             state = .paused
@@ -126,23 +134,37 @@ class PlayerControl: NSView {
 
     // MARK: Gestures
 
-    var seekValue = 0
     private func didScrubControl(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer, let position = pan.lastLocation else {
             return
         }
 
         switch pan.state {
-        case .began, .recognized:
+        case .began:
+            scrubbing = true
+            player?.pause()
+        case .recognized:
             let margin = Constants.seekBarInsetMargin
             let positionInSeekBar = Double((position.x - seekBar.frame.minX - margin) / (seekBar.frame.width - (margin * 2)))
             let seekPosition = clamp(positionInSeekBar, min: 0, max: 1)
 
             if seekBar.frame.minX <= position.x && seekBar.frame.maxX >= position.x {
                 let timeInSeconds = seekPosition * duration.seconds
-                let time = CMTime(seconds: timeInSeconds, preferredTimescale: duration.timescale)
-                seek(to: time)
+                currentTime = CMTime(seconds: timeInSeconds, preferredTimescale: duration.timescale)
+
+                // This is an Int b/t 0 and scrubImageUpdatesPerVideo which gives the time that should be seeked when multipled by scrubImageUpdateTimeInterval
+                let imageUpdateNumber = round(timeInSeconds / scrubImageUpdateTimeInterval)
+                if imageUpdateNumber != currentScrubImageUpdateNumber {
+                    currentScrubImageUpdateNumber = imageUpdateNumber
+                    seek(to: currentTime)
+                }
             }
+        case .ended, .failed:
+            seek(to: currentTime)
+            if state == .playing {
+                player?.play()
+            }
+            scrubbing = false
         default:
             return
         }
