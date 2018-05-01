@@ -122,6 +122,9 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         let nsToggleRelatedItemClickGesture = NSClickGestureRecognizer(target: self, action: #selector(handleRelatedItemToggleClick(_:)))
         toggleRelatedItemsArea.addGestureRecognizer(nsToggleRelatedItemClickGesture)
 
+        let nsMediaItemClick = NSClickGestureRecognizer(target: self, action: #selector(handleCollectionViewClick(_:)))
+        mediaView.addGestureRecognizer(nsMediaItemClick)
+
         let collectionViewPanGesture = PanGestureRecognizer()
         gestureManager.add(collectionViewPanGesture, to: mediaView)
         collectionViewPanGesture.gestureUpdated = handleCollectionViewPan(_:)
@@ -365,6 +368,36 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     @objc
     private func handleRelatedItemToggleClick(_ gesture: NSClickGestureRecognizer) {
         toggleRelatedItems()
+    }
+
+    @objc
+    private func handleCollectionViewClick(_ gesture: NSClickGestureRecognizer) {
+        if animating {
+            return
+        }
+
+        let rect = mediaView.visibleRect
+        let offset = rect.origin.x / rect.width
+        let index = Int(round(offset))
+        let indexPath = IndexPath(item: index, section: 0)
+        guard let mediaItem = mediaView.item(at: indexPath) as? MediaItemView else {
+            return
+        }
+
+        switch gesture.state {
+        case .began:
+            selectedMediaItem = mediaItem
+        case .failed:
+            selectedMediaItem = nil
+        case .ended:
+            selectedMediaItem = mediaItem
+            if let selectedMedia = selectedMediaItem?.media {
+                selectMediaItem(selectedMedia)
+            }
+            selectedMediaItem = nil
+        default:
+            return
+        }
     }
 
 

@@ -35,7 +35,6 @@
                     <constraints>
                         <constraint firstItem="a5X-zo-zhB" firstAttribute="centerX" secondItem="qFx-mJ-ye3" secondAttribute="centerX" id="Hfp-Vr-D4m"/>
                         <constraint firstItem="a5X-zo-zhB" firstAttribute="top" secondItem="qFx-mJ-ye3" secondAttribute="top" id="Q5M-ia-Ojb"/>
-                        <constraint firstItem="a5X-zo-zhB" firstAttribute="width" relation="lessThanOrEqual" secondItem="qFx-mJ-ye3" secondAttribute="width" constant="-80" id="ycT-Yp-fM7"/>
                     </constraints>
                 </customView>
                 <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MCi-Na-Q3u">

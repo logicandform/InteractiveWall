@@ -46,8 +46,6 @@ class ImageViewController: MediaViewController {
             return
         }
 
-        imageScrollView.minMagnification = Constants.initialMagnification
-        imageScrollView.maxMagnification = Constants.maximumMagnification
         imageView = NSImageView()
 
         urlRequest = Alamofire.request(media.url).responseImage { [weak self] response in
