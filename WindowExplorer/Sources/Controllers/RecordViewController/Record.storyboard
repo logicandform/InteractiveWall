@@ -15,7 +15,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="732" height="640"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView placeholderIntrinsicWidth="300" placeholderIntrinsicHeight="600" borderType="none" autohidesScrollers="YES" horizontalLineScroll="21" horizontalPageScroll="10" verticalLineScroll="21" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="vNQ-tt-E3O" userLabel="Scroll View">
+                            <scrollView placeholderIntrinsicWidth="300" placeholderIntrinsicHeight="600" borderType="none" autohidesScrollers="YES" horizontalLineScroll="21" horizontalPageScroll="10" verticalLineScroll="21" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="vNQ-tt-E3O" userLabel="Scroll View" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
                                 <rect key="frame" x="424" y="0.0" width="300" height="544"/>
                                 <clipView key="contentView" drawsBackground="NO" id="c7X-hu-wk8">
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="544"/>
@@ -104,7 +104,7 @@
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="83q-cx-wcX" userLabel="contentView">
                                 <rect key="frame" x="0.0" y="0.0" width="416" height="640"/>
                                 <subviews>
-                                    <scrollView verticalCompressionResistancePriority="250" placeholderIntrinsicWidth="380" placeholderIntrinsicHeight="300" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FBg-bp-lkB">
+                                    <scrollView verticalCompressionResistancePriority="250" placeholderIntrinsicWidth="380" placeholderIntrinsicHeight="300" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FBg-bp-lkB" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
                                         <rect key="frame" x="18" y="10" width="380" height="310"/>
                                         <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="CkM-eN-t5N" customClass="FlippedClipView" customModule="WindowExplorer" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="380" height="310"/>
@@ -308,6 +308,7 @@
                         <outlet property="relatedItemsView" destination="cKY-nL-NPV" id="26r-gU-lSa"/>
                         <outlet property="relatedRecordsLabel" destination="79v-3B-4jX" id="egP-qv-zjo"/>
                         <outlet property="relatedRecordsTypeLabel" destination="dT1-7n-nU7" id="nGW-5s-HoU"/>
+                        <outlet property="scrollView" destination="FBg-bp-lkB" id="8LR-hW-YDs"/>
                         <outlet property="stackClipView" destination="CkM-eN-t5N" id="Ycr-Y2-xGv"/>
                         <outlet property="stackView" destination="RgY-ah-SAv" id="N4b-iD-145"/>
                         <outlet property="toggleRelatedItemsArea" destination="ng9-0N-mwq" id="Lqz-na-MLi"/>

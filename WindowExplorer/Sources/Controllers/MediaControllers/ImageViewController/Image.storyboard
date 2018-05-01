@@ -68,7 +68,7 @@
                                     <constraint firstAttribute="trailing" secondItem="1GK-FO-lwr" secondAttribute="trailing" constant="8" id="xas-Zt-nVk"/>
                                 </constraints>
                             </customView>
-                            <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" allowsMagnification="YES" maxMagnification="5" minMagnification="1" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="WTp-wA-9SL" customClass="RegularScrollView" customModule="WindowExplorer" customModuleProvider="target">
+                            <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" allowsMagnification="YES" maxMagnification="5" minMagnification="1" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="WTp-wA-9SL" customClass="RegularScrollView" customModule="WindowExplorer" customModuleProvider="target">
                                 <rect key="frame" x="8" y="8" width="624" height="352"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="SUf-jl-Y0i">
                                     <rect key="frame" x="0.0" y="0.0" width="624" height="352"/>
@@ -85,12 +85,12 @@
                                     <constraint firstAttribute="width" constant="624" id="etP-mP-7KU"/>
                                     <constraint firstAttribute="height" constant="352" id="qA2-gP-fqc"/>
                                 </constraints>
-                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="vQy-Dv-4a6">
-                                    <rect key="frame" x="-100" y="-100" width="622" height="16"/>
+                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="vQy-Dv-4a6">
+                                    <rect key="frame" x="0.0" y="336" width="624" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="nVi-Xv-HAv">
-                                    <rect key="frame" x="-100" y="-100" width="16" height="359"/>
+                                <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="nVi-Xv-HAv">
+                                    <rect key="frame" x="608" y="0.0" width="16" height="352"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>

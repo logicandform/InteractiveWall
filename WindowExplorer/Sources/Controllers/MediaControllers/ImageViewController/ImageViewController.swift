@@ -46,9 +46,9 @@ class ImageViewController: MediaViewController {
             return
         }
 
-        imageScrollView.minMagnification = Constants.initialMagnification
-        imageScrollView.maxMagnification = Constants.maximumMagnification
         imageView = NSImageView()
+        imageScrollView.scrollerStyle = .overlay
+        imageScrollView.autohidesScrollers = true
 
         urlRequest = Alamofire.request(media.url).responseImage { [weak self] response in
             if let image = response.value {

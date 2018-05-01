@@ -89,6 +89,7 @@
 		618F0C38206A114100762C20 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61767FF620688A0200970640 /* AVFoundation.framework */; };
 		8E4010A020487B8D00E81AAA /* WindowFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E40109F20487B8D00E81AAA /* WindowFactory.swift */; };
 		8E4010A220487E0300E81AAA /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4010A120487E0300E81AAA /* Collection.swift */; };
+		8F6EFD7D2098FF0800E4D97D /* FadingScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F6EFD7C2098FF0800E4D97D /* FadingScrollView.swift */; };
 		8FA62A08206BFAFC004E6092 /* RecordInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA62A07206BFAFC004E6092 /* RecordInfo.swift */; };
 		8FE6467B2060553100E6116A /* RegularScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE6467A2060553100E6116A /* RegularScrollView.swift */; };
 		8FEABDA12064702600612C84 /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEABD9F2064702600612C84 /* MediaViewController.swift */; };
@@ -214,6 +215,7 @@
 		618F0C36206A113B00762C20 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		8E40109F20487B8D00E81AAA /* WindowFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowFactory.swift; sourceTree = "<group>"; };
 		8E4010A120487E0300E81AAA /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
+		8F6EFD7C2098FF0800E4D97D /* FadingScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FadingScrollView.swift; sourceTree = "<group>"; };
 		8FA62A07206BFAFC004E6092 /* RecordInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordInfo.swift; sourceTree = "<group>"; };
 		8FE6467A2060553100E6116A /* RegularScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularScrollView.swift; sourceTree = "<group>"; };
 		8FEABD9F2064702600612C84 /* MediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaViewController.swift; sourceTree = "<group>"; };
@@ -558,6 +560,7 @@
 				3F47D52E206420C6001E86E3 /* FlippedClipView.swift */,
 				D92E0EFD20604BDB00C1C9A7 /* PageControl.swift */,
 				D92E0EFF206052C900C1C9A7 /* ArrowControl.swift */,
+				8F6EFD7C2098FF0800E4D97D /* FadingScrollView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -761,6 +764,7 @@
 				2204623420472FDF0067D9FB /* NSImage.swift in Sources */,
 				D9F24E62205B040700B9FCB8 /* ImageViewController.swift in Sources */,
 				227B5E11205611BB00F403B3 /* Style.swift in Sources */,
+				8F6EFD7D2098FF0800E4D97D /* FadingScrollView.swift in Sources */,
 				8E4010A220487E0300E81AAA /* Collection.swift in Sources */,
 				D59DAA092072C8A300908164 /* Math.swift in Sources */,
 				618F0C2F2069F98900762C20 /* MultiChannelPanner.swift in Sources */,
