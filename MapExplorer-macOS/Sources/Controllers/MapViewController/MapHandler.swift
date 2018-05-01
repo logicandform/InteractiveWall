@@ -30,6 +30,7 @@ class MapHandler {
         static let canadaSize = MKMapSize(width: 80000000, height: 0)
         static let verticalPanLimit: Double = 100000000
         static let verticalVisibleMapRatio = 0.25
+        static let annotationTitleZoomLevel = Double(36000000 / Configuration.mapsPerScreen)
     }
 
     private struct Keys {
@@ -163,6 +164,7 @@ class MapHandler {
             yOrigin = Constants.verticalPanLimit - mapRect.size.height * Constants.verticalVisibleMapRatio
         }
 
+        updateAnnotationIfNeeded(to: mapRect, from: mapView.visibleMapRect)
         let mapOrigin = MKMapPointMake(xOrigin, yOrigin)
         mapView.setVisibleMapRect(MKMapRect(origin: mapOrigin, size: mapRect.size), animated: animated)
     }
@@ -270,6 +272,22 @@ class MapHandler {
         if activityState == .idle {
             let info: JSON = [Keys.id: mapID, Keys.group: mapID]
             DistributedNotificationCenter.default().postNotificationName(MapNotification.ungroup.name, object: nil, userInfo: info, deliverImmediately: true)
+        }
+    }
+
+    private func updateAnnotationIfNeeded(to mapRect1: MKMapRect, from mapRect2: MKMapRect) {
+        if mapRect1.size.width < Constants.annotationTitleZoomLevel && mapRect2.size.width > Constants.annotationTitleZoomLevel {
+            for annotation in mapView.annotations {
+                if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
+                    annotationView.showTitle()
+                }
+            }
+        } else if mapRect1.size.width > Constants.annotationTitleZoomLevel && mapRect2.size.width < Constants.annotationTitleZoomLevel {
+            for annotation in mapView.annotations {
+                if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
+                    annotationView.hideTitle()
+                }
+            }
         }
     }
 }

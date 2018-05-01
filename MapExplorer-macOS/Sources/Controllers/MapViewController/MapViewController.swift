@@ -27,7 +27,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let minZoomWidth: Double = 424500
         static let touchRadius: CGFloat = 20
         static let annotationHitSize = CGSize(width: 50, height: 50)
-        static let annotationTitleZoomLevel = Double(36000000 / Configuration.mapsPerScreen)
         static let doubleTapScale = 0.5
     }
 
@@ -115,7 +114,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                 mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
             }
             mapRect.origin += MKMapPoint(x: translationX, y: translationY)
-            updateAnnotationIfNeeded(to: mapRect, from: mapView.visibleMapRect)
             mapHandler?.send(mapRect, for: pinch.state)
         case .ended:
             mapHandler?.endActivity()
@@ -244,22 +242,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         let location = window.frame.origin + position
         let info: JSON = [Keys.map: appID, Keys.id: record.id, Keys.position: location.toJSON()]
         DistributedNotificationCenter.default().postNotificationName(WindowNotification.with(record.type).name, object: nil, userInfo: info, deliverImmediately: true)
-    }
-
-    private func updateAnnotationIfNeeded(to mapRect1: MKMapRect, from mapRect2: MKMapRect) {
-        if mapRect1.size.width < Constants.annotationTitleZoomLevel && mapRect2.size.width > Constants.annotationTitleZoomLevel {
-            for annotation in mapView.annotations {
-                if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
-                    annotationView.showTitle()
-                }
-            }
-        } else if mapRect1.size.width > Constants.annotationTitleZoomLevel && mapRect2.size.width < Constants.annotationTitleZoomLevel {
-            for annotation in mapView.annotations {
-                if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
-                    annotationView.hideTitle()
-                }
-            }
-        }
     }
 
     private func handleDoubleTap(at position: CGPoint) {
