@@ -7,6 +7,12 @@ import MapKit
 typealias MapState = (pair: Int?, group: Int?)
 
 
+private enum UserActivity {
+    case idle
+    case active
+}
+
+
 class MapHandler {
 
     let mapView: MKMapView
