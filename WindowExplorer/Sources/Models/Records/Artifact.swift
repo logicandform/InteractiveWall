@@ -46,10 +46,10 @@ class Artifact {
 
         self.id = id
         self.title = title
-        self.subtitle = (json[Keys.subtitle] as? String)?.removingHtml()
-        self.date = (json[Keys.date] as? String)?.removingHtml()
-        self.description = (json[Keys.description] as? String)?.removingHtml()
-        self.comments = (json[Keys.comments] as? String)?.removingHtml()
+        self.subtitle = json[Keys.subtitle] as? String
+        self.date = json[Keys.date] as? String
+        self.description = json[Keys.description] as? String
+        self.comments = json[Keys.comments] as? String
 
         if let urlStrings = json[Keys.media] as? [String], let thumbnailStrings = json[Keys.thumbnails] as? [String] {
             let urls = urlStrings.compactMap { URL.from(CachingNetwork.baseURL + $0) }

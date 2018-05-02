@@ -30,6 +30,8 @@ final class CachingNetwork {
         static let artifactByID = artifacts + "/find/"
         static let schools = baseURL + "/schools"
         static let schoolByID = schools + "/find/"
+        static let themes = baseURL + "/themes"
+        static let themeByID = baseURL + "/find/"
     }
 
     private static let credentials: [String: String] = {
@@ -130,6 +132,25 @@ final class CachingNetwork {
 
         return Alamofire.request(url).responseJSON().then { json in
             try ResponseHandler.serializeSchool(from: json)
+        }
+    }
+
+
+    // MARK: Themes
+
+    static func getThemes() throws -> Promise<[Theme]> {
+        let url = Endpoints.themes
+
+        return Alamofire.request(url).responseJSON().then { json in
+            try ResponseHandler.serializeThemes(from: json)
+        }
+    }
+
+    static func getTheme(by id: Int) -> Promise<Theme> {
+        let url = Endpoints.themeByID + id.description
+
+        return Alamofire.request(url).responseJSON().then { json in
+            try ResponseHandler.serializeTheme(from: json)
         }
     }
 }

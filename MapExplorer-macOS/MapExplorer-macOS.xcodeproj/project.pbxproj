@@ -19,7 +19,6 @@
 		22290C092028F9EC000E0573 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C082028F9EC000E0573 /* AppDelegate.swift */; };
 		22290C0D2028F9EC000E0573 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22290C0C2028F9EC000E0573 /* Assets.xcassets */; };
 		22290C102028F9EC000E0573 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22290C0E2028F9EC000E0573 /* Main.storyboard */; };
-		22290C2B2028FA1F000E0573 /* PlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C1E2028FA1E000E0573 /* PlaceView.swift */; };
 		22290C2C2028FA1F000E0573 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C1F2028FA1E000E0573 /* MapViewController.swift */; };
 		22290C2D2028FA1F000E0573 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C202028FA1E000E0573 /* Place.swift */; };
 		22290C2E2028FA1F000E0573 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C222028FA1E000E0573 /* Style.swift */; };
@@ -29,16 +28,13 @@
 		22290C3A2028FA35000E0573 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C352028FA34000E0573 /* Int.swift */; };
 		22290C3B2028FA35000E0573 /* PacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C362028FA34000E0573 /* PacketType.swift */; };
 		22290C3C2028FA35000E0573 /* NetworkConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C372028FA34000E0573 /* NetworkConfiguration.swift */; };
-		22290C4220292D22000E0573 /* ClusterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C4120292D22000E0573 /* ClusterView.swift */; };
 		222AB400203CE9AE002BFAF2 /* Demo.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 222AB3FF203CE9AE002BFAF2 /* Demo.storyboard */; };
 		222AB408203DF8F5002BFAF2 /* Map.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 222AB407203DF8F5002BFAF2 /* Map.storyboard */; };
 		22318DE0202B984F0092937C /* ResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22318DDF202B984F0092937C /* ResponseHandler.swift */; };
-		22368E29203791A700D03A0E /* SelectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22368E28203791A700D03A0E /* SelectableView.swift */; };
 		226EA70120296C240067B542 /* NSImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226EA70020296C240067B542 /* NSImage.swift */; };
 		2276AE68204E75C2001FAD8B /* BorderlessWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2276AE67204E75C2001FAD8B /* BorderlessWindow.swift */; };
 		22A4986E2047492B0024B46C /* TouchState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A4986D2047492B0024B46C /* TouchState.swift */; };
 		22A49873204749700024B46C /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A49872204749700024B46C /* JSON.swift */; };
-		22B1E29F2044D84000BDDF14 /* NetworkMapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2220D3FE202F84A300B878D6 /* NetworkMapManager.swift */; };
 		22B1E2AA2045F2EE00BDDF14 /* AVKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2A92045F2EE00BDDF14 /* AVKit.swift */; };
 		22EF0FA8202B847200571002 /* CachingNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EF0FA7202B847200571002 /* CachingNetwork.swift */; };
 		22F0EDF82066D9500075E467 /* TouchListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F0EDF72066D9500075E467 /* TouchListener.swift */; };
@@ -85,7 +81,6 @@
 		221C629E203B4906009493DA /* School.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = School.swift; sourceTree = "<group>"; };
 		221C62A7203B57F7009493DA /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		2220D3FC202F7E4200B878D6 /* GestureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureManager.swift; sourceTree = "<group>"; };
-		2220D3FE202F84A300B878D6 /* NetworkMapManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMapManager.swift; sourceTree = "<group>"; };
 		222694BF20699B10007DA6FA /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		222694C120699B53007DA6FA /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		22290C052028F9EC000E0573 /* MapExplorer-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MapExplorer-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,7 +89,6 @@
 		22290C0F2028F9EC000E0573 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		22290C112028F9EC000E0573 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		22290C122028F9EC000E0573 /* MapExplorer_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MapExplorer_macOS.entitlements; sourceTree = "<group>"; };
-		22290C1E2028FA1E000E0573 /* PlaceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceView.swift; sourceTree = "<group>"; };
 		22290C1F2028FA1E000E0573 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		22290C202028FA1E000E0573 /* Place.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		22290C222028FA1E000E0573 /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
@@ -104,11 +98,9 @@
 		22290C352028FA34000E0573 /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
 		22290C362028FA34000E0573 /* PacketType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PacketType.swift; sourceTree = "<group>"; };
 		22290C372028FA34000E0573 /* NetworkConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkConfiguration.swift; sourceTree = "<group>"; };
-		22290C4120292D22000E0573 /* ClusterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterView.swift; sourceTree = "<group>"; };
 		222AB3FF203CE9AE002BFAF2 /* Demo.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Demo.storyboard; sourceTree = "<group>"; };
 		222AB407203DF8F5002BFAF2 /* Map.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Map.storyboard; sourceTree = "<group>"; };
 		22318DDF202B984F0092937C /* ResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseHandler.swift; sourceTree = "<group>"; };
-		22368E28203791A700D03A0E /* SelectableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableView.swift; sourceTree = "<group>"; };
 		226EA70020296C240067B542 /* NSImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSImage.swift; sourceTree = "<group>"; };
 		2276AE67204E75C2001FAD8B /* BorderlessWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderlessWindow.swift; sourceTree = "<group>"; };
 		22A4986D2047492B0024B46C /* TouchState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchState.swift; sourceTree = "<group>"; };
@@ -254,7 +246,6 @@
 			children = (
 				22290C082028F9EC000E0573 /* AppDelegate.swift */,
 				2220D3FC202F7E4200B878D6 /* GestureManager.swift */,
-				2220D3FE202F84A300B878D6 /* NetworkMapManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -299,9 +290,6 @@
 		22368E272037918F00D03A0E /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				22368E28203791A700D03A0E /* SelectableView.swift */,
-				22290C1E2028FA1E000E0573 /* PlaceView.swift */,
-				22290C4120292D22000E0573 /* ClusterView.swift */,
 				8F1A1CBA205B41AC00A59A84 /* FlippedMapView.swift */,
 			);
 			path = Views;
@@ -563,7 +551,6 @@
 				22046267204732A40067D9FB /* WindowNotifications.swift in Sources */,
 				22FEF1D8202CFE8D001E9596 /* PinchGestureRecognizer.swift in Sources */,
 				22290C3B2028FA35000E0573 /* PacketType.swift in Sources */,
-				22290C4220292D22000E0573 /* ClusterView.swift in Sources */,
 				3F0254F22049D521004B831C /* LastTwo.swift in Sources */,
 				22B1E2AA2045F2EE00BDDF14 /* AVKit.swift in Sources */,
 				22FEF1D5202CFE8D001E9596 /* GestureRecognizer.swift in Sources */,
@@ -582,7 +569,6 @@
 				22F0EDFD2066DA1E0075E467 /* ListenerCallback.m in Sources */,
 				222694C020699B10007DA6FA /* Record.swift in Sources */,
 				2276AE68204E75C2001FAD8B /* BorderlessWindow.swift in Sources */,
-				22290C2B2028FA1F000E0573 /* PlaceView.swift in Sources */,
 				22FEF1D4202CFE8D001E9596 /* PanGestureRecognizer.swift in Sources */,
 				22290C382028FA35000E0573 /* MapKit.swift in Sources */,
 				221C629F203B4906009493DA /* School.swift in Sources */,
@@ -593,10 +579,8 @@
 				22290C092028F9EC000E0573 /* AppDelegate.swift in Sources */,
 				22290C392028FA35000E0573 /* CoreGraphics.swift in Sources */,
 				22FEF1DD202CFF68001E9596 /* GestureHandler.swift in Sources */,
-				22B1E29F2044D84000BDDF14 /* NetworkMapManager.swift in Sources */,
 				22290C2C2028FA1F000E0573 /* MapViewController.swift in Sources */,
 				22FEF1D2202CFE8D001E9596 /* RotateGestureRecognizer.swift in Sources */,
-				22368E29203791A700D03A0E /* SelectableView.swift in Sources */,
 				3F2FAB5D204F7D9E002EDF5D /* Collection.swift in Sources */,
 				22FEF1D7202CFE8D001E9596 /* TapGestureRecognizer.swift in Sources */,
 				2204621220472E3D0067D9FB /* MapHandler.swift in Sources */,

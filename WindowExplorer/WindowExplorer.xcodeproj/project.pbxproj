@@ -79,7 +79,6 @@
 		3F0902612049C6B10044F100 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0902602049C6B10044F100 /* Theme.swift */; };
 		3F2FAB5B204F7D24002EDF5D /* Artifact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2FAB5A204F7D24002EDF5D /* Artifact.swift */; };
 		3F47D52F206420C6001E86E3 /* FlippedClipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F47D52E206420C6001E86E3 /* FlippedClipView.swift */; };
-		3F8436E420647F9F00AAAB55 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8436E320647F9E00AAAB55 /* String.swift */; };
 		618F0C292069F8F000762C20 /* AKPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618F0C282069F8F000762C20 /* AKPlayer.swift */; };
 		618F0C2F2069F98900762C20 /* MultiChannelPanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618F0C2B2069F98900762C20 /* MultiChannelPanner.swift */; };
 		618F0C322069FFD600762C20 /* AudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618F0C312069FFD600762C20 /* AudioController.swift */; };
@@ -201,7 +200,6 @@
 		3F0902602049C6B10044F100 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		3F2FAB5A204F7D24002EDF5D /* Artifact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Artifact.swift; sourceTree = "<group>"; };
 		3F47D52E206420C6001E86E3 /* FlippedClipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlippedClipView.swift; sourceTree = "<group>"; };
-		3F8436E320647F9E00AAAB55 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		6154D53B206DDC140078F0AA /* BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BridgingHeader.h; sourceTree = "<group>"; };
 		61767FCF206883A900970640 /* MultiChannelPanAudioUnit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MultiChannelPanAudioUnit.h; sourceTree = "<group>"; };
 		61767FD0206883A900970640 /* MultiChannelPanAudioUnit.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MultiChannelPanAudioUnit.mm; sourceTree = "<group>"; };
@@ -294,7 +292,6 @@
 				2204623020472FDF0067D9FB /* URL.swift */,
 				8E4010A120487E0300E81AAA /* Collection.swift */,
 				22914F76204905230000D4E1 /* NSApplication.swift */,
-				3F8436E320647F9E00AAAB55 /* String.swift */,
 				2256D2982090CF3B009DEADE /* NSView.swift */,
 			);
 			path = Extensions;
@@ -753,7 +750,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F910718206C2973008F9513 /* ImageView.swift in Sources */,
-				3F8436E420647F9F00AAAB55 /* String.swift in Sources */,
 				22A76FEC2046477A006C0AE7 /* PlayerViewController.swift in Sources */,
 				D92E0F00206052C900C1C9A7 /* ArrowControl.swift in Sources */,
 				2204623520472FDF0067D9FB /* Int.swift in Sources */,

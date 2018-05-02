@@ -17,7 +17,7 @@ final class GestureManager {
 
     private struct Constants {
         static let indicatorRadius: CGFloat = 4
-        static let indicatorDuration: Double = 0.6
+        static let indicatorDuration = 0.6
     }
 
 

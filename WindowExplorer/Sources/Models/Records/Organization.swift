@@ -38,7 +38,7 @@ class Organization {
 
         self.id = id
         self.title = title
-        self.description = (json[Keys.description] as? String)?.removingHtml()
+        self.description = json[Keys.description] as? String
 
         if let urlStrings = json[Keys.media] as? [String], let thumbnailStrings = json[Keys.thumbnails] as? [String] {
             let urls = urlStrings.compactMap { URL.from(CachingNetwork.baseURL + $0) }
