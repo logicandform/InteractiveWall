@@ -604,10 +604,10 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         let lastScreen = NSScreen.at(position: Configuration.numberOfScreens)
 
         if origin.x > lastScreen.frame.maxX - Constants.screenEdgeBuffer {
-            if lastScreen.frame.height - window.frame.maxY < type.size.height {
-                return CGPoint(x: lastScreen.frame.maxX - type.size.width - style.windowMargins, y: origin.y - view.frame.height - style.windowMargins)
+            if lastScreen.frame.height - window.frame.maxY < window.frame.height {
+                return CGPoint(x: lastScreen.frame.maxX - window.frame.width - style.windowMargins, y: origin.y - view.frame.height - style.windowMargins)
             } else {
-                return CGPoint(x: lastScreen.frame.maxX - type.size.width - style.windowMargins, y: origin.y + type.size.height + style.windowMargins)
+                return CGPoint(x: lastScreen.frame.maxX - window.frame.width - style.windowMargins, y: origin.y + window.frame.height + style.windowMargins)
             }
         }
 
