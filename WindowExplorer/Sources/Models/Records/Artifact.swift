@@ -13,11 +13,11 @@ class Artifact {
     let description: String?
     let comments: String?
     var media = [Media]()
-    var relatedSchools: [School]?
-    var relatedOrganizations: [Organization]?
-    var relatedArtifacts: [Artifact]?
-    var relatedEvents: [Event]?
-    var themes: [Theme]?
+    var relatedSchools = [School]()
+    var relatedOrganizations = [Organization]()
+    var relatedArtifacts = [Artifact]()
+    var relatedEvents = [Event]()
+    var relatedThemes = [Theme]()
 
     private struct Keys {
         static let id = "id"
@@ -77,7 +77,7 @@ class Artifact {
         }
         if let themesJSON = json[Keys.themes] as? [JSON] {
             let themes = themesJSON.compactMap { Theme(json: $0) }
-            self.themes = themes
+            self.relatedThemes = themes
         }
     }
 }

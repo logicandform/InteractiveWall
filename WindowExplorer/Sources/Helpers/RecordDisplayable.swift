@@ -8,24 +8,24 @@ private struct Constants {
     static let titleFontSize: CGFloat = 28
     static let titleLineSpacing: CGFloat = 0
     static let titleMaximumLineheight: CGFloat = titleFontSize + 15
-    static let titleForegroundColor: NSColor = .white
+    static let titleForegroundColor = NSColor.white
     static let dateFontSize: CGFloat = 14
     static let dateLineSpacing: CGFloat = 0
     static let dateParagraphSpacingBefore: CGFloat = 0
-    static let dateForegroundColor: NSColor = style.selectedColor
+    static let dateForegroundColor = style.selectedColor
     static let descriptionFontSize: CGFloat = 16
     static let descriptionLineSpacing: CGFloat = 0
     static let descriptionMaximumLineHeight: CGFloat = descriptionFontSize + 5
     static let descriptionParagraphSpacing: CGFloat = 8
-    static let descriptionForegroundColor: NSColor = .white
+    static let descriptionForegroundColor = NSColor.white
     static let commentsFontSize: CGFloat = 16
     static let commentsLineSpacing: CGFloat = 0
     static let commentsMaximumLineHeight: CGFloat = commentsFontSize + 5
     static let commentsParagraphSpacing: CGFloat = 8
-    static let commentsForegroundColor: NSColor = .white
+    static let commentsForegroundColor = NSColor.white
     static let smallHeaderFontSize: CGFloat = 12
     static let smallHeaderLineSpacing: CGFloat = 0
-    static let smallHeaderForegroundColor: NSColor = .white
+    static let smallHeaderForegroundColor = NSColor.white
     static let smallHeaderParagraphSpacing: CGFloat = 0
     static let smallHeaderParagraphSpacingBefore: CGFloat = 20
     static let fontName = "Soleil"
@@ -172,14 +172,10 @@ extension RecordDisplayable {
 extension Event: RecordDisplayable {
 
     var recordGroups: [RecordGroup] {
-        guard let schools = relatedSchools, let organizations = relatedOrganizations, let artifacts = relatedArtifacts, let events = relatedEvents else {
-            return []
-        }
-
-        let schoolGroup = RecordGroup(type: .school, records: schools)
-        let organizationGroup = RecordGroup(type: .organization, records: organizations)
-        let artifactGroup = RecordGroup(type: .artifact, records: artifacts)
-        let eventGroup = RecordGroup(type: .event, records: events)
+        let schoolGroup = RecordGroup(type: .school, records: relatedSchools)
+        let organizationGroup = RecordGroup(type: .organization, records: relatedOrganizations)
+        let artifactGroup = RecordGroup(type: .artifact, records: relatedArtifacts)
+        let eventGroup = RecordGroup(type: .event, records: relatedEvents)
 
         return [schoolGroup, organizationGroup, artifactGroup, eventGroup]
     }
@@ -210,14 +206,10 @@ extension Artifact: RecordDisplayable {
     }
 
     var recordGroups: [RecordGroup] {
-        guard let schools = relatedSchools, let organizations = relatedOrganizations, let artifacts = relatedArtifacts, let events = relatedEvents else {
-            return []
-        }
-
-        let schoolGroup = RecordGroup(type: .school, records: schools)
-        let organizationGroup = RecordGroup(type: .organization, records: organizations)
-        let artifactGroup = RecordGroup(type: .artifact, records: artifacts)
-        let eventGroup = RecordGroup(type: .event, records: events)
+        let schoolGroup = RecordGroup(type: .school, records: relatedSchools)
+        let organizationGroup = RecordGroup(type: .organization, records: relatedOrganizations)
+        let artifactGroup = RecordGroup(type: .artifact, records: relatedArtifacts)
+        let eventGroup = RecordGroup(type: .event, records: relatedEvents)
 
         return [schoolGroup, organizationGroup, artifactGroup, eventGroup]
     }
@@ -230,14 +222,10 @@ extension Organization: RecordDisplayable {
     }
 
     var recordGroups: [RecordGroup] {
-        guard let schools = relatedSchools, let organizations = relatedOrganizations, let artifacts = relatedArtifacts, let events = relatedEvents else {
-            return []
-        }
-
-        let schoolGroup = RecordGroup(type: .school, records: schools)
-        let organizationGroup = RecordGroup(type: .organization, records: organizations)
-        let artifactGroup = RecordGroup(type: .artifact, records: artifacts)
-        let eventGroup = RecordGroup(type: .event, records: events)
+        let schoolGroup = RecordGroup(type: .school, records: relatedSchools)
+        let organizationGroup = RecordGroup(type: .organization, records: relatedOrganizations)
+        let artifactGroup = RecordGroup(type: .artifact, records: relatedArtifacts)
+        let eventGroup = RecordGroup(type: .event, records: relatedEvents)
 
         return [schoolGroup, organizationGroup, artifactGroup, eventGroup]
     }
@@ -246,14 +234,10 @@ extension Organization: RecordDisplayable {
 extension School: RecordDisplayable {
 
     var recordGroups: [RecordGroup] {
-        guard let schools = relatedSchools, let organizations = relatedOrganizations, let artifacts = relatedArtifacts, let events = relatedEvents else {
-            return []
-        }
-
-        let schoolGroup = RecordGroup(type: .school, records: schools)
-        let organizationGroup = RecordGroup(type: .organization, records: organizations)
-        let artifactGroup = RecordGroup(type: .artifact, records: artifacts)
-        let eventGroup = RecordGroup(type: .event, records: events)
+        let schoolGroup = RecordGroup(type: .school, records: relatedSchools)
+        let organizationGroup = RecordGroup(type: .organization, records: relatedOrganizations)
+        let artifactGroup = RecordGroup(type: .artifact, records: relatedArtifacts)
+        let eventGroup = RecordGroup(type: .event, records: relatedEvents)
 
         return [schoolGroup, organizationGroup, artifactGroup, eventGroup]
     }

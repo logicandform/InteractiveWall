@@ -8,10 +8,10 @@ class Place {
     let id: Int
     let title: String
     let coordinate: CLLocationCoordinate2D
-    var relatedSchools: [School]?
-    var relatedOrganizations: [Organization]?
-    var relatedArtifacts: [Artifact]?
-    var relatedEvents: [Event]?
+    var relatedSchools = [School]()
+    var relatedOrganizations = [Organization]()
+    var relatedArtifacts = [Artifact]()
+    var relatedEvents = [Event]()
 
     private struct Keys {
         static let id = "id"
