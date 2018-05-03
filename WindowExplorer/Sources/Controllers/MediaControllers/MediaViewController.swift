@@ -103,6 +103,7 @@ class MediaViewController: NSViewController, GestureResponder {
         closeWindowTimer?.invalidate()
     }
 
+    // Updates the position of the controller, based on its delegates frame, and its positional ranking
     func updatePosition(animating: Bool) {
         if let recordFrameAndPosition = delegate?.recordFrameAndPosition(for: self) {
             updateOrigin(from: recordFrameAndPosition.frame, at: recordFrameAndPosition.position, animating: animating)

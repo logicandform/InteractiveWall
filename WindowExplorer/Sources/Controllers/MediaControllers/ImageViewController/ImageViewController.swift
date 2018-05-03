@@ -66,7 +66,7 @@ class ImageViewController: MediaViewController {
         imageView.setFrameSize(frameSize)
         scrollViewHeightConstraint.constant = frameSize.height
         scrollViewWidthConstraint.constant = frameSize.width
-        view.window?.setFrame(NSRect(origin: view.window!.frame.origin, size: frameSize), display: true)
+        view.window?.setFrame(NSRect(origin: window.frame.origin, size: frameSize), display: true)
         imageScrollView.documentView = imageView
 
         updatePosition(animating: false)
