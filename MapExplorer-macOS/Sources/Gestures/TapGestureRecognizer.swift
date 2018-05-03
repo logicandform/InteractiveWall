@@ -19,6 +19,13 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
 
     private var positionForTouch = [Touch: CGPoint]()
     private var doubleTapPositionAndTimeForTouch = [Touch: (position: CGPoint, time: Date)]()
+    private var beginTapDelay: Bool!
+
+
+    // MARK: Init
+    init(beginTapDelay: Bool = true) {
+        self.beginTapDelay = beginTapDelay
+    }
 
 
     // MARK: API
@@ -32,10 +39,14 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         state = .began
 
         // Dont update with began until startTapThresholdTime has passed
-        Timer.scheduledTimer(withTimeInterval: Constants.startTapThresholdTime, repeats: false) { [weak self] _ in
-            if let strongSelf = self, strongSelf.state == .began {
-                strongSelf.gestureUpdated?(strongSelf)
+        if beginTapDelay {
+            Timer.scheduledTimer(withTimeInterval: Constants.startTapThresholdTime, repeats: false) { [weak self] _ in
+                if let strongSelf = self, strongSelf.state == .began {
+                    strongSelf.gestureUpdated?(strongSelf)
+                }
             }
+        } else {
+            gestureUpdated?(self)
         }
     }
 

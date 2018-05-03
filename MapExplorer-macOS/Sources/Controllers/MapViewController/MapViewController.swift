@@ -84,7 +84,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         nsPinch.delaysMagnificationEvents = false
         mapView.addGestureRecognizer(nsPinch)
 
-        let tapGesture = TapGestureRecognizer()
+        let tapGesture = TapGestureRecognizer(beginTapDelay: false)
         gestureManager.add(tapGesture, to: mapView)
         tapGesture.gestureUpdated = didTapOnMap(_:)
 
