@@ -4,6 +4,7 @@ import Cocoa
 import AppKit
 
 class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource, NSTableViewDataSource, NSTableViewDelegate, GestureResponder, MediaControllerDelegate {
+
     static let storyboard = NSStoryboard.Name(rawValue: "Record")
 
     @IBOutlet weak var detailView: NSView!
@@ -38,14 +39,12 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         static let allRecordsTitle = "RECORDS"
         static let animationDuration = 0.5
         static let tableRowHeight: CGFloat = 80
-        static let mediaControllerOffset = 50
         static let closeWindowTimeoutPeriod: TimeInterval = 300
         static let animationDistanceThreshold: CGFloat = 20
         static let fontName = "Soleil"
         static let fontSize: CGFloat = 13
         static let fontColor: NSColor = .white
         static let kern: CGFloat = 0.5
-        static let screenEdgeBuffer: CGFloat = 80
         static let showRelatedItemViewRotation: CGFloat = 45
         static let relatedItemsViewMargin: CGFloat = 8
         static let relatedRecordsTitleAnimationDuration = 0.15
@@ -478,6 +477,18 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     func controllerDidMove(_ controller: MediaViewController) {
         positionForMediaController[controller] = nil as Int?
     }
+ 
+    func recordFrameAndPosition(for controller: MediaViewController) -> (frame: CGRect, position: Int)? {
+        guard let window = view.window else {
+            return nil
+        }
+
+        if let position = positionForMediaController[controller], position != nil {
+            return (window.frame, position!)
+        } else {
+            return (window.frame, getMediaControllerPosition())
+        }
+    }
 
 
     // MARK: GestureResponder
@@ -572,46 +583,29 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func selectMediaItem(_ media: Media) {
-        guard let window = view.window, let windowType = WindowType(for: media) else {
+        guard let windowType = WindowType(for: media) else {
             return
         }
 
         let controller = positionForMediaController.keys.first(where: { $0.media == media })
         let position = getMediaControllerPosition()
-        let offset = CGVector(dx: position * Constants.mediaControllerOffset, dy: position * -Constants.mediaControllerOffset)
-        var origin = CGPoint(x: window.frame.maxX + style.windowMargins + offset.dx, y: window.frame.maxY + offset.dy)
-        origin.y -= controller?.view.frame.height ?? windowType.size.height
-        if windowType.canAdjustOrigin {
-            origin = constrainedToApplication(origin, for: window, type: windowType)
-        }
 
         if let controller = controller {
-            // If the controller is in the correct position, bring it to the front, else animate to point
+            // If the controller is in the correct position, bring it to the front, else animate to origin
             if let position = positionForMediaController[controller], position != nil {
                 controller.view.window?.makeKeyAndOrderFront(self)
             } else {
-                controller.animate(to: origin)
+                controller.updatePosition(animating: true)
                 positionForMediaController[controller] = position
             }
-        } else if let controller = WindowManager.instance.display(windowType, at: origin) as? MediaViewController {
-            positionForMediaController[controller] = position
+        } else if let controller = WindowManager.instance.display(windowType) as? MediaViewController {
             controller.delegate = self
-        }
-    }
-
-    /// Returns the given origin translated to the application frame if necessary
-    private func constrainedToApplication(_ origin: CGPoint, for window: NSWindow, type: WindowType) -> CGPoint {
-        let lastScreen = NSScreen.at(position: Configuration.numberOfScreens)
-
-        if origin.x > lastScreen.frame.maxX - Constants.screenEdgeBuffer {
-            if lastScreen.frame.height - window.frame.maxY < window.frame.height {
-                return CGPoint(x: lastScreen.frame.maxX - window.frame.width - style.windowMargins, y: origin.y - view.frame.height - style.windowMargins)
-            } else {
-                return CGPoint(x: lastScreen.frame.maxX - window.frame.width - style.windowMargins, y: origin.y + window.frame.height + style.windowMargins)
+            // Image view controller takes care of setting its own position after its image has loaded in
+            if controller is PlayerViewController || controller is PDFViewController {
+                controller.updatePosition(animating: false)
             }
+            positionForMediaController[controller] = position
         }
-
-        return origin
     }
 
     /// Gets the first available media controller position
