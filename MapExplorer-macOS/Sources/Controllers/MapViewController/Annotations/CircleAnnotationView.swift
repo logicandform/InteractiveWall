@@ -23,7 +23,6 @@ class CircleAnnotationView: MKAnnotationView {
         static let fontName = "Soleil"
         static let kern: CGFloat = 0.5
         static let animationDuration = 1.0
-        static let annotationTitleZoomLevel = Double(36000000 / Configuration.mapsPerScreen)
     }
 
     var titleAttributes: [NSAttributedStringKey: Any] {
@@ -101,7 +100,6 @@ class CircleAnnotationView: MKAnnotationView {
         addSubview(circle3)
         addSubview(center)
         addSubview(title)
-        showTitle(showingTitle)
 
         self.wantsLayer = true
         layer?.shadowColor = NSColor.black.cgColor
