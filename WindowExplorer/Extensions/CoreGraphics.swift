@@ -56,6 +56,11 @@ extension CGPoint {
         return CGPoint(x: x, y: frame.size.height - y)
     }
 
+    /// Gives the magnitude of the distance to a given point.
+    func distance(to otherPoint: CGPoint) -> CGFloat {
+        return sqrt(pow(x - otherPoint.x, 2) + pow(y - otherPoint.y, 2))
+    }
+
     static func + (lhs: CGPoint, rhs: CGPoint) -> CGPoint {
         return CGPoint(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
     }

@@ -19,12 +19,12 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
 
     private var positionForTouch = [Touch: CGPoint]()
     private var doubleTapPositionAndTimeForTouch = [Touch: (position: CGPoint, time: Date)]()
-    private var beginTapDelay: Bool!
+    private var delayTapBegin = true
 
 
     // MARK: Init
-    init(beginTapDelay: Bool = true) {
-        self.beginTapDelay = beginTapDelay
+    init(delayTapBegin: Bool = true) {
+        self.delayTapBegin = delayTapBegin
     }
 
 
@@ -38,15 +38,16 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         position = touch.position
         state = .began
 
-        // Dont update with began until startTapThresholdTime has passed
-        if beginTapDelay {
-            Timer.scheduledTimer(withTimeInterval: Constants.startTapThresholdTime, repeats: false) { [weak self] _ in
-                if let strongSelf = self, strongSelf.state == .began {
-                    strongSelf.gestureUpdated?(strongSelf)
-                }
-            }
-        } else {
+        if !delayTapBegin {
             gestureUpdated?(self)
+            return
+        }
+
+        // Dont update with began until startTapThresholdTime has passed
+        Timer.scheduledTimer(withTimeInterval: Constants.startTapThresholdTime, repeats: false) { [weak self] _ in
+            if let strongSelf = self, strongSelf.state == .began {
+                strongSelf.gestureUpdated?(strongSelf)
+            }
         }
     }
 
@@ -73,14 +74,13 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         if state == .failed {
             gestureUpdated?(self)
             doubleTapPositionAndTimeForTouch.removeValue(forKey: touch)
-            reset()
         } else {
             state = .ended
             checkForDoubleTap(with: touch)
             gestureUpdated?(self)
-            reset()
         }
 
+        reset()
         positionForTouch.removeValue(forKey: touch)
     }
 
