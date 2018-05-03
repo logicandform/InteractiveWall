@@ -29,6 +29,8 @@ final class Style {
 
     let minMediaWindowWidth: CGFloat = 550.0
     let maxMediaWindowWidth: CGFloat = 700.0
+    let minMediaWindowHeight: CGFloat = 550.0
+    let maxMediaWindowHeight: CGFloat = 1500.0
 
     let windowMargins: CGFloat = 20
 }
