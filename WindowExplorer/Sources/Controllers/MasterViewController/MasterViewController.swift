@@ -189,7 +189,7 @@ class MasterViewController: NSViewController {
             let application = try NSWorkspace.shared.launchApplication(at: url, options: .newInstance, configuration: config)
             return application
         } catch {
-            print("Failed to execute: \(application.path).")
+            print("Failed to open application at path: \(application.path).")
             return nil
         }
     }

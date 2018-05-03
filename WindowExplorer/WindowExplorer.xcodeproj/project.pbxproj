@@ -427,7 +427,6 @@
 				2204623C204730050067D9FB /* Gestures */,
 				22A4985F204734790024B46C /* Notifications */,
 				61767FFD206895EE00970640 /* Audio */,
-				6154D53B206DDC140078F0AA /* BridgingHeader.h */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -446,6 +445,7 @@
 			children = (
 				22A9232A2044AF05003EA9BB /* WindowExplorer.entitlements */,
 				22A923292044AF05003EA9BB /* WindowExplorer.plist */,
+				6154D53B206DDC140078F0AA /* BridgingHeader.h */,
 			);
 			path = Metadata;
 			sourceTree = "<group>";
@@ -963,7 +963,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = is.slant.WindowExplorer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = Sources/BridgingHeader.h;
+				SWIFT_OBJC_BRIDGING_HEADER = Metadata/BridgingHeader.h;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
@@ -980,7 +980,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = is.slant.WindowExplorer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = Sources/BridgingHeader.h;
+				SWIFT_OBJC_BRIDGING_HEADER = Metadata/BridgingHeader.h;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Release;

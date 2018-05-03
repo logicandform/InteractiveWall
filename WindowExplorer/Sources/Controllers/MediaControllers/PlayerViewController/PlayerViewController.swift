@@ -39,8 +39,8 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
 
     override func viewDidAppear() {
         super.viewDidAppear()
-        if let window = view.window, let screen = window.screen {
-            audioPlayer?.location = Double(window.frame.midX / screen.visibleFrame.width)
+        if let window = view.window {
+            audioPlayer?.location = horizontalPosition(of: window)
         }
     }
 

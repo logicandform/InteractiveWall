@@ -12,8 +12,8 @@ class ImageViewController: MediaViewController {
     @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollViewWidthConstraint: NSLayoutConstraint!
 
-    private var urlRequest: DataRequest?
     private var imageView: NSImageView!
+    private var imageRequest: DataRequest?
     private var contentViewFrame: NSRect!
     private var frameSize: NSSize!
 
@@ -35,7 +35,7 @@ class ImageViewController: MediaViewController {
 
     override func viewDidDisappear() {
         super.viewDidDisappear()
-        urlRequest?.cancel()
+        imageRequest?.cancel()
     }
 
 
@@ -48,7 +48,7 @@ class ImageViewController: MediaViewController {
 
         imageView = NSImageView()
 
-        urlRequest = Alamofire.request(media.url).responseImage { [weak self] response in
+        imageRequest = Alamofire.request(media.url).responseImage { [weak self] response in
             if let image = response.value {
                 self?.addImage(image)
             }
@@ -56,12 +56,12 @@ class ImageViewController: MediaViewController {
     }
 
     private func addImage(_ image: NSImage) {
-        imageView.image = image
-        imageView.imageScaling = NSImageScaling.scaleAxesIndependently
-        
         let imageRatio = image.size.height / image.size.width
         let width = clamp(image.size.width, min: style.minMediaWindowWidth, max: style.maxMediaWindowWidth)
         let height = width * imageRatio
+
+        imageView.image = image
+        imageView.imageScaling = .scaleAxesIndependently
         frameSize = NSSize(width: width, height: height)
         imageView.setFrameSize(frameSize)
         scrollViewHeightConstraint.constant = frameSize.height

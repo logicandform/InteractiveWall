@@ -16,8 +16,8 @@ class MediaViewController: NSViewController, GestureResponder {
     @IBOutlet weak var windowDragAreaHighlight: NSView!
     @IBOutlet weak var titleLabel: NSTextField!
 
-    var gestureManager: GestureManager!
     var media: Media!
+    var gestureManager: GestureManager!
     var animating = false
     weak var delegate: MediaControllerDelegate?
     private weak var closeWindowTimer: Foundation.Timer?
@@ -28,10 +28,10 @@ class MediaViewController: NSViewController, GestureResponder {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byTruncatingTail
         
-        return [.paragraphStyle : paragraphStyle,
-                .font : font,
-                .foregroundColor : Constants.titleForegroundColor,
-                .kern : Constants.kern]
+        return [.paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: Constants.titleForegroundColor,
+                .kern: Constants.kern]
     }
 
     private struct Constants {
