@@ -5,32 +5,33 @@ import AppKit
 
 
 private struct Constants {
-    static let titleFontSize: CGFloat = 28.0
-    static let titleLineSpacing: CGFloat = 0.0
-    static let titleMaximumLineheight: CGFloat = titleFontSize + 15.0
-    static let titleForegroundColor: NSColor = NSColor.white
-    static let dateFontSize: CGFloat = 14.0
-    static let dateLineSpacing: CGFloat = 0.0
-    static let dateParagraphSpacingBefore: CGFloat = 0.0
+    static let titleFontSize: CGFloat = 28
+    static let titleLineSpacing: CGFloat = 0
+    static let titleMaximumLineheight: CGFloat = titleFontSize + 15
+    static let titleForegroundColor: NSColor = .white
+    static let dateFontSize: CGFloat = 14
+    static let dateLineSpacing: CGFloat = 0
+    static let dateParagraphSpacingBefore: CGFloat = 0
     static let dateForegroundColor: NSColor = style.selectedColor
-    static let descriptionFontSize: CGFloat = 16.0
-    static let descriptionLineSpacing: CGFloat = 0.0
-    static let descriptionMaximumLineHeight: CGFloat = descriptionFontSize + 5.0
-    static let descriptionParagraphSpacing: CGFloat = 8.0
-    static let descriptionForegroundColor: NSColor = NSColor.white
-    static let commentsFontSize: CGFloat = 16.0
-    static let commentsLineSpacing: CGFloat = 0.0
-    static let commentsMaximumLineHeight: CGFloat = commentsFontSize + 5.0
-    static let commentsParagraphSpacing: CGFloat = 8.0
-    static let commentsForegroundColor: NSColor = NSColor.white
-    static let smallHeaderFontSize: CGFloat = 12.0
-    static let smallHeaderLineSpacing: CGFloat = 0.0
-    static let smallHeaderForegroundColor: NSColor = NSColor.white
-    static let smallHeaderParagraphSpacing: CGFloat = 0.0
-    static let smallHeaderParagraphSpacingBefore: CGFloat = 20.0
-    static let fontName: String = "Soleil"
+    static let descriptionFontSize: CGFloat = 16
+    static let descriptionLineSpacing: CGFloat = 0
+    static let descriptionMaximumLineHeight: CGFloat = descriptionFontSize + 5
+    static let descriptionParagraphSpacing: CGFloat = 8
+    static let descriptionForegroundColor: NSColor = .white
+    static let commentsFontSize: CGFloat = 16
+    static let commentsLineSpacing: CGFloat = 0
+    static let commentsMaximumLineHeight: CGFloat = commentsFontSize + 5
+    static let commentsParagraphSpacing: CGFloat = 8
+    static let commentsForegroundColor: NSColor = .white
+    static let smallHeaderFontSize: CGFloat = 12
+    static let smallHeaderLineSpacing: CGFloat = 0
+    static let smallHeaderForegroundColor: NSColor = .white
+    static let smallHeaderParagraphSpacing: CGFloat = 0
+    static let smallHeaderParagraphSpacingBefore: CGFloat = 20
+    static let fontName = "Soleil"
     static let kern: CGFloat = 0.5
 }
+
 
 protocol RecordDisplayable {
     var id: Int { get }
@@ -71,10 +72,10 @@ extension RecordDisplayable {
         paragraphStyle.lineSpacing = Constants.titleLineSpacing
         paragraphStyle.maximumLineHeight = Constants.titleMaximumLineheight
         
-        return [.paragraphStyle : paragraphStyle,
-                .font : font,
-                .foregroundColor : Constants.titleForegroundColor,
-                .kern : Constants.kern
+        return [.paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: Constants.titleForegroundColor,
+                .kern: Constants.kern
         ]
     }
     
@@ -83,10 +84,10 @@ extension RecordDisplayable {
         paragraphStyle.lineSpacing = Constants.dateLineSpacing
         paragraphStyle.paragraphSpacingBefore = Constants.dateParagraphSpacingBefore
         let font = NSFont(name: Constants.fontName, size: Constants.dateFontSize) ?? NSFont.systemFont(ofSize: Constants.dateFontSize)
-        return [.paragraphStyle : paragraphStyle,
-                .font : font,
-                .foregroundColor : type.color,
-                .kern : Constants.kern
+        return [.paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: type.color,
+                .kern: Constants.kern
         ]
     }
     
@@ -97,10 +98,10 @@ extension RecordDisplayable {
         paragraphStyle.maximumLineHeight = Constants.descriptionMaximumLineHeight
         paragraphStyle.lineBreakMode = .byWordWrapping
         let font = NSFont(name: Constants.fontName, size: Constants.descriptionFontSize) ?? NSFont.systemFont(ofSize: Constants.descriptionFontSize)
-        return [.paragraphStyle : paragraphStyle,
-                .font : font,
-                .foregroundColor : Constants.descriptionForegroundColor,
-                .kern : Constants.kern
+        return [.paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: Constants.descriptionForegroundColor,
+                .kern: Constants.kern
         ]
     }
     
@@ -111,10 +112,10 @@ extension RecordDisplayable {
         paragraphStyle.maximumLineHeight = Constants.commentsMaximumLineHeight
         paragraphStyle.lineBreakMode = .byWordWrapping
         let font = NSFont(name: Constants.fontName, size: Constants.commentsFontSize) ?? NSFont.systemFont(ofSize: Constants.commentsFontSize)
-        return [.paragraphStyle : paragraphStyle,
-                .font : font,
-                .foregroundColor : Constants.commentsForegroundColor,
-                .kern : Constants.kern
+        return [.paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: Constants.commentsForegroundColor,
+                .kern: Constants.kern
         ]
     }
     
@@ -125,10 +126,10 @@ extension RecordDisplayable {
         paragraphStyle.paragraphSpacing = Constants.smallHeaderParagraphSpacing
         paragraphStyle.paragraphSpacingBefore = Constants.smallHeaderParagraphSpacingBefore
         let font = NSFont(name: Constants.fontName, size: Constants.smallHeaderFontSize) ?? NSFont.systemFont(ofSize: Constants.smallHeaderFontSize)
-        return [.paragraphStyle : paragraphStyle,
-                .font : font,
-                .foregroundColor : Constants.smallHeaderForegroundColor,
-                .kern : Constants.kern
+        return [.paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: Constants.smallHeaderForegroundColor,
+                .kern: Constants.kern
         ]
     }
     
@@ -142,7 +143,7 @@ extension RecordDisplayable {
         return label
     }
     
-    func textFieldFor(string: String, attributes: [NSAttributedStringKey : Any]) -> NSTextField {
+    func textFieldFor(string: String, attributes: [NSAttributedStringKey: Any]) -> NSTextField {
         let attributedString = NSMutableAttributedString(string: string, attributes: attributes)
         let label = NSTextField(labelWithAttributedString: attributedString)
         label.drawsBackground = false
@@ -153,14 +154,13 @@ extension RecordDisplayable {
     
     var textFields: [NSTextField] {
         var labels = [NSTextField]()
-        
         labels.append(textFieldFor(string: title, attributes: titleAttributes))
         
         if let date = date, let first = date.split(separator: "|").first?.description {
             labels.append(textFieldFor(string: first, attributes: dateAttributes))
         }
         
-        if let description = description {
+        if let description = description, !description.isEmpty {
             labels.append(smallHeader(named: "Description"))
             labels.append(textFieldFor(string: description, attributes: descriptionAttributes))
         }
@@ -196,12 +196,12 @@ extension Artifact: RecordDisplayable {
             labels.append(textFieldFor(string: first, attributes: dateAttributes))
         }
         
-        if let description = description {
+        if let description = description, !description.isEmpty {
             labels.append(smallHeader(named: "Description"))
             labels.append(textFieldFor(string: description, attributes: descriptionAttributes))
         }
         
-        if let comments = comments {
+        if let comments = comments, !comments.isEmpty {
             labels.append(smallHeader(named: "Curatorial Comments"))
             labels.append(textFieldFor(string: comments, attributes: commentAttributes))
         }
