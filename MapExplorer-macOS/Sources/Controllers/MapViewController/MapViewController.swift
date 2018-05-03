@@ -209,7 +209,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         if showingAnnotationTitles != (mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel) {
             showingAnnotationTitles = mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel
-            annotationTitles(showing: showingAnnotationTitles)
+            toggleAnnotationTitles(on: showingAnnotationTitles)
         }
     }
 
@@ -277,10 +277,10 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         }
     }
 
-    private func annotationTitles(showing: Bool) {
+    private func toggleAnnotationTitles(on: Bool) {
         for annotation in mapView.annotations {
             if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
-                annotationView.showTitle(showing)
+                annotationView.showTitle(on)
             }
         }
     }

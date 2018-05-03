@@ -23,6 +23,8 @@ class CircleAnnotationView: MKAnnotationView {
         static let fontName = "Soleil"
         static let kern: CGFloat = 0.5
         static let animationDuration = 1.0
+        static let hiddenAlpha = 0
+        static let visibleAlpha = 1
     }
 
     var titleAttributes: [NSAttributedStringKey: Any] {
@@ -60,15 +62,15 @@ class CircleAnnotationView: MKAnnotationView {
     }
 
     func showTitle(_ show: Bool) {
-        if title.alphaValue == (show ? 0.0 : 1.0) {
+        let alphaValue: CGFloat = show ? 1 : 0
+        if title.alphaValue != alphaValue {
             let animateAlpha = CABasicAnimation(keyPath: "opacity")
             animateAlpha.isRemovedOnCompletion = true
             animateAlpha.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-            animateAlpha.fromValue = show ? 0 : 1
-            animateAlpha.toValue = show ? 1 : 0
+            animateAlpha.toValue = alphaValue
             animateAlpha.duration = Constants.animationDuration
             title.layer?.add(animateAlpha, forKey: "opacity")
-            title.alphaValue = show ? 1.0 : 0.0
+            title.alphaValue = alphaValue
         }
     }
 
