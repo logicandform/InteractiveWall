@@ -27,10 +27,10 @@ final class Style {
     let pdfWindowSize = CGSize(width: 600, height: 640)
     let playerWindowSize = CGSize(width: 640, height: 440)
 
-    let minMediaWindowWidth: CGFloat = 550.0
-    let maxMediaWindowWidth: CGFloat = 700.0
-    let minMediaWindowHeight: CGFloat = 550.0
-    let maxMediaWindowHeight: CGFloat = 1500.0
+    let minMediaWindowWidth: CGFloat = 550
+    let maxMediaWindowWidth: CGFloat = 700
+    let minMediaWindowHeight: CGFloat = 550
+    let maxMediaWindowHeight: CGFloat = 1500
 
     let windowMargins: CGFloat = 20
 }
