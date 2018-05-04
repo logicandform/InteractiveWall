@@ -18,7 +18,7 @@ class ImageViewController: MediaViewController {
     private var frameSize: NSSize!
 
     private struct Constants {
-        static let initialMagnification: CGFloat = 1
+        static let initialMagnifition: CGFloat = 1
         static let maximumMagnification: CGFloat = 5
     }
 
@@ -56,6 +56,10 @@ class ImageViewController: MediaViewController {
     }
 
     private func addImage(_ image: NSImage) {
+        guard let window = view.window else {
+            return
+        }
+
         let imageRatio = image.size.height / image.size.width
         let width = clamp(image.size.width, min: style.minMediaWindowWidth, max: style.maxMediaWindowWidth)
         let height = clamp(width * imageRatio, min: style.minMediaWindowHeight, max: style.maxMediaWindowHeight)
@@ -66,7 +70,10 @@ class ImageViewController: MediaViewController {
         imageView.setFrameSize(frameSize)
         scrollViewHeightConstraint.constant = frameSize.height
         scrollViewWidthConstraint.constant = frameSize.width
+        view.window?.setFrame(NSRect(origin: window.frame.origin, size: frameSize), display: true)
         imageScrollView.documentView = imageView
+
+        updatePosition(animating: false)
     }
 
     private func setupGestures() {

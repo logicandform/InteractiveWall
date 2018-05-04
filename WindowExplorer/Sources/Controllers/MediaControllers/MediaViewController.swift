@@ -6,6 +6,7 @@ import Cocoa
 protocol MediaControllerDelegate: class {
     func controllerDidClose(_ controller: MediaViewController)
     func controllerDidMove(_ controller: MediaViewController)
+    func recordFrameAndPosition(for controller: MediaViewController) -> (frame: CGRect, position: Int)?
 }
 
 
@@ -41,6 +42,7 @@ class MediaViewController: NSViewController, GestureResponder {
         static let kern: CGFloat = 1.5
         static let fontName = "Soleil"
         static let animationDuration = 0.5
+        static let controllerOffset = 50
     }
 
 
@@ -99,6 +101,13 @@ class MediaViewController: NSViewController, GestureResponder {
 
     func cancelCloseWindowTime() {
         closeWindowTimer?.invalidate()
+    }
+
+    // Updates the position of the controller, based on its delegates frame, and its positional ranking
+    func updatePosition(animating: Bool) {
+        if let recordFrameAndPosition = delegate?.recordFrameAndPosition(for: self) {
+            updateOrigin(from: recordFrameAndPosition.frame, at: recordFrameAndPosition.position, animating: animating)
+        }
     }
 
     func animate(to origin: NSPoint) {
@@ -211,6 +220,29 @@ class MediaViewController: NSViewController, GestureResponder {
             }
         case .moved, .indicator:
             return
+        }
+    }
+
+    private func updateOrigin(from recordFrame: CGRect, at position: Int, animating: Bool) {
+        let offsetX = CGFloat(position * Constants.controllerOffset)
+        let offsetY = CGFloat(position * -Constants.controllerOffset)
+        let lastScreen = NSScreen.at(position: Configuration.numberOfScreens)
+        var origin = CGPoint(x: recordFrame.maxX + style.windowMargins + offsetX, y: recordFrame.maxY + offsetY - view.frame.height)
+
+        if origin.x > lastScreen.frame.maxX - view.frame.width / 2 {
+            if lastScreen.frame.height - recordFrame.maxY < view.frame.height + style.windowMargins - 2 * offsetY {
+                // Below
+                origin =  CGPoint(x: lastScreen.frame.maxX - view.frame.width - style.windowMargins, y: origin.y - recordFrame.height - style.windowMargins)
+            } else {
+                // Above
+                origin =  CGPoint(x: lastScreen.frame.maxX - view.frame.width - style.windowMargins, y: origin.y + view.frame.height + style.windowMargins - 2 * offsetY)
+            }
+        }
+
+        if animating {
+            animate(to: origin)
+        } else {
+            view.window?.setFrameOrigin(origin)
         }
     }
 }

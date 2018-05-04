@@ -48,7 +48,7 @@ final class WindowManager {
     }
 
     @discardableResult
-    func display(_ type: WindowType, at origin: CGPoint) -> NSViewController? {
+    func display(_ type: WindowType, at origin: CGPoint = .zero) -> NSViewController? {
         let window = WindowFactory.window(for: type, at: origin)
 
         if let controller = window.contentViewController {
