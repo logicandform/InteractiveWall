@@ -17,8 +17,7 @@ struct Configuration {
 
 
 struct Paths {
-//    static let mapExplorer = "/Users/spencerperkins/Library/Developer/Xcode/DerivedData/MapExplorer-dttmkubbxpmqnkgcnmtskfqjhfbq/Build/Products/Debug/MapExplorer-macOS.app"
-    static let mapExplorer = "/Users/Tim/Library/Developer/Xcode/DerivedData/MapExplorer-btnxiobgycwlwddqfdkwxqhmpeum/Build/Products/Debug/MapExplorer-macOS.app"
+    static let mapExplorer = "/Users/harrisonturley/Library/Developer/Xcode/DerivedData/MapExplorer-advgqestfqggadbethjhtmretrda/Build/Products/Debug/MapExplorer-macOS.app"
 }
 
 
@@ -28,8 +27,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         WindowManager.instance.registerForNotifications()
         TouchManager.instance.setupTouchSocket()
-//        MasterViewController.instantiate()
-        WindowManager.instance.display(.search, at: CGPoint(x: 880, y: 100))
+        MasterViewController.instantiate()
+        
+        RecordFactory.record(for: .artifact, id: 459) { artifact in
+            if let artifact = artifact {
+                WindowFactory.window(for: .record(artifact), at: CGPoint(x: 600, y: 500))
+            }
+        }
     }
 
     func applicationWillTerminate(_ notification: Notification) {

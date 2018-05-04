@@ -55,6 +55,21 @@ enum RecordType: String {
             return NSImage(named: "school-icon")!
         }
     }
+    
+    var filterType: RecordFilterType {
+        switch self {
+        case .event:
+            return .event
+        case .artifact:
+            return .artifact
+        case .organization:
+            return .organization
+        case .school:
+            return .school
+        case .theme:
+            return .theme
+        }
+    }
 
     static var allValues: [RecordType] {
         return [.event, .artifact, .organization, .school, .theme]

@@ -23,7 +23,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private var pageControl = PageControl()
     private var positionForMediaController = [MediaViewController: Int?]()
     private var showingRelatedItems = false
-    private var relatedItemsType: RecordType?
+    private var relatedItemsType: RecordFilterType?
     private var hiddenRelatedItems = IndexSet()
 
     private struct Constants {
@@ -578,14 +578,14 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     }
 
     /// Handle a change of record type from the RelatedItemsHeaderView
-    private func didSelectRelatedItemsType(_ type: RecordType?) {
+    private func didSelectRelatedItemsType(_ type: RecordFilterType?) {
         let titleForType = type?.title ?? Constants.allRecordsTitle
         transitionRelatedRecordsTitle(to: titleForType)
 
         var itemsToRemove = IndexSet()
         if let type = type {
             for (index, record) in record.relatedRecords.enumerated() {
-                if record.type != type {
+                if record.type.filterType != type {
                     itemsToRemove.insert(index)
                 }
             }
