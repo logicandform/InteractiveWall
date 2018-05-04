@@ -7,7 +7,7 @@ import AppKit
 private struct Constants {
     static let titleFontSize: CGFloat = 28
     static let titleLineSpacing: CGFloat = 0
-    static let titleMaximumLineheight: CGFloat = titleFontSize + 15
+    static let titleMaximumLineheight: CGFloat = titleFontSize
     static let titleForegroundColor = NSColor.white
     static let dateFontSize: CGFloat = 14
     static let dateLineSpacing: CGFloat = 0
