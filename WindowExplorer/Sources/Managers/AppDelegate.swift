@@ -8,7 +8,7 @@ let style = Style()
 
 
 struct Configuration {
-    static let mapsPerScreen = 1
+    static let mapsPerScreen = 2
     static let numberOfScreens = 1
     static let touchScreenSize = CGSize(width: 21564, height: 12116)
     static let refreshRate: Double = 1 / 60
@@ -17,7 +17,7 @@ struct Configuration {
 
 
 struct Paths {
-    static let mapExplorer = "/Users/Tim/Library/Developer/Xcode/DerivedData/MapExplorer-btnxiobgycwlwddqfdkwxqhmpeum/Build/Products/Debug/MapExplorer-macOS.app"
+    static let mapExplorer = "/Users/spencerperkins/Library/Developer/Xcode/DerivedData/MapExplorer-dttmkubbxpmqnkgcnmtskfqjhfbq/Build/Products/Debug/MapExplorer-macOS.app"
 }
 
 

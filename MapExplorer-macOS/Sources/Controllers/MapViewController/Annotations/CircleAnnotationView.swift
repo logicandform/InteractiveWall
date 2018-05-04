@@ -7,10 +7,10 @@ import MapKit
 class CircleAnnotationView: MKAnnotationView {
     static let identifier = "CircleAnnotationView"
 
-    private let circle1 = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.0, y: -Constants.radii.0), size: CGSize(width: Constants.radii.0*2.0, height: Constants.radii.0*2.0)))
-    private let circle2 = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.1, y: -Constants.radii.1), size: CGSize(width: Constants.radii.1*2.0, height: Constants.radii.1*2.0)))
-    private let circle3 = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.2, y: -Constants.radii.2), size: CGSize(width: Constants.radii.2*2.0, height: Constants.radii.2*2.0)))
-    private let center = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.3, y: -Constants.radii.3), size: CGSize(width: Constants.radii.3*2.0, height: Constants.radii.3*2.0)))
+    private let circle1 = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.0, y: -Constants.radii.0), size: CGSize(width: Constants.radii.0 * 2.0, height: Constants.radii.0 * 2.0)))
+    private let circle2 = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.1, y: -Constants.radii.1), size: CGSize(width: Constants.radii.1 * 2.0, height: Constants.radii.1 * 2.0)))
+    private let circle3 = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.2, y: -Constants.radii.2), size: CGSize(width: Constants.radii.2 * 2.0, height: Constants.radii.2 * 2.0)))
+    private let center = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.3, y: -Constants.radii.3), size: CGSize(width: Constants.radii.3 * 2.0, height: Constants.radii.3 * 2.0)))
     private let title = NSTextField(frame: NSRect(x: 18, y: -8, width: 500, height: 15))
 
     private struct Constants {
@@ -23,6 +23,8 @@ class CircleAnnotationView: MKAnnotationView {
         static let fontName = "Soleil"
         static let kern: CGFloat = 0.5
         static let animationDuration = 1.0
+        static let hiddenAlpha = 0
+        static let visibleAlpha = 1
     }
 
     var titleAttributes: [NSAttributedStringKey: Any] {
@@ -59,31 +61,19 @@ class CircleAnnotationView: MKAnnotationView {
         animateOuterCircle()
     }
 
-    func showTitle() {
-        if title.alphaValue == 0.0 {
+    func showTitle(_ show: Bool) {
+        let alphaValue: CGFloat = show ? 1 : 0
+        if title.alphaValue != alphaValue {
             let animateAlpha = CABasicAnimation(keyPath: "opacity")
             animateAlpha.isRemovedOnCompletion = true
             animateAlpha.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-            animateAlpha.fromValue = 0
-            animateAlpha.toValue = 1
+            animateAlpha.toValue = alphaValue
             animateAlpha.duration = Constants.animationDuration
             title.layer?.add(animateAlpha, forKey: "opacity")
-            title.alphaValue = 1.0
+            title.alphaValue = alphaValue
         }
     }
 
-    func hideTitle() {
-        if title.alphaValue == 1.0 {
-            let animateAlpha = CABasicAnimation(keyPath: "opacity")
-            animateAlpha.isRemovedOnCompletion = true
-            animateAlpha.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-            animateAlpha.fromValue = 1
-            animateAlpha.toValue = 0
-            animateAlpha.duration = Constants.animationDuration
-            title.layer?.add(animateAlpha, forKey: "opacity")
-            title.alphaValue = 0.0
-        }
-    }
 
     // MARK: Setup
 

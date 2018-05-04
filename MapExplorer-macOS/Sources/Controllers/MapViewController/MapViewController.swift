@@ -14,8 +14,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
-    private let touchListener = TouchListener()
     private var recordForAnnotation = [CircleAnnotation: Record]()
+    private var showingAnnotationTitles = false
+    private let touchListener = TouchListener()
 
     private var tileURL: String {
         let tileID = max(screenID, 1)
@@ -28,6 +29,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let touchRadius: CGFloat = 20
         static let annotationHitSize = CGSize(width: 50, height: 50)
         static let doubleTapScale = 0.5
+        static let annotationTitleZoomLevel = Double(36000000 / Configuration.mapsPerScreen)
     }
 
     private struct Keys {
@@ -203,6 +205,23 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         return MKAnnotationView()
     }
 
+    // When the map region changes, if annotationTitleZoomLevel is crossed the annotations title visibilty updates
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        if showingAnnotationTitles != (mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel) {
+            showingAnnotationTitles = mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel
+            toggleAnnotationTitles(on: showingAnnotationTitles)
+        }
+    }
+
+    // When annotations come back into the visibleRect their title visibility updates
+    func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
+        for view in views {
+            if let circleAnnotationView = view as? CircleAnnotationView {
+                circleAnnotationView.showTitle(showingAnnotationTitles)
+            }
+        }
+    }
+
 
     // MARK: Helpers
 
@@ -255,6 +274,14 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             mapRect.origin += MKMapPoint(x: translationX, y: translationY)
             mapHandler?.send(mapRect, animated: true)
             mapHandler?.endActivity()
+        }
+    }
+
+    private func toggleAnnotationTitles(on: Bool) {
+        for annotation in mapView.annotations {
+            if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
+                annotationView.showTitle(on)
+            }
         }
     }
 }
