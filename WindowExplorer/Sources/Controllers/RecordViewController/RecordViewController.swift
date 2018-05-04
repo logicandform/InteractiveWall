@@ -29,7 +29,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private var animating = false
     private var showingRelatedItems = false
     private weak var closeWindowTimer: Foundation.Timer?
-    private var relatedItemsType: RecordType?
+    private var relatedItemsType: RecordFilterType?
     private var hiddenRelatedItems = IndexSet()
     private var windowPanGesture: PanGestureRecognizer!
 
@@ -665,14 +665,14 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     /// Handle a change of record type from the RelatedItemsHeaderView
-    private func didSelectRelatedItemsType(_ type: RecordType?) {
+    private func didSelectRelatedItemsType(_ type: RecordFilterType?) {
         let titleForType = type?.title ?? Constants.allRecordsTitle
         transitionRelatedRecordsTitle(to: titleForType)
 
         var itemsToRemove = IndexSet()
         if let type = type {
             for (index, record) in record.relatedRecords.enumerated() {
-                if record.type != type {
+                if record.type.filterType != type {
                     itemsToRemove.insert(index)
                 }
             }

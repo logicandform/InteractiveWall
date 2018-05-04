@@ -23,24 +23,24 @@
                             </constraints>
                         </customView>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oFi-RG-9Vw">
-                            <rect key="frame" x="78" y="52" width="214" height="18"/>
+                            <rect key="frame" x="78" y="56" width="214" height="14"/>
                             <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Title" usesSingleLineMode="YES" id="DZc-6H-bXz">
-                                <font key="font" size="11" name="Soleil-Bold"/>
+                                <font key="font" metaFont="smallSystem"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
                         <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PLs-By-PJe">
-                            <rect key="frame" x="76" y="4" width="216" height="48"/>
+                            <rect key="frame" x="76" y="4" width="216" height="52"/>
                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="3Gd-au-x14">
-                                <rect key="frame" x="0.0" y="0.0" width="216" height="48"/>
+                                <rect key="frame" x="0.0" y="0.0" width="216" height="52"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <textView autoresizesSubviews="NO" editable="NO" selectable="NO" drawsBackground="NO" importsGraphics="NO" verticallyResizable="NO" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" id="tzF-dV-bDK">
-                                        <rect key="frame" x="0.0" y="0.0" width="216" height="48"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="216" height="52"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <size key="minSize" width="216" height="48"/>
+                                        <size key="minSize" width="216" height="52"/>
                                         <size key="maxSize" width="463" height="10000000"/>
                                         <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </textView>

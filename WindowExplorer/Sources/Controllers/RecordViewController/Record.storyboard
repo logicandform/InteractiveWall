@@ -107,11 +107,11 @@
                                     <scrollView verticalCompressionResistancePriority="250" placeholderIntrinsicWidth="380" placeholderIntrinsicHeight="300" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FBg-bp-lkB" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
                                         <rect key="frame" x="18" y="10" width="380" height="310"/>
                                         <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="CkM-eN-t5N" customClass="FlippedClipView" customModule="WindowExplorer" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="380" height="310"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="365" height="310"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <view placeholderIntrinsicWidth="380" placeholderIntrinsicHeight="310" translatesAutoresizingMaskIntoConstraints="NO" id="Bws-Xv-6hl">
-                                                    <rect key="frame" x="0.0" y="0.0" width="380" height="310"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="365" height="310"/>
                                                     <subviews>
                                                         <stackView distribution="equalSpacing" orientation="vertical" alignment="leading" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" placeholderIntrinsicWidth="404" placeholderIntrinsicHeight="310" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RgY-ah-SAv">
                                                             <rect key="frame" x="0.0" y="0.0" width="380" height="310"/>
@@ -139,7 +139,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="WJp-14-XQg">
-                                            <rect key="frame" x="364" y="0.0" width="16" height="310"/>
+                                            <rect key="frame" x="365" y="0.0" width="15" height="310"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
