@@ -24,8 +24,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     private struct Constants {
-        static let maxZoomWidth: Double =  Double(134207500 / Configuration.mapsPerScreen)
-        static let minZoomWidth: Double = 424500
+        static let maxZoomWidth =  Double(134207500 / Configuration.mapsPerScreen)
+        static let minZoomWidth = 424500.0
         static let touchRadius: CGFloat = 20
         static let annotationHitSize = CGSize(width: 50, height: 50)
         static let doubleTapScale = 0.5
@@ -77,15 +77,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     private func setupGestures() {
-        let nsPan = NSPanGestureRecognizer(target: self, action: #selector(didPanMouse(_:)))
-        nsPan.delegate = self
-        mapView.addGestureRecognizer(nsPan)
-
-        let nsPinch = NSMagnificationGestureRecognizer(target: self, action: #selector(didPinchTrackpad(_:)))
-        nsPinch.delegate = self
-        nsPinch.delaysMagnificationEvents = false
-        mapView.addGestureRecognizer(nsPinch)
-
         let tapGesture = TapGestureRecognizer(delayTapBegin: false)
         gestureManager.add(tapGesture, to: mapView)
         tapGesture.gestureUpdated = didTapOnMap(_:)
@@ -150,32 +141,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
         if tap.state == .doubleTapped {
             handleDoubleTap(at: position)
-        }
-    }
-
-    /// Used to handle pan events recorded by a mouse
-    @objc
-    func didPanMouse(_ gesture: NSPanGestureRecognizer) {
-        switch gesture.state {
-        case .changed:
-            mapHandler?.send(mapView.visibleMapRect, for: .system)
-        case .ended:
-            mapHandler?.endUpdates()
-        default:
-            return
-        }
-    }
-
-    /// Used to handle pinch events recorded by a trackpad
-    @objc
-    func didPinchTrackpad(_ gesture: NSMagnificationGestureRecognizer) {
-        switch gesture.state {
-        case .changed:
-            mapHandler?.send(mapView.visibleMapRect, for: .system)
-        case .ended:
-            mapHandler?.endUpdates()
-        default:
-            return
         }
     }
 
