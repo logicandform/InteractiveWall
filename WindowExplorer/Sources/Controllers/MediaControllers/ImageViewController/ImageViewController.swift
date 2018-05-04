@@ -56,6 +56,10 @@ class ImageViewController: MediaViewController {
     }
 
     private func addImage(_ image: NSImage) {
+        guard let window = view.window else {
+            return
+        }
+
         let imageRatio = image.size.height / image.size.width
         let width = clamp(image.size.width, min: style.minMediaWindowWidth, max: style.maxMediaWindowWidth)
         let height = clamp(width * imageRatio, min: style.minMediaWindowHeight, max: style.maxMediaWindowHeight)
