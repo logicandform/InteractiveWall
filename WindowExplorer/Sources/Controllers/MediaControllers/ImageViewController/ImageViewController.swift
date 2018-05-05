@@ -14,12 +14,14 @@ class ImageViewController: MediaViewController {
 
     private var imageView: NSImageView!
     private var imageRequest: DataRequest?
-    private var contentViewFrame: NSRect!
     private var frameSize: NSSize!
+    private lazy var contentViewFrame = imageScrollView.contentView.frame
 
     private struct Constants {
-        static let initialMagnifition: CGFloat = 1
+        static let initialMagnification: CGFloat = 1
         static let maximumMagnification: CGFloat = 5
+        static let doubleTapScale: CGFloat = 0.45
+        static let doubleTapAnimationDuration = 0.3
     }
 
 
@@ -79,6 +81,10 @@ class ImageViewController: MediaViewController {
         let pinchGesture = PinchGestureRecognizer()
         gestureManager.add(pinchGesture, to: imageScrollView)
         pinchGesture.gestureUpdated = didPinchImageView(_:)
+
+        let tapGesture = TapGestureRecognizer()
+        gestureManager.add(tapGesture, to: imageScrollView)
+        tapGesture.gestureUpdated = didTapImageView(_:)
     }
 
     
@@ -90,13 +96,11 @@ class ImageViewController: MediaViewController {
         }
 
         switch pinch.state {
-        case .began:
-            contentViewFrame = imageScrollView.contentView.frame
         case .recognized, .momentum:
             var imageRect = imageScrollView.contentView.bounds
             let scaledWidth = (2.0 - pinch.scale) * imageRect.size.width
             let scaledHeight = (2.0 - pinch.scale) * imageRect.size.height
-            if scaledWidth <= contentViewFrame.width{
+            if scaledWidth <= contentViewFrame.width {
                 var translationX = pinch.delta.dx * imageRect.size.width / contentViewFrame.width
                 var translationY = pinch.delta.dy * imageRect.size.height / contentViewFrame.height
                 if scaledWidth >= contentViewFrame.width / Constants.maximumMagnification {
@@ -105,8 +109,35 @@ class ImageViewController: MediaViewController {
                     imageRect.size = CGSize(width: scaledWidth, height: scaledHeight)
                 }
                 imageRect.origin = CGPoint(x: imageRect.origin.x - translationX, y: imageRect.origin.y - translationY)
+                imageScrollView.contentView.bounds = imageRect
             }
-            imageScrollView.contentView.bounds = imageRect
+        default:
+            return
+        }
+    }
+
+    private func didTapImageView(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position, !animating else {
+            return
+        }
+
+        switch tap.state {
+        case .doubleTapped:
+            var imageRect = imageScrollView.contentView.bounds
+            let scaledWidth = Constants.doubleTapScale * imageRect.size.width
+            let scaledHeight = Constants.doubleTapScale * imageRect.size.height
+            if scaledWidth >= contentViewFrame.width / Constants.maximumMagnification   {
+                let translationX = -(imageRect.size.width - scaledWidth) * (position.x / contentViewFrame.width)
+                let translationY = -(imageRect.size.height - scaledHeight) * (position.y / contentViewFrame.height)
+                imageRect.size = CGSize(width: scaledWidth, height: scaledHeight)
+                imageRect.origin = CGPoint(x: imageRect.origin.x - translationX, y: imageRect.origin.y - translationY)
+
+                NSAnimationContext.runAnimationGroup({ _ in
+                    NSAnimationContext.current.duration = Constants.doubleTapAnimationDuration
+                    NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+                    imageScrollView.contentView.animator().bounds = imageRect
+                })
+            }
         default:
             return
         }
