@@ -34,7 +34,7 @@ class PDFTableViewItem: NSView {
             layer?.backgroundColor = tintColor.cgColor
             textField.textColor = style.darkBackground
         } else {
-            layer?.backgroundColor = style.clear.cgColor
+            layer?.backgroundColor = CGColor.clear
             textField.textColor = .white
         }
     }

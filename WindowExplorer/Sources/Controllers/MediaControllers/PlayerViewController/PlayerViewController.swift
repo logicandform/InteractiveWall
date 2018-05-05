@@ -48,7 +48,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     // MARK: Overrides
 
     override func resetCloseWindowTimer() {
-        cancelCloseWindowTime()
+        closeWindowTimer?.invalidate()
         if playerControl.state != .playing {
             super.resetCloseWindowTimer()
         }

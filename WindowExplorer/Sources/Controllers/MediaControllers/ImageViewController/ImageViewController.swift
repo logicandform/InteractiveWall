@@ -47,7 +47,6 @@ class ImageViewController: MediaViewController {
         }
 
         imageView = NSImageView()
-
         imageRequest = Alamofire.request(media.url).responseImage { [weak self] response in
             if let image = response.value {
                 self?.addImage(image)

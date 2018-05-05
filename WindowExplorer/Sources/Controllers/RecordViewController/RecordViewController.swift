@@ -3,12 +3,10 @@
 import Cocoa
 import AppKit
 
-class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource, NSTableViewDataSource, NSTableViewDelegate, GestureResponder, MediaControllerDelegate {
+class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource, NSTableViewDataSource, NSTableViewDelegate, MediaControllerDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Record")
 
     @IBOutlet weak var detailView: NSView!
-    @IBOutlet weak var windowDragArea: NSView!
-    @IBOutlet weak var windowDragAreaHighlight: NSView!
     @IBOutlet weak var relatedRecordsLabel: NSTextField!
     @IBOutlet weak var relatedRecordsTypeLabel: NSTextField!
     @IBOutlet weak var mediaView: NSCollectionView!
@@ -16,34 +14,24 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     @IBOutlet weak var stackView: NSStackView!
     @IBOutlet weak var stackClipView: NSClipView!
     @IBOutlet weak var relatedItemsView: NSTableView!
-    @IBOutlet weak var closeWindowTapArea: NSView!
     @IBOutlet weak var toggleRelatedItemsArea: NSView!
     @IBOutlet weak var toggleRelatedItemsImage: NSImageView!
     @IBOutlet weak var placeHolderImage: NSImageView!
     @IBOutlet weak var recordTypeSelectionView: RecordTypeSelectionView!
 
     var record: RecordDisplayable!
-    private(set) var gestureManager: GestureManager!
     private var pageControl = PageControl()
     private var positionForMediaController = [MediaViewController: Int?]()
-    private var animating = false
     private var showingRelatedItems = false
-    private weak var closeWindowTimer: Foundation.Timer?
     private var relatedItemsType: RecordType?
     private var hiddenRelatedItems = IndexSet()
-    private var windowPanGesture: PanGestureRecognizer!
 
     private struct Constants {
-        static let relatedRecordsTitle = "RELATED"
         static let allRecordsTitle = "RECORDS"
         static let animationDuration = 0.5
         static let tableRowHeight: CGFloat = 80
         static let closeWindowTimeoutPeriod: TimeInterval = 300
         static let animationDistanceThreshold: CGFloat = 20
-        static let fontName = "Soleil"
-        static let fontSize: CGFloat = 13
-        static let fontColor: NSColor = .white
-        static let kern: CGFloat = 0.5
         static let showRelatedItemViewRotation: CGFloat = 45
         static let relatedItemsViewMargin: CGFloat = 8
         static let relatedRecordsTitleAnimationDuration = 0.15
@@ -60,8 +48,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         detailView.wantsLayer = true
         detailView.layer?.backgroundColor = style.darkBackground.cgColor
         placeHolderImage.isHidden = !record.media.isEmpty
-        gestureManager = GestureManager(responder: self)
-        gestureManager.touchReceived = recievedTouch(touch:)
 
         setupMediaView()
         setupRelatedItemsView()
@@ -89,24 +75,15 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         pageControl.heightAnchor.constraint(equalToConstant: Constants.pageControlHeight).isActive = true
         pageControl.numberOfPages = UInt(record?.media.count ?? 0)
     }
-    
-    private var titleBarAttributes : [NSAttributedStringKey : Any] {
-        let font = NSFont(name: Constants.fontName, size: Constants.fontSize) ?? NSFont.systemFont(ofSize: Constants.fontSize)
-        
-        return [.font: font,
-                .foregroundColor: Constants.fontColor,
-                .kern: Constants.kern,
-                .baselineOffset: font.fontName == Constants.fontName ? 1 : 0]
-    }
 
     private func setupRelatedItemsView() {
         relatedItemsView.alphaValue = 0
         relatedItemsView.register(NSNib(nibNamed: RelatedItemView.nibName, bundle: nil), forIdentifier: RelatedItemView.interfaceIdentifier)
         relatedItemsView.backgroundColor = .clear
         relatedRecordsLabel.alphaValue = 0
-        relatedRecordsLabel.attributedStringValue = NSAttributedString(string: Constants.relatedRecordsTitle, attributes: titleBarAttributes)
+        relatedRecordsLabel.attributedStringValue = NSAttributedString(string: relatedRecordsLabel.stringValue, attributes: style.relatedItemsTitleAttributes)
         relatedRecordsTypeLabel.alphaValue = 0
-        relatedRecordsTypeLabel.attributedStringValue = NSAttributedString(string: Constants.allRecordsTitle, attributes: titleBarAttributes)
+        relatedRecordsTypeLabel.attributedStringValue = NSAttributedString(string: Constants.allRecordsTitle, attributes: style.relatedItemsTitleAttributes)
         toggleRelatedItemsImage.isHidden = record.relatedRecords.isEmpty
         toggleRelatedItemsImage.frameCenterRotation = Constants.showRelatedItemViewRotation
         recordTypeSelectionView.stackview.alphaValue = 0
@@ -115,9 +92,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     private func setupGestures() {
-        let mousePan = NSPanGestureRecognizer(target: self, action: #selector(handleMouseDrag(_:)))
-        windowDragArea.addGestureRecognizer(mousePan)
-
         let nsToggleRelatedItemClickGesture = NSClickGestureRecognizer(target: self, action: #selector(handleRelatedItemToggleClick(_:)))
         toggleRelatedItemsArea.addGestureRecognizer(nsToggleRelatedItemClickGesture)
 
@@ -140,10 +114,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         gestureManager.add(relatedItemTap, to: relatedItemsView)
         relatedItemTap.gestureUpdated = handleRelatedItemTap(_:)
 
-        windowPanGesture = PanGestureRecognizer()
-        gestureManager.add(windowPanGesture, to: windowDragArea)
-        windowPanGesture.gestureUpdated = handleWindowPan(_:)
-
         let stackViewPanGesture = PanGestureRecognizer()
         gestureManager.add(stackViewPanGesture, to: stackView)
         stackViewPanGesture.gestureUpdated = handleStackViewPan(_:)
@@ -151,20 +121,9 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         let toggleRelatedItemsTap = TapGestureRecognizer()
         gestureManager.add(toggleRelatedItemsTap, to: toggleRelatedItemsArea)
         toggleRelatedItemsTap.gestureUpdated = handleRelatedItemsToggle(_:)
-
-        let tapToClose = TapGestureRecognizer()
-        gestureManager.add(tapToClose, to: closeWindowTapArea)
-        tapToClose.gestureUpdated = { [weak self] gesture in
-            if gesture.state == .ended {
-                self?.animateViewOut()
-            }
-        }
     }
 
     private func setupWindowDragArea() {
-        windowDragArea.wantsLayer = true
-        windowDragArea.layer?.backgroundColor = style.dragAreaBackground.cgColor
-        windowDragAreaHighlight.wantsLayer = true
         windowDragAreaHighlight.layer?.backgroundColor = record.type.color.cgColor
     }
 
@@ -180,7 +139,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
 
     // MARK: API
 
-    func animate(to origin: NSPoint) {
+    override func animate(to origin: NSPoint) {
         guard let window = self.view.window, let screen = window.screen, shouldAnimate(to: origin), !gestureManager.isActive() else {
             return
         }
@@ -337,7 +296,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         }
     }
 
-    private func handleWindowPan(_ gesture: GestureRecognizer) {
+    override func handleWindowPan(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer, let window = view.window, !animating else {
             return
         }
@@ -354,17 +313,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         default:
             return
         }
-    }
-
-    @objc
-    private func handleMouseDrag(_ gesture: NSPanGestureRecognizer) {
-        guard let window = view.window, !animating else {
-            return
-        }
-
-        var origin = window.frame.origin
-        origin += gesture.translation(in: nil)
-        window.setFrameOrigin(origin)
     }
 
     @objc
@@ -400,17 +348,6 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         default:
             return
         }
-    }
-
-
-    // MARK: IB-Actions
-
-    @IBAction func toggleRelatedItems(_ sender: Any) {
-        toggleRelatedItems()
-    }
-
-    @IBAction func closeWindowTapped(_ sender: Any) {
-        animateViewOut()
     }
 
 
@@ -494,32 +431,16 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
 
-    // MARK: GestureResponder
+    // MARK: Overrides
 
-    /// Determines if the bounds of the draggable area is inside a given rect
-    func draggableInside(bounds: CGRect) -> Bool {
-        guard let window = view.window else {
-            return false
-        }
-
-        // Calculate the center box of the drag area in the window's coordinate system
-        let dragAreaInWindow = windowDragArea.frame.transformed(from: view.frame).transformed(from: window.frame)
-        let adjustedWidth = dragAreaInWindow.width / 2
-        let smallDragArea = CGRect(x: dragAreaInWindow.minX + adjustedWidth / 2, y: dragAreaInWindow.minY, width: adjustedWidth, height: dragAreaInWindow.height)
-        return bounds.contains(smallDragArea)
-    }
-
-
-    // MARK: Helpers
-
-    private func animateViewIn() {
+    override func animateViewIn() {
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration
             detailView.animator().alphaValue = 1
         })
     }
 
-    private func animateViewOut() {
+    override func animateViewOut() {
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration
             detailView.animator().alphaValue = 0
@@ -530,6 +451,17 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             WindowManager.instance.closeWindow(for: self)
         })
     }
+
+
+    override func resetCloseWindowTimer() {
+        closeWindowTimer?.invalidate()
+        closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Constants.closeWindowTimeoutPeriod, repeats: false) { [weak self] _ in
+            self?.closeTimerFired()
+        }
+    }
+
+
+    // MARK: Helpers
 
     private func animateCollectionView(to point: CGPoint, duration: CGFloat, for index: Int) {
         NSAnimationContext.runAnimationGroup({ _ in
@@ -624,29 +556,10 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         return record.media.count
     }
 
-    private func resetCloseWindowTimer() {
-        closeWindowTimer?.invalidate()
-        closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Constants.closeWindowTimeoutPeriod, repeats: false) { [weak self] _ in
-            self?.closeTimerFired()
-        }
-    }
-
     private func closeTimerFired() {
         // Reset timer gets recalled once a child MediaViewContoller gets closed
         if positionForMediaController.keys.isEmpty {
             animateViewOut()
-        }
-    }
-
-    private func recievedTouch(touch: Touch) {
-        switch touch.state {
-        case .down, .up:
-            resetCloseWindowTimer()
-            if windowPanGesture.state == .momentum {
-                windowPanGesture.invalidate()
-            }
-        case .moved, .indicator:
-            return
         }
     }
 
@@ -690,7 +603,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private func transitionRelatedRecordsTitle(to title: String) {
         fadeRelatedRecordsTitle(out: true) { [weak self] in
             if let strongSelf = self {
-                strongSelf.relatedRecordsTypeLabel.attributedStringValue = NSAttributedString(string: title, attributes: strongSelf.titleBarAttributes)
+                strongSelf.relatedRecordsTypeLabel.attributedStringValue = NSAttributedString(string: title, attributes: style.relatedItemsTitleAttributes)
                 strongSelf.fadeRelatedRecordsTitle(out: false, completion: {})
             }
         }
