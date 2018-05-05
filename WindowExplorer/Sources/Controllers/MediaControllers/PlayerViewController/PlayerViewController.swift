@@ -35,7 +35,6 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         setupPlayer()
         setupGestures()
         animateViewIn()
-        playerControl.toggle()
     }
 
     override func viewDidAppear() {
@@ -43,6 +42,8 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         if let window = view.window {
             audioPlayer?.location = horizontalPosition(of: window)
         }
+        
+        playerControl.toggle()
     }
 
 
