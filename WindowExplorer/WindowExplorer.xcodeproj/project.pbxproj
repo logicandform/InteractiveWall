@@ -665,7 +665,6 @@
 				22A9231B2044AF05003EA9BB /* Resources */,
 				22A9234F2044B09D003EA9BB /* Embed XPC Services */,
 				D706A887330181305494F3D8 /* [CP] Embed Pods Frameworks */,
-				8454E9A53B856D80A74E202D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -748,21 +747,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		8454E9A53B856D80A74E202D /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		D706A887330181305494F3D8 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
