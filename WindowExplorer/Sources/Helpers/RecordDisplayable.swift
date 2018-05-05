@@ -73,6 +73,12 @@ extension RecordDisplayable {
         return []
     }
     
+    func relatedRecordsContainsImages(of type: RecordFilterType) -> Bool {
+        // Want to check a record, see if it's related records contains any media.  If media is not empty, want to check if it is an image pdf/png/etc.  If it is, return true
+        
+        return false
+    }
+    
     var titleAttributes: [NSAttributedStringKey: Any] {
         let font = NSFont(name: Constants.fontName, size: Constants.titleFontSize) ?? NSFont.systemFont(ofSize: Constants.titleFontSize)
 
