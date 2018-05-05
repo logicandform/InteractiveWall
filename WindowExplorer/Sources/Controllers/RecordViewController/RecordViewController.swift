@@ -65,10 +65,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         resetCloseWindowTimer()
     }
     
-    override func viewDidAppear() {
-        self.descriptionScrollView.flashScrollers()
-    }
-    
     
     // MARK: Setup
 
