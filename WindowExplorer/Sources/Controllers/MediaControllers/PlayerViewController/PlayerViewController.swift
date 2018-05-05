@@ -35,6 +35,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         setupPlayer()
         setupGestures()
         animateViewIn()
+        playerControl.toggle()
     }
 
     override func viewDidAppear() {
