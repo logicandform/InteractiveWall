@@ -29,7 +29,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     private var animating = false
     private var showingRelatedItems = false
     private weak var closeWindowTimer: Foundation.Timer?
-    private var relatedItemsType: RecordFilterType?
+    private var relatedItemsFilterType: RecordFilterType?
     private var hiddenRelatedItems = IndexSet()
     private var windowPanGesture: PanGestureRecognizer!
 
@@ -111,7 +111,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         toggleRelatedItemsImage.frameCenterRotation = Constants.showRelatedItemViewRotation
         recordTypeSelectionView.stackview.alphaValue = 0
         recordTypeSelectionView.initialize(with: record, manager: gestureManager)
-        recordTypeSelectionView.selectionCallback = didSelectRelatedItemsType(_:)
+        recordTypeSelectionView.selectionCallback = didSelectRelatedItemsFilterType(_:)
     }
 
     private func setupGestures() {
@@ -438,7 +438,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     // MARK: NSTableViewDataSource & NSTableViewDelegate
 
     func numberOfRows(in tableView: NSTableView) -> Int {
-        guard let type = relatedItemsType else {
+        guard let type = relatedItemsFilterType else {
             return record.relatedRecords.count
         }
 
@@ -450,7 +450,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             return nil
         }
 
-        if let type = relatedItemsType {
+        if let type = relatedItemsFilterType {
             let relatedRecords = record.relatedRecords(of: type)
             relatedItemView.record = relatedRecords[row]
         } else {
@@ -665,7 +665,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
     }
 
     /// Handle a change of record type from the RelatedItemsHeaderView
-    private func didSelectRelatedItemsType(_ type: RecordFilterType?) {
+    private func didSelectRelatedItemsFilterType(_ type: RecordFilterType?) {
         let titleForType = type?.title ?? Constants.allRecordsTitle
         transitionRelatedRecordsTitle(to: titleForType)
 
@@ -678,7 +678,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
             }
         }
 
-        relatedItemsType = type
+        relatedItemsFilterType = type
         relatedItemsView.beginUpdates()
         relatedItemsView.insertRows(at: hiddenRelatedItems, withAnimation: .effectFade)
         relatedItemsView.removeRows(at: itemsToRemove, withAnimation: .effectFade)
