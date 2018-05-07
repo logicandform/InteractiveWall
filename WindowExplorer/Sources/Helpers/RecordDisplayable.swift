@@ -242,3 +242,23 @@ extension School: RecordDisplayable {
         return [schoolGroup, organizationGroup, artifactGroup, eventGroup]
     }
 }
+
+extension Theme: RecordDisplayable {
+
+    var date: String? {
+        return nil
+    }
+
+    var media: [Media] {
+        return []
+    }
+
+    var recordGroups: [RecordGroup] {
+        let schoolGroup = RecordGroup(type: .school, records: relatedSchools)
+        let organizationGroup = RecordGroup(type: .organization, records: relatedOrganizations)
+        let artifactGroup = RecordGroup(type: .artifact, records: relatedArtifacts)
+        let eventGroup = RecordGroup(type: .event, records: relatedEvents)
+
+        return [schoolGroup, organizationGroup, artifactGroup, eventGroup]
+    }
+}

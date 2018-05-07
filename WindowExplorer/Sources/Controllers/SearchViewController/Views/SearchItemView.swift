@@ -7,6 +7,14 @@ class SearchItemView: NSCollectionViewItem {
 
     @IBOutlet weak var titleTextField: NSTextField!
 
+    var tintColor = style.selectedColor
+
+    var type: RecordType? {
+        didSet {
+            titleTextField.stringValue = type?.title ?? ""
+            tintColor = type?.color ?? style.selectedColor
+        }
+    }
 
     // MARK: Life-Cycle
 
@@ -21,7 +29,7 @@ class SearchItemView: NSCollectionViewItem {
 
     func set(highlighted: Bool) {
         if highlighted {
-            view.layer?.backgroundColor = style.selectedColor.cgColor
+            view.layer?.backgroundColor = tintColor.cgColor
         } else {
             view.layer?.backgroundColor = style.darkBackground.cgColor
         }

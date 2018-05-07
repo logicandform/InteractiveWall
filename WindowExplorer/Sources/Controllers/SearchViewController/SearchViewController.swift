@@ -16,10 +16,9 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        titleLabel.attributedStringValue = NSAttributedString(string: titleLabel.stringValue, attributes: style.windowTitleAttributes)
 
         setupGestures()
-        setupCollectionViews()
-        setupWindowDragArea()
         resetCloseWindowTimer()
         animateViewIn()
     }
@@ -27,12 +26,8 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     // MARK: Setup
 
-    private func setupCollectionViews() {
-        
-    }
-
     private func setupWindowDragArea() {
-        titleLabel.attributedStringValue = NSAttributedString(string: titleLabel.stringValue, attributes: style.windowTitleAttributes)
+
     }
 
     private func setupGestures() {
@@ -44,10 +39,11 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
 
 
+
     // MARK: NSCollectionViewDelegate & NSCollectionViewDataSource
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
+        return RecordType.allValues.count
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
@@ -55,6 +51,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             return NSCollectionViewItem()
         }
 
+        searchItemView.type = RecordType.allValues[indexPath.item]
         return searchItemView
     }
 
@@ -63,8 +60,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     }
 
 
-
-    // MARK: Helpers
+    // MARK: Overrides
 
     override func animateViewIn() {
         primaryCollectionView.alphaValue = 0
@@ -86,4 +82,9 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             }
         })
     }
+
+
+    // MARK: Helpers
+
+    
 }
