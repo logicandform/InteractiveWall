@@ -76,10 +76,6 @@ extension RecordDisplayable {
     func relatedRecordsContainsImages() -> Bool {
         // Want to check a record, see if it's related records contains any media.  If media is not empty, want to check if it is an image pdf/png/etc.  If it is, return true
         for record in relatedRecords {
-            if record.media.isEmpty {
-                return false
-            }
-            
             for media in record.media {
                 if media.type == .image || media.type == .pdf || media.type == .video {
                     return true
