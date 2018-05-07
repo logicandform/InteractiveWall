@@ -103,7 +103,6 @@ extension RecordDisplayable {
                 return true
             }
         }
-        
         return false
     }
     
