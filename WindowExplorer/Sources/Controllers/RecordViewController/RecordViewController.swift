@@ -23,7 +23,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private var pageControl = PageControl()
     private var positionForMediaController = [MediaViewController: Int?]()
     private var showingRelatedItems = false
-    private var relatedItemsType: RecordType?
+    private var relatedItemsFilterType: RecordFilterType?
     private var hiddenRelatedItems = IndexSet()
 
     private struct Constants {
