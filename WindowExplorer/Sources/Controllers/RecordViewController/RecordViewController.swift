@@ -64,10 +64,10 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
         gestureManager.touchReceived = recievedTouch(touch:)
 
         setupMediaView()
-        setupRelatedItemsView()
         setupWindowDragArea()
         setupStackview()
         setupGestures()
+        setupRelatedItemsView()
         animateViewIn()
         resetCloseWindowTimer()
     }
@@ -675,7 +675,7 @@ class RecordViewController: NSViewController, NSCollectionViewDelegateFlowLayout
                 if type == .image  && !record.containsImages() {
                     itemsToRemove.insert(index)
                 }
-                else if record.type.filterType != type && record.type.filterType != .image {
+                else if record.type.filterType != type && type != .image {
                     itemsToRemove.insert(index)
                 }
             }
