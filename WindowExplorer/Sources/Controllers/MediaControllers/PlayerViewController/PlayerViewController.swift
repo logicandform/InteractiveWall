@@ -42,6 +42,8 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         if let window = view.window {
             audioPlayer?.location = horizontalPosition(of: window)
         }
+        
+        playerControl.toggle()
     }
 
 
