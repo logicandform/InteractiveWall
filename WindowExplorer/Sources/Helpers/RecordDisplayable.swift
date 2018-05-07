@@ -83,7 +83,7 @@ extension RecordDisplayable {
         
         for record in relatedRecords {
             for media in record.media {
-                if media.type == .image || media.type == .pdf || media.type == .video {
+                if media.type == .image || media.type == .pdf {
                     allRelatedRecordsWithImages.append(record)
                     break;
                 }
@@ -99,7 +99,7 @@ extension RecordDisplayable {
         }
         
         for media in self.media {
-            if media.type == .image || media.type == .pdf || media.type == .video {
+            if media.type == .image || media.type == .pdf {
                 return true
             }
         }
