@@ -70,20 +70,27 @@ extension RecordDisplayable {
             return relatedRecords(of: recordType)
         }
         
-        return []
+        switch type {
+        case .image:
+            return relatedRecordsContainingImages()
+        default:
+            return []
+        }
     }
     
-    func relatedRecordsContainsImages() -> Bool {
-        // Want to check a record, see if it's related records contains any media.  If media is not empty, want to check if it is an image pdf/png/etc.  If it is, return true
+    func relatedRecordsContainingImages() -> [RecordDisplayable] {
+        var allRelatedRecordsWithImages = [RecordDisplayable]()
+        
         for record in relatedRecords {
             for media in record.media {
                 if media.type == .image || media.type == .pdf || media.type == .video {
-                    return true
+                    allRelatedRecordsWithImages.append(record)
+                    break;
                 }
             }
         }
         
-        return false
+        return allRelatedRecordsWithImages
     }
     
     func containsImages() -> Bool {
