@@ -70,6 +70,7 @@ class MasterViewController: NSViewController {
         super.viewDidLoad()
         
         setupScreens()
+        setupCheckboxes()
         setupActionButton()
         registerForNotifications()
     }

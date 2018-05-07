@@ -15,6 +15,8 @@ final class RecordFactory {
             event(id: id, completion: completion)
         case .organization:
             organization(id: id, completion: completion)
+        case .theme:
+            theme(id: id, completion: completion)
         }
     }
 
@@ -59,6 +61,17 @@ final class RecordFactory {
             CachingNetwork.getOrganization(by: id)
         }.then { organization -> Void in
             completion(organization)
+        }.catch { error in
+            print(error)
+            completion(nil)
+        }
+    }
+
+    private static func theme(id: Int, completion: @escaping ((RecordDisplayable?) -> Void)) {
+        firstly {
+            CachingNetwork.getTheme(by: id)
+        }.then { theme -> Void in
+            completion(theme)
         }.catch { error in
             print(error)
             completion(nil)

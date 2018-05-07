@@ -42,13 +42,15 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         if let window = view.window {
             audioPlayer?.location = horizontalPosition(of: window)
         }
+        
+        playerControl.toggle()
     }
 
 
     // MARK: Overrides
 
     override func resetCloseWindowTimer() {
-        cancelCloseWindowTime()
+        closeWindowTimer?.invalidate()
         if playerControl.state != .playing {
             super.resetCloseWindowTimer()
         }

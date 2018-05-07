@@ -63,13 +63,14 @@ class CircleAnnotationView: MKAnnotationView {
 
     func showTitle(_ show: Bool) {
         let alphaValue: CGFloat = show ? 1 : 0
+
         if title.alphaValue != alphaValue {
-            let animateAlpha = CABasicAnimation(keyPath: "opacity")
-            animateAlpha.isRemovedOnCompletion = true
-            animateAlpha.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-            animateAlpha.toValue = alphaValue
-            animateAlpha.duration = Constants.animationDuration
-            title.layer?.add(animateAlpha, forKey: "opacity")
+            let animation = CABasicAnimation(keyPath: "opacity")
+            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+            animation.fromValue = show ? 0 : 1
+            animation.toValue = alphaValue
+            animation.duration = Constants.animationDuration
+            title.layer?.add(animation, forKey: "opacity")
             title.alphaValue = alphaValue
         }
     }

@@ -19,7 +19,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private let touchListener = TouchListener()
 
     private var tileURL: String {
-        let tileID = max(screenID, 1)
+        let tileID = max(screenID, 3)
         return "http://10.58.73.164:4\(tileID)00/v2/tiles/{z}/{x}/{y}.pbf"
     }
 
@@ -70,9 +70,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     private func setupMap() {
         mapHandler = MapHandler(mapView: mapView, id: appID)
-//        let overlay = MKTileOverlay(urlTemplate: tileURL)
-//        overlay.canReplaceMapContent = true
-//        mapView.add(overlay)
+        let overlay = MKTileOverlay(urlTemplate: tileURL)
+        overlay.canReplaceMapContent = true
+        mapView.add(overlay)
         createAnnotations()
     }
 

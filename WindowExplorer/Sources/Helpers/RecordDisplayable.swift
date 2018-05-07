@@ -7,7 +7,7 @@ import AppKit
 private struct Constants {
     static let titleFontSize: CGFloat = 28
     static let titleLineSpacing: CGFloat = 0
-    static let titleMaximumLineheight: CGFloat = titleFontSize
+    static let titleMaximumLineheight: CGFloat = titleFontSize + 5
     static let titleForegroundColor = NSColor.white
     static let dateFontSize: CGFloat = 14
     static let dateLineSpacing: CGFloat = 0
@@ -240,6 +240,26 @@ extension Organization: RecordDisplayable {
 }
 
 extension School: RecordDisplayable {
+
+    var recordGroups: [RecordGroup] {
+        let schoolGroup = RecordGroup(type: .school, records: relatedSchools)
+        let organizationGroup = RecordGroup(type: .organization, records: relatedOrganizations)
+        let artifactGroup = RecordGroup(type: .artifact, records: relatedArtifacts)
+        let eventGroup = RecordGroup(type: .event, records: relatedEvents)
+
+        return [schoolGroup, organizationGroup, artifactGroup, eventGroup]
+    }
+}
+
+extension Theme: RecordDisplayable {
+
+    var date: String? {
+        return nil
+    }
+
+    var media: [Media] {
+        return []
+    }
 
     var recordGroups: [RecordGroup] {
         let schoolGroup = RecordGroup(type: .school, records: relatedSchools)

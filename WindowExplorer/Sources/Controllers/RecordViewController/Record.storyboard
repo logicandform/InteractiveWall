@@ -299,9 +299,9 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="closeWindowTapArea" destination="uhV-2F-c5f" id="X44-7A-E7k"/>
                         <outlet property="collectionClipView" destination="IhY-hb-dfg" id="T4r-mC-1YX"/>
                         <outlet property="detailView" destination="83q-cx-wcX" id="pb8-ex-weM"/>
+                        <outlet property="dismissButton" destination="uhV-2F-c5f" id="fji-JA-ClI"/>
                         <outlet property="mediaView" destination="Eaz-7m-IDm" id="eav-Zv-2bd"/>
                         <outlet property="placeHolderImage" destination="Zeo-g9-VHC" id="YQF-Yz-VuJ"/>
                         <outlet property="recordTypeSelectionView" destination="pwG-Vb-Cze" id="Yg5-e3-d8b"/>

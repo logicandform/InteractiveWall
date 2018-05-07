@@ -14,10 +14,6 @@ class MediaItemView: NSCollectionViewItem {
     @IBOutlet weak var titleLabelBackgroundHeight: NSLayoutConstraint!
     
     private struct Constants {
-        static let fontName = "Soleil"
-        static let fontSize: CGFloat = 13
-        static let fontColor: NSColor = .white
-        static let kern: CGFloat = 0.5
         static let titleBackgroundAdditionalWidth: CGFloat = 80
         static let percentageOfAdditionalWidthForTransitionLocation: CGFloat = 0.9
     }
@@ -27,16 +23,6 @@ class MediaItemView: NSCollectionViewItem {
         didSet {
             load(media)
         }
-    }
-    private var titleAttributes: [NSAttributedStringKey: Any] {
-        let font = NSFont(name: Constants.fontName, size: Constants.fontSize) ?? NSFont.systemFont(ofSize: Constants.fontSize)
-
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineBreakMode = .byTruncatingTail
-        return [.paragraphStyle: paragraphStyle,
-                .font: font,
-                .foregroundColor: Constants.fontColor,
-                .kern: Constants.kern]
     }
 
 
@@ -56,7 +42,7 @@ class MediaItemView: NSCollectionViewItem {
         if highlighted {
             view.layer?.borderColor = tintColor.cgColor
         } else {
-            view.layer?.borderColor = style.clear.cgColor
+            view.layer?.borderColor = CGColor.clear
         }
     }
 
@@ -96,7 +82,7 @@ class MediaItemView: NSCollectionViewItem {
         let maxWidth = view.frame.width - Constants.titleBackgroundAdditionalWidth
 
         // Setting up title label in backgroundView
-        let titleLabel = NSTextField(labelWithAttributedString: NSAttributedString(string: mediaTitle, attributes: titleAttributes))
+        let titleLabel = NSTextField(labelWithAttributedString: NSAttributedString(string: mediaTitle, attributes: style.mediaItemTitleAttributes))
         titleLabel.setFrameSize(NSSize(width: min(maxWidth, titleLabel.frame.width), height: titleLabel.frame.height))
         titleLabel.frame.origin.x = Constants.titleBackgroundAdditionalWidth / 2
         titleLabelBackgroundWidth.constant = titleLabel.frame.size.width + Constants.titleBackgroundAdditionalWidth
@@ -113,7 +99,6 @@ class MediaItemView: NSCollectionViewItem {
         gradient.frame = NSRect(x: 0, y: 0, width: titleLabelBackgroundWidth.constant, height: titleLabelBackgroundHeight.constant)
         titleLabelBackgroundView.wantsLayer = true
         titleLabelBackgroundView.layer?.insertSublayer(gradient, at: 0)
-
         titleLabelBackgroundView.isHidden = false
     }
 }

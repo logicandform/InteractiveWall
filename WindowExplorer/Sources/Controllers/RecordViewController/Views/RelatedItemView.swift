@@ -20,41 +20,10 @@ class RelatedItemView: NSView {
     }
 
     private struct Constants {
-        static let fontName = "Soleil"
-        static let titleFontName = "Soleil-Bold"
-        static let fontColor: NSColor = .white
-        static let kern: CGFloat = 1
-        static let titleFontSize: CGFloat = 11
-        static let descriptionFontSize: CGFloat = 10
         static let imageTransitionDuration = 0.3
+        static let numberOfDescriptionLines = 3
     }
-    
-    private var titleLabelAttributes: [NSAttributedStringKey : Any] {
-        get {
-            let font = NSFont(name: Constants.titleFontName, size: Constants.titleFontSize) ?? NSFont.systemFont(ofSize: Constants.titleFontSize)
-            let paragraphStyle = NSMutableParagraphStyle()
-            paragraphStyle.lineBreakMode = .byTruncatingTail
-            return [.paragraphStyle : paragraphStyle,
-                    .kern : Constants.kern,
-                    .foregroundColor : Constants.fontColor,
-                    .font : font]
-        }
-    }
-    
-    private var descriptionLabelAttributes : [NSAttributedStringKey : Any] {
-        get {
-            let font = NSFont(name: Constants.fontName, size: Constants.descriptionFontSize) ?? NSFont.systemFont(ofSize: Constants.descriptionFontSize)
-            let paragraphStyle = NSMutableParagraphStyle()
-            paragraphStyle.lineBreakMode = .byCharWrapping
-            paragraphStyle.paragraphSpacing = 0
-            paragraphStyle.paragraphSpacingBefore = 0
-            return [.paragraphStyle: paragraphStyle,
-                    .kern: Constants.kern,
-                    .foregroundColor: Constants.fontColor,
-                    .font: font,
-                    .baselineOffset: 0]
-        }
-    }
+
 
     // MARK: Init
 
@@ -89,9 +58,9 @@ class RelatedItemView: NSView {
         }
 
         descriptionView.drawsBackground = false
-        descriptionView.textContainer?.maximumNumberOfLines = 3
-        titleLabel.attributedStringValue = NSAttributedString(string: record.title, attributes: titleLabelAttributes)
-        descriptionView.textStorage?.setAttributedString(NSAttributedString(string: record.description ?? "", attributes: descriptionLabelAttributes))
+        descriptionView.textContainer?.maximumNumberOfLines = Constants.numberOfDescriptionLines
+        titleLabel.attributedStringValue = NSAttributedString(string: record.title, attributes: style.relatedItemViewTitleAttributes)
+        descriptionView.textStorage?.setAttributedString(NSAttributedString(string: record.description ?? "", attributes: style.relatedItemViewDescriptionAttributes))
         let placeholder = record.type.placeholder.tinted(with: record.type.color)
 
         if let media = record.media.first {
