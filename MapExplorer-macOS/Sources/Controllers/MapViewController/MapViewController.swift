@@ -31,7 +31,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let annotationHitSize = CGSize(width: 50, height: 50)
         static let doubleTapScale = 0.5
         static let annotationTitleZoomLevel = Double(36000000 / Configuration.mapsPerScreen)
-        static let spacingBetweenAnnotations = 0.05
+        static let spacingBetweenAnnotations = 0.02
     }
 
     private struct Keys {
@@ -249,23 +249,17 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     private func updateAnnotationPositions() {
-        // Want to seperate if too close, will only run once when titles appear such that they aren't directly overlapping (must always be at least some space between
-        let allAnnotations = mapView.annotations.map { return $0 as? CircleAnnotation }
-
-        for outerAnnotation in mapView.annotations {
-            for innerAnnotation in mapView.annotations {
-                if outerAnnotation !== innerAnnotation {
-                    guard let firstAnnotation = outerAnnotation as? CircleAnnotation, let secondAnnotation = innerAnnotation as? CircleAnnotation else {
-                        break
-                    }
+        for (outerIndex, outerAnnotation) in mapView.annotations.enumerated() {
+            for (innerIndex, innerAnnotation) in mapView.annotations.enumerated() {
+                if outerIndex < innerIndex, let firstAnnotation = outerAnnotation as? CircleAnnotation, let secondAnnotation = innerAnnotation as? CircleAnnotation {
 //                    firstAnnotation.coordinate.latitude += Double(Constants.spacingBetweenAnnotations)
                     
-                    let latitudeCheck = firstAnnotation.coordinate.latitude + Double(Constants.spacingBetweenAnnotations) > secondAnnotation.coordinate.latitude  && firstAnnotation.coordinate.latitude - Double(Constants.spacingBetweenAnnotations) > secondAnnotation.coordinate.latitude
-                    let longitudeCheck = firstAnnotation.coordinate.longitude + Double(Constants.spacingBetweenAnnotations) > secondAnnotation.coordinate.longitude && firstAnnotation.coordinate.longitude - Double(Constants.spacingBetweenAnnotations) > secondAnnotation.coordinate.longitude
+                    let latitudeCheck = firstAnnotation.coordinate.latitude + Double(Constants.spacingBetweenAnnotations) > secondAnnotation.coordinate.latitude  && firstAnnotation.coordinate.latitude - Double(Constants.spacingBetweenAnnotations) < secondAnnotation.coordinate.latitude
+                    let longitudeCheck = firstAnnotation.coordinate.longitude + Double(Constants.spacingBetweenAnnotations) > secondAnnotation.coordinate.longitude && firstAnnotation.coordinate.longitude - Double(Constants.spacingBetweenAnnotations) < secondAnnotation.coordinate.longitude
 
                     if latitudeCheck && longitudeCheck {
                         firstAnnotation.coordinate.latitude += Double(Constants.spacingBetweenAnnotations)
-                        secondAnnotation.coordinate.latitude -= Double(Constants.spacingBetweenAnnotations)
+//                        secondAnnotation.coordinate.latitude -= Double(Constants.spacingBetweenAnnotations)
                     }
                 }
             }
