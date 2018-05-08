@@ -30,6 +30,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let annotationHitSize = CGSize(width: 50, height: 50)
         static let doubleTapScale = 0.5
         static let annotationTitleZoomLevel = Double(36000000 / Configuration.mapsPerScreen)
+        static let spacingBetweenAnnotations = 5
     }
 
     private struct Keys {
@@ -74,6 +75,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         overlay.canReplaceMapContent = true
         mapView.add(overlay)
         createAnnotations()
+        updateAnnotationPositions()
     }
 
     private func setupGestures() {
@@ -241,6 +243,51 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             mapHandler?.endActivity()
         }
     }
+
+    private func updateAnnotationPositions() {
+        // Want to seperate if too close, will only run once when titles appear such that they aren't directly overlapping (must always be at least some space between
+        let allAnnotations = mapView.annotations.map { return $0 as? CircleAnnotation }
+
+        for outerAnnotation in allAnnotations {
+            for innerAnnotation in allAnnotations {
+                if outerAnnotation !== innerAnnotation {
+                    guard let firstAnnotation = outerAnnotation, let secondAnnotation = innerAnnotation else {
+                        break
+                    }
+                    let latitudeCheck = firstAnnotation.coordinate.latitude + Double(Constants.spacingBetweenAnnotations) > secondAnnotation.coordinate.latitude  && firstAnnotation.coordinate.latitude - Double(Constants.spacingBetweenAnnotations) > secondAnnotation.coordinate.latitude
+                    let longitudeCheck = firstAnnotation.coordinate.longitude + Double(Constants.spacingBetweenAnnotations) > secondAnnotation.coordinate.longitude && firstAnnotation.coordinate.longitude - Double(Constants.spacingBetweenAnnotations) > secondAnnotation.coordinate.longitude
+
+                    if latitudeCheck && longitudeCheck {
+                        firstAnnotation.coordinate.latitude += Double(Constants.spacingBetweenAnnotations)
+                        secondAnnotation.coordinate.latitude -= Double(Constants.spacingBetweenAnnotations)
+                    }
+                }
+            }
+        }
+    }
+
+    /*
+    private func updateAnnotationPositions() {
+        // Idea: Check annotation radius or coordinates against others, if too close, add or subtract some amount from coordinates
+        // annotation.coordinate.latitude = 100
+        // Try comparing latitude and longitude to some degree of certainty (aka current map scale?), if both too close, add some distance to coordinate based on map scale
+        let visibleAnnotations = mapView.annotations(in: mapView.visibleMapRect).map { return $0 as? CircleAnnotation }
+        for outerAnnotation in visibleAnnotations {
+            for innerAnnotation in visibleAnnotations {
+                if outerAnnotation !== innerAnnotation {
+                    // use center offset property?
+                    guard let firstAnnotation = outerAnnotation, let secondAnnotation = innerAnnotation else {
+                        break
+                    }
+                    let latitudeTooClose = (firstAnnotation.coordinate.latitude + Double(mapView.visibleRect.size.width) / Constants.maxZoomWidth > secondAnnotation.coordinate.latitude) &&
+                    
+                    let annotationView = mapView.view(for: firstAnnotation)
+                    mapView.visibleRect.size.width
+                }
+            }
+        }
+    }
+ */
 
     private func toggleAnnotationTitles(on: Bool) {
         for annotation in mapView.annotations {
