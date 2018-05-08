@@ -16,6 +16,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private var mapHandler: MapHandler?
     private var recordForAnnotation = [CircleAnnotation: Record]()
     private var showingAnnotationTitles = false
+    private var annotationPositionsUpdated = false
     private let touchListener = TouchListener()
 
     private var tileURL: String {
@@ -30,7 +31,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let annotationHitSize = CGSize(width: 50, height: 50)
         static let doubleTapScale = 0.5
         static let annotationTitleZoomLevel = Double(36000000 / Configuration.mapsPerScreen)
-        static let spacingBetweenAnnotations = 5
+        static let spacingBetweenAnnotations = 0.05
     }
 
     private struct Keys {
@@ -75,7 +76,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         overlay.canReplaceMapContent = true
         mapView.add(overlay)
         createAnnotations()
-        updateAnnotationPositions()
     }
 
     private func setupGestures() {
@@ -177,6 +177,10 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         if showingAnnotationTitles != (mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel) {
             showingAnnotationTitles = mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel
             toggleAnnotationTitles(on: showingAnnotationTitles)
+            
+            if !annotationPositionsUpdated {
+                updateAnnotationPositions()
+            }
         }
     }
 
@@ -248,12 +252,14 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         // Want to seperate if too close, will only run once when titles appear such that they aren't directly overlapping (must always be at least some space between
         let allAnnotations = mapView.annotations.map { return $0 as? CircleAnnotation }
 
-        for outerAnnotation in allAnnotations {
-            for innerAnnotation in allAnnotations {
+        for outerAnnotation in mapView.annotations {
+            for innerAnnotation in mapView.annotations {
                 if outerAnnotation !== innerAnnotation {
-                    guard let firstAnnotation = outerAnnotation, let secondAnnotation = innerAnnotation else {
+                    guard let firstAnnotation = outerAnnotation as? CircleAnnotation, let secondAnnotation = innerAnnotation as? CircleAnnotation else {
                         break
                     }
+//                    firstAnnotation.coordinate.latitude += Double(Constants.spacingBetweenAnnotations)
+                    
                     let latitudeCheck = firstAnnotation.coordinate.latitude + Double(Constants.spacingBetweenAnnotations) > secondAnnotation.coordinate.latitude  && firstAnnotation.coordinate.latitude - Double(Constants.spacingBetweenAnnotations) > secondAnnotation.coordinate.latitude
                     let longitudeCheck = firstAnnotation.coordinate.longitude + Double(Constants.spacingBetweenAnnotations) > secondAnnotation.coordinate.longitude && firstAnnotation.coordinate.longitude - Double(Constants.spacingBetweenAnnotations) > secondAnnotation.coordinate.longitude
 
@@ -264,6 +270,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                 }
             }
         }
+        annotationPositionsUpdated = true
     }
 
     /*
