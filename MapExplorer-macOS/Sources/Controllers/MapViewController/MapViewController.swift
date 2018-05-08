@@ -255,8 +255,10 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                     let latitudeCheck = firstAnnotation.coordinate.latitude + Double(Constants.spacingBetweenAnnotations) > secondAnnotation.coordinate.latitude  && firstAnnotation.coordinate.latitude - Double(Constants.spacingBetweenAnnotations) < secondAnnotation.coordinate.latitude
                     let longitudeCheck = firstAnnotation.coordinate.longitude + Double(Constants.spacingBetweenAnnotations) > secondAnnotation.coordinate.longitude && firstAnnotation.coordinate.longitude - Double(Constants.spacingBetweenAnnotations) < secondAnnotation.coordinate.longitude
 
-                    if latitudeCheck && longitudeCheck {
+                    if latitudeCheck && longitudeCheck && firstAnnotation.coordinate.latitude >= secondAnnotation.coordinate.latitude {
                         firstAnnotation.coordinate.latitude += Double(Constants.spacingBetweenAnnotations)
+                    } else if latitudeCheck && longitudeCheck && firstAnnotation.coordinate.latitude < secondAnnotation.coordinate.latitude {
+                        firstAnnotation.coordinate.latitude -= Double(Constants.spacingBetweenAnnotations)
                     }
                 }
             }
