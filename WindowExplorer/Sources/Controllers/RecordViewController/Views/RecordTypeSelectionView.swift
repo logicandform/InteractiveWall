@@ -13,9 +13,9 @@ class RecordTypeSelectionView: NSView {
         }
     }
 
-    var selectionCallback: ((RecordType?) -> Void)?
-    private var imageForType = [RecordType: NSView]()
-    private var selectedType: RecordType? {
+    var selectionCallback: ((RecordFilterType?) -> Void)?
+    private var imageForType = [RecordFilterType: NSView]()
+    private var selectedType: RecordFilterType? {
         didSet {
             selectionCallback?(selectedType)
             unselect(oldValue)
@@ -31,16 +31,15 @@ class RecordTypeSelectionView: NSView {
     // MARK: API
 
     func initialize(with record: RecordDisplayable, manager: GestureManager) {
-        // Only display views if the record has related items of that type
-        let relatedTypesForRecord = record.recordGroups.filter { !$0.records.isEmpty }.map { $0.type }
-
-        relatedTypesForRecord.forEach { type in
+        let filterTypesForRecord = RecordFilterType.allValues.filter { !record.relatedRecords(of: $0).isEmpty }
+        
+        filterTypesForRecord.forEach { type in
             // Use two views to increase hit area of image while image is centered
             let view = NSView()
             let image = NSView()
             view.addSubview(image)
             image.wantsLayer = true
-            image.layer?.contents = type.placeholder.tinted(with: style.unselectedRecordIcon)
+            image.layer?.contents = type.placeholder?.tinted(with: style.unselectedRecordIcon)
             stackview.addView(view, in: .leading)
             view.translatesAutoresizingMaskIntoConstraints = false
             view.heightAnchor.constraint(equalTo: stackview.heightAnchor).isActive = true
@@ -58,7 +57,7 @@ class RecordTypeSelectionView: NSView {
 
     // MARK: Helpers
 
-    private func addGesture(to view: NSView, in manager: GestureManager, for type: RecordType) {
+    private func addGesture(to view: NSView, in manager: GestureManager, for type: RecordFilterType) {
         let tapGesture = TapGestureRecognizer()
         manager.add(tapGesture, to: view)
 
@@ -69,16 +68,16 @@ class RecordTypeSelectionView: NSView {
         }
     }
 
-    private func didSelect(type: RecordType) {
+    private func didSelect(type: RecordFilterType) {
         if type == selectedType {
             selectedType = nil
         } else if let image = imageForType[type] {
             selectedType = type
-            image.transition(to: type.placeholder.tinted(with: type.color), duration: Constants.imageTransitionDuration)
+            image.transition(to: type.placeholder?.tinted(with: type.color), duration: Constants.imageTransitionDuration)
         }
     }
 
-    private func unselect(_ type: RecordType?) {
+    private func unselect(_ type: RecordFilterType?) {
         guard let type = type, let image = imageForType[type], let currentImage = image.layer?.contents as? NSImage else {
             return
         }

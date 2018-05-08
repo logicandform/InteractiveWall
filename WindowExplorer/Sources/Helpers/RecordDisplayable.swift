@@ -65,6 +65,14 @@ extension RecordDisplayable {
         return []
     }
     
+    func relatedRecords(of type: RecordFilterType) -> [RecordDisplayable] {
+        if let recordType = type.recordType {
+            return relatedRecords(of: recordType)
+        }
+        
+        return []
+    }
+    
     var titleAttributes: [NSAttributedStringKey: Any] {
         let font = NSFont(name: Constants.fontName, size: Constants.titleFontSize) ?? NSFont.systemFont(ofSize: Constants.titleFontSize)
 
