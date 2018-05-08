@@ -1,6 +1,8 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
 import Cocoa
+import PromiseKit
+import CoreLocation
 
 
 protocol SearchItemDisplayable {
@@ -30,6 +32,9 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         tertiaryCollectionView: []
     ]
 
+    private lazy var dict = [CLPlacemark: School]()
+    private lazy var convertDict = [String: [School?]]()
+
     private struct Constants {
         static let animationDuration = 0.5
         static let searchItemHeight: CGFloat = 70
@@ -45,6 +50,8 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         setupGestures()
         resetCloseWindowTimer()
         animateViewIn()
+
+
     }
 
 
