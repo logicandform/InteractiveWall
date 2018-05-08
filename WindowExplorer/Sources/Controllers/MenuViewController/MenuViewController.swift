@@ -1,12 +1,11 @@
-//
-//  MenuViewController.swift
-//  WindowExplorer
-//
-//  Created by Spencer Perkins on 2018-05-07.
 //  Copyright © 2018 JABT. All rights reserved.
-//
 
 import Cocoa
+
+enum Side {
+    case right
+    case left
+}
 
 class MenuViewController: NSViewController, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "Menu")
@@ -115,21 +114,13 @@ class MenuViewController: NSViewController, GestureResponder {
             return
         }
 
-        print(view.window!.frame)
-
         switch side {
         case .left:
             origin.x -= style.searchWindowSize.width + style.windowMargins
         case .right:
-            print("Right: ", view.frame.width)
             origin.x += style.windowMargins + view.frame.width
         }
 
         WindowManager.instance.display(.search, at: origin)
     }
-}
-
-enum Side {
-    case right
-    case left
 }
