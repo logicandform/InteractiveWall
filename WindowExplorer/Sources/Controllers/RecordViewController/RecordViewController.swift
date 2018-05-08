@@ -84,7 +84,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         relatedRecordsLabel.alphaValue = 0
         relatedRecordsLabel.attributedStringValue = NSAttributedString(string: relatedRecordsLabel.stringValue, attributes: style.relatedItemsTitleAttributes)
         relatedRecordsTypeLabel.alphaValue = 0
-        relatedRecordsTypeLabel.attributedStringValue = NSAttributedString(string: Constants.allRecordsTitle, attributes: style.relatedItemsTitleAttributes)
+        relatedRecordsTypeLabel.attributedStringValue = NSAttributedString(string: Constants.allRecordsTitle.uppercased(), attributes: style.relatedItemsTitleAttributes)
         toggleRelatedItemsImage.isHidden = record.relatedRecords.isEmpty
         toggleRelatedItemsImage.frameCenterRotation = Constants.showRelatedItemViewRotation
         recordTypeSelectionView.stackview.alphaValue = 0
@@ -576,11 +576,10 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
     /// Handle a change of record type from the RelatedItemsHeaderView
     private func didSelectRelatedItemsFilterType(_ type: RecordFilterType?) {
-        let titleForType = type?.title ?? Constants.allRecordsTitle
+        let titleForType = type?.title?.uppercased() ?? Constants.allRecordsTitle
         transitionRelatedRecordsTitle(to: titleForType)
 
         relatedItemsFilterType = type
-        // reloadData calls collectionView(...sizeForItemAt indexPath: IndexPath), which does the filtering (see comment above that function for more info)
         relatedItemsView.reloadData()
     }
 

@@ -16,7 +16,7 @@ class SearchItemView: NSCollectionViewItem {
         }
     }
 
-    var item: SearchItemDisplayable? {
+    var item: SearchItemDisplayable! {
         didSet {
             apply(item)
         }

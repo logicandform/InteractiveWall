@@ -167,11 +167,9 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
                 toggle(to: secondaryCollectionView)
             }
         case secondaryCollectionView:
-            if let selectedType = selectedType {
-                loadResults(for: view, of: selectedType)
-            }
+            loadResults(for: view)
         case tertiaryCollectionView:
-            break
+            displayRecord(for: view.item)
         default:
             break
         }
@@ -224,9 +222,26 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     }
 
     /// Loads records into and toggles the tertiary collection view
-    private func loadResults(for view: SearchItemView, of type: RecordType) {
+    private func loadResults(for view: SearchItemView) {
+        guard let selectedType = selectedType else {
+            return
+        }
+
         // TODO: networking request for view.item with type
         view.set(loading: true)
         toggle(to: tertiaryCollectionView)
+    }
+
+    private func displayRecord(for item: SearchItemDisplayable) {
+        guard let window = view.window, let record = item as? RecordDisplayable else {
+            return
+        }
+
+        let location = CGPoint(x: window.frame.maxX + style.windowMargins, y: window.frame.minY)
+        RecordFactory.record(for: record.type, id: record.id) { record in
+            if let record = record {
+                WindowManager.instance.display(.record(record), at: location)
+            }
+        }
     }
 }
