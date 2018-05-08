@@ -5,10 +5,17 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-2" userLabel="File's Owner" customClass="RelatedItemView" customModule="WindowExplorer" customModuleProvider="target">
+            <connections>
+                <outlet property="descriptionView" destination="tzF-dV-bDK" id="2rQ-s9-Xl4"/>
+                <outlet property="mediaImageView" destination="GPP-LU-OnZ" id="ZIK-hb-e7x"/>
+                <outlet property="titleLabel" destination="oFi-RG-9Vw" id="ekW-Br-MED"/>
+                <outlet property="view" destination="c22-O7-iKe" id="Voa-ol-fEC"/>
+            </connections>
+        </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView identifier="RelatedItemView" wantsLayer="YES" id="c22-O7-iKe" customClass="RelatedItemView" customModule="WindowExplorer" customModuleProvider="target">
+        <customView identifier="RelatedItemView" wantsLayer="YES" id="c22-O7-iKe">
             <rect key="frame" x="0.0" y="0.0" width="300" height="80"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
@@ -78,11 +85,6 @@
                 <constraint firstAttribute="trailing" secondItem="YQD-s2-RG2" secondAttribute="trailing" id="zXe-xF-DKu"/>
                 <constraint firstItem="YQD-s2-RG2" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="zdw-gO-wIC"/>
             </constraints>
-            <connections>
-                <outlet property="descriptionView" destination="tzF-dV-bDK" id="OE1-9X-hSq"/>
-                <outlet property="imageView" destination="GPP-LU-OnZ" id="Gmt-o8-1ey"/>
-                <outlet property="titleLabel" destination="oFi-RG-9Vw" id="Q9s-Ic-0cw"/>
-            </connections>
             <point key="canvasLocation" x="208" y="189"/>
         </customView>
     </objects>
