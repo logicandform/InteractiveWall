@@ -160,6 +160,10 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     // MARK: Helpers
 
     private func select(_ view: SearchItemView, in collectionView: NSCollectionView) {
+        guard view == selectedItemForView[collectionView] else {
+            return
+        }
+        
         switch collectionView {
         case primaryCollectionView:
             if let recordType = view.item as? RecordType {
