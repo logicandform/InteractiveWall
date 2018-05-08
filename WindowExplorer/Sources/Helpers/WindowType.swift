@@ -7,6 +7,7 @@ enum WindowType {
     case image(Media)
     case player(Media)
     case pdf(Media)
+    case search
 
     init?(for media: Media) {
         switch media.type {
@@ -31,6 +32,8 @@ enum WindowType {
             return style.playerWindowSize
         case .pdf:
             return style.pdfWindowSize
+        case .search:
+            return style.searchWindowSize
         }
     }
 
@@ -39,7 +42,7 @@ enum WindowType {
         switch self {
         case .record:
             return false
-        case .image, .player, .pdf:
+        case .image, .player, .pdf, .search:
             return true
         }
     }

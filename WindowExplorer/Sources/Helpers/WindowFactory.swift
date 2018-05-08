@@ -42,6 +42,9 @@ final class WindowFactory {
             let pdfViewController = storyboard.instantiateInitialController() as! PDFViewController
             pdfViewController.media = media
             return pdfViewController
+        case .search:
+            let storyboard = NSStoryboard(name: SearchViewController.storyboard, bundle: .main)
+            return storyboard.instantiateInitialController() as! SearchViewController
         }
     }
 }

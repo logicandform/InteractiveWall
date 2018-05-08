@@ -17,7 +17,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
     private var document: PDFDocument!
     private let leftArrow = ArrowControl()
     private let rightArrow = ArrowControl()
-    private var contentViewFrame: NSRect!
+    private lazy var contentViewFrame = pdfScrollView.contentView.frame
 
     private var selectedThumbnailItem: PDFTableViewItem? {
         didSet {
@@ -34,6 +34,8 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         static let initialMagnification: CGFloat = 1
         static let maximumMagnification: CGFloat = 5
         static let percentToDeallocateWindow: CGFloat = 40
+        static let doubleTapScale: CGFloat = 0.45
+        static let doubleTapAnimationDuration = 0.3
     }
 
 
@@ -107,6 +109,10 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         gestureManager.add(pinchGesture, to: pdfView)
         pinchGesture.gestureUpdated = handlePinch(_:)
 
+        let tapGesture = TapGestureRecognizer()
+        gestureManager.add(tapGesture, to: pdfView)
+        tapGesture.gestureUpdated = didTapImageView(_:)
+
         let thumbnailViewTap = TapGestureRecognizer()
         gestureManager.add(thumbnailViewTap, to: thumbnailView)
         thumbnailViewTap.gestureUpdated = handleThumbnailItemTap(_:)
@@ -144,8 +150,6 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         }
 
         switch pinch.state {
-        case .began:
-            contentViewFrame = pdfScrollView.contentView.frame
         case .recognized, .momentum:
             var pdfRect = pdfScrollView.contentView.bounds
             let scaledWidth = (2.0 - pinch.scale) * pdfRect.size.width
@@ -163,6 +167,33 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
             leftArrow.isHidden = !pdfView.canGoToPreviousPage || contentViewFrame.width / pdfRect.width >= Constants.initialMagnification + 0.1
             rightArrow.isHidden = !pdfView.canGoToNextPage || contentViewFrame.width / pdfRect.width >= Constants.initialMagnification + 0.1
             pdfScrollView.contentView.bounds = pdfRect
+        default:
+            return
+        }
+    }
+
+    private func didTapImageView(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position, !animating else {
+            return
+        }
+
+        switch tap.state {
+        case .doubleTapped:
+            var pdfRect = pdfScrollView.contentView.bounds
+            let scaledWidth = Constants.doubleTapScale * pdfRect.size.width
+            let scaledHeight = Constants.doubleTapScale * pdfRect.size.height
+            if scaledWidth >= contentViewFrame.width / Constants.maximumMagnification   {
+                let translationX = -(pdfRect.size.width - scaledWidth) * (position.x / contentViewFrame.width)
+                let translationY = -(pdfRect.size.height - scaledHeight) * (position.y / contentViewFrame.height)
+                pdfRect.size = CGSize(width: scaledWidth, height: scaledHeight)
+                pdfRect.origin = CGPoint(x: pdfRect.origin.x - translationX, y: pdfRect.origin.y - translationY)
+
+                NSAnimationContext.runAnimationGroup({ _ in
+                    NSAnimationContext.current.duration = Constants.doubleTapAnimationDuration
+                    NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+                    pdfScrollView.contentView.animator().bounds = pdfRect
+                })
+            }
         default:
             return
         }
