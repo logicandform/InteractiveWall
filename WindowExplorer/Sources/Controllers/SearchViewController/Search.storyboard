@@ -144,7 +144,7 @@
                                         </constraints>
                                     </customView>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4sB-bV-Fph">
-                                        <rect key="frame" x="46" y="0.0" width="998" height="30"/>
+                                        <rect key="frame" x="148" y="0.0" width="55" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="3NA-oG-NTh"/>
                                         </constraints>
@@ -154,15 +154,37 @@
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jVk-aJ-U1i">
+                                        <rect key="frame" x="475" y="0.0" width="100" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="DEF-wn-DqX"/>
+                                        </constraints>
+                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Intermediate" usesSingleLineMode="YES" id="vBN-FT-xiU">
+                                            <font key="font" size="16" name="Soleil"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sam-yv-2oh">
+                                        <rect key="frame" x="847" y="0.0" width="57" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="AUr-cF-0qr"/>
+                                        </constraints>
+                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Results" usesSingleLineMode="YES" id="8B2-Mi-XEU">
+                                            <font key="font" size="16" name="Soleil"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="4S0-Hp-abU" firstAttribute="leading" secondItem="oGe-AJ-Idu" secondAttribute="leading" id="7oq-mx-01c"/>
                                     <constraint firstItem="sOu-1b-tUh" firstAttribute="top" secondItem="oGe-AJ-Idu" secondAttribute="top" id="8W0-kf-FSW"/>
+                                    <constraint firstAttribute="bottom" secondItem="jVk-aJ-U1i" secondAttribute="bottom" id="K7b-4P-toa"/>
                                     <constraint firstAttribute="bottom" secondItem="4S0-Hp-abU" secondAttribute="bottom" id="KBu-KV-dJ7"/>
                                     <constraint firstAttribute="bottom" secondItem="4sB-bV-Fph" secondAttribute="bottom" id="R3t-b0-Jby"/>
                                     <constraint firstAttribute="height" constant="40" id="R4R-AN-tL4"/>
-                                    <constraint firstAttribute="trailing" secondItem="4sB-bV-Fph" secondAttribute="trailing" constant="8" id="UUb-so-NfQ"/>
-                                    <constraint firstItem="4sB-bV-Fph" firstAttribute="leading" secondItem="sOu-1b-tUh" secondAttribute="trailing" constant="8" id="Ya1-bX-eHE"/>
+                                    <constraint firstAttribute="bottom" secondItem="sam-yv-2oh" secondAttribute="bottom" id="WHi-b0-mpB"/>
                                     <constraint firstItem="sOu-1b-tUh" firstAttribute="leading" secondItem="oGe-AJ-Idu" secondAttribute="leading" id="gxd-Jz-05U"/>
                                     <constraint firstAttribute="trailing" secondItem="4S0-Hp-abU" secondAttribute="trailing" id="lQr-hI-DAd"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="pc4-Li-HSc"/>
@@ -173,6 +195,7 @@
                             <constraint firstAttribute="bottom" secondItem="gbE-u6-ffb" secondAttribute="bottom" id="0W0-On-WtR"/>
                             <constraint firstItem="oGe-AJ-Idu" firstAttribute="top" secondItem="0wA-7c-noQ" secondAttribute="top" id="7Uv-S6-r3Y"/>
                             <constraint firstItem="3LC-eL-E7F" firstAttribute="leading" relation="lessThanOrEqual" secondItem="0wA-7c-noQ" secondAttribute="leading" constant="350" id="8Ag-ea-Dc3"/>
+                            <constraint firstItem="sam-yv-2oh" firstAttribute="centerX" secondItem="DnM-Ou-hpA" secondAttribute="centerX" id="9xP-0Z-HOG"/>
                             <constraint firstAttribute="trailing" secondItem="rvJ-Ae-W65" secondAttribute="trailing" constant="700" placeholder="YES" id="Amv-8J-ZUO"/>
                             <constraint firstAttribute="bottom" secondItem="3LC-eL-E7F" secondAttribute="bottom" id="EiJ-1W-va3"/>
                             <constraint firstAttribute="bottom" secondItem="rvJ-Ae-W65" secondAttribute="bottom" id="GNd-aO-oAh"/>
@@ -183,6 +206,8 @@
                             <constraint firstItem="3LC-eL-E7F" firstAttribute="top" secondItem="S1c-RT-6BK" secondAttribute="top" id="e4S-eo-b8v"/>
                             <constraint firstAttribute="trailing" secondItem="3LC-eL-E7F" secondAttribute="trailing" priority="250" id="gvU-bO-8Pz"/>
                             <constraint firstAttribute="trailing" secondItem="oGe-AJ-Idu" secondAttribute="trailing" id="opa-VN-u3n"/>
+                            <constraint firstItem="jVk-aJ-U1i" firstAttribute="centerX" secondItem="Mma-p7-p7J" secondAttribute="centerX" id="tjC-oC-X6G"/>
+                            <constraint firstItem="4sB-bV-Fph" firstAttribute="centerX" secondItem="S1c-RT-6BK" secondAttribute="centerX" id="vco-Q0-lyQ"/>
                             <constraint firstItem="gbE-u6-ffb" firstAttribute="top" secondItem="S1c-RT-6BK" secondAttribute="top" id="ya3-op-maM"/>
                             <constraint firstItem="oGe-AJ-Idu" firstAttribute="leading" secondItem="0wA-7c-noQ" secondAttribute="leading" id="yow-Mu-gNQ"/>
                         </constraints>
@@ -191,7 +216,9 @@
                         <outlet property="dismissButton" destination="sOu-1b-tUh" id="glV-Mp-c8I"/>
                         <outlet property="primaryCollectionView" destination="S1c-RT-6BK" id="Rql-aO-Hh0"/>
                         <outlet property="secondaryCollectionView" destination="Mma-p7-p7J" id="Xf2-4F-Zif"/>
+                        <outlet property="secondaryTextField" destination="jVk-aJ-U1i" id="q1z-xL-YsW"/>
                         <outlet property="tertiaryCollectionView" destination="DnM-Ou-hpA" id="EM9-L9-h9T"/>
+                        <outlet property="tertiaryTextField" destination="sam-yv-2oh" id="jt5-wP-dws"/>
                         <outlet property="titleLabel" destination="4sB-bV-Fph" id="LRm-7j-qTO"/>
                         <outlet property="windowDragArea" destination="oGe-AJ-Idu" id="wcL-Yc-nsk"/>
                         <outlet property="windowDragAreaHighlight" destination="4S0-Hp-abU" id="o95-dG-LAn"/>

@@ -13,10 +13,13 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     @IBOutlet weak var primaryCollectionView: NSCollectionView!
     @IBOutlet weak var secondaryCollectionView: NSCollectionView!
     @IBOutlet weak var tertiaryCollectionView: NSCollectionView!
+    @IBOutlet weak var secondaryTextField: NSTextField!
+    @IBOutlet weak var tertiaryTextField: NSTextField!
 
     private var selectedType: RecordType?
     private var selectedItemForView = [NSCollectionView: SearchItemView]()
 
+    private lazy var titleViews: [NSTextField] = [titleLabel, secondaryTextField, tertiaryTextField]
     private lazy var collectionViews: [NSCollectionView] = [primaryCollectionView, secondaryCollectionView, tertiaryCollectionView]
     private lazy var searchItemsForView: [NSCollectionView: [SearchItemDisplayable]] = [
         primaryCollectionView: RecordType.allValues,
@@ -86,12 +89,15 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         switch tap.state {
         case .began:
             selectedItemForView[collectionView]?.set(highlighted: false)
+            selectedItemForView[collectionView]?.set(loading: false)
             selectedItemForView[collectionView] = searchItem
             selectedItemForView[collectionView]?.set(highlighted: true)
         case .failed:
             selectedItemForView[collectionView]?.set(highlighted: false)
         case .ended:
-            select(searchItem, in: collectionView)
+            toggle(to: collectionView) { [weak self] in
+                self?.select(searchItem, in: collectionView)
+            }
         default:
             return
         }
@@ -130,6 +136,8 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         windowDragArea.alphaValue = 0
         secondaryCollectionView.alphaValue = 0
         tertiaryCollectionView.alphaValue = 0
+        secondaryTextField.alphaValue = 0
+        tertiaryTextField.alphaValue = 0
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration
             primaryCollectionView.animator().alphaValue = 1
@@ -152,33 +160,28 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     // MARK: Helpers
 
     private func select(_ view: SearchItemView, in collectionView: NSCollectionView) {
-        guard let viewIndex = collectionViews.index(of: collectionView) else {
-            return
-        }
-
         switch collectionView {
         case primaryCollectionView:
             if let recordType = view.item as? RecordType {
                 selectedType = recordType
                 searchItemsForView[secondaryCollectionView] = searchItems(for: recordType)
+                secondaryTextField.attributedStringValue = title(for: recordType)
+                secondaryCollectionView.reloadData()
+                toggle(to: secondaryCollectionView)
             }
         case secondaryCollectionView:
-            break
+            if let selectedType = selectedType {
+                loadResults(for: view, of: selectedType)
+            }
         case tertiaryCollectionView:
             break
         default:
             break
         }
-
-        toggle(to: viewIndex, completion: { [weak self] in
-            let nextIndex = viewIndex + 1
-            self?.collectionViews.at(index: nextIndex)?.reloadData()
-            self?.toggle(to: nextIndex)
-        })
     }
 
-    private func toggle(to index: Int, completion: (() -> Void)? = nil) {
-        guard let window = view.window, index < collectionViews.count else {
+    private func toggle(to view: NSCollectionView, completion: (() -> Void)? = nil) {
+        guard let window = view.window, let index = collectionViews.index(of: view) else {
             return
         }
 
@@ -189,12 +192,13 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             }
         }
 
-        NSAnimationContext.runAnimationGroup({ [weak self] _ in
+        NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration
-                self?.collectionViews.enumerated().forEach { indexOfView, collectionView in
-                    collectionView.animator().alphaValue = indexOfView <= index ? 1 : 0
-                }
-            }, completionHandler: completion)
+            for indexOfView in 0 ..< collectionViews.count {
+                collectionViews.at(index: indexOfView)?.animator().alphaValue = indexOfView <= index ? 1 : 0
+                titleViews.at(index: indexOfView)?.animator().alphaValue = indexOfView <= index ? 1 : 0
+            }
+        }, completionHandler: completion)
 
         var frame = window.frame
         frame.size.width = style.searchWindowSize.width * CGFloat(index + 1)
@@ -209,5 +213,22 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         case .school:
             return Province.allValues
         }
+    }
+
+    /// Returns the attributed string to present as a tile in the window drag area
+    private func title(for type: RecordType) -> NSAttributedString {
+        switch type {
+        case .event, .artifact, .organization, .theme:
+            return NSAttributedString(string: "Range", attributes: style.windowTitleAttributes)
+        case .school:
+            return NSAttributedString(string: "Province", attributes: style.windowTitleAttributes)
+        }
+    }
+
+    /// Loads records into and toggles the tertiary collection view
+    private func loadResults(for view: SearchItemView, of type: RecordType) {
+        // TODO: networking request for view.item with type
+        view.set(loading: true)
+        toggle(to: tertiaryCollectionView)
     }
 }
