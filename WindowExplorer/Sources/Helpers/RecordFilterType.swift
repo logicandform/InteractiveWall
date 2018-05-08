@@ -7,9 +7,9 @@ import AppKit
 enum RecordFilterType {
     case image
     case school
+    case artifact
     case event
     case organization
-    case artifact
     case theme
     
     var title: String? {
