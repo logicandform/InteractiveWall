@@ -585,10 +585,9 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         var itemsToRemove = IndexSet()
         if let type = type {
             for (index, record) in record.relatedRecords.enumerated() {
-                if type == .image  && !record.containsImages() {
+                if type == .image && !record.containsImages() {
                     itemsToRemove.insert(index)
-                }
-                else if record.type.filterType != type && type != .image {
+                } else if record.type.filterType != type && type != .image {
                     itemsToRemove.insert(index)
                 }
             }
