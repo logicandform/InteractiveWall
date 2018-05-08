@@ -79,6 +79,8 @@
 		22B85B03209CF1040099F44E /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22B85B02209CF1040099F44E /* Search.storyboard */; };
 		22B85B07209CF5200099F44E /* SearchItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B85B05209CF5200099F44E /* SearchItemView.swift */; };
 		22B85B08209CF5200099F44E /* SearchItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22B85B06209CF5200099F44E /* SearchItemView.xib */; };
+		22F309BC20A2220C00BA5456 /* Province.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F309BB20A2220C00BA5456 /* Province.swift */; };
+		22F309BF20A224A000BA5456 /* LetterGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F309BE20A224A000BA5456 /* LetterGroup.swift */; };
 		3F09025B2048D9D30044F100 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09025A2048D9D30044F100 /* Place.swift */; };
 		3F09025F2048E0E70044F100 /* Organization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09025E2048E0E70044F100 /* Organization.swift */; };
 		3F0902612049C6B10044F100 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0902602049C6B10044F100 /* Theme.swift */; };
@@ -205,6 +207,8 @@
 		22B85B02209CF1040099F44E /* Search.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Search.storyboard; sourceTree = "<group>"; };
 		22B85B05209CF5200099F44E /* SearchItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItemView.swift; sourceTree = "<group>"; };
 		22B85B06209CF5200099F44E /* SearchItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchItemView.xib; sourceTree = "<group>"; };
+		22F309BB20A2220C00BA5456 /* Province.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Province.swift; sourceTree = "<group>"; };
+		22F309BE20A224A000BA5456 /* LetterGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterGroup.swift; sourceTree = "<group>"; };
 		2B994FF43C43BAD129E83037 /* Pods-All-WindowExplorer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-WindowExplorer.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer.debug.xcconfig"; sourceTree = "<group>"; };
 		3F09025A2048D9D30044F100 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		3F09025E2048E0E70044F100 /* Organization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Organization.swift; sourceTree = "<group>"; };
@@ -312,8 +316,9 @@
 		2204623B20472FFD0067D9FB /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				22A49876204749B70024B46C /* Touches */,
 				22A4987A204749EA0024B46C /* Records */,
+				22616CA020A235170042C420 /* Search */,
+				22A49876204749B70024B46C /* Touches */,
 				223613E620509D920024145C /* LastTwo.swift */,
 				D9F24E5C205AFE2900B9FCB8 /* Media.swift */,
 			);
@@ -342,6 +347,15 @@
 				2243C7DC2093A10F00CE2CA0 /* ApplicationType.swift */,
 			);
 			path = MasterViewController;
+			sourceTree = "<group>";
+		};
+		22616CA020A235170042C420 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				22F309BB20A2220C00BA5456 /* Province.swift */,
+				22F309BE20A224A000BA5456 /* LetterGroup.swift */,
+			);
+			path = Search;
 			sourceTree = "<group>";
 		};
 		2276AE63204E7122001FAD8B /* Windows */ = {
@@ -800,6 +814,7 @@
 				8E4010A220487E0300E81AAA /* Collection.swift in Sources */,
 				D59DAA092072C8A300908164 /* Math.swift in Sources */,
 				618F0C2F2069F98900762C20 /* MultiChannelPanner.swift in Sources */,
+				22F309BF20A224A000BA5456 /* LetterGroup.swift in Sources */,
 				3F2FAB5B204F7D24002EDF5D /* Artifact.swift in Sources */,
 				22B1E2CD204638B900BDDF14 /* GestureManager.swift in Sources */,
 				D9F24E5D205AFE2900B9FCB8 /* Media.swift in Sources */,
@@ -816,6 +831,7 @@
 				22046254204730C70067D9FB /* Touch.swift in Sources */,
 				3F47D52F206420C6001E86E3 /* FlippedClipView.swift in Sources */,
 				8E4010A020487B8D00E81AAA /* WindowFactory.swift in Sources */,
+				22F309BC20A2220C00BA5456 /* Province.swift in Sources */,
 				2256D293208FEF5D009DEADE /* RecordTypeSelectionView.swift in Sources */,
 				22A498612047349C0024B46C /* WindowNotifications.swift in Sources */,
 				618F0C292069F8F000762C20 /* AKPlayer.swift in Sources */,

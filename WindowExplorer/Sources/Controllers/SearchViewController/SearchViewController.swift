@@ -2,17 +2,27 @@
 
 import Cocoa
 
+protocol SearchItemDisplayable {
+    var title: String { get }
+}
+
+
 class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout {
     static let storyboard = NSStoryboard.Name(rawValue: "Search")
 
     @IBOutlet weak var primaryCollectionView: NSCollectionView!
     @IBOutlet weak var secondaryCollectionView: NSCollectionView!
     @IBOutlet weak var tertiaryCollectionView: NSCollectionView!
-    @IBOutlet weak var quaternaryCollectionView: NSCollectionView!
 
-    private var currentType: RecordType?
+    private var selectedType: RecordType?
     private var selectedItemForView = [NSCollectionView: SearchItemView]()
-    private lazy var collectionViews: [NSCollectionView] = [primaryCollectionView, secondaryCollectionView, tertiaryCollectionView, quaternaryCollectionView]
+
+    private lazy var collectionViews: [NSCollectionView] = [primaryCollectionView, secondaryCollectionView, tertiaryCollectionView]
+    private lazy var searchItemsForView: [NSCollectionView: [SearchItemDisplayable]] = [
+        primaryCollectionView: RecordType.allValues,
+        secondaryCollectionView: [],
+        tertiaryCollectionView: []
+    ]
 
     private struct Constants {
         static let animationDuration = 0.5
@@ -35,7 +45,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     // MARK: Setup
 
     private func setupGestures() {
-        collectionViews.compactMap{$0}.forEach { collectionView in
+        collectionViews.forEach { collectionView in
             let collectionViewPan = PanGestureRecognizer()
             gestureManager.add(collectionViewPan, to: collectionView)
             collectionViewPan.gestureUpdated = handleCollectionViewPan(_:)
@@ -81,61 +91,30 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         case .failed:
             selectedItemForView[collectionView]?.set(highlighted: false)
         case .ended:
-            select(searchItem, index: indexPath.item, in: collectionView)
+            select(searchItem, in: collectionView)
         default:
             return
         }
-    }
-
-    private func toggleWindowSize() {
-        guard let window = view.window else {
-            return
-        }
-
-        var frame = window.frame
-        frame.size.width += 350
-        window.setFrame(frame, display: true, animate: true)
     }
 
 
     // MARK: NSCollectionViewDelegate & NSCollectionViewDataSource
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch collectionView {
-        case primaryCollectionView:
-             return RecordType.allValues.count
-        case secondaryCollectionView:
-            return 5
-        case tertiaryCollectionView:
-            return 7
-        case quaternaryCollectionView:
-            return 10
-        default:
+        guard let searchItems = searchItemsForView[collectionView] else {
             return 0
         }
+
+        return searchItems.count
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        guard let searchItemView = collectionView.makeItem(withIdentifier: SearchItemView.identifier, for: indexPath) as? SearchItemView else {
+        guard let searchItemView = collectionView.makeItem(withIdentifier: SearchItemView.identifier, for: indexPath) as? SearchItemView, let searchItems = searchItemsForView[collectionView] else {
             return NSCollectionViewItem()
         }
 
-        searchItemView.type = currentType
-
-        switch collectionView {
-        case primaryCollectionView:
-            searchItemView.text = RecordType.allValues[indexPath.item].title
-            searchItemView.type = RecordType.allValues[indexPath.item]
-        case secondaryCollectionView:
-            searchItemView.text = "2"
-        case tertiaryCollectionView:
-            searchItemView.text = "3"
-        case quaternaryCollectionView:
-            searchItemView.text = "4"
-        default:
-            break
-        }
-
+        searchItemView.type = selectedType
+        searchItemView.item = searchItems.at(index: indexPath.item)
         return searchItemView
     }
 
@@ -151,7 +130,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         windowDragArea.alphaValue = 0
         secondaryCollectionView.alphaValue = 0
         tertiaryCollectionView.alphaValue = 0
-        quaternaryCollectionView.alphaValue = 0
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration
             primaryCollectionView.animator().alphaValue = 1
@@ -173,26 +151,30 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     // MARK: Helpers
 
-    private func select(_ item: SearchItemView, index: Int, in collectionView: NSCollectionView) {
+    private func select(_ view: SearchItemView, in collectionView: NSCollectionView) {
+        guard let viewIndex = collectionViews.index(of: collectionView) else {
+            return
+        }
+
         switch collectionView {
         case primaryCollectionView:
-            currentType = RecordType.allValues[index]
+            if let recordType = view.item as? RecordType {
+                selectedType = recordType
+                searchItemsForView[secondaryCollectionView] = searchItems(for: recordType)
+            }
         case secondaryCollectionView:
             break
         case tertiaryCollectionView:
-            break
-        case quaternaryCollectionView:
             break
         default:
             break
         }
 
-        if let index = collectionViews.index(of: collectionView) {
-            toggle(to: index, completion: { [weak self] in
-                self?.collectionViews.at(index: index + 1)?.reloadData()
-                self?.toggle(to: index + 1)
-            })
-        }
+        toggle(to: viewIndex, completion: { [weak self] in
+            let nextIndex = viewIndex + 1
+            self?.collectionViews.at(index: nextIndex)?.reloadData()
+            self?.toggle(to: nextIndex)
+        })
     }
 
     private func toggle(to index: Int, completion: (() -> Void)? = nil) {
@@ -217,5 +199,15 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         var frame = window.frame
         frame.size.width = style.searchWindowSize.width * CGFloat(index + 1)
         window.setFrame(frame, display: true, animate: true)
+    }
+
+    /// Returns a collection of search items used as the second level of a search query
+    private func searchItems(for type: RecordType) -> [SearchItemDisplayable] {
+        switch type {
+        case .event, .artifact, .organization, .theme:
+            return LetterGroup.allValues
+        case .school:
+            return Province.allValues
+        }
     }
 }

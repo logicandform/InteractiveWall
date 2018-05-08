@@ -81,7 +81,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private func setupRelatedItemsView() {
         relatedItemsView.alphaValue = 0
         relatedItemsView.register(RelatedItemView.self, forItemWithIdentifier: RelatedItemView.identifier)
-
         relatedRecordsLabel.alphaValue = 0
         relatedRecordsLabel.attributedStringValue = NSAttributedString(string: relatedRecordsLabel.stringValue, attributes: style.relatedItemsTitleAttributes)
         relatedRecordsTypeLabel.alphaValue = 0
@@ -355,46 +354,54 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     // MARK: NSCollectionViewDelegate & NSCollectionViewDataSource
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView == mediaView {
+        switch collectionView {
+        case mediaView:
             return record.media.count
-        } else if let type = relatedItemsFilterType {
-            return record.relatedRecords(of: type).count
-        } else {
-            return record.relatedRecords.count
+        case relatedItemsView:
+            if let type = relatedItemsFilterType {
+                return record.relatedRecords(of: type).count
+            } else {
+                return record.relatedRecords.count
+            }
+        default:
+            return 0
         }
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        if collectionView == mediaView {
-            guard let mediaItemView = collectionView.makeItem(withIdentifier: MediaItemView.identifier, for: indexPath) as? MediaItemView else {
-                return NSCollectionViewItem()
+        switch collectionView {
+        case mediaView:
+            if let mediaItemView = collectionView.makeItem(withIdentifier: MediaItemView.identifier, for: indexPath) as? MediaItemView {
+                mediaItemView.media = record.media.at(index: indexPath.item)
+                mediaItemView.tintColor = record.type.color
+                return mediaItemView
             }
-
-            mediaItemView.media = record.media[indexPath.item]
-            mediaItemView.tintColor = record.type.color
-            return mediaItemView
-        } else if let relatedItemView = collectionView.makeItem(withIdentifier: RelatedItemView.identifier, for: indexPath) as? RelatedItemView {
-            if let type = relatedItemsFilterType {
-                let relatedRecords = record.relatedRecords(of: type)
-                relatedItemView.record = relatedRecords[indexPath.item]
-            } else {
-                relatedItemView.record = record.relatedRecords[indexPath.item]
+        case relatedItemsView:
+            if let relatedItemView = collectionView.makeItem(withIdentifier: RelatedItemView.identifier, for: indexPath) as? RelatedItemView {
+                if let type = relatedItemsFilterType {
+                    relatedItemView.record = record.relatedRecords(of: type).at(index: indexPath.item)
+                } else {
+                    relatedItemView.record = record.relatedRecords.at(index: indexPath.item)
+                }
+                relatedItemView.tintColor = record.type.color
+                return relatedItemView
             }
-
-            relatedItemView.tintColor = record.type.color
-            return relatedItemView
+        default:
+            break
         }
+
         return NSCollectionViewItem()
     }
 
-    // Set's initial size and also does the filtering for relatedItemType by setting all other types sizes to 0
     func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
-        if collectionView == mediaView {
+        switch collectionView {
+        case mediaView:
             return mediaCollectionClipView.frame.size
-        } else if let itemView = collectionView.item(at: indexPath) as? RelatedItemView, let recordType = relatedItemsFilterType?.recordType, itemView.record?.type != recordType {
-            return CGSize.zero
+        case relatedItemsView:
+            return CGSize(width: collectionView.frame.width, height: Constants.relatedItemCollectionViewItemHeight)
+        default:
+            return .zero
         }
-        return CGSize(width: collectionView.frame.width, height: Constants.relatedItemCollectionViewItemHeight)
     }
 
 
@@ -442,7 +449,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             WindowManager.instance.closeWindow(for: self)
         })
     }
-
 
     override func resetCloseWindowTimer() {
         closeWindowTimer?.invalidate()

@@ -77,7 +77,7 @@ final class GestureManager {
     }
 
     func isActive() -> Bool {
-        return gestureHandlers.values.contains(where: {!$0.touches.isEmpty})
+        return gestureHandlers.values.contains(where: { !$0.touches.isEmpty })
     }
 
     func invalidateAllGestures() {

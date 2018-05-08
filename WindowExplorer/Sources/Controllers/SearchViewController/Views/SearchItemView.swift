@@ -15,11 +15,12 @@ class SearchItemView: NSCollectionViewItem {
         }
     }
 
-    var text: String? {
+    var item: SearchItemDisplayable? {
         didSet {
-            titleTextField.stringValue = text ?? ""
+            apply(item)
         }
     }
+
 
     // MARK: Life-Cycle
 
@@ -37,6 +38,17 @@ class SearchItemView: NSCollectionViewItem {
             view.layer?.backgroundColor = tintColor.cgColor
         } else {
             view.layer?.backgroundColor = style.darkBackground.cgColor
+        }
+    }
+
+
+    // MARK: Helpers
+
+    private func apply(_ item: SearchItemDisplayable?) {
+        titleTextField.stringValue = item?.title ?? ""
+
+        if let recordType = item as? RecordType {
+            type = recordType
         }
     }
 }
