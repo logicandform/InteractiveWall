@@ -82,24 +82,17 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             let collectionView = gestureManager.view(for: tap) as? NSCollectionView,
             let location = tap.position,
             let indexPath = collectionView.indexPathForItem(at: location + collectionView.visibleRect.origin),
-            let searchItem = collectionView.item(at: indexPath) as? SearchItemView else {
+            let searchItem = collectionView.item(at: indexPath) as? SearchItemView,
+            tap.state == .ended else {
             return
         }
 
-        switch tap.state {
-        case .began:
-            selectedItemForView[collectionView]?.set(highlighted: false)
-            selectedItemForView[collectionView]?.set(loading: false)
-            selectedItemForView[collectionView] = searchItem
-            selectedItemForView[collectionView]?.set(highlighted: true)
-        case .failed:
-            selectedItemForView[collectionView]?.set(highlighted: false)
-        case .ended:
-            toggle(to: collectionView) { [weak self] in
-                self?.select(searchItem, in: collectionView)
-            }
-        default:
-            return
+        selectedItemForView[collectionView]?.set(highlighted: false)
+        selectedItemForView[collectionView]?.set(loading: false)
+        selectedItemForView[collectionView] = searchItem
+        selectedItemForView[collectionView]?.set(highlighted: true)
+        toggle(to: collectionView) { [weak self] in
+            self?.select(searchItem, in: collectionView)
         }
     }
 
@@ -193,6 +186,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         collectionViews.enumerated().forEach { indexOfView, collectionView in
             if indexOfView > index {
                 selectedItemForView[collectionView]?.set(highlighted: false)
+                selectedItemForView[collectionView]?.set(loading: false)
             }
         }
 

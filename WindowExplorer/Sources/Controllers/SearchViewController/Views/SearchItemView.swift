@@ -32,7 +32,6 @@ class SearchItemView: NSCollectionViewItem {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.wantsLayer = true
-        spinner.controlTint = .graphiteControlTint
         set(highlighted: false)
     }
 
@@ -56,15 +55,6 @@ class SearchItemView: NSCollectionViewItem {
 
         titleTextField.isHidden = loading
         spinner.isHidden = !loading
-    }
-
-
-    // MARK: Overrides
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        set(highlighted: false)
-        set(loading: false)
     }
 
 
