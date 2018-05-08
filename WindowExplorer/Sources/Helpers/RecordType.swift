@@ -66,6 +66,8 @@ enum RecordType: String {
             return .organization
         case .school:
             return .school
+        case .theme:
+            return .theme
         }
     }
 

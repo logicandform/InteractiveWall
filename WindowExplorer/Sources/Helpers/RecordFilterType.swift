@@ -7,6 +7,7 @@ import AppKit
 enum RecordFilterType {
     case image
     case school
+    case theme
     case event
     case organization
     case artifact
@@ -63,6 +64,8 @@ enum RecordFilterType {
             return .organization
         case .artifact:
             return .artifact
+        case .theme:
+            return .theme
         }
     }
     
