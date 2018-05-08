@@ -79,32 +79,15 @@ extension RecordDisplayable {
     }
     
     func relatedRecordsContainingImages() -> [RecordDisplayable] {
-        var allRelatedRecordsWithImages = [RecordDisplayable]()
-        
-        for record in relatedRecords {
-            for media in record.media {
-                if media.type == .image || media.type == .pdf {
-                    allRelatedRecordsWithImages.append(record)
-                    break;
-                }
-            }
-        }
-        
-        return allRelatedRecordsWithImages
+        return relatedRecords.filter { $0.containsImages() }
     }
     
     func containsImages() -> Bool {
-        if self.media.isEmpty {
+        guard let firstMediaItem = media.first else {
             return false
         }
         
-        for media in self.media {
-            if media.type == .image || media.type == .pdf {
-                return true
-            }
-        }
-        
-        return false
+        return firstMediaItem.type == .image || firstMediaItem.type == .pdf
     }
     
     var titleAttributes: [NSAttributedStringKey: Any] {
