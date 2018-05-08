@@ -95,6 +95,8 @@
 		618F0C38206A114100762C20 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61767FF620688A0200970640 /* AVFoundation.framework */; };
 		8E4010A020487B8D00E81AAA /* WindowFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E40109F20487B8D00E81AAA /* WindowFactory.swift */; };
 		8E4010A220487E0300E81AAA /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E4010A120487E0300E81AAA /* Collection.swift */; };
+		8F5D5B8F20A116AA00B9CBA9 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F5D5B8E20A116AA00B9CBA9 /* MenuViewController.swift */; };
+		8F5D5B9120A116B900B9CBA9 /* Menu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8F5D5B9020A116B900B9CBA9 /* Menu.storyboard */; };
 		8F6EFD7D2098FF0800E4D97D /* FadingScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F6EFD7C2098FF0800E4D97D /* FadingScrollView.swift */; };
 		8FA62A08206BFAFC004E6092 /* RecordInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA62A07206BFAFC004E6092 /* RecordInfo.swift */; };
 		8FE6467B2060553100E6116A /* RegularScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE6467A2060553100E6116A /* RegularScrollView.swift */; };
@@ -228,6 +230,8 @@
 		618F0C36206A113B00762C20 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		8E40109F20487B8D00E81AAA /* WindowFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowFactory.swift; sourceTree = "<group>"; };
 		8E4010A120487E0300E81AAA /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
+		8F5D5B8E20A116AA00B9CBA9 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		8F5D5B9020A116B900B9CBA9 /* Menu.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Menu.storyboard; sourceTree = "<group>"; };
 		8F6EFD7C2098FF0800E4D97D /* FadingScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FadingScrollView.swift; sourceTree = "<group>"; };
 		8FA62A07206BFAFC004E6092 /* RecordInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordInfo.swift; sourceTree = "<group>"; };
 		8FE6467A2060553100E6116A /* RegularScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularScrollView.swift; sourceTree = "<group>"; };
@@ -492,6 +496,7 @@
 			children = (
 				22A6D96A209D2936009957BB /* BaseViewController.swift */,
 				225FBB9F208E899900B2CD3E /* MasterViewController */,
+				8F5D5B9220A116CC00B9CBA9 /* MenuViewController */,
 				D992E20620533A0400EAB698 /* RecordViewController */,
 				8FEABD9E20646FF600612C84 /* MediaControllers */,
 				22B85AFF209CF0D80099F44E /* SearchViewController */,
@@ -551,6 +556,15 @@
 				618F0C2B2069F98900762C20 /* MultiChannelPanner.swift */,
 			);
 			path = Audio;
+			sourceTree = "<group>";
+		};
+		8F5D5B9220A116CC00B9CBA9 /* MenuViewController */ = {
+			isa = PBXGroup;
+			children = (
+				8F5D5B9020A116B900B9CBA9 /* Menu.storyboard */,
+				8F5D5B8E20A116AA00B9CBA9 /* MenuViewController.swift */,
+			);
+			path = MenuViewController;
 			sourceTree = "<group>";
 		};
 		8FEABD9E20646FF600612C84 /* MediaControllers */ = {
@@ -717,6 +731,7 @@
 				2204621720472F2D0067D9FB /* PlayerControl.xib in Resources */,
 				22B85AFD209B7ADF0099F44E /* Main.storyboard in Resources */,
 				1FAFF019206EDD93005DC68B /* Soleil-05.otf in Resources */,
+				8F5D5B9120A116B900B9CBA9 /* Menu.storyboard in Resources */,
 				1FAFF01D206EDD93005DC68B /* Soleil-10.otf in Resources */,
 				22A76FEB2046477A006C0AE7 /* Player.storyboard in Resources */,
 				1FAFF01E206EDD93005DC68B /* Soleil-11.otf in Resources */,
@@ -805,6 +820,7 @@
 				2204623520472FDF0067D9FB /* Int.swift in Sources */,
 				226D0587204FC78100D74711 /* CachingNetwork.swift in Sources */,
 				22046246204730780067D9FB /* GestureRecognizer.swift in Sources */,
+				8F5D5B8F20A116AA00B9CBA9 /* MenuViewController.swift in Sources */,
 				618F0C322069FFD600762C20 /* AudioController.swift in Sources */,
 				2204625D204730C70067D9FB /* TouchProperties.swift in Sources */,
 				2204623420472FDF0067D9FB /* NSImage.swift in Sources */,

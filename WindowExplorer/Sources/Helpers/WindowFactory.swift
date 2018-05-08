@@ -45,6 +45,9 @@ final class WindowFactory {
         case .search:
             let storyboard = NSStoryboard(name: SearchViewController.storyboard, bundle: .main)
             return storyboard.instantiateInitialController() as! SearchViewController
+        case .menu:
+            let storyboard = NSStoryboard(name: MenuViewController.storyboard, bundle: .main)
+            return storyboard.instantiateInitialController() as! MenuViewController
         }
     }
 }
