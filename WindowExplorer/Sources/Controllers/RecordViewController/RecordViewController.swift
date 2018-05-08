@@ -23,7 +23,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private var pageControl = PageControl()
     private var positionForMediaController = [MediaViewController: Int?]()
     private var showingRelatedItems = false
-    private var relatedItemsType: RecordType?
+    private var relatedItemsFilterType: RecordFilterType?
     private var hiddenRelatedItems = IndexSet()
 
     private struct Constants {
@@ -88,7 +88,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         toggleRelatedItemsImage.frameCenterRotation = Constants.showRelatedItemViewRotation
         recordTypeSelectionView.stackview.alphaValue = 0
         recordTypeSelectionView.initialize(with: record, manager: gestureManager)
-        recordTypeSelectionView.selectionCallback = didSelectRelatedItemsType(_:)
+        recordTypeSelectionView.selectionCallback = didSelectRelatedItemsFilterType(_:)
     }
 
     private func setupGestures() {
@@ -375,7 +375,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     // MARK: NSTableViewDataSource & NSTableViewDelegate
 
     func numberOfRows(in tableView: NSTableView) -> Int {
-        guard let type = relatedItemsType else {
+        guard let type = relatedItemsFilterType else {
             return record.relatedRecords.count
         }
 
@@ -387,7 +387,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             return nil
         }
 
-        if let type = relatedItemsType {
+        if let type = relatedItemsFilterType {
             let relatedRecords = record.relatedRecords(of: type)
             relatedItemView.record = relatedRecords[row]
         } else {
@@ -578,20 +578,20 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     }
 
     /// Handle a change of record type from the RelatedItemsHeaderView
-    private func didSelectRelatedItemsType(_ type: RecordType?) {
+    private func didSelectRelatedItemsFilterType(_ type: RecordFilterType?) {
         let titleForType = type?.title ?? Constants.allRecordsTitle
         transitionRelatedRecordsTitle(to: titleForType)
 
         var itemsToRemove = IndexSet()
         if let type = type {
             for (index, record) in record.relatedRecords.enumerated() {
-                if record.type != type {
+                if record.type.filterType != type {
                     itemsToRemove.insert(index)
                 }
             }
         }
 
-        relatedItemsType = type
+        relatedItemsFilterType = type
         relatedItemsView.beginUpdates()
         relatedItemsView.insertRows(at: hiddenRelatedItems, withAnimation: .effectFade)
         relatedItemsView.removeRows(at: itemsToRemove, withAnimation: .effectFade)

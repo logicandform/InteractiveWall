@@ -11,8 +11,13 @@ class SearchItemView: NSCollectionViewItem {
 
     var type: RecordType? {
         didSet {
-            titleTextField.stringValue = type?.title ?? ""
             tintColor = type?.color ?? style.selectedColor
+        }
+    }
+
+    var text: String? {
+        didSet {
+            titleTextField.stringValue = text ?? ""
         }
     }
 
