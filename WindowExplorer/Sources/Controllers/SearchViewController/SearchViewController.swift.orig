@@ -290,6 +290,167 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             if let record = record {
                 WindowManager.instance.display(.record(record), at: location)
             }
+<<<<<<< HEAD
+=======
+        }
+    }
+
+}
+
+
+
+private extension SearchViewController {
+    class SchoolFactory {
+
+        static func getAllSchools(then completionHandler: @escaping ([School]?) -> Void) {
+            firstly {
+                try CachingNetwork.getSchools()
+            }.then { schools in
+                completionHandler(schools)
+            }.catch { error in
+                print(error.localizedDescription)
+                completionHandler(nil)
+            }
+        }
+    }
+}
+
+private extension SearchViewController {
+    typealias SuccessHandler = ([String: [School]]) -> ()
+    typealias FailureHandler = () -> ()
+
+    func associateProvincesToSchools() {
+        SchoolFactory.getAllSchools { [weak self] (schools) in
+            guard let strongSelf = self else {
+                return
+            }
+
+            guard let schools = schools else {
+                return
+            }
+            let schoolsWithLatLong = strongSelf.filter(schools)
+
+            strongSelf.geoCode(schoolsWithLatLong, then: { (provinceKeySchoolDict) in
+                // initialize and store property in the global singleton instance
+            })
+        }
+    }
+
+    func filter(_ schools: [School]) -> [School] {
+        return schools.filter {
+            $0.coordinate != nil
+        }
+    }
+
+    func geoCode(_ schools: [School], with results: [String: [School]] = [:], then completionHandler: @escaping SuccessHandler) {
+        guard let school = schools.first,
+            let latitude = school.coordinate?.latitude,
+            let longitude = school.coordinate?.longitude else {
+            completionHandler(results)
+            return
+        }
+
+        let location = CLLocation(latitude: latitude, longitude: longitude)
+        let geocoder = CLGeocoder()
+
+        geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
+            var updatedResults = results
+
+            if let error = error {
+                print(error.localizedDescription)
+                self.geoCodeTimer?.invalidate()
+                self.geoCodeTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block: { [weak self] (timer) in
+                    guard let strongSelf = self else {
+                        return
+                    }
+
+                    strongSelf.geoCode(schools, with: updatedResults, then: completionHandler)
+                })
+
+            } else if let placemark = placemarks?.first, let province = placemark.administrativeArea {
+                if let _  = updatedResults[province] {
+                    updatedResults[province]?.append(school)
+                } else {
+                    updatedResults[province] = [school]
+                }
+            }
+
+            let remainingSchools = Array(schools[1..<schools.count])
+
+            self.geoCode(remainingSchools, with: updatedResults, then: completionHandler)
+
+        }
+    }
+
+
+
+
+
+    func getAllSchools() {
+        firstly {
+            try CachingNetwork.getSchools()
+            }.then { [weak self] schools in
+
+                self?.schoolsArray = schools
+
+            }.then { [weak self] schools in
+                self?.mapSchool()
+
+            }.catch { (error) in
+                print(error)
+        }
+    }
+
+    @objc
+    func mapSchool() {
+
+        guard index < schoolsArray.count else {
+            return
+        }
+        print("Index: \(index)")
+
+        let school = schoolsArray[index]
+
+        mapOneSchoolToCLPlacemark(school: school, success: { (province) in
+//            if let _ = self?.convertDict[province] {
+//                self?.convertDict[province]?.append(school)
+//            } else {
+//                self?.convertDict[province] = [school]
+//            }
+//            self?.index = (self?.index)! + 1
+//            self?.mapSchool()
+
+        }, failure: {
+            Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.mapSchool), userInfo: nil, repeats: false)
+//            self.mapSchool()
+        })
+    }
+
+    func mapOneSchoolToCLPlacemark(school: School, success successHandler: @escaping SuccessHandler, failure failureHandler: @escaping FailureHandler) {
+        let geocoder = CLGeocoder()
+
+        if let latitude = school.coordinate?.latitude, let longitude = school.coordinate?.longitude {
+            let location = CLLocation(latitude: latitude, longitude: longitude)
+
+            geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
+
+                if error != nil {
+//                    print(error?.localizedDescription)
+                    self.count1 = self.count1 + 1
+                    print("Failure Error: \(self.count1)")
+                    failureHandler()
+                } else if let placemark = placemarks?[0], let _ = placemark.administrativeArea {
+                    self.successCount = self.successCount + 1
+                    print("Success: \(self.successCount)")
+//                    successHandler(area)
+                }
+            }
+>>>>>>> added GeocodeHelper singleton class
+
+        } else {
+            count = count + 1
+            print("Failure LatLong: \(count)")
+            failureHandler()
         }
     }
 
