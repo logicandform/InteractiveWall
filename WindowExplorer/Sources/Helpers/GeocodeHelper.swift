@@ -19,9 +19,9 @@ final class GeocodeHelper {
 
     // MARK: API
 
-    // TODO: change province: String to province: Province Enum
-    func getAllSchools(correspondingTo province: String) -> [School]? {
-        guard let schools = provinceSchoolMapping[province] else {
+    func getAllSchools(correspondingTo province: Province) -> [School]? {
+        let key = province.abbreviation
+        guard let schools = provinceSchoolMapping[key] else {
             return nil
         }
         return schools
@@ -35,6 +35,7 @@ final class GeocodeHelper {
 
             self?.geoCode(schoolsWithLatLong, then: { (dict) in
                 self?.provinceSchoolMapping = dict
+                print("completed")
             })
         }
     }
@@ -85,6 +86,7 @@ final class GeocodeHelper {
         }
     }
 
+    /// Gets Provinces of the school in batches (can setup timer..not sure if necessary)
     private func getProvinces(of schoolBatches: [[School]], then completionHandler: @escaping () -> ()) {
         guard let schoolBatch = schoolBatches.first else {
             completionHandler()

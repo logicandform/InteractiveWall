@@ -28,6 +28,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         WindowManager.instance.registerForNotifications()
         TouchManager.instance.setupTouchSocket()
+        GeocodeHelper.instance.associateSchoolsToProvinces()
         MasterViewController.instantiate()
         MenuViewController.instantiate()
     }

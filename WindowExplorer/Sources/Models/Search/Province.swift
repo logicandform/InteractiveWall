@@ -49,6 +49,37 @@ enum Province: SearchItemDisplayable {
         }
     }
 
+    var abbreviation: String {
+        switch self {
+        case .britishColumbia:
+            return "BC"
+        case .alberta:
+            return "AB"
+        case .manitoba:
+            return "MB"
+        case .ontario:
+            return "ON"
+        case .quebec:
+            return "QC"
+        case .saskatchewan:
+            return "SK"
+        case .newfoundland:
+            return "NL"
+        case .novaScotia:
+            return "NS"
+        case .newBrunswick:
+            return "NB"
+        case .princeEdwardIsland:
+            return "PE"
+        case .yukonTerritory:
+            return "YT"
+        case .northwestTerritory:
+            return "NT"
+        case .nunavut:
+            return "NU"
+        }
+    }
+
     static var allValues: [Province] {
         return [.alberta, .britishColumbia, .manitoba, .newBrunswick, .newfoundland, .northwestTerritory, .novaScotia, .nunavut, .ontario, .princeEdwardIsland, .quebec, .saskatchewan, .yukonTerritory]
     }

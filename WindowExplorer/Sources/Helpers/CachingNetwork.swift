@@ -209,7 +209,7 @@ final class CachingNetwork {
     // MARK: Schools
 
     static func getSchools(page: Int = 0, load: [School] = []) throws -> Promise<[School]> {
-        let url = String(format: Endpoints.schools, page)
+        let url = String(format: Endpoints.allSchools, page)
 
         return Alamofire.request(url).responseJSON().then { json in
             guard let schools = try? ResponseHandler.serializeSchools(from: json), !schools.isEmpty else {
