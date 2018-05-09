@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="riY-ZD-9cD">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Menu View Controller-->
+        <scene sceneID="Csi-5N-0Ko">
+            <objects>
+                <viewController id="riY-ZD-9cD" customClass="MenuViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="me1-4m-SDM">
+                        <rect key="frame" x="0.0" y="0.0" width="321" height="85"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="A7W-Kn-jfd">
+                                <rect key="frame" x="6" y="57" width="104" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="1tZ-iF-nue"/>
+                                    <constraint firstAttribute="width" constant="100" id="I4v-Gh-5uu"/>
+                                </constraints>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Search Record" id="1mY-ZP-P7Y">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="y4M-g2-4va">
+                                <rect key="frame" x="211" y="57" width="104" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="55v-oN-zWt"/>
+                                    <constraint firstAttribute="width" constant="100" id="SEG-m6-GGP"/>
+                                </constraints>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Search Record" id="BN2-Ry-lgY">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tFh-6G-8z6">
+                                <rect key="frame" x="211" y="8" width="104" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="4Gu-Ae-lIb"/>
+                                    <constraint firstAttribute="height" constant="20" id="hfy-gl-Irp"/>
+                                </constraints>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Switch Interface" id="9gv-IW-q3F">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5Nz-Af-9mW">
+                                <rect key="frame" x="6" y="8" width="104" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="SAS-uq-T8L"/>
+                                    <constraint firstAttribute="height" constant="20" id="Uby-Ij-vRX"/>
+                                </constraints>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Switch Interface" id="7AW-Hv-tpL">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="5Nz-Af-9mW" firstAttribute="leading" secondItem="me1-4m-SDM" secondAttribute="leading" constant="8" id="26o-Cb-ve9"/>
+                            <constraint firstAttribute="trailing" secondItem="y4M-g2-4va" secondAttribute="trailing" constant="8" id="9kd-1I-tA5"/>
+                            <constraint firstItem="A7W-Kn-jfd" firstAttribute="top" secondItem="me1-4m-SDM" secondAttribute="top" constant="8" id="KTe-IG-lg3"/>
+                            <constraint firstAttribute="bottom" secondItem="5Nz-Af-9mW" secondAttribute="bottom" constant="8" id="MgQ-Nc-W1U"/>
+                            <constraint firstItem="A7W-Kn-jfd" firstAttribute="leading" secondItem="me1-4m-SDM" secondAttribute="leading" constant="8" id="WBA-Q0-wvr"/>
+                            <constraint firstItem="y4M-g2-4va" firstAttribute="top" secondItem="me1-4m-SDM" secondAttribute="top" constant="8" id="eJQ-PS-iOw"/>
+                            <constraint firstAttribute="bottom" secondItem="tFh-6G-8z6" secondAttribute="bottom" constant="8" id="f1M-VB-m5N"/>
+                            <constraint firstAttribute="trailing" secondItem="tFh-6G-8z6" secondAttribute="trailing" constant="8" id="vM4-pX-S1Z"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="leftSearchRecordLabel" destination="A7W-Kn-jfd" id="zcM-MZ-iY6"/>
+                        <outlet property="leftSwitchInterfaceLabel" destination="5Nz-Af-9mW" id="6ps-BX-fSv"/>
+                        <outlet property="rightSearchRecordLabel" destination="y4M-g2-4va" id="4xT-zs-Y09"/>
+                        <outlet property="rightSwitchInterfaceLabel" destination="tFh-6G-8z6" id="plU-Ns-QNi"/>
+                    </connections>
+                </viewController>
+                <customObject id="3ND-aa-ZX6" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-157.5" y="55.5"/>
+        </scene>
+    </scenes>
+</document>

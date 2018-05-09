@@ -8,6 +8,7 @@ enum WindowType {
     case player(Media)
     case pdf(Media)
     case search
+    case menu
 
     init?(for media: Media) {
         switch media.type {
@@ -34,13 +35,15 @@ enum WindowType {
             return style.pdfWindowSize
         case .search:
             return style.searchWindowSize
+        case .menu:
+            return style.menuWindowSize
         }
     }
 
     /// Used for checking if the specific media can be move above or below the record it was called from.
     var canAdjustOrigin: Bool {
         switch self {
-        case .record:
+        case .record, .menu:
             return false
         case .image, .player, .pdf, .search:
             return true
