@@ -170,9 +170,9 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         case secondaryCollectionView:
             if let selectedType = selectedType, let group = view.item as? LetterGroup {
                 view.set(loading: true)
-                RecordFactory.records(for: selectedType, group: group) { [weak self] records in
+                RecordFactory.records(for: selectedType, in: group) { [weak self] records in
+                    view.set(loading: false)
                     if let records = records {
-                        view.set(loading: false)
                         self?.load(records, of: selectedType)
                     }
                 }

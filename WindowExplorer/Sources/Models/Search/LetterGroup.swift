@@ -5,31 +5,37 @@ import Foundation
 
 enum LetterGroup: String, SearchItemDisplayable {
 
-    case abcd
-    case efgh
-    case ijkl
-    case mnop
-    case qrstu
-    case vwxyz
+    case abc
+    case def
+    case ghi
+    case jkl
+    case mno
+    case pqr
+    case stuv
+    case wxyz
 
     var title: String {
         switch self {
-        case .abcd:
-            return "A-D"
-        case .efgh:
-            return "E-H"
-        case .ijkl:
-            return "I-L"
-        case .mnop:
-            return "M-P"
-        case .qrstu:
-            return "Q-U"
-        case .vwxyz:
-            return "V-Z"
+        case .abc:
+            return "A-C"
+        case .def:
+            return "D-F"
+        case .ghi:
+            return "G-I"
+        case .jkl:
+            return "J-L"
+        case .mno:
+            return "M-O"
+        case .pqr:
+            return "P-R"
+        case .stuv:
+            return "S-V"
+        case .wxyz:
+            return "W-Z"
         }
     }
 
     static var allValues: [LetterGroup] {
-        return [.abcd, .efgh, .ijkl, .mnop, .qrstu, .vwxyz]
+        return [.abc, .def, .ghi, .jkl, .mno, .pqr, .stuv, .wxyz]
     }
 }
