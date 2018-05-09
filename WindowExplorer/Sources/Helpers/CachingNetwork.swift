@@ -222,14 +222,6 @@ final class CachingNetwork {
         }
     }
 
-//    static func getSchools() throws -> Promise<[School]> {
-//        let url = Endpoints.schools
-//
-//        return Alamofire.request(url).responseJSON().then { json in
-//            try ResponseHandler.serializeSchools(from: json)
-//        }
-//    }
-
     static func getSchool(by id: Int) -> Promise<School> {
         let url = Endpoints.schoolByID + id.description
 
