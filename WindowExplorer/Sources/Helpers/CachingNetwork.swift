@@ -50,11 +50,6 @@ final class CachingNetwork {
         return ["Authorization": "Basic \(base64Credentials)"]
     }()
 
-    private struct Constants {
-        static let batchSize = 20
-    }
-
-
     // MARK: Places
 
     static func getPlaces(page: Int = 0, load: [Place] = []) throws -> Promise<[Place]> {
