@@ -39,6 +39,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     var index = 0
 
     private var geoCodeTimer: Timer?
+    private var provinceTimer: Timer?
 
     private var schoolsArray: [School] = []
 
@@ -290,13 +291,33 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             if let record = record {
                 WindowManager.instance.display(.record(record), at: location)
             }
-<<<<<<< HEAD
-=======
         }
     }
 
+<<<<<<< HEAD
+    // Removes all state from the currently selected view of the given collectionview
+    private func unselectItem(for collectionView: NSCollectionView) {
+        guard let indexPath = selectedIndexForView[collectionView] else {
+            return
+        }
+
+        selectedIndexForView.removeValue(forKey: collectionView)
+        if let view = collectionView.item(at: indexPath) as? SearchItemView {
+            view.set(highlighted: false)
+            view.set(loading: false)
+        }
+    }
+=======
 }
 
+
+extension Array {
+    func chunked(into size: Int) -> [[Element]] {
+        return stride(from: 0, to: count, by: size).map {
+            Array(self[$0 ..< Swift.min($0 + size, count)])
+        }
+    }
+}
 
 
 private extension SearchViewController {
@@ -321,24 +342,37 @@ private extension SearchViewController {
 
     func associateProvincesToSchools() {
         SchoolFactory.getAllSchools { [weak self] (schools) in
-            guard let strongSelf = self else {
+            guard let strongSelf = self, let schools = schools else {
                 return
             }
 
-            guard let schools = schools else {
-                return
-            }
             let schoolsWithLatLong = strongSelf.filter(schools)
+            let schoolBatches = schoolsWithLatLong.chunked(into: 30)
 
-            strongSelf.geoCode(schoolsWithLatLong, then: { (provinceKeySchoolDict) in
-                // initialize and store property in the global singleton instance
+//            strongSelf.getProvinces(of: schoolBatches, then: {
+//                print("completed")
+//            })
+
+            strongSelf.geoCode(schoolsWithLatLong, then: { (dict) in
+                print(dict)
+                print("completed")
             })
         }
     }
 
-    func filter(_ schools: [School]) -> [School] {
-        return schools.filter {
-            $0.coordinate != nil
+    func getProvinces(of schoolBatches: [[School]], then completionHandler: @escaping () -> ()) {
+        guard let schoolBatch = schoolBatches.first else {
+            completionHandler()
+            return
+        }
+
+        geoCode(schoolBatch) { (provinceKeyDict) in
+            //initialize and store provinceKeyDict to singleton instance
+            print(provinceKeyDict)
+            print("Count: \(provinceKeyDict.values.count)")
+
+            let remainingSchoolBatches = Array(schoolBatches[1..<schoolBatches.count])
+            self.getProvinces(of: remainingSchoolBatches, then: completionHandler)
         }
     }
 
@@ -364,106 +398,30 @@ private extension SearchViewController {
                         return
                     }
 
-                    strongSelf.geoCode(schools, with: updatedResults, then: completionHandler)
+                    strongSelf.geoCode(schools, with: results, then: completionHandler)
                 })
 
-            } else if let placemark = placemarks?.first, let province = placemark.administrativeArea {
-                if let _  = updatedResults[province] {
-                    updatedResults[province]?.append(school)
-                } else {
-                    updatedResults[province] = [school]
+            } else if let placemark = placemarks?.first {
+
+                if let province = placemark.administrativeArea {
+                    if let _  = updatedResults[province] {
+                        updatedResults[province]?.append(school)
+                    } else {
+                        updatedResults[province] = [school]
+                    }
                 }
+
+                let remainingSchools = Array(schools[1..<schools.count])
+                self.geoCode(remainingSchools, with: updatedResults, then: completionHandler)
             }
-
-            let remainingSchools = Array(schools[1..<schools.count])
-
-            self.geoCode(remainingSchools, with: updatedResults, then: completionHandler)
-
         }
     }
 
-
-
-
-
-    func getAllSchools() {
-        firstly {
-            try CachingNetwork.getSchools()
-            }.then { [weak self] schools in
-
-                self?.schoolsArray = schools
-
-            }.then { [weak self] schools in
-                self?.mapSchool()
-
-            }.catch { (error) in
-                print(error)
+    func filter(_ schools: [School]) -> [School] {
+        return schools.filter {
+            $0.coordinate != nil
         }
     }
 
-    @objc
-    func mapSchool() {
-
-        guard index < schoolsArray.count else {
-            return
-        }
-        print("Index: \(index)")
-
-        let school = schoolsArray[index]
-
-        mapOneSchoolToCLPlacemark(school: school, success: { (province) in
-//            if let _ = self?.convertDict[province] {
-//                self?.convertDict[province]?.append(school)
-//            } else {
-//                self?.convertDict[province] = [school]
-//            }
-//            self?.index = (self?.index)! + 1
-//            self?.mapSchool()
-
-        }, failure: {
-            Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.mapSchool), userInfo: nil, repeats: false)
-//            self.mapSchool()
-        })
-    }
-
-    func mapOneSchoolToCLPlacemark(school: School, success successHandler: @escaping SuccessHandler, failure failureHandler: @escaping FailureHandler) {
-        let geocoder = CLGeocoder()
-
-        if let latitude = school.coordinate?.latitude, let longitude = school.coordinate?.longitude {
-            let location = CLLocation(latitude: latitude, longitude: longitude)
-
-            geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
-
-                if error != nil {
-//                    print(error?.localizedDescription)
-                    self.count1 = self.count1 + 1
-                    print("Failure Error: \(self.count1)")
-                    failureHandler()
-                } else if let placemark = placemarks?[0], let _ = placemark.administrativeArea {
-                    self.successCount = self.successCount + 1
-                    print("Success: \(self.successCount)")
-//                    successHandler(area)
-                }
-            }
->>>>>>> added GeocodeHelper singleton class
-
-        } else {
-            count = count + 1
-            print("Failure LatLong: \(count)")
-            failureHandler()
-        }
-    }
-
-    // Removes all state from the currently selected view of the given collectionview
-    private func unselectItem(for collectionView: NSCollectionView) {
-        guard let indexPath = selectedIndexForView[collectionView] else {
-            return
-        }
-
-        selectedIndexForView.removeValue(forKey: collectionView)
-        if let view = collectionView.item(at: indexPath) as? SearchItemView {
-            view.set(highlighted: false)
-            view.set(loading: false)
-        }
-    }
+>>>>>>> check to see if geocoder returns province
 }

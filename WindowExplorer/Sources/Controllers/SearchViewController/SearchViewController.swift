@@ -39,6 +39,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     var index = 0
 
     private var geoCodeTimer: Timer?
+    private var provinceTimer: Timer?
 
     private var schoolsArray: [School] = []
 
