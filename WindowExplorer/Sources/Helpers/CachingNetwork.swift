@@ -32,12 +32,16 @@ final class CachingNetwork {
         static let artifacts = baseURL + "/artifacts/all/%d"
         static let artifactByID = baseURL + "/artifacts/find/"
         static let artifactsInGroup = baseURL + "/artifacts/group/%@/%d"
-        static let schools = baseURL + "/schools/all/%d"
+        static let allSchools = baseURL + "/schools/all/%d"
         static let schoolByID = baseURL + "/schools/find/"
         static let schoolsInGroup = baseURL + "/schools/group/%@/%d"
         static let themes = baseURL + "/themes/all/%d"
         static let themeByID = baseURL + "/themes/find/"
         static let themesInGroup = baseURL + "/themes/group/%@/%d"
+    }
+
+    private struct Constants {
+        static let batchSize = 20
     }
 
     private static let credentials: [String: String] = {
@@ -222,6 +226,14 @@ final class CachingNetwork {
             return try getSchools(page: next, load: result)
         }
     }
+
+//    static func getSchools() throws -> Promise<[School]> {
+//        let url = Endpoints.schools
+//
+//        return Alamofire.request(url).responseJSON().then { json in
+//            try ResponseHandler.serializeSchools(from: json)
+//        }
+//    }
 
     static func getSchool(by id: Int) -> Promise<School> {
         let url = Endpoints.schoolByID + id.description

@@ -32,8 +32,16 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         tertiaryCollectionView: []
     ]
 
-    private lazy var dict = [CLPlacemark: School]()
-    private lazy var convertDict = [String: [School?]]()
+    private lazy var convertDict = [String: [School]]()
+    var count: Int = 0
+    var count1 = 0
+    var successCount = 0
+    var index = 0
+
+    private var geoCodeTimer: Timer?
+
+    private var schoolsArray: [School] = []
+
 
     private struct Constants {
         static let animationDuration = 0.5
@@ -52,6 +60,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         animateViewIn()
 
 
+        associateProvincesToSchools()
     }
 
 
@@ -281,6 +290,11 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             if let record = record {
                 WindowManager.instance.display(.record(record), at: location)
             }
+
+        } else {
+            count = count + 1
+            print("Failure LatLong: \(count)")
+            failureHandler()
         }
     }
 
