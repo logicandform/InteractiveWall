@@ -12,12 +12,10 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     @IBOutlet weak var mapView: FlippedMapView!
 
-    var allRecords = [Record]()
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
     private var recordForAnnotation = [CircleAnnotation: Record]()
     private var showingAnnotationTitles = false
-    private var numberOfAnnotationPositionUpdates = 0
     private let touchListener = TouchListener()
 
     private var tileURL: String {
@@ -33,7 +31,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let doubleTapScale = 0.5
         static let annotationTitleZoomLevel = Double(36000000 / Configuration.mapsPerScreen)
         static let spacingBetweenAnnotations = 0.02
-        static let maximumNumberPositionUpdates = 5
     }
 
     private struct Keys {
@@ -198,8 +195,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         // Schools
         let schoolChain = firstly {
             try CachingNetwork.getSchools()
-        }.then { [weak self] schools in
-            self?.updateAllRecords(for: schools)
         }.catch { error in
             print(error)
         }
@@ -207,23 +202,19 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         // Events
         let eventChain = firstly {
             try CachingNetwork.getEvents()
-        }.then { [weak self] events in
-            self?.updateAllRecords(for: events)
         }.catch { error in
             print(error)
         }
 
-        when(resolved: schoolChain, eventChain).always {
-            self.updateRecordCoordinates()
-            self.addAnnotations(for: self.allRecords)
-        }
-    }
+        when(resolved: schoolChain, eventChain).then { [weak self] results -> Void in
+            var recordsToLoad = [Record]()
 
-    private func addAnnotations(for records: [Record]) {
-        records.forEach { record in
-            let annotation = CircleAnnotation(coordinate: record.coordinate, record: record.type, title: record.title)
-            recordForAnnotation[annotation] = record
-            mapView.addAnnotation(annotation)
+            for case .fulfilled(let value) in results {
+                recordsToLoad.append(contentsOf: value)
+            }
+
+            self?.loadRecords(for: recordsToLoad)
+            return
         }
     }
 
@@ -251,36 +242,42 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         }
     }
 
-    private func updateAllRecords (for records: [Record]) {
-        allRecords.append(contentsOf: records)
-    }
+    private func loadRecords(for records: [Record]) {
+        var adjustedRecords = [Record]()
 
-    private func updateRecordCoordinates() {
-        if numberOfAnnotationPositionUpdates >= Constants.maximumNumberPositionUpdates {
-            return
+        for record in records {
+            let adjustedRecord = adjustCoordinateOfRecord(for: record, in: adjustedRecords)
+            adjustedRecords.append(adjustedRecord)
         }
 
-        for (outerIndex, outerRecord) in allRecords.enumerated() {
-            for (innerIndex, innerRecord) in allRecords.enumerated() {
-                if outerIndex < innerIndex {
-                    let outerRecordCoordinateLatitude = outerRecord.coordinate.latitude
-                    let outerRecordCoordinateLongitude = outerRecord.coordinate.longitude
-                    let innerRecordCoordinateLatitude = innerRecord.coordinate.latitude
-                    let innerRecordCoordinateLongitude = innerRecord.coordinate.longitude
-                    let latitudeCheck = outerRecordCoordinateLatitude + Double(Constants.spacingBetweenAnnotations) > innerRecordCoordinateLatitude && outerRecordCoordinateLatitude - Double(Constants.spacingBetweenAnnotations) < innerRecordCoordinateLatitude
-                    let longitudeCheck = outerRecordCoordinateLongitude + Double(Constants.spacingBetweenAnnotations) > innerRecordCoordinateLongitude && outerRecordCoordinateLongitude - Double(Constants.spacingBetweenAnnotations) < innerRecordCoordinateLongitude
+        addAnnotations(for: adjustedRecords)
+    }
 
-                    if latitudeCheck && longitudeCheck && outerRecordCoordinateLatitude >= innerRecordCoordinateLatitude {
-                        allRecords[outerIndex].coordinate.latitude += Double(Constants.spacingBetweenAnnotations)
-                        numberOfAnnotationPositionUpdates += 1
-                        updateRecordCoordinates()
-                    } else if latitudeCheck && longitudeCheck && outerRecordCoordinateLatitude < innerRecordCoordinateLatitude {
-                        allRecords[outerIndex].coordinate.latitude -= Double(Constants.spacingBetweenAnnotations)
-                        numberOfAnnotationPositionUpdates += 1
-                        updateRecordCoordinates()
-                    }
-                }
+    private func adjustCoordinateOfRecord(for record: Record, in records: [Record]) -> Record {
+        var adjustedRecord = record
+
+        for runnerRecord in records {
+            let recordLatitude = adjustedRecord.coordinate.latitude
+            let recordLongitude = adjustedRecord.coordinate.longitude
+            let runnerRecordLatitude = runnerRecord.coordinate.latitude
+            let runnerRecordLongitude = runnerRecord.coordinate.longitude
+            let latitudeCheck = recordLatitude + Double(Constants.spacingBetweenAnnotations) > runnerRecordLatitude && recordLatitude - Double(Constants.spacingBetweenAnnotations) < runnerRecordLatitude
+            let longitudeCheck = recordLongitude + Double(Constants.spacingBetweenAnnotations) > runnerRecordLongitude && recordLongitude - Double(Constants.spacingBetweenAnnotations) < runnerRecordLongitude
+
+            if latitudeCheck && longitudeCheck {
+                adjustedRecord.coordinate.latitude += Double(Constants.spacingBetweenAnnotations)
+                adjustedRecord = adjustCoordinateOfRecord(for: adjustedRecord, in: records)
             }
+        }
+
+        return adjustedRecord
+    }
+
+    private func addAnnotations(for records: [Record]) {
+        records.forEach { record in
+            let annotation = CircleAnnotation(coordinate: record.coordinate, record: record.type, title: record.title)
+            recordForAnnotation[annotation] = record
+            mapView.addAnnotation(annotation)
         }
     }
 

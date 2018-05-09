@@ -49,7 +49,7 @@ final class CachingNetwork {
 
     // MARK: Schools
 
-    static func getSchools(page: Int = 0, load: [School] = []) throws -> Promise<[School]> {
+    static func getSchools(page: Int = 0, load: [School] = []) throws -> Promise<[Record]> {
         let url = String(format: Endpoints.schools, page)
 
         return Alamofire.request(url).responseJSON().then { json in
@@ -66,7 +66,7 @@ final class CachingNetwork {
 
     // MARK: Events
 
-    static func getEvents() throws -> Promise<[Event]> {
+    static func getEvents() throws -> Promise<[Record]> {
         let url = Endpoints.events
 
         return Alamofire.request(url).responseJSON().then { json in
