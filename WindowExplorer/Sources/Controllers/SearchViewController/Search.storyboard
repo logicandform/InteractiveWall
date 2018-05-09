@@ -176,15 +176,36 @@
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="w51-de-YGS">
+                                        <rect key="frame" x="1010" y="0.0" width="40" height="40"/>
+                                        <subviews>
+                                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="J1c-pu-NWX">
+                                                <rect key="frame" x="10" y="10" width="20" height="20"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="20" id="emA-dJ-vaM"/>
+                                                    <constraint firstAttribute="width" constant="20" id="pkh-xn-zTL"/>
+                                                </constraints>
+                                                <imageCell key="cell" enabled="NO" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="close button" id="deW-Cq-6kx"/>
+                                            </imageView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="J1c-pu-NWX" firstAttribute="centerX" secondItem="w51-de-YGS" secondAttribute="centerX" id="0uw-KE-lCc"/>
+                                            <constraint firstAttribute="width" constant="40" id="LRx-Ts-dq2"/>
+                                            <constraint firstAttribute="height" constant="40" id="Qwm-JP-uMt"/>
+                                            <constraint firstItem="J1c-pu-NWX" firstAttribute="centerY" secondItem="w51-de-YGS" secondAttribute="centerY" id="sFR-W0-6vw"/>
+                                        </constraints>
+                                    </customView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="4S0-Hp-abU" firstAttribute="leading" secondItem="oGe-AJ-Idu" secondAttribute="leading" id="7oq-mx-01c"/>
                                     <constraint firstItem="sOu-1b-tUh" firstAttribute="top" secondItem="oGe-AJ-Idu" secondAttribute="top" id="8W0-kf-FSW"/>
+                                    <constraint firstAttribute="trailing" secondItem="w51-de-YGS" secondAttribute="trailing" id="CMY-xu-ZAM"/>
                                     <constraint firstAttribute="bottom" secondItem="jVk-aJ-U1i" secondAttribute="bottom" id="K7b-4P-toa"/>
                                     <constraint firstAttribute="bottom" secondItem="4S0-Hp-abU" secondAttribute="bottom" id="KBu-KV-dJ7"/>
                                     <constraint firstAttribute="bottom" secondItem="4sB-bV-Fph" secondAttribute="bottom" id="R3t-b0-Jby"/>
                                     <constraint firstAttribute="height" constant="40" id="R4R-AN-tL4"/>
                                     <constraint firstAttribute="bottom" secondItem="sam-yv-2oh" secondAttribute="bottom" id="WHi-b0-mpB"/>
+                                    <constraint firstItem="w51-de-YGS" firstAttribute="top" secondItem="oGe-AJ-Idu" secondAttribute="top" id="b0a-sh-t6J"/>
                                     <constraint firstItem="sOu-1b-tUh" firstAttribute="leading" secondItem="oGe-AJ-Idu" secondAttribute="leading" id="gxd-Jz-05U"/>
                                     <constraint firstAttribute="trailing" secondItem="4S0-Hp-abU" secondAttribute="trailing" id="lQr-hI-DAd"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="pc4-Li-HSc"/>
@@ -213,6 +234,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="collapseButtonArea" destination="w51-de-YGS" id="gm5-5y-HYG"/>
                         <outlet property="dismissButton" destination="sOu-1b-tUh" id="glV-Mp-c8I"/>
                         <outlet property="primaryCollectionView" destination="S1c-RT-6BK" id="Rql-aO-Hh0"/>
                         <outlet property="secondaryCollectionView" destination="Mma-p7-p7J" id="Xf2-4F-Zif"/>

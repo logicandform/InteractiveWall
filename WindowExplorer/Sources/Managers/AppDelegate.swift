@@ -29,7 +29,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         WindowManager.instance.registerForNotifications()
         TouchManager.instance.setupTouchSocket()
 //        MasterViewController.instantiate()
-        WindowManager.instance.display(.search, at: CGPoint(x: 2600, y: 400))
+        WindowManager.instance.display(.search, at: CGPoint(x: 3500, y: 700))
     }
 
     func applicationWillTerminate(_ notification: Notification) {

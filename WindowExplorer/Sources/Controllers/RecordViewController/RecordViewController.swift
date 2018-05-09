@@ -103,7 +103,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         gestureManager.add(collectionViewPanGesture, to: mediaView)
         collectionViewPanGesture.gestureUpdated = handleCollectionViewPan(_:)
 
-        let collectionViewTapGesture = TapGestureRecognizer()
+        let collectionViewTapGesture = TapGestureRecognizer(withDelay: true)
         gestureManager.add(collectionViewTapGesture, to: mediaView)
         collectionViewTapGesture.gestureUpdated = handleCollectionViewTap(_:)
 
@@ -111,7 +111,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         gestureManager.add(relatedViewPan, to: relatedItemsView)
         relatedViewPan.gestureUpdated = handleRelatedViewPan(_:)
 
-        let relatedItemTap = TapGestureRecognizer()
+        let relatedItemTap = TapGestureRecognizer(withDelay: true)
         gestureManager.add(relatedItemTap, to: relatedItemsView)
         relatedItemTap.gestureUpdated = handleRelatedItemTap(_:)
 

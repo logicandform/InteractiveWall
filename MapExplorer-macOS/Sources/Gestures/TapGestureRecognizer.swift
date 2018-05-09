@@ -19,12 +19,12 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
 
     private var positionForTouch = [Touch: CGPoint]()
     private var doubleTapPositionAndTimeForTouch = [Touch: (position: CGPoint, time: Date)]()
-    private var delayTapBegin = true
+    private var delayTap: Bool
 
 
     // MARK: Init
-    init(delayTapBegin: Bool = true) {
-        self.delayTapBegin = delayTapBegin
+    init(withDelay: Bool = false) {
+        self.delayTap = withDelay
     }
 
 
@@ -38,7 +38,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         position = touch.position
         state = .began
 
-        if !delayTapBegin {
+        if !delayTap {
             gestureUpdated?(self)
             return
         }

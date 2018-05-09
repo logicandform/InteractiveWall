@@ -16,12 +16,14 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     @IBOutlet weak var tertiaryCollectionView: NSCollectionView!
     @IBOutlet weak var secondaryTextField: NSTextField!
     @IBOutlet weak var tertiaryTextField: NSTextField!
-
+    @IBOutlet weak var collapseButtonArea: NSView!
+    
     private var selectedType: RecordType?
     private var selectedItemForView = [NSCollectionView: SearchItemView]()
 
     private lazy var titleViews: [NSTextField] = [titleLabel, secondaryTextField, tertiaryTextField]
     private lazy var collectionViews: [NSCollectionView] = [primaryCollectionView, secondaryCollectionView, tertiaryCollectionView]
+    private lazy var focusedCollectionView: NSCollectionView = primaryCollectionView
     private lazy var searchItemsForView: [NSCollectionView: [SearchItemDisplayable]] = [
         primaryCollectionView: RecordType.allValues,
         secondaryCollectionView: [],
@@ -54,10 +56,14 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             gestureManager.add(collectionViewPan, to: collectionView)
             collectionViewPan.gestureUpdated = handleCollectionViewPan(_:)
 
-            let collectionViewTap = TapGestureRecognizer()
+            let collectionViewTap = TapGestureRecognizer(withDelay: true)
             gestureManager.add(collectionViewTap, to: collectionView)
             collectionViewTap.gestureUpdated = handleCollectionViewTap(_:)
         }
+
+        let collapseButtonTap = TapGestureRecognizer()
+        gestureManager.add(collapseButtonTap, to: collapseButtonArea)
+        collapseButtonTap.gestureUpdated = handleCollapseButtonTap(_:)
     }
 
 
@@ -97,6 +103,16 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
     }
 
+    private func handleCollapseButtonTap(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
+            return
+        }
+
+        if let index = collectionViews.index(of: focusedCollectionView), let previous = collectionViews.at(index: index - 1) {
+            toggle(to: previous)
+        }
+    }
+
 
     // MARK: NSCollectionViewDelegate & NSCollectionViewDataSource
 
@@ -132,6 +148,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         tertiaryCollectionView.alphaValue = 0
         secondaryTextField.alphaValue = 0
         tertiaryTextField.alphaValue = 0
+        collapseButtonArea.alphaValue = 0
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration
             primaryCollectionView.animator().alphaValue = 1
@@ -205,11 +222,13 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
                 collectionViews.at(index: indexOfView)?.animator().alphaValue = indexOfView <= index ? 1 : 0
                 titleViews.at(index: indexOfView)?.animator().alphaValue = indexOfView <= index ? 1 : 0
             }
+            collapseButtonArea.animator().alphaValue = index.isZero ? 0 : 1
         }, completionHandler: completion)
 
         var frame = window.frame
         frame.size.width = style.searchWindowSize.width * CGFloat(index + 1)
         window.setFrame(frame, display: true, animate: true)
+        focusedCollectionView = view
     }
 
     /// Returns a collection of search items used as the second level of a search query

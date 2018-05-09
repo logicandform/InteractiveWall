@@ -20,7 +20,7 @@ final class RecordFactory {
         }
     }
 
-    static func records(for type: RecordType, group: LetterGroup, completion: @escaping (([RecordDisplayable]?) -> Void)) {
+    static func records(for type: RecordType, in group: LetterGroup, completion: @escaping (([RecordDisplayable]?) -> Void)) {
         switch type {
         case .artifact:
             artifacts(for: group, completion: completion)
