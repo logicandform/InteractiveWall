@@ -32,18 +32,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         tertiaryCollectionView: []
     ]
 
-    private lazy var convertDict = [String: [School]]()
-    var count: Int = 0
-    var count1 = 0
-    var successCount = 0
-    var index = 0
-
-    private var geoCodeTimer: Timer?
-    private var provinceTimer: Timer?
-
-    private var schoolsArray: [School] = []
-
-
     private struct Constants {
         static let animationDuration = 0.5
         static let searchItemHeight: CGFloat = 70
@@ -59,9 +47,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         setupGestures()
         resetCloseWindowTimer()
         animateViewIn()
-
-
-        associateProvincesToSchools()
     }
 
 
@@ -305,15 +290,8 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         if let view = collectionView.item(at: indexPath) as? SearchItemView {
             view.set(highlighted: false)
             view.set(loading: false)
-=======
-}
-
-
-extension Array {
-    func chunked(into size: Int) -> [[Element]] {
-        return stride(from: 0, to: count, by: size).map {
-            Array(self[$0 ..< Swift.min($0 + size, count)])
->>>>>>> moved methods to GeocodeHelper class
         }
     }
+=======
+>>>>>>> clean up SearchViewController
 }

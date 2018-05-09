@@ -32,18 +32,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         tertiaryCollectionView: []
     ]
 
-    private lazy var convertDict = [String: [School]]()
-    var count: Int = 0
-    var count1 = 0
-    var successCount = 0
-    var index = 0
-
-    private var geoCodeTimer: Timer?
-    private var provinceTimer: Timer?
-
-    private var schoolsArray: [School] = []
-
-
     private struct Constants {
         static let animationDuration = 0.5
         static let searchItemHeight: CGFloat = 70
@@ -59,9 +47,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         setupGestures()
         resetCloseWindowTimer()
         animateViewIn()
-
-
-        associateProvincesToSchools()
     }
 
 
