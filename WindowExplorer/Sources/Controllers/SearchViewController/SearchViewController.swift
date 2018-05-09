@@ -2,6 +2,7 @@
 
 import Cocoa
 
+
 protocol SearchItemDisplayable {
     var title: String { get }
 }
@@ -167,9 +168,17 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
                 toggle(to: secondaryCollectionView)
             }
         case secondaryCollectionView:
-            loadResults(for: view)
+            if let selectedType = selectedType, let group = view.item as? LetterGroup {
+                RecordFactory.records(for: selectedType, group: group) { [weak self] records in
+                    if let records = records {
+                        self?.load(records, of: selectedType)
+                    }
+                }
+            }
         case tertiaryCollectionView:
-            displayRecord(for: view.item)
+            if let record = view.item as? RecordDisplayable {
+                display(record)
+            }
         default:
             break
         }
@@ -222,18 +231,15 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     }
 
     /// Loads records into and toggles the tertiary collection view
-    private func loadResults(for view: SearchItemView) {
-        guard let selectedType = selectedType else {
-            return
-        }
-
-        // TODO: networking request for view.item with type
-        view.set(loading: true)
+    private func load(_ records: [RecordDisplayable], of type: RecordType) {
+        searchItemsForView[tertiaryCollectionView] = records
+        tertiaryCollectionView.reloadData()
+        tertiaryTextField.attributedStringValue = NSAttributedString(string: type.title, attributes: style.windowTitleAttributes)
         toggle(to: tertiaryCollectionView)
     }
 
-    private func displayRecord(for item: SearchItemDisplayable) {
-        guard let window = view.window, let record = item as? RecordDisplayable else {
+    private func display(_ record: RecordDisplayable) {
+        guard let window = view.window else {
             return
         }
 

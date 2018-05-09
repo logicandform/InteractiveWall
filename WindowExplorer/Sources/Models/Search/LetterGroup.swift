@@ -3,7 +3,7 @@
 import Foundation
 
 
-enum LetterGroup: SearchItemDisplayable {
+enum LetterGroup: String, SearchItemDisplayable {
 
     case abcd
     case efgh
