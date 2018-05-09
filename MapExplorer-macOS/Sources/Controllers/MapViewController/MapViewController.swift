@@ -206,16 +206,17 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             print(error)
         }
 
-        when(resolved: schoolChain, eventChain).then { [weak self] results -> Void in
-            var recordsToLoad = [Record]()
-
-            for case .fulfilled(let value) in results {
-                recordsToLoad.append(contentsOf: value)
-            }
-
-            self?.loadRecords(for: recordsToLoad)
-            return
+        when(fulfilled: schoolChain, eventChain).then { [weak self] results -> Void in
+            self?.parseNetworkResults(results)
         }
+    }
+
+    private func parseNetworkResults(_ results: ([School], [Event])) {
+        var recordsToLoad = [Record]()
+        recordsToLoad.append(contentsOf: results.0)
+        recordsToLoad.append(contentsOf: results.1)
+
+        addToMap(recordsToLoad)
     }
 
     private func postWindowNotification(for record: Record, at position: CGPoint) {
@@ -242,23 +243,23 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         }
     }
 
-    private func loadRecords(for records: [Record]) {
+    private func addToMap(_ records: [Record]) {
         var adjustedRecords = [Record]()
 
         for record in records {
-            let adjustedRecord = adjustCoordinateOfRecord(for: record, in: adjustedRecords)
+            let adjustedRecord = adjustCoordinates(of: record, current: adjustedRecords)
             adjustedRecords.append(adjustedRecord)
         }
 
         addAnnotations(for: adjustedRecords)
     }
 
-    private func adjustCoordinateOfRecord(for record: Record, in records: [Record]) -> Record {
+    private func adjustCoordinates(of record: Record, current records: [Record]) -> Record {
         var adjustedRecord = record
 
         for runnerRecord in records {
-            let recordLatitude = adjustedRecord.coordinate.latitude
-            let recordLongitude = adjustedRecord.coordinate.longitude
+            let recordLatitude = record.coordinate.latitude
+            let recordLongitude = record.coordinate.longitude
             let runnerRecordLatitude = runnerRecord.coordinate.latitude
             let runnerRecordLongitude = runnerRecord.coordinate.longitude
             let latitudeCheck = recordLatitude + Double(Constants.spacingBetweenAnnotations) > runnerRecordLatitude && recordLatitude - Double(Constants.spacingBetweenAnnotations) < runnerRecordLatitude
@@ -266,7 +267,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
             if latitudeCheck && longitudeCheck {
                 adjustedRecord.coordinate.latitude += Double(Constants.spacingBetweenAnnotations)
-                adjustedRecord = adjustCoordinateOfRecord(for: adjustedRecord, in: records)
+                return adjustCoordinates(of: adjustedRecord, current: records)
             }
         }
 
