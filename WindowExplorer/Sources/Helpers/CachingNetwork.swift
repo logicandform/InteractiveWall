@@ -29,12 +29,12 @@ final class CachingNetwork {
         static let events = baseURL + "/events"
         static let eventByID = events + "/find/"
         static let eventsInGroup = events + "/group/%@/%d"
-        static let artifacts = baseURL + "/artifacts"
-        static let artifactByID = artifacts + "/find/"
-        static let artifactsInGroup = artifacts + "/group/%@/%d"
-        static let schools = baseURL + "/schools"
-        static let schoolByID = schools + "/find/"
-        static let schoolsInGroup = schools + "/group/%@/%d"
+        static let allArtifacts = baseURL + "/artifacts/all/%d"
+        static let artifactByID = baseURL + "/artifacts/find/"
+        static let artifactsInGroup = baseURL + "/artifacts/group/%@/%d"
+        static let schools = baseURL + "/schools/all/%d"
+        static let schoolByID = baseURL + "/schools/find/"
+        static let schoolsInGroup = baseURL + "/schools/group/%@/%d"
         static let themes = baseURL + "/themes"
         static let themeByID = themes + "/find/"
         static let themesInGroup = themes + "/group/%@/%d"
@@ -152,11 +152,17 @@ final class CachingNetwork {
 
     // MARK: Artifacts
 
-    static func getArtifacts() throws -> Promise<[Artifact]> {
-        let url = Endpoints.artifacts
+    static func getArtifacts(page: Int = 0, load: [Artifact] = []) throws -> Promise<[Artifact]> {
+        let url = String(format: Endpoints.allArtifacts, page)
 
         return Alamofire.request(url).responseJSON().then { json in
-            try ResponseHandler.serializeArtifacts(from: json)
+            guard let artifacts = try? ResponseHandler.serializeArtifacts(from: json), !artifacts.isEmpty else {
+                return Promise(value: load)
+            }
+
+            let next = page + Constants.batchSize
+            let result = load + artifacts
+            return try getArtifacts(page: next, load: result)
         }
     }
 
@@ -185,11 +191,17 @@ final class CachingNetwork {
 
     // MARK: Schools
 
-    static func getSchools() throws -> Promise<[School]> {
-        let url = Endpoints.schools
+    static func getSchools(page: Int = 0, load: [School] = []) throws -> Promise<[School]> {
+        let url = String(format: Endpoints.schools, page)
 
         return Alamofire.request(url).responseJSON().then { json in
-            try ResponseHandler.serializeSchools(from: json)
+            guard let schools = try? ResponseHandler.serializeSchools(from: json), !schools.isEmpty else {
+                return Promise(value: load)
+            }
+
+            let next = page + Constants.batchSize
+            let result = load + schools
+            return try getSchools(page: next, load: result)
         }
     }
 
