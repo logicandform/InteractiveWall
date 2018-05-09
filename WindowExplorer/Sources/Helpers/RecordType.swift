@@ -4,7 +4,7 @@ import Foundation
 import AppKit
 
 
-enum RecordType: String {
+enum RecordType: String, SearchItemDisplayable {
     case event
     case artifact
     case organization
@@ -14,15 +14,15 @@ enum RecordType: String {
     var title: String {
         switch self {
         case .event:
-            return "EVENTS"
+            return "Events"
         case .artifact:
-            return "ARTIFACTS"
+            return "Artifacts"
         case .organization:
-            return "ORGANIZATIONS"
+            return "Organizations"
         case .school:
-            return "SCHOOLS"
+            return "Schools"
         case .theme:
-            return "THEMES"
+            return "Themes"
         }
     }
 

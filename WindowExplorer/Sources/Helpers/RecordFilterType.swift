@@ -7,10 +7,10 @@ import AppKit
 enum RecordFilterType {
     case image
     case school
-    case theme
+    case artifact
     case event
     case organization
-    case artifact
+    case theme
     
     var title: String? {
         if let recordType = self.recordType {
@@ -39,14 +39,14 @@ enum RecordFilterType {
     }
     
     var placeholder: NSImage? {
-        if let recordType = recordType {
+        if let recordType = self.recordType {
             return recordType.placeholder
         }
         
         switch self {
         case .image:
             // NOTE: placeholder for now, need actual icon
-            return NSImage(named: "school-icon")
+            return NSImage(named: "school-icon")!
         default:
             return nil
         }

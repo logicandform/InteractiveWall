@@ -4,13 +4,12 @@ import Cocoa
 import Alamofire
 import AlamofireImage
 
-class RelatedItemView: NSView {
-    static let interfaceIdentifier = NSUserInterfaceItemIdentifier(rawValue: "RelatedItemView")
-    static let nibName = NSNib.Name(rawValue: "RelatedItemView")
+class RelatedItemView: NSCollectionViewItem {
+    static let identifier = NSUserInterfaceItemIdentifier(rawValue: "RelatedItemView")
 
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var descriptionView: NSTextView!
-    @IBOutlet weak var imageView: ImageView!
+    @IBOutlet weak var mediaImageView: ImageView!
 
     var tintColor = style.selectedColor
     var record: RecordDisplayable? {
@@ -24,12 +23,12 @@ class RelatedItemView: NSView {
         static let numberOfDescriptionLines = 3
     }
 
-
+    
     // MARK: Init
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        wantsLayer = true
+        view.wantsLayer = true
         set(highlighted: false)
     }
 
@@ -38,15 +37,15 @@ class RelatedItemView: NSView {
 
     func set(highlighted: Bool) {
         if highlighted {
-            layer?.backgroundColor = tintColor.cgColor
+            view.layer?.backgroundColor = tintColor.cgColor
         } else {
-            layer?.backgroundColor = style.darkBackground.cgColor
+            view.layer?.backgroundColor = style.darkBackground.cgColor
         }
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        imageView.set(nil)
+        mediaImageView.set(nil)
     }
 
 
@@ -77,6 +76,6 @@ class RelatedItemView: NSView {
     }
 
     private func setImage(_ image: NSImage, scaling: ImageScaling) {
-        imageView.transition(image, duration: Constants.imageTransitionDuration, scaling: scaling)
+        mediaImageView.transition(image, duration: Constants.imageTransitionDuration, scaling: scaling)
     }
 }

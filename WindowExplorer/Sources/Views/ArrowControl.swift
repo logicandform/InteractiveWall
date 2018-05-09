@@ -9,7 +9,7 @@ public class ArrowControl: NSControl {
 
     private var mouseDown = false {
         didSet {
-            self.needsDisplay = true
+            needsDisplay = true
         }
     }
 
@@ -23,13 +23,13 @@ public class ArrowControl: NSControl {
 
     public var direction = Direction.left {
         didSet {
-            self.needsDisplay = true
+            needsDisplay = true
         }
     }
 
     public var color = NSColor.black {
         didSet {
-            self.needsDisplay = true
+            needsDisplay = true
         }
     }
 
@@ -61,7 +61,7 @@ public class ArrowControl: NSControl {
 
     public override func mouseUp(with theEvent: NSEvent) {
         super.mouseUp(with: theEvent)
-        self.mouseDown = false
+        mouseDown = false
 
         guard let target = self.target, let action = self.action else { return }
         NSApp.sendAction(action, to: target, from: self)

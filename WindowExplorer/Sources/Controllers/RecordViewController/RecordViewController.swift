@@ -10,10 +10,12 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     @IBOutlet weak var relatedRecordsLabel: NSTextField!
     @IBOutlet weak var relatedRecordsTypeLabel: NSTextField!
     @IBOutlet weak var mediaView: NSCollectionView!
-    @IBOutlet weak var collectionClipView: NSClipView!
+    @IBOutlet weak var mediaCollectionClipView: NSClipView!
     @IBOutlet weak var stackView: NSStackView!
     @IBOutlet weak var stackClipView: NSClipView!
-    @IBOutlet weak var relatedItemsView: NSTableView!
+    @IBOutlet weak var relatedItemsView: NSCollectionView!
+    @IBOutlet weak var relatedRecordCollectionClipView: NSClipView!
+    @IBOutlet weak var closeWindowTapArea: NSView!
     @IBOutlet weak var toggleRelatedItemsArea: NSView!
     @IBOutlet weak var toggleRelatedItemsImage: NSImageView!
     @IBOutlet weak var placeHolderImage: NSImageView!
@@ -24,12 +26,12 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private var positionForMediaController = [MediaViewController: Int?]()
     private var showingRelatedItems = false
     private var relatedItemsFilterType: RecordFilterType?
-    private var hiddenRelatedItems = IndexSet()
 
     private struct Constants {
         static let allRecordsTitle = "RECORDS"
         static let animationDuration = 0.5
-        static let tableRowHeight: CGFloat = 80
+        static let relatedItemCollectionViewItemHeight: CGFloat = 80
+        static let mediaControllerOffset = 50
         static let closeWindowTimeoutPeriod: TimeInterval = 300
         static let animationDistanceThreshold: CGFloat = 20
         static let showRelatedItemViewRotation: CGFloat = 45
@@ -78,12 +80,11 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
     private func setupRelatedItemsView() {
         relatedItemsView.alphaValue = 0
-        relatedItemsView.register(NSNib(nibNamed: RelatedItemView.nibName, bundle: nil), forIdentifier: RelatedItemView.interfaceIdentifier)
-        relatedItemsView.backgroundColor = .clear
+        relatedItemsView.register(RelatedItemView.self, forItemWithIdentifier: RelatedItemView.identifier)
         relatedRecordsLabel.alphaValue = 0
         relatedRecordsLabel.attributedStringValue = NSAttributedString(string: relatedRecordsLabel.stringValue, attributes: style.relatedItemsTitleAttributes)
         relatedRecordsTypeLabel.alphaValue = 0
-        relatedRecordsTypeLabel.attributedStringValue = NSAttributedString(string: Constants.allRecordsTitle, attributes: style.relatedItemsTitleAttributes)
+        relatedRecordsTypeLabel.attributedStringValue = NSAttributedString(string: Constants.allRecordsTitle.uppercased(), attributes: style.relatedItemsTitleAttributes)
         toggleRelatedItemsImage.isHidden = record.relatedRecords.isEmpty
         toggleRelatedItemsImage.frameCenterRotation = Constants.showRelatedItemViewRotation
         recordTypeSelectionView.stackview.alphaValue = 0
@@ -260,8 +261,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
 
         let locationInTable = location + relatedItemsView.visibleRect.origin
-        let row = relatedItemsView.row(at: locationInTable)
-        guard row >= 0, let relatedItemView = relatedItemsView.view(atColumn: 0, row: row, makeIfNecessary: false) as? RelatedItemView else {
+        guard let indexPath = relatedItemsView.indexPathForItem(at: locationInTable), let relatedItemView = relatedItemsView.item(at: indexPath) as? RelatedItemView else {
             return
         }
 
@@ -354,56 +354,54 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     // MARK: NSCollectionViewDelegate & NSCollectionViewDataSource
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return record.media.count
+        switch collectionView {
+        case mediaView:
+            return record.media.count
+        case relatedItemsView:
+            if let type = relatedItemsFilterType {
+                return record.relatedRecords(of: type).count
+            } else {
+                return record.relatedRecords.count
+            }
+        default:
+            return 0
+        }
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        guard let mediaItemView = collectionView.makeItem(withIdentifier: MediaItemView.identifier, for: indexPath) as? MediaItemView else {
-            return NSCollectionViewItem()
+        switch collectionView {
+        case mediaView:
+            if let mediaItemView = collectionView.makeItem(withIdentifier: MediaItemView.identifier, for: indexPath) as? MediaItemView {
+                mediaItemView.media = record.media.at(index: indexPath.item)
+                mediaItemView.tintColor = record.type.color
+                return mediaItemView
+            }
+        case relatedItemsView:
+            if let relatedItemView = collectionView.makeItem(withIdentifier: RelatedItemView.identifier, for: indexPath) as? RelatedItemView {
+                if let type = relatedItemsFilterType {
+                    relatedItemView.record = record.relatedRecords(of: type).at(index: indexPath.item)
+                } else {
+                    relatedItemView.record = record.relatedRecords.at(index: indexPath.item)
+                }
+                relatedItemView.tintColor = record.type.color
+                return relatedItemView
+            }
+        default:
+            break
         }
 
-        mediaItemView.media = record.media[indexPath.item]
-        mediaItemView.tintColor = record.type.color
-        return mediaItemView
+        return NSCollectionViewItem()
     }
 
     func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
-        return collectionClipView.frame.size
-    }
-
-
-    // MARK: NSTableViewDataSource & NSTableViewDelegate
-
-    func numberOfRows(in tableView: NSTableView) -> Int {
-        guard let type = relatedItemsFilterType else {
-            return record.relatedRecords.count
+        switch collectionView {
+        case mediaView:
+            return mediaCollectionClipView.frame.size
+        case relatedItemsView:
+            return CGSize(width: collectionView.frame.width, height: Constants.relatedItemCollectionViewItemHeight)
+        default:
+            return .zero
         }
-
-        return record.relatedRecords(of: type).count
-    }
-
-    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        guard let relatedItemView = tableView.makeView(withIdentifier: RelatedItemView.interfaceIdentifier, owner: self) as? RelatedItemView else {
-            return nil
-        }
-
-        if let type = relatedItemsFilterType {
-            let relatedRecords = record.relatedRecords(of: type)
-            relatedItemView.record = relatedRecords[row]
-        } else {
-            relatedItemView.record = record.relatedRecords[row]
-        }
-
-        relatedItemView.tintColor = record.type.color
-        return relatedItemView
-    }
-
-    func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        return Constants.tableRowHeight
-    }
-
-    func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
-        return false
     }
 
 
@@ -452,7 +450,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         })
     }
 
-
     override func resetCloseWindowTimer() {
         closeWindowTimer?.invalidate()
         closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Constants.closeWindowTimeoutPeriod, repeats: false) { [weak self] _ in
@@ -466,7 +463,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private func animateCollectionView(to point: CGPoint, duration: CGFloat, for index: Int) {
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = TimeInterval(duration)
-            collectionClipView.animator().setBoundsOrigin(point)
+            mediaCollectionClipView.animator().setBoundsOrigin(point)
             }, completionHandler: { [weak self] in
                 self?.pageControl.selectedPage = UInt(index)
         })
@@ -579,26 +576,11 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
     /// Handle a change of record type from the RelatedItemsHeaderView
     private func didSelectRelatedItemsFilterType(_ type: RecordFilterType?) {
-        let titleForType = type?.title ?? Constants.allRecordsTitle
+        let titleForType = type?.title?.uppercased() ?? Constants.allRecordsTitle
         transitionRelatedRecordsTitle(to: titleForType)
 
-        var itemsToRemove = IndexSet()
-        if let type = type {
-            for (index, record) in record.relatedRecords.enumerated() {
-                if type == .image && !record.containsImages() {
-                    itemsToRemove.insert(index)
-                } else if record.type.filterType != type && type != .image {
-                    itemsToRemove.insert(index)
-                }
-            }
-        }
-
         relatedItemsFilterType = type
-        relatedItemsView.beginUpdates()
-        relatedItemsView.insertRows(at: hiddenRelatedItems, withAnimation: .effectFade)
-        relatedItemsView.removeRows(at: itemsToRemove, withAnimation: .effectFade)
-        relatedItemsView.endUpdates()
-        hiddenRelatedItems = itemsToRemove
+        relatedItemsView.reloadData()
     }
 
     /// Transitions the related records title by fading out & in

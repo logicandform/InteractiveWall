@@ -7,6 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SearchItemView" customModule="WindowExplorer" customModuleProvider="target">
             <connections>
+                <outlet property="spinner" destination="96G-nx-k16" id="6Su-Ag-5BE"/>
                 <outlet property="titleTextField" destination="SNb-xw-cHU" id="2LH-Dy-db9"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
@@ -25,9 +26,14 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <progressIndicator hidden="YES" wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="96G-nx-k16">
+                    <rect key="frame" x="142" y="27" width="16" height="16"/>
+                </progressIndicator>
             </subviews>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="SNb-xw-cHU" secondAttribute="trailing" constant="20" id="i1c-4V-PHK"/>
+                <constraint firstItem="96G-nx-k16" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="iYJ-IS-cgp"/>
+                <constraint firstItem="96G-nx-k16" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="pYp-n3-RRt"/>
                 <constraint firstItem="SNb-xw-cHU" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="slB-d3-q3T"/>
                 <constraint firstItem="SNb-xw-cHU" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="wKi-VZ-Ywz"/>
             </constraints>

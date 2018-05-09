@@ -20,8 +20,23 @@ final class RecordFactory {
         }
     }
 
+    static func records(for type: RecordType, group: LetterGroup, completion: @escaping (([RecordDisplayable]?) -> Void)) {
+        switch type {
+        case .artifact:
+            artifacts(for: group, completion: completion)
+        case .school:
+            schools(for: group, completion: completion)
+        case .event:
+            events(for: group, completion: completion)
+        case .organization:
+            organizations(for: group, completion: completion)
+        case .theme:
+            themes(for: group, completion: completion)
+        }
+    }
 
-    // MARK: Helpers
+
+    // MARK: Artifacts
 
     private static func artifact(id: Int, completion: @escaping ((RecordDisplayable?) -> Void)) {
         firstly {
@@ -34,6 +49,20 @@ final class RecordFactory {
         }
     }
 
+    private static func artifacts(for group: LetterGroup, completion: @escaping (([RecordDisplayable]?) -> Void)) {
+        firstly {
+            try CachingNetwork.getArtifacts(in: group)
+        }.then { artifacts -> Void in
+            completion(artifacts)
+        }.catch { error in
+            print(error)
+            completion(nil)
+        }
+    }
+
+
+    // MARK: Schools
+
     private static func school(id: Int, completion: @escaping ((RecordDisplayable?) -> Void)) {
         firstly {
             CachingNetwork.getSchool(by: id)
@@ -44,6 +73,20 @@ final class RecordFactory {
             completion(nil)
         }
     }
+
+    private static func schools(for group: LetterGroup, completion: @escaping (([RecordDisplayable]?) -> Void)) {
+        firstly {
+            try CachingNetwork.getSchools(in: group)
+        }.then { schools -> Void in
+            completion(schools)
+        }.catch { error in
+            print(error)
+            completion(nil)
+        }
+    }
+
+
+    // MARK: Events
 
     private static func event(id: Int, completion: @escaping ((RecordDisplayable?) -> Void)) {
         firstly {
@@ -56,6 +99,20 @@ final class RecordFactory {
         }
     }
 
+    private static func events(for group: LetterGroup, completion: @escaping (([RecordDisplayable]?) -> Void)) {
+        firstly {
+            try CachingNetwork.getEvents(in: group)
+        }.then { events -> Void in
+            completion(events)
+        }.catch { error in
+            print(error)
+            completion(nil)
+        }
+    }
+
+
+    // MARK: Organizations
+
     private static func organization(id: Int, completion: @escaping ((RecordDisplayable?) -> Void)) {
         firstly {
             CachingNetwork.getOrganization(by: id)
@@ -67,11 +124,36 @@ final class RecordFactory {
         }
     }
 
+    private static func organizations(for group: LetterGroup, completion: @escaping (([RecordDisplayable]?) -> Void)) {
+        firstly {
+            try CachingNetwork.getOrganizations(in: group)
+        }.then { organizations -> Void in
+            completion(organizations)
+        }.catch { error in
+            print(error)
+            completion(nil)
+        }
+    }
+
+
+    // MARK: Themes
+
     private static func theme(id: Int, completion: @escaping ((RecordDisplayable?) -> Void)) {
         firstly {
             CachingNetwork.getTheme(by: id)
         }.then { theme -> Void in
             completion(theme)
+        }.catch { error in
+            print(error)
+            completion(nil)
+        }
+    }
+
+    private static func themes(for group: LetterGroup, completion: @escaping (([RecordDisplayable]?) -> Void)) {
+        firstly {
+            try CachingNetwork.getThemes(in: group)
+        }.then { themes -> Void in
+            completion(themes)
         }.catch { error in
             print(error)
             completion(nil)

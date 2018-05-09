@@ -28,7 +28,7 @@ final class Style {
     let searchWindowSize = CGSize(width: 350, height: 650)
     let minMediaWindowWidth: CGFloat = 550
     let maxMediaWindowWidth: CGFloat = 700
-    let minMediaWindowHeight: CGFloat = 550
+    let minMediaWindowHeight: CGFloat = 275
     let maxMediaWindowHeight: CGFloat = 1500
     let windowMargins: CGFloat = 20
 

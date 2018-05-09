@@ -33,7 +33,7 @@ private struct Constants {
 }
 
 
-protocol RecordDisplayable {
+protocol RecordDisplayable: SearchItemDisplayable {
     var id: Int { get }
     var title: String { get }
     var type: RecordType { get }

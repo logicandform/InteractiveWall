@@ -71,10 +71,14 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
 
         position = touch.position
 
-        if state == .failed {
+        switch state {
+        case .failed:
             gestureUpdated?(self)
             doubleTapPositionAndTimeForTouch.removeValue(forKey: touch)
-        } else {
+        case .began:
+            gestureUpdated?(self)
+            fallthrough
+        default:
             state = .ended
             checkForDoubleTap(with: touch)
             gestureUpdated?(self)
