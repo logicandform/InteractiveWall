@@ -6,7 +6,7 @@ import MapKit
 
 class CircleAnnotation: NSObject, MKAnnotation {
 
-    dynamic var coordinate: CLLocationCoordinate2D
+    var coordinate: CLLocationCoordinate2D
     var record: RecordType
     var title: String?
 

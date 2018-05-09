@@ -12,11 +12,11 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     @IBOutlet weak var mapView: FlippedMapView!
 
+    var allRecords = [Record]()
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
     private var recordForAnnotation = [CircleAnnotation: Record]()
     private var showingAnnotationTitles = false
-    private var annotationPositionsUpdated = false
     private let touchListener = TouchListener()
 
     private var tileURL: String {
@@ -178,9 +178,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             showingAnnotationTitles = mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel
             toggleAnnotationTitles(on: showingAnnotationTitles)
 
-            if !annotationPositionsUpdated {
-                updateAnnotationPositions()
-            }
+            //if !annotationPositionsUpdated {
+                //updateAnnotationPositions()
+            //}
         }
     }
 
@@ -198,21 +198,26 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     private func createAnnotations() {
         // Schools
-        firstly {
+        let schoolChain = firstly {
             try CachingNetwork.getSchools()
         }.then { [weak self] schools in
-            self?.addAnnotations(for: schools)
+            self?.updateAllRecords(for: schools)
         }.catch { error in
             print(error)
         }
 
         // Events
-        firstly {
+        let eventChain = firstly {
             try CachingNetwork.getEvents()
         }.then { [weak self] events in
-            self?.addAnnotations(for: events)
+            self?.updateAllRecords(for: events)
         }.catch { error in
             print(error)
+        }
+
+        when(resolved: schoolChain, eventChain).always {
+            self.updateRecordCoordinates()
+            self.addAnnotations(for: self.allRecords)
         }
     }
 
@@ -248,7 +253,32 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         }
     }
 
-    private func updateAnnotationPositions() {
+    private func updateAllRecords (for records: [Record]) {
+        allRecords.append(contentsOf: records)
+    }
+
+    private func updateRecordCoordinates() {
+        for (outerIndex, outerRecord) in allRecords.enumerated() {
+            for (innerIndex, innerRecord) in allRecords.enumerated() {
+                if outerIndex < innerIndex {
+                    let outerRecordCoordinateLatitude = outerRecord.coordinate.latitude
+                    let outerRecordCoordinateLongitude = outerRecord.coordinate.longitude
+                    let innerRecordCoordinateLatitude = innerRecord.coordinate.latitude
+                    let innerRecordCoordinateLongitude = innerRecord.coordinate.longitude
+                    let latitudeCheck = outerRecordCoordinateLatitude + Double(Constants.spacingBetweenAnnotations) > innerRecordCoordinateLatitude && outerRecordCoordinateLatitude - Double(Constants.spacingBetweenAnnotations) < innerRecordCoordinateLatitude
+                    let longitudeCheck = outerRecordCoordinateLongitude + Double(Constants.spacingBetweenAnnotations) > innerRecordCoordinateLongitude && outerRecordCoordinateLongitude - Double(Constants.spacingBetweenAnnotations) < innerRecordCoordinateLongitude
+
+                    if latitudeCheck && longitudeCheck && outerRecordCoordinateLatitude >= innerRecordCoordinateLatitude {
+                        allRecords[outerIndex].coordinate.latitude += Double(Constants.spacingBetweenAnnotations)
+                    } else if latitudeCheck && longitudeCheck && outerRecordCoordinateLatitude < innerRecordCoordinateLatitude {
+                        allRecords[outerIndex].coordinate.latitude -= Double(Constants.spacingBetweenAnnotations)
+                    }
+                }
+            }
+        }
+    }
+
+    /*private func updateAnnotationPositions() {
         for (outerIndex, outerAnnotation) in mapView.annotations.enumerated() {
             for (innerIndex, innerAnnotation) in mapView.annotations.enumerated() {
                 if outerIndex < innerIndex, let firstAnnotation = outerAnnotation as? CircleAnnotation, let secondAnnotation = innerAnnotation as? CircleAnnotation {
@@ -264,7 +294,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             }
         }
         annotationPositionsUpdated = true
-    }
+    }*/
 
     private func toggleAnnotationTitles(on: Bool) {
         for annotation in mapView.annotations {

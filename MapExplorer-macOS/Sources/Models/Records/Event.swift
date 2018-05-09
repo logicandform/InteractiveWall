@@ -8,7 +8,7 @@ class Event: Record {
     let id: Int
     let type = RecordType.event
     let title: String
-    let coordinate: CLLocationCoordinate2D
+    var coordinate: CLLocationCoordinate2D
 
     private struct Keys {
         static let id = "id"

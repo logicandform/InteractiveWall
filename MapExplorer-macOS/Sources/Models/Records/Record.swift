@@ -6,7 +6,7 @@ import MapKit
 protocol Record {
     var type: RecordType { get }
     var id: Int { get }
-    var coordinate: CLLocationCoordinate2D { get }
+    var coordinate: CLLocationCoordinate2D { get set }
     var title: String { get }
 }
 
