@@ -18,6 +18,10 @@ class School {
     var relatedEvents = [Event]()
     var relatedThemes = [Theme]()
 
+    var hashValue: Int {
+        return id.hashValue
+    }
+
     private struct Keys {
         static let id = "id"
         static let title = "title"
@@ -76,5 +80,11 @@ class School {
             let themes = themesJSON.compactMap { Theme(json: $0) }
             self.relatedThemes = themes
         }
+    }
+}
+
+extension School: Hashable {
+    static func == (lhs: School, rhs: School) -> Bool {
+        return lhs.id == rhs.id
     }
 }

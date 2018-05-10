@@ -1,15 +1,15 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
 import Foundation
-import PromiseKit
 import CoreLocation
 
 final class GeocodeHelper {
 
     static let instance = GeocodeHelper()
 
-    private var provinceSchoolMapping = [String: [School]]()
-    private var geoCodeTimer: Timer?
+    private(set) var provinceForSchool = [String: Set<School>]()
+    private lazy var schools = Set<School>()
+    private var requestTimer: Timer?
     private lazy var geocoder = CLGeocoder()
 
 
@@ -19,108 +19,64 @@ final class GeocodeHelper {
 
     // MARK: API
 
-    func getAllSchools(correspondingTo province: Province) -> [School]? {
-        let key = province.abbreviation
-        guard let schools = provinceSchoolMapping[key] else {
-            return nil
-        }
-        return schools
-    }
-
     func associateSchoolsToProvinces() {
-        SchoolFactory.getAllSchools { [weak self] (schools) in
-            guard let schools = schools, let schoolsWithLatLong = self?.filter(schools) else {
+        RecordFactory.records(for: .school) { [weak self] schools in
+            guard let schools = schools as? [School] else {
                 return
             }
 
-            self?.geoCode(schoolsWithLatLong, then: { (dict) in
-                self?.provinceSchoolMapping = dict
-                print("completed")
-            })
+            self?.schools = Set(schools)
+            self?.getNewProvince()
         }
     }
 
 
     // MARK: Helpers
 
-    private func filter(_ schools: [School]) -> [School] {
-        return schools.filter {
-            $0.coordinate != nil
+    private func getNewProvince() {
+        guard let school = schools.popFirst() else {
+            return
         }
+        
+        reverseGeocode(school)
     }
 
-    /// Reverse geocode school's coordinates to its associated province
-    private func geoCode(_ schools: [School], with results: [String: [School]] = [:], then completionHandler: @escaping ([String: [School]]) -> ()) {
-        guard let school = schools.first,
-            let latitude = school.coordinate?.latitude,
-            let longitude = school.coordinate?.longitude else {
-                completionHandler(results)
-                return
-        }
-
-        let location = CLLocation(latitude: latitude, longitude: longitude)
-
-        geocoder.reverseGeocodeLocation(location) { [weak self] (placemarks, error) in
-            var updatedResults = results
-
-            if let error = error {
-                print(error.localizedDescription)
-                self?.geoCodeTimer?.invalidate()
-                self?.geoCodeTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block: { [weak self] (timer) in
-                    self?.geoCode(schools, with: results, then: completionHandler)
-                })
-
-            } else if let placemark = placemarks?.first {
-
-                if let province = placemark.administrativeArea {
-                    if let _  = updatedResults[province] {
-                        updatedResults[province]?.append(school)
-                    } else {
-                        updatedResults[province] = [school]
-                    }
-                }
-
-                let remainingSchools = Array(schools[1..<schools.count])
-                self?.geoCode(remainingSchools, with: updatedResults, then: completionHandler)
-            }
-        }
+    private func retryProvince(for school: School) {
+        requestTimer?.invalidate()
+        requestTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block: { [weak self] _ in
+            self?.reverseGeocode(school)
+        })
     }
 
-    /// Gets Provinces of the school in batches (can setup timer..not sure if necessary)
-    private func getProvinces(of schoolBatches: [[School]], then completionHandler: @escaping () -> ()) {
-        guard let schoolBatch = schoolBatches.first else {
-            completionHandler()
+    private func reverseGeocode(_ school: School) {
+        guard let latitude = school.coordinate?.latitude, let longitude = school.coordinate?.longitude else {
+            // because not filtering beforehand, if there is no coordinate for a school, just get the next province
+            getNewProvince()
             return
         }
 
-        geoCode(schoolBatch) { (dict) in
-            // dict
-            let remainingSchoolBatches = Array(schoolBatches[1..<schoolBatches.count])
-            self.getProvinces(of: remainingSchoolBatches, then: completionHandler)
+        let location = CLLocation(latitude: latitude, longitude: longitude)
+        geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
+            self?.mapProvince(for: school, with: placemarks, error)
         }
     }
 
-}
+    private func mapProvince(for school: School, with placemarks: [CLPlacemark]?, _ error: Error?) {
+        if let error = error {
+            // maximum number of requests made, so request with same school
+            print(error.localizedDescription)
+            retryProvince(for: school)
 
-private extension GeocodeHelper {
-    class SchoolFactory {
-        static func getAllSchools(then completionHandler: @escaping ([School]?) -> Void) {
-            firstly {
-                try CachingNetwork.getSchools()
-            }.then { schools in
-                completionHandler(schools)
-            }.catch { error in
-                print(error.localizedDescription)
-                completionHandler(nil)
+        } else if let placemark = placemarks?.first {
+            if let province = placemark.administrativeArea {
+                if let _  = provinceForSchool[province] {
+                    provinceForSchool[province]?.insert(school)
+                } else {
+                    provinceForSchool[province] = [school]
+                }
             }
-        }
-    }
-}
-
-extension Array {
-    func chunked(into size: Int) -> [[Element]] {
-        return stride(from: 0, to: count, by: size).map {
-            Array(self[$0 ..< Swift.min($0 + size, count)])
+            
+            getNewProvince()
         }
     }
 }
