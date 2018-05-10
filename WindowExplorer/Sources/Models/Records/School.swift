@@ -3,7 +3,7 @@
 import Foundation
 import MapKit
 
-class School {
+class School: Hashable {
 
     let id: Int
     let title: String
@@ -17,6 +17,10 @@ class School {
     var relatedArtifacts = [Artifact]()
     var relatedEvents = [Event]()
     var relatedThemes = [Theme]()
+
+    var hashValue: Int {
+        return id.hashValue
+    }
 
     private struct Keys {
         static let id = "id"
@@ -76,5 +80,9 @@ class School {
             let themes = themesJSON.compactMap { Theme(json: $0) }
             self.relatedThemes = themes
         }
+    }
+
+    static func == (lhs: School, rhs: School) -> Bool {
+        return lhs.id == rhs.id
     }
 }

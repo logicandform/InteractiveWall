@@ -32,7 +32,7 @@ final class CachingNetwork {
         static let artifacts = baseURL + "/artifacts/all/%d"
         static let artifactByID = baseURL + "/artifacts/find/"
         static let artifactsInGroup = baseURL + "/artifacts/group/%@/%d"
-        static let schools = baseURL + "/schools/all/%d"
+        static let allSchools = baseURL + "/schools/all/%d"
         static let schoolByID = baseURL + "/schools/find/"
         static let schoolsInGroup = baseURL + "/schools/group/%@/%d"
         static let themes = baseURL + "/themes/all/%d"
@@ -40,16 +40,15 @@ final class CachingNetwork {
         static let themesInGroup = baseURL + "/themes/group/%@/%d"
     }
 
+    private struct Constants {
+        static let batchSize = 20
+    }
+
     private static let credentials: [String: String] = {
         let credentialData = "tim:ph@wRaBa63Dr".data(using: String.Encoding.utf8)!
         let base64Credentials = credentialData.base64EncodedString(options: [])
         return ["Authorization": "Basic \(base64Credentials)"]
     }()
-
-    private struct Constants {
-        static let batchSize = 20
-    }
-
 
     // MARK: Places
 
@@ -210,7 +209,7 @@ final class CachingNetwork {
     // MARK: Schools
 
     static func getSchools(page: Int = 0, load: [School] = []) throws -> Promise<[School]> {
-        let url = String(format: Endpoints.schools, page)
+        let url = String(format: Endpoints.allSchools, page)
 
         return Alamofire.request(url).responseJSON().then { json in
             guard let schools = try? ResponseHandler.serializeSchools(from: json), !schools.isEmpty else {
