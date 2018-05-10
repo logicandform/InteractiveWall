@@ -12,7 +12,7 @@ final class GeocodeHelper {
         case retry(school: School)
     }
 
-    private(set) var schoolsForProvince = [Province: Set<School>]()
+    private var schoolsForProvince = [Province: Set<School>]()
     private var schools = Set<School>()
     private var geocoder = CLGeocoder()
 
@@ -32,6 +32,14 @@ final class GeocodeHelper {
             self?.schools = Set(schools)
             self?.handle(.next)
         }
+    }
+
+    func schools(for province: Province) -> [School] {
+        guard let schools = schoolsForProvince[province] else {
+            return []
+        }
+
+        return Array(schools)
     }
 
 

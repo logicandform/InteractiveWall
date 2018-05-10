@@ -86,19 +86,18 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     private func handleCollectionViewTap(_ gesture: GestureRecognizer) {
         guard let tap = gesture as? TapGestureRecognizer,
+            tap.state == .ended,
             let collectionView = gestureManager.view(for: tap) as? NSCollectionView,
             let location = tap.position,
             let indexPath = collectionView.indexPathForItem(at: location + collectionView.visibleRect.origin),
             let searchItem = collectionView.item(at: indexPath) as? SearchItemView,
-            tap.state == .ended else {
+            indexPath != selectedIndexForView[collectionView] else {
             return
         }
 
-        unselectItem(for: collectionView)
-        selectedIndexForView[collectionView] = indexPath
-        searchItem.set(highlighted: true)
+        select(searchItem)
         toggle(to: collectionView) { [weak self] in
-            self?.select(searchItem, in: collectionView)
+            self?.showResults(for: searchItem)
         }
     }
 
@@ -108,6 +107,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
 
         if let index = collectionViews.index(of: focusedCollectionView), let previous = collectionViews.at(index: index - 1) {
+            unselectItem(for: previous)
             toggle(to: previous)
         }
     }
@@ -174,11 +174,34 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     // MARK: Helpers
 
-    private func select(_ view: SearchItemView, in collectionView: NSCollectionView) {
-        guard let indexPath = selectedIndexForView[collectionView], view == collectionView.item(at: indexPath) else {
+    private func select(_ item: SearchItemView) {
+        guard let collectionView = item.collectionView, let indexPath = collectionView.indexPath(for: item) else {
             return
         }
-        
+
+        unselectItem(for: collectionView)
+        selectedIndexForView[collectionView] = indexPath
+        item.set(highlighted: true)
+    }
+
+    // Removes all state from the currently selected view of the given collectionview
+    private func unselectItem(for collectionView: NSCollectionView) {
+        guard let indexPath = selectedIndexForView[collectionView] else {
+            return
+        }
+
+        selectedIndexForView.removeValue(forKey: collectionView)
+        if let item = collectionView.item(at: indexPath) as? SearchItemView {
+            item.set(highlighted: false)
+            item.set(loading: false)
+        }
+    }
+
+    private func showResults(for view: SearchItemView) {
+        guard let collectionView = view.collectionView, let indexPath = collectionView.indexPath(for: view), indexPath == selectedIndexForView[collectionView] else {
+            return
+        }
+
         switch collectionView {
         case primaryCollectionView:
             if let recordType = view.item as? RecordType {
@@ -190,14 +213,17 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
                 toggle(to: secondaryCollectionView)
             }
         case secondaryCollectionView:
-            if let selectedType = selectedType, let group = view.item as? LetterGroup {
+            if let group = view.item as? LetterGroup, let type = selectedType {
                 view.set(loading: true)
-                RecordFactory.records(for: selectedType, in: group) { [weak self] records in
+                RecordFactory.records(for: type, in: group) { [weak self] records in
                     view.set(loading: false)
                     if let records = records {
-                        self?.load(records, of: selectedType)
+                        self?.load(records)
                     }
                 }
+            } else if let province = view.item as? Province {
+                let schools = GeocodeHelper.instance.schools(for: province)
+                load(schools)
             }
         case tertiaryCollectionView:
             if let record = view.item as? RecordDisplayable {
@@ -208,6 +234,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
     }
 
+    /// Toggles to the given collection view, unselects items for hidden collection views
     private func toggle(to view: NSCollectionView, completion: (() -> Void)? = nil) {
         guard let window = view.window, let index = collectionViews.index(of: view) else {
             return
@@ -256,11 +283,11 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     }
 
     /// Loads records into and toggles the tertiary collection view
-    private func load(_ records: [RecordDisplayable], of type: RecordType) {
+    private func load(_ records: [RecordDisplayable]) {
         searchItemsForView[tertiaryCollectionView] = records
         tertiaryCollectionView.reloadData()
         tertiaryCollectionView.scroll(.zero)
-        tertiaryTextField.attributedStringValue = NSAttributedString(string: type.title, attributes: style.windowTitleAttributes)
+        tertiaryTextField.attributedStringValue = NSAttributedString(string: selectedType?.title ?? "", attributes: style.windowTitleAttributes)
         toggle(to: tertiaryCollectionView)
     }
 
@@ -274,19 +301,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             if let record = record {
                 WindowManager.instance.display(.record(record), at: location)
             }
-        }
-    }
-
-    // Removes all state from the currently selected view of the given collectionview
-    private func unselectItem(for collectionView: NSCollectionView) {
-        guard let indexPath = selectedIndexForView[collectionView] else {
-            return
-        }
-
-        selectedIndexForView.removeValue(forKey: collectionView)
-        if let view = collectionView.item(at: indexPath) as? SearchItemView {
-            view.set(highlighted: false)
-            view.set(loading: false)
         }
     }
 }

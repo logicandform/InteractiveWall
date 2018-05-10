@@ -21,22 +21,22 @@ final class CachingNetwork {
 
     private struct Endpoints {
         static let places = baseURL + "/places/all/%d"
-        static let placeByID = baseURL + "/places/find/"
+        static let placeByID = baseURL + "/places/find/%d"
         static let placesInGroup = baseURL + "/places/group/%@/%d"
         static let organizations = baseURL + "/organizations/all/%d"
-        static let organizationByID = baseURL + "/organizations/find/"
+        static let organizationByID = baseURL + "/organizations/find/%d"
         static let organizationsInGroup = baseURL + "/organizations/group/%@/%d"
         static let events = baseURL + "/events/all/%d"
-        static let eventByID = baseURL + "/events/find/"
+        static let eventByID = baseURL + "/events/find/%d"
         static let eventsInGroup = baseURL + "/events/group/%@/%d"
         static let artifacts = baseURL + "/artifacts/all/%d"
-        static let artifactByID = baseURL + "/artifacts/find/"
+        static let artifactByID = baseURL + "/artifacts/find/%d"
         static let artifactsInGroup = baseURL + "/artifacts/group/%@/%d"
-        static let allSchools = baseURL + "/schools/all/%d"
-        static let schoolByID = baseURL + "/schools/find/"
+        static let schools = baseURL + "/schools/all/%d"
+        static let schoolByID = baseURL + "/schools/find/%d"
         static let schoolsInGroup = baseURL + "/schools/group/%@/%d"
         static let themes = baseURL + "/themes/all/%d"
-        static let themeByID = baseURL + "/themes/find/"
+        static let themeByID = baseURL + "/themes/find/%d"
         static let themesInGroup = baseURL + "/themes/group/%@/%d"
     }
 
@@ -49,6 +49,7 @@ final class CachingNetwork {
         let base64Credentials = credentialData.base64EncodedString(options: [])
         return ["Authorization": "Basic \(base64Credentials)"]
     }()
+
 
     // MARK: Places
 
@@ -67,7 +68,7 @@ final class CachingNetwork {
     }
 
     static func getPlace(by id: Int) -> Promise<Place> {
-        let url = Endpoints.placeByID + id.description
+        let url = String(format: Endpoints.placeByID, id)
 
         return Alamofire.request(url).responseJSON().then { json in
             try ResponseHandler.serializePlace(from: json)
@@ -106,7 +107,7 @@ final class CachingNetwork {
     }
 
     static func getOrganization(by id: Int) -> Promise<Organization> {
-        let url = Endpoints.organizationByID + id.description
+        let url = String(format: Endpoints.organizationByID, id)
 
         return Alamofire.request(url).responseJSON().then { json in
             try ResponseHandler.serializeOrganization(from: json)
@@ -145,7 +146,7 @@ final class CachingNetwork {
     }
 
     static func getEvent(by id: Int) -> Promise<Event> {
-        let url = Endpoints.eventByID + id.description
+        let url = String(format: Endpoints.eventByID, id)
 
         return Alamofire.request(url).responseJSON().then { json in
             try ResponseHandler.serializeEvent(from: json)
@@ -184,7 +185,7 @@ final class CachingNetwork {
     }
 
     static func getArtifact(by id: Int) -> Promise<Artifact> {
-        let url = Endpoints.artifactByID + id.description
+        let url = String(format: Endpoints.artifactByID, id)
 
         return Alamofire.request(url).responseJSON().then { json in
             try ResponseHandler.serializeArtifact(from: json)
@@ -209,7 +210,7 @@ final class CachingNetwork {
     // MARK: Schools
 
     static func getSchools(page: Int = 0, load: [School] = []) throws -> Promise<[School]> {
-        let url = String(format: Endpoints.allSchools, page)
+        let url = String(format: Endpoints.schools, page)
 
         return Alamofire.request(url).responseJSON().then { json in
             guard let schools = try? ResponseHandler.serializeSchools(from: json), !schools.isEmpty else {
@@ -223,7 +224,7 @@ final class CachingNetwork {
     }
 
     static func getSchool(by id: Int) -> Promise<School> {
-        let url = Endpoints.schoolByID + id.description
+        let url = String(format: Endpoints.schoolByID, id)
 
         return Alamofire.request(url).responseJSON().then { json in
             try ResponseHandler.serializeSchool(from: json)
@@ -262,7 +263,7 @@ final class CachingNetwork {
     }
 
     static func getTheme(by id: Int) -> Promise<Theme> {
-        let url = Endpoints.themeByID + id.description
+        let url = String(format: Endpoints.themeByID, id)
 
         return Alamofire.request(url).responseJSON().then { json in
             try ResponseHandler.serializeTheme(from: json)
