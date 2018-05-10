@@ -18,6 +18,39 @@ enum Province: SearchItemDisplayable {
     case northwestTerritory
     case nunavut
 
+    init?(forAdministrativeArea area: String) {
+        switch area {
+        case "BC":
+            self = .britishColumbia
+        case "AB":
+            self = .alberta
+        case "MB":
+            self = .manitoba
+        case "ON":
+            self = .ontario
+        case "QC":
+            self = .quebec
+        case "SK":
+            self = .ontario
+        case "NL":
+            self = .newfoundland
+        case "NS":
+            self = .novaScotia
+        case "NB":
+            self = .newBrunswick
+        case "PE":
+            self = .princeEdwardIsland
+        case "YT":
+            self = .yukonTerritory
+        case "NT":
+            self = .northwestTerritory
+        case "NU":
+            self = .nunavut
+        default:
+            return nil
+        }
+    }
+
     var title: String {
         switch self {
         case .britishColumbia:

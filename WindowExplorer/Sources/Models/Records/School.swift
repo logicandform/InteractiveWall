@@ -3,7 +3,7 @@
 import Foundation
 import MapKit
 
-class School {
+class School: Hashable {
 
     let id: Int
     let title: String
@@ -81,9 +81,7 @@ class School {
             self.relatedThemes = themes
         }
     }
-}
 
-extension School: Hashable {
     static func == (lhs: School, rhs: School) -> Bool {
         return lhs.id == rhs.id
     }

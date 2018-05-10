@@ -12,9 +12,9 @@ final class GeocodeHelper {
         case retry(school: School)
     }
 
-    private(set) var provinceForSchool = [String: Set<School>]()
-    private lazy var schools = Set<School>()
-    private lazy var geocoder = CLGeocoder()
+    private(set) var schoolsForProvince = [Province: Set<School>]()
+    private var schools = Set<School>()
+    private var geocoder = CLGeocoder()
 
 
     // Use singleton instance
@@ -67,13 +67,12 @@ final class GeocodeHelper {
     private func mapProvince(for school: School, with placemarks: [CLPlacemark]?, _ error: Error?) {
         if let _ = error {
             handle(.retry(school: school))
-
         } else if let placemark = placemarks?.first {
-            if let province = placemark.administrativeArea {
-                if let _  = provinceForSchool[province] {
-                    provinceForSchool[province]?.insert(school)
+            if let area = placemark.administrativeArea, let province = Province(forAdministrativeArea: area) {
+                if let _  = schoolsForProvince[province] {
+                    schoolsForProvince[province]?.insert(school)
                 } else {
-                    provinceForSchool[province] = [school]
+                    schoolsForProvince[province] = [school]
                 }
             }
 
