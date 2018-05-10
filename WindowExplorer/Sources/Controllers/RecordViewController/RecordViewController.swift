@@ -26,10 +26,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private var positionForMediaController = [MediaViewController: Int?]()
     private var showingRelatedItems = false
     private var relatedItemsFilterType: RecordFilterType?
-    private weak var closeWindowTimer: Foundation.Timer?
-    private var relatedItemsType: RecordType?
-    private var hiddenRelatedItems = IndexSet()
-    private var windowPanGesture: PanGestureRecognizer!
 
     private struct Constants {
         static let allRecordsTitle = "RECORDS"
