@@ -30,6 +30,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let annotationHitSize = CGSize(width: 50, height: 50)
         static let doubleTapScale = 0.5
         static let annotationTitleZoomLevel = Double(36000000 / Configuration.mapsPerScreen)
+        static let spacingBetweenAnnotations = 0.02
     }
 
     private struct Keys {
@@ -192,30 +193,30 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     private func createAnnotations() {
         // Schools
-        firstly {
+        let schoolChain = firstly {
             try CachingNetwork.getSchools()
-        }.then { [weak self] schools in
-            self?.addAnnotations(for: schools)
         }.catch { error in
             print(error)
         }
 
         // Events
-        firstly {
+        let eventChain = firstly {
             try CachingNetwork.getEvents()
-        }.then { [weak self] events in
-            self?.addAnnotations(for: events)
         }.catch { error in
             print(error)
         }
+
+        when(fulfilled: schoolChain, eventChain).then { [weak self] results -> Void in
+            self?.parseNetworkResults(results)
+        }
     }
 
-    private func addAnnotations(for records: [Record]) {
-        records.forEach { record in
-            let annotation = CircleAnnotation(coordinate: record.coordinate, record: record.type, title: record.title)
-            recordForAnnotation[annotation] = record
-            mapView.addAnnotation(annotation)
-        }
+    private func parseNetworkResults(_ results: ([School], [Event])) {
+        var recordsToLoad = [Record]()
+        recordsToLoad.append(contentsOf: results.0)
+        recordsToLoad.append(contentsOf: results.1)
+
+        addToMap(recordsToLoad)
     }
 
     private func postWindowNotification(for record: Record, at position: CGPoint) {
@@ -239,6 +240,45 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             mapRect.origin += MKMapPoint(x: translationX, y: translationY)
             mapHandler?.send(mapRect, animated: true)
             mapHandler?.endActivity()
+        }
+    }
+
+    private func addToMap(_ records: [Record]) {
+        var adjustedRecords = [Record]()
+
+        for record in records {
+            let adjustedRecord = adjustCoordinates(of: record, current: adjustedRecords)
+            adjustedRecords.append(adjustedRecord)
+        }
+
+        addAnnotations(for: adjustedRecords)
+    }
+
+    private func adjustCoordinates(of record: Record, current records: [Record]) -> Record {
+        var adjustedRecord = record
+
+        for runnerRecord in records {
+            let recordLatitude = record.coordinate.latitude
+            let recordLongitude = record.coordinate.longitude
+            let runnerRecordLatitude = runnerRecord.coordinate.latitude
+            let runnerRecordLongitude = runnerRecord.coordinate.longitude
+            let latitudeCheck = recordLatitude + Double(Constants.spacingBetweenAnnotations) > runnerRecordLatitude && recordLatitude - Double(Constants.spacingBetweenAnnotations) < runnerRecordLatitude
+            let longitudeCheck = recordLongitude + Double(Constants.spacingBetweenAnnotations) > runnerRecordLongitude && recordLongitude - Double(Constants.spacingBetweenAnnotations) < runnerRecordLongitude
+
+            if latitudeCheck && longitudeCheck {
+                adjustedRecord.coordinate.latitude += Double(Constants.spacingBetweenAnnotations)
+                return adjustCoordinates(of: adjustedRecord, current: records)
+            }
+        }
+
+        return adjustedRecord
+    }
+
+    private func addAnnotations(for records: [Record]) {
+        records.forEach { record in
+            let annotation = CircleAnnotation(coordinate: record.coordinate, record: record.type, title: record.title)
+            recordForAnnotation[annotation] = record
+            mapView.addAnnotation(annotation)
         }
     }
 
