@@ -38,7 +38,8 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         static let relatedItemsViewMargin: CGFloat = 8
         static let relatedRecordsTitleAnimationDuration = 0.15
         static let pageControlHeight: CGFloat = 20
-        static let initialStackEdgeInset: CGFloat = 15
+        static let stackViewTopInset: CGFloat = 15
+        static let stackViewBottomInset: CGFloat = 15
     }
 
 
@@ -129,9 +130,9 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     }
 
     private func setupStackview() {
-        let spacingFromTop: NSEdgeInsets = NSEdgeInsets(top: Constants.initialStackEdgeInset, left: 0, bottom: Constants.initialStackEdgeInset, right: 0)
-        stackView.edgeInsets = spacingFromTop
-        
+        let stackViewEdgeInsets = NSEdgeInsets(top: Constants.stackViewTopInset, left: 0, bottom: Constants.stackViewBottomInset, right: 0)
+        stackView.edgeInsets = stackViewEdgeInsets
+
         for label in record.textFields {
             stackView.insertView(label, at: stackView.subviews.count, in: .top)
         }
