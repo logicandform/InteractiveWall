@@ -52,10 +52,10 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         placeHolderImage.isHidden = !record.media.isEmpty
 
         setupMediaView()
-        setupRelatedItemsView()
         setupWindowDragArea()
         setupStackview()
         setupGestures()
+        setupRelatedItemsView()
         animateViewIn()
         resetCloseWindowTimer()
     }

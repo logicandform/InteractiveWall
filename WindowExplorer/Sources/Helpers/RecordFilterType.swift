@@ -39,14 +39,14 @@ enum RecordFilterType {
     }
     
     var placeholder: NSImage? {
-        if let recordType = self.recordType {
+        if let recordType = recordType {
             return recordType.placeholder
         }
         
         switch self {
         case .image:
             // NOTE: placeholder for now, need actual icon
-            return NSImage(named: "school-icon")!
+            return NSImage(named: "school-icon")
         default:
             return nil
         }

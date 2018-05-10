@@ -70,7 +70,24 @@ extension RecordDisplayable {
             return relatedRecords(of: recordType)
         }
         
-        return []
+        switch type {
+        case .image:
+            return relatedRecordsContainingImages()
+        default:
+            return []
+        }
+    }
+    
+    func relatedRecordsContainingImages() -> [RecordDisplayable] {
+        return relatedRecords.filter { $0.containsImages() }
+    }
+    
+    func containsImages() -> Bool {
+        guard let firstMediaItem = media.first else {
+            return false
+        }
+        
+        return firstMediaItem.type == .image || firstMediaItem.type == .pdf
     }
     
     var titleAttributes: [NSAttributedStringKey: Any] {
