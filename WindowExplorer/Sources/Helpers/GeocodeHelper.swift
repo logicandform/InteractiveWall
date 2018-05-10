@@ -7,9 +7,13 @@ final class GeocodeHelper {
 
     static let instance = GeocodeHelper()
 
+    private enum RequestState {
+        case next
+        case retry(school: School)
+    }
+
     private(set) var provinceForSchool = [String: Set<School>]()
     private lazy var schools = Set<School>()
-    private var requestTimer: Timer?
     private lazy var geocoder = CLGeocoder()
 
 
@@ -26,32 +30,31 @@ final class GeocodeHelper {
             }
 
             self?.schools = Set(schools)
-            self?.getNewProvince()
+            self?.handle(.next)
         }
     }
 
 
     // MARK: Helpers
 
-    private func getNewProvince() {
-        guard let school = schools.popFirst() else {
-            return
-        }
-        
-        reverseGeocode(school)
-    }
+    private func handle(_ state: RequestState) {
+        switch state {
+        case .next:
+            guard let school = schools.popFirst() else {
+                return
+            }
+            reverseGeocode(school)
 
-    private func retryProvince(for school: School) {
-        requestTimer?.invalidate()
-        requestTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block: { [weak self] _ in
-            self?.reverseGeocode(school)
-        })
+        case .retry(let school):
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
+                self?.reverseGeocode(school)
+            }
+        }
     }
 
     private func reverseGeocode(_ school: School) {
         guard let latitude = school.coordinate?.latitude, let longitude = school.coordinate?.longitude else {
-            // because not filtering beforehand, if there is no coordinate for a school, just get the next province
-            getNewProvince()
+            handle(.next)
             return
         }
 
@@ -62,10 +65,8 @@ final class GeocodeHelper {
     }
 
     private func mapProvince(for school: School, with placemarks: [CLPlacemark]?, _ error: Error?) {
-        if let error = error {
-            // maximum number of requests made, so request with same school
-            print(error.localizedDescription)
-            retryProvince(for: school)
+        if let _ = error {
+            handle(.retry(school: school))
 
         } else if let placemark = placemarks?.first {
             if let province = placemark.administrativeArea {
@@ -75,8 +76,8 @@ final class GeocodeHelper {
                     provinceForSchool[province] = [school]
                 }
             }
-            
-            getNewProvince()
+
+            handle(.next)
         }
     }
 }
