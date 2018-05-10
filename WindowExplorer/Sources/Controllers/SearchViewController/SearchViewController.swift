@@ -19,7 +19,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     @IBOutlet weak var collapseButtonArea: NSView!
     
     private var selectedType: RecordType?
-    private var selectedItemForView = [NSCollectionView: SearchItemView]()
+    private var selectedIndexForView = [NSCollectionView: IndexPath]()
 
     private lazy var titleViews: [NSTextField] = [titleLabel, secondaryTextField, tertiaryTextField]
     private lazy var collectionViews: [NSCollectionView] = [primaryCollectionView, secondaryCollectionView, tertiaryCollectionView]
@@ -94,10 +94,9 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             return
         }
 
-        selectedItemForView[collectionView]?.set(highlighted: false)
-        selectedItemForView[collectionView]?.set(loading: false)
-        selectedItemForView[collectionView] = searchItem
-        selectedItemForView[collectionView]?.set(highlighted: true)
+        unselectItem(for: collectionView)
+        selectedIndexForView[collectionView] = indexPath
+        searchItem.set(highlighted: true)
         toggle(to: collectionView) { [weak self] in
             self?.select(searchItem, in: collectionView)
         }
@@ -127,6 +126,11 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
         guard let searchItemView = collectionView.makeItem(withIdentifier: SearchItemView.identifier, for: indexPath) as? SearchItemView, let searchItems = searchItemsForView[collectionView] else {
             return NSCollectionViewItem()
+        }
+
+        // Check if index path is selected
+        if let selectedIndex = selectedIndexForView[collectionView] {
+            searchItemView.set(highlighted: selectedIndex == indexPath)
         }
 
         searchItemView.type = selectedType
@@ -171,7 +175,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     // MARK: Helpers
 
     private func select(_ view: SearchItemView, in collectionView: NSCollectionView) {
-        guard view == selectedItemForView[collectionView] else {
+        guard let indexPath = selectedIndexForView[collectionView], view == collectionView.item(at: indexPath) else {
             return
         }
         
@@ -182,6 +186,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
                 searchItemsForView[secondaryCollectionView] = searchItems(for: recordType)
                 secondaryTextField.attributedStringValue = title(for: recordType)
                 secondaryCollectionView.reloadData()
+                secondaryCollectionView.scroll(.zero)
                 toggle(to: secondaryCollectionView)
             }
         case secondaryCollectionView:
@@ -211,8 +216,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         // Unselect nested search items
         collectionViews.enumerated().forEach { indexOfView, collectionView in
             if indexOfView > index {
-                selectedItemForView[collectionView]?.set(highlighted: false)
-                selectedItemForView[collectionView]?.set(loading: false)
+                unselectItem(for: collectionView)
             }
         }
 
@@ -255,6 +259,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     private func load(_ records: [RecordDisplayable], of type: RecordType) {
         searchItemsForView[tertiaryCollectionView] = records
         tertiaryCollectionView.reloadData()
+        tertiaryCollectionView.scroll(.zero)
         tertiaryTextField.attributedStringValue = NSAttributedString(string: type.title, attributes: style.windowTitleAttributes)
         toggle(to: tertiaryCollectionView)
     }
@@ -269,6 +274,19 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             if let record = record {
                 WindowManager.instance.display(.record(record), at: location)
             }
+        }
+    }
+
+    // Removes all state from the currently selected view of the given collectionview
+    private func unselectItem(for collectionView: NSCollectionView) {
+        guard let indexPath = selectedIndexForView[collectionView] else {
+            return
+        }
+
+        selectedIndexForView.removeValue(forKey: collectionView)
+        if let view = collectionView.item(at: indexPath) as? SearchItemView {
+            view.set(highlighted: false)
+            view.set(loading: false)
         }
     }
 }

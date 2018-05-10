@@ -14,3 +14,10 @@ extension NSView {
         layer?.contents = image
     }
 }
+
+extension NSCollectionView {
+
+    func item(at row: Int, section: Int = 0) -> NSCollectionViewItem? {
+        return item(at: IndexPath(item: row, section: section))
+    }
+}

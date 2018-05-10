@@ -10,21 +10,21 @@
             <objects>
                 <viewController id="NYe-qK-JtK" customClass="SearchViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="0wA-7c-noQ">
-                        <rect key="frame" x="0.0" y="0.0" width="1050" height="550"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1050" height="560"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gbE-u6-ffb" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="700" y="0.0" width="350" height="505"/>
+                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gbE-u6-ffb" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
+                                <rect key="frame" x="700" y="0.0" width="350" height="515"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="mRt-Zl-nHF">
-                                    <rect key="frame" x="0.0" y="0.0" width="350" height="505"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="350" height="515"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <collectionView id="DnM-Ou-hpA">
-                                            <rect key="frame" x="0.0" y="0.0" width="350" height="505"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="350" height="515"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" id="aAy-l6-vm1">
                                                 <size key="itemSize" width="50" height="50"/>
-                                                <edgeInsets key="sectionInset" left="0.0" right="0.0" top="10" bottom="0.0"/>
+                                                <edgeInsets key="sectionInset" left="0.0" right="0.0" top="10" bottom="10"/>
                                             </collectionViewFlowLayout>
                                             <color key="primaryBackgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                             <connections>
@@ -47,18 +47,18 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
-                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3LC-eL-E7F" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="350" y="0.0" width="350" height="505"/>
+                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3LC-eL-E7F" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
+                                <rect key="frame" x="350" y="0.0" width="350" height="515"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="RR8-Bh-xmj">
-                                    <rect key="frame" x="0.0" y="0.0" width="350" height="505"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="350" height="515"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <collectionView id="Mma-p7-p7J">
-                                            <rect key="frame" x="0.0" y="0.0" width="350" height="505"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="350" height="515"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" id="XNT-tN-XVj">
                                                 <size key="itemSize" width="50" height="50"/>
-                                                <edgeInsets key="sectionInset" left="0.0" right="0.0" top="10" bottom="0.0"/>
+                                                <edgeInsets key="sectionInset" left="0.0" right="0.0" top="10" bottom="10"/>
                                             </collectionViewFlowLayout>
                                             <color key="primaryBackgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                             <connections>
@@ -81,18 +81,18 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
-                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rvJ-Ae-W65" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="350" height="505"/>
+                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rvJ-Ae-W65" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="350" height="515"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="xtD-cc-2HP">
-                                    <rect key="frame" x="0.0" y="0.0" width="350" height="505"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="350" height="515"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <collectionView id="S1c-RT-6BK">
-                                            <rect key="frame" x="0.0" y="0.0" width="350" height="505"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="350" height="515"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" id="YHu-ll-36E">
                                                 <size key="itemSize" width="50" height="50"/>
-                                                <edgeInsets key="sectionInset" left="0.0" right="0.0" top="10" bottom="0.0"/>
+                                                <edgeInsets key="sectionInset" left="0.0" right="0.0" top="10" bottom="10"/>
                                             </collectionViewFlowLayout>
                                             <color key="primaryBackgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                             <connections>
@@ -116,7 +116,7 @@
                                 </scroller>
                             </scrollView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="oGe-AJ-Idu">
-                                <rect key="frame" x="0.0" y="510" width="1050" height="40"/>
+                                <rect key="frame" x="0.0" y="520" width="1050" height="40"/>
                                 <subviews>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="sOu-1b-tUh">
                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
