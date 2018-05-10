@@ -20,24 +20,24 @@ final class CachingNetwork {
     static let baseURL = "http://10.58.73.164:3000"
 
     private struct Endpoints {
-        static let places = baseURL + "/places"
-        static let placeByID = places + "/find/"
-        static let placesInGroup = places + "/group/%@/%d"
-        static let organizations = baseURL + "/organizations"
-        static let organizationByID = organizations + "/find/"
-        static let organizationsInGroup = organizations + "/group/%@/%d"
-        static let events = baseURL + "/events"
-        static let eventByID = events + "/find/"
-        static let eventsInGroup = events + "/group/%@/%d"
-        static let allArtifacts = baseURL + "/artifacts/all/%d"
+        static let places = baseURL + "/places/all/%d"
+        static let placeByID = baseURL + "/places/find/"
+        static let placesInGroup = baseURL + "/places/group/%@/%d"
+        static let organizations = baseURL + "/organizations/all/%d"
+        static let organizationByID = baseURL + "/organizations/find/"
+        static let organizationsInGroup = baseURL + "/organizations/group/%@/%d"
+        static let events = baseURL + "/events/all/%d"
+        static let eventByID = baseURL + "/events/find/"
+        static let eventsInGroup = baseURL + "/events/group/%@/%d"
+        static let artifacts = baseURL + "/artifacts/all/%d"
         static let artifactByID = baseURL + "/artifacts/find/"
         static let artifactsInGroup = baseURL + "/artifacts/group/%@/%d"
         static let schools = baseURL + "/schools/all/%d"
         static let schoolByID = baseURL + "/schools/find/"
         static let schoolsInGroup = baseURL + "/schools/group/%@/%d"
-        static let themes = baseURL + "/themes"
-        static let themeByID = themes + "/find/"
-        static let themesInGroup = themes + "/group/%@/%d"
+        static let themes = baseURL + "/themes/all/%d"
+        static let themeByID = baseURL + "/themes/find/"
+        static let themesInGroup = baseURL + "/themes/group/%@/%d"
     }
 
     private static let credentials: [String: String] = {
@@ -53,11 +53,17 @@ final class CachingNetwork {
 
     // MARK: Places
 
-    static func getPlaces() throws -> Promise<[Place]> {
-        let url = Endpoints.places
+    static func getPlaces(page: Int = 0, load: [Place] = []) throws -> Promise<[Place]> {
+        let url = String(format: Endpoints.places, page)
 
         return Alamofire.request(url).responseJSON().then { json in
-            try ResponseHandler.serializePlaces(from: json)
+            guard let places = try? ResponseHandler.serializePlaces(from: json), !places.isEmpty else {
+                return Promise(value: load)
+            }
+
+            let next = page + Constants.batchSize
+            let result = load + places
+            return try getPlaces(page: next, load: result)
         }
     }
 
@@ -86,11 +92,17 @@ final class CachingNetwork {
 
     // MARK: Organizations
 
-    static func getOrganizations() throws -> Promise<[Organization]> {
-        let url = Endpoints.organizations
+    static func getOrganizations(page: Int = 0, load: [Organization] = []) throws -> Promise<[Organization]> {
+        let url = String(format: Endpoints.organizations, page)
 
         return Alamofire.request(url).responseJSON().then { json in
-            try ResponseHandler.serializeOrganizations(from: json)
+            guard let organizations = try? ResponseHandler.serializeOrganizations(from: json), !organizations.isEmpty else {
+                return Promise(value: load)
+            }
+
+            let next = page + Constants.batchSize
+            let result = load + organizations
+            return try getOrganizations(page: next, load: result)
         }
     }
 
@@ -119,11 +131,17 @@ final class CachingNetwork {
 
     // MARK: Events
 
-    static func getEvents() throws -> Promise<[Event]> {
-        let url = Endpoints.events
+    static func getEvents(page: Int = 0, load: [Event] = []) throws -> Promise<[Event]> {
+        let url = String(format: Endpoints.events, page)
 
         return Alamofire.request(url).responseJSON().then { json in
-            try ResponseHandler.serializeEvents(from: json)
+            guard let events = try? ResponseHandler.serializeEvents(from: json), !events.isEmpty else {
+                return Promise(value: load)
+            }
+
+            let next = page + Constants.batchSize
+            let result = load + events
+            return try getEvents(page: next, load: result)
         }
     }
 
@@ -153,7 +171,7 @@ final class CachingNetwork {
     // MARK: Artifacts
 
     static func getArtifacts(page: Int = 0, load: [Artifact] = []) throws -> Promise<[Artifact]> {
-        let url = String(format: Endpoints.allArtifacts, page)
+        let url = String(format: Endpoints.artifacts, page)
 
         return Alamofire.request(url).responseJSON().then { json in
             guard let artifacts = try? ResponseHandler.serializeArtifacts(from: json), !artifacts.isEmpty else {
@@ -230,11 +248,17 @@ final class CachingNetwork {
 
     // MARK: Themes
 
-    static func getThemes() throws -> Promise<[Theme]> {
-        let url = Endpoints.themes
+    static func getThemes(page: Int = 0, load: [Theme] = []) throws -> Promise<[Theme]> {
+        let url = String(format: Endpoints.themes, page)
 
         return Alamofire.request(url).responseJSON().then { json in
-            try ResponseHandler.serializeThemes(from: json)
+            guard let themes = try? ResponseHandler.serializeThemes(from: json), !themes.isEmpty else {
+                return Promise(value: load)
+            }
+
+            let next = page + Constants.batchSize
+            let result = load + themes
+            return try getThemes(page: next, load: result)
         }
     }
 

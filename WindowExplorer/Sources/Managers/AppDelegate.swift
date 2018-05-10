@@ -17,7 +17,7 @@ struct Configuration {
 
 
 struct Paths {
-    static let mapExplorer = "/Users/harrisonturley/Library/Developer/Xcode/DerivedData/MapExplorer-advgqestfqggadbethjhtmretrda/Build/Products/Debug/MapExplorer-macOS.app"
+    static let mapExplorer = "/Users/Tim/Library/Developer/Xcode/DerivedData/MapExplorer-btnxiobgycwlwddqfdkwxqhmpeum/Build/Products/Debug/MapExplorer-macOS.app"
 }
 
 
@@ -28,6 +28,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         WindowManager.instance.registerForNotifications()
         TouchManager.instance.setupTouchSocket()
         MasterViewController.instantiate()
+        MenuViewController.instantiate()
     }
 
     func applicationWillTerminate(_ notification: Notification) {

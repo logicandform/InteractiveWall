@@ -20,9 +20,9 @@ final class CachingNetwork {
 
     private struct Endpoints {
         static let baseURL = "http://10.58.73.164:3000"
-        static let places = baseURL + "/places"
+        static let places = baseURL + "/places/all/%d"
         static let schools = baseURL + "/schools/all/%d"
-        static let events = baseURL + "/events"
+        static let events = baseURL + "/events/all/%d"
     }
 
     private struct Constants {
@@ -38,11 +38,17 @@ final class CachingNetwork {
 
     // MARK: Places
 
-    static func getPlaces() throws -> Promise<[Place]> {
-        let url = Endpoints.places
+    static func getPlaces(page: Int = 0, load: [Place] = []) throws -> Promise<[Place]> {
+        let url = String(format: Endpoints.places, page)
 
         return Alamofire.request(url).responseJSON().then { json in
-            try ResponseHandler.serializePlaces(from: json)
+            guard let places = try? ResponseHandler.serializePlaces(from: json), !places.isEmpty else {
+                return Promise(value: load)
+            }
+
+            let next = page + Constants.batchSize
+            let result = load + places
+            return try getPlaces(page: next, load: result)
         }
     }
 
@@ -66,11 +72,17 @@ final class CachingNetwork {
 
     // MARK: Events
 
-    static func getEvents() throws -> Promise<[Event]> {
-        let url = Endpoints.events
+    static func getEvents(page: Int = 0, load: [Event] = []) throws -> Promise<[Event]> {
+        let url = String(format: Endpoints.events, page)
 
         return Alamofire.request(url).responseJSON().then { json in
-            try ResponseHandler.serializeEvents(from: json)
+            guard let events = try? ResponseHandler.serializeEvents(from: json), !events.isEmpty else {
+                return Promise(value: load)
+            }
+
+            let next = page + Constants.batchSize
+            let result = load + events
+            return try getEvents(page: next, load: result)
         }
     }
 }
