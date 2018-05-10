@@ -30,7 +30,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private var relatedItemsType: RecordType?
     private var hiddenRelatedItems = IndexSet()
     private var windowPanGesture: PanGestureRecognizer!
-    
+
     private struct Constants {
         static let allRecordsTitle = "RECORDS"
         static let animationDuration = 0.5
@@ -48,7 +48,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
 
     // MARK: Life-cycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         detailView.alphaValue = 0
@@ -64,7 +64,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         animateViewIn()
         resetCloseWindowTimer()
     }
-    
+
     
     // MARK: Setup
 
