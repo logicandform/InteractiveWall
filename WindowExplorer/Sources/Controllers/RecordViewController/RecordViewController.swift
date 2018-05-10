@@ -65,7 +65,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         resetCloseWindowTimer()
     }
 
-    
+
     // MARK: Setup
 
     private func setupMediaView() {
@@ -136,7 +136,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private func setupStackview() {
         let stackViewEdgeInsets = NSEdgeInsets(top: Constants.stackViewTopInset, left: 0, bottom: Constants.stackViewBottomInset, right: 0)
         stackView.edgeInsets = stackViewEdgeInsets
-        
+
         for label in record.textFields {
             stackView.insertView(label, at: stackView.subviews.count, in: .top)
         }
