@@ -18,8 +18,8 @@ enum Province: SearchItemDisplayable {
     case northwestTerritory
     case nunavut
 
-    init?(forAdministrativeArea area: String) {
-        switch area {
+    init?(abbreviation: String) {
+        switch abbreviation {
         case "BC":
             self = .britishColumbia
         case "AB":

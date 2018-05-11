@@ -222,7 +222,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
                     }
                 }
             } else if let province = view.item as? Province {
-                let schools = GeocodeHelper.instance.schools(for: province)
+                let schools = GeocodeHelper.instance.schools(for: province).sorted { $0.title < $1.title }
                 load(schools)
             }
         case tertiaryCollectionView:
