@@ -393,6 +393,7 @@
 				22FEF1BD202CD86D001E9596 /* Run Swiftlint */,
 				5B065ABFB721CD1408B62F1F /* [CP] Embed Pods Frameworks */,
 				22A923132044A1D2003EA9BB /* Embed XPC Services */,
+				7CC52D6E39237329E1C81554 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -496,6 +497,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-All-MapExplorer-macOS/Pods-All-MapExplorer-macOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7CC52D6E39237329E1C81554 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-All-MapExplorer-macOS/Pods-All-MapExplorer-macOS-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8F1D2FAC58B31812451CE63B /* [CP] Check Pods Manifest.lock */ = {
