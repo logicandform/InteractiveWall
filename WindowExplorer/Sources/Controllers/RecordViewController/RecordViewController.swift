@@ -3,7 +3,8 @@
 import Cocoa
 import AppKit
 
-class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource, NSTableViewDataSource, NSTableViewDelegate, MediaControllerDelegate {
+class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource, NSTableViewDataSource, NSTableViewDelegate, ControllerDelegate {
+
     static let storyboard = NSStoryboard.Name(rawValue: "Record")
 
     @IBOutlet weak var detailView: NSView!
@@ -26,6 +27,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private var positionForMediaController = [MediaViewController: Int?]()
     private var showingRelatedItems = false
     private var relatedItemsFilterType: RecordFilterType?
+    private var baseViewPositionManager = BaseViewPositionManager()
 
     private struct Constants {
         static let allRecordsTitle = "RECORDS"
@@ -343,7 +345,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         case .ended:
             selectedMediaItem = mediaItem
             if let selectedMedia = selectedMediaItem?.media {
-                selectMediaItem(selectedMedia)
+                baseViewPositionManager.show(type: selectedMedia, for: self)
             }
             selectedMediaItem = nil
         default:
@@ -408,21 +410,21 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
     // MARK: MediaControllerDelegate
 
-    func controllerDidClose(_ controller: MediaViewController) {
-        positionForMediaController.removeValue(forKey: controller)
+    func controllerDidClose(_ controller: BaseViewController) {
+        baseViewPositionManager.removeFromQueue(self)
         resetCloseWindowTimer()
     }
 
-    func controllerDidMove(_ controller: MediaViewController) {
-        positionForMediaController[controller] = nil as Int?
+    func controllerDidMove(_ controller: BaseViewController) {
+        baseViewPositionManager.makeNilInQueue(for: self)
     }
  
-    func recordFrameAndPosition(for controller: MediaViewController) -> (frame: CGRect, position: Int)? {
+    func frameAndPosition(for controller: BaseViewController) -> (frame: CGRect, position: Int)? {
         guard let window = view.window else {
             return nil
         }
 
-        if let position = positionForMediaController[controller], position != nil {
+        if let position = baseViewPositionManager.getValueInQueue(for: self), position != nil {
             return (window.frame, position!)
         } else {
             return (window.frame, getMediaControllerPosition())
@@ -515,6 +517,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         })
     }
 
+    /*
     private func selectMediaItem(_ media: Media) {
         guard let windowType = WindowType(for: media) else {
             return
@@ -540,6 +543,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             positionForMediaController[controller] = position
         }
     }
+ */
 
     /// Gets the first available media controller position
     private func getMediaControllerPosition() -> Int {
