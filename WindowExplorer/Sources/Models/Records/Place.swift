@@ -16,7 +16,8 @@ class Place {
     private struct Keys {
         static let id = "id"
         static let title = "title"
-        static let coordinate = "coordinate"
+        static let latitude = "latitude"
+        static let longitude = "longitude"
         static let schools = "schools"
         static let organizations = "organizations"
         static let artifacts = "artifacts"
@@ -29,14 +30,14 @@ class Place {
     init?(json: JSON) {
         guard let id = json[Keys.id] as? Int,
             let title = json[Keys.title] as? String,
-            let coordinateString = json[Keys.coordinate] as? String,
-            let coordinate = CLLocationCoordinate2D(string: coordinateString) else {
+            let latitude = json[Keys.latitude] as? Double,
+            let longitude = json[Keys.longitude] as? Double else {
                 return nil
         }
 
         self.id = id
         self.title = title
-        self.coordinate = coordinate
+        self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
 
         if let schoolsJSON = json[Keys.schools] as? [JSON] {
             let schools = schoolsJSON.compactMap { School(json: $0) }
