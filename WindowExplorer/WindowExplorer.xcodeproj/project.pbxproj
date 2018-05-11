@@ -56,7 +56,6 @@
 		226D0582204FC38700D74711 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226D0581204FC38600D74711 /* Event.swift */; };
 		226D0587204FC78100D74711 /* CachingNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226D0586204FC78100D74711 /* CachingNetwork.swift */; };
 		226D0589204FC7BC00D74711 /* ResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226D0588204FC7BC00D74711 /* ResponseHandler.swift */; };
-		2274948220AB730800A91D60 /* RelationshipHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2274948120AB730800A91D60 /* RelationshipHelper.swift */; };
 		2276AE65204E7150001FAD8B /* BorderlessWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2276AE64204E7150001FAD8B /* BorderlessWindow.swift */; };
 		227B5E11205611BB00F403B3 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227B5E10205611BB00F403B3 /* Style.swift */; };
 		22914F752049001B0000D4E1 /* TouchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22914F742049001B0000D4E1 /* TouchManager.swift */; };
@@ -103,6 +102,7 @@
 		8FE6467B2060553100E6116A /* RegularScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE6467A2060553100E6116A /* RegularScrollView.swift */; };
 		8FEABDA12064702600612C84 /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEABD9F2064702600612C84 /* MediaViewController.swift */; };
 		A4694B66209CEC18006A407F /* RecordFilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4694B65209CEC18006A407F /* RecordFilterType.swift */; };
+		A471B7EE20A625DA00DE7F05 /* BaseViewPositionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471B7ED20A625DA00DE7F05 /* BaseViewPositionManager.swift */; };
 		C6DB17689F287C9826286DF2 /* Pods_All_WindowExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */; };
 		CD096C8A20A3AD7F00C8A732 /* GeocodeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD096C8920A3AD7F00C8A732 /* GeocodeHelper.swift */; };
 		D507D33B2072FD2B0003CEA7 /* ColoredSliderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D507D33A2072FD2B0003CEA7 /* ColoredSliderCell.swift */; };
@@ -185,7 +185,6 @@
 		226D0581204FC38600D74711 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		226D0586204FC78100D74711 /* CachingNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachingNetwork.swift; sourceTree = "<group>"; };
 		226D0588204FC7BC00D74711 /* ResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseHandler.swift; sourceTree = "<group>"; };
-		2274948120AB730800A91D60 /* RelationshipHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelationshipHelper.swift; sourceTree = "<group>"; };
 		2276AE64204E7150001FAD8B /* BorderlessWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderlessWindow.swift; sourceTree = "<group>"; };
 		227B5E10205611BB00F403B3 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		22914F742049001B0000D4E1 /* TouchManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchManager.swift; sourceTree = "<group>"; };
@@ -241,6 +240,7 @@
 		8FEABD9F2064702600612C84 /* MediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaViewController.swift; sourceTree = "<group>"; };
 		A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_WindowExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4694B65209CEC18006A407F /* RecordFilterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFilterType.swift; sourceTree = "<group>"; };
+		A471B7ED20A625DA00DE7F05 /* BaseViewPositionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewPositionManager.swift; sourceTree = "<group>"; };
 		CD096C8920A3AD7F00C8A732 /* GeocodeHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeocodeHelper.swift; sourceTree = "<group>"; };
 		CE471FCE047AE2FD1C92BA3A /* Pods-All-WindowExplorer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-WindowExplorer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer.release.xcconfig"; sourceTree = "<group>"; };
 		D507D33A2072FD2B0003CEA7 /* ColoredSliderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredSliderCell.swift; sourceTree = "<group>"; };
@@ -526,7 +526,7 @@
 				22927911208E531C005E2036 /* BackgroundTimer.swift */,
 				A4694B65209CEC18006A407F /* RecordFilterType.swift */,
 				CD096C8920A3AD7F00C8A732 /* GeocodeHelper.swift */,
-				2274948120AB730800A91D60 /* RelationshipHelper.swift */,
+				A471B7ED20A625DA00DE7F05 /* BaseViewPositionManager.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -669,9 +669,9 @@
 				22A923192044AF05003EA9BB /* Sources */,
 				22A9231A2044AF05003EA9BB /* Frameworks */,
 				22A9231B2044AF05003EA9BB /* Resources */,
-				22F9E38020A9FA36000FFD16 /* Run Swiftlint */,
 				22A9234F2044B09D003EA9BB /* Embed XPC Services */,
 				D706A887330181305494F3D8 /* [CP] Embed Pods Frameworks */,
+				4820A6207000EE78BA94FFAA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -754,19 +754,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		22F9E38020A9FA36000FFD16 /* Run Swiftlint */ = {
+		4820A6207000EE78BA94FFAA /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Run Swiftlint";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		D706A887330181305494F3D8 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -895,7 +896,6 @@
 				22927912208E531C005E2036 /* BackgroundTimer.swift in Sources */,
 				2204623820472FDF0067D9FB /* URL.swift in Sources */,
 				2204621820472F2D0067D9FB /* PlayerState.swift in Sources */,
-				2274948220AB730800A91D60 /* RelationshipHelper.swift in Sources */,
 				D901EBED2056EEFE00BBFCF2 /* RecordDisplayable.swift in Sources */,
 				22A923212044AF05003EA9BB /* AppDelegate.swift in Sources */,
 				22046259204730C70067D9FB /* School.swift in Sources */,
@@ -903,6 +903,7 @@
 				22B85B07209CF5200099F44E /* SearchItemView.swift in Sources */,
 				2224125E206BFE9F008E7A9D /* RecordType.swift in Sources */,
 				3F09025F2048E0E70044F100 /* Organization.swift in Sources */,
+				A471B7EE20A625DA00DE7F05 /* BaseViewPositionManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
