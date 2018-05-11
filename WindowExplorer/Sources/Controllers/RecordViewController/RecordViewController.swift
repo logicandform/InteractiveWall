@@ -26,6 +26,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private var pageControl = PageControl()
     private var showingRelatedItems = false
     private var relatedItemsFilterType: RecordFilterType?
+    private var baseViewPositionManager = BaseViewPositionManager()
 
     private struct Constants {
         static let allRecordsTitle = "RECORDS"

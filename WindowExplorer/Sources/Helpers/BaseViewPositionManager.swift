@@ -50,6 +50,22 @@ class BaseViewPositionManager: BaseViewController {
         WindowManager.instance.closeWindow(for: self)
     }
 
+    func removeFromQueue(_ controller: BaseViewController) {
+        positionInQueue.removeValue(forKey: controller)
+    }
+
+    func makeNilInQueue(for controller: BaseViewController) {
+
+    }
+
+    func getValueInQueue(for controller: BaseViewController) -> Int?? {
+        guard let controllerInQueue = positionInQueue.keys.first(where: { $0 === controller }) else {
+            return nil
+        }
+
+        return positionInQueue[controllerInQueue]
+    }
+
 
     // MARK: Gesture Handling
 
@@ -73,6 +89,8 @@ class BaseViewPositionManager: BaseViewController {
     }
 
     // MARK: Helpers
+
+
 
     private func getControllerPosition() -> Int {
         let currentPositions = positionInQueue.values
