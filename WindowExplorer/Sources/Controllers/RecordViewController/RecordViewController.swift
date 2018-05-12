@@ -220,7 +220,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         case .ended:
             selectedMediaItem = mediaItem
             if let selectedMedia = selectedMediaItem?.media {
-                selectMediaItem(selectedMedia)
+                baseViewPositionManager.select(type: WindowType(for: selectedMedia), for: self)
             }
             selectedMediaItem = nil
         default:
@@ -345,7 +345,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         case .ended:
             selectedMediaItem = mediaItem
             if let selectedMedia = selectedMediaItem?.media {
-                baseViewPositionManager.show(type: selectedMedia, for: self)
+                baseViewPositionManager.select(type: WindowType(for: selectedMedia), for: self)
             }
             selectedMediaItem = nil
         default:
@@ -427,7 +427,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         if let position = baseViewPositionManager.getValueInQueue(for: self), position != nil {
             return (window.frame, position!)
         } else {
-            return (window.frame, getMediaControllerPosition())
+            return (window.frame, baseViewPositionManager.getControllerPosition())
         }
     }
 
