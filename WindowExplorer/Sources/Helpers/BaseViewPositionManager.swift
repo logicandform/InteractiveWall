@@ -22,7 +22,11 @@ class BaseViewPositionManager: BaseViewController {
 
     // MARK: API
 
-    func show(type: WindowType, for controller: BaseViewController) {
+    func select(type: WindowType?, for controller: BaseViewController) {
+        guard let type = type else {
+            return
+        }
+
         let controller = positionInQueue.keys.first(where: { $0 === controller })
         let position = getControllerPosition()
 
@@ -35,8 +39,8 @@ class BaseViewPositionManager: BaseViewController {
                 positionInQueue[controller] = position
             }
         } else if let controller = WindowManager.instance.display(type) as? MediaViewController {
-            //Removed delegate statement here
-
+            //Removed delegate statement here, but need it somehow
+            
             // Image view controller takes care of setting its own position after its image has loaded in
             if controller is PlayerViewController || controller is PDFViewController {
                 updatePosition(animating: false)
@@ -55,7 +59,7 @@ class BaseViewPositionManager: BaseViewController {
     }
 
     func makeNilInQueue(for controller: BaseViewController) {
-
+        
     }
 
     func getValueInQueue(for controller: BaseViewController) -> Int?? {
@@ -92,7 +96,7 @@ class BaseViewPositionManager: BaseViewController {
 
 
 
-    private func getControllerPosition() -> Int {
+    func getControllerPosition() -> Int {
         let currentPositions = positionInQueue.values
 
         for position in 0 ... positionInQueue.keys.count {
