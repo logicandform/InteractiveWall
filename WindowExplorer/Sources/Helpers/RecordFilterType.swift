@@ -13,7 +13,7 @@ enum RecordFilterType {
     case theme
 
     var title: String? {
-        if let recordType = self.recordType {
+        if let recordType = recordType {
             return recordType.title
         }
 
@@ -26,7 +26,7 @@ enum RecordFilterType {
     }
 
     var color: NSColor {
-        if let recordType = self.recordType {
+        if let recordType = recordType {
             return recordType.color
         }
 
