@@ -37,6 +37,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         static let showRelatedItemViewRotation: CGFloat = 45
         static let relatedItemsViewMargin: CGFloat = 8
         static let relatedRecordsTitleAnimationDuration = 0.15
+        static let relatedItemsViewAnimationDuration = 0.35
         static let pageControlHeight: CGFloat = 20
         static let stackViewTopInset: CGFloat = 15
         static let stackViewBottomInset: CGFloat = 15
@@ -581,7 +582,10 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         transitionRelatedRecordsTitle(to: titleForType)
 
         relatedItemsFilterType = type
-        relatedItemsView.reloadData()
+        fadeRelatedItemsView(out: true, completion: { [weak self] in
+            self?.relatedItemsView.reloadData()
+            self?.fadeRelatedItemsView(out: false, completion: {})
+        })
     }
 
     /// Transitions the related records title by fading out & in
@@ -597,9 +601,20 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private func fadeRelatedRecordsTitle(out: Bool, completion: @escaping () -> Void) {
         let alpha: CGFloat = out ? 0 : 1
 
-        NSAnimationContext.runAnimationGroup({ _ in
+        NSAnimationContext.runAnimationGroup({ [weak self] _ in
             NSAnimationContext.current.duration = Constants.relatedRecordsTitleAnimationDuration
-            relatedRecordsTypeLabel.animator().alphaValue = alpha
+            self?.relatedRecordsTypeLabel.animator().alphaValue = alpha
+        }, completionHandler: {
+            completion()
+        })
+    }
+
+    private func fadeRelatedItemsView(out: Bool, completion: @escaping () -> Void) {
+        let alpha: CGFloat = out ? 0 : 1
+
+        NSAnimationContext.runAnimationGroup({ [weak self] _ in
+            NSAnimationContext.current.duration = Constants.relatedItemsViewAnimationDuration
+            self?.relatedItemsView.animator().alphaValue = alpha
         }, completionHandler: {
             completion()
         })
