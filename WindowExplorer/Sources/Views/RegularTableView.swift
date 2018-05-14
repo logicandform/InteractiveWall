@@ -11,5 +11,4 @@ class RegularTableView: NSTableView {
     override var isFlipped: Bool {
         return false
     }
-    
 }

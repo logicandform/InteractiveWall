@@ -12,7 +12,7 @@ class MediaItemView: NSCollectionViewItem {
     @IBOutlet weak var titleLabelBackgroundView: NSView!
     @IBOutlet weak var titleLabelBackgroundWidth: NSLayoutConstraint!
     @IBOutlet weak var titleLabelBackgroundHeight: NSLayoutConstraint!
-    
+
     private struct Constants {
         static let titleBackgroundAdditionalWidth: CGFloat = 80
         static let percentageOfAdditionalWidthForTransitionLocation: CGFloat = 0.9

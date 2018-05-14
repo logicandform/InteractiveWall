@@ -22,4 +22,3 @@ public final class AudioController {
         return player
     }
 }
-

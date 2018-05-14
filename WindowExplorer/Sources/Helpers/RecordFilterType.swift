@@ -11,12 +11,12 @@ enum RecordFilterType {
     case event
     case organization
     case theme
-    
+
     var title: String? {
         if let recordType = self.recordType {
             return recordType.title
         }
-        
+
         switch self {
         case .image:
             return "IMAGES"
@@ -24,12 +24,12 @@ enum RecordFilterType {
             return nil
         }
     }
-    
+
     var color: NSColor {
         if let recordType = self.recordType {
             return recordType.color
         }
-        
+
         switch self {
         case .image:
             return style.organizationColor
@@ -37,12 +37,12 @@ enum RecordFilterType {
             return style.unselectedRecordIcon
         }
     }
-    
+
     var placeholder: NSImage? {
         if let recordType = recordType {
             return recordType.placeholder
         }
-        
+
         switch self {
         case .image:
             // NOTE: placeholder for now, need actual icon
@@ -51,7 +51,7 @@ enum RecordFilterType {
             return nil
         }
     }
-    
+
     var recordType: RecordType? {
         switch self {
         case .image:
@@ -68,7 +68,7 @@ enum RecordFilterType {
             return .theme
         }
     }
-    
+
     static var allValues: [RecordFilterType] {
         return [.image, .school, .event, .organization, .artifact]
     }

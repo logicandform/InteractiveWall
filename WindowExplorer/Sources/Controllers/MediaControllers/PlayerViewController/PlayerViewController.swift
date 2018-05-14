@@ -11,7 +11,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     @IBOutlet weak var playerView: AVPlayerView!
     @IBOutlet weak var playerControl: PlayerControl!
     @IBOutlet weak var playerStateImageView: NSImageView!
-    
+
     private var audioPlayer: AKPlayer?
 
     private struct Constants {
@@ -42,7 +42,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         if let window = view.window {
             audioPlayer?.location = horizontalPosition(of: window)
         }
-        
+
         playerControl.toggle()
     }
 

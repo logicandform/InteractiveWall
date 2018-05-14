@@ -26,7 +26,7 @@ final class WindowManager {
 
 
     // MARK: API
- 
+
     /// Must be done after application launches.
     func registerForNotifications() {
         for notification in WindowNotification.allValues {

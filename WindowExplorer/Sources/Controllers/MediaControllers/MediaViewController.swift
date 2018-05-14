@@ -32,7 +32,7 @@ class MediaViewController: BaseViewController {
 
 
     // MARK: API
-    
+
     override func close() {
         delegate?.controllerDidClose(self)
         WindowManager.instance.closeWindow(for: self)

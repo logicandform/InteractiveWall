@@ -12,7 +12,7 @@ extension CGRect {
 }
 
 extension CGPoint {
-    
+
     var asVector: CGVector {
         return CGVector(dx: x, dy: y)
     }
@@ -119,7 +119,7 @@ extension CGPoint {
 }
 
 extension CGVector {
-    
+
     var asPoint: CGPoint {
         return CGPoint(x: dx, y: dy)
     }

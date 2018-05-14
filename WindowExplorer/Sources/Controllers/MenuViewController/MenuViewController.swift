@@ -35,7 +35,7 @@ class MenuViewController: NSViewController, GestureResponder {
 
 
     // MARK: Life-Cycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         gestureManager = GestureManager(responder: self)
@@ -87,7 +87,7 @@ class MenuViewController: NSViewController, GestureResponder {
             print("leftSwitchInterfaceLabelTap gesture handling not implemented")
         }
     }
-    
+
     private func handleRightSwitchInterfaceTap(_ gesture: GestureRecognizer) {
         if let tap = gesture as? TapGestureRecognizer, tap.state == .ended {
             print("leftSwitchInterfaceLabelTap gesture handling not implemented")
@@ -99,7 +99,7 @@ class MenuViewController: NSViewController, GestureResponder {
 
     /// Determines if the bounds of the draggable area is inside a given rect
     func draggableInside(bounds: CGRect) -> Bool {
-        guard let _ = view.window else {
+        if view.window == nil {
             return false
         }
 

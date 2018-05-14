@@ -64,12 +64,12 @@ extension RecordDisplayable {
 
         return []
     }
-    
+
     func relatedRecords(of type: RecordFilterType) -> [RecordDisplayable] {
         if let recordType = type.recordType {
             return relatedRecords(of: recordType)
         }
-        
+
         switch type {
         case .image:
             return relatedRecordsContainingImages()
@@ -77,33 +77,33 @@ extension RecordDisplayable {
             return []
         }
     }
-    
+
     func relatedRecordsContainingImages() -> [RecordDisplayable] {
         return relatedRecords.filter { $0.containsImages() }
     }
-    
+
     func containsImages() -> Bool {
         guard let firstMediaItem = media.first else {
             return false
         }
-        
+
         return firstMediaItem.type == .image || firstMediaItem.type == .pdf
     }
-    
+
     var titleAttributes: [NSAttributedStringKey: Any] {
         let font = NSFont(name: Constants.fontName, size: Constants.titleFontSize) ?? NSFont.systemFont(ofSize: Constants.titleFontSize)
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Constants.titleLineSpacing
         paragraphStyle.maximumLineHeight = Constants.titleMaximumLineheight
-        
+
         return [.paragraphStyle: paragraphStyle,
                 .font: font,
                 .foregroundColor: Constants.titleForegroundColor,
                 .kern: Constants.kern
         ]
     }
-    
+
     var dateAttributes: [NSAttributedStringKey: Any] {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Constants.dateLineSpacing
@@ -115,7 +115,7 @@ extension RecordDisplayable {
                 .kern: Constants.kern
         ]
     }
-    
+
     var descriptionAttributes: [NSAttributedStringKey: Any] {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Constants.descriptionLineSpacing
@@ -129,7 +129,7 @@ extension RecordDisplayable {
                 .kern: Constants.kern
         ]
     }
-    
+
     var commentAttributes: [NSAttributedStringKey: Any] {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Constants.commentsLineSpacing
@@ -143,7 +143,7 @@ extension RecordDisplayable {
                 .kern: Constants.kern
         ]
     }
-    
+
     var smallHeaderAttributes: [NSAttributedStringKey: Any] {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Constants.smallHeaderLineSpacing
@@ -157,7 +157,7 @@ extension RecordDisplayable {
                 .kern: Constants.kern
         ]
     }
-    
+
     func smallHeader(named headerName: String) -> NSTextField {
         let header = NSMutableAttributedString(string: "\n"+headerName, attributes: smallHeaderAttributes)
         let label = NSTextField(labelWithAttributedString: header)
@@ -167,7 +167,7 @@ extension RecordDisplayable {
         label.sizeToFit()
         return label
     }
-    
+
     func textFieldFor(string: String, attributes: [NSAttributedStringKey: Any]) -> NSTextField {
         let attributedString = NSMutableAttributedString(string: string, attributes: attributes)
         let label = NSTextField(labelWithAttributedString: attributedString)
@@ -176,20 +176,20 @@ extension RecordDisplayable {
         label.isSelectable = false
         return label
     }
-    
+
     var textFields: [NSTextField] {
         var labels = [NSTextField]()
         labels.append(textFieldFor(string: title, attributes: titleAttributes))
-        
+
         if let date = date, let first = date.split(separator: "|").first?.description {
             labels.append(textFieldFor(string: first, attributes: dateAttributes))
         }
-        
+
         if let description = description, !description.isEmpty {
             labels.append(smallHeader(named: "Description"))
             labels.append(textFieldFor(string: description, attributes: descriptionAttributes))
         }
-        
+
         return labels
     }
 }
@@ -207,26 +207,26 @@ extension Event: RecordDisplayable {
 }
 
 extension Artifact: RecordDisplayable {
-    
+
     var textFields: [NSTextField] {
         var labels = [NSTextField]()
-        
+
         labels.append(textFieldFor(string: title, attributes: titleAttributes))
-        
+
         if let date = date, let first = date.split(separator: "|").first?.description {
             labels.append(textFieldFor(string: first, attributes: dateAttributes))
         }
-        
+
         if let description = description, !description.isEmpty {
             labels.append(smallHeader(named: "Description"))
             labels.append(textFieldFor(string: description, attributes: descriptionAttributes))
         }
-        
+
         if let comments = comments, !comments.isEmpty {
             labels.append(smallHeader(named: "Curatorial Comments"))
             labels.append(textFieldFor(string: comments, attributes: commentAttributes))
         }
-        
+
         return labels
     }
 

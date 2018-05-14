@@ -41,9 +41,9 @@ public class ArrowControl: NSControl {
         let lineWidth: CGFloat = 4
 
         let bezierPath = NSBezierPath()
-        bezierPath.move(to: NSPoint(x: drawRightArrow ? NSMinX(self.bounds) : NSMaxX(self.bounds), y: NSMaxY(self.bounds)))
-        bezierPath.line(to: NSPoint(x: drawRightArrow ? NSMaxX(self.bounds)-lineWidth*0.5 : NSMinX(self.bounds)+lineWidth*0.5, y: NSMidY(self.bounds)))
-        bezierPath.line(to: NSPoint(x: drawRightArrow ? NSMinX(self.bounds) : NSMaxX(self.bounds), y: NSMinY(self.bounds)))
+        bezierPath.move(to: NSPoint(x: drawRightArrow ? bounds.minX : bounds.maxX, y: bounds.maxY))
+        bezierPath.line(to: NSPoint(x: drawRightArrow ? bounds.maxX-lineWidth*0.5 : bounds.minX+lineWidth*0.5, y: bounds.midY))
+        bezierPath.line(to: NSPoint(x: drawRightArrow ? bounds.minX : bounds.maxX, y: bounds.minY))
         bezierPath.lineWidth = lineWidth
         bezierPath.lineCapStyle = .roundLineCapStyle
         bezierPath.lineJoinStyle = .roundLineJoinStyle

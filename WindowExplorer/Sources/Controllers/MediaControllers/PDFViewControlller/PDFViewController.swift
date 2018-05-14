@@ -73,7 +73,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         pdfScrollView.maxMagnification = Constants.maximumMagnification
         resizeToFirstPage()
     }
-    
+
     private func setupThumbnailView() {
         thumbnailView.register(NSNib(nibNamed: PDFTableViewItem.nibName, bundle: nil), forIdentifier: PDFTableViewItem.interfaceIdentifier)
     }
@@ -133,7 +133,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         guard let pan = gesture as? PanGestureRecognizer, !animating else {
             return
         }
-        
+
         switch pan.state {
         case .recognized, .momentum:
             var rect = thumbnailView.visibleRect
@@ -154,7 +154,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
             var pdfRect = pdfScrollView.contentView.bounds
             let scaledWidth = (2.0 - pinch.scale) * pdfRect.size.width
             let scaledHeight = (2.0 - pinch.scale) * pdfRect.size.height
-            if scaledWidth <= contentViewFrame.width{
+            if scaledWidth <= contentViewFrame.width {
                 var translationX = pinch.delta.dx * pdfRect.size.width / contentViewFrame.width
                 var translationY = pinch.delta.dy * pdfRect.size.height / contentViewFrame.height
                 if scaledWidth >= contentViewFrame.width / Constants.maximumMagnification {
@@ -182,7 +182,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
             var pdfRect = pdfScrollView.contentView.bounds
             let scaledWidth = Constants.doubleTapScale * pdfRect.size.width
             let scaledHeight = Constants.doubleTapScale * pdfRect.size.height
-            if scaledWidth >= contentViewFrame.width / Constants.maximumMagnification   {
+            if scaledWidth >= contentViewFrame.width / Constants.maximumMagnification {
                 let translationX = -(pdfRect.size.width - scaledWidth) * (position.x / contentViewFrame.width)
                 let translationY = -(pdfRect.size.height - scaledHeight) * (position.y / contentViewFrame.height)
                 pdfRect.size = CGSize(width: scaledWidth, height: scaledHeight)
@@ -221,7 +221,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         guard let tap = gesture as? TapGestureRecognizer, let location = tap.position, tap.state == .ended, !animating else {
             return
         }
-        
+
         let locationInTable = location + thumbnailView.visibleRect.origin
         let row = thumbnailView.row(at: locationInTable)
         if row >= 0, let thumbnailItem = thumbnailView.view(atColumn: 0, row: row, makeIfNecessary: false) as? PDFTableViewItem, let selectedPage = thumbnailItem.page {
@@ -269,7 +269,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         leftArrow.isHidden = !pdfView.canGoToPreviousPage
         rightArrow.isHidden = !pdfView.canGoToNextPage
         pdfScrollView.magnification = Constants.initialMagnification
-        
+
         if let page = pdfView.currentPage, let pageNumber = page.pageRef?.pageNumber, let thumbnailItem = thumbnailView.view(atColumn: 0, row: pageNumber - 1, makeIfNecessary: false) as? PDFTableViewItem {
             selectedThumbnailItem = thumbnailItem
             thumbnailView.scrollRowToVisible(pageNumber - 1)

@@ -32,4 +32,3 @@ class LastTwo<Element>: CustomStringConvertible {
         secondLast = nil
     }
 }
-

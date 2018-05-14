@@ -17,7 +17,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     @IBOutlet weak var secondaryTextField: NSTextField!
     @IBOutlet weak var tertiaryTextField: NSTextField!
     @IBOutlet weak var collapseButtonArea: NSView!
-    
+
     private var selectedType: RecordType?
     private var selectedIndexForView = [NSCollectionView: IndexPath]()
 

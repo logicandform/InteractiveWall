@@ -55,7 +55,7 @@ enum RecordType: String, SearchItemDisplayable {
             return NSImage(named: "school-icon")!
         }
     }
-    
+
     var filterType: RecordFilterType {
         switch self {
         case .event:

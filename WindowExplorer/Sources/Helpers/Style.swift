@@ -58,25 +58,25 @@ final class Style {
         let font = NSFont(name: "Soleil", size: 13) ?? NSFont.systemFont(ofSize: 13)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byTruncatingTail
-        
+
         return [.paragraphStyle: paragraphStyle,
                 .font: font,
                 .foregroundColor: NSColor.white,
                 .kern: 0.5]
     }
 
-    var relatedItemViewTitleAttributes: [NSAttributedStringKey : Any] {
+    var relatedItemViewTitleAttributes: [NSAttributedStringKey: Any] {
         let font = NSFont(name: "Soleil-Bold", size: 11) ?? NSFont.systemFont(ofSize: 11)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byTruncatingTail
 
-        return [.paragraphStyle : paragraphStyle,
-                .kern : 1,
-                .foregroundColor : NSColor.white,
-                .font : font]
+        return [.paragraphStyle: paragraphStyle,
+                .kern: 1,
+                .foregroundColor: NSColor.white,
+                .font: font]
     }
 
-    var relatedItemViewDescriptionAttributes : [NSAttributedStringKey : Any] {
+    var relatedItemViewDescriptionAttributes: [NSAttributedStringKey: Any] {
         let font = NSFont(name: "Soleil", size: 10) ?? NSFont.systemFont(ofSize: 10)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byCharWrapping

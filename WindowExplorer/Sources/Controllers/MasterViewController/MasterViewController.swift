@@ -68,7 +68,7 @@ class MasterViewController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupScreens()
         setupCheckboxes()
         setupActionButton()
@@ -119,7 +119,7 @@ class MasterViewController: NSViewController {
 
 
     // MARK: IB-Actions
-    
+
     @IBAction func applyButtonClicked(_ sender: NSButton) {
         guard let selectedAction = actionSelectionButton.selectedItem, let action = ControlAction(title: selectedAction.title) else {
             return

@@ -87,7 +87,7 @@ class ImageViewController: MediaViewController {
         tapGesture.gestureUpdated = didTapImageView(_:)
     }
 
-    
+
     // MARK: Gesture Handling
 
     private func didPinchImageView(_ gesture: GestureRecognizer) {
@@ -126,7 +126,7 @@ class ImageViewController: MediaViewController {
             var imageRect = imageScrollView.contentView.bounds
             let scaledWidth = Constants.doubleTapScale * imageRect.size.width
             let scaledHeight = Constants.doubleTapScale * imageRect.size.height
-            if scaledWidth >= contentViewFrame.width / Constants.maximumMagnification   {
+            if scaledWidth >= contentViewFrame.width / Constants.maximumMagnification {
                 let translationX = -(imageRect.size.width - scaledWidth) * (position.x / contentViewFrame.width)
                 let translationY = -(imageRect.size.height - scaledHeight) * (position.y / contentViewFrame.height)
                 imageRect.size = CGSize(width: scaledWidth, height: scaledHeight)

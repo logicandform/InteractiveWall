@@ -80,7 +80,7 @@ final class GeocodeHelper {
     }
 
     private func extractProvince(for school: School, with placemarks: [CLPlacemark]?, _ error: Error?) {
-        if let _ = error {
+        if error != nil {
             handle(.retry(school: school))
         } else if let placemark = placemarks?.first {
             if let area = placemark.administrativeArea, let province = Province(abbreviation: area) {

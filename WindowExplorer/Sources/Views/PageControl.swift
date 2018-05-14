@@ -15,13 +15,13 @@ public class PageControl: NSControl {
 
     public var color = NSColor.black {
         didSet {
-            self.redrawIndicators()
+            redrawIndicators()
         }
     }
 
     public var indicatorSize: CGFloat = 7 {
         didSet {
-            self.redrawIndicators()
+            redrawIndicators()
         }
     }
 
@@ -32,7 +32,7 @@ public class PageControl: NSControl {
 
     public var style = Style.dot {
         didSet {
-            self.redrawIndicators()
+            redrawIndicators()
         }
     }
 
@@ -41,13 +41,13 @@ public class PageControl: NSControl {
 
     public var numberOfPages: UInt = 0 {
         didSet {
-            self.redrawIndicators()
+            redrawIndicators()
         }
     }
 
     public var selectedPage: UInt = 0 {
         didSet {
-            self.redrawIndicators()
+            redrawIndicators()
         }
     }
 
@@ -56,7 +56,7 @@ public class PageControl: NSControl {
 
     public override var frame: NSRect {
         willSet {
-            self.needsToRedrawIndicators = true
+            needsToRedrawIndicators = true
         }
     }
 
@@ -64,21 +64,23 @@ public class PageControl: NSControl {
     // MARK: Drawing
 
     public override func draw(_ dirtyRect: NSRect) {
-        guard self.needsToRedrawIndicators else { return }
+        guard needsToRedrawIndicators else {
+            return
+        }
 
-        if self.numberOfPages > 1 {
-            for index in 0...self.numberOfPages-1 {
+        if numberOfPages > 1 {
+            for index in 0 ... numberOfPages-1 {
                 var fill = true
-                let frame = self.frameOfIndicator(at: index)
+                let frame = frameOfIndicator(at: index)
                 let lineWidth: CGFloat = 1
 
-                switch (self.style, index == self.selectedPage) {
+                switch (self.style, index == selectedPage) {
                 case (.dot, true), (.circle, true):
-                    self.color.setFill()
+                    color.setFill()
                 case (.dot, false):
-                    self.color.withAlphaComponent(0.33).setFill()
+                    color.withAlphaComponent(0.33).setFill()
                 case (.circle, false):
-                    self.color.setStroke()
+                    color.setStroke()
                     fill = false
                     frame.insetBy(dx: lineWidth*0.5, dy: lineWidth*0.5)
                 }
@@ -93,57 +95,57 @@ public class PageControl: NSControl {
             }
         }
 
-        self.needsToRedrawIndicators = false
+        needsToRedrawIndicators = false
     }
 
 
     // MARK: Mouse
 
     public override func mouseDown(with theEvent: NSEvent) {
-        let location = self.convert(theEvent.locationInWindow, from: nil)
-        self.highlightIndicator(at: location)
+        let location = convert(theEvent.locationInWindow, from: nil)
+        highlightIndicator(at: location)
     }
 
     public override func mouseDragged(with theEvent: NSEvent) {
-        let location = self.convert(theEvent.locationInWindow, from: nil)
-        self.highlightIndicator(at: location)
+        let location = convert(theEvent.locationInWindow, from: nil)
+        highlightIndicator(at: location)
     }
 
     public override func mouseUp(with theEvent: NSEvent) {
-        let location = self.convert(theEvent.locationInWindow, from: nil)
-        self.highlightIndicator(at: location, sendAction: true)
+        let location = convert(theEvent.locationInWindow, from: nil)
+        highlightIndicator(at: location, sendAction: true)
     }
 
 
     // MARK: Helpers
 
     private func highlightIndicator(at location: NSPoint, sendAction: Bool = false) {
-        var newPage = self.selectedPage
-        for index in 0...self.numberOfPages-1 {
-            if NSPointInRect(location, self.frameOfIndicator(at: index)) {
+        var newPage = selectedPage
+        for index in 0...numberOfPages-1 {
+            if frameOfIndicator(at: index).contains(location) {
                 newPage = index
                 break
             }
         }
-        if self.selectedPage != newPage {
-            self.selectedPage = newPage
+        if selectedPage != newPage {
+            selectedPage = newPage
         }
 
-        guard sendAction, let target = self.target, let action = self.action else { return }
+        guard sendAction, let target = target, let action = action else { return }
         NSApp.sendAction(action, to: target, from: self)
     }
 
     private func frameOfIndicator(at index: UInt) -> NSRect {
-        let centerDrawingAroundSpace = (self.numberOfPages % 2 == 0)
-        let centeredIndex = self.numberOfPages/2
-        let centeredFrame = NSRect(x: NSMidX(self.bounds) - (centerDrawingAroundSpace ? -self.indicatorSize/2 : self.indicatorSize/2), y: NSMidY(self.bounds) - self.indicatorSize/2, width: self.indicatorSize, height: self.indicatorSize)
+        let centerDrawingAroundSpace = (numberOfPages % 2 == 0)
+        let centeredIndex = numberOfPages/2
+        let centeredFrame = NSRect(x: bounds.midX - (centerDrawingAroundSpace ? -indicatorSize/2 : indicatorSize/2), y: bounds.midY - indicatorSize/2, width: indicatorSize, height: indicatorSize)
         let distanceToCenteredIndex = CGFloat(centeredIndex)-CGFloat(index)
 
-        return NSRect(x: NSMinX(centeredFrame) - distanceToCenteredIndex*self.indicatorSize*2, y: NSMidY(self.bounds) - self.indicatorSize/2, width: self.indicatorSize, height: self.indicatorSize)
+        return NSRect(x: centeredFrame.minX - distanceToCenteredIndex*indicatorSize*2, y: bounds.midY - indicatorSize/2, width: indicatorSize, height: indicatorSize)
     }
 
     private func redrawIndicators() {
-        self.needsToRedrawIndicators = true
-        self.needsDisplay = true
+        needsToRedrawIndicators = true
+        needsDisplay = true
     }
 }

@@ -416,7 +416,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     func controllerDidMove(_ controller: MediaViewController) {
         positionForMediaController[controller] = nil as Int?
     }
- 
+
     func recordFrameAndPosition(for controller: MediaViewController) -> (frame: CGRect, position: Int)? {
         guard let window = view.window else {
             return nil

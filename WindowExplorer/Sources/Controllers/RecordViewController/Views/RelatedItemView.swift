@@ -23,7 +23,7 @@ class RelatedItemView: NSCollectionViewItem {
         static let numberOfDescriptionLines = 3
     }
 
-    
+
     // MARK: Init
 
     override func awakeFromNib() {

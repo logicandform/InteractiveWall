@@ -4,7 +4,7 @@ import Foundation
 import MONode
 
 public extension NetworkConfiguration {
-    
+
     public init(broadcast: String) {
         self.init()
         self.broadcastHost = broadcast

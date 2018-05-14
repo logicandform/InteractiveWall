@@ -301,7 +301,8 @@ public class AKPlayer {
     }
 
     // keep this timer separate in the cases of sounds that aren't scheduled
-    @objc private func startCompletionTimer() {
+    @objc
+    private func startCompletionTimer() {
         var segmentDuration = endTime - startTime
         if isLooping && loop.end > 0 {
             segmentDuration = loop.end - startTime
@@ -333,7 +334,7 @@ public class AKPlayer {
         // correct it with the first case above (seek).
 
         scheduleSegment(from: nextRenderFrame, frameCount: frameCount, at: nil, completion: completion)
-        nextRenderFrame = nextRenderFrame + AVAudioFramePosition(frameCount)
+        nextRenderFrame += AVAudioFramePosition(frameCount)
     }
 
     func scheduleBuffer(at audioTime: AVAudioTime) {
@@ -387,7 +388,8 @@ public class AKPlayer {
         }
     }
 
-    @objc private func handleComplete() {
+    @objc
+    private func handleComplete() {
         stop()
         if isLooping {
             startTime = loop.start
@@ -561,4 +563,3 @@ extension AVAudioTime {
         return out
     }
 }
-
