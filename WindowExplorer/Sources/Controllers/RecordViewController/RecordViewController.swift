@@ -26,7 +26,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private var pageControl = PageControl()
     private var showingRelatedItems = false
     private var relatedItemsFilterType: RecordFilterType?
-    private var baseViewPositionManager = BaseViewPositionManager()
 
     private struct Constants {
         static let allRecordsTitle = "RECORDS"
@@ -437,6 +436,11 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
     }
 
+    override func close() {
+        //Check if it is part of the list here, if so, do something extra
+        WindowManager.instance.closeWindow(for: self)
+    }
+
 
     // MARK: Helpers
 
@@ -492,6 +496,19 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
                 }
             })
         })
+    }
+ */
+
+    private func getMediaControllerPosition() -> Int {
+        let currentPositions = positionForMediaController.values
+
+        for position in 0 ... positionForMediaController.keys.count {
+            if !currentPositions.contains(position) {
+                return position
+            }
+        }
+
+        return positionForMediaController.count
     }
 
     private func closeTimerFired() {

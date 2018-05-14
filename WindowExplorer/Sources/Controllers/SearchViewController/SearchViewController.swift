@@ -7,6 +7,12 @@ protocol SearchItemDisplayable {
     var title: String { get }
 }
 
+protocol SearchViewDelegate: class {
+    func controllerDidClose(_ controller: BaseViewController)
+    func controllerDidMove(_ controller: BaseViewController)
+    func frameAndPosition(for controller: BaseViewController) -> (frame: CGRect, position: Int)?
+}
+
 
 class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout {
     static let storyboard = NSStoryboard.Name(rawValue: "Search")
@@ -20,6 +26,8 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     private var selectedType: RecordType?
     private var selectedIndexForView = [NSCollectionView: IndexPath]()
+    private var baseViewPositionManager = BaseViewPositionManager()
+    private var positionForRecordController = [RecordViewController: Int?]()
 
     private lazy var titleViews: [NSTextField] = [titleLabel, secondaryTextField, tertiaryTextField]
     private lazy var collectionViews: [NSCollectionView] = [primaryCollectionView, secondaryCollectionView, tertiaryCollectionView]
@@ -148,6 +156,30 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
         return CGSize(width: collectionView.frame.size.width, height: Constants.searchItemHeight)
+    }
+
+
+    // MARK: RecordDelegate
+
+    func controllerDidClose(_ controller: RecordViewController) {
+        positionForRecordController.removeValue(forKey: controller)
+        resetCloseWindowTimer()
+    }
+
+    func controllerDidMove(_ controller: RecordViewController) {
+        positionForRecordController[controller] = nil as Int?
+    }
+
+    func frameAndPosition(for controller: RecordViewController) -> (frame: CGRect, position: Int)? {
+        guard let window = view.window else {
+            return nil
+        }
+
+        if let position = positionForRecordController[controller], position != nil {
+            return (window.frame, position!)
+        } else {
+            return (window.frame, getRecordControllerPosition())
+        }
     }
 
 
