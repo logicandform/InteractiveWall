@@ -33,6 +33,8 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     private struct Constants {
         static let animationDuration = 0.5
         static let searchItemHeight: CGFloat = 70
+        static let defaultWindowDragAreaColor = NSColor.lightGray
+        static let collectionViewMargin: CGFloat = 5
     }
 
 
@@ -44,6 +46,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
         setupGestures()
         resetCloseWindowTimer()
+        updateWindowDragAreaHighlight(for: selectedType)
         animateViewIn()
     }
 
@@ -90,14 +93,19 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             let collectionView = gestureManager.view(for: tap) as? NSCollectionView,
             let location = tap.position,
             let indexPath = collectionView.indexPathForItem(at: location + collectionView.visibleRect.origin),
-            let searchItem = collectionView.item(at: indexPath) as? SearchItemView,
+            let searchItemView = collectionView.item(at: indexPath) as? SearchItemView,
             indexPath != selectedIndexForView[collectionView] else {
             return
         }
 
-        select(searchItem)
+        // Set the windowDragHighlight color before waiting to toggle collectionViews
+        if let recordType = searchItemView.item as? RecordType {
+            updateWindowDragAreaHighlight(for: recordType)
+        }
+
+        select(searchItemView)
         toggle(to: collectionView) { [weak self] in
-            self?.showResults(for: searchItem)
+            self?.showResults(for: searchItemView)
         }
     }
 
@@ -218,12 +226,12 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
                 RecordFactory.records(for: type, in: group) { [weak self] records in
                     view.set(loading: false)
                     if let records = records {
-                        self?.load(records)
+                        self?.load(records, group: group.title)
                     }
                 }
             } else if let province = view.item as? Province {
                 let schools = GeocodeHelper.instance.schools(for: province).sorted { $0.title < $1.title }
-                load(schools)
+                load(schools, group: province.abbreviation)
             }
         case tertiaryCollectionView:
             if let record = view.item as? RecordDisplayable {
@@ -257,7 +265,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }, completionHandler: completion)
 
         var frame = window.frame
-        frame.size.width = style.searchWindowSize.width * CGFloat(index + 1)
+        frame.size.width = style.searchWindowSize.width * CGFloat(index + 1) + Constants.collectionViewMargin * CGFloat(index)
         window.setFrame(frame, display: true, animate: true)
         focusedCollectionView = view
     }
@@ -282,12 +290,17 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
     }
 
-    /// Loads records into and toggles the tertiary collection view
-    private func load(_ records: [RecordDisplayable]) {
+    /// Loads records into and toggles the tertiary collection view, from intermediary group
+    private func load(_ records: [RecordDisplayable], group: String) {
+        guard let selectedType = selectedType else {
+            return
+        }
+
         searchItemsForView[tertiaryCollectionView] = records
         tertiaryCollectionView.reloadData()
         tertiaryCollectionView.scroll(.zero)
-        tertiaryTextField.attributedStringValue = NSAttributedString(string: selectedType?.title ?? "", attributes: style.windowTitleAttributes)
+        let title = "\(selectedType.title) (\(group))"
+        tertiaryTextField.attributedStringValue = NSAttributedString(string: title, attributes: style.windowTitleAttributes)
         toggle(to: tertiaryCollectionView)
     }
 
@@ -302,5 +315,14 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
                 WindowManager.instance.display(.record(record), at: location)
             }
         }
+    }
+
+    private func updateWindowDragAreaHighlight(for recordType: RecordType?) {
+        guard let recordType = recordType else {
+            windowDragAreaHighlight.layer?.backgroundColor = Constants.defaultWindowDragAreaColor.cgColor
+            return
+        }
+
+        windowDragAreaHighlight.layer?.backgroundColor = recordType.color.cgColor
     }
 }
