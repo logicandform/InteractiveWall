@@ -6,6 +6,7 @@ class SearchItemView: NSCollectionViewItem {
     static let identifier = NSUserInterfaceItemIdentifier("SearchItemView")
 
     @IBOutlet weak var titleTextField: NSTextField!
+    @IBOutlet weak var attributionTextField: NSTextField!
     @IBOutlet weak var spinner: NSProgressIndicator!
 
     var tintColor = style.selectedColor
@@ -62,9 +63,23 @@ class SearchItemView: NSCollectionViewItem {
 
     private func apply(_ item: SearchItemDisplayable?) {
         titleTextField.stringValue = item?.title ?? ""
+        attributionTextField.stringValue = ""
 
         if let recordType = item as? RecordType {
             type = recordType
+        }
+
+        if let group = item as? LetterGroup, let type = type {
+            RecordFactory.count(for: type, in: group) { [weak self] count in
+                if let count = count {
+                    self?.attributionTextField.stringValue = "\(count)"
+                }
+            }
+        }
+
+        if let province = item as? Province {
+            let count = GeocodeHelper.instance.schools(for: province).count
+            attributionTextField.stringValue = "\(count)"
         }
     }
 }

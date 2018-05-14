@@ -20,6 +20,7 @@ final class CachingNetwork {
     static let baseURL = "http://10.58.73.164:3000"
 
     private struct Endpoints {
+        static let countForGroup = baseURL + "/%@/count/group/%@"
         static let places = baseURL + "/places/all/%d"
         static let placeByID = baseURL + "/places/find/%d"
         static let placesInGroup = baseURL + "/places/group/%@/%d"
@@ -49,6 +50,17 @@ final class CachingNetwork {
         let base64Credentials = credentialData.base64EncodedString(options: [])
         return ["Authorization": "Basic \(base64Credentials)"]
     }()
+
+
+    // MARK: Generic
+
+    static func getCount(of type: RecordType, in group: LetterGroup) throws -> Promise<Int> {
+        let url = String(format: Endpoints.countForGroup, type.title.lowercased(), group.rawValue)
+
+        return Alamofire.request(url).responseJSON().then { json in
+            return try ResponseHandler.serializeCount(from: json)
+        }
+    }
 
 
     // MARK: Places

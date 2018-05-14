@@ -5,6 +5,7 @@ import PromiseKit
 
 final class RecordFactory {
 
+
     static func record(for type: RecordType, id: Int, completion: @escaping ((RecordDisplayable?) -> Void)) {
         switch type {
         case .artifact:
@@ -47,6 +48,17 @@ final class RecordFactory {
             organizations(completion: completion)
         case .theme:
             themes(completion: completion)
+        }
+    }
+
+    static func count(for type: RecordType, in group: LetterGroup, completion: @escaping ((Int?) -> Void)) {
+        firstly {
+            try CachingNetwork.getCount(of: type, in: group)
+        }.then { count -> Void in
+            completion(count)
+        }.catch { error in
+            print(error)
+            completion(nil)
         }
     }
 

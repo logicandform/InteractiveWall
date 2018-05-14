@@ -5,6 +5,17 @@ import Foundation
 final class ResponseHandler {
 
 
+    // MARK: Generic
+
+    static func serializeCount(from json: Any) throws -> Int {
+        guard let count = json as? Int else {
+            throw NetworkError.badResponse
+        }
+
+        return count
+    }
+
+
     // MARK: Places
 
     static func serializePlaces(from json: Any) throws -> [Place] {
