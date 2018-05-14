@@ -3,7 +3,15 @@
 import Cocoa
 import AppKit
 
-class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource, NSTableViewDataSource, NSTableViewDelegate, ControllerDelegate {
+
+protocol RecordControllerDelegate: class {
+    func controllerDidClose(_ controller: BaseViewController)
+    func controllerDidMove(_ controller: BaseViewController)
+    func frameAndPosition(for controller: BaseViewController) -> (frame: CGRect, position: Int)?
+}
+
+
+class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource, NSTableViewDataSource, NSTableViewDelegate, MediaControllerDelegate, SearchViewDelegate {
 
     static let storyboard = NSStoryboard.Name(rawValue: "Record")
 
@@ -27,7 +35,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private var positionForMediaController = [MediaViewController: Int?]()
     private var showingRelatedItems = false
     private var relatedItemsFilterType: RecordFilterType?
-    private var baseViewPositionManager = BaseViewPositionManager()
 
     private struct Constants {
         static let allRecordsTitle = "RECORDS"
@@ -220,7 +227,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         case .ended:
             selectedMediaItem = mediaItem
             if let selectedMedia = selectedMediaItem?.media {
-                baseViewPositionManager.select(type: WindowType(for: selectedMedia), for: self)
+                selectController(selectedMedia)
             }
             selectedMediaItem = nil
         default:
@@ -345,7 +352,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         case .ended:
             selectedMediaItem = mediaItem
             if let selectedMedia = selectedMediaItem?.media {
-                baseViewPositionManager.select(type: WindowType(for: selectedMedia), for: self)
+                selectController(selectedMedia)
             }
             selectedMediaItem = nil
         default:
@@ -411,23 +418,31 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     // MARK: MediaControllerDelegate
 
     func controllerDidClose(_ controller: BaseViewController) {
-        baseViewPositionManager.removeFromQueue(self)
+        guard let controller = controller as? MediaViewController else {
+            return
+        }
+
+        positionForMediaController.removeValue(forKey: controller)
         resetCloseWindowTimer()
     }
 
     func controllerDidMove(_ controller: BaseViewController) {
-        baseViewPositionManager.makeNilInQueue(for: self)
+        guard let controller = controller as? MediaViewController else {
+            return
+        }
+
+        positionForMediaController[controller] = nil as Int?
     }
  
     func frameAndPosition(for controller: BaseViewController) -> (frame: CGRect, position: Int)? {
-        guard let window = view.window else {
+        guard let window = view.window, let controller = controller as? MediaViewController else {
             return nil
         }
 
-        if let position = baseViewPositionManager.getValueInQueue(for: self), position != nil {
+        if let position = positionForMediaController[controller], position != nil {
             return (window.frame, position!)
         } else {
-            return (window.frame, baseViewPositionManager.getControllerPosition())
+            return (window.frame, getMediaControllerPosition())
         }
     }
 
@@ -458,6 +473,11 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Constants.closeWindowTimeoutPeriod, repeats: false) { [weak self] _ in
             self?.closeTimerFired()
         }
+    }
+
+    override func close() {
+        //Check if it is part of the list here, if so, do something extra
+        WindowManager.instance.closeWindow(for: self)
     }
 
 
@@ -545,6 +565,34 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     }
  */
 
+    private func selectController(_ media: Media) {
+        guard let windowType = WindowType(for: media) else {
+            return
+        }
+
+        let controller = positionForMediaController.keys.first(where: { $0.media == media })
+        let position = getMediaControllerPosition()
+
+        if let controller = controller {
+            // If the controller is in the correct position, bring it to the front, else animate to origin
+            if let position = positionForMediaController[controller], position != nil {
+                controller.view.window?.makeKeyAndOrderFront(self)
+            } else {
+                controller.updatePosition(animating: true)
+                positionForMediaController[controller] = position
+            }
+        } else if let controller = WindowManager.instance.display(windowType) as? MediaViewController {
+            controller.delegate = self
+
+            // Image view controller takes care of setting its own position after its image has loaded in
+            if controller is PlayerViewController || controller is PDFViewController {
+                controller.updatePosition(animating: false)
+            }
+            positionForMediaController[controller] = position
+        }
+    }
+
+    /*
     /// Gets the first available media controller position
     private func getMediaControllerPosition() -> Int {
         let currentPositions = positionForMediaController.values
@@ -556,6 +604,19 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
 
         return record.media.count
+    }
+ */
+
+    private func getMediaControllerPosition() -> Int {
+        let currentPositions = positionForMediaController.values
+
+        for position in 0 ... positionForMediaController.keys.count {
+            if !currentPositions.contains(position) {
+                return position
+            }
+        }
+
+        return positionForMediaController.count
     }
 
     private func closeTimerFired() {

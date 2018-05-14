@@ -7,6 +7,12 @@ protocol SearchItemDisplayable {
     var title: String { get }
 }
 
+protocol SearchViewDelegate: class {
+    func controllerDidClose(_ controller: BaseViewController)
+    func controllerDidMove(_ controller: BaseViewController)
+    func frameAndPosition(for controller: BaseViewController) -> (frame: CGRect, position: Int)?
+}
+
 
 class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout {
     static let storyboard = NSStoryboard.Name(rawValue: "Search")
@@ -17,9 +23,13 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     @IBOutlet weak var secondaryTextField: NSTextField!
     @IBOutlet weak var tertiaryTextField: NSTextField!
     @IBOutlet weak var collapseButtonArea: NSView!
-    
+
+    weak var delegate: SearchViewDelegate?
+
     private var selectedType: RecordType?
     private var selectedIndexForView = [NSCollectionView: IndexPath]()
+    private var baseViewPositionManager = BaseViewPositionManager()
+    private var positionForRecordController = [RecordViewController: Int?]()
 
     private lazy var titleViews: [NSTextField] = [titleLabel, secondaryTextField, tertiaryTextField]
     private lazy var collectionViews: [NSCollectionView] = [primaryCollectionView, secondaryCollectionView, tertiaryCollectionView]
@@ -33,6 +43,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     private struct Constants {
         static let animationDuration = 0.5
         static let searchItemHeight: CGFloat = 70
+        static let controllerOffset = 50
     }
 
 
@@ -140,6 +151,30 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
         return CGSize(width: collectionView.frame.size.width, height: Constants.searchItemHeight)
+    }
+
+
+    // MARK: RecordDelegate
+
+    func controllerDidClose(_ controller: RecordViewController) {
+        positionForRecordController.removeValue(forKey: controller)
+        resetCloseWindowTimer()
+    }
+
+    func controllerDidMove(_ controller: RecordViewController) {
+        positionForRecordController[controller] = nil as Int?
+    }
+
+    func frameAndPosition(for controller: RecordViewController) -> (frame: CGRect, position: Int)? {
+        guard let window = view.window else {
+            return nil
+        }
+
+        if let position = positionForRecordController[controller], position != nil {
+            return (window.frame, position!)
+        } else {
+            return (window.frame, getRecordControllerPosition())
+        }
     }
 
 
@@ -298,9 +333,47 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
         let location = CGPoint(x: window.frame.maxX + style.windowMargins, y: window.frame.minY)
         RecordFactory.record(for: record.type, id: record.id) { record in
-            if let record = record {
-                WindowManager.instance.display(.record(record), at: location)
+            if let record = record, let controller = WindowManager.instance.display(.record(record), at: location) as? RecordViewController {
+                self.baseViewPositionManager.add(record: controller)
+                self.positionForRecordController[controller] = nil
             }
         }
     }
+
+    private func getRecordControllerPosition() -> Int {
+        let currentPositions = positionForRecordController.values
+
+        for position in 0 ... positionForRecordController.keys.count {
+            if !currentPositions.contains(position) {
+                return position
+            }
+        }
+
+        return positionForRecordController.count
+    }
+
+    /*
+    private func updateOrigin(from recordFrame: CGRect, at position: Int, animating: Bool) {
+        let offsetX = CGFloat(position * Constants.controllerOffset)
+        let offsetY = CGFloat(position * -Constants.controllerOffset)
+        let lastScreen = NSScreen.at(position: Configuration.numberOfScreens)
+        var origin = CGPoint(x: recordFrame.maxX + style.windowMargins + offsetX, y: recordFrame.maxY + offsetY - view.frame.height)
+
+        if origin.x > lastScreen.frame.maxX - view.frame.width / 2 {
+            if lastScreen.frame.height - recordFrame.maxY < view.frame.height + style.windowMargins - 2 * offsetY {
+                // Below
+                origin =  CGPoint(x: lastScreen.frame.maxX - view.frame.width - style.windowMargins, y: origin.y - recordFrame.height - style.windowMargins)
+            } else {
+                // Above
+                origin =  CGPoint(x: lastScreen.frame.maxX - view.frame.width - style.windowMargins, y: origin.y + view.frame.height + style.windowMargins - 2 * offsetY)
+            }
+        }
+
+        if animating {
+            animate(to: origin)
+        } else {
+            view.window?.setFrameOrigin(origin)
+        }
+    }
+ */
 }
