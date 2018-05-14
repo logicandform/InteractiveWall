@@ -3,7 +3,15 @@
 import Cocoa
 import AppKit
 
-class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource, NSTableViewDataSource, NSTableViewDelegate, ControllerDelegate {
+
+protocol RecordControllerDelegate: class {
+    func controllerDidClose(_ controller: BaseViewController)
+    func controllerDidMove(_ controller: BaseViewController)
+    func frameAndPosition(for controller: BaseViewController) -> (frame: CGRect, position: Int)?
+}
+
+
+class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource, NSTableViewDataSource, NSTableViewDelegate, MediaControllerDelegate, SearchViewDelegate {
 
     static let storyboard = NSStoryboard.Name(rawValue: "Record")
 
