@@ -32,7 +32,7 @@ enum RecordFilterType {
 
         switch self {
         case .image:
-            return style.organizationColor
+            return style.imageFilterTypeColor
         default:
             return style.unselectedRecordIcon
         }
@@ -45,8 +45,7 @@ enum RecordFilterType {
 
         switch self {
         case .image:
-            // NOTE: placeholder for now, need actual icon
-            return NSImage(named: "school-icon")
+            return NSImage(named: "image-icon")
         default:
             return nil
         }
