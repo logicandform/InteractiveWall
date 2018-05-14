@@ -586,7 +586,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             self?.relatedItemsView.reloadData()
             self?.fadeRelatedItemsView(out: false, completion: {})
         })
-
     }
 
     /// Transitions the related records title by fading out & in
