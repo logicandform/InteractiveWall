@@ -10,7 +10,7 @@ class Event {
     let type = RecordType.event
     let date: String?
     let description: String?
-    var coordinate: CLLocationCoordinate2D? = nil
+    var coordinate: CLLocationCoordinate2D?
     var media = [Media]()
     var relatedSchools = [School]()
     var relatedOrganizations = [Organization]()
