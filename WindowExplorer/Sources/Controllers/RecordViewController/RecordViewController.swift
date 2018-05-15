@@ -94,12 +94,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
 
         arrowIndicatorImageView.isHidden = scrollView.hasReachedBottom
-
-        if arrowIndicatorImageView.isHidden {
-            print("hidden")
-        } else {
-            print("show")
-        }
     }
 
     private func setupMediaView() {
