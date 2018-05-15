@@ -93,7 +93,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             return
         }
 
-        arrowIndicatorImageView.isHidden = scrollView.hasReachedBottom ? true : false
+        arrowIndicatorImageView.isHidden = scrollView.hasReachedBottom
 
         if arrowIndicatorImageView.isHidden {
             print("hidden")
