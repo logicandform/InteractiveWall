@@ -17,6 +17,7 @@ class School: Hashable {
     var relatedArtifacts = [Artifact]()
     var relatedEvents = [Event]()
     var relatedThemes = [Theme]()
+    lazy var priority = PriorityOrder.priority(for: self)
 
     var hashValue: Int {
         return id.hashValue

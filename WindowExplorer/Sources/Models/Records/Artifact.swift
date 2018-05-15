@@ -18,6 +18,7 @@ class Artifact {
     var relatedArtifacts = [Artifact]()
     var relatedEvents = [Event]()
     var relatedThemes = [Theme]()
+    lazy var priority = PriorityOrder.priority(for: self)
 
     private struct Keys {
         static let id = "id"

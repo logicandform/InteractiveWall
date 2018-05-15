@@ -25,6 +25,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
     var record: RecordDisplayable!
     private let relationshipHelper = RelationshipHelper()
+    private var relatedRecords: [RecordDisplayable]!
     private var pageControl = PageControl()
     private var showingRelatedItems = false
     private var relatedItemsFilterType: RecordFilterType?
@@ -107,6 +108,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         recordTypeSelectionView.stackview.alphaValue = 0
         recordTypeSelectionView.initialize(with: record, manager: gestureManager)
         recordTypeSelectionView.selectionCallback = didSelectRelatedItemsFilterType(_:)
+        relatedRecords = record.relatedRecords.sorted(by: { $0.priority > $1.priority })
     }
 
     private func setupGestures() {
@@ -378,9 +380,9 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             return record.media.count
         case relatedItemsView:
             if let type = relatedItemsFilterType {
-                return record.relatedRecords(of: type).count
+                return record.filterRelatedRecords(of: type, from: relatedRecords).count
             } else {
-                return record.relatedRecords.count
+                return relatedRecords.count
             }
         default:
             return 0
@@ -398,9 +400,9 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         case relatedItemsView:
             if let relatedItemView = collectionView.makeItem(withIdentifier: RelatedItemView.identifier, for: indexPath) as? RelatedItemView {
                 if let type = relatedItemsFilterType {
-                    relatedItemView.record = record.relatedRecords(of: type).at(index: indexPath.item)
+                    relatedItemView.record = record.filterRelatedRecords(of: type, from: relatedRecords).at(index: indexPath.item)
                 } else {
-                    relatedItemView.record = record.relatedRecords.at(index: indexPath.item)
+                    relatedItemView.record = relatedRecords.at(index: indexPath.item)
                 }
                 relatedItemView.tintColor = record.type.color
                 return relatedItemView
