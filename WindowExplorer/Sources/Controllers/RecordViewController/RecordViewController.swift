@@ -22,13 +22,12 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     @IBOutlet weak var recordTypeSelectionView: RecordTypeSelectionView!
     @IBOutlet weak var expandImageView: NSImageView!
 
+    @IBOutlet weak var arrowIndicatorContainerView: NSView!
     var record: RecordDisplayable!
     private let relationshipHelper = RelationshipHelper()
     private var pageControl = PageControl()
     private var showingRelatedItems = false
     private var relatedItemsFilterType: RecordFilterType?
-
-    private lazy var arrowIndicatorImageView = NSImageView()
 
     private struct Constants {
         static let allRecordsTitle = "RECORDS"
@@ -69,32 +68,14 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         setupRelatedItemsView()
         animateViewIn()
         resetCloseWindowTimer()
-        setupArrowIndicatorView()
+    }
+
+    override func viewDidAppear() {
         showArrowIndicatorView()
     }
 
 
     // MARK: Setup
-
-    private func setupArrowIndicatorView() {
-        arrowIndicatorImageView.image = NSImage(named: "sound-3-icon")
-        arrowIndicatorImageView.translatesAutoresizingMaskIntoConstraints = false
-        arrowIndicatorImageView.image?.backgroundColor = .white
-        detailView.addSubview(arrowIndicatorImageView)
-
-        arrowIndicatorImageView.centerXAnchor.constraint(equalTo: detailView.centerXAnchor).isActive = true
-        arrowIndicatorImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        arrowIndicatorImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        arrowIndicatorImageView.bottomAnchor.constraint(equalTo: detailView.bottomAnchor).isActive = true
-    }
-
-    private func showArrowIndicatorView() {
-        guard let scrollView = stackView.enclosingScrollView else {
-            return
-        }
-
-        arrowIndicatorImageView.isHidden = scrollView.hasReachedBottom
-    }
 
     private func setupMediaView() {
         mediaView.register(MediaItemView.self, forItemWithIdentifier: MediaItemView.identifier)
@@ -583,5 +564,13 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }, completionHandler: {
             completion()
         })
+    }
+
+    private func showArrowIndicatorView() {
+        guard let scrollView = stackView.enclosingScrollView else {
+            return
+        }
+
+        arrowIndicatorContainerView.isHidden = scrollView.hasReachedBottom
     }
 }

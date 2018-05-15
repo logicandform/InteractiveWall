@@ -110,6 +110,24 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="EXh-d9-a5i">
+                                        <rect key="frame" x="2" y="10" width="412" height="50"/>
+                                        <subviews>
+                                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VQM-S5-OoI">
+                                                <rect key="frame" x="182" y="1" width="48" height="48"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="48" id="Kcm-4v-8zt"/>
+                                                    <constraint firstAttribute="width" constant="48" id="SxH-HT-MfA"/>
+                                                </constraints>
+                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="down_arrow_indicator" id="u2l-fZ-VH0"/>
+                                            </imageView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="f00-Re-kaK"/>
+                                            <constraint firstItem="VQM-S5-OoI" firstAttribute="centerY" secondItem="EXh-d9-a5i" secondAttribute="centerY" id="kn0-EZ-cCi"/>
+                                            <constraint firstItem="VQM-S5-OoI" firstAttribute="centerX" secondItem="EXh-d9-a5i" secondAttribute="centerX" id="xFS-Cq-vah"/>
+                                        </constraints>
+                                    </customView>
                                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Zeo-g9-VHC">
                                         <rect key="frame" x="148" y="413" width="120" height="120"/>
                                         <constraints>
@@ -276,6 +294,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="arrowIndicatorContainerView" destination="EXh-d9-a5i" id="FwQ-9W-Fbd"/>
                         <outlet property="closeWindowTapArea" destination="uhV-2F-c5f" id="X44-7A-E7k"/>
                         <outlet property="detailView" destination="83q-cx-wcX" id="pb8-ex-weM"/>
                         <outlet property="dismissButton" destination="uhV-2F-c5f" id="fji-JA-ClI"/>
@@ -310,5 +329,6 @@
     <resources>
         <image name="close button" width="15" height="15"/>
         <image name="expand_arrow" width="22" height="24"/>
+        <image name="down_arrow_indicator" width="31" height="11"/>
     </resources>
 </document>
