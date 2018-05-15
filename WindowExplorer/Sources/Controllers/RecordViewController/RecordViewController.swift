@@ -126,10 +126,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         let toggleRelatedItemsTap = TapGestureRecognizer()
         gestureManager.add(toggleRelatedItemsTap, to: toggleRelatedItemsArea)
         toggleRelatedItemsTap.gestureUpdated = handleRelatedItemsToggle(_:)
-
-        let toggleWindowDepth = TapGestureRecognizer()
-        gestureManager.add(toggleWindowDepth, to: windowDragArea)
-        toggleWindowDepth.gestureUpdated = handleWindowTap(_:)
     }
 
     private func setupWindowDragArea() {
@@ -323,35 +319,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
     }
 
-    func handleWindowTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, !animating else {
-            return
-        }
-
-        let rect = mediaView.visibleRect
-        let offset = rect.origin.x / rect.width
-        let index = Int(round(offset))
-        let indexPath = IndexPath(item: index, section: 0)
-        guard let mediaItem = mediaView.item(at: indexPath) as? MediaItemView else {
-            return
-        }
-
-        switch tap.state {
-        case .began:
-            selectedMediaItem = mediaItem
-        case .failed:
-            selectedMediaItem = nil
-        case .ended:
-            selectedMediaItem = mediaItem
-            if let selectedMedia = selectedMediaItem?.media {
-                select(media: selectedMedia)
-            }
-            selectedMediaItem = nil
-        default:
-            return
-        }
-    }
-
     @objc
     private func handleRelatedItemToggleClick(_ gesture: NSClickGestureRecognizer) {
         toggleRelatedItems()
@@ -531,7 +498,33 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             })
         })
     }
- */
+
+    private func select(media: Media) {
+        guard let windowType = WindowType(for: media) else {
+            return
+        }
+
+        let controller = positionForMediaController.keys.first(where: { $0.media == media })
+        let position = getMediaControllerPosition()
+
+        if let controller = controller {
+            // If the controller is in the correct position, bring it to the front, else animate to origin
+            if let position = positionForMediaController[controller], position != nil {
+                controller.view.window?.makeKeyAndOrderFront(self)
+            } else {
+                controller.updatePosition(animating: true)
+                positionForMediaController[controller] = position
+            }
+        } else if let controller = WindowManager.instance.display(windowType) as? MediaViewController {
+            controller.delegate = self
+
+            // Image view controller takes care of setting its own position after its image has loaded in
+            if controller is PlayerViewController || controller is PDFViewController {
+                controller.updatePosition(animating: false)
+            }
+            positionForMediaController[controller] = position
+        }
+    }
 
     private func getMediaControllerPosition() -> Int {
         let currentPositions = positionForMediaController.values
