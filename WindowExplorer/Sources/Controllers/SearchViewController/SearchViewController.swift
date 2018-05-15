@@ -155,6 +155,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     func controllerDidMove(_ controller: RecordViewController) {
         positionForRecordController[controller] = nil as Int?
+        select(controller)
     }
 
     func frameAndPosition(for controller: RecordViewController) -> (frame: CGRect, position: Int)? {
@@ -201,13 +202,11 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     // MARK: Helpers
 
-    /*
-    func updatePosition(animating: Bool) {
-        if let recordFrameAndPosition = delegate?.frameAndPosition(for: self) {
+    func updatePosition(animating: Bool, with record: RecordViewController) {
+        if let recordFrameAndPosition = frameAndPosition(for: record) {
             updateOrigin(from: recordFrameAndPosition.frame, at: recordFrameAndPosition.position, animating: animating)
         }
     }
- */
 
     private func select(_ item: SearchItemView) {
         guard let collectionView = item.collectionView, let indexPath = collectionView.indexPath(for: item) else {
@@ -217,6 +216,35 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         unselectItem(for: collectionView)
         selectedIndexForView[collectionView] = indexPath
         item.set(highlighted: true)
+    }
+
+    private func select(_ record: RecordViewController) {
+        //let windowType = WindowType.record
+        let controller = positionForRecordController.keys.first(where: { $0 == record })
+        let position = getRecordControllerPosition()
+
+        if let controller = controller {
+            // If the controller is in the correct position, bring it to the front, else animate to origin
+            if let position = positionForRecordController[controller], position != nil {
+                controller.view.window?.makeKeyAndOrderFront(self)
+            } else {
+                updatePosition(animating: true, with: record)
+                positionForRecordController[controller] = position
+            }
+        } else {
+            positionForRecordController[record] = position
+            updatePosition(animating: false, with: record)
+        }
+
+        /*else if let controller = WindowManager.instance.display(windowType) as? RecordViewController {
+            controller.delegate = self
+
+            // Image view controller takes care of setting its own position after its image has loaded in
+            if controller is PlayerViewController || controller is PDFViewController {
+                controller.updatePosition(animating: false)
+            }
+            positionForRecordController[controller] = position
+        }*/
     }
 
     // Removes all state from the currently selected view of the given collectionview
@@ -334,9 +362,9 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         let location = CGPoint(x: window.frame.maxX + style.windowMargins, y: window.frame.minY)
         RecordFactory.record(for: record.type, id: record.id) { record in
             if let record = record, let controller = WindowManager.instance.display(.record(record), at: location) as? RecordViewController {
-                self.baseViewPositionManager.add(record: controller)
                 controller.delegate = self
-                self.positionForRecordController[controller] = nil
+
+                self.select(controller)
             }
         }
     }
