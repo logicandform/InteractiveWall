@@ -122,6 +122,26 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
     }
 
+    override func handleWindowPan(_ gesture: GestureRecognizer) {
+        guard let pan = gesture as? PanGestureRecognizer, let window = view.window, !animating else {
+            return
+        }
+
+        switch pan.state {
+        case .began:
+            resetRecordControllerPositions()
+        case .recognized, .momentum:
+            var origin = window.frame.origin
+            origin += pan.delta.round()
+            window.setFrameOrigin(origin)
+        case .possible:
+            WindowManager.instance.checkBounds(of: self)
+        default:
+            return
+        }
+    }
+
+
 
     // MARK: NSCollectionViewDelegate & NSCollectionViewDataSource
 
@@ -237,16 +257,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             controller.updateSearchRecordPosition(animating: false)
             positionForRecordController[controller] = position
         }
-
-        /*else if let controller = WindowManager.instance.display(windowType) as? RecordViewController {
-            controller.delegate = self
-
-            // Image view controller takes care of setting its own position after its image has loaded in
-            if controller is PlayerViewController || controller is PDFViewController {
-                controller.updatePosition(animating: false)
-            }
-            positionForRecordController[controller] = position
-        }*/
     }
 
     // Removes all state from the currently selected view of the given collectionview
@@ -366,15 +376,11 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             if let record = record {
                 self.select(record)
             }
-
-            /*
-            if let record = record, let controller = WindowManager.instance.display(.record(record), at: location) as? RecordViewController {
-                controller.delegate = self
-
-                self.select(controller)
-            }
- */
         }
+    }
+
+    private func resetRecordControllerPositions() {
+        positionForRecordController.keys.forEach { positionForRecordController[$0] = nil as Int? }
     }
 
     private func getRecordControllerPosition() -> Int {
