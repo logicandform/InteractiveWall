@@ -114,10 +114,10 @@
                                         <rect key="frame" x="2" y="0.0" width="412" height="20"/>
                                         <subviews>
                                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VQM-S5-OoI">
-                                                <rect key="frame" x="196" y="0.0" width="20" height="20"/>
+                                                <rect key="frame" x="198" y="2" width="17" height="17"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="20" id="Kcm-4v-8zt"/>
-                                                    <constraint firstAttribute="width" constant="20" id="SxH-HT-MfA"/>
+                                                    <constraint firstAttribute="height" constant="17" id="Kcm-4v-8zt"/>
+                                                    <constraint firstAttribute="width" constant="17" id="SxH-HT-MfA"/>
                                                 </constraints>
                                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="down_arrow_indicator" id="u2l-fZ-VH0"/>
                                             </imageView>

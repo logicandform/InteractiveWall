@@ -73,7 +73,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     }
 
     override func viewDidAppear() {
-        showArrowIndicatorView()
+        handleArrowIndicatorView()
     }
 
 
@@ -311,7 +311,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             return
         }
 
-        showArrowIndicatorView()
+        handleArrowIndicatorView()
     }
 
     override func handleWindowPan(_ gesture: GestureRecognizer) {
@@ -568,7 +568,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         })
     }
 
-    private func showArrowIndicatorView() {
+    private func handleArrowIndicatorView() {
         guard let scrollView = stackView.enclosingScrollView else {
             return
         }
