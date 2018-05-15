@@ -228,7 +228,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         case .ended:
             selectedMediaItem = mediaItem
             if let selectedMedia = selectedMediaItem?.media {
-                selectedMediaItem(selectedMedia)
+                selectMediaItem(selectedMedia)
             }
             selectedMediaItem = nil
         default:
@@ -354,7 +354,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         case .ended:
             selectedMediaItem = mediaItem
             if let selectedMedia = selectedMediaItem?.media {
-                selectedMediaItem(selectedMedia)
+                selectMediaItem(selectedMedia)
             }
             selectedMediaItem = nil
         default:
@@ -527,7 +527,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         })
     }
 
-    private func selectedMediaItem(_ media: Media) {
+    private func selectMediaItem(_ media: Media) {
         guard let windowType = WindowType(for: media) else {
             return
         }
