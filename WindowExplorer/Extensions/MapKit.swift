@@ -69,3 +69,26 @@ extension MKMapSize: Equatable {
         lhs.height /= rhs
     }
 }
+
+extension CLLocationCoordinate2D {
+
+    // Example geolocation string: "Tofino [49.2761659,-126.0563673]"
+    init?(string: String?) {
+        guard let location = string, let openingBracket = location.index(of: "["), let comma = location.range(of: ",", options: String.CompareOptions.backwards, range: nil, locale: nil)?.lowerBound, let closingBracket = location.index(of: "]") else {
+            return nil
+        }
+
+        self.init()
+        let latitudeStart = location.index(after: openingBracket)
+        let latitudeEnd = location.index(before: comma)
+        let longitudeStart = location.index(after: comma)
+        let longitudeEnd = location.index(before: closingBracket)
+
+        guard let lat = Double(location[latitudeStart...latitudeEnd]), let long = Double(location[longitudeStart...longitudeEnd]) else {
+            return nil
+        }
+
+        self.latitude = lat
+        self.longitude = long
+    }
+}

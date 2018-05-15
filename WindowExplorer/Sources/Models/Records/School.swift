@@ -10,7 +10,7 @@ class School: Hashable {
     let type = RecordType.school
     let date: String?
     let description: String?
-    var coordinate: CLLocationCoordinate2D?
+    var coordinate: CLLocationCoordinate2D? = nil
     var media = [Media]()
     var relatedSchools = [School]()
     var relatedOrganizations = [Organization]()
