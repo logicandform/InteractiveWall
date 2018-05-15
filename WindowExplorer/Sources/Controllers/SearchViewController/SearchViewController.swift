@@ -7,14 +7,8 @@ protocol SearchItemDisplayable {
     var title: String { get }
 }
 
-protocol SearchViewDelegate: class {
-    func controllerDidClose(_ controller: BaseViewController)
-    func controllerDidMove(_ controller: BaseViewController)
-    func frameAndPosition(for controller: BaseViewController) -> (frame: CGRect, position: Int)?
-}
 
-
-class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout {
+class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout, RecordControllerDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Search")
 
     @IBOutlet weak var primaryCollectionView: NSCollectionView!
@@ -23,8 +17,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     @IBOutlet weak var secondaryTextField: NSTextField!
     @IBOutlet weak var tertiaryTextField: NSTextField!
     @IBOutlet weak var collapseButtonArea: NSView!
-
-    weak var delegate: SearchViewDelegate?
 
     private var selectedType: RecordType?
     private var selectedIndexForView = [NSCollectionView: IndexPath]()
@@ -160,7 +152,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     }
 
 
-    // MARK: RecordDelegate
+    // MARK: RecordControllerDelegate
 
     func controllerDidClose(_ controller: RecordViewController) {
         positionForRecordController.removeValue(forKey: controller)
@@ -214,6 +206,14 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
 
     // MARK: Helpers
+
+    /*
+    func updatePosition(animating: Bool) {
+        if let recordFrameAndPosition = delegate?.frameAndPosition(for: self) {
+            updateOrigin(from: recordFrameAndPosition.frame, at: recordFrameAndPosition.position, animating: animating)
+        }
+    }
+ */
 
     private func select(_ item: SearchItemView) {
         guard let collectionView = item.collectionView, let indexPath = collectionView.indexPath(for: item) else {
@@ -346,6 +346,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         RecordFactory.record(for: record.type, id: record.id) { record in
             if let record = record, let controller = WindowManager.instance.display(.record(record), at: location) as? RecordViewController {
                 self.baseViewPositionManager.add(record: controller)
+                controller.delegate = self
                 self.positionForRecordController[controller] = nil
             }
         }
@@ -363,7 +364,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         return positionForRecordController.count
     }
 
-    /*
     private func updateOrigin(from recordFrame: CGRect, at position: Int, animating: Bool) {
         let offsetX = CGFloat(position * Constants.controllerOffset)
         let offsetY = CGFloat(position * -Constants.controllerOffset)
@@ -386,5 +386,4 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             view.window?.setFrameOrigin(origin)
         }
     }
- */
 }

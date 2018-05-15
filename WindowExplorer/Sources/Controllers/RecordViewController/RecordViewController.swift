@@ -5,13 +5,13 @@ import AppKit
 
 
 protocol RecordControllerDelegate: class {
-    func controllerDidClose(_ controller: BaseViewController)
-    func controllerDidMove(_ controller: BaseViewController)
-    func frameAndPosition(for controller: BaseViewController) -> (frame: CGRect, position: Int)?
+    func controllerDidClose(_ controller: RecordViewController)
+    func controllerDidMove(_ controller: RecordViewController)
+    func frameAndPosition(for controller: RecordViewController) -> (frame: CGRect, position: Int)?
 }
 
 
-class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource, NSTableViewDataSource, NSTableViewDelegate, MediaControllerDelegate, SearchViewDelegate {
+class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource, NSTableViewDataSource, NSTableViewDelegate, MediaControllerDelegate {
 
     static let storyboard = NSStoryboard.Name(rawValue: "Record")
 
@@ -31,10 +31,12 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     @IBOutlet weak var recordTypeSelectionView: RecordTypeSelectionView!
 
     var record: RecordDisplayable!
+    weak var delegate: RecordControllerDelegate?
     private var pageControl = PageControl()
     private var positionForMediaController = [MediaViewController: Int?]()
     private var showingRelatedItems = false
     private var relatedItemsFilterType: RecordFilterType?
+    private var searchViewController: SearchViewController?
 
     private struct Constants {
         static let allRecordsTitle = "RECORDS"
@@ -133,6 +135,10 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         let toggleRelatedItemsTap = TapGestureRecognizer()
         gestureManager.add(toggleRelatedItemsTap, to: toggleRelatedItemsArea)
         toggleRelatedItemsTap.gestureUpdated = handleRelatedItemsToggle(_:)
+
+        let toggleWindowDepth = TapGestureRecognizer()
+        gestureManager.add(toggleWindowDepth, to: windowDragArea)
+        toggleWindowDepth.gestureUpdated = handleWindowTap(_:)
     }
 
     private func setupWindowDragArea() {
@@ -228,7 +234,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         case .ended:
             selectedMediaItem = mediaItem
             if let selectedMedia = selectedMediaItem?.media {
-                selectMediaItem(selectedMedia)
+                select(media: selectedMedia)
             }
             selectedMediaItem = nil
         default:
@@ -320,7 +326,37 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         case .possible:
             WindowManager.instance.checkBounds(of: self)
         case .began, .ended:
+            delegate?.controllerDidMove(self)
             resetMediaControllerPositions()
+        default:
+            return
+        }
+    }
+
+    func handleWindowTap(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, !animating else {
+            return
+        }
+
+        let rect = mediaView.visibleRect
+        let offset = rect.origin.x / rect.width
+        let index = Int(round(offset))
+        let indexPath = IndexPath(item: index, section: 0)
+        guard let mediaItem = mediaView.item(at: indexPath) as? MediaItemView else {
+            return
+        }
+
+        switch tap.state {
+        case .began:
+            selectedMediaItem = mediaItem
+        case .failed:
+            selectedMediaItem = nil
+        case .ended:
+            selectedMediaItem = mediaItem
+            if let selectedMedia = selectedMediaItem?.media {
+                select(media: selectedMedia)
+            }
+            selectedMediaItem = nil
         default:
             return
         }
@@ -353,7 +389,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         case .ended:
             selectedMediaItem = mediaItem
             if let selectedMedia = selectedMediaItem?.media {
-                selectMediaItem(selectedMedia)
+                select(media: selectedMedia)
             }
             selectedMediaItem = nil
         default:
@@ -468,6 +504,11 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
     }
 
+    override func close() {
+        delegate?.controllerDidClose(self)
+        WindowManager.instance.closeWindow(for: self)
+    }
+
 
     // MARK: Helpers
 
@@ -525,7 +566,37 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         })
     }
 
-    private func selectMediaItem(_ media: Media) {
+    /*
+    private func selectRecord() {
+        // Need to change this soon
+        guard let windowType = WindowType(for: self) else {
+            return
+        }
+
+        //let controller = positionForMediaController.keys.first(where: { $0.media == media })
+        let position = getMediaControllerPosition()
+
+        if let controller = controller {
+            // If the controller is in the correct position, bring it to the front, else animate to origin
+            if let position = positionForMediaController[controller], position != nil {
+                controller.view.window?.makeKeyAndOrderFront(self)
+            } else {
+                controller.updatePosition(animating: true)
+                positionForMediaController[controller] = position
+            }
+        } else if let controller = WindowManager.instance.display(windowType) as? MediaViewController {
+            controller.delegate = self
+
+            // Image view controller takes care of setting its own position after its image has loaded in
+            if controller is PlayerViewController || controller is PDFViewController {
+                controller.updatePosition(animating: false)
+            }
+            positionForMediaController[controller] = position
+        }
+    }
+ */
+
+    private func select(media: Media) {
         guard let windowType = WindowType(for: media) else {
             return
         }
@@ -543,6 +614,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             }
         } else if let controller = WindowManager.instance.display(windowType) as? MediaViewController {
             controller.delegate = self
+
             // Image view controller takes care of setting its own position after its image has loaded in
             if controller is PlayerViewController || controller is PDFViewController {
                 controller.updatePosition(animating: false)
@@ -551,17 +623,16 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
     }
 
-    /// Gets the first available media controller position
     private func getMediaControllerPosition() -> Int {
         let currentPositions = positionForMediaController.values
 
-        for position in 0 ..< record.media.count {
+        for position in 0 ... positionForMediaController.keys.count {
             if !currentPositions.contains(position) {
                 return position
             }
         }
 
-        return record.media.count
+        return positionForMediaController.count
     }
 
     private func closeTimerFired() {
