@@ -495,7 +495,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         })
     }
 
-    private func selectedMediaItem(_ media: Media) {
+    private func selectMediaItem(_ media: Media) {
         guard let windowType = WindowType(for: media) else {
             return
         }
