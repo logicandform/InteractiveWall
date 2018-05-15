@@ -26,7 +26,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private var pageControl = PageControl()
     private var showingRelatedItems = false
     private var relatedItemsFilterType: RecordFilterType?
-    private var searchViewController: SearchViewController?
 
     private struct Constants {
         static let allRecordsTitle = "RECORDS"
@@ -496,7 +495,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         })
     }
 
-    private func select(media: Media) {
+    private func selectedMediaItem(_ media: Media) {
         guard let windowType = WindowType(for: media) else {
             return
         }
@@ -514,7 +513,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             }
         } else if let controller = WindowManager.instance.display(windowType) as? MediaViewController {
             controller.delegate = self
-
             // Image view controller takes care of setting its own position after its image has loaded in
             if controller is PlayerViewController || controller is PDFViewController {
                 controller.updatePosition(animating: false)
@@ -523,16 +521,17 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
     }
 
+    /// Gets the first available media controller position
     private func getMediaControllerPosition() -> Int {
         let currentPositions = positionForMediaController.values
 
-        for position in 0 ... positionForMediaController.keys.count {
+        for position in 0 ..< record.media.count {
             if !currentPositions.contains(position) {
                 return position
             }
         }
 
-        return positionForMediaController.count
+        return record.media.count
     }
 
     private func closeTimerFired() {
