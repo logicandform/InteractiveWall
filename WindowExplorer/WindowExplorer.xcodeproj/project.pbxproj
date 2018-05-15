@@ -752,32 +752,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-<<<<<<< HEAD
-		22F9E38020A9FA36000FFD16 /* Run Swiftlint */ = {
-=======
 		4820A6207000EE78BA94FFAA /* [CP] Copy Pods Resources */ = {
->>>>>>> Current progress on transitioning to abstract position management
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-<<<<<<< HEAD
-			name = "Run Swiftlint";
-=======
 			name = "[CP] Copy Pods Resources";
->>>>>>> Current progress on transitioning to abstract position management
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-<<<<<<< HEAD
-			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
-=======
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer-resources.sh\"\n";
 			showEnvVarsInLog = 0;
->>>>>>> Current progress on transitioning to abstract position management
 		};
 		D706A887330181305494F3D8 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;

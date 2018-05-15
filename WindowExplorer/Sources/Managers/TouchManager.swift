@@ -6,11 +6,7 @@ import MONode
 final class TouchManager: SocketManagerDelegate {
 
     static let instance = TouchManager()
-<<<<<<< HEAD
-    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 13001)
-=======
     static let touchNetwork = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 13002)
->>>>>>> Current progress on transitioning to abstract position management
 
     private var socketManager: SocketManager?
     private var managersForTouch = [Touch: (NSWindow, GestureManager)]()
