@@ -28,6 +28,8 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private var showingRelatedItems = false
     private var relatedItemsFilterType: RecordFilterType?
 
+    private lazy var arrowIndicatorImageView = NSImageView()
+
     private struct Constants {
         static let allRecordsTitle = "RECORDS"
         static let animationDuration = 0.5
@@ -67,10 +69,38 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         setupRelatedItemsView()
         animateViewIn()
         resetCloseWindowTimer()
+        setupArrowIndicatorView()
+        showArrowIndicatorView()
     }
 
 
     // MARK: Setup
+
+    private func setupArrowIndicatorView() {
+        arrowIndicatorImageView.image = NSImage(named: "sound-3-icon")
+        arrowIndicatorImageView.translatesAutoresizingMaskIntoConstraints = false
+        arrowIndicatorImageView.image?.backgroundColor = .white
+        detailView.addSubview(arrowIndicatorImageView)
+
+        arrowIndicatorImageView.centerXAnchor.constraint(equalTo: detailView.centerXAnchor).isActive = true
+        arrowIndicatorImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        arrowIndicatorImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        arrowIndicatorImageView.bottomAnchor.constraint(equalTo: detailView.bottomAnchor).isActive = true
+    }
+
+    private func showArrowIndicatorView() {
+        guard let scrollView = stackView.enclosingScrollView else {
+            return
+        }
+
+        arrowIndicatorImageView.isHidden = scrollView.hasReachedBottom ? true : false
+
+        if arrowIndicatorImageView.isHidden {
+            print("hidden")
+        } else {
+            print("show")
+        }
+    }
 
     private func setupMediaView() {
         mediaView.register(MediaItemView.self, forItemWithIdentifier: MediaItemView.identifier)
@@ -303,6 +333,8 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         default:
             return
         }
+
+        showArrowIndicatorView()
     }
 
     override func handleWindowPan(_ gesture: GestureRecognizer) {
