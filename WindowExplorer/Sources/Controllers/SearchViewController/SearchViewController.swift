@@ -20,7 +20,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     private var selectedType: RecordType?
     private var selectedIndexForView = [NSCollectionView: IndexPath]()
-    private var baseViewPositionManager = BaseViewPositionManager()
     private var positionForRecordController = [RecordViewController: Int?]()
 
     private lazy var titleViews: [NSTextField] = [titleLabel, secondaryTextField, tertiaryTextField]
