@@ -444,6 +444,11 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
     }
 
+    override func close() {
+        delegate?.controllerDidClose(self)
+        WindowManager.instance.closeWindow(for: self)
+    }
+
 
     // MARK: Helpers
 
@@ -519,6 +524,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             }
         } else if let controller = WindowManager.instance.display(windowType) as? MediaViewController {
             controller.delegate = self
+
             // Image view controller takes care of setting its own position after its image has loaded in
             if controller is PlayerViewController || controller is PDFViewController {
                 controller.updatePosition(animating: false)
@@ -527,17 +533,16 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
     }
 
-    /// Gets the first available media controller position
     private func getMediaControllerPosition() -> Int {
         let currentPositions = positionForMediaController.values
 
-        for position in 0 ..< record.media.count {
+        for position in 0 ... positionForMediaController.keys.count {
             if !currentPositions.contains(position) {
                 return position
             }
         }
 
-        return record.media.count
+        return positionForMediaController.count
     }
 
     private func closeTimerFired() {
