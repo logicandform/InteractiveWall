@@ -102,7 +102,6 @@
 		8FE6467B2060553100E6116A /* RegularScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE6467A2060553100E6116A /* RegularScrollView.swift */; };
 		8FEABDA12064702600612C84 /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEABD9F2064702600612C84 /* MediaViewController.swift */; };
 		A4694B66209CEC18006A407F /* RecordFilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4694B65209CEC18006A407F /* RecordFilterType.swift */; };
-		A471B7EE20A625DA00DE7F05 /* BaseViewPositionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A471B7ED20A625DA00DE7F05 /* BaseViewPositionManager.swift */; };
 		C6DB17689F287C9826286DF2 /* Pods_All_WindowExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */; };
 		CD096C8A20A3AD7F00C8A732 /* GeocodeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD096C8920A3AD7F00C8A732 /* GeocodeHelper.swift */; };
 		D507D33B2072FD2B0003CEA7 /* ColoredSliderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D507D33A2072FD2B0003CEA7 /* ColoredSliderCell.swift */; };
@@ -240,7 +239,6 @@
 		8FEABD9F2064702600612C84 /* MediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaViewController.swift; sourceTree = "<group>"; };
 		A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_WindowExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4694B65209CEC18006A407F /* RecordFilterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFilterType.swift; sourceTree = "<group>"; };
-		A471B7ED20A625DA00DE7F05 /* BaseViewPositionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewPositionManager.swift; sourceTree = "<group>"; };
 		CD096C8920A3AD7F00C8A732 /* GeocodeHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeocodeHelper.swift; sourceTree = "<group>"; };
 		CE471FCE047AE2FD1C92BA3A /* Pods-All-WindowExplorer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-WindowExplorer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer.release.xcconfig"; sourceTree = "<group>"; };
 		D507D33A2072FD2B0003CEA7 /* ColoredSliderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredSliderCell.swift; sourceTree = "<group>"; };
@@ -526,7 +524,6 @@
 				22927911208E531C005E2036 /* BackgroundTimer.swift */,
 				A4694B65209CEC18006A407F /* RecordFilterType.swift */,
 				CD096C8920A3AD7F00C8A732 /* GeocodeHelper.swift */,
-				A471B7ED20A625DA00DE7F05 /* BaseViewPositionManager.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -903,7 +900,6 @@
 				22B85B07209CF5200099F44E /* SearchItemView.swift in Sources */,
 				2224125E206BFE9F008E7A9D /* RecordType.swift in Sources */,
 				3F09025F2048E0E70044F100 /* Organization.swift in Sources */,
-				A471B7EE20A625DA00DE7F05 /* BaseViewPositionManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

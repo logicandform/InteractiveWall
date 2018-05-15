@@ -4,9 +4,9 @@ import Cocoa
 
 
 protocol MediaControllerDelegate: class {
-    func controllerDidClose(_ controller: BaseViewController)
-    func controllerDidMove(_ controller: BaseViewController)
-    func frameAndPosition(for controller: BaseViewController) -> (frame: CGRect, position: Int)?
+    func controllerDidClose(_ controller: MediaViewController)
+    func controllerDidMove(_ controller: MediaViewController)
+    func recordFrameAndPosition(for controller: MediaViewController) -> (frame: CGRect, position: Int)?
 }
 
 
@@ -40,7 +40,7 @@ class MediaViewController: BaseViewController {
 
     // Updates the position of the controller, based on its delegates frame, and its positional ranking
     func updatePosition(animating: Bool) {
-        if let recordFrameAndPosition = delegate?.frameAndPosition(for: self) {
+        if let recordFrameAndPosition = delegate?.recordFrameAndPosition(for: self) {
             updateOrigin(from: recordFrameAndPosition.frame, at: recordFrameAndPosition.position, animating: animating)
         }
     }
