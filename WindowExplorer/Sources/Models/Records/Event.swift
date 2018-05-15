@@ -10,7 +10,7 @@ class Event {
     let type = RecordType.event
     let date: String?
     let description: String?
-    let coordinate: CLLocationCoordinate2D?
+    var coordinate: CLLocationCoordinate2D?
     var media = [Media]()
     var relatedSchools = [School]()
     var relatedOrganizations = [Organization]()
@@ -22,7 +22,8 @@ class Event {
         static let title = "title"
         static let date = "date"
         static let description = "description"
-        static let coordinate = "coordinate"
+        static let latitude = "latitude"
+        static let longitude = "longitude"
         static let mediaTitles = "mediaTitles"
         static let media = "mediaPaths"
         static let thumbnails = "thumbnailPaths"
@@ -43,7 +44,11 @@ class Event {
         self.id = id
         self.title = title
         self.description = json[Keys.description] as? String
-        self.coordinate = CLLocationCoordinate2D(string: json[Keys.coordinate] as? String)
+
+        if let latitude = json[Keys.latitude] as? Double, let longitude = json[Keys.longitude] as? Double {
+            self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        }
+
         self.date = json[Keys.date] as? String
 
         if let urlStrings = json[Keys.media] as? [String], let thumbnailStrings = json[Keys.thumbnails] as? [String] {
