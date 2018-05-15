@@ -60,6 +60,8 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         expandImageView.layer?.cornerRadius = Constants.expandImageViewCornerRadius
         expandImageView.layer?.backgroundColor = style.darkBackground.cgColor
         expandImageView.isHidden = record.media.isEmpty
+        arrowIndicatorContainerView.wantsLayer = true
+        arrowIndicatorContainerView.layer?.backgroundColor = style.darkBackground.cgColor
 
         setupMediaView()
         setupWindowDragArea()
