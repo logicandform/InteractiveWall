@@ -454,6 +454,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     }
 
     override func animateViewOut() {
+        searchDelegate?.controllerDidClose(self)
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration
             detailView.animator().alphaValue = 0
@@ -470,11 +471,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Constants.closeWindowTimeoutPeriod, repeats: false) { [weak self] _ in
             self?.closeTimerFired()
         }
-    }
-
-    override func close() {
-        searchDelegate?.controllerDidClose(self)
-        WindowManager.instance.closeWindow(for: self)
     }
 
 

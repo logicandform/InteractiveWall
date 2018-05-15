@@ -361,11 +361,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     }
 
     private func display(_ record: RecordDisplayable) {
-        guard let window = view.window else {
-            return
-        }
-
-        //let location = CGPoint(x: window.frame.maxX + style.windowMargins, y: window.frame.minY)
         RecordFactory.record(for: record.type, id: record.id) { record in
             if let record = record {
                 self.select(record)
