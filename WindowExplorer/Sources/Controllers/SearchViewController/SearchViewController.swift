@@ -162,7 +162,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     func controllerDidMove(_ controller: RecordViewController) {
         positionForRecordController[controller] = nil as Int?
-        select(controller)
     }
 
     func frameAndPosition(for controller: RecordViewController) -> (frame: CGRect, position: Int)? {
@@ -209,12 +208,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     // MARK: Helpers
 
-    func updatePosition(animating: Bool, with record: RecordViewController) {
-        if let recordFrameAndPosition = frameAndPosition(for: record) {
-            updateOrigin(from: recordFrameAndPosition.frame, at: recordFrameAndPosition.position, animating: animating)
-        }
-    }
-
     private func select(_ item: SearchItemView) {
         guard let collectionView = item.collectionView, let indexPath = collectionView.indexPath(for: item) else {
             return
@@ -225,9 +218,10 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         item.set(highlighted: true)
     }
 
-    private func select(_ record: RecordViewController) {
-        //let windowType = WindowType.record
-        let controller = positionForRecordController.keys.first(where: { $0 == record })
+    private func select(_ record: RecordDisplayable) {
+        let windowType = WindowType.record(record)
+
+        let controller = positionForRecordController.keys.first(where: { $0.record.id == record.id })
         let position = getRecordControllerPosition()
 
         if let controller = controller {
@@ -235,12 +229,13 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             if let position = positionForRecordController[controller], position != nil {
                 controller.view.window?.makeKeyAndOrderFront(self)
             } else {
-                updatePosition(animating: true, with: record)
+                controller.updateSearchRecordPosition(animating: true)
                 positionForRecordController[controller] = position
             }
-        } else {
-            positionForRecordController[record] = position
-            updatePosition(animating: false, with: record)
+        } else if let controller = WindowManager.instance.display(windowType) as? RecordViewController {
+            controller.searchDelegate = self
+            controller.updateSearchRecordPosition(animating: false)
+            positionForRecordController[controller] = position
         }
 
         /*else if let controller = WindowManager.instance.display(windowType) as? RecordViewController {
@@ -371,13 +366,19 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             return
         }
 
-        let location = CGPoint(x: window.frame.maxX + style.windowMargins, y: window.frame.minY)
+        //let location = CGPoint(x: window.frame.maxX + style.windowMargins, y: window.frame.minY)
         RecordFactory.record(for: record.type, id: record.id) { record in
+            if let record = record {
+                self.select(record)
+            }
+
+            /*
             if let record = record, let controller = WindowManager.instance.display(.record(record), at: location) as? RecordViewController {
                 controller.delegate = self
 
                 self.select(controller)
             }
+ */
         }
     }
 
@@ -393,29 +394,5 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         return positionForRecordController.count
     }
 
-    private func updateOrigin(from recordFrame: CGRect, at position: Int, animating: Bool) {
-        let offsetX = CGFloat(position * Constants.controllerOffset)
-        let offsetY = CGFloat(position * -Constants.controllerOffset)
-        let lastScreen = NSScreen.at(position: Configuration.numberOfScreens)
-        var origin = CGPoint(x: recordFrame.maxX + style.windowMargins + offsetX, y: recordFrame.maxY + offsetY - view.frame.height)
-
-        if origin.x > lastScreen.frame.maxX - view.frame.width / 2 {
-            if lastScreen.frame.height - recordFrame.maxY < view.frame.height + style.windowMargins - 2 * offsetY {
-                // Below
-                origin =  CGPoint(x: lastScreen.frame.maxX - view.frame.width - style.windowMargins, y: origin.y - recordFrame.height - style.windowMargins)
-            } else {
-                // Above
-                origin =  CGPoint(x: lastScreen.frame.maxX - view.frame.width - style.windowMargins, y: origin.y + view.frame.height + style.windowMargins - 2 * offsetY)
-            }
-        }
-    }
-
-    private func updateWindowDragAreaHighlight(for recordType: RecordType?) {
-        guard let recordType = recordType else {
-            windowDragAreaHighlight.layer?.backgroundColor = Constants.defaultWindowDragAreaColor.cgColor
-            return
-        }
-
-        windowDragAreaHighlight.layer?.backgroundColor = recordType.color.cgColor
-    }
+    
 }

@@ -42,6 +42,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         static let pageControlHeight: CGFloat = 20
         static let stackViewTopInset: CGFloat = 15
         static let stackViewBottomInset: CGFloat = 15
+        static let controllerOffset = 50
     }
 
 
@@ -438,7 +439,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     }
 
     override func close() {
-        delegate?.controllerDidClose(self)
+        searchDelegate?.controllerDidClose(self)
         WindowManager.instance.closeWindow(for: self)
     }
 
@@ -596,5 +597,34 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }, completionHandler: {
             completion()
         })
+    }
+
+    func updateSearchRecordPosition(animating: Bool) {
+        if let recordFrameAndPosition = searchDelegate?.frameAndPosition(for: self) {
+            updateOrigin(from: recordFrameAndPosition.frame, at: recordFrameAndPosition.position, animating: animating)
+        }
+    }
+
+    private func updateOrigin(from recordFrame: CGRect, at position: Int, animating: Bool) {
+        let offsetX = CGFloat(position * Constants.controllerOffset)
+        let offsetY = CGFloat(position * -Constants.controllerOffset)
+        let lastScreen = NSScreen.at(position: Configuration.numberOfScreens)
+        var origin = CGPoint(x: recordFrame.maxX + style.windowMargins + offsetX, y: recordFrame.maxY + offsetY - view.frame.height)
+
+        if origin.x > lastScreen.frame.maxX - view.frame.width / 2 {
+            if lastScreen.frame.height - recordFrame.maxY < view.frame.height + style.windowMargins - 2 * offsetY {
+                // Below
+                origin =  CGPoint(x: lastScreen.frame.maxX - view.frame.width - style.windowMargins, y: origin.y - recordFrame.height - style.windowMargins)
+            } else {
+                // Above
+                origin =  CGPoint(x: lastScreen.frame.maxX - view.frame.width - style.windowMargins, y: origin.y + view.frame.height + style.windowMargins - 2 * offsetY)
+            }
+        }
+
+        if animating {
+            animate(to: origin)
+        } else {
+            view.window?.setFrameOrigin(origin)
+        }
     }
 }
