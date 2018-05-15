@@ -444,11 +444,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
     }
 
-    override func close() {
-        delegate?.controllerDidClose(self)
-        WindowManager.instance.closeWindow(for: self)
-    }
-
 
     // MARK: Helpers
 
