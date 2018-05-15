@@ -174,6 +174,12 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         })
     }
 
+    func updateSearchRecordPosition(animating: Bool) {
+        if let recordFrameAndPosition = searchDelegate?.frameAndPosition(for: self) {
+            updateOrigin(from: recordFrameAndPosition.frame, at: recordFrameAndPosition.position, animating: animating)
+        }
+    }
+
 
     // MARK: Gesture Handling
 
@@ -615,12 +621,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }, completionHandler: {
             completion()
         })
-    }
-
-    func updateSearchRecordPosition(animating: Bool) {
-        if let recordFrameAndPosition = searchDelegate?.frameAndPosition(for: self) {
-            updateOrigin(from: recordFrameAndPosition.frame, at: recordFrameAndPosition.position, animating: animating)
-        }
     }
 
     private func updateOrigin(from recordFrame: CGRect, at position: Int, animating: Bool) {
