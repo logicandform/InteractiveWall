@@ -13,23 +13,19 @@ class Event: Record {
     private struct Keys {
         static let id = "id"
         static let title = "title"
-        static let latitude = "latitude"
-        static let longitude = "longitude"
+        static let coordinate = "coordinate"
     }
 
 
     // MARK: Init
 
     init?(json: JSON) {
-        guard let id = json[Keys.id] as? Int,
-            let title = json[Keys.title] as? String,
-            let latitude = json[Keys.latitude] as? Double,
-            let longitude = json[Keys.longitude] as? Double else {
+        guard let id = json[Keys.id] as? Int, let title = json[Keys.title] as? String, let coordinate = CLLocationCoordinate2D(string: json[Keys.coordinate] as? String) else {
             return nil
         }
 
         self.id = id
         self.title = title
-        self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        self.coordinate = coordinate
     }
 }

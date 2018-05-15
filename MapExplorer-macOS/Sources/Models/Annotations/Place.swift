@@ -29,14 +29,16 @@ class Place: MKPointAnnotation {
         guard let subtitle = json[Keys.subtitle] as? String,
             let type = json[Keys.type] as? String,
             let discipline = Discipline(from: type),
-            let latitude = json[Keys.latitude] as? Double,
-            let longitude = json[Keys.longitude] as? Double else {
+            let latitudeString = json[Keys.latitude] as? String,
+            let longitudeString = json[Keys.longitude] as? String else {
                 return nil
         }
         self.discipline = discipline
         super.init()
         self.title = json[Keys.title] as? String
         self.subtitle = subtitle
+        let latitude = Double(Place.matches(for: "\\d+(\\.\\d+)?", in: latitudeString)[0])!
+        let longitude = Double(Place.matches(for: "\\d+(\\.\\d+)?", in: longitudeString)[0])! * (-1)
         self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
 
