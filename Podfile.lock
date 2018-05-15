@@ -23,18 +23,26 @@ DEPENDENCIES:
   - Alamofire (~> 4.5)
   - AlamofireImage
   - C4 (~> 3.0.1)
-  - MONode (from `git@github.com:SlantDesign/mo.git`)
+  - "MONode (from `git@github.com:SlantDesign/mo.git`)"
   - PromiseKit (~> 4.4)
   - PromiseKit/Alamofire
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - AlamofireImage
+    - C4
+    - CocoaAsyncSocket
+    - PromiseKit
+
 EXTERNAL SOURCES:
   MONode:
-    :git: git@github.com:SlantDesign/mo.git
+    :git: "git@github.com:SlantDesign/mo.git"
 
 CHECKOUT OPTIONS:
   MONode:
     :commit: 50eab2c5b295ec5a66d79aeb6637f19868b056b9
-    :git: git@github.com:SlantDesign/mo.git
+    :git: "git@github.com:SlantDesign/mo.git"
 
 SPEC CHECKSUMS:
   Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
@@ -46,4 +54,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 4513408e48a47a11ae52b36d2bdb72e9ff2b22a9
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.2
