@@ -21,8 +21,8 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     @IBOutlet weak var placeHolderImage: NSImageView!
     @IBOutlet weak var recordTypeSelectionView: RecordTypeSelectionView!
     @IBOutlet weak var expandImageView: NSImageView!
-
     @IBOutlet weak var arrowIndicatorContainerView: NSView!
+    
     var record: RecordDisplayable!
     private let relationshipHelper = RelationshipHelper()
     private var pageControl = PageControl()

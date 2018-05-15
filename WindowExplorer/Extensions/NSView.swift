@@ -23,6 +23,7 @@ extension NSCollectionView {
 }
 
 extension NSScrollView {
+    
     var hasReachedBottom: Bool {
         let contentOffsetY = self.contentView.bounds.origin.y
         return contentOffsetY >= verticalOffsetForBottom
