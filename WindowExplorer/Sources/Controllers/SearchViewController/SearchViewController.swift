@@ -36,6 +36,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         static let searchItemHeight: CGFloat = 70
         static let defaultWindowDragAreaColor = NSColor.lightGray
         static let collectionViewMargin: CGFloat = 5
+        static let controllerOffset = 50
     }
 
 
@@ -394,5 +395,12 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         return positionForRecordController.count
     }
 
-    
+    private func updateWindowDragAreaHighlight(for recordType: RecordType?) {
+        guard let recordType = recordType else {
+            windowDragAreaHighlight.layer?.backgroundColor = Constants.defaultWindowDragAreaColor.cgColor
+            return
+        }
+
+        windowDragAreaHighlight.layer?.backgroundColor = recordType.color.cgColor
+    }
 }
