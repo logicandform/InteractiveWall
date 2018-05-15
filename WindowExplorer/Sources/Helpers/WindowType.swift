@@ -2,7 +2,7 @@
 
 import Foundation
 
-enum WindowType {
+enum WindowType: Equatable {
     case record(RecordDisplayable)
     case image(Media)
     case player(Media)
@@ -47,6 +47,21 @@ enum WindowType {
             return false
         case .image, .player, .pdf, .search:
             return true
+        }
+    }
+
+    static func == (lhs: WindowType, rhs: WindowType) -> Bool {
+        switch (lhs, rhs) {
+        case let (.record(lhsModel), .record(rhsModel)):
+            return lhsModel.type == rhsModel.type && lhsModel.id == rhsModel.id
+        case let (.image(lhsMedia), .image(rhsMedia)):
+            return lhsMedia == rhsMedia
+        case let (.player(lhsMedia), .player(rhsMedia)):
+            return lhsMedia == rhsMedia
+        case let (.pdf(lhsMedia), .pdf(rhsMedia)):
+            return lhsMedia == rhsMedia
+        default:
+            return false
         }
     }
 }

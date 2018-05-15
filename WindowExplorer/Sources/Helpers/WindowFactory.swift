@@ -26,25 +26,31 @@ final class WindowFactory {
             let storyboard = NSStoryboard(name: RecordViewController.storyboard, bundle: .main)
             let recordViewController = storyboard.instantiateInitialController() as! RecordViewController
             recordViewController.record = displayable
+            recordViewController.type = type
             return recordViewController
         case let .image(media):
             let storyboard = NSStoryboard(name: ImageViewController.storyboard, bundle: .main)
             let imageViewController = storyboard.instantiateInitialController() as! ImageViewController
             imageViewController.media = media
+            imageViewController.type = type
             return imageViewController
         case let .player(media):
             let storyboard = NSStoryboard(name: PlayerViewController.storyboard, bundle: .main)
             let playerViewController = storyboard.instantiateInitialController() as! PlayerViewController
             playerViewController.media = media
+            playerViewController.type = type
             return playerViewController
         case let .pdf(media):
             let storyboard = NSStoryboard(name: PDFViewController.storyboard, bundle: .main)
             let pdfViewController = storyboard.instantiateInitialController() as! PDFViewController
             pdfViewController.media = media
+            pdfViewController.type = type
             return pdfViewController
         case .search:
             let storyboard = NSStoryboard(name: SearchViewController.storyboard, bundle: .main)
-            return storyboard.instantiateInitialController() as! SearchViewController
+            let searchViewController = storyboard.instantiateInitialController() as! SearchViewController
+            searchViewController.type = type
+            return searchViewController
         case .menu:
             let storyboard = NSStoryboard(name: MenuViewController.storyboard, bundle: .main)
             return storyboard.instantiateInitialController() as! MenuViewController

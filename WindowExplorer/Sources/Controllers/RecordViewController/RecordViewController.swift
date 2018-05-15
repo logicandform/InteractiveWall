@@ -3,7 +3,7 @@
 import Cocoa
 import AppKit
 
-class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource, NSTableViewDataSource, NSTableViewDelegate, MediaControllerDelegate {
+class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource, NSTableViewDataSource, NSTableViewDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Record")
 
     @IBOutlet weak var detailView: NSView!
@@ -22,8 +22,8 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     @IBOutlet weak var recordTypeSelectionView: RecordTypeSelectionView!
 
     var record: RecordDisplayable!
+    private let relationshipHelper = RelationshipHelper()
     private var pageControl = PageControl()
-    private var positionForMediaController = [MediaViewController: Int?]()
     private var showingRelatedItems = false
     private var relatedItemsFilterType: RecordFilterType?
 
@@ -52,6 +52,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         detailView.wantsLayer = true
         detailView.layer?.backgroundColor = style.darkBackground.cgColor
         placeHolderImage.isHidden = !record.media.isEmpty
+        relationshipHelper.parent = self
 
         setupMediaView()
         setupWindowDragArea()
@@ -218,8 +219,8 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             selectedMediaItem = nil
         case .ended:
             selectedMediaItem = mediaItem
-            if let selectedMedia = selectedMediaItem?.media {
-                selectMediaItem(selectedMedia)
+            if let selectedMedia = selectedMediaItem?.media, let windowType = WindowType(for: selectedMedia) {
+                relationshipHelper.display(windowType)
             }
             selectedMediaItem = nil
         default:
@@ -311,7 +312,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         case .possible:
             WindowManager.instance.checkBounds(of: self)
         case .began, .ended:
-            resetMediaControllerPositions()
+            relationshipHelper.reset()
         default:
             return
         }
@@ -343,8 +344,8 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             selectedMediaItem = nil
         case .ended:
             selectedMediaItem = mediaItem
-            if let selectedMedia = selectedMediaItem?.media {
-                selectMediaItem(selectedMedia)
+            if let selectedMedia = selectedMediaItem?.media, let windowType = WindowType(for: selectedMedia) {
+                relationshipHelper.display(windowType)
             }
             selectedMediaItem = nil
         default:
@@ -403,30 +404,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             return CGSize(width: collectionView.frame.width, height: Constants.relatedItemCollectionViewItemHeight)
         default:
             return .zero
-        }
-    }
-
-
-    // MARK: MediaControllerDelegate
-
-    func controllerDidClose(_ controller: MediaViewController) {
-        positionForMediaController.removeValue(forKey: controller)
-        resetCloseWindowTimer()
-    }
-
-    func controllerDidMove(_ controller: MediaViewController) {
-        positionForMediaController[controller] = nil as Int?
-    }
-
-    func recordFrameAndPosition(for controller: MediaViewController) -> (frame: CGRect, position: Int)? {
-        guard let window = view.window else {
-            return nil
-        }
-
-        if let position = positionForMediaController[controller], position != nil {
-            return (window.frame, position!)
-        } else {
-            return (window.frame, getMediaControllerPosition())
         }
     }
 
@@ -516,48 +493,8 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         })
     }
 
-    private func selectMediaItem(_ media: Media) {
-        guard let windowType = WindowType(for: media) else {
-            return
-        }
-
-        let controller = positionForMediaController.keys.first(where: { $0.media == media })
-        let position = getMediaControllerPosition()
-
-        if let controller = controller {
-            // If the controller is in the correct position, bring it to the front, else animate to origin
-            if let position = positionForMediaController[controller], position != nil {
-                controller.view.window?.makeKeyAndOrderFront(self)
-            } else {
-                controller.updatePosition(animating: true)
-                positionForMediaController[controller] = position
-            }
-        } else if let controller = WindowManager.instance.display(windowType) as? MediaViewController {
-            controller.delegate = self
-            // Image view controller takes care of setting its own position after its image has loaded in
-            if controller is PlayerViewController || controller is PDFViewController {
-                controller.updatePosition(animating: false)
-            }
-            positionForMediaController[controller] = position
-        }
-    }
-
-    /// Gets the first available media controller position
-    private func getMediaControllerPosition() -> Int {
-        let currentPositions = positionForMediaController.values
-
-        for position in 0 ..< record.media.count {
-            if !currentPositions.contains(position) {
-                return position
-            }
-        }
-
-        return record.media.count
-    }
-
     private func closeTimerFired() {
-        // Reset timer gets recalled once a child MediaViewContoller gets closed
-        if positionForMediaController.keys.isEmpty {
+        if relationshipHelper.isEmpty() {
             animateViewOut()
         }
     }
@@ -570,10 +507,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
         let diff = currentOrigin - origin
         return abs(diff.x) > Constants.animationDistanceThreshold || abs(diff.y) > Constants.animationDistanceThreshold ? true : false
-    }
-
-    private func resetMediaControllerPositions() {
-        positionForMediaController.keys.forEach { positionForMediaController[$0] = nil as Int? }
     }
 
     /// Handle a change of record type from the RelatedItemsHeaderView

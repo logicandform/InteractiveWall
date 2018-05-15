@@ -11,8 +11,10 @@ class BaseViewController: NSViewController, GestureResponder {
     @IBOutlet weak var titleLabel: NSTextField!
 
     var gestureManager: GestureManager!
+    var type: WindowType!
     var animating = false
     var windowPanGesture: PanGestureRecognizer!
+    weak var parentDelegate: RelationshipDelegate?
     weak var closeWindowTimer: Foundation.Timer?
 
     private struct Constants {
@@ -91,6 +93,10 @@ class BaseViewController: NSViewController, GestureResponder {
         }, completionHandler: { [weak self] in
             self?.animating = false
         })
+    }
+
+    func updatePosition(animating: Bool) {
+        // Override
     }
 
     func animateViewIn() {
