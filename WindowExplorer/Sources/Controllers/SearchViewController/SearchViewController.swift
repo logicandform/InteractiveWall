@@ -67,19 +67,13 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             collectionViewTap.gestureUpdated = handleCollectionViewTap(_:)
         }
 
-        titleViews.forEach { titleView in
-            let titleViewTap = TapGestureRecognizer(withDelay: true)
-            gestureManager.add(titleViewTap, to: titleView)
-            titleViewTap.gestureUpdated = handleTitleTextFieldTap(_:)
-
-            let titleViewPan = PanGestureRecognizer()
-            gestureManager.add(titleViewPan, to: titleView)
-            titleViewPan.gestureUpdated = handleWindowPan(_:)
-        }
-
         let collapseButtonTap = TapGestureRecognizer()
         gestureManager.add(collapseButtonTap, to: collapseButtonArea)
         collapseButtonTap.gestureUpdated = handleCollapseButtonTap(_:)
+
+        let windowDragAreaTap = TapGestureRecognizer()
+        gestureManager.add(windowDragAreaTap, to: windowDragArea)
+        windowDragAreaTap.gestureUpdated = handleWindowDragAreaTap(_:)
     }
 
 
@@ -122,19 +116,21 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
     }
 
-    private func handleTitleTextFieldTap(_ gesture: GestureRecognizer) {
+    private func handleWindowDragAreaTap(_ gesture: GestureRecognizer) {
         guard let tap = gesture as? TapGestureRecognizer,
             tap.state == .ended,
-            let titleTextField = gestureManager.view(for: tap) as? NSTextField,
-            let index = titleViews.index(of: titleTextField),
-            index < titleViews.count - 1 else {
+            let positionOfTouch = tap.position else {
             return
         }
 
-        let correspondingCollectionView = collectionViews[index]
+        let xPos = positionOfTouch.x
+        let index = Int(xPos / style.searchWindowSize.width)
 
-        unselectItem(for: correspondingCollectionView)
-        toggle(to: correspondingCollectionView)
+        if index < collectionViews.count - 1 {
+            let correspondingCollectionView = collectionViews[index]
+            unselectItem(for: correspondingCollectionView)
+            toggle(to: correspondingCollectionView)
+        }
     }
 
     private func handleCollapseButtonTap(_ gesture: GestureRecognizer) {
