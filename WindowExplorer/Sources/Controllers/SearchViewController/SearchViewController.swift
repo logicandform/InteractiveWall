@@ -20,6 +20,8 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     private var selectedType: RecordType?
     private var selectedIndexForView = [NSCollectionView: IndexPath]()
+    
+    private let relationshipHelper = RelationshipHelper()
 
     private lazy var titleViews: [NSTextField] = [titleLabel, secondaryTextField, tertiaryTextField]
     private lazy var collectionViews: [NSCollectionView] = [primaryCollectionView, secondaryCollectionView, tertiaryCollectionView]
@@ -35,6 +37,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         static let searchItemHeight: CGFloat = 70
         static let defaultWindowDragAreaColor = NSColor.lightGray
         static let collectionViewMargin: CGFloat = 5
+        static let closeWindowTimeoutPeriod: TimeInterval = 300
         static let controllerOffset = 50
     }
 
@@ -44,6 +47,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     override func viewDidLoad() {
         super.viewDidLoad()
         titleLabel.attributedStringValue = NSAttributedString(string: titleLabel.stringValue, attributes: style.windowTitleAttributes)
+        relationshipHelper.parent = self
 
         setupGestures()
         resetCloseWindowTimer()
@@ -121,6 +125,25 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
     }
 
+    override func handleWindowPan(_ gesture: GestureRecognizer) {
+        guard let pan = gesture as? PanGestureRecognizer, let window = view.window, !animating else {
+            return
+        }
+
+        switch pan.state {
+        case .recognized, .momentum:
+            var origin = window.frame.origin
+            origin += pan.delta.round()
+            window.setFrameOrigin(origin)
+        case .possible:
+            WindowManager.instance.checkBounds(of: self)
+        case .began, .ended:
+            relationshipHelper.reset()
+        default:
+            return
+        }
+    }
+
 
     // MARK: NSCollectionViewDelegate & NSCollectionViewDataSource
 
@@ -180,6 +203,13 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         })
     }
 
+    override func resetCloseWindowTimer() {
+        closeWindowTimer?.invalidate()
+        closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Constants.closeWindowTimeoutPeriod, repeats: false) { [weak self] _ in
+            self?.closeTimerFired()
+        }
+    }
+
 
     // MARK: Helpers
 
@@ -191,6 +221,12 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         unselectItem(for: collectionView)
         selectedIndexForView[collectionView] = indexPath
         item.set(highlighted: true)
+    }
+
+    private func closeTimerFired() {
+        if relationshipHelper.isEmpty() {
+            animateViewOut()
+        }
     }
 
     // Removes all state from the currently selected view of the given collectionview
@@ -306,14 +342,9 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     }
 
     private func display(_ record: RecordDisplayable) {
-        guard let window = view.window else {
-            return
-        }
-
-        let location = CGPoint(x: window.frame.maxX + style.windowMargins, y: window.frame.minY)
-        RecordFactory.record(for: record.type, id: record.id) { record in
+        RecordFactory.record(for: record.type, id: record.id) { [weak self] record in
             if let record = record {
-                WindowManager.instance.display(.record(record), at: location)
+                self?.relationshipHelper.display(WindowType.record(record))
             }
         }
     }

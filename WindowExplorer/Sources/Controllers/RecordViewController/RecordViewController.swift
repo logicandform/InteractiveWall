@@ -313,6 +313,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         case .possible:
             WindowManager.instance.checkBounds(of: self)
         case .began, .ended:
+            parentDelegate?.controllerDidMove(self)
             relationshipHelper.reset()
         default:
             return
@@ -434,6 +435,17 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         closeWindowTimer?.invalidate()
         closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Constants.closeWindowTimeoutPeriod, repeats: false) { [weak self] _ in
             self?.closeTimerFired()
+        }
+    }
+
+    override func close() {
+        parentDelegate?.controllerDidClose(self)
+        WindowManager.instance.closeWindow(for: self)
+    }
+
+    override func updatePosition(animating: Bool) {
+        if let frameAndPosition = parentDelegate?.frameAndPosition(for: self) {
+            updateOrigin(from: frameAndPosition.frame, at: frameAndPosition.position, animating: animating)
         }
     }
 
