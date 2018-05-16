@@ -122,7 +122,8 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         guard let tap = gesture as? TapGestureRecognizer,
             tap.state == .ended,
             let titleTextField = gestureManager.view(for: tap) as? NSTextField,
-            let index = titleViews.index(of: titleTextField) else {
+            let index = titleViews.index(of: titleTextField),
+            index < titleViews.count - 1 else {
             return
         }
 
