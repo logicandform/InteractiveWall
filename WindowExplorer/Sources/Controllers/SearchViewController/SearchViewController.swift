@@ -38,7 +38,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         static let defaultWindowDragAreaColor = NSColor.lightGray
         static let collectionViewMargin: CGFloat = 5
         static let closeWindowTimeoutPeriod: TimeInterval = 300
-        static let controllerOffset = 50
     }
 
 

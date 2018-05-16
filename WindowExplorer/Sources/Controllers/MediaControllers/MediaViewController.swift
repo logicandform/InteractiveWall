@@ -7,10 +7,6 @@ class MediaViewController: BaseViewController {
 
     var media: Media!
 
-    private struct Constants {
-        static let controllerOffset = 50
-    }
-
 
     // MARK: Life-Cycle
 
@@ -62,8 +58,8 @@ class MediaViewController: BaseViewController {
     // MARK: Helpers
 
     private func updateOrigin(from recordFrame: CGRect, at position: Int, animating: Bool) {
-        let offsetX = CGFloat(position * Constants.controllerOffset)
-        let offsetY = CGFloat(position * -Constants.controllerOffset)
+        let offsetX = CGFloat(position * style.controllerOffset)
+        let offsetY = CGFloat(position * -style.controllerOffset)
         let lastScreen = NSScreen.at(position: Configuration.numberOfScreens)
         var origin = CGPoint(x: recordFrame.maxX + style.windowMargins + offsetX, y: recordFrame.maxY + offsetY - view.frame.height)
 
