@@ -167,12 +167,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         })
     }
 
-    func updateSearchRecordPosition(animating: Bool) {
-        if let recordFrameAndPosition = searchDelegate?.frameAndPosition(for: self) {
-            updateOrigin(from: recordFrameAndPosition.frame, at: recordFrameAndPosition.position, animating: animating)
-        }
-    }
-
 
     // MARK: Gesture Handling
 
@@ -425,7 +419,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     }
 
     override func animateViewOut() {
-        searchDelegate?.controllerDidClose(self)
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration
             detailView.animator().alphaValue = 0
@@ -499,45 +492,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
                 }
             })
         })
-    }
-
-    private func selectMediaItem(_ media: Media) {
-        guard let windowType = WindowType(for: media) else {
-            return
-        }
-
-        let controller = positionForMediaController.keys.first(where: { $0.media == media })
-        let position = getMediaControllerPosition()
-
-        if let controller = controller {
-            // If the controller is in the correct position, bring it to the front, else animate to origin
-            if let position = positionForMediaController[controller], position != nil {
-                controller.view.window?.makeKeyAndOrderFront(self)
-            } else {
-                controller.updatePosition(animating: true)
-                positionForMediaController[controller] = position
-            }
-        } else if let controller = WindowManager.instance.display(windowType) as? MediaViewController {
-            controller.delegate = self
-
-            // Image view controller takes care of setting its own position after its image has loaded in
-            if controller is PlayerViewController || controller is PDFViewController {
-                controller.updatePosition(animating: false)
-            }
-            positionForMediaController[controller] = position
-        }
-    }
-
-    private func getMediaControllerPosition() -> Int {
-        let currentPositions = positionForMediaController.values
-
-        for position in 0 ... positionForMediaController.keys.count {
-            if !currentPositions.contains(position) {
-                return position
-            }
-        }
-
-        return positionForMediaController.count
     }
 
     private func closeTimerFired() {

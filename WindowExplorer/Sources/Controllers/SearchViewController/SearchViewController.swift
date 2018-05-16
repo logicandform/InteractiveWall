@@ -8,7 +8,7 @@ protocol SearchItemDisplayable {
 }
 
 
-class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout, RecordControllerDelegate {
+class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout {
     static let storyboard = NSStoryboard.Name(rawValue: "Search")
 
     @IBOutlet weak var primaryCollectionView: NSCollectionView!
@@ -20,7 +20,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     private var selectedType: RecordType?
     private var selectedIndexForView = [NSCollectionView: IndexPath]()
-    private var positionForRecordController = [RecordViewController: Int?]()
 
     private lazy var titleViews: [NSTextField] = [titleLabel, secondaryTextField, tertiaryTextField]
     private lazy var collectionViews: [NSCollectionView] = [primaryCollectionView, secondaryCollectionView, tertiaryCollectionView]
@@ -122,26 +121,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
     }
 
-    override func handleWindowPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let window = view.window, !animating else {
-            return
-        }
-
-        switch pan.state {
-        case .began:
-            resetRecordControllerPositions()
-        case .recognized, .momentum:
-            var origin = window.frame.origin
-            origin += pan.delta.round()
-            window.setFrameOrigin(origin)
-        case .possible:
-            WindowManager.instance.checkBounds(of: self)
-        default:
-            return
-        }
-    }
-
-
 
     // MARK: NSCollectionViewDelegate & NSCollectionViewDataSource
 
@@ -170,30 +149,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
         return CGSize(width: collectionView.frame.size.width, height: Constants.searchItemHeight)
-    }
-
-
-    // MARK: RecordControllerDelegate
-
-    func controllerDidClose(_ controller: RecordViewController) {
-        positionForRecordController.removeValue(forKey: controller)
-        resetCloseWindowTimer()
-    }
-
-    func controllerDidMove(_ controller: RecordViewController) {
-        positionForRecordController[controller] = nil as Int?
-    }
-
-    func frameAndPosition(for controller: RecordViewController) -> (frame: CGRect, position: Int)? {
-        guard let window = view.window else {
-            return nil
-        }
-
-        if let position = positionForRecordController[controller], position != nil {
-            return (window.frame, position!)
-        } else {
-            return (window.frame, getRecordControllerPosition())
-        }
     }
 
 
@@ -236,27 +191,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         unselectItem(for: collectionView)
         selectedIndexForView[collectionView] = indexPath
         item.set(highlighted: true)
-    }
-
-    private func select(_ record: RecordDisplayable) {
-        let windowType = WindowType.record(record)
-
-        let controller = positionForRecordController.keys.first(where: { $0.record.id == record.id })
-        let position = getRecordControllerPosition()
-
-        if let controller = controller {
-            // If the controller is in the correct position, bring it to the front, else animate to origin
-            if let position = positionForRecordController[controller], position != nil {
-                controller.view.window?.makeKeyAndOrderFront(self)
-            } else {
-                controller.updateSearchRecordPosition(animating: true)
-                positionForRecordController[controller] = position
-            }
-        } else if let controller = WindowManager.instance.display(windowType) as? RecordViewController {
-            controller.searchDelegate = self
-            controller.updateSearchRecordPosition(animating: false)
-            positionForRecordController[controller] = position
-        }
     }
 
     // Removes all state from the currently selected view of the given collectionview
@@ -372,27 +306,16 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     }
 
     private func display(_ record: RecordDisplayable) {
+        guard let window = view.window else {
+            return
+        }
+
+        let location = CGPoint(x: window.frame.maxX + style.windowMargins, y: window.frame.minY)
         RecordFactory.record(for: record.type, id: record.id) { record in
             if let record = record {
-                self.select(record)
+                WindowManager.instance.display(.record(record), at: location)
             }
         }
-    }
-
-    private func resetRecordControllerPositions() {
-        positionForRecordController.keys.forEach { positionForRecordController[$0] = nil as Int? }
-    }
-
-    private func getRecordControllerPosition() -> Int {
-        let currentPositions = positionForRecordController.values
-
-        for position in 0 ... positionForRecordController.keys.count {
-            if !currentPositions.contains(position) {
-                return position
-            }
-        }
-
-        return positionForRecordController.count
     }
 
     private func updateWindowDragAreaHighlight(for recordType: RecordType?) {
