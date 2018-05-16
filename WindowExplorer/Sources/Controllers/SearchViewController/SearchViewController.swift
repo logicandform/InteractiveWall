@@ -71,6 +71,10 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             let titleViewTap = TapGestureRecognizer(withDelay: true)
             gestureManager.add(titleViewTap, to: titleView)
             titleViewTap.gestureUpdated = handleTitleTextFieldTap(_:)
+
+            let titleViewPan = PanGestureRecognizer()
+            gestureManager.add(titleViewPan, to: titleView)
+            titleViewPan.gestureUpdated = handleWindowPan(_:)
         }
 
         let collapseButtonTap = TapGestureRecognizer()
