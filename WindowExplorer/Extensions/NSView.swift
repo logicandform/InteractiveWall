@@ -21,3 +21,18 @@ extension NSCollectionView {
         return item(at: IndexPath(item: row, section: section))
     }
 }
+
+extension NSScrollView {
+
+    var hasReachedBottom: Bool {
+        let contentOffsetY = contentView.bounds.origin.y
+        return contentOffsetY >= verticalOffsetForBottom
+    }
+
+    private var verticalOffsetForBottom: CGFloat {
+        let scrollViewHeight = bounds.size.height
+        let scrollViewContentSizeHeight = contentView.documentRect.size.height
+
+        return scrollViewContentSizeHeight - scrollViewHeight
+    }
+}

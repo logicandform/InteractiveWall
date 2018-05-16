@@ -21,6 +21,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     @IBOutlet weak var placeHolderImage: NSImageView!
     @IBOutlet weak var recordTypeSelectionView: RecordTypeSelectionView!
     @IBOutlet weak var expandImageView: NSImageView!
+    @IBOutlet weak var arrowIndicatorContainerView: NSView!
 
     var record: RecordDisplayable!
     private let relationshipHelper = RelationshipHelper()
@@ -59,6 +60,8 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         expandImageView.layer?.cornerRadius = Constants.expandImageViewCornerRadius
         expandImageView.layer?.backgroundColor = style.darkBackground.cgColor
         expandImageView.isHidden = record.media.isEmpty
+        arrowIndicatorContainerView.wantsLayer = true
+        arrowIndicatorContainerView.layer?.backgroundColor = style.darkBackground.cgColor
 
         setupMediaView()
         setupWindowDragArea()
@@ -67,6 +70,11 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         setupRelatedItemsView()
         animateViewIn()
         resetCloseWindowTimer()
+    }
+
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        updateArrowIndicatorView()
     }
 
 
@@ -300,6 +308,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             var point = stackClipView.visibleRect.origin
             point.y += pan.delta.dy
             stackClipView.scroll(point)
+            updateArrowIndicatorView()
         default:
             return
         }
@@ -557,5 +566,11 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }, completionHandler: {
             completion()
         })
+    }
+
+    private func updateArrowIndicatorView() {
+        if let scrollView = stackView.enclosingScrollView {
+            arrowIndicatorContainerView.isHidden = scrollView.hasReachedBottom
+        }
     }
 }
