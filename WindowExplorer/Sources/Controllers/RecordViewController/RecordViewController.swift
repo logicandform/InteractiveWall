@@ -20,6 +20,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     @IBOutlet weak var toggleRelatedItemsImage: NSImageView!
     @IBOutlet weak var placeHolderImage: NSImageView!
     @IBOutlet weak var recordTypeSelectionView: RecordTypeSelectionView!
+    @IBOutlet weak var expandImageView: NSImageView!
 
     var record: RecordDisplayable!
     private let relationshipHelper = RelationshipHelper()
@@ -41,6 +42,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         static let pageControlHeight: CGFloat = 20
         static let stackViewTopInset: CGFloat = 15
         static let stackViewBottomInset: CGFloat = 15
+        static let expandImageViewCornerRadius: CGFloat = 2.0
     }
 
 
@@ -53,6 +55,10 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         detailView.layer?.backgroundColor = style.darkBackground.cgColor
         placeHolderImage.isHidden = !record.media.isEmpty
         relationshipHelper.parent = self
+        expandImageView.wantsLayer = true
+        expandImageView.layer?.cornerRadius = Constants.expandImageViewCornerRadius
+        expandImageView.layer?.backgroundColor = style.darkBackground.cgColor
+        expandImageView.isHidden = record.media.isEmpty
 
         setupMediaView()
         setupWindowDragArea()
