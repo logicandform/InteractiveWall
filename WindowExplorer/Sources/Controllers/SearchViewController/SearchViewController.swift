@@ -20,7 +20,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     private var selectedType: RecordType?
     private var selectedIndexForView = [NSCollectionView: IndexPath]()
-    
     private let relationshipHelper = RelationshipHelper()
 
     private lazy var titleViews: [NSTextField] = [titleLabel, secondaryTextField, tertiaryTextField]

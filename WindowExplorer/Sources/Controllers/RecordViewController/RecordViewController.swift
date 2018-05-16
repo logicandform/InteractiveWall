@@ -607,7 +607,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private func updateArrowIndicatorView() {
         if let scrollView = stackView.enclosingScrollView {
             arrowIndicatorContainerView.isHidden = scrollView.hasReachedBottom
-
         }
     }
 }
