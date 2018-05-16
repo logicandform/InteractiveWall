@@ -580,7 +580,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         })
     }
 
-
     private func updateOrigin(from recordFrame: CGRect, at position: Int, animating: Bool) {
         let offsetX = CGFloat(position * style.controllerOffset)
         let offsetY = CGFloat(position * -style.controllerOffset)
