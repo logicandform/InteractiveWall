@@ -34,6 +34,9 @@ final class Style {
     let maxMediaWindowHeight: CGFloat = 1500
     let windowMargins: CGFloat = 20
 
+    // Controllers
+    let controllerOffset = 50
+
     // Titles
     var windowTitleAttributes: [NSAttributedStringKey: Any] {
         let font = NSFont(name: "Soleil", size: 16) ?? NSFont.systemFont(ofSize: 16)
