@@ -22,7 +22,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     @IBOutlet weak var recordTypeSelectionView: RecordTypeSelectionView!
     @IBOutlet weak var expandImageView: NSImageView!
     @IBOutlet weak var arrowIndicatorContainerView: NSView!
-    
+
     var record: RecordDisplayable!
     private let relationshipHelper = RelationshipHelper()
     private var pageControl = PageControl()
@@ -73,7 +73,8 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     }
 
     override func viewDidAppear() {
-        handleArrowIndicatorView()
+        super.viewDidAppear()
+        updateArrowIndicatorView()
     }
 
 
@@ -307,11 +308,10 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             var point = stackClipView.visibleRect.origin
             point.y += pan.delta.dy
             stackClipView.scroll(point)
+            updateArrowIndicatorView()
         default:
             return
         }
-
-        handleArrowIndicatorView()
     }
 
     override func handleWindowPan(_ gesture: GestureRecognizer) {
@@ -568,11 +568,9 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         })
     }
 
-    private func handleArrowIndicatorView() {
-        guard let scrollView = stackView.enclosingScrollView else {
-            return
+    private func updateArrowIndicatorView() {
+        if let scrollView = stackView.enclosingScrollView {
+            arrowIndicatorContainerView.isHidden = scrollView.hasReachedBottom
         }
-
-        arrowIndicatorContainerView.isHidden = scrollView.hasReachedBottom
     }
 }
