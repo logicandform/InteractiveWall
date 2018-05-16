@@ -152,7 +152,7 @@
                                         </scroller>
                                     </scrollView>
                                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bUk-IU-mgC">
-                                        <rect key="frame" x="366" y="560" width="30" height="30"/>
+                                        <rect key="frame" x="376" y="560" width="30" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="kZg-Qm-H9m"/>
                                             <constraint firstAttribute="width" constant="30" id="o9G-Xk-LdZ"/>
@@ -166,7 +166,7 @@
                                     <constraint firstItem="FBg-bp-lkB" firstAttribute="top" secondItem="Eaz-7m-IDm" secondAttribute="bottom" constant="25" id="8vh-Mt-Z9V"/>
                                     <constraint firstItem="ufY-Kg-vBR" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="leading" id="CBg-hb-EdH"/>
                                     <constraint firstItem="Zeo-g9-VHC" firstAttribute="centerY" secondItem="ufY-Kg-vBR" secondAttribute="centerY" id="EcY-KO-d8G"/>
-                                    <constraint firstAttribute="trailing" secondItem="bUk-IU-mgC" secondAttribute="trailing" constant="20" id="dWQ-cx-ayu"/>
+                                    <constraint firstAttribute="trailing" secondItem="bUk-IU-mgC" secondAttribute="trailing" constant="10" id="dWQ-cx-ayu"/>
                                     <constraint firstItem="Zeo-g9-VHC" firstAttribute="centerX" secondItem="ufY-Kg-vBR" secondAttribute="centerX" id="e06-73-OD5"/>
                                     <constraint firstItem="FBg-bp-lkB" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="leading" id="fiA-kL-6Ij"/>
                                     <constraint firstAttribute="width" constant="416" id="gCO-Bx-Eu3"/>
