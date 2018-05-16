@@ -67,6 +67,12 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             collectionViewTap.gestureUpdated = handleCollectionViewTap(_:)
         }
 
+        titleViews.forEach { titleView in
+            let titleViewTap = TapGestureRecognizer(withDelay: true)
+            gestureManager.add(titleViewTap, to: titleView)
+            titleViewTap.gestureUpdated = handleTitleTextFieldTap(_:)
+        }
+
         let collapseButtonTap = TapGestureRecognizer()
         gestureManager.add(collapseButtonTap, to: collapseButtonArea)
         collapseButtonTap.gestureUpdated = handleCollapseButtonTap(_:)
@@ -110,6 +116,20 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         toggle(to: collectionView) { [weak self] in
             self?.showResults(for: searchItemView)
         }
+    }
+
+    private func handleTitleTextFieldTap(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer,
+            tap.state == .ended,
+            let titleTextField = gestureManager.view(for: tap) as? NSTextField,
+            let index = titleViews.index(of: titleTextField) else {
+            return
+        }
+
+        let correspondingCollectionView = collectionViews[index]
+
+        unselectItem(for: correspondingCollectionView)
+        toggle(to: correspondingCollectionView)
     }
 
     private func handleCollapseButtonTap(_ gesture: GestureRecognizer) {
