@@ -49,13 +49,13 @@ class FadingScrollView: NSScrollView {
         switch position {
         case .top:
             gradientLayer.colors = [opaque, transparent]
-            gradientLayer.locations = [NSNumber(value: 1.0-0.035), 1.0]
+            gradientLayer.locations = [NSNumber(value: 1.0 - fadePercentage), 1.0]
         case .bottom:
             gradientLayer.colors = [transparent, opaque]
-            gradientLayer.locations = [0.0, 0.035]
+            gradientLayer.locations = [0.0, NSNumber(value:fadePercentage)]
         case .middle:
             gradientLayer.colors = [transparent, opaque, opaque, transparent]
-            gradientLayer.locations = [0.0, 0.035, NSNumber(value: 1.0-0.035), 1.0]
+            gradientLayer.locations = [0.0, NSNumber(value: fadePercentage), NSNumber(value: 1.0 - fadePercentage), 1.0]
         }
 
         self.layer?.mask = gradientLayer
