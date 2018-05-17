@@ -45,7 +45,7 @@
                                             <constraint firstAttribute="height" constant="30" id="zkM-Nh-jSx"/>
                                         </constraints>
                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" usesSingleLineMode="YES" id="748-1L-Vho">
-                                            <font key="font" size="16" name="Soleil"/>
+                                            <font key="font" metaFont="system" size="16"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>

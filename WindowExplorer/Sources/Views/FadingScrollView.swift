@@ -6,28 +6,11 @@ class FadingScrollView: NSScrollView {
 
     let fadePercentage: Float = 0.035
 
+
     enum ScrollPosition {
         case top
         case bottom
         case middle
-    }
-
-    override func layout() {
-        super.layout()
-
-        let transparent = NSColor.clear.cgColor
-        let opaque = style.darkBackground.cgColor
-
-        let maskLayer = CALayer()
-        maskLayer.frame = bounds
-
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = NSRect(x: bounds.origin.x, y: 0, width: bounds.size.width, height: bounds.size.height)
-        gradientLayer.colors = [transparent, opaque, opaque, transparent]
-        gradientLayer.locations = [0, NSNumber(value: fadePercentage), NSNumber(value: 1 - fadePercentage), 1]
-
-        maskLayer.addSublayer(gradientLayer)
-        self.layer?.mask = maskLayer
     }
 
 
@@ -43,6 +26,14 @@ class FadingScrollView: NSScrollView {
                 updateGradientProperty(position: .middle)
             }
         }
+    }
+
+
+    // MARK: Overrides
+
+    override func layout() {
+        super.layout()
+        checkGradient()
     }
 
 
@@ -67,7 +58,6 @@ class FadingScrollView: NSScrollView {
             gradientLayer.locations = [0.0, 0.035, NSNumber(value: 1.0-0.035), 1.0]
         }
 
-        self.layer?.mask = nil
         self.layer?.mask = gradientLayer
     }
 }

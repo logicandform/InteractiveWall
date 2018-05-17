@@ -314,6 +314,8 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         frame.size.width = style.searchWindowSize.width * CGFloat(index + 1) + Constants.collectionViewMargin * CGFloat(index)
         window.setFrame(frame, display: true, animate: true)
         focusedCollectionView = view
+
+        checkGradients()
     }
 
     /// Returns a collection of search items used as the second level of a search query
