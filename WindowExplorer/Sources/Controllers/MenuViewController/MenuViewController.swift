@@ -112,6 +112,11 @@ class MenuViewController: NSViewController, GestureResponder {
        return true
     }
 
+    func contains(touch: Touch) -> Bool {
+        return view.visibleRect.contains(touch.position)
+//        return view.subviews.first(where: { $0.visibleRect.contains(touch.position) }) != nil
+    }
+
 
     // MARK: Helpers
 

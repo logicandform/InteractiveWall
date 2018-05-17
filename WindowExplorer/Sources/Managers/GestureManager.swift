@@ -9,6 +9,7 @@ protocol GestureResponder: class {
     var view: NSView { get }
     var gestureManager: GestureManager! { get }
     func draggableInside(bounds: CGRect) -> Bool
+    func contains(touch: Touch) -> Bool
 }
 
 
@@ -49,6 +50,10 @@ final class GestureManager {
 
     func handle(_ touch: Touch) {
         touchReceived?(touch)
+
+        if !responder.contains(touch: touch) {
+            return
+        }
 
         switch touch.state {
         case .down:

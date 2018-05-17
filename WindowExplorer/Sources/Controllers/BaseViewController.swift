@@ -172,6 +172,10 @@ class BaseViewController: NSViewController, GestureResponder {
         return bounds.contains(smallDragArea)
     }
 
+    func contains(touch: Touch) -> Bool {
+        return view.subviews.first(where: { $0.visibleRect.contains(touch.position) }) != nil
+    }
+
 
     // MARK: Helpers
 
