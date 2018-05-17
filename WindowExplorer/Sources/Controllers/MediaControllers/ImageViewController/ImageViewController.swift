@@ -152,20 +152,23 @@ class ImageViewController: MediaViewController {
         // if not already zoomed, then zoom in center
         // after moving around, need to zoom in and out using new center point
 
-        var imageRect = imageScrollView.contentView.bounds
-        let scaledWidth = CGFloat(scale) * imageRect.size.width
-        let scaledHeight = CGFloat(scale) * imageRect.size.height
+        // first, let's get proper zoom in and out scaling
+        // next, let's get centering the image
 
-//        let translationX = -(imageRect.size.width - scaledWidth) * (CGFloat(scale) / contentViewFrame.width)
-//        let translationY = -(imageRect.size.height - scaledHeight) * (CGFloat(scale) / contentViewFrame.height)
+        let currentZoomScale = CGFloat(scale)
+
+        var imageRect = imageScrollView.contentView.frame
+        let scaledWidth = currentZoomScale * imageRect.size.width
+        let scaledHeight = currentZoomScale * imageRect.size.height
         imageRect.size = CGSize(width: scaledWidth, height: scaledHeight)
-//        imageRect.origin = CGPoint(x: imageRect.origin.x - translationX, y: imageRect.origin.y - translationY)
 
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.doubleTapAnimationDuration
             NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
             imageScrollView.contentView.animator().bounds = imageRect
         })
+
+
     }
 
 
