@@ -20,7 +20,7 @@ PODS:
     - PromiseKit/CorePromise
 
 DEPENDENCIES:
-  - Alamofire (~> 4.5)
+  - Alamofire (~> 4.7)
   - AlamofireImage
   - C4 (~> 3.0.1)
   - "MONode (from `git@github.com:SlantDesign/mo.git`)"
@@ -52,6 +52,6 @@ SPEC CHECKSUMS:
   MONode: 6bcc731f16d2f355b7c29da63823b95cd945b290
   PromiseKit: 743e497a5f505a470d3bbbf4ce0663c1268af0a4
 
-PODFILE CHECKSUM: 4513408e48a47a11ae52b36d2bdb72e9ff2b22a9
+PODFILE CHECKSUM: ecfebd79fdd9129b29a85b162879f5f3cb1ac9b5
 
 COCOAPODS: 1.5.2

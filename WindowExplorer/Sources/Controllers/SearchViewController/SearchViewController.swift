@@ -7,6 +7,11 @@ protocol SearchItemDisplayable {
     var title: String { get }
 }
 
+fileprivate struct SelectedRecord: Equatable {
+    let id: Int
+    let type: RecordType
+}
+
 
 class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout {
     static let storyboard = NSStoryboard.Name(rawValue: "Search")
@@ -19,6 +24,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     @IBOutlet weak var collapseButtonArea: NSView!
 
     private var selectedType: RecordType?
+    private var selectedRecords = [SelectedRecord]()
     private var selectedIndexForView = [NSCollectionView: IndexPath]()
     private let relationshipHelper = RelationshipHelper()
 
@@ -100,8 +106,12 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             let collectionView = gestureManager.view(for: tap) as? NSCollectionView,
             let location = tap.position,
             let indexPath = collectionView.indexPathForItem(at: location + collectionView.visibleRect.origin),
-            let searchItemView = collectionView.item(at: indexPath) as? SearchItemView,
-            indexPath != selectedIndexForView[collectionView] else {
+            let searchItemView = collectionView.item(at: indexPath) as? SearchItemView else {
+            return
+        }
+
+        // Only allow reselected of cells in the tertiaryViewController.
+        if indexPath == selectedIndexForView[collectionView] && collectionView != tertiaryCollectionView {
             return
         }
 
@@ -178,9 +188,11 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             return NSCollectionViewItem()
         }
 
-        // Check if index path is selected
-        if let selectedIndex = selectedIndexForView[collectionView] {
+        // Set the highlighted state of view
+        if let selectedIndex = selectedIndexForView[collectionView], searchItemView.collectionView != tertiaryCollectionView {
             searchItemView.set(highlighted: selectedIndex == indexPath)
+        } else if let record = searchItems.at(index: indexPath.item) as? RecordDisplayable {
+            searchItemView.set(highlighted: isSelected(record))
         }
 
         searchItemView.type = selectedType
@@ -236,7 +248,13 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             return
         }
 
-        unselectItem(for: collectionView)
+        if collectionView == tertiaryCollectionView, let record = item.item as? RecordDisplayable {
+            selectedIndexForView.removeValue(forKey: collectionView)
+            selectedRecords.append(SelectedRecord(id: record.id, type: record.type))
+        } else {
+            unselectItem(for: collectionView)
+        }
+
         selectedIndexForView[collectionView] = indexPath
         item.set(highlighted: true)
     }
@@ -374,5 +392,9 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
 
         windowDragAreaHighlight.layer?.backgroundColor = recordType.color.cgColor
+    }
+
+    private func isSelected(_ record: RecordDisplayable) -> Bool {
+        return selectedRecords.contains(where: { $0.id == record.id && $0.type == record.type })
     }
 }

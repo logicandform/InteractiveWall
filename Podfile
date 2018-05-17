@@ -4,7 +4,7 @@ workspace 'MapExplorer'
 
 abstract_target 'All' do
     pod 'MONode', :git => 'git@github.com:SlantDesign/mo.git'
-    pod 'Alamofire', '~> 4.5'
+    pod 'Alamofire', '~> 4.7'
 
     target 'MapExplorer-iOS' do
         project 'MapExplorer-iOS/MapExplorer-iOS.xcodeproj'
