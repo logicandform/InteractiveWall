@@ -42,6 +42,7 @@ protocol RecordDisplayable: SearchItemDisplayable {
     var media: [Media] { get }
     var textFields: [NSTextField] { get }
     var recordGroups: [RecordGroup] { get }
+    var priority: Int { get }
 }
 
 
@@ -73,6 +74,19 @@ extension RecordDisplayable {
         switch type {
         case .image:
             return relatedRecordsContainingImages()
+        default:
+            return []
+        }
+    }
+
+    func filterRelatedRecords(of type: RecordFilterType, from records: [RecordDisplayable]) -> [RecordDisplayable] {
+        if let recordType = type.recordType {
+            return records.filter { $0.type == recordType }
+        }
+
+        switch type {
+        case .image:
+            return records.filter { $0.containsImages() }
         default:
             return []
         }

@@ -102,6 +102,7 @@
 		8FE6467B2060553100E6116A /* RegularScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE6467A2060553100E6116A /* RegularScrollView.swift */; };
 		8FEABDA12064702600612C84 /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEABD9F2064702600612C84 /* MediaViewController.swift */; };
 		A407161220ABAE5C00B54593 /* RelationshipHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A407161120ABAE5B00B54593 /* RelationshipHelper.swift */; };
+		A407160E20AB94B800B54593 /* PriorityOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A407160D20AB94B800B54593 /* PriorityOrder.swift */; };
 		A4694B66209CEC18006A407F /* RecordFilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4694B65209CEC18006A407F /* RecordFilterType.swift */; };
 		C6DB17689F287C9826286DF2 /* Pods_All_WindowExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */; };
 		CD096C8A20A3AD7F00C8A732 /* GeocodeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD096C8920A3AD7F00C8A732 /* GeocodeHelper.swift */; };
@@ -240,6 +241,7 @@
 		8FEABD9F2064702600612C84 /* MediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaViewController.swift; sourceTree = "<group>"; };
 		A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_WindowExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A407161120ABAE5B00B54593 /* RelationshipHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipHelper.swift; sourceTree = "<group>"; };
+		A407160D20AB94B800B54593 /* PriorityOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityOrder.swift; sourceTree = "<group>"; };
 		A4694B65209CEC18006A407F /* RecordFilterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFilterType.swift; sourceTree = "<group>"; };
 		CD096C8920A3AD7F00C8A732 /* GeocodeHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeocodeHelper.swift; sourceTree = "<group>"; };
 		CE471FCE047AE2FD1C92BA3A /* Pods-All-WindowExplorer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-WindowExplorer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer.release.xcconfig"; sourceTree = "<group>"; };
@@ -527,6 +529,7 @@
 				22927911208E531C005E2036 /* BackgroundTimer.swift */,
 				A4694B65209CEC18006A407F /* RecordFilterType.swift */,
 				CD096C8920A3AD7F00C8A732 /* GeocodeHelper.swift */,
+				A407160D20AB94B800B54593 /* PriorityOrder.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -868,6 +871,7 @@
 				225FBBA5208EAF9400B2CD3E /* ControlAction.swift in Sources */,
 				2247670020562F65003E8790 /* MediaItemView.swift in Sources */,
 				22914F77204905230000D4E1 /* NSApplication.swift in Sources */,
+				A407160E20AB94B800B54593 /* PriorityOrder.swift in Sources */,
 				2204623920472FDF0067D9FB /* NetworkConfiguration.swift in Sources */,
 				2204623620472FDF0067D9FB /* AVKit.swift in Sources */,
 				D9F24E5F205B01A000B9FCB8 /* WindowType.swift in Sources */,

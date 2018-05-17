@@ -14,6 +14,7 @@ class Organization {
     var relatedOrganizations = [Organization]()
     var relatedArtifacts = [Artifact]()
     var relatedEvents = [Event]()
+    lazy var priority = PriorityOrder.priority(for: self)
 
     private struct Keys {
         static let id = "id"
