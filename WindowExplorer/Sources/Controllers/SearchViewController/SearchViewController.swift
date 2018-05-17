@@ -17,6 +17,9 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     @IBOutlet weak var secondaryTextField: NSTextField!
     @IBOutlet weak var tertiaryTextField: NSTextField!
     @IBOutlet weak var collapseButtonArea: NSView!
+    @IBOutlet weak var primaryScrollView: FadingScrollView!
+    @IBOutlet weak var secondaryScrollView: FadingScrollView!
+    @IBOutlet weak var tertiaryScrollView: FadingScrollView!
 
     private var selectedType: RecordType?
     private var selectedIndexForView = [NSCollectionView: IndexPath]()
@@ -51,6 +54,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         resetCloseWindowTimer()
         updateWindowDragAreaHighlight(for: selectedType)
         animateViewIn()
+        checkGradients()
     }
 
 
@@ -85,6 +89,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             var rect = collectionView.visibleRect
             rect.origin.y += pan.delta.dy
             collectionView.scrollToVisible(rect)
+            checkGradients()
         default:
             return
         }
@@ -210,6 +215,12 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
 
     // MARK: Helpers
+
+    private func checkGradients() {
+        primaryScrollView.checkGradient()
+        secondaryScrollView.checkGradient()
+        tertiaryScrollView.checkGradient()
+    }
 
     private func select(_ item: SearchItemView) {
         guard let collectionView = item.collectionView, let indexPath = collectionView.indexPath(for: item) else {

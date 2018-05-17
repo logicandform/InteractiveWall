@@ -24,9 +24,20 @@ extension NSCollectionView {
 
 extension NSScrollView {
 
+    var isScrollActive: Bool {
+        let contentViewHeight = contentView.documentRect.size.height
+        let scrollViewHeight = bounds.size.height
+        return contentViewHeight > scrollViewHeight
+    }
+
     var hasReachedBottom: Bool {
         let contentOffsetY = contentView.bounds.origin.y
         return contentOffsetY >= verticalOffsetForBottom
+    }
+
+    var hasReachedTop: Bool {
+        let contentOffsetY = contentView.bounds.origin.y
+        return contentOffsetY <= 0
     }
 
     private var verticalOffsetForBottom: CGFloat {
