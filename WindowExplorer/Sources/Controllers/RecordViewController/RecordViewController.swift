@@ -442,8 +442,8 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             relatedItemsView.animator().alphaValue = 0
             windowDragArea.animator().alphaValue = 0
             recordTypeSelectionView.stackview.animator().alphaValue = 0
-        }, completionHandler: {
-            WindowManager.instance.closeWindow(for: self)
+        }, completionHandler: { [weak self] in
+            self?.close()
         })
     }
 
