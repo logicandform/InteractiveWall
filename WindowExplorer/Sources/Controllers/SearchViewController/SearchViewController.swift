@@ -54,7 +54,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         resetCloseWindowTimer()
         updateWindowDragAreaHighlight(for: selectedType)
         animateViewIn()
-        checkGradients()
+        updateGradients()
     }
 
 
@@ -89,7 +89,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             var rect = collectionView.visibleRect
             rect.origin.y += pan.delta.dy
             collectionView.scrollToVisible(rect)
-            checkGradients()
+            updateGradients()
         default:
             return
         }
@@ -216,10 +216,10 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     // MARK: Helpers
 
-    private func checkGradients() {
-        primaryScrollView.checkGradient()
-        secondaryScrollView.checkGradient()
-        tertiaryScrollView.checkGradient()
+    private func updateGradients() {
+        primaryScrollView.updateGradient()
+        secondaryScrollView.updateGradient()
+        tertiaryScrollView.updateGradient()
     }
 
     private func select(_ item: SearchItemView) {
@@ -315,7 +315,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         window.setFrame(frame, display: true, animate: true)
         focusedCollectionView = view
 
-        checkGradients()
+        updateGradients()
     }
 
     /// Returns a collection of search items used as the second level of a search query

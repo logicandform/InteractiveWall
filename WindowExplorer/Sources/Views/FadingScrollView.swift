@@ -16,11 +16,11 @@ class FadingScrollView: NSScrollView {
 
     // MARK: API
 
-    func checkGradient() {
-        if self.isScrollActive {
-            if self.hasReachedBottom {
+    func updateGradient() {
+        if self.isActive {
+            if hasReachedBottom {
                 updateGradientProperty(position: .bottom)
-            } else if self.hasReachedTop {
+            } else if hasReachedTop {
                 updateGradientProperty(position: .top)
             } else {
                 updateGradientProperty(position: .middle)
@@ -33,7 +33,7 @@ class FadingScrollView: NSScrollView {
 
     override func layout() {
         super.layout()
-        checkGradient()
+        updateGradient()
     }
 
 
@@ -58,6 +58,6 @@ class FadingScrollView: NSScrollView {
             gradientLayer.locations = [0.0, NSNumber(value: fadePercentage), NSNumber(value: 1.0 - fadePercentage), 1.0]
         }
 
-        self.layer?.mask = gradientLayer
+        layer?.mask = gradientLayer
     }
 }

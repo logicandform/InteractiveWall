@@ -255,7 +255,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             var rect = relatedItemsView.visibleRect
             rect.origin.y += pan.delta.dy
             relatedItemsView.scrollToVisible(rect)
-            relatedRecordScrollView.checkGradient()
+            relatedRecordScrollView.updateGradient()
         default:
             return
         }
@@ -267,7 +267,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
 
         toggleRelatedItems()
-        relatedRecordScrollView.checkGradient()
+        relatedRecordScrollView.updateGradient()
     }
 
     private var selectedRelatedItem: RelatedItemView? {

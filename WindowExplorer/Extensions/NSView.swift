@@ -24,7 +24,7 @@ extension NSCollectionView {
 
 extension NSScrollView {
 
-    var isScrollActive: Bool {
+    var isActive: Bool {
         let contentViewHeight = contentView.documentRect.size.height
         let scrollViewHeight = bounds.size.height
         return contentViewHeight > scrollViewHeight
