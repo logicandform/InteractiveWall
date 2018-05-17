@@ -12,7 +12,7 @@ class ImageViewController: MediaViewController {
     @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageZoomControl: ImageZoomControl!
-    
+
     private var imageView: NSImageView!
     private var imageRequest: DataRequest?
     private var frameSize: NSSize!
@@ -55,6 +55,9 @@ class ImageViewController: MediaViewController {
                 self?.addImage(image)
             }
         }
+
+        imageZoomControl.gestureManager = gestureManager
+        imageZoomControl.zoomScaleUpdated = handleZoomScale(_:)
     }
 
     private func addImage(_ image: NSImage) {
@@ -142,6 +145,27 @@ class ImageViewController: MediaViewController {
         default:
             return
         }
+    }
+
+    private func handleZoomScale(_ scale: Double) {
+
+        // if not already zoomed, then zoom in center
+        // after moving around, need to zoom in and out using new center point
+
+        var imageRect = imageScrollView.contentView.bounds
+        let scaledWidth = CGFloat(scale) * imageRect.size.width
+        let scaledHeight = CGFloat(scale) * imageRect.size.height
+
+//        let translationX = -(imageRect.size.width - scaledWidth) * (CGFloat(scale) / contentViewFrame.width)
+//        let translationY = -(imageRect.size.height - scaledHeight) * (CGFloat(scale) / contentViewFrame.height)
+        imageRect.size = CGSize(width: scaledWidth, height: scaledHeight)
+//        imageRect.origin = CGPoint(x: imageRect.origin.x - translationX, y: imageRect.origin.y - translationY)
+
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = Constants.doubleTapAnimationDuration
+            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+            imageScrollView.contentView.animator().bounds = imageRect
+        })
     }
 
 

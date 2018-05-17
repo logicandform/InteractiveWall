@@ -97,7 +97,6 @@
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="JxA-3p-oGM" customClass="ImageZoomControl" customModule="WindowExplorer" customModuleProvider="target">
                                 <rect key="frame" x="8" y="0.0" width="624" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="624" id="3Fx-12-B9d"/>
                                     <constraint firstAttribute="height" constant="40" id="7WH-LO-dIK"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="624" id="7w8-YW-Gzh"/>
                                 </constraints>
