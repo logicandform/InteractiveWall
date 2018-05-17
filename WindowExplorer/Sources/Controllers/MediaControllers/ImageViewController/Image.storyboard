@@ -50,7 +50,7 @@
                                             <constraint firstAttribute="height" constant="30" id="g5g-AP-8FI"/>
                                         </constraints>
                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" usesSingleLineMode="YES" id="HlC-v9-VHL">
-                                            <font key="font" metaFont="system" size="16"/>
+                                            <font key="font" size="16" name="Soleil"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
