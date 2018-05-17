@@ -70,6 +70,10 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         let collapseButtonTap = TapGestureRecognizer()
         gestureManager.add(collapseButtonTap, to: collapseButtonArea)
         collapseButtonTap.gestureUpdated = handleCollapseButtonTap(_:)
+
+        let windowDragAreaTap = TapGestureRecognizer()
+        gestureManager.add(windowDragAreaTap, to: windowDragArea)
+        windowDragAreaTap.gestureUpdated = handleWindowDragAreaTap(_:)
     }
 
 
@@ -109,6 +113,22 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         select(searchItemView)
         toggle(to: collectionView) { [weak self] in
             self?.showResults(for: searchItemView)
+        }
+    }
+
+    private func handleWindowDragAreaTap(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer,
+            tap.state == .ended,
+            let positionOfTouch = tap.position else {
+            return
+        }
+
+        let xPos = positionOfTouch.x
+        let index = Int(xPos / style.searchWindowSize.width)
+
+        if index < collectionViews.count - 1, let correspondingCollectionView = collectionViews.at(index: index), correspondingCollectionView != focusedCollectionView {
+            unselectItem(for: correspondingCollectionView)
+            toggle(to: correspondingCollectionView)
         }
     }
 
