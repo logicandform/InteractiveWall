@@ -126,8 +126,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         let xPos = positionOfTouch.x
         let index = Int(xPos / style.searchWindowSize.width)
 
-        if index < collectionViews.count - 1 {
-            let correspondingCollectionView = collectionViews[index]
+        if index < collectionViews.count - 1, let correspondingCollectionView = collectionViews.at(index: index), correspondingCollectionView != focusedCollectionView {
             unselectItem(for: correspondingCollectionView)
             toggle(to: correspondingCollectionView)
         }
