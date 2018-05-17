@@ -10,11 +10,11 @@
             <objects>
                 <viewController id="stH-E5-D9l" customClass="ImageViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="sSn-s5-6HM">
-                        <rect key="frame" x="0.0" y="0.0" width="640" height="400"/>
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="432"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="529-pd-R3M">
-                                <rect key="frame" x="0.0" y="360" width="640" height="40"/>
+                                <rect key="frame" x="0.0" y="392" width="640" height="40"/>
                                 <subviews>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="NkP-e9-NC4">
                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -50,7 +50,7 @@
                                             <constraint firstAttribute="height" constant="30" id="g5g-AP-8FI"/>
                                         </constraints>
                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" usesSingleLineMode="YES" id="HlC-v9-VHL">
-                                            <font key="font" size="16" name="Soleil"/>
+                                            <font key="font" metaFont="system" size="16"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
@@ -69,7 +69,7 @@
                                 </constraints>
                             </customView>
                             <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" allowsMagnification="YES" maxMagnification="5" minMagnification="1" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="WTp-wA-9SL" customClass="RegularScrollView" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="8" y="8" width="624" height="352"/>
+                                <rect key="frame" x="8" y="40" width="624" height="352"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="SUf-jl-Y0i">
                                     <rect key="frame" x="0.0" y="0.0" width="624" height="352"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -94,12 +94,23 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="JxA-3p-oGM" customClass="ImageZoomControl" customModule="WindowExplorer" customModuleProvider="target">
+                                <rect key="frame" x="8" y="0.0" width="624" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="624" id="3Fx-12-B9d"/>
+                                    <constraint firstAttribute="height" constant="40" id="7WH-LO-dIK"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="624" id="7w8-YW-Gzh"/>
+                                </constraints>
+                            </customView>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="JxA-3p-oGM" firstAttribute="top" secondItem="WTp-wA-9SL" secondAttribute="bottom" id="3Ag-R2-ecv"/>
                             <constraint firstItem="529-pd-R3M" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" id="6Jt-qE-li2"/>
+                            <constraint firstAttribute="trailing" secondItem="JxA-3p-oGM" secondAttribute="trailing" constant="8" id="7ae-yM-Cw7"/>
+                            <constraint firstAttribute="bottom" secondItem="JxA-3p-oGM" secondAttribute="bottom" id="Egh-mV-YbL"/>
                             <constraint firstAttribute="trailing" secondItem="WTp-wA-9SL" secondAttribute="trailing" constant="8" id="Uvu-Og-omp"/>
-                            <constraint firstAttribute="bottom" secondItem="WTp-wA-9SL" secondAttribute="bottom" constant="8" id="VgE-4i-fHq"/>
                             <constraint firstItem="529-pd-R3M" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="WnV-SU-5jv"/>
+                            <constraint firstItem="JxA-3p-oGM" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="8" id="bJW-lV-JQ3"/>
                             <constraint firstItem="WTp-wA-9SL" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="8" id="dsS-3c-P65"/>
                             <constraint firstAttribute="trailing" secondItem="529-pd-R3M" secondAttribute="trailing" id="qKh-TI-HmK"/>
                             <constraint firstItem="WTp-wA-9SL" firstAttribute="top" secondItem="529-pd-R3M" secondAttribute="bottom" id="yIW-4a-jsl"/>
@@ -108,6 +119,7 @@
                     <connections>
                         <outlet property="dismissButton" destination="NkP-e9-NC4" id="ZRu-Fa-ZLo"/>
                         <outlet property="imageScrollView" destination="WTp-wA-9SL" id="ycY-PS-kHc"/>
+                        <outlet property="imageZoomControl" destination="JxA-3p-oGM" id="wMu-PD-sxl"/>
                         <outlet property="scrollViewHeightConstraint" destination="qA2-gP-fqc" id="sD3-Vj-Qus"/>
                         <outlet property="scrollViewWidthConstraint" destination="etP-mP-7KU" id="aKz-kx-Oe4"/>
                         <outlet property="titleLabel" destination="1GK-FO-lwr" id="HfV-8T-rGp"/>

@@ -11,7 +11,8 @@ class ImageViewController: MediaViewController {
     @IBOutlet weak var imageScrollView: RegularScrollView!
     @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollViewWidthConstraint: NSLayoutConstraint!
-
+    @IBOutlet weak var imageZoomControl: ImageZoomControl!
+    
     private var imageView: NSImageView!
     private var imageRequest: DataRequest?
     private var frameSize: NSSize!
