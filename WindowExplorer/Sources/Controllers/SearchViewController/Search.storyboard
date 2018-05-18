@@ -43,7 +43,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="eAn-f2-EUL">
-                                    <rect key="frame" x="-100" y="-100" width="16" height="505"/>
+                                    <rect key="frame" x="334" y="0.0" width="16" height="0.0"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
@@ -77,7 +77,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="NGX-06-h4b">
-                                    <rect key="frame" x="-100" y="-100" width="16" height="505"/>
+                                    <rect key="frame" x="334" y="0.0" width="16" height="515"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>

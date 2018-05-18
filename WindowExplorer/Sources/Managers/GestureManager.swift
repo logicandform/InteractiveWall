@@ -9,7 +9,7 @@ protocol GestureResponder: class {
     var view: NSView { get }
     var gestureManager: GestureManager! { get }
     func draggableInside(bounds: CGRect) -> Bool
-    func contains(touch: Touch, with window: NSWindow) -> Bool
+    func contains(position: CGPoint) -> Bool
 }
 
 

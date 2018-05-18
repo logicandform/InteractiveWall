@@ -104,16 +104,11 @@ final class TouchManager: SocketManagerDelegate {
         let windows = WindowManager.instance.windows.sorted(by: { $0.key.orderedIndex < $1.key.orderedIndex })
 
         if touch.state == .down {
-            //if let (window, manager) = windows.first(where: { $0.value.responder.contains(touch: touch, with: $0.key) } ) {
-            //let test = windows.first(where: { $0.key.frame.contains(touch.position) })!.key.frame
-            //if let (window, manager) = windows.first(where: { contains(window: $0, for: touch)} ) {
-            if let (window, manager) = windows.first(where: { isValidInWindow(touch: touch, window: $0) }) {
-            }
-            if let (window, manager) = windows.first(where: { $0.key.frame.contains(touch.position) }) {
+            if let (window, manager) = windows.first(where: { $0.key.frame.contains(touch.position) }), isValidInWindow(with: touch, at: (window, manager)) {
                 return (window, manager)
             }
         } else {
-            if let (window, manager) = windows.first(where: { $0.value.owns(touch) }) {
+            if let (window, manager) = windows.first(where: { $0.value.owns(touch) }), isValidInWindow(with: touch, at: (window, manager)) {
                 return (window, manager)
             }
         }
@@ -121,11 +116,12 @@ final class TouchManager: SocketManagerDelegate {
         return nil
     }
 
-    private func isValidInWindow(touch: Touch, window: (key: NSWindow, value: GestureManager)) -> Bool {
-        let adjustedTouch = touch
-        adjustedTouch.position.x = adjustedTouch.position.x - 1000
+    private func isValidInWindow(with touch: Touch, at window: (key: NSWindow, value: GestureManager)) -> Bool {
+        var adjustedTouch = CGPoint.zero
+        adjustedTouch.x = touch.position.x - window.key.frame.origin.x
+        adjustedTouch.y = touch.position.y - window.key.frame.origin.y
 
-        return true
+        return window.value.responder.contains(position: adjustedTouch)
     }
 
     /// Updates the touches for map dictionary when a touch down or up occurs.

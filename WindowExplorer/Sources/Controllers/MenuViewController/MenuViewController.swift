@@ -112,8 +112,8 @@ class MenuViewController: NSViewController, GestureResponder {
        return true
     }
 
-    func contains(touch: Touch, with window: NSWindow) -> Bool {
-        return view.subviews.first(where: { $0.frame.contains(touch.position) }) != nil
+    func contains(position: CGPoint) -> Bool {
+        return view.frame.contains(position)
     }
 
 

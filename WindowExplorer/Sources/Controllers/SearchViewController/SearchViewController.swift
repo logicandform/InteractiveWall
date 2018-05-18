@@ -62,6 +62,10 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         animateViewIn()
     }
 
+    override func viewDidAppear() {
+        super.viewDidAppear()
+    }
+
 
     // MARK: Setup
 
@@ -244,6 +248,10 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
                 WindowManager.instance.closeWindow(for: strongSelf)
             }
         })
+    }
+
+    override func contains(position: CGPoint) -> Bool {
+        return view.subviews.first(where: { $0.frame.contains(position) }) != nil
     }
 
     override func resetCloseWindowTimer() {
