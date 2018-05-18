@@ -308,6 +308,7 @@
                         <outlet property="recordTypeSelectionView" destination="pwG-Vb-Cze" id="Yg5-e3-d8b"/>
                         <outlet property="relatedItemsView" destination="9ag-mR-qAv" id="uxP-yf-2rd"/>
                         <outlet property="relatedRecordCollectionClipView" destination="B6c-6H-ats" id="aMD-Zs-68c"/>
+                        <outlet property="relatedRecordScrollView" destination="fAf-gM-eoZ" id="N01-xH-aA5"/>
                         <outlet property="relatedRecordsLabel" destination="79v-3B-4jX" id="egP-qv-zjo"/>
                         <outlet property="relatedRecordsTypeLabel" destination="dT1-7n-nU7" id="nGW-5s-HoU"/>
                         <outlet property="stackClipView" destination="CkM-eN-t5N" id="Ycr-Y2-xGv"/>

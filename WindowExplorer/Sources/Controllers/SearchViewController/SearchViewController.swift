@@ -22,6 +22,9 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     @IBOutlet weak var secondaryTextField: NSTextField!
     @IBOutlet weak var tertiaryTextField: NSTextField!
     @IBOutlet weak var collapseButtonArea: NSView!
+    @IBOutlet weak var primaryScrollView: FadingScrollView!
+    @IBOutlet weak var secondaryScrollView: FadingScrollView!
+    @IBOutlet weak var tertiaryScrollView: FadingScrollView!
 
     private var selectedType: RecordType?
     private var selectedRecords = [SelectedRecord]()
@@ -57,6 +60,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         resetCloseWindowTimer()
         updateWindowDragAreaHighlight(for: selectedType)
         animateViewIn()
+        updateGradients()
     }
 
 
@@ -95,6 +99,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             var rect = collectionView.visibleRect
             rect.origin.y += pan.delta.dy
             collectionView.scrollToVisible(rect)
+            updateGradients()
         default:
             return
         }
@@ -243,6 +248,12 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     // MARK: Helpers
 
+    private func updateGradients() {
+        primaryScrollView.updateGradient()
+        secondaryScrollView.updateGradient()
+        tertiaryScrollView.updateGradient()
+    }
+
     private func select(_ item: SearchItemView) {
         guard let collectionView = item.collectionView, let indexPath = collectionView.indexPath(for: item) else {
             return
@@ -341,6 +352,8 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         frame.size.width = style.searchWindowSize.width * CGFloat(index + 1) + Constants.collectionViewMargin * CGFloat(index)
         window.setFrame(frame, display: true, animate: true)
         focusedCollectionView = view
+
+        updateGradients()
     }
 
     /// Returns a collection of search items used as the second level of a search query

@@ -15,6 +15,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     @IBOutlet weak var stackClipView: NSClipView!
     @IBOutlet weak var relatedItemsView: NSCollectionView!
     @IBOutlet weak var relatedRecordCollectionClipView: NSClipView!
+    @IBOutlet weak var relatedRecordScrollView: FadingScrollView!
     @IBOutlet weak var closeWindowTapArea: NSView!
     @IBOutlet weak var toggleRelatedItemsArea: NSView!
     @IBOutlet weak var toggleRelatedItemsImage: NSImageView!
@@ -254,6 +255,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             var rect = relatedItemsView.visibleRect
             rect.origin.y += pan.delta.dy
             relatedItemsView.scrollToVisible(rect)
+            relatedRecordScrollView.updateGradient()
         default:
             return
         }
@@ -265,6 +267,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
 
         toggleRelatedItems()
+        relatedRecordScrollView.updateGradient()
     }
 
     private var selectedRelatedItem: RelatedItemView? {
