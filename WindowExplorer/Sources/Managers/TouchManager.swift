@@ -104,6 +104,8 @@ final class TouchManager: SocketManagerDelegate {
         let windows = WindowManager.instance.windows.sorted(by: { $0.key.orderedIndex < $1.key.orderedIndex })
 
         if touch.state == .down {
+            //if let (window, manager) = windows.first(where: { $0.value.responder.contains(touch: touch, with: $0.key) } ) {
+            let test = windows.first(where: { $0.key.frame.contains(touch.position) })!.key.frame 
             if let (window, manager) = windows.first(where: { $0.key.frame.contains(touch.position) }) {
                 return (window, manager)
             }

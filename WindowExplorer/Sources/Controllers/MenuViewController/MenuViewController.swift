@@ -112,9 +112,8 @@ class MenuViewController: NSViewController, GestureResponder {
        return true
     }
 
-    func contains(touch: Touch) -> Bool {
-        return view.visibleRect.contains(touch.position)
-//        return view.subviews.first(where: { $0.visibleRect.contains(touch.position) }) != nil
+    func contains(touch: Touch, with window: NSWindow) -> Bool {
+        return view.subviews.first(where: { $0.frame.contains(touch.position) }) != nil
     }
 
 

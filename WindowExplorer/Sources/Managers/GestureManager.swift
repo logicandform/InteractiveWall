@@ -9,14 +9,14 @@ protocol GestureResponder: class {
     var view: NSView { get }
     var gestureManager: GestureManager! { get }
     func draggableInside(bounds: CGRect) -> Bool
-    func contains(touch: Touch) -> Bool
+    func contains(touch: Touch, with window: NSWindow) -> Bool
 }
 
 
 final class GestureManager {
 
     var touchReceived: ((Touch) -> Void)?
-    private weak var responder: GestureResponder!
+    weak var responder: GestureResponder!
     private var gestureHandlers = [NSView: GestureHandler]()
 
 
@@ -50,10 +50,6 @@ final class GestureManager {
 
     func handle(_ touch: Touch) {
         touchReceived?(touch)
-
-        if !responder.contains(touch: touch) {
-            return
-        }
 
         switch touch.state {
         case .down:
