@@ -108,6 +108,7 @@ final class TouchManager: SocketManagerDelegate {
             //let test = windows.first(where: { $0.key.frame.contains(touch.position) })!.key.frame
             //if let (window, manager) = windows.first(where: { contains(window: $0, for: touch)} ) {
             if let (window, manager) = windows.first(where: { isValidInWindow(touch: touch, window: $0) }) {
+            }
             if let (window, manager) = windows.first(where: { $0.key.frame.contains(touch.position) }) {
                 return (window, manager)
             }
