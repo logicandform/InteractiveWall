@@ -46,24 +46,16 @@ class ImageZoomControl: NSView {
         }
 
         switch pan.state {
-        case .began:
-            return
-
         case .recognized:
             let positionInSeekBar = Double(position.x / seekBar.frame.size.width)
-            let zoomScale = clamp(positionInSeekBar, min: 0, max: 1)
-
-            seekBar.doubleValue = zoomScale
+            let zoomScale = clamp(positionInSeekBar, min: 0, max: 0.9)
+            
+            seekBar.doubleValue = positionInSeekBar
             zoomScaleUpdated?(1 - zoomScale)
 
             // need to update the seekbar position when using double tap to zoom
-
-        case .ended:
-            return
-
         default:
             return
         }
     }
-
 }
