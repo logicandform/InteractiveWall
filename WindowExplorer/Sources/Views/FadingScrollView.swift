@@ -17,7 +17,7 @@ class FadingScrollView: NSScrollView {
     // MARK: API
 
     func updateGradient() {
-        if self.isAvailable {
+        if canScroll {
             if hasReachedBottom {
                 updateGradientProperty(position: .bottom)
             } else if hasReachedTop {
