@@ -105,7 +105,9 @@ final class TouchManager: SocketManagerDelegate {
 
         if touch.state == .down {
             //if let (window, manager) = windows.first(where: { $0.value.responder.contains(touch: touch, with: $0.key) } ) {
-            let test = windows.first(where: { $0.key.frame.contains(touch.position) })!.key.frame 
+            //let test = windows.first(where: { $0.key.frame.contains(touch.position) })!.key.frame
+            //if let (window, manager) = windows.first(where: { contains(window: $0, for: touch)} ) {
+            if let (window, manager) = windows.first(where: { isValidInWindow(touch: touch, window: $0) }) {
             if let (window, manager) = windows.first(where: { $0.key.frame.contains(touch.position) }) {
                 return (window, manager)
             }
@@ -116,6 +118,13 @@ final class TouchManager: SocketManagerDelegate {
         }
 
         return nil
+    }
+
+    private func isValidInWindow(touch: Touch, window: (key: NSWindow, value: GestureManager)) -> Bool {
+        let adjustedTouch = touch
+        adjustedTouch.position.x = adjustedTouch.position.x - 1000
+
+        return true
     }
 
     /// Updates the touches for map dictionary when a touch down or up occurs.

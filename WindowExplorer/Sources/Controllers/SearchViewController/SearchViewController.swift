@@ -65,8 +65,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     // MARK: Setup
 
-    
-
     private func setupGestures() {
         collectionViews.forEach { collectionView in
             let collectionViewPan = PanGestureRecognizer()
