@@ -23,10 +23,17 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     @IBOutlet weak var secondaryTextField: NSTextField!
     @IBOutlet weak var tertiaryTextField: NSTextField!
     @IBOutlet weak var collapseButtonArea: NSView!
+    @IBOutlet weak var primaryScrollView: FadingScrollView!
+    @IBOutlet weak var secondaryScrollView: FadingScrollView!
+    @IBOutlet weak var tertiaryScrollView: FadingScrollView!
+    @IBOutlet weak var primaryScrollViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var secondaryScrollViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var tertiaryScrollViewHeight: NSLayoutConstraint!
 
     private var selectedType: RecordType?
     private var selectedRecords = Set<RecordProxy>()
     private var selectedIndexForView = [NSCollectionView: IndexPath]()
+    private var primaryCollectionItems: Int?
     private let relationshipHelper = RelationshipHelper()
 
     private lazy var titleViews: [NSTextField] = [titleLabel, secondaryTextField, tertiaryTextField]
@@ -64,6 +71,26 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     override func viewDidAppear() {
         super.viewDidAppear()
+
+        guard let primaryContentHeight = primaryCollectionView.collectionViewLayout?.collectionViewContentSize.height, let secondaryContentHeight = secondaryCollectionView.collectionViewLayout?.collectionViewContentSize.height, let tertiaryContentHeight = tertiaryCollectionView.collectionViewLayout?.collectionViewContentSize.height else {
+            return
+        }
+
+        if let primaryContentHeight = primaryCollectionView.collectionViewLayout?.collectionViewContentSize.height {
+            primaryScrollViewHeight.constant = primaryContentHeight
+        }
+
+        if let secondaryContentHeight = secondaryCollectionView.collectionViewLayout?.collectionViewContentSize.height {
+            secondaryScrollViewHeight.constant = secondaryContentHeight
+        }
+
+        if let tertiaryContentHeight = tertiaryCollectionView.collectionViewLayout?.collectionViewContentSize.height {
+            tertiaryScrollViewHeight.constant = tertiaryContentHeight
+        }
+
+        primaryScrollViewHeight.constant = primaryContentHeight
+        secondaryScrollViewHeight.constant = secondaryContentHeight
+        tertiaryScrollViewHeight.constant = tertiaryContentHeight
     }
 
 
@@ -197,6 +224,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             return 0
         }
 
+        primaryCollectionItems = searchItems.count
         return searchItems.count
     }
 
