@@ -71,26 +71,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     override func viewDidAppear() {
         super.viewDidAppear()
-
-        guard let primaryContentHeight = primaryCollectionView.collectionViewLayout?.collectionViewContentSize.height, let secondaryContentHeight = secondaryCollectionView.collectionViewLayout?.collectionViewContentSize.height, let tertiaryContentHeight = tertiaryCollectionView.collectionViewLayout?.collectionViewContentSize.height else {
-            return
-        }
-
-        if let primaryContentHeight = primaryCollectionView.collectionViewLayout?.collectionViewContentSize.height {
-            primaryScrollViewHeight.constant = primaryContentHeight
-        }
-
-        if let secondaryContentHeight = secondaryCollectionView.collectionViewLayout?.collectionViewContentSize.height {
-            secondaryScrollViewHeight.constant = secondaryContentHeight
-        }
-
-        if let tertiaryContentHeight = tertiaryCollectionView.collectionViewLayout?.collectionViewContentSize.height {
-            tertiaryScrollViewHeight.constant = tertiaryContentHeight
-        }
-
-        primaryScrollViewHeight.constant = primaryContentHeight
-        secondaryScrollViewHeight.constant = secondaryContentHeight
-        tertiaryScrollViewHeight.constant = tertiaryContentHeight
+        updateScrollViewHeights()
     }
 
 
@@ -192,9 +173,15 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
 
         if let index = collectionViews.index(of: focusedCollectionView), let previous = collectionViews.at(index: index - 1) {
+            deleteItems(in: focusedCollectionView)
             unselectItem(for: previous)
             toggle(to: previous)
         }
+    }
+
+    private func deleteItems(in collectionView: NSCollectionView) {
+        searchItemsForView[collectionView] = []
+        collectionView.reloadData()
     }
 
     override func handleWindowPan(_ gesture: GestureRecognizer) {
@@ -377,6 +364,8 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             }
         }
 
+        updateScrollViewHeights()
+
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration
             for indexOfView in 0 ..< collectionViews.count {
@@ -464,6 +453,35 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
                 let recordProxy = RecordProxy(id: record.id, type: record.type)
                 view.set(highlighted: selectedRecords.contains(recordProxy))
             }
+        }
+    }
+
+    private func updateScrollViewHeights() {
+        if let primaryContentHeight = primaryCollectionView.collectionViewLayout?.collectionViewContentSize.height {
+            if primaryContentHeight > 565 {
+                primaryScrollViewHeight.constant = 565
+            } else {
+                primaryScrollViewHeight.constant = primaryContentHeight
+            }
+            primaryScrollView.updateConstraints()
+        }
+
+        if let secondaryContentHeight = secondaryCollectionView.collectionViewLayout?.collectionViewContentSize.height {
+            if secondaryContentHeight > 565 {
+                secondaryScrollViewHeight.constant = 565
+            } else {
+                secondaryScrollViewHeight.constant = secondaryContentHeight
+            }
+            secondaryScrollView.updateConstraints()
+        }
+
+        if let tertiaryContentHeight = tertiaryCollectionView.collectionViewLayout?.collectionViewContentSize.height {
+            if tertiaryContentHeight > 565 {
+                tertiaryScrollViewHeight.constant = 565
+            } else {
+                tertiaryScrollViewHeight.constant = tertiaryContentHeight
+            }
+            tertiaryScrollView.updateConstraints()
         }
     }
 }
