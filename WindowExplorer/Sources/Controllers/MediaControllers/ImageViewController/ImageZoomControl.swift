@@ -2,6 +2,7 @@
 
 import Cocoa
 
+
 class ImageZoomControl: NSView {
 
     static let nib = NSNib.Name(rawValue: "ImageZoomControl")
@@ -15,7 +16,7 @@ class ImageZoomControl: NSView {
         }
     }
 
-    var zoomScaleUpdated: ((Double) -> Void)?
+    var zoomSliderUpdated: ((CGFloat) -> Void)?
 
 
     // MARK: Init
@@ -40,8 +41,8 @@ class ImageZoomControl: NSView {
 
     // MARK: API
 
-    func updateSeekBarPosition(value: Double) {
-        seekBar.doubleValue = value
+    func updateSeekBarPosition(to value: CGFloat) {
+        seekBar.doubleValue = Double(value)
     }
 
 
@@ -55,10 +56,10 @@ class ImageZoomControl: NSView {
         switch pan.state {
         case .recognized:
             let positionInSeekBar = Double((position.x / seekBar.frame.size.width) + 0.2)
-            let zoomScale = clamp(positionInSeekBar, min: 0.2, max: 1)
-            
-            seekBar.doubleValue = zoomScale
-            zoomScaleUpdated?(zoomScale)
+            let zoomScale = CGFloat(clamp(positionInSeekBar, min: 0.2, max: 1))
+
+            updateSeekBarPosition(to: zoomScale)
+            zoomSliderUpdated?(zoomScale)
         default:
             return
         }
