@@ -22,7 +22,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="15" id="id2-5k-aMY"/>
                     </constraints>
-                    <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="1" tickMarkPosition="above" sliderType="linear" id="T5B-9i-06I" customClass="ColoredSliderCell" customModule="WindowExplorer" customModuleProvider="target"/>
+                    <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="0.20000000000000001" maxValue="1" doubleValue="0.20000000000000001" tickMarkPosition="above" sliderType="linear" id="T5B-9i-06I" customClass="ColoredSliderCell" customModule="WindowExplorer" customModuleProvider="target"/>
                 </slider>
             </subviews>
             <constraints>

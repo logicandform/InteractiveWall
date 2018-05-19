@@ -58,6 +58,10 @@ class ImageViewController: MediaViewController {
 
         imageZoomControl.gestureManager = gestureManager
         imageZoomControl.zoomScaleUpdated = handleZoomScale(_:)
+
+        imageScrollView.minMagnification = 1
+        imageScrollView.maxMagnification = 5
+        imageScrollView.allowsMagnification = true
     }
 
     private func addImage(_ image: NSImage) {
@@ -104,6 +108,7 @@ class ImageViewController: MediaViewController {
             var imageRect = imageScrollView.contentView.bounds
             let scaledWidth = (2.0 - pinch.scale) * imageRect.size.width
             let scaledHeight = (2.0 - pinch.scale) * imageRect.size.height
+
             if scaledWidth <= contentViewFrame.width {
                 var translationX = pinch.delta.dx * imageRect.size.width / contentViewFrame.width
                 var translationY = pinch.delta.dy * imageRect.size.height / contentViewFrame.height
@@ -111,6 +116,11 @@ class ImageViewController: MediaViewController {
                     translationX -= (imageRect.size.width - scaledWidth) * (pinch.center.x / contentViewFrame.width)
                     translationY -= (imageRect.size.height - scaledHeight) * (pinch.center.y / contentViewFrame.height)
                     imageRect.size = CGSize(width: scaledWidth, height: scaledHeight)
+
+                    print((contentViewFrame.width / Constants.maximumMagnification) / scaledWidth)
+                    let update = (contentViewFrame.width / Constants.maximumMagnification) / scaledWidth
+                    imageZoomControl.updateSeekBarPosition(value: Double(update))
+                    imageScrollView.magnification = update
                 }
                 imageRect.origin = CGPoint(x: imageRect.origin.x - translationX, y: imageRect.origin.y - translationY)
                 imageScrollView.contentView.bounds = imageRect
@@ -127,21 +137,35 @@ class ImageViewController: MediaViewController {
 
         switch tap.state {
         case .doubleTapped:
-            var imageRect = imageScrollView.contentView.bounds
-            let scaledWidth = Constants.doubleTapScale * imageRect.size.width
-            let scaledHeight = Constants.doubleTapScale * imageRect.size.height
-            if scaledWidth >= contentViewFrame.width / Constants.maximumMagnification {
-                let translationX = -(imageRect.size.width - scaledWidth) * (position.x / contentViewFrame.width)
-                let translationY = -(imageRect.size.height - scaledHeight) * (position.y / contentViewFrame.height)
-                imageRect.size = CGSize(width: scaledWidth, height: scaledHeight)
-                imageRect.origin = CGPoint(x: imageRect.origin.x - translationX, y: imageRect.origin.y - translationY)
 
-                NSAnimationContext.runAnimationGroup({ _ in
-                    NSAnimationContext.current.duration = Constants.doubleTapAnimationDuration
-                    NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-                    imageScrollView.contentView.animator().bounds = imageRect
-                })
+            if imageScrollView.magnification > imageScrollView.minMagnification {
+                imageScrollView.animator().setMagnification(imageScrollView.minMagnification, centeredAt: position)
+                imageZoomControl.updateSeekBarPosition(value: 0)
+            } else {
+                imageScrollView.animator().setMagnification(imageScrollView.maxMagnification, centeredAt: position)
+                imageZoomControl.updateSeekBarPosition(value: 1)
             }
+
+
+
+//            var imageRect = imageScrollView.contentView.bounds
+//            let scaledWidth = Constants.doubleTapScale * imageRect.size.width
+//            let scaledHeight = Constants.doubleTapScale * imageRect.size.height
+
+//            if scaledWidth >= contentViewFrame.width / Constants.maximumMagnification {
+//                let translationX = -(imageRect.size.width - scaledWidth) * (position.x / contentViewFrame.width)
+//                let translationY = -(imageRect.size.height - scaledHeight) * (position.y / contentViewFrame.height)
+//                imageRect.size = CGSize(width: scaledWidth, height: scaledHeight)
+//                imageRect.origin = CGPoint(x: imageRect.origin.x - translationX, y: imageRect.origin.y - translationY)
+//
+//                imageZoomControl.updateSeekBarPosition(value: Double((contentViewFrame.width / Constants.maximumMagnification) / scaledWidth))
+//
+//                NSAnimationContext.runAnimationGroup({ _ in
+//                    NSAnimationContext.current.duration = Constants.doubleTapAnimationDuration
+//                    NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+//                    imageScrollView.contentView.animator().bounds = imageRect
+//                })
+//            }
         default:
             return
         }
@@ -150,21 +174,28 @@ class ImageViewController: MediaViewController {
     private func handleZoomScale(_ scale: Double) {
         let currentZoomScale = CGFloat(scale)
 
-        var imageRect = imageScrollView.contentView.frame
-        let scaledWidth = currentZoomScale * imageRect.size.width
-        let scaledHeight = currentZoomScale * imageRect.size.height
-        imageRect.size = CGSize(width: scaledWidth, height: scaledHeight)
+        let rect = imageScrollView.contentView.bounds
+        let x = (rect.origin.x + rect.size.width) / 2
+        let y = (rect.origin.y + rect.size.height) / 2
+        imageScrollView.setMagnification(5.0 * currentZoomScale, centeredAt: NSPoint(x: x, y: y))
 
-        let currentBounds = imageScrollView.contentView.bounds
-        let translationX = -(currentBounds.size.width - scaledWidth)
-        let translationY = -(currentBounds.size.height - scaledHeight)
-        imageRect.origin = CGPoint(x: currentBounds.origin.x - translationX, y: currentBounds.origin.y - translationY)
 
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = Constants.doubleTapAnimationDuration
-            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-            imageScrollView.contentView.animator().bounds = imageRect
-        })
+
+
+//        var imageRect = imageScrollView.contentView.frame
+//        let scaledWidth = currentZoomScale * imageRect.size.width
+//        let scaledHeight = currentZoomScale * imageRect.size.height
+//
+//        if scaledWidth >= contentViewFrame.width / Constants.maximumMagnification {
+//            imageRect.size = CGSize(width: scaledWidth, height: scaledHeight)
+//
+//            let currentBounds = imageScrollView.contentView.bounds
+//            let translationX = -(currentBounds.size.width - scaledWidth)
+//            let translationY = -(currentBounds.size.height - scaledHeight)
+//            imageRect.origin = CGPoint(x: currentBounds.origin.x - translationX, y: currentBounds.origin.y - translationY)
+//
+//            imageScrollView.contentView.bounds = imageRect
+//        }
     }
 
 

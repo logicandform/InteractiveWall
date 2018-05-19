@@ -38,7 +38,14 @@ class ImageZoomControl: NSView {
     }
 
 
-    // MARK: Helpers
+    // MARK: API
+
+    func updateSeekBarPosition(value: Double) {
+        seekBar.doubleValue = value
+    }
+
+
+    // MARK: Gesture Handlers
 
     private func handleSlideGesture(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer, let position = pan.lastLocation else {
@@ -47,13 +54,11 @@ class ImageZoomControl: NSView {
 
         switch pan.state {
         case .recognized:
-            let positionInSeekBar = Double(position.x / seekBar.frame.size.width)
-            let zoomScale = clamp(positionInSeekBar, min: 0, max: 0.9)
+            let positionInSeekBar = Double((position.x / seekBar.frame.size.width) + 0.2)
+            let zoomScale = clamp(positionInSeekBar, min: 0.2, max: 1)
             
-            seekBar.doubleValue = positionInSeekBar
-            zoomScaleUpdated?(1 - zoomScale)
-
-            // need to update the seekbar position when using double tap to zoom
+            seekBar.doubleValue = zoomScale
+            zoomScaleUpdated?(zoomScale)
         default:
             return
         }
