@@ -19,8 +19,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private let touchListener = TouchListener()
 
     private var tileURL: String {
-        let tileID = max(screenID, 3)
-        return "http://10.58.73.164:4\(tileID)00/v2/tiles/{z}/{x}/{y}.pbf"
+        let tileID = max(screenID, 1)
+        return "http://10.58.73.131:4\(tileID)00/v2/tiles/{z}/{x}/{y}.pbf"
     }
 
     private struct Constants {
