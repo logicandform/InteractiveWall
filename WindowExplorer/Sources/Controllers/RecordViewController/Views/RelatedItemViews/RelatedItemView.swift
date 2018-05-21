@@ -4,11 +4,9 @@ import Cocoa
 import Alamofire
 import AlamofireImage
 
-class RelatedItemView: NSCollectionViewItem {
-    static let identifier = NSUserInterfaceItemIdentifier(rawValue: "RelatedItemView")
 
-    @IBOutlet weak var titleLabel: NSTextField!
-    @IBOutlet weak var descriptionView: NSTextView!
+class RelatedItemView: NSCollectionViewItem {
+
     @IBOutlet weak var mediaImageView: ImageView!
 
     var tintColor = style.selectedColor
@@ -18,7 +16,7 @@ class RelatedItemView: NSCollectionViewItem {
         }
     }
 
-    private struct Constants {
+    struct Constants {
         static let imageTransitionDuration = 0.3
         static let numberOfDescriptionLines = 3
     }
@@ -51,17 +49,12 @@ class RelatedItemView: NSCollectionViewItem {
 
     // MARK: Helpers
 
-    private func load(_ record: RecordDisplayable?) {
+    func load(_ record: RecordDisplayable?) {
         guard let record = record else {
             return
         }
 
-        descriptionView.drawsBackground = false
-        descriptionView.textContainer?.maximumNumberOfLines = Constants.numberOfDescriptionLines
-        titleLabel.attributedStringValue = NSAttributedString(string: record.title, attributes: style.relatedItemViewTitleAttributes)
-        descriptionView.textStorage?.setAttributedString(NSAttributedString(string: record.description ?? "", attributes: style.relatedItemViewDescriptionAttributes))
         let placeholder = record.type.placeholder.tinted(with: record.type.color)
-
         if let media = record.media.first {
             Alamofire.request(media.thumbnail).responseImage { [weak self] response in
                 if let image = response.value {
@@ -75,7 +68,7 @@ class RelatedItemView: NSCollectionViewItem {
         }
     }
 
-    private func setImage(_ image: NSImage, scaling: ImageScaling) {
+    func setImage(_ image: NSImage, scaling: ImageScaling) {
         mediaImageView.transition(image, duration: Constants.imageTransitionDuration, scaling: scaling)
     }
 }

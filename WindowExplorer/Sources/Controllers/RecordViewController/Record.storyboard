@@ -38,30 +38,30 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="300" id="O51-WT-Mt2"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="O51-WT-Mt2"/>
                                 </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="vfL-oU-Ntl">
                                     <rect key="frame" x="-100" y="-100" width="300" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="30K-It-gPH">
-                                    <rect key="frame" x="284" y="0.0" width="16" height="544"/>
+                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="30K-It-gPH">
+                                    <rect key="frame" x="284" y="0.0" width="16" height="539"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="pwG-Vb-Cze" customClass="RecordTypeSelectionView" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="424" y="557" width="300" height="40"/>
+                                <rect key="frame" x="424" y="557" width="244" height="40"/>
                                 <subviews>
-                                    <stackView orientation="horizontal" alignment="centerY" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" placeholderIntrinsicWidth="300" placeholderIntrinsicHeight="40" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YiS-is-wdH">
-                                        <rect key="frame" x="0.0" y="0.0" width="300" height="40"/>
+                                    <stackView orientation="horizontal" alignment="centerY" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" placeholderIntrinsicWidth="244" placeholderIntrinsicHeight="40" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YiS-is-wdH">
+                                        <rect key="frame" x="0.0" y="0.0" width="244" height="40"/>
                                     </stackView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="YiS-is-wdH" secondAttribute="bottom" id="Enu-10-5OJ"/>
-                                    <constraint firstItem="YiS-is-wdH" firstAttribute="leading" secondItem="pwG-Vb-Cze" secondAttribute="leading" id="VVT-t2-cZt"/>
-                                    <constraint firstItem="YiS-is-wdH" firstAttribute="top" secondItem="pwG-Vb-Cze" secondAttribute="top" id="bYG-Ba-V7P"/>
+                                    <constraint firstItem="YiS-is-wdH" firstAttribute="leading" secondItem="pwG-Vb-Cze" secondAttribute="leading" id="AcU-cL-XIK"/>
+                                    <constraint firstAttribute="trailing" secondItem="YiS-is-wdH" secondAttribute="trailing" id="DsN-bl-nyq"/>
                                     <constraint firstAttribute="height" constant="40" id="c8L-NK-Au5"/>
-                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="YiS-is-wdH" secondAttribute="trailing" id="ku4-J0-nNG"/>
+                                    <constraint firstAttribute="bottom" secondItem="YiS-is-wdH" secondAttribute="bottom" id="fq0-uE-TsQ"/>
+                                    <constraint firstItem="YiS-is-wdH" firstAttribute="top" secondItem="pwG-Vb-Cze" secondAttribute="top" id="wxE-XK-IqX"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="stackview" destination="YiS-is-wdH" id="5uE-Y7-YlZ"/>
@@ -272,28 +272,29 @@
                                     <constraint firstItem="79v-3B-4jX" firstAttribute="centerY" secondItem="4OT-12-Vbx" secondAttribute="centerY" id="IyY-Qu-1cr"/>
                                     <constraint firstAttribute="trailing" secondItem="ng9-0N-mwq" secondAttribute="trailing" id="NsW-mC-M2L"/>
                                     <constraint firstItem="dT1-7n-nU7" firstAttribute="leading" secondItem="79v-3B-4jX" secondAttribute="trailing" constant="4" id="Qm2-wO-ncd"/>
-                                    <constraint firstItem="ng9-0N-mwq" firstAttribute="leading" relation="lessThanOrEqual" secondItem="dT1-7n-nU7" secondAttribute="trailing" constant="85" id="X1F-6l-I35"/>
                                     <constraint firstItem="e2P-UJ-8Oj" firstAttribute="leading" secondItem="4OT-12-Vbx" secondAttribute="leading" id="gLs-Wr-wMT"/>
-                                    <constraint firstItem="ng9-0N-mwq" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="dT1-7n-nU7" secondAttribute="trailing" constant="8" id="ntH-WW-wVE"/>
                                     <constraint firstAttribute="height" constant="40" id="r8Y-aK-C3X"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="416" id="syG-eS-gdc"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="668" id="vtq-Pq-jTe"/>
                                 </constraints>
                             </customView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="83q-cx-wcX" firstAttribute="top" secondItem="i2Z-RE-f6z" secondAttribute="top" id="9fe-gB-ueE"/>
                             <constraint firstAttribute="trailing" secondItem="fAf-gM-eoZ" secondAttribute="trailing" constant="8" id="AmA-AO-1uT"/>
+                            <constraint firstItem="pwG-Vb-Cze" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="ng9-0N-mwq" secondAttribute="trailing" id="Dzr-yo-FcR"/>
                             <constraint firstItem="fAf-gM-eoZ" firstAttribute="top" secondItem="pwG-Vb-Cze" secondAttribute="bottom" constant="8" id="GpH-FH-HFN"/>
-                            <constraint firstItem="fAf-gM-eoZ" firstAttribute="trailing" secondItem="4OT-12-Vbx" secondAttribute="trailing" priority="1" constant="56" id="HR4-56-3bH"/>
                             <constraint firstItem="83q-cx-wcX" firstAttribute="leading" secondItem="i2Z-RE-f6z" secondAttribute="leading" id="Kp5-K5-vf4"/>
+                            <constraint firstItem="79v-3B-4jX" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="trailing" constant="8" placeholder="YES" id="KxR-ww-UOe"/>
                             <constraint firstItem="4OT-12-Vbx" firstAttribute="leading" secondItem="i2Z-RE-f6z" secondAttribute="leading" id="MFB-Uj-PLT"/>
                             <constraint firstAttribute="bottom" secondItem="fAf-gM-eoZ" secondAttribute="bottom" id="N1A-Rf-gqN"/>
                             <constraint firstAttribute="bottom" secondItem="83q-cx-wcX" secondAttribute="bottom" id="Y1m-b0-aom"/>
                             <constraint firstItem="pwG-Vb-Cze" firstAttribute="leading" secondItem="fAf-gM-eoZ" secondAttribute="leading" id="Yzb-8I-rbr"/>
-                            <constraint firstItem="79v-3B-4jX" firstAttribute="leading" secondItem="YiS-is-wdH" secondAttribute="leading" id="dtQ-0y-xMN"/>
                             <constraint firstItem="pwG-Vb-Cze" firstAttribute="top" secondItem="4OT-12-Vbx" secondAttribute="bottom" constant="13" id="hqk-4r-jGZ"/>
                             <constraint firstItem="4OT-12-Vbx" firstAttribute="top" secondItem="i2Z-RE-f6z" secondAttribute="top" id="kRH-u9-X9o"/>
-                            <constraint firstItem="pwG-Vb-Cze" firstAttribute="trailing" secondItem="fAf-gM-eoZ" secondAttribute="trailing" id="xay-Fg-dh5"/>
+                            <constraint firstAttribute="trailing" secondItem="4OT-12-Vbx" secondAttribute="trailing" priority="100" constant="64" id="tN5-LH-KUx"/>
+                            <constraint firstItem="fAf-gM-eoZ" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="trailing" priority="250" constant="8" id="ujn-v6-o3J"/>
+                            <constraint firstItem="pwG-Vb-Cze" firstAttribute="leading" secondItem="79v-3B-4jX" secondAttribute="leading" id="uxo-Ur-xyu"/>
                         </constraints>
                     </view>
                     <connections>
@@ -312,6 +313,7 @@
                         <outlet property="relatedRecordsLabel" destination="79v-3B-4jX" id="egP-qv-zjo"/>
                         <outlet property="relatedRecordsTypeLabel" destination="dT1-7n-nU7" id="nGW-5s-HoU"/>
                         <outlet property="stackClipView" destination="CkM-eN-t5N" id="Ycr-Y2-xGv"/>
+                        <outlet property="stackScrollView" destination="FBg-bp-lkB" id="jJz-oc-iKT"/>
                         <outlet property="stackView" destination="RgY-ah-SAv" id="N4b-iD-145"/>
                         <outlet property="toggleRelatedItemsArea" destination="ng9-0N-mwq" id="Lqz-na-MLi"/>
                         <outlet property="toggleRelatedItemsImage" destination="dyM-5a-uST" id="8hh-6N-sqR"/>
@@ -327,7 +329,7 @@
                     </constraints>
                 </customView>
             </objects>
-            <point key="canvasLocation" x="-658" y="118"/>
+            <point key="canvasLocation" x="-652" y="118"/>
         </scene>
     </scenes>
     <resources>

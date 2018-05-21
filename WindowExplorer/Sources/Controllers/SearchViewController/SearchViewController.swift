@@ -22,9 +22,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     @IBOutlet weak var secondaryTextField: NSTextField!
     @IBOutlet weak var tertiaryTextField: NSTextField!
     @IBOutlet weak var collapseButtonArea: NSView!
-    @IBOutlet weak var primaryScrollView: FadingScrollView!
-    @IBOutlet weak var secondaryScrollView: FadingScrollView!
-    @IBOutlet weak var tertiaryScrollView: FadingScrollView!
 
     private var selectedType: RecordType?
     private var selectedRecords = [SelectedRecord]()
@@ -57,10 +54,10 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         relationshipHelper.parent = self
 
         setupGestures()
+        setupScrollViews()
         resetCloseWindowTimer()
         updateWindowDragAreaHighlight(for: selectedType)
         animateViewIn()
-        updateGradients()
     }
 
 
@@ -86,6 +83,15 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         windowDragAreaTap.gestureUpdated = handleWindowDragAreaTap(_:)
     }
 
+    private func setupScrollViews() {
+        let scrollViews = collectionViews.compactMap { $0.superview?.superview as? FadingScrollView }
+
+        scrollViews.forEach { view in
+            view.verticalScroller?.alphaValue = 0
+            view.updateGradient()
+        }
+    }
+
 
     // MARK: GestureHandling
 
@@ -99,7 +105,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             var rect = collectionView.visibleRect
             rect.origin.y += pan.delta.dy
             collectionView.scrollToVisible(rect)
-            updateGradients()
+            updateGradient(for: collectionView)
         default:
             return
         }
@@ -248,12 +254,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     // MARK: Helpers
 
-    private func updateGradients() {
-        primaryScrollView.updateGradient()
-        secondaryScrollView.updateGradient()
-        tertiaryScrollView.updateGradient()
-    }
-
     private func select(_ item: SearchItemView) {
         guard let collectionView = item.collectionView, let indexPath = collectionView.indexPath(for: item) else {
             return
@@ -352,8 +352,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         frame.size.width = style.searchWindowSize.width * CGFloat(index + 1) + Constants.collectionViewMargin * CGFloat(index)
         window.setFrame(frame, display: true, animate: true)
         focusedCollectionView = view
-
-        updateGradients()
+        updateGradient(for: view)
     }
 
     /// Returns a collection of search items used as the second level of a search query
@@ -409,5 +408,11 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     private func isSelected(_ record: RecordDisplayable) -> Bool {
         return selectedRecords.contains(where: { $0.id == record.id && $0.type == record.type })
+    }
+
+    private func updateGradient(for view: NSCollectionView) {
+        if let scrollView = view.superview?.superview as? FadingScrollView {
+            scrollView.updateGradient()
+        }
     }
 }

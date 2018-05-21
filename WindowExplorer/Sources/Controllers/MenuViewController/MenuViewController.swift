@@ -25,10 +25,16 @@ class MenuViewController: NSViewController, GestureResponder {
         for screen in NSScreen.screens.sorted(by: { $0.frame.minX < $1.frame.minX }).dropFirst() {
             let screenFrame = screen.frame
             let xSpacing = screenFrame.width / CGFloat(Configuration.mapsPerScreen)
-            for menuNumber in 1...(Configuration.mapsPerScreen - 1) {
-                let x = screenFrame.maxX - style.menuWindowSize.width / 2 - CGFloat(menuNumber) * xSpacing
+            if Configuration.mapsPerScreen == 1 {
+                let x = screenFrame.maxX - style.menuWindowSize.width / 2 - (xSpacing / 2)
                 let y = screenFrame.midY - style.menuWindowSize.height / 2
                 WindowManager.instance.display(.menu, at: CGPoint(x: x, y: y))
+            } else {
+                for menuNumber in 1...(Configuration.mapsPerScreen - 1) {
+                    let x = screenFrame.maxX - style.menuWindowSize.width / 2 - CGFloat(menuNumber) * xSpacing
+                    let y = screenFrame.midY - style.menuWindowSize.height / 2
+                    WindowManager.instance.display(.menu, at: CGPoint(x: x, y: y))
+                }
             }
         }
     }

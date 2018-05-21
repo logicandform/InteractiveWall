@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="RelatedItemImageView" customModule="WindowExplorer" customModuleProvider="target">
+            <connections>
+                <outlet property="mediaImageView" destination="BP8-zT-Hm2" id="Hy5-wp-auY"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="BP8-zT-Hm2" customClass="ImageView" customModule="WindowExplorer" customModuleProvider="target">
+                    <rect key="frame" x="8" y="8" width="464" height="256"/>
+                </customView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="BP8-zT-Hm2" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="8" id="9ha-YQ-d6R"/>
+                <constraint firstAttribute="trailing" secondItem="BP8-zT-Hm2" secondAttribute="trailing" constant="8" id="D9a-wf-LWG"/>
+                <constraint firstItem="BP8-zT-Hm2" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="8" id="WCX-WB-UxS"/>
+                <constraint firstAttribute="bottom" secondItem="BP8-zT-Hm2" secondAttribute="bottom" constant="8" id="oU6-2g-IWA"/>
+            </constraints>
+        </customView>
+    </objects>
+</document>

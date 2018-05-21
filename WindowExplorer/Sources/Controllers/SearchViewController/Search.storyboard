@@ -13,7 +13,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="1060" height="560"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gbE-u6-ffb" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
+                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gbE-u6-ffb" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
                                 <rect key="frame" x="710" y="0.0" width="350" height="515"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="mRt-Zl-nHF">
                                     <rect key="frame" x="0.0" y="0.0" width="350" height="515"/>
@@ -47,7 +47,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
-                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3LC-eL-E7F" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
+                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3LC-eL-E7F" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
                                 <rect key="frame" x="355" y="0.0" width="350" height="515"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="RR8-Bh-xmj">
                                     <rect key="frame" x="0.0" y="0.0" width="350" height="515"/>
@@ -81,7 +81,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
-                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rvJ-Ae-W65" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
+                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rvJ-Ae-W65" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="350" height="515"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="xtD-cc-2HP">
                                     <rect key="frame" x="0.0" y="0.0" width="350" height="515"/>
@@ -237,12 +237,9 @@
                         <outlet property="collapseButtonArea" destination="w51-de-YGS" id="gm5-5y-HYG"/>
                         <outlet property="dismissButton" destination="sOu-1b-tUh" id="glV-Mp-c8I"/>
                         <outlet property="primaryCollectionView" destination="S1c-RT-6BK" id="Rql-aO-Hh0"/>
-                        <outlet property="primaryScrollView" destination="rvJ-Ae-W65" id="AVu-66-aEl"/>
                         <outlet property="secondaryCollectionView" destination="Mma-p7-p7J" id="Xf2-4F-Zif"/>
-                        <outlet property="secondaryScrollView" destination="3LC-eL-E7F" id="Kxl-0i-s4r"/>
                         <outlet property="secondaryTextField" destination="jVk-aJ-U1i" id="q1z-xL-YsW"/>
                         <outlet property="tertiaryCollectionView" destination="DnM-Ou-hpA" id="EM9-L9-h9T"/>
-                        <outlet property="tertiaryScrollView" destination="gbE-u6-ffb" id="Gvm-y8-uwf"/>
                         <outlet property="tertiaryTextField" destination="sam-yv-2oh" id="jt5-wP-dws"/>
                         <outlet property="titleLabel" destination="4sB-bV-Fph" id="LRm-7j-qTO"/>
                         <outlet property="windowDragArea" destination="oGe-AJ-Idu" id="wcL-Yc-nsk"/>

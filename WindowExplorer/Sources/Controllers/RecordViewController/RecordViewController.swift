@@ -12,6 +12,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     @IBOutlet weak var mediaView: NSCollectionView!
     @IBOutlet weak var mediaCollectionClipView: NSClipView!
     @IBOutlet weak var stackView: NSStackView!
+    @IBOutlet weak var stackScrollView: FadingScrollView!
     @IBOutlet weak var stackClipView: NSClipView!
     @IBOutlet weak var relatedItemsView: NSCollectionView!
     @IBOutlet weak var relatedRecordCollectionClipView: NSClipView!
@@ -29,12 +30,12 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private var relatedRecords: [RecordDisplayable]!
     private var pageControl = PageControl()
     private var showingRelatedItems = false
-    private var relatedItemsFilterType: RecordFilterType?
+    private var relatedItemsFilterType = RecordFilterType.all
+    private var currentLayout = RelatedItemViewLayout.list
 
     private struct Constants {
         static let allRecordsTitle = "RECORDS"
         static let animationDuration = 0.5
-        static let relatedItemCollectionViewItemHeight: CGFloat = 80
         static let mediaControllerOffset = 50
         static let closeWindowTimeoutPeriod: TimeInterval = 300
         static let animationDistanceThreshold: CGFloat = 20
@@ -99,7 +100,9 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
     private func setupRelatedItemsView() {
         relatedItemsView.alphaValue = 0
-        relatedItemsView.register(RelatedItemView.self, forItemWithIdentifier: RelatedItemView.identifier)
+        relatedItemsView.register(RelatedItemListView.self, forItemWithIdentifier: RelatedItemListView.identifier)
+        relatedItemsView.register(RelatedItemImageView.self, forItemWithIdentifier: RelatedItemImageView.identifier)
+        relatedRecordScrollView.verticalScroller?.alphaValue = 0
         relatedRecordsLabel.alphaValue = 0
         relatedRecordsLabel.attributedStringValue = NSAttributedString(string: relatedRecordsLabel.stringValue, attributes: style.relatedItemsTitleAttributes)
         relatedRecordsTypeLabel.alphaValue = 0
@@ -151,6 +154,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private func setupStackview() {
         let stackViewEdgeInsets = NSEdgeInsets(top: Constants.stackViewTopInset, left: 0, bottom: Constants.stackViewBottomInset, right: 0)
         stackView.edgeInsets = stackViewEdgeInsets
+        stackScrollView.updateGradient()
 
         for label in record.textFields {
             stackView.insertView(label, at: stackView.subviews.count, in: .top)
@@ -278,22 +282,20 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     }
 
     private func handleRelatedItemTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let location = tap.position, !animating else {
-            return
-        }
-
-        let locationInTable = location + relatedItemsView.visibleRect.origin
-        guard let indexPath = relatedItemsView.indexPathForItem(at: locationInTable), let relatedItemView = relatedItemsView.item(at: indexPath) as? RelatedItemView else {
-            return
+        guard let tap = gesture as? TapGestureRecognizer,
+            let location = tap.position,
+            let indexPath = relatedItemsView.indexPathForItem(at: location + relatedItemsView.visibleRect.origin),
+            let relatedItem = relatedItemsView.item(at: indexPath) as? RelatedItemView else {
+                return
         }
 
         switch tap.state {
         case .began:
-            selectedRelatedItem = relatedItemView
+            selectedRelatedItem = relatedItem
         case .failed:
             selectedRelatedItem = nil
         case .ended:
-            selectedRelatedItem = relatedItemView
+            selectedRelatedItem = relatedItem
             if let selectedRecord = selectedRelatedItem?.record {
                 selectRelatedRecord(selectedRecord)
             }
@@ -313,6 +315,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             var point = stackClipView.visibleRect.origin
             point.y += pan.delta.dy
             stackClipView.scroll(point)
+            stackScrollView.updateGradient()
             updateArrowIndicatorView()
         default:
             return
@@ -382,11 +385,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         case mediaView:
             return record.media.count
         case relatedItemsView:
-            if let type = relatedItemsFilterType {
-                return record.filterRelatedRecords(of: type, from: relatedRecords).count
-            } else {
-                return relatedRecords.count
-            }
+            return record.relatedRecords(of: relatedItemsFilterType).count
         default:
             return 0
         }
@@ -401,14 +400,10 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
                 return mediaItemView
             }
         case relatedItemsView:
-            if let relatedItemView = collectionView.makeItem(withIdentifier: RelatedItemView.identifier, for: indexPath) as? RelatedItemView {
-                if let type = relatedItemsFilterType {
-                    relatedItemView.record = record.filterRelatedRecords(of: type, from: relatedRecords).at(index: indexPath.item)
-                } else {
-                    relatedItemView.record = relatedRecords.at(index: indexPath.item)
-                }
-                relatedItemView.tintColor = record.type.color
-                return relatedItemView
+            if let relatedItem = collectionView.makeItem(withIdentifier: relatedItemsFilterType.layout.identifier, for: indexPath) as? RelatedItemView {
+                relatedItem.record = record.relatedRecords(of: relatedItemsFilterType).at(index: indexPath.item)
+                relatedItem.tintColor = record.type.color
+                return relatedItem
             }
         default:
             break
@@ -422,7 +417,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         case mediaView:
             return mediaCollectionClipView.frame.size
         case relatedItemsView:
-            return CGSize(width: collectionView.frame.width, height: Constants.relatedItemCollectionViewItemHeight)
+            return relatedItemsFilterType.layout.itemSize
         default:
             return .zero
         }
@@ -502,8 +497,8 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
                 completion?()
         })
 
-        let relatedItemsWidth = relatedItemsView.frame.width + Constants.relatedItemsViewMargin * 2
-        let offset = showingRelatedItems ? -relatedItemsWidth : relatedItemsWidth
+        let relatedItemsWidthWithMargins = relatedItemsFilterType.layout.rowWidth + Constants.relatedItemsViewMargin * 2
+        let offset = showingRelatedItems ? -relatedItemsWidthWithMargins : relatedItemsWidthWithMargins
         var frame = window.frame
         frame.size.width += offset
         window.setFrame(frame, display: true, animate: true)
@@ -542,44 +537,43 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     }
 
     /// Handle a change of record type from the RelatedItemsHeaderView
-    private func didSelectRelatedItemsFilterType(_ type: RecordFilterType?) {
-        let titleForType = type?.title?.uppercased() ?? Constants.allRecordsTitle
-        transitionRelatedRecordsTitle(to: titleForType)
-
+    private func didSelectRelatedItemsFilterType(_ type: RecordFilterType) {
         relatedItemsFilterType = type
-        fadeRelatedItemsView(out: true, completion: { [weak self] in
-            self?.relatedItemsView.reloadData()
-            self?.fadeRelatedItemsView(out: false, completion: {})
+        let titleForType = type.title?.uppercased() ?? Constants.allRecordsTitle
+
+        // Transitions the related records and their title by fading out & in
+        fadeRelatedRecordsAndTitle(out: true, completion: { [weak self] in
+            if let strongSelf = self {
+                strongSelf.relatedRecordsTypeLabel.attributedStringValue = NSAttributedString(string: titleForType, attributes: style.relatedItemsTitleAttributes)
+                strongSelf.updateRelatedItemsLayout()
+                strongSelf.relatedItemsView.reloadData()
+                strongSelf.relatedItemsView.scroll(.zero)
+                strongSelf.fadeRelatedRecordsAndTitle(out: false, completion: {})
+            }
         })
     }
 
-    /// Transitions the related records title by fading out & in
-    private func transitionRelatedRecordsTitle(to title: String) {
-        fadeRelatedRecordsTitle(out: true) { [weak self] in
-            if let strongSelf = self {
-                strongSelf.relatedRecordsTypeLabel.attributedStringValue = NSAttributedString(string: title, attributes: style.relatedItemsTitleAttributes)
-                strongSelf.fadeRelatedRecordsTitle(out: false, completion: {})
-            }
+    // Adjusts the size of the window if necessary, which changes the relatedRecordView through autolayout
+    private func updateRelatedItemsLayout() {
+        guard let window = view.window, relatedItemsFilterType.layout != currentLayout else {
+            return
         }
+
+        currentLayout = relatedItemsFilterType.layout
+        let offset = relatedItemsFilterType.layout.rowWidth - relatedItemsView.frame.width
+        var frame = window.frame
+        frame.size.width += offset
+        view.window?.setFrame(frame, display: true)
+        view.displayIfNeeded()
     }
 
-    private func fadeRelatedRecordsTitle(out: Bool, completion: @escaping () -> Void) {
+    private func fadeRelatedRecordsAndTitle(out: Bool, completion: @escaping () -> Void) {
         let alpha: CGFloat = out ? 0 : 1
 
         NSAnimationContext.runAnimationGroup({ [weak self] _ in
             NSAnimationContext.current.duration = Constants.relatedRecordsTitleAnimationDuration
-            self?.relatedRecordsTypeLabel.animator().alphaValue = alpha
-        }, completionHandler: {
-            completion()
-        })
-    }
-
-    private func fadeRelatedItemsView(out: Bool, completion: @escaping () -> Void) {
-        let alpha: CGFloat = out ? 0 : 1
-
-        NSAnimationContext.runAnimationGroup({ [weak self] _ in
-            NSAnimationContext.current.duration = Constants.relatedItemsViewAnimationDuration
             self?.relatedItemsView.animator().alphaValue = alpha
+            self?.relatedRecordsTypeLabel.animator().alphaValue = alpha
         }, completionHandler: {
             completion()
         })

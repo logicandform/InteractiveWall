@@ -31,7 +31,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         WindowManager.instance.registerForNotifications()
         TouchManager.instance.setupTouchSocket()
         GeocodeHelper.instance.associateSchoolsToProvinces()
-        MasterViewController.instantiate()
+//        MasterViewController.instantiate()
         MenuViewController.instantiate()
     }
 

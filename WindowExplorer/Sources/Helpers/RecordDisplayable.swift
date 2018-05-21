@@ -69,6 +69,8 @@ extension RecordDisplayable {
     func relatedRecords(of type: RecordFilterType) -> [RecordDisplayable] {
         if let recordType = type.recordType {
             return relatedRecords(of: recordType)
+        } else if type == .all {
+            return relatedRecords
         }
 
         switch type {

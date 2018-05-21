@@ -13,9 +13,9 @@ class RecordTypeSelectionView: NSView {
         }
     }
 
-    var selectionCallback: ((RecordFilterType?) -> Void)?
+    var selectionCallback: ((RecordFilterType) -> Void)?
     private var imageForType = [RecordFilterType: NSView]()
-    private var selectedType: RecordFilterType? {
+    private var selectedType: RecordFilterType = .all {
         didSet {
             selectionCallback?(selectedType)
             unselect(oldValue)
@@ -32,7 +32,6 @@ class RecordTypeSelectionView: NSView {
 
     func initialize(with record: RecordDisplayable, manager: GestureManager) {
         let filterTypesForRecord = RecordFilterType.allValues.filter { !record.relatedRecords(of: $0).isEmpty }
-
         filterTypesForRecord.forEach { type in
             // Use two views to increase hit area of image while image is centered
             let view = NSView()
@@ -70,7 +69,7 @@ class RecordTypeSelectionView: NSView {
 
     private func didSelect(type: RecordFilterType) {
         if type == selectedType {
-            selectedType = nil
+            selectedType = .all
         } else if let image = imageForType[type] {
             selectedType = type
             image.transition(to: type.placeholder?.tinted(with: type.color), duration: Constants.imageTransitionDuration)

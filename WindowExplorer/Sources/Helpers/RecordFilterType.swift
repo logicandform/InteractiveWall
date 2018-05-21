@@ -11,7 +11,8 @@ enum RecordFilterType {
     case event
     case organization
     case theme
-
+    case all
+    
     var title: String? {
         if let recordType = recordType {
             return recordType.title
@@ -65,6 +66,17 @@ enum RecordFilterType {
             return .artifact
         case .theme:
             return .theme
+        case .all:
+            return nil
+        }
+    }
+
+    var layout: RelatedItemViewLayout {
+        switch self {
+        case .image:
+            return RelatedItemViewLayout.grid
+        default:
+            return RelatedItemViewLayout.list
         }
     }
 
