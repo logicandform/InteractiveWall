@@ -7,7 +7,8 @@ protocol SearchItemDisplayable {
     var title: String { get }
 }
 
-fileprivate struct SelectedRecord: Equatable {
+
+fileprivate struct RecordProxy: Hashable {
     let id: Int
     let type: RecordType
 }
@@ -24,7 +25,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     @IBOutlet weak var collapseButtonArea: NSView!
 
     private var selectedType: RecordType?
-    private var selectedRecords = [SelectedRecord]()
+    private var selectedRecords = Set<RecordProxy>()
     private var selectedIndexForView = [NSCollectionView: IndexPath]()
     private let relationshipHelper = RelationshipHelper()
 
@@ -52,6 +53,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         super.viewDidLoad()
         titleLabel.attributedStringValue = NSAttributedString(string: titleLabel.stringValue, attributes: style.windowTitleAttributes)
         relationshipHelper.parent = self
+        relationshipHelper.recordClosed = unselectRecord(_:)
 
         setupGestures()
         setupScrollViews()
@@ -261,7 +263,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
         if collectionView == tertiaryCollectionView, let record = item.item as? RecordDisplayable {
             selectedIndexForView.removeValue(forKey: collectionView)
-            selectedRecords.append(SelectedRecord(id: record.id, type: record.type))
+            selectedRecords.insert(RecordProxy(id: record.id, type: record.type))
         } else {
             unselectItem(for: collectionView)
         }
@@ -407,12 +409,25 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     }
 
     private func isSelected(_ record: RecordDisplayable) -> Bool {
-        return selectedRecords.contains(where: { $0.id == record.id && $0.type == record.type })
+        let recordProxy = RecordProxy(id: record.id, type: record.type)
+        return selectedRecords.contains(recordProxy)
     }
 
     private func updateGradient(for view: NSCollectionView) {
         if let scrollView = view.superview?.superview as? FadingScrollView {
             scrollView.updateGradient()
+        }
+    }
+
+    private func unselectRecord(_ record: RecordDisplayable) {
+        let recordProxy = RecordProxy(id: record.id, type: record.type)
+        selectedRecords.remove(recordProxy)
+
+        for view in tertiaryCollectionView.visibleItems().compactMap({ $0 as? SearchItemView }) {
+            if let record = view.item as? RecordDisplayable {
+                let recordProxy = RecordProxy(id: record.id, type: record.type)
+                view.set(highlighted: selectedRecords.contains(recordProxy))
+            }
         }
     }
 }

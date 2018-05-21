@@ -34,8 +34,8 @@ final class WindowManager {
         }
     }
 
-    func closeWindow(for controller: NSViewController) {
-        if let responder = controller as? GestureResponder, let (window, _) = windows.first(where: { $0.value === responder.gestureManager }) {
+    func closeWindow(for controller: BaseViewController) {
+        if let (window, _) = windows.first(where: { $0.value === controller.gestureManager }) {
             windows.removeValue(forKey: window)
             window.close()
 
@@ -61,25 +61,12 @@ final class WindowManager {
     }
 
     /// If the controller is not draggable within the applications bounds, dismiss the window.
-    func checkBounds(of controller: NSViewController) {
-        guard let responder = controller as? GestureResponder else {
-            dismissWindow(for: controller)
-            return
-        }
-
+    func checkBounds(of controller: BaseViewController) {
         let applicationScreens = NSScreen.screens.dropFirst()
         let first = applicationScreens.first?.frame ?? .zero
         let applicationFrame = applicationScreens.reduce(first) { $0.union($1.frame) }
-        if !responder.draggableInside(bounds: applicationFrame) {
-            dismissWindow(for: controller)
-        }
-    }
-
-    private func dismissWindow(for controller: NSViewController) {
-        if let mediaController = controller as? MediaViewController {
-            mediaController.close()
-        } else {
-            closeWindow(for: controller)
+        if !controller.draggableInside(bounds: applicationFrame) {
+            controller.close()
         }
     }
 
