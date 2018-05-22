@@ -22,7 +22,6 @@ class FadingScrollView: NSScrollView {
     // MARK: API
 
     func updateGradient() {
-<<<<<<< HEAD
         guard canScroll else {
             return
         }
@@ -33,16 +32,6 @@ class FadingScrollView: NSScrollView {
             updateGradientProperty(for: .top)
         } else {
             updateGradientProperty(for: .middle)
-=======
-        if canScroll {
-            if hasReachedBottom {
-                updateGradientProperty(position: .bottom)
-            } else if hasReachedTop {
-                updateGradientProperty(position: .top)
-            } else {
-                updateGradientProperty(position: .middle)
-            }
->>>>>>> Working for search view controller, need to adjust height to expected values and check for related
         }
     }
 

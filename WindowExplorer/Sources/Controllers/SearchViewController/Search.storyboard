@@ -36,6 +36,7 @@
                                     <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                 </clipView>
                                 <constraints>
+                                    <constraint firstAttribute="height" constant="515" id="6Jv-Mv-9us"/>
                                     <constraint firstAttribute="width" constant="350" id="MXe-5j-pAA"/>
                                 </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="8pX-9c-Y89">
@@ -71,6 +72,7 @@
                                 </clipView>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="350" id="8T4-jf-SAM"/>
+                                    <constraint firstAttribute="height" constant="515" id="XOQ-su-FFd"/>
                                 </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="GlW-FB-MCI">
                                     <rect key="frame" x="-100" y="-100" width="327" height="16"/>
@@ -105,6 +107,7 @@
                                 </clipView>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="350" id="Ufi-Ql-zcK"/>
+                                    <constraint firstAttribute="height" constant="515" id="owv-zl-cyQ"/>
                                 </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="ABq-A6-NWQ">
                                     <rect key="frame" x="-100" y="-100" width="327" height="16"/>
@@ -235,14 +238,14 @@
                         <outlet property="dismissButton" destination="sOu-1b-tUh" id="glV-Mp-c8I"/>
                         <outlet property="primaryCollectionView" destination="S1c-RT-6BK" id="Rql-aO-Hh0"/>
                         <outlet property="primaryScrollView" destination="rvJ-Ae-W65" id="AVu-66-aEl"/>
-                        <outlet property="primaryScrollViewHeight" destination="cLW-YE-jeG" id="fyA-A9-He3"/>
+                        <outlet property="primaryScrollViewHeight" destination="owv-zl-cyQ" id="gar-Zi-0AR"/>
                         <outlet property="secondaryCollectionView" destination="Mma-p7-p7J" id="Xf2-4F-Zif"/>
                         <outlet property="secondaryScrollView" destination="3LC-eL-E7F" id="Kxl-0i-s4r"/>
-                        <outlet property="secondaryScrollViewHeight" destination="mtK-CA-5ga" id="2Va-CH-5Ae"/>
+                        <outlet property="secondaryScrollViewHeight" destination="XOQ-su-FFd" id="oEK-qL-67V"/>
                         <outlet property="secondaryTextField" destination="jVk-aJ-U1i" id="q1z-xL-YsW"/>
                         <outlet property="tertiaryCollectionView" destination="DnM-Ou-hpA" id="EM9-L9-h9T"/>
                         <outlet property="tertiaryScrollView" destination="gbE-u6-ffb" id="Gvm-y8-uwf"/>
-                        <outlet property="tertiaryScrollViewHeight" destination="iHH-rg-XFn" id="njd-wg-FIG"/>
+                        <outlet property="tertiaryScrollViewHeight" destination="6Jv-Mv-9us" id="L3v-3i-Is0"/>
                         <outlet property="tertiaryTextField" destination="sam-yv-2oh" id="jt5-wP-dws"/>
                         <outlet property="titleLabel" destination="4sB-bV-Fph" id="LRm-7j-qTO"/>
                         <outlet property="windowDragArea" destination="oGe-AJ-Idu" id="wcL-Yc-nsk"/>
