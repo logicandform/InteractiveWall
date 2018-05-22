@@ -34,8 +34,11 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     private var selectedRecords = Set<RecordProxy>()
     private var selectedIndexForView = [NSCollectionView: IndexPath]()
     private var primaryCollectionItems: Int?
+    private var previousCollectionView: NSCollectionView?
     private let relationshipHelper = RelationshipHelper()
 
+    private lazy var scrollViewForCollectionView = [primaryCollectionView: primaryScrollView, secondaryCollectionView: secondaryScrollView, tertiaryCollectionView: tertiaryScrollView]
+    private lazy var heightForCollectionView = [primaryCollectionView: primaryScrollViewHeight, secondaryCollectionView: secondaryScrollViewHeight, tertiaryCollectionView: tertiaryScrollViewHeight]
     private lazy var titleViews: [NSTextField] = [titleLabel, secondaryTextField, tertiaryTextField]
     private lazy var collectionViews: [NSCollectionView] = [primaryCollectionView, secondaryCollectionView, tertiaryCollectionView]
     private lazy var focusedCollectionView: NSCollectionView = primaryCollectionView
@@ -173,15 +176,18 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
 
         if let index = collectionViews.index(of: focusedCollectionView), let previous = collectionViews.at(index: index - 1) {
-            deleteItems(in: focusedCollectionView)
+            previousCollectionView = focusedCollectionView
             unselectItem(for: previous)
-            toggle(to: previous)
+            toggle(to: previous, completion: deleteItemsInPrevious)
         }
     }
 
-    private func deleteItems(in collectionView: NSCollectionView) {
-        searchItemsForView[collectionView] = []
-        collectionView.reloadData()
+    private func deleteItemsInPrevious() {
+        if let previousCollectionView = previousCollectionView {
+            searchItemsForView[previousCollectionView] = []
+            previousCollectionView.reloadData()
+            updateScrollViewHeights()
+        }
     }
 
     override func handleWindowPan(_ gesture: GestureRecognizer) {
@@ -364,8 +370,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             }
         }
 
-        updateScrollViewHeights()
-
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration
             for indexOfView in 0 ..< collectionViews.count {
@@ -375,6 +379,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             collapseButtonArea.animator().alphaValue = index.isZero ? 0 : 1
         }, completionHandler: completion)
 
+        updateScrollViewHeights()
         var frame = window.frame
         frame.size.width = style.searchWindowSize.width * CGFloat(index + 1) + Constants.collectionViewMargin * CGFloat(index)
         window.setFrame(frame, display: true, animate: true)
@@ -456,8 +461,21 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
     }
 
+    private func updateHeight(for collectionView: NSCollectionView) {
+        let maxHeight = style.searchScrollViewSize.height
+
+        if let height = collectionView.collectionViewLayout?.collectionViewContentSize.height, let heightConstraint = heightForCollectionView[collectionView], let scrollView = scrollViewForCollectionView[collectionView] {
+            if height > maxHeight {
+                heightConstraint?.constant = maxHeight
+            } else {
+                heightConstraint?.constant = height
+            }
+            scrollView?.updateConstraints()
+        }
+    }
+
     private func updateScrollViewHeights() {
-        let maxHeight = view.frame.height - windowDragArea.frame.height
+        let maxHeight = style.searchScrollViewSize.height
 
         if let primaryContentHeight = primaryCollectionView.collectionViewLayout?.collectionViewContentSize.height {
             if primaryContentHeight > maxHeight {
