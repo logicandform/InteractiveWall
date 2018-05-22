@@ -33,7 +33,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     private var selectedType: RecordType?
     private var selectedRecords = Set<RecordProxy>()
     private var selectedIndexForView = [NSCollectionView: IndexPath]()
-    private var primaryCollectionItems: Int?
     private var previousCollectionView: NSCollectionView?
     private let relationshipHelper = RelationshipHelper()
 
@@ -219,7 +218,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             return 0
         }
 
-        primaryCollectionItems = searchItems.count
         return searchItems.count
     }
 
