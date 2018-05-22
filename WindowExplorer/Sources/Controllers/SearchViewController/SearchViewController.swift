@@ -74,7 +74,9 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     override func viewDidAppear() {
         super.viewDidAppear()
-        updateScrollViewHeights()
+        updateHeight(for: primaryCollectionView)
+        updateHeight(for: secondaryCollectionView)
+        updateHeight(for: tertiaryCollectionView)
     }
 
 
@@ -186,7 +188,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         if let previousCollectionView = previousCollectionView {
             searchItemsForView[previousCollectionView] = []
             previousCollectionView.reloadData()
-            updateScrollViewHeights()
+            updateHeight(for: previousCollectionView)
         }
     }
 
@@ -370,6 +372,8 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             }
         }
 
+        updateHeight(for: view)
+
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration
             for indexOfView in 0 ..< collectionViews.count {
@@ -379,7 +383,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             collapseButtonArea.animator().alphaValue = index.isZero ? 0 : 1
         }, completionHandler: completion)
 
-        updateScrollViewHeights()
         var frame = window.frame
         frame.size.width = style.searchWindowSize.width * CGFloat(index + 1) + Constants.collectionViewMargin * CGFloat(index)
         window.setFrame(frame, display: true, animate: true)
@@ -471,37 +474,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
                 heightConstraint?.constant = height
             }
             scrollView?.updateConstraints()
-        }
-    }
-
-    private func updateScrollViewHeights() {
-        let maxHeight = style.searchScrollViewSize.height
-
-        if let primaryContentHeight = primaryCollectionView.collectionViewLayout?.collectionViewContentSize.height {
-            if primaryContentHeight > maxHeight {
-                primaryScrollViewHeight.constant = maxHeight
-            } else {
-                primaryScrollViewHeight.constant = primaryContentHeight
-            }
-            primaryScrollView.updateConstraints()
-        }
-
-        if let secondaryContentHeight = secondaryCollectionView.collectionViewLayout?.collectionViewContentSize.height {
-            if secondaryContentHeight > maxHeight {
-                secondaryScrollViewHeight.constant = maxHeight
-            } else {
-                secondaryScrollViewHeight.constant = secondaryContentHeight
-            }
-            secondaryScrollView.updateConstraints()
-        }
-
-        if let tertiaryContentHeight = tertiaryCollectionView.collectionViewLayout?.collectionViewContentSize.height {
-            if tertiaryContentHeight > maxHeight {
-                tertiaryScrollViewHeight.constant = maxHeight
-            } else {
-                tertiaryScrollViewHeight.constant = tertiaryContentHeight
-            }
-            tertiaryScrollView.updateConstraints()
         }
     }
 }
