@@ -1,26 +1,17 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
+import Foundation
 import Cocoa
 
-enum Side {
-    case right
-    case left
-}
 
 class MenuViewController: NSViewController, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "Menu")
-
-    @IBOutlet weak var leftSearchRecordLabel: NSTextField!
-    @IBOutlet weak var leftSwitchInterfaceLabel: NSTextField!
-    @IBOutlet weak var rightSearchRecordLabel: NSTextField!
-    @IBOutlet weak var rightSwitchInterfaceLabel: NSTextField!
 
     var gestureManager: GestureManager!
 
 
     // MARK: Init
 
-    /// Displays the menuVC between maps on each screen
     static func instantiate() {
         for screen in NSScreen.screens.sorted(by: { $0.frame.minX < $1.frame.minX }).dropFirst() {
             let screenFrame = screen.frame
@@ -56,50 +47,11 @@ class MenuViewController: NSViewController, GestureResponder {
     // MARK: Setup
 
     private func setupGestures() {
-        let leftSearchRecordLabelTap = TapGestureRecognizer()
-        gestureManager.add(leftSearchRecordLabelTap, to: leftSearchRecordLabel)
-        leftSearchRecordLabelTap.gestureUpdated = handleLeftSearchRecordTap(_:)
-
-        let rightSearchRecordLabelTap = TapGestureRecognizer()
-        gestureManager.add(rightSearchRecordLabelTap, to: rightSearchRecordLabel)
-        rightSearchRecordLabelTap.gestureUpdated = handleRightSearchRecordTap(_:)
-
-        let leftSwitchInterfaceLabelTap = TapGestureRecognizer()
-        gestureManager.add(leftSwitchInterfaceLabelTap, to: leftSwitchInterfaceLabel)
-        leftSwitchInterfaceLabelTap.gestureUpdated = handleLeftSwitchInterfaceTap(_:)
-
-        let rightSwitchInterfaceLabelTap = TapGestureRecognizer()
-        gestureManager.add(rightSwitchInterfaceLabelTap, to: rightSwitchInterfaceLabel)
-        rightSwitchInterfaceLabelTap.gestureUpdated = handleRightSwitchInterfaceTap(_:)
+        let viewPanGesture = PanGestureRecognizer()
+        gestureManager.add(viewPanGesture, to: view)
+        viewPanGesture.gestureUpdated = handleWindowPan(_:)
     }
-
-
-    // MARK: Gesture Handling
-
-    private func handleLeftSearchRecordTap(_ gesture: GestureRecognizer) {
-        if let tap = gesture as? TapGestureRecognizer, tap.state == .ended {
-            displaySearchInterface(on: .left)
-        }
-    }
-
-    private func handleRightSearchRecordTap(_ gesture: GestureRecognizer) {
-        if let tap = gesture as? TapGestureRecognizer, tap.state == .ended {
-            displaySearchInterface(on: .right)
-        }
-    }
-
-    private func handleLeftSwitchInterfaceTap(_ gesture: GestureRecognizer) {
-        if let tap = gesture as? TapGestureRecognizer, tap.state == .ended {
-            print("leftSwitchInterfaceLabelTap gesture handling not implemented")
-        }
-    }
-
-    private func handleRightSwitchInterfaceTap(_ gesture: GestureRecognizer) {
-        if let tap = gesture as? TapGestureRecognizer, tap.state == .ended {
-            print("leftSwitchInterfaceLabelTap gesture handling not implemented")
-        }
-    }
-
+    
 
     // MARK: GestureResponder
 
@@ -109,7 +61,7 @@ class MenuViewController: NSViewController, GestureResponder {
             return false
         }
 
-       return true
+        return true
     }
 
     func subview(contains position: CGPoint) -> Bool {
@@ -117,20 +69,38 @@ class MenuViewController: NSViewController, GestureResponder {
     }
 
 
-    // MARK: Helpers
+    // MARK: Gesture Handling
 
-    private func displaySearchInterface(on side: Side) {
-        guard var origin = view.window?.frame.origin else {
+    func handleWindowPan(_ gesture: GestureRecognizer) {
+        guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
             return
         }
 
-        switch side {
-        case .left:
-            origin.x -= style.searchWindowSize.width + style.windowMargins
-        case .right:
-            origin.x += style.windowMargins + view.frame.width
+        switch pan.state {
+        case .recognized, .momentum:
+            var origin = window.frame.origin
+            origin += pan.delta.dy
+            window.setFrameOrigin(origin)
+        case .possible:
+            checkBounds()
+        default:
+            return
         }
+    }
 
-        WindowManager.instance.display(.search, at: origin)
+
+    // MARK: Helpers
+
+    private func checkBounds() {
+        let applicationScreens = NSScreen.screens.dropFirst()
+        let first = applicationScreens.first?.frame ?? .zero
+        let applicationFrame = applicationScreens.reduce(first) { $0.union($1.frame) }
+        if !draggableInside(bounds: applicationFrame) {
+            resetPosition()
+        }
+    }
+
+    private func resetPosition() {
+
     }
 }
