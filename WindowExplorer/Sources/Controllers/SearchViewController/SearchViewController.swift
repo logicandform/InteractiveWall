@@ -457,9 +457,11 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     }
 
     private func updateScrollViewHeights() {
+        let maxHeight = view.frame.height - windowDragArea.frame.height
+
         if let primaryContentHeight = primaryCollectionView.collectionViewLayout?.collectionViewContentSize.height {
-            if primaryContentHeight > 515 {
-                primaryScrollViewHeight.constant = 515
+            if primaryContentHeight > maxHeight {
+                primaryScrollViewHeight.constant = maxHeight
             } else {
                 primaryScrollViewHeight.constant = primaryContentHeight
             }
@@ -467,8 +469,8 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
 
         if let secondaryContentHeight = secondaryCollectionView.collectionViewLayout?.collectionViewContentSize.height {
-            if secondaryContentHeight > 515 {
-                secondaryScrollViewHeight.constant = 515
+            if secondaryContentHeight > maxHeight {
+                secondaryScrollViewHeight.constant = maxHeight
             } else {
                 secondaryScrollViewHeight.constant = secondaryContentHeight
             }
@@ -476,8 +478,8 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
 
         if let tertiaryContentHeight = tertiaryCollectionView.collectionViewLayout?.collectionViewContentSize.height {
-            if tertiaryContentHeight > 515 {
-                tertiaryScrollViewHeight.constant = 515
+            if tertiaryContentHeight > maxHeight {
+                tertiaryScrollViewHeight.constant = maxHeight
             } else {
                 tertiaryScrollViewHeight.constant = tertiaryContentHeight
             }
