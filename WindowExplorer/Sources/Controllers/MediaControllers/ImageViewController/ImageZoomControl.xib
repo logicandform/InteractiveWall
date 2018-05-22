@@ -24,12 +24,38 @@
                     </constraints>
                     <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="0.20000000000000001" maxValue="1" doubleValue="0.20000000000000001" tickMarkPosition="above" sliderType="linear" id="T5B-9i-06I" customClass="ColoredSliderCell" customModule="WindowExplorer" customModuleProvider="target"/>
                 </slider>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5aM-Lg-6mg">
+                    <rect key="frame" x="600" y="0.0" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="NW8-mJ-XaK"/>
+                        <constraint firstAttribute="width" constant="40" id="qPF-h4-LjY"/>
+                    </constraints>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="sound-3-icon" id="vsp-PP-P6M"/>
+                </imageView>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ijt-95-niL">
+                    <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="4Ey-9Q-van"/>
+                        <constraint firstAttribute="width" constant="40" id="VNL-w0-uFg"/>
+                    </constraints>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="sound-1-icon" id="k1U-hS-0wR"/>
+                </imageView>
             </subviews>
             <constraints>
-                <constraint firstItem="igJ-uQ-VVI" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="50" id="2EV-Kw-cpE"/>
-                <constraint firstAttribute="trailing" secondItem="igJ-uQ-VVI" secondAttribute="trailing" constant="50" id="WUI-pI-QYj"/>
+                <constraint firstItem="5aM-Lg-6mg" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="1qJ-VZ-Yhe"/>
+                <constraint firstItem="5aM-Lg-6mg" firstAttribute="leading" secondItem="igJ-uQ-VVI" secondAttribute="trailing" constant="10" id="RYt-dz-LbK"/>
+                <constraint firstItem="igJ-uQ-VVI" firstAttribute="leading" secondItem="Ijt-95-niL" secondAttribute="trailing" constant="10" id="aRI-ri-0rA"/>
+                <constraint firstItem="Ijt-95-niL" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="jQH-rG-3sd"/>
+                <constraint firstAttribute="trailing" secondItem="5aM-Lg-6mg" secondAttribute="trailing" id="koh-yd-psD"/>
+                <constraint firstAttribute="bottom" secondItem="5aM-Lg-6mg" secondAttribute="bottom" id="rgS-Su-vGM"/>
+                <constraint firstItem="Ijt-95-niL" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="uRO-sq-ujq"/>
                 <constraint firstItem="igJ-uQ-VVI" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="x5e-a8-KBY"/>
+                <constraint firstAttribute="bottom" secondItem="Ijt-95-niL" secondAttribute="bottom" id="xID-2T-MMA"/>
             </constraints>
         </customView>
     </objects>
+    <resources>
+        <image name="sound-1-icon" width="22" height="20"/>
+        <image name="sound-3-icon" width="32" height="26"/>
+    </resources>
 </document>

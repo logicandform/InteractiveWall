@@ -95,21 +95,20 @@
                                 </scroller>
                             </scrollView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="JxA-3p-oGM" customClass="ImageZoomControl" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="8" y="0.0" width="624" height="40"/>
+                                <rect key="frame" x="0.0" y="0.0" width="640" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="7WH-LO-dIK"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="624" id="7w8-YW-Gzh"/>
                                 </constraints>
                             </customView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="JxA-3p-oGM" firstAttribute="top" secondItem="WTp-wA-9SL" secondAttribute="bottom" id="3Ag-R2-ecv"/>
                             <constraint firstItem="529-pd-R3M" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" id="6Jt-qE-li2"/>
-                            <constraint firstAttribute="trailing" secondItem="JxA-3p-oGM" secondAttribute="trailing" constant="8" id="7ae-yM-Cw7"/>
+                            <constraint firstAttribute="trailing" secondItem="JxA-3p-oGM" secondAttribute="trailing" id="7ae-yM-Cw7"/>
                             <constraint firstAttribute="bottom" secondItem="JxA-3p-oGM" secondAttribute="bottom" id="Egh-mV-YbL"/>
                             <constraint firstAttribute="trailing" secondItem="WTp-wA-9SL" secondAttribute="trailing" constant="8" id="Uvu-Og-omp"/>
                             <constraint firstItem="529-pd-R3M" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="WnV-SU-5jv"/>
-                            <constraint firstItem="JxA-3p-oGM" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="8" id="bJW-lV-JQ3"/>
+                            <constraint firstItem="JxA-3p-oGM" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" id="bJW-lV-JQ3"/>
                             <constraint firstItem="WTp-wA-9SL" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="8" id="dsS-3c-P65"/>
                             <constraint firstAttribute="trailing" secondItem="529-pd-R3M" secondAttribute="trailing" id="qKh-TI-HmK"/>
                             <constraint firstItem="WTp-wA-9SL" firstAttribute="top" secondItem="529-pd-R3M" secondAttribute="bottom" id="yIW-4a-jsl"/>

@@ -33,6 +33,8 @@ class ImageViewController: MediaViewController {
 
         imageScrollView.minMagnification = Constants.initialMagnification
         imageScrollView.maxMagnification = Constants.maximumMagnification
+        imageZoomControl.gestureManager = gestureManager
+        imageZoomControl.zoomSliderUpdated = didScrubZoomSlider(_:)
 
         setupImageView()
         setupGestures()
@@ -58,9 +60,6 @@ class ImageViewController: MediaViewController {
                 self?.addImage(image)
             }
         }
-
-        imageZoomControl.gestureManager = gestureManager
-        imageZoomControl.zoomSliderUpdated = didScrubZoomSlider(_:)
     }
 
     private func addImage(_ image: NSImage) {
