@@ -26,7 +26,7 @@ class ImageZoomControl: NSView {
 
         Bundle.main.loadNibNamed(ImageZoomControl.nib, owner: self, topLevelObjects: nil)
         addSubview(contentView)
-        contentView.frame = NSRect(x: 0, y: 0, width: bounds.size.width, height: bounds.size.height)
+        contentView.frame = bounds
     }
 
 
@@ -55,11 +55,12 @@ class ImageZoomControl: NSView {
 
         switch pan.state {
         case .recognized:
-            let positionInSeekBar = position.x < 0.2 ? (position.x / seekBar.frame.size.width) + 0.2 : position.x / seekBar.frame.size.width
-            let zoomScale = clamp(positionInSeekBar, min: 0.2, max: 1)
+            let positionInSeekBar = (position.x) / (seekBar.frame.width)
+            let delta = Double(positionInSeekBar) * (seekBar.maxValue - seekBar.minValue)
+            let scale = CGFloat(delta + seekBar.minValue)
 
-            updateSeekBarPosition(to: zoomScale)
-            zoomSliderUpdated?(zoomScale)
+            updateSeekBarPosition(to: scale)
+            zoomSliderUpdated?(scale)
         default:
             return
         }
