@@ -104,11 +104,11 @@ final class TouchManager: SocketManagerDelegate {
         let windows = WindowManager.instance.windows.sorted(by: { $0.key.orderedIndex < $1.key.orderedIndex })
 
         if touch.state == .down {
-            if let (window, manager) = windows.first(where: { $0.key.frame.contains(touch.position) }), windowSubviewsContain(touch: touch, at: (window, manager)) {
+            if let (window, manager) = windows.first(where: { $0.key.frame.contains(touch.position) }), windowSubviewsContain(touch, at: (window, manager)) {
                 return (window, manager)
             }
         } else {
-            if let (window, manager) = windows.first(where: { $0.value.owns(touch) }), windowSubviewsContain(touch: touch, at: (window, manager)) {
+            if let (window, manager) = windows.first(where: { $0.value.owns(touch) }), windowSubviewsContain(touch, at: (window, manager)) {
                 return (window, manager)
             }
         }
@@ -116,7 +116,7 @@ final class TouchManager: SocketManagerDelegate {
         return nil
     }
 
-    private func windowSubviewsContain(touch: Touch, at window: (key: NSWindow, value: GestureManager)) -> Bool {
+    private func windowSubviewsContain(_ touch: Touch, at window: (key: NSWindow, value: GestureManager)) -> Bool {
         var adjustedTouch = CGPoint.zero
         adjustedTouch.x = touch.position.x - window.key.frame.origin.x
         adjustedTouch.y = touch.position.y - window.key.frame.origin.y
