@@ -26,6 +26,7 @@
                 </slider>
             </subviews>
             <constraints>
+                <constraint firstItem="igJ-uQ-VVI" firstAttribute="centerX" secondItem="c22-O7-iKe" secondAttribute="centerX" id="H5w-ul-Qlk"/>
                 <constraint firstAttribute="trailing" secondItem="igJ-uQ-VVI" secondAttribute="trailing" constant="50" id="bPP-4H-kTz"/>
                 <constraint firstItem="igJ-uQ-VVI" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="x5e-a8-KBY"/>
                 <constraint firstItem="igJ-uQ-VVI" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="50" id="xvf-gD-2SX"/>
