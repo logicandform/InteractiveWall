@@ -622,6 +622,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		CD24305C20B4DB8000EAED91 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CD7B3CD020ADFB1400723BDB /* ImageZoomControl.xib */,
+				CD7B3CD220ADFB2500723BDB /* ImageZoomControl.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		D5384CF32071A6BE00A157AE /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -672,8 +681,7 @@
 			children = (
 				D9F24E63205B041200B9FCB8 /* Image.storyboard */,
 				D9F24E61205B040700B9FCB8 /* ImageViewController.swift */,
-				CD7B3CD020ADFB1400723BDB /* ImageZoomControl.xib */,
-				CD7B3CD220ADFB2500723BDB /* ImageZoomControl.swift */,
+				CD24305C20B4DB8000EAED91 /* Views */,
 			);
 			path = ImageViewController;
 			sourceTree = "<group>";
@@ -760,7 +768,7 @@
 				22A923252044AF05003EA9BB /* Assets.xcassets in Resources */,
 				2204621020472DE80067D9FB /* RelatedItemListView.xib in Resources */,
 				8F8DE19020A3C48C006FA48B /* RelatedItemImageView.xib in Resources */,
-				2204621020472DE80067D9FB /* RelatedItemView.xib in Resources */,
+				2204621020472DE80067D9FB /* RelatedItemListView.xib in Resources */,
 				CD7B3CD120ADFB1400723BDB /* ImageZoomControl.xib in Resources */,
 				1FAFF01B206EDD93005DC68B /* Soleil-04.otf in Resources */,
 				2247670120562F65003E8790 /* MediaItemView.xib in Resources */,

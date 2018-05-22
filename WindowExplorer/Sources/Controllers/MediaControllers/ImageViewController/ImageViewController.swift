@@ -31,11 +31,7 @@ class ImageViewController: MediaViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        imageScrollView.minMagnification = Constants.initialMagnification
-        imageScrollView.maxMagnification = Constants.maximumMagnification
-        imageZoomControl.gestureManager = gestureManager
-        imageZoomControl.zoomSliderUpdated = didScrubZoomSlider(_:)
-
+        setupScrollView()
         setupImageView()
         setupGestures()
         animateViewIn()
@@ -48,6 +44,13 @@ class ImageViewController: MediaViewController {
 
 
     // MARK: Setup
+
+    private func setupScrollView() {
+        imageScrollView.minMagnification = Constants.initialMagnification
+        imageScrollView.maxMagnification = Constants.maximumMagnification
+        imageZoomControl.gestureManager = gestureManager
+        imageZoomControl.zoomSliderUpdated = didScrubZoomSlider(_:)
+    }
 
     private func setupImageView() {
         guard media.type == .image else {
