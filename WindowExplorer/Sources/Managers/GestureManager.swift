@@ -9,13 +9,14 @@ protocol GestureResponder: class {
     var view: NSView { get }
     var gestureManager: GestureManager! { get }
     func draggableInside(bounds: CGRect) -> Bool
+    func subview(contains position: CGPoint) -> Bool
 }
 
 
 final class GestureManager {
 
     var touchReceived: ((Touch) -> Void)?
-    private weak var responder: GestureResponder!
+    weak var responder: GestureResponder!
     private var gestureHandlers = [NSView: GestureHandler]()
 
 

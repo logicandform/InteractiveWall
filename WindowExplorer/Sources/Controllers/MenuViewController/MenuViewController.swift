@@ -112,6 +112,10 @@ class MenuViewController: NSViewController, GestureResponder {
        return true
     }
 
+    func subview(contains position: CGPoint) -> Bool {
+        return view.frame.contains(position)
+    }
+
 
     // MARK: Helpers
 

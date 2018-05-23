@@ -23,12 +23,20 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     @IBOutlet weak var secondaryTextField: NSTextField!
     @IBOutlet weak var tertiaryTextField: NSTextField!
     @IBOutlet weak var collapseButtonArea: NSView!
+    @IBOutlet weak var primaryScrollView: FadingScrollView!
+    @IBOutlet weak var secondaryScrollView: FadingScrollView!
+    @IBOutlet weak var tertiaryScrollView: FadingScrollView!
+    @IBOutlet weak var primaryScrollViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var secondaryScrollViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var tertiaryScrollViewHeight: NSLayoutConstraint!
 
     private var selectedType: RecordType?
     private var selectedRecords = Set<RecordProxy>()
     private var selectedIndexForView = [NSCollectionView: IndexPath]()
     private let relationshipHelper = RelationshipHelper()
 
+    private lazy var scrollViewForCollectionView = [primaryCollectionView: primaryScrollView, secondaryCollectionView: secondaryScrollView, tertiaryCollectionView: tertiaryScrollView]
+    private lazy var heightForCollectionView = [primaryCollectionView: primaryScrollViewHeight, secondaryCollectionView: secondaryScrollViewHeight, tertiaryCollectionView: tertiaryScrollViewHeight]
     private lazy var titleViews: [NSTextField] = [titleLabel, secondaryTextField, tertiaryTextField]
     private lazy var collectionViews: [NSCollectionView] = [primaryCollectionView, secondaryCollectionView, tertiaryCollectionView]
     private lazy var focusedCollectionView: NSCollectionView = primaryCollectionView
@@ -60,6 +68,13 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         resetCloseWindowTimer()
         updateWindowDragAreaHighlight(for: selectedType)
         animateViewIn()
+    }
+
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        updateHeight(for: primaryCollectionView)
+        updateHeight(for: secondaryCollectionView)
+        updateHeight(for: tertiaryCollectionView)
     }
 
 
@@ -161,8 +176,19 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
 
         if let index = collectionViews.index(of: focusedCollectionView), let previous = collectionViews.at(index: index - 1) {
+            let previousCollectionView = focusedCollectionView
             unselectItem(for: previous)
-            toggle(to: previous)
+            toggle(to: previous, completion: { [weak self] in
+                self?.deleteItems(in: previousCollectionView)
+            })
+        }
+    }
+
+    private func deleteItems(in previousCollectionView: NSCollectionView?) {
+        if let previousCollectionView = previousCollectionView {
+            searchItemsForView[previousCollectionView] = []
+            previousCollectionView.reloadData()
+            updateHeight(for: previousCollectionView)
         }
     }
 
@@ -341,6 +367,8 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             }
         }
 
+        updateHeight(for: view)
+
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration
             for indexOfView in 0 ..< collectionViews.count {
@@ -428,6 +456,19 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
                 let recordProxy = RecordProxy(id: record.id, type: record.type)
                 view.set(highlighted: selectedRecords.contains(recordProxy))
             }
+        }
+    }
+
+    private func updateHeight(for collectionView: NSCollectionView) {
+        let maxHeight = style.searchScrollViewSize.height
+
+        if let height = collectionView.collectionViewLayout?.collectionViewContentSize.height, let heightConstraint = heightForCollectionView[collectionView], let scrollView = scrollViewForCollectionView[collectionView] {
+            if height > maxHeight {
+                heightConstraint?.constant = maxHeight
+            } else {
+                heightConstraint?.constant = height
+            }
+            scrollView?.updateConstraints()
         }
     }
 }

@@ -6,7 +6,7 @@ import MONode
 final class TouchManager: SocketManagerDelegate {
 
     static let instance = TouchManager()
-    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 13003)
+    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 13001)
 
     private var socketManager: SocketManager?
     private var managersForTouch = [Touch: (NSWindow, GestureManager)]()
@@ -104,16 +104,20 @@ final class TouchManager: SocketManagerDelegate {
         let windows = WindowManager.instance.windows.sorted(by: { $0.key.orderedIndex < $1.key.orderedIndex })
 
         if touch.state == .down {
-            if let (window, manager) = windows.first(where: { $0.key.frame.contains(touch.position) }) {
+            if let (window, manager) = windows.first(where: { $0.key.frame.contains(touch.position) }), windowSubviews(window, contains: touch, in: manager.responder) {
                 return (window, manager)
             }
         } else {
-            if let (window, manager) = windows.first(where: { $0.value.owns(touch) }) {
+            if let (window, manager) = windows.first(where: { $0.value.owns(touch) }), windowSubviews(window, contains: touch, in: manager.responder) {
                 return (window, manager)
             }
         }
 
         return nil
+    }
+
+    private func windowSubviews(_ window: NSWindow, contains touch: Touch, in responder: GestureResponder) -> Bool {
+        return responder.subview(contains: touch.position.transformed(to: window.frame))
     }
 
     /// Updates the touches for map dictionary when a touch down or up occurs.

@@ -11,6 +11,7 @@ class ImageViewController: MediaViewController {
     @IBOutlet weak var imageScrollView: RegularScrollView!
     @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollViewWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageZoomControl: ImageZoomControl!
 
     private var imageView: NSImageView!
     private var imageRequest: DataRequest?
@@ -30,6 +31,7 @@ class ImageViewController: MediaViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupScrollView()
         setupImageView()
         setupGestures()
         animateViewIn()
@@ -42,6 +44,13 @@ class ImageViewController: MediaViewController {
 
 
     // MARK: Setup
+
+    private func setupScrollView() {
+        imageScrollView.minMagnification = Constants.initialMagnification
+        imageScrollView.maxMagnification = Constants.maximumMagnification
+        imageZoomControl.gestureManager = gestureManager
+        imageZoomControl.zoomSliderUpdated = didScrubZoomSlider(_:)
+    }
 
     private func setupImageView() {
         guard media.type == .image else {
@@ -100,6 +109,7 @@ class ImageViewController: MediaViewController {
             var imageRect = imageScrollView.contentView.bounds
             let scaledWidth = (2.0 - pinch.scale) * imageRect.size.width
             let scaledHeight = (2.0 - pinch.scale) * imageRect.size.height
+
             if scaledWidth <= contentViewFrame.width {
                 var translationX = pinch.delta.dx * imageRect.size.width / contentViewFrame.width
                 var translationY = pinch.delta.dy * imageRect.size.height / contentViewFrame.height
@@ -107,6 +117,9 @@ class ImageViewController: MediaViewController {
                     translationX -= (imageRect.size.width - scaledWidth) * (pinch.center.x / contentViewFrame.width)
                     translationY -= (imageRect.size.height - scaledHeight) * (pinch.center.y / contentViewFrame.height)
                     imageRect.size = CGSize(width: scaledWidth, height: scaledHeight)
+
+                    let scale = (contentViewFrame.width / Constants.maximumMagnification) / scaledWidth
+                    imageZoomControl.updateSeekBarPosition(to: scale)
                 }
                 imageRect.origin = CGPoint(x: imageRect.origin.x - translationX, y: imageRect.origin.y - translationY)
                 imageScrollView.contentView.bounds = imageRect
@@ -123,24 +136,23 @@ class ImageViewController: MediaViewController {
 
         switch tap.state {
         case .doubleTapped:
-            var imageRect = imageScrollView.contentView.bounds
-            let scaledWidth = Constants.doubleTapScale * imageRect.size.width
-            let scaledHeight = Constants.doubleTapScale * imageRect.size.height
-            if scaledWidth >= contentViewFrame.width / Constants.maximumMagnification {
-                let translationX = -(imageRect.size.width - scaledWidth) * (position.x / contentViewFrame.width)
-                let translationY = -(imageRect.size.height - scaledHeight) * (position.y / contentViewFrame.height)
-                imageRect.size = CGSize(width: scaledWidth, height: scaledHeight)
-                imageRect.origin = CGPoint(x: imageRect.origin.x - translationX, y: imageRect.origin.y - translationY)
-
-                NSAnimationContext.runAnimationGroup({ _ in
-                    NSAnimationContext.current.duration = Constants.doubleTapAnimationDuration
-                    NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-                    imageScrollView.contentView.animator().bounds = imageRect
-                })
+            if imageScrollView.magnification > imageScrollView.minMagnification {
+                imageScrollView.animator().setMagnification(imageScrollView.minMagnification, centeredAt: position)
+                imageZoomControl.updateSeekBarPosition(to: 0)
+            } else {
+                imageScrollView.animator().setMagnification(imageScrollView.maxMagnification, centeredAt: position)
+                imageZoomControl.updateSeekBarPosition(to: 1)
             }
         default:
             return
         }
+    }
+
+    private func didScrubZoomSlider(_ scale: CGFloat) {
+        let rect = imageScrollView.contentView.bounds
+        let x = (rect.origin.x + rect.size.width) / 2
+        let y = (rect.origin.y + rect.size.height) / 2
+        imageScrollView.setMagnification(Constants.maximumMagnification * scale, centeredAt: NSPoint(x: x, y: y))
     }
 
 
