@@ -36,6 +36,7 @@
                                     <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                 </clipView>
                                 <constraints>
+                                    <constraint firstAttribute="height" constant="515" id="6Jv-Mv-9us"/>
                                     <constraint firstAttribute="width" constant="350" id="MXe-5j-pAA"/>
                                 </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="8pX-9c-Y89">
@@ -43,7 +44,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="eAn-f2-EUL">
-                                    <rect key="frame" x="-100" y="-100" width="16" height="505"/>
+                                    <rect key="frame" x="334" y="0.0" width="16" height="0.0"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
@@ -71,13 +72,14 @@
                                 </clipView>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="350" id="8T4-jf-SAM"/>
+                                    <constraint firstAttribute="height" constant="515" id="XOQ-su-FFd"/>
                                 </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="GlW-FB-MCI">
                                     <rect key="frame" x="-100" y="-100" width="327" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="NGX-06-h4b">
-                                    <rect key="frame" x="-100" y="-100" width="16" height="505"/>
+                                    <rect key="frame" x="334" y="0.0" width="16" height="515"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
@@ -105,6 +107,7 @@
                                 </clipView>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="350" id="Ufi-Ql-zcK"/>
+                                    <constraint firstAttribute="height" constant="515" id="owv-zl-cyQ"/>
                                 </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="ABq-A6-NWQ">
                                     <rect key="frame" x="-100" y="-100" width="327" height="16"/>
@@ -213,13 +216,10 @@
                             </customView>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="gbE-u6-ffb" secondAttribute="bottom" id="0W0-On-WtR"/>
                             <constraint firstItem="oGe-AJ-Idu" firstAttribute="top" secondItem="0wA-7c-noQ" secondAttribute="top" id="7Uv-S6-r3Y"/>
                             <constraint firstItem="3LC-eL-E7F" firstAttribute="leading" relation="lessThanOrEqual" secondItem="0wA-7c-noQ" secondAttribute="leading" constant="355" id="8Ag-ea-Dc3"/>
                             <constraint firstItem="sam-yv-2oh" firstAttribute="centerX" secondItem="DnM-Ou-hpA" secondAttribute="centerX" id="9xP-0Z-HOG"/>
                             <constraint firstAttribute="trailing" secondItem="rvJ-Ae-W65" secondAttribute="trailing" constant="710" placeholder="YES" id="Amv-8J-ZUO"/>
-                            <constraint firstAttribute="bottom" secondItem="3LC-eL-E7F" secondAttribute="bottom" id="EiJ-1W-va3"/>
-                            <constraint firstAttribute="bottom" secondItem="rvJ-Ae-W65" secondAttribute="bottom" id="GNd-aO-oAh"/>
                             <constraint firstItem="rvJ-Ae-W65" firstAttribute="top" secondItem="oGe-AJ-Idu" secondAttribute="bottom" constant="5" id="Ijl-5r-xXg"/>
                             <constraint firstAttribute="trailing" secondItem="gbE-u6-ffb" secondAttribute="trailing" id="Luw-QY-4Vp"/>
                             <constraint firstItem="rvJ-Ae-W65" firstAttribute="leading" secondItem="0wA-7c-noQ" secondAttribute="leading" id="QbE-jY-lwg"/>
@@ -237,9 +237,15 @@
                         <outlet property="collapseButtonArea" destination="w51-de-YGS" id="gm5-5y-HYG"/>
                         <outlet property="dismissButton" destination="sOu-1b-tUh" id="glV-Mp-c8I"/>
                         <outlet property="primaryCollectionView" destination="S1c-RT-6BK" id="Rql-aO-Hh0"/>
+                        <outlet property="primaryScrollView" destination="rvJ-Ae-W65" id="AVu-66-aEl"/>
+                        <outlet property="primaryScrollViewHeight" destination="owv-zl-cyQ" id="gar-Zi-0AR"/>
                         <outlet property="secondaryCollectionView" destination="Mma-p7-p7J" id="Xf2-4F-Zif"/>
+                        <outlet property="secondaryScrollView" destination="3LC-eL-E7F" id="Kxl-0i-s4r"/>
+                        <outlet property="secondaryScrollViewHeight" destination="XOQ-su-FFd" id="oEK-qL-67V"/>
                         <outlet property="secondaryTextField" destination="jVk-aJ-U1i" id="q1z-xL-YsW"/>
                         <outlet property="tertiaryCollectionView" destination="DnM-Ou-hpA" id="EM9-L9-h9T"/>
+                        <outlet property="tertiaryScrollView" destination="gbE-u6-ffb" id="Gvm-y8-uwf"/>
+                        <outlet property="tertiaryScrollViewHeight" destination="6Jv-Mv-9us" id="L3v-3i-Is0"/>
                         <outlet property="tertiaryTextField" destination="sam-yv-2oh" id="jt5-wP-dws"/>
                         <outlet property="titleLabel" destination="4sB-bV-Fph" id="LRm-7j-qTO"/>
                         <outlet property="windowDragArea" destination="oGe-AJ-Idu" id="wcL-Yc-nsk"/>
