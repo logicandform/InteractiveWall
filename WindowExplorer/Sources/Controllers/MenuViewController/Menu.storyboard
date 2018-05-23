@@ -3,15 +3,27 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
     </dependencies>
     <scenes>
         <!--Menu View Controller-->
         <scene sceneID="x84-Ml-acq">
             <objects>
                 <viewController id="AWf-NK-kp0" customClass="MenuViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="AdH-oQ-xB7">
-                        <rect key="frame" x="0.0" y="0.0" width="800" height="800"/>
+                    <view key="view" misplaced="YES" id="AdH-oQ-xB7">
+                        <rect key="frame" x="0.0" y="0.0" width="50" height="150"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" misplaced="YES" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KcA-Ro-iLC">
+                                <rect key="frame" x="0.0" y="150" width="50" height="0.0"/>
+                            </stackView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="KcA-Ro-iLC" firstAttribute="top" secondItem="AdH-oQ-xB7" secondAttribute="top" id="70F-76-O5s"/>
+                            <constraint firstAttribute="bottom" secondItem="KcA-Ro-iLC" secondAttribute="bottom" constant="400" id="XX7-S2-KXk"/>
+                            <constraint firstAttribute="trailing" secondItem="KcA-Ro-iLC" secondAttribute="trailing" id="fs4-sb-uf9"/>
+                            <constraint firstItem="KcA-Ro-iLC" firstAttribute="leading" secondItem="AdH-oQ-xB7" secondAttribute="leading" id="s1j-Zk-eBr"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <customObject id="vEQ-kv-rRL" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

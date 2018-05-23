@@ -79,7 +79,7 @@ class MenuViewController: NSViewController, GestureResponder {
         switch pan.state {
         case .recognized, .momentum:
             var origin = window.frame.origin
-            origin += pan.delta.dy
+            origin.y += pan.delta.dy
             window.setFrameOrigin(origin)
         case .possible:
             checkBounds()
