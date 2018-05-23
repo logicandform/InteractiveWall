@@ -15,8 +15,7 @@ class MenuViewController: NSViewController, GestureResponder {
     static func instantiate() {
         for screen in NSScreen.screens.sorted(by: { $0.frame.minX < $1.frame.minX }).dropFirst() {
             let screenFrame = screen.frame
-            // let xSpacing = screenFrame.width / CGFloat(Configuration.mapsPerScreen)
-            // May want a check for 1 map per screen here?
+            
             for menuNumber in 1...(Configuration.mapsPerScreen) {
                 let x: CGFloat
 
@@ -59,12 +58,11 @@ class MenuViewController: NSViewController, GestureResponder {
 
     /// Determines if the bounds of the draggable area is inside a given rect
     func draggableInside(bounds: CGRect) -> Bool {
-        if view.window == nil {
+        guard let window = view.window else {
             return false
         }
-        let test = bounds.contains(view.frame)
-        let test2 = view.frame.transformed(from: bounds)
-        return bounds.contains(view.frame)
+
+        return bounds.contains(view.frame.transformed(from: window.frame))
     }
 
     func subview(contains position: CGPoint) -> Bool {
@@ -99,11 +97,16 @@ class MenuViewController: NSViewController, GestureResponder {
         let first = applicationScreens.first?.frame ?? .zero
         let applicationFrame = applicationScreens.reduce(first) { $0.union($1.frame) }
         if !draggableInside(bounds: applicationFrame) {
-            resetPosition()
+            resetPosition(in: applicationFrame)
         }
     }
 
-    private func resetPosition() {
-
+    private func resetPosition(in screenFrame: NSRect) {
+        guard let window = view.window else {
+            return
+        }
+        var origin = window.frame.origin
+        origin.y = screenFrame.midY - style.menuWindowSize.height / 2
+        window.setFrameOrigin(origin)
     }
 }
