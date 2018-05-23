@@ -15,17 +15,19 @@ class MenuViewController: NSViewController, GestureResponder {
     static func instantiate() {
         for screen in NSScreen.screens.sorted(by: { $0.frame.minX < $1.frame.minX }).dropFirst() {
             let screenFrame = screen.frame
-            let xSpacing = screenFrame.width / CGFloat(Configuration.mapsPerScreen)
-            if Configuration.mapsPerScreen == 1 {
-                let x = screenFrame.maxX - style.menuWindowSize.width / 2 - (xSpacing / 2)
+            // let xSpacing = screenFrame.width / CGFloat(Configuration.mapsPerScreen)
+            // May want a check for 1 map per screen here?
+            for menuNumber in 1...(Configuration.mapsPerScreen) {
+                let x: CGFloat
+
+                if menuNumber % 2 == 1 {
+                    x = screenFrame.maxX - style.menuWindowSize.width
+                } else {
+                    x = screenFrame.minX
+                }
+                
                 let y = screenFrame.midY - style.menuWindowSize.height / 2
                 WindowManager.instance.display(.menu, at: CGPoint(x: x, y: y))
-            } else {
-                for menuNumber in 1...(Configuration.mapsPerScreen - 1) {
-                    let x = screenFrame.maxX - style.menuWindowSize.width / 2 - CGFloat(menuNumber) * xSpacing
-                    let y = screenFrame.midY - style.menuWindowSize.height / 2
-                    WindowManager.instance.display(.menu, at: CGPoint(x: x, y: y))
-                }
             }
         }
     }
@@ -60,7 +62,8 @@ class MenuViewController: NSViewController, GestureResponder {
         if view.window == nil {
             return false
         }
-
+        let test = bounds.contains(view.frame)
+        let test2 = view.frame.transformed(from: bounds)
         return bounds.contains(view.frame)
     }
 

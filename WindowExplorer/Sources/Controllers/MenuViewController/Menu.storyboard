@@ -11,15 +11,41 @@
             <objects>
                 <viewController id="AWf-NK-kp0" customClass="MenuViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="AdH-oQ-xB7">
-                        <rect key="frame" x="0.0" y="0.0" width="50" height="150"/>
+                        <rect key="frame" x="0.0" y="0.0" width="100" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KcA-Ro-iLC">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="150"/>
+                                <rect key="frame" x="0.0" y="0.0" width="100" height="300"/>
+                                <subviews>
+                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1uv-Ha-1ob">
+                                        <rect key="frame" x="0.0" y="58" width="100" height="242"/>
+                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="58J-QZ-CyQ"/>
+                                    </imageView>
+                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yqt-x9-nG0">
+                                        <rect key="frame" x="0.0" y="0.0" width="100" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="GWW-GA-IeA"/>
+                                        </constraints>
+                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="7ey-20-Jy8"/>
+                                    </imageView>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="150" id="hDA-yR-NX7"/>
-                                    <constraint firstAttribute="width" constant="50" id="mU9-XE-3sQ"/>
+                                    <constraint firstAttribute="trailing" secondItem="1uv-Ha-1ob" secondAttribute="trailing" id="1gu-Jo-IQr"/>
+                                    <constraint firstItem="1uv-Ha-1ob" firstAttribute="top" secondItem="KcA-Ro-iLC" secondAttribute="top" id="4qZ-rI-Fua"/>
+                                    <constraint firstItem="yqt-x9-nG0" firstAttribute="leading" secondItem="KcA-Ro-iLC" secondAttribute="leading" id="ZpK-9D-FgG"/>
+                                    <constraint firstAttribute="height" constant="300" id="hDA-yR-NX7"/>
+                                    <constraint firstAttribute="trailing" secondItem="yqt-x9-nG0" secondAttribute="trailing" id="lMA-qx-nZC"/>
+                                    <constraint firstAttribute="width" constant="100" id="mU9-XE-3sQ"/>
+                                    <constraint firstItem="1uv-Ha-1ob" firstAttribute="leading" secondItem="KcA-Ro-iLC" secondAttribute="leading" id="q6b-26-3rF"/>
                                 </constraints>
+                                <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
                             </stackView>
                         </subviews>
                         <constraints>
