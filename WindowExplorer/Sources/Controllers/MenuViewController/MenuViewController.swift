@@ -61,7 +61,7 @@ class MenuViewController: NSViewController, GestureResponder {
             return false
         }
 
-        return true
+        return bounds.contains(view.frame)
     }
 
     func subview(contains position: CGPoint) -> Bool {
