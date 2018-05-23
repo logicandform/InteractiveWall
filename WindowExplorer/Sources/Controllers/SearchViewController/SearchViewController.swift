@@ -33,7 +33,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     private var selectedType: RecordType?
     private var selectedRecords = Set<RecordProxy>()
     private var selectedIndexForView = [NSCollectionView: IndexPath]()
-    private var previousCollectionView: NSCollectionView?
     private let relationshipHelper = RelationshipHelper()
 
     private lazy var scrollViewForCollectionView = [primaryCollectionView: primaryScrollView, secondaryCollectionView: secondaryScrollView, tertiaryCollectionView: tertiaryScrollView]
@@ -177,13 +176,15 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
 
         if let index = collectionViews.index(of: focusedCollectionView), let previous = collectionViews.at(index: index - 1) {
-            previousCollectionView = focusedCollectionView
+            let previousCollectionView = focusedCollectionView
             unselectItem(for: previous)
-            toggle(to: previous, completion: deleteItemsInPrevious)
+            toggle(to: previous, completion: { [weak self] in
+                self?.deleteItems(in: previousCollectionView)
+            })
         }
     }
 
-    private func deleteItemsInPrevious() {
+    private func deleteItems(in previousCollectionView: NSCollectionView?) {
         if let previousCollectionView = previousCollectionView {
             searchItemsForView[previousCollectionView] = []
             previousCollectionView.reloadData()
@@ -269,10 +270,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
                 WindowManager.instance.closeWindow(for: strongSelf)
             }
         })
-    }
-
-    override func contains(position: CGPoint) -> Bool {
-        return view.subviews.first(where: { $0.frame.contains(position) }) != nil
     }
 
     override func resetCloseWindowTimer() {

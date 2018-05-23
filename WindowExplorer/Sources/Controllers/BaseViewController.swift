@@ -172,7 +172,7 @@ class BaseViewController: NSViewController, GestureResponder {
         return bounds.contains(smallDragArea)
     }
 
-    func contains(position: CGPoint) -> Bool {
+    func subview(contains position: CGPoint) -> Bool {
         return view.subviews.first(where: { $0.frame.contains(position) }) != nil
     }
 
