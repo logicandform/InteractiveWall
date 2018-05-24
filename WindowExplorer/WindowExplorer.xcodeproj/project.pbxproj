@@ -72,6 +72,7 @@
 		22A76FEC2046477A006C0AE7 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A76FEA2046477A006C0AE7 /* PlayerViewController.swift */; };
 		22A923212044AF05003EA9BB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A923202044AF05003EA9BB /* AppDelegate.swift */; };
 		22A923252044AF05003EA9BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22A923242044AF05003EA9BB /* Assets.xcassets */; };
+		22AEAF0420B67E6700DD184B /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AEAF0320B67E6700DD184B /* Math.swift */; };
 		22B1E2CD204638B900BDDF14 /* GestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2CC204638B900BDDF14 /* GestureManager.swift */; };
 		22B1E2CF204638CA00BDDF14 /* GestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2CE204638CA00BDDF14 /* GestureHandler.swift */; };
 		22B85AFD209B7ADF0099F44E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22B85AFB209B7ADF0099F44E /* Main.storyboard */; };
@@ -115,7 +116,6 @@
 		D507D33B2072FD2B0003CEA7 /* ColoredSliderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D507D33A2072FD2B0003CEA7 /* ColoredSliderCell.swift */; };
 		D5384CF52071A74300A157AE /* PDFTableViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5384CF42071A74300A157AE /* PDFTableViewItem.swift */; };
 		D5384CF72071A7FD00A157AE /* PDFTableViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5384CF62071A7FD00A157AE /* PDFTableViewItem.xib */; };
-		D59DAA092072C8A300908164 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59DAA082072C8A300908164 /* Math.swift */; };
 		D901EBED2056EEFE00BBFCF2 /* RecordDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D901EBEC2056EEFE00BBFCF2 /* RecordDisplayable.swift */; };
 		D901EBF02057490400BBFCF2 /* RegularTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D901EBEF2057490400BBFCF2 /* RegularTableView.swift */; };
 		D92E0EFE20604BDB00C1C9A7 /* PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92E0EFD20604BDB00C1C9A7 /* PageControl.swift */; };
@@ -211,6 +211,7 @@
 		22A923242044AF05003EA9BB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		22A923292044AF05003EA9BB /* WindowExplorer.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = WindowExplorer.plist; sourceTree = "<group>"; };
 		22A9232A2044AF05003EA9BB /* WindowExplorer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WindowExplorer.entitlements; sourceTree = "<group>"; };
+		22AEAF0320B67E6700DD184B /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		22B1E2CC204638B900BDDF14 /* GestureManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureManager.swift; sourceTree = "<group>"; };
 		22B1E2CE204638CA00BDDF14 /* GestureHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureHandler.swift; sourceTree = "<group>"; };
 		22B85AFC209B7ADF0099F44E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Controllers/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -260,7 +261,6 @@
 		D507D33A2072FD2B0003CEA7 /* ColoredSliderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredSliderCell.swift; sourceTree = "<group>"; };
 		D5384CF42071A74300A157AE /* PDFTableViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFTableViewItem.swift; sourceTree = "<group>"; };
 		D5384CF62071A7FD00A157AE /* PDFTableViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PDFTableViewItem.xib; sourceTree = "<group>"; };
-		D59DAA082072C8A300908164 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Math.swift; path = Extensions/Math.swift; sourceTree = SOURCE_ROOT; };
 		D901EBEC2056EEFE00BBFCF2 /* RecordDisplayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDisplayable.swift; sourceTree = "<group>"; };
 		D901EBEF2057490400BBFCF2 /* RegularTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularTableView.swift; sourceTree = "<group>"; };
 		D92E0EFD20604BDB00C1C9A7 /* PageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageControl.swift; sourceTree = "<group>"; };
@@ -409,8 +409,8 @@
 		22A4987A204749EA0024B46C /* Records */ = {
 			isa = PBXGroup;
 			children = (
-				3F09025A2048D9D30044F100 /* Place.swift */,
 				226D0581204FC38600D74711 /* Event.swift */,
+				3F09025A2048D9D30044F100 /* Place.swift */,
 				3F2FAB5A204F7D24002EDF5D /* Artifact.swift */,
 				3F09025E2048E0E70044F100 /* Organization.swift */,
 				2204624E204730C70067D9FB /* School.swift */,
@@ -446,7 +446,6 @@
 			children = (
 				22A923302044AF19003EA9BB /* Sources */,
 				22A923332044AF2D003EA9BB /* Metadata */,
-				2204621A20472F840067D9FB /* Extensions */,
 				22A923312044AF1E003EA9BB /* Resources */,
 				22A9231E2044AF05003EA9BB /* Products */,
 				E7F56EE9570176C399CE51F3 /* Pods */,
@@ -470,6 +469,7 @@
 				22A9233B2044B047003EA9BB /* Controllers */,
 				2276AE63204E7122001FAD8B /* Windows */,
 				D901EBEE205748C500BBFCF2 /* Views */,
+				2204621A20472F840067D9FB /* Extensions */,
 				2204623B20472FFD0067D9FB /* Models */,
 				22B1E2D0204638CD00BDDF14 /* Helpers */,
 				2204623C204730050067D9FB /* Gestures */,
@@ -526,7 +526,6 @@
 			isa = PBXGroup;
 			children = (
 				A407161120ABAE5B00B54593 /* RelationshipHelper.swift */,
-				D59DAA082072C8A300908164 /* Math.swift */,
 				227B5E10205611BB00F403B3 /* Style.swift */,
 				22A498742047499B0024B46C /* JSON.swift */,
 				22B1E2CE204638CA00BDDF14 /* GestureHandler.swift */,
@@ -542,6 +541,7 @@
 				A4694B65209CEC18006A407F /* RecordFilterType.swift */,
 				CD096C8920A3AD7F00C8A732 /* GeocodeHelper.swift */,
 				A407160D20AB94B800B54593 /* PriorityOrder.swift */,
+				22AEAF0320B67E6700DD184B /* Math.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -859,7 +859,6 @@
 				227B5E11205611BB00F403B3 /* Style.swift in Sources */,
 				8F6EFD7D2098FF0800E4D97D /* FadingScrollView.swift in Sources */,
 				8E4010A220487E0300E81AAA /* Collection.swift in Sources */,
-				D59DAA092072C8A300908164 /* Math.swift in Sources */,
 				618F0C2F2069F98900762C20 /* MultiChannelPanner.swift in Sources */,
 				22F309BF20A224A000BA5456 /* LetterGroup.swift in Sources */,
 				3F2FAB5B204F7D24002EDF5D /* Artifact.swift in Sources */,
@@ -930,6 +929,7 @@
 				22A923212044AF05003EA9BB /* AppDelegate.swift in Sources */,
 				22046259204730C70067D9FB /* School.swift in Sources */,
 				226D0582204FC38700D74711 /* Event.swift in Sources */,
+				22AEAF0420B67E6700DD184B /* Math.swift in Sources */,
 				22B85B07209CF5200099F44E /* SearchItemView.swift in Sources */,
 				2224125E206BFE9F008E7A9D /* RecordType.swift in Sources */,
 				3F09025F2048E0E70044F100 /* Organization.swift in Sources */,

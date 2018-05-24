@@ -1,13 +1,19 @@
-//
-//  AppDelegate.swift
-//  NodeVisualizer
-//
-//  Created by Tim Davis on 2018-05-23.
 //  Copyright © 2018 JABT. All rights reserved.
-//
-
 
 import Cocoa
+
+
+let style = Style()
+
+
+struct Configuration {
+    static let mapsPerScreen = 2
+    static let numberOfScreens = 1
+    static let touchScreenSize = CGSize(width: 21564, height: 12116)
+    static let refreshRate = 1.0 / 60.0
+    static let loadMapsOnFirstScreen = false
+}
+
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {

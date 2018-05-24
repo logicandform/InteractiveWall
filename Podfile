@@ -30,4 +30,13 @@ abstract_target 'All' do
         pod 'PromiseKit/Alamofire'
         pod 'AlamofireImage'
     end
+
+    target 'NodeVisualizer' do
+        project 'NodeVisualizer/NodeVisualizer.xcodeproj'
+        platform :osx, '10.13'
+
+        pod 'PromiseKit', '~> 4.4'
+        pod 'PromiseKit/Alamofire'
+        pod 'AlamofireImage'
+    end
 end
