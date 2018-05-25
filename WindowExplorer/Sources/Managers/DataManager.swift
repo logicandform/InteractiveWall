@@ -21,9 +21,7 @@ class DataManager {
     // MARK: API
 
     func loadPersistenceStore(then completion: @escaping ([RecordDisplayable]) -> Void) {
-        load(completion: { records in
-            completion(records)
-        })
+        load(then: completion)
     }
 
     func loadRecords(of type: RecordType, then completion: @escaping ([RecordDisplayable]?) -> Void) {
@@ -41,7 +39,7 @@ class DataManager {
 
     // MARK: Helpers
 
-    private func load(with results: [RecordDisplayable] = [], completion: @escaping ([RecordDisplayable]) -> Void) {
+    private func load(with results: [RecordDisplayable] = [], then completion: @escaping ([RecordDisplayable]) -> Void) {
         guard let recordType = allRecordTypes.popLast() else {
             completion(results)
             return
@@ -50,7 +48,7 @@ class DataManager {
         loadRecords(of: recordType, then: { [weak self] records in
             if let records = records {
                 let updatedResults = records
-                self?.load(with: updatedResults, completion: completion)
+                self?.load(with: updatedResults, then: completion)
             }
         })
     }
