@@ -17,6 +17,7 @@ class MenuViewController: NSViewController, GestureResponder {
 
     var gestureManager: GestureManager!
     private var scrollMinimumSpeedAchieved = false
+    private var buttonType = [NSImageView: MenuButtonType]()
 
     private struct Constants {
         static let minimumScrollSpeed: CGFloat = 4
@@ -37,7 +38,7 @@ class MenuViewController: NSViewController, GestureResponder {
                 } else {
                     x = screenFrame.minX
                 }
-                
+
                 let y = screenFrame.midY - style.menuWindowSize.height / 2
                 WindowManager.instance.display(.menu, at: CGPoint(x: x, y: y))
             }
@@ -53,6 +54,8 @@ class MenuViewController: NSViewController, GestureResponder {
 
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
+
+        buttonType = [splitScreenButton: MenuButtonType.splitScreen, mapToggleButton: MenuButtonType.mapToggle, timelineToggleButton: MenuButtonType.timelineToggle, informationButton: MenuButtonType.information, settingsButton: MenuButtonType.settings, searchButton: MenuButtonType.search]
 
         setupButtons()
         setupGestures()
@@ -74,6 +77,8 @@ class MenuViewController: NSViewController, GestureResponder {
                 self?.splitScreenButton.image = NSImage(named: "image-icon")?.tinted(with: style.artifactColor)
             }
         }
+
+//        addGesture(to: splitScreenButton, in: gestureManager, for: buttonType[splitScreenButton])
     }
 
     private func setupButtons() {
@@ -128,6 +133,17 @@ class MenuViewController: NSViewController, GestureResponder {
 
 
     // MARK: Helpers
+
+    private func addGesture(to view: NSView, in manager: GestureManager, for type: MenuButtonType) {
+        let tapGesture = TapGestureRecognizer()
+        manager.add(tapGesture, to: view)
+
+        tapGesture.gestureUpdated = { [weak self] tap in
+            if tap.state == .ended {
+                //self?.didSelect(type: type)
+            }
+        }
+    }
 
     private func updateSpeedAtBoundary(for velocity: CGFloat, with window: NSWindow) -> CGPoint {
         let applicationFrame = getApplicationFrame()
