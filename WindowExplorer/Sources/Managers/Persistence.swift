@@ -22,13 +22,4 @@ final class Persistence {
             recordsForType[type] = records
         }
     }
-
-
-
-    // MARK: Helpers
-
-
-
-
-
 }
