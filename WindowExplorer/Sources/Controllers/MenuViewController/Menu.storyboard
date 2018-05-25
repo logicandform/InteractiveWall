@@ -10,46 +10,47 @@
             <objects>
                 <viewController id="AWf-NK-kp0" customClass="MenuViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="AdH-oQ-xB7">
-                        <rect key="frame" x="0.0" y="0.0" width="50" height="300"/>
+                        <rect key="frame" x="0.0" y="0.0" width="40" height="290"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XSL-8U-p48">
-                                <rect key="frame" x="0.0" y="250" width="50" height="50"/>
+                                <rect key="frame" x="0.0" y="250" width="40" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="tgK-0D-WW1"/>
+                                    <constraint firstAttribute="width" constant="40" id="ZuQ-R3-pkR"/>
+                                    <constraint firstAttribute="height" constant="40" id="tgK-0D-WW1"/>
                                 </constraints>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="s3y-ox-dYc"/>
                             </imageView>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YH7-tX-fhw">
-                                <rect key="frame" x="0.0" y="200" width="50" height="50"/>
+                                <rect key="frame" x="0.0" y="200" width="40" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="mz3-xN-JgI"/>
                                 </constraints>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="ZZq-63-8Q9"/>
                             </imageView>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="w1D-MX-hx3">
-                                <rect key="frame" x="0.0" y="150" width="50" height="50"/>
+                                <rect key="frame" x="0.0" y="150" width="40" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="4jJ-XJ-ov1"/>
                                 </constraints>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="Pan-ey-4a3"/>
                             </imageView>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FRJ-wF-ukw">
-                                <rect key="frame" x="0.0" y="100" width="50" height="50"/>
+                                <rect key="frame" x="0.0" y="100" width="40" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="NM9-Sv-kbi"/>
                                 </constraints>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="Zwa-5w-z3R"/>
                             </imageView>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ed7-a7-wxz">
-                                <rect key="frame" x="0.0" y="50" width="50" height="50"/>
+                                <rect key="frame" x="0.0" y="50" width="40" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="Zef-0g-RyZ"/>
                                 </constraints>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="Nka-6M-Vao"/>
                             </imageView>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fLv-1R-6Ot">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <rect key="frame" x="0.0" y="0.0" width="40" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="QCx-g6-cHZ"/>
                                 </constraints>
@@ -79,7 +80,13 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="splitScreen" destination="XSL-8U-p48" id="luM-fH-daB"/>
+                        <outlet property="informationButton" destination="FRJ-wF-ukw" id="pEf-HY-Ve9"/>
+                        <outlet property="mapToggleButton" destination="YH7-tX-fhw" id="tP1-Lm-lkU"/>
+                        <outlet property="menuView" destination="AdH-oQ-xB7" id="SPU-eJ-wgZ"/>
+                        <outlet property="searchButton" destination="fLv-1R-6Ot" id="o59-Bn-D53"/>
+                        <outlet property="settingsButton" destination="ed7-a7-wxz" id="RzN-Pl-VyR"/>
+                        <outlet property="splitScreenButton" destination="XSL-8U-p48" id="86a-kn-zK7"/>
+                        <outlet property="timelineToggleButton" destination="w1D-MX-hx3" id="ynW-SB-HsR"/>
                     </connections>
                 </viewController>
                 <customObject id="vEQ-kv-rRL" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
