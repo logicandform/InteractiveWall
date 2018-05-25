@@ -65,6 +65,15 @@ class MenuViewController: NSViewController, GestureResponder {
         let viewPanGesture = PanGestureRecognizer()
         gestureManager.add(viewPanGesture, to: view)
         viewPanGesture.gestureUpdated = handleWindowPan(_:)
+
+        // Want to set up tap gestures for each button here
+        let testTapGesture = TapGestureRecognizer()
+        gestureManager.add(testTapGesture, to: splitScreenButton)
+        testTapGesture.gestureUpdated = {[weak self] tap in
+            if tap.state == .ended {
+                self?.splitScreenButton.image = NSImage(named: "image-icon")?.tinted(with: style.artifactColor)
+            }
+        }
     }
 
     private func setupButtons() {
