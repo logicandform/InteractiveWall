@@ -4,91 +4,83 @@ import Foundation
 import PromiseKit
 
 
-final class DataManager {
+class DataManager {
 
-    static let instance = DataManager()
-
-    private var places = Set<Place>()
-    private var organizations = Set<Organization>()
-    private var events = Set<Event>()
-    private var artifacts = Set<Artifact>()
-    private var schools = Set<School>()
-    private var themes = Set<Theme>()
+    private let persistence: Persistence
 
 
-    // Use singleton instance
-    private init() { }
+    // MARK: Init
+
+    init(database: Persistence = .instance) {
+        self.persistence = database
+    }
 
 
     // MARK: API
 
-    /// Gets all records from database and saves them locally
-    func getAllRecords() {
-        getAllOrganizations()
-        getAllEvents()
-        getAllArtifacts()
-        getAllSchools()
-        getAllThemes()
+    func loadPersistenceStore() {
+        // load all models
     }
 
-    // api to query and fetch from the different Sets (i.e. places, schools, etc)
-    
+    func loadObjects(of type: RecordType, then completion: @escaping (([RecordDisplayable]?) -> Void)) {
+        if let records = persistence.recordsForType[type] {
+            completion(records)
+        } else {
+            fetchRecords(of: type, then: { [weak self] records in
+                self?.persistence.save(records, for: type)
+                completion(records)
+            })
+        }
+    }
 
+    func loadObject(of type: RecordType, then completion: @escaping ((RecordDisplayable) -> Void)) {
 
+    }
 
 
     // MARK: Helpers
 
-    private func getAllOrganizations() {
+    private func fetchRecords(of type: RecordType, then completion: @escaping (([RecordDisplayable]?) -> Void)) {
+        switch type {
+        case .organization:
+            fetchOrganization(then: completion)
+        case .event:
+            break
+        case .artifact:
+            break
+        case .school:
+            break
+        case .theme:
+            break
+        }
+    }
+
+    private func fetchOrganization(then completion: @escaping (([RecordDisplayable]?) -> Void)) {
         firstly {
             try CachingNetwork.getOrganizations()
-        }.then { [weak self] organizations in
-            self?.organizations = Set(organizations)
+        }.then { organizations in
+            completion(organizations)
         }.catch { error in
-            print(error.localizedDescription)
-        }
-    }
-
-    private func getAllEvents() {
-        firstly {
-            try CachingNetwork.getEvents()
-        }.then { [weak self] events in
-            self?.events = Set(events)
-        }.catch { error in
-            print(error.localizedDescription)
-        }
-    }
-
-    private func getAllArtifacts() {
-        firstly {
-            try CachingNetwork.getArtifacts()
-        }.then { [weak self] artifacts in
-            self?.artifacts = Set(artifacts)
-        }.catch { error in
-            print(error.localizedDescription)
-        }
-    }
-
-    private func getAllSchools() {
-        firstly {
-            try CachingNetwork.getSchools()
-        }.then { [weak self] schools in
-            self?.schools = Set(schools)
-        }.catch { error in
-            print(error.localizedDescription)
-        }
-    }
-
-    private func getAllThemes() {
-        firstly {
-            try CachingNetwork.getThemes()
-        }.then { [weak self] themes in
-            self?.themes = Set(themes)
-        }.catch { error in
-            print(error.localizedDescription)
+            print(error)
+            completion(nil)
         }
     }
 
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
