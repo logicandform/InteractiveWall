@@ -40,8 +40,8 @@ final class DataLoader {
     private func getEvents(then completion: @escaping (([RecordDisplayable]?) -> Void)) {
         firstly {
             try CachingNetwork.getEvents()
-        }.then { organizations in
-            completion(organizations)
+        }.then { events in
+            completion(events)
         }.catch { error in
             print(error)
             completion(nil)
@@ -51,8 +51,8 @@ final class DataLoader {
     private func getArtifacts(then completion: @escaping (([RecordDisplayable]?) -> Void)) {
         firstly {
             try CachingNetwork.getArtifacts()
-        }.then { organizations in
-            completion(organizations)
+        }.then { artifacts in
+            completion(artifacts)
         }.catch { error in
             print(error)
             completion(nil)
@@ -62,8 +62,8 @@ final class DataLoader {
     private func getSchools(then completion: @escaping (([RecordDisplayable]?) -> Void)) {
         firstly {
             try CachingNetwork.getSchools()
-        }.then { organizations in
-            completion(organizations)
+        }.then { schools in
+            completion(schools)
         }.catch { error in
             print(error)
             completion(nil)
@@ -73,8 +73,8 @@ final class DataLoader {
     private func getThemes(then completion: @escaping (([RecordDisplayable]?) -> Void)) {
         firstly {
             try CachingNetwork.getThemes()
-        }.then { organizations in
-            completion(organizations)
+        }.then { themes in
+            completion(themes)
         }.catch { error in
             print(error)
             completion(nil)
