@@ -69,7 +69,6 @@ class MenuViewController: NSViewController, GestureResponder {
 
     private func setupButtons() {
         splitScreenButton.image = NSImage(named: "image-icon")?.tinted(with: style.unselectedRecordIcon)
-        splitScreenButton.widthAnchor.constraint(equalToConstant: 24)
         mapToggleButton.image = NSImage(named: "event-icon")?.tinted(with: style.unselectedRecordIcon)
         timelineToggleButton.image = NSImage(named: "organization-icon")?.tinted(with: style.unselectedRecordIcon)
         informationButton.image = NSImage(named: "school-icon")?.tinted(with: style.unselectedRecordIcon)
