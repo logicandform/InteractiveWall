@@ -11,15 +11,16 @@ final class Persistence {
     private(set) var recordsForType = [RecordType: [RecordDisplayable]]()
 
 
-
     // Use singleton instance
     private init() {}
 
 
     // MARK: API
 
-    func save(_ records: [RecordDisplayable]?, for type: RecordType) {
-
+    func save(_ records: [RecordDisplayable], for type: RecordType) {
+        if recordsForType[type] == nil {
+            recordsForType[type] = records
+        }
     }
 
 
@@ -31,8 +32,3 @@ final class Persistence {
 
 
 }
-
-
-
-
-
