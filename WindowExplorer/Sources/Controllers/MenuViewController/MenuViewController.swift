@@ -132,10 +132,4 @@ class MenuViewController: NSViewController, GestureResponder {
 
         return updatedOrigin
     }
-
-    private func getApplicationFrame() -> CGRect {
-        let applicationScreens = NSScreen.screens.dropFirst()
-        let first = applicationScreens.first?.frame ?? .zero
-        return applicationScreens.reduce(first) { $0.union($1.frame) }
-    }
 }
