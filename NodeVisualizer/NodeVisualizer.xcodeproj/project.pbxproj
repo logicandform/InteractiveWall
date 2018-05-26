@@ -52,6 +52,11 @@
 		22D6F91A20B6824300C7FB5F /* RotateGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F91420B6824300C7FB5F /* RotateGestureRecognizer.swift */; };
 		22D6F91B20B6824300C7FB5F /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F91520B6824300C7FB5F /* TapGestureRecognizer.swift */; };
 		22D6F91C20B6824300C7FB5F /* SwipeGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F91620B6824300C7FB5F /* SwipeGestureRecognizer.swift */; };
+		CD2CC5E620B8E66000FB3C10 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2CC5E320B8E66000FB3C10 /* DataManager.swift */; };
+		CD2CC5E720B8E66000FB3C10 /* DataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2CC5E420B8E66000FB3C10 /* DataLoader.swift */; };
+		CD2CC5E820B8E66000FB3C10 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2CC5E520B8E66000FB3C10 /* Persistence.swift */; };
+		CD2CC5EB20B8E6D800FB3C10 /* RecordDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2CC5E920B8E6D700FB3C10 /* RecordDisplayable.swift */; };
+		CD2CC5EC20B8E6D800FB3C10 /* RecordFilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2CC5EA20B8E6D800FB3C10 /* RecordFilterType.swift */; };
 		D88D9E3C5FEA8DFC85B8FEF4 /* Pods_All_NodeVisualizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A74D0C56BCB99FB5CDC067 /* Pods_All_NodeVisualizer.framework */; };
 /* End PBXBuildFile section */
 
@@ -107,6 +112,11 @@
 		28A74D0C56BCB99FB5CDC067 /* Pods_All_NodeVisualizer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_NodeVisualizer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		72B5F6840D3186BD92A6EA0D /* Pods-All-NodeVisualizer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-NodeVisualizer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-NodeVisualizer/Pods-All-NodeVisualizer.release.xcconfig"; sourceTree = "<group>"; };
 		89AF3FC4E45BBD39F89AFF7F /* Pods-All-NodeVisualizer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-NodeVisualizer.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-NodeVisualizer/Pods-All-NodeVisualizer.debug.xcconfig"; sourceTree = "<group>"; };
+		CD2CC5E320B8E66000FB3C10 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		CD2CC5E420B8E66000FB3C10 /* DataLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataLoader.swift; sourceTree = "<group>"; };
+		CD2CC5E520B8E66000FB3C10 /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		CD2CC5E920B8E6D700FB3C10 /* RecordDisplayable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordDisplayable.swift; sourceTree = "<group>"; };
+		CD2CC5EA20B8E6D800FB3C10 /* RecordFilterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordFilterType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,8 +189,11 @@
 		22AEAECD20B67C4600DD184B /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				22AEAED520B67D2600DD184B /* GestureManager.swift */,
 				22AEAEB520B67C2400DD184B /* AppDelegate.swift */,
+				22AEAED520B67D2600DD184B /* GestureManager.swift */,
+				CD2CC5E420B8E66000FB3C10 /* DataLoader.swift */,
+				CD2CC5E320B8E66000FB3C10 /* DataManager.swift */,
+				CD2CC5E520B8E66000FB3C10 /* Persistence.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -203,6 +216,8 @@
 				22D6F8FF20B6810600C7FB5F /* JSON.swift */,
 				22D6F90020B6810600C7FB5F /* Math.swift */,
 				22D6F90120B6810600C7FB5F /* PriorityOrder.swift */,
+				CD2CC5E920B8E6D700FB3C10 /* RecordDisplayable.swift */,
+				CD2CC5EA20B8E6D800FB3C10 /* RecordFilterType.swift */,
 				22D6F8FA20B6810600C7FB5F /* RecordType.swift */,
 				22D6F90220B6810600C7FB5F /* ResponseHandler.swift */,
 				22D6F8FC20B6810600C7FB5F /* Style.swift */,
@@ -443,6 +458,7 @@
 				22D6F91020B681A300C7FB5F /* Media.swift in Sources */,
 				22D6F90C20B6810600C7FB5F /* ResponseHandler.swift in Sources */,
 				22D6F91920B6824300C7FB5F /* PanGestureRecognizer.swift in Sources */,
+				CD2CC5EB20B8E6D800FB3C10 /* RecordDisplayable.swift in Sources */,
 				22AEAEF820B67DA600DD184B /* Artifact.swift in Sources */,
 				22D6F91B20B6824300C7FB5F /* TapGestureRecognizer.swift in Sources */,
 				22AEAEEC20B67D6800DD184B /* NSApplication.swift in Sources */,
@@ -456,8 +472,12 @@
 				22AEAEE820B67D6800DD184B /* NSImage.swift in Sources */,
 				22AEAF0220B67E2C00DD184B /* Touch.swift in Sources */,
 				22AEAEF720B67DA600DD184B /* Theme.swift in Sources */,
+				CD2CC5EC20B8E6D800FB3C10 /* RecordFilterType.swift in Sources */,
 				22D6F90620B6810600C7FB5F /* Style.swift in Sources */,
 				22D6F90420B6810600C7FB5F /* RecordType.swift in Sources */,
+				CD2CC5E720B8E66000FB3C10 /* DataLoader.swift in Sources */,
+				CD2CC5E620B8E66000FB3C10 /* DataManager.swift in Sources */,
+				CD2CC5E820B8E66000FB3C10 /* Persistence.swift in Sources */,
 				22D6F91C20B6824300C7FB5F /* SwipeGestureRecognizer.swift in Sources */,
 				22AEAEB620B67C2400DD184B /* AppDelegate.swift in Sources */,
 				22AEAEF620B67DA600DD184B /* Place.swift in Sources */,
