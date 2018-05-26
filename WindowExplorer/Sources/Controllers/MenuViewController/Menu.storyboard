@@ -85,7 +85,7 @@
                         <outlet property="menuView" destination="AdH-oQ-xB7" id="SPU-eJ-wgZ"/>
                         <outlet property="searchButton" destination="fLv-1R-6Ot" id="o59-Bn-D53"/>
                         <outlet property="settingsButton" destination="ed7-a7-wxz" id="RzN-Pl-VyR"/>
-                        <outlet property="splitScreenButton" destination="XSL-8U-p48" id="86a-kn-zK7"/>
+                        <outlet property="splitScreenButton" destination="XSL-8U-p48" id="kZq-2v-Djz"/>
                         <outlet property="timelineToggleButton" destination="w1D-MX-hx3" id="ynW-SB-HsR"/>
                     </connections>
                 </viewController>

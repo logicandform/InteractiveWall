@@ -17,7 +17,7 @@ class MenuViewController: NSViewController, GestureResponder {
 
     var gestureManager: GestureManager!
     private var scrollMinimumSpeedAchieved = false
-    private var buttonType = [NSImageView: MenuButtonType]()
+    private var buttonType = [NSView: MenuButtonType]()
 
     private struct Constants {
         static let minimumScrollSpeed: CGFloat = 4
@@ -58,36 +58,31 @@ class MenuViewController: NSViewController, GestureResponder {
         buttonType = [splitScreenButton: MenuButtonType.splitScreen, mapToggleButton: MenuButtonType.mapToggle, timelineToggleButton: MenuButtonType.timelineToggle, informationButton: MenuButtonType.information, settingsButton: MenuButtonType.settings, searchButton: MenuButtonType.search]
 
         setupButtons()
-        setupGestures()
     }
 
 
     // MARK: Setup
 
-    private func setupGestures() {
-        let viewPanGesture = PanGestureRecognizer()
-        gestureManager.add(viewPanGesture, to: view)
-        viewPanGesture.gestureUpdated = handleWindowPan(_:)
-
-        // Want to set up tap gestures for each button here
-        let testTapGesture = TapGestureRecognizer()
-        gestureManager.add(testTapGesture, to: splitScreenButton)
-        testTapGesture.gestureUpdated = {[weak self] tap in
-            if tap.state == .ended {
-                self?.splitScreenButton.image = NSImage(named: "image-icon")?.tinted(with: style.artifactColor)
-            }
-        }
-
-//        addGesture(to: splitScreenButton, in: gestureManager, for: buttonType[splitScreenButton])
+    private func setupButtons() {
+        setupButton(for: splitScreenButton, with: MenuButtonType.splitScreen)
+        setupButton(for: mapToggleButton, with: MenuButtonType.mapToggle)
+        setupButton(for: timelineToggleButton, with: MenuButtonType.timelineToggle)
+        setupButton(for: informationButton, with: MenuButtonType.information)
+        setupButton(for: settingsButton, with: MenuButtonType.settings)
+        setupButton(for: searchButton, with: MenuButtonType.search)
     }
 
-    private func setupButtons() {
-        splitScreenButton.image = NSImage(named: "image-icon")?.tinted(with: style.unselectedRecordIcon)
-        mapToggleButton.image = NSImage(named: "event-icon")?.tinted(with: style.unselectedRecordIcon)
-        timelineToggleButton.image = NSImage(named: "organization-icon")?.tinted(with: style.unselectedRecordIcon)
-        informationButton.image = NSImage(named: "school-icon")?.tinted(with: style.unselectedRecordIcon)
-        settingsButton.image = NSImage(named: "artifact-icon")?.tinted(with: style.unselectedRecordIcon)
-        searchButton.image = NSImage(named: "image-icon")?.tinted(with: style.unselectedRecordIcon)
+    private func setupButton(for view: NSView, with type: MenuButtonType) {
+        let image = NSView()
+        view.addSubview(image)
+        image.wantsLayer = true
+        image.layer?.contents = type.placeholder?.tinted(with: style.unselectedRecordIcon)
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        image.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        image.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        image.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        addGesture(to: view, with: image)
     }
 
 
@@ -134,15 +129,24 @@ class MenuViewController: NSViewController, GestureResponder {
 
     // MARK: Helpers
 
-    private func addGesture(to view: NSView, in manager: GestureManager, for type: MenuButtonType) {
+    private func addGesture(to view: NSView, with sublayer: NSView) {
         let tapGesture = TapGestureRecognizer()
-        manager.add(tapGesture, to: view)
+        gestureManager.add(tapGesture, to: sublayer)
 
         tapGesture.gestureUpdated = { [weak self] tap in
             if tap.state == .ended {
-                //self?.didSelect(type: type)
+                self?.didSelect(view: view, image: sublayer)
             }
         }
+    }
+
+    private func didSelect(view: NSView, image: NSView) {
+//        guard let view = view as? NSImageView, let type = buttonType[view] else {
+        guard let type = buttonType[view] else {
+            return
+        }
+
+        image.transition(to: type.placeholder?.tinted(with: type.color), duration: 0.5)
     }
 
     private func updateSpeedAtBoundary(for velocity: CGFloat, with window: NSWindow) -> CGPoint {
