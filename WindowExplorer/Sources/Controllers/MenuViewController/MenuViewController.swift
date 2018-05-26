@@ -17,7 +17,8 @@ class MenuViewController: NSViewController, GestureResponder {
 
     var gestureManager: GestureManager!
     private var scrollMinimumSpeedAchieved = false
-    private var buttonType = [NSView: MenuButtonType]()
+    private var buttonTypeView = [MenuButtonType: NSView]()
+    private var buttonTypeSubview = [MenuButtonType: NSView]()
 
     private struct Constants {
         static let minimumScrollSpeed: CGFloat = 4
@@ -55,24 +56,35 @@ class MenuViewController: NSViewController, GestureResponder {
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
 
-        buttonType = [splitScreenButton: MenuButtonType.splitScreen, mapToggleButton: MenuButtonType.mapToggle, timelineToggleButton: MenuButtonType.timelineToggle, informationButton: MenuButtonType.information, settingsButton: MenuButtonType.settings, searchButton: MenuButtonType.search]
+        buttonTypeView = [MenuButtonType.splitScreen: splitScreenButton, MenuButtonType.mapToggle: mapToggleButton, MenuButtonType.timelineToggle: timelineToggleButton, MenuButtonType.information: informationButton, MenuButtonType.settings: settingsButton, MenuButtonType.search: searchButton]
 
         setupButtons()
+        setupGestures()
     }
 
 
     // MARK: Setup
 
-    private func setupButtons() {
-        setupButton(for: splitScreenButton, with: MenuButtonType.splitScreen)
-        setupButton(for: mapToggleButton, with: MenuButtonType.mapToggle)
-        setupButton(for: timelineToggleButton, with: MenuButtonType.timelineToggle)
-        setupButton(for: informationButton, with: MenuButtonType.information)
-        setupButton(for: settingsButton, with: MenuButtonType.settings)
-        setupButton(for: searchButton, with: MenuButtonType.search)
+    private func setupGestures() {
+        let viewPanGesture = PanGestureRecognizer()
+        gestureManager.add(viewPanGesture, to: view)
+        viewPanGesture.gestureUpdated = handleWindowPan(_:)
     }
 
-    private func setupButton(for view: NSView, with type: MenuButtonType) {
+    private func setupButtons() {
+        setupButton(with: MenuButtonType.splitScreen)
+        setupButton(with: MenuButtonType.mapToggle)
+        setupButton(with: MenuButtonType.timelineToggle)
+        setupButton(with: MenuButtonType.information)
+        setupButton(with: MenuButtonType.settings)
+        setupButton(with: MenuButtonType.search)
+    }
+
+    private func setupButton(with type: MenuButtonType) {
+        guard let view = buttonTypeView[type] else {
+            return
+        }
+
         let image = NSView()
         view.addSubview(image)
         image.wantsLayer = true
@@ -82,7 +94,8 @@ class MenuViewController: NSViewController, GestureResponder {
         image.heightAnchor.constraint(equalToConstant: 40).isActive = true
         image.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         image.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        addGesture(to: view, with: image)
+        buttonTypeSubview[type] = image
+        addGesture(withButtonType: type)
     }
 
 
@@ -129,23 +142,26 @@ class MenuViewController: NSViewController, GestureResponder {
 
     // MARK: Helpers
 
-    private func addGesture(to view: NSView, with sublayer: NSView) {
+    private func addGesture(withButtonType type: MenuButtonType) {
+        guard let view = buttonTypeView[type], let subview = buttonTypeSubview[type] else {
+            return
+        }
+
         let tapGesture = TapGestureRecognizer()
-        gestureManager.add(tapGesture, to: sublayer)
+        gestureManager.add(tapGesture, to: subview)
+
+        let panGesture = PanGestureRecognizer()
+        gestureManager.add(panGesture, to: subview)
+        panGesture.gestureUpdated = handleWindowPan(_:)
 
         tapGesture.gestureUpdated = { [weak self] tap in
             if tap.state == .ended {
-                self?.didSelect(view: view, image: sublayer)
+                self?.didSelect(view: view, image: subview, type: type)
             }
         }
     }
 
-    private func didSelect(view: NSView, image: NSView) {
-//        guard let view = view as? NSImageView, let type = buttonType[view] else {
-        guard let type = buttonType[view] else {
-            return
-        }
-
+    private func didSelect(view: NSView, image: NSView, type: MenuButtonType) {
         image.transition(to: type.placeholder?.tinted(with: type.color), duration: 0.5)
     }
 
