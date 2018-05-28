@@ -1,40 +1,45 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
+import Foundation
 import Cocoa
 
-enum Side {
-    case right
-    case left
-}
 
 class MenuViewController: NSViewController, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "Menu")
 
-    @IBOutlet weak var leftSearchRecordLabel: NSTextField!
-    @IBOutlet weak var leftSwitchInterfaceLabel: NSTextField!
-    @IBOutlet weak var rightSearchRecordLabel: NSTextField!
-    @IBOutlet weak var rightSwitchInterfaceLabel: NSTextField!
+    @IBOutlet weak var menuView: NSView!
+    @IBOutlet weak var splitScreenButton: NSImageView!
+    @IBOutlet weak var mapToggleButton: NSImageView!
+    @IBOutlet weak var timelineToggleButton: NSImageView!
+    @IBOutlet weak var informationButton: NSImageView!
+    @IBOutlet weak var settingsButton: NSImageView!
+    @IBOutlet weak var searchButton: NSImageView!
 
     var gestureManager: GestureManager!
+    private var scrollMinimumSpeedAchieved = false
+
+    private struct Constants {
+        static let minimumScrollSpeed: CGFloat = 4
+    }
 
 
     // MARK: Init
 
-    /// Displays the menuVC between maps on each screen
     static func instantiate() {
         for screen in NSScreen.screens.sorted(by: { $0.frame.minX < $1.frame.minX }).dropFirst() {
             let screenFrame = screen.frame
-            let xSpacing = screenFrame.width / CGFloat(Configuration.mapsPerScreen)
-            if Configuration.mapsPerScreen == 1 {
-                let x = screenFrame.maxX - style.menuWindowSize.width / 2 - (xSpacing / 2)
+
+            for menuNumber in 1...(Configuration.mapsPerScreen) {
+                let x: CGFloat
+
+                if menuNumber % 2 == 1 {
+                    x = screenFrame.maxX - style.menuWindowSize.width
+                } else {
+                    x = screenFrame.minX
+                }
+                
                 let y = screenFrame.midY - style.menuWindowSize.height / 2
                 WindowManager.instance.display(.menu, at: CGPoint(x: x, y: y))
-            } else {
-                for menuNumber in 1...(Configuration.mapsPerScreen - 1) {
-                    let x = screenFrame.maxX - style.menuWindowSize.width / 2 - CGFloat(menuNumber) * xSpacing
-                    let y = screenFrame.midY - style.menuWindowSize.height / 2
-                    WindowManager.instance.display(.menu, at: CGPoint(x: x, y: y))
-                }
             }
         }
     }
@@ -49,6 +54,7 @@ class MenuViewController: NSViewController, GestureResponder {
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
 
+        setupButtons()
         setupGestures()
     }
 
@@ -56,48 +62,18 @@ class MenuViewController: NSViewController, GestureResponder {
     // MARK: Setup
 
     private func setupGestures() {
-        let leftSearchRecordLabelTap = TapGestureRecognizer()
-        gestureManager.add(leftSearchRecordLabelTap, to: leftSearchRecordLabel)
-        leftSearchRecordLabelTap.gestureUpdated = handleLeftSearchRecordTap(_:)
-
-        let rightSearchRecordLabelTap = TapGestureRecognizer()
-        gestureManager.add(rightSearchRecordLabelTap, to: rightSearchRecordLabel)
-        rightSearchRecordLabelTap.gestureUpdated = handleRightSearchRecordTap(_:)
-
-        let leftSwitchInterfaceLabelTap = TapGestureRecognizer()
-        gestureManager.add(leftSwitchInterfaceLabelTap, to: leftSwitchInterfaceLabel)
-        leftSwitchInterfaceLabelTap.gestureUpdated = handleLeftSwitchInterfaceTap(_:)
-
-        let rightSwitchInterfaceLabelTap = TapGestureRecognizer()
-        gestureManager.add(rightSwitchInterfaceLabelTap, to: rightSwitchInterfaceLabel)
-        rightSwitchInterfaceLabelTap.gestureUpdated = handleRightSwitchInterfaceTap(_:)
+        let viewPanGesture = PanGestureRecognizer()
+        gestureManager.add(viewPanGesture, to: view)
+        viewPanGesture.gestureUpdated = handleWindowPan(_:)
     }
 
-
-    // MARK: Gesture Handling
-
-    private func handleLeftSearchRecordTap(_ gesture: GestureRecognizer) {
-        if let tap = gesture as? TapGestureRecognizer, tap.state == .ended {
-            displaySearchInterface(on: .left)
-        }
-    }
-
-    private func handleRightSearchRecordTap(_ gesture: GestureRecognizer) {
-        if let tap = gesture as? TapGestureRecognizer, tap.state == .ended {
-            displaySearchInterface(on: .right)
-        }
-    }
-
-    private func handleLeftSwitchInterfaceTap(_ gesture: GestureRecognizer) {
-        if let tap = gesture as? TapGestureRecognizer, tap.state == .ended {
-            print("leftSwitchInterfaceLabelTap gesture handling not implemented")
-        }
-    }
-
-    private func handleRightSwitchInterfaceTap(_ gesture: GestureRecognizer) {
-        if let tap = gesture as? TapGestureRecognizer, tap.state == .ended {
-            print("leftSwitchInterfaceLabelTap gesture handling not implemented")
-        }
+    private func setupButtons() {
+        splitScreenButton.image = NSImage(named: "image-icon")?.tinted(with: style.unselectedRecordIcon)
+        mapToggleButton.image = NSImage(named: "event-icon")?.tinted(with: style.unselectedRecordIcon)
+        timelineToggleButton.image = NSImage(named: "organization-icon")?.tinted(with: style.unselectedRecordIcon)
+        informationButton.image = NSImage(named: "school-icon")?.tinted(with: style.unselectedRecordIcon)
+        settingsButton.image = NSImage(named: "artifact-icon")?.tinted(with: style.unselectedRecordIcon)
+        searchButton.image = NSImage(named: "image-icon")?.tinted(with: style.unselectedRecordIcon)
     }
 
 
@@ -105,11 +81,11 @@ class MenuViewController: NSViewController, GestureResponder {
 
     /// Determines if the bounds of the draggable area is inside a given rect
     func draggableInside(bounds: CGRect) -> Bool {
-        if view.window == nil {
+        guard let window = view.window else {
             return false
         }
 
-       return true
+        return bounds.contains(view.frame.transformed(from: window.frame))
     }
 
     func subview(contains position: CGPoint) -> Bool {
@@ -117,20 +93,43 @@ class MenuViewController: NSViewController, GestureResponder {
     }
 
 
-    // MARK: Helpers
+    // MARK: Gesture Handling
 
-    private func displaySearchInterface(on side: Side) {
-        guard var origin = view.window?.frame.origin else {
+    func handleWindowPan(_ gesture: GestureRecognizer) {
+        guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
             return
         }
 
-        switch side {
-        case .left:
-            origin.x -= style.searchWindowSize.width + style.windowMargins
-        case .right:
-            origin.x += style.windowMargins + view.frame.width
+        switch pan.state {
+        case .recognized where abs(pan.delta.dy) > Constants.minimumScrollSpeed || scrollMinimumSpeedAchieved, .momentum:
+            scrollMinimumSpeedAchieved = true
+            var origin = window.frame.origin
+            origin = updateSpeedAtBoundary(for: pan.delta.dy, with: window)
+            window.setFrameOrigin(origin)
+        case .possible:
+            scrollMinimumSpeedAchieved = false
+        default:
+            return
+        }
+    }
+
+
+    // MARK: Helpers
+
+    private func updateSpeedAtBoundary(for velocity: CGFloat, with window: NSWindow) -> CGPoint {
+        var updatedOrigin = window.frame.origin
+        guard let applicationFrame = NSScreen.containing(x: updatedOrigin.x)?.frame else {
+            return updatedOrigin
         }
 
-        WindowManager.instance.display(.search, at: origin)
+        updatedOrigin.y = updatedOrigin.y + velocity
+
+        if velocity < 0 && updatedOrigin.y < applicationFrame.minY {
+            updatedOrigin.y = applicationFrame.minY
+        } else if velocity > 0 && updatedOrigin.y + window.frame.height > applicationFrame.maxY {
+            updatedOrigin.y = applicationFrame.maxY - window.frame.height
+        }
+
+        return updatedOrigin
     }
 }
