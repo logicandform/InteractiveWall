@@ -97,7 +97,7 @@ class MenuViewController: NSViewController, GestureResponder {
         image.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         image.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         buttonTypeSubview[type] = image
-        addGesture(withButtonType: type)
+        addGesture(for: type)
     }
 
 
@@ -140,17 +140,17 @@ class MenuViewController: NSViewController, GestureResponder {
 
     // MARK: Helpers
 
-    private func addGesture(withButtonType type: MenuButtonType) {
+    private func addGesture(for type: MenuButtonType) {
         guard let view = buttonTypeView[type], let subview = buttonTypeSubview[type] else {
             return
         }
 
-        let tapGesture = TapGestureRecognizer()
-        gestureManager.add(tapGesture, to: subview)
-
         let panGesture = PanGestureRecognizer()
         gestureManager.add(panGesture, to: subview)
         panGesture.gestureUpdated = handleWindowPan(_:)
+
+        let tapGesture = TapGestureRecognizer()
+        gestureManager.add(tapGesture, to: subview)
 
         tapGesture.gestureUpdated = { [weak self] tap in
             if tap.state == .ended {
