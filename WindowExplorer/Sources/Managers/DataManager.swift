@@ -3,43 +3,84 @@
 import Foundation
 
 
-class DataManager {
+final class DataManager {
 
-    private let persistence: Persistence
-    private let dataLoader: DataLoader
-    private var allRecordTypes = RecordType.allValues
+    static let instance = DataManager()
 
-
-    // MARK: Init
-
-    init(database: Persistence = .instance, dataLoader: DataLoader = DataLoader()) {
-        self.persistence = database
-        self.dataLoader = dataLoader
+    struct RecordIdentifier: Hashable {
+        let id: Int
+        let type: RecordType
     }
+
+    private var allRecordTypes = RecordType.allValues
+    private var allRecords = [RecordDisplayable]()
+    private var recordsForType = [RecordType: [RecordDisplayable]]()
+    private var relatedRecordsForIdentifier = [RecordIdentifier: [RecordDisplayable]]()
+
+
+    // Use singleton instance
+    private init() {}
 
 
     // MARK: API
 
-    func loadPersistenceStore(then completion: @escaping ([RecordDisplayable]) -> Void) {
-        load(completion: completion)
+    func associateRecordsToRelatedRecords(then completion: @escaping ([RecordDisplayable]) -> Void) {
+        loadAllRecords(then: { [weak self] allRecords in
+            self?.allRecords = allRecords
+
+            self?.associateAllRecordsToRelatedRecords(completion: {
+                completion(allRecords)
+            })
+        })
     }
 
-    func loadRecords(of type: RecordType, then completion: @escaping ([RecordDisplayable]?) -> Void) {
-        if let records = persistence.recordsForType[type] {
-            completion(records)
-        } else {
-            fetchRecords(of: type, completion: completion)
+    func records(for type: RecordType) -> [RecordDisplayable] {
+        guard let records = recordsForType[type] else {
+            return []
         }
+
+        return records
     }
 
-    func loadRecord(of type: RecordType, id: Int, then completion: @escaping (RecordDisplayable) -> Void) {
-        // implement later when necessary
+    func relatedRecords(for identifier: RecordIdentifier) -> [RecordDisplayable] {
+        guard let relatedRecords = relatedRecordsForIdentifier[identifier] else {
+            return []
+        }
+
+        return relatedRecords
     }
 
 
     // MARK: Helpers
 
-    private func load(with results: [RecordDisplayable] = [], completion: @escaping ([RecordDisplayable]) -> Void) {
+    private func associateAllRecordsToRelatedRecords(completion: @escaping () -> Void) {
+        guard let record = allRecords.popLast() else {
+            completion()
+            return
+        }
+
+        loadDetails(of: record, then: { [weak self] recordDetails in
+            let identifier = RecordIdentifier(id: record.id, type: record.type)
+            self?.associateRelatedRecords(to: identifier, with: recordDetails)
+            self?.associateAllRecordsToRelatedRecords(completion: completion)
+        })
+    }
+
+    private func loadDetails(of record: RecordDisplayable, then completion: @escaping (RecordDisplayable?) -> Void) {
+        RecordFactory.record(for: record.type, id: record.id, completion: completion)
+    }
+
+    private func associateRelatedRecords(to identifier: RecordIdentifier, with recordDetails: RecordDisplayable?) {
+        if relatedRecordsForIdentifier[identifier] == nil, let recordDetails = recordDetails {
+            relatedRecordsForIdentifier[identifier] = recordDetails.relatedRecords
+        }
+    }
+
+    private func loadAllRecords(then completion: @escaping ([RecordDisplayable]) -> Void) {
+        loadNextRecords(completion: completion)
+    }
+
+    private func loadNextRecords(with results: [RecordDisplayable] = [], completion: @escaping ([RecordDisplayable]) -> Void) {
         guard let recordType = allRecordTypes.popLast() else {
             completion(results)
             return
@@ -50,16 +91,20 @@ class DataManager {
             if let records = records {
                 updatedResults += records
             }
-            self?.load(with: updatedResults, completion: completion)
+            self?.loadNextRecords(with: updatedResults, completion: completion)
         })
     }
 
-    private func fetchRecords(of type: RecordType, completion: @escaping ([RecordDisplayable]?) -> Void) {
-        dataLoader.fetchRecords(of: type, then: { [weak self] records in
-            if let records = records {
-                self?.persistence.save(records, for: type)
-            }
+    private func loadRecords(of type: RecordType, then completion: @escaping ([RecordDisplayable]?) -> Void) {
+        RecordFactory.records(for: type, completion: { [weak self] records in
+            self?.save(records, for: type)
             completion(records)
         })
+    }
+
+    private func save(_ records: [RecordDisplayable]?, for type: RecordType) {
+        if recordsForType[type] == nil, let records = records {
+            recordsForType[type] = records
+        }
     }
 }
