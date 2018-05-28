@@ -19,9 +19,11 @@ class MenuViewController: NSViewController, GestureResponder {
     private var scrollMinimumSpeedAchieved = false
     private var buttonTypeView = [MenuButtonType: NSView]()
     private var buttonTypeSubview = [MenuButtonType: NSView]()
+    private var selectedButtons = [NSView]()
 
     private struct Constants {
         static let minimumScrollSpeed: CGFloat = 4
+        static let imageTransitionDuration = 0.5
     }
 
 
@@ -90,8 +92,8 @@ class MenuViewController: NSViewController, GestureResponder {
         image.wantsLayer = true
         image.layer?.contents = type.placeholder?.tinted(with: style.unselectedRecordIcon)
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        image.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        image.widthAnchor.constraint(equalToConstant: style.menuImageSize.width).isActive = true
+        image.heightAnchor.constraint(equalToConstant: style.menuImageSize.height).isActive = true
         image.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         image.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         buttonTypeSubview[type] = image
@@ -123,7 +125,7 @@ class MenuViewController: NSViewController, GestureResponder {
         }
 
         switch pan.state {
-        case .recognized where abs(pan.delta.dy) > Constants.minimumScrollSpeed || scrollMinimumSpeedAchieved, .momentum:
+        case .recognized where abs(pan.delta.dy) > Constants.minimumScrollSpeed || scrollMinimumSpeedAchieved, .momentum where scrollMinimumSpeedAchieved:
             scrollMinimumSpeedAchieved = true
             var origin = window.frame.origin
             origin = updateSpeedAtBoundary(for: pan.delta.dy, with: window)
@@ -158,7 +160,14 @@ class MenuViewController: NSViewController, GestureResponder {
     }
 
     private func didSelect(view: NSView, image: NSView, type: MenuButtonType) {
-        image.transition(to: type.placeholder?.tinted(with: type.color), duration: 0.5)
+        guard let selectedButtonIndex = selectedButtons.index(of: view) else {
+            selectedButtons.append(view)
+            image.transition(to: type.placeholder?.tinted(with: type.color), duration: Constants.imageTransitionDuration)
+            return
+        }
+
+        selectedButtons.remove(at: selectedButtonIndex)
+        image.transition(to: type.placeholder?.tinted(with: style.unselectedRecordIcon), duration: Constants.imageTransitionDuration)
     }
 
     private func updateSpeedAtBoundary(for velocity: CGFloat, with window: NSWindow) -> CGPoint {
