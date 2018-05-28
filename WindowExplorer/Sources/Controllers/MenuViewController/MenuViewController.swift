@@ -121,14 +121,10 @@ class MenuViewController: NSViewController, GestureResponder {
         guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
             return
         }
-        switch pan.state {
-        case .recognized, .momentum:
-            if !scrollMinimumSpeedAchieved && abs(pan.delta.dy) < Constants.minimumScrollSpeed {
-                return
-            } else {
-                scrollMinimumSpeedAchieved = true
-            }
 
+        switch pan.state {
+        case .recognized where abs(pan.delta.dy) > Constants.minimumScrollSpeed || scrollMinimumSpeedAchieved, .momentum:
+            scrollMinimumSpeedAchieved = true
             var origin = window.frame.origin
             origin = updateSpeedAtBoundary(for: pan.delta.dy, with: window)
             window.setFrameOrigin(origin)
@@ -166,9 +162,11 @@ class MenuViewController: NSViewController, GestureResponder {
     }
 
     private func updateSpeedAtBoundary(for velocity: CGFloat, with window: NSWindow) -> CGPoint {
-        let applicationFrame = getApplicationFrame()
-
         var updatedOrigin = window.frame.origin
+        guard let applicationFrame = NSScreen.containing(x: updatedOrigin.x)?.frame else {
+            return updatedOrigin
+        }
+
         updatedOrigin.y = updatedOrigin.y + velocity
 
         if velocity < 0 && updatedOrigin.y < applicationFrame.minY {
@@ -178,11 +176,5 @@ class MenuViewController: NSViewController, GestureResponder {
         }
 
         return updatedOrigin
-    }
-
-    private func getApplicationFrame() -> CGRect {
-        let applicationScreens = NSScreen.screens.dropFirst()
-        let first = applicationScreens.first?.frame ?? .zero
-        return applicationScreens.reduce(first) { $0.union($1.frame) }
     }
 }
