@@ -54,8 +54,8 @@
 		22D6F91C20B6824300C7FB5F /* SwipeGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F91620B6824300C7FB5F /* SwipeGestureRecognizer.swift */; };
 		CD27F40420BCB5B900375CBC /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40320BCB5B900375CBC /* DataManager.swift */; };
 		CD27F40620BCBD5A00375CBC /* RecordFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40520BCBD5A00375CBC /* RecordFactory.swift */; };
-		CD27F40A20BCBE0100375CBC /* Province.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40820BCBE0100375CBC /* Province.swift */; };
-		CD27F40B20BCBE0100375CBC /* LetterGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40920BCBE0100375CBC /* LetterGroup.swift */; };
+		CD27F40E20BCBFB700375CBC /* Province.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40C20BCBFB700375CBC /* Province.swift */; };
+		CD27F40F20BCBFB700375CBC /* LetterGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40D20BCBFB700375CBC /* LetterGroup.swift */; };
 		CD2CC5EB20B8E6D800FB3C10 /* RecordDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2CC5E920B8E6D700FB3C10 /* RecordDisplayable.swift */; };
 		CD2CC5EC20B8E6D800FB3C10 /* RecordFilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2CC5EA20B8E6D800FB3C10 /* RecordFilterType.swift */; };
 		D88D9E3C5FEA8DFC85B8FEF4 /* Pods_All_NodeVisualizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A74D0C56BCB99FB5CDC067 /* Pods_All_NodeVisualizer.framework */; };
@@ -115,8 +115,8 @@
 		89AF3FC4E45BBD39F89AFF7F /* Pods-All-NodeVisualizer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-NodeVisualizer.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-NodeVisualizer/Pods-All-NodeVisualizer.debug.xcconfig"; sourceTree = "<group>"; };
 		CD27F40320BCB5B900375CBC /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		CD27F40520BCBD5A00375CBC /* RecordFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordFactory.swift; sourceTree = "<group>"; };
-		CD27F40820BCBE0100375CBC /* Province.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Province.swift; sourceTree = "<group>"; };
-		CD27F40920BCBE0100375CBC /* LetterGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LetterGroup.swift; sourceTree = "<group>"; };
+		CD27F40C20BCBFB700375CBC /* Province.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Province.swift; sourceTree = "<group>"; };
+		CD27F40D20BCBFB700375CBC /* LetterGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LetterGroup.swift; sourceTree = "<group>"; };
 		CD2CC5E920B8E6D700FB3C10 /* RecordDisplayable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordDisplayable.swift; sourceTree = "<group>"; };
 		CD2CC5EA20B8E6D800FB3C10 /* RecordFilterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordFilterType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -318,8 +318,8 @@
 		CD27F40720BCBDDD00375CBC /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				CD27F40920BCBE0100375CBC /* LetterGroup.swift */,
-				CD27F40820BCBE0100375CBC /* Province.swift */,
+				CD27F40D20BCBFB700375CBC /* LetterGroup.swift */,
+				CD27F40C20BCBFB700375CBC /* Province.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -466,7 +466,7 @@
 				22AEAEEA20B67D6800DD184B /* CoreGraphics.swift in Sources */,
 				22D6F90F20B681A300C7FB5F /* LastTwo.swift in Sources */,
 				22AEAEF920B67DA600DD184B /* School.swift in Sources */,
-				CD27F40B20BCBE0100375CBC /* LetterGroup.swift in Sources */,
+				CD27F40F20BCBFB700375CBC /* LetterGroup.swift in Sources */,
 				22D6F91020B681A300C7FB5F /* Media.swift in Sources */,
 				22D6F90C20B6810600C7FB5F /* ResponseHandler.swift in Sources */,
 				22D6F91920B6824300C7FB5F /* PanGestureRecognizer.swift in Sources */,
@@ -489,7 +489,7 @@
 				22D6F90620B6810600C7FB5F /* Style.swift in Sources */,
 				22D6F90420B6810600C7FB5F /* RecordType.swift in Sources */,
 				22D6F91C20B6824300C7FB5F /* SwipeGestureRecognizer.swift in Sources */,
-				CD27F40A20BCBE0100375CBC /* Province.swift in Sources */,
+				CD27F40E20BCBFB700375CBC /* Province.swift in Sources */,
 				22AEAEB620B67C2400DD184B /* AppDelegate.swift in Sources */,
 				22AEAEF620B67DA600DD184B /* Place.swift in Sources */,
 				22AEAEEE20B67D7500DD184B /* BorderlessWindow.swift in Sources */,
