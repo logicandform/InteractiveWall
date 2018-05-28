@@ -53,29 +53,6 @@ final class DataManager {
 
     // MARK: Helpers
 
-    private func associateAllRecordsToRelatedRecords(completion: @escaping () -> Void) {
-        guard let record = allRecords.popLast() else {
-            completion()
-            return
-        }
-
-        loadDetails(of: record, then: { [weak self] recordDetails in
-            let identifier = RecordIdentifier(id: record.id, type: record.type)
-            self?.associateRelatedRecords(to: identifier, with: recordDetails)
-            self?.associateAllRecordsToRelatedRecords(completion: completion)
-        })
-    }
-
-    private func loadDetails(of record: RecordDisplayable, then completion: @escaping (RecordDisplayable?) -> Void) {
-        RecordFactory.record(for: record.type, id: record.id, completion: completion)
-    }
-
-    private func associateRelatedRecords(to identifier: RecordIdentifier, with recordDetails: RecordDisplayable?) {
-        if relatedRecordsForIdentifier[identifier] == nil, let recordDetails = recordDetails {
-            relatedRecordsForIdentifier[identifier] = recordDetails.relatedRecords
-        }
-    }
-
     private func loadAllRecords(then completion: @escaping ([RecordDisplayable]) -> Void) {
         loadNextRecords(completion: completion)
     }
@@ -105,6 +82,31 @@ final class DataManager {
     private func save(_ records: [RecordDisplayable]?, for type: RecordType) {
         if recordsForType[type] == nil, let records = records {
             recordsForType[type] = records
+        }
+    }
+
+    private func associateAllRecordsToRelatedRecords(completion: @escaping () -> Void) {
+        guard let record = allRecords.popLast() else {
+            completion()
+            return
+        }
+
+        loadDetails(of: record, then: { [weak self] _ in
+            self?.associateAllRecordsToRelatedRecords(completion: completion)
+        })
+    }
+
+    private func loadDetails(of record: RecordDisplayable, then completion: @escaping (RecordDisplayable?) -> Void) {
+        RecordFactory.record(for: record.type, id: record.id, completion: { [weak self] recordDetails in
+            let identifier = RecordIdentifier(id: record.id, type: record.type)
+            self?.associateRelatedRecords(to: identifier, with: recordDetails)
+            completion(recordDetails)
+        })
+    }
+
+    private func associateRelatedRecords(to identifier: RecordIdentifier, with recordDetails: RecordDisplayable?) {
+        if relatedRecordsForIdentifier[identifier] == nil, let recordDetails = recordDetails {
+            relatedRecordsForIdentifier[identifier] = recordDetails.relatedRecords
         }
     }
 }
