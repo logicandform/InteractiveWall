@@ -4,7 +4,6 @@ import Cocoa
 
 
 let style = Style()
-let manager = DataManager()
 
 
 struct Configuration {
@@ -22,10 +21,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
-
-        manager.loadPersistenceStore(then: { records in
-            print(records.count)
-        })
+        
     }
     
     func applicationWillTerminate(_ aNotification: Notification) {

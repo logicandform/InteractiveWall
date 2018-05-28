@@ -17,8 +17,7 @@ enum NetworkError: Error {
 
 
 final class CachingNetwork {
-//    static let baseURL = "http://10.58.73.131:3000"
-    static let baseURL = "http://localhost:3100"
+    static let baseURL = "http://10.58.73.153:3000"
 
     private struct Endpoints {
         static let countForGroup = baseURL + "/%@/count/group/%@"
@@ -53,6 +52,17 @@ final class CachingNetwork {
     }()
 
 
+    // MARK: Generic
+
+    static func getCount(of type: RecordType, in group: LetterGroup) throws -> Promise<Int> {
+        let url = String(format: Endpoints.countForGroup, type.title.lowercased(), group.rawValue)
+
+        return Alamofire.request(url).responseJSON().then { json in
+            return try ResponseHandler.serializeCount(from: json)
+        }
+    }
+
+
     // MARK: Places
 
     static func getPlaces(page: Int = 0, load: [Place] = []) throws -> Promise<[Place]> {
@@ -74,6 +84,20 @@ final class CachingNetwork {
 
         return Alamofire.request(url).responseJSON().then { json in
             try ResponseHandler.serializePlace(from: json)
+        }
+    }
+
+    static func getPlaces(in group: LetterGroup, page: Int = 0, load: [Place] = []) throws -> Promise<[Place]> {
+        let url = String(format: Endpoints.placesInGroup, group.rawValue, page)
+
+        return Alamofire.request(url).responseJSON().then { json in
+            guard let places = try? ResponseHandler.serializePlaces(from: json), !places.isEmpty else {
+                return Promise(value: load)
+            }
+
+            let next = page + Constants.batchSize
+            let result = load + places
+            return try getPlaces(in: group, page: next, load: result)
         }
     }
 
@@ -102,6 +126,20 @@ final class CachingNetwork {
         }
     }
 
+    static func getOrganizations(in group: LetterGroup, page: Int = 0, load: [Organization] = []) throws -> Promise<[Organization]> {
+        let url = String(format: Endpoints.organizationsInGroup, group.rawValue, page)
+
+        return Alamofire.request(url).responseJSON().then { json in
+            guard let organizations = try? ResponseHandler.serializeOrganizations(from: json), !organizations.isEmpty else {
+                return Promise(value: load)
+            }
+
+            let next = page + Constants.batchSize
+            let result = load + organizations
+            return try getOrganizations(in: group, page: next, load: result)
+        }
+    }
+
 
     // MARK: Events
 
@@ -124,6 +162,20 @@ final class CachingNetwork {
 
         return Alamofire.request(url).responseJSON().then { json in
             try ResponseHandler.serializeEvent(from: json)
+        }
+    }
+
+    static func getEvents(in group: LetterGroup, page: Int = 0, load: [Event] = []) throws -> Promise<[Event]> {
+        let url = String(format: Endpoints.eventsInGroup, group.rawValue, page)
+
+        return Alamofire.request(url).responseJSON().then { json in
+            guard let events = try? ResponseHandler.serializeEvents(from: json), !events.isEmpty else {
+                return Promise(value: load)
+            }
+
+            let next = page + Constants.batchSize
+            let result = load + events
+            return try getEvents(in: group, page: next, load: result)
         }
     }
 
@@ -152,6 +204,20 @@ final class CachingNetwork {
         }
     }
 
+    static func getArtifacts(in group: LetterGroup, page: Int = 0, load: [Artifact] = []) throws -> Promise<[Artifact]> {
+        let url = String(format: Endpoints.artifactsInGroup, group.rawValue, page)
+
+        return Alamofire.request(url).responseJSON().then { json in
+            guard let artifacts = try? ResponseHandler.serializeArtifacts(from: json), !artifacts.isEmpty else {
+                return Promise(value: load)
+            }
+
+            let next = page + Constants.batchSize
+            let result = load + artifacts
+            return try getArtifacts(in: group, page: next, load: result)
+        }
+    }
+
 
     // MARK: Schools
 
@@ -177,6 +243,20 @@ final class CachingNetwork {
         }
     }
 
+    static func getSchools(in group: LetterGroup, page: Int = 0, load: [School] = []) throws -> Promise<[School]> {
+        let url = String(format: Endpoints.schoolsInGroup, group.rawValue, page)
+
+        return Alamofire.request(url).responseJSON().then { json in
+            guard let schools = try? ResponseHandler.serializeSchools(from: json), !schools.isEmpty else {
+                return Promise(value: load)
+            }
+
+            let next = page + Constants.batchSize
+            let result = load + schools
+            return try getSchools(in: group, page: next, load: result)
+        }
+    }
+
 
     // MARK: Themes
 
@@ -199,6 +279,20 @@ final class CachingNetwork {
 
         return Alamofire.request(url).responseJSON().then { json in
             try ResponseHandler.serializeTheme(from: json)
+        }
+    }
+
+    static func getThemes(in group: LetterGroup, page: Int = 0, load: [Theme] = []) throws -> Promise<[Theme]> {
+        let url = String(format: Endpoints.themesInGroup, group.rawValue, page)
+
+        return Alamofire.request(url).responseJSON().then { json in
+            guard let themes = try? ResponseHandler.serializeThemes(from: json), !themes.isEmpty else {
+                return Promise(value: load)
+            }
+
+            let next = page + Constants.batchSize
+            let result = load + themes
+            return try getThemes(in: group, page: next, load: result)
         }
     }
 }

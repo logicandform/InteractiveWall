@@ -33,18 +33,6 @@ private struct Constants {
 }
 
 
-//protocol RecordDisplayable: SearchItemDisplayable {
-//    var id: Int { get }
-//    var title: String { get }
-//    var type: RecordType { get }
-//    var description: String? { get }
-//    var date: String? { get }
-//    var media: [Media] { get }
-//    var textFields: [NSTextField] { get }
-//    var recordGroups: [RecordGroup] { get }
-//    var priority: Int { get }
-//}
-
 protocol RecordDisplayable {
     var id: Int { get }
     var title: String { get }
