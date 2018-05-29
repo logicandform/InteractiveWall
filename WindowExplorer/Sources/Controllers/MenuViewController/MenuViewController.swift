@@ -192,6 +192,8 @@ class MenuViewController: NSViewController, GestureResponder {
         guard selectedButtons.index(of: type) != nil else {
             if type == .splitScreen {
                 menuStateHelper?.splitButtonToggled(by: self, to: .on)
+            } else if type == .search {
+                searchSelected()
             }
 
             buttonToggled(type: type, selection: .on)
@@ -220,5 +222,25 @@ class MenuViewController: NSViewController, GestureResponder {
         }
 
         return updatedOrigin
+    }
+
+    private func searchSelected() {
+        guard let windowPosition = searchButton.window?.frame, let screenBounds = NSScreen.containing(x: windowPosition.origin.x)?.frame else {
+            return
+        }
+
+        let buttonOrigin = windowPosition.transformed(from: searchButton.frame).origin
+        var x = windowPosition.maxX + style.windowMargins
+        var y = buttonOrigin.y + style.menuImageSize.height - style.searchWindowSize.height
+
+        if windowPosition.maxX >= screenBounds.maxX {
+            x = windowPosition.origin.x - style.searchWindowSize.width - style.windowMargins
+        }
+
+        if buttonOrigin.y + style.menuImageSize.height < screenBounds.minY + style.searchWindowSize.height {
+            y = screenBounds.minY
+        }
+
+        WindowManager.instance.display(.search, at: CGPoint(x: x, y: y))
     }
 }
