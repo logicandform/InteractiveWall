@@ -27,10 +27,11 @@ final class DataManager {
     func associateRecordsToRelatedRecords(then completion: @escaping ([RecordDisplayable]) -> Void) {
         loadAllRecords(then: { [weak self] allRecords in
             self?.allRecords = allRecords
+            completion(allRecords)
 
-            self?.associateAllRecordsToRelatedRecords(completion: {
-                completion(allRecords)
-            })
+//            self?.associateAllRecordsToRelatedRecords(completion: {
+//                completion(allRecords)
+//            })
         })
     }
 

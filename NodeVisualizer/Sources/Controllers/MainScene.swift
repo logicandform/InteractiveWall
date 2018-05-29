@@ -1,27 +1,29 @@
-//
-//  GameScene.swift
-//  NodeVisualizer
-//
-//  Created by Tim Davis on 2018-05-23.
 //  Copyright © 2018 JABT. All rights reserved.
-//
 
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene {
+
+class MainScene: SKScene {
+
+    var records: [RecordDisplayable]!
     
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
+
+    
+    // MARK: Lifecycle
     
     override func didMove(to view: SKView) {
-        
-        // Get label node from scene and store it for use later
-        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-        if let label = self.label {
-            label.alpha = 0.0
-            label.run(SKAction.fadeIn(withDuration: 2.0))
-        }
+
+        // scene should manage the different nodes (position, etc) --> all nodes are presented in a scene
+        // manages the interaction of the different nodes
+
+
+
+
+
+
         
         // Create shape node to use during mouse interaction
         let w = (self.size.width + self.size.height) * 0.05
@@ -36,14 +38,23 @@ class GameScene: SKScene {
                                               SKAction.removeFromParent()]))
         }
     }
-    
-    
+
+
+    // MARK: Helpers
+
+
     func touchDown(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.green
-            self.addChild(n)
-        }
+        let record = records[0]
+        let node = RecordNode(record: record)
+        node.position = pos
+        addChild(node)
+
+
+//        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
+//            n.position = pos
+//            n.strokeColor = SKColor.green
+//            self.addChild(n)
+//        }
     }
     
     func touchMoved(toPoint pos : CGPoint) {
@@ -90,3 +101,13 @@ class GameScene: SKScene {
         // Called before each frame is rendered
     }
 }
+
+
+
+
+
+
+
+
+
+
