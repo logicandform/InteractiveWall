@@ -108,6 +108,28 @@ class MenuViewController: NSViewController, GestureResponder {
     }
 
 
+    // MARK: API
+
+    func buttonToggled(type: MenuButtonType, selection: ToggleStatus) {
+        guard let image = buttonTypeSubview[type] else {
+            return
+        }
+
+        switch selection {
+        case .on:
+            if !selectedButtons.contains(type) {
+                selectedButtons.append(type)
+                image.transition(to: type.placeholder?.tinted(with: type.color), duration: Constants.imageTransitionDuration)
+            }
+        case .off:
+            if let selectedButtonIndex = selectedButtons.index(of: type) {
+                selectedButtons.remove(at: selectedButtonIndex)
+                image.transition(to: type.placeholder?.tinted(with: style.unselectedRecordIcon), duration: Constants.imageTransitionDuration)
+            }
+        }
+    }
+
+
     // MARK: GestureResponder
 
     /// Determines if the bounds of the draggable area is inside a given rect
@@ -181,25 +203,6 @@ class MenuViewController: NSViewController, GestureResponder {
         }
 
         buttonToggled(type: type, selection: .off)
-    }
-
-    func buttonToggled(type: MenuButtonType, selection: ToggleStatus) {
-        guard let image = buttonTypeSubview[type] else {
-            return
-        }
-
-        switch selection {
-        case .on:
-            if !selectedButtons.contains(type) {
-                selectedButtons.append(type)
-                image.transition(to: type.placeholder?.tinted(with: type.color), duration: Constants.imageTransitionDuration)
-            }
-        case .off:
-            if let selectedButtonIndex = selectedButtons.index(of: type) {
-                selectedButtons.remove(at: selectedButtonIndex)
-                image.transition(to: type.placeholder?.tinted(with: style.unselectedRecordIcon), duration: Constants.imageTransitionDuration)
-            }
-        }
     }
 
     private func updateSpeedAtBoundary(for velocity: CGFloat, with window: NSWindow) -> CGPoint {
