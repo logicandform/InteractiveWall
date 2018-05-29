@@ -5,7 +5,7 @@ import SpriteKit
 import GameplayKit
 
 
-class RecordNode: SKSpriteNode {
+class RecordNode: SKNode {
 
     private let record: RecordDisplayable
 
@@ -14,7 +14,7 @@ class RecordNode: SKSpriteNode {
 
     init(record: RecordDisplayable) {
         self.record = record
-        super.init(texture: nil, color: .blue, size: .zero)
+        super.init()
         makeRecordNode()
     }
 
@@ -26,28 +26,30 @@ class RecordNode: SKSpriteNode {
     // MARK: Helpers
 
     private func makeRecordNode() {
-        let width: CGFloat = 10
-        let height: CGFloat = 10
+        let root = SKSpriteNode()
+        root.size = CGSize(width: 50, height: 50)
+        addChild(root)
 
-        size = CGSize(width: width, height: height)
-
-        let border = SKShapeNode(rect: CGRect(x: 0, y: 0, width: frame.width, height: frame.height), cornerRadius: frame.width * 0.3)
-        border.lineWidth = 1.5
+        let border = SKShapeNode(rectOf: root.size, cornerRadius: root.frame.width * 0.3)
         border.strokeColor = record.type.color
-        addChild(border)
+        root.addChild(border)
 
         let title = SKLabelNode(text: record.title)
         title.verticalAlignmentMode = .center
         title.horizontalAlignmentMode = .center
-        title.position = CGPoint(x: frame.width / 2, y: 0)
-        addChild(title)
+        title.position = CGPoint(x: 0, y: (root.frame.height / 2 * 0.2))
+        title.fontSize = 13
+        title.xScale = root.frame.width / title.frame.width
+        title.yScale = title.xScale
+        root.addChild(title)
 
         let id = SKLabelNode()
         id.text = String(record.id)
         id.verticalAlignmentMode = .center
         id.horizontalAlignmentMode = .center
-        id.position = CGPoint(x: frame.width, y: frame.height)
-        addChild(id)
+        id.position = CGPoint(x: 0, y: -(root.frame.height / 2 * 0.2))
+        id.fontSize = 13
+        root.addChild(id)
     }
 
 

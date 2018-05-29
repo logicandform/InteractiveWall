@@ -11,7 +11,7 @@ class MainScene: SKScene {
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
 
-    
+
     // MARK: Lifecycle
     
     override func didMove(to view: SKView) {
@@ -39,6 +39,10 @@ class MainScene: SKScene {
         }
     }
 
+    override func update(_ currentTime: TimeInterval) {
+        // Called before each frame is rendered
+    }
+
 
     // MARK: Helpers
 
@@ -48,13 +52,6 @@ class MainScene: SKScene {
         let node = RecordNode(record: record)
         node.position = pos
         addChild(node)
-
-
-//        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-//            n.position = pos
-//            n.strokeColor = SKColor.green
-//            self.addChild(n)
-//        }
     }
     
     func touchMoved(toPoint pos : CGPoint) {
@@ -97,9 +94,7 @@ class MainScene: SKScene {
     }
     
     
-    override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
-    }
+
 }
 
 
