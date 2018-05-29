@@ -2,7 +2,7 @@
 
 import Foundation
 
-class Theme {
+class Theme: Hashable {
 
     let id: Int
     let title: String
@@ -13,6 +13,10 @@ class Theme {
     var relatedArtifacts = [Artifact]()
     var relatedEvents = [Event]()
     lazy var priority = PriorityOrder.priority(for: self)
+
+    var hashValue: Int {
+        return id.hashValue
+    }
 
     private struct Keys {
         static let id = "id"
@@ -52,5 +56,9 @@ class Theme {
             let events = eventsJSON.compactMap { Event(json: $0) }
             self.relatedEvents = events
         }
+    }
+
+    static func == (lhs: Theme, rhs: Theme) -> Bool {
+        return lhs.id == rhs.id
     }
 }

@@ -3,7 +3,7 @@
 import Foundation
 import MapKit
 
-class Event {
+class Event: Hashable {
 
     let id: Int
     let title: String
@@ -17,6 +17,10 @@ class Event {
     var relatedArtifacts = [Artifact]()
     var relatedEvents = [Event]()
     lazy var priority = PriorityOrder.priority(for: self)
+
+    var hashValue: Int {
+        return id.hashValue
+    }
 
     private struct Keys {
         static let id = "id"
@@ -76,5 +80,9 @@ class Event {
             let events = eventsJSON.compactMap { Event(json: $0) }
             self.relatedEvents = events
         }
+    }
+
+    static func == (lhs: Event, rhs: Event) -> Bool {
+        return lhs.id == rhs.id
     }
 }

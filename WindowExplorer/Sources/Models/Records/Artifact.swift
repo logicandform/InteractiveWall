@@ -3,7 +3,7 @@
 import Foundation
 import MapKit
 
-class Artifact {
+class Artifact: Hashable {
 
     let id: Int
     let title: String
@@ -19,6 +19,10 @@ class Artifact {
     var relatedEvents = [Event]()
     var relatedThemes = [Theme]()
     lazy var priority = PriorityOrder.priority(for: self)
+
+    var hashValue: Int {
+        return id.hashValue
+    }
 
     private struct Keys {
         static let id = "id"
@@ -80,5 +84,9 @@ class Artifact {
             let themes = themesJSON.compactMap { Theme(json: $0) }
             self.relatedThemes = themes
         }
+    }
+
+    static func == (lhs: Artifact, rhs: Artifact) -> Bool {
+        return lhs.id == rhs.id
     }
 }
