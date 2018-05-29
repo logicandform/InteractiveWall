@@ -17,9 +17,13 @@ class MenuViewController: NSViewController, GestureResponder {
 
     var gestureManager: GestureManager!
     private var scrollMinimumSpeedAchieved = false
+    private var buttonTypeView = [MenuButtonType: NSView]()
+    private var buttonTypeSubview = [MenuButtonType: NSView]()
+    private var selectedButtons = [NSView]()
 
     private struct Constants {
         static let minimumScrollSpeed: CGFloat = 4
+        static let imageTransitionDuration = 0.5
     }
 
 
@@ -37,7 +41,7 @@ class MenuViewController: NSViewController, GestureResponder {
                 } else {
                     x = screenFrame.minX
                 }
-                
+
                 let y = screenFrame.midY - style.menuWindowSize.height / 2
                 WindowManager.instance.display(.menu, at: CGPoint(x: x, y: y))
             }
@@ -54,6 +58,8 @@ class MenuViewController: NSViewController, GestureResponder {
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
 
+        buttonTypeView = [.splitScreen: splitScreenButton, .mapToggle: mapToggleButton, .timelineToggle: timelineToggleButton, .information: informationButton, .settings: settingsButton, .search: searchButton]
+
         setupButtons()
         setupGestures()
     }
@@ -68,12 +74,30 @@ class MenuViewController: NSViewController, GestureResponder {
     }
 
     private func setupButtons() {
-        splitScreenButton.image = NSImage(named: "image-icon")?.tinted(with: style.unselectedRecordIcon)
-        mapToggleButton.image = NSImage(named: "event-icon")?.tinted(with: style.unselectedRecordIcon)
-        timelineToggleButton.image = NSImage(named: "organization-icon")?.tinted(with: style.unselectedRecordIcon)
-        informationButton.image = NSImage(named: "school-icon")?.tinted(with: style.unselectedRecordIcon)
-        settingsButton.image = NSImage(named: "artifact-icon")?.tinted(with: style.unselectedRecordIcon)
-        searchButton.image = NSImage(named: "image-icon")?.tinted(with: style.unselectedRecordIcon)
+        setupButton(with: .splitScreen)
+        setupButton(with: .mapToggle)
+        setupButton(with: .timelineToggle)
+        setupButton(with: .information)
+        setupButton(with: .settings)
+        setupButton(with: .search)
+    }
+
+    private func setupButton(with type: MenuButtonType) {
+        guard let view = buttonTypeView[type] else {
+            return
+        }
+
+        let image = NSView()
+        view.addSubview(image)
+        image.wantsLayer = true
+        image.layer?.contents = type.placeholder?.tinted(with: style.unselectedRecordIcon)
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.widthAnchor.constraint(equalToConstant: style.menuImageSize.width).isActive = true
+        image.heightAnchor.constraint(equalToConstant: style.menuImageSize.height).isActive = true
+        image.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        image.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        buttonTypeSubview[type] = image
+        addGesture(for: type)
     }
 
 
@@ -101,7 +125,7 @@ class MenuViewController: NSViewController, GestureResponder {
         }
 
         switch pan.state {
-        case .recognized where abs(pan.delta.dy) > Constants.minimumScrollSpeed || scrollMinimumSpeedAchieved, .momentum:
+        case .recognized where abs(pan.delta.dy) > Constants.minimumScrollSpeed || scrollMinimumSpeedAchieved, .momentum where scrollMinimumSpeedAchieved:
             scrollMinimumSpeedAchieved = true
             var origin = window.frame.origin
             origin = updateSpeedAtBoundary(for: pan.delta.dy, with: window)
@@ -115,6 +139,36 @@ class MenuViewController: NSViewController, GestureResponder {
 
 
     // MARK: Helpers
+
+    private func addGesture(for type: MenuButtonType) {
+        guard let view = buttonTypeView[type], let subview = buttonTypeSubview[type] else {
+            return
+        }
+
+        let panGesture = PanGestureRecognizer()
+        gestureManager.add(panGesture, to: subview)
+        panGesture.gestureUpdated = handleWindowPan(_:)
+
+        let tapGesture = TapGestureRecognizer()
+        gestureManager.add(tapGesture, to: subview)
+
+        tapGesture.gestureUpdated = { [weak self] tap in
+            if tap.state == .ended {
+                self?.didSelect(view: view, image: subview, type: type)
+            }
+        }
+    }
+
+    private func didSelect(view: NSView, image: NSView, type: MenuButtonType) {
+        guard let selectedButtonIndex = selectedButtons.index(of: view) else {
+            selectedButtons.append(view)
+            image.transition(to: type.placeholder?.tinted(with: type.color), duration: Constants.imageTransitionDuration)
+            return
+        }
+
+        selectedButtons.remove(at: selectedButtonIndex)
+        image.transition(to: type.placeholder?.tinted(with: style.unselectedRecordIcon), duration: Constants.imageTransitionDuration)
+    }
 
     private func updateSpeedAtBoundary(for velocity: CGFloat, with window: NSWindow) -> CGPoint {
         var updatedOrigin = window.frame.origin

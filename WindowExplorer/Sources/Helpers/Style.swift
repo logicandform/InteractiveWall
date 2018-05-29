@@ -29,6 +29,7 @@ final class Style {
     let searchWindowSize = CGSize(width: 350, height: 655)
     let searchScrollViewSize = CGSize(width: 350, height: 610)
     let menuWindowSize = CGSize(width: 60, height: 310)
+    let menuImageSize = CGSize(width: 40, height: 40)
     let minMediaWindowWidth: CGFloat = 550
     let maxMediaWindowWidth: CGFloat = 700
     let minMediaWindowHeight: CGFloat = 275
