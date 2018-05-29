@@ -20,7 +20,7 @@ class MenuStateHelper {
         relatedMenus.append(menu)
     }
 
-    func splitToggled(by menu: MenuViewController, to status: ToggleStatus) {
+    func splitButtonToggled(by menu: MenuViewController, to status: ToggleStatus) {
         relatedMenus.forEach {
             if $0 !== menu {
                 $0.buttonExternallyToggled(type: .splitScreen, selection: status)

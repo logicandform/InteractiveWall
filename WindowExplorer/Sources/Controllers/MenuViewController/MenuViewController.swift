@@ -167,9 +167,9 @@ class MenuViewController: NSViewController, GestureResponder {
     }
 
     private func didSelect(buttonImage: NSView, type: MenuButtonType) {
-        guard let selectedButtonIndex = selectedButtons.index(of: type) else {
+        guard let buttonIndex = selectedButtons.index(of: type) else {
             if type == .splitScreen {
-                menuStateHelper?.splitToggled(by: self, to: ToggleStatus.on)
+                menuStateHelper?.splitButtonToggled(by: self, to: ToggleStatus.on)
             }
 
             selectedButtons.append(type)
@@ -178,10 +178,10 @@ class MenuViewController: NSViewController, GestureResponder {
         }
 
         if type == .splitScreen {
-            menuStateHelper?.splitToggled(by: self, to: ToggleStatus.off)
+            menuStateHelper?.splitButtonToggled(by: self, to: ToggleStatus.off)
         }
 
-        selectedButtons.remove(at: selectedButtonIndex)
+        selectedButtons.remove(at: buttonIndex)
         buttonImage.transition(to: type.placeholder?.tinted(with: style.unselectedRecordIcon), duration: Constants.imageTransitionDuration)
     }
 
