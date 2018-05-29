@@ -231,14 +231,10 @@ class MenuViewController: NSViewController, GestureResponder {
 
         let buttonOrigin = windowPosition.transformed(from: searchButton.frame).origin
         var x = windowPosition.maxX + style.windowMargins
-        var y = buttonOrigin.y + style.menuImageSize.height - style.searchWindowSize.height
+        let y = buttonOrigin.y + style.menuImageSize.height - style.searchWindowSize.height
 
         if windowPosition.maxX >= screenBounds.maxX {
             x = windowPosition.origin.x - style.searchWindowSize.width - style.windowMargins
-        }
-
-        if buttonOrigin.y + style.menuImageSize.height < screenBounds.minY + style.searchWindowSize.height {
-            y = screenBounds.minY
         }
 
         WindowManager.instance.display(.search, at: CGPoint(x: x, y: y))
