@@ -161,31 +161,29 @@ class MenuViewController: NSViewController, GestureResponder {
 
         tapGesture.gestureUpdated = { [weak self] tap in
             if tap.state == .ended {
-                self?.didSelect(buttonImage: subview, type: type)
+                self?.didSelect(type: type)
             }
         }
     }
 
-    private func didSelect(buttonImage: NSView, type: MenuButtonType) {
-        guard let buttonIndex = selectedButtons.index(of: type) else {
+    private func didSelect(type: MenuButtonType) {
+        guard selectedButtons.index(of: type) != nil else {
             if type == .splitScreen {
-                menuStateHelper?.splitButtonToggled(by: self, to: ToggleStatus.on)
+                menuStateHelper?.splitButtonToggled(by: self, to: .on)
             }
 
-            selectedButtons.append(type)
-            buttonImage.transition(to: type.placeholder?.tinted(with: type.color), duration: Constants.imageTransitionDuration)
+            buttonToggled(type: type, selection: .on)
             return
         }
 
         if type == .splitScreen {
-            menuStateHelper?.splitButtonToggled(by: self, to: ToggleStatus.off)
+            menuStateHelper?.splitButtonToggled(by: self, to: .off)
         }
 
-        selectedButtons.remove(at: buttonIndex)
-        buttonImage.transition(to: type.placeholder?.tinted(with: style.unselectedRecordIcon), duration: Constants.imageTransitionDuration)
+        buttonToggled(type: type, selection: .off)
     }
 
-    func buttonExternallyToggled(type: MenuButtonType, selection: ToggleStatus) {
+    func buttonToggled(type: MenuButtonType, selection: ToggleStatus) {
         guard let image = buttonTypeSubview[type] else {
             return
         }
