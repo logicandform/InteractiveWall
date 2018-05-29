@@ -65,7 +65,7 @@ class MenuViewController: NSViewController, GestureResponder {
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
 
-        buttonTypeView = [MenuButtonType.splitScreen: splitScreenButton, MenuButtonType.mapToggle: mapToggleButton, MenuButtonType.timelineToggle: timelineToggleButton, MenuButtonType.information: informationButton, MenuButtonType.settings: settingsButton, MenuButtonType.search: searchButton]
+        buttonTypeView = [.splitScreen: splitScreenButton, .mapToggle: mapToggleButton, .timelineToggle: timelineToggleButton, .information: informationButton, .settings: settingsButton, .search: searchButton]
 
         setupButtons()
         setupGestures()
@@ -81,12 +81,12 @@ class MenuViewController: NSViewController, GestureResponder {
     }
 
     private func setupButtons() {
-        setupButton(with: MenuButtonType.splitScreen)
-        setupButton(with: MenuButtonType.mapToggle)
-        setupButton(with: MenuButtonType.timelineToggle)
-        setupButton(with: MenuButtonType.information)
-        setupButton(with: MenuButtonType.settings)
-        setupButton(with: MenuButtonType.search)
+        setupButton(with: .splitScreen)
+        setupButton(with: .mapToggle)
+        setupButton(with: .timelineToggle)
+        setupButton(with: .information)
+        setupButton(with: .settings)
+        setupButton(with: .search)
     }
 
     private func setupButton(with type: MenuButtonType) {
