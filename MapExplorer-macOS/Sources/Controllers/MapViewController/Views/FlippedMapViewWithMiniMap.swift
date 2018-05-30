@@ -155,7 +155,7 @@ class FlippedMapWithMiniMap: MKMapView, MKMapViewDelegate {
     }
 
     /// Update the location rect on the miniMap to track the current location of the main map
-    func updateMiniMap(with mapRect: MKMapRect) {
+    private func updateMiniMap(with mapRect: MKMapRect) {
         let mapPoints = mapRect.corners()
         let arrayOfPoints = [mapPoints.nw, mapPoints.ne, mapPoints.se, mapPoints.sw]
         let polygon = MKPolygon(points: arrayOfPoints, count: arrayOfPoints.count)
