@@ -5,16 +5,24 @@ import Cocoa
 import AppKit
 import MapKit
 
+enum CompassDirection: Int {
+    case nw, ne, se, sw
+}
+
 class FlippedMapWithMiniMap: MKMapView, MKMapViewDelegate {
     fileprivate var removeLegal = true
 
     private var miniMap: FlippedMapView!
-    private var miniMapNeedsConstraints = true
+    private var miniMapLeadingConstraint: NSLayoutConstraint!
+    private var miniMapTrailingConstraint: NSLayoutConstraint!
+    private var miniMapTopConstraint: NSLayoutConstraint!
+    private var miniMapBottomConstraint: NSLayoutConstraint!
 
     struct Constants {
         static let miniMapWidthRatio: CGFloat = 1/4
+        static let miniMapAspectRatio: CGFloat = 3/2
         static let miniMapMargin: CGFloat = 10
-        static let defaultMiniMapPosition: CompassDirection = .nw
+        static let defaultMiniMapPosition: CompassDirection = .ne
     }
 
 
@@ -33,24 +41,26 @@ class FlippedMapWithMiniMap: MKMapView, MKMapViewDelegate {
 
     // MARK: Setup
 
-    // TODO: Figure out this resolution stuff
     private func setupMiniMap() {
-        guard let lastScreen = NSScreen.screens.last else {
-            return
-        }
-
-        let heightToWidthRatio = lastScreen.frame.size.height / lastScreen.frame.size.width
-        let width = lastScreen.frame.width / CGFloat(Configuration.mapsPerScreen) * Constants.miniMapWidthRatio
-        let rect = CGRect(x: 0, y: 0, width: width, height: width * heightToWidthRatio)
-
-        miniMap = FlippedMapView(frame: rect)
+        miniMap = FlippedMapView(frame: CGRect.zero)
         miniMap.mapType = self.mapType
         miniMap.isScrollEnabled = false
         miniMap.isZoomEnabled = false
         miniMap.setVisibleMapRect(MKMapRect(origin: CanadaRect.origin, size: CanadaRect.size), animated: false)
         miniMap.delegate = self
+        miniMap.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(miniMap)
+        setupConstraints()
         miniMapPosition = Constants.defaultMiniMapPosition
+    }
+
+    private func setupConstraints() {
+        miniMap.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: Constants.miniMapWidthRatio).isActive = true
+        miniMap.heightAnchor.constraint(equalTo: miniMap.widthAnchor, multiplier: 1 / Constants.miniMapAspectRatio).isActive = true
+        miniMapTopConstraint = miniMap.topAnchor.constraint(equalTo: self.topAnchor, constant: Constants.miniMapMargin)
+        miniMapBottomConstraint = miniMap.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -Constants.miniMapMargin)
+        miniMapLeadingConstraint = miniMap.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.miniMapMargin)
+        miniMapTrailingConstraint = miniMap.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constants.miniMapMargin)
     }
 
 
@@ -105,17 +115,6 @@ class FlippedMapWithMiniMap: MKMapView, MKMapViewDelegate {
         miniMap.addAnnotations(annotations)
     }
 
-    // TODO: Programatically add autolayout constraints
-    override func updateConstraints() {
-        if miniMapNeedsConstraints {
-            miniMapNeedsConstraints = false
-            miniMap.widthAnchor.constraint(lessThanOrEqualTo: self.widthAnchor, multiplier: 0.5).isActive = true
-
-
-        }
-        super.updateConstraints()
-    }
-
 
     // MARK: MKMapViewDelegate
 
@@ -133,25 +132,29 @@ class FlippedMapWithMiniMap: MKMapView, MKMapViewDelegate {
 
     // MARK: Helpers
 
+    /// Changes the position of the miniMap within the main map with autolayout constraints
     private func updateMiniMapPosition() {
-        var origin = self.frame.origin
-//        switch miniMapPosition {
-//        case .nw:
-//            origin.x += Constants.margins
-//            origin.y += self.frame.size.height - miniMap.frame.size.height - Constants.margins
-//        case .ne:
-//            origin.x += self.frame.size.width - miniMap.frame.size.width - Constants.margins
-//            origin.y += self.frame.size.height - miniMap.frame.size.height - Constants.margins
-//        case .se:
-//            origin.x += self.frame.size.width - miniMap.frame.size.width - Constants.margins
-//            origin.y += Constants.margins
-//        case .sw:
-//            origin.x += Constants.margins
-//            origin.y += Constants.margins
-//        }
-        //miniMap.setFrameOrigin(origin)
+        miniMapTopConstraint.isActive = false
+        miniMapBottomConstraint.isActive = false
+        miniMapTrailingConstraint.isActive = false
+        miniMapLeadingConstraint.isActive = false
+        switch miniMapPosition {
+        case .nw:
+            miniMapTopConstraint.isActive = true
+            miniMapTrailingConstraint.isActive = true
+        case .ne:
+            miniMapTopConstraint.isActive = true
+            miniMapLeadingConstraint.isActive = true
+        case .se:
+            miniMapBottomConstraint.isActive = true
+            miniMapLeadingConstraint.isActive = true
+        case .sw:
+            miniMapBottomConstraint.isActive = true
+            miniMapTrailingConstraint.isActive = true
+        }
     }
 
+    /// Update the location rect on the miniMap to track the current location of the main map
     func updateMiniMap(with mapRect: MKMapRect) {
         let mapPoints = mapRect.corners()
         let arrayOfPoints = [mapPoints.nw, mapPoints.ne, mapPoints.se, mapPoints.sw]
@@ -159,18 +162,4 @@ class FlippedMapWithMiniMap: MKMapView, MKMapViewDelegate {
         miniMap.removeOverlays(miniMap.overlays)
         miniMap.add(polygon)
     }
-
-
-    // MARK: Temp
-    func updateMiniMap() {
-        let mapPoints = self.visibleMapRect.corners()
-        let arrayOfPoints = [mapPoints.nw, mapPoints.ne, mapPoints.se, mapPoints.sw]
-        let polygon = MKPolygon(points: arrayOfPoints, count: arrayOfPoints.count)
-        miniMap.removeOverlays(miniMap.overlays)
-        miniMap.add(polygon)
-    }
-}
-
-enum CompassDirection {
-    case nw, ne, se, sw
 }
