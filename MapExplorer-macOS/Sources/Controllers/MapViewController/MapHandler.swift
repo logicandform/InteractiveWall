@@ -6,6 +6,7 @@ import MapKit
 
 typealias MapState = (pair: Int?, group: Int?)
 
+let CanadaRect = MKMapRect(origin: MKMapPoint(x: 23000000, y: 70000000), size: MKMapSize(width: 80000000, height: 0))
 
 private enum UserActivity {
     case idle
@@ -32,8 +33,6 @@ class MapHandler {
         static let masterID = 0
         static let ungroupTimeoutPeriod: TimeInterval = 10
         static let resetTimeoutPeriod: TimeInterval = 180
-        static let canadaOrigin = MKMapPoint(x: 23000000, y: 70000000)
-        static let canadaSize = MKMapSize(width: 80000000, height: 0)
         static let verticalPanLimit: Double = 100000000
         static let verticalVisibleMapRatio = 0.25
     }
@@ -85,11 +84,11 @@ class MapHandler {
 
     func reset() {
         if Configuration.mapsPerScreen == 1 {
-            mapView.setVisibleMapRect(MKMapRect(origin: Constants.canadaOrigin, size: Constants.canadaSize), animated: true)
+            mapView.setVisibleMapRect(MKMapRect(origin: CanadaRect.origin, size: CanadaRect.size), animated: true)
         } else {
-            let newWidth = Constants.canadaSize.width / (Double(Configuration.mapsPerScreen) - 1.0)
-            let newXOrigin = ((Double(mapID).truncatingRemainder(dividingBy: Double(Configuration.mapsPerScreen)) * newWidth) - (newWidth / 2)) + Constants.canadaOrigin.x
-            let mapRect = MKMapRect(origin: MKMapPoint(x: newXOrigin, y: Constants.canadaOrigin.y), size: MKMapSize(width: newWidth, height: 0.0))
+            let newWidth = CanadaRect.size.width / (Double(Configuration.mapsPerScreen) - 1.0)
+            let newXOrigin = ((Double(mapID).truncatingRemainder(dividingBy: Double(Configuration.mapsPerScreen)) * newWidth) - (newWidth / 2)) + CanadaRect.origin.x
+            let mapRect = MKMapRect(origin: MKMapPoint(x: newXOrigin, y: CanadaRect.origin.y), size: MKMapSize(width: newWidth, height: 0.0))
             mapView.setVisibleMapRect(mapRect, animated: true)
         }
     }
@@ -157,12 +156,12 @@ class MapHandler {
         }
 
         var yOrigin = mapRect.origin.y
-        if xOrigin > Constants.canadaOrigin.x + Constants.canadaSize.width {
-            let distance = xOrigin - Constants.canadaOrigin.x + mapRect.size.width
-            xOrigin = distance.truncatingRemainder(dividingBy: Constants.canadaSize.width + mapRect.size.width) - mapRect.size.width + Constants.canadaOrigin.x
-        } else if xOrigin + mapRect.size.width < Constants.canadaOrigin.x {
-            let distance = Constants.canadaSize.width + Constants.canadaOrigin.x - xOrigin
-            xOrigin = Constants.canadaOrigin.x + Constants.canadaSize.width - distance.truncatingRemainder(dividingBy: Constants.canadaSize.width + mapRect.size.width)
+        if xOrigin > CanadaRect.origin.x + CanadaRect.size.width {
+            let distance = xOrigin - CanadaRect.origin.x + mapRect.size.width
+            xOrigin = distance.truncatingRemainder(dividingBy: CanadaRect.size.width + mapRect.size.width) - mapRect.size.width + CanadaRect.origin.x
+        } else if xOrigin + mapRect.size.width < CanadaRect.origin.x {
+            let distance = CanadaRect.size.width + CanadaRect.origin.x - xOrigin
+            xOrigin = CanadaRect.origin.x + CanadaRect.size.width - distance.truncatingRemainder(dividingBy: CanadaRect.size.width + mapRect.size.width)
         }
 
         if mapRect.origin.y + mapRect.size.height * Constants.verticalVisibleMapRatio > Constants.verticalPanLimit {

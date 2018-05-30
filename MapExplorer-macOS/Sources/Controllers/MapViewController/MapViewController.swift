@@ -10,7 +10,7 @@ import AppKit
 class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, NSGestureRecognizerDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Map")
 
-    @IBOutlet weak var mapView: FlippedMapView!
+    @IBOutlet weak var mapView: FlippedMapWithMiniMap!
 
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
@@ -71,9 +71,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     private func setupMap() {
         mapHandler = MapHandler(mapView: mapView, id: appID)
-        let overlay = MKTileOverlay(urlTemplate: tileURL)
-        overlay.canReplaceMapContent = true
-        mapView.add(overlay)
+//        let overlay = MKTileOverlay(urlTemplate: tileURL)
+//        overlay.canReplaceMapContent = true
+//        mapView.add(overlay)
         createAnnotations()
     }
 
@@ -177,6 +177,11 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             showingAnnotationTitles = mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel
             toggleAnnotationTitles(on: showingAnnotationTitles)
         }
+
+        // TODO: Remove this
+       // self.mapView.updateMiniMap()
+        self.mapView.miniMapPosition = .se
+
     }
 
     // When annotations come back into the visibleRect their title visibility updates
