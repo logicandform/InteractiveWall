@@ -16,7 +16,7 @@ class RelatedItemListView: RelatedItemView {
         guard let record = record else {
             return
         }
-        
+
         super.load(record)
         descriptionView.drawsBackground = false
         descriptionView.textContainer?.maximumNumberOfLines = Constants.numberOfDescriptionLines

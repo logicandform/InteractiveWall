@@ -16,10 +16,11 @@ class MenuViewController: NSViewController, GestureResponder {
     @IBOutlet weak var searchButton: NSImageView!
 
     var gestureManager: GestureManager!
+    var menuStateHelper: MenuStateHelper?
     private var scrollMinimumSpeedAchieved = false
     private var buttonTypeView = [MenuButtonType: NSView]()
     private var buttonTypeSubview = [MenuButtonType: NSView]()
-    private var selectedButtons = [NSView]()
+    private var selectedButtons = [MenuButtonType]()
 
     private struct Constants {
         static let minimumScrollSpeed: CGFloat = 4
@@ -32,6 +33,7 @@ class MenuViewController: NSViewController, GestureResponder {
     static func instantiate() {
         for screen in NSScreen.screens.sorted(by: { $0.frame.minX < $1.frame.minX }).dropFirst() {
             let screenFrame = screen.frame
+            let menuStateHelper = MenuStateHelper()
 
             for menuNumber in 1...(Configuration.mapsPerScreen) {
                 let x: CGFloat
@@ -43,7 +45,12 @@ class MenuViewController: NSViewController, GestureResponder {
                 }
 
                 let y = screenFrame.midY - style.menuWindowSize.height / 2
-                WindowManager.instance.display(.menu, at: CGPoint(x: x, y: y))
+                let menu = WindowManager.instance.display(.menu, at: CGPoint(x: x, y: y))
+
+                if let menu = menu as? MenuViewController {
+                    menuStateHelper.add(menu)
+                    menu.menuStateHelper = menuStateHelper
+                }
             }
         }
     }
@@ -101,6 +108,28 @@ class MenuViewController: NSViewController, GestureResponder {
     }
 
 
+    // MARK: API
+
+    func buttonToggled(type: MenuButtonType, selection: ToggleStatus) {
+        guard let image = buttonTypeSubview[type] else {
+            return
+        }
+
+        switch selection {
+        case .on:
+            if !selectedButtons.contains(type) {
+                selectedButtons.append(type)
+                image.transition(to: type.placeholder?.tinted(with: type.color), duration: Constants.imageTransitionDuration)
+            }
+        case .off:
+            if let selectedButtonIndex = selectedButtons.index(of: type) {
+                selectedButtons.remove(at: selectedButtonIndex)
+                image.transition(to: type.placeholder?.tinted(with: style.unselectedRecordIcon), duration: Constants.imageTransitionDuration)
+            }
+        }
+    }
+
+
     // MARK: GestureResponder
 
     /// Determines if the bounds of the draggable area is inside a given rect
@@ -141,7 +170,7 @@ class MenuViewController: NSViewController, GestureResponder {
     // MARK: Helpers
 
     private func addGesture(for type: MenuButtonType) {
-        guard let view = buttonTypeView[type], let subview = buttonTypeSubview[type] else {
+        guard let subview = buttonTypeSubview[type] else {
             return
         }
 
@@ -154,20 +183,26 @@ class MenuViewController: NSViewController, GestureResponder {
 
         tapGesture.gestureUpdated = { [weak self] tap in
             if tap.state == .ended {
-                self?.didSelect(view: view, image: subview, type: type)
+                self?.didSelect(type: type)
             }
         }
     }
 
-    private func didSelect(view: NSView, image: NSView, type: MenuButtonType) {
-        guard let selectedButtonIndex = selectedButtons.index(of: view) else {
-            selectedButtons.append(view)
-            image.transition(to: type.placeholder?.tinted(with: type.color), duration: Constants.imageTransitionDuration)
+    private func didSelect(type: MenuButtonType) {
+        guard selectedButtons.index(of: type) != nil else {
+            if type == .splitScreen {
+                menuStateHelper?.splitButtonToggled(by: self, to: .on)
+            }
+
+            buttonToggled(type: type, selection: .on)
             return
         }
 
-        selectedButtons.remove(at: selectedButtonIndex)
-        image.transition(to: type.placeholder?.tinted(with: style.unselectedRecordIcon), duration: Constants.imageTransitionDuration)
+        if type == .splitScreen {
+            menuStateHelper?.splitButtonToggled(by: self, to: .off)
+        }
+
+        buttonToggled(type: type, selection: .off)
     }
 
     private func updateSpeedAtBoundary(for velocity: CGFloat, with window: NSWindow) -> CGPoint {
@@ -176,7 +211,7 @@ class MenuViewController: NSViewController, GestureResponder {
             return updatedOrigin
         }
 
-        updatedOrigin.y = updatedOrigin.y + velocity
+        updatedOrigin.y += velocity
 
         if velocity < 0 && updatedOrigin.y < applicationFrame.minY {
             updatedOrigin.y = applicationFrame.minY

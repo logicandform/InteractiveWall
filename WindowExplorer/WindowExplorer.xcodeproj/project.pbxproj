@@ -106,6 +106,7 @@
 		8FEABDA12064702600612C84 /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEABD9F2064702600612C84 /* MediaViewController.swift */; };
 		A407160E20AB94B800B54593 /* PriorityOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A407160D20AB94B800B54593 /* PriorityOrder.swift */; };
 		A407161220ABAE5C00B54593 /* RelationshipHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A407161120ABAE5B00B54593 /* RelationshipHelper.swift */; };
+		A455CC7120BC949B00457ACF /* MenuStateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A455CC7020BC949B00457ACF /* MenuStateHelper.swift */; };
 		A460292920B4C689000F902E /* Menu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A460292820B4C689000F902E /* Menu.storyboard */; };
 		A460292B20B4C6A0000F902E /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A460292A20B4C6A0000F902E /* MenuViewController.swift */; };
 		A4694B66209CEC18006A407F /* RecordFilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4694B65209CEC18006A407F /* RecordFilterType.swift */; };
@@ -252,6 +253,7 @@
 		A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_WindowExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A407160D20AB94B800B54593 /* PriorityOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityOrder.swift; sourceTree = "<group>"; };
 		A407161120ABAE5B00B54593 /* RelationshipHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipHelper.swift; sourceTree = "<group>"; };
+		A455CC7020BC949B00457ACF /* MenuStateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuStateHelper.swift; sourceTree = "<group>"; };
 		A460292820B4C689000F902E /* Menu.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Menu.storyboard; sourceTree = "<group>"; };
 		A460292A20B4C6A0000F902E /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		A4694B65209CEC18006A407F /* RecordFilterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFilterType.swift; sourceTree = "<group>"; };
@@ -545,6 +547,7 @@
 				A407160D20AB94B800B54593 /* PriorityOrder.swift */,
 				22AEAF0320B67E6700DD184B /* Math.swift */,
 				A479487F20B89ACC00091CEC /* MenuButtonType.swift */,
+				A455CC7020BC949B00457ACF /* MenuStateHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -711,6 +714,7 @@
 				22A9231B2044AF05003EA9BB /* Resources */,
 				22A9234F2044B09D003EA9BB /* Embed XPC Services */,
 				D706A887330181305494F3D8 /* [CP] Embed Pods Frameworks */,
+				A4F3914A20BCBB490034D304 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -796,6 +800,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		A4F3914A20BCBB490034D304 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+		};
 		D706A887330181305494F3D8 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -914,6 +931,7 @@
 				225FBBA5208EAF9400B2CD3E /* ControlAction.swift in Sources */,
 				2247670020562F65003E8790 /* MediaItemView.swift in Sources */,
 				22914F77204905230000D4E1 /* NSApplication.swift in Sources */,
+				A455CC7120BC949B00457ACF /* MenuStateHelper.swift in Sources */,
 				A407160E20AB94B800B54593 /* PriorityOrder.swift in Sources */,
 				2204623920472FDF0067D9FB /* NetworkConfiguration.swift in Sources */,
 				2204623620472FDF0067D9FB /* AVKit.swift in Sources */,

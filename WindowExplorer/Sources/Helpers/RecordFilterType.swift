@@ -12,7 +12,7 @@ enum RecordFilterType {
     case organization
     case theme
     case all
-    
+
     var title: String? {
         if let recordType = recordType {
             return recordType.title
