@@ -26,13 +26,10 @@ class MainViewController: NSViewController {
 
             let mainScene = self?.makeScene()
             mainScene?.records = records
-            
+
             self?.mainView.presentScene(mainScene)
         })
 
-//        let mainScene = makeScene()
-//        mainView.presentScene(mainScene)
-//
         mainView.showsFPS = true
         mainView.showsNodeCount = true
     }
@@ -49,31 +46,4 @@ class MainViewController: NSViewController {
         scene.scaleMode = .aspectFill
         return scene
     }
-
-    private func getAllRecords() {
-        DataManager.instance.associateRecordsToRelatedRecords(then: { [weak self] allRecords in
-            self?.records = allRecords
-        })
-    }
-
-
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
