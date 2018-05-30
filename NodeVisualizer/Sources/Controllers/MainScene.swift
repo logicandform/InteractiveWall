@@ -8,7 +8,7 @@ class MainScene: SKScene {
 
     var records: [RecordDisplayable]!
 
-    private enum RandomPosition: UInt32 {
+    private enum StartingPositionType: UInt32 {
         case top = 0
         case bottom = 1
         case left = 2
@@ -20,15 +20,10 @@ class MainScene: SKScene {
     
     override func didMove(to view: SKView) {
 
-        // scene should manage the different nodes (position, etc) --> all nodes are presented in a scene
-        // manages the interaction of the different nodes
-
-
         addRecordNodesToScene()
 
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
-//        physicsWorld.gravity = .zero
-
+        physicsWorld.gravity = .zero
     }
 
     override func update(_ currentTime: TimeInterval) {
@@ -39,26 +34,30 @@ class MainScene: SKScene {
     // MARK: Helpers
 
     private func addRecordNodesToScene() {
-//        for record in records.prefix(15) {
-//            let node = RecordNode(record: record)
+        records.prefix(5).enumerated().forEach { index, record in
+            let node = RecordNode(record: record)
 //            node.position = getRandomPosition()
-////            node.position.x = randomX()
-////            node.position.y = randomY()
-//            addChild(node)
-//        }
+            node.position.x = randomX()
+            node.position.y = randomY()
+            let action = node.createInitialAnimation(delay: index)
+            node.run(action)
+            addChild(node)
+        }
 
-        let record = records[0]
-        let node = RecordNode(record: record)
-//        node.position = getRandomPosition()
-        node.position.x = randomX()
-        node.position.y = randomY()
-        addChild(node)
+//        let record = records[0]
+//        let node = RecordNode(record: record)
+////        node.position = getRandomPosition()
+//        node.position.x = randomX()
+//        node.position.y = randomY()
+//        let action = node.createInitialAnimation(delay: 0)
+//        node.run(action)
+//        addChild(node)
     }
 
     private func getRandomPosition() -> CGPoint {
         var point = CGPoint.zero
 
-        guard let position = RandomPosition(rawValue: arc4random_uniform(4)) else {
+        guard let position = StartingPositionType(rawValue: arc4random_uniform(4)) else {
             return point
         }
 

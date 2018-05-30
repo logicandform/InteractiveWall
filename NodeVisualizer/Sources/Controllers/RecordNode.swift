@@ -31,10 +31,19 @@ class RecordNode: SKNode {
 
     // MARK: API
 
-    func addAnimations() {
+    func runAnimations() {
 
-        
+    }
 
+    func createInitialAnimation(delay: Int) -> SKAction {
+        let delayAction = SKAction.wait(forDuration: TimeInterval(delay) * 2)
+        let fadeInAction = SKAction.fadeIn(withDuration: 0.5)
+        let moveToCenterAction = SKAction.move(to: CGPoint(x: 10, y: 10), duration: 1)
+
+        let impulse = SKAction.applyImpulse(CGVector(dx: 10, dy: 10), duration: 1)
+
+        let actionSequence = SKAction.sequence([delayAction, fadeInAction, moveToCenterAction, impulse])
+        return actionSequence
     }
 
 
@@ -48,6 +57,10 @@ class RecordNode: SKNode {
         addIdLabelNode(to: rootNode)
 
         physicsBody = SKPhysicsBody(rectangleOf: calculateAccumulatedFrame().size)
+//        physicsBody?.affectedByGravity = false
+        physicsBody?.restitution = 1
+        physicsBody?.linearDamping = 0
+        physicsBody?.friction = 0
     }
 
     private func makeRootNode() -> SKNode {
