@@ -20,10 +20,10 @@ class MenuStateHelper {
         relatedMenus.append(menu)
     }
 
-    func splitButtonToggled(by menu: MenuViewController, to status: ToggleStatus) {
-        relatedMenus.forEach {
-            if $0 !== menu {
-                $0.buttonToggled(type: .splitScreen, selection: status)
+    func splitButtonToggled(by tappedMenu: MenuViewController, to status: ToggleStatus) {
+        relatedMenus.forEach { menu in
+            if menu !== tappedMenu {
+                menu.buttonToggled(type: .splitScreen, selection: status)
             }
         }
     }
