@@ -7,9 +7,6 @@ import GameplayKit
 class MainScene: SKScene {
 
     var records: [RecordDisplayable]!
-    
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
 
 
     // MARK: Lifecycle
@@ -19,7 +16,12 @@ class MainScene: SKScene {
         // scene should manage the different nodes (position, etc) --> all nodes are presented in a scene
         // manages the interaction of the different nodes
 
+
         addRecordNodesToScene()
+
+        physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
+//        physicsWorld.gravity = .zero
+
     }
 
     override func update(_ currentTime: TimeInterval) {
@@ -30,18 +32,19 @@ class MainScene: SKScene {
     // MARK: Helpers
 
     private func addRecordNodesToScene() {
-//        for record in records {
-//            let node = RecordNode(record: record)
-//            node.position.x = randomX()
-//            node.position.y = randomY()
-//            addChild(node)
-//        }
+        for record in records.prefix(15) {
+            let node = RecordNode(record: record)
+            node.position.x = randomX()
+            node.position.y = randomY()
+            addChild(node)
+        }
 
-        let record = records[0]
-        let node = RecordNode(record: record)
-        node.position.x = randomX()
-        node.position.y = randomY()
-        addChild(node)
+//        let record = records[0]
+//        let node = RecordNode(record: record)
+//        node.position.x = randomX()
+//        node.position.y = randomY()
+//
+//        addChild(node)
     }
 
     private func randomX() -> CGFloat {
@@ -57,3 +60,11 @@ class MainScene: SKScene {
     }
 
 }
+
+
+
+
+
+
+
+

@@ -21,6 +21,8 @@ class MainViewController: NSViewController {
             return
         }
 
+        // could show loading scene when we are making network request, then transistion to the main scene
+        
         DataManager.instance.associateRecordsToRelatedRecords(then: { [weak self] records in
             self?.records = records
 

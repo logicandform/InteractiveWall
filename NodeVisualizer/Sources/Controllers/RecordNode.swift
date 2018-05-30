@@ -2,7 +2,6 @@
 
 import Cocoa
 import SpriteKit
-import GameplayKit
 
 
 class RecordNode: SKNode {
@@ -33,16 +32,23 @@ class RecordNode: SKNode {
     // MARK: Helpers
 
     private func makeRecordNode() {
-        let root = SKSpriteNode()
-        root.size = CGSize(width: 50, height: 50)
-        root.color = record.type.color
-        addChild(root)
+        let rootNode = makeRootNode()
 
-        addTitleNode(to: root)
-        addIdNode(to: root)
+        addTitleLabelNode(to: rootNode)
+        addIdLabelNode(to: rootNode)
+
+        physicsBody = SKPhysicsBody(rectangleOf: calculateAccumulatedFrame().size)
     }
 
-    private func addTitleNode(to root: SKNode) {
+    private func makeRootNode() -> SKNode {
+        let rootNode = SKSpriteNode()
+        rootNode.size = CGSize(width: 50, height: 50)
+        rootNode.color = record.type.color
+        addChild(rootNode)
+        return rootNode
+    }
+
+    private func addTitleLabelNode(to root: SKNode) {
         let title = SKLabelNode(text: record.title)
         title.verticalAlignmentMode = .center
         title.horizontalAlignmentMode = .center
@@ -53,7 +59,7 @@ class RecordNode: SKNode {
         root.addChild(title)
     }
 
-    private func addIdNode(to root: SKNode) {
+    private func addIdLabelNode(to root: SKNode) {
         let id = SKLabelNode()
         id.text = String(record.id)
         id.verticalAlignmentMode = .center
@@ -62,4 +68,16 @@ class RecordNode: SKNode {
         id.fontSize = Constants.labelFontSize
         root.addChild(id)
     }
+
+
+
 }
+
+
+
+
+
+
+
+
+
