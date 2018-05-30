@@ -8,6 +8,13 @@ class MainScene: SKScene {
 
     var records: [RecordDisplayable]!
 
+    private enum RandomPosition: UInt32 {
+        case top = 0
+        case bottom = 1
+        case left = 2
+        case right = 3
+    }
+
 
     // MARK: Lifecycle
     
@@ -25,26 +32,50 @@ class MainScene: SKScene {
     }
 
     override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
+
     }
 
 
     // MARK: Helpers
 
     private func addRecordNodesToScene() {
-        for record in records.prefix(15) {
-            let node = RecordNode(record: record)
-            node.position.x = randomX()
-            node.position.y = randomY()
-            addChild(node)
+//        for record in records.prefix(15) {
+//            let node = RecordNode(record: record)
+//            node.position = getRandomPosition()
+////            node.position.x = randomX()
+////            node.position.y = randomY()
+//            addChild(node)
+//        }
+
+        let record = records[0]
+        let node = RecordNode(record: record)
+//        node.position = getRandomPosition()
+        node.position.x = randomX()
+        node.position.y = randomY()
+        addChild(node)
+    }
+
+    private func getRandomPosition() -> CGPoint {
+        var point = CGPoint.zero
+
+        guard let position = RandomPosition(rawValue: arc4random_uniform(4)) else {
+            return point
         }
 
-//        let record = records[0]
-//        let node = RecordNode(record: record)
-//        node.position.x = randomX()
-//        node.position.y = randomY()
-//
-//        addChild(node)
+        switch position {
+        case .top:
+            point = CGPoint(x: randomX(), y: frame.height)
+            return point
+        case .bottom:
+            point = CGPoint(x: randomX(), y: 0)
+            return point
+        case .left:
+            point = CGPoint(x: 0, y: randomY())
+            return point
+        case .right:
+            point = CGPoint(x: frame.width, y: randomY())
+            return point
+        }
     }
 
     private func randomX() -> CGFloat {

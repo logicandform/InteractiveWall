@@ -29,6 +29,16 @@ class RecordNode: SKNode {
     }
 
 
+    // MARK: API
+
+    func addAnimations() {
+
+        
+
+    }
+
+
+
     // MARK: Helpers
 
     private func makeRecordNode() {
@@ -68,6 +78,7 @@ class RecordNode: SKNode {
         id.fontSize = Constants.labelFontSize
         root.addChild(id)
     }
+
 
 
 
