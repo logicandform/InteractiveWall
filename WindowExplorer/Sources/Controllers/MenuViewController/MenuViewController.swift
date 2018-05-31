@@ -197,10 +197,6 @@ class MenuViewController: NSViewController, GestureResponder {
         gestureManager.add(panGesture, to: subview)
         panGesture.gestureUpdated = handleWindowPan(_:)
 
-        let nsButtonClick = NSClickGestureRecognizer(target: self, action: #selector(handleButtonClick(_:)))
-        subview.addGestureRecognizer(nsButtonClick)
-        view.addGestureRecognizer(nsButtonClick)
-
         let tapGesture = TapGestureRecognizer()
         gestureManager.add(tapGesture, to: subview)
         gestureManager.add(tapGesture, to: view)
@@ -229,16 +225,6 @@ class MenuViewController: NSViewController, GestureResponder {
         }
 
         buttonToggled(type: type, selection: .off)
-    }
-
-    @objc
-    private func handleButtonClick(_ gesture: NSClickGestureRecognizer) {
-        switch gesture.state {
-        case .ended:
-            didSelect(type: .information)
-        default:
-            return
-        }
     }
 
     private func updateSpeedAtBoundary(for velocity: CGFloat, with window: NSWindow) -> CGPoint {
