@@ -12,37 +12,30 @@ enum MenuButtonType {
     case settings
     case search
 
-    var color: NSColor {
+    var color: NSColor? {
         switch self {
-        case .splitScreen:
-            return style.artifactColor
-        case .mapToggle:
-            return style.eventColor
-        case .timelineToggle:
-            return style.schoolColor
-        case .information:
-            return style.organizationColor
-        case .settings:
-            return style.imageFilterTypeColor
-        case .search:
-            return style.schoolColor
+        case .mapToggle, .timelineToggle, .information, .settings, .search:
+            return style.menuSelectedColor
+        default:
+            return nil
         }
     }
+
 
     var placeholder: NSImage? {
         switch self {
         case .splitScreen:
-            return NSImage(named: "image-icon")
+            return NSImage(named: "single-person-icon")
         case .mapToggle:
-            return NSImage(named: "event-icon")
+            return NSImage(named: "map-icon")
         case .timelineToggle:
-            return NSImage(named: "organization-icon")
+            return NSImage(named: "timeline-icon")
         case .information:
-            return NSImage(named: "school-icon")
+            return NSImage(named: "info-icon")
         case .settings:
-            return NSImage(named: "artifact-icon")
+            return NSImage(named: "settings-icon")
         case .search:
-            return NSImage(named: "image-icon")
+            return NSImage(named: "search-icon")
         }
     }
 }
