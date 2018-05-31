@@ -97,7 +97,7 @@ class MenuViewController: NSViewController, GestureResponder {
         let image = NSView()
         view.addSubview(image)
         image.wantsLayer = true
-        image.layer?.contents = type.placeholder
+        image.layer?.contents = imageIcon
         image.translatesAutoresizingMaskIntoConstraints = false
 
         if view.frame.width < imageIcon.size.width {
