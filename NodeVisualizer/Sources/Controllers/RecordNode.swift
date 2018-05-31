@@ -31,20 +31,13 @@ class RecordNode: SKNode {
 
     // MARK: API
 
-    func runAnimations() {
-
-    }
-
-    func createInitialAnimation(delay: Int) -> SKAction {
-        let delayAction = SKAction.wait(forDuration: TimeInterval(delay) * 2)
+    func createInitialAnimation(with forceVector: CGVector) -> SKAction {
         let fadeInAction = SKAction.fadeIn(withDuration: 0.5)
-        let moveToCenterAction = SKAction.move(to: CGPoint(x: 10, y: 10), duration: 1)
-
-        let impulse = SKAction.applyImpulse(CGVector(dx: 10, dy: 10), duration: 1)
-
-        let actionSequence = SKAction.sequence([delayAction, fadeInAction, moveToCenterAction, impulse])
-        return actionSequence
+        let applyImpulseAction = SKAction.applyForce(forceVector, duration: 0.1)
+        let groupAction = SKAction.group([fadeInAction, applyImpulseAction])
+        return groupAction
     }
+
 
 
 
@@ -57,10 +50,9 @@ class RecordNode: SKNode {
         addIdLabelNode(to: rootNode)
 
         physicsBody = SKPhysicsBody(rectangleOf: calculateAccumulatedFrame().size)
-//        physicsBody?.affectedByGravity = false
-        physicsBody?.restitution = 1
+        physicsBody?.friction = 0.5
+        physicsBody?.restitution = 0.8
         physicsBody?.linearDamping = 0
-        physicsBody?.friction = 0
     }
 
     private func makeRootNode() -> SKNode {
@@ -79,6 +71,7 @@ class RecordNode: SKNode {
         title.fontSize = Constants.labelFontSize
         title.xScale = root.frame.width / title.frame.width
         title.yScale = title.xScale
+        title.fontColor = .black
         root.addChild(title)
     }
 
@@ -89,6 +82,7 @@ class RecordNode: SKNode {
         id.horizontalAlignmentMode = .center
         id.position.y = -(root.frame.height / 2 * Constants.centerOffset)
         id.fontSize = Constants.labelFontSize
+        id.fontColor = .black
         root.addChild(id)
     }
 

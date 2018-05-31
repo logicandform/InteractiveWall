@@ -34,14 +34,17 @@ class MainScene: SKScene {
     // MARK: Helpers
 
     private func addRecordNodesToScene() {
-        records.prefix(5).enumerated().forEach { index, record in
+        records.prefix(15).enumerated().forEach { index, record in
             let node = RecordNode(record: record)
-//            node.position = getRandomPosition()
-            node.position.x = randomX()
-            node.position.y = randomY()
-            let action = node.createInitialAnimation(delay: index)
-            node.run(action)
+            node.position = CGPoint(x: frame.width / 2, y: frame.height / 2)
+            node.zPosition = 1
+            node.alpha = 0
             addChild(node)
+
+            let destinationPosition = getRandomPosition()
+            let forceVector = CGVector(dx: destinationPosition.x - node.position.x, dy: destinationPosition.y - node.position.y)
+            let action = node.createInitialAnimation(with: forceVector)
+            node.run(action)
         }
 
 //        let record = records[0]
@@ -49,8 +52,6 @@ class MainScene: SKScene {
 ////        node.position = getRandomPosition()
 //        node.position.x = randomX()
 //        node.position.y = randomY()
-//        let action = node.createInitialAnimation(delay: 0)
-//        node.run(action)
 //        addChild(node)
     }
 
@@ -63,29 +64,29 @@ class MainScene: SKScene {
 
         switch position {
         case .top:
-            point = CGPoint(x: randomX(), y: frame.height)
+            point = CGPoint(x: randomX(), y: frame.height - 5)
             return point
         case .bottom:
-            point = CGPoint(x: randomX(), y: 0)
+            point = CGPoint(x: randomX(), y: 0 + 5)
             return point
         case .left:
-            point = CGPoint(x: 0, y: randomY())
+            point = CGPoint(x: 0 + 5, y: randomY())
             return point
         case .right:
-            point = CGPoint(x: frame.width, y: randomY())
+            point = CGPoint(x: frame.width - 5, y: randomY())
             return point
         }
     }
 
     private func randomX() -> CGFloat {
-        let lowestValue = 0
-        let highestValue = Int(frame.width)
+        let lowestValue = 5
+        let highestValue = Int(frame.width - 5)
         return CGFloat(GKRandomDistribution(lowestValue: lowestValue, highestValue: highestValue).nextInt())
     }
 
     private func randomY() -> CGFloat {
-        let lowestValue = 0
-        let highestValue = Int(frame.height)
+        let lowestValue = 5
+        let highestValue = Int(frame.height - 5)
         return CGFloat(GKRandomDistribution(lowestValue: lowestValue, highestValue: highestValue).nextInt())
     }
 
