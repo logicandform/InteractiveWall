@@ -117,9 +117,21 @@ class MenuViewController: NSViewController, GestureResponder {
         buttonTypeSubview[type] = image
         addGesture(for: type)
 
-        if type == .splitScreen {
+        if type == .splitScreen, let secondaryPlaceholder = type.secondaryPlaceholder {
             view.wantsLayer = true
             view.layer?.backgroundColor = style.menuSelectedColor.cgColor
+
+            let lockIcon = NSView()
+            view.addSubview(lockIcon)
+            lockIcon.wantsLayer = true
+            lockIcon.layer?.contents = type.secondaryPlaceholder
+            lockIcon.translatesAutoresizingMaskIntoConstraints = false
+
+            lockIcon.widthAnchor.constraint(equalToConstant: secondaryPlaceholder.size.width).isActive = true
+            lockIcon.heightAnchor.constraint(equalToConstant: secondaryPlaceholder.size.height).isActive = true
+
+            lockIcon.centerXAnchor.constraint(equalTo: view.centerXAnchor).constant = 20
+
         }
     }
 
@@ -187,6 +199,10 @@ class MenuViewController: NSViewController, GestureResponder {
 
 
     // MARK: Helpers
+
+    private func setImage(for type: MenuButtonType, in view: NSView, with image: NSImage) {
+
+    }
 
     private func addGesture(for type: MenuButtonType) {
         guard let view = buttonTypeView[type], let subview = buttonTypeSubview[type] else {
