@@ -6,13 +6,17 @@ import AppKit
 import MapKit
 
 enum CompassDirection: Int {
-    case nw, ne, se, sw
+    case nw
+    case ne
+    case se
+    case sw
 }
 
 class FlippedMapWithMiniMap: MKMapView, MKMapViewDelegate {
     fileprivate var removeLegal = true
 
     private var miniMap: FlippedMapView!
+    private var miniMapLocationRect: MKPolygon?
     private var miniMapLeadingConstraint: NSLayoutConstraint!
     private var miniMapTrailingConstraint: NSLayoutConstraint!
     private var miniMapTopConstraint: NSLayoutConstraint!
@@ -23,6 +27,9 @@ class FlippedMapWithMiniMap: MKMapView, MKMapViewDelegate {
         static let miniMapAspectRatio: CGFloat = 3/2
         static let miniMapMargin: CGFloat = 10
         static let defaultMiniMapPosition: CompassDirection = .ne
+        static let canadaRect = MapHandler.MapConstants.canadaRect
+        static let miniMapLocationRectStrokeColor = #colorLiteral(red: 0.9240344167, green: 0.3190495968, blue: 0.9256045818, alpha: 1)
+        static let miniMapLocationRectFillColor = #colorLiteral(red: 0.9240344167, green: 0.3190495968, blue: 0.9256045818, alpha: 0.5483197774)
     }
 
 
@@ -46,7 +53,8 @@ class FlippedMapWithMiniMap: MKMapView, MKMapViewDelegate {
         miniMap.mapType = self.mapType
         miniMap.isScrollEnabled = false
         miniMap.isZoomEnabled = false
-        miniMap.setVisibleMapRect(MKMapRect(origin: CanadaRect.origin, size: CanadaRect.size), animated: false)
+        miniMap.isRotateEnabled = false
+        miniMap.setVisibleMapRect(MKMapRect(origin: Constants.canadaRect.origin, size: Constants.canadaRect.size), animated: false)
         miniMap.delegate = self
         miniMap.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(miniMap)
@@ -105,24 +113,16 @@ class FlippedMapWithMiniMap: MKMapView, MKMapViewDelegate {
         updateMiniMap(with: mapRect)
     }
 
-    override func addAnnotation(_ annotation: MKAnnotation) {
-        super.addAnnotation(annotation)
-        miniMap.addAnnotation(annotation)
-    }
-
-    override func addAnnotations(_ annotations: [MKAnnotation]) {
-        super.addAnnotations(annotations)
-        miniMap.addAnnotations(annotations)
-    }
-
 
     // MARK: MKMapViewDelegate
 
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        if overlay is MKPolygon {
+        if let tileOverlay = overlay as? MKTileOverlay {
+            return MKTileOverlayRenderer(tileOverlay: tileOverlay)
+        } else if overlay is MKPolygon {
             let renderer = MKPolygonRenderer(overlay: overlay)
-            renderer.strokeColor = #colorLiteral(red: 0.9240344167, green: 0.3190495968, blue: 0.9256045818, alpha: 1)
-            renderer.fillColor = #colorLiteral(red: 0.9240344167, green: 0.3190495968, blue: 0.9256045818, alpha: 0.5483197774)
+            renderer.strokeColor = Constants.miniMapLocationRectStrokeColor
+            renderer.fillColor = Constants.miniMapLocationRectFillColor
             return renderer
         }
 
@@ -159,7 +159,10 @@ class FlippedMapWithMiniMap: MKMapView, MKMapViewDelegate {
         let mapPoints = mapRect.corners()
         let arrayOfPoints = [mapPoints.nw, mapPoints.ne, mapPoints.se, mapPoints.sw]
         let polygon = MKPolygon(points: arrayOfPoints, count: arrayOfPoints.count)
-        miniMap.removeOverlays(miniMap.overlays)
+        if let locationRect = miniMapLocationRect {
+            miniMap.remove(locationRect)
+        }
         miniMap.add(polygon)
+        miniMapLocationRect = polygon
     }
 }
