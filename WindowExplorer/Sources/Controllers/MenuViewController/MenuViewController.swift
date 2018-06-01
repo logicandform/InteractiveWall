@@ -90,7 +90,7 @@ class MenuViewController: NSViewController, GestureResponder {
     }
 
     private func setupButton(with type: MenuButtonType) {
-        guard let view = buttonTypeView[type], let imageIcon = type.placeholder else {
+        guard let view = buttonTypeView[type], let imageIcon = type.primaryPlaceholder else {
             return
         }
 
@@ -136,14 +136,14 @@ class MenuViewController: NSViewController, GestureResponder {
             if !selectedButtons.contains(type) {
                 selectedButtons.append(type)
 
-                if let color = type.color {
-                    image.transition(to: type.placeholder?.tinted(with: color), duration: Constants.imageTransitionDuration)
+                if let activeIcon = type.selectedPlaceholder {
+                    image.transition(to: activeIcon, duration: Constants.imageTransitionDuration)
                 }
             }
         case .off:
             if let selectedButtonIndex = selectedButtons.index(of: type) {
                 selectedButtons.remove(at: selectedButtonIndex)
-                image.transition(to: type.placeholder, duration: Constants.imageTransitionDuration)
+                image.transition(to: type.primaryPlaceholder, duration: Constants.imageTransitionDuration)
             }
         }
     }

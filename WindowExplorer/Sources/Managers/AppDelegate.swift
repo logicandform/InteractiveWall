@@ -33,7 +33,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         GeocodeHelper.instance.associateSchoolsToProvinces()
         MasterViewController.instantiate()
         MenuViewController.instantiate()
-        WindowManager.instance.display(.menu)
     }
 
     func applicationWillTerminate(_ notification: Notification) {
