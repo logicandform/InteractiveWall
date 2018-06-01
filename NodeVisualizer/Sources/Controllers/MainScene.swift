@@ -7,41 +7,75 @@ import GameplayKit
 class MainScene: SKScene {
 
     var records: [RecordDisplayable]!
-    
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
+
+    private enum StartingPositionType: UInt32 {
+        case top = 0
+        case bottom = 1
+        case left = 2
+        case right = 3
+    }
 
 
     // MARK: Lifecycle
     
     override func didMove(to view: SKView) {
 
-        // scene should manage the different nodes (position, etc) --> all nodes are presented in a scene
-        // manages the interaction of the different nodes
-
         addRecordNodesToScene()
+
+        physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
+        physicsWorld.gravity = .zero
     }
 
     override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
+
     }
 
 
     // MARK: Helpers
 
     private func addRecordNodesToScene() {
-//        for record in records {
-//            let node = RecordNode(record: record)
-//            node.position.x = randomX()
-//            node.position.y = randomY()
-//            addChild(node)
-//        }
+        records.prefix(10).enumerated().forEach { index, record in
+            let node = RecordNode(record: record)
+            node.position = CGPoint(x: frame.width / 2, y: frame.height / 2)
+            node.zPosition = 1
+            node.alpha = 0
+            addChild(node)
 
-        let record = records[0]
-        let node = RecordNode(record: record)
-        node.position.x = randomX()
-        node.position.y = randomY()
-        addChild(node)
+            let destinationPosition = getRandomPosition()
+            let forceVector = CGVector(dx: destinationPosition.x - node.position.x, dy: destinationPosition.y - node.position.y)
+            let action = node.createInitialAnimation(with: forceVector)
+            node.run(action)
+        }
+
+//        let record = records[0]
+//        let node = RecordNode(record: record)
+////        node.position = getRandomPosition()
+//        node.position.x = randomX()
+//        node.position.y = randomY()
+//        addChild(node)
+    }
+
+    private func getRandomPosition() -> CGPoint {
+        var point = CGPoint.zero
+
+        guard let position = StartingPositionType(rawValue: arc4random_uniform(4)) else {
+            return point
+        }
+
+        switch position {
+        case .top:
+            point = CGPoint(x: randomX(), y: frame.height)
+            return point
+        case .bottom:
+            point = CGPoint(x: randomX(), y: 0)
+            return point
+        case .left:
+            point = CGPoint(x: 0, y: randomY())
+            return point
+        case .right:
+            point = CGPoint(x: frame.width, y: randomY())
+            return point
+        }
     }
 
     private func randomX() -> CGFloat {
@@ -55,5 +89,4 @@ class MainScene: SKScene {
         let highestValue = Int(frame.height)
         return CGFloat(GKRandomDistribution(lowestValue: lowestValue, highestValue: highestValue).nextInt())
     }
-
 }
