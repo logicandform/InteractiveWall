@@ -195,6 +195,7 @@ class MenuViewController: NSViewController, GestureResponder {
 
         let panGesture = PanGestureRecognizer()
         gestureManager.add(panGesture, to: subview)
+        gestureManager.add(panGesture, to: view)
         panGesture.gestureUpdated = handleWindowPan(_:)
 
         let tapGesture = TapGestureRecognizer()
