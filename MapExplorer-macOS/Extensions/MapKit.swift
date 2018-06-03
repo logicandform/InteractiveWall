@@ -26,6 +26,14 @@ extension MKMapRect: Equatable {
         return [Keys.x: origin.x, Keys.y: origin.y, Keys.width: size.width, Keys.height: size.height]
     }
 
+    func corners() -> (nw: MKMapPoint, ne: MKMapPoint, se: MKMapPoint, sw: MKMapPoint) {
+        let nw = self.origin
+        let ne = MKMapPoint(x: nw.x + self.size.width, y: nw.y)
+        let se = MKMapPoint(x: ne.x, y: ne.y + self.size.height)
+        let sw = MKMapPoint(x: nw.x, y: se.y)
+        return (nw: nw, ne: ne, se: se, sw: sw)
+    }
+
     static public func == (lhs: MKMapRect, rhs: MKMapRect) -> Bool {
         return lhs.origin == rhs.origin && lhs.size == rhs.size
     }

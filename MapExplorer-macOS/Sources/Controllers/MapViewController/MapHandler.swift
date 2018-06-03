@@ -6,7 +6,6 @@ import MapKit
 
 typealias MapState = (pair: Int?, group: Int?)
 
-
 private enum UserActivity {
     case idle
     case active
@@ -28,12 +27,14 @@ class MapHandler {
         return stateForMap[mapID]
     }
 
+    struct MapConstants {
+        static let canadaRect = MKMapRect(origin: MKMapPoint(x: 23000000, y: 70000000), size: MKMapSize(width: 80000000, height: 0))
+    }
+
     private struct Constants {
         static let masterID = 0
         static let ungroupTimeoutPeriod: TimeInterval = 10
         static let resetTimeoutPeriod: TimeInterval = 180
-        static let canadaOrigin = MKMapPoint(x: 23000000, y: 70000000)
-        static let canadaSize = MKMapSize(width: 80000000, height: 0)
         static let verticalPanLimit: Double = 100000000
         static let verticalVisibleMapRatio = 0.25
     }
@@ -84,12 +85,13 @@ class MapHandler {
     }
 
     func reset() {
+        let canadaRect = MapConstants.canadaRect
         if Configuration.mapsPerScreen == 1 {
-            mapView.setVisibleMapRect(MKMapRect(origin: Constants.canadaOrigin, size: Constants.canadaSize), animated: true)
+            mapView.setVisibleMapRect(MKMapRect(origin: canadaRect.origin, size: canadaRect.size), animated: true)
         } else {
-            let newWidth = Constants.canadaSize.width / (Double(Configuration.mapsPerScreen) - 1.0)
-            let newXOrigin = ((Double(mapID).truncatingRemainder(dividingBy: Double(Configuration.mapsPerScreen)) * newWidth) - (newWidth / 2)) + Constants.canadaOrigin.x
-            let mapRect = MKMapRect(origin: MKMapPoint(x: newXOrigin, y: Constants.canadaOrigin.y), size: MKMapSize(width: newWidth, height: 0.0))
+            let newWidth = canadaRect.size.width / (Double(Configuration.mapsPerScreen) - 1.0)
+            let newXOrigin = ((Double(mapID).truncatingRemainder(dividingBy: Double(Configuration.mapsPerScreen)) * newWidth) - (newWidth / 2)) + canadaRect.origin.x
+            let mapRect = MKMapRect(origin: MKMapPoint(x: newXOrigin, y: canadaRect.origin.y), size: MKMapSize(width: newWidth, height: 0.0))
             mapView.setVisibleMapRect(mapRect, animated: true)
         }
     }
@@ -150,6 +152,7 @@ class MapHandler {
     private func set(_ mapRect: MKMapRect, from pair: Int?, animated: Bool) {
         var xOrigin = 0.0
         let pairedID = pair ?? mapID
+        let canadaRect = MapConstants.canadaRect
         if mapRect.origin.x > MKMapSizeWorld.width - mapRect.size.width {
             xOrigin = mapRect.origin.x - MKMapSizeWorld.width + Double(mapID - pairedID) * mapRect.size.width
         } else {
@@ -157,12 +160,12 @@ class MapHandler {
         }
 
         var yOrigin = mapRect.origin.y
-        if xOrigin > Constants.canadaOrigin.x + Constants.canadaSize.width {
-            let distance = xOrigin - Constants.canadaOrigin.x + mapRect.size.width
-            xOrigin = distance.truncatingRemainder(dividingBy: Constants.canadaSize.width + mapRect.size.width) - mapRect.size.width + Constants.canadaOrigin.x
-        } else if xOrigin + mapRect.size.width < Constants.canadaOrigin.x {
-            let distance = Constants.canadaSize.width + Constants.canadaOrigin.x - xOrigin
-            xOrigin = Constants.canadaOrigin.x + Constants.canadaSize.width - distance.truncatingRemainder(dividingBy: Constants.canadaSize.width + mapRect.size.width)
+        if xOrigin > canadaRect.origin.x + canadaRect.size.width {
+            let distance = xOrigin - canadaRect.origin.x + mapRect.size.width
+            xOrigin = distance.truncatingRemainder(dividingBy: canadaRect.size.width + mapRect.size.width) - mapRect.size.width + canadaRect.origin.x
+        } else if xOrigin + mapRect.size.width < canadaRect.origin.x {
+            let distance = canadaRect.size.width + canadaRect.origin.x - xOrigin
+            xOrigin = canadaRect.origin.x + canadaRect.size.width - distance.truncatingRemainder(dividingBy: canadaRect.size.width + mapRect.size.width)
         }
 
         if mapRect.origin.y + mapRect.size.height * Constants.verticalVisibleMapRatio > Constants.verticalPanLimit {
