@@ -217,11 +217,23 @@ class MenuViewController: NSViewController, GestureResponder {
     }
 
     private func didSelect(type: MenuButtonType) {
-        guard selectedButtons.contains(type) else {
-            if type == .splitScreen {
+        guard selectedButtons.index(of: type) != nil else {
+            switch type {
+            case .splitScreen:
                 menuStateHelper?.splitButtonToggled(by: self, to: .on)
-            } else if type == .search {
+            case .mapToggle:
+                if mapApplication == nil, let screenIndex = calculateScreenIndex(), let mapIndex = calculateMapIndex() {
+                    mapApplication = open(.mapExplorer, screenID: screenIndex, appID: mapIndex)
+                }
+            case .timelineToggle:
+                if let mapApplication = mapApplication {
+                    mapApplication.terminate()
+                    self.mapApplication = nil
+                }
+            case .search:
                 searchSelected()
+            default:
+                break
             }
 
             buttonToggled(type: type, selection: .on)
@@ -266,5 +278,41 @@ class MenuViewController: NSViewController, GestureResponder {
         }
 
         WindowManager.instance.display(.search, at: CGPoint(x: x, y: y))
+    }
+
+    /// Open a known application type with the required parameters
+    @discardableResult
+    private func open(_ application: ApplicationType, screenID: Int, appID: Int) -> NSRunningApplication? {
+        let args = [String(screenID), String(appID)]
+
+        do {
+            let url = URL(fileURLWithPath: application.path)
+            let config = [NSWorkspace.LaunchConfigurationKey.arguments: args]
+            let application = try NSWorkspace.shared.launchApplication(at: url, options: .newInstance, configuration: config)
+            return application
+        } catch {
+            print("Failed to open application at path: \(application.path).")
+            return nil
+        }
+    }
+
+    /// Calculates the screen index based off the x-position of the menu and the screens
+    private func calculateScreenIndex() -> Int? {
+        guard let window = view.window, let screen = NSScreen.containing(x: window.frame.midX), let screenIndex = screen.orderedIndex else {
+            return nil
+        }
+
+        return screenIndex
+    }
+
+    /// Calculates the map index based off the x-position of the menu and the screens
+    private func calculateMapIndex() -> Int? {
+        guard let window = view.window, let screen = NSScreen.containing(x: window.frame.midX) else {
+            return nil
+        }
+
+        let mapWidth = screen.frame.width / CGFloat(Configuration.mapsPerScreen)
+        let mapIndex = Int((window.frame.origin.x - screen.frame.minX) / mapWidth)
+        return mapIndex
     }
 }
