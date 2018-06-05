@@ -219,15 +219,13 @@ class MenuViewController: NSViewController, GestureResponder {
             case .splitScreen:
                 menuStateHelper?.splitButtonToggled(by: self, to: .on)
             case .mapToggle:
-                if let screenIndex = calculateScreenIndex(), let mapIndex = calculateMapIndex() {
-                    MasterViewController.instance?.apply(.menuLaunchedMapExplorer, toScreen: screenIndex - 1, on: mapIndex)
-                    buttonToggled(type: .timelineToggle, selection: .off)
+                if mapApplication == nil, let screenIndex = calculateScreenIndex(), let mapIndex = calculateMapIndex() {
+                    mapApplication = open(.mapExplorer, screenID: screenIndex, appID: mapIndex)
                 }
-
             case .timelineToggle:
-                if let screenIndex = calculateScreenIndex(), let mapIndex = calculateMapIndex() {
-                    MasterViewController.instance?.apply(.menuLaunchedTimeline, toScreen: screenIndex - 1, on: mapIndex)
-                    buttonToggled(type: .mapToggle, selection: .off)
+                if let mapApplication = mapApplication {
+                    mapApplication.terminate()
+                    self.mapApplication = nil
                 }
             case .search:
                 searchSelected()
@@ -277,6 +275,22 @@ class MenuViewController: NSViewController, GestureResponder {
         }
 
         WindowManager.instance.display(.search, at: CGPoint(x: x, y: y))
+    }
+
+    /// Open a known application type with the required parameters
+    @discardableResult
+    private func open(_ application: ApplicationType, screenID: Int, appID: Int) -> NSRunningApplication? {
+        let args = [String(screenID), String(appID)]
+
+        do {
+            let url = URL(fileURLWithPath: application.path)
+            let config = [NSWorkspace.LaunchConfigurationKey.arguments: args]
+            let application = try NSWorkspace.shared.launchApplication(at: url, options: .newInstance, configuration: config)
+            return application
+        } catch {
+            print("Failed to open application at path: \(application.path).")
+            return nil
+        }
     }
 
     /// Calculates the screen index based off the x-position of the menu and the screens
