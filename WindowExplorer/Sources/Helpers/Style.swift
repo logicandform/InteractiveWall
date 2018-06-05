@@ -28,8 +28,6 @@ final class Style {
     let playerWindowSize = CGSize(width: 640, height: 440)
     let searchWindowSize = CGSize(width: 350, height: 655)
     let searchScrollViewSize = CGSize(width: 350, height: 610)
-    let menuWindowSize = CGSize(width: 60, height: 310)
-    let menuImageSize = CGSize(width: 40, height: 40)
     let minMediaWindowWidth: CGFloat = 550
     let maxMediaWindowWidth: CGFloat = 700
     let minMediaWindowHeight: CGFloat = 275
@@ -38,6 +36,11 @@ final class Style {
 
     // Controllers
     let controllerOffset = 50
+
+    // Menu
+    let menuWindowSize = CGSize(width: 50, height: 300)
+    let menuImageSize = CGSize(width: 50, height: 50)
+    let menuSelectedColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
 
     // Titles
     var windowTitleAttributes: [NSAttributedStringKey: Any] {

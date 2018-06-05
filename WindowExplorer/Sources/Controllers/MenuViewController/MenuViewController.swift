@@ -90,21 +90,37 @@ class MenuViewController: NSViewController, GestureResponder {
     }
 
     private func setupButton(with type: MenuButtonType) {
-        guard let view = buttonTypeView[type] else {
+        guard let view = buttonTypeView[type], let imageIcon = type.primaryPlaceholder else {
             return
         }
 
         let image = NSView()
         view.addSubview(image)
         image.wantsLayer = true
-        image.layer?.contents = type.placeholder?.tinted(with: style.unselectedRecordIcon)
+        image.layer?.contents = imageIcon
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.widthAnchor.constraint(equalToConstant: style.menuImageSize.width).isActive = true
-        image.heightAnchor.constraint(equalToConstant: style.menuImageSize.height).isActive = true
+
+        if view.frame.width < imageIcon.size.width {
+            image.widthAnchor.constraint(equalToConstant: style.menuImageSize.width).isActive = true
+        } else {
+            image.widthAnchor.constraint(equalToConstant: imageIcon.size.width).isActive = true
+        }
+
+        if view.frame.height < imageIcon.size.height {
+            image.heightAnchor.constraint(equalToConstant: style.menuImageSize.height).isActive = true
+        } else {
+            image.heightAnchor.constraint(equalToConstant: imageIcon.size.height).isActive = true
+        }
+
         image.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         image.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         buttonTypeSubview[type] = image
         addGesture(for: type)
+
+        if type == .splitScreen {
+            view.wantsLayer = true
+            view.layer?.backgroundColor = style.menuSelectedColor.cgColor
+        }
     }
 
 
@@ -119,12 +135,15 @@ class MenuViewController: NSViewController, GestureResponder {
         case .on:
             if !selectedButtons.contains(type) {
                 selectedButtons.append(type)
-                image.transition(to: type.placeholder?.tinted(with: type.color), duration: Constants.imageTransitionDuration)
+
+                if let activeIcon = type.selectedPlaceholder {
+                    image.transition(to: activeIcon, duration: Constants.imageTransitionDuration)
+                }
             }
         case .off:
             if let selectedButtonIndex = selectedButtons.index(of: type) {
                 selectedButtons.remove(at: selectedButtonIndex)
-                image.transition(to: type.placeholder?.tinted(with: style.unselectedRecordIcon), duration: Constants.imageTransitionDuration)
+                image.transition(to: type.primaryPlaceholder, duration: Constants.imageTransitionDuration)
             }
         }
     }
@@ -170,16 +189,18 @@ class MenuViewController: NSViewController, GestureResponder {
     // MARK: Helpers
 
     private func addGesture(for type: MenuButtonType) {
-        guard let subview = buttonTypeSubview[type] else {
+        guard let view = buttonTypeView[type], let subview = buttonTypeSubview[type] else {
             return
         }
 
         let panGesture = PanGestureRecognizer()
         gestureManager.add(panGesture, to: subview)
+        gestureManager.add(panGesture, to: view)
         panGesture.gestureUpdated = handleWindowPan(_:)
 
         let tapGesture = TapGestureRecognizer()
         gestureManager.add(tapGesture, to: subview)
+        gestureManager.add(tapGesture, to: view)
 
         tapGesture.gestureUpdated = { [weak self] tap in
             if tap.state == .ended {
