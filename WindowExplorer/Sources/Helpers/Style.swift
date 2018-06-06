@@ -43,6 +43,9 @@ final class Style {
     let menuSelectedColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
     let menuLockIconPosition = CGSize(width: -3, height: 3)
 
+    // Settings
+    let settingsWindowSize = CGSize(width: 325, height: 296)
+
     // Titles
     var windowTitleAttributes: [NSAttributedStringKey: Any] {
         let font = NSFont(name: "Soleil", size: 16) ?? NSFont.systemFont(ofSize: 16)

@@ -20,8 +20,8 @@ class MenuViewController: NSViewController, GestureResponder {
     private var viewForButtonType = [MenuButtonType: NSView]()
     private var subviewForButtonType = [MenuButtonType: NSView]()
     private var selectedButtons = [MenuButtonType]()
-    private var lockIcon: NSView?
-    private var scrollThresholdAchieved = false
+    private var mapApplication: NSRunningApplication?
+    private var settingsMenu: NSViewController?
 
     private struct Constants {
         static let minimumScrollThreshold: CGFloat = 4
@@ -215,9 +215,10 @@ class MenuViewController: NSViewController, GestureResponder {
 
     private func didSelect(type: MenuButtonType) {
         guard selectedButtons.index(of: type) != nil else {
+            // Button is not currently selected
             switch type {
             case .splitScreen:
-                menuStateHelper?.splitButtonToggled(by: self, to: .on)
+                splitStateHelper?.splitButtonToggled(by: self, to: .on)
             case .mapToggle:
                 if mapApplication == nil, let screenIndex = calculateScreenIndex(), let mapIndex = calculateMapIndex() {
                     mapApplication = open(.mapExplorer, screenID: screenIndex, appID: mapIndex)
@@ -227,8 +228,10 @@ class MenuViewController: NSViewController, GestureResponder {
                     mapApplication.terminate()
                     self.mapApplication = nil
                 }
+            case .settings:
+                settingsMenu = WindowManager.instance.display(.settings, at: selectedPosition(for: settingsButton, frame: style.settingsWindowSize)) as? SettingsMenuViewController
             case .search:
-                searchSelected()
+                WindowManager.instance.display(.search, at: selectedPosition(for: searchButton, frame: style.searchWindowSize))
             default:
                 break
             }
@@ -237,8 +240,14 @@ class MenuViewController: NSViewController, GestureResponder {
             return
         }
 
-        if type == .splitScreen {
-            menuStateHelper?.splitButtonToggled(by: self, to: .off)
+        // Button is currently selected
+        switch type {
+        case .splitScreen:
+            splitStateHelper?.splitButtonToggled(by: self, to: .off)
+        case .settings:
+            settingsMenu?.view.window?.close()
+        default:
+            break
         }
 
         buttonToggled(type: type, selection: .off)
@@ -261,20 +270,20 @@ class MenuViewController: NSViewController, GestureResponder {
         return origin
     }
 
-    private func searchSelected() {
+    private func selectedPosition(for button: NSImageView, frame: CGSize) -> CGPoint {
         guard let windowPosition = searchButton.window?.frame, let screenBounds = NSScreen.containing(x: windowPosition.origin.x)?.frame else {
-            return
+            return CGPoint(x: 0, y: 0)
         }
 
-        let buttonOrigin = windowPosition.transformed(from: searchButton.frame).origin
+        let buttonOrigin = windowPosition.transformed(from: button.frame).origin
         var x = windowPosition.maxX + style.windowMargins
-        let y = buttonOrigin.y + style.menuImageSize.height - style.searchWindowSize.height
+        let y = buttonOrigin.y + style.menuImageSize.height - frame.height
 
         if windowPosition.maxX >= screenBounds.maxX {
-            x = windowPosition.origin.x - style.searchWindowSize.width - style.windowMargins
+            x = windowPosition.origin.x - frame.width - style.windowMargins
         }
 
-        WindowManager.instance.display(.search, at: CGPoint(x: x, y: y))
+        return CGPoint(x: x, y: y)
     }
 
     /// Open a known application type with the required parameters
