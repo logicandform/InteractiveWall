@@ -106,6 +106,7 @@
 		8FEABDA12064702600612C84 /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEABD9F2064702600612C84 /* MediaViewController.swift */; };
 		A407160E20AB94B800B54593 /* PriorityOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A407160D20AB94B800B54593 /* PriorityOrder.swift */; };
 		A407161220ABAE5C00B54593 /* RelationshipHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A407161120ABAE5B00B54593 /* RelationshipHelper.swift */; };
+		A450D0DA20C84C3F00646F09 /* MacToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450D0D920C84C3F00646F09 /* MacToggle.swift */; };
 		A455CC7120BC949B00457ACF /* MenuStateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A455CC7020BC949B00457ACF /* MenuStateHelper.swift */; };
 		A456F6C020C73826004534A4 /* SettingsMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A456F6BF20C73826004534A4 /* SettingsMenuViewController.swift */; };
 		A456F6C220C73836004534A4 /* SettingsMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A456F6C120C73836004534A4 /* SettingsMenu.storyboard */; };
@@ -256,6 +257,7 @@
 		A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_WindowExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A407160D20AB94B800B54593 /* PriorityOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityOrder.swift; sourceTree = "<group>"; };
 		A407161120ABAE5B00B54593 /* RelationshipHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipHelper.swift; sourceTree = "<group>"; };
+		A450D0D920C84C3F00646F09 /* MacToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacToggle.swift; sourceTree = "<group>"; };
 		A455CC7020BC949B00457ACF /* MenuStateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuStateHelper.swift; sourceTree = "<group>"; };
 		A456F6BF20C73826004534A4 /* SettingsMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMenuViewController.swift; sourceTree = "<group>"; };
 		A456F6C120C73836004534A4 /* SettingsMenu.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsMenu.storyboard; sourceTree = "<group>"; };
@@ -684,6 +686,7 @@
 				D92E0EFD20604BDB00C1C9A7 /* PageControl.swift */,
 				D92E0EFF206052C900C1C9A7 /* ArrowControl.swift */,
 				8F6EFD7C2098FF0800E4D97D /* FadingScrollView.swift */,
+				A450D0D920C84C3F00646F09 /* MacToggle.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -950,6 +953,7 @@
 				8FE6467B2060553100E6116A /* RegularScrollView.swift in Sources */,
 				225FBBA5208EAF9400B2CD3E /* ControlAction.swift in Sources */,
 				2247670020562F65003E8790 /* MediaItemView.swift in Sources */,
+				A450D0DA20C84C3F00646F09 /* MacToggle.swift in Sources */,
 				22914F77204905230000D4E1 /* NSApplication.swift in Sources */,
 				A455CC7120BC949B00457ACF /* MenuStateHelper.swift in Sources */,
 				A407160E20AB94B800B54593 /* PriorityOrder.swift in Sources */,
