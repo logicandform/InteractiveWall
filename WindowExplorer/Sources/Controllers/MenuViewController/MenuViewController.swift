@@ -21,6 +21,7 @@ class MenuViewController: NSViewController, GestureResponder {
     private var buttonTypeView = [MenuButtonType: NSView]()
     private var buttonTypeSubview = [MenuButtonType: NSView]()
     private var selectedButtons = [MenuButtonType]()
+    private var lockIcon: NSView?
 
     private struct Constants {
         static let minimumScrollSpeed: CGFloat = 4
@@ -117,9 +118,21 @@ class MenuViewController: NSViewController, GestureResponder {
         buttonTypeSubview[type] = image
         addGesture(for: type)
 
-        if type == .splitScreen {
+        if type == .splitScreen, let secondaryPlaceholder = type.secondaryPlaceholder {
             view.wantsLayer = true
             view.layer?.backgroundColor = style.menuSelectedColor.cgColor
+
+            let lockIcon = NSView()
+            view.addSubview(lockIcon)
+            lockIcon.wantsLayer = true
+            lockIcon.translatesAutoresizingMaskIntoConstraints = false
+
+            lockIcon.widthAnchor.constraint(equalToConstant: secondaryPlaceholder.size.width).isActive = true
+            lockIcon.heightAnchor.constraint(equalToConstant: secondaryPlaceholder.size.height).isActive = true
+
+            lockIcon.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: style.menuLockIconPosition.width).isActive = true
+            lockIcon.topAnchor.constraint(equalTo: view.topAnchor, constant: style.menuLockIconPosition.height).isActive = true
+            self.lockIcon = lockIcon
         }
     }
 
@@ -139,11 +152,19 @@ class MenuViewController: NSViewController, GestureResponder {
                 if let activeIcon = type.selectedPlaceholder {
                     image.transition(to: activeIcon, duration: Constants.imageTransitionDuration)
                 }
+
+                if type == .splitScreen, let lockIcon = lockIcon {
+                    lockIcon.transition(to: type.secondaryPlaceholder, duration: Constants.imageTransitionDuration)
+                }
             }
         case .off:
             if let selectedButtonIndex = selectedButtons.index(of: type) {
                 selectedButtons.remove(at: selectedButtonIndex)
                 image.transition(to: type.primaryPlaceholder, duration: Constants.imageTransitionDuration)
+            }
+
+            if type == .splitScreen, let lockIcon = lockIcon {
+                lockIcon.transition(to: nil, duration: Constants.imageTransitionDuration)
             }
         }
     }

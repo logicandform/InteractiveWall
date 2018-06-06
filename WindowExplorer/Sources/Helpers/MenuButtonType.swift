@@ -46,4 +46,13 @@ enum MenuButtonType {
             return NSImage(named: "search-icon")
         }
     }
+
+    var secondaryPlaceholder: NSImage? {
+        switch self {
+        case .splitScreen:
+            return NSImage(named: "Lock Icon")
+        default:
+            return nil
+        }
+    }
 }

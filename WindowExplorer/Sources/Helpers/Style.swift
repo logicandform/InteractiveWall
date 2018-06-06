@@ -41,6 +41,7 @@ final class Style {
     let menuWindowSize = CGSize(width: 50, height: 300)
     let menuImageSize = CGSize(width: 50, height: 50)
     let menuSelectedColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
+    let menuLockIconPosition = CGSize(width: -3, height: 3)
 
     // Titles
     var windowTitleAttributes: [NSAttributedStringKey: Any] {
