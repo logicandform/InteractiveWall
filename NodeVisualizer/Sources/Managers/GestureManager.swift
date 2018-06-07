@@ -8,8 +8,6 @@ import MapKit
 protocol GestureResponder: class {
     var view: NSView { get }
     var gestureManager: GestureManager! { get }
-    func draggableInside(bounds: CGRect) -> Bool
-    func subview(contains position: CGPoint) -> Bool
 }
 
 
