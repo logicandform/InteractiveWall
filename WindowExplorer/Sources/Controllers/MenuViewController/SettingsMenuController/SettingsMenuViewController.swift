@@ -105,6 +105,20 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         eventsSwitch = setupSwitch(for: .events)
         organizationsSwitch = setupSwitch(for: .organizations)
         artifactsSwitch = setupSwitch(for: .artifacts)
+
+        let newSwitch: SwitchControl = SwitchControl(isOn: true, frame: NSRect(x: 0, y: 0, width: 40, height: 20), textOn: nil, textOff: nil, tintColor: style.artifactSecondarySelectedColor)
+        view.addSubview(newSwitch)
+        newSwitch.translatesAutoresizingMaskIntoConstraints = false
+
+        newSwitch.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        newSwitch.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+
+        let toggleTap = TapGestureRecognizer()
+        gestureManager.add(toggleTap, to: newSwitch)
+        toggleTap.gestureUpdated = { gesture in
+            newSwitch.isOn = false
+        }
+
     }
 
     private func setupSwitch(for type: SettingsTypes) -> MacToggle? {

@@ -110,6 +110,7 @@
 		A455CC7120BC949B00457ACF /* MenuStateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A455CC7020BC949B00457ACF /* MenuStateHelper.swift */; };
 		A456F6C020C73826004534A4 /* SettingsMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A456F6BF20C73826004534A4 /* SettingsMenuViewController.swift */; };
 		A456F6C220C73836004534A4 /* SettingsMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A456F6C120C73836004534A4 /* SettingsMenu.storyboard */; };
+		A457D19820C9A42900D21ABA /* SwitchControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A457D19720C9A42900D21ABA /* SwitchControl.swift */; };
 		A460292920B4C689000F902E /* Menu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A460292820B4C689000F902E /* Menu.storyboard */; };
 		A460292B20B4C6A0000F902E /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A460292A20B4C6A0000F902E /* MenuViewController.swift */; };
 		A4694B66209CEC18006A407F /* RecordFilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4694B65209CEC18006A407F /* RecordFilterType.swift */; };
@@ -261,6 +262,7 @@
 		A455CC7020BC949B00457ACF /* MenuStateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuStateHelper.swift; sourceTree = "<group>"; };
 		A456F6BF20C73826004534A4 /* SettingsMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMenuViewController.swift; sourceTree = "<group>"; };
 		A456F6C120C73836004534A4 /* SettingsMenu.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsMenu.storyboard; sourceTree = "<group>"; };
+		A457D19720C9A42900D21ABA /* SwitchControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchControl.swift; sourceTree = "<group>"; };
 		A460292820B4C689000F902E /* Menu.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Menu.storyboard; sourceTree = "<group>"; };
 		A460292A20B4C6A0000F902E /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		A4694B65209CEC18006A407F /* RecordFilterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFilterType.swift; sourceTree = "<group>"; };
@@ -687,6 +689,7 @@
 				D92E0EFF206052C900C1C9A7 /* ArrowControl.swift */,
 				8F6EFD7C2098FF0800E4D97D /* FadingScrollView.swift */,
 				A450D0D920C84C3F00646F09 /* MacToggle.swift */,
+				A457D19720C9A42900D21ABA /* SwitchControl.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -973,6 +976,7 @@
 				8F2B188F20AA321700C5E0FA /* RelatedItemViewLayout.swift in Sources */,
 				D901EBED2056EEFE00BBFCF2 /* RecordDisplayable.swift in Sources */,
 				22A923212044AF05003EA9BB /* AppDelegate.swift in Sources */,
+				A457D19820C9A42900D21ABA /* SwitchControl.swift in Sources */,
 				22046259204730C70067D9FB /* School.swift in Sources */,
 				226D0582204FC38700D74711 /* Event.swift in Sources */,
 				22AEAF0420B67E6700DD184B /* Math.swift in Sources */,
