@@ -222,13 +222,13 @@ class MenuViewController: NSViewController, GestureResponder {
             case .splitScreen:
                 menuStateHelper?.splitButtonToggled(by: self, to: .on)
             case .mapToggle:
-                if mapApplication == nil, let screenIndex = calculateScreenIndex(), let mapIndex = calculateMapIndex() {
-                    mapApplication = open(.mapExplorer, screenID: screenIndex, appID: mapIndex)
+                if let screenIndex = calculateScreenIndex() {
+                    MasterViewController.instance?.apply(.launchMapExplorer, toScreen: screenIndex - 1)
                 }
+
             case .timelineToggle:
-                if let mapApplication = mapApplication {
-                    mapApplication.terminate()
-                    self.mapApplication = nil
+                if let screenIndex = calculateScreenIndex() {
+                    MasterViewController.instance?.apply(.closeApplication, toScreen: screenIndex - 1)
                 }
             case .search:
                 searchSelected()
@@ -278,22 +278,6 @@ class MenuViewController: NSViewController, GestureResponder {
         }
 
         WindowManager.instance.display(.search, at: CGPoint(x: x, y: y))
-    }
-
-    /// Open a known application type with the required parameters
-    @discardableResult
-    private func open(_ application: ApplicationType, screenID: Int, appID: Int) -> NSRunningApplication? {
-        let args = [String(screenID), String(appID)]
-
-        do {
-            let url = URL(fileURLWithPath: application.path)
-            let config = [NSWorkspace.LaunchConfigurationKey.arguments: args]
-            let application = try NSWorkspace.shared.launchApplication(at: url, options: .newInstance, configuration: config)
-            return application
-        } catch {
-            print("Failed to open application at path: \(application.path).")
-            return nil
-        }
     }
 
     /// Calculates the screen index based off the x-position of the menu and the screens

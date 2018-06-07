@@ -85,6 +85,26 @@ class MasterViewController: NSViewController {
         }
     }
 
+    func apply(_ action: ControlAction, toScreen screen: Int) {
+        // Ignore action if it's current
+        if let currentInfo = infoForScreen[screen], currentInfo.action == action {
+            return
+        }
+
+        // Clear currently running processes
+        terminate(screen: screen)
+
+        // Load new processes
+        switch action {
+        case .launchMapExplorer:
+            launchMaps(screen: screen)
+        case .launchTimeline, .closeApplication, .disconnected:
+            infoForScreen[screen] = ApplicationInfo(action: action, applications: [])
+        }
+
+        transition(screen: screen, to: action)
+    }
+
 
     // MARK: Setup
 
@@ -134,26 +154,6 @@ class MasterViewController: NSViewController {
 
 
     // MARK: Helpers
-
-    private func apply(_ action: ControlAction, toScreen screen: Int) {
-        // Ignore action if it's current
-        if let currentInfo = infoForScreen[screen], currentInfo.action == action {
-            return
-        }
-
-        // Clear currently running processes
-        terminate(screen: screen)
-
-        // Load new processes
-        switch action {
-        case .launchMapExplorer:
-            launchMaps(screen: screen)
-        case .launchTimeline, .closeApplication, .disconnected:
-            infoForScreen[screen] = ApplicationInfo(action: action, applications: [])
-        }
-
-        transition(screen: screen, to: action)
-    }
 
     /// Terminate the processes associated with the given screen
     private func terminate(screen: Int) {
