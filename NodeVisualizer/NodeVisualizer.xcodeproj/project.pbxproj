@@ -52,7 +52,6 @@
 		22D6F91A20B6824300C7FB5F /* RotateGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F91420B6824300C7FB5F /* RotateGestureRecognizer.swift */; };
 		22D6F91B20B6824300C7FB5F /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F91520B6824300C7FB5F /* TapGestureRecognizer.swift */; };
 		22D6F91C20B6824300C7FB5F /* SwipeGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F91620B6824300C7FB5F /* SwipeGestureRecognizer.swift */; };
-		CD006ADE20C88CDE006F0FB4 /* TouchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD006ADD20C88CDD006F0FB4 /* TouchManager.swift */; };
 		CD006AE020C8A681006F0FB4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD006ADF20C8A681006F0FB4 /* Main.storyboard */; };
 		CD27F40420BCB5B900375CBC /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40320BCB5B900375CBC /* DataManager.swift */; };
 		CD27F40620BCBD5A00375CBC /* RecordFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40520BCBD5A00375CBC /* RecordFactory.swift */; };
@@ -116,7 +115,6 @@
 		28A74D0C56BCB99FB5CDC067 /* Pods_All_NodeVisualizer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_NodeVisualizer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		72B5F6840D3186BD92A6EA0D /* Pods-All-NodeVisualizer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-NodeVisualizer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-NodeVisualizer/Pods-All-NodeVisualizer.release.xcconfig"; sourceTree = "<group>"; };
 		89AF3FC4E45BBD39F89AFF7F /* Pods-All-NodeVisualizer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-NodeVisualizer.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-NodeVisualizer/Pods-All-NodeVisualizer.debug.xcconfig"; sourceTree = "<group>"; };
-		CD006ADD20C88CDD006F0FB4 /* TouchManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchManager.swift; sourceTree = "<group>"; };
 		CD006ADF20C8A681006F0FB4 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		CD27F40320BCB5B900375CBC /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		CD27F40520BCBD5A00375CBC /* RecordFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordFactory.swift; sourceTree = "<group>"; };
@@ -200,7 +198,6 @@
 				22AEAEB520B67C2400DD184B /* AppDelegate.swift */,
 				CD27F40320BCB5B900375CBC /* DataManager.swift */,
 				22AEAED520B67D2600DD184B /* GestureManager.swift */,
-				CD006ADD20C88CDD006F0FB4 /* TouchManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -491,7 +488,6 @@
 				22AEAEBC20B67C2400DD184B /* MainScene.swift in Sources */,
 				22AEAEEB20B67D6800DD184B /* MapKit.swift in Sources */,
 				22D6F90320B6810600C7FB5F /* GestureHandler.swift in Sources */,
-				CD006ADE20C88CDE006F0FB4 /* TouchManager.swift in Sources */,
 				22AEAF0120B67E2C00DD184B /* TouchProperties.swift in Sources */,
 				22AEAEE820B67D6800DD184B /* NSImage.swift in Sources */,
 				CD27F40620BCBD5A00375CBC /* RecordFactory.swift in Sources */,
