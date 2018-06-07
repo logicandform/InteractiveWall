@@ -20,18 +20,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Insert code here to initialize your application
+        // For now, hardcode screen position to be 1
+        let screen = NSScreen.at(position: 1)
+        let frame = NSRect(x: screen.frame.minX, y: screen.frame.minY, width: screen.frame.width, height: screen.frame.height)
+        let controller = MainViewController.instance()
 
-        let vc = MainViewController.instance()
-        let screen = NSScreen.main!
-        let window = NSWindow()
-        let origin = CGPoint(x: screen.frame.midX - vc.view.frame.width / 2, y: screen.frame.midY - vc.view.frame.height / 2)
-        window.contentViewController = vc
-        window.title = "Node Visualizer"
-        window.setFrame(CGRect(origin: origin, size: vc.view.frame.size), display: true)
-        window.styleMask.insert(.resizable)
+        let window = BorderlessWindow(frame: frame, controller: controller)
+        window.setFrame(frame, display: true)
         window.makeKeyAndOrderFront(self)
-
     }
     
     func applicationWillTerminate(_ aNotification: Notification) {

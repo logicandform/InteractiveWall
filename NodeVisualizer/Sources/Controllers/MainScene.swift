@@ -34,7 +34,7 @@ class MainScene: SKScene {
     // MARK: Helpers
 
     private func addRecordNodesToScene() {
-        records.prefix(10).enumerated().forEach { index, record in
+        records.prefix(50).enumerated().forEach { index, record in
             let node = RecordNode(record: record)
             node.position = CGPoint(x: frame.width / 2, y: frame.height / 2)
             node.zPosition = 1
