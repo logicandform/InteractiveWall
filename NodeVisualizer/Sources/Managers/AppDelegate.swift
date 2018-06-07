@@ -21,7 +21,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
-        
+
+        let vc = MainViewController.instance()
+        let screen = NSScreen.main!
+        let window = NSWindow()
+        let origin = CGPoint(x: screen.frame.midX - vc.view.frame.width / 2, y: screen.frame.midY - vc.view.frame.height / 2)
+        window.contentViewController = vc
+        window.title = "Node Visualizer"
+        window.setFrame(CGRect(origin: origin, size: vc.view.frame.size), display: true)
+        window.styleMask.insert(.resizable)
+        window.makeKeyAndOrderFront(self)
+
     }
     
     func applicationWillTerminate(_ aNotification: Notification) {

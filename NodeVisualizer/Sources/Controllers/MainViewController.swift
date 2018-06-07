@@ -6,10 +6,19 @@ import GameplayKit
 
 
 class MainViewController: NSViewController {
+    static let storyboard = NSStoryboard.Name(rawValue: "Main")
 
     @IBOutlet var mainView: SKView!
 
     private var records = [RecordDisplayable]()
+
+
+    // MARK: Init
+
+    static func instance() -> MainViewController {
+        let vc = NSStoryboard(name: MainViewController.storyboard, bundle: .main).instantiateInitialController() as! MainViewController
+        return vc
+    }
 
 
     // MARK: Lifecycle

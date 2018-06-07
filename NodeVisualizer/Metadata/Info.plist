@@ -40,7 +40,7 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2018 JABT. All rights reserved.</string>
 	<key>NSMainStoryboardFile</key>
-	<string>Main</string>
+	<string>Master</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>
