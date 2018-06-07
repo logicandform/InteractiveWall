@@ -31,7 +31,7 @@ class MacToggle: NSView {
     fileprivate let backVw: NSView = {
         let view = NSView()
         view.wantsLayer = true
-        view.layer?.masksToBounds = false
+        view.layer?.masksToBounds = true
         return view
     }()
 
@@ -170,6 +170,7 @@ class MacToggle: NSView {
 
     fileprivate func drawView() {
         backVw.backgroundColor = backColor
+        //backVw.layer?.borderColor = backColor.cgColor
 
         addSubview(backVw)
         backVw.translatesAutoresizingMaskIntoConstraints = false
