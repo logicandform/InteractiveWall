@@ -17,9 +17,8 @@ public class SwitchControl: NSButton {
     let kBorderWidth: CGFloat = 1.0
     let kGoldenRatio: CGFloat = 1.61803398875
     let kDecreasedGoldenRatio: CGFloat = 1.38
-    let knobBackgroundColor = style.artifactColor
-    let kDisabledBorderColor = NSColor(calibratedWhite: 0, alpha: 0.2)
-    let kDisabledBackgroundColor = style.eventSecondarySelectedColor
+    let disabledBorderColor = NSColor(calibratedWhite: 0, alpha: 0.2)
+//    let kDisabledBackgroundColor = style.eventSecondarySelectedColor
     let kAnimationDuration = 0.4
     let kEnabledOpacity: CFloat = 0.8
     let kDisabledOpacity: CFloat = 0.5
@@ -29,7 +28,22 @@ public class SwitchControl: NSButton {
             self.refreshLayer()
         }
     }
-    @IBInspectable var tintColor: NSColor {
+    @IBInspectable var knobBackgroundColor: NSColor = .white {
+        didSet {
+            self.refreshLayer()
+        }
+    }
+    @IBInspectable var disabledKnobBackgroundColor: NSColor = .white {
+        didSet {
+            self.refreshLayer()
+        }
+    }
+    @IBInspectable var tintColor: NSColor = .blue {
+        didSet {
+            self.refreshLayer()
+        }
+    }
+    @IBInspectable var disabledBackgroundColor: NSColor = .black {
         didSet {
             self.refreshLayer()
         }
@@ -64,17 +78,9 @@ public class SwitchControl: NSButton {
     }
 
     // MARK: Initializers
-    init(isOn: Bool, frame: NSRect, textOn: String?, textOff: String?, tintColor: NSColor?) {
-
+    init(isOn: Bool, frame: NSRect) {
         self.isOn = isOn
-        if let optionalTintColor = tintColor {
-            self.tintColor = optionalTintColor
-        } else {
-            self.tintColor = kDefaultTintColor
-        }
-
         super.init(frame: frame)
-
         self.setupLayers()
     }
 
@@ -86,7 +92,7 @@ public class SwitchControl: NSButton {
     }
 
     convenience override init(frame frameRect: NSRect) {
-        self.init(isOn: false, frame: frameRect, textOn: nil, textOff: nil, tintColor: nil)
+        self.init(isOn: false, frame: frameRect)
     }
 
     // MARK: Setup
@@ -157,9 +163,13 @@ public class SwitchControl: NSButton {
         if (hasDragged && isDragginToOn) || (!hasDragged && isOn) {
             backgroundLayer.borderColor = tintColor.cgColor
             backgroundLayer.backgroundColor = tintColor.cgColor
+            knobLayer.backgroundColor = knobBackgroundColor.cgColor
+            knobInsideLayer.backgroundColor = knobBackgroundColor.cgColor
         } else {
-            backgroundLayer.borderColor = kDisabledBorderColor.cgColor
-            backgroundLayer.backgroundColor = kDisabledBackgroundColor.cgColor
+            backgroundLayer.borderColor = disabledBorderColor.cgColor
+            backgroundLayer.backgroundColor = disabledBackgroundColor.cgColor
+            knobLayer.backgroundColor = disabledKnobBackgroundColor.cgColor
+            knobInsideLayer.backgroundColor = disabledKnobBackgroundColor.cgColor
         }
 
         if !isActive {

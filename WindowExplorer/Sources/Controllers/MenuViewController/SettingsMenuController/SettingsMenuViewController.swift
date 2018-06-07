@@ -65,15 +65,15 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     @IBOutlet weak var artifactsText: NSTextField!
 
     var gestureManager: GestureManager!
-    private var labelsSwitch: MacToggle?
-    private var miniMapSwitch: MacToggle?
-    private var lightboxSwitch: MacToggle?
-    private var schoolsSwitch: MacToggle?
-    private var eventsSwitch: MacToggle?
-    private var organizationsSwitch: MacToggle?
-    private var artifactsSwitch: MacToggle?
+    private var labelsSwitch: SwitchControl?
+    private var miniMapSwitch: SwitchControl?
+    private var lightboxSwitch: SwitchControl?
+    private var schoolsSwitch: SwitchControl?
+    private var eventsSwitch: SwitchControl?
+    private var organizationsSwitch: SwitchControl?
+    private var artifactsSwitch: SwitchControl?
 
-    private var switchForSettingsType = [SettingsTypes: MacToggle?]()
+    private var switchForSettingsType = [SettingsTypes: SwitchControl?]()
     private var textFieldForSettingsType = [SettingsTypes: NSTextField]()
 
 
@@ -105,44 +105,29 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         eventsSwitch = setupSwitch(for: .events)
         organizationsSwitch = setupSwitch(for: .organizations)
         artifactsSwitch = setupSwitch(for: .artifacts)
-
-        let newSwitch: SwitchControl = SwitchControl(isOn: true, frame: NSRect(x: 0, y: 0, width: 40, height: 20), textOn: nil, textOff: nil, tintColor: style.artifactSecondarySelectedColor)
-        view.addSubview(newSwitch)
-        newSwitch.translatesAutoresizingMaskIntoConstraints = false
-
-        newSwitch.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        newSwitch.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-
-        let toggleTap = TapGestureRecognizer()
-        gestureManager.add(toggleTap, to: newSwitch)
-        toggleTap.gestureUpdated = { gesture in
-            newSwitch.isOn = false
-        }
-
     }
 
-    private func setupSwitch(for type: SettingsTypes) -> MacToggle? {
-        if let textField = textFieldForSettingsType[type] {
-            let toggleSwitch: MacToggle = {
-                let view = MacToggle(height: 20)
-                view.isOn = true
-                view.toggleColor = type.color
-                view.fillColor = type.secondaryColor
-                view.hasToggleBorder = false
-                view.outlineColor = type.secondaryColor
-                return view
-            }()
-
-            view.addSubview(toggleSwitch)
-            toggleSwitch.translatesAutoresizingMaskIntoConstraints = false
-
-            toggleSwitch.topAnchor.constraint(equalTo: textField.topAnchor).isActive = true
-            toggleSwitch.bottomAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
-            toggleSwitch.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
-            return toggleSwitch
+    private func setupSwitch(for type: SettingsTypes) -> SwitchControl? {
+        guard let textField = textFieldForSettingsType[type] else {
+            return nil
         }
 
-        return nil
+        let toggleSwitch: SwitchControl = {
+            let toggle = SwitchControl(isOn: true, frame: NSRect(x: 0, y: 0, width: 32, height: 16))
+            toggle.knobBackgroundColor = type.color
+            toggle.disabledKnobBackgroundColor = style.toggleUnselectedColor
+            toggle.tintColor = type.secondaryColor
+            toggle.disabledBackgroundColor = style.toggleSecondaryUnselectedColor
+            return toggle
+        }()
+
+        view.addSubview(toggleSwitch)
+        toggleSwitch.translatesAutoresizingMaskIntoConstraints = false
+
+        toggleSwitch.topAnchor.constraint(equalTo: textField.topAnchor).isActive = true
+        toggleSwitch.bottomAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
+        toggleSwitch.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+        return toggleSwitch
     }
 
     private func setupGestures() {
