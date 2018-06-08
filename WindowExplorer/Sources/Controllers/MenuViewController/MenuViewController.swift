@@ -21,11 +21,12 @@ class MenuViewController: NSViewController, GestureResponder {
     private var subviewForButtonType = [MenuButtonType: NSView]()
     private var selectedButtons = [MenuButtonType]()
     private var mapApplication: NSRunningApplication?
-    private var settingsMenu: NSViewController?
+    private var settingsMenu: NSViewController!
 
     private struct Constants {
         static let minimumScrollThreshold: CGFloat = 4
         static let imageTransitionDuration = 0.5
+        static let animationDuration = 0.5
     }
 
 
@@ -60,6 +61,11 @@ class MenuViewController: NSViewController, GestureResponder {
 
         setupButtons()
         setupGestures()
+    }
+
+    override func viewDidAppear() {
+        settingsMenu = WindowManager.instance.display(.settings, at: selectedPosition(for: settingsButton, frame: style.settingsWindowSize, margins: false)) as? SettingsMenuViewController
+        settingsMenu.view.alphaValue = 0
     }
 
 
@@ -174,7 +180,7 @@ class MenuViewController: NSViewController, GestureResponder {
     // MARK: Gesture Handling
 
     func handleWindowPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
+        guard let pan = gesture as? PanGestureRecognizer, let window = view.window, let settingsWindow = settingsMenu.view.window else {
             return
         }
 
@@ -229,7 +235,10 @@ class MenuViewController: NSViewController, GestureResponder {
                     self.mapApplication = nil
                 }
             case .settings:
-                settingsMenu = WindowManager.instance.display(.settings, at: selectedPosition(for: settingsButton, frame: style.settingsWindowSize)) as? SettingsMenuViewController
+                NSAnimationContext.runAnimationGroup({ _ in
+                    NSAnimationContext.current.duration = Constants.animationDuration
+                    settingsMenu.view.animator().alphaValue = 1
+                })
             case .search:
                 WindowManager.instance.display(.search, at: selectedPosition(for: searchButton, frame: style.searchWindowSize))
             default:
@@ -245,7 +254,10 @@ class MenuViewController: NSViewController, GestureResponder {
         case .splitScreen:
             splitStateHelper?.splitButtonToggled(by: self, to: .off)
         case .settings:
-            settingsMenu?.view.window?.close()
+            NSAnimationContext.runAnimationGroup({ _ in
+                NSAnimationContext.current.duration = Constants.animationDuration
+                settingsMenu.view.animator().alphaValue = 0
+            })
         default:
             break
         }
@@ -270,17 +282,18 @@ class MenuViewController: NSViewController, GestureResponder {
         return origin
     }
 
-    private func selectedPosition(for button: NSImageView, frame: CGSize) -> CGPoint {
-        guard let windowPosition = searchButton.window?.frame, let screenBounds = NSScreen.containing(x: windowPosition.origin.x)?.frame else {
+    private func selectedPosition(for button: NSImageView, frame: CGSize, margins: Bool = true) -> CGPoint {
+        guard let windowPosition = button.window?.frame, let screenBounds = NSScreen.containing(x: windowPosition.origin.x)?.frame else {
             return CGPoint(x: 0, y: 0)
         }
 
+        let windowMargin = margins ? style.windowMargins : 0
         let buttonOrigin = windowPosition.transformed(from: button.frame).origin
-        var x = windowPosition.maxX + style.windowMargins
+        var x = windowPosition.maxX + windowMargin
         let y = buttonOrigin.y + style.menuImageSize.height - frame.height
 
         if windowPosition.maxX >= screenBounds.maxX {
-            x = windowPosition.origin.x - frame.width - style.windowMargins
+            x = windowPosition.origin.x - frame.width - windowMargin
         }
 
         return CGPoint(x: x, y: y)

@@ -53,6 +53,8 @@ final class Style {
     let eventSecondarySelectedColor = NSColor(calibratedRed: 0.29, green: 0.07, blue: 0.16, alpha: 1)
     let toggleUnselectedColor = NSColor(calibratedRed: 0.51, green: 0.62, blue: 0.65, alpha: 1)
     let toggleSecondaryUnselectedColor = NSColor(calibratedRed: 0.16, green: 0.18, blue: 0.19, alpha: 1)
+    let toggleSwitchFrame = NSRect(x: 0, y: 0, width: 32, height: 16)
+    let toggleSwitchOffset: CGFloat = -30
 
     // Titles
     var windowTitleAttributes: [NSAttributedStringKey: Any] {

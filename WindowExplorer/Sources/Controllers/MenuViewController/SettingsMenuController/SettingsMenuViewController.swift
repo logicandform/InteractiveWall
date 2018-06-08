@@ -65,15 +65,15 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     @IBOutlet weak var artifactsText: NSTextField!
 
     var gestureManager: GestureManager!
-    private var labelsSwitch: SwitchControl?
-    private var miniMapSwitch: SwitchControl?
-    private var lightboxSwitch: SwitchControl?
-    private var schoolsSwitch: SwitchControl?
-    private var eventsSwitch: SwitchControl?
-    private var organizationsSwitch: SwitchControl?
-    private var artifactsSwitch: SwitchControl?
+    private var labelsSwitch: SwitchControl!
+    private var miniMapSwitch: SwitchControl!
+    private var lightboxSwitch: SwitchControl!
+    private var schoolsSwitch: SwitchControl!
+    private var eventsSwitch: SwitchControl!
+    private var organizationsSwitch: SwitchControl!
+    private var artifactsSwitch: SwitchControl!
 
-    private var switchForSettingsType = [SettingsTypes: SwitchControl?]()
+    private var switchForSettingsType = [SettingsTypes: SwitchControl]()
     private var textFieldForSettingsType = [SettingsTypes: NSTextField]()
 
 
@@ -87,10 +87,11 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
 
-//        switchForSettingsType = [.showLabels: labelsSwitch, .showMiniMap: miniMapSwitch, .showLightbox: lightboxSwitch, .schools: schoolsSwitch, .events: eventsSwitch, .organizations: organizationsSwitch, .artifacts: artifactsSwitch]
         textFieldForSettingsType = [.showLabels: labelsText, .showMiniMap: miniMapText, .showLightbox: lightboxText, .schools: schoolsText, .events: eventsText, .organizations: organizationsText, .artifacts: artifactsText]
-
         setupSwitches()
+        switchForSettingsType = [.showLabels: labelsSwitch, .showMiniMap: miniMapSwitch, .showLightbox: lightboxSwitch, .schools: schoolsSwitch, .events: eventsSwitch, .organizations: organizationsSwitch, .artifacts: artifactsSwitch]
+
+
         setupGestures()
     }
 
@@ -113,7 +114,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         }
 
         let toggleSwitch: SwitchControl = {
-            let toggle = SwitchControl(isOn: true, frame: NSRect(x: 0, y: 0, width: 32, height: 16))
+            let toggle = SwitchControl(isOn: true, frame: style.toggleSwitchFrame)
             toggle.knobBackgroundColor = type.color
             toggle.disabledKnobBackgroundColor = style.toggleUnselectedColor
             toggle.tintColor = type.secondaryColor
@@ -124,32 +125,35 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         view.addSubview(toggleSwitch)
         toggleSwitch.translatesAutoresizingMaskIntoConstraints = false
 
-        toggleSwitch.topAnchor.constraint(equalTo: textField.topAnchor).isActive = true
-        toggleSwitch.bottomAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
-        toggleSwitch.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+        toggleSwitch.centerYAnchor.constraint(equalTo: textField.centerYAnchor).isActive = true
+        toggleSwitch.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: style.toggleSwitchOffset).isActive = true
+        toggleSwitch.heightAnchor.constraint(equalToConstant: style.toggleSwitchFrame.height).isActive = true
+        toggleSwitch.widthAnchor.constraint(equalToConstant: style.toggleSwitchFrame.width).isActive = true
         return toggleSwitch
     }
 
     private func setupGestures() {
-        guard let labelsSwitch = labelsSwitch else {
+        setupGesture(for: .showLabels)
+        setupGesture(for: .showMiniMap)
+        setupGesture(for: .showLightbox)
+        setupGesture(for: .schools)
+        setupGesture(for: .artifacts)
+        setupGesture(for: .events)
+        setupGesture(for: .organizations)
+    }
+
+    private func setupGesture(for type: SettingsTypes) {
+        guard let toggleSwitch = switchForSettingsType[type] else {
             return
         }
 
         let toggleTap = TapGestureRecognizer()
-        gestureManager.add(toggleTap, to: labelsSwitch)
-        toggleTap.gestureUpdated = handleToggle(_:)
-    }
+        gestureManager.add(toggleTap, to: toggleSwitch)
 
-
-    // MARK: Gesture Handling
-
-    private func handleToggle(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
-            return
-        }
-
-        if let labelsSwitch = labelsSwitch {
-            labelsSwitch.isOn = !labelsSwitch.isOn
+        toggleTap.gestureUpdated = { [weak self] tap in
+            if tap.state == .ended {
+                self?.handle(toggleSwitch: toggleSwitch)
+            }
         }
     }
 
@@ -166,6 +170,17 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     }
 
     func subview(contains position: CGPoint) -> Bool {
-        return view.frame.contains(position)
+        if view.alphaValue == 0 {
+            return false
+        } else {
+            return view.frame.contains(position)
+        }
+    }
+
+
+    // MARK: Helpers
+
+    private func handle(toggleSwitch: SwitchControl) {
+        toggleSwitch.isOn = !toggleSwitch.isOn
     }
 }
