@@ -111,6 +111,7 @@
 		A460292B20B4C6A0000F902E /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A460292A20B4C6A0000F902E /* MenuViewController.swift */; };
 		A4694B66209CEC18006A407F /* RecordFilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4694B65209CEC18006A407F /* RecordFilterType.swift */; };
 		A479488020B89ACC00091CEC /* MenuButtonType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A479487F20B89ACC00091CEC /* MenuButtonType.swift */; };
+		A47C67E420CB07CB00C361D1 /* MapNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47C67E320CB07CB00C361D1 /* MapNotification.swift */; };
 		C6DB17689F287C9826286DF2 /* Pods_All_WindowExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */; };
 		CD096C8A20A3AD7F00C8A732 /* GeocodeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD096C8920A3AD7F00C8A732 /* GeocodeHelper.swift */; };
 		CD7B3CD120ADFB1400723BDB /* ImageZoomControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD7B3CD020ADFB1400723BDB /* ImageZoomControl.xib */; };
@@ -258,6 +259,7 @@
 		A460292A20B4C6A0000F902E /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		A4694B65209CEC18006A407F /* RecordFilterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFilterType.swift; sourceTree = "<group>"; };
 		A479487F20B89ACC00091CEC /* MenuButtonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButtonType.swift; sourceTree = "<group>"; };
+		A47C67E320CB07CB00C361D1 /* MapNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapNotification.swift; sourceTree = "<group>"; };
 		CD096C8920A3AD7F00C8A732 /* GeocodeHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeocodeHelper.swift; sourceTree = "<group>"; };
 		CD7B3CD020ADFB1400723BDB /* ImageZoomControl.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageZoomControl.xib; sourceTree = "<group>"; };
 		CD7B3CD220ADFB2500723BDB /* ImageZoomControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageZoomControl.swift; sourceTree = "<group>"; };
@@ -396,6 +398,7 @@
 			isa = PBXGroup;
 			children = (
 				22A498602047349C0024B46C /* WindowNotifications.swift */,
+				A47C67E320CB07CB00C361D1 /* MapNotification.swift */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -865,6 +868,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F910718206C2973008F9513 /* ImageView.swift in Sources */,
+				A47C67E420CB07CB00C361D1 /* MapNotification.swift in Sources */,
 				22A76FEC2046477A006C0AE7 /* PlayerViewController.swift in Sources */,
 				D92E0F00206052C900C1C9A7 /* ArrowControl.swift in Sources */,
 				2204623520472FDF0067D9FB /* Int.swift in Sources */,

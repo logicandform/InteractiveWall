@@ -17,6 +17,8 @@ class MapHandler {
     let mapView: MKMapView
     let mapID: Int
 
+    var border: NSView?
+
     /// The state for a map indexed by it's mapID
     private var stateForMap: [MapState]
     private var activityState = UserActivity.idle
@@ -107,7 +109,7 @@ class MapHandler {
 
     @objc
     private func handleNotification(_ notification: NSNotification) {
-        guard let info = notification.userInfo, let fromID = info[Keys.id] as? Int else {
+        guard let info = notification.userInfo, let ID = info[Keys.id] as? Int else {
             return
         }
 
@@ -115,11 +117,11 @@ class MapHandler {
         case MapNotification.position.name:
             resetTimer?.invalidate()
             if let mapJSON = info[Keys.map] as? JSON, let fromGroup = info[Keys.group] as? Int, let mapRect = MKMapRect(json: mapJSON), let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture), let animated = info[Keys.animated] as? Bool {
-                setMapState(from: fromID, group: fromGroup, momentum: state == .momentum)
-                handle(mapRect, from: fromID, group: fromGroup, animated: animated)
+                setMapState(from: ID, group: fromGroup, momentum: state == .momentum)
+                handle(mapRect, from: ID, group: fromGroup, animated: animated)
             }
         case MapNotification.unpair.name:
-            unpair(from: fromID)
+            unpair(from: ID)
         case MapNotification.ungroup.name:
             beginResetTimer()
             if let fromGroup = info[Keys.group] as? Int {
@@ -127,6 +129,14 @@ class MapHandler {
             }
         case MapNotification.reset.name:
             reset()
+        case MapNotification.toggleBorderOn.name:
+            if ID == mapID {
+                border?.isHidden = false
+            }
+        case MapNotification.toggleBorderOff.name:
+            if ID == mapID {
+                border?.isHidden = true
+            }
         default:
             return
         }
