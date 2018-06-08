@@ -41,6 +41,7 @@ class MainScene: SKScene {
     }
 
     private func setupSystemGesturesForTest(to view: SKView) {
+//        let tapGesture = NSPressGestureRecognizer(target: self, action: #selector(handleSystemClickGesture(_:)))
         let tapGesture = NSClickGestureRecognizer(target: self, action: #selector(handleSystemClickGesture(_:)))
         view.addGestureRecognizer(tapGesture)
     }
@@ -50,10 +51,9 @@ class MainScene: SKScene {
         physicsWorld.gravity = .zero
     }
 
-    private func addRecordNodesToScene() {
-        records.prefix(5).enumerated().forEach { index, record in
+    private func addRecordNodesToScene() { 
+        records.prefix(20).enumerated().forEach { index, record in
             let node = RecordNode(record: record)
-//            node.position = CGPoint(x: frame.width / 2, y: frame.height / 2)
 
             node.position.x = randomX()
             node.position.y = randomY()
@@ -94,9 +94,11 @@ class MainScene: SKScene {
         switch recognizer.state {
         case .began:
             // perform animation
+            print("began")
             return
         case .ended:
             // move all related nodes
+            print("ended")
             return
         default:
             return

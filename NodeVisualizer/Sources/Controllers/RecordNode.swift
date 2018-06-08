@@ -12,7 +12,7 @@ class RecordNode: SKNode {
     private struct Constants {
         static let borderCornerRadius: CGFloat = 0.3
         static let centerOffset: CGFloat = 0.2
-        static let labelFontSize: CGFloat = 13
+        static let labelFontSize: CGFloat = 10
     }
 
 
@@ -44,7 +44,7 @@ class RecordNode: SKNode {
     private func makeRecordNode() {
         let rootNode = makeRootNode()
 
-        addTitleLabelNode(to: rootNode)
+//        addTitleLabelNode(to: rootNode)
         addIdLabelNode(to: rootNode)
 
         setupPhysics()
@@ -52,7 +52,7 @@ class RecordNode: SKNode {
 
     private func makeRootNode() -> SKNode {
         let rootNode = SKSpriteNode()
-        rootNode.size = CGSize(width: 50, height: 50)
+        rootNode.size = CGSize(width: 20, height: 20)
         rootNode.color = record.type.color
         addChild(rootNode)
         return rootNode
@@ -75,7 +75,7 @@ class RecordNode: SKNode {
         id.text = String(record.id)
         id.verticalAlignmentMode = .center
         id.horizontalAlignmentMode = .center
-        id.position.y = -(root.frame.height / 2 * Constants.centerOffset)
+//        id.position.y = -(root.frame.height / 2 * Constants.centerOffset)
         id.fontSize = Constants.labelFontSize
         id.fontColor = .black
         root.addChild(id)

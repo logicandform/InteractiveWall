@@ -106,16 +106,6 @@ extension MainViewController: SocketManagerDelegate {
         return true
     }
 
-    private func convertToScreen(_ touch: Touch) {
-        guard let screen = NSScreen.screens.at(index: touch.screen) else {
-            return
-        }
-
-        let xPos = (touch.position.x / Configuration.touchScreenSize.width * CGFloat(screen.frame.width)) + screen.frame.origin.x
-        let yPos = (1 - touch.position.y / Configuration.touchScreenSize.height) * CGFloat(screen.frame.height)
-        touch.position = CGPoint(x: xPos, y: yPos)
-    }
-
     private func convert(_ touch: Touch, toScreen screen: Int) {
         let screen = NSScreen.at(position: screen)
         let xPos = (touch.position.x / Configuration.touchScreenSize.width * CGFloat(screen.frame.width)) + screen.frame.origin.x
