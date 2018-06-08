@@ -223,13 +223,13 @@ class MenuViewController: NSViewController, GestureResponder {
                 menuStateHelper?.splitButtonToggled(by: self, to: .on)
             case .mapToggle:
                 if let screenIndex = calculateScreenIndex(), let mapIndex = calculateMapIndex() {
-                    MasterViewController.instance?.apply(.buttonLaunchedMapExplorer, toScreen: screenIndex - 1, on: mapIndex)
+                    MasterViewController.instance?.apply(.menuLaunchedMapExplorer, toScreen: screenIndex - 1, on: mapIndex)
                     buttonToggled(type: .timelineToggle, selection: .off)
                 }
 
             case .timelineToggle:
-                if let screenIndex = calculateScreenIndex() {
-                    MasterViewController.instance?.apply(.buttonLaunchedTimeline, toScreen: screenIndex - 1)
+                if let screenIndex = calculateScreenIndex(), let mapIndex = calculateMapIndex() {
+                    MasterViewController.instance?.apply(.menuLaunchedTimeline, toScreen: screenIndex - 1, on: mapIndex)
                     buttonToggled(type: .mapToggle, selection: .off)
                 }
             case .search:

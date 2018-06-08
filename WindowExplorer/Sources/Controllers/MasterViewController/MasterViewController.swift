@@ -4,9 +4,9 @@ import Cocoa
 
 
 private struct ApplicationInfo {
-    let action: ControlAction
-    let applications: [Int: NSRunningApplication]
-    let maps: [Int]
+    var action: ControlAction
+    var applications: [Int: NSRunningApplication]
+    var maps: [Int]
 }
 
 
@@ -94,23 +94,17 @@ class MasterViewController: NSViewController {
 
         // Load new processes
         switch action {
-        case .launchMapExplorer:
-            guard let currentInfo = infoForScreen[screen] else {
-                return
-            }
-
-            launchMaps(info: currentInfo, screen: screen, action: action)
-        case .launchTimeline, .closeApplication, .disconnected:
-            terminate(screen: screen)
-            infoForScreen[screen] = ApplicationInfo(action: action, applications: [:], maps: [])
-        case .buttonLaunchedMapExplorer:
+        case .launchMapExplorer, .menuLaunchedMapExplorer:
             guard let currentInfo = infoForScreen[screen] else {
                 return
             }
 
             launchMaps(info: currentInfo, screen: screen, action: action, map: map)
-        case .buttonLaunchedTimeline:
+        case .launchTimeline, .menuLaunchedTimeline, .closeApplication, .disconnected:
             terminate(screen: screen, map: map)
+            if action != .menuLaunchedTimeline {
+                infoForScreen[screen] = ApplicationInfo(action: action, applications: [:], maps: [])
+            }
         }
 
         transition(screen: screen, to: action)
@@ -174,7 +168,10 @@ class MasterViewController: NSViewController {
 
         if let map = map, info.maps.contains(map) {
             info.applications[map]?.terminate()
-        } else {
+            infoForScreen[screen]?.maps = info.maps.filter { $0 != map }
+            infoForScreen[screen]?.applications = info.applications.filter { $0.key != map }
+            infoForScreen[screen]?.action = .menuLaunchedTimeline
+        } else if map == nil {
             info.applications.forEach { application in
                 application.value.terminate()
             }
