@@ -5,7 +5,8 @@ import Cocoa
 
 private struct ApplicationInfo {
     let action: ControlAction
-    let applications: [NSRunningApplication]
+    let applications: [Int: NSRunningApplication]
+    let maps: [Int]
 }
 
 
@@ -85,21 +86,31 @@ class MasterViewController: NSViewController {
         }
     }
 
-    func apply(_ action: ControlAction, toScreen screen: Int) {
+    func apply(_ action: ControlAction, toScreen screen: Int, on map: Int? = nil) {
         // Ignore action if it's current
-        if let currentInfo = infoForScreen[screen], currentInfo.action == action {
+        if let currentInfo = infoForScreen[screen], currentInfo.action == action && map == nil {
             return
         }
-
-        // Clear currently running processes
-        terminate(screen: screen)
 
         // Load new processes
         switch action {
         case .launchMapExplorer:
-            launchMaps(screen: screen)
+            guard let currentInfo = infoForScreen[screen] else {
+                return
+            }
+
+            launchMaps(info: currentInfo, screen: screen, action: action)
         case .launchTimeline, .closeApplication, .disconnected:
-            infoForScreen[screen] = ApplicationInfo(action: action, applications: [])
+            terminate(screen: screen)
+            infoForScreen[screen] = ApplicationInfo(action: action, applications: [:], maps: [])
+        case .buttonLaunchedMapExplorer:
+            guard let currentInfo = infoForScreen[screen] else {
+                return
+            }
+
+            launchMaps(info: currentInfo, screen: screen, action: action, map: map)
+        case .buttonLaunchedTimeline:
+            terminate(screen: screen, map: map)
         }
 
         transition(screen: screen, to: action)
@@ -156,27 +167,38 @@ class MasterViewController: NSViewController {
     // MARK: Helpers
 
     /// Terminate the processes associated with the given screen
-    private func terminate(screen: Int) {
+    private func terminate(screen: Int, map: Int? = nil) {
         guard let info = infoForScreen[screen] else {
             return
         }
 
-        info.applications.forEach { application in
-            application.terminate()
+        if let map = map, info.maps.contains(map) {
+            info.applications[map]?.terminate()
+        } else {
+            info.applications.forEach { application in
+                application.value.terminate()
+            }
         }
     }
 
     /// Launch MapExplorer on the given screen
-    private func launchMaps(screen: Int) {
-        var applications = [NSRunningApplication]()
+    private func launchMaps(info: ApplicationInfo, screen: Int, action: ControlAction, map: Int? = nil) {
+        var applications = info.applications
+        var maps = info.maps
 
-        for map in 0 ..< Configuration.mapsPerScreen {
-            if let application = open(.mapExplorer, screenID: screen + 1, appID: map) {
-                applications.append(application)
+        if let map = map, !maps.contains(map), let application = open(.mapExplorer, screenID: screen + 1, appID: map) {
+            applications[map] = application
+            maps.append(map)
+        } else {
+            for map in 0 ..< Configuration.mapsPerScreen {
+                if !maps.contains(map), let application = open(.mapExplorer, screenID: screen + 1, appID: map) {
+                    applications[map] = application
+                    maps.append(map)
+                }
             }
         }
 
-        infoForScreen[screen] = ApplicationInfo(action: .launchMapExplorer, applications: applications)
+        infoForScreen[screen] = ApplicationInfo(action: action, applications: applications, maps: maps)
     }
 
     /// Open a known application type with the required parameters
