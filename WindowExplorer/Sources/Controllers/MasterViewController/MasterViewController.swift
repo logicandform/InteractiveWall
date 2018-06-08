@@ -99,7 +99,7 @@ class MasterViewController: NSViewController {
                 return
             }
 
-            launchMaps(info: currentInfo, screen: screen, action: action, map: map)
+            launchMaps(info: currentInfo, action: action, screen: screen, map: map)
         case .launchTimeline, .menuLaunchedTimeline, .closeApplication, .disconnected:
             terminate(screen: screen, map: map)
             if action != .menuLaunchedTimeline {
@@ -179,7 +179,7 @@ class MasterViewController: NSViewController {
     }
 
     /// Launch MapExplorer on the given screen
-    private func launchMaps(info: ApplicationInfo, screen: Int, action: ControlAction, map: Int? = nil) {
+    private func launchMaps(info: ApplicationInfo, action: ControlAction, screen: Int, map: Int? = nil) {
         var applications = info.applications
         var maps = info.maps
 
