@@ -20,8 +20,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Insert code here to initialize your application
-        
+        // For now, hardcode screen position to be 1
+        let screen = NSScreen.at(position: 1)
+        let frame = NSRect(x: screen.frame.minX, y: screen.frame.minY, width: screen.frame.width, height: screen.frame.height)
+        let controller = MainViewController.instance()
+
+        let window = BorderlessWindow(frame: frame, controller: controller)
+        window.setFrame(frame, display: true)
+        window.makeKeyAndOrderFront(self)
     }
     
     func applicationWillTerminate(_ aNotification: Notification) {

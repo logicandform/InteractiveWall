@@ -31,11 +31,11 @@ class RecordNode: SKNode {
 
     // MARK: API
 
-    func createInitialAnimation(with forceVector: CGVector) -> SKAction {
+    func runInitialAnimation(with forceVector: CGVector) {
         let fadeInAction = SKAction.fadeIn(withDuration: 0.5)
         let applyImpulseAction = SKAction.applyForce(forceVector, duration: 0.1)
         let groupAction = SKAction.group([fadeInAction, applyImpulseAction])
-        return groupAction
+        run(groupAction)
     }
 
 

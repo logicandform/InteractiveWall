@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:NodeVisualizer/NodeVisualizer.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:MapExplorer-iOS/MapExplorer-iOS.xcodeproj">
    </FileRef>
    <FileRef
