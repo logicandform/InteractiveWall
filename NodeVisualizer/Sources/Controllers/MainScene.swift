@@ -21,6 +21,7 @@ class MainScene: SKScene {
     
     override func didMove(to view: SKView) {
         addGestures(to: view)
+        setupSystemGesturesForTest(to: view)
 
         addPhysicsToScene()
         addRecordNodesToScene()
@@ -31,7 +32,7 @@ class MainScene: SKScene {
     }
 
 
-    // MARK: Helpers
+    // MARK: Setup
 
     private func addGestures(to view: SKView) {
         let tapGesture = TapGestureRecognizer()
@@ -39,18 +40,9 @@ class MainScene: SKScene {
         tapGesture.gestureUpdated = handleTapGesture(_:)
     }
 
-    private func handleTapGesture(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position else {
-            return
-        }
-
-        switch tap.state {
-        case .ended:
-            print(position)
-            return
-        default:
-            return
-        }
+    private func setupSystemGesturesForTest(to view: SKView) {
+        let tapGesture = NSClickGestureRecognizer(target: self, action: #selector(handleSystemClickGesture(_:)))
+        view.addGestureRecognizer(tapGesture)
     }
 
     private func addPhysicsToScene() {
@@ -59,7 +51,7 @@ class MainScene: SKScene {
     }
 
     private func addRecordNodesToScene() {
-        records.prefix(50).enumerated().forEach { index, record in
+        records.prefix(5).enumerated().forEach { index, record in
             let node = RecordNode(record: record)
 //            node.position = CGPoint(x: frame.width / 2, y: frame.height / 2)
 
@@ -81,6 +73,52 @@ class MainScene: SKScene {
 //        node.position.y = randomY()
 //        addChild(node)
     }
+
+
+    // MARK: Gesture Handlers
+
+    @objc
+    private func handleSystemClickGesture(_ recognizer: NSClickGestureRecognizer) {
+        print("click")
+
+        let clickPosition = recognizer.location(in: recognizer.view)
+        let nodePosition = convertPoint(fromView: clickPosition)
+
+        guard let recordNode = nodes(at: nodePosition).first(where: { $0 is RecordNode }) as? RecordNode else {
+            return
+        }
+
+        print(recordNode.record.id)
+        print(recordNode.record.type)
+
+        switch recognizer.state {
+        case .began:
+            // perform animation
+            return
+        case .ended:
+            // move all related nodes
+            return
+        default:
+            return
+        }
+    }
+
+    private func handleTapGesture(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position else {
+            return
+        }
+
+        switch tap.state {
+        case .ended:
+            print(position)
+            return
+        default:
+            return
+        }
+    }
+
+
+    // MARK: Helpers
 
     private func getRandomPosition() -> CGPoint {
         var point = CGPoint.zero

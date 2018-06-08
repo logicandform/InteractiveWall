@@ -21,11 +21,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // For now, hardcode screen position to be 1
-        let screen = NSScreen.at(position: 1)
-        let frame = NSRect(x: screen.frame.minX, y: screen.frame.minY, width: screen.frame.width, height: screen.frame.height)
-        let controller = MainViewController.instance()
+//        let screen = NSScreen.at(position: 1)
+//        let frame = NSRect(x: screen.frame.minX, y: screen.frame.minY, width: screen.frame.width, height: screen.frame.height)
+//        let controller = MainViewController.instance()
+//
+//        let window = BorderlessWindow(frame: frame, controller: controller)
+//        window.setFrame(frame, display: true)
+//        window.makeKeyAndOrderFront(self)
 
-        let window = BorderlessWindow(frame: frame, controller: controller)
+        let screen = NSScreen.main!
+        let controller = MainViewController.instance()
+        let frame = NSRect(x: screen.frame.midX - controller.view.frame.width / 2, y: screen.frame.midY - controller.view.frame.height / 2, width: controller.view.frame.width, height: controller.view.frame.height)
+        let window = NSWindow(contentViewController: controller)
         window.setFrame(frame, display: true)
         window.makeKeyAndOrderFront(self)
     }

@@ -6,7 +6,7 @@ import SpriteKit
 
 class RecordNode: SKNode {
 
-    private let record: RecordDisplayable
+    private(set) var record: RecordDisplayable
 
 
     private struct Constants {
@@ -50,13 +50,6 @@ class RecordNode: SKNode {
         setupPhysics()
     }
 
-    private func setupPhysics() {
-        physicsBody = SKPhysicsBody(rectangleOf: calculateAccumulatedFrame().size)
-        physicsBody?.friction = 0.5
-        physicsBody?.restitution = 0.9
-        physicsBody?.linearDamping = 0
-    }
-
     private func makeRootNode() -> SKNode {
         let rootNode = SKSpriteNode()
         rootNode.size = CGSize(width: 50, height: 50)
@@ -86,5 +79,12 @@ class RecordNode: SKNode {
         id.fontSize = Constants.labelFontSize
         id.fontColor = .black
         root.addChild(id)
+    }
+
+    private func setupPhysics() {
+        physicsBody = SKPhysicsBody(rectangleOf: calculateAccumulatedFrame().size)
+        physicsBody?.friction = 0.5
+        physicsBody?.restitution = 0.9
+        physicsBody?.linearDamping = 0
     }
 }
