@@ -18,7 +18,6 @@ public class SwitchControl: NSButton {
     let kGoldenRatio: CGFloat = 1.61803398875
     let kDecreasedGoldenRatio: CGFloat = 1.38
     let disabledBorderColor = NSColor(calibratedWhite: 0, alpha: 0.2)
-//    let kDisabledBackgroundColor = style.eventSecondarySelectedColor
     let kAnimationDuration = 0.4
     let kEnabledOpacity: CFloat = 0.8
     let kDisabledOpacity: CFloat = 0.5
@@ -187,49 +186,4 @@ public class SwitchControl: NSButton {
 
         CATransaction.commit()
     }
-
-    /*
-    // MARK: - NSView
-    override public func acceptsFirstMouse(with event: NSEvent) -> Bool {
-        return true
-    }
-
-    // MARK: - NSResponder
-    override public func mouseDown(with event: NSEvent) {
-        if !super.isEnabled {
-            isActive = true
-            refreshLayer()
-        }
-    }
-
-    override public func mouseDragged(with event: NSEvent)  {
-        if super.isEnabled {
-            hasDragged = true
-
-            let dragginPoint: NSPoint = convertPoint(theEvent.locationInWindow, fromView: nil)
-            isDragginToOn = dragginPoint.x >= NSWidth(bounds) / 2.0
-
-            refreshLayer()
-        }
-    }
-
-    override public func mouseUp(with event: NSEvent)  {
-        if super.isEnabled {
-            isActive = false
-
-            let isOn: Bool = (!hasDragged) ? !self.isOn : isDragginToOn
-            let invokeTargetAction: Bool = isOn != self.isOn
-
-            self.isOn = isOn
-
-            hasDragged = false
-            isDragginToOn = false
-
-            refreshLayer()
-            if invokeTargetAction {
-                cell().performClick(self)
-            }
-        }
-    }
- */
 }
