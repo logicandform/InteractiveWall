@@ -5,12 +5,14 @@ import Cocoa
 import AppKit
 import MapKit
 
+
 enum CompassDirection: Int {
     case nw
     case ne
     case se
     case sw
 }
+
 
 class FlippedMapWithMiniMap: MKMapView, MKMapViewDelegate {
     fileprivate var removeLegal = true
@@ -26,10 +28,10 @@ class FlippedMapWithMiniMap: MKMapView, MKMapViewDelegate {
         static let miniMapWidthRatio: CGFloat = 1/4
         static let miniMapAspectRatio: CGFloat = 3/2
         static let miniMapMargin: CGFloat = 10
-        static let defaultMiniMapPosition: CompassDirection = .ne
+        static let defaultMiniMapPosition = CompassDirection.ne
         static let canadaRect = MapHandler.MapConstants.canadaRect
-        static let miniMapLocationRectStrokeColor = #colorLiteral(red: 0.9240344167, green: 0.3190495968, blue: 0.9256045818, alpha: 1)
-        static let miniMapLocationRectFillColor = #colorLiteral(red: 0.9240344167, green: 0.3190495968, blue: 0.9256045818, alpha: 0.5483197774)
+        static let miniMapLocationRectStrokeColor = NSColor.white
+        static let miniMapLocationRectFillColor = style.selectedColor
     }
 
 
@@ -49,15 +51,16 @@ class FlippedMapWithMiniMap: MKMapView, MKMapViewDelegate {
     // MARK: Setup
 
     private func setupMiniMap() {
-        miniMap = FlippedMapView(frame: CGRect.zero)
-        miniMap.mapType = self.mapType
+        miniMap = FlippedMapView(frame: .zero)
+        miniMap.mapType = mapType
         miniMap.isScrollEnabled = false
         miniMap.isZoomEnabled = false
         miniMap.isRotateEnabled = false
         miniMap.setVisibleMapRect(MKMapRect(origin: Constants.canadaRect.origin, size: Constants.canadaRect.size), animated: false)
         miniMap.delegate = self
         miniMap.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(miniMap)
+        miniMap.isHidden = true
+        addSubview(miniMap)
         setupConstraints()
         miniMapPosition = Constants.defaultMiniMapPosition
     }
@@ -80,7 +83,7 @@ class FlippedMapWithMiniMap: MKMapView, MKMapViewDelegate {
         }
     }
 
-    var miniMapPosition: CompassDirection = Constants.defaultMiniMapPosition {
+    var miniMapPosition = Constants.defaultMiniMapPosition {
         didSet {
             updateMiniMapPosition()
         }
@@ -105,7 +108,7 @@ class FlippedMapWithMiniMap: MKMapView, MKMapViewDelegate {
 
     override func add(_ overlay: MKOverlay) {
         super.add(overlay)
-        miniMap.add(overlay)
+        miniMap?.add(overlay)
     }
 
     override func setVisibleMapRect(_ mapRect: MKMapRect, animated animate: Bool) {
@@ -138,6 +141,7 @@ class FlippedMapWithMiniMap: MKMapView, MKMapViewDelegate {
         miniMapBottomConstraint.isActive = false
         miniMapTrailingConstraint.isActive = false
         miniMapLeadingConstraint.isActive = false
+
         switch miniMapPosition {
         case .nw:
             miniMapTopConstraint.isActive = true

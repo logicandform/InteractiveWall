@@ -72,15 +72,15 @@ class MenuViewController: NSViewController, GestureResponder {
     }
 
     private func setupButtons() {
-        setupButton(with: .splitScreen)
-        setupButton(with: .mapToggle)
-        setupButton(with: .timelineToggle)
-        setupButton(with: .information)
-        setupButton(with: .settings)
-        setupButton(with: .search)
+        setupButton(for: .splitScreen)
+        setupButton(for: .mapToggle)
+        setupButton(for: .timelineToggle)
+        setupButton(for: .information)
+        setupButton(for: .settings)
+        setupButton(for: .search)
     }
 
-    private func setupButton(with type: MenuButtonType) {
+    private func setupButton(for type: MenuButtonType) {
         guard let view = viewForButtonType[type], let imageIcon = type.primaryPlaceholder else {
             return
         }
@@ -136,11 +136,9 @@ class MenuViewController: NSViewController, GestureResponder {
         case .on:
             if !selectedButtons.contains(type) {
                 selectedButtons.append(type)
-
                 if let activeIcon = type.selectedPlaceholder {
                     image.transition(to: activeIcon, duration: Constants.imageTransitionDuration)
                 }
-
                 if type == .splitScreen, let lockIcon = lockIcon {
                     lockIcon.transition(to: type.secondaryPlaceholder, duration: Constants.imageTransitionDuration)
                 }
@@ -150,7 +148,6 @@ class MenuViewController: NSViewController, GestureResponder {
                 selectedButtons.remove(at: selectedButtonIndex)
                 image.transition(to: type.primaryPlaceholder, duration: Constants.imageTransitionDuration)
             }
-
             if type == .splitScreen, let lockIcon = lockIcon {
                 lockIcon.transition(to: nil, duration: Constants.imageTransitionDuration)
             }

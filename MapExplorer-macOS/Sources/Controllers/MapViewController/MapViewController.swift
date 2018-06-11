@@ -21,7 +21,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     private var tileURL: String {
         let tileID = max(screenID, 1)
-        return "http://10.58.73.102:4\(tileID)00/v2/tiles/{z}/{x}/{y}.pbf"
+        return "http://\(Configuration.serverIP):4\(tileID)00/v2/tiles/{z}/{x}/{y}.pbf"
     }
 
     private struct Constants {
@@ -223,15 +223,15 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             print(error)
         }
 
-        when(fulfilled: schoolChain, eventChain).then { [weak self] results -> Void in
+        when(fulfilled: schoolChain, eventChain).then { [weak self] results in
             self?.parseNetworkResults(results)
         }
     }
 
-    private func parseNetworkResults(_ results: ([School], [Event])) {
+    private func parseNetworkResults(_ results: (schools: [School], events: [Event])) {
         var recordsToLoad = [Record]()
-        recordsToLoad.append(contentsOf: results.0)
-        recordsToLoad.append(contentsOf: results.1)
+        recordsToLoad.append(contentsOf: results.schools)
+        recordsToLoad.append(contentsOf: results.events)
 
         addToMap(recordsToLoad)
     }
