@@ -104,6 +104,8 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         let scrollViews = collectionViews.compactMap { $0.superview?.superview as? FadingScrollView }
 
         scrollViews.forEach { view in
+//            view.wantsLayer = true
+//            view.layer?.backgroundColor = style.darkBackground.cgColor
             view.verticalScroller?.alphaValue = 0
             view.updateGradient()
         }
