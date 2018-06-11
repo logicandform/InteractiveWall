@@ -7,7 +7,7 @@ private enum ScrollPosition {
     case top
     case bottom
     case middle
-    case none
+    case noScroll
 }
 
 
@@ -24,7 +24,7 @@ class FadingScrollView: NSScrollView {
 
     func updateGradient() {
         guard canScroll else {
-            updateGradientProperty(for: .none)
+            updateGradientProperty(for: .noScroll)
             return
         }
 
@@ -69,7 +69,7 @@ class FadingScrollView: NSScrollView {
         case .middle:
             gradientLayer.colors = [transparent, opaque, opaque, transparent]
             gradientLayer.locations = [0.0, NSNumber(value: Constants.fadePercentage), NSNumber(value: 1.0 - Constants.fadePercentage), 1.0]
-        case .none:
+        case .noScroll:
             gradientLayer.colors = [opaque, opaque]
             gradientLayer.locations = [0.0, 1.0]
         }
