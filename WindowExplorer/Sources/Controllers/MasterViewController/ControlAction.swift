@@ -6,6 +6,8 @@ import AppKit
 
 enum ControlAction {
     case launchMapExplorer
+    case menuLaunchedMapExplorer
+    case menuLaunchedTimeline
     case launchTimeline
     case closeApplication
     case disconnected
@@ -33,6 +35,10 @@ enum ControlAction {
             return "Close Application"
         case .disconnected:
             return ""
+        case .menuLaunchedTimeline:
+            return ""
+        case .menuLaunchedMapExplorer:
+            return ""
         }
     }
 
@@ -46,6 +52,10 @@ enum ControlAction {
             return NSImage(named: "connected_background")
         case .disconnected:
             return NSImage(named: "disconnected_background")
+        case .menuLaunchedMapExplorer:
+            return NSImage(named: "map_background")
+        case .menuLaunchedTimeline:
+            return NSImage(named: "timeline_background")
         }
     }
 

@@ -4,8 +4,9 @@ import Cocoa
 
 
 private struct ApplicationInfo {
-    let action: ControlAction
-    let applications: [NSRunningApplication]
+    var action: ControlAction
+    var applications: [Int: NSRunningApplication]
+    var maps: [Int]
 }
 
 
@@ -85,6 +86,30 @@ class MasterViewController: NSViewController {
         }
     }
 
+    func apply(_ action: ControlAction, toScreen screen: Int, on map: Int? = nil) {
+        // Ignore action if it's current
+        if let currentInfo = infoForScreen[screen], currentInfo.action == action && map == nil {
+            return
+        }
+
+        // Load new processes
+        switch action {
+        case .launchMapExplorer, .menuLaunchedMapExplorer:
+            guard let currentInfo = infoForScreen[screen] else {
+                return
+            }
+
+            launchMaps(info: currentInfo, action: action, screen: screen, map: map)
+        case .launchTimeline, .menuLaunchedTimeline, .closeApplication, .disconnected:
+            terminate(screen: screen, map: map)
+            if action != .menuLaunchedTimeline {
+                infoForScreen[screen] = ApplicationInfo(action: action, applications: [:], maps: [])
+            }
+        }
+
+        transition(screen: screen, to: action)
+    }
+
 
     // MARK: Setup
 
@@ -135,48 +160,42 @@ class MasterViewController: NSViewController {
 
     // MARK: Helpers
 
-    private func apply(_ action: ControlAction, toScreen screen: Int) {
-        // Ignore action if it's current
-        if let currentInfo = infoForScreen[screen], currentInfo.action == action {
-            return
-        }
-
-        // Clear currently running processes
-        terminate(screen: screen)
-
-        // Load new processes
-        switch action {
-        case .launchMapExplorer:
-            launchMaps(screen: screen)
-        case .launchTimeline, .closeApplication, .disconnected:
-            infoForScreen[screen] = ApplicationInfo(action: action, applications: [])
-        }
-
-        transition(screen: screen, to: action)
-    }
-
     /// Terminate the processes associated with the given screen
-    private func terminate(screen: Int) {
+    private func terminate(screen: Int, map: Int? = nil) {
         guard let info = infoForScreen[screen] else {
             return
         }
 
-        info.applications.forEach { application in
-            application.terminate()
+        if let map = map, info.maps.contains(map) {
+            info.applications[map]?.terminate()
+            infoForScreen[screen]?.maps = info.maps.filter { $0 != map }
+            infoForScreen[screen]?.applications = info.applications.filter { $0.key != map }
+            infoForScreen[screen]?.action = .menuLaunchedTimeline
+        } else if map == nil {
+            info.applications.forEach { application in
+                application.value.terminate()
+            }
         }
     }
 
     /// Launch MapExplorer on the given screen
-    private func launchMaps(screen: Int) {
-        var applications = [NSRunningApplication]()
+    private func launchMaps(info: ApplicationInfo, action: ControlAction, screen: Int, map: Int? = nil) {
+        var applications = info.applications
+        var maps = info.maps
 
-        for map in 0 ..< Configuration.mapsPerScreen {
-            if let application = open(.mapExplorer, screenID: screen + 1, appID: map) {
-                applications.append(application)
+        if let map = map, !maps.contains(map), let application = open(.mapExplorer, screenID: screen + 1, appID: map) {
+            applications[map] = application
+            maps.append(map)
+        } else {
+            for map in 0 ..< Configuration.mapsPerScreen {
+                if !maps.contains(map), let application = open(.mapExplorer, screenID: screen + 1, appID: map) {
+                    applications[map] = application
+                    maps.append(map)
+                }
             }
         }
 
-        infoForScreen[screen] = ApplicationInfo(action: .launchMapExplorer, applications: applications)
+        infoForScreen[screen] = ApplicationInfo(action: action, applications: applications, maps: maps)
     }
 
     /// Open a known application type with the required parameters

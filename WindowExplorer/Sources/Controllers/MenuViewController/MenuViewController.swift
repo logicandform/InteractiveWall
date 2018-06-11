@@ -217,11 +217,25 @@ class MenuViewController: NSViewController, GestureResponder {
     }
 
     private func didSelect(type: MenuButtonType) {
-        guard selectedButtons.contains(type) else {
-            if type == .splitScreen {
+        guard selectedButtons.index(of: type) != nil else {
+            switch type {
+            case .splitScreen:
                 menuStateHelper?.splitButtonToggled(by: self, to: .on)
-            } else if type == .search {
+            case .mapToggle:
+                if let screenIndex = calculateScreenIndex(), let mapIndex = calculateMapIndex() {
+                    MasterViewController.instance?.apply(.menuLaunchedMapExplorer, toScreen: screenIndex - 1, on: mapIndex)
+                    buttonToggled(type: .timelineToggle, selection: .off)
+                }
+
+            case .timelineToggle:
+                if let screenIndex = calculateScreenIndex(), let mapIndex = calculateMapIndex() {
+                    MasterViewController.instance?.apply(.menuLaunchedTimeline, toScreen: screenIndex - 1, on: mapIndex)
+                    buttonToggled(type: .mapToggle, selection: .off)
+                }
+            case .search:
                 searchSelected()
+            default:
+                break
             }
 
             buttonToggled(type: type, selection: .on)
@@ -266,5 +280,25 @@ class MenuViewController: NSViewController, GestureResponder {
         }
 
         WindowManager.instance.display(.search, at: CGPoint(x: x, y: y))
+    }
+
+    /// Calculates the screen index based off the x-position of the menu and the screens
+    private func calculateScreenIndex() -> Int? {
+        guard let window = view.window, let screen = NSScreen.containing(x: window.frame.midX), let screenIndex = screen.orderedIndex else {
+            return nil
+        }
+
+        return screenIndex
+    }
+
+    /// Calculates the map index based off the x-position of the menu and the screens
+    private func calculateMapIndex() -> Int? {
+        guard let window = view.window, let screen = NSScreen.containing(x: window.frame.midX) else {
+            return nil
+        }
+
+        let mapWidth = screen.frame.width / CGFloat(Configuration.mapsPerScreen)
+        let mapIndex = Int((window.frame.origin.x - screen.frame.minX) / mapWidth)
+        return mapIndex
     }
 }
