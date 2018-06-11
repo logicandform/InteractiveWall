@@ -24,11 +24,6 @@ class FadingScrollView: NSScrollView {
 
     func updateGradient() {
         guard canScroll else {
-//            let gradientLayer = CAGradientLayer()
-//            gradientLayer.frame = NSRect(x: bounds.origin.x, y: 0, width: bounds.size.width, height: bounds.size.height)
-//            gradientLayer.colors = [style.darkBackground.cgColor, NSColor.clear.cgColor]
-//            gradientLayer.locations = [1.0, 0.0]
-//            layer?.mask = gradientLayer
             updateGradientProperty(for: .none)
             return
         }
