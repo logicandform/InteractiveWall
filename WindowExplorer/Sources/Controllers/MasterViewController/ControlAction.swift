@@ -33,7 +33,11 @@ enum ControlAction {
             return "Launch Timeline"
         case .closeApplication:
             return "Close Application"
-        default:
+        case .disconnected:
+            return ""
+        case .menuLaunchedTimeline:
+            return ""
+        case .menuLaunchedMapExplorer:
             return ""
         }
     }
