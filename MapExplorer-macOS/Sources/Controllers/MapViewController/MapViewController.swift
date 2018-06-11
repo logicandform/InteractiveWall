@@ -11,6 +11,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     static let storyboard = NSStoryboard.Name(rawValue: "Map")
 
     @IBOutlet weak var mapView: FlippedMapWithMiniMap!
+    @IBOutlet weak var border: NSView!
 
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
@@ -20,7 +21,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     private var tileURL: String {
         let tileID = max(screenID, 1)
-        return "http://10.58.73.153:4\(tileID)00/v2/tiles/{z}/{x}/{y}.pbf"
+        return "http://10.58.73.102:4\(tileID)00/v2/tiles/{z}/{x}/{y}.pbf"
     }
 
     private struct Constants {
@@ -53,13 +54,14 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     override func viewDidLoad() {
         super.viewDidLoad()
         gestureManager = GestureManager(responder: self)
+        setupMap()
+        setupGestures()
+        setupBorder()
+
         touchListener.listenToPort(named: "MapListener\(appID)")
         touchListener.receivedTouch = { [weak self] touch in
             self?.gestureManager.handle(touch)
         }
-
-        setupMap()
-        setupGestures()
     }
 
     override func viewDidAppear() {
@@ -85,6 +87,21 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         let pinchGesture = PinchGestureRecognizer()
         gestureManager.add(pinchGesture, to: mapView)
         pinchGesture.gestureUpdated = didPinchOnMap(_:)
+    }
+
+    private func setupBorder() {
+        mapHandler?.border = border
+        border.translatesAutoresizingMaskIntoConstraints = false
+
+        if appID % Configuration.mapsPerScreen == 0 {
+            border.trailingAnchor.constraint(equalTo: mapView.trailingAnchor).isActive = true
+        } else {
+            border.leadingAnchor.constraint(equalTo: mapView.leadingAnchor).isActive = true
+        }
+
+        border.wantsLayer = true
+        border.layer?.backgroundColor = style.borderColor.cgColor
+        border.isHidden = true
     }
 
 
