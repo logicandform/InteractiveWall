@@ -17,14 +17,14 @@ class MenuViewController: NSViewController, GestureResponder {
 
     var gestureManager: GestureManager!
     var menuStateHelper: MenuStateHelper?
-    private var scrollMinimumSpeedAchieved = false
-    private var buttonTypeView = [MenuButtonType: NSView]()
-    private var buttonTypeSubview = [MenuButtonType: NSView]()
+    private var viewForButtonType = [MenuButtonType: NSView]()
+    private var subviewForButtonType = [MenuButtonType: NSView]()
     private var selectedButtons = [MenuButtonType]()
     private var lockIcon: NSView?
+    private var scrollThresholdAchieved = false
 
     private struct Constants {
-        static let minimumScrollSpeed: CGFloat = 4
+        static let minimumScrollThreshold: CGFloat = 4
         static let imageTransitionDuration = 0.5
     }
 
@@ -36,19 +36,11 @@ class MenuViewController: NSViewController, GestureResponder {
             let screenFrame = screen.frame
             let menuStateHelper = MenuStateHelper()
 
-            for menuNumber in 1...(Configuration.mapsPerScreen) {
-                let x: CGFloat
-
-                if menuNumber % 2 == 1 {
-                    x = screenFrame.maxX - style.menuWindowSize.width
-                } else {
-                    x = screenFrame.minX
-                }
-
+            for menuNumber in (1 ... Configuration.mapsPerScreen) {
+                let x = menuNumber % 2 == 1 ? screenFrame.maxX - style.menuWindowSize.width : screenFrame.minX
                 let y = screenFrame.midY - style.menuWindowSize.height / 2
-                let menu = WindowManager.instance.display(.menu, at: CGPoint(x: x, y: y))
 
-                if let menu = menu as? MenuViewController {
+                if let menu = WindowManager.instance.display(.menu, at: CGPoint(x: x, y: y)) as? MenuViewController {
                     menuStateHelper.add(menu)
                     menu.menuStateHelper = menuStateHelper
                 }
@@ -61,12 +53,10 @@ class MenuViewController: NSViewController, GestureResponder {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        gestureManager = GestureManager(responder: self)
-
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
-
-        buttonTypeView = [.splitScreen: splitScreenButton, .mapToggle: mapToggleButton, .timelineToggle: timelineToggleButton, .information: informationButton, .settings: settingsButton, .search: searchButton]
+        gestureManager = GestureManager(responder: self)
+        viewForButtonType = [.splitScreen: splitScreenButton, .mapToggle: mapToggleButton, .timelineToggle: timelineToggleButton, .information: informationButton, .settings: settingsButton, .search: searchButton]
 
         setupButtons()
         setupGestures()
@@ -91,7 +81,7 @@ class MenuViewController: NSViewController, GestureResponder {
     }
 
     private func setupButton(with type: MenuButtonType) {
-        guard let view = buttonTypeView[type], let imageIcon = type.primaryPlaceholder else {
+        guard let view = viewForButtonType[type], let imageIcon = type.primaryPlaceholder else {
             return
         }
 
@@ -115,7 +105,7 @@ class MenuViewController: NSViewController, GestureResponder {
 
         image.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         image.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        buttonTypeSubview[type] = image
+        subviewForButtonType[type] = image
         addGesture(for: type)
 
         if type == .splitScreen, let secondaryPlaceholder = type.secondaryPlaceholder {
@@ -126,10 +116,8 @@ class MenuViewController: NSViewController, GestureResponder {
             view.addSubview(lockIcon)
             lockIcon.wantsLayer = true
             lockIcon.translatesAutoresizingMaskIntoConstraints = false
-
             lockIcon.widthAnchor.constraint(equalToConstant: secondaryPlaceholder.size.width).isActive = true
             lockIcon.heightAnchor.constraint(equalToConstant: secondaryPlaceholder.size.height).isActive = true
-
             lockIcon.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: style.menuLockIconPosition.width).isActive = true
             lockIcon.topAnchor.constraint(equalTo: view.topAnchor, constant: style.menuLockIconPosition.height).isActive = true
             self.lockIcon = lockIcon
@@ -140,7 +128,7 @@ class MenuViewController: NSViewController, GestureResponder {
     // MARK: API
 
     func buttonToggled(type: MenuButtonType, selection: ToggleStatus) {
-        guard let image = buttonTypeSubview[type] else {
+        guard let image = subviewForButtonType[type] else {
             return
         }
 
@@ -194,13 +182,12 @@ class MenuViewController: NSViewController, GestureResponder {
         }
 
         switch pan.state {
-        case .recognized where abs(pan.delta.dy) > Constants.minimumScrollSpeed || scrollMinimumSpeedAchieved, .momentum where scrollMinimumSpeedAchieved:
-            scrollMinimumSpeedAchieved = true
-            var origin = window.frame.origin
-            origin = updateSpeedAtBoundary(for: pan.delta.dy, with: window)
+        case .recognized where abs(pan.delta.dy) > Constants.minimumScrollThreshold || scrollThresholdAchieved, .momentum where scrollThresholdAchieved:
+            scrollThresholdAchieved = true
+            let origin = originAppending(delta: pan.delta, to: window)
             window.setFrameOrigin(origin)
         case .possible:
-            scrollMinimumSpeedAchieved = false
+            scrollThresholdAchieved = false
         default:
             return
         }
@@ -210,7 +197,7 @@ class MenuViewController: NSViewController, GestureResponder {
     // MARK: Helpers
 
     private func addGesture(for type: MenuButtonType) {
-        guard let view = buttonTypeView[type], let subview = buttonTypeSubview[type] else {
+        guard let view = viewForButtonType[type], let subview = subviewForButtonType[type] else {
             return
         }
 
@@ -222,7 +209,6 @@ class MenuViewController: NSViewController, GestureResponder {
         let tapGesture = TapGestureRecognizer()
         gestureManager.add(tapGesture, to: subview)
         gestureManager.add(tapGesture, to: view)
-
         tapGesture.gestureUpdated = { [weak self] tap in
             if tap.state == .ended {
                 self?.didSelect(type: type)
@@ -231,7 +217,7 @@ class MenuViewController: NSViewController, GestureResponder {
     }
 
     private func didSelect(type: MenuButtonType) {
-        guard selectedButtons.index(of: type) != nil else {
+        guard selectedButtons.contains(type) else {
             if type == .splitScreen {
                 menuStateHelper?.splitButtonToggled(by: self, to: .on)
             } else if type == .search {
@@ -249,21 +235,21 @@ class MenuViewController: NSViewController, GestureResponder {
         buttonToggled(type: type, selection: .off)
     }
 
-    private func updateSpeedAtBoundary(for velocity: CGFloat, with window: NSWindow) -> CGPoint {
-        var updatedOrigin = window.frame.origin
-        guard let applicationFrame = NSScreen.containing(x: updatedOrigin.x)?.frame else {
-            return updatedOrigin
+    private func originAppending(delta: CGVector, to window: NSWindow) -> CGPoint {
+        guard let screen = window.screen else {
+            return window.frame.origin
         }
 
-        updatedOrigin.y += velocity
+        var origin = window.frame.origin
+        origin.y += delta.dy
 
-        if velocity < 0 && updatedOrigin.y < applicationFrame.minY {
-            updatedOrigin.y = applicationFrame.minY
-        } else if velocity > 0 && updatedOrigin.y + window.frame.height > applicationFrame.maxY {
-            updatedOrigin.y = applicationFrame.maxY - window.frame.height
+        if delta.dy < 0 && origin.y < screen.frame.minY {
+            origin.y = screen.frame.minY
+        } else if delta.dy > 0 && origin.y + window.frame.height > screen.frame.maxY {
+            origin.y = screen.frame.maxY - window.frame.height
         }
 
-        return updatedOrigin
+        return origin
     }
 
     private func searchSelected() {

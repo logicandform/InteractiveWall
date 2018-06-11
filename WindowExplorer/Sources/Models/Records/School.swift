@@ -58,8 +58,8 @@ class School: Hashable {
         }
 
         if let urlStrings = json[Keys.media] as? [String], let thumbnailStrings = json[Keys.thumbnails] as? [String] {
-            let urls = urlStrings.compactMap { URL.from(CachingNetwork.baseURL + $0) }
-            let thumbnails = thumbnailStrings.compactMap { URL.from(CachingNetwork.baseURL + $0) }
+            let urls = urlStrings.compactMap { URL.from(Configuration.serverURL + $0) }
+            let thumbnails = thumbnailStrings.compactMap { URL.from(Configuration.serverURL + $0) }
             let titles = json[Keys.mediaTitles] as? [String] ?? []
             for (url, thumbnail) in zip(urls, thumbnails) {
                 media.append(Media(url: url, thumbnail: thumbnail, title: titles.at(index: media.count), color: type.color))

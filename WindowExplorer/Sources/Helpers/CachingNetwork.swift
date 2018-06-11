@@ -17,28 +17,27 @@ enum NetworkError: Error {
 
 
 final class CachingNetwork {
-    static let baseURL = "http://10.58.73.153:3000"
 
     private struct Endpoints {
-        static let countForGroup = baseURL + "/%@/count/group/%@"
-        static let places = baseURL + "/places/all/%d"
-        static let placeByID = baseURL + "/places/find/%d"
-        static let placesInGroup = baseURL + "/places/group/%@/%d"
-        static let organizations = baseURL + "/organizations/all/%d"
-        static let organizationByID = baseURL + "/organizations/find/%d"
-        static let organizationsInGroup = baseURL + "/organizations/group/%@/%d"
-        static let events = baseURL + "/events/all/%d"
-        static let eventByID = baseURL + "/events/find/%d"
-        static let eventsInGroup = baseURL + "/events/group/%@/%d"
-        static let artifacts = baseURL + "/artifacts/all/%d"
-        static let artifactByID = baseURL + "/artifacts/find/%d"
-        static let artifactsInGroup = baseURL + "/artifacts/group/%@/%d"
-        static let schools = baseURL + "/schools/all/%d"
-        static let schoolByID = baseURL + "/schools/find/%d"
-        static let schoolsInGroup = baseURL + "/schools/group/%@/%d"
-        static let themes = baseURL + "/themes/all/%d"
-        static let themeByID = baseURL + "/themes/find/%d"
-        static let themesInGroup = baseURL + "/themes/group/%@/%d"
+        static let countForGroup = Configuration.serverURL + "/%@/count/group/%@"
+        static let places = Configuration.serverURL + "/places/all/%d"
+        static let placeByID = Configuration.serverURL + "/places/find/%d"
+        static let placesInGroup = Configuration.serverURL + "/places/group/%@/%d"
+        static let organizations = Configuration.serverURL + "/organizations/all/%d"
+        static let organizationByID = Configuration.serverURL + "/organizations/find/%d"
+        static let organizationsInGroup = Configuration.serverURL + "/organizations/group/%@/%d"
+        static let events = Configuration.serverURL + "/events/all/%d"
+        static let eventByID = Configuration.serverURL + "/events/find/%d"
+        static let eventsInGroup = Configuration.serverURL + "/events/group/%@/%d"
+        static let artifacts = Configuration.serverURL + "/artifacts/all/%d"
+        static let artifactByID = Configuration.serverURL + "/artifacts/find/%d"
+        static let artifactsInGroup = Configuration.serverURL + "/artifacts/group/%@/%d"
+        static let schools = Configuration.serverURL + "/schools/all/%d"
+        static let schoolByID = Configuration.serverURL + "/schools/find/%d"
+        static let schoolsInGroup = Configuration.serverURL + "/schools/group/%@/%d"
+        static let themes = Configuration.serverURL + "/themes/all/%d"
+        static let themeByID = Configuration.serverURL + "/themes/find/%d"
+        static let themesInGroup = Configuration.serverURL + "/themes/group/%@/%d"
     }
 
     private struct Constants {

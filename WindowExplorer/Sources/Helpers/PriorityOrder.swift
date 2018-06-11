@@ -5,17 +5,17 @@ import Foundation
 
 class PriorityOrder {
 
-    struct Constants {
-        static let datePriority = 1
-        static let descriptionPriority = 1
-        static let coordinatePriority = 1
-        static let commentPriority = 1
-        static let mediaPriority = 2
-        static let relatedSchoolsPriority = 1
-        static let relatedOrganizationsPriority = 1
-        static let relatedArtifactsPriority = 1
-        static let relatedEventsPriority = 1
-        static let relatedThemePriority = 1
+    struct Priority {
+        static let date = 1
+        static let description = 1
+        static let coordinate = 1
+        static let comment = 1
+        static let media = 2
+        static let relatedSchools = 1
+        static let relatedOrganizations = 1
+        static let relatedArtifacts = 1
+        static let relatedEvents = 1
+        static let relatedTheme = 1
     }
 
 
@@ -25,29 +25,28 @@ class PriorityOrder {
         var priority = 0
 
         if let date = event.date, !date.isEmpty {
-            priority += Constants.datePriority
+            priority += Priority.date
         }
         if let description = event.description, !description.isEmpty {
-            priority += Constants.descriptionPriority
+            priority += Priority.description
         }
         if event.coordinate != nil {
-            priority += Constants.coordinatePriority
+            priority += Priority.coordinate
         }
-
         if !event.media.isEmpty {
-            priority += Constants.mediaPriority
+            priority += Priority.media
         }
         if !event.relatedSchools.isEmpty {
-            priority += Constants.relatedSchoolsPriority
+            priority += Priority.relatedSchools
         }
         if !event.relatedOrganizations.isEmpty {
-            priority += Constants.relatedOrganizationsPriority
+            priority += Priority.relatedOrganizations
         }
         if !event.relatedArtifacts.isEmpty {
-            priority += Constants.relatedArtifactsPriority
+            priority += Priority.relatedArtifacts
         }
         if !event.relatedEvents.isEmpty {
-            priority += Constants.relatedEventsPriority
+            priority += Priority.relatedEvents
         }
 
         return priority
@@ -57,32 +56,31 @@ class PriorityOrder {
         var priority = 0
 
         if let date = artifact.date, !date.isEmpty {
-            priority += Constants.datePriority
+            priority += Priority.date
         }
         if let description = artifact.description, !description.isEmpty {
-            priority += Constants.descriptionPriority
+            priority += Priority.description
         }
         if let comments = artifact.comments, !comments.isEmpty {
-            priority += Constants.commentPriority
+            priority += Priority.comment
         }
-
         if !artifact.media.isEmpty {
-            priority += Constants.mediaPriority
+            priority += Priority.media
         }
         if !artifact.relatedSchools.isEmpty {
-            priority += Constants.relatedSchoolsPriority
+            priority += Priority.relatedSchools
         }
         if !artifact.relatedOrganizations.isEmpty {
-            priority += Constants.relatedOrganizationsPriority
+            priority += Priority.relatedOrganizations
         }
         if !artifact.relatedArtifacts.isEmpty {
-            priority += Constants.relatedArtifactsPriority
+            priority += Priority.relatedArtifacts
         }
         if !artifact.relatedEvents.isEmpty {
-            priority += Constants.relatedEventsPriority
+            priority += Priority.relatedEvents
         }
         if !artifact.relatedThemes.isEmpty {
-            priority += Constants.relatedThemePriority
+            priority += Priority.relatedTheme
         }
 
         return priority
@@ -92,23 +90,22 @@ class PriorityOrder {
         var priority = 0
 
         if let description = organization.description, !description.isEmpty {
-            priority += Constants.descriptionPriority
+            priority += Priority.description
         }
-
         if !organization.media.isEmpty {
-            priority += Constants.mediaPriority
+            priority += Priority.media
         }
         if !organization.relatedSchools.isEmpty {
-            priority += Constants.relatedSchoolsPriority
+            priority += Priority.relatedSchools
         }
         if !organization.relatedOrganizations.isEmpty {
-            priority += Constants.relatedOrganizationsPriority
+            priority += Priority.relatedOrganizations
         }
         if !organization.relatedArtifacts.isEmpty {
-            priority += Constants.relatedArtifactsPriority
+            priority += Priority.relatedArtifacts
         }
         if !organization.relatedEvents.isEmpty {
-            priority += Constants.relatedEventsPriority
+            priority += Priority.relatedEvents
         }
 
         return priority
@@ -118,32 +115,31 @@ class PriorityOrder {
         var priority = 0
 
         if let date = school.date, !date.isEmpty {
-            priority += Constants.datePriority
+            priority += Priority.date
         }
         if let description = school.description, !description.isEmpty {
-            priority += Constants.descriptionPriority
+            priority += Priority.description
         }
         if school.coordinate != nil {
-            priority += Constants.coordinatePriority
+            priority += Priority.coordinate
         }
-
         if !school.media.isEmpty {
-            priority += Constants.mediaPriority
+            priority += Priority.media
         }
         if !school.relatedSchools.isEmpty {
-            priority += Constants.relatedSchoolsPriority
+            priority += Priority.relatedSchools
         }
         if !school.relatedOrganizations.isEmpty {
-            priority += Constants.relatedOrganizationsPriority
+            priority += Priority.relatedOrganizations
         }
         if !school.relatedArtifacts.isEmpty {
-            priority += Constants.relatedArtifactsPriority
+            priority += Priority.relatedArtifacts
         }
         if !school.relatedEvents.isEmpty {
-            priority += Constants.relatedEventsPriority
+            priority += Priority.relatedEvents
         }
         if !school.relatedThemes.isEmpty {
-            priority += Constants.relatedThemePriority
+            priority += Priority.relatedTheme
         }
 
         return priority
@@ -153,20 +149,19 @@ class PriorityOrder {
         var priority = 0
 
         if let description = theme.description, !description.isEmpty {
-            priority += Constants.descriptionPriority
+            priority += Priority.description
         }
-
         if !theme.relatedSchools.isEmpty {
-            priority += Constants.relatedSchoolsPriority
+            priority += Priority.relatedSchools
         }
         if !theme.relatedOrganizations.isEmpty {
-            priority += Constants.relatedOrganizationsPriority
+            priority += Priority.relatedOrganizations
         }
         if !theme.relatedArtifacts.isEmpty {
-            priority += Constants.relatedArtifactsPriority
+            priority += Priority.relatedArtifacts
         }
         if !theme.relatedEvents.isEmpty {
-            priority += Constants.relatedEventsPriority
+            priority += Priority.relatedEvents
         }
 
         return priority

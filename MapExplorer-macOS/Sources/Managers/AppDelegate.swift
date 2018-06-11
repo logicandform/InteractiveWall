@@ -4,10 +4,12 @@ import Cocoa
 
 
 struct Configuration {
+    static let serverIP = "10.58.73.153"
+    static let serverURL = "http://\(serverIP):3000"
     static let mapsPerScreen = 2
     static let numberOfScreens = 1
     static let touchScreenSize = CGSize(width: 21564, height: 12116)
-    static let refreshRate: Double = 1 / 60
+    static let refreshRate = 1.0 / 60.0
 }
 
 

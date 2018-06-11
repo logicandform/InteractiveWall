@@ -11,6 +11,7 @@ enum ToggleStatus {
 
 
 class MenuStateHelper {
+
     private var relatedMenus = [MenuViewController]()
 
 
