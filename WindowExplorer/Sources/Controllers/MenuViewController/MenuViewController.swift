@@ -20,7 +20,8 @@ class MenuViewController: NSViewController, GestureResponder {
     private var viewForButtonType = [MenuButtonType: NSView]()
     private var subviewForButtonType = [MenuButtonType: NSView]()
     private var selectedButtons = [MenuButtonType]()
-    private var mapApplication: NSRunningApplication?
+    private var lockIcon: NSView?
+    private var scrollThresholdAchieved = false
     private var settingsMenu: NSViewController!
 
     private struct Constants {
@@ -224,15 +225,16 @@ class MenuViewController: NSViewController, GestureResponder {
             // Button is not currently selected
             switch type {
             case .splitScreen:
-                splitStateHelper?.splitButtonToggled(by: self, to: .on)
+                menuStateHelper?.splitButtonToggled(by: self, to: .on)
             case .mapToggle:
-                if mapApplication == nil, let screenIndex = calculateScreenIndex(), let mapIndex = calculateMapIndex() {
-                    mapApplication = open(.mapExplorer, screenID: screenIndex, appID: mapIndex)
+                if let screenIndex = calculateScreenIndex(), let mapIndex = calculateMapIndex() {
+                    MasterViewController.instance?.apply(.menuLaunchedMapExplorer, toScreen: screenIndex - 1, on: mapIndex)
+                    buttonToggled(type: .timelineToggle, selection: .off)
                 }
             case .timelineToggle:
-                if let mapApplication = mapApplication {
-                    mapApplication.terminate()
-                    self.mapApplication = nil
+                if let screenIndex = calculateScreenIndex(), let mapIndex = calculateMapIndex() {
+                    MasterViewController.instance?.apply(.menuLaunchedTimeline, toScreen: screenIndex - 1, on: mapIndex)
+                    buttonToggled(type: .mapToggle, selection: .off)
                 }
             case .settings:
                 NSAnimationContext.runAnimationGroup({ _ in
@@ -252,7 +254,7 @@ class MenuViewController: NSViewController, GestureResponder {
         // Button is currently selected
         switch type {
         case .splitScreen:
-            splitStateHelper?.splitButtonToggled(by: self, to: .off)
+            menuStateHelper?.splitButtonToggled(by: self, to: .off)
         case .settings:
             NSAnimationContext.runAnimationGroup({ _ in
                 NSAnimationContext.current.duration = Constants.animationDuration
@@ -297,22 +299,6 @@ class MenuViewController: NSViewController, GestureResponder {
         }
 
         return CGPoint(x: x, y: y)
-    }
-
-    /// Open a known application type with the required parameters
-    @discardableResult
-    private func open(_ application: ApplicationType, screenID: Int, appID: Int) -> NSRunningApplication? {
-        let args = [String(screenID), String(appID)]
-
-        do {
-            let url = URL(fileURLWithPath: application.path)
-            let config = [NSWorkspace.LaunchConfigurationKey.arguments: args]
-            let application = try NSWorkspace.shared.launchApplication(at: url, options: .newInstance, configuration: config)
-            return application
-        } catch {
-            print("Failed to open application at path: \(application.path).")
-            return nil
-        }
     }
 
     /// Calculates the screen index based off the x-position of the menu and the screens
