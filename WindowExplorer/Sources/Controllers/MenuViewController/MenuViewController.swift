@@ -22,7 +22,7 @@ class MenuViewController: NSViewController, GestureResponder {
     private var selectedButtons = [MenuButtonType]()
     private var lockIcon: NSView?
     private var scrollThresholdAchieved = false
-    private var settingsMenu: NSViewController!
+    private var settingsMenu: SettingsMenuViewController!
 
     private struct Constants {
         static let minimumScrollThreshold: CGFloat = 4
@@ -189,7 +189,9 @@ class MenuViewController: NSViewController, GestureResponder {
         case .recognized where abs(pan.delta.dy) > Constants.minimumScrollThreshold || scrollThresholdAchieved, .momentum where scrollThresholdAchieved:
             scrollThresholdAchieved = true
             let origin = originAppending(delta: pan.delta, to: window)
+            let settingsOrigin = originAppending(delta: pan.delta, to: settingsWindow)
             window.setFrameOrigin(origin)
+            settingsWindow.setFrameOrigin(settingsOrigin)
         case .possible:
             scrollThresholdAchieved = false
         default:

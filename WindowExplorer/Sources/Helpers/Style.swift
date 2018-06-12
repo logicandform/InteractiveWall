@@ -42,7 +42,6 @@ final class Style {
     let menuImageSize = CGSize(width: 50, height: 50)
     let menuSelectedColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
     let menuLockIconPosition = CGSize(width: -3, height: 3)
-    let menuUnselectedColor = NSColor(calibratedRed: 0.51, green: 0.62, blue: 0.65, alpha: 1)
     let menuSecondarySelectedColor = NSColor(calibratedRed: 0.06, green: 0.28, blue: 0.24, alpha: 1)
 
     // Settings
