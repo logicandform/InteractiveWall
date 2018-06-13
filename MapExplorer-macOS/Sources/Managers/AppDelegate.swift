@@ -4,7 +4,7 @@ import Cocoa
 
 
 struct Configuration {
-    static let serverIP = "10.58.73.102"
+    static let serverIP = "10.58.73.83"
     static let serverURL = "http://\(serverIP):3000"
     static let mapsPerScreen = 2
     static let numberOfScreens = 1

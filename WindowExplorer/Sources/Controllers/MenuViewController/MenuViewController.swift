@@ -22,10 +22,12 @@ class MenuViewController: NSViewController, GestureResponder {
     private var selectedButtons = [MenuButtonType]()
     private var lockIcon: NSView?
     private var scrollThresholdAchieved = false
+    private var settingsMenu: SettingsMenuViewController!
 
     private struct Constants {
         static let minimumScrollThreshold: CGFloat = 4
         static let imageTransitionDuration = 0.5
+        static let animationDuration = 0.5
     }
 
 
@@ -60,6 +62,11 @@ class MenuViewController: NSViewController, GestureResponder {
 
         setupButtons()
         setupGestures()
+    }
+
+    override func viewDidAppear() {
+        settingsMenu = WindowManager.instance.display(.settings, at: position(for: settingsButton, frame: style.settingsWindowSize, margins: false)) as? SettingsMenuViewController
+        settingsMenu.view.alphaValue = 0
     }
 
 
@@ -174,7 +181,7 @@ class MenuViewController: NSViewController, GestureResponder {
     // MARK: Gesture Handling
 
     func handleWindowPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
+        guard let pan = gesture as? PanGestureRecognizer, let window = view.window, let settingsWindow = settingsMenu.view.window else {
             return
         }
 
@@ -182,7 +189,9 @@ class MenuViewController: NSViewController, GestureResponder {
         case .recognized where abs(pan.delta.dy) > Constants.minimumScrollThreshold || scrollThresholdAchieved, .momentum where scrollThresholdAchieved:
             scrollThresholdAchieved = true
             let origin = originAppending(delta: pan.delta, to: window)
+            let settingsOrigin = originAppending(delta: pan.delta, to: settingsWindow)
             window.setFrameOrigin(origin)
+            settingsWindow.setFrameOrigin(settingsOrigin)
         case .possible:
             scrollThresholdAchieved = false
         default:
@@ -215,6 +224,7 @@ class MenuViewController: NSViewController, GestureResponder {
 
     private func didSelect(type: MenuButtonType) {
         guard selectedButtons.index(of: type) != nil else {
+            // Button is not currently selected
             switch type {
             case .splitScreen:
                 menuStateHelper?.splitButtonToggled(by: self, to: .on)
@@ -223,14 +233,18 @@ class MenuViewController: NSViewController, GestureResponder {
                     MasterViewController.instance?.apply(.menuLaunchedMapExplorer, toScreen: screenIndex - 1, on: mapIndex)
                     buttonToggled(type: .timelineToggle, selection: .off)
                 }
-
             case .timelineToggle:
                 if let screenIndex = calculateScreenIndex(), let mapIndex = calculateMapIndex() {
                     MasterViewController.instance?.apply(.menuLaunchedTimeline, toScreen: screenIndex - 1, on: mapIndex)
                     buttonToggled(type: .mapToggle, selection: .off)
                 }
+            case .settings:
+                NSAnimationContext.runAnimationGroup({ _ in
+                    NSAnimationContext.current.duration = Constants.animationDuration
+                    settingsMenu.view.animator().alphaValue = 1
+                })
             case .search:
-                searchSelected()
+                WindowManager.instance.display(.search, at: position(for: searchButton, frame: style.searchWindowSize))
             default:
                 break
             }
@@ -239,8 +253,17 @@ class MenuViewController: NSViewController, GestureResponder {
             return
         }
 
-        if type == .splitScreen {
+        // Button is currently selected
+        switch type {
+        case .splitScreen:
             menuStateHelper?.splitButtonToggled(by: self, to: .off)
+        case .settings:
+            NSAnimationContext.runAnimationGroup({ _ in
+                NSAnimationContext.current.duration = Constants.animationDuration
+                settingsMenu.view.animator().alphaValue = 0
+            })
+        default:
+            break
         }
 
         buttonToggled(type: type, selection: .off)
@@ -263,20 +286,21 @@ class MenuViewController: NSViewController, GestureResponder {
         return origin
     }
 
-    private func searchSelected() {
-        guard let windowPosition = searchButton.window?.frame, let screenBounds = NSScreen.containing(x: windowPosition.origin.x)?.frame else {
-            return
+    private func position(for button: NSImageView, frame: CGSize, margins: Bool = true) -> CGPoint {
+        guard let windowPosition = button.window?.frame, let screenBounds = NSScreen.containing(x: windowPosition.origin.x)?.frame else {
+            return CGPoint(x: 0, y: 0)
         }
 
-        let buttonOrigin = windowPosition.transformed(from: searchButton.frame).origin
-        var x = windowPosition.maxX + style.windowMargins
-        let y = buttonOrigin.y + style.menuImageSize.height - style.searchWindowSize.height
+        let windowMargin = margins ? style.windowMargins : 0
+        let buttonOrigin = windowPosition.transformed(from: button.frame).origin
+        var x = windowPosition.maxX + windowMargin
+        let y = buttonOrigin.y + style.menuImageSize.height - frame.height
 
         if windowPosition.maxX >= screenBounds.maxX {
-            x = windowPosition.origin.x - style.searchWindowSize.width - style.windowMargins
+            x = windowPosition.origin.x - frame.width - windowMargin
         }
 
-        WindowManager.instance.display(.search, at: CGPoint(x: x, y: y))
+        return CGPoint(x: x, y: y)
     }
 
     /// Calculates the screen index based off the x-position of the menu and the screens

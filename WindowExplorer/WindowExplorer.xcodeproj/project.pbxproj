@@ -107,6 +107,10 @@
 		A407160E20AB94B800B54593 /* PriorityOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A407160D20AB94B800B54593 /* PriorityOrder.swift */; };
 		A407161220ABAE5C00B54593 /* RelationshipHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A407161120ABAE5B00B54593 /* RelationshipHelper.swift */; };
 		A455CC7120BC949B00457ACF /* MenuStateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A455CC7020BC949B00457ACF /* MenuStateHelper.swift */; };
+		A456CE9820D0A39E0036F020 /* SettingsTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A456CE9720D0A39E0036F020 /* SettingsTypes.swift */; };
+		A456F6C020C73826004534A4 /* SettingsMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A456F6BF20C73826004534A4 /* SettingsMenuViewController.swift */; };
+		A456F6C220C73836004534A4 /* SettingsMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A456F6C120C73836004534A4 /* SettingsMenu.storyboard */; };
+		A457D19820C9A42900D21ABA /* SwitchControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A457D19720C9A42900D21ABA /* SwitchControl.swift */; };
 		A460292920B4C689000F902E /* Menu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A460292820B4C689000F902E /* Menu.storyboard */; };
 		A460292B20B4C6A0000F902E /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A460292A20B4C6A0000F902E /* MenuViewController.swift */; };
 		A4694B66209CEC18006A407F /* RecordFilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4694B65209CEC18006A407F /* RecordFilterType.swift */; };
@@ -255,6 +259,10 @@
 		A407160D20AB94B800B54593 /* PriorityOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityOrder.swift; sourceTree = "<group>"; };
 		A407161120ABAE5B00B54593 /* RelationshipHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipHelper.swift; sourceTree = "<group>"; };
 		A455CC7020BC949B00457ACF /* MenuStateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuStateHelper.swift; sourceTree = "<group>"; };
+		A456CE9720D0A39E0036F020 /* SettingsTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTypes.swift; sourceTree = "<group>"; };
+		A456F6BF20C73826004534A4 /* SettingsMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMenuViewController.swift; sourceTree = "<group>"; };
+		A456F6C120C73836004534A4 /* SettingsMenu.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsMenu.storyboard; sourceTree = "<group>"; };
+		A457D19720C9A42900D21ABA /* SwitchControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchControl.swift; sourceTree = "<group>"; };
 		A460292820B4C689000F902E /* Menu.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Menu.storyboard; sourceTree = "<group>"; };
 		A460292A20B4C6A0000F902E /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		A4694B65209CEC18006A407F /* RecordFilterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordFilterType.swift; sourceTree = "<group>"; };
@@ -593,6 +601,7 @@
 			children = (
 				A460292820B4C689000F902E /* Menu.storyboard */,
 				A460292A20B4C6A0000F902E /* MenuViewController.swift */,
+				A456F6BE20C73722004534A4 /* SettingsMenuController */,
 			);
 			path = MenuViewController;
 			sourceTree = "<group>";
@@ -618,6 +627,16 @@
 				22A76FE320464764006C0AE7 /* PDFViewControlller */,
 			);
 			path = MediaControllers;
+			sourceTree = "<group>";
+		};
+		A456F6BE20C73722004534A4 /* SettingsMenuController */ = {
+			isa = PBXGroup;
+			children = (
+				A456F6C120C73836004534A4 /* SettingsMenu.storyboard */,
+				A456F6BF20C73826004534A4 /* SettingsMenuViewController.swift */,
+				A456CE9720D0A39E0036F020 /* SettingsTypes.swift */,
+			);
+			path = SettingsMenuController;
 			sourceTree = "<group>";
 		};
 		BA7AB469DDFD237E3385F839 /* Frameworks */ = {
@@ -670,6 +689,7 @@
 				D92E0EFD20604BDB00C1C9A7 /* PageControl.swift */,
 				D92E0EFF206052C900C1C9A7 /* ArrowControl.swift */,
 				8F6EFD7C2098FF0800E4D97D /* FadingScrollView.swift */,
+				A457D19720C9A42900D21ABA /* SwitchControl.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -780,6 +800,7 @@
 				2204621020472DE80067D9FB /* RelatedItemListView.xib in Resources */,
 				8F8DE19020A3C48C006FA48B /* RelatedItemImageView.xib in Resources */,
 				2204621020472DE80067D9FB /* RelatedItemListView.xib in Resources */,
+				A456F6C220C73836004534A4 /* SettingsMenu.storyboard in Resources */,
 				CD7B3CD120ADFB1400723BDB /* ImageZoomControl.xib in Resources */,
 				1FAFF01B206EDD93005DC68B /* Soleil-04.otf in Resources */,
 				2247670120562F65003E8790 /* MediaItemView.xib in Resources */,
@@ -876,6 +897,7 @@
 				22046246204730780067D9FB /* GestureRecognizer.swift in Sources */,
 				618F0C322069FFD600762C20 /* AudioController.swift in Sources */,
 				2204625D204730C70067D9FB /* TouchProperties.swift in Sources */,
+				A456F6C020C73826004534A4 /* SettingsMenuViewController.swift in Sources */,
 				2204623420472FDF0067D9FB /* NSImage.swift in Sources */,
 				D9F24E62205B040700B9FCB8 /* ImageViewController.swift in Sources */,
 				8F8DE19220A3EDFD006FA48B /* RelatedItemView.swift in Sources */,
@@ -949,10 +971,12 @@
 				22046244204730780067D9FB /* PanGestureRecognizer.swift in Sources */,
 				22927912208E531C005E2036 /* BackgroundTimer.swift in Sources */,
 				2204623820472FDF0067D9FB /* URL.swift in Sources */,
+				A456CE9820D0A39E0036F020 /* SettingsTypes.swift in Sources */,
 				2204621820472F2D0067D9FB /* PlayerState.swift in Sources */,
 				8F2B188F20AA321700C5E0FA /* RelatedItemViewLayout.swift in Sources */,
 				D901EBED2056EEFE00BBFCF2 /* RecordDisplayable.swift in Sources */,
 				22A923212044AF05003EA9BB /* AppDelegate.swift in Sources */,
+				A457D19820C9A42900D21ABA /* SwitchControl.swift in Sources */,
 				22046259204730C70067D9FB /* School.swift in Sources */,
 				226D0582204FC38700D74711 /* Event.swift in Sources */,
 				22AEAF0420B67E6700DD184B /* Math.swift in Sources */,
