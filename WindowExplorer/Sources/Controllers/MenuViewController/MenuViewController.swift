@@ -181,7 +181,7 @@ class MenuViewController: NSViewController, GestureResponder {
     // MARK: Gesture Handling
 
     func handleWindowPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let window = view.window, let settingsWindow = settingsMenu.view.window else {
+        guard let pan = gesture as? PanGestureRecognizer, let window = view.window, let settingsWindow = settingsMenu.view.window, let screen = window.screen else {
             return
         }
 
@@ -190,8 +190,20 @@ class MenuViewController: NSViewController, GestureResponder {
             scrollThresholdAchieved = true
             let origin = originAppending(delta: pan.delta, to: window)
             let settingsOrigin = originAppending(delta: pan.delta, to: settingsWindow)
-            window.setFrameOrigin(origin)
-            settingsWindow.setFrameOrigin(settingsOrigin)
+
+            if settingsMenu.view.isVisible {
+                if pan.delta.dy < 0 && settingsOrigin.y > screen.frame.minY && origin.y > screen.frame.minY {
+                    window.setFrameOrigin(origin)
+                    settingsWindow.setFrameOrigin(settingsOrigin)
+                } else if pan.delta.dy > 0 && settingsOrigin.y < screen.frame.maxY && origin.y < screen.frame.maxY {
+                    window.setFrameOrigin(origin)
+                    settingsWindow.setFrameOrigin(settingsOrigin)
+                }
+            } else {
+                window.setFrameOrigin(origin)
+            }
+
+//            setOrigin(for: window, and: settingsWindow, menuWindowOrigin: origin, settingsWindowOrigin: settingsOrigin)
         case .possible:
             scrollThresholdAchieved = false
         default:
@@ -201,6 +213,23 @@ class MenuViewController: NSViewController, GestureResponder {
 
 
     // MARK: Helpers
+
+    private func setOrigin(for menuWindow: NSWindow, and settingsWindow: NSWindow, menuWindowOrigin: CGPoint, settingsWindowOrigin: CGPoint) {
+        guard let screen = menuWindow.screen else {
+            return
+        }
+        // Need to check if settings is visible, if it is, calculate based on that.  if it's not, caculate based on
+//        if settingsWindow.isVisible &&
+
+        if screen.frame.minY < settingsWindowOrigin.y && screen.frame.minY < menuWindowOrigin.y, screen.frame.maxY > settingsWindowOrigin.y + style.settingsWindowSize.height && screen.frame.maxY > menuWindowOrigin.y + style.menuWindowSize.height {
+            if settingsWindow.isVisible {
+                menuWindow.setFrameOrigin(menuWindowOrigin)
+                settingsWindow.setFrameOrigin(settingsWindowOrigin)
+            } else if !settingsWindow.isVisible {
+
+            }
+        }
+    }
 
     private func addGesture(for type: MenuButtonType) {
         guard let view = viewForButtonType[type], let subview = subviewForButtonType[type] else {
@@ -241,10 +270,26 @@ class MenuViewController: NSViewController, GestureResponder {
                     buttonToggled(type: .mapToggle, selection: .off)
                 }
             case .settings:
+                guard let settingsButtonWindow = settingsButton.window, let settingsMenuWindow = settingsMenu.view.window, let screen = settingsButtonWindow.screen else {
+                    return
+                }
+
+                let position = selectedPosition(for: settingsButton, frame: style.settingsWindowSize, margins: false)
+                if position.y < screen.frame.minY {
+                    adjustHeight(for: settingsButton, submenu: settingsMenu.view, on: screen)
+                    NSAnimationContext.runAnimationGroup({ _ in
+                        NSAnimationContext.current.duration = Constants.animationDuration
+                        settingsMenu.view.animator().alphaValue = 1
+                    })
+                } else {
+                    settingsMenu.view.window?.setFrameOrigin(position)
+                }
+
                 NSAnimationContext.runAnimationGroup({ _ in
                     NSAnimationContext.current.duration = Constants.animationDuration
                     settingsMenu.view.animator().isHidden = false
                 })
+
             case .search:
                 WindowManager.instance.display(.search, at: position(for: searchButton, frame: style.searchWindowSize))
             default:

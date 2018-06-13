@@ -5,6 +5,11 @@ import AppKit
 
 extension NSView {
 
+    var isVisible: Bool {
+        let alpha = alphaValue
+        return alphaValue > 0
+    }
+
     /// Animates the transition of the view's layer contents to a new image
     func transition(to image: NSImage?, duration: TimeInterval, type: String = kCATransitionFade) {
         let transition = CATransition()
