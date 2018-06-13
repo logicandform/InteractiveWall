@@ -4,55 +4,6 @@ import Foundation
 import Cocoa
 
 
-enum SettingsTypes {
-    case showLabels
-    case showMiniMap
-    case showLightbox
-    case schools
-    case events
-    case organizations
-    case artifacts
-
-    var color: NSColor {
-        switch self {
-        case .showLabels:
-            return style.menuSelectedColor
-        case .showMiniMap:
-            return style.menuSelectedColor
-        case .showLightbox:
-            return style.menuSelectedColor
-        case .schools:
-            return style.schoolColor
-        case .events:
-            return style.eventColor
-        case .organizations:
-            return style.organizationColor
-        case .artifacts:
-            return style.artifactColor
-        }
-    }
-
-    var secondaryColor: NSColor {
-        switch self {
-        case .showLabels:
-            return style.menuSecondarySelectedColor
-        case .showMiniMap:
-            return style.menuSecondarySelectedColor
-        case .showLightbox:
-            return style.menuSecondarySelectedColor
-        case .schools:
-            return style.schoolSecondarySelectedColor
-        case .events:
-            return style.eventSecondarySelectedColor
-        case .organizations:
-            return style.organizationSecondarySelectedColor
-        case .artifacts:
-            return style.artifactSecondarySelectedColor
-        }
-    }
-}
-
-
 class SettingsMenuViewController: NSViewController, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "SettingsMenu")
 
@@ -87,11 +38,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
 
-        textFieldForSettingsType = [.showLabels: labelsText, .showMiniMap: miniMapText, .showLightbox: lightboxText, .schools: schoolsText, .events: eventsText, .organizations: organizationsText, .artifacts: artifactsText]
         setupSwitches()
-        switchForSettingsType = [.showLabels: labelsSwitch, .showMiniMap: miniMapSwitch, .showLightbox: lightboxSwitch, .schools: schoolsSwitch, .events: eventsSwitch, .organizations: organizationsSwitch, .artifacts: artifactsSwitch]
-
-
         setupGestures()
     }
 
@@ -99,13 +46,54 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     // MARK: Setup
 
     private func setupSwitches() {
+        textFieldForSettingsType = [.showLabels: labelsText, .showMiniMap: miniMapText, .showLightbox: lightboxText, .toggleSchools: schoolsText, .toggleEvents: eventsText, .toggleOrganizations: organizationsText, .toggleArtifacts: artifactsText]
+
         labelsSwitch = setupSwitch(for: .showLabels)
         miniMapSwitch = setupSwitch(for: .showMiniMap)
         lightboxSwitch = setupSwitch(for: .showLightbox)
-        schoolsSwitch = setupSwitch(for: .schools)
-        eventsSwitch = setupSwitch(for: .events)
-        organizationsSwitch = setupSwitch(for: .organizations)
-        artifactsSwitch = setupSwitch(for: .artifacts)
+        schoolsSwitch = setupSwitch(for: .toggleSchools)
+        eventsSwitch = setupSwitch(for: .toggleEvents)
+        organizationsSwitch = setupSwitch(for: .toggleOrganizations)
+        artifactsSwitch = setupSwitch(for: .toggleArtifacts)
+
+        switchForSettingsType = [.showLabels: labelsSwitch, .showMiniMap: miniMapSwitch, .showLightbox: lightboxSwitch, .toggleSchools: schoolsSwitch, .toggleEvents: eventsSwitch, .toggleOrganizations: organizationsSwitch, .toggleArtifacts: artifactsSwitch]
+    }
+
+    private func setupGestures() {
+        setupGesture(for: .showLabels)
+        setupGesture(for: .showMiniMap)
+        setupGesture(for: .showLightbox)
+        setupGesture(for: .toggleSchools)
+        setupGesture(for: .toggleArtifacts)
+        setupGesture(for: .toggleEvents)
+        setupGesture(for: .toggleOrganizations)
+    }
+
+
+    // MARK: GestureResponder
+
+    /// Determines if the bounds of the draggable area is inside a given rect
+    func draggableInside(bounds: CGRect) -> Bool {
+        guard let window = view.window else {
+            return false
+        }
+
+        return bounds.contains(view.frame.transformed(from: window.frame))
+    }
+
+    func subview(contains position: CGPoint) -> Bool {
+        if view.alphaValue.isZero {
+            return false
+        } else {
+            return view.frame.contains(position)
+        }
+    }
+
+
+    // MARK: Helpers
+
+    private func handle(toggleSwitch: SwitchControl) {
+        toggleSwitch.isOn = !toggleSwitch.isOn
     }
 
     private func setupSwitch(for type: SettingsTypes) -> SwitchControl? {
@@ -124,22 +112,11 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
 
         view.addSubview(toggleSwitch)
         toggleSwitch.translatesAutoresizingMaskIntoConstraints = false
-
         toggleSwitch.centerYAnchor.constraint(equalTo: textField.centerYAnchor).isActive = true
         toggleSwitch.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: style.toggleSwitchOffset).isActive = true
         toggleSwitch.heightAnchor.constraint(equalToConstant: style.toggleSwitchFrame.height).isActive = true
         toggleSwitch.widthAnchor.constraint(equalToConstant: style.toggleSwitchFrame.width).isActive = true
         return toggleSwitch
-    }
-
-    private func setupGestures() {
-        setupGesture(for: .showLabels)
-        setupGesture(for: .showMiniMap)
-        setupGesture(for: .showLightbox)
-        setupGesture(for: .schools)
-        setupGesture(for: .artifacts)
-        setupGesture(for: .events)
-        setupGesture(for: .organizations)
     }
 
     private func setupGesture(for type: SettingsTypes) {
@@ -149,38 +126,10 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
 
         let toggleTap = TapGestureRecognizer()
         gestureManager.add(toggleTap, to: toggleSwitch)
-
         toggleTap.gestureUpdated = { [weak self] tap in
             if tap.state == .ended {
                 self?.handle(toggleSwitch: toggleSwitch)
             }
         }
-    }
-
-
-    // MARK: GestureResponder
-
-    /// Determines if the bounds of the draggable area is inside a given rect
-    func draggableInside(bounds: CGRect) -> Bool {
-        guard let window = view.window else {
-            return false
-        }
-
-        return bounds.contains(view.frame.transformed(from: window.frame))
-    }
-
-    func subview(contains position: CGPoint) -> Bool {
-        if view.alphaValue == 0 {
-            return false
-        } else {
-            return view.frame.contains(position)
-        }
-    }
-
-
-    // MARK: Helpers
-
-    private func handle(toggleSwitch: SwitchControl) {
-        toggleSwitch.isOn = !toggleSwitch.isOn
     }
 }

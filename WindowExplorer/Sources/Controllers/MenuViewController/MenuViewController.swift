@@ -65,7 +65,7 @@ class MenuViewController: NSViewController, GestureResponder {
     }
 
     override func viewDidAppear() {
-        settingsMenu = WindowManager.instance.display(.settings, at: selectedPosition(for: settingsButton, frame: style.settingsWindowSize, margins: false)) as? SettingsMenuViewController
+        settingsMenu = WindowManager.instance.display(.settings, at: position(for: settingsButton, frame: style.settingsWindowSize, margins: false)) as? SettingsMenuViewController
         settingsMenu.view.alphaValue = 0
     }
 
@@ -244,7 +244,7 @@ class MenuViewController: NSViewController, GestureResponder {
                     settingsMenu.view.animator().alphaValue = 1
                 })
             case .search:
-                WindowManager.instance.display(.search, at: selectedPosition(for: searchButton, frame: style.searchWindowSize))
+                WindowManager.instance.display(.search, at: position(for: searchButton, frame: style.searchWindowSize))
             default:
                 break
             }
@@ -286,7 +286,7 @@ class MenuViewController: NSViewController, GestureResponder {
         return origin
     }
 
-    private func selectedPosition(for button: NSImageView, frame: CGSize, margins: Bool = true) -> CGPoint {
+    private func position(for button: NSImageView, frame: CGSize, margins: Bool = true) -> CGPoint {
         guard let windowPosition = button.window?.frame, let screenBounds = NSScreen.containing(x: windowPosition.origin.x)?.frame else {
             return CGPoint(x: 0, y: 0)
         }

@@ -107,6 +107,7 @@
 		A407160E20AB94B800B54593 /* PriorityOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A407160D20AB94B800B54593 /* PriorityOrder.swift */; };
 		A407161220ABAE5C00B54593 /* RelationshipHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A407161120ABAE5B00B54593 /* RelationshipHelper.swift */; };
 		A455CC7120BC949B00457ACF /* MenuStateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A455CC7020BC949B00457ACF /* MenuStateHelper.swift */; };
+		A456CE9820D0A39E0036F020 /* SettingsTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A456CE9720D0A39E0036F020 /* SettingsTypes.swift */; };
 		A456F6C020C73826004534A4 /* SettingsMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A456F6BF20C73826004534A4 /* SettingsMenuViewController.swift */; };
 		A456F6C220C73836004534A4 /* SettingsMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A456F6C120C73836004534A4 /* SettingsMenu.storyboard */; };
 		A457D19820C9A42900D21ABA /* SwitchControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A457D19720C9A42900D21ABA /* SwitchControl.swift */; };
@@ -258,6 +259,7 @@
 		A407160D20AB94B800B54593 /* PriorityOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityOrder.swift; sourceTree = "<group>"; };
 		A407161120ABAE5B00B54593 /* RelationshipHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipHelper.swift; sourceTree = "<group>"; };
 		A455CC7020BC949B00457ACF /* MenuStateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuStateHelper.swift; sourceTree = "<group>"; };
+		A456CE9720D0A39E0036F020 /* SettingsTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTypes.swift; sourceTree = "<group>"; };
 		A456F6BF20C73826004534A4 /* SettingsMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMenuViewController.swift; sourceTree = "<group>"; };
 		A456F6C120C73836004534A4 /* SettingsMenu.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsMenu.storyboard; sourceTree = "<group>"; };
 		A457D19720C9A42900D21ABA /* SwitchControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchControl.swift; sourceTree = "<group>"; };
@@ -632,6 +634,7 @@
 			children = (
 				A456F6C120C73836004534A4 /* SettingsMenu.storyboard */,
 				A456F6BF20C73826004534A4 /* SettingsMenuViewController.swift */,
+				A456CE9720D0A39E0036F020 /* SettingsTypes.swift */,
 			);
 			path = SettingsMenuController;
 			sourceTree = "<group>";
@@ -968,6 +971,7 @@
 				22046244204730780067D9FB /* PanGestureRecognizer.swift in Sources */,
 				22927912208E531C005E2036 /* BackgroundTimer.swift in Sources */,
 				2204623820472FDF0067D9FB /* URL.swift in Sources */,
+				A456CE9820D0A39E0036F020 /* SettingsTypes.swift in Sources */,
 				2204621820472F2D0067D9FB /* PlayerState.swift in Sources */,
 				8F2B188F20AA321700C5E0FA /* RelatedItemViewLayout.swift in Sources */,
 				D901EBED2056EEFE00BBFCF2 /* RecordDisplayable.swift in Sources */,
