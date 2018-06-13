@@ -7,7 +7,6 @@ import Cocoa
 enum SettingsTypes {
     case showLabels
     case showMiniMap
-    case showLightbox
     case toggleSchools
     case toggleEvents
     case toggleOrganizations
@@ -18,8 +17,6 @@ enum SettingsTypes {
         case .showLabels:
             return style.menuSelectedColor
         case .showMiniMap:
-            return style.menuSelectedColor
-        case .showLightbox:
             return style.menuSelectedColor
         case .toggleSchools:
             return style.schoolColor
@@ -37,8 +34,6 @@ enum SettingsTypes {
         case .showLabels:
             return style.menuSecondarySelectedColor
         case .showMiniMap:
-            return style.menuSecondarySelectedColor
-        case .showLightbox:
             return style.menuSecondarySelectedColor
         case .toggleSchools:
             return style.schoolSecondarySelectedColor

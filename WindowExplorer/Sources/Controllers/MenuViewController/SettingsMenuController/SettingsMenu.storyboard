@@ -10,11 +10,11 @@
             <objects>
                 <viewController id="jcr-A7-Ddu" customClass="SettingsMenuViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="ZeC-5C-8Vg">
-                        <rect key="frame" x="0.0" y="0.0" width="275" height="296"/>
+                        <rect key="frame" x="0.0" y="0.0" width="275" height="245"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9Ya-v4-Vaa">
-                                <rect key="frame" x="18" y="260" width="139" height="21"/>
+                                <rect key="frame" x="18" y="209" width="139" height="21"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Show Map Labels" id="Pxr-4m-l0U">
                                     <font key="font" metaFont="system" size="17"/>
                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
@@ -22,16 +22,8 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1rM-3a-ePD">
-                                <rect key="frame" x="18" y="209" width="121" height="21"/>
+                                <rect key="frame" x="18" y="158" width="121" height="21"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Show Mini Map" id="aXv-RQ-L8T">
-                                    <font key="font" metaFont="system" size="17"/>
-                                    <color key="textColor" red="1" green="1" blue="1" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Kmw-c1-nj7">
-                                <rect key="frame" x="18" y="158" width="117" height="21"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Show Lightbox" id="KHQ-4m-dT4">
                                     <font key="font" metaFont="system" size="17"/>
                                     <color key="textColor" red="1" green="1" blue="1" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -71,7 +63,6 @@
                             </textField>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="Kmw-c1-nj7" firstAttribute="leading" secondItem="ZeC-5C-8Vg" secondAttribute="leading" constant="20" id="2dp-Ci-5uf"/>
                             <constraint firstItem="TFb-oj-abs" firstAttribute="top" secondItem="FBE-J8-oig" secondAttribute="bottom" constant="15" id="9bJ-6h-mjv"/>
                             <constraint firstItem="FBE-J8-oig" firstAttribute="top" secondItem="ijp-h9-lPP" secondAttribute="bottom" constant="15" id="9oi-5z-cTd"/>
                             <constraint firstItem="1rM-3a-ePD" firstAttribute="top" secondItem="9Ya-v4-Vaa" secondAttribute="bottom" constant="30" id="EUM-Oh-SKY"/>
@@ -80,11 +71,10 @@
                             <constraint firstItem="TFb-oj-abs" firstAttribute="leading" secondItem="ZeC-5C-8Vg" secondAttribute="leading" constant="20" id="RqN-yb-PYT"/>
                             <constraint firstAttribute="bottom" secondItem="TFb-oj-abs" secondAttribute="bottom" constant="15" id="VS0-gx-fRz"/>
                             <constraint firstItem="ijp-h9-lPP" firstAttribute="leading" secondItem="ZeC-5C-8Vg" secondAttribute="leading" constant="20" id="YH0-KX-4wT"/>
-                            <constraint firstItem="Kmw-c1-nj7" firstAttribute="top" secondItem="1rM-3a-ePD" secondAttribute="bottom" constant="30" id="b3v-4e-drd"/>
                             <constraint firstItem="1rM-3a-ePD" firstAttribute="leading" secondItem="ZeC-5C-8Vg" secondAttribute="leading" constant="20" id="fdR-sz-jDe"/>
+                            <constraint firstItem="FnJ-sr-hYn" firstAttribute="top" secondItem="1rM-3a-ePD" secondAttribute="bottom" constant="30" id="jIi-fv-0ij"/>
                             <constraint firstItem="FnJ-sr-hYn" firstAttribute="leading" secondItem="ZeC-5C-8Vg" secondAttribute="leading" constant="20" id="nhC-kL-bLF"/>
                             <constraint firstItem="ijp-h9-lPP" firstAttribute="top" secondItem="FnJ-sr-hYn" secondAttribute="bottom" constant="15" id="plt-Cg-yn9"/>
-                            <constraint firstItem="FnJ-sr-hYn" firstAttribute="top" secondItem="Kmw-c1-nj7" secondAttribute="bottom" constant="30" id="xYT-7Z-I56"/>
                             <constraint firstItem="9Ya-v4-Vaa" firstAttribute="leading" secondItem="ZeC-5C-8Vg" secondAttribute="leading" constant="20" id="zEW-gW-1lc"/>
                         </constraints>
                     </view>
@@ -92,7 +82,6 @@
                         <outlet property="artifactsText" destination="TFb-oj-abs" id="ocA-fj-1lZ"/>
                         <outlet property="eventsText" destination="ijp-h9-lPP" id="OgW-XW-sZF"/>
                         <outlet property="labelsText" destination="9Ya-v4-Vaa" id="Mqw-ja-RJs"/>
-                        <outlet property="lightboxText" destination="Kmw-c1-nj7" id="wPM-Vh-6Js"/>
                         <outlet property="miniMapText" destination="1rM-3a-ePD" id="Iu9-eh-x9m"/>
                         <outlet property="organizationsText" destination="FBE-J8-oig" id="bXL-fi-ZTQ"/>
                         <outlet property="schoolsText" destination="FnJ-sr-hYn" id="PMl-K7-X8V"/>

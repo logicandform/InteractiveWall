@@ -9,7 +9,6 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
 
     @IBOutlet weak var labelsText: NSTextField!
     @IBOutlet weak var miniMapText: NSTextField!
-    @IBOutlet weak var lightboxText: NSTextField!
     @IBOutlet weak var schoolsText: NSTextField!
     @IBOutlet weak var eventsText: NSTextField!
     @IBOutlet weak var organizationsText: NSTextField!
@@ -18,7 +17,6 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     var gestureManager: GestureManager!
     private var labelsSwitch: SwitchControl!
     private var miniMapSwitch: SwitchControl!
-    private var lightboxSwitch: SwitchControl!
     private var schoolsSwitch: SwitchControl!
     private var eventsSwitch: SwitchControl!
     private var organizationsSwitch: SwitchControl!
@@ -46,23 +44,21 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     // MARK: Setup
 
     private func setupSwitches() {
-        textFieldForSettingsType = [.showLabels: labelsText, .showMiniMap: miniMapText, .showLightbox: lightboxText, .toggleSchools: schoolsText, .toggleEvents: eventsText, .toggleOrganizations: organizationsText, .toggleArtifacts: artifactsText]
+        textFieldForSettingsType = [.showLabels: labelsText, .showMiniMap: miniMapText, .toggleSchools: schoolsText, .toggleEvents: eventsText, .toggleOrganizations: organizationsText, .toggleArtifacts: artifactsText]
 
         labelsSwitch = setupSwitch(for: .showLabels)
         miniMapSwitch = setupSwitch(for: .showMiniMap)
-        lightboxSwitch = setupSwitch(for: .showLightbox)
         schoolsSwitch = setupSwitch(for: .toggleSchools)
         eventsSwitch = setupSwitch(for: .toggleEvents)
         organizationsSwitch = setupSwitch(for: .toggleOrganizations)
         artifactsSwitch = setupSwitch(for: .toggleArtifacts)
 
-        switchForSettingsType = [.showLabels: labelsSwitch, .showMiniMap: miniMapSwitch, .showLightbox: lightboxSwitch, .toggleSchools: schoolsSwitch, .toggleEvents: eventsSwitch, .toggleOrganizations: organizationsSwitch, .toggleArtifacts: artifactsSwitch]
+        switchForSettingsType = [.showLabels: labelsSwitch, .showMiniMap: miniMapSwitch, .toggleSchools: schoolsSwitch, .toggleEvents: eventsSwitch, .toggleOrganizations: organizationsSwitch, .toggleArtifacts: artifactsSwitch]
     }
 
     private func setupGestures() {
         setupGesture(for: .showLabels)
         setupGesture(for: .showMiniMap)
-        setupGesture(for: .showLightbox)
         setupGesture(for: .toggleSchools)
         setupGesture(for: .toggleArtifacts)
         setupGesture(for: .toggleEvents)

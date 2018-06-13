@@ -45,7 +45,7 @@ final class Style {
     let menuSecondarySelectedColor = NSColor(calibratedRed: 0.06, green: 0.28, blue: 0.24, alpha: 1)
 
     // Settings
-    let settingsWindowSize = CGSize(width: 275, height: 296)
+    let settingsWindowSize = CGSize(width: 275, height: 245)
     let artifactSecondarySelectedColor = NSColor(calibratedRed: 0.17, green: 0, blue: 0.27, alpha: 1)
     let schoolSecondarySelectedColor = NSColor(calibratedRed: 0, green: 0.19, blue: 0.32, alpha: 1)
     let organizationSecondarySelectedColor = NSColor(calibratedRed: 0, green: 0.25, blue: 0.16, alpha: 1)
