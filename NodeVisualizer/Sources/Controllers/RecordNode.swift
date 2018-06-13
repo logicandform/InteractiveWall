@@ -31,10 +31,14 @@ class RecordNode: SKNode {
 
     // MARK: API
 
-    func runInitialAnimation(with forceVector: CGVector) {
-        let fadeInAction = SKAction.fadeIn(withDuration: 0.5)
-        let applyImpulseAction = SKAction.applyForce(forceVector, duration: 0.1)
-        let groupAction = SKAction.group([fadeInAction, applyImpulseAction])
+    func runInitialAnimation(with forceVector: CGVector, delay: Int) {
+        let dX = forceVector.dx * 0.5
+        let dY = forceVector.dy * 0.5
+        let force = CGVector(dx: dX, dy: dY)
+
+        let fadeInAction = SKAction.fadeIn(withDuration: TimeInterval(delay) * 0.01)
+        let applyForceAction = SKAction.applyForce(force, duration: 0.1)
+        let groupAction = SKAction.sequence([fadeInAction, applyForceAction])
         run(groupAction)
     }
 
@@ -42,15 +46,12 @@ class RecordNode: SKNode {
     // MARK: Helpers
 
     private func makeRecordNode() {
-        let rootNode = makeRootNode()
-
-//        addTitleLabelNode(to: rootNode)
-        addIdLabelNode(to: rootNode)
-
+        let _ = makeRootNode()
+//        addIdLabelNode(to: rootNode)
         setupPhysics()
     }
 
-    private func makeRootNode() -> SKNode {
+    private func makeRootNode() -> SKSpriteNode {
         let rootNode = SKSpriteNode()
         rootNode.size = CGSize(width: 20, height: 20)
         rootNode.color = record.type.color

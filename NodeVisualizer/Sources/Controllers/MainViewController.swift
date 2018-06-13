@@ -61,12 +61,11 @@ class MainViewController: NSViewController, GestureResponder {
         let mainScene = makeScene()
         mainScene.records = records
         mainScene.gestureManager = gestureManager
-
         mainView.presentScene(mainScene)
     }
 
     private func makeScene() -> MainScene {
-        let scene = MainScene(size: CGSize(width: view.bounds.width, height: view.bounds.height))
+        let scene = MainScene(size: CGSize(width: mainView.bounds.width, height: mainView.bounds.height))
         scene.backgroundColor = style.darkBackground
         scene.scaleMode = .aspectFill
         return scene
