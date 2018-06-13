@@ -26,6 +26,17 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     private var textFieldForSettingsType = [SettingsTypes: NSTextField]()
 
 
+    private struct Keys {
+        static let id = "id"
+        static let map = "map"
+        static let group = "group"
+        static let gesture = "gestureType"
+        static let animated = "amimated"
+        static let toggleOn = "toggleOn"
+        static let switchType = "switchType"
+    }
+
+
     // MARK: Life-cycle 
 
     override func viewDidLoad() {
@@ -88,8 +99,14 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
 
     // MARK: Helpers
 
-    private func handle(toggleSwitch: SwitchControl) {
+    private func handle(toggleSwitch: SwitchControl, type: SettingsTypes) {
+        guard let appID = view.calculateAppID() else {
+            return
+        }
+
         toggleSwitch.isOn = !toggleSwitch.isOn
+        let info: JSON = [Keys.id: appID, Keys.toggleOn: toggleSwitch.isOn, Keys.switchType: type.rawValue]
+        DistributedNotificationCenter.default().postNotificationName(MapNotification.toggleSwitch.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
     private func setupSwitch(for type: SettingsTypes) -> SwitchControl? {
@@ -124,7 +141,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         gestureManager.add(toggleTap, to: toggleSwitch)
         toggleTap.gestureUpdated = { [weak self] tap in
             if tap.state == .ended {
-                self?.handle(toggleSwitch: toggleSwitch)
+                self?.handle(toggleSwitch: toggleSwitch, type: type)
             }
         }
     }

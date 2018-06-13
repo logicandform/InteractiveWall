@@ -17,6 +17,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private var mapHandler: MapHandler?
     private var recordForAnnotation = [CircleAnnotation: Record]()
     private var showingAnnotationTitles = false
+    private var settingsShowingAnnotationTitles = true
     private let touchListener = TouchListener()
 
     private var tileURL: String {
@@ -72,7 +73,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     // MARK: Setup
 
     private func setupMap() {
-        mapHandler = MapHandler(mapView: mapView, id: appID)
+        mapHandler = MapHandler(mapView: mapView, id: appID, mapViewController: self)
         let overlay = MKTileOverlay(urlTemplate: tileURL)
         overlay.canReplaceMapContent = true
         mapView.add(overlay)
@@ -102,6 +103,23 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         border.wantsLayer = true
         border.layer?.backgroundColor = style.borderColor.cgColor
         border.isHidden = true
+    }
+
+
+    // MARK: API
+
+    func toggle(switchType: SettingsTypes, toggleOn: Bool) {
+        switch switchType {
+        case .showLabels:
+            settingsShowingAnnotationTitles = toggleOn
+            if mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel {
+                toggleAnnotationTitles(on: settingsShowingAnnotationTitles)
+            }
+        case .showMiniMap:
+            mapView.miniMapIsHidden = !toggleOn
+        case .toggleSchools, .toggleEvents, .toggleOrganizations, .toggleArtifacts:
+            toggleAnnotations(type: switchType, toggleOn: toggleOn)
+        }
     }
 
 
@@ -192,7 +210,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         if showingAnnotationTitles != (mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel) {
             showingAnnotationTitles = mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel
-            toggleAnnotationTitles(on: showingAnnotationTitles)
+            toggleAnnotationTitles(on: showingAnnotationTitles && settingsShowingAnnotationTitles)
         }
     }
 
@@ -200,7 +218,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
         for view in views {
             if let circleAnnotationView = view as? CircleAnnotationView {
-                circleAnnotationView.showTitle(showingAnnotationTitles)
+                circleAnnotationView.showTitle(showingAnnotationTitles && settingsShowingAnnotationTitles)
             }
         }
     }
@@ -304,6 +322,24 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
                 annotationView.showTitle(on)
             }
+        }
+    }
+
+    private func toggleAnnotations(type: SettingsTypes, toggleOn: Bool) {
+        guard let type = type.recordType else {
+            return
+        }
+
+        let filteredAnnotations = recordForAnnotation.filter({ $0.value.type == type })
+        if toggleOn {
+            let annotationsOnMap = mapView.annotations as? [CircleAnnotation]
+            for annotation in filteredAnnotations {
+                if let mapContainsAnnotation = annotationsOnMap?.contains(annotation.key), !mapContainsAnnotation {
+                    mapView.addAnnotation(annotation.key)
+                }
+            }
+        } else {
+            mapView.removeAnnotations(Array(filteredAnnotations.keys))
         }
     }
 }

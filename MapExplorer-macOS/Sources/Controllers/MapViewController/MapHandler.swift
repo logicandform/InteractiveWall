@@ -16,6 +16,7 @@ class MapHandler {
 
     let mapView: MKMapView
     let mapID: Int
+    let mapViewController: MapViewController
 
     var border: NSView?
 
@@ -47,14 +48,17 @@ class MapHandler {
         static let group = "group"
         static let gesture = "gestureType"
         static let animated = "amimated"
+        static let toggleOn = "toggleOn"
+        static let switchType = "switchType"
     }
 
 
     // MARK: Init
 
-    init(mapView: MKMapView, id: Int) {
+    init(mapView: MKMapView, id: Int, mapViewController: MapViewController) {
         self.mapView = mapView
         self.mapID = id
+        self.mapViewController = mapViewController
         let numberOfMaps = Configuration.mapsPerScreen * Configuration.numberOfScreens
         let initialState = MapState(pair: nil, group: nil)
         self.stateForMap = Array(repeating: initialState, count: numberOfMaps)
@@ -136,6 +140,10 @@ class MapHandler {
         case MapNotification.toggleBorderOff.name:
             if id == mapID {
                 border?.isHidden = true
+            }
+        case MapNotification.toggleSwitch.name:
+            if id == mapID, let switchType = info[Keys.switchType] as? Int, let type = SettingsTypes(rawValue: switchType), let toggleOn = info[Keys.toggleOn] as? Bool {
+                mapViewController.toggle(switchType: type, toggleOn: toggleOn)
             }
         default:
             return

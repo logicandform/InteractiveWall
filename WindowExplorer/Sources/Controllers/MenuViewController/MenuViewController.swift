@@ -229,12 +229,12 @@ class MenuViewController: NSViewController, GestureResponder {
             case .splitScreen:
                 menuStateHelper?.splitButtonToggled(by: self, to: .on)
             case .mapToggle:
-                if let screenIndex = calculateScreenIndex(), let mapIndex = calculateMapIndex() {
+                if let screenIndex = view.calculateScreenIndex(), let mapIndex = view.calculateMapIndex() {
                     MasterViewController.instance?.apply(.menuLaunchedMapExplorer, toScreen: screenIndex - 1, on: mapIndex)
                     buttonToggled(type: .timelineToggle, selection: .off)
                 }
             case .timelineToggle:
-                if let screenIndex = calculateScreenIndex(), let mapIndex = calculateMapIndex() {
+                if let screenIndex = view.calculateScreenIndex(), let mapIndex = view.calculateMapIndex() {
                     MasterViewController.instance?.apply(.menuLaunchedTimeline, toScreen: screenIndex - 1, on: mapIndex)
                     buttonToggled(type: .mapToggle, selection: .off)
                 }
@@ -303,6 +303,7 @@ class MenuViewController: NSViewController, GestureResponder {
         return CGPoint(x: x, y: y)
     }
 
+    /*
     /// Calculates the screen index based off the x-position of the menu and the screens
     private func calculateScreenIndex() -> Int? {
         guard let window = view.window, let screen = NSScreen.containing(x: window.frame.midX), let screenIndex = screen.orderedIndex else {
@@ -322,4 +323,5 @@ class MenuViewController: NSViewController, GestureResponder {
         let mapIndex = Int((window.frame.origin.x - screen.frame.minX) / mapWidth)
         return mapIndex
     }
+ */
 }

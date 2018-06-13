@@ -4,13 +4,13 @@ import Foundation
 import Cocoa
 
 
-enum SettingsTypes {
-    case showLabels
-    case showMiniMap
-    case toggleSchools
-    case toggleEvents
-    case toggleOrganizations
-    case toggleArtifacts
+enum SettingsTypes: Int {
+    case showLabels = 50
+    case showMiniMap = 51
+    case toggleSchools = 52
+    case toggleEvents = 53
+    case toggleOrganizations = 54
+    case toggleArtifacts = 55
 
     var color: NSColor {
         switch self {
@@ -45,4 +45,18 @@ enum SettingsTypes {
             return style.artifactSecondarySelectedColor
         }
     }
+
+    /*
+    var notificationName: Notification.Name {
+        switch self {
+        case .showLabels:
+            return
+        case .showMiniMap:
+            return
+        case .toggleSchools:
+            return MapNotification.toggleSchools.name
+            
+        }
+    }
+ */
 }

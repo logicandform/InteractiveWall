@@ -58,6 +58,7 @@
 		8F1A1CBB205B41AC00A59A84 /* FlippedMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1A1CBA205B41AC00A59A84 /* FlippedMapView.swift */; };
 		8F22945620773EA600731E78 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F22945520773EA600731E78 /* Math.swift */; };
 		8F64A1E720BEF88600F0D209 /* FlippedMapViewWithMiniMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F64A1E620BEF88600F0D209 /* FlippedMapViewWithMiniMap.swift */; };
+		A45C4A8820D1A4BA0022E037 /* SettingsTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45C4A8720D1A4BA0022E037 /* SettingsTypes.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -133,6 +134,7 @@
 		8F64A1E620BEF88600F0D209 /* FlippedMapViewWithMiniMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlippedMapViewWithMiniMap.swift; sourceTree = "<group>"; };
 		9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_MapExplorer_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E45B0B207D66FC5A3CD5BEA /* Pods-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
+		A45C4A8720D1A4BA0022E037 /* SettingsTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTypes.swift; sourceTree = "<group>"; };
 		D9FF0C65383B61E5A7A798B0 /* Pods-All-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-macOS.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-macOS/Pods-All-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -236,6 +238,7 @@
 				22F0EDFC2066DA1E0075E467 /* ListenerCallback.h */,
 				22F0EDFB2066DA1E0075E467 /* ListenerCallback.m */,
 				8F22945520773EA600731E78 /* Math.swift */,
+				A45C4A8720D1A4BA0022E037 /* SettingsTypes.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -542,6 +545,7 @@
 				22FEF1E1202D005D001E9596 /* TouchProperties.swift in Sources */,
 				221C62A8203B57F7009493DA /* URL.swift in Sources */,
 				3F5FAAAC206043D700CF275B /* CircleAnnotation.swift in Sources */,
+				A45C4A8820D1A4BA0022E037 /* SettingsTypes.swift in Sources */,
 				3F5FAAAE206043E600CF275B /* CircleAnnotationView.swift in Sources */,
 				220329092066F20900FFD9E2 /* Data.swift in Sources */,
 				22A49873204749700024B46C /* JSON.swift in Sources */,
