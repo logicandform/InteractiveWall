@@ -22,7 +22,9 @@ enum SettingsTypes: Int {
             return nil
         case .toggleArtifacts:
             return nil
-        default:
+        case .showLabels:
+            return nil
+        case .showMiniMap:
             return nil
         }
     }

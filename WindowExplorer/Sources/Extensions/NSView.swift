@@ -14,7 +14,7 @@ extension NSView {
         layer?.contents = image
     }
 
-    /// Calculates the screen index based off the x-position of the view controller
+    /// Calculates the screen index based off the x-position of the view
     func calculateScreenIndex() -> Int? {
         guard let window = window, let screen = NSScreen.containing(x: window.frame.midX), let screenIndex = screen.orderedIndex else {
             return nil
@@ -23,7 +23,7 @@ extension NSView {
         return screenIndex
     }
 
-    /// Calculates the map index based off the x-position of view controller
+    /// Calculates the map index based off the x-position of view
     func calculateMapIndex() -> Int? {
         guard let window = window, let screen = NSScreen.containing(x: window.frame.midX) else {
             return nil
@@ -34,7 +34,7 @@ extension NSView {
         return mapIndex
     }
 
-    /// Calculates the app ID based off the x-position of the view controller
+    /// Calculates the app ID based off the x-position of the view
     func calculateAppID() -> Int? {
         guard let window = window, let screen = NSScreen.containing(x: window.frame.midX), let screenIndex = screen.orderedIndex else {
             return nil

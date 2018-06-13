@@ -45,18 +45,4 @@ enum SettingsTypes: Int {
             return style.artifactSecondarySelectedColor
         }
     }
-
-    /*
-    var notificationName: Notification.Name {
-        switch self {
-        case .showLabels:
-            return
-        case .showMiniMap:
-            return
-        case .toggleSchools:
-            return MapNotification.toggleSchools.name
-            
-        }
-    }
- */
 }
