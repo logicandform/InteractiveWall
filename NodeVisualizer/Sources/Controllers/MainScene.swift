@@ -9,6 +9,9 @@ class MainScene: SKScene {
     var records: [RecordDisplayable]!
     var gestureManager: GestureManager!
 
+    var entityManager: EntityManager!
+
+
     private enum StartingPositionType: UInt32 {
         case top = 0
         case bottom = 1
@@ -20,6 +23,8 @@ class MainScene: SKScene {
     // MARK: Lifecycle
     
     override func didMove(to view: SKView) {
+        entityManager = EntityManager(scene: self)
+
         addGestures(to: view)
         setupSystemGesturesForTest(to: view)
 
@@ -51,19 +56,34 @@ class MainScene: SKScene {
     }
 
     private func addRecordNodesToScene() {
-        records.enumerated().forEach { index, record in
-            let node = RecordNode(record: record)
+        records.prefix(50).enumerated().forEach { index, record in
 
-            node.position.x = randomX()
-            node.position.y = randomY()
-            node.zPosition = 1
+            let recordEntity = RecordEntity(record: record)
+            if let spriteComponent = recordEntity.component(ofType: SpriteComponent.self) {
+                spriteComponent.recordNode.position.x = randomX()
+                spriteComponent.recordNode.position.y = randomY()
+            }
 
-            node.alpha = 0
-            addChild(node)
+            entityManager.add(recordEntity)
 
-            let destinationPosition = getRandomPosition()
-            let forceVector = CGVector(dx: destinationPosition.x - node.position.x, dy: destinationPosition.y - node.position.y)
-            node.runInitialAnimation(with: forceVector, delay: index)
+
+
+
+
+
+
+//            let node = RecordNode(record: record)
+//
+//            node.position.x = randomX()
+//            node.position.y = randomY()
+//            node.zPosition = 1
+//
+//            node.alpha = 0
+//            addChild(node)
+//
+//            let destinationPosition = getRandomPosition()
+//            let forceVector = CGVector(dx: destinationPosition.x - node.position.x, dy: destinationPosition.y - node.position.y)
+//            node.runInitialAnimation(with: forceVector, delay: index)
         }
     }
 

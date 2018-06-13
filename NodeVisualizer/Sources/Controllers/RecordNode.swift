@@ -84,8 +84,8 @@ class RecordNode: SKNode {
 
     private func setupPhysics() {
         physicsBody = SKPhysicsBody(rectangleOf: calculateAccumulatedFrame().size)
-        physicsBody?.friction = 0.5
-        physicsBody?.restitution = 0.9
+        physicsBody?.friction = 0
+        physicsBody?.restitution = 1
         physicsBody?.linearDamping = 0
     }
 }
