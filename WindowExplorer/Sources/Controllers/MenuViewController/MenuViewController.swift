@@ -256,11 +256,11 @@ class MenuViewController: NSViewController, GestureResponder {
                     return
                 }
 
-                let position = selectedPosition(for: settingsButton, frame: style.settingsWindowSize, margins: false)
-                if position.y < screen.frame.minY {
+                let currentPosition = position(for: settingsButton, frame: style.settingsWindowSize, margins: false)
+                if currentPosition.y < screen.frame.minY {
                     adjustHeight(for: settingsButton, submenu: settingsMenu.view, on: screen)
                 } else {
-                    settingsMenu.view.window?.setFrameOrigin(position)
+                    settingsMenu.view.window?.setFrameOrigin(currentPosition)
                 }
 
                 NSAnimationContext.runAnimationGroup({ _ in
