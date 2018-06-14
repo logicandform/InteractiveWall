@@ -191,7 +191,7 @@ class MenuViewController: NSViewController, GestureResponder {
             let origin = originAppending(delta: pan.delta, to: window)
             let settingsOrigin = originAppending(delta: pan.delta, to: settingsWindow)
 
-            if settingsMenu.view.isVisible {
+            if !settingsMenu.view.isHidden {
                 if pan.delta.dy < 0 && settingsOrigin.y > screen.frame.minY && origin.y > screen.frame.minY {
                     window.setFrameOrigin(origin)
                     settingsWindow.setFrameOrigin(settingsOrigin)

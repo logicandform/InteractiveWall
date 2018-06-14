@@ -37,7 +37,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     }
 
 
-    // MARK: Life-cycle 
+    // MARK: Life-cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
