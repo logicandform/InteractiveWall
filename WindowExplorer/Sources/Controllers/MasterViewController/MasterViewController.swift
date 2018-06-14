@@ -3,9 +3,10 @@
 import Cocoa
 
 
-private struct ApplicationInfo {
+struct ApplicationInfo {
     var action: ControlAction
     var applications: [Int: NSRunningApplication]
+    var applicationTypesForMaps: [Int: ApplicationType]
     var maps: [Int]
 }
 
@@ -21,7 +22,7 @@ class MasterViewController: NSViewController {
     @IBOutlet weak var rightScreenCheckbox: NSButton!
     @IBOutlet weak var actionSelectionButton: NSPopUpButton!
 
-    private var infoForScreen = [Int: ApplicationInfo]()
+    var infoForScreen = [Int: ApplicationInfo]()
 
     private var screens: [NSView] {
         return [leftScreen, middleScreen, rightScreen]
@@ -103,7 +104,7 @@ class MasterViewController: NSViewController {
         case .launchTimeline, .menuLaunchedTimeline, .closeApplication, .disconnected:
             terminate(screen: screen, map: map)
             if action != .menuLaunchedTimeline {
-                infoForScreen[screen] = ApplicationInfo(action: action, applications: [:], maps: [])
+                infoForScreen[screen] = ApplicationInfo(action: action, applications: [:], applicationTypesForMaps: [:], maps: [])
             }
         }
 
@@ -170,6 +171,7 @@ class MasterViewController: NSViewController {
             info.applications[map]?.terminate()
             infoForScreen[screen]?.maps = info.maps.filter { $0 != map }
             infoForScreen[screen]?.applications = info.applications.filter { $0.key != map }
+            infoForScreen[screen]?.applicationTypesForMaps = info.applicationTypesForMaps.filter { $0.key != map }
             infoForScreen[screen]?.action = .menuLaunchedTimeline
         } else if map == nil {
             info.applications.forEach { application in
@@ -181,21 +183,24 @@ class MasterViewController: NSViewController {
     /// Launch MapExplorer on the given screen
     private func launchMaps(info: ApplicationInfo, action: ControlAction, screen: Int, map: Int? = nil) {
         var applications = info.applications
+        var applicationTypes = info.applicationTypesForMaps
         var maps = info.maps
 
         if let map = map, !maps.contains(map), let application = open(.mapExplorer, screenID: screen + 1, appID: map) {
             applications[map] = application
+            applicationTypes[map] = .mapExplorer
             maps.append(map)
         } else {
             for map in 0 ..< Configuration.mapsPerScreen {
                 if !maps.contains(map), let application = open(.mapExplorer, screenID: screen + 1, appID: map) {
                     applications[map] = application
+                    applicationTypes[map] = .mapExplorer
                     maps.append(map)
                 }
             }
         }
 
-        infoForScreen[screen] = ApplicationInfo(action: action, applications: applications, maps: maps)
+        infoForScreen[screen] = ApplicationInfo(action: action, applications: applications, applicationTypesForMaps: applicationTypes, maps: maps)
     }
 
     /// Open a known application type with the required parameters

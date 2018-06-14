@@ -23,7 +23,6 @@ class MenuViewController: NSViewController, GestureResponder {
     private var lockIcon: NSView?
     private var scrollThresholdAchieved = false
     private var settingsMenu: SettingsMenuViewController!
-    private var mapViewController: NSViewController!
 
     private struct Constants {
         static let minimumScrollThreshold: CGFloat = 4
@@ -230,13 +229,14 @@ class MenuViewController: NSViewController, GestureResponder {
             case .splitScreen:
                 menuStateHelper?.splitButtonToggled(by: self, to: .on)
             case .mapToggle:
-                if let screenIndex = view.calculateScreenIndex(), let mapIndex = view.calculateMapIndex() {
+                if let screenIndex = view.calculateScreenIndex(), let mapIndex = view.calculateMapIndex(), MasterViewController.instance?.infoForScreen[screenIndex - 1]?.applicationTypesForMaps[mapIndex] != .mapExplorer {
                     MasterViewController.instance?.apply(.menuLaunchedMapExplorer, toScreen: screenIndex - 1, on: mapIndex)
+                    settingsMenu.reset()
+                    buttonToggled(type: .settings, selection: .off)
                     buttonToggled(type: .timelineToggle, selection: .off)
                 }
             case .timelineToggle:
-                if let screenIndex = view.calculateScreenIndex(), let mapIndex = view.calculateMapIndex() {
-                    settingsMenu.reset()
+                if let screenIndex = view.calculateScreenIndex(), let mapIndex = view.calculateMapIndex(), MasterViewController.instance?.infoForScreen[screenIndex - 1]?.applicationTypesForMaps[mapIndex] != .timeline {
                     MasterViewController.instance?.apply(.menuLaunchedTimeline, toScreen: screenIndex - 1, on: mapIndex)
                     buttonToggled(type: .mapToggle, selection: .off)
                 }
