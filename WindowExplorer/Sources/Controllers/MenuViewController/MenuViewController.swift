@@ -236,6 +236,7 @@ class MenuViewController: NSViewController, GestureResponder {
                 }
             case .timelineToggle:
                 if let screenIndex = view.calculateScreenIndex(), let mapIndex = view.calculateMapIndex() {
+                    settingsMenu.reset()
                     MasterViewController.instance?.apply(.menuLaunchedTimeline, toScreen: screenIndex - 1, on: mapIndex)
                     buttonToggled(type: .mapToggle, selection: .off)
                 }

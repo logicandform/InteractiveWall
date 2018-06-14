@@ -77,6 +77,19 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     }
 
 
+    // MARK: API
+
+    func reset() {
+        view.isHidden = true
+        labelsSwitch.isOn = true
+        miniMapSwitch.isOn = false
+        schoolsSwitch.isOn = true
+        eventsSwitch.isOn = true
+        artifactsSwitch.isOn = true
+        organizationsSwitch.isOn = true
+    }
+
+
     // MARK: GestureResponder
 
     /// Determines if the bounds of the draggable area is inside a given rect
