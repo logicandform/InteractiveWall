@@ -6,6 +6,7 @@ import AppKit
 final class Style {
 
     let darkBackground = NSColor.black.withAlphaComponent(0.85)
+    let darkBackgroundOpaque = NSColor.black
     let selectedColor = NSColor(calibratedRed: 0, green: 200/255, blue: 1, alpha: 1)
     let unselectedRecordIcon = NSColor.gray
     let dragAreaBackground = NSColor.black.withAlphaComponent(0.85)
