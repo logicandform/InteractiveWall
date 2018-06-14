@@ -108,17 +108,21 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     // MARK: API
 
-    func toggle(switchType: SettingsTypes, toggleOn: Bool) {
+    func toggle(on: Bool, switchType: SettingsTypes) {
         switch switchType {
         case .showLabels:
-            settingsShowingAnnotationTitles = toggleOn
+            settingsShowingAnnotationTitles = on
             if mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel {
                 toggleAnnotationTitles(on: settingsShowingAnnotationTitles)
             }
         case .showMiniMap:
-            mapView.miniMapIsHidden = !toggleOn
+            mapView.miniMapIsHidden = !on
         case .toggleSchools, .toggleEvents, .toggleOrganizations, .toggleArtifacts:
-            toggleAnnotations(type: switchType, toggleOn: toggleOn)
+            guard let recordType = switchType.recordType else {
+                return
+            }
+
+            toggleAnnotations(on: on, for: recordType)
         }
     }
 
@@ -325,13 +329,10 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         }
     }
 
-    private func toggleAnnotations(type: SettingsTypes, toggleOn: Bool) {
-        guard let type = type.recordType else {
-            return
-        }
-
+    private func toggleAnnotations(on: Bool, for type: RecordType) {
         let filteredAnnotations = recordForAnnotation.filter({ $0.value.type == type })
-        if toggleOn {
+
+        if on {
             let annotationsOnMap = mapView.annotations as? [CircleAnnotation]
             for annotation in filteredAnnotations {
                 if let mapContainsAnnotation = annotationsOnMap?.contains(annotation.key), !mapContainsAnnotation {

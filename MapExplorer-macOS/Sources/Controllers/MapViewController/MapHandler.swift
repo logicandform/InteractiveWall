@@ -143,7 +143,7 @@ class MapHandler {
             }
         case MapNotification.toggleSwitch.name:
             if id == mapID, let switchType = info[Keys.switchType] as? Int, let type = SettingsTypes(rawValue: switchType), let toggleOn = info[Keys.toggleOn] as? Bool {
-                mapViewController.toggle(switchType: type, toggleOn: toggleOn)
+                mapViewController.toggle(on: toggleOn, switchType: type)
             }
         default:
             return

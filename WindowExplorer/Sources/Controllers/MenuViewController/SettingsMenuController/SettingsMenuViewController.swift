@@ -58,7 +58,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         textFieldForSettingsType = [.showLabels: labelsText, .showMiniMap: miniMapText, .toggleSchools: schoolsText, .toggleEvents: eventsText, .toggleOrganizations: organizationsText, .toggleArtifacts: artifactsText]
 
         labelsSwitch = setupSwitch(for: .showLabels)
-        miniMapSwitch = setupSwitch(for: .showMiniMap)
+        miniMapSwitch = setupSwitch(for: .showMiniMap, on: false)
         schoolsSwitch = setupSwitch(for: .toggleSchools)
         eventsSwitch = setupSwitch(for: .toggleEvents)
         organizationsSwitch = setupSwitch(for: .toggleOrganizations)
@@ -109,13 +109,13 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         DistributedNotificationCenter.default().postNotificationName(MapNotification.toggleSwitch.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
-    private func setupSwitch(for type: SettingsTypes) -> SwitchControl? {
+    private func setupSwitch(for type: SettingsTypes, on: Bool = true) -> SwitchControl? {
         guard let textField = textFieldForSettingsType[type] else {
             return nil
         }
 
         let toggleSwitch: SwitchControl = {
-            let toggle = SwitchControl(isOn: true, frame: style.toggleSwitchFrame)
+            let toggle = SwitchControl(isOn: on, frame: style.toggleSwitchFrame)
             toggle.knobBackgroundColor = type.color
             toggle.disabledKnobBackgroundColor = style.toggleUnselectedColor
             toggle.tintColor = type.secondaryColor
