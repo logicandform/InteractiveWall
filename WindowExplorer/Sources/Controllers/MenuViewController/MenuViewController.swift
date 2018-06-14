@@ -267,7 +267,6 @@ class MenuViewController: NSViewController, GestureResponder {
                     NSAnimationContext.current.duration = Constants.animationDuration
                     settingsMenu.view.animator().isHidden = false
                 })
-
             case .search:
                 WindowManager.instance.display(.search, at: position(for: searchButton, frame: style.searchWindowSize))
             default:
