@@ -89,7 +89,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     }
 
     func subview(contains position: CGPoint) -> Bool {
-        if view.alphaValue.isZero {
+        if view.isHidden {
             return false
         } else {
             return view.frame.contains(position)

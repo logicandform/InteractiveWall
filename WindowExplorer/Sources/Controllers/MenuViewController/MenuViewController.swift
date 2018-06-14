@@ -23,6 +23,7 @@ class MenuViewController: NSViewController, GestureResponder {
     private var lockIcon: NSView?
     private var scrollThresholdAchieved = false
     private var settingsMenu: SettingsMenuViewController!
+    private var mapViewController: NSViewController!
 
     private struct Constants {
         static let minimumScrollThreshold: CGFloat = 4
@@ -66,7 +67,7 @@ class MenuViewController: NSViewController, GestureResponder {
 
     override func viewDidAppear() {
         settingsMenu = WindowManager.instance.display(.settings, at: position(for: settingsButton, frame: style.settingsWindowSize, margins: false)) as? SettingsMenuViewController
-        settingsMenu.view.alphaValue = 0
+        settingsMenu.view.isHidden = true
     }
 
 
@@ -241,7 +242,7 @@ class MenuViewController: NSViewController, GestureResponder {
             case .settings:
                 NSAnimationContext.runAnimationGroup({ _ in
                     NSAnimationContext.current.duration = Constants.animationDuration
-                    settingsMenu.view.animator().alphaValue = 1
+                    settingsMenu.view.animator().isHidden = false
                 })
             case .search:
                 WindowManager.instance.display(.search, at: position(for: searchButton, frame: style.searchWindowSize))
@@ -260,7 +261,7 @@ class MenuViewController: NSViewController, GestureResponder {
         case .settings:
             NSAnimationContext.runAnimationGroup({ _ in
                 NSAnimationContext.current.duration = Constants.animationDuration
-                settingsMenu.view.animator().alphaValue = 0
+                settingsMenu.view.animator().isHidden = true
             })
         default:
             break
