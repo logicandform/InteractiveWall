@@ -46,8 +46,8 @@ class RecordNode: SKNode {
     // MARK: Helpers
 
     private func makeRecordNode() {
-        let _ = makeRootNode()
-//        addIdLabelNode(to: rootNode)
+        let rootNode = makeRootNode()
+        addIdLabelNode(to: rootNode)
         setupPhysics()
     }
 
@@ -85,7 +85,9 @@ class RecordNode: SKNode {
     private func setupPhysics() {
         physicsBody = SKPhysicsBody(rectangleOf: calculateAccumulatedFrame().size)
         physicsBody?.friction = 0
-        physicsBody?.restitution = 1
+        physicsBody?.restitution = 0
         physicsBody?.linearDamping = 0
+        physicsBody?.affectedByGravity = true
+        physicsBody?.isDynamic = true
     }
 }
