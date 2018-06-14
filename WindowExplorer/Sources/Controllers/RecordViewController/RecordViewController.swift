@@ -7,6 +7,8 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     static let storyboard = NSStoryboard.Name(rawValue: "Record")
 
     @IBOutlet weak var detailView: NSView!
+    @IBOutlet weak var relatedItemsHeader: NSView!
+    @IBOutlet weak var relatedItemsHeaderHighlight: NSView!
     @IBOutlet weak var relatedRecordsLabel: NSTextField!
     @IBOutlet weak var relatedRecordsTypeLabel: NSTextField!
     @IBOutlet weak var mediaView: NSCollectionView!
@@ -18,8 +20,9 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     @IBOutlet weak var relatedRecordCollectionClipView: NSClipView!
     @IBOutlet weak var relatedRecordScrollView: FadingScrollView!
     @IBOutlet weak var closeWindowTapArea: NSView!
-    @IBOutlet weak var toggleRelatedItemsArea: NSView!
-    @IBOutlet weak var toggleRelatedItemsImage: NSImageView!
+    @IBOutlet weak var showRelatedItemsArea: NSView!
+    @IBOutlet weak var hideRelatedItemsArea: NSView!
+    @IBOutlet weak var showRelatedItemsImage: NSImageView!
     @IBOutlet weak var placeHolderImage: NSImageView!
     @IBOutlet weak var recordTypeSelectionView: RecordTypeSelectionView!
     @IBOutlet weak var expandImageView: NSImageView!
@@ -40,13 +43,14 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         static let closeWindowTimeoutPeriod: TimeInterval = 300
         static let animationDistanceThreshold: CGFloat = 20
         static let showRelatedItemViewRotation: CGFloat = 45
-        static let relatedItemsViewMargin: CGFloat = 8
-        static let relatedRecordsTitleAnimationDuration = 0.15
+        static let relatedItemsViewMargin: CGFloat = 12
+        static let relatedRecordsAnimationDuration = 0.15
         static let relatedItemsViewAnimationDuration = 0.35
         static let pageControlHeight: CGFloat = 20
         static let stackViewTopInset: CGFloat = 15
         static let stackViewBottomInset: CGFloat = 15
         static let expandImageViewCornerRadius: CGFloat = 2.0
+        static let relatedImagesAnimationTime = 0.1
     }
 
 
@@ -54,20 +58,11 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        detailView.alphaValue = 0
-        detailView.wantsLayer = true
-        detailView.layer?.backgroundColor = style.darkBackground.cgColor
-        placeHolderImage.isHidden = !record.media.isEmpty
         relationshipHelper.parent = self
-        expandImageView.wantsLayer = true
-        expandImageView.layer?.cornerRadius = Constants.expandImageViewCornerRadius
-        expandImageView.layer?.backgroundColor = style.darkBackground.cgColor
-        expandImageView.isHidden = record.media.isEmpty
-        arrowIndicatorContainerView.wantsLayer = true
-        arrowIndicatorContainerView.layer?.backgroundColor = style.darkBackground.cgColor
+        placeHolderImage.isHidden = !record.media.isEmpty
 
+        setupSublayers()
         setupMediaView()
-        setupWindowDragArea()
         setupStackview()
         setupGestures()
         setupRelatedItemsView()
@@ -82,6 +77,23 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
 
     // MARK: Setup
+
+    private func setupSublayers() {
+        detailView.alphaValue = 0
+        detailView.wantsLayer = true
+        detailView.layer?.backgroundColor = style.darkBackground.cgColor
+        relatedItemsHeader.wantsLayer = true
+        relatedItemsHeader.layer?.backgroundColor = style.darkBackground.cgColor
+        relatedItemsHeaderHighlight.wantsLayer = true
+        relatedItemsHeaderHighlight.layer?.backgroundColor = record.type.color.cgColor
+        windowDragAreaHighlight.layer?.backgroundColor = record.type.color.cgColor
+        expandImageView.wantsLayer = true
+        expandImageView.layer?.cornerRadius = Constants.expandImageViewCornerRadius
+        expandImageView.layer?.backgroundColor = style.darkBackground.cgColor
+        expandImageView.isHidden = record.media.isEmpty
+        arrowIndicatorContainerView.wantsLayer = true
+        arrowIndicatorContainerView.layer?.backgroundColor = style.darkBackground.cgColor
+    }
 
     private func setupMediaView() {
         mediaView.register(MediaItemView.self, forItemWithIdentifier: MediaItemView.identifier)
@@ -107,8 +119,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         relatedRecordsLabel.attributedStringValue = NSAttributedString(string: relatedRecordsLabel.stringValue, attributes: style.relatedItemsTitleAttributes)
         relatedRecordsTypeLabel.alphaValue = 0
         relatedRecordsTypeLabel.attributedStringValue = NSAttributedString(string: Constants.allRecordsTitle.uppercased(), attributes: style.relatedItemsTitleAttributes)
-        toggleRelatedItemsImage.isHidden = record.relatedRecords.isEmpty
-        toggleRelatedItemsImage.frameCenterRotation = Constants.showRelatedItemViewRotation
+        showRelatedItemsImage.isHidden = record.relatedRecords.isEmpty
         recordTypeSelectionView.stackview.alphaValue = 0
         recordTypeSelectionView.initialize(with: record, manager: gestureManager)
         recordTypeSelectionView.selectionCallback = didSelectRelatedItemsFilterType(_:)
@@ -117,7 +128,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
     private func setupGestures() {
         let nsToggleRelatedItemClickGesture = NSClickGestureRecognizer(target: self, action: #selector(handleRelatedItemToggleClick(_:)))
-        toggleRelatedItemsArea.addGestureRecognizer(nsToggleRelatedItemClickGesture)
+        showRelatedItemsArea.addGestureRecognizer(nsToggleRelatedItemClickGesture)
 
         let nsMediaItemClick = NSClickGestureRecognizer(target: self, action: #selector(handleCollectionViewClick(_:)))
         mediaView.addGestureRecognizer(nsMediaItemClick)
@@ -129,6 +140,8 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         let collectionViewTapGesture = TapGestureRecognizer(withDelay: true)
         gestureManager.add(collectionViewTapGesture, to: mediaView)
         collectionViewTapGesture.gestureUpdated = handleCollectionViewTap(_:)
+
+        gestureManager.add(windowPanGesture, to: relatedItemsHeader)
 
         let relatedViewPan = PanGestureRecognizer()
         gestureManager.add(relatedViewPan, to: relatedItemsView)
@@ -142,13 +155,13 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         gestureManager.add(stackViewPanGesture, to: stackView)
         stackViewPanGesture.gestureUpdated = handleStackViewPan(_:)
 
-        let toggleRelatedItemsTap = TapGestureRecognizer()
-        gestureManager.add(toggleRelatedItemsTap, to: toggleRelatedItemsArea)
-        toggleRelatedItemsTap.gestureUpdated = handleRelatedItemsToggle(_:)
-    }
+        let showRelatedItemsTap = TapGestureRecognizer()
+        gestureManager.add(showRelatedItemsTap, to: showRelatedItemsArea)
+        showRelatedItemsTap.gestureUpdated = handleShowRelatedItemsTap(_:)
 
-    private func setupWindowDragArea() {
-        windowDragAreaHighlight.layer?.backgroundColor = record.type.color.cgColor
+        let hideRelatedItemsTap = TapGestureRecognizer()
+        gestureManager.add(hideRelatedItemsTap, to: hideRelatedItemsArea)
+        hideRelatedItemsTap.gestureUpdated = handleHideRelatedItemsTap(_:)
     }
 
     private func setupStackview() {
@@ -265,8 +278,17 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
     }
 
-    private func handleRelatedItemsToggle(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, !record.relatedRecords.isEmpty else {
+    private func handleShowRelatedItemsTap(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, !record.relatedRecords.isEmpty, !showRelatedItemsImage.alphaValue.isZero else {
+            return
+        }
+
+        toggleRelatedItems()
+        relatedRecordScrollView.updateGradient()
+    }
+
+    private func handleHideRelatedItemsTap(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
             return
         }
 
@@ -440,6 +462,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             relatedItemsView.animator().alphaValue = 0
             windowDragArea.animator().alphaValue = 0
             recordTypeSelectionView.stackview.animator().alphaValue = 0
+            relatedItemsHeader.animator().alphaValue = 0
         }, completionHandler: { [weak self] in
             self?.close()
         })
@@ -485,24 +508,32 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
         NSAnimationContext.runAnimationGroup({ [weak self] _ in
             NSAnimationContext.current.duration = Constants.animationDuration
-            self?.relatedItemsView.animator().alphaValue = alpha
+            self?.relatedItemsView.animator().alphaValue = 0
             self?.relatedRecordsLabel.animator().alphaValue = alpha
             self?.relatedRecordsTypeLabel.animator().alphaValue = alpha
             self?.recordTypeSelectionView.stackview.animator().alphaValue = alpha
-            self?.toggleRelatedItemsImage.animator().frameCenterRotation = showingRelatedItems ? Constants.showRelatedItemViewRotation : 0
+            self?.showRelatedItemsImage.animator().alphaValue = 1 - alpha
             }, completionHandler: { [weak self] in
-                if let strongSelf = self {
-                    strongSelf.relatedItemsView.isHidden = !strongSelf.showingRelatedItems
-                }
-                completion?()
+                self?.didToggleRelatedItems(completion: completion)
         })
 
-        let relatedItemsWidthWithMargins = relatedItemsFilterType.layout.rowWidth + Constants.relatedItemsViewMargin * 2
+        let relatedItemsWidthWithMargins = relatedItemsFilterType.layout.rowWidth + Constants.relatedItemsViewMargin
         let offset = showingRelatedItems ? -relatedItemsWidthWithMargins : relatedItemsWidthWithMargins
         var frame = window.frame
         frame.size.width += offset
         window.setFrame(frame, display: true, animate: true)
         showingRelatedItems = !showingRelatedItems
+    }
+
+    private func didToggleRelatedItems(completion: (() -> Void)?) {
+        relatedItemsView.isHidden = !showingRelatedItems
+
+        if showingRelatedItems {
+            relatedRecordScrollView.updateGradient(forced: true)
+            fadeRelatedRecordsAndTitle(out: false, completion: completion)
+        } else {
+            completion?()
+        }
     }
 
     private func selectRelatedRecord(_ record: RecordDisplayable) {
@@ -545,17 +576,22 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         fadeRelatedRecordsAndTitle(out: true, completion: { [weak self] in
             if let strongSelf = self {
                 strongSelf.relatedRecordsTypeLabel.attributedStringValue = NSAttributedString(string: titleForType, attributes: style.relatedItemsTitleAttributes)
-                strongSelf.updateRelatedItemsLayout()
-                strongSelf.relatedItemsView.reloadData()
-                strongSelf.relatedItemsView.scroll(.zero)
-                strongSelf.fadeRelatedRecordsAndTitle(out: false, completion: {})
+                strongSelf.updateRelatedItemsLayout { [weak self] in
+                    if let strongSelf = self {
+                        strongSelf.relatedItemsView.reloadData()
+                        strongSelf.relatedItemsView.scroll(.zero)
+                        strongSelf.relatedRecordScrollView.updateGradient(forced: true)
+                        strongSelf.fadeRelatedRecordsAndTitle(out: false, completion: {})
+                    }
+                }
             }
         })
     }
 
     // Adjusts the size of the window if necessary, which changes the relatedRecordView through autolayout
-    private func updateRelatedItemsLayout() {
+    private func updateRelatedItemsLayout(completion: @escaping () -> Void) {
         guard let window = view.window, relatedItemsFilterType.layout != currentLayout else {
+            completion()
             return
         }
 
@@ -563,19 +599,21 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         let offset = relatedItemsFilterType.layout.rowWidth - relatedItemsView.frame.width
         var frame = window.frame
         frame.size.width += offset
-        view.window?.setFrame(frame, display: true)
-        view.displayIfNeeded()
+        view.window?.setFrame(frame, display: true, animate: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.relatedImagesAnimationTime) {
+            completion()
+        }
     }
 
-    private func fadeRelatedRecordsAndTitle(out: Bool, completion: @escaping () -> Void) {
+    private func fadeRelatedRecordsAndTitle(out: Bool, completion: (() -> Void)?) {
         let alpha: CGFloat = out ? 0 : 1
 
         NSAnimationContext.runAnimationGroup({ [weak self] _ in
-            NSAnimationContext.current.duration = Constants.relatedRecordsTitleAnimationDuration
+            NSAnimationContext.current.duration = Constants.relatedRecordsAnimationDuration
             self?.relatedItemsView.animator().alphaValue = alpha
             self?.relatedRecordsTypeLabel.animator().alphaValue = alpha
         }, completionHandler: {
-            completion()
+            completion?()
         })
     }
 

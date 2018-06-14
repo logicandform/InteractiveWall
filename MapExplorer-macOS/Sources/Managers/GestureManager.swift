@@ -64,6 +64,7 @@ final class GestureManager {
         }
     }
 
+    /// If multiple views registered with the same gestrue, return value is undefined.
     func view(for gesture: GestureRecognizer) -> NSView? {
         for (view, handler) in gestureHandlers {
             if handler.owns(gesture) {

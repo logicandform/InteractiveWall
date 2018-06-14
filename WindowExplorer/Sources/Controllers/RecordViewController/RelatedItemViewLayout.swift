@@ -14,6 +14,7 @@ private struct Constants {
     static let imageItemHeight: CGFloat = 180
 }
 
+
 enum RelatedItemViewLayout {
     case list
     case grid

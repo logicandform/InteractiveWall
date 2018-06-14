@@ -22,18 +22,18 @@ class FadingScrollView: NSScrollView {
 
     // MARK: API
 
-    func updateGradient() {
+    func updateGradient(forced: Bool = false) {
         guard canScroll else {
-            updateGradientProperty(for: .none)
+            updateGradientProperty(for: .none, forced: forced)
             return
         }
 
         if hasReachedBottom {
-            updateGradientProperty(for: .bottom)
+            updateGradientProperty(for: .bottom, forced: forced)
         } else if hasReachedTop {
-            updateGradientProperty(for: .top)
+            updateGradientProperty(for: .top, forced: forced)
         } else {
-            updateGradientProperty(for: .middle)
+            updateGradientProperty(for: .middle, forced: forced)
         }
     }
 
@@ -48,8 +48,8 @@ class FadingScrollView: NSScrollView {
 
     // MARK: Helpers
 
-    private func updateGradientProperty(for position: ScrollPosition ) {
-        if currentPosition == position {
+    private func updateGradientProperty(for position: ScrollPosition, forced: Bool) {
+        if position == currentPosition, !forced {
             return
         }
 

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -25,8 +26,7 @@
                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="GPP-LU-OnZ" customClass="ImageView" customModule="WindowExplorer" customModuleProvider="target">
                             <rect key="frame" x="10" y="10" width="60" height="60"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="60" id="M5H-B8-xpK"/>
-                                <constraint firstAttribute="height" constant="60" id="ow4-03-tXC"/>
+                                <constraint firstAttribute="width" secondItem="GPP-LU-OnZ" secondAttribute="height" multiplier="1:1" id="onI-H2-PtG"/>
                             </constraints>
                         </customView>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oFi-RG-9Vw">
