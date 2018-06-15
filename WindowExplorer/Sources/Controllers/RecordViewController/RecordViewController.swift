@@ -162,6 +162,10 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         let hideRelatedItemsTap = TapGestureRecognizer()
         gestureManager.add(hideRelatedItemsTap, to: hideRelatedItemsArea)
         hideRelatedItemsTap.gestureUpdated = handleHideRelatedItemsTap(_:)
+
+        let arrowIndicatorTap = TapGestureRecognizer()
+        gestureManager.add(arrowIndicatorTap, to: arrowIndicatorContainerView)
+        arrowIndicatorTap.gestureUpdated = handleArrowIndicatorTap(_:)
     }
 
     private func setupStackview() {
@@ -339,6 +343,28 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             stackClipView.scroll(point)
             stackScrollView.updateGradient()
             updateArrowIndicatorView()
+        default:
+            return
+        }
+    }
+
+    private func handleArrowIndicatorTap(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer else {
+            return
+        }
+
+        switch tap.state {
+        case .ended:
+            let delta = stackScrollView.frame.height - 20
+            var point = stackClipView.visibleRect.origin
+            point.y += delta
+            stackScrollView.updateGradient(with: delta)
+            updateArrowIndicatorView(with: delta)
+
+            NSAnimationContext.runAnimationGroup({ _ in
+                NSAnimationContext.current.duration = Constants.animationDuration
+                stackClipView.animator().setBoundsOrigin(point)
+            })
         default:
             return
         }
@@ -537,7 +563,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     }
 
     private func selectRelatedRecord(_ record: RecordDisplayable) {
-        guard let window = view.window else {
+        guard let window = view.window, showingRelatedItems else {
             return
         }
 
@@ -569,6 +595,10 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
     /// Handle a change of record type from the RelatedItemsHeaderView
     private func didSelectRelatedItemsFilterType(_ type: RecordFilterType) {
+        guard showingRelatedItems else {
+            return
+        }
+
         relatedItemsFilterType = type
         let titleForType = type.title?.uppercased() ?? Constants.allRecordsTitle
 
@@ -640,9 +670,9 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
     }
 
-    private func updateArrowIndicatorView() {
+    private func updateArrowIndicatorView(with delta: CGFloat = 0) {
         if let scrollView = stackView.enclosingScrollView {
-            arrowIndicatorContainerView.isHidden = scrollView.hasReachedBottom
+            arrowIndicatorContainerView.isHidden = scrollView.hasReachedBottom(with: delta)
         }
     }
 }
