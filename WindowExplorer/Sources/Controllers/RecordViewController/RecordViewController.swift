@@ -361,10 +361,10 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
                 NSAnimationContext.current.duration = Constants.animationDuration
                 stackClipView.animator().setBoundsOrigin(point)
             }, completionHandler: { [weak self] in
-                self?.stackScrollView.updateGradient()
-                self?.updateArrowIndicatorView()
-            })
 
+            })
+            stackScrollView.updateGradient()
+            updateArrowIndicatorView()
         default:
             return
         }

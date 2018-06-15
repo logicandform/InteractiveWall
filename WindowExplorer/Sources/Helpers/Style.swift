@@ -23,7 +23,6 @@ final class Style {
 
     // Windows
     let recordWindowSize = CGSize(width: 416, height: 640)
-    let recordStackViewSize = CGSize(width: 414, height: 310)
     let imageWindowSize = CGSize(width: 640, height: 410)
     let pdfWindowSize = CGSize(width: 600, height: 640)
     let playerWindowSize = CGSize(width: 640, height: 440)
