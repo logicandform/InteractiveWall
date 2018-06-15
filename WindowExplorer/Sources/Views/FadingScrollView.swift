@@ -55,7 +55,7 @@ class FadingScrollView: NSScrollView {
 
         currentPosition = position
         let transparent = NSColor.clear.cgColor
-        let opaque = style.darkBackground.cgColor
+        let opaque = style.darkBackgroundOpaque.cgColor
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = NSRect(x: bounds.origin.x, y: 0, width: bounds.size.width, height: bounds.size.height)
 
