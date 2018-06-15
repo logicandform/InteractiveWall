@@ -10,11 +10,11 @@ class MoveComponent: GKAgent2D, GKAgentDelegate {
     init(seek: GKAgent2D) {
         super.init()
 
-        maxSpeed = 0.5
-        maxAcceleration = 0.1
+        maxSpeed = 500
+        maxAcceleration = 100
 
         delegate = self
-        behavior = GKBehavior(goal: GKGoal(toSeekAgent: seek), weight: 0.1)
+        behavior = GKBehavior(goal: GKGoal(toSeekAgent: seek), weight: 1)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -33,7 +33,7 @@ class MoveComponent: GKAgent2D, GKAgentDelegate {
         guard let spriteComponent = entity?.component(ofType: SpriteComponent.self) else {
             return
         }
-        
+
         position = vector_float2(x: Float(spriteComponent.recordNode.position.x), y: Float(spriteComponent.recordNode.position.y))
     }
 

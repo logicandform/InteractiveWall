@@ -32,8 +32,8 @@ class RecordNode: SKNode {
     // MARK: API
 
     func runInitialAnimation(with forceVector: CGVector, delay: Int) {
-        let dX = forceVector.dx * 0.5
-        let dY = forceVector.dy * 0.5
+        let dX = forceVector.dx * 0.005
+        let dY = forceVector.dy * 0.005
         let force = CGVector(dx: dX, dy: dY)
 
         let fadeInAction = SKAction.fadeIn(withDuration: TimeInterval(delay) * 0.01)
@@ -87,7 +87,5 @@ class RecordNode: SKNode {
         physicsBody?.friction = 0
         physicsBody?.restitution = 0
         physicsBody?.linearDamping = 0
-        physicsBody?.affectedByGravity = true
-        physicsBody?.isDynamic = true
     }
 }
