@@ -181,7 +181,7 @@ class MenuViewController: NSViewController, GestureResponder {
     // MARK: Gesture Handling
 
     func handleWindowPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let window = view.window, let settingsWindow = settingsMenu.view.window else {
+        guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
             return
         }
 
@@ -189,9 +189,9 @@ class MenuViewController: NSViewController, GestureResponder {
         case .recognized where abs(pan.delta.dy) > Constants.minimumScrollThreshold || scrollThresholdAchieved, .momentum where scrollThresholdAchieved:
             scrollThresholdAchieved = true
             let origin = originAppending(delta: pan.delta, to: window)
-            let settingsOrigin = originAppending(delta: pan.delta, to: settingsWindow)
+            let settingsButtonFrame = settingsButton.frame
+            settingsMenu.updateOrigin(relativeTo: origin, with: settingsButtonFrame)
             window.setFrameOrigin(origin)
-            settingsWindow.setFrameOrigin(settingsOrigin)
         case .possible:
             scrollThresholdAchieved = false
         default:

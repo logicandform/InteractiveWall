@@ -37,7 +37,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     }
 
 
-    // MARK: Life-cycle 
+    // MARK: Life-cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,6 +89,19 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         organizationsSwitch.isOn = true
     }
 
+    func updateOrigin(relativeTo button: CGPoint, with frame: NSRect) {
+        guard let window = view.window, let screen = window.screen else {
+            return
+        }
+
+        let updatedVerticalPosition = button.y + frame.origin.y + frame.height - view.frame.height
+
+        if updatedVerticalPosition < 0 {
+            view.window?.setFrameOrigin(CGPoint(x: window.frame.origin.x, y: screen.frame.minY))
+        } else {
+            view.window?.setFrameOrigin(CGPoint(x: window.frame.origin.x, y: updatedVerticalPosition))
+        }
+    }
 
     // MARK: GestureResponder
 
