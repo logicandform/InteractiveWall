@@ -188,7 +188,6 @@ class MenuViewController: NSViewController, GestureResponder {
         switch pan.state {
         case .recognized where abs(pan.delta.dy) > Constants.minimumScrollThreshold || scrollThresholdAchieved, .momentum where scrollThresholdAchieved:
             scrollThresholdAchieved = true
-
             let origin = originAppending(delta: pan.delta, to: window)
             let settingsButtonFrame = settingsButton.frame
             settingsMenu.updateOrigin(relativeTo: origin, with: settingsButtonFrame)
