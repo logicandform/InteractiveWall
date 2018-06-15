@@ -9,12 +9,13 @@ enum MapNotification: String {
     case reset
     case toggleBorderOn
     case toggleBorderOff
+    case toggleSwitch
 
     var name: Notification.Name {
         return Notification.Name(rawValue: rawValue)
     }
 
     static var allValues: [MapNotification] {
-        return [.position, .unpair, .ungroup, .reset, .toggleBorderOn, .toggleBorderOff]
+        return [.position, .unpair, .ungroup, .reset, .toggleBorderOn, .toggleBorderOff, .toggleSwitch]
     }
 }

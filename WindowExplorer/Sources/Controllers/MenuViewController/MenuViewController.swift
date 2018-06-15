@@ -66,7 +66,7 @@ class MenuViewController: NSViewController, GestureResponder {
 
     override func viewDidAppear() {
         settingsMenu = WindowManager.instance.display(.settings, at: position(for: settingsButton, frame: style.settingsWindowSize, margins: false)) as? SettingsMenuViewController
-        settingsMenu.view.alphaValue = 0
+        settingsMenu.view.isHidden = true
     }
 
 
@@ -229,19 +229,21 @@ class MenuViewController: NSViewController, GestureResponder {
             case .splitScreen:
                 menuStateHelper?.splitButtonToggled(by: self, to: .on)
             case .mapToggle:
-                if let screenIndex = calculateScreenIndex(), let mapIndex = calculateMapIndex() {
+                if let screenIndex = view.calculateScreenIndex(), let mapIndex = view.calculateMapIndex(), MasterViewController.instance?.infoForScreen[screenIndex - 1]?.applicationTypesForMaps[mapIndex] != .mapExplorer {
                     MasterViewController.instance?.apply(.menuLaunchedMapExplorer, toScreen: screenIndex - 1, on: mapIndex)
+                    settingsMenu.reset()
+                    buttonToggled(type: .settings, selection: .off)
                     buttonToggled(type: .timelineToggle, selection: .off)
                 }
             case .timelineToggle:
-                if let screenIndex = calculateScreenIndex(), let mapIndex = calculateMapIndex() {
+                if let screenIndex = view.calculateScreenIndex(), let mapIndex = view.calculateMapIndex(), MasterViewController.instance?.infoForScreen[screenIndex - 1]?.applicationTypesForMaps[mapIndex] != .timeline {
                     MasterViewController.instance?.apply(.menuLaunchedTimeline, toScreen: screenIndex - 1, on: mapIndex)
                     buttonToggled(type: .mapToggle, selection: .off)
                 }
             case .settings:
                 NSAnimationContext.runAnimationGroup({ _ in
                     NSAnimationContext.current.duration = Constants.animationDuration
-                    settingsMenu.view.animator().alphaValue = 1
+                    settingsMenu.view.animator().isHidden = false
                 })
             case .search:
                 WindowManager.instance.display(.search, at: position(for: searchButton, frame: style.searchWindowSize))
@@ -260,7 +262,7 @@ class MenuViewController: NSViewController, GestureResponder {
         case .settings:
             NSAnimationContext.runAnimationGroup({ _ in
                 NSAnimationContext.current.duration = Constants.animationDuration
-                settingsMenu.view.animator().alphaValue = 0
+                settingsMenu.view.animator().isHidden = true
             })
         default:
             break
@@ -301,25 +303,5 @@ class MenuViewController: NSViewController, GestureResponder {
         }
 
         return CGPoint(x: x, y: y)
-    }
-
-    /// Calculates the screen index based off the x-position of the menu and the screens
-    private func calculateScreenIndex() -> Int? {
-        guard let window = view.window, let screen = NSScreen.containing(x: window.frame.midX), let screenIndex = screen.orderedIndex else {
-            return nil
-        }
-
-        return screenIndex
-    }
-
-    /// Calculates the map index based off the x-position of the menu and the screens
-    private func calculateMapIndex() -> Int? {
-        guard let window = view.window, let screen = NSScreen.containing(x: window.frame.midX) else {
-            return nil
-        }
-
-        let mapWidth = screen.frame.width / CGFloat(Configuration.mapsPerScreen)
-        let mapIndex = Int((window.frame.origin.x - screen.frame.minX) / mapWidth)
-        return mapIndex
     }
 }

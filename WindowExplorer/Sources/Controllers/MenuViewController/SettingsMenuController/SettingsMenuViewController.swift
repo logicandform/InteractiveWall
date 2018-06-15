@@ -26,6 +26,17 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     private var textFieldForSettingsType = [SettingsTypes: NSTextField]()
 
 
+    private struct Keys {
+        static let id = "id"
+        static let map = "map"
+        static let group = "group"
+        static let gesture = "gestureType"
+        static let animated = "amimated"
+        static let toggleOn = "toggleOn"
+        static let switchType = "switchType"
+    }
+
+
     // MARK: Life-cycle 
 
     override func viewDidLoad() {
@@ -47,7 +58,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         textFieldForSettingsType = [.showLabels: labelsText, .showMiniMap: miniMapText, .toggleSchools: schoolsText, .toggleEvents: eventsText, .toggleOrganizations: organizationsText, .toggleArtifacts: artifactsText]
 
         labelsSwitch = setupSwitch(for: .showLabels)
-        miniMapSwitch = setupSwitch(for: .showMiniMap)
+        miniMapSwitch = setupSwitch(for: .showMiniMap, on: false)
         schoolsSwitch = setupSwitch(for: .toggleSchools)
         eventsSwitch = setupSwitch(for: .toggleEvents)
         organizationsSwitch = setupSwitch(for: .toggleOrganizations)
@@ -66,6 +77,19 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     }
 
 
+    // MARK: API
+
+    func reset() {
+        view.isHidden = true
+        labelsSwitch.isOn = true
+        miniMapSwitch.isOn = false
+        schoolsSwitch.isOn = true
+        eventsSwitch.isOn = true
+        artifactsSwitch.isOn = true
+        organizationsSwitch.isOn = true
+    }
+
+
     // MARK: GestureResponder
 
     /// Determines if the bounds of the draggable area is inside a given rect
@@ -78,7 +102,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     }
 
     func subview(contains position: CGPoint) -> Bool {
-        if view.alphaValue.isZero {
+        if view.isHidden {
             return false
         } else {
             return view.frame.contains(position)
@@ -88,17 +112,23 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
 
     // MARK: Helpers
 
-    private func handle(toggleSwitch: SwitchControl) {
+    private func handle(toggleSwitch: SwitchControl, type: SettingsTypes) {
+        guard let appID = view.calculateAppID() else {
+            return
+        }
+
         toggleSwitch.isOn = !toggleSwitch.isOn
+        let info: JSON = [Keys.id: appID, Keys.toggleOn: toggleSwitch.isOn, Keys.switchType: type.rawValue]
+        DistributedNotificationCenter.default().postNotificationName(MapNotification.toggleSwitch.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
-    private func setupSwitch(for type: SettingsTypes) -> SwitchControl? {
+    private func setupSwitch(for type: SettingsTypes, on: Bool = true) -> SwitchControl? {
         guard let textField = textFieldForSettingsType[type] else {
             return nil
         }
 
         let toggleSwitch: SwitchControl = {
-            let toggle = SwitchControl(isOn: true, frame: style.toggleSwitchFrame)
+            let toggle = SwitchControl(isOn: on, frame: style.toggleSwitchFrame)
             toggle.knobBackgroundColor = type.color
             toggle.disabledKnobBackgroundColor = style.toggleUnselectedColor
             toggle.tintColor = type.secondaryColor
@@ -124,7 +154,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         gestureManager.add(toggleTap, to: toggleSwitch)
         toggleTap.gestureUpdated = { [weak self] tap in
             if tap.state == .ended {
-                self?.handle(toggleSwitch: toggleSwitch)
+                self?.handle(toggleSwitch: toggleSwitch, type: type)
             }
         }
     }
