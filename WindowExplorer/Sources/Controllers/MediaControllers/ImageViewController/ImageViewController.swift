@@ -149,10 +149,7 @@ class ImageViewController: MediaViewController {
     }
 
     private func didScrubZoomSlider(_ scale: CGFloat) {
-        let rect = imageScrollView.contentView.bounds
-        let x = (rect.origin.x + rect.size.width) / 2
-        let y = (rect.origin.y + rect.size.height) / 2
-        imageScrollView.setMagnification(Constants.maximumMagnification * scale, centeredAt: NSPoint(x: x, y: y))
+        imageScrollView.magnification = Constants.maximumMagnification * scale
     }
 
 
