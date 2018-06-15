@@ -15,7 +15,6 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     @IBOutlet weak var artifactsText: NSTextField!
 
     var gestureManager: GestureManager!
-    var menuViewController: MenuViewController!
     private var labelsSwitch: SwitchControl!
     private var miniMapSwitch: SwitchControl!
     private var schoolsSwitch: SwitchControl!
@@ -90,12 +89,12 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         organizationsSwitch.isOn = true
     }
 
-    func updateOrigin(relativeTo button: CGPoint) {
+    func updateOrigin(relativeTo button: CGPoint, with frame: NSRect) {
         guard let window = view.window, let screen = window.screen else {
             return
         }
 
-        let updatedVerticalPosition = button.y + 2 * style.menuImageSize.height - view.frame.height
+        let updatedVerticalPosition = button.y + frame.origin.y + frame.height - view.frame.height
 
         if updatedVerticalPosition < 0 {
             view.window?.setFrameOrigin(CGPoint(x: window.frame.origin.x, y: screen.frame.minY))
