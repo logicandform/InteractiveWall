@@ -162,6 +162,10 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         let hideRelatedItemsTap = TapGestureRecognizer()
         gestureManager.add(hideRelatedItemsTap, to: hideRelatedItemsArea)
         hideRelatedItemsTap.gestureUpdated = handleHideRelatedItemsTap(_:)
+
+        let arrowIndicatorTap = TapGestureRecognizer()
+        gestureManager.add(arrowIndicatorTap, to: arrowIndicatorContainerView)
+        arrowIndicatorTap.gestureUpdated = handleArrowIndicatorTap(_:)
     }
 
     private func setupStackview() {
@@ -339,6 +343,28 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             stackClipView.scroll(point)
             stackScrollView.updateGradient()
             updateArrowIndicatorView()
+        default:
+            return
+        }
+    }
+
+    private func handleArrowIndicatorTap(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer else {
+            return
+        }
+
+        switch tap.state {
+        case .ended:
+            var point = stackClipView.visibleRect.origin
+            point.y += stackScrollView.frame.height - 20
+            NSAnimationContext.runAnimationGroup({ _ in
+                NSAnimationContext.current.duration = Constants.animationDuration
+                stackClipView.animator().setBoundsOrigin(point)
+            }, completionHandler: { [weak self] in
+                self?.stackScrollView.updateGradient()
+                self?.updateArrowIndicatorView()
+            })
+
         default:
             return
         }
