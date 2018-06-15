@@ -355,16 +355,15 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
         switch tap.state {
         case .ended:
+            let delta = stackScrollView.frame.height - 20
             var point = stackClipView.visibleRect.origin
-            point.y += stackScrollView.frame.height - 20
+            point.y += delta
             NSAnimationContext.runAnimationGroup({ _ in
                 NSAnimationContext.current.duration = Constants.animationDuration
                 stackClipView.animator().setBoundsOrigin(point)
-            }, completionHandler: { [weak self] in
-
             })
-            stackScrollView.updateGradient()
-            updateArrowIndicatorView()
+            stackScrollView.updateGradient(with: delta)
+            updateArrowIndicatorView(with: delta)
         default:
             return
         }
@@ -563,7 +562,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     }
 
     private func selectRelatedRecord(_ record: RecordDisplayable) {
-        guard let window = view.window else {
+        guard let window = view.window, showingRelatedItems else {
             return
         }
 
@@ -595,6 +594,10 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
     /// Handle a change of record type from the RelatedItemsHeaderView
     private func didSelectRelatedItemsFilterType(_ type: RecordFilterType) {
+        guard showingRelatedItems else {
+            return
+        }
+
         relatedItemsFilterType = type
         let titleForType = type.title?.uppercased() ?? Constants.allRecordsTitle
 
@@ -666,9 +669,9 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
     }
 
-    private func updateArrowIndicatorView() {
+    private func updateArrowIndicatorView(with delta: CGFloat = 0) {
         if let scrollView = stackView.enclosingScrollView {
-            arrowIndicatorContainerView.isHidden = scrollView.hasReachedBottom
+            arrowIndicatorContainerView.isHidden = scrollView.hasReachedBottom(with: delta)
         }
     }
 }

@@ -30,13 +30,13 @@ extension NSScrollView {
         return contentViewHeight > scrollViewHeight
     }
 
-    var hasReachedBottom: Bool {
-        let contentOffsetY = contentView.bounds.origin.y
+    func hasReachedBottom(with delta: CGFloat = 0) -> Bool {
+        let contentOffsetY = contentView.bounds.origin.y + delta
         return contentOffsetY >= verticalOffsetForBottom
     }
 
-    var hasReachedTop: Bool {
-        let contentOffsetY = contentView.bounds.origin.y
+    func hasReachedTop(with delta: CGFloat = 0) -> Bool {
+        let contentOffsetY = contentView.bounds.origin.y + delta
         return contentOffsetY <= 0
     }
 
