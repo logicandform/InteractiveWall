@@ -358,12 +358,13 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             let delta = stackScrollView.frame.height - 20
             var point = stackClipView.visibleRect.origin
             point.y += delta
+            stackScrollView.updateGradient(with: delta)
+            updateArrowIndicatorView(with: delta)
+
             NSAnimationContext.runAnimationGroup({ _ in
                 NSAnimationContext.current.duration = Constants.animationDuration
                 stackClipView.animator().setBoundsOrigin(point)
             })
-            stackScrollView.updateGradient(with: delta)
-            updateArrowIndicatorView(with: delta)
         default:
             return
         }
