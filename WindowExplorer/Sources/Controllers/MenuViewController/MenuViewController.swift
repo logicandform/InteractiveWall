@@ -181,7 +181,7 @@ class MenuViewController: NSViewController, GestureResponder {
     // MARK: Gesture Handling
 
     func handleWindowPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let window = view.window, let settingsWindow = settingsMenu.view.window, let screen = window.screen else {
+        guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
             return
         }
 
@@ -189,20 +189,8 @@ class MenuViewController: NSViewController, GestureResponder {
         case .recognized where abs(pan.delta.dy) > Constants.minimumScrollThreshold || scrollThresholdAchieved, .momentum where scrollThresholdAchieved:
             scrollThresholdAchieved = true
             let origin = originAppending(delta: pan.delta, to: window)
-            let settingsOrigin = originAppending(delta: pan.delta, to: settingsWindow)
-
-            if !settingsMenu.view.isHidden {
-                if pan.delta.dy < 0 && settingsOrigin.y > screen.frame.minY && origin.y > screen.frame.minY {
-                    window.setFrameOrigin(origin)
-                    settingsWindow.setFrameOrigin(settingsOrigin)
-                } else if pan.delta.dy > 0 && settingsOrigin.y + style.settingsWindowSize.height < screen.frame.maxY && origin.y + style.menuWindowSize.height < screen.frame.maxY {
-                    window.setFrameOrigin(origin)
-                    settingsWindow.setFrameOrigin(settingsOrigin)
-                }
-            } else {
-                window.setFrameOrigin(origin)
-            }
-
+            settingsMenu.updateOrigin(relativeTo: origin)
+            window.setFrameOrigin(origin)
         case .possible:
             scrollThresholdAchieved = false
         default:
@@ -252,17 +240,6 @@ class MenuViewController: NSViewController, GestureResponder {
                     buttonToggled(type: .mapToggle, selection: .off)
                 }
             case .settings:
-                guard let screen = settingsButton.window?.screen else {
-                    return
-                }
-
-                let currentPosition = position(for: settingsButton, frame: style.settingsWindowSize, margins: false)
-                if currentPosition.y < screen.frame.minY {
-                    adjustHeight(for: settingsButton, submenu: settingsMenu.view, on: screen)
-                } else {
-                    settingsMenu.view.window?.setFrameOrigin(currentPosition)
-                }
-
                 NSAnimationContext.runAnimationGroup({ _ in
                     NSAnimationContext.current.duration = Constants.animationDuration
                     settingsMenu.view.animator().isHidden = false
