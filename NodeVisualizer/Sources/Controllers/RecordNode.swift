@@ -32,14 +32,14 @@ class RecordNode: SKNode {
     // MARK: API
 
     func runInitialAnimation(with forceVector: CGVector, delay: Int) {
-        let dX = forceVector.dx * 0.005
-        let dY = forceVector.dy * 0.005
+        let dX = forceVector.dx * 0.05
+        let dY = forceVector.dy * 0.05
         let force = CGVector(dx: dX, dy: dY)
 
-        let fadeInAction = SKAction.fadeIn(withDuration: TimeInterval(delay) * 0.01)
+//        let fadeInAction = SKAction.fadeIn(withDuration: TimeInterval(delay) * 0.01)
         let applyForceAction = SKAction.applyForce(force, duration: 0.1)
-        let groupAction = SKAction.sequence([fadeInAction, applyForceAction])
-        run(groupAction)
+//        let groupAction = SKAction.sequence([fadeInAction, applyForceAction])
+        run(applyForceAction)
     }
 
 

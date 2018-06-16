@@ -12,7 +12,8 @@ class EntityManager {
 
     lazy var componentSystems: [GKComponentSystem] = {
         let moveSystem = GKComponentSystem(componentClass: MoveComponent.self)
-        return [moveSystem]
+        let agentSystem = GKComponentSystem(componentClass: AgentComponent.self)
+        return [agentSystem, moveSystem]
     }()
 
 
@@ -20,6 +21,12 @@ class EntityManager {
         self.scene = scene
     }
 
+
+    func update(_ deltaTime: CFTimeInterval) {
+        for componentSystem in componentSystems {
+            componentSystem.update(deltaTime: deltaTime)
+        }
+    }
 
     func add(_ entity: GKEntity) {
         entities.insert(entity)
@@ -41,13 +48,27 @@ class EntityManager {
         }
     }
 
-    func update(_ deltaTime: CFTimeInterval) {
-        for componentSystem in componentSystems {
-            componentSystem.update(deltaTime: deltaTime)
+    func entities(for records: [RecordDisplayable]) -> [GKEntity] {
+        var recordEntities = [GKEntity]()
+
+        for record in records {
+            if let entity = entity(for: record) {
+                recordEntities.append(entity)
+            }
         }
+
+        return recordEntities
     }
 
+    func entity(for record: RecordDisplayable) -> GKEntity? {
+        for entity in entities {
+            if let spriteRecord = entity.component(ofType: SpriteComponent.self)?.recordNode.record, spriteRecord.id == record.id {
+                return entity
+            }
+        }
 
+        return nil
+    }
 
 
 

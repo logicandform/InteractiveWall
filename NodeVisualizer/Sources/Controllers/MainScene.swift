@@ -43,7 +43,6 @@ class MainScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         let delta = currentTime - pastTime
         entityManager.update(delta)
-
         pastTime = currentTime
     }
 
@@ -67,29 +66,21 @@ class MainScene: SKScene {
     }
 
     private func addRecordNodesToScene() {
-        records.prefix(100).enumerated().forEach { index, record in
+        records.enumerated().forEach { index, record in
 
             let recordEntity = RecordEntity(record: record)
 
-            if let spriteComponent = recordEntity.component(ofType: SpriteComponent.self) {
-                spriteComponent.recordNode.position.x = randomX()
-                spriteComponent.recordNode.position.y = randomY()
+            if let recordNode = recordEntity.component(ofType: SpriteComponent.self)?.recordNode {
+                recordNode.position.x = randomX()
+                recordNode.position.y = randomY()
+                recordNode.zPosition = 1
+
+//                let destinationPosition = getRandomPosition()
+//                let forceVector = CGVector(dx: destinationPosition.x - recordNode.position.x, dy: destinationPosition.y - recordNode.position.y)
+//                recordNode.runInitialAnimation(with: forceVector, delay: index)
             }
 
             entityManager.add(recordEntity)
-
-//            let node = RecordNode(record: record)
-//
-//            node.position.x = randomX()
-//            node.position.y = randomY()
-//            node.zPosition = 1
-//
-////            node.alpha = 0
-//            addChild(node)
-////
-//            let destinationPosition = getRandomPosition()
-//            let forceVector = CGVector(dx: destinationPosition.x - node.position.x, dy: destinationPosition.y - node.position.y)
-//            node.runInitialAnimation(with: forceVector, delay: index)
         }
     }
 
@@ -129,17 +120,17 @@ class MainScene: SKScene {
         }
     }
 
-    func doSomething(at point: CGPoint, to node: RecordNode) {
+    func doSomething(at point: CGPoint, to node: RecordNode? = nil) {
         agentToSeek = GKAgent2D()
         agentToSeek.position = vector_float2(x: Float(point.x), y: Float(point.y))
 
-        for entity in entityManager.entities {
-            entity.addComponent(MoveComponent(seek: agentToSeek))
-
-            for system in entityManager.componentSystems {
-                system.addComponent(foundIn: entity)
-            }
-        }
+//        for entity in entityManager.entities {
+//            entity.addComponent(MoveComponent(agentToSeek: agentToSeek))
+//
+//            for system in entityManager.componentSystems {
+//                system.addComponent(foundIn: entity)
+//            }
+//        }
     }
 
     @objc
@@ -149,6 +140,8 @@ class MainScene: SKScene {
         let clickPosition = recognizer.location(in: recognizer.view)
         let nodePosition = convertPoint(fromView: clickPosition)
 
+//        doSomething(at: nodePosition)
+
         guard let recordNode = nodes(at: nodePosition).first(where: { $0 is RecordNode }) as? RecordNode else {
             return
         }
@@ -157,13 +150,9 @@ class MainScene: SKScene {
         print(recordNode.record.type)
 
         switch recognizer.state {
-        case .began:
-            print("began")
         case .ended:
-            print("ended")
-//            relatedNodes(for: recordNode)
-//            createGravityField(at: nodePosition, to: recordNode)
-            doSomething(at: nodePosition, to: recordNode)
+            relatedNodes(for: recordNode)
+            // TODO: need to create gravity field
         default:
             return
         }
@@ -174,9 +163,20 @@ class MainScene: SKScene {
         let relatedRecords = DataManager.instance.relatedRecords(for: identifier)
         print(relatedRecords)
 
-        // move related record nodes to the clicked node && create relationship
+        // move related record nodes to the clicked node
+        let tappedRecordEntity = entityManager.entity(for: node.record)
+//        tappedRecordEntity?.component(ofType: SpriteComponent.self)?.recordNode.physicsBody?.isDynamic = false
+        let tappedRecordAgent = tappedRecordEntity?.component(ofType: AgentComponent.self)
+        let relatedRecordEntities = entityManager.entities(for: relatedRecords)
 
+        for relatedRecordEntity in relatedRecordEntities {
+            let moveComponent = MoveComponent(agentToSeek: tappedRecordAgent)
+            relatedRecordEntity.addComponent(moveComponent)
 
+            for componentSystem in entityManager.componentSystems {
+                componentSystem.addComponent(foundIn: relatedRecordEntity)
+            }
+        }
     }
 
     private func handleTapGesture(_ gesture: GestureRecognizer) {

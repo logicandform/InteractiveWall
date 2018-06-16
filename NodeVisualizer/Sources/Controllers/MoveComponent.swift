@@ -7,14 +7,17 @@ import GameplayKit
 
 class MoveComponent: GKAgent2D, GKAgentDelegate {
 
-    init(seek: GKAgent2D) {
+    init(agentToSeek: GKAgent2D?) {
         super.init()
 
-        maxSpeed = 500
+        maxSpeed = 200
         maxAcceleration = 100
 
         delegate = self
-        behavior = GKBehavior(goal: GKGoal(toSeekAgent: seek), weight: 1)
+
+        if let agentToSeek = agentToSeek {
+            behavior = GKBehavior(goal: GKGoal(toSeekAgent: agentToSeek), weight: 1)
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -35,6 +38,7 @@ class MoveComponent: GKAgent2D, GKAgentDelegate {
         }
 
         position = vector_float2(x: Float(spriteComponent.recordNode.position.x), y: Float(spriteComponent.recordNode.position.y))
+//        rotation = Float(spriteComponent.recordNode.zRotation)
     }
 
     func agentDidUpdate(_ agent: GKAgent) {
@@ -42,7 +46,10 @@ class MoveComponent: GKAgent2D, GKAgentDelegate {
             return
         }
 
-        spriteComponent.recordNode.position = CGPoint(x: CGFloat(position.x), y: CGFloat(position.y))
+//        spriteComponent.recordNode.position = CGPoint(x: CGFloat(position.x), y: CGFloat(position.y))
+
+        spriteComponent.recordNode.physicsBody?.velocity = CGVector(dx: CGFloat(velocity.x), dy: CGFloat(velocity.y))
+//        spriteComponent.recordNode.zRotation = CGFloat(rotation)
     }
 
 }
