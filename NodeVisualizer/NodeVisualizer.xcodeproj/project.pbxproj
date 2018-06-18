@@ -210,6 +210,7 @@
 				22AEAEB520B67C2400DD184B /* AppDelegate.swift */,
 				CD27F40320BCB5B900375CBC /* DataManager.swift */,
 				22AEAED520B67D2600DD184B /* GestureManager.swift */,
+				CD0FB28320D1AA9D0058A410 /* EntityManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -221,12 +222,9 @@
 				22AEAEBD20B67C2400DD184B /* MainViewController.swift */,
 				22AEAEBB20B67C2400DD184B /* MainScene.swift */,
 				CDC22D2720BDC6B0006BC0BE /* RecordNode.swift */,
-				CD0FB27F20D1A4AE0058A410 /* RenderComponent.swift */,
-				CD0FB28120D1A6300058A410 /* RecordEntity.swift */,
-				CD0FB28320D1AA9D0058A410 /* EntityManager.swift */,
-				CD0FB28720D1BFDD0058A410 /* MoveComponent.swift */,
-				CD0FB28920D83B840058A410 /* RecordEntityBehavior.swift */,
-				CD0FB28B20D849140058A410 /* RecordAgent.swift */,
+				CD0FB28D20D853D70058A410 /* Entities */,
+				CD0FB28E20D853E00058A410 /* Components */,
+				CD0FB28F20D854060058A410 /* Behaviors */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -337,6 +335,32 @@
 				72B5F6840D3186BD92A6EA0D /* Pods-All-NodeVisualizer.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		CD0FB28D20D853D70058A410 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				CD0FB28120D1A6300058A410 /* RecordEntity.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		CD0FB28E20D853E00058A410 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				CD0FB27F20D1A4AE0058A410 /* RenderComponent.swift */,
+				CD0FB28720D1BFDD0058A410 /* MoveComponent.swift */,
+				CD0FB28B20D849140058A410 /* RecordAgent.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		CD0FB28F20D854060058A410 /* Behaviors */ = {
+			isa = PBXGroup;
+			children = (
+				CD0FB28920D83B840058A410 /* RecordEntityBehavior.swift */,
+			);
+			path = Behaviors;
 			sourceTree = "<group>";
 		};
 		CD27F40720BCBDDD00375CBC /* Search */ = {
