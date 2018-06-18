@@ -29,7 +29,7 @@ extension NSView {
             return nil
         }
 
-        let mapWidth = screen.frame.width / CGFloat(Configuration.mapsPerScreen)
+        let mapWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen)
         let mapIndex = Int((window.frame.origin.x - screen.frame.minX) / mapWidth)
         return mapIndex
     }
@@ -40,10 +40,10 @@ extension NSView {
             return nil
         }
 
-        let baseMapForScreen = (screenIndex - 1) * Int(Configuration.mapsPerScreen)
-        let mapWidth = screen.frame.width / CGFloat(Configuration.mapsPerScreen)
-        let mapForScreen = Int((window.frame.origin.x - screen.frame.minX) / mapWidth)
-        return mapForScreen + baseMapForScreen
+        let baseAppForScreen = (screenIndex - 1) * Int(Configuration.appsPerScreen)
+        let appWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen)
+        let appForScreen = Int((window.frame.origin.x - screen.frame.minX) / appWidth)
+        return appForScreen + baseAppForScreen
     }
 }
 
