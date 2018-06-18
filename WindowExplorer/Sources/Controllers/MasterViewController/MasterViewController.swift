@@ -191,7 +191,7 @@ class MasterViewController: NSViewController {
             applicationTypes[map] = .mapExplorer
             maps.append(map)
         } else {
-            for map in 0 ..< Configuration.mapsPerScreen {
+            for map in 0 ..< Configuration.appsPerScreen {
                 if !maps.contains(map), let application = open(.mapExplorer, screenID: screen + 1, appID: map) {
                     applications[map] = application
                     applicationTypes[map] = .mapExplorer

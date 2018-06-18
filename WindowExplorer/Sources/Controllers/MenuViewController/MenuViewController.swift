@@ -38,7 +38,7 @@ class MenuViewController: NSViewController, GestureResponder {
             let screenFrame = screen.frame
             let menuStateHelper = MenuStateHelper()
 
-            for menuNumber in (1 ... Configuration.mapsPerScreen) {
+            for menuNumber in (1 ... Configuration.appsPerScreen) {
                 let x = menuNumber % 2 == 1 ? screenFrame.maxX - style.menuWindowSize.width : screenFrame.minX
                 let y = screenFrame.midY - style.menuWindowSize.height / 2
 
@@ -303,5 +303,25 @@ class MenuViewController: NSViewController, GestureResponder {
         }
 
         return CGPoint(x: x, y: y)
+    }
+
+    /// Calculates the screen index based off the x-position of the menu and the screens
+    private func calculateScreenIndex() -> Int? {
+        guard let window = view.window, let screen = NSScreen.containing(x: window.frame.midX), let screenIndex = screen.orderedIndex else {
+            return nil
+        }
+
+        return screenIndex
+    }
+
+    /// Calculates the map index based off the x-position of the menu and the screens
+    private func calculateMapIndex() -> Int? {
+        guard let window = view.window, let screen = NSScreen.containing(x: window.frame.midX) else {
+            return nil
+        }
+
+        let mapWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen)
+        let mapIndex = Int((window.frame.origin.x - screen.frame.minX) / mapWidth)
+        return mapIndex
     }
 }

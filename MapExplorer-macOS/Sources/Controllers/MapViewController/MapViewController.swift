@@ -7,11 +7,15 @@ import PromiseKit
 import AppKit
 
 
+struct MapConstants {
+    static let canadaRect = MKMapRect(origin: MKMapPoint(x: 23000000, y: 70000000), size: MKMapSize(width: 80000000, height: 0))
+}
+
+
 class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, NSGestureRecognizerDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Map")
 
     @IBOutlet weak var mapView: FlippedMapWithMiniMap!
-    @IBOutlet weak var border: NSView!
 
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
@@ -26,12 +30,12 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     private struct Constants {
-        static let maxZoomWidth =  Double(160000000 / Configuration.mapsPerScreen)
+        static let maxZoomWidth =  Double(160000000 / Configuration.appsPerScreen)
         static let minZoomWidth = 424500.0
         static let touchRadius: CGFloat = 20
         static let annotationHitSize = CGSize(width: 50, height: 50)
         static let doubleTapScale = 0.5
-        static let annotationTitleZoomLevel = Double(36000000 / Configuration.mapsPerScreen)
+        static let annotationTitleZoomLevel = Double(36000000 / Configuration.appsPerScreen)
         static let spacingBetweenAnnotations = 0.02
     }
 
@@ -55,10 +59,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     override func viewDidLoad() {
         super.viewDidLoad()
         gestureManager = GestureManager(responder: self)
+
         setupMap()
         setupGestures()
-        setupBorder()
-
         touchListener.listenToPort(named: "MapListener\(appID)")
         touchListener.receivedTouch = { [weak self] touch in
             self?.gestureManager.handle(touch)
@@ -73,7 +76,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     // MARK: Setup
 
     private func setupMap() {
-        mapHandler = MapHandler(mapView: mapView, id: appID, mapViewController: self)
+        mapHandler = MapHandler(mapView: mapView, id: appID)
+        ConnectionManager.instance.mapHandler = mapHandler
         let overlay = MKTileOverlay(urlTemplate: tileURL)
         overlay.canReplaceMapContent = true
         mapView.add(overlay)
@@ -88,21 +92,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         let pinchGesture = PinchGestureRecognizer()
         gestureManager.add(pinchGesture, to: mapView)
         pinchGesture.gestureUpdated = didPinchOnMap(_:)
-    }
-
-    private func setupBorder() {
-        mapHandler?.border = border
-        border.translatesAutoresizingMaskIntoConstraints = false
-
-        if appID % Configuration.mapsPerScreen == 0 {
-            border.trailingAnchor.constraint(equalTo: mapView.trailingAnchor).isActive = true
-        } else {
-            border.leadingAnchor.constraint(equalTo: mapView.leadingAnchor).isActive = true
-        }
-
-        border.wantsLayer = true
-        border.layer?.backgroundColor = style.borderColor.cgColor
-        border.isHidden = true
     }
 
 

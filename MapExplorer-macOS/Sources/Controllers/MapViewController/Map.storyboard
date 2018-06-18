@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="TYK-5A-x82">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="TYK-5A-x82">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
-        <plugIn identifier="com.apple.MapKitIBPlugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <plugIn identifier="com.apple.MapKitIBPlugin" version="14113"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -20,25 +20,15 @@
                                     <outlet property="delegate" destination="TYK-5A-x82" id="dxv-gV-hz1"/>
                                 </connections>
                             </mapView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="4oU-Dd-DUB">
-                                <rect key="frame" x="200" y="0.0" width="2" height="417"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="2" id="zKp-X5-lJg"/>
-                                </constraints>
-                            </customView>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="4oU-Dd-DUB" secondAttribute="bottom" id="8pX-8Z-g54"/>
                             <constraint firstAttribute="trailing" secondItem="s1R-HV-vyu" secondAttribute="trailing" id="Txz-yL-mWb"/>
-                            <constraint firstItem="4oU-Dd-DUB" firstAttribute="top" secondItem="qa6-7c-s1W" secondAttribute="top" id="VIy-0A-cSD"/>
                             <constraint firstItem="s1R-HV-vyu" firstAttribute="leading" secondItem="qa6-7c-s1W" secondAttribute="leading" id="b1d-fn-Hmn"/>
                             <constraint firstAttribute="bottom" secondItem="s1R-HV-vyu" secondAttribute="bottom" id="kkI-xz-pKq"/>
                             <constraint firstItem="s1R-HV-vyu" firstAttribute="top" secondItem="qa6-7c-s1W" secondAttribute="top" id="pOP-Ow-rrj"/>
-                            <constraint firstItem="4oU-Dd-DUB" firstAttribute="leading" secondItem="qa6-7c-s1W" secondAttribute="leading" constant="200" placeholder="YES" id="rjB-eW-Hbk"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="border" destination="4oU-Dd-DUB" id="K1i-Sk-6Rb"/>
                         <outlet property="mapView" destination="s1R-HV-vyu" id="Gig-cX-EII"/>
                     </connections>
                 </viewController>

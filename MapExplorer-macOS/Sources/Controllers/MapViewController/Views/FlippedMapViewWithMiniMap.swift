@@ -1,6 +1,5 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
-
 import Cocoa
 import AppKit
 import MapKit
@@ -29,7 +28,6 @@ class FlippedMapWithMiniMap: MKMapView, MKMapViewDelegate {
         static let miniMapAspectRatio: CGFloat = 3/2
         static let miniMapMargin: CGFloat = 10
         static let defaultMiniMapPosition = CompassDirection.ne
-        static let canadaRect = MapHandler.MapConstants.canadaRect
         static let miniMapLocationRectStrokeColor = NSColor.white
         static let miniMapLocationRectFillColor = style.selectedColor
     }
@@ -56,7 +54,7 @@ class FlippedMapWithMiniMap: MKMapView, MKMapViewDelegate {
         miniMap.isScrollEnabled = false
         miniMap.isZoomEnabled = false
         miniMap.isRotateEnabled = false
-        miniMap.setVisibleMapRect(MKMapRect(origin: Constants.canadaRect.origin, size: Constants.canadaRect.size), animated: false)
+        miniMap.setVisibleMapRect(MKMapRect(origin: MapConstants.canadaRect.origin, size: MapConstants.canadaRect.size), animated: false)
         miniMap.delegate = self
         miniMap.translatesAutoresizingMaskIntoConstraints = false
         miniMap.isHidden = true

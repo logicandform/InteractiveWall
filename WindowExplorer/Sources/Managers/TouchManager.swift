@@ -159,16 +159,16 @@ final class TouchManager: SocketManagerDelegate {
     /// Calculates the map index based off the x-position of the touch and the screens
     private func calculateMap(for touch: Touch) -> Int {
         let screen = NSScreen.at(position: touch.screen)
-        let baseMapForScreen = (touch.screen - 1) * Int(Configuration.mapsPerScreen)
-        let mapWidth = screen.frame.width / CGFloat(Configuration.mapsPerScreen)
+        let baseMapForScreen = (touch.screen - 1) * Int(Configuration.appsPerScreen)
+        let mapWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen)
         let mapForScreen = Int((touch.position.x - screen.frame.minX) / mapWidth)
         return baseMapForScreen + mapForScreen
     }
 
     private func map(_ map: Int, contains touch: Touch) -> Bool {
         let screen = NSScreen.at(position: touch.screen)
-        let mapWidth = screen.frame.width / CGFloat(Configuration.mapsPerScreen)
-        let mapInScreen = CGFloat(map % Configuration.mapsPerScreen)
+        let mapWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen)
+        let mapInScreen = CGFloat(map % Configuration.appsPerScreen)
         let minX = screen.frame.minX + (mapInScreen * mapWidth)
         let maxX = minX + mapWidth
         return touch.position.x >= minX && touch.position.x <= maxX

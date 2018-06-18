@@ -6,7 +6,7 @@ import Cocoa
 struct Configuration {
     static let serverIP = "10.58.73.211"
     static let serverURL = "http://\(serverIP):3000"
-    static let mapsPerScreen = 2
+    static let appsPerScreen = 2
     static let numberOfScreens = 1
     static let touchScreenSize = CGSize(width: 21564, height: 12116)
     static let refreshRate = 1.0 / 60.0
@@ -26,10 +26,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         let screen = NSScreen.at(position: screenIndex)
         screenID = screenIndex
-        appID = appIndex + ((screenIndex - 1) * Configuration.mapsPerScreen)
+        appID = appIndex + ((screenIndex - 1) * Configuration.appsPerScreen)
 
         let controller = MapViewController.instance()
-        let screenWidth = screen.frame.width / CGFloat(Configuration.mapsPerScreen)
+        let screenWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen)
         let frame = NSRect(x: screen.frame.minX + screenWidth * CGFloat(appIndex), y: screen.frame.minY, width: screenWidth, height: screen.frame.height)
         let window = BorderlessWindow(frame: frame, controller: controller)
         window.setFrame(frame, display: true)

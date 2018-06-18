@@ -54,4 +54,16 @@ class MenuStateHelper {
             DistributedNotificationCenter.default().postNotificationName(MapNotification.toggleBorderOff.name, object: nil, userInfo: info, deliverImmediately: true)
         }
     }
+
+    /// Calculates the map index based off the x-position of the menu and the screens
+    private func calculateMap(for menu: MenuViewController) -> Int? {
+        guard let window = menu.view.window, let screen = NSScreen.containing(x: window.frame.midX), let screenIndex = screen.orderedIndex else {
+            return nil
+        }
+
+        let baseMapForScreen = (screenIndex - 1) * Int(Configuration.appsPerScreen)
+        let mapWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen)
+        let mapForScreen = Int((window.frame.origin.x - screen.frame.minX) / mapWidth)
+        return mapForScreen + baseMapForScreen
+    }
 }

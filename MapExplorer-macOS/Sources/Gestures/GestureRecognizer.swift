@@ -3,6 +3,7 @@
 import Foundation
 import AppKit
 
+
 protocol GestureRecognizer: class {
 
     var gestureUpdated: ((GestureRecognizer) -> Void)? { get set }
@@ -20,6 +21,7 @@ protocol GestureRecognizer: class {
     func invalidate()
 }
 
+
 extension GestureRecognizer {
 
     var state: GestureState {
@@ -28,6 +30,7 @@ extension GestureRecognizer {
 
     func invalidate() {}
 }
+
 
 enum GestureState: String {
     case possible
