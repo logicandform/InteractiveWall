@@ -21,6 +21,7 @@ final class Style {
     // Related Items
     let relatedItemColor = NSColor(calibratedRed: 75/255, green: 91/255, blue: 100/255, alpha: 1)
     let noRelatedItemsColor = NSColor(calibratedRed: 33/255, green: 33/255, blue: 33/255, alpha: 1)
+    let relatedItemBackgroundColor = NSColor(calibratedRed: 0.08, green: 0.10, blue: 0.11, alpha: 1)
 
     // Windows
     let recordWindowSize = CGSize(width: 416, height: 650)
