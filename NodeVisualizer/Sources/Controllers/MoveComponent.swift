@@ -7,17 +7,22 @@ import GameplayKit
 
 class MoveComponent: GKAgent2D, GKAgentDelegate {
 
+    private var renderComponent: RenderComponent {
+        guard let renderComponent = entity?.component(ofType: RenderComponent.self) else {
+            fatalError()
+        }
+        return renderComponent
+    }
+
+
     init(agentToSeek: GKAgent2D?) {
         super.init()
 
+        delegate = self
         maxSpeed = 200
         maxAcceleration = 100
-
-        delegate = self
-
-        if let agentToSeek = agentToSeek {
-            behavior = GKBehavior(goal: GKGoal(toSeekAgent: agentToSeek), weight: 1)
-        }
+        radius = 10
+        behavior = RecordEntityBehavior.behavior(for: self, toSeek: agentToSeek!)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -33,24 +38,33 @@ class MoveComponent: GKAgent2D, GKAgentDelegate {
     // MARK: GKAgentDelegate
 
     func agentWillUpdate(_ agent: GKAgent) {
-        guard let spriteComponent = entity?.component(ofType: SpriteComponent.self) else {
-            return
-        }
-
-        position = vector_float2(x: Float(spriteComponent.recordNode.position.x), y: Float(spriteComponent.recordNode.position.y))
-//        rotation = Float(spriteComponent.recordNode.zRotation)
+        updateAgentPositionToMatchNodePosition()
+//        guard let spriteComponent = entity?.component(ofType: RenderComponent.self) else {
+//            return
+//        }
+//
+//        position = vector_float2(x: Float(spriteComponent.recordNode.position.x), y: Float(spriteComponent.recordNode.position.y))
     }
 
     func agentDidUpdate(_ agent: GKAgent) {
-        guard let spriteComponent = entity?.component(ofType: SpriteComponent.self) else {
-            return
-        }
-
-//        spriteComponent.recordNode.position = CGPoint(x: CGFloat(position.x), y: CGFloat(position.y))
-
-        spriteComponent.recordNode.physicsBody?.velocity = CGVector(dx: CGFloat(velocity.x), dy: CGFloat(velocity.y))
-//        spriteComponent.recordNode.zRotation = CGFloat(rotation)
+        updateNodePositionToMatchAgentPosition()
+//        guard let spriteComponent = entity?.component(ofType: RenderComponent.self) else {
+//            return
+//        }
+//
+//        spriteComponent.recordNode.physicsBody?.velocity = CGVector(dx: CGFloat(velocity.x), dy: CGFloat(velocity.y))
     }
+
+
+    private func updateAgentPositionToMatchNodePosition() {
+        let renderComponent = self.renderComponent
+        position = vector_float2(x: Float(renderComponent.recordNode.position.x), y: Float(renderComponent.recordNode.position.y))
+    }
+
+    private func updateNodePositionToMatchAgentPosition() {
+        renderComponent.recordNode.position = CGPoint(x: CGFloat(position.x), y: CGFloat(position.y))
+    }
+
 
 }
 

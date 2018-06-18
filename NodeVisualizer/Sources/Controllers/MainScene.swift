@@ -11,7 +11,7 @@ class MainScene: SKScene {
 
     var entityManager: EntityManager!
     var agentToSeek: GKAgent2D!
-    var pastTime: TimeInterval = 0
+    var lastUpdateTimeInterval: TimeInterval = 0
 
     private enum StartingPositionType: UInt32 {
         case top = 0
@@ -41,9 +41,14 @@ class MainScene: SKScene {
     }
 
     override func update(_ currentTime: TimeInterval) {
-        let delta = currentTime - pastTime
-        entityManager.update(delta)
-        pastTime = currentTime
+        let deltaTime = currentTime - lastUpdateTimeInterval
+        lastUpdateTimeInterval = currentTime
+
+        entityManager.update(deltaTime)
+    }
+
+    override func didFinishUpdate() {
+
     }
 
 
@@ -67,20 +72,21 @@ class MainScene: SKScene {
 
     private func addRecordNodesToScene() {
         records.enumerated().forEach { index, record in
-
             let recordEntity = RecordEntity(record: record)
 
-            if let recordNode = recordEntity.component(ofType: SpriteComponent.self)?.recordNode {
+            if let recordNode = recordEntity.component(ofType: RenderComponent.self)?.recordNode {
                 recordNode.position.x = randomX()
                 recordNode.position.y = randomY()
                 recordNode.zPosition = 1
+
+                recordEntity.updateAgentPositionToMatchNodePosition()
+                entityManager.add(recordEntity)
+                addChild(recordNode)
 
 //                let destinationPosition = getRandomPosition()
 //                let forceVector = CGVector(dx: destinationPosition.x - recordNode.position.x, dy: destinationPosition.y - recordNode.position.y)
 //                recordNode.runInitialAnimation(with: forceVector, delay: index)
             }
-
-            entityManager.add(recordEntity)
         }
     }
 
@@ -152,7 +158,6 @@ class MainScene: SKScene {
         switch recognizer.state {
         case .ended:
             relatedNodes(for: recordNode)
-            // TODO: need to create gravity field
         default:
             return
         }
@@ -163,19 +168,13 @@ class MainScene: SKScene {
         let relatedRecords = DataManager.instance.relatedRecords(for: identifier)
         print(relatedRecords)
 
-        // move related record nodes to the clicked node
         let tappedRecordEntity = entityManager.entity(for: node.record)
-//        tappedRecordEntity?.component(ofType: SpriteComponent.self)?.recordNode.physicsBody?.isDynamic = false
-        let tappedRecordAgent = tappedRecordEntity?.component(ofType: AgentComponent.self)
+        let tappedRecordAgent = tappedRecordEntity?.component(ofType: RecordAgent.self)
         let relatedRecordEntities = entityManager.entities(for: relatedRecords)
 
         for relatedRecordEntity in relatedRecordEntities {
             let moveComponent = MoveComponent(agentToSeek: tappedRecordAgent)
-            relatedRecordEntity.addComponent(moveComponent)
-
-            for componentSystem in entityManager.componentSystems {
-                componentSystem.addComponent(foundIn: relatedRecordEntity)
-            }
+            entityManager.add(component: moveComponent, to: relatedRecordEntity)
         }
     }
 

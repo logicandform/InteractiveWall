@@ -5,7 +5,7 @@ import SpriteKit
 import GameplayKit
 
 
-class SpriteComponent: GKComponent {
+class RenderComponent: GKComponent {
 
     private(set) var recordNode: RecordNode
 
@@ -20,10 +20,11 @@ class SpriteComponent: GKComponent {
     }
 
 
-    func applyInitialAnimation(with force: CGVector) {
-        let scaledForceX = force.dx * 0.05
-        let scaledForceY = force.dy * 0.05
-        let applyForceAction = SKAction.applyForce(CGVector(dx: scaledForceX, dy: scaledForceY), duration: 0.1)
-        recordNode.run(applyForceAction)
+    override func didAddToEntity() {
+        recordNode.entity = entity
+    }
+
+    override func willRemoveFromEntity() {
+        recordNode.entity = nil
     }
 }

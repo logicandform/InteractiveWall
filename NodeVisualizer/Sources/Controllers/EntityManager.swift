@@ -11,8 +11,8 @@ class EntityManager {
     private let scene: SKScene
 
     lazy var componentSystems: [GKComponentSystem] = {
+        let agentSystem = GKComponentSystem(componentClass: RecordAgent.self)
         let moveSystem = GKComponentSystem(componentClass: MoveComponent.self)
-        let agentSystem = GKComponentSystem(componentClass: AgentComponent.self)
         return [agentSystem, moveSystem]
     }()
 
@@ -34,18 +34,10 @@ class EntityManager {
         for componentSystem in componentSystems {
             componentSystem.addComponent(foundIn: entity)
         }
-
-        if let spriteComponent = entity.component(ofType: SpriteComponent.self) {
-            scene.addChild(spriteComponent.recordNode)
-        }
     }
 
     func remove(_ entity: GKEntity) {
         entities.remove(entity)
-
-        if let spriteComponent = entity.component(ofType: SpriteComponent.self) {
-            spriteComponent.recordNode.removeFromParent()
-        }
     }
 
     func entities(for records: [RecordDisplayable]) -> [GKEntity] {
@@ -62,12 +54,20 @@ class EntityManager {
 
     func entity(for record: RecordDisplayable) -> GKEntity? {
         for entity in entities {
-            if let spriteRecord = entity.component(ofType: SpriteComponent.self)?.recordNode.record, spriteRecord.id == record.id {
+            if let renderRecord = entity.component(ofType: RenderComponent.self)?.recordNode.record, renderRecord.id == record.id {
                 return entity
             }
         }
 
         return nil
+    }
+
+    func add(component: GKComponent, to entity: GKEntity) {
+        entity.addComponent(component)
+
+        for componentSystem in componentSystems {
+            componentSystem.addComponent(foundIn: entity)
+        }
     }
 
 
