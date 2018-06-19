@@ -3,9 +3,9 @@
 import Cocoa
 
 
-class ImageZoomControl: NSView {
+class ZoomControl: NSView {
 
-    static let nib = NSNib.Name(rawValue: "ImageZoomControl")
+    static let nib = NSNib.Name(rawValue: "ZoomControl")
 
     @IBOutlet var contentView: NSView!
     @IBOutlet weak var seekBar: NSSlider!
@@ -24,7 +24,7 @@ class ImageZoomControl: NSView {
     required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
 
-        Bundle.main.loadNibNamed(ImageZoomControl.nib, owner: self, topLevelObjects: nil)
+        Bundle.main.loadNibNamed(ZoomControl.nib, owner: self, topLevelObjects: nil)
         addSubview(contentView)
         contentView.frame = bounds
     }
