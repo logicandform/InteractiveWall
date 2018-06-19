@@ -7,15 +7,12 @@ enum MapNotification: String {
     case unpair
     case ungroup
     case reset
-    case toggleBorderOn
-    case toggleBorderOff
-    case toggleSwitch
 
     var name: Notification.Name {
         return Notification.Name(rawValue: rawValue)
     }
 
     static var allValues: [MapNotification] {
-        return [.position, .unpair, .ungroup, .reset, .toggleBorderOn, .toggleBorderOff, .toggleSwitch]
+        return [.position, .unpair, .ungroup, .reset]
     }
 }

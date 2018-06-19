@@ -4,13 +4,13 @@ import Foundation
 import Cocoa
 
 
-enum SettingsTypes: Int {
-    case showLabels = 50
-    case showMiniMap = 51
-    case toggleSchools = 52
-    case toggleEvents = 53
-    case toggleOrganizations = 54
-    case toggleArtifacts = 55
+enum SettingsType {
+    case showLabels
+    case showMiniMap
+    case toggleSchools
+    case toggleEvents
+    case toggleOrganizations
+    case toggleArtifacts
 
     var color: NSColor {
         switch self {
@@ -43,6 +43,36 @@ enum SettingsTypes: Int {
             return style.organizationSecondarySelectedColor
         case .toggleArtifacts:
             return style.artifactSecondarySelectedColor
+        }
+    }
+
+    var recordType: RecordType? {
+        switch self {
+        case .toggleSchools:
+            return .school
+        case .toggleEvents:
+            return .event
+        case .toggleOrganizations:
+            return .organization
+        case .toggleArtifacts:
+            return .artifact
+        case .showLabels, .showMiniMap:
+            return nil
+        }
+    }
+
+    static func from(recordType: RecordType) -> SettingsType? {
+        switch recordType {
+        case .school:
+            return .toggleSchools
+        case .event:
+            return .toggleEvents
+        case .organization:
+            return .toggleOrganizations
+        case .artifact:
+            return .toggleArtifacts
+        case .theme:
+            return nil
         }
     }
 }

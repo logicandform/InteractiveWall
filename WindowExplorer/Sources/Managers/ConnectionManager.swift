@@ -50,6 +50,10 @@ final class ConnectionManager {
         return stateForApp.at(index: id)?.group
     }
 
+    func typeForApp(id: Int) -> ApplicationType? {
+        return stateForApp.at(index: id)?.type
+    }
+
     func registerForNotifications() {
         for notification in ApplicationNotification.allValues {
             DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)

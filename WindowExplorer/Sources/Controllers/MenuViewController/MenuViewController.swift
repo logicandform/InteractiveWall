@@ -4,6 +4,21 @@ import Foundation
 import Cocoa
 
 
+enum ButtonState {
+    case on
+    case off
+
+    var toggled: ButtonState {
+        switch self {
+        case .on:
+            return .off
+        case .off:
+            return .on
+        }
+    }
+}
+
+
 class MenuViewController: NSViewController, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "Menu")
 
@@ -16,10 +31,10 @@ class MenuViewController: NSViewController, GestureResponder {
     @IBOutlet weak var searchButton: NSImageView!
 
     var gestureManager: GestureManager!
-    var menuStateHelper: MenuStateHelper?
+    private var appID: Int!
     private var viewForButtonType = [MenuButtonType: NSView]()
     private var subviewForButtonType = [MenuButtonType: NSView]()
-    private var selectedButtons = [MenuButtonType]()
+    private var stateForButton = [MenuButtonType: ButtonState]()
     private var lockIcon: NSView?
     private var scrollThresholdAchieved = false
     private var settingsMenu: SettingsMenuViewController!
@@ -34,17 +49,16 @@ class MenuViewController: NSViewController, GestureResponder {
     // MARK: Init
 
     static func instantiate() {
-        for screen in NSScreen.screens.sorted(by: { $0.frame.minX < $1.frame.minX }).dropFirst() {
-            let screenFrame = screen.frame
-            let menuStateHelper = MenuStateHelper()
+        for screen in (1 ... Configuration.numberOfScreens) {
+            let screenFrame = NSScreen.at(position: screen).frame
 
-            for menuNumber in (1 ... Configuration.appsPerScreen) {
-                let x = menuNumber % 2 == 1 ? screenFrame.maxX - style.menuWindowSize.width : screenFrame.minX
+            for appIndex in (0 ..< Configuration.appsPerScreen) {
+                let x = appIndex % 2 == 0 ? screenFrame.minX : screenFrame.maxX - style.menuWindowSize.width
                 let y = screenFrame.midY - style.menuWindowSize.height / 2
 
                 if let menu = WindowManager.instance.display(.menu, at: CGPoint(x: x, y: y)) as? MenuViewController {
-                    menuStateHelper.add(menu)
-                    menu.menuStateHelper = menuStateHelper
+                    let appID = appIndex + ((screen - 1) * Configuration.appsPerScreen)
+                    menu.set(appID: appID)
                 }
             }
         }
@@ -70,6 +84,67 @@ class MenuViewController: NSViewController, GestureResponder {
     }
 
 
+    // MARK: API
+
+    func set(appID: Int) {
+        self.appID = appID
+        settingsMenu.set(appID: appID)
+    }
+
+    func toggle(type: MenuButtonType, to state: ButtonState) {
+        guard let currentState = stateForButton[type], currentState != state, let subview = subviewForButtonType[type] else {
+            return
+        }
+
+        // Set the new state
+        stateForButton[type] = state
+
+        // Transition image for the button
+        let image = state == .on ? type.selectedImage : type.image
+        subview.transition(to: image, duration: Constants.imageTransitionDuration)
+
+        switch type {
+        case .splitScreen:
+            let lockImage = state == .on ? type.detailImage : nil
+            lockIcon?.transition(to: lockImage, duration: Constants.imageTransitionDuration)
+            // Send notification for splitting
+            // TODO: UBC-441
+        case .mapToggle where state == .on:
+            if let currentType = ConnectionManager.instance.typeForApp(id: appID), currentType != .mapExplorer {
+                // Send notification for switch
+                // TODO: UBC-440
+            }
+            toggle(type: .timelineToggle, to: .off)
+            toggle(type: .settings, to: .off)
+            toggle(type: .information, to: .off)
+        case .timelineToggle where state == .on:
+            if let currentType = ConnectionManager.instance.typeForApp(id: appID), currentType != .timeline {
+                // Send notification for switch
+                // TODO: UBC-440
+            }
+            toggle(type: .mapToggle, to: .off)
+            toggle(type: .settings, to: .off)
+            toggle(type: .information, to: .off)
+        case .information:
+            toggleInfoPanel(to: state)
+            if state == .on {
+                toggle(type: .settings, to: .off)
+            }
+        case .settings:
+            toggleSettingsPanel(to: state)
+            if state == .on {
+                toggle(type: .information, to: .off)
+            }
+        case .search where state == .on:
+            displaySearchController()
+            toggle(type: .settings, to: .off)
+            toggle(type: .information, to: .off)
+        default:
+            return
+        }
+    }
+
+
     // MARK: Setup
 
     private func setupGestures() {
@@ -87,8 +162,68 @@ class MenuViewController: NSViewController, GestureResponder {
         setupButton(for: .search)
     }
 
+
+    // MARK: Gesture Handling
+
+    func handleWindowPan(_ gesture: GestureRecognizer) {
+        guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
+            return
+        }
+
+        switch pan.state {
+        case .recognized where abs(pan.delta.dy) > Constants.minimumScrollThreshold || scrollThresholdAchieved, .momentum where scrollThresholdAchieved:
+            scrollThresholdAchieved = true
+            let origin = originAppending(delta: pan.delta, to: window)
+            let settingsButtonFrame = settingsButton.frame
+            settingsMenu.updateOrigin(relativeTo: origin, with: settingsButtonFrame)
+            window.setFrameOrigin(origin)
+        case .possible:
+            scrollThresholdAchieved = false
+        default:
+            return
+        }
+    }
+
+    private func didSelect(type: MenuButtonType) {
+        guard let state = stateForButton[type] else {
+            return
+        }
+
+        switch type {
+        case .splitScreen:
+            // Check if locked before allowing split / merge of screens
+            // TODO: UBC-441
+            break
+        case .mapToggle, .timelineToggle:
+            if state == .off {
+                toggle(type: type, to: state.toggled)
+            }
+        case .information, .settings, .search:
+            toggle(type: type, to: state.toggled)
+        }
+    }
+
+
+    // MARK: GestureResponder
+
+    /// Determines if the bounds of the draggable area is inside a given rect
+    func draggableInside(bounds: CGRect) -> Bool {
+        guard let window = view.window else {
+            return false
+        }
+
+        return bounds.contains(view.frame.transformed(from: window.frame))
+    }
+
+    func subview(contains position: CGPoint) -> Bool {
+        return view.frame.contains(position)
+    }
+
+
+    // MARK: Helpers
+
     private func setupButton(for type: MenuButtonType) {
-        guard let view = viewForButtonType[type], let imageIcon = type.primaryPlaceholder else {
+        guard let view = viewForButtonType[type], let imageIcon = type.image else {
             return
         }
 
@@ -115,10 +250,13 @@ class MenuViewController: NSViewController, GestureResponder {
         subviewForButtonType[type] = image
         addGesture(for: type)
 
-        if type == .splitScreen, let secondaryPlaceholder = type.secondaryPlaceholder {
+        switch type {
+        case .splitScreen:
+            guard let secondaryPlaceholder = type.detailImage else {
+                return
+            }
             view.wantsLayer = true
             view.layer?.backgroundColor = style.menuSelectedColor.cgColor
-
             let lockIcon = NSView()
             view.addSubview(lockIcon)
             lockIcon.wantsLayer = true
@@ -128,79 +266,14 @@ class MenuViewController: NSViewController, GestureResponder {
             lockIcon.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: style.menuLockIconPosition.width).isActive = true
             lockIcon.topAnchor.constraint(equalTo: view.topAnchor, constant: style.menuLockIconPosition.height).isActive = true
             self.lockIcon = lockIcon
+            stateForButton[type] = .off
+        case .mapToggle:
+            image.layer?.contents = type.selectedImage
+            stateForButton[type] = .on
+        case .timelineToggle, .information, .settings, .search:
+            stateForButton[type] = .off
         }
     }
-
-
-    // MARK: API
-
-    func buttonToggled(type: MenuButtonType, selection: ToggleStatus) {
-        guard let image = subviewForButtonType[type] else {
-            return
-        }
-
-        switch selection {
-        case .on:
-            if !selectedButtons.contains(type) {
-                selectedButtons.append(type)
-                if let activeIcon = type.selectedPlaceholder {
-                    image.transition(to: activeIcon, duration: Constants.imageTransitionDuration)
-                }
-                if type == .splitScreen, let lockIcon = lockIcon {
-                    lockIcon.transition(to: type.secondaryPlaceholder, duration: Constants.imageTransitionDuration)
-                }
-            }
-        case .off:
-            if let selectedButtonIndex = selectedButtons.index(of: type) {
-                selectedButtons.remove(at: selectedButtonIndex)
-                image.transition(to: type.primaryPlaceholder, duration: Constants.imageTransitionDuration)
-            }
-            if type == .splitScreen, let lockIcon = lockIcon {
-                lockIcon.transition(to: nil, duration: Constants.imageTransitionDuration)
-            }
-        }
-    }
-
-
-    // MARK: GestureResponder
-
-    /// Determines if the bounds of the draggable area is inside a given rect
-    func draggableInside(bounds: CGRect) -> Bool {
-        guard let window = view.window else {
-            return false
-        }
-
-        return bounds.contains(view.frame.transformed(from: window.frame))
-    }
-
-    func subview(contains position: CGPoint) -> Bool {
-        return view.frame.contains(position)
-    }
-
-
-    // MARK: Gesture Handling
-
-    func handleWindowPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
-            return
-        }
-
-        switch pan.state {
-        case .recognized where abs(pan.delta.dy) > Constants.minimumScrollThreshold || scrollThresholdAchieved, .momentum where scrollThresholdAchieved:
-            scrollThresholdAchieved = true
-            let origin = originAppending(delta: pan.delta, to: window)
-            let settingsButtonFrame = settingsButton.frame
-            settingsMenu.updateOrigin(relativeTo: origin, with: settingsButtonFrame)
-            window.setFrameOrigin(origin)
-        case .possible:
-            scrollThresholdAchieved = false
-        default:
-            return
-        }
-    }
-
-
-    // MARK: Helpers
 
     private func addGesture(for type: MenuButtonType) {
         guard let view = viewForButtonType[type], let subview = subviewForButtonType[type] else {
@@ -222,53 +295,21 @@ class MenuViewController: NSViewController, GestureResponder {
         }
     }
 
-    private func didSelect(type: MenuButtonType) {
-        guard selectedButtons.index(of: type) != nil else {
-            // Button is not currently selected
-            switch type {
-            case .splitScreen:
-                menuStateHelper?.splitButtonToggled(by: self, to: .on)
-            case .mapToggle:
-                if let screenIndex = view.calculateScreenIndex(), let mapIndex = view.calculateMapIndex(), MasterViewController.instance?.infoForScreen[screenIndex - 1]?.applicationTypesForMaps[mapIndex] != .mapExplorer {
-                    MasterViewController.instance?.apply(.menuLaunchedMapExplorer, toScreen: screenIndex - 1, on: mapIndex)
-                    settingsMenu.reset()
-                    buttonToggled(type: .settings, selection: .off)
-                    buttonToggled(type: .timelineToggle, selection: .off)
-                }
-            case .timelineToggle:
-                if let screenIndex = view.calculateScreenIndex(), let mapIndex = view.calculateMapIndex(), MasterViewController.instance?.infoForScreen[screenIndex - 1]?.applicationTypesForMaps[mapIndex] != .timeline {
-                    MasterViewController.instance?.apply(.menuLaunchedTimeline, toScreen: screenIndex - 1, on: mapIndex)
-                    buttonToggled(type: .mapToggle, selection: .off)
-                }
-            case .settings:
-                NSAnimationContext.runAnimationGroup({ _ in
-                    NSAnimationContext.current.duration = Constants.animationDuration
-                    settingsMenu.view.animator().isHidden = false
-                })
-            case .search:
-                WindowManager.instance.display(.search, at: position(for: searchButton, frame: style.searchWindowSize))
-            default:
-                break
-            }
+    private func toggleSettingsPanel(to state: ButtonState) {
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = Constants.animationDuration
+            settingsMenu.view.animator().isHidden = state == .off
+        })
+    }
 
-            buttonToggled(type: type, selection: .on)
-            return
-        }
+    private func toggleInfoPanel(to state: ButtonState) {
 
-        // Button is currently selected
-        switch type {
-        case .splitScreen:
-            menuStateHelper?.splitButtonToggled(by: self, to: .off)
-        case .settings:
-            NSAnimationContext.runAnimationGroup({ _ in
-                NSAnimationContext.current.duration = Constants.animationDuration
-                settingsMenu.view.animator().isHidden = true
-            })
-        default:
-            break
-        }
+    }
 
-        buttonToggled(type: type, selection: .off)
+    /// Presents a search controller at the same height as the button, if one is already displayed; animates into position
+    private func displaySearchController() {
+        // TODO: UBC-438
+        WindowManager.instance.display(.search, at: position(for: searchButton, frame: style.searchWindowSize))
     }
 
     private func originAppending(delta: CGVector, to window: NSWindow) -> CGPoint {
@@ -303,25 +344,5 @@ class MenuViewController: NSViewController, GestureResponder {
         }
 
         return CGPoint(x: x, y: y)
-    }
-
-    /// Calculates the screen index based off the x-position of the menu and the screens
-    private func calculateScreenIndex() -> Int? {
-        guard let window = view.window, let screen = NSScreen.containing(x: window.frame.midX), let screenIndex = screen.orderedIndex else {
-            return nil
-        }
-
-        return screenIndex
-    }
-
-    /// Calculates the map index based off the x-position of the menu and the screens
-    private func calculateMapIndex() -> Int? {
-        guard let window = view.window, let screen = NSScreen.containing(x: window.frame.midX) else {
-            return nil
-        }
-
-        let mapWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen)
-        let mapIndex = Int((window.frame.origin.x - screen.frame.minX) / mapWidth)
-        return mapIndex
     }
 }

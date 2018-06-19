@@ -15,6 +15,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     @IBOutlet weak var artifactsText: NSTextField!
 
     var gestureManager: GestureManager!
+    private var appID: Int!
     private var labelsSwitch: SwitchControl!
     private var miniMapSwitch: SwitchControl!
     private var schoolsSwitch: SwitchControl!
@@ -22,18 +23,13 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     private var organizationsSwitch: SwitchControl!
     private var artifactsSwitch: SwitchControl!
 
-    private var switchForSettingsType = [SettingsTypes: SwitchControl]()
-    private var textFieldForSettingsType = [SettingsTypes: NSTextField]()
-
+    private var switchForSettingsType = [SettingsType: SwitchControl]()
+    private var textFieldForSettingsType = [SettingsType: NSTextField]()
 
     private struct Keys {
         static let id = "id"
-        static let map = "map"
-        static let group = "group"
-        static let gesture = "gestureType"
-        static let animated = "amimated"
-        static let toggleOn = "toggleOn"
-        static let switchType = "switchType"
+        static let recordType = "recordType"
+        static let status = "status"
     }
 
 
@@ -41,14 +37,43 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        gestureManager = GestureManager(responder: self)
-
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
+        gestureManager = GestureManager(responder: self)
 
         setupSwitches()
         setupGestures()
+        setupNotifications()
+    }
+
+
+    // MARK: API
+
+    func set(appID: Int) {
+        self.appID = appID
+    }
+
+    func reset() {
+        view.isHidden = true
+        labelsSwitch.isOn = true
+        miniMapSwitch.isOn = false
+        schoolsSwitch.isOn = true
+        eventsSwitch.isOn = true
+        artifactsSwitch.isOn = true
+        organizationsSwitch.isOn = true
+    }
+
+    func updateOrigin(relativeTo button: CGPoint, with frame: NSRect) {
+        guard let window = view.window, let screen = window.screen else {
+            return
+        }
+
+        let updatedVerticalPosition = button.y + frame.origin.y + frame.height - view.frame.height
+        if updatedVerticalPosition < 0 {
+            view.window?.setFrameOrigin(CGPoint(x: window.frame.origin.x, y: screen.frame.minY))
+        } else {
+            view.window?.setFrameOrigin(CGPoint(x: window.frame.origin.x, y: updatedVerticalPosition))
+        }
     }
 
 
@@ -76,32 +101,52 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         setupGesture(for: .toggleOrganizations)
     }
 
-
-    // MARK: API
-
-    func reset() {
-        view.isHidden = true
-        labelsSwitch.isOn = true
-        miniMapSwitch.isOn = false
-        schoolsSwitch.isOn = true
-        eventsSwitch.isOn = true
-        artifactsSwitch.isOn = true
-        organizationsSwitch.isOn = true
+    private func setupNotifications() {
+        for notification in SettingsNotification.allValues {
+            DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
+        }
     }
 
-    func updateOrigin(relativeTo button: CGPoint, with frame: NSRect) {
-        guard let window = view.window, let screen = window.screen else {
+
+    // MARK: Gesture Handling
+
+    private func toggle(_ switchControl: SwitchControl, with type: SettingsType) {
+        switchControl.isOn = !switchControl.isOn
+        let recordType = type.recordType?.rawValue ?? ""
+        let info: JSON = [Keys.id: appID, Keys.recordType: recordType, Keys.status: switchControl.isOn]
+        DistributedNotificationCenter.default().postNotificationName(SettingsNotification.with(type).name, object: nil, userInfo: info, deliverImmediately: true)
+    }
+
+
+    // MARK: Notification Handling
+
+    @objc
+    private func handleNotification(_ notification: NSNotification) {
+        guard let info = notification.userInfo, let id = info[Keys.id] as? Int, let status = info[Keys.status] as? Bool else {
             return
         }
 
-        let updatedVerticalPosition = button.y + frame.origin.y + frame.height - view.frame.height
+        // Only respond to notifications from the same group, or if group is nil
+        if let group = ConnectionManager.instance.groupForApp(id: appID) {
+            if group != ConnectionManager.instance.groupForApp(id: id) {
+                return
+            }
+        }
 
-        if updatedVerticalPosition < 0 {
-            view.window?.setFrameOrigin(CGPoint(x: window.frame.origin.x, y: screen.frame.minY))
-        } else {
-            view.window?.setFrameOrigin(CGPoint(x: window.frame.origin.x, y: updatedVerticalPosition))
+        switch notification.name {
+        case SettingsNotification.filter.name:
+            if let rawRecordType = info[Keys.recordType] as? String, let recordType = RecordType(rawValue: rawRecordType), let setting = SettingsType.from(recordType: recordType) {
+                switchForSettingsType[setting]?.isOn = status
+            }
+        case SettingsNotification.labels.name:
+            switchForSettingsType[.showLabels]?.isOn = status
+        case SettingsNotification.miniMap.name:
+            switchForSettingsType[.showMiniMap]?.isOn = status
+        default:
+            return
         }
     }
+
 
     // MARK: GestureResponder
 
@@ -115,27 +160,13 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     }
 
     func subview(contains position: CGPoint) -> Bool {
-        if view.isHidden {
-            return false
-        } else {
-            return view.frame.contains(position)
-        }
+        return view.isHidden ? false : view.frame.contains(position)
     }
 
 
     // MARK: Helpers
 
-    private func handle(toggleSwitch: SwitchControl, type: SettingsTypes) {
-        guard let appID = view.calculateAppID() else {
-            return
-        }
-
-        toggleSwitch.isOn = !toggleSwitch.isOn
-        let info: JSON = [Keys.id: appID, Keys.toggleOn: toggleSwitch.isOn, Keys.switchType: type.rawValue]
-        DistributedNotificationCenter.default().postNotificationName(MapNotification.toggleSwitch.name, object: nil, userInfo: info, deliverImmediately: true)
-    }
-
-    private func setupSwitch(for type: SettingsTypes, on: Bool = true) -> SwitchControl? {
+    private func setupSwitch(for type: SettingsType, on: Bool = true) -> SwitchControl? {
         guard let textField = textFieldForSettingsType[type] else {
             return nil
         }
@@ -158,7 +189,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         return toggleSwitch
     }
 
-    private func setupGesture(for type: SettingsTypes) {
+    private func setupGesture(for type: SettingsType) {
         guard let toggleSwitch = switchForSettingsType[type] else {
             return
         }
@@ -167,7 +198,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         gestureManager.add(toggleTap, to: toggleSwitch)
         toggleTap.gestureUpdated = { [weak self] tap in
             if tap.state == .ended {
-                self?.handle(toggleSwitch: toggleSwitch, type: type)
+                self?.toggle(toggleSwitch, with: type)
             }
         }
     }

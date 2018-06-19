@@ -3,6 +3,7 @@
 import Foundation
 import MapKit
 
+
 protocol Record {
     var type: RecordType { get }
     var id: Int { get }
@@ -10,9 +11,12 @@ protocol Record {
     var title: String { get }
 }
 
+
 enum RecordType: String {
     case school
     case event
+    case organization
+    case artifact
 
     var color: NSColor {
         switch self {
@@ -20,6 +24,10 @@ enum RecordType: String {
             return style.schoolColor
         case .event:
             return style.eventColor
+        case .organization:
+            return style.organizationColor
+        case .artifact:
+            return style.artifactColor
         }
     }
 }

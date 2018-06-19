@@ -40,9 +40,11 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     private struct Keys {
-        static let map = "map"
         static let id = "id"
+        static let map = "map"
         static let position = "position"
+        static let recordType = "recordType"
+        static let status = "status"
     }
 
 
@@ -62,6 +64,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
         setupMap()
         setupGestures()
+        setupNotifications()
         touchListener.listenToPort(named: "MapListener\(appID)")
         touchListener.receivedTouch = { [weak self] touch in
             self?.gestureManager.handle(touch)
@@ -94,24 +97,42 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         pinchGesture.gestureUpdated = didPinchOnMap(_:)
     }
 
+    private func setupNotifications() {
+        for notification in SettingsNotification.allValues {
+            DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
+        }
+    }
+
 
     // MARK: API
 
-    func toggle(on: Bool, switchType: SettingsTypes) {
-        switch switchType {
-        case .showLabels:
-            settingsShowingAnnotationTitles = on
+    @objc
+    func handleNotification(_ notification: NSNotification) {
+        guard let info = notification.userInfo, let id = info[Keys.id] as? Int, let status = info[Keys.status] as? Bool else {
+            return
+        }
+
+        // Only respond to notifications from the same group, or if group is nil
+        if let group = ConnectionManager.instance.groupForApp(id: appID) {
+            if group != ConnectionManager.instance.groupForApp(id: id) {
+                return
+            }
+        }
+
+        switch notification.name {
+        case SettingsNotification.filter.name:
+            if let rawRecordType = info[Keys.recordType] as? String, let recordType = RecordType(rawValue: rawRecordType) {
+                toggleAnnotations(on: status, for: recordType)
+            }
+        case SettingsNotification.labels.name:
+            settingsShowingAnnotationTitles = status
             if mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel {
                 toggleAnnotationTitles(on: settingsShowingAnnotationTitles)
             }
-        case .showMiniMap:
-            mapView.miniMapIsHidden = !on
-        case .toggleSchools, .toggleEvents, .toggleOrganizations, .toggleArtifacts:
-            guard let recordType = switchType.recordType else {
-                return
-            }
-
-            toggleAnnotations(on: on, for: recordType)
+        case SettingsNotification.miniMap.name:
+            mapView.miniMapIsHidden = !status
+        default:
+            return
         }
     }
 

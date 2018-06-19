@@ -22,29 +22,6 @@ extension NSView {
 
         return screenIndex
     }
-
-    /// Calculates the map index based off the x-position of view
-    func calculateMapIndex() -> Int? {
-        guard let window = window, let screen = NSScreen.containing(x: window.frame.midX) else {
-            return nil
-        }
-
-        let mapWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen)
-        let mapIndex = Int((window.frame.origin.x - screen.frame.minX) / mapWidth)
-        return mapIndex
-    }
-
-    /// Calculates the app ID based off the x-position of the view
-    func calculateAppID() -> Int? {
-        guard let window = window, let screen = NSScreen.containing(x: window.frame.midX), let screenIndex = screen.orderedIndex else {
-            return nil
-        }
-
-        let baseAppForScreen = (screenIndex - 1) * Int(Configuration.appsPerScreen)
-        let appWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen)
-        let appForScreen = Int((window.frame.origin.x - screen.frame.minX) / appWidth)
-        return appForScreen + baseAppForScreen
-    }
 }
 
 extension NSCollectionView {
