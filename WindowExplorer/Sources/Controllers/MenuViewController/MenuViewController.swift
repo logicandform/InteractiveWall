@@ -329,6 +329,21 @@ class MenuViewController: NSViewController, GestureResponder {
         return origin
     }
 
+    private func centeredPosition(for button: NSImageView, with frame: CGSize) -> CGPoint {
+        guard let buttonWindowPosition = button.window?.frame, let screenBounds = NSScreen.containing(x: buttonWindowPosition.origin.x)?.frame else {
+            return CGPoint(x: 0, y: 0)
+        }
+
+        var x = screenBounds.minX + ((screenBounds.width / CGFloat(Configuration.appsPerScreen)) / 2) - (frame.width / 2)
+        let y = screenBounds.minY + (screenBounds.maxY / 2) - (frame.height / 2)
+
+        if buttonWindowPosition.maxX >= screenBounds.maxX {
+            x = screenBounds.maxX - ((screenBounds.width / CGFloat(Configuration.appsPerScreen)) / 2) - (frame.width / 2)
+        }
+
+        return CGPoint(x: x, y: y)
+    }
+
     private func position(for button: NSImageView, frame: CGSize, margins: Bool = true) -> CGPoint {
         guard let windowPosition = button.window?.frame, let screenBounds = NSScreen.containing(x: windowPosition.origin.x)?.frame else {
             return CGPoint(x: 0, y: 0)
