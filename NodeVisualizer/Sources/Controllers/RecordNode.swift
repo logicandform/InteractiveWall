@@ -8,7 +8,6 @@ class RecordNode: SKNode {
 
     private(set) var record: RecordDisplayable
 
-
     private struct Constants {
         static let borderCornerRadius: CGFloat = 0.3
         static let centerOffset: CGFloat = 0.2

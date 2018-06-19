@@ -21,8 +21,8 @@ class MoveComponent: GKAgent2D, GKAgentDelegate {
         delegate = self
         maxSpeed = 200
         maxAcceleration = 100
-        radius = 10
-        behavior = RecordEntityBehavior.behavior(for: self, toSeek: agentToSeek!)
+        mass = 0.01
+        behavior = RecordEntityBehavior.behavior(toSeek: agentToSeek!)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -39,20 +39,10 @@ class MoveComponent: GKAgent2D, GKAgentDelegate {
 
     func agentWillUpdate(_ agent: GKAgent) {
         updateAgentPositionToMatchNodePosition()
-//        guard let spriteComponent = entity?.component(ofType: RenderComponent.self) else {
-//            return
-//        }
-//
-//        position = vector_float2(x: Float(spriteComponent.recordNode.position.x), y: Float(spriteComponent.recordNode.position.y))
     }
 
     func agentDidUpdate(_ agent: GKAgent) {
         updateNodePositionToMatchAgentPosition()
-//        guard let spriteComponent = entity?.component(ofType: RenderComponent.self) else {
-//            return
-//        }
-//
-//        spriteComponent.recordNode.physicsBody?.velocity = CGVector(dx: CGFloat(velocity.x), dy: CGFloat(velocity.y))
     }
 
 
@@ -64,11 +54,4 @@ class MoveComponent: GKAgent2D, GKAgentDelegate {
     private func updateNodePositionToMatchAgentPosition() {
         renderComponent.recordNode.position = CGPoint(x: CGFloat(position.x), y: CGFloat(position.y))
     }
-
-
 }
-
-
-
-
-

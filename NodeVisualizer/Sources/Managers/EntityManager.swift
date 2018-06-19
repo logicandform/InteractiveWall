@@ -8,19 +8,14 @@ import GameplayKit
 class EntityManager {
 
     private(set) var entities = Set<GKEntity>()
-    private let scene: SKScene
 
     lazy var componentSystems: [GKComponentSystem] = {
         let agentSystem = GKComponentSystem(componentClass: RecordAgent.self)
-        let moveSystem = GKComponentSystem(componentClass: MoveComponent.self)
-        return [agentSystem, moveSystem]
+        return [agentSystem]
     }()
 
 
-    init(scene: SKScene) {
-        self.scene = scene
-    }
-
+    // MARK: API
 
     func update(_ deltaTime: CFTimeInterval) {
         for componentSystem in componentSystems {
@@ -69,25 +64,4 @@ class EntityManager {
             componentSystem.addComponent(foundIn: entity)
         }
     }
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

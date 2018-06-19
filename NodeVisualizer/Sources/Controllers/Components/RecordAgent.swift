@@ -19,6 +19,11 @@ class RecordAgent: GKAgent2D, GKAgentDelegate {
     override init() {
         super.init()
         delegate = self
+
+        maxSpeed = 200
+        maxAcceleration = 100
+        radius = 5
+        behavior = GKBehavior()
     }
 
     required init?(coder aDecoder: NSCoder) {

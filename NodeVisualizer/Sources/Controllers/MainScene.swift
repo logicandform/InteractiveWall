@@ -8,10 +8,10 @@ class MainScene: SKScene {
 
     var records: [RecordDisplayable]!
     var gestureManager: GestureManager!
+    private var entityManager = EntityManager()
 
-    var entityManager: EntityManager!
-    var agentToSeek: GKAgent2D!
-    var lastUpdateTimeInterval: TimeInterval = 0
+    private var lastUpdateTimeInterval: TimeInterval = 0
+    private var agentToSeek: GKAgent2D!
 
     private enum StartingPositionType: UInt32 {
         case top = 0
@@ -31,8 +31,6 @@ class MainScene: SKScene {
     // MARK: Lifecycle
     
     override func didMove(to view: SKView) {
-        entityManager = EntityManager(scene: self)
-
         addGestures(to: view)
         setupSystemGesturesForTest(to: view)
 
@@ -43,12 +41,7 @@ class MainScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         let deltaTime = currentTime - lastUpdateTimeInterval
         lastUpdateTimeInterval = currentTime
-
         entityManager.update(deltaTime)
-    }
-
-    override func didFinishUpdate() {
-
     }
 
 
@@ -93,75 +86,52 @@ class MainScene: SKScene {
 
     // MARK: Gesture Handlers
 
-    private func createGravityField(at point: CGPoint, to node: RecordNode) {
-        let field = SKFieldNode.radialGravityField()
-        field.strength = 10
-        field.falloff = 1
-        field.minimumRadius = 5
-        field.categoryBitMask = BitMasks.FieldBitMasks.testBitMaskCategory
-//        field.position = node.position
-        node.physicsBody?.isDynamic = false
-        node.addChild(field)
-
-        for case let recordNode as RecordNode in children {
-            if recordNode.record.id == 48 {
-                let field1 = SKFieldNode.radialGravityField()
-                field1.strength = 35
-                field1.falloff = 1
-                field1.minimumRadius = 5
-                field1.categoryBitMask = BitMasks.FieldBitMasks.testBitMask1Category
-                recordNode.physicsBody?.isDynamic = false
-                recordNode.addChild(field1)
-            } else {
-                recordNode.physicsBody?.fieldBitMask = BitMasks.FieldBitMasks.testBitMaskCategory
-            }
+    private func handleTapGesture(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position else {
+            return
         }
-    }
 
-    override func keyDown(with event: NSEvent) {
-        if let node50 = children.compactMap({ $0 as? RecordNode }).filter({ $0.record.id == 50 }).first {
-            node50.physicsBody?.fieldBitMask = BitMasks.FieldBitMasks.testBitMask1Category
-            let move = SKAction.moveBy(x: 350, y: 350, duration: 5)
-            node50.run(move)
-        }
-    }
-
-    func doSomething(at point: CGPoint, to node: RecordNode? = nil) {
-        agentToSeek = GKAgent2D()
-        agentToSeek.position = vector_float2(x: Float(point.x), y: Float(point.y))
-
-//        for entity in entityManager.entities {
-//            entity.addComponent(MoveComponent(agentToSeek: agentToSeek))
-//
-//            for system in entityManager.componentSystems {
-//                system.addComponent(foundIn: entity)
-//            }
-//        }
-    }
-
-    @objc
-    private func handleSystemClickGesture(_ recognizer: NSClickGestureRecognizer) {
-        print("click")
-
-        let clickPosition = recognizer.location(in: recognizer.view)
-        let nodePosition = convertPoint(fromView: clickPosition)
-
-//        doSomething(at: nodePosition)
+        let nodePosition = convertPoint(fromView: position)
 
         guard let recordNode = nodes(at: nodePosition).first(where: { $0 is RecordNode }) as? RecordNode else {
             return
         }
 
-        print(recordNode.record.id)
-        print(recordNode.record.type)
+        print("ID: \(recordNode.record.id) , Type: \(recordNode.record.type)")
 
-        switch recognizer.state {
+        switch tap.state {
         case .ended:
             relatedNodes(for: recordNode)
         default:
             return
         }
     }
+
+    @objc
+    private func handleSystemClickGesture(_ recognizer: NSClickGestureRecognizer) {
+        let clickPosition = recognizer.location(in: recognizer.view)
+        let nodePosition = convertPoint(fromView: clickPosition)
+
+//        seekTest(at: nodePosition)
+
+        guard let recordNode = nodes(at: nodePosition).first(where: { $0 is RecordNode }) as? RecordNode else {
+            return
+        }
+
+        print("ID: \(recordNode.record.id) , Type: \(recordNode.record.type)")
+
+        switch recognizer.state {
+        case .ended:
+            recordNode.physicsBody?.isDynamic = false
+            relatedNodes(for: recordNode)
+            return
+        default:
+            return
+        }
+    }
+
+
+    // MARK: Helpers
 
     private func relatedNodes(for node: RecordNode) {
         let identifier = DataManager.RecordIdentifier(id: node.record.id, type: node.record.type)
@@ -172,28 +142,38 @@ class MainScene: SKScene {
         let tappedRecordAgent = tappedRecordEntity?.component(ofType: RecordAgent.self)
         let relatedRecordEntities = entityManager.entities(for: relatedRecords)
 
-        for relatedRecordEntity in relatedRecordEntities {
-            let moveComponent = MoveComponent(agentToSeek: tappedRecordAgent)
-            entityManager.add(component: moveComponent, to: relatedRecordEntity)
+        for entity in relatedRecordEntities {
+            let moveBehavior = RecordEntityBehavior.behavior(toSeek: tappedRecordAgent)
+            entity.component(ofType: RecordAgent.self)?.behavior = moveBehavior
         }
     }
 
-    private func handleTapGesture(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position else {
-            return
-        }
+    // Debug
+    private func seekTest(at point: CGPoint, to node: RecordNode? = nil) {
+        agentToSeek = GKAgent2D()
+        agentToSeek.position = vector_float2(x: Float(point.x), y: Float(point.y))
 
-        switch tap.state {
-        case .ended:
-            print(position)
-            return
-        default:
-            return
+        for entity in entityManager.entities {
+            let move = RecordEntityBehavior.behavior(toSeek: agentToSeek)
+            let agent = entity.component(ofType: RecordAgent.self)
+            agent?.behavior = move
         }
     }
 
+    // Debug
+    private func createGravityField(at point: CGPoint, to node: RecordNode) {
+        let field = SKFieldNode.radialGravityField()
+        field.strength = 10
+        field.falloff = 1
+        field.categoryBitMask = BitMasks.FieldBitMasks.testBitMaskCategory
+        field.position = node.position
+        node.physicsBody?.isDynamic = false
+        node.addChild(field)
 
-    // MARK: Helpers
+        for case let recordNode as RecordNode in children {
+            recordNode.physicsBody?.fieldBitMask = BitMasks.FieldBitMasks.testBitMaskCategory
+        }
+    }
 
     private func getRandomPosition() -> CGPoint {
         var point = CGPoint.zero

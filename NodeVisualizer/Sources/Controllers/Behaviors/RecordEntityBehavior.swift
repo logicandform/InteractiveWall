@@ -1,30 +1,21 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
 import Foundation
-import SpriteKit
 import GameplayKit
 
 
 class RecordEntityBehavior: GKBehavior {
 
-    static func behavior(for agent: GKAgent2D, toSeek seekAgent: GKAgent2D) -> GKBehavior {
+    static func behavior(toSeek agent: GKAgent2D?) -> GKBehavior {
         let behavior = RecordEntityBehavior()
-        behavior.addAgentSeekGoal(seek: seekAgent)
+        behavior.addAgentSeekGoal(agent: agent)
         return behavior
     }
 
 
-    private func addAgentSeekGoal(seek: GKAgent2D) {
-        setWeight(1, for: GKGoal(toSeekAgent: seek))
+    private func addAgentSeekGoal(agent: GKAgent2D?) {
+        if let agent = agent {
+            setWeight(1, for: GKGoal(toSeekAgent: agent))
+        }
     }
-
-
-
-
-
 }
-
-
-
-
-
