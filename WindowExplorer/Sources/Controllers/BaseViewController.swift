@@ -173,7 +173,7 @@ class BaseViewController: NSViewController, GestureResponder {
     }
 
     func subview(contains position: CGPoint) -> Bool {
-        return view.subviews.first(where: { $0.frame.contains(position) }) != nil
+        return view.subviews.contains(where: { $0.frame.contains(position) })
     }
 
 

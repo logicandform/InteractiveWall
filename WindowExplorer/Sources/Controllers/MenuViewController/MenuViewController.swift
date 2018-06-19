@@ -19,7 +19,7 @@ enum ButtonState {
 }
 
 
-class MenuViewController: NSViewController, GestureResponder {
+class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Menu")
 
     @IBOutlet weak var menuView: NSView!
@@ -93,7 +93,7 @@ class MenuViewController: NSViewController, GestureResponder {
     }
 
     func toggle(type: MenuButtonType, to state: ButtonState) {
-        guard let currentState = stateForButton[type], currentState != state, let subview = subviewForButtonType[type] else {
+        guard let currentState = stateForButton[type], currentState != state || type == .search, let subview = subviewForButtonType[type] else {
             return
         }
 
@@ -199,8 +199,10 @@ class MenuViewController: NSViewController, GestureResponder {
             if state == .off {
                 toggle(type: type, to: state.toggled)
             }
-        case .information, .settings, .search:
+        case .information, .settings:
             toggle(type: type, to: state.toggled)
+        case .search:
+            toggle(type: type, to: .on)
         }
     }
 
@@ -218,6 +220,14 @@ class MenuViewController: NSViewController, GestureResponder {
 
     func subview(contains position: CGPoint) -> Bool {
         return view.frame.contains(position)
+    }
+
+
+    // MARK: SearchViewDelegate
+
+    func searchDidClose() {
+        toggle(type: .search, to: .off)
+        searchMenu = nil
     }
 
 
@@ -309,8 +319,12 @@ class MenuViewController: NSViewController, GestureResponder {
 
     /// Presents a search controller at the same height as the button, if one is already displayed; animates into position
     private func displaySearchController() {
-        // TODO: UBC-438
-        WindowManager.instance.display(.search, at: position(for: searchButton, frame: style.searchWindowSize))
+        if searchMenu == nil {
+            searchMenu = WindowManager.instance.display(.search, at: centeredPosition(for: searchButton, with: style.searchWindowSize)) as? SearchViewController
+            searchMenu?.searchViewDelegate = self
+        } else {
+            searchMenu?.updateOrigin(to: centeredPosition(for: searchButton, with: style.searchWindowSize), animating: true)
+        }
     }
 
     private func originAppending(delta: CGVector, to window: NSWindow) -> CGPoint {
