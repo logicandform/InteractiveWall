@@ -18,6 +18,10 @@ class MainScene: SKScene {
         case bottom = 1
         case left = 2
         case right = 3
+
+        static var allValues: [StartingPositionType] {
+            return [.top, .bottom, .left, .right]
+        }
     }
 
     private struct BitMasks {
@@ -41,7 +45,7 @@ class MainScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         let deltaTime = currentTime - lastUpdateTimeInterval
         lastUpdateTimeInterval = currentTime
-        entityManager.update(deltaTime)
+//        entityManager.update(deltaTime)
     }
 
 
@@ -61,23 +65,61 @@ class MainScene: SKScene {
     private func addPhysicsToScene() {
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         physicsWorld.gravity = .zero
+
+        for type in StartingPositionType.allValues {
+            addLinearGravityField(to: type)
+        }
+    }
+
+    private func addLinearGravityField(to type: StartingPositionType) {
+        var vector: vector_float3
+        var size: CGSize
+        var position: CGPoint
+
+        switch type {
+        case .top:
+            vector = vector_float3(0,-1,0)
+            size = CGSize(width: frame.width, height: 20)
+            position = CGPoint(x: frame.width / 2, y: frame.height - 20)
+        case .bottom:
+            vector = vector_float3(0,1,0)
+            size = CGSize(width: frame.width, height: 20)
+            position = CGPoint(x: frame.width / 2, y: 20)
+        case .left:
+            vector = vector_float3(1,0,0)
+            size = CGSize(width: 20, height: frame.height)
+            position = CGPoint(x: 20, y: frame.height / 2)
+        case .right:
+            vector = vector_float3(-1,0,0)
+            size = CGSize(width: 20, height: frame.height)
+            position = CGPoint(x: frame.width - 20, y: frame.height / 2)
+        }
+
+        let field = SKFieldNode.linearGravityField(withVector: vector)
+        field.strength = 10
+        field.region = SKRegion(size: size)
+        field.position = position
+        addChild(field)
     }
 
     private func addRecordNodesToScene() {
-        records.enumerated().forEach { index, record in
+        records.prefix(100).enumerated().forEach { index, record in
             let recordEntity = RecordEntity(record: record)
 
             if let recordNode = recordEntity.component(ofType: RenderComponent.self)?.recordNode {
                 recordNode.position.x = randomX()
                 recordNode.position.y = randomY()
-                recordNode.zPosition = 1
-
+                recordNode.zPosition = 0
                 recordEntity.updateAgentPositionToMatchNodePosition()
+
+                let screenBoundsConstraint = SKConstraint.positionX(SKRange(lowerLimit: 0, upperLimit: frame.width), y: SKRange(lowerLimit: 0, upperLimit: frame.height))
+                recordNode.constraints = [screenBoundsConstraint]
+
                 entityManager.add(recordEntity)
                 addChild(recordNode)
 
-//                let destinationPosition = getRandomPosition()
-//                let forceVector = CGVector(dx: destinationPosition.x - recordNode.position.x, dy: destinationPosition.y - recordNode.position.y)
+                let destinationPosition = getRandomPosition()
+                let forceVector = CGVector(dx: destinationPosition.x - recordNode.position.x, dy: destinationPosition.y - recordNode.position.y)
 //                recordNode.runInitialAnimation(with: forceVector, delay: index)
             }
         }
@@ -102,6 +144,7 @@ class MainScene: SKScene {
         switch tap.state {
         case .ended:
             relatedNodes(for: recordNode)
+//            createGravityField(at: nodePosition, to: recordNode)
         default:
             return
         }
@@ -122,8 +165,8 @@ class MainScene: SKScene {
 
         switch recognizer.state {
         case .ended:
-            recordNode.physicsBody?.isDynamic = false
-            relatedNodes(for: recordNode)
+//            relatedNodes(for: recordNode)
+            useSKConstraints(node: recordNode)
             return
         default:
             return
@@ -144,7 +187,8 @@ class MainScene: SKScene {
 
         for entity in relatedRecordEntities {
             let moveBehavior = RecordEntityBehavior.behavior(toSeek: tappedRecordAgent)
-            entity.component(ofType: RecordAgent.self)?.behavior = moveBehavior
+            entity.component(ofType: RecordAgent.self)?.behavior?.setWeight(1, for: GKGoal(toSeekAgent: tappedRecordAgent!))
+            entity.component(ofType: RecordAgent.self)?.behavior?.setWeight(0.5, for: GKGoal(toWander: 100))
         }
     }
 
@@ -161,17 +205,36 @@ class MainScene: SKScene {
     }
 
     // Debug
+    private func useSKConstraints(node: RecordNode) {
+//        let identifier = DataManager.RecordIdentifier(id: node.record.id, type: node.record.type)
+//        let relatedRecords = DataManager.instance.relatedRecords(for: identifier)
+
+        let constraint = SKConstraint.distance(SKRange(upperLimit: 80), to: node)
+
+        for case let node as RecordNode in children {
+            if node.record.id != 48 {
+                node.constraints?.append(constraint)
+            }
+
+        }
+    }
+
+    // Debug
     private func createGravityField(at point: CGPoint, to node: RecordNode) {
         let field = SKFieldNode.radialGravityField()
-        field.strength = 10
+        field.strength = 1
         field.falloff = 1
         field.categoryBitMask = BitMasks.FieldBitMasks.testBitMaskCategory
-        field.position = node.position
+//        field.position = node.position
         node.physicsBody?.isDynamic = false
         node.addChild(field)
 
-        for case let recordNode as RecordNode in children {
-            recordNode.physicsBody?.fieldBitMask = BitMasks.FieldBitMasks.testBitMaskCategory
+        let identifier = DataManager.RecordIdentifier(id: node.record.id, type: node.record.type)
+        let relatedRecords = DataManager.instance.relatedRecords(for: identifier)
+        let relatedRecordEntities = entityManager.entities(for: relatedRecords)
+
+        for entity in relatedRecordEntities {
+            entity.component(ofType: RenderComponent.self)?.recordNode.physicsBody?.fieldBitMask = BitMasks.FieldBitMasks.testBitMaskCategory
         }
     }
 
