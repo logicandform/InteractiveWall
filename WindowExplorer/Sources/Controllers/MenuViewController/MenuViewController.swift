@@ -38,6 +38,7 @@ class MenuViewController: NSViewController, GestureResponder {
     private var lockIcon: NSView?
     private var scrollThresholdAchieved = false
     private var settingsMenu: SettingsMenuViewController!
+    private var searchMenu: SearchViewController?
 
     private struct Constants {
         static let minimumScrollThreshold: CGFloat = 4

@@ -8,6 +8,11 @@ protocol SearchItemDisplayable {
 }
 
 
+protocol SearchViewDelegate: class {
+    func searchDidClose()
+}
+
+
 fileprivate struct RecordProxy: Hashable {
     let id: Int
     let type: RecordType
@@ -30,7 +35,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     @IBOutlet weak var secondaryScrollViewHeight: NSLayoutConstraint!
     @IBOutlet weak var tertiaryScrollViewHeight: NSLayoutConstraint!
 
-    var menuStateHelper: MenuStateHelper?
+    weak var searchViewDelegate: SearchViewDelegate?
     private var selectedType: RecordType?
     private var selectedRecords = Set<RecordProxy>()
     private var selectedIndexForView = [NSCollectionView: IndexPath]()
@@ -119,6 +124,8 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         } else {
             view.window?.setFrameOrigin(point)
         }
+
+        relationshipHelper.reset()
     }
 
 
@@ -290,7 +297,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     }
 
     override func close() {
-        menuStateHelper?.searchMenu = nil
+        searchViewDelegate?.searchDidClose()
         super.close()
     }
 
