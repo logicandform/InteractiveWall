@@ -6,7 +6,27 @@ import GameplayKit
 
 class RecordEntity: GKEntity {
 
+    enum RecordEntityMandate {
+        case wander
+        case seekRecordAgent(GKAgent2D)
+    }
+
+    var mandate: RecordEntityMandate
+
+    var behaviorForCurrentMandate: GKBehavior {
+        switch mandate {
+        case .wander:
+            break
+        case .seekRecordAgent(let agent):
+            return RecordEntityBehavior.behavior(toSeek: agent)
+        }
+        return GKBehavior()
+    }
+
+
     init(record: RecordDisplayable) {
+        mandate = .wander
+
         super.init()
 
         let renderComponent = RenderComponent(record: record)
@@ -14,6 +34,13 @@ class RecordEntity: GKEntity {
 
         let agentComponent = RecordAgent()
         addComponent(agentComponent)
+
+        let intelligenceComponent = IntelligenceComponent(states: [
+            WanderState(entity: self),
+            SeekState(entity: self),
+            ConnectedState(entity: self)
+        ])
+        addComponent(intelligenceComponent)
     }
 
     required init?(coder aDecoder: NSCoder) {

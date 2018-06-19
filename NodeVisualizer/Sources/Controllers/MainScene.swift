@@ -35,6 +35,8 @@ class MainScene: SKScene {
     // MARK: Lifecycle
     
     override func didMove(to view: SKView) {
+        super.didMove(to: view)
+
         addGestures(to: view)
         setupSystemGesturesForTest(to: view)
 
@@ -43,9 +45,11 @@ class MainScene: SKScene {
     }
 
     override func update(_ currentTime: TimeInterval) {
+        super.update(currentTime)
+
         let deltaTime = currentTime - lastUpdateTimeInterval
         lastUpdateTimeInterval = currentTime
-//        entityManager.update(deltaTime)
+        entityManager.update(deltaTime)
     }
 
 
@@ -103,13 +107,13 @@ class MainScene: SKScene {
     }
 
     private func addRecordNodesToScene() {
-        records.prefix(100).enumerated().forEach { index, record in
+        records.prefix(10).enumerated().forEach { index, record in
             let recordEntity = RecordEntity(record: record)
 
             if let recordNode = recordEntity.component(ofType: RenderComponent.self)?.recordNode {
                 recordNode.position.x = randomX()
                 recordNode.position.y = randomY()
-                recordNode.zPosition = 0
+                recordNode.zPosition = 1
                 recordEntity.updateAgentPositionToMatchNodePosition()
 
                 let screenBoundsConstraint = SKConstraint.positionX(SKRange(lowerLimit: 0, upperLimit: frame.width), y: SKRange(lowerLimit: 0, upperLimit: frame.height))
@@ -118,8 +122,12 @@ class MainScene: SKScene {
                 entityManager.add(recordEntity)
                 addChild(recordNode)
 
-                let destinationPosition = getRandomPosition()
-                let forceVector = CGVector(dx: destinationPosition.x - recordNode.position.x, dy: destinationPosition.y - recordNode.position.y)
+                if let intelligenceComponent = recordEntity.component(ofType: IntelligenceComponent.self) {
+                    intelligenceComponent.enterInitialState()
+                }
+
+//                let destinationPosition = getRandomPosition()
+//                let forceVector = CGVector(dx: destinationPosition.x - recordNode.position.x, dy: destinationPosition.y - recordNode.position.y)
 //                recordNode.runInitialAnimation(with: forceVector, delay: index)
             }
         }
@@ -155,7 +163,7 @@ class MainScene: SKScene {
         let clickPosition = recognizer.location(in: recognizer.view)
         let nodePosition = convertPoint(fromView: clickPosition)
 
-//        seekTest(at: nodePosition)
+        seekTest(at: nodePosition)
 
         guard let recordNode = nodes(at: nodePosition).first(where: { $0 is RecordNode }) as? RecordNode else {
             return
@@ -166,7 +174,7 @@ class MainScene: SKScene {
         switch recognizer.state {
         case .ended:
 //            relatedNodes(for: recordNode)
-            useSKConstraints(node: recordNode)
+//            useSKConstraints(node: recordNode)
             return
         default:
             return
@@ -187,8 +195,7 @@ class MainScene: SKScene {
 
         for entity in relatedRecordEntities {
             let moveBehavior = RecordEntityBehavior.behavior(toSeek: tappedRecordAgent)
-            entity.component(ofType: RecordAgent.self)?.behavior?.setWeight(1, for: GKGoal(toSeekAgent: tappedRecordAgent!))
-            entity.component(ofType: RecordAgent.self)?.behavior?.setWeight(0.5, for: GKGoal(toWander: 100))
+            entity.component(ofType: RecordAgent.self)?.behavior = moveBehavior
         }
     }
 
@@ -197,25 +204,26 @@ class MainScene: SKScene {
         agentToSeek = GKAgent2D()
         agentToSeek.position = vector_float2(x: Float(point.x), y: Float(point.y))
 
-        for entity in entityManager.entities {
-            let move = RecordEntityBehavior.behavior(toSeek: agentToSeek)
-            let agent = entity.component(ofType: RecordAgent.self)
-            agent?.behavior = move
+        for case let entity as RecordEntity in entityManager.entities {
+            entity.mandate = .seekRecordAgent(agentToSeek)
+            if let intelligenceComponent = entity.component(ofType: IntelligenceComponent.self) {
+                intelligenceComponent.stateMachine.enter(SeekState.self)
+            }
+
+//            let move = RecordEntityBehavior.behavior(toSeek: agentToSeek)
+//            let agent = entity.component(ofType: RecordAgent.self)
+//            agent?.behavior = move
         }
     }
 
     // Debug
     private func useSKConstraints(node: RecordNode) {
-//        let identifier = DataManager.RecordIdentifier(id: node.record.id, type: node.record.type)
-//        let relatedRecords = DataManager.instance.relatedRecords(for: identifier)
-
         let constraint = SKConstraint.distance(SKRange(upperLimit: 80), to: node)
 
         for case let node as RecordNode in children {
             if node.record.id != 48 {
                 node.constraints?.append(constraint)
             }
-
         }
     }
 

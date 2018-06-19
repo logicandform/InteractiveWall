@@ -11,7 +11,8 @@ class EntityManager {
 
     lazy var componentSystems: [GKComponentSystem] = {
         let agentSystem = GKComponentSystem(componentClass: RecordAgent.self)
-        return [agentSystem]
+        let intelligenceSystem = GKComponentSystem(componentClass: IntelligenceComponent.self)
+        return [intelligenceSystem, agentSystem]
     }()
 
 
