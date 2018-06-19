@@ -60,15 +60,16 @@ class RelatedItemView: NSCollectionViewItem {
                 if let image = response.value {
                     self?.setImage(image, scaling: .aspectFill)
                 } else {
-                    self?.setImage(placeholder, scaling: .resize)
+                    self?.setImage(placeholder, scaling: .center)
                 }
             }
         } else {
-            setImage(placeholder, scaling: .resize)
+            setImage(placeholder, scaling: .center)
         }
     }
 
     func setImage(_ image: NSImage, scaling: ImageScaling) {
+        mediaImageView.layer?.backgroundColor = style.relatedItemBackgroundColor.cgColor
         mediaImageView.transition(image, duration: Constants.imageTransitionDuration, scaling: scaling)
     }
 }
