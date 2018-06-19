@@ -666,13 +666,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		CD24305C20B4DB8000EAED91 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		D5384CF32071A6BE00A157AE /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -724,7 +717,6 @@
 			children = (
 				D9F24E63205B041200B9FCB8 /* Image.storyboard */,
 				D9F24E61205B040700B9FCB8 /* ImageViewController.swift */,
-				CD24305C20B4DB8000EAED91 /* Views */,
 			);
 			path = ImageViewController;
 			sourceTree = "<group>";
