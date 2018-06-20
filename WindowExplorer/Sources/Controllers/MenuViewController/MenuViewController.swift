@@ -339,10 +339,14 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         }
 
         var x = screenBounds.minX + ((screenBounds.width / CGFloat(Configuration.appsPerScreen)) / 2) - (frame.width / 2)
-        let y = screenBounds.minY + (screenBounds.maxY / 2) - (frame.height / 2)
+        var y = buttonWindowPosition.origin.y + button.frame.origin.y + button.frame.height - frame.height
 
         if buttonWindowPosition.maxX >= screenBounds.maxX {
             x = screenBounds.maxX - ((screenBounds.width / CGFloat(Configuration.appsPerScreen)) / 2) - (frame.width / 2)
+        }
+
+        if y < screenBounds.minY {
+            y = screenBounds.minY
         }
 
         return CGPoint(x: x, y: y)
