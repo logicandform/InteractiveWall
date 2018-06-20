@@ -319,11 +319,11 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
 
     /// Presents a search controller at the same height as the button, if one is already displayed; animates into position
     private func displaySearchController() {
-        if searchMenu == nil {
+        if let searchMenu = searchMenu {
+            searchMenu.updateOrigin(to: centeredPosition(for: searchButton, with: style.searchWindowSize), animating: true)
+        } else {
             searchMenu = WindowManager.instance.display(.search, at: centeredPosition(for: searchButton, with: style.searchWindowSize)) as? SearchViewController
             searchMenu?.searchViewDelegate = self
-        } else {
-            searchMenu?.updateOrigin(to: centeredPosition(for: searchButton, with: style.searchWindowSize), animating: true)
         }
     }
 
