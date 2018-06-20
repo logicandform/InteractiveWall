@@ -34,9 +34,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         WindowManager.instance.registerForNotifications()
         ConnectionManager.instance.registerForNotifications()
         TouchManager.instance.setupTouchSocket()
+        MenuManager.instance.createMenus()
         GeocodeHelper.instance.associateSchoolsToProvinces()
         MasterViewController.instantiate()
-        MenuViewController.instantiate()
     }
 
     func applicationWillTerminate(_ notification: Notification) {

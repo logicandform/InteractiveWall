@@ -8,7 +8,6 @@ typealias AppState = (pair: Int?, group: Int?, type: ApplicationType)
 
 /// Class used to determine which application's are paired with one another.
 final class ConnectionManager {
-
     static let instance = ConnectionManager()
 
     /// The state for each app indexed by it's appID
@@ -42,14 +41,17 @@ final class ConnectionManager {
 
     // MARK: API
 
+    /// Returns the current pair for the given appID
     func pairForApp(id: Int) -> Int? {
         return stateForApp.at(index: id)?.pair
     }
 
+    /// Returns the current group for the given appID
     func groupForApp(id: Int) -> Int? {
         return stateForApp.at(index: id)?.group
     }
 
+    /// Returns the current application type for the given appID
     func typeForApp(id: Int) -> ApplicationType? {
         return stateForApp.at(index: id)?.type
     }
@@ -61,6 +63,8 @@ final class ConnectionManager {
         for notification in MapNotification.allValues {
             DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
         }
+        DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: SettingsNotification.split.name, object: nil)
+        DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: SettingsNotification.merge.name, object: nil)
     }
 
 
@@ -92,6 +96,10 @@ final class ConnectionManager {
             if let group = group {
                 ungroup(from: group, with: .mapExplorer)
             }
+        case SettingsNotification.split.name:
+            split(from: id, group: group)
+        case SettingsNotification.merge.name:
+            merge(from: id, group: group)
         default:
             return
         }
@@ -117,7 +125,7 @@ final class ConnectionManager {
                 stateForApp[app] = AppState(pair: nil, group: id, type: type)
             }
         }
-        updateBorders()
+        updateViews()
     }
 
     /// Set all app states accordingly when a app sends its position
@@ -151,7 +159,82 @@ final class ConnectionManager {
                 stateForApp[app] = AppState(pair: id, group: id, type: state.type)
             }
         }
-        updateBorders()
+        updateViews()
+    }
+
+    /// Initiates a split between applications within the screen containing the given appID
+    private func split(from id: Int, group: Int?) {
+        let type = typeForApp(id: id)
+        let neighborID = id % Configuration.appsPerScreen == 0 ? id + 1 : id - 1
+
+        for (app, state) in stateForApp.enumerated() {
+            // Only receive updates for apps of the same type
+            if type != state.type {
+                continue
+            }
+
+            // Calculate closest appID of the screen being split
+            let closestApp = abs(app - id) < abs(app - neighborID) ? id : neighborID
+
+            // Check for current group
+            if let appGroup = state.group, appGroup == group {
+                // Once paired with own screen, don't group to other screens
+                if screen(of: appGroup) == screen(of: app) && screen(of: app) != screen(of: id) {
+                    continue
+                }
+                // Only listen to the closest screen once paired
+                if let group = group, abs(screen(of: app) - screen(of: id)) >= abs(screen(of: app) - screen(of: appGroup)), screen(of: id) != screen(of: group) {
+                    continue
+                }
+                // If app is farther or equal to the group then the app splitting, join the closest appID
+                if abs(appGroup - app) >= abs(appGroup - id) {
+                    stateForApp[app] = AppState(pair: nil, group: closestApp, type: state.type)
+                }
+            } else if state.group == nil {
+                // Group with the closest of the two apps being split
+                stateForApp[app] = AppState(pair: nil, group: closestApp, type: state.type)
+            }
+        }
+        updateViews()
+    }
+
+    private func merge(from id: Int, group: Int?) {
+        let type = typeForApp(id: id)
+        let neighborID = id % Configuration.appsPerScreen == 0 ? id + 1 : id - 1
+
+        for (app, state) in stateForApp.enumerated() {
+            // Only receive updates for apps of the same type
+            if type != state.type {
+                continue
+            }
+
+            // Check for current group
+            if let appGroup = state.group, appGroup == group {
+                // Once paired with own screen, don't group to other screens
+                if screen(of: appGroup) == screen(of: app) && screen(of: app) != screen(of: id) {
+                    continue
+                }
+                // Only listen to the closest screen once paired
+                if let group = group, abs(screen(of: app) - screen(of: id)) >= abs(screen(of: app) - screen(of: appGroup)), screen(of: id) != screen(of: group) {
+                    continue
+                }
+                // Check for current pair
+                if let appPair = state.pair {
+                    // Check if incoming id is closer than current pair
+                    if abs(app - id) < abs(app - appPair) {
+                        stateForApp[app] = AppState(pair: nil, group: id, type: state.type)
+                    }
+                } else {
+                    stateForApp[app] = AppState(pair: nil, group: id, type: state.type)
+                }
+            } else if state.group == nil {
+                stateForApp[app] = AppState(pair: nil, group: id, type: state.type)
+            } else if app == neighborID || state.group == neighborID {
+                // Force the merge of neighbor app and everyone in it's group
+                stateForApp[app] = AppState(pair: nil, group: id, type: state.type)
+            }
+        }
+        updateViews()
     }
 
     /// If paired to the given id, will unpair else ignore
@@ -161,6 +244,7 @@ final class ConnectionManager {
                 stateForApp[app] = AppState(pair: nil, group: state.group, type: state.type)
             }
         }
+        updateViews()
     }
 
     /// Ungroup all apps from group with given id
@@ -199,9 +283,18 @@ final class ConnectionManager {
         return (id / Configuration.appsPerScreen) + 1
     }
 
-    /// Shows / Hides borders between applications as necessary given the state of each application
-    private func updateBorders() {
-        // TODO: Check each state and show / hide each border if necessary
+    /// Shows / Hides borders between applications and notifies menu controllers of updates
+    private func updateViews() {
+        // Update the split button and lock view in each menu controller
+        for (app, state) in stateForApp.enumerated() {
+            let menu = MenuManager.instance.menuForApp(id: app)
+            let neighborID = app % Configuration.appsPerScreen == 0 ? app + 1 : app - 1
+            let neighborPair = pairForApp(id: neighborID)
+            let split = state.group != groupForApp(id: neighborID)
+            let mergeLocked = typeForApp(id: app) != typeForApp(id: neighborID) || split && neighborPair == neighborID
+            menu?.toggle(.split, to: split ? .on : .off)
+            menu?.toggleMergeLock(on: mergeLocked)
+        }
     }
 
     private func beginResetTimer() {

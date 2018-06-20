@@ -183,7 +183,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                         return
                     }
                 } else if tap.state == .ended, let annotation = annotation as? CircleAnnotation, let record = recordForAnnotation[annotation] {
-                    postWindowNotification(for: record, at: CGPoint(x: positionInView.x, y: positionInView.y - 20.0))
+                    postRecordNotification(for: record, at: CGPoint(x: positionInView.x, y: positionInView.y - 20.0))
                     return
                 }
             }
@@ -268,14 +268,14 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         addToMap(recordsToLoad)
     }
 
-    private func postWindowNotification(for record: Record, at position: CGPoint) {
+    private func postRecordNotification(for record: Record, at position: CGPoint) {
         guard let window = view.window else {
             return
         }
 
         let location = window.frame.origin + position
         let info: JSON = [Keys.map: appID, Keys.id: record.id, Keys.position: location.toJSON()]
-        DistributedNotificationCenter.default().postNotificationName(WindowNotification.with(record.type).name, object: nil, userInfo: info, deliverImmediately: true)
+        DistributedNotificationCenter.default().postNotificationName(RecordNotification.with(record.type).name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
     private func handleDoubleTap(at position: CGPoint) {

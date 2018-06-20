@@ -29,7 +29,7 @@ final class WindowManager {
 
     /// Must be done after application launches.
     func registerForNotifications() {
-        for notification in WindowNotification.allValues {
+        for notification in RecordNotification.allValues {
             DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
         }
     }
@@ -75,11 +75,11 @@ final class WindowManager {
 
     @objc
     private func handleNotification(_ notification: NSNotification) {
-        guard let windowNotification = WindowNotification.with(notification.name), let info = notification.userInfo, let map = info[Keys.map] as? Int, let id = info[Keys.id] as? Int, let locationJSON = info[Keys.position] as? JSON, let location = CGPoint(json: locationJSON) else {
+        guard let RecordNotification = RecordNotification.with(notification.name), let info = notification.userInfo, let map = info[Keys.map] as? Int, let id = info[Keys.id] as? Int, let locationJSON = info[Keys.position] as? JSON, let location = CGPoint(json: locationJSON) else {
             return
         }
 
-        RecordFactory.record(for: windowNotification.type, id: id) { [weak self] record in
+        RecordFactory.record(for: RecordNotification.type, id: id) { [weak self] record in
             if let record = record {
                 let windowType = WindowType.record(record)
                 let originX = location.x - windowType.size.width / 2

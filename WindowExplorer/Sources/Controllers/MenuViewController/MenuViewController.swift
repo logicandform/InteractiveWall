@@ -35,7 +35,8 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     private var viewForButtonType = [MenuButtonType: NSView]()
     private var subviewForButtonType = [MenuButtonType: NSView]()
     private var stateForButton = [MenuButtonType: ButtonState]()
-    private var lockIcon: NSView?
+    private var mergeLockIcon: NSView?
+    private var mergeLocked = false
     private var scrollThresholdAchieved = false
     private var settingsMenu: SettingsMenuViewController!
     private var searchMenu: SearchViewController?
@@ -46,23 +47,9 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         static let animationDuration = 0.5
     }
 
-
-    // MARK: Init
-
-    static func instantiate() {
-        for screen in (1 ... Configuration.numberOfScreens) {
-            let screenFrame = NSScreen.at(position: screen).frame
-
-            for appIndex in (0 ..< Configuration.appsPerScreen) {
-                let x = appIndex % 2 == 0 ? screenFrame.minX : screenFrame.maxX - style.menuWindowSize.width
-                let y = screenFrame.midY - style.menuWindowSize.height / 2
-
-                if let menu = WindowManager.instance.display(.menu, at: CGPoint(x: x, y: y)) as? MenuViewController {
-                    let appID = appIndex + ((screen - 1) * Configuration.appsPerScreen)
-                    menu.set(appID: appID)
-                }
-            }
-        }
+    private struct Keys {
+        static let id = "id"
+        static let group = "group"
     }
 
 
@@ -73,13 +60,14 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
         gestureManager = GestureManager(responder: self)
-        viewForButtonType = [.splitScreen: splitScreenButton, .mapToggle: mapToggleButton, .timelineToggle: timelineToggleButton, .information: informationButton, .settings: settingsButton, .search: searchButton]
+        viewForButtonType = [.split: splitScreenButton, .map: mapToggleButton, .timeline: timelineToggleButton, .information: informationButton, .settings: settingsButton, .search: searchButton]
 
         setupButtons()
         setupGestures()
     }
 
     override func viewDidAppear() {
+        super.viewDidAppear()
         settingsMenu = WindowManager.instance.display(.settings, at: position(for: settingsButton, frame: style.settingsWindowSize, margins: false)) as? SettingsMenuViewController
         settingsMenu.view.isHidden = true
     }
@@ -92,7 +80,15 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         settingsMenu.set(appID: appID)
     }
 
-    func toggle(type: MenuButtonType, to state: ButtonState) {
+    func toggleMergeLock(on: Bool) {
+        if mergeLocked != on {
+            let lockImage = on ? MenuButtonType.split.detailImage : nil
+            mergeLockIcon?.transition(to: lockImage, duration: Constants.imageTransitionDuration)
+            mergeLocked = on
+        }
+    }
+
+    func toggle(_ type: MenuButtonType, to state: ButtonState) {
         guard let currentState = stateForButton[type], currentState != state || type == .search, let subview = subviewForButtonType[type] else {
             return
         }
@@ -105,41 +101,32 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         subview.transition(to: image, duration: Constants.imageTransitionDuration)
 
         switch type {
-        case .splitScreen:
-            let lockImage = state == .on ? type.detailImage : nil
-            lockIcon?.transition(to: lockImage, duration: Constants.imageTransitionDuration)
-            // Send notification for splitting
-            // TODO: UBC-441
-        case .mapToggle where state == .on:
-            if let currentType = ConnectionManager.instance.typeForApp(id: appID), currentType != .mapExplorer {
-                // Send notification for switch
-                // TODO: UBC-440
-            }
-            toggle(type: .timelineToggle, to: .off)
-            toggle(type: .settings, to: .off)
-            toggle(type: .information, to: .off)
-        case .timelineToggle where state == .on:
-            if let currentType = ConnectionManager.instance.typeForApp(id: appID), currentType != .timeline {
-                // Send notification for switch
-                // TODO: UBC-440
-            }
-            toggle(type: .mapToggle, to: .off)
-            toggle(type: .settings, to: .off)
-            toggle(type: .information, to: .off)
+        case .map where state == .on:
+            // Send notification for switch
+            // TODO: UBC-440
+            toggle(.timeline, to: .off)
+            toggle(.settings, to: .off)
+            toggle(.information, to: .off)
+        case .timeline where state == .on:
+            // Send notification for switch
+            // TODO: UBC-440
+            toggle(.map, to: .off)
+            toggle(.settings, to: .off)
+            toggle(.information, to: .off)
         case .information:
             toggleInfoPanel(to: state)
             if state == .on {
-                toggle(type: .settings, to: .off)
+                toggle(.settings, to: .off)
             }
         case .settings:
             toggleSettingsPanel(to: state)
             if state == .on {
-                toggle(type: .information, to: .off)
+                toggle(.information, to: .off)
             }
         case .search where state == .on:
             displaySearchController()
-            toggle(type: .settings, to: .off)
-            toggle(type: .information, to: .off)
+            toggle(.settings, to: .off)
+            toggle(.information, to: .off)
         default:
             return
         }
@@ -155,9 +142,9 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     }
 
     private func setupButtons() {
-        setupButton(for: .splitScreen)
-        setupButton(for: .mapToggle)
-        setupButton(for: .timelineToggle)
+        setupButton(for: .split)
+        setupButton(for: .map)
+        setupButton(for: .timeline)
         setupButton(for: .information)
         setupButton(for: .settings)
         setupButton(for: .search)
@@ -165,6 +152,27 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
 
 
     // MARK: Gesture Handling
+
+    private func didSelect(type: MenuButtonType) {
+        guard let state = stateForButton[type] else {
+            return
+        }
+
+        switch type {
+        case .split:
+            if state == .off {
+                postSplitNotification()
+            } else if !mergeLocked {
+                postMergeNotification()
+            }
+        case .map, .timeline:
+            if state == .off {
+                toggle(type, to: state.toggled)
+            }
+        case .information, .settings, .search:
+            toggle(type, to: state.toggled)
+        }
+    }
 
     func handleWindowPan(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
@@ -182,27 +190,6 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             scrollThresholdAchieved = false
         default:
             return
-        }
-    }
-
-    private func didSelect(type: MenuButtonType) {
-        guard let state = stateForButton[type] else {
-            return
-        }
-
-        switch type {
-        case .splitScreen:
-            // Check if locked before allowing split / merge of screens
-            // TODO: UBC-441
-            break
-        case .mapToggle, .timelineToggle:
-            if state == .off {
-                toggle(type: type, to: state.toggled)
-            }
-        case .information, .settings:
-            toggle(type: type, to: state.toggled)
-        case .search:
-            toggle(type: type, to: .on)
         }
     }
 
@@ -262,7 +249,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         addGesture(for: type)
 
         switch type {
-        case .splitScreen:
+        case .split:
             guard let secondaryPlaceholder = type.detailImage else {
                 return
             }
@@ -276,12 +263,12 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             lockIcon.heightAnchor.constraint(equalToConstant: secondaryPlaceholder.size.height).isActive = true
             lockIcon.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: style.menuLockIconPosition.width).isActive = true
             lockIcon.topAnchor.constraint(equalTo: view.topAnchor, constant: style.menuLockIconPosition.height).isActive = true
-            self.lockIcon = lockIcon
+            mergeLockIcon = lockIcon
             stateForButton[type] = .off
-        case .mapToggle:
+        case .map:
             image.layer?.contents = type.selectedImage
             stateForButton[type] = .on
-        case .timelineToggle, .information, .settings, .search:
+        case .timeline, .information, .settings, .search:
             stateForButton[type] = .off
         }
     }
@@ -374,5 +361,21 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         }
 
         return CGPoint(x: x, y: y)
+    }
+
+    private func postSplitNotification() {
+        var info: JSON = [Keys.id: appID]
+        if let group = ConnectionManager.instance.groupForApp(id: appID) {
+            info[Keys.group] = group
+        }
+        DistributedNotificationCenter.default().postNotificationName(SettingsNotification.split.name, object: nil, userInfo: info, deliverImmediately: true)
+    }
+
+    private func postMergeNotification() {
+        var info: JSON = [Keys.id: appID]
+        if let group = ConnectionManager.instance.groupForApp(id: appID) {
+            info[Keys.group] = group
+        }
+        DistributedNotificationCenter.default().postNotificationName(SettingsNotification.merge.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 }

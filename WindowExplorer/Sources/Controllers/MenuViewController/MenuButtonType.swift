@@ -5,20 +5,20 @@ import Cocoa
 
 
 enum MenuButtonType {
-    case splitScreen
-    case mapToggle
-    case timelineToggle
+    case split
+    case map
+    case timeline
     case information
     case settings
     case search
 
     var image: NSImage? {
         switch self {
-        case .splitScreen:
+        case .split:
             return NSImage(named: "single-person-icon")
-        case .mapToggle:
+        case .map:
             return NSImage(named: "map-icon")
-        case .timelineToggle:
+        case .timeline:
             return NSImage(named: "timeline-icon")
         case .information:
             return NSImage(named: "info-icon")
@@ -31,9 +31,11 @@ enum MenuButtonType {
 
     var selectedImage: NSImage? {
         switch self {
-        case .mapToggle:
+        case .split:
+            return NSImage(named: "multiple-person-icon")
+        case .map:
             return NSImage(named: "map-icon-active")
-        case .timelineToggle:
+        case .timeline:
             return NSImage(named: "timeline-icon-active")
         case .information:
             return NSImage(named: "info-icon-active")
@@ -41,14 +43,12 @@ enum MenuButtonType {
             return NSImage(named: "settings-icon-active")
         case .search:
             return NSImage(named: "search-icon-active")
-        default:
-            return nil
         }
     }
 
     var detailImage: NSImage? {
         switch self {
-        case .splitScreen:
+        case .split:
             return NSImage(named: "Lock Icon")
         default:
             return nil

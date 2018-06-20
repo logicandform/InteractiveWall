@@ -2,7 +2,8 @@
 
 import Foundation
 
-enum WindowNotification: String {
+/// Used to notify the WindowExplorer Application that a record window should be displayed for a given record.
+enum RecordNotification: String {
     case school
     case event
     case organization
@@ -12,8 +13,8 @@ enum WindowNotification: String {
         return Notification.Name(rawValue: rawValue)
     }
 
-    static func with(_ type: RecordType) -> WindowNotification {
-        switch type {
+    var type: RecordType {
+        switch self {
         case .school:
             return .school
         case .event:
@@ -23,5 +24,13 @@ enum WindowNotification: String {
         case .artifact:
             return .artifact
         }
+    }
+
+    static func with(_ name: Notification.Name) -> RecordNotification? {
+        return RecordNotification(rawValue: name.rawValue)
+    }
+
+    static var allValues: [RecordNotification] {
+        return [.school, .event, .organization, .artifact]
     }
 }

@@ -4,6 +4,8 @@ import Foundation
 
 
 enum SettingsNotification: String {
+    case split
+    case merge
     case filter
     case labels
     case miniMap
@@ -24,6 +26,6 @@ enum SettingsNotification: String {
     }
 
     static var allValues: [SettingsNotification] {
-        return [.filter, .labels, .miniMap]
+        return [.split, .merge, .filter, .labels, .miniMap]
     }
 }
