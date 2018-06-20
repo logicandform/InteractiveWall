@@ -8,6 +8,11 @@ protocol SearchItemDisplayable {
 }
 
 
+protocol SearchViewDelegate: class {
+    func searchDidClose()
+}
+
+
 fileprivate struct RecordProxy: Hashable {
     let id: Int
     let type: RecordType
@@ -30,6 +35,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     @IBOutlet weak var secondaryScrollViewHeight: NSLayoutConstraint!
     @IBOutlet weak var tertiaryScrollViewHeight: NSLayoutConstraint!
 
+    weak var searchViewDelegate: SearchViewDelegate?
     private var selectedType: RecordType?
     private var selectedRecords = Set<RecordProxy>()
     private var selectedIndexForView = [NSCollectionView: IndexPath]()
@@ -107,6 +113,19 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             view.verticalScroller?.alphaValue = 0
             view.updateGradient()
         }
+    }
+
+
+    // MARK: API
+
+    func updateOrigin(to point: CGPoint, animating: Bool) {
+        if animating {
+            animate(to: point)
+        } else {
+            view.window?.setFrameOrigin(point)
+        }
+
+        relationshipHelper.reset()
     }
 
 
@@ -266,9 +285,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             NSAnimationContext.current.duration = Constants.animationDuration
             view.animator().alphaValue = 0
         }, completionHandler: { [weak self] in
-            if let strongSelf = self {
-                WindowManager.instance.closeWindow(for: strongSelf)
-            }
+            self?.close()
         })
     }
 
@@ -277,6 +294,11 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Constants.closeWindowTimeoutPeriod, repeats: false) { [weak self] _ in
             self?.closeTimerFired()
         }
+    }
+
+    override func close() {
+        searchViewDelegate?.searchDidClose()
+        super.close()
     }
 
 
