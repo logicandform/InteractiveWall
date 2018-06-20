@@ -19,6 +19,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     @IBOutlet weak var relatedItemsView: NSCollectionView!
     @IBOutlet weak var relatedRecordCollectionClipView: NSClipView!
     @IBOutlet weak var relatedRecordScrollView: FadingScrollView!
+    @IBOutlet weak var relatedRecordsHeightConstrant: NSLayoutConstraint!
     @IBOutlet weak var closeWindowTapArea: NSView!
     @IBOutlet weak var showRelatedItemsArea: NSView!
     @IBOutlet weak var hideRelatedItemsArea: NSView!
@@ -124,6 +125,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         recordTypeSelectionView.initialize(with: record, manager: gestureManager)
         recordTypeSelectionView.selectionCallback = didSelectRelatedItemsFilterType(_:)
         relatedRecords = record.relatedRecords.sorted(by: { $0.priority > $1.priority })
+        updateRelatedRecordsHeight()
     }
 
     private func setupGestures() {
@@ -673,6 +675,19 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private func updateArrowIndicatorView(with delta: CGFloat = 0) {
         if let scrollView = stackView.enclosingScrollView {
             arrowIndicatorContainerView.isHidden = scrollView.hasReachedBottom(with: delta)
+        }
+    }
+
+    private func updateRelatedRecordsHeight() {
+        let maxHeight = style.relatedRecordsMaxSize.height
+
+        if let height = relatedItemsView.collectionViewLayout?.collectionViewContentSize.height {
+            if height > maxHeight {
+                relatedRecordsHeightConstrant.constant = maxHeight
+            } else {
+                relatedRecordsHeightConstrant.constant = height
+            }
+            relatedRecordScrollView.updateConstraints()
         }
     }
 }
