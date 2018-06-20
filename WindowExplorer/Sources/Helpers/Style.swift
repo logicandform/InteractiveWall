@@ -17,6 +17,7 @@ final class Style {
     let eventColor = NSColor(calibratedRed: 145/255, green: 18/255, blue: 88/255, alpha: 1)
     let organizationColor = NSColor(calibratedRed: 16/255, green: 147/255, blue: 79/255, alpha: 1)
     let imageFilterTypeColor = NSColor.red
+    let relatedRecordsMaxSize = CGSize(width: 300, height: 534)
 
     // Related Items
     let relatedItemColor = NSColor(calibratedRed: 75/255, green: 91/255, blue: 100/255, alpha: 1)

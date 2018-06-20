@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="7oi-8d-QFD">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="7oi-8d-QFD">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
         <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
@@ -98,6 +98,7 @@
                                 </clipView>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="O51-WT-Mt2"/>
+                                    <constraint firstAttribute="height" constant="534" id="Usv-Mh-9vJ"/>
                                 </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="vfL-oU-Ntl">
                                     <rect key="frame" x="-100" y="-100" width="300" height="16"/>
@@ -333,7 +334,6 @@
                             <constraint firstItem="83q-cx-wcX" firstAttribute="leading" secondItem="i2Z-RE-f6z" secondAttribute="leading" id="Kp5-K5-vf4"/>
                             <constraint firstItem="4OT-12-Vbx" firstAttribute="trailing" secondItem="83q-cx-wcX" secondAttribute="trailing" id="Kt6-1E-nz5"/>
                             <constraint firstItem="4OT-12-Vbx" firstAttribute="leading" secondItem="i2Z-RE-f6z" secondAttribute="leading" id="MFB-Uj-PLT"/>
-                            <constraint firstAttribute="bottom" secondItem="fAf-gM-eoZ" secondAttribute="bottom" id="N1A-Rf-gqN"/>
                             <constraint firstAttribute="bottom" secondItem="83q-cx-wcX" secondAttribute="bottom" id="Y1m-b0-aom"/>
                             <constraint firstItem="pwG-Vb-Cze" firstAttribute="leading" secondItem="fAf-gM-eoZ" secondAttribute="leading" id="Yzb-8I-rbr"/>
                             <constraint firstItem="nSA-ft-oNw" firstAttribute="leading" secondItem="fAf-gM-eoZ" secondAttribute="leading" id="g24-WO-vgr"/>
@@ -359,6 +359,7 @@
                         <outlet property="relatedItemsView" destination="9ag-mR-qAv" id="uxP-yf-2rd"/>
                         <outlet property="relatedRecordCollectionClipView" destination="B6c-6H-ats" id="aMD-Zs-68c"/>
                         <outlet property="relatedRecordScrollView" destination="fAf-gM-eoZ" id="N01-xH-aA5"/>
+                        <outlet property="relatedRecordsHeightConstrant" destination="Usv-Mh-9vJ" id="3F7-Ii-2IZ"/>
                         <outlet property="relatedRecordsLabel" destination="uOU-t8-dRH" id="lgg-r1-D7e"/>
                         <outlet property="relatedRecordsTypeLabel" destination="fbw-1G-bzI" id="pSX-6D-qfI"/>
                         <outlet property="showRelatedItemsArea" destination="ng9-0N-mwq" id="Fbu-Qh-2f4"/>
