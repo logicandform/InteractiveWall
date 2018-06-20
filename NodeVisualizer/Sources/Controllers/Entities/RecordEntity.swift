@@ -24,7 +24,7 @@ class RecordEntity: GKEntity {
     }
 
 
-    init(record: RecordDisplayable) {
+    init(record: TestingEnvironment.Record) {
         mandate = .wander
 
         super.init()

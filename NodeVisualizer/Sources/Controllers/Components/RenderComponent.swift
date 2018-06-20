@@ -10,7 +10,7 @@ class RenderComponent: GKComponent {
     private(set) var recordNode: RecordNode
 
 
-    init(record: RecordDisplayable) {
+    init(record: TestingEnvironment.Record) {
         self.recordNode = RecordNode(record: record)
         super.init()
     }

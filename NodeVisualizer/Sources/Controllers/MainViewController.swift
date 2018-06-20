@@ -43,14 +43,39 @@ class MainViewController: NSViewController, GestureResponder {
 
         // could show loading scene when we are making network request, then transistion to the main scene
 
-        DataManager.instance.associateRecordsToRelatedRecords(then: { [weak self] records in
-            self?.setupMainScene(with: records)
-        })
+//        DataManager.instance.associateRecordsToRelatedRecords(then: { [weak self] records in
+//            self?.setupMainScene(with: records)
+//        })
 
         mainView.showsFPS = true
         mainView.showsNodeCount = true
         mainView.showsFields = true
         mainView.ignoresSiblingOrder = true
+    }
+
+    override func viewWillAppear() {
+        super.viewWillAppear()
+
+        setupTestingEnvironment()
+    }
+
+
+    // MARK: Testing Environment
+
+    private func setupTestingEnvironment() {
+        TestingEnvironment.instance.createTestingEnvironment { [weak self] in
+            let records = TestingEnvironment.instance.allRecords
+            self?.setupMainScene(with: records)
+        }
+    }
+
+    private func setupMainScene(with records: [TestingEnvironment.Record]) {
+        let mainScene = MainScene(size: CGSize(width: mainView.bounds.width, height: mainView.bounds.height))
+        mainScene.backgroundColor = style.darkBackground
+        mainScene.scaleMode = .aspectFit
+        mainScene.records = records
+        mainScene.gestureManager = gestureManager
+        mainView.presentScene(mainScene)
     }
 
 
@@ -60,7 +85,7 @@ class MainViewController: NSViewController, GestureResponder {
         self.records = records
 
         let mainScene = makeScene()
-        mainScene.records = records
+//        mainScene.records = records
         mainScene.gestureManager = gestureManager
         mainView.presentScene(mainScene)
     }

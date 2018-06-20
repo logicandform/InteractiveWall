@@ -6,7 +6,7 @@ import SpriteKit
 
 class RecordNode: SKNode {
 
-    private(set) var record: RecordDisplayable
+    private(set) var record: TestingEnvironment.Record
 
     private struct Constants {
         static let borderCornerRadius: CGFloat = 0.3
@@ -17,7 +17,7 @@ class RecordNode: SKNode {
 
     // MARK: Initializers
 
-    init(record: RecordDisplayable) {
+    init(record: TestingEnvironment.Record) {
         self.record = record
         super.init()
         makeRecordNode()
@@ -50,25 +50,30 @@ class RecordNode: SKNode {
         setupPhysics()
     }
 
-    private func makeRootNode() -> SKSpriteNode {
-        let rootNode = SKSpriteNode()
-        rootNode.size = CGSize(width: 20, height: 20)
-        rootNode.color = record.type.color
+    private func makeRootNode() -> SKShapeNode {
+//        let rootNode = SKSpriteNode()
+//        rootNode.size = CGSize(width: 20, height: 20)
+//        rootNode.color = record.color
+//        addChild(rootNode)
+//        return rootNode
+
+        let rootNode = SKShapeNode(circleOfRadius: 20)
+        rootNode.fillColor = record.color
         addChild(rootNode)
         return rootNode
     }
 
-    private func addTitleLabelNode(to root: SKNode) {
-        let title = SKLabelNode(text: record.title)
-        title.verticalAlignmentMode = .center
-        title.horizontalAlignmentMode = .center
-        title.position.y = root.frame.height / 2 * Constants.centerOffset
-        title.fontSize = Constants.labelFontSize
-        title.xScale = root.frame.width / title.frame.width
-        title.yScale = title.xScale
-        title.fontColor = .black
-        root.addChild(title)
-    }
+//    private func addTitleLabelNode(to root: SKNode) {
+//        let title = SKLabelNode(text: record.title)
+//        title.verticalAlignmentMode = .center
+//        title.horizontalAlignmentMode = .center
+//        title.position.y = root.frame.height / 2 * Constants.centerOffset
+//        title.fontSize = Constants.labelFontSize
+//        title.xScale = root.frame.width / title.frame.width
+//        title.yScale = title.xScale
+//        title.fontColor = .black
+//        root.addChild(title)
+//    }
 
     private func addIdLabelNode(to root: SKNode) {
         let id = SKLabelNode()

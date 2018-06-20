@@ -6,7 +6,7 @@ import GameplayKit
 
 class MainScene: SKScene {
 
-    var records: [RecordDisplayable]!
+    var records: [TestingEnvironment.Record]!
     var gestureManager: GestureManager!
     private var entityManager = EntityManager()
 
@@ -70,9 +70,9 @@ class MainScene: SKScene {
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         physicsWorld.gravity = .zero
 
-        for type in StartingPositionType.allValues {
-            addLinearGravityField(to: type)
-        }
+//        for type in StartingPositionType.allValues {
+//            addLinearGravityField(to: type)
+//        }
     }
 
     private func addLinearGravityField(to type: StartingPositionType) {
@@ -107,7 +107,7 @@ class MainScene: SKScene {
     }
 
     private func addRecordNodesToScene() {
-        records.prefix(10).enumerated().forEach { index, record in
+        records.enumerated().forEach { index, record in
             let recordEntity = RecordEntity(record: record)
 
             if let recordNode = recordEntity.component(ofType: RenderComponent.self)?.recordNode {
@@ -147,7 +147,7 @@ class MainScene: SKScene {
             return
         }
 
-        print("ID: \(recordNode.record.id) , Type: \(recordNode.record.type)")
+//        print("ID: \(recordNode.record.id) , Type: \(recordNode.record.type)")
 
         switch tap.state {
         case .ended:
@@ -169,7 +169,7 @@ class MainScene: SKScene {
             return
         }
 
-        print("ID: \(recordNode.record.id) , Type: \(recordNode.record.type)")
+//        print("ID: \(recordNode.record.id) , Type: \(recordNode.record.type)")
 
         switch recognizer.state {
         case .ended:
@@ -185,18 +185,18 @@ class MainScene: SKScene {
     // MARK: Helpers
 
     private func relatedNodes(for node: RecordNode) {
-        let identifier = DataManager.RecordIdentifier(id: node.record.id, type: node.record.type)
-        let relatedRecords = DataManager.instance.relatedRecords(for: identifier)
-        print(relatedRecords)
-
-        let tappedRecordEntity = entityManager.entity(for: node.record)
-        let tappedRecordAgent = tappedRecordEntity?.component(ofType: RecordAgent.self)
-        let relatedRecordEntities = entityManager.entities(for: relatedRecords)
-
-        for entity in relatedRecordEntities {
-            let moveBehavior = RecordEntityBehavior.behavior(toSeek: tappedRecordAgent)
-            entity.component(ofType: RecordAgent.self)?.behavior = moveBehavior
-        }
+//        let identifier = DataManager.RecordIdentifier(id: node.record.id, type: node.record.type)
+//        let relatedRecords = DataManager.instance.relatedRecords(for: identifier)
+//        print(relatedRecords)
+//
+//        let tappedRecordEntity = entityManager.entity(for: node.record)
+//        let tappedRecordAgent = tappedRecordEntity?.component(ofType: RecordAgent.self)
+//        let relatedRecordEntities = entityManager.entities(for: relatedRecords)
+//
+//        for entity in relatedRecordEntities {
+//            let moveBehavior = RecordEntityBehavior.behavior(toSeek: tappedRecordAgent)
+//            entity.component(ofType: RecordAgent.self)?.behavior = moveBehavior
+//        }
     }
 
     // Debug
@@ -229,21 +229,21 @@ class MainScene: SKScene {
 
     // Debug
     private func createGravityField(at point: CGPoint, to node: RecordNode) {
-        let field = SKFieldNode.radialGravityField()
-        field.strength = 1
-        field.falloff = 1
-        field.categoryBitMask = BitMasks.FieldBitMasks.testBitMaskCategory
-//        field.position = node.position
-        node.physicsBody?.isDynamic = false
-        node.addChild(field)
-
-        let identifier = DataManager.RecordIdentifier(id: node.record.id, type: node.record.type)
-        let relatedRecords = DataManager.instance.relatedRecords(for: identifier)
-        let relatedRecordEntities = entityManager.entities(for: relatedRecords)
-
-        for entity in relatedRecordEntities {
-            entity.component(ofType: RenderComponent.self)?.recordNode.physicsBody?.fieldBitMask = BitMasks.FieldBitMasks.testBitMaskCategory
-        }
+//        let field = SKFieldNode.radialGravityField()
+//        field.strength = 1
+//        field.falloff = 1
+//        field.categoryBitMask = BitMasks.FieldBitMasks.testBitMaskCategory
+////        field.position = node.position
+//        node.physicsBody?.isDynamic = false
+//        node.addChild(field)
+//
+//        let identifier = DataManager.RecordIdentifier(id: node.record.id, type: node.record.type)
+//        let relatedRecords = DataManager.instance.relatedRecords(for: identifier)
+//        let relatedRecordEntities = entityManager.entities(for: relatedRecords)
+//
+//        for entity in relatedRecordEntities {
+//            entity.component(ofType: RenderComponent.self)?.recordNode.physicsBody?.fieldBitMask = BitMasks.FieldBitMasks.testBitMaskCategory
+//        }
     }
 
     private func getRandomPosition() -> CGPoint {

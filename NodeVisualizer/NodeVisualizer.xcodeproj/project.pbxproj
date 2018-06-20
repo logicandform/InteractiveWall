@@ -61,6 +61,7 @@
 		CD1FC73820D9B36B00B87D02 /* WanderState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1FC73720D9B36B00B87D02 /* WanderState.swift */; };
 		CD1FC73A20D9B39A00B87D02 /* SeekState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1FC73920D9B39A00B87D02 /* SeekState.swift */; };
 		CD1FC73C20D9B3AA00B87D02 /* ConnectedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1FC73B20D9B3AA00B87D02 /* ConnectedState.swift */; };
+		CD1FC73E20DB06AA00B87D02 /* TestingEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1FC73D20DB06AA00B87D02 /* TestingEnvironment.swift */; };
 		CD27F40420BCB5B900375CBC /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40320BCB5B900375CBC /* DataManager.swift */; };
 		CD27F40620BCBD5A00375CBC /* RecordFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40520BCBD5A00375CBC /* RecordFactory.swift */; };
 		CD27F40E20BCBFB700375CBC /* Province.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40C20BCBFB700375CBC /* Province.swift */; };
@@ -132,6 +133,7 @@
 		CD1FC73720D9B36B00B87D02 /* WanderState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WanderState.swift; sourceTree = "<group>"; };
 		CD1FC73920D9B39A00B87D02 /* SeekState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeekState.swift; sourceTree = "<group>"; };
 		CD1FC73B20D9B3AA00B87D02 /* ConnectedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectedState.swift; sourceTree = "<group>"; };
+		CD1FC73D20DB06AA00B87D02 /* TestingEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingEnvironment.swift; sourceTree = "<group>"; };
 		CD27F40320BCB5B900375CBC /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		CD27F40520BCBD5A00375CBC /* RecordFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordFactory.swift; sourceTree = "<group>"; };
 		CD27F40C20BCBFB700375CBC /* Province.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Province.swift; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 				CD27F40320BCB5B900375CBC /* DataManager.swift */,
 				22AEAED520B67D2600DD184B /* GestureManager.swift */,
 				CD0FB28320D1AA9D0058A410 /* EntityManager.swift */,
+				CD1FC73D20DB06AA00B87D02 /* TestingEnvironment.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -556,6 +559,7 @@
 				CD2CC5EC20B8E6D800FB3C10 /* RecordFilterType.swift in Sources */,
 				22D6F90620B6810600C7FB5F /* Style.swift in Sources */,
 				CD0FB28C20D849140058A410 /* RecordAgent.swift in Sources */,
+				CD1FC73E20DB06AA00B87D02 /* TestingEnvironment.swift in Sources */,
 				22D6F90420B6810600C7FB5F /* RecordType.swift in Sources */,
 				22D6F91C20B6824300C7FB5F /* SwipeGestureRecognizer.swift in Sources */,
 				CD0FB28020D1A4AE0058A410 /* RenderComponent.swift in Sources */,
