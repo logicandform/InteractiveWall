@@ -94,7 +94,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="JxA-3p-oGM" customClass="ImageZoomControl" customModule="WindowExplorer" customModuleProvider="target">
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="JxA-3p-oGM" customClass="ZoomControl" customModule="WindowExplorer" customModuleProvider="target">
                                 <rect key="frame" x="8" y="0.0" width="624" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="7WH-LO-dIK"/>

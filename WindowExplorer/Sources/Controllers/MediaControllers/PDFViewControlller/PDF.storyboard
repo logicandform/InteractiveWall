@@ -11,11 +11,11 @@
             <objects>
                 <viewController id="1Ij-Lj-j0K" customClass="PDFViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="l0O-E9-8FM">
-                        <rect key="frame" x="0.0" y="0.0" width="640" height="730"/>
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="762"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="QK0-JK-wDg">
-                                <rect key="frame" x="0.0" y="690" width="640" height="40"/>
+                                <rect key="frame" x="0.0" y="722" width="640" height="40"/>
                                 <subviews>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="ty9-rb-Gm3">
                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -70,7 +70,7 @@
                                 </constraints>
                             </customView>
                             <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" allowsMagnification="YES" maxMagnification="5" minMagnification="1" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MNf-ca-Rd2">
-                                <rect key="frame" x="116" y="8" width="516" height="682"/>
+                                <rect key="frame" x="116" y="40" width="516" height="682"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="RFH-Z2-VKt">
                                     <rect key="frame" x="0.0" y="0.0" width="516" height="682"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -112,25 +112,25 @@
                                 </scroller>
                             </scrollView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="u0A-Yb-xpw">
-                                <rect key="frame" x="572" y="8" width="60" height="682"/>
+                                <rect key="frame" x="572" y="40" width="60" height="682"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="QXt-Ii-RKt"/>
                                 </constraints>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="dYk-YZ-F2X">
-                                <rect key="frame" x="116" y="8" width="60" height="682"/>
+                                <rect key="frame" x="116" y="40" width="60" height="682"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="ZwZ-51-X0L"/>
                                 </constraints>
                             </customView>
                             <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="100" horizontalPageScroll="10" verticalLineScroll="100" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" scrollerKnobStyle="dark" translatesAutoresizingMaskIntoConstraints="NO" id="aNn-xH-yEO">
-                                <rect key="frame" x="0.0" y="0.0" width="108" height="690"/>
+                                <rect key="frame" x="0.0" y="0.0" width="108" height="722"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="K8G-DR-c0g">
-                                    <rect key="frame" x="0.0" y="0.0" width="108" height="690"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="108" height="722"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="100" rowSizeStyle="automatic" viewBased="YES" id="jmI-PA-kXC">
-                                            <rect key="frame" x="0.0" y="0.0" width="108" height="690"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="108" height="722"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <color key="backgroundColor" red="0.90063423409999999" green="0.90063423409999999" blue="0.90063423409999999" alpha="0.0" colorSpace="custom" customColorSpace="displayP3"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
@@ -194,14 +194,24 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="8eD-Q9-Rkj" customClass="ZoomControl" customModule="WindowExplorer" customModuleProvider="target">
+                                <rect key="frame" x="116" y="0.0" width="516" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="516" id="CCI-1K-M94"/>
+                                    <constraint firstAttribute="width" constant="516" id="DoS-RN-9Jb"/>
+                                    <constraint firstAttribute="height" constant="40" id="PLD-LS-6VW"/>
+                                </constraints>
+                            </customView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="dYk-YZ-F2X" firstAttribute="bottom" secondItem="MNf-ca-Rd2" secondAttribute="bottom" id="7Gj-eo-edM"/>
+                            <constraint firstAttribute="bottom" secondItem="8eD-Q9-Rkj" secondAttribute="bottom" id="Gfo-GY-XQU"/>
                             <constraint firstItem="QK0-JK-wDg" firstAttribute="leading" secondItem="l0O-E9-8FM" secondAttribute="leading" id="Jcs-sa-mcD"/>
                             <constraint firstAttribute="bottom" secondItem="aNn-xH-yEO" secondAttribute="bottom" id="RqS-p3-6tb"/>
-                            <constraint firstAttribute="bottom" secondItem="MNf-ca-Rd2" secondAttribute="bottom" constant="8" id="RwD-QD-D4x"/>
+                            <constraint firstItem="MNf-ca-Rd2" firstAttribute="bottom" secondItem="8eD-Q9-Rkj" secondAttribute="top" id="RwD-QD-D4x"/>
                             <constraint firstItem="dYk-YZ-F2X" firstAttribute="leading" secondItem="MNf-ca-Rd2" secondAttribute="leading" id="VdI-2X-rm1"/>
                             <constraint firstAttribute="trailing" secondItem="MNf-ca-Rd2" secondAttribute="trailing" constant="8" id="aEk-z9-6Hr"/>
+                            <constraint firstItem="8eD-Q9-Rkj" firstAttribute="centerX" secondItem="MNf-ca-Rd2" secondAttribute="centerX" id="aMm-d5-JMG"/>
                             <constraint firstItem="u0A-Yb-xpw" firstAttribute="trailing" secondItem="MNf-ca-Rd2" secondAttribute="trailing" id="d4e-6x-9Ho"/>
                             <constraint firstItem="u0A-Yb-xpw" firstAttribute="top" secondItem="MNf-ca-Rd2" secondAttribute="top" id="i6I-1S-ZWw"/>
                             <constraint firstItem="aNn-xH-yEO" firstAttribute="top" secondItem="QK0-JK-wDg" secondAttribute="bottom" id="iNt-qa-r8B"/>
@@ -226,6 +236,7 @@
                         <outlet property="titleLabel" destination="FZL-O2-tAp" id="idt-KW-H9k"/>
                         <outlet property="windowDragArea" destination="QK0-JK-wDg" id="n2f-41-2DI"/>
                         <outlet property="windowDragAreaHighlight" destination="ARk-O2-Nsv" id="1S5-j0-waj"/>
+                        <outlet property="zoomControl" destination="8eD-Q9-Rkj" id="0li-8n-MOZ"/>
                     </connections>
                 </viewController>
                 <customObject id="Q0f-PU-OLM" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

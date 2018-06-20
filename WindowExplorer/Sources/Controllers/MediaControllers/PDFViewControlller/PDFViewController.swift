@@ -13,6 +13,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
     @IBOutlet weak var forwardTapArea: NSView!
     @IBOutlet weak var scrollViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var zoomControl: ZoomControl!
 
     private var document: PDFDocument!
     private let leftArrow = ArrowControl()
@@ -36,6 +37,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         static let percentToDeallocateWindow: CGFloat = 40
         static let doubleTapScale: CGFloat = 0.45
         static let doubleTapAnimationDuration = 0.3
+        static let minimumZoomScale: CGFloat = 0.2
     }
 
 
@@ -72,6 +74,9 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         pdfScrollView.minMagnification = Constants.initialMagnification
         pdfScrollView.maxMagnification = Constants.maximumMagnification
         resizeToFirstPage()
+
+        zoomControl.gestureManager = gestureManager
+        zoomControl.zoomSliderUpdated = didScrubZoomSlider(_:)
     }
 
     private func setupThumbnailView() {
@@ -161,6 +166,9 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
                     translationX -= (pdfRect.size.width - scaledWidth) * (pinch.center.x / contentViewFrame.width)
                     translationY -= (pdfRect.size.height - scaledHeight) * (pinch.center.y / contentViewFrame.height)
                     pdfRect.size = CGSize(width: scaledWidth, height: scaledHeight)
+
+                    let scale = (contentViewFrame.width / Constants.maximumMagnification) / scaledWidth
+                    zoomControl.updateSeekBarPosition(to: scale)
                 }
                 pdfRect.origin = CGPoint(x: pdfRect.origin.x - translationX, y: pdfRect.origin.y - translationY)
             }
@@ -269,6 +277,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         leftArrow.isHidden = !pdfView.canGoToPreviousPage
         rightArrow.isHidden = !pdfView.canGoToNextPage
         pdfScrollView.magnification = Constants.initialMagnification
+        zoomControl.updateSeekBarPosition(to: 0)
 
         if let page = pdfView.currentPage, let pageNumber = page.pageRef?.pageNumber, let thumbnailItem = thumbnailView.view(atColumn: 0, row: pageNumber - 1, makeIfNecessary: false) as? PDFTableViewItem {
             selectedThumbnailItem = thumbnailItem
@@ -289,5 +298,11 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         scrollViewHeightConstraint.constant = height
         view.needsLayout = true
         view.layout()
+    }
+
+    private func didScrubZoomSlider(_ scale: CGFloat) {
+        pdfScrollView.magnification = scale * Constants.maximumMagnification
+        leftArrow.isHidden = !pdfView.canGoToPreviousPage || scale >= Constants.minimumZoomScale
+        rightArrow.isHidden = !pdfView.canGoToNextPage || scale >= Constants.minimumZoomScale
     }
 }

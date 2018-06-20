@@ -121,8 +121,8 @@
 		A47C67E420CB07CB00C361D1 /* MapNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47C67E320CB07CB00C361D1 /* MapNotification.swift */; };
 		C6DB17689F287C9826286DF2 /* Pods_All_WindowExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */; };
 		CD096C8A20A3AD7F00C8A732 /* GeocodeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD096C8920A3AD7F00C8A732 /* GeocodeHelper.swift */; };
-		CD7B3CD120ADFB1400723BDB /* ImageZoomControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD7B3CD020ADFB1400723BDB /* ImageZoomControl.xib */; };
-		CD7B3CD320ADFB2500723BDB /* ImageZoomControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7B3CD220ADFB2500723BDB /* ImageZoomControl.swift */; };
+		CD7B3CD120ADFB1400723BDB /* ZoomControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD7B3CD020ADFB1400723BDB /* ZoomControl.xib */; };
+		CD7B3CD320ADFB2500723BDB /* ZoomControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7B3CD220ADFB2500723BDB /* ZoomControl.swift */; };
 		D507D33B2072FD2B0003CEA7 /* ColoredSliderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D507D33A2072FD2B0003CEA7 /* ColoredSliderCell.swift */; };
 		D5384CF52071A74300A157AE /* PDFTableViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5384CF42071A74300A157AE /* PDFTableViewItem.swift */; };
 		D5384CF72071A7FD00A157AE /* PDFTableViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5384CF62071A7FD00A157AE /* PDFTableViewItem.xib */; };
@@ -275,8 +275,8 @@
 		A479487F20B89ACC00091CEC /* MenuButtonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButtonType.swift; sourceTree = "<group>"; };
 		A47C67E320CB07CB00C361D1 /* MapNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapNotification.swift; sourceTree = "<group>"; };
 		CD096C8920A3AD7F00C8A732 /* GeocodeHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeocodeHelper.swift; sourceTree = "<group>"; };
-		CD7B3CD020ADFB1400723BDB /* ImageZoomControl.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageZoomControl.xib; sourceTree = "<group>"; };
-		CD7B3CD220ADFB2500723BDB /* ImageZoomControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageZoomControl.swift; sourceTree = "<group>"; };
+		CD7B3CD020ADFB1400723BDB /* ZoomControl.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ZoomControl.xib; sourceTree = "<group>"; };
+		CD7B3CD220ADFB2500723BDB /* ZoomControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomControl.swift; sourceTree = "<group>"; };
 		CE471FCE047AE2FD1C92BA3A /* Pods-All-WindowExplorer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-WindowExplorer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer.release.xcconfig"; sourceTree = "<group>"; };
 		D507D33A2072FD2B0003CEA7 /* ColoredSliderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredSliderCell.swift; sourceTree = "<group>"; };
 		D5384CF42071A74300A157AE /* PDFTableViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFTableViewItem.swift; sourceTree = "<group>"; };
@@ -631,11 +631,21 @@
 			isa = PBXGroup;
 			children = (
 				8FEABD9F2064702600612C84 /* MediaViewController.swift */,
+				A447476120D8789F00346714 /* Views */,
 				D9F24E60205B03AA00B9FCB8 /* ImageViewController */,
 				22A76FE82046477A006C0AE7 /* PlayerViewController */,
 				22A76FE320464764006C0AE7 /* PDFViewControlller */,
 			);
 			path = MediaControllers;
+			sourceTree = "<group>";
+		};
+		A447476120D8789F00346714 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CD7B3CD020ADFB1400723BDB /* ZoomControl.xib */,
+				CD7B3CD220ADFB2500723BDB /* ZoomControl.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		A456F6BE20C73722004534A4 /* SettingsMenuController */ = {
@@ -657,15 +667,6 @@
 				A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		CD24305C20B4DB8000EAED91 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				CD7B3CD020ADFB1400723BDB /* ImageZoomControl.xib */,
-				CD7B3CD220ADFB2500723BDB /* ImageZoomControl.swift */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		D5384CF32071A6BE00A157AE /* Views */ = {
@@ -719,7 +720,6 @@
 			children = (
 				D9F24E63205B041200B9FCB8 /* Image.storyboard */,
 				D9F24E61205B040700B9FCB8 /* ImageViewController.swift */,
-				CD24305C20B4DB8000EAED91 /* Views */,
 			);
 			path = ImageViewController;
 			sourceTree = "<group>";
@@ -810,7 +810,7 @@
 				8F8DE19020A3C48C006FA48B /* RelatedItemImageView.xib in Resources */,
 				2204621020472DE80067D9FB /* RelatedItemListView.xib in Resources */,
 				A456F6C220C73836004534A4 /* SettingsMenu.storyboard in Resources */,
-				CD7B3CD120ADFB1400723BDB /* ImageZoomControl.xib in Resources */,
+				CD7B3CD120ADFB1400723BDB /* ZoomControl.xib in Resources */,
 				1FAFF01B206EDD93005DC68B /* Soleil-04.otf in Resources */,
 				2247670120562F65003E8790 /* MediaItemView.xib in Resources */,
 				1FAFF020206EDD93005DC68B /* Soleil-01.otf in Resources */,
@@ -956,7 +956,7 @@
 				222A94EB20D9D50A00B4AE4E /* MenuManager.swift in Sources */,
 				618F0C33206A058900762C20 /* MultiChannelPanAudioUnit.mm in Sources */,
 				3F09025B2048D9D30044F100 /* Place.swift in Sources */,
-				CD7B3CD320ADFB2500723BDB /* ImageZoomControl.swift in Sources */,
+				CD7B3CD320ADFB2500723BDB /* ZoomControl.swift in Sources */,
 				22A498752047499B0024B46C /* JSON.swift in Sources */,
 				22046247204730780067D9FB /* PinchGestureRecognizer.swift in Sources */,
 				8FEABDA12064702600612C84 /* MediaViewController.swift in Sources */,
