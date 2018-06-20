@@ -169,8 +169,10 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             if state == .off {
                 toggle(type, to: state.toggled)
             }
-        case .information, .settings, .search:
+        case .information, .settings:
             toggle(type, to: state.toggled)
+        case .search:
+            toggle(type, to: .on)
         }
     }
 
@@ -213,7 +215,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     // MARK: SearchViewDelegate
 
     func searchDidClose() {
-        toggle(type: .search, to: .off)
+        toggle(.search, to: .off)
         searchMenu = nil
     }
 
