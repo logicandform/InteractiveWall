@@ -37,6 +37,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         static let percentToDeallocateWindow: CGFloat = 40
         static let doubleTapScale: CGFloat = 0.45
         static let doubleTapAnimationDuration = 0.3
+        static let minimumZoomScale: CGFloat = 0.2
     }
 
 
@@ -301,7 +302,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
 
     private func didScrubZoomSlider(_ scale: CGFloat) {
         pdfScrollView.magnification = scale * Constants.maximumMagnification
-        leftArrow.isHidden = !pdfView.canGoToPreviousPage || scale >= 0.2
-        rightArrow.isHidden = !pdfView.canGoToNextPage || scale >= 0.2
+        leftArrow.isHidden = !pdfView.canGoToPreviousPage || scale >= Constants.minimumZoomScale
+        rightArrow.isHidden = !pdfView.canGoToNextPage || scale >= Constants.minimumZoomScale
     }
 }
