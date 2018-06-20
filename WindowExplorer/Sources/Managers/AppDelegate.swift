@@ -37,12 +37,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         GeocodeHelper.instance.associateSchoolsToProvinces()
         MasterViewController.instantiate()
         MenuViewController.instantiate()
-
-        RecordFactory.record(for: .artifact, id: 459) { artifact in
-            if let artifact = artifact {
-                WindowFactory.window(for: .record(artifact), at: CGPoint(x: 0, y: 0))
-            }
-        }
     }
 
     func applicationWillTerminate(_ notification: Notification) {

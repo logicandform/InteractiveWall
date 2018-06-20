@@ -125,7 +125,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         recordTypeSelectionView.initialize(with: record, manager: gestureManager)
         recordTypeSelectionView.selectionCallback = didSelectRelatedItemsFilterType(_:)
         relatedRecords = record.relatedRecords.sorted(by: { $0.priority > $1.priority })
-        updateHeight(for: relatedItemsView)
+        updateRelatedRecordsHeight()
     }
 
     private func setupGestures() {
@@ -678,7 +678,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
     }
 
-    private func updateHeight(for collectionView: NSCollectionView) {
+    private func updateRelatedRecordsHeight() {
         let maxHeight = style.relatedRecordsMaxSize.height
 
         if let height = relatedItemsView.collectionViewLayout?.collectionViewContentSize.height {
