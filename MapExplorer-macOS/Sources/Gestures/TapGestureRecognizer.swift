@@ -75,7 +75,6 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         case .failed:
             gestureUpdated?(self)
             doubleTapPositionAndTimeForTouch.removeValue(forKey: touch)
-            reset()
         case .began:
             gestureUpdated?(self)
             fallthrough
