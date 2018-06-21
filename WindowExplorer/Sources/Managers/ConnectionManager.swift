@@ -288,12 +288,14 @@ final class ConnectionManager {
         // Update the split button and lock view in each menu controller
         for (app, state) in stateForApp.enumerated() {
             let menu = MenuManager.instance.menuForApp(id: app)
+            let border = MenuManager.instance.borderForApp(id: app)
             let neighborID = app % Configuration.appsPerScreen == 0 ? app + 1 : app - 1
             let neighborPair = pairForApp(id: neighborID)
             let split = state.group != groupForApp(id: neighborID)
             let mergeLocked = typeForApp(id: app) != typeForApp(id: neighborID) || split && neighborPair == neighborID
             menu?.toggle(.split, to: split ? .on : .off)
             menu?.toggleMergeLock(on: mergeLocked)
+            border?.set(visible: split)
         }
     }
 

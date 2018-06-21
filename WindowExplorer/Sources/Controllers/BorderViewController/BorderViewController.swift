@@ -9,12 +9,12 @@ class BorderViewController: NSViewController {
 
     @IBOutlet weak var border: BorderControl!
 
-    var screenID: Int?
+    var screenID: Int!
 
 
     // MARK: API
 
-    func isVisible(_ visible: Bool) {
+    func set(visible: Bool) {
         border.isVisible = visible
     }
 }

@@ -193,7 +193,7 @@ final class ConnectionManager {
                 if abs(appGroup - app) >= abs(appGroup - id) {
                     stateForApp[app] = AppState(pair: nil, group: closestApp, type: state.type)
                     if app == neighborID {
-                        startTimerForApp(id: app, with: Type)
+                        startTimerForApp(id: app, with: state.type)
                     }
                 }
             } else if state.group == nil {
@@ -284,11 +284,13 @@ final class ConnectionManager {
 
     /// Send position notification that won't cause app's to pair but causes map to sync together
     private func syncApps(inGroup group: Int?) {
-        let type = typeForApp(id: group)
+        guard let group = group, let type = typeForApp(id: group) else {
+            return
+        }
 
         switch type {
         case .mapExplorer:
-            if let mapHandler = mapHandler, let group = group, mapHandler.mapID == group {
+            if let mapHandler = mapHandler, mapHandler.mapID == group {
                 let mapRect = mapHandler.mapView.visibleMapRect
                 mapHandler.send(mapRect, for: .momentum, forced: true)
             }

@@ -9,6 +9,9 @@ final class MenuManager {
     // MenuViewControllers indexed by their associated appID
     private var menuForID = [Int: MenuViewController]()
 
+    // BorderViewControllers indexed by their associated screenID
+    private var borderForScreen = [Int: BorderViewController]()
+
 
     // MARK: Init
 
@@ -35,8 +38,8 @@ final class MenuManager {
 
                 if appIndex % 2 == 1 {
                     let border = WindowManager.instance.display(.border, at: CGPoint(x: borderXPosition, y: screenFrame.minY)) as? BorderViewController
-                    border?.isVisible(false)
                     border?.screenID = screen
+                    borderForScreen[screen] = border
                 }
             }
         }
@@ -44,5 +47,10 @@ final class MenuManager {
 
     func menuForApp(id: Int) -> MenuViewController? {
         return menuForID[id]
+    }
+
+    func borderForApp(id: Int) -> BorderViewController? {
+        let screen = (id / Configuration.appsPerScreen) + 1
+        return borderForScreen[screen]
     }
 }

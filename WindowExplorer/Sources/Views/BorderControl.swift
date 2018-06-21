@@ -6,7 +6,7 @@ import Cocoa
 
 class BorderControl: NSView {
     let borderColor = style.borderColor.cgColor
-    var isVisible: Bool = true {
+    var isVisible: Bool = false {
         didSet {
             refresh()
         }
@@ -27,7 +27,7 @@ class BorderControl: NSView {
         wantsLayer = true
         layer?.backgroundColor = borderColor
 
-        isHidden = !isVisible
+        refresh()
     }
 
 
