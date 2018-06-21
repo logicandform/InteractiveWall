@@ -28,12 +28,13 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     @IBOutlet weak var timelineToggleButton: NSImageView!
     @IBOutlet weak var informationButton: NSImageView!
     @IBOutlet weak var settingsButton: NSImageView!
+    @IBOutlet weak var testimonyButton: NSImageView!
     @IBOutlet weak var searchButton: NSImageView!
 
     var gestureManager: GestureManager!
     private var appID: Int!
     private var viewForButtonType = [MenuButtonType: NSView]()
-    private var subviewForButtonType = [MenuButtonType: NSView]()
+    private var subviewForButtonType = [MenuButtonType: MenuButtonView]()
     private var stateForButton = [MenuButtonType: ButtonState]()
     private var mergeLockIcon: NSView?
     private var mergeLocked = false
@@ -60,7 +61,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
         gestureManager = GestureManager(responder: self)
-        viewForButtonType = [.split: splitScreenButton, .map: mapToggleButton, .timeline: timelineToggleButton, .information: informationButton, .settings: settingsButton, .search: searchButton]
+        viewForButtonType = [.split: splitScreenButton, .map: mapToggleButton, .timeline: timelineToggleButton, .information: informationButton, .settings: settingsButton, .testimony: testimonyButton, .search: searchButton]
 
         setupButtons()
         setupGestures()
@@ -100,8 +101,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         stateForButton[type] = state
 
         // Transition image for the button
-        let image = state == .on ? type.selectedImage : type.image
-        subview.transition(to: image, duration: Constants.imageTransitionDuration)
+        subview.toggle(to: state)
 
         switch type {
         case .map where state == .on:
@@ -150,6 +150,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         setupButton(for: .timeline)
         setupButton(for: .information)
         setupButton(for: .settings)
+        setupButton(for: .testimony)
         setupButton(for: .search)
     }
 
@@ -172,7 +173,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             if state == .off {
                 toggle(type, to: state.toggled)
             }
-        case .information, .settings:
+        case .information, .settings, .testimony:
             toggle(type, to: state.toggled)
         case .search:
             toggle(type, to: .on)
@@ -226,54 +227,22 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     // MARK: Helpers
 
     private func setupButton(for type: MenuButtonType) {
-        guard let view = viewForButtonType[type], let imageIcon = type.image else {
+        guard let view = viewForButtonType[type] else {
             return
         }
 
-        let image = NSView()
+        let image = MenuButtonView(type: type, buttonSize: style.menuImageSize)
         view.addSubview(image)
-        image.wantsLayer = true
-        image.layer?.contents = imageIcon
-        image.translatesAutoresizingMaskIntoConstraints = false
-
-        if view.frame.width < imageIcon.size.width {
-            image.widthAnchor.constraint(equalToConstant: style.menuImageSize.width).isActive = true
-        } else {
-            image.widthAnchor.constraint(equalToConstant: imageIcon.size.width).isActive = true
-        }
-
-        if view.frame.height < imageIcon.size.height {
-            image.heightAnchor.constraint(equalToConstant: style.menuImageSize.height).isActive = true
-        } else {
-            image.heightAnchor.constraint(equalToConstant: imageIcon.size.height).isActive = true
-        }
-
-        image.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        image.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         subviewForButtonType[type] = image
         addGesture(for: type)
 
         switch type {
         case .split:
-            guard let secondaryPlaceholder = type.detailImage else {
-                return
-            }
-            view.wantsLayer = true
-            view.layer?.backgroundColor = style.menuSelectedColor.cgColor
-            let lockIcon = NSView()
-            view.addSubview(lockIcon)
-            lockIcon.wantsLayer = true
-            lockIcon.translatesAutoresizingMaskIntoConstraints = false
-            lockIcon.widthAnchor.constraint(equalToConstant: secondaryPlaceholder.size.width).isActive = true
-            lockIcon.heightAnchor.constraint(equalToConstant: secondaryPlaceholder.size.height).isActive = true
-            lockIcon.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: style.menuLockIconPosition.x).isActive = true
-            lockIcon.topAnchor.constraint(equalTo: view.topAnchor, constant: style.menuLockIconPosition.y).isActive = true
-            mergeLockIcon = lockIcon
             stateForButton[type] = .off
         case .map:
-            image.layer?.contents = type.selectedImage
+            image.toggle(to: .on)
             stateForButton[type] = .on
-        case .timeline, .information, .settings, .search:
+        case .timeline, .information, .settings, .search, .testimony:
             stateForButton[type] = .off
         }
     }

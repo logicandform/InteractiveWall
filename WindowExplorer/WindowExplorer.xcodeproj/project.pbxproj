@@ -116,6 +116,7 @@
 		8FEABDA12064702600612C84 /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEABD9F2064702600612C84 /* MediaViewController.swift */; };
 		A407160E20AB94B800B54593 /* PriorityOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A407160D20AB94B800B54593 /* PriorityOrder.swift */; };
 		A407161220ABAE5C00B54593 /* RelationshipHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A407161120ABAE5B00B54593 /* RelationshipHelper.swift */; };
+		A4551B6420DC38D100D8C029 /* MenuButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4551B6320DC38D100D8C029 /* MenuButtonView.swift */; };
 		A456618020D9CDC400D23333 /* BorderControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A456617F20D9CDC400D23333 /* BorderControl.swift */; };
 		A456618320D9D42D00D23333 /* BorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A456618220D9D42D00D23333 /* BorderViewController.swift */; };
 		A456618520D9D43B00D23333 /* Border.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A456618420D9D43B00D23333 /* Border.storyboard */; };
@@ -280,6 +281,7 @@
 		A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_WindowExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A407160D20AB94B800B54593 /* PriorityOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityOrder.swift; sourceTree = "<group>"; };
 		A407161120ABAE5B00B54593 /* RelationshipHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipHelper.swift; sourceTree = "<group>"; };
+		A4551B6320DC38D100D8C029 /* MenuButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButtonView.swift; sourceTree = "<group>"; };
 		A456617F20D9CDC400D23333 /* BorderControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderControl.swift; sourceTree = "<group>"; };
 		A456618220D9D42D00D23333 /* BorderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderViewController.swift; sourceTree = "<group>"; };
 		A456618420D9D43B00D23333 /* Border.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Border.storyboard; sourceTree = "<group>"; };
@@ -751,6 +753,7 @@
 				8F6EFD7C2098FF0800E4D97D /* FadingScrollView.swift */,
 				A457D19720C9A42900D21ABA /* SwitchControl.swift */,
 				A456617F20D9CDC400D23333 /* BorderControl.swift */,
+				A4551B6320DC38D100D8C029 /* MenuButtonView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1052,6 +1055,7 @@
 				226D0582204FC38700D74711 /* Event.swift in Sources */,
 				22AEAF0420B67E6700DD184B /* Math.swift in Sources */,
 				22B85B07209CF5200099F44E /* SearchItemView.swift in Sources */,
+				A4551B6420DC38D100D8C029 /* MenuButtonView.swift in Sources */,
 				2224125E206BFE9F008E7A9D /* RecordType.swift in Sources */,
 				3F09025F2048E0E70044F100 /* Organization.swift in Sources */,
 			);
