@@ -338,18 +338,16 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             return CGPoint(x: 0, y: 0)
         }
 
-        var x = screenBounds.minX + ((screenBounds.width / CGFloat(Configuration.appsPerScreen)) / 2) - (frame.width / 2)
-        var y = buttonWindowPosition.origin.y + button.frame.origin.y + button.frame.height - frame.height
+        let buttonTop = buttonWindowPosition.origin.y + button.frame.origin.y + button.frame.height - frame.height
+        let minimumX = max(buttonWindowPosition.minX, screenBounds.minX)
 
-        if buttonWindowPosition.maxX >= screenBounds.maxX {
-            x = screenBounds.maxX - ((screenBounds.width / CGFloat(Configuration.appsPerScreen)) / 2) - (frame.width / 2)
+        let y = max(buttonTop, screenBounds.minY)
+
+        if minimumX == screenBounds.minX {
+            return CGPoint(x: screenBounds.minX + ((screenBounds.width / CGFloat(Configuration.appsPerScreen)) / 2) - (frame.width / 2), y: y)
+        } else {
+            return CGPoint(x: screenBounds.maxX - ((screenBounds.width / CGFloat(Configuration.appsPerScreen)) / 2) - (frame.width / 2), y: y)
         }
-
-        if y < screenBounds.minY {
-            y = screenBounds.minY
-        }
-
-        return CGPoint(x: x, y: y)
     }
 
     private func position(for button: NSImageView, frame: CGSize, margins: Bool = true) -> CGPoint {
