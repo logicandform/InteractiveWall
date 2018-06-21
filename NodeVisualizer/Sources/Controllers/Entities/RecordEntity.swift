@@ -18,10 +18,35 @@ class RecordEntity: GKEntity {
         case .wander:
             break
         case .seekRecordAgent(let agent):
-            return RecordEntityBehavior.behavior(toSeek: agent)
+            return RecordEntityBehavior.behavior(seek: agent, agentsToSeparateFrom: agentsToSeparateFrom)
+//            return RecordEntityBehavior.behavior(toSeek: agent)
         }
         return GKBehavior()
     }
+
+    var agent: RecordAgent {
+        guard let agent = component(ofType: RecordAgent.self) else {
+            fatalError("A RecordEntity must have a GKAgent2D component")
+        }
+        return agent
+    }
+
+    var renderComponent: RenderComponent {
+        guard let renderComponent = component(ofType: RenderComponent.self) else {
+            fatalError("A RecordEntity must have a Render component")
+        }
+        return renderComponent
+    }
+
+    var intelligenceComponent: IntelligenceComponent {
+        guard let intelligenceComponent = component(ofType: IntelligenceComponent.self) else {
+            fatalError("A RecordEntity must have an Intelligence component")
+        }
+        return intelligenceComponent
+    }
+
+    var manager: EntityManager!
+    var agentsToSeparateFrom: [GKAgent2D]!
 
 
     init(record: TestingEnvironment.Record) {
@@ -54,5 +79,11 @@ class RecordEntity: GKEntity {
         }
 
         agent.position = vector_float2(x: Float(renderComponent.recordNode.position.x), y: Float(renderComponent.recordNode.position.y))
+    }
+
+    func distance(to otherAgent: GKAgent2D) -> Float {
+        let dX = agent.position.x - otherAgent.position.x
+        let dY = agent.position.y - otherAgent.position.y
+        return hypotf(dX, dY)
     }
 }

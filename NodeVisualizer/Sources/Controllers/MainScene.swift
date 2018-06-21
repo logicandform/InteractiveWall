@@ -109,11 +109,14 @@ class MainScene: SKScene {
     private func addRecordNodesToScene() {
         records.enumerated().forEach { index, record in
             let recordEntity = RecordEntity(record: record)
+            recordEntity.manager = entityManager
 
             if let recordNode = recordEntity.component(ofType: RenderComponent.self)?.recordNode {
                 recordNode.position.x = randomX()
                 recordNode.position.y = randomY()
                 recordNode.zPosition = 1
+                recordNode.physicsBody?.fieldBitMask = 0x1 << 0
+                recordNode.physicsBody?.mass = 0.2
                 recordEntity.updateAgentPositionToMatchNodePosition()
 
                 let screenBoundsConstraint = SKConstraint.positionX(SKRange(lowerLimit: 0, upperLimit: frame.width), y: SKRange(lowerLimit: 0, upperLimit: frame.height))
@@ -147,8 +150,6 @@ class MainScene: SKScene {
             return
         }
 
-//        print("ID: \(recordNode.record.id) , Type: \(recordNode.record.type)")
-
         switch tap.state {
         case .ended:
             relatedNodes(for: recordNode)
@@ -163,17 +164,17 @@ class MainScene: SKScene {
         let clickPosition = recognizer.location(in: recognizer.view)
         let nodePosition = convertPoint(fromView: clickPosition)
 
-        seekTest(at: nodePosition)
+//        seekTest(at: nodePosition)
 
         guard let recordNode = nodes(at: nodePosition).first(where: { $0 is RecordNode }) as? RecordNode else {
             return
         }
 
-//        print("ID: \(recordNode.record.id) , Type: \(recordNode.record.type)")
+        print("ID: \(recordNode.record.id)")
 
         switch recognizer.state {
         case .ended:
-//            relatedNodes(for: recordNode)
+            relatedNodes(for: recordNode)
 //            useSKConstraints(node: recordNode)
             return
         default:
@@ -185,6 +186,32 @@ class MainScene: SKScene {
     // MARK: Helpers
 
     private func relatedNodes(for node: RecordNode) {
+        let field = SKFieldNode.radialGravityField()
+        field.strength = 10
+        field.falloff = 2
+        field.minimumRadius = 1
+        field.categoryBitMask = 0x1 << 1
+        node.addChild(field)
+        node.physicsBody?.isDynamic = false
+
+        guard let relatedRecords = TestingEnvironment.instance.relatedRecordsForRecord[node.record] else {
+            return
+        }
+
+        guard let recordEntityToSeek = entityManager.entity(for: node.record) as? RecordEntity else {
+            return
+        }
+
+        let relatedRecordEntities = entityManager.entities(for: Array(relatedRecords)) as! [RecordEntity]
+
+        for case let entity in relatedRecordEntities {
+            entity.agentsToSeparateFrom = relatedRecordEntities.compactMap({ $0.agent })
+            entity.mandate = .seekRecordAgent(recordEntityToSeek.agent)
+            entity.intelligenceComponent.stateMachine.enter(SeekState.self)
+        }
+    }
+
+//    private func relatedNodes(for node: RecordNode) {
 //        let identifier = DataManager.RecordIdentifier(id: node.record.id, type: node.record.type)
 //        let relatedRecords = DataManager.instance.relatedRecords(for: identifier)
 //        print(relatedRecords)
@@ -197,7 +224,7 @@ class MainScene: SKScene {
 //            let moveBehavior = RecordEntityBehavior.behavior(toSeek: tappedRecordAgent)
 //            entity.component(ofType: RecordAgent.self)?.behavior = moveBehavior
 //        }
-    }
+//    }
 
     // Debug
     private func seekTest(at point: CGPoint, to node: RecordNode? = nil) {

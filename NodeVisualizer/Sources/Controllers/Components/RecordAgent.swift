@@ -22,7 +22,7 @@ class RecordAgent: GKAgent2D, GKAgentDelegate {
 
         maxSpeed = 200
         maxAcceleration = 100
-        radius = 5
+        radius = 60
         behavior = GKBehavior()
     }
 

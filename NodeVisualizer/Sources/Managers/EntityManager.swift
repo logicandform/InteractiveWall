@@ -36,7 +36,7 @@ class EntityManager {
         entities.remove(entity)
     }
 
-    func entities(for records: [RecordDisplayable]) -> [GKEntity] {
+    func entities(for records: [TestingEnvironment.Record]) -> [GKEntity] {
         var recordEntities = [GKEntity]()
 
         for record in records {
@@ -48,7 +48,7 @@ class EntityManager {
         return recordEntities
     }
 
-    func entity(for record: RecordDisplayable) -> GKEntity? {
+    func entity(for record: TestingEnvironment.Record) -> GKEntity? {
         for entity in entities {
             if let renderRecord = entity.component(ofType: RenderComponent.self)?.recordNode.record, renderRecord.id == record.id {
                 return entity

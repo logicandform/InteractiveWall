@@ -20,7 +20,7 @@ class ConnectedState: GKState {
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
 
-
+        entity.renderComponent.recordNode.physicsBody?.fieldBitMask = 0x1 << 1
     }
 
     override func update(deltaTime seconds: TimeInterval) {
@@ -35,18 +35,5 @@ class ConnectedState: GKState {
 
     override func willExit(to nextState: GKState) {
         super.willExit(to: nextState)
-
-        entity.component(ofType: RecordAgent.self)?.behavior = nil
     }
-
-
-
-
-
-
 }
-
-
-
-
-

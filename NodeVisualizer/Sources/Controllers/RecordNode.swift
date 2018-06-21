@@ -57,7 +57,7 @@ class RecordNode: SKNode {
 //        addChild(rootNode)
 //        return rootNode
 
-        let rootNode = SKShapeNode(circleOfRadius: 20)
+        let rootNode = SKShapeNode(circleOfRadius: 15)
         rootNode.fillColor = record.color
         addChild(rootNode)
         return rootNode

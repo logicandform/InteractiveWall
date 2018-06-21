@@ -26,7 +26,13 @@ class SeekState: GKState {
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
 
-        //do periodic checks to see if it is within radius, then update its state to connected
+        if case let .seekRecordAgent(targetAgent) = entity.mandate {
+            if entity.distance(to: targetAgent) < 100 {
+                entity.agent.behavior = RecordEntityBehavior.behavior(toSeek: targetAgent, withTargetSpeed: 0.001)
+            } else {
+                entity.agent.behavior = RecordEntityBehavior.behavior(toSeek: targetAgent)
+            }
+        }
     }
 
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
@@ -36,6 +42,16 @@ class SeekState: GKState {
     override func willExit(to nextState: GKState) {
         super.willExit(to: nextState)
 
-        entity.component(ofType: RecordAgent.self)?.behavior = nil
+        entity.agent.behavior = GKBehavior()
+    }
+
+
+    private func stopMovement(afterTraversing distance: Float) {
+        let timeToTarget = TimeInterval(distance / entity.agent.speed)
+        Timer.scheduledTimer(withTimeInterval: timeToTarget, repeats: false) { _ in
+            self.entity.agent.behavior = nil
+            self.entity.agent.behavior = RecordEntityBehavior.stop()
+            self.entity.agent.maxSpeed = 0
+        }
     }
 }

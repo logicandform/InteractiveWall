@@ -54,7 +54,7 @@ class TestingEnvironment {
     // MARK: Helpers
 
     private func makeRelatedRecordsForSchool() {
-        for index in 0..<50 {
+        for index in -50..<50 {
             let relatedRecord = Record(id: index, color: .brown)
             relatedRecordsForSchool.append(relatedRecord)
             associate(records: [schoolRecord], to: relatedRecord)
@@ -82,13 +82,13 @@ class TestingEnvironment {
         associate(records: relatedRecordsForEvent, to: eventRecord)
     }
 
-    private func associate(records: [Record], to record: Record) {
-        if relatedRecordsForRecord[record] != nil {
+    private func associate(records: [Record], to key: Record) {
+        if relatedRecordsForRecord[key] != nil {
             for record in records {
-                relatedRecordsForRecord[record]?.insert(record)
+                relatedRecordsForRecord[key]?.insert(record)
             }
         } else {
-            relatedRecordsForRecord[record] = Set(records)
+            relatedRecordsForRecord[key] = Set(records)
         }
     }
 }
