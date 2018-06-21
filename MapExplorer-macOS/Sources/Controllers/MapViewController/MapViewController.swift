@@ -202,7 +202,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
         if tap.state == .doubleTapped {
             handleDoubleTap(at: position)
-            return
         }
 
         previousDidSpawnRecord = false
