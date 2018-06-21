@@ -88,7 +88,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     private func setupGestures() {
-        let tapGesture = TapGestureRecognizer()
+        let tapGesture = TapGestureRecognizer(withDelay: true)
         gestureManager.add(tapGesture, to: mapView)
         tapGesture.gestureUpdated = didTapOnMap(_:)
 

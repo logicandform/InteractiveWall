@@ -36,7 +36,6 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         removeExpiredDoubleTapTouches()
 
         position = touch.position
-        state = .began
 
         if !delayTap {
             gestureUpdated?(self)
@@ -44,8 +43,9 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         }
 
         // Dont update with began until startTapThresholdTime has passed
+        checkForDoubleTap(with: touch)
         Timer.scheduledTimer(withTimeInterval: Constants.startTapThresholdTime, repeats: false) { [weak self] _ in
-            if let strongSelf = self, strongSelf.state == .began {
+            if let strongSelf = self {
                 strongSelf.gestureUpdated?(strongSelf)
             }
         }
@@ -75,16 +75,21 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         case .failed:
             gestureUpdated?(self)
             doubleTapPositionAndTimeForTouch.removeValue(forKey: touch)
+            reset()
         case .began:
             gestureUpdated?(self)
             fallthrough
         default:
             state = .ended
             checkForDoubleTap(with: touch)
-            gestureUpdated?(self)
+            Timer.scheduledTimer(withTimeInterval: Constants.startTapThresholdTime, repeats: false) { [weak self] _ in
+                if let strongSelf = self {
+                    strongSelf.gestureUpdated?(strongSelf)
+                    strongSelf.reset()
+                }
+            }
         }
 
-        reset()
         positionForTouch.removeValue(forKey: touch)
     }
 
