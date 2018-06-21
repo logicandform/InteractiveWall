@@ -110,6 +110,9 @@
 		8FEABDA12064702600612C84 /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEABD9F2064702600612C84 /* MediaViewController.swift */; };
 		A407160E20AB94B800B54593 /* PriorityOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A407160D20AB94B800B54593 /* PriorityOrder.swift */; };
 		A407161220ABAE5C00B54593 /* RelationshipHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A407161120ABAE5B00B54593 /* RelationshipHelper.swift */; };
+		A456618020D9CDC400D23333 /* BorderControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A456617F20D9CDC400D23333 /* BorderControl.swift */; };
+		A456618320D9D42D00D23333 /* BorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A456618220D9D42D00D23333 /* BorderViewController.swift */; };
+		A456618520D9D43B00D23333 /* Border.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A456618420D9D43B00D23333 /* Border.storyboard */; };
 		A456CE9820D0A39E0036F020 /* SettingsTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A456CE9720D0A39E0036F020 /* SettingsTypes.swift */; };
 		A456F6C020C73826004534A4 /* SettingsMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A456F6BF20C73826004534A4 /* SettingsMenuViewController.swift */; };
 		A456F6C220C73836004534A4 /* SettingsMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A456F6C120C73836004534A4 /* SettingsMenu.storyboard */; };
@@ -265,6 +268,9 @@
 		A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_WindowExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A407160D20AB94B800B54593 /* PriorityOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityOrder.swift; sourceTree = "<group>"; };
 		A407161120ABAE5B00B54593 /* RelationshipHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipHelper.swift; sourceTree = "<group>"; };
+		A456617F20D9CDC400D23333 /* BorderControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderControl.swift; sourceTree = "<group>"; };
+		A456618220D9D42D00D23333 /* BorderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderViewController.swift; sourceTree = "<group>"; };
+		A456618420D9D43B00D23333 /* Border.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Border.storyboard; sourceTree = "<group>"; };
 		A456CE9720D0A39E0036F020 /* SettingsTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTypes.swift; sourceTree = "<group>"; };
 		A456F6BF20C73826004534A4 /* SettingsMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMenuViewController.swift; sourceTree = "<group>"; };
 		A456F6C120C73836004534A4 /* SettingsMenu.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsMenu.storyboard; sourceTree = "<group>"; };
@@ -536,6 +542,7 @@
 			isa = PBXGroup;
 			children = (
 				22A6D96A209D2936009957BB /* BaseViewController.swift */,
+				A456618120D9D41900D23333 /* BorderViewController */,
 				225FBB9F208E899900B2CD3E /* MasterViewController */,
 				8F5D5B9220A116CC00B9CBA9 /* MenuViewController */,
 				D992E20620533A0400EAB698 /* RecordViewController */,
@@ -648,6 +655,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		A456618120D9D41900D23333 /* BorderViewController */ = {
+			isa = PBXGroup;
+			children = (
+				A456618420D9D43B00D23333 /* Border.storyboard */,
+				A456618220D9D42D00D23333 /* BorderViewController.swift */,
+			);
+			path = BorderViewController;
+			sourceTree = "<group>";
+		};
 		A456F6BE20C73722004534A4 /* SettingsMenuController */ = {
 			isa = PBXGroup;
 			children = (
@@ -700,6 +716,7 @@
 				D92E0EFF206052C900C1C9A7 /* ArrowControl.swift */,
 				8F6EFD7C2098FF0800E4D97D /* FadingScrollView.swift */,
 				A457D19720C9A42900D21ABA /* SwitchControl.swift */,
+				A456617F20D9CDC400D23333 /* BorderControl.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -799,6 +816,7 @@
 			files = (
 				225FBBA3208E89C200B2CD3E /* Master.storyboard in Resources */,
 				1FAFF01C206EDD93005DC68B /* Soleil-09.otf in Resources */,
+				A456618520D9D43B00D23333 /* Border.storyboard in Resources */,
 				22A76FE720464764006C0AE7 /* PDF.storyboard in Resources */,
 				22B85B08209CF5200099F44E /* SearchItemView.xib in Resources */,
 				D5384CF72071A7FD00A157AE /* PDFTableViewItem.xib in Resources */,
@@ -967,11 +985,13 @@
 				618F0C35206A08CE00762C20 /* AudioComponentDescription.swift in Sources */,
 				22046248204730780067D9FB /* TapGestureRecognizer.swift in Sources */,
 				8FE6467B2060553100E6116A /* RegularScrollView.swift in Sources */,
+				A456618020D9CDC400D23333 /* BorderControl.swift in Sources */,
 				225FBBA5208EAF9400B2CD3E /* ControlAction.swift in Sources */,
 				2247670020562F65003E8790 /* MediaItemView.swift in Sources */,
 				22914F77204905230000D4E1 /* NSApplication.swift in Sources */,
 				A407160E20AB94B800B54593 /* PriorityOrder.swift in Sources */,
 				2204623920472FDF0067D9FB /* NetworkConfiguration.swift in Sources */,
+				A456618320D9D42D00D23333 /* BorderViewController.swift in Sources */,
 				2204623620472FDF0067D9FB /* AVKit.swift in Sources */,
 				D9F24E5F205B01A000B9FCB8 /* WindowType.swift in Sources */,
 				22914F752049001B0000D4E1 /* TouchManager.swift in Sources */,

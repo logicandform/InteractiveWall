@@ -58,6 +58,10 @@ final class Style {
     let toggleSwitchFrame = NSRect(x: 0, y: 0, width: 32, height: 16)
     let toggleSwitchOffset: CGFloat = -30
 
+    // Border Style
+    let borderSize = NSSize(width: 4, height: 2160)
+    let borderColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
+
     // Titles
     var windowTitleAttributes: [NSAttributedStringKey: Any] {
         let font = NSFont(name: "Soleil", size: 16) ?? NSFont.systemFont(ofSize: 16)

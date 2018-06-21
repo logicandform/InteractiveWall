@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="qqN-7p-iud">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Border View Controller-->
+        <scene sceneID="9o8-yf-PGf">
+            <objects>
+                <viewController id="qqN-7p-iud" customClass="BorderViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="oAq-Ij-c8P">
+                        <rect key="frame" x="0.0" y="0.0" width="4" height="2160"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yhC-Ta-DuV" customClass="BorderControl" customModule="WindowExplorer" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="4" height="2160"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            </customView>
+                        </subviews>
+                    </view>
+                    <connections>
+                        <outlet property="border" destination="yhC-Ta-DuV" id="g9n-YB-nCG"/>
+                    </connections>
+                </viewController>
+                <customObject id="uMk-IY-NQM" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="107" y="124"/>
+        </scene>
+    </scenes>
+</document>
