@@ -88,7 +88,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     private func setupGestures() {
-        let tapGesture = TapGestureRecognizer(withDelay: true)
+        let tapGesture = TapGestureRecognizer()
         gestureManager.add(tapGesture, to: mapView)
         tapGesture.gestureUpdated = didTapOnMap(_:)
 
@@ -185,12 +185,15 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                 } else if tap.state == .ended, let annotation = annotation as? CircleAnnotation, let record = recordForAnnotation[annotation] {
                     postRecordNotification(for: record, at: CGPoint(x: positionInView.x, y: positionInView.y - 20.0))
                     return
+                } else if tap.state == .doubleTapped {
+                    return
                 }
             }
         }
 
         if tap.state == .doubleTapped {
             handleDoubleTap(at: position)
+            return
         }
     }
 
