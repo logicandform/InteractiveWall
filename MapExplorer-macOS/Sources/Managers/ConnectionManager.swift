@@ -12,11 +12,11 @@ final class ConnectionManager {
 
     static let instance = ConnectionManager()
 
-    /// The state for each app indexed by it's appID
-    private var stateForApp: [AppState]
-
     /// The handler for map associated events
     var mapHandler: MapHandler?
+
+    /// The state for each app indexed by it's appID
+    private var stateForApp: [AppState]
 
     private struct Keys {
         static let id = "id"
@@ -104,6 +104,7 @@ final class ConnectionManager {
             split(from: id, group: group)
         case SettingsNotification.merge.name:
             merge(from: id, group: group)
+            syncApps(inGroup: group)
         default:
             return
         }
@@ -191,6 +192,9 @@ final class ConnectionManager {
                 // If app is farther or equal to the group then the app splitting, join the closest appID
                 if abs(appGroup - app) >= abs(appGroup - id) {
                     stateForApp[app] = AppState(pair: nil, group: closestApp, type: state.type)
+                    if app == neighborID {
+                        startTimerForApp(id: app, with: Type)
+                    }
                 }
             } else if state.group == nil {
                 // Group with the closest of the two apps being split
@@ -259,6 +263,7 @@ final class ConnectionManager {
             if state.group == nil {
                 let group = findGroupForApp(id: app, of: type)
                 stateForApp[app] = AppState(pair: nil, group: group, type: state.type)
+                syncApps(inGroup: group)
             }
         }
     }
@@ -275,6 +280,33 @@ final class ConnectionManager {
         let externalApps = sortedAppStates.dropFirst()
         let filteredApps = externalApps.filter { $0.1.type == type }
         return filteredApps.compactMap({ $0.1.group }).first
+    }
+
+    /// Send position notification that won't cause app's to pair but causes map to sync together
+    private func syncApps(inGroup group: Int?) {
+        let type = typeForApp(id: group)
+
+        switch type {
+        case .mapExplorer:
+            if let mapHandler = mapHandler, let group = group, mapHandler.mapID == group {
+                let mapRect = mapHandler.mapView.visibleMapRect
+                mapHandler.send(mapRect, for: .momentum, forced: true)
+            }
+        default:
+            return
+        }
+    }
+
+    /// Starts the ungroup timer for the map handler associated with the given mapID
+    private func startTimerForApp(id: Int, with type: ApplicationType) {
+        switch type {
+        case .mapExplorer:
+            if let mapHandler = mapHandler, mapHandler.mapID == id {
+                mapHandler.endUpdates()
+            }
+        default:
+            return
+        }
     }
 
     /// Returns the screen id of the given app id

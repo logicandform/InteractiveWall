@@ -28,7 +28,7 @@ class MapHandler {
     private weak var ungroupTimer: Foundation.Timer?
 
     private struct Constants {
-        static let ungroupTimeoutPeriod: TimeInterval = 10
+        static let ungroupTimeoutPeriod: TimeInterval = 30
         static let verticalPanLimit: Double = 100000000
         static let verticalVisibleMapRatio = 0.25
     }
@@ -63,13 +63,14 @@ class MapHandler {
         // Filter position updates; state will be nil receiving when receiving from momentum, else id must match pair
         if pair == nil || pair! == fromID {
             activityState = .active
-            set(mapRect, from: fromID, animated: animated)
+            let adjustedMapRect = adjust(mapRect, toMap: mapID, fromMap: fromID)
+            mapView.setVisibleMapRect(adjustedMapRect, animated: animated)
         }
     }
 
-    func send(_ mapRect: MKMapRect, for gestureState: GestureState = .recognized, animated: Bool = false) {
+    func send(_ mapRect: MKMapRect, for gestureState: GestureState = .recognized, animated: Bool = false, forced: Bool = false) {
         // If sending from momentum but another map has interrupted, ignore
-        if gestureState == .momentum && pair != nil {
+        if gestureState == .momentum && pair != nil && !forced {
             return
         }
 
@@ -89,7 +90,7 @@ class MapHandler {
         beginUngroupTimer()
     }
 
-    func reset() {
+    func reset(animated: Bool = true) {
         let canadaRect = MapConstants.canadaRect
         if Configuration.appsPerScreen == 1 {
             mapView.setVisibleMapRect(MKMapRect(origin: canadaRect.origin, size: canadaRect.size), animated: true)
@@ -104,10 +105,9 @@ class MapHandler {
 
     // MARK: Helpers
 
-    /// Sets the visble rect of self.mapView based on the current pairedID, else self.mapID
-    private func set(_ mapRect: MKMapRect, from pair: Int?, animated: Bool) {
+    private func adjust(_ mapRect: MKMapRect, toMap map: Int, fromMap pair: Int?) -> MKMapRect {
         var xOrigin = 0.0
-        let pairedID = pair ?? mapID
+        let pairedID = pair ?? map
         let canadaRect = MapConstants.canadaRect
         if mapRect.origin.x > MKMapSizeWorld.width - mapRect.size.width {
             xOrigin = mapRect.origin.x - MKMapSizeWorld.width + Double(mapID - pairedID) * mapRect.size.width
@@ -128,8 +128,7 @@ class MapHandler {
             yOrigin = Constants.verticalPanLimit - mapRect.size.height * Constants.verticalVisibleMapRatio
         }
 
-        let mapOrigin = MKMapPointMake(xOrigin, yOrigin)
-        mapView.setVisibleMapRect(MKMapRect(origin: mapOrigin, size: mapRect.size), animated: animated)
+        return MKMapRect(origin: MKMapPointMake(xOrigin, yOrigin), size: mapRect.size)
     }
 
     /// Resets the pairedDeviceID after a timeout period

@@ -66,7 +66,7 @@ final class TouchManager: SocketManagerDelegate {
         let portName = "MapListener\(map)"
         if let serverPort = CFMessagePortCreateRemote(nil, portName as CFString) {
             let touchData = touch.toData()
-            CFMessagePortSendRequest(serverPort, 1, touchData as CFData, 1.0, 1.0, nil, nil)
+            CFMessagePortSendRequest(serverPort, 1, touchData as CFData, 1, 1, nil, nil)
         }
         updateTouchesForMap(with: touch, for: map)
     }
