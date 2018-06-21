@@ -193,6 +193,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                         previousDidSpawnRecord = true
                         return
                     } else {
+                        previousDidSpawnRecord = false
                         return
                     }
                 }
