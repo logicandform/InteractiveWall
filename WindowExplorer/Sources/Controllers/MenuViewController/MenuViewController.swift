@@ -33,8 +33,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
 
     var gestureManager: GestureManager!
     private var appID: Int!
-    private var viewForButtonType = [MenuButtonType: NSView]()
-//    private var subviewForButtonType = [MenuButtonType: MenuButton]()
+    private var viewForButtonType = [MenuButtonType: MenuButton]()
     private var stateForButton = [MenuButtonType: ButtonState]()
     private var mergeLockIcon: NSView?
     private var mergeLocked = false
@@ -85,13 +84,13 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     }
 
     func toggleMergeLock(on: Bool) {
-        if mergeLocked != on, let splitButton = viewForButtonType[MenuButtonType.split] as? MenuButton {
+        if mergeLocked != on, let splitButton = viewForButtonType[MenuButtonType.split] {
             mergeLocked = splitButton.toggleLockIcon(on: on)
         }
     }
 
     func toggle(_ type: MenuButtonType, to state: ButtonState) {
-        guard let currentState = stateForButton[type], currentState != state || type == .search, let button = viewForButtonType[type] as? MenuButton else {
+        guard let currentState = stateForButton[type], currentState != state || type == .search, let button = viewForButtonType[type] else {
             return
         }
 
@@ -225,7 +224,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     // MARK: Helpers
 
     private func setupButton(for type: MenuButtonType) {
-        guard let view = viewForButtonType[type] as? MenuButton else {
+        guard let view = viewForButtonType[type] else {
             return
         }
 

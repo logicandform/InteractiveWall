@@ -9,6 +9,7 @@ class MenuButton: NSView {
 
     @IBOutlet weak var contentView: NSView!
     @IBOutlet weak var lockView: NSView!
+    @IBOutlet weak var lockIcon: NSImageView!
 
     var buttonType: MenuButtonType! {
         didSet {
@@ -26,6 +27,11 @@ class MenuButton: NSView {
 
 
     // MARK: Init
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+    }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -46,13 +52,7 @@ class MenuButton: NSView {
         }
 
         layer?.contents = imageIcon
-
-        guard let lockIcon = buttonType.detailImage else {
-            return
-        }
-
-        lockView.wantsLayer = true
-        lockView.layer?.contents = lockIcon
+        lockIcon.isHidden = true
     }
 
 
@@ -65,12 +65,11 @@ class MenuButton: NSView {
     }
 
     func toggleLockIcon(on: Bool) -> Bool {
-        if let lockView = lockView {
-            let lockImage = on ? buttonType.detailImage : nil
-            lockView.transition(to: lockImage, duration: Constants.imageTransitionDuration)
-            return on
+        guard buttonType.detailImage != nil else {
+            return false
         }
 
-        return false
+        lockIcon.isHidden = !on
+        return on
     }
 }
