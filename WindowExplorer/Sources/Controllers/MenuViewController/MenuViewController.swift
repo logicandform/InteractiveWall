@@ -334,20 +334,22 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     }
 
     private func centeredPosition(for button: NSImageView, with frame: CGSize) -> CGPoint {
-        guard let buttonWindowPosition = button.window?.frame, let screenBounds = NSScreen.containing(x: buttonWindowPosition.origin.x)?.frame else {
-            return CGPoint(x: 0, y: 0)
+        guard let buttonWindowPosition = button.window?.frame else {
+            return CGPoint.zero
         }
 
-        let buttonTop = buttonWindowPosition.origin.y + button.frame.origin.y + button.frame.height - frame.height
-        let minimumX = max(buttonWindowPosition.minX, screenBounds.minX)
+        let screenBounds = NSScreen.at(position: (appID / Configuration.appsPerScreen) + 1).frame
+        let windowBottom = buttonWindowPosition.origin.y + button.frame.origin.y + button.frame.height - frame.height
 
-        let y = max(buttonTop, screenBounds.minY)
+        let screenMin = screenBounds.minX
+        let halfAppWidth = screenBounds.width / CGFloat(Configuration.appsPerScreen) / 2
+        let halfFrameWidth = frame.width / 2
+        let offsetX = appID % Configuration.appsPerScreen == 0 ? halfAppWidth : halfAppWidth * 3
 
-        if minimumX == screenBounds.minX {
-            return CGPoint(x: screenBounds.minX + ((screenBounds.width / CGFloat(Configuration.appsPerScreen)) / 2) - (frame.width / 2), y: y)
-        } else {
-            return CGPoint(x: screenBounds.maxX - ((screenBounds.width / CGFloat(Configuration.appsPerScreen)) / 2) - (frame.width / 2), y: y)
-        }
+        let x = offsetX + screenMin - halfFrameWidth
+        let y = max(windowBottom, screenBounds.minY)
+
+        return CGPoint(x: x, y: y)
     }
 
     private func position(for button: NSImageView, frame: CGSize, margins: Bool = true) -> CGPoint {
