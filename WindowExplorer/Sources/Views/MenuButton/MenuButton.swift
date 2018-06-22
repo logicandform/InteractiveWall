@@ -68,7 +68,11 @@ class MenuButton: NSView {
             return false
         }
 
-        lockIcon.isHidden = !on
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = Constants.imageTransitionDuration
+            lockIcon.animator().isHidden = !on
+        })
+
         return on
     }
 }
