@@ -243,16 +243,16 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     }
 
     private func addGesture(for type: MenuButtonType) {
-        guard let view = viewForButtonType[type] else {
+        guard let button = viewForButtonType[type] else {
             return
         }
 
         let panGesture = PanGestureRecognizer()
-        gestureManager.add(panGesture, to: view)
+        gestureManager.add(panGesture, to: button)
         panGesture.gestureUpdated = handleWindowPan(_:)
 
         let tapGesture = TapGestureRecognizer()
-        gestureManager.add(tapGesture, to: view)
+        gestureManager.add(tapGesture, to: button)
         tapGesture.gestureUpdated = { [weak self] tap in
             if tap.state == .ended {
                 self?.didSelect(type: type)
