@@ -21,7 +21,6 @@
 		1FAFF022206EDD93005DC68B /* Soleil-02.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF016206EDD93005DC68B /* Soleil-02.otf */; };
 		1FAFF023206EDD93005DC68B /* Soleil-06.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF017206EDD93005DC68B /* Soleil-06.otf */; };
 		2204620E20472DE80067D9FB /* RelatedItemListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204620A20472DE80067D9FB /* RelatedItemListView.swift */; };
-		2204621020472DE80067D9FB /* RelatedItemListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2204620C20472DE80067D9FB /* RelatedItemListView.xib */; };
 		2204621720472F2D0067D9FB /* PlayerControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2204621420472F2D0067D9FB /* PlayerControl.xib */; };
 		2204621820472F2D0067D9FB /* PlayerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204621520472F2D0067D9FB /* PlayerState.swift */; };
 		2204621920472F2D0067D9FB /* PlayerControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204621620472F2D0067D9FB /* PlayerControl.swift */; };
@@ -43,8 +42,13 @@
 		22046259204730C70067D9FB /* School.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624E204730C70067D9FB /* School.swift */; };
 		2204625D204730C70067D9FB /* TouchProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046252204730C70067D9FB /* TouchProperties.swift */; };
 		2222B13C20D9866900ECCB5D /* SettingsNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2222B13B20D9866900ECCB5D /* SettingsNotifications.swift */; };
+		2222C7BF20DC020200B76D12 /* RelatedItemListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2204620C20472DE80067D9FB /* RelatedItemListView.xib */; };
+		2222C7C320DC028000B76D12 /* TestimonyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2222C7C120DC028000B76D12 /* TestimonyViewController.swift */; };
+		2222C7C620DC028D00B76D12 /* Testimony.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2222C7C520DC028D00B76D12 /* Testimony.storyboard */; };
 		2224125E206BFE9F008E7A9D /* RecordType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2224125D206BFE9F008E7A9D /* RecordType.swift */; };
 		222A94EB20D9D50A00B4AE4E /* MenuManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222A94EA20D9D50A00B4AE4E /* MenuManager.swift */; };
+		222EA54020DC14F400DB16CA /* TestimonyItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222EA53E20DC14F400DB16CA /* TestimonyItemView.swift */; };
+		222EA54120DC14F400DB16CA /* TestimonyItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 222EA53F20DC14F400DB16CA /* TestimonyItemView.xib */; };
 		223613E720509D920024145C /* LastTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223613E620509D920024145C /* LastTwo.swift */; };
 		2243C7DD2093A10F00CE2CA0 /* ApplicationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2243C7DC2093A10F00CE2CA0 /* ApplicationType.swift */; };
 		2247670020562F65003E8790 /* MediaItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224766FE20562F65003E8790 /* MediaItemView.swift */; };
@@ -192,8 +196,12 @@
 		2204624E204730C70067D9FB /* School.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = School.swift; sourceTree = "<group>"; };
 		22046252204730C70067D9FB /* TouchProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchProperties.swift; sourceTree = "<group>"; };
 		2222B13B20D9866900ECCB5D /* SettingsNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotifications.swift; sourceTree = "<group>"; };
+		2222C7C120DC028000B76D12 /* TestimonyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestimonyViewController.swift; sourceTree = "<group>"; };
+		2222C7C520DC028D00B76D12 /* Testimony.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Testimony.storyboard; sourceTree = "<group>"; };
 		2224125D206BFE9F008E7A9D /* RecordType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordType.swift; sourceTree = "<group>"; };
 		222A94EA20D9D50A00B4AE4E /* MenuManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuManager.swift; sourceTree = "<group>"; };
+		222EA53E20DC14F400DB16CA /* TestimonyItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestimonyItemView.swift; sourceTree = "<group>"; };
+		222EA53F20DC14F400DB16CA /* TestimonyItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TestimonyItemView.xib; sourceTree = "<group>"; };
 		223613E620509D920024145C /* LastTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastTwo.swift; sourceTree = "<group>"; };
 		2243C7DC2093A10F00CE2CA0 /* ApplicationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationType.swift; sourceTree = "<group>"; };
 		224766FE20562F65003E8790 /* MediaItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaItemView.swift; sourceTree = "<group>"; };
@@ -386,6 +394,25 @@
 			path = Gestures;
 			sourceTree = "<group>";
 		};
+		2222C7C020DC024F00B76D12 /* TestimonyViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2222C7C520DC028D00B76D12 /* Testimony.storyboard */,
+				2222C7C120DC028000B76D12 /* TestimonyViewController.swift */,
+				222EA53D20DC117C00DB16CA /* Views */,
+			);
+			path = TestimonyViewController;
+			sourceTree = "<group>";
+		};
+		222EA53D20DC117C00DB16CA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				222EA53F20DC14F400DB16CA /* TestimonyItemView.xib */,
+				222EA53E20DC14F400DB16CA /* TestimonyItemView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		225FBB9F208E899900B2CD3E /* MasterViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -544,10 +571,11 @@
 				22A6D96A209D2936009957BB /* BaseViewController.swift */,
 				A456618120D9D41900D23333 /* BorderViewController */,
 				225FBB9F208E899900B2CD3E /* MasterViewController */,
+				8FEABD9E20646FF600612C84 /* MediaControllers */,
 				8F5D5B9220A116CC00B9CBA9 /* MenuViewController */,
 				D992E20620533A0400EAB698 /* RecordViewController */,
-				8FEABD9E20646FF600612C84 /* MediaControllers */,
 				22B85AFF209CF0D80099F44E /* SearchViewController */,
+				2222C7C020DC024F00B76D12 /* TestimonyViewController */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -781,7 +809,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = JABT;
 				TargetAttributes = {
 					22A9231C2044AF05003EA9BB = {
@@ -815,6 +843,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				225FBBA3208E89C200B2CD3E /* Master.storyboard in Resources */,
+				2222C7C620DC028D00B76D12 /* Testimony.storyboard in Resources */,
 				1FAFF01C206EDD93005DC68B /* Soleil-09.otf in Resources */,
 				A456618520D9D43B00D23333 /* Border.storyboard in Resources */,
 				22A76FE720464764006C0AE7 /* PDF.storyboard in Resources */,
@@ -824,9 +853,8 @@
 				1FAFF023206EDD93005DC68B /* Soleil-06.otf in Resources */,
 				A460292920B4C689000F902E /* Menu.storyboard in Resources */,
 				22A923252044AF05003EA9BB /* Assets.xcassets in Resources */,
-				2204621020472DE80067D9FB /* RelatedItemListView.xib in Resources */,
+				2222C7BF20DC020200B76D12 /* RelatedItemListView.xib in Resources */,
 				8F8DE19020A3C48C006FA48B /* RelatedItemImageView.xib in Resources */,
-				2204621020472DE80067D9FB /* RelatedItemListView.xib in Resources */,
 				A456F6C220C73836004534A4 /* SettingsMenu.storyboard in Resources */,
 				CD7B3CD120ADFB1400723BDB /* ZoomControl.xib in Resources */,
 				1FAFF01B206EDD93005DC68B /* Soleil-04.otf in Resources */,
@@ -842,6 +870,7 @@
 				1FAFF022206EDD93005DC68B /* Soleil-02.otf in Resources */,
 				D992E20D20533A6200EAB698 /* Record.storyboard in Resources */,
 				1FAFF01A206EDD93005DC68B /* Soleil-00.otf in Resources */,
+				222EA54120DC14F400DB16CA /* TestimonyItemView.xib in Resources */,
 				1FAFF018206EDD93005DC68B /* Soleil-03.otf in Resources */,
 				22B85B03209CF1040099F44E /* Search.storyboard in Resources */,
 				D9F24E64205B041200B9FCB8 /* Image.storyboard in Resources */,
@@ -961,9 +990,11 @@
 				618F0C292069F8F000762C20 /* AKPlayer.swift in Sources */,
 				2204621920472F2D0067D9FB /* PlayerControl.swift in Sources */,
 				22B1E2CF204638CA00BDDF14 /* GestureHandler.swift in Sources */,
+				2222C7C320DC028000B76D12 /* TestimonyViewController.swift in Sources */,
 				22A49878204749C30024B46C /* TouchState.swift in Sources */,
 				2204623720472FDF0067D9FB /* PacketType.swift in Sources */,
 				D9F24E5B2059DD1900B9FCB8 /* RecordFactory.swift in Sources */,
+				222EA54020DC14F400DB16CA /* TestimonyItemView.swift in Sources */,
 				223613E720509D920024145C /* LastTwo.swift in Sources */,
 				2204623320472FDF0067D9FB /* CoreGraphics.swift in Sources */,
 				8FA62A08206BFAFC004E6092 /* RecordInfo.swift in Sources */,

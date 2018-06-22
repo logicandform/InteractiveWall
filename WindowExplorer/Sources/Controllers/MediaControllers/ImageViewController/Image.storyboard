@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="stH-E5-D9l">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="stH-E5-D9l">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -45,9 +45,9 @@
                                         </constraints>
                                     </customView>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1GK-FO-lwr">
-                                        <rect key="frame" x="46" y="0.0" width="588" height="30"/>
+                                        <rect key="frame" x="46" y="0.0" width="588" height="29"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="g5g-AP-8FI"/>
+                                            <constraint firstAttribute="height" constant="29" id="g5g-AP-8FI"/>
                                         </constraints>
                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" usesSingleLineMode="YES" id="HlC-v9-VHL">
                                             <font key="font" metaFont="system" size="16"/>
@@ -95,21 +95,21 @@
                                 </scroller>
                             </scrollView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="JxA-3p-oGM" customClass="ZoomControl" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="8" y="0.0" width="624" height="40"/>
+                                <rect key="frame" x="40" y="0.0" width="560" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="7WH-LO-dIK"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="624" id="hD0-oz-YGB"/>
-                                    <constraint firstAttribute="width" constant="624" id="osd-K3-vUn"/>
                                 </constraints>
                             </customView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="JxA-3p-oGM" firstAttribute="top" secondItem="WTp-wA-9SL" secondAttribute="bottom" id="3Ag-R2-ecv"/>
+                            <constraint firstItem="JxA-3p-oGM" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="40" id="3ku-Nm-0Yz"/>
                             <constraint firstItem="529-pd-R3M" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" id="6Jt-qE-li2"/>
                             <constraint firstItem="JxA-3p-oGM" firstAttribute="centerX" secondItem="WTp-wA-9SL" secondAttribute="centerX" id="EVK-nM-amX"/>
                             <constraint firstAttribute="bottom" secondItem="JxA-3p-oGM" secondAttribute="bottom" id="Egh-mV-YbL"/>
                             <constraint firstAttribute="trailing" secondItem="WTp-wA-9SL" secondAttribute="trailing" constant="8" id="Uvu-Og-omp"/>
                             <constraint firstItem="529-pd-R3M" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="WnV-SU-5jv"/>
+                            <constraint firstAttribute="trailing" secondItem="JxA-3p-oGM" secondAttribute="trailing" constant="40" id="Xhc-0r-yht"/>
                             <constraint firstItem="WTp-wA-9SL" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="8" id="dsS-3c-P65"/>
                             <constraint firstAttribute="trailing" secondItem="529-pd-R3M" secondAttribute="trailing" id="qKh-TI-HmK"/>
                             <constraint firstItem="WTp-wA-9SL" firstAttribute="top" secondItem="529-pd-R3M" secondAttribute="bottom" id="yIW-4a-jsl"/>

@@ -3,7 +3,7 @@
 import Foundation
 import MapKit
 
-class Artifact: Hashable {
+final class Artifact: Hashable {
 
     let id: Int
     let title: String

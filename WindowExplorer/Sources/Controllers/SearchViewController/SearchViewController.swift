@@ -67,7 +67,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         super.viewDidLoad()
         titleLabel.attributedStringValue = NSAttributedString(string: titleLabel.stringValue, attributes: style.windowTitleAttributes)
         relationshipHelper.parent = self
-        relationshipHelper.recordClosed = unselectRecord(_:)
+        relationshipHelper.controllerClosed = unselectRecordForController(_:)
 
         setupGestures()
         setupScrollViews()
@@ -148,8 +148,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     }
 
     private func handleCollectionViewTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer,
-            tap.state == .ended,
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended,
             let collectionView = gestureManager.view(for: tap) as? NSCollectionView,
             let location = tap.position,
             let indexPath = collectionView.indexPathForItem(at: location + collectionView.visibleRect.origin),
@@ -469,7 +468,11 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
     }
 
-    private func unselectRecord(_ record: RecordDisplayable) {
+    private func unselectRecordForController(_ controller: BaseViewController) {
+        guard let recordViewController = controller as? RecordViewController, let record = recordViewController.record else {
+            return
+        }
+
         let recordProxy = RecordProxy(id: record.id, type: record.type)
         selectedRecords.remove(recordProxy)
 

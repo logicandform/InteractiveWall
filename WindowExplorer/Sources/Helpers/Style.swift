@@ -10,19 +10,11 @@ final class Style {
     let selectedColor = NSColor(calibratedRed: 0, green: 200/255, blue: 1, alpha: 1)
     let unselectedRecordIcon = NSColor.gray
     let dragAreaBackground = NSColor.black.withAlphaComponent(0.85)
-
-    // Records
     let artifactColor = NSColor(calibratedRed: 128/255, green: 1/255, blue: 206/255, alpha: 1)
     let schoolColor = NSColor(calibratedRed: 78/255, green: 106/255, blue: 200/255, alpha: 1)
     let eventColor = NSColor(calibratedRed: 145/255, green: 18/255, blue: 88/255, alpha: 1)
     let organizationColor = NSColor(calibratedRed: 16/255, green: 147/255, blue: 79/255, alpha: 1)
-    let imageFilterTypeColor = NSColor.red
-    let relatedRecordsMaxSize = CGSize(width: 300, height: 534)
-
-    // Related Items
-    let relatedItemColor = NSColor(calibratedRed: 75/255, green: 91/255, blue: 100/255, alpha: 1)
-    let noRelatedItemsColor = NSColor(calibratedRed: 33/255, green: 33/255, blue: 33/255, alpha: 1)
-    let relatedItemBackgroundColor = NSColor(calibratedRed: 0.08, green: 0.10, blue: 0.11, alpha: 1)
+    let testimonyColor = NSColor(calibratedRed: 0.96, green: 0.51, blue: 0.07, alpha: 1)
 
     // Windows
     let recordWindowSize = CGSize(width: 416, height: 650)
@@ -31,6 +23,8 @@ final class Style {
     let playerWindowSize = CGSize(width: 640, height: 440)
     let searchWindowSize = CGSize(width: 350, height: 655)
     let searchScrollViewSize = CGSize(width: 350, height: 610)
+    let borderWindowSize = NSSize(width: 4, height: 2160)
+    let testimonyWindowSize = CGSize(width: 416, height: 655)
     let minMediaWindowWidth: CGFloat = 550
     let maxMediaWindowWidth: CGFloat = 700
     let minMediaWindowHeight: CGFloat = 275
@@ -40,14 +34,21 @@ final class Style {
     // Controllers
     let controllerOffset = 50
 
-    // Menu
+    // Record Controller
+    let imageFilterTypeColor = NSColor.red
+    let relatedRecordsMaxSize = CGSize(width: 300, height: 534)
+    let relatedItemColor = NSColor(calibratedRed: 75/255, green: 91/255, blue: 100/255, alpha: 1)
+    let noRelatedItemsColor = NSColor(calibratedRed: 33/255, green: 33/255, blue: 33/255, alpha: 1)
+    let relatedItemBackgroundColor = NSColor(calibratedRed: 0.08, green: 0.10, blue: 0.11, alpha: 1)
+
+    // Menu Controller
     let menuWindowSize = CGSize(width: 50, height: 300)
     let menuImageSize = CGSize(width: 50, height: 50)
     let menuSelectedColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
-    let menuLockIconPosition = CGSize(width: -3, height: 3)
+    let menuLockIconPosition = CGPoint(x: -3, y: 3)
     let menuSecondarySelectedColor = NSColor(calibratedRed: 0.06, green: 0.28, blue: 0.24, alpha: 1)
 
-    // Settings
+    // Settings Controller
     let settingsWindowSize = CGSize(width: 275, height: 245)
     let artifactSecondarySelectedColor = NSColor(calibratedRed: 0.17, green: 0, blue: 0.27, alpha: 1)
     let schoolSecondarySelectedColor = NSColor(calibratedRed: 0, green: 0.19, blue: 0.32, alpha: 1)
@@ -58,9 +59,9 @@ final class Style {
     let toggleSwitchFrame = NSRect(x: 0, y: 0, width: 32, height: 16)
     let toggleSwitchOffset: CGFloat = -30
 
-    // Border Style
-    let borderSize = NSSize(width: 4, height: 2160)
+    // Border Controller
     let borderColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
+
 
     // Titles
     var windowTitleAttributes: [NSAttributedStringKey: Any] {

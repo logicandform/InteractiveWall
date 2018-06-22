@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="1Ij-Lj-j0K">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="1Ij-Lj-j0K">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
-        <plugIn identifier="com.apple.pdfkit.ibplugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <plugIn identifier="com.apple.pdfkit.ibplugin" version="14113"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -40,9 +40,9 @@
                                         </constraints>
                                     </customView>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FZL-O2-tAp">
-                                        <rect key="frame" x="46" y="0.0" width="588" height="30"/>
+                                        <rect key="frame" x="46" y="0.0" width="588" height="29"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="zkM-Nh-jSx"/>
+                                            <constraint firstAttribute="height" constant="29" id="zkM-Nh-jSx"/>
                                         </constraints>
                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" usesSingleLineMode="YES" id="748-1L-Vho">
                                             <font key="font" size="16" name="Soleil"/>
@@ -195,10 +195,8 @@
                                 </scroller>
                             </scrollView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="8eD-Q9-Rkj" customClass="ZoomControl" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="116" y="0.0" width="516" height="40"/>
+                                <rect key="frame" x="156" y="0.0" width="436" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="516" id="CCI-1K-M94"/>
-                                    <constraint firstAttribute="width" constant="516" id="DoS-RN-9Jb"/>
                                     <constraint firstAttribute="height" constant="40" id="PLD-LS-6VW"/>
                                 </constraints>
                             </customView>
@@ -212,6 +210,7 @@
                             <constraint firstItem="dYk-YZ-F2X" firstAttribute="leading" secondItem="MNf-ca-Rd2" secondAttribute="leading" id="VdI-2X-rm1"/>
                             <constraint firstAttribute="trailing" secondItem="MNf-ca-Rd2" secondAttribute="trailing" constant="8" id="aEk-z9-6Hr"/>
                             <constraint firstItem="8eD-Q9-Rkj" firstAttribute="centerX" secondItem="MNf-ca-Rd2" secondAttribute="centerX" id="aMm-d5-JMG"/>
+                            <constraint firstItem="8eD-Q9-Rkj" firstAttribute="trailing" secondItem="LrV-6C-x9X" secondAttribute="trailing" constant="-40" id="bRh-VE-Jaf"/>
                             <constraint firstItem="u0A-Yb-xpw" firstAttribute="trailing" secondItem="MNf-ca-Rd2" secondAttribute="trailing" id="d4e-6x-9Ho"/>
                             <constraint firstItem="u0A-Yb-xpw" firstAttribute="top" secondItem="MNf-ca-Rd2" secondAttribute="top" id="i6I-1S-ZWw"/>
                             <constraint firstItem="aNn-xH-yEO" firstAttribute="top" secondItem="QK0-JK-wDg" secondAttribute="bottom" id="iNt-qa-r8B"/>
@@ -220,6 +219,7 @@
                             <constraint firstItem="dYk-YZ-F2X" firstAttribute="top" secondItem="MNf-ca-Rd2" secondAttribute="top" id="mpj-LF-904"/>
                             <constraint firstItem="MNf-ca-Rd2" firstAttribute="leading" secondItem="aNn-xH-yEO" secondAttribute="trailing" constant="8" id="oWM-oh-agk"/>
                             <constraint firstAttribute="trailing" secondItem="QK0-JK-wDg" secondAttribute="trailing" id="og7-JT-nYV"/>
+                            <constraint firstItem="8eD-Q9-Rkj" firstAttribute="leading" secondItem="LrV-6C-x9X" secondAttribute="leading" constant="40" id="t2G-OZ-wn0"/>
                             <constraint firstItem="MNf-ca-Rd2" firstAttribute="top" secondItem="QK0-JK-wDg" secondAttribute="bottom" id="xN6-z0-1pe"/>
                             <constraint firstItem="aNn-xH-yEO" firstAttribute="leading" secondItem="l0O-E9-8FM" secondAttribute="leading" id="xQO-5l-BlL"/>
                         </constraints>

@@ -2,7 +2,7 @@
 
 import Foundation
 
-class Theme: Hashable {
+final class Theme: Hashable {
 
     let id: Int
     let title: String

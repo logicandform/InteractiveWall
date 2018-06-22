@@ -3,8 +3,8 @@
 import Foundation
 import PromiseKit
 
-final class RecordFactory {
 
+final class RecordFactory {
 
     static func record(for type: RecordType, id: Int, completion: @escaping ((RecordDisplayable?) -> Void)) {
         switch type {
@@ -18,6 +18,21 @@ final class RecordFactory {
             organization(id: id, completion: completion)
         case .theme:
             theme(id: id, completion: completion)
+        }
+    }
+
+    static func records(for type: RecordType, ids: [Int], completion: @escaping (([RecordDisplayable]?) -> Void)) {
+        switch type {
+        case .artifact:
+            artifacts(ids: ids, completion: completion)
+        case .school:
+            schools(ids: ids, completion: completion)
+        case .event:
+            events(ids: ids, completion: completion)
+        case .organization:
+            organizations(ids: ids, completion: completion)
+        case .theme:
+            themes(ids: ids, completion: completion)
         }
     }
 
@@ -76,6 +91,19 @@ final class RecordFactory {
         }
     }
 
+    private static func artifacts(ids: [Int], completion: @escaping (([RecordDisplayable]?) -> Void)) {
+        let promises = ids.map { CachingNetwork.getArtifact(by: $0) }
+
+        firstly {
+            when(fulfilled: promises)
+        }.then { artifacts -> Void in
+            completion(artifacts)
+        }.catch { error in
+            print(error)
+            completion(nil)
+        }
+    }
+
     private static func artifacts(completion: @escaping (([RecordDisplayable]?) -> Void)) {
         firstly {
             try CachingNetwork.getArtifacts()
@@ -106,6 +134,19 @@ final class RecordFactory {
             CachingNetwork.getSchool(by: id)
         }.then { school -> Void in
             completion(school)
+        }.catch { error in
+            print(error)
+            completion(nil)
+        }
+    }
+
+    private static func schools(ids: [Int], completion: @escaping (([RecordDisplayable]?) -> Void)) {
+        let promises = ids.map { CachingNetwork.getTheme(by: $0) }
+
+        firstly {
+            when(fulfilled: promises)
+        }.then { schools -> Void in
+            completion(schools)
         }.catch { error in
             print(error)
             completion(nil)
@@ -148,6 +189,19 @@ final class RecordFactory {
         }
     }
 
+    private static func events(ids: [Int], completion: @escaping (([RecordDisplayable]?) -> Void)) {
+        let promises = ids.map { CachingNetwork.getTheme(by: $0) }
+
+        firstly {
+            when(fulfilled: promises)
+        }.then { events -> Void in
+            completion(events)
+        }.catch { error in
+            print(error)
+            completion(nil)
+        }
+    }
+
     private static func events(completion: @escaping (([RecordDisplayable]?) -> Void)) {
         firstly {
             try CachingNetwork.getEvents()
@@ -184,6 +238,19 @@ final class RecordFactory {
         }
     }
 
+    private static func organizations(ids: [Int], completion: @escaping (([RecordDisplayable]?) -> Void)) {
+        let promises = ids.map { CachingNetwork.getTheme(by: $0) }
+
+        firstly {
+            when(fulfilled: promises)
+        }.then { organizations -> Void in
+            completion(organizations)
+        }.catch { error in
+            print(error)
+            completion(nil)
+        }
+    }
+
     private static func organizations(completion: @escaping (([RecordDisplayable]?) -> Void)) {
         firstly {
             try CachingNetwork.getOrganizations()
@@ -214,6 +281,19 @@ final class RecordFactory {
             CachingNetwork.getTheme(by: id)
         }.then { theme -> Void in
             completion(theme)
+        }.catch { error in
+            print(error)
+            completion(nil)
+        }
+    }
+
+    private static func themes(ids: [Int], completion: @escaping (([RecordDisplayable]?) -> Void)) {
+        let promises = ids.map { CachingNetwork.getTheme(by: $0) }
+
+        firstly {
+            when(fulfilled: promises)
+        }.then { themes -> Void in
+            completion(themes)
         }.catch { error in
             print(error)
             completion(nil)

@@ -40,8 +40,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private struct Constants {
         static let allRecordsTitle = "RECORDS"
         static let animationDuration = 0.5
-        static let mediaControllerOffset = 50
-        static let closeWindowTimeoutPeriod: TimeInterval = 300
+        static let closeWindowTimeoutPeriod = 300.0
         static let animationDistanceThreshold: CGFloat = 20
         static let showRelatedItemViewRotation: CGFloat = 45
         static let relatedItemsViewMargin: CGFloat = 12

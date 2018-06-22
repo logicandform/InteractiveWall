@@ -3,7 +3,7 @@
 import Foundation
 import MapKit
 
-class Event: Hashable {
+final class Event: Hashable {
 
     let id: Int
     let title: String

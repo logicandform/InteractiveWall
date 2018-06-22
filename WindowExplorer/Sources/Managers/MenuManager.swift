@@ -21,14 +21,14 @@ final class MenuManager {
 
     // MARK: API
 
-    func createMenus() {
+    func createMenusAndBorders() {
         for screen in (1 ... Configuration.numberOfScreens) {
             let screenFrame = NSScreen.at(position: screen).frame
 
             for appIndex in (0 ..< Configuration.appsPerScreen) {
                 let x = appIndex % 2 == 0 ? screenFrame.minX : screenFrame.maxX - style.menuWindowSize.width
                 let y = screenFrame.midY - style.menuWindowSize.height / 2
-                let borderXPosition = (screenFrame.size.width / 2) + screenFrame.origin.x - (style.borderSize.width / 2)
+                let borderXPosition = (screenFrame.size.width / 2) + screenFrame.origin.x - (style.borderWindowSize.width / 2)
 
                 if let menu = WindowManager.instance.display(.menu, at: CGPoint(x: x, y: y)) as? MenuViewController {
                     let appID = appIndex + ((screen - 1) * Configuration.appsPerScreen)

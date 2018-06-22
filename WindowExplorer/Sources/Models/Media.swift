@@ -36,19 +36,27 @@ enum MediaType {
     }
 }
 
-struct Media: Equatable {
+
+final class Media: Hashable {
     let url: URL
     let thumbnail: URL
     let title: String?
+    var tintColor: NSColor
     let type: MediaType
-    let tintColor: NSColor
+
+    var hashValue: Int {
+        return url.hashValue ^ thumbnail.hashValue
+    }
+
+
+    // MARK: Init
 
     init(url: URL, thumbnail: URL, title: String?, color: NSColor) {
         self.url = url
         self.thumbnail = thumbnail
         self.title = title
-        self.type = MediaType(for: url)
         self.tintColor = color
+        self.type = MediaType(for: url)
     }
 
     static func == (lhs: Media, rhs: Media) -> Bool {

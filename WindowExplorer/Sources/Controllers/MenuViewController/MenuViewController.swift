@@ -263,8 +263,8 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             lockIcon.translatesAutoresizingMaskIntoConstraints = false
             lockIcon.widthAnchor.constraint(equalToConstant: secondaryPlaceholder.size.width).isActive = true
             lockIcon.heightAnchor.constraint(equalToConstant: secondaryPlaceholder.size.height).isActive = true
-            lockIcon.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: style.menuLockIconPosition.width).isActive = true
-            lockIcon.topAnchor.constraint(equalTo: view.topAnchor, constant: style.menuLockIconPosition.height).isActive = true
+            lockIcon.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: style.menuLockIconPosition.x).isActive = true
+            lockIcon.topAnchor.constraint(equalTo: view.topAnchor, constant: style.menuLockIconPosition.y).isActive = true
             mergeLockIcon = lockIcon
             stateForButton[type] = .off
         case .map:

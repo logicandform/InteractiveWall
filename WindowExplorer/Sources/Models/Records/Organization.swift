@@ -3,7 +3,7 @@
 import Foundation
 import MapKit
 
-class Organization: Hashable {
+final class Organization: Hashable {
 
     let id: Int
     let title: String

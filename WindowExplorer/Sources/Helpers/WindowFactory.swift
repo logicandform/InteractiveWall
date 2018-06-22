@@ -60,6 +60,9 @@ final class WindowFactory {
         case .border:
             let storyboard = NSStoryboard(name: BorderViewController.storyboard, bundle: .main)
             return storyboard.instantiateInitialController() as! BorderViewController
+        case .testimony:
+            let storyboard = NSStoryboard(name: TestimonyViewController.storyboard, bundle: .main)
+            return storyboard.instantiateInitialController() as! TestimonyViewController
         }
     }
 }

@@ -11,6 +11,7 @@ enum WindowType: Equatable {
     case menu
     case settings
     case border
+    case testimony
 
     init?(for media: Media) {
         switch media.type {
@@ -42,17 +43,9 @@ enum WindowType: Equatable {
         case .settings:
             return style.settingsWindowSize
         case .border:
-            return style.borderSize
-        }
-    }
-
-    /// Used for checking if the specific media can be move above or below the record it was called from.
-    var canAdjustOrigin: Bool {
-        switch self {
-        case .record, .menu, .settings, .border:
-            return false
-        case .image, .player, .pdf, .search:
-            return true
+            return style.borderWindowSize
+        case .testimony:
+            return style.testimonyWindowSize
         }
     }
 

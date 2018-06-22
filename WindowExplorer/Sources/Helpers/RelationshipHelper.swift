@@ -14,7 +14,7 @@ protocol RelationshipDelegate: class {
 final class RelationshipHelper: RelationshipDelegate {
 
     weak var parent: BaseViewController?
-    var recordClosed: ((RecordDisplayable) -> Void)?
+    var controllerClosed: ((BaseViewController) -> Void)?
     private var positionForController = [BaseViewController: Int?]()
 
 
@@ -49,9 +49,7 @@ final class RelationshipHelper: RelationshipDelegate {
     func controllerDidClose(_ controller: BaseViewController) {
         positionForController.removeValue(forKey: controller)
         parent?.resetCloseWindowTimer()
-        if let recordViewController = controller as? RecordViewController {
-            recordClosed?(recordViewController.record)
-        }
+        controllerClosed?(controller)
     }
 
     func controllerDidMove(_ controller: BaseViewController) {
