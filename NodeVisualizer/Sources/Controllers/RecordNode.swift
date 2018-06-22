@@ -47,7 +47,7 @@ class RecordNode: SKNode {
     private func makeRecordNode() {
         let rootNode = makeRootNode()
         addIdLabelNode(to: rootNode)
-        setupPhysics()
+//        setupPhysics()
     }
 
     private func makeRootNode() -> SKShapeNode {

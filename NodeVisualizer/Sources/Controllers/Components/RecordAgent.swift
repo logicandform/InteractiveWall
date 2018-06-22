@@ -20,9 +20,9 @@ class RecordAgent: GKAgent2D, GKAgentDelegate {
         super.init()
         delegate = self
 
-        maxSpeed = 200
-        maxAcceleration = 100
-        radius = 60
+        maxSpeed = NodeConfiguration.Record.agentMaxSpeed
+        maxAcceleration = NodeConfiguration.Record.agentMaxAcceleration
+        radius = NodeConfiguration.Record.agentRadius
         behavior = GKBehavior()
     }
 

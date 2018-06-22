@@ -20,7 +20,8 @@ class SeekState: GKState {
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
 
-        entity.renderComponent.recordNode.physicsBody?.fieldBitMask = 0x1 << 1
+//        entity.renderComponent.recordNode.physicsBody?.fieldBitMask = 0x1 << 1
+        entity.physicsComponent.setFieldBitMask(bitmask: 0x1 << 1)
 
 //        entity.component(ofType: RecordAgent.self)?.behavior = entity.behaviorForCurrentMandate
     }

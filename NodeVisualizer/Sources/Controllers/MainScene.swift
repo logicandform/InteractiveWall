@@ -24,13 +24,6 @@ class MainScene: SKScene {
         }
     }
 
-    private struct BitMasks {
-        struct FieldBitMasks {
-            static let testBitMaskCategory: UInt32 = 0x1 << 0
-            static let testBitMask1Category: UInt32 = 0x1 << 1
-        }
-    }
-
 
     // MARK: Lifecycle
     
@@ -186,13 +179,7 @@ class MainScene: SKScene {
     // MARK: Helpers
 
     private func relatedNodes(for node: RecordNode) {
-        let field = SKFieldNode.radialGravityField()
-        field.strength = 1
-        field.falloff = 10
-        field.minimumRadius = 15
-        field.categoryBitMask = 0x1 << 1
-        node.addChild(field)
-        node.physicsBody?.isDynamic = false
+        addFieldNode(to: node)
 
         guard let recordEntityToSeek = entityManager.entity(for: node.record) as? RecordEntity else {
             return
@@ -213,6 +200,17 @@ class MainScene: SKScene {
 
     private func handleNonRelatedEntities(byFiltering entities: [RecordEntity]) {
         
+    }
+
+    // TODO: use own calculations based on radius instead of field node
+    private func addFieldNode(to node: SKNode) {
+        let field = SKFieldNode.radialGravityField()
+        field.strength = 10
+        field.falloff = 1
+        field.minimumRadius = 15
+        field.categoryBitMask = 0x1 << 1
+        node.addChild(field)
+        node.physicsBody?.isDynamic = false
     }
 
 
@@ -242,25 +240,6 @@ class MainScene: SKScene {
                 node.constraints?.append(constraint)
             }
         }
-    }
-
-    // Debug
-    private func createGravityField(at point: CGPoint, to node: RecordNode) {
-//        let field = SKFieldNode.radialGravityField()
-//        field.strength = 1
-//        field.falloff = 1
-//        field.categoryBitMask = BitMasks.FieldBitMasks.testBitMaskCategory
-////        field.position = node.position
-//        node.physicsBody?.isDynamic = false
-//        node.addChild(field)
-//
-//        let identifier = DataManager.RecordIdentifier(id: node.record.id, type: node.record.type)
-//        let relatedRecords = DataManager.instance.relatedRecords(for: identifier)
-//        let relatedRecordEntities = entityManager.entities(for: relatedRecords)
-//
-//        for entity in relatedRecordEntities {
-//            entity.component(ofType: RenderComponent.self)?.recordNode.physicsBody?.fieldBitMask = BitMasks.FieldBitMasks.testBitMaskCategory
-//        }
     }
 
     private func getRandomPosition() -> CGPoint {

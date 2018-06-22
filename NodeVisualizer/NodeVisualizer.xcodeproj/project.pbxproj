@@ -68,6 +68,8 @@
 		CD27F40F20BCBFB700375CBC /* LetterGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40D20BCBFB700375CBC /* LetterGroup.swift */; };
 		CD2CC5EB20B8E6D800FB3C10 /* RecordDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2CC5E920B8E6D700FB3C10 /* RecordDisplayable.swift */; };
 		CD2CC5EC20B8E6D800FB3C10 /* RecordFilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2CC5EA20B8E6D800FB3C10 /* RecordFilterType.swift */; };
+		CDA5A90820DD70B700E1CF87 /* PhysicsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */; };
+		CDA5A90A20DD751C00E1CF87 /* NodeConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5A90920DD751C00E1CF87 /* NodeConfiguration.swift */; };
 		CDC22D2820BDC6B0006BC0BE /* RecordNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC22D2720BDC6B0006BC0BE /* RecordNode.swift */; };
 		D88D9E3C5FEA8DFC85B8FEF4 /* Pods_All_NodeVisualizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A74D0C56BCB99FB5CDC067 /* Pods_All_NodeVisualizer.framework */; };
 /* End PBXBuildFile section */
@@ -140,6 +142,8 @@
 		CD27F40D20BCBFB700375CBC /* LetterGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LetterGroup.swift; sourceTree = "<group>"; };
 		CD2CC5E920B8E6D700FB3C10 /* RecordDisplayable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordDisplayable.swift; sourceTree = "<group>"; };
 		CD2CC5EA20B8E6D800FB3C10 /* RecordFilterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordFilterType.swift; sourceTree = "<group>"; };
+		CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsComponent.swift; sourceTree = "<group>"; };
+		CDA5A90920DD751C00E1CF87 /* NodeConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeConfiguration.swift; sourceTree = "<group>"; };
 		CDC22D2720BDC6B0006BC0BE /* RecordNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -346,6 +350,7 @@
 			isa = PBXGroup;
 			children = (
 				CD0FB28120D1A6300058A410 /* RecordEntity.swift */,
+				CDA5A90920DD751C00E1CF87 /* NodeConfiguration.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -358,6 +363,7 @@
 				CD0FB28720D1BFDD0058A410 /* MoveComponent.swift */,
 				CD0FB28B20D849140058A410 /* RecordAgent.swift */,
 				CD1FC73520D9B2F700B87D02 /* IntelligenceComponent.swift */,
+				CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -524,6 +530,7 @@
 				22AEAF0020B67E2C00DD184B /* TouchState.swift in Sources */,
 				22AEAEBE20B67C2400DD184B /* MainViewController.swift in Sources */,
 				22AEAEE620B67D6800DD184B /* PacketType.swift in Sources */,
+				CDA5A90820DD70B700E1CF87 /* PhysicsComponent.swift in Sources */,
 				CD1FC73620D9B2F700B87D02 /* IntelligenceComponent.swift in Sources */,
 				22D6F90520B6810600C7FB5F /* BackgroundTimer.swift in Sources */,
 				22AEAED620B67D2700DD184B /* GestureManager.swift in Sources */,
@@ -575,6 +582,7 @@
 				CD27F40420BCB5B900375CBC /* DataManager.swift in Sources */,
 				CD1FC73C20D9B3AA00B87D02 /* ConnectedState.swift in Sources */,
 				22D6F90820B6810600C7FB5F /* CachingNetwork.swift in Sources */,
+				CDA5A90A20DD751C00E1CF87 /* NodeConfiguration.swift in Sources */,
 				22D6F90920B6810600C7FB5F /* JSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

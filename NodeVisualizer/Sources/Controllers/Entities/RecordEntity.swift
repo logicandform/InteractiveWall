@@ -38,6 +38,13 @@ class RecordEntity: GKEntity {
         return renderComponent
     }
 
+    var physicsComponent: PhysicsComponent {
+        guard let physicsComponent = component(ofType: PhysicsComponent.self) else {
+            fatalError("A RecordEntity must have a Physics component")
+        }
+        return physicsComponent
+    }
+
     var intelligenceComponent: IntelligenceComponent {
         guard let intelligenceComponent = component(ofType: IntelligenceComponent.self) else {
             fatalError("A RecordEntity must have an Intelligence component")
@@ -56,6 +63,12 @@ class RecordEntity: GKEntity {
 
         let renderComponent = RenderComponent(record: record)
         addComponent(renderComponent)
+
+        let physicsComponent = PhysicsComponent(physicsBody: SKPhysicsBody(circleOfRadius: NodeConfiguration.Record.physicsBodyRadius))
+        addComponent(physicsComponent)
+
+        // Connect the 'PhysicsComponent' and the 'RenderComponent'
+        renderComponent.recordNode.physicsBody = physicsComponent.physicsBody
 
         let agentComponent = RecordAgent()
         addComponent(agentComponent)
