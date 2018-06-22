@@ -224,18 +224,18 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     // MARK: Helpers
 
     private func setupButton(for type: MenuButtonType) {
-        guard let view = viewForButtonType[type] else {
+        guard let button = viewForButtonType[type] else {
             return
         }
 
-        view.buttonType = type
+        button.buttonType = type
         addGesture(for: type)
 
         switch type {
         case .split:
             stateForButton[type] = .off
         case .map:
-            view.toggle(to: .on)
+            button.toggle(to: .on)
             stateForButton[type] = .on
         case .timeline, .information, .settings, .search, .testimony:
             stateForButton[type] = .off
