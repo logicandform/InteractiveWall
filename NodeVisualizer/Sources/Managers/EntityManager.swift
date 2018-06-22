@@ -12,7 +12,8 @@ class EntityManager {
     lazy var componentSystems: [GKComponentSystem] = {
         let agentSystem = GKComponentSystem(componentClass: RecordAgent.self)
         let intelligenceSystem = GKComponentSystem(componentClass: IntelligenceComponent.self)
-        return [intelligenceSystem, agentSystem]
+        let movementSystem = GKComponentSystem(componentClass: MovementComponent.self)
+        return [intelligenceSystem, movementSystem, agentSystem]
     }()
 
 
@@ -34,19 +35,6 @@ class EntityManager {
 
     func remove(_ entity: GKEntity) {
         entities.remove(entity)
-    }
-
-    func nonRelatedEntities(for record: TestingEnvironment.Record) -> [GKEntity] {
-        var nonRelatedEntities = [GKEntity]()
-
-        guard let relatedRecords = TestingEnvironment.instance.relatedRecordsForRecord[record] else {
-            return []
-        }
-
-
-
-
-        return []
     }
 
     func entities(for records: [TestingEnvironment.Record]) -> [GKEntity] {

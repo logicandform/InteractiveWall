@@ -101,8 +101,7 @@ class MainScene: SKScene {
 
     private func addRecordNodesToScene() {
         records.enumerated().forEach { index, record in
-            let recordEntity = RecordEntity(record: record)
-            recordEntity.manager = entityManager
+            let recordEntity = RecordEntity(record: record, manager: entityManager)
 
             if let recordNode = recordEntity.component(ofType: RenderComponent.self)?.recordNode {
                 recordNode.position.x = randomX()
@@ -179,23 +178,14 @@ class MainScene: SKScene {
     // MARK: Helpers
 
     private func relatedNodes(for node: RecordNode) {
-        addFieldNode(to: node)
+//        addFieldNode(to: node)
+        node.physicsBody?.isDynamic = false
 
-        guard let recordEntityToSeek = entityManager.entity(for: node.record) as? RecordEntity else {
+        guard let entity = entityManager.entity(for: node.record) as? RecordEntity else {
             return
         }
 
-        guard let relatedRecords = TestingEnvironment.instance.relatedRecordsForRecord[node.record] else {
-            return
-        }
-
-        let relatedRecordEntities = entityManager.entities(for: Array(relatedRecords)) as! [RecordEntity]
-
-        for case let entity in relatedRecordEntities {
-            entity.agentsToSeparateFrom = relatedRecordEntities.compactMap({ $0.agent })
-            entity.mandate = .seekRecordAgent(recordEntityToSeek.agent)
-            entity.intelligenceComponent.stateMachine.enter(SeekState.self)
-        }
+        entity.intelligenceComponent.stateMachine.enter(TappedState.self)
     }
 
     private func handleNonRelatedEntities(byFiltering entities: [RecordEntity]) {

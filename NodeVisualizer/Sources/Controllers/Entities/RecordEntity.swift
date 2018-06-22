@@ -19,7 +19,6 @@ class RecordEntity: GKEntity {
             break
         case .seekRecordAgent(let agent):
             return RecordEntityBehavior.behavior(seek: agent, agentsToSeparateFrom: agentsToSeparateFrom)
-//            return RecordEntityBehavior.behavior(toSeek: agent)
         }
         return GKBehavior()
     }
@@ -45,6 +44,13 @@ class RecordEntity: GKEntity {
         return physicsComponent
     }
 
+    var movementComponent: MovementComponent {
+        guard let movementComponent = component(ofType: MovementComponent.self) else {
+            fatalError("A RecordEntity must have a Movement component")
+        }
+        return movementComponent
+    }
+
     var intelligenceComponent: IntelligenceComponent {
         guard let intelligenceComponent = component(ofType: IntelligenceComponent.self) else {
             fatalError("A RecordEntity must have an Intelligence component")
@@ -52,11 +58,12 @@ class RecordEntity: GKEntity {
         return intelligenceComponent
     }
 
-    var manager: EntityManager!
+    private(set) var manager: EntityManager
     var agentsToSeparateFrom: [GKAgent2D]!
 
 
-    init(record: TestingEnvironment.Record) {
+    init(record: TestingEnvironment.Record, manager: EntityManager) {
+        self.manager = manager
         mandate = .wander
 
         super.init()
@@ -73,10 +80,13 @@ class RecordEntity: GKEntity {
         let agentComponent = RecordAgent()
         addComponent(agentComponent)
 
+        let movementComponent = MovementComponent()
+        addComponent(movementComponent)
+
         let intelligenceComponent = IntelligenceComponent(states: [
             WanderState(entity: self),
             SeekState(entity: self),
-            ConnectedState(entity: self)
+            TappedState(entity: self)
         ])
         addComponent(intelligenceComponent)
     }
@@ -100,3 +110,10 @@ class RecordEntity: GKEntity {
         return hypotf(dX, dY)
     }
 }
+
+
+
+
+
+
+

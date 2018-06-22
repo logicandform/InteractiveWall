@@ -7,7 +7,7 @@ import GameplayKit
 
 class SeekState: GKState {
 
-    unowned var entity: RecordEntity
+    private(set) unowned var entity: RecordEntity
 
 
     required init(entity: RecordEntity) {
@@ -20,10 +20,7 @@ class SeekState: GKState {
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
 
-//        entity.renderComponent.recordNode.physicsBody?.fieldBitMask = 0x1 << 1
-        entity.physicsComponent.setFieldBitMask(bitmask: 0x1 << 1)
-
-//        entity.component(ofType: RecordAgent.self)?.behavior = entity.behaviorForCurrentMandate
+//        entity.physicsComponent.setFieldBitMask(bitmask: 0x1 << 1)
     }
 
     override func update(deltaTime seconds: TimeInterval) {
@@ -40,22 +37,18 @@ class SeekState: GKState {
     }
 
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
-        return stateClass is ConnectedState.Type
+        return stateClass is SeekState.Type
     }
 
     override func willExit(to nextState: GKState) {
         super.willExit(to: nextState)
-
-        entity.agent.behavior = nil
     }
 
-
-    private func stopMovement(afterTraversing distance: Float) {
-        let timeToTarget = TimeInterval(distance / entity.agent.speed)
-        Timer.scheduledTimer(withTimeInterval: timeToTarget, repeats: false) { _ in
-            self.entity.agent.behavior = nil
-            self.entity.agent.behavior = RecordEntityBehavior.stop()
-            self.entity.agent.maxSpeed = 0
-        }
-    }
 }
+
+
+
+
+
+
+

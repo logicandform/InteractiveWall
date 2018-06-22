@@ -30,7 +30,8 @@ class WanderState: GKState {
     }
 
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
-        return stateClass is SeekState.Type
+//        return stateClass is SeekState.Type
+        return true
     }
 
     override func willExit(to nextState: GKState) {

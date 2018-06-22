@@ -35,6 +35,7 @@ class PhysicsComponent: GKComponent {
         physicsBody.friction = 0
         physicsBody.restitution = 0
         physicsBody.linearDamping = 0
+        physicsBody.mass = NodeConfiguration.Record.physicsBodyMass
     }
 
 }
