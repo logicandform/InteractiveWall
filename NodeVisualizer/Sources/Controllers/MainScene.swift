@@ -187,18 +187,18 @@ class MainScene: SKScene {
 
     private func relatedNodes(for node: RecordNode) {
         let field = SKFieldNode.radialGravityField()
-        field.strength = 10
-        field.falloff = 2
-        field.minimumRadius = 1
+        field.strength = 1
+        field.falloff = 10
+        field.minimumRadius = 15
         field.categoryBitMask = 0x1 << 1
         node.addChild(field)
         node.physicsBody?.isDynamic = false
 
-        guard let relatedRecords = TestingEnvironment.instance.relatedRecordsForRecord[node.record] else {
+        guard let recordEntityToSeek = entityManager.entity(for: node.record) as? RecordEntity else {
             return
         }
 
-        guard let recordEntityToSeek = entityManager.entity(for: node.record) as? RecordEntity else {
+        guard let relatedRecords = TestingEnvironment.instance.relatedRecordsForRecord[node.record] else {
             return
         }
 
@@ -211,20 +211,10 @@ class MainScene: SKScene {
         }
     }
 
-//    private func relatedNodes(for node: RecordNode) {
-//        let identifier = DataManager.RecordIdentifier(id: node.record.id, type: node.record.type)
-//        let relatedRecords = DataManager.instance.relatedRecords(for: identifier)
-//        print(relatedRecords)
-//
-//        let tappedRecordEntity = entityManager.entity(for: node.record)
-//        let tappedRecordAgent = tappedRecordEntity?.component(ofType: RecordAgent.self)
-//        let relatedRecordEntities = entityManager.entities(for: relatedRecords)
-//
-//        for entity in relatedRecordEntities {
-//            let moveBehavior = RecordEntityBehavior.behavior(toSeek: tappedRecordAgent)
-//            entity.component(ofType: RecordAgent.self)?.behavior = moveBehavior
-//        }
-//    }
+    private func handleNonRelatedEntities(byFiltering entities: [RecordEntity]) {
+        
+    }
+
 
     // Debug
     private func seekTest(at point: CGPoint, to node: RecordNode? = nil) {
@@ -237,9 +227,9 @@ class MainScene: SKScene {
                 intelligenceComponent.stateMachine.enter(SeekState.self)
             }
 
-//            let move = RecordEntityBehavior.behavior(toSeek: agentToSeek)
-//            let agent = entity.component(ofType: RecordAgent.self)
-//            agent?.behavior = move
+            let move = RecordEntityBehavior.behavior(toSeek: agentToSeek)
+            let agent = entity.component(ofType: RecordAgent.self)
+            agent?.behavior = move
         }
     }
 

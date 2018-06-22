@@ -36,6 +36,19 @@ class EntityManager {
         entities.remove(entity)
     }
 
+    func nonRelatedEntities(for record: TestingEnvironment.Record) -> [GKEntity] {
+        var nonRelatedEntities = [GKEntity]()
+
+        guard let relatedRecords = TestingEnvironment.instance.relatedRecordsForRecord[record] else {
+            return []
+        }
+
+
+
+
+        return []
+    }
+
     func entities(for records: [TestingEnvironment.Record]) -> [GKEntity] {
         var recordEntities = [GKEntity]()
 
