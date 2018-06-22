@@ -8,7 +8,6 @@ class MenuButton: NSView {
     static let nib = NSNib.Name(rawValue: "MenuButton")
 
     @IBOutlet weak var contentView: NSView!
-    @IBOutlet weak var lockView: NSView!
     @IBOutlet weak var lockIcon: NSImageView!
 
     var buttonType: MenuButtonType! {

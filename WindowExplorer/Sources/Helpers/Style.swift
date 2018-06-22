@@ -43,7 +43,7 @@ final class Style {
 
     // Menu Controller
     let menuWindowSize = CGSize(width: 50, height: 350)
-    let menuImageSize = CGRect(x: 0, y: 0, width: 50, height: 50)
+    let menuImageSize = CGSize(width: 50, height: 50)
     let menuSelectedColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
     let menuLockIconPosition = CGPoint(x: -3, y: 3)
     let menuSecondarySelectedColor = NSColor(calibratedRed: 0.06, green: 0.28, blue: 0.24, alpha: 1)
