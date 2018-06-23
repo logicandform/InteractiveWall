@@ -689,7 +689,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             } else {
                 relatedRecordsHeightConstraint.constant = height
             }
-            
+
             relatedRecordScrollView.updateConstraints()
         }
     }
