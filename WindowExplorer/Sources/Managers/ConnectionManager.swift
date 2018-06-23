@@ -11,7 +11,7 @@ final class ConnectionManager {
     static let instance = ConnectionManager()
 
     /// The state for each app indexed by it's appID
-    private var stateForApp: [AppState]
+    private(set) var stateForApp: [AppState]
 
     /// A timer used to reset the entire installation when no activity has been detected
     private weak var resetTimer: Foundation.Timer?
@@ -100,6 +100,7 @@ final class ConnectionManager {
             split(from: id, group: group)
         case SettingsNotification.merge.name:
             merge(from: id, group: group)
+            SettingsManager.instance.syncApps(group: group)
         default:
             return
         }
@@ -260,6 +261,7 @@ final class ConnectionManager {
             if state.group == nil {
                 let group = findGroupForApp(id: app, of: type)
                 stateForApp[app] = AppState(pair: nil, group: group, type: state.type)
+                SettingsManager.instance.syncApps(group: group)
             }
         }
     }

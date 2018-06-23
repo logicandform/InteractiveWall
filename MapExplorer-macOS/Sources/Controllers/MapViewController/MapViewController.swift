@@ -20,9 +20,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
     private var recordForAnnotation = [CircleAnnotation: Record]()
-    private var showingAnnotationTitles = false
-    private var settingsShowingAnnotationTitles = true
     private let touchListener = TouchListener()
+    private var showingAnnotationTitles = false
+    private var currentSettings = Settings()
 
     private var tileURL: String {
         let tileID = max(screenID, 1)
@@ -45,6 +45,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let position = "position"
         static let recordType = "recordType"
         static let status = "status"
+        static let settings = "settings"
     }
 
 
@@ -108,7 +109,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     @objc
     func handleNotification(_ notification: NSNotification) {
-        guard let info = notification.userInfo, let id = info[Keys.id] as? Int, let status = info[Keys.status] as? Bool else {
+        guard let info = notification.userInfo, let id = info[Keys.id] as? Int else {
             return
         }
 
@@ -119,18 +120,26 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             }
         }
 
+        let status = info[Keys.status] as? Bool
+
         switch notification.name {
+        case SettingsNotification.sync.name:
+            if let json = info[Keys.settings] as? JSON, let settings = Settings(json: json) {
+                update(with: settings)
+            }
         case SettingsNotification.filter.name:
-            if let rawRecordType = info[Keys.recordType] as? String, let recordType = RecordType(rawValue: rawRecordType) {
-                toggleAnnotations(on: status, for: recordType)
+            if let status = status, let rawRecordType = info[Keys.recordType] as? String, let recordType = RecordType(rawValue: rawRecordType) {
+                currentSettings.set(recordType, on: status)
+                toggleAnnotations(for: currentSettings)
             }
         case SettingsNotification.labels.name:
-            settingsShowingAnnotationTitles = status
-            if mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel {
-                toggleAnnotationTitles(on: settingsShowingAnnotationTitles)
+            if let status = status {
+                toggleAnnotationTitles(on: showingAnnotationTitles && status)
             }
         case SettingsNotification.miniMap.name:
-            mapView.miniMapIsHidden = !status
+            if let status = status {
+                mapView.miniMapIsHidden = !status
+            }
         default:
             return
         }
@@ -224,7 +233,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         if showingAnnotationTitles != (mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel) {
             showingAnnotationTitles = mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel
-            toggleAnnotationTitles(on: showingAnnotationTitles && settingsShowingAnnotationTitles)
+            toggleAnnotationTitles(on: showingAnnotationTitles && currentSettings.showLabels)
         }
     }
 
@@ -232,7 +241,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
         for view in views {
             if let circleAnnotationView = view as? CircleAnnotationView {
-                circleAnnotationView.showTitle(showingAnnotationTitles && settingsShowingAnnotationTitles)
+                circleAnnotationView.showTitle(showingAnnotationTitles && currentSettings.showLabels)
             }
         }
     }
@@ -258,6 +267,13 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         when(fulfilled: schoolChain, eventChain).then { [weak self] results in
             self?.parseNetworkResults(results)
         }
+    }
+
+    private func update(with settings: Settings) {
+        currentSettings.clone(settings)
+        toggleAnnotations(for: settings)
+        toggleAnnotationTitles(on: showingAnnotationTitles && settings.showLabels)
+        mapView.miniMapIsHidden = !settings.showMiniMap
     }
 
     private func parseNetworkResults(_ results: (schools: [School], events: [Event])) {
@@ -325,7 +341,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     private func addAnnotations(for records: [Record]) {
         records.forEach { record in
-            let annotation = CircleAnnotation(coordinate: record.coordinate, record: record.type, title: record.title)
+            let annotation = CircleAnnotation(coordinate: record.coordinate, type: record.type, title: record.title)
             recordForAnnotation[annotation] = record
             mapView.addAnnotation(annotation)
         }
@@ -339,18 +355,25 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         }
     }
 
-    private func toggleAnnotations(on: Bool, for type: RecordType) {
-        let filteredAnnotations = recordForAnnotation.filter({ $0.value.type == type })
+    private func toggleAnnotations(for settings: Settings) {
+        guard let annotationsOnMap = mapView.annotations as? [CircleAnnotation] else {
+            return
+        }
 
-        if on {
-            let annotationsOnMap = mapView.annotations as? [CircleAnnotation]
-            for annotation in filteredAnnotations {
-                if let mapContainsAnnotation = annotationsOnMap?.contains(annotation.key), !mapContainsAnnotation {
-                    mapView.addAnnotation(annotation.key)
+        let typesToDisplay = RecordType.allValues.filter { settings.displaying($0) }
+        let allAnnotations = recordForAnnotation.keys
+        let annotationsToDisplay = allAnnotations.filter({ typesToDisplay.contains($0.type) })
+
+        for annotation in allAnnotations {
+            if annotationsToDisplay.contains(annotation) {
+                if !annotationsOnMap.contains(annotation) {
+                    mapView.addAnnotation(annotation)
+                }
+            } else {
+                if annotationsOnMap.contains(annotation) {
+                    mapView.removeAnnotation(annotation)
                 }
             }
-        } else {
-            mapView.removeAnnotations(Array(filteredAnnotations.keys))
         }
     }
 }

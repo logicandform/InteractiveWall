@@ -70,6 +70,9 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         super.viewDidAppear()
         settingsMenu = WindowManager.instance.display(.settings, at: position(for: settingsButton, frame: style.settingsWindowSize, margins: false)) as? SettingsMenuViewController
         settingsMenu.view.isHidden = true
+        if let appID = appID {
+            settingsMenu.set(appID: appID)
+        }
     }
 
 
@@ -77,14 +80,14 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
 
     func set(appID: Int) {
         self.appID = appID
-        settingsMenu.set(appID: appID)
+        settingsMenu?.set(appID: appID)
     }
 
-    func toggleMergeLock(on: Bool) {
-        if mergeLocked != on {
-            let lockImage = on ? MenuButtonType.split.detailImage : nil
+    func toggleMergeLock(on status: Bool) {
+        if mergeLocked != status {
+            let lockImage = status ? MenuButtonType.split.detailImage : nil
             mergeLockIcon?.transition(to: lockImage, duration: Constants.imageTransitionDuration)
-            mergeLocked = on
+            mergeLocked = status
         }
     }
 

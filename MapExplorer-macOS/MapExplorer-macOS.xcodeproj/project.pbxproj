@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22004FEA20DDA66100B1E740 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22004FE920DDA66100B1E740 /* Settings.swift */; };
 		220329092066F20900FFD9E2 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220329082066F20900FFD9E2 /* Data.swift */; };
 		2204621220472E3D0067D9FB /* MapHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204621120472E3C0067D9FB /* MapHandler.swift */; };
 		22046267204732A40067D9FB /* RecordNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046265204732A40067D9FB /* RecordNotifications.swift */; };
@@ -78,6 +79,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		22004FE920DDA66100B1E740 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		220329082066F20900FFD9E2 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		2204621120472E3C0067D9FB /* MapHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapHandler.swift; sourceTree = "<group>"; };
 		22046265204732A40067D9FB /* RecordNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordNotifications.swift; sourceTree = "<group>"; };
@@ -264,10 +266,11 @@
 		22290C262028FA1E000E0573 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				3F0254F12049D521004B831C /* LastTwo.swift */,
 				22A49871204749500024B46C /* Records */,
 				22A49870204749470024B46C /* Annotations */,
 				22A4986F2047493A0024B46C /* Touches */,
+				3F0254F12049D521004B831C /* LastTwo.swift */,
+				22004FE920DDA66100B1E740 /* Settings.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -541,6 +544,7 @@
 				8F64A1E720BEF88600F0D209 /* FlippedMapViewWithMiniMap.swift in Sources */,
 				22A4986E2047492B0024B46C /* TouchState.swift in Sources */,
 				22D6F91E20B6836900C7FB5F /* NSApplication.swift in Sources */,
+				22004FEA20DDA66100B1E740 /* Settings.swift in Sources */,
 				22046267204732A40067D9FB /* RecordNotifications.swift in Sources */,
 				22290C3B2028FA35000E0573 /* PacketType.swift in Sources */,
 				3F0254F22049D521004B831C /* LastTwo.swift in Sources */,

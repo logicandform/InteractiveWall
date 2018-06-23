@@ -20,6 +20,8 @@
 		1FAFF021206EDD93005DC68B /* Soleil-07.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF015206EDD93005DC68B /* Soleil-07.otf */; };
 		1FAFF022206EDD93005DC68B /* Soleil-02.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF016206EDD93005DC68B /* Soleil-02.otf */; };
 		1FAFF023206EDD93005DC68B /* Soleil-06.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF017206EDD93005DC68B /* Soleil-06.otf */; };
+		22004FE420DD7A7F00B1E740 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22004FE320DD7A7F00B1E740 /* SettingsManager.swift */; };
+		22004FE620DD7DE700B1E740 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22004FE520DD7DE700B1E740 /* Settings.swift */; };
 		2204620E20472DE80067D9FB /* RelatedItemListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204620A20472DE80067D9FB /* RelatedItemListView.swift */; };
 		2204621720472F2D0067D9FB /* PlayerControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2204621420472F2D0067D9FB /* PlayerControl.xib */; };
 		2204621820472F2D0067D9FB /* PlayerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204621520472F2D0067D9FB /* PlayerState.swift */; };
@@ -117,7 +119,7 @@
 		A456618020D9CDC400D23333 /* BorderControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A456617F20D9CDC400D23333 /* BorderControl.swift */; };
 		A456618320D9D42D00D23333 /* BorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A456618220D9D42D00D23333 /* BorderViewController.swift */; };
 		A456618520D9D43B00D23333 /* Border.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A456618420D9D43B00D23333 /* Border.storyboard */; };
-		A456CE9820D0A39E0036F020 /* SettingsTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A456CE9720D0A39E0036F020 /* SettingsTypes.swift */; };
+		A456CE9820D0A39E0036F020 /* SettingTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A456CE9720D0A39E0036F020 /* SettingTypes.swift */; };
 		A456F6C020C73826004534A4 /* SettingsMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A456F6BF20C73826004534A4 /* SettingsMenuViewController.swift */; };
 		A456F6C220C73836004534A4 /* SettingsMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A456F6C120C73836004534A4 /* SettingsMenu.storyboard */; };
 		A457D19820C9A42900D21ABA /* SwitchControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A457D19720C9A42900D21ABA /* SwitchControl.swift */; };
@@ -173,6 +175,8 @@
 		1FAFF015206EDD93005DC68B /* Soleil-07.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-07.otf"; sourceTree = "<group>"; };
 		1FAFF016206EDD93005DC68B /* Soleil-02.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-02.otf"; sourceTree = "<group>"; };
 		1FAFF017206EDD93005DC68B /* Soleil-06.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-06.otf"; sourceTree = "<group>"; };
+		22004FE320DD7A7F00B1E740 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
+		22004FE520DD7DE700B1E740 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		2204620A20472DE80067D9FB /* RelatedItemListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelatedItemListView.swift; sourceTree = "<group>"; };
 		2204620C20472DE80067D9FB /* RelatedItemListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RelatedItemListView.xib; sourceTree = "<group>"; };
 		2204621420472F2D0067D9FB /* PlayerControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerControl.xib; sourceTree = "<group>"; };
@@ -279,7 +283,7 @@
 		A456617F20D9CDC400D23333 /* BorderControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderControl.swift; sourceTree = "<group>"; };
 		A456618220D9D42D00D23333 /* BorderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderViewController.swift; sourceTree = "<group>"; };
 		A456618420D9D43B00D23333 /* Border.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Border.storyboard; sourceTree = "<group>"; };
-		A456CE9720D0A39E0036F020 /* SettingsTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTypes.swift; sourceTree = "<group>"; };
+		A456CE9720D0A39E0036F020 /* SettingTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTypes.swift; sourceTree = "<group>"; };
 		A456F6BF20C73826004534A4 /* SettingsMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMenuViewController.swift; sourceTree = "<group>"; };
 		A456F6C120C73836004534A4 /* SettingsMenu.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingsMenu.storyboard; sourceTree = "<group>"; };
 		A457D19720C9A42900D21ABA /* SwitchControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchControl.swift; sourceTree = "<group>"; };
@@ -377,6 +381,7 @@
 				22A49876204749B70024B46C /* Touches */,
 				223613E620509D920024145C /* LastTwo.swift */,
 				D9F24E5C205AFE2900B9FCB8 /* Media.swift */,
+				22004FE520DD7DE700B1E740 /* Settings.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -561,6 +566,7 @@
 				22914F742049001B0000D4E1 /* TouchManager.swift */,
 				22AE5D2420D2DB3200D5FB9C /* ConnectionManager.swift */,
 				222A94EA20D9D50A00B4AE4E /* MenuManager.swift */,
+				22004FE320DD7A7F00B1E740 /* SettingsManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -697,7 +703,7 @@
 			children = (
 				A456F6C120C73836004534A4 /* SettingsMenu.storyboard */,
 				A456F6BF20C73826004534A4 /* SettingsMenuViewController.swift */,
-				A456CE9720D0A39E0036F020 /* SettingsTypes.swift */,
+				A456CE9720D0A39E0036F020 /* SettingTypes.swift */,
 			);
 			path = SettingsMenuController;
 			sourceTree = "<group>";
@@ -946,6 +952,7 @@
 			files = (
 				1F910718206C2973008F9513 /* ImageView.swift in Sources */,
 				A47C67E420CB07CB00C361D1 /* MapNotification.swift in Sources */,
+				22004FE620DD7DE700B1E740 /* Settings.swift in Sources */,
 				22A76FEC2046477A006C0AE7 /* PlayerViewController.swift in Sources */,
 				D92E0F00206052C900C1C9A7 /* ArrowControl.swift in Sources */,
 				2204623520472FDF0067D9FB /* Int.swift in Sources */,
@@ -989,6 +996,7 @@
 				22A498612047349C0024B46C /* RecordNotifications.swift in Sources */,
 				618F0C292069F8F000762C20 /* AKPlayer.swift in Sources */,
 				2204621920472F2D0067D9FB /* PlayerControl.swift in Sources */,
+				22004FE420DD7A7F00B1E740 /* SettingsManager.swift in Sources */,
 				22B1E2CF204638CA00BDDF14 /* GestureHandler.swift in Sources */,
 				2222C7C320DC028000B76D12 /* TestimonyViewController.swift in Sources */,
 				22A49878204749C30024B46C /* TouchState.swift in Sources */,
@@ -1034,7 +1042,7 @@
 				22046244204730780067D9FB /* PanGestureRecognizer.swift in Sources */,
 				22927912208E531C005E2036 /* BackgroundTimer.swift in Sources */,
 				2204623820472FDF0067D9FB /* URL.swift in Sources */,
-				A456CE9820D0A39E0036F020 /* SettingsTypes.swift in Sources */,
+				A456CE9820D0A39E0036F020 /* SettingTypes.swift in Sources */,
 				2204621820472F2D0067D9FB /* PlayerState.swift in Sources */,
 				8F2B188F20AA321700C5E0FA /* RelatedItemViewLayout.swift in Sources */,
 				D901EBED2056EEFE00BBFCF2 /* RecordDisplayable.swift in Sources */,

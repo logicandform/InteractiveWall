@@ -4,73 +4,73 @@ import Foundation
 import Cocoa
 
 
-enum SettingsType {
-    case showLabels
-    case showMiniMap
-    case toggleSchools
-    case toggleEvents
-    case toggleOrganizations
-    case toggleArtifacts
+enum SettingType {
+    case labels
+    case miniMap
+    case schools
+    case events
+    case organizations
+    case artifacts
 
     var color: NSColor {
         switch self {
-        case .showLabels:
+        case .labels:
             return style.menuSelectedColor
-        case .showMiniMap:
+        case .miniMap:
             return style.menuSelectedColor
-        case .toggleSchools:
+        case .schools:
             return style.schoolColor
-        case .toggleEvents:
+        case .events:
             return style.eventColor
-        case .toggleOrganizations:
+        case .organizations:
             return style.organizationColor
-        case .toggleArtifacts:
+        case .artifacts:
             return style.artifactColor
         }
     }
 
     var secondaryColor: NSColor {
         switch self {
-        case .showLabels:
+        case .labels:
             return style.menuSecondarySelectedColor
-        case .showMiniMap:
+        case .miniMap:
             return style.menuSecondarySelectedColor
-        case .toggleSchools:
+        case .schools:
             return style.schoolSecondarySelectedColor
-        case .toggleEvents:
+        case .events:
             return style.eventSecondarySelectedColor
-        case .toggleOrganizations:
+        case .organizations:
             return style.organizationSecondarySelectedColor
-        case .toggleArtifacts:
+        case .artifacts:
             return style.artifactSecondarySelectedColor
         }
     }
 
     var recordType: RecordType? {
         switch self {
-        case .toggleSchools:
+        case .schools:
             return .school
-        case .toggleEvents:
+        case .events:
             return .event
-        case .toggleOrganizations:
+        case .organizations:
             return .organization
-        case .toggleArtifacts:
+        case .artifacts:
             return .artifact
-        case .showLabels, .showMiniMap:
+        case .labels, .miniMap:
             return nil
         }
     }
 
-    static func from(recordType: RecordType) -> SettingsType? {
+    static func from(recordType: RecordType) -> SettingType? {
         switch recordType {
         case .school:
-            return .toggleSchools
+            return .schools
         case .event:
-            return .toggleEvents
+            return .events
         case .organization:
-            return .toggleOrganizations
+            return .organizations
         case .artifact:
-            return .toggleArtifacts
+            return .artifacts
         case .theme:
             return nil
         }

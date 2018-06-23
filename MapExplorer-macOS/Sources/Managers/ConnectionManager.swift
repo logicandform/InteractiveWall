@@ -34,7 +34,6 @@ final class ConnectionManager {
         let numberOfApps = Configuration.appsPerScreen * Configuration.numberOfScreens
         let initialState = AppState(pair: nil, group: nil, type: .mapExplorer)
         self.stateForApp = Array(repeating: initialState, count: numberOfApps)
-        subscribeToNotifications()
     }
 
 
@@ -60,10 +59,7 @@ final class ConnectionManager {
         stateForApp[app] = state
     }
 
-
-    // MARK: Notifications
-
-    private func subscribeToNotifications() {
+    func registerForNotifications() {
         for notification in ApplicationNotification.allValues {
             DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
         }
@@ -73,6 +69,9 @@ final class ConnectionManager {
         DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: SettingsNotification.split.name, object: nil)
         DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: SettingsNotification.merge.name, object: nil)
     }
+
+
+    // MARK: Notifications
 
     @objc
     private func handleNotification(_ notification: NSNotification) {
@@ -282,7 +281,7 @@ final class ConnectionManager {
         return filteredApps.compactMap({ $0.1.group }).first
     }
 
-    /// Send position notification that won't cause app's to pair but causes map to sync together
+    /// From the app matching the groupID, send position notification that won't cause app's to pair but causes map to sync together
     private func syncApps(inGroup group: Int?) {
         guard let group = group, let type = typeForApp(id: group) else {
             return

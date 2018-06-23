@@ -7,12 +7,12 @@ import MapKit
 class CircleAnnotation: NSObject, MKAnnotation {
 
     var coordinate: CLLocationCoordinate2D
-    var record: RecordType
+    var type: RecordType
     var title: String?
 
-    init(coordinate: CLLocationCoordinate2D, record: RecordType, title: String) {
+    init(coordinate: CLLocationCoordinate2D, type: RecordType, title: String) {
         self.coordinate = coordinate
-        self.record = record
+        self.type = type
         self.title = title
     }
 }

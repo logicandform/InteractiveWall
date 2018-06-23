@@ -30,4 +30,8 @@ enum RecordType: String {
             return style.artifactColor
         }
     }
+
+    static var allValues: [RecordType] {
+        return [.school, .event, .organization, .artifact]
+    }
 }

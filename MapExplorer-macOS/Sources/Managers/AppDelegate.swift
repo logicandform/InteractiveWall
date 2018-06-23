@@ -35,12 +35,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.setFrame(frame, display: true)
         window.makeKeyAndOrderFront(self)
 
-        /// Display the DemoViewController
-//        let demoStoryboard = NSStoryboard(name: GestureDemoController.storyboard, bundle: nil)
-//        let demoVC = demoStoryboard.instantiateInitialController() as! GestureDemoController
-//        let demoWindow = NSWindow(contentViewController: demoVC)
-//        demoWindow.title = "Demo Window"
-//        demoWindow.makeKeyAndOrderFront(self)
+        ConnectionManager.instance.registerForNotifications()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

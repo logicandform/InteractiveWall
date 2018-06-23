@@ -14,6 +14,8 @@ class MapHandler {
 
     let mapView: MKMapView
     let mapID: Int
+    private var activityState = UserActivity.idle
+    private weak var ungroupTimer: Foundation.Timer?
 
     private var pair: Int? {
         return ConnectionManager.instance.pairForApp(id: appID)
@@ -22,10 +24,6 @@ class MapHandler {
     private var group: Int? {
         return ConnectionManager.instance.groupForApp(id: appID)
     }
-
-    /// The state for a map indexed by it's mapID
-    private var activityState = UserActivity.idle
-    private weak var ungroupTimer: Foundation.Timer?
 
     private struct Constants {
         static let ungroupTimeoutPeriod: TimeInterval = 30

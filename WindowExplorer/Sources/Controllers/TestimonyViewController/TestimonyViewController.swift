@@ -11,7 +11,7 @@ class TestimonyViewController: BaseViewController, NSCollectionViewDelegateFlowL
     @IBOutlet weak var collectionClipView: NSClipView!
     @IBOutlet weak var collectionScrollView: FadingScrollView!
 
-    var testimonies = [Media]()
+    private var testimonies = [Media]()
     private let relationshipHelper = RelationshipHelper()
     private var selectedTestimonies = Set<Media>()
 
@@ -19,7 +19,7 @@ class TestimonyViewController: BaseViewController, NSCollectionViewDelegateFlowL
         static let testimonyCellHeight: CGFloat = 160
         static let closeWindowTimeoutPeriod = 300.0
         static let animationDuration = 1.0
-        static let windowTitle = "Testimonials"
+        static let windowHeaderTitle = "Testimonials"
         static let artifactTestimonyIDs = [9454, 9455, 9456, 9457, 9458, 9459, 9460, 9461, 9462, 9463, 9464, 9465]
     }
 
@@ -32,7 +32,7 @@ class TestimonyViewController: BaseViewController, NSCollectionViewDelegateFlowL
         collectionView.alphaValue = 0
         relationshipHelper.parent = self
         relationshipHelper.controllerClosed = unselectTestimonyForController(_:)
-        titleLabel.attributedStringValue = NSAttributedString(string: Constants.windowTitle, attributes: style.windowTitleAttributes)
+        titleLabel.attributedStringValue = NSAttributedString(string: Constants.windowHeaderTitle, attributes: style.windowTitleAttributes)
         windowDragAreaHighlight.layer?.backgroundColor = style.testimonyColor.cgColor
 
         setupTestimonies()

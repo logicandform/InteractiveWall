@@ -4,6 +4,7 @@ import Foundation
 
 
 enum SettingsNotification: String {
+    case sync
     case split
     case merge
     case filter
@@ -14,18 +15,18 @@ enum SettingsNotification: String {
         return Notification.Name(rawValue: rawValue)
     }
 
-    static func with(_ type: SettingsType) -> SettingsNotification {
+    static func with(_ type: SettingType) -> SettingsNotification {
         switch type {
-        case .toggleSchools, .toggleEvents, .toggleOrganizations, .toggleArtifacts:
+        case .schools, .events, .organizations, .artifacts:
             return .filter
-        case .showLabels:
+        case .labels:
             return .labels
-        case .showMiniMap:
+        case .miniMap:
             return .miniMap
         }
     }
 
     static var allValues: [SettingsNotification] {
-        return [.split, .merge, .filter, .labels, .miniMap]
+        return [.sync, .split, .merge, .filter, .labels, .miniMap]
     }
 }

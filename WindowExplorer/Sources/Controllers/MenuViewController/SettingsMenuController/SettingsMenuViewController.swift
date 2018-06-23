@@ -16,6 +16,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
 
     var gestureManager: GestureManager!
     private var appID: Int!
+    private var currentSettings = Settings()
     private var labelsSwitch: SwitchControl!
     private var miniMapSwitch: SwitchControl!
     private var schoolsSwitch: SwitchControl!
@@ -23,11 +24,13 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     private var organizationsSwitch: SwitchControl!
     private var artifactsSwitch: SwitchControl!
 
-    private var switchForSettingsType = [SettingsType: SwitchControl]()
-    private var textFieldForSettingsType = [SettingsType: NSTextField]()
+    private var switchForSettingType = [SettingType: SwitchControl]()
+    private var textFieldForSettingType = [SettingType: NSTextField]()
 
     private struct Keys {
         static let id = "id"
+        static let group = "group"
+        static let settings = "settings"
         static let recordType = "recordType"
         static let status = "status"
     }
@@ -80,25 +83,25 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     // MARK: Setup
 
     private func setupSwitches() {
-        textFieldForSettingsType = [.showLabels: labelsText, .showMiniMap: miniMapText, .toggleSchools: schoolsText, .toggleEvents: eventsText, .toggleOrganizations: organizationsText, .toggleArtifacts: artifactsText]
+        textFieldForSettingType = [.labels: labelsText, .miniMap: miniMapText, .schools: schoolsText, .events: eventsText, .organizations: organizationsText, .artifacts: artifactsText]
 
-        labelsSwitch = setupSwitch(for: .showLabels)
-        miniMapSwitch = setupSwitch(for: .showMiniMap, on: false)
-        schoolsSwitch = setupSwitch(for: .toggleSchools)
-        eventsSwitch = setupSwitch(for: .toggleEvents)
-        organizationsSwitch = setupSwitch(for: .toggleOrganizations)
-        artifactsSwitch = setupSwitch(for: .toggleArtifacts)
+        labelsSwitch = setupSwitch(for: .labels)
+        miniMapSwitch = setupSwitch(for: .miniMap, on: false)
+        schoolsSwitch = setupSwitch(for: .schools)
+        eventsSwitch = setupSwitch(for: .events)
+        organizationsSwitch = setupSwitch(for: .organizations)
+        artifactsSwitch = setupSwitch(for: .artifacts)
 
-        switchForSettingsType = [.showLabels: labelsSwitch, .showMiniMap: miniMapSwitch, .toggleSchools: schoolsSwitch, .toggleEvents: eventsSwitch, .toggleOrganizations: organizationsSwitch, .toggleArtifacts: artifactsSwitch]
+        switchForSettingType = [.labels: labelsSwitch, .miniMap: miniMapSwitch, .schools: schoolsSwitch, .events: eventsSwitch, .organizations: organizationsSwitch, .artifacts: artifactsSwitch]
     }
 
     private func setupGestures() {
-        setupGesture(for: .showLabels)
-        setupGesture(for: .showMiniMap)
-        setupGesture(for: .toggleSchools)
-        setupGesture(for: .toggleArtifacts)
-        setupGesture(for: .toggleEvents)
-        setupGesture(for: .toggleOrganizations)
+        setupGesture(for: .labels)
+        setupGesture(for: .miniMap)
+        setupGesture(for: .schools)
+        setupGesture(for: .artifacts)
+        setupGesture(for: .events)
+        setupGesture(for: .organizations)
     }
 
     private func setupNotifications() {
@@ -110,10 +113,12 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
 
     // MARK: Gesture Handling
 
-    private func toggle(_ switchControl: SwitchControl, with type: SettingsType) {
-        switchControl.isOn = !switchControl.isOn
+    private func toggle(_ switchControl: SwitchControl, with type: SettingType) {
         let recordType = type.recordType?.rawValue ?? ""
-        let info: JSON = [Keys.id: appID, Keys.recordType: recordType, Keys.status: switchControl.isOn]
+        var info: JSON = [Keys.id: appID, Keys.recordType: recordType, Keys.status: !switchControl.isOn]
+        if let group = ConnectionManager.instance.groupForApp(id: appID) {
+            info[Keys.group] = group
+        }
         DistributedNotificationCenter.default().postNotificationName(SettingsNotification.with(type).name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
@@ -122,7 +127,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
 
     @objc
     private func handleNotification(_ notification: NSNotification) {
-        guard let info = notification.userInfo, let id = info[Keys.id] as? Int, let status = info[Keys.status] as? Bool else {
+        guard let info = notification.userInfo, let id = info[Keys.id] as? Int else {
             return
         }
 
@@ -134,14 +139,25 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         }
 
         switch notification.name {
+        case SettingsNotification.sync.name:
+            if let json = info[Keys.settings] as? JSON, let settings = Settings(json: json) {
+                sync(to: settings)
+            }
         case SettingsNotification.filter.name:
-            if let rawRecordType = info[Keys.recordType] as? String, let recordType = RecordType(rawValue: rawRecordType), let setting = SettingsType.from(recordType: recordType) {
-                switchForSettingsType[setting]?.isOn = status
+            if let status = info[Keys.status] as? Bool, let rawRecordType = info[Keys.recordType] as? String, let recordType = RecordType(rawValue: rawRecordType), let setting = SettingType.from(recordType: recordType) {
+                currentSettings.set(recordType, on: status)
+                switchForSettingType[setting]?.isOn = status
             }
         case SettingsNotification.labels.name:
-            switchForSettingsType[.showLabels]?.isOn = status
+            if let status = info[Keys.status] as? Bool {
+                currentSettings.showLabels = status
+                switchForSettingType[.labels]?.isOn = status
+            }
         case SettingsNotification.miniMap.name:
-            switchForSettingsType[.showMiniMap]?.isOn = status
+            if let status = info[Keys.status] as? Bool {
+                currentSettings.showMiniMap = status
+                switchForSettingType[.miniMap]?.isOn = status
+            }
         default:
             return
         }
@@ -166,8 +182,19 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
 
     // MARK: Helpers
 
-    private func setupSwitch(for type: SettingsType, on: Bool = true) -> SwitchControl? {
-        guard let textField = textFieldForSettingsType[type] else {
+    private func sync(to settings: Settings) {
+        currentSettings.clone(settings)
+        for recordType in RecordType.allValues {
+            if let settingType = SettingType.from(recordType: recordType) {
+                switchForSettingType[settingType]?.isOn = settings.displaying(recordType)
+            }
+        }
+        switchForSettingType[.labels]?.isOn = settings.showLabels
+        switchForSettingType[.miniMap]?.isOn = settings.showMiniMap
+    }
+
+    private func setupSwitch(for type: SettingType, on: Bool = true) -> SwitchControl? {
+        guard let textField = textFieldForSettingType[type] else {
             return nil
         }
 
@@ -189,8 +216,8 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         return toggleSwitch
     }
 
-    private func setupGesture(for type: SettingsType) {
-        guard let toggleSwitch = switchForSettingsType[type] else {
+    private func setupGesture(for type: SettingType) {
+        guard let toggleSwitch = switchForSettingType[type] else {
             return
         }
 

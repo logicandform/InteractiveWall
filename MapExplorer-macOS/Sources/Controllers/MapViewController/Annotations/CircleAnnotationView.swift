@@ -89,9 +89,9 @@ class CircleAnnotationView: MKAnnotationView {
         title.backgroundColor = NSColor.clear
         title.alphaValue = 0.0
         title.attributedStringValue = NSMutableAttributedString(string: annotation.title!, attributes: titleAttributes)
-        circle3.layer?.backgroundColor = annotation.record.color.cgColor
-        circle2.layer?.backgroundColor = annotation.record.color.withAlphaComponent(0.4).cgColor
-        circle1.layer?.backgroundColor = annotation.record.color.withAlphaComponent(0.2).cgColor
+        circle3.layer?.backgroundColor = annotation.type.color.cgColor
+        circle2.layer?.backgroundColor = annotation.type.color.withAlphaComponent(0.4).cgColor
+        circle1.layer?.backgroundColor = annotation.type.color.withAlphaComponent(0.2).cgColor
         center.layer?.backgroundColor = CGColor.white
         circle1.layer?.cornerRadius = Constants.radii.0
         circle2.layer?.cornerRadius = Constants.radii.1
