@@ -22,9 +22,9 @@ final class Style {
     let pdfWindowSize = CGSize(width: 600, height: 640)
     let playerWindowSize = CGSize(width: 640, height: 440)
     let searchWindowSize = CGSize(width: 350, height: 655)
-    let searchScrollViewSize = CGSize(width: 350, height: 610)
+    let searchScrollViewSize = CGSize(width: 350, height: 600)
     let borderWindowSize = NSSize(width: 4, height: 2160)
-    let testimonyWindowSize = CGSize(width: 416, height: 655)
+    let testimonyWindowSize = CGSize(width: 416, height: 645)
     let minMediaWindowWidth: CGFloat = 550
     let maxMediaWindowWidth: CGFloat = 700
     let minMediaWindowHeight: CGFloat = 275
