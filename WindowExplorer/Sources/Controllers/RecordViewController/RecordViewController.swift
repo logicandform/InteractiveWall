@@ -20,7 +20,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     @IBOutlet weak var relatedRecordCollectionClipView: NSClipView!
     @IBOutlet weak var relatedRecordScrollView: FadingScrollView!
     @IBOutlet weak var relatedRecordsHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var relatedRecordsWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var closeWindowTapArea: NSView!
     @IBOutlet weak var showRelatedItemsArea: NSView!
     @IBOutlet weak var hideRelatedItemsArea: NSView!
@@ -689,7 +688,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             } else {
                 relatedRecordsHeightConstraint.constant = height
             }
-
             relatedRecordScrollView.updateConstraints()
         }
     }
