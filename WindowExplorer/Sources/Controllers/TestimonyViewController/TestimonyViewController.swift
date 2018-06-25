@@ -4,6 +4,11 @@ import Cocoa
 import PromiseKit
 
 
+protocol TestimonyDelegate: class {
+    func testimonyDidClose()
+}
+
+
 class TestimonyViewController: BaseViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource {
     static let storyboard = NSStoryboard.Name(rawValue: "Testimony")
 
@@ -11,6 +16,7 @@ class TestimonyViewController: BaseViewController, NSCollectionViewDelegateFlowL
     @IBOutlet weak var collectionClipView: NSClipView!
     @IBOutlet weak var collectionScrollView: FadingScrollView!
 
+    weak var testimonyDelegate: TestimonyDelegate?
     private var testimonies = [Media]()
     private let relationshipHelper = RelationshipHelper()
     private var selectedTestimonies = Set<Media>()
@@ -110,6 +116,11 @@ class TestimonyViewController: BaseViewController, NSCollectionViewDelegateFlowL
         closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Constants.closeWindowTimeoutPeriod, repeats: false) { [weak self] _ in
             self?.closeTimerFired()
         }
+    }
+
+    override func close() {
+        testimonyDelegate?.testimonyDidClose()
+        super.close()
     }
 
 
