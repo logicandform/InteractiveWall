@@ -23,17 +23,17 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     static let storyboard = NSStoryboard.Name(rawValue: "Menu")
 
     @IBOutlet weak var menuView: NSView!
-    @IBOutlet weak var splitScreenButton: NSImageView!
-    @IBOutlet weak var mapToggleButton: NSImageView!
-    @IBOutlet weak var timelineToggleButton: NSImageView!
-    @IBOutlet weak var informationButton: NSImageView!
-    @IBOutlet weak var settingsButton: NSImageView!
-    @IBOutlet weak var searchButton: NSImageView!
+    @IBOutlet weak var splitScreenButton: MenuButton!
+    @IBOutlet weak var mapToggleButton: MenuButton!
+    @IBOutlet weak var timelineToggleButton: MenuButton!
+    @IBOutlet weak var informationButton: MenuButton!
+    @IBOutlet weak var settingsButton: MenuButton!
+    @IBOutlet weak var testimonyButton: MenuButton!
+    @IBOutlet weak var searchButton: MenuButton!
 
     var gestureManager: GestureManager!
     private var appID: Int!
-    private var viewForButtonType = [MenuButtonType: NSView]()
-    private var subviewForButtonType = [MenuButtonType: NSView]()
+    private var viewForButtonType = [MenuButtonType: MenuButton]()
     private var stateForButton = [MenuButtonType: ButtonState]()
     private var mergeLockIcon: NSView?
     private var mergeLocked = false
@@ -60,7 +60,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
         gestureManager = GestureManager(responder: self)
-        viewForButtonType = [.split: splitScreenButton, .map: mapToggleButton, .timeline: timelineToggleButton, .information: informationButton, .settings: settingsButton, .search: searchButton]
+        viewForButtonType = [.split: splitScreenButton, .map: mapToggleButton, .timeline: timelineToggleButton, .information: informationButton, .settings: settingsButton, .testimony: testimonyButton, .search: searchButton]
 
         setupButtons()
         setupGestures()
@@ -83,16 +83,14 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         settingsMenu?.set(appID: appID)
     }
 
-    func toggleMergeLock(on status: Bool) {
-        if mergeLocked != status {
-            let lockImage = status ? MenuButtonType.split.detailImage : nil
-            mergeLockIcon?.transition(to: lockImage, duration: Constants.imageTransitionDuration)
-            mergeLocked = status
+    func toggleMergeLock(on: Bool) {
+        if mergeLocked != on, let splitButton = viewForButtonType[MenuButtonType.split] {
+            mergeLocked = splitButton.toggleLockIcon(on: on)
         }
     }
 
     func toggle(_ type: MenuButtonType, to state: ButtonState) {
-        guard let currentState = stateForButton[type], currentState != state || type == .search, let subview = subviewForButtonType[type] else {
+        guard let currentState = stateForButton[type], currentState != state || type == .search, let button = viewForButtonType[type] else {
             return
         }
 
@@ -100,8 +98,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         stateForButton[type] = state
 
         // Transition image for the button
-        let image = state == .on ? type.selectedImage : type.image
-        subview.transition(to: image, duration: Constants.imageTransitionDuration)
+        button.toggle(to: state)
 
         switch type {
         case .map where state == .on:
@@ -150,6 +147,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         setupButton(for: .timeline)
         setupButton(for: .information)
         setupButton(for: .settings)
+        setupButton(for: .testimony)
         setupButton(for: .search)
     }
 
@@ -172,7 +170,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             if state == .off {
                 toggle(type, to: state.toggled)
             }
-        case .information, .settings:
+        case .information, .settings, .testimony:
             toggle(type, to: state.toggled)
         case .search:
             toggle(type, to: .on)
@@ -226,71 +224,35 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     // MARK: Helpers
 
     private func setupButton(for type: MenuButtonType) {
-        guard let view = viewForButtonType[type], let imageIcon = type.image else {
+        guard let button = viewForButtonType[type] else {
             return
         }
 
-        let image = NSView()
-        view.addSubview(image)
-        image.wantsLayer = true
-        image.layer?.contents = imageIcon
-        image.translatesAutoresizingMaskIntoConstraints = false
-
-        if view.frame.width < imageIcon.size.width {
-            image.widthAnchor.constraint(equalToConstant: style.menuImageSize.width).isActive = true
-        } else {
-            image.widthAnchor.constraint(equalToConstant: imageIcon.size.width).isActive = true
-        }
-
-        if view.frame.height < imageIcon.size.height {
-            image.heightAnchor.constraint(equalToConstant: style.menuImageSize.height).isActive = true
-        } else {
-            image.heightAnchor.constraint(equalToConstant: imageIcon.size.height).isActive = true
-        }
-
-        image.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        image.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        subviewForButtonType[type] = image
+        button.buttonType = type
         addGesture(for: type)
 
         switch type {
         case .split:
-            guard let secondaryPlaceholder = type.detailImage else {
-                return
-            }
-            view.wantsLayer = true
-            view.layer?.backgroundColor = style.menuSelectedColor.cgColor
-            let lockIcon = NSView()
-            view.addSubview(lockIcon)
-            lockIcon.wantsLayer = true
-            lockIcon.translatesAutoresizingMaskIntoConstraints = false
-            lockIcon.widthAnchor.constraint(equalToConstant: secondaryPlaceholder.size.width).isActive = true
-            lockIcon.heightAnchor.constraint(equalToConstant: secondaryPlaceholder.size.height).isActive = true
-            lockIcon.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: style.menuLockIconPosition.x).isActive = true
-            lockIcon.topAnchor.constraint(equalTo: view.topAnchor, constant: style.menuLockIconPosition.y).isActive = true
-            mergeLockIcon = lockIcon
             stateForButton[type] = .off
         case .map:
-            image.layer?.contents = type.selectedImage
+            button.toggle(to: .on)
             stateForButton[type] = .on
-        case .timeline, .information, .settings, .search:
+        case .timeline, .information, .settings, .search, .testimony:
             stateForButton[type] = .off
         }
     }
 
     private func addGesture(for type: MenuButtonType) {
-        guard let view = viewForButtonType[type], let subview = subviewForButtonType[type] else {
+        guard let button = viewForButtonType[type] else {
             return
         }
 
         let panGesture = PanGestureRecognizer()
-        gestureManager.add(panGesture, to: subview)
-        gestureManager.add(panGesture, to: view)
+        gestureManager.add(panGesture, to: button)
         panGesture.gestureUpdated = handleWindowPan(_:)
 
         let tapGesture = TapGestureRecognizer()
-        gestureManager.add(tapGesture, to: subview)
-        gestureManager.add(tapGesture, to: view)
+        gestureManager.add(tapGesture, to: button)
         tapGesture.gestureUpdated = { [weak self] tap in
             if tap.state == .ended {
                 self?.didSelect(type: type)
@@ -336,7 +298,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         return origin
     }
 
-    private func centeredPosition(for button: NSImageView, with frame: CGSize) -> CGPoint {
+    private func centeredPosition(for button: MenuButton, with frame: CGSize) -> CGPoint {
         guard let buttonWindowPosition = button.window?.frame else {
             return CGPoint.zero
         }
@@ -355,7 +317,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         return CGPoint(x: x, y: y)
     }
 
-    private func position(for button: NSImageView, frame: CGSize, margins: Bool = true) -> CGPoint {
+    private func position(for button: NSView, frame: CGSize, margins: Bool = true) -> CGPoint {
         guard let windowPosition = button.window?.frame, let screenBounds = NSScreen.containing(x: windowPosition.origin.x)?.frame else {
             return CGPoint(x: 0, y: 0)
         }

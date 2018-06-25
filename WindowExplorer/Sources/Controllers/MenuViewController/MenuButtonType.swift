@@ -11,6 +11,7 @@ enum MenuButtonType {
     case information
     case settings
     case search
+    case testimony
 
     var image: NSImage? {
         switch self {
@@ -26,6 +27,8 @@ enum MenuButtonType {
             return NSImage(named: "settings-icon")
         case .search:
             return NSImage(named: "search-icon")
+        case .testimony:
+            return NSImage(named: "timeline-icon")
         }
     }
 
@@ -43,6 +46,8 @@ enum MenuButtonType {
             return NSImage(named: "settings-icon-active")
         case .search:
             return NSImage(named: "search-icon-active")
+        case .testimony:
+            return NSImage(named: "timeline-icon-active")
         }
     }
 
