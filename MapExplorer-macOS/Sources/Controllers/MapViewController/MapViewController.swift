@@ -22,7 +22,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private var recordForAnnotation = [CircleAnnotation: Record]()
     private var showingAnnotationTitles = false
     private var settingsShowingAnnotationTitles = true
-    private var previousDidSpawnRecord = false
     private let touchListener = TouchListener()
 
     private var tileURL: String {
@@ -185,17 +184,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                     }
                 } else if tap.state == .ended, let annotation = annotation as? CircleAnnotation, let record = recordForAnnotation[annotation] {
                     postRecordNotification(for: record, at: CGPoint(x: positionInView.x, y: positionInView.y - 20.0))
-                    previousDidSpawnRecord = true
                     return
                 } else if tap.state == .doubleTapped {
-                    if !previousDidSpawnRecord, let annotation = annotation as? CircleAnnotation, let record = recordForAnnotation[annotation] {
-                        postRecordNotification(for: record, at: CGPoint(x: positionInView.x, y: positionInView.y - 20.0))
-                        previousDidSpawnRecord = true
-                        return
-                    } else {
-                        previousDidSpawnRecord = false
-                        return
-                    }
+                    return
                 }
             }
         }
@@ -203,8 +194,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         if tap.state == .doubleTapped {
             handleDoubleTap(at: position)
         }
-
-        previousDidSpawnRecord = false
     }
 
 
