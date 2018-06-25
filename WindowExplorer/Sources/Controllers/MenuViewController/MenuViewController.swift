@@ -298,7 +298,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         return origin
     }
 
-    private func centeredPosition(for button: NSImageView, with frame: CGSize) -> CGPoint {
+    private func centeredPosition(for button: MenuButton, with frame: CGSize) -> CGPoint {
         guard let buttonWindowPosition = button.window?.frame else {
             return CGPoint.zero
         }
