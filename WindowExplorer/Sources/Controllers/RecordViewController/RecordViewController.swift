@@ -19,7 +19,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     @IBOutlet weak var relatedItemsView: NSCollectionView!
     @IBOutlet weak var relatedRecordCollectionClipView: NSClipView!
     @IBOutlet weak var relatedRecordScrollView: FadingScrollView!
-    @IBOutlet weak var relatedRecordsHeightConstrant: NSLayoutConstraint!
+    @IBOutlet weak var relatedRecordsHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var closeWindowTapArea: NSView!
     @IBOutlet weak var showRelatedItemsArea: NSView!
     @IBOutlet weak var hideRelatedItemsArea: NSView!
@@ -607,9 +607,10 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         fadeRelatedRecordsAndTitle(out: true, completion: { [weak self] in
             if let strongSelf = self {
                 strongSelf.relatedRecordsTypeLabel.attributedStringValue = NSAttributedString(string: titleForType, attributes: style.relatedItemsTitleAttributes)
+                strongSelf.relatedItemsView.reloadData()
+                strongSelf.updateRelatedRecordsHeight()
                 strongSelf.updateRelatedItemsLayout { [weak self] in
                     if let strongSelf = self {
-                        strongSelf.relatedItemsView.reloadData()
                         strongSelf.relatedItemsView.scroll(.zero)
                         strongSelf.relatedRecordScrollView.updateGradient(forced: true)
                         strongSelf.fadeRelatedRecordsAndTitle(out: false, completion: {})
@@ -682,9 +683,9 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
         if let height = relatedItemsView.collectionViewLayout?.collectionViewContentSize.height {
             if height > maxHeight {
-                relatedRecordsHeightConstrant.constant = maxHeight
+                relatedRecordsHeightConstraint.constant = maxHeight
             } else {
-                relatedRecordsHeightConstrant.constant = height
+                relatedRecordsHeightConstraint.constant = height
             }
             relatedRecordScrollView.updateConstraints()
         }

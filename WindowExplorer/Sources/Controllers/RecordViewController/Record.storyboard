@@ -359,7 +359,7 @@
                         <outlet property="relatedItemsView" destination="9ag-mR-qAv" id="uxP-yf-2rd"/>
                         <outlet property="relatedRecordCollectionClipView" destination="B6c-6H-ats" id="aMD-Zs-68c"/>
                         <outlet property="relatedRecordScrollView" destination="fAf-gM-eoZ" id="N01-xH-aA5"/>
-                        <outlet property="relatedRecordsHeightConstrant" destination="Usv-Mh-9vJ" id="3F7-Ii-2IZ"/>
+                        <outlet property="relatedRecordsHeightConstraint" destination="Usv-Mh-9vJ" id="nQ0-q5-eiU"/>
                         <outlet property="relatedRecordsLabel" destination="uOU-t8-dRH" id="lgg-r1-D7e"/>
                         <outlet property="relatedRecordsTypeLabel" destination="fbw-1G-bzI" id="pSX-6D-qfI"/>
                         <outlet property="showRelatedItemsArea" destination="ng9-0N-mwq" id="Fbu-Qh-2f4"/>
