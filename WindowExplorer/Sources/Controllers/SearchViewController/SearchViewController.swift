@@ -339,9 +339,11 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     }
 
     private func showResults(for view: SearchItemView) {
-        guard let collectionView = view.collectionView, let indexPath = collectionView.indexPath(for: view), indexPath == selectedIndexForView[collectionView] else {
+        guard let collectionView = view.collectionView, let indexPath = collectionView.indexPath(for: view) else {
             return
         }
+//indexPath == selectedIndexForView[collectionView]
+//        view.set(highlighted: true)
 
         switch collectionView {
         case primaryCollectionView:
