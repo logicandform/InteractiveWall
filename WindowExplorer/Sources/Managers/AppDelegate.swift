@@ -38,10 +38,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         MenuManager.instance.createMenusAndBorders()
         GeocodeHelper.instance.associateSchoolsToProvinces()
         MasterViewController.instantiate()
-<<<<<<< HEAD
-=======
 //        WindowManager.instance.display(.testimony, at: CGPoint(x: 3500, y: 500))
->>>>>>> Heights fixed, gradient now appears at bottom of last cell when at top
     }
 
     func applicationWillTerminate(_ notification: Notification) {
