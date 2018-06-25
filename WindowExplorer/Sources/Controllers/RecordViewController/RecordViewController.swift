@@ -313,6 +313,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             let location = tap.position,
             let indexPath = relatedItemsView.indexPathForItem(at: location + relatedItemsView.visibleRect.origin),
             let relatedItem = relatedItemsView.item(at: indexPath) as? RelatedItemView else {
+                selectedRelatedItem = nil
                 return
         }
 
