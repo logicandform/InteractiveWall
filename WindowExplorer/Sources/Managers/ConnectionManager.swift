@@ -91,6 +91,7 @@ final class ConnectionManager {
             }
         case MapNotification.unpair.name:
             unpair(from: id)
+            resetTimer?.invalidate()
         case MapNotification.ungroup.name:
             beginResetTimer()
             if let group = group {
@@ -310,6 +311,6 @@ final class ConnectionManager {
 
     private func resetTimerFired() {
         let info: JSON = [Keys.id: 0]
-        DistributedNotificationCenter.default().postNotificationName(MapNotification.reset.name, object: nil, userInfo: info, deliverImmediately: true)
+        DistributedNotificationCenter.default().postNotificationName(SettingsNotification.reset.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 }

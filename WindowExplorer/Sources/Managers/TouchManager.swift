@@ -4,7 +4,6 @@ import Foundation
 import MONode
 
 final class TouchManager: SocketManagerDelegate {
-
     static let instance = TouchManager()
     static let touchNetwork = NetworkConfiguration(broadcastHost: Configuration.broadcastIP, nodePort: Configuration.touchPort)
 

@@ -68,6 +68,7 @@ final class ConnectionManager {
         }
         DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: SettingsNotification.split.name, object: nil)
         DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: SettingsNotification.merge.name, object: nil)
+        DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: SettingsNotification.reset.name, object: nil)
     }
 
 
@@ -104,6 +105,8 @@ final class ConnectionManager {
         case SettingsNotification.merge.name:
             merge(from: id, group: group)
             syncApps(inGroup: group)
+        case SettingsNotification.reset.name:
+            mapHandler?.reset(animated: true)
         default:
             return
         }

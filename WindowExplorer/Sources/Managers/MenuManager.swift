@@ -3,6 +3,7 @@
 import Foundation
 import AppKit
 
+
 final class MenuManager {
     static let instance = MenuManager()
 

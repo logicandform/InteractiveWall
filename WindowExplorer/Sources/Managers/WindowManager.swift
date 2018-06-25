@@ -6,7 +6,6 @@ import MONode
 import PromiseKit
 
 final class WindowManager {
-
     static let instance = WindowManager()
 
     private(set) var windows = [NSWindow: GestureManager]()
