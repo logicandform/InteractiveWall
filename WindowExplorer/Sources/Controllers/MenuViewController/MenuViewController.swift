@@ -292,7 +292,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         }
     }
 
-    /// Presents a search controller at the same height as the button, if one is already displayed; animates into position
+    /// Presents a testimony controller at the same height as the button, if one is already displayed; animates into position
     private func displayTestimonyController() {
         if let testimonyController = testimonyController {
             testimonyController.updateOrigin(to: centeredPosition(for: testimonyButton, with: style.testimonyWindowSize), animating: true)
