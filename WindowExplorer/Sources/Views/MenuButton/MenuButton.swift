@@ -15,21 +15,17 @@ class MenuButton: NSView {
             setupButton()
         }
     }
-
     private var toggleStatus: ButtonState = .off
-
 
     private struct Constants {
         static let imageTransitionDuration = 0.5
     }
 
 
-
     // MARK: Init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-
     }
 
     required init?(coder aDecoder: NSCoder) {
