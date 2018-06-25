@@ -194,6 +194,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                 } else if tap.state == .ended, let annotation = annotation as? CircleAnnotation, let record = recordForAnnotation[annotation] {
                     postRecordNotification(for: record, at: CGPoint(x: positionInView.x, y: positionInView.y - 20.0))
                     return
+                } else if tap.state == .doubleTapped {
+                    return
                 }
             }
         }
