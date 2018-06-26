@@ -19,7 +19,7 @@ enum ButtonState {
 }
 
 
-class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate, TestimonyDelegate {
+class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate, TestimonyDelegate, SettingsDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Menu")
 
     @IBOutlet weak var menuView: NSView!
@@ -246,6 +246,13 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     }
 
 
+    // MARK: SettingsDelegate
+
+    func settingsGestureRecognized() {
+        beginSettingsTimeout()
+    }
+
+
     // MARK: Helpers
 
     private func setupButton(for type: MenuButtonType) {
@@ -271,10 +278,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     private func setupSettings() {
         settingsMenu = WindowManager.instance.display(.settings, at: position(for: settingsButton, frame: style.settingsWindowSize, margins: false)) as? SettingsMenuViewController
         settingsMenu.view.isHidden = true
-
-//        let tapGesture = TapGestureRecognizer()
-//        gestureManager.add(tapGesture, to: settingsMenu.view)
-//        tapGesture.gestureUpdated = handleSettingsTap(_:)
+        settingsMenu.settingsParent = self
 
         if let appID = appID {
             settingsMenu.set(appID: appID)

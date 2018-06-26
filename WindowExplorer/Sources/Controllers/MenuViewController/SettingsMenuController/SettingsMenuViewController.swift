@@ -4,6 +4,11 @@ import Foundation
 import Cocoa
 
 
+protocol SettingsDelegate: class {
+    func settingsGestureRecognized()
+}
+
+
 class SettingsMenuViewController: NSViewController, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "SettingsMenu")
 
@@ -20,6 +25,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     @IBOutlet weak var artifactsSwitchContainer: NSView!
     @IBOutlet weak var schoolsSwitchContainer: NSView!
 
+    weak var settingsParent: SettingsDelegate?
     var gestureManager: GestureManager!
     private var appID: Int!
     private var currentSettings = Settings()
@@ -108,6 +114,12 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         setupGesture(for: .artifacts)
         setupGesture(for: .events)
         setupGesture(for: .organizations)
+
+        let tapGesture = TapGestureRecognizer()
+        gestureManager.add(tapGesture, to: view)
+        tapGesture.gestureUpdated = { [weak self] _ in
+            self?.settingsParent?.settingsGestureRecognized()
+        }
     }
 
     private func setupNotifications() {
@@ -126,6 +138,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
             info[Keys.group] = group
         }
         DistributedNotificationCenter.default().postNotificationName(SettingsNotification.with(type).name, object: nil, userInfo: info, deliverImmediately: true)
+        settingsParent?.settingsGestureRecognized()
     }
 
 
