@@ -39,6 +39,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     private var mergeLocked = false
     private var scrollThresholdAchieved = false
     private var settingsMenu: SettingsMenuViewController!
+    private var settingsTimeout: Foundation.Timer?
     private var searchMenu: SearchViewController?
     private var testimonyController: TestimonyViewController?
 
@@ -46,6 +47,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         static let minimumScrollThreshold: CGFloat = 4
         static let imageTransitionDuration = 0.5
         static let animationDuration = 0.5
+        static let settingsTimeoutPeriod: TimeInterval = 3
     }
 
     private struct Keys {
@@ -118,6 +120,9 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             toggleSettingsPanel(to: state)
             if state == .on {
                 toggle(.information, to: .off)
+                beginSettingsTimeout()
+            } else {
+                settingsTimeout?.invalidate()
             }
         case .testimony where state == .on:
             displayTestimonyController()
@@ -387,5 +392,12 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             info[Keys.group] = group
         }
         DistributedNotificationCenter.default().postNotificationName(SettingsNotification.transition.name, object: nil, userInfo: info, deliverImmediately: true)
+    }
+
+    private func beginSettingsTimeout() {
+        settingsTimeout?.invalidate()
+        settingsTimeout = Timer.scheduledTimer(withTimeInterval: Constants.settingsTimeoutPeriod, repeats: false) { [weak self] _ in
+            self?.toggle(.settings, to: .off)
+        }
     }
 }
