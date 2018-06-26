@@ -51,7 +51,7 @@ class MasterViewController: NSViewController {
 
         let storyboard = NSStoryboard(name: Constants.storyboard, bundle: .main)
         let controller = storyboard.instantiateInitialController() as! MasterViewController
-        let screen = NSScreen.main!
+        let screen = NSScreen.mainScreen
         let window = NSWindow()
         let origin = CGPoint(x: screen.frame.midX - controller.view.frame.width/2, y: screen.frame.midY - controller.view.frame.height/2)
         window.contentViewController = controller

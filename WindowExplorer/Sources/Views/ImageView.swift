@@ -54,6 +54,11 @@ class ImageView: NSView {
         transition.type = type
         layer?.add(transition, forKey: "contents")
         layer?.contentsGravity = scaling.contentsGravity
+
+        if let contentScale = layer?.contentsScale, contentScale < 2.0 {
+            layer?.contentsScale = 2.0
+        }
+
         layer?.contents = image
     }
 }

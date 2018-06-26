@@ -20,4 +20,8 @@ extension NSScreen {
     static func containing(x: CGFloat) -> NSScreen? {
         return NSScreen.screens.first(where: { $0.frame.contains(CGPoint(x: x, y: 0)) })
     }
+
+    static var mainScreen: NSScreen {
+        return NSScreen.screens.sorted { $0.frame.minX < $1.frame.minX }.first!
+    }
 }
