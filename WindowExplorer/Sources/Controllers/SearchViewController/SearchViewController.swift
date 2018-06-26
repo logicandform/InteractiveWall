@@ -157,7 +157,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
 
         // Only allow reselected of cells in the tertiaryViewController.
-        if let indexPaths = selectedIndexForView[collectionView], indexPaths.contains(indexPath) && collectionView != tertiaryCollectionView {
+        if let indicesForView = selectedIndexForView[collectionView], indicesForView.contains(indexPath) && collectionView != tertiaryCollectionView {
             return
         }
 
