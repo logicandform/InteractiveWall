@@ -1,14 +1,14 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
-import Foundation
-import SpriteKit
-import GameplayKit
-
-
 /*
     Abstract:
     A `GKComponent` that provides an `SKPhysicsBody` for an entity. This enables the entity to be represented in the SpriteKit physics world.
 */
+
+import Foundation
+import SpriteKit
+import GameplayKit
+
 
 class PhysicsComponent: GKComponent {
     typealias CategoryBitMask = Int
@@ -20,11 +20,10 @@ class PhysicsComponent: GKComponent {
         return renderComponent
     }
 
-
-    var physicsBody: SKPhysicsBody
+    private(set) var physicsBody: SKPhysicsBody
 
     private struct Constants {
-        static let resetBitMask: UInt32 = 0
+        static let resetBitMask: UInt32 = 0x1 << 0
     }
 
 
@@ -53,29 +52,13 @@ class PhysicsComponent: GKComponent {
         physicsBody.fieldBitMask = Constants.resetBitMask
     }
 
-    func createRadialGravityFieldNode() {
-        let radialField = SKFieldNode.radialGravityField()
-        radialField.strength = 5
-        radialField.falloff = 1
-        radialField.categoryBitMask = UInt32(1 << renderComponent.recordNode.record.id)
-        renderComponent.recordNode.addChild(radialField)
-    }
-
-    func createDragFieldNode() {
-        let dragField = SKFieldNode.dragField()
-        dragField.strength = 1
-        dragField.categoryBitMask = 0x1 << 1
-        renderComponent.recordNode.addChild(dragField)
-    }
-
 
     // MARK: Helpers
 
     private func setupInitialPhysicsBodyProperties() {
-        physicsBody.friction = 1
+        physicsBody.friction = 0
         physicsBody.restitution = 0
-        physicsBody.linearDamping = 1
+        physicsBody.linearDamping = 0
         physicsBody.mass = NodeConfiguration.Record.physicsBodyMass
-        physicsBody.fieldBitMask = 0x1 << 0
     }
 }

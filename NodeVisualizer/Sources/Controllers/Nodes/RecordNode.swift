@@ -9,9 +9,9 @@ class RecordNode: SKNode {
     private(set) var record: TestingEnvironment.Record
 
     private struct Constants {
-        static let borderCornerRadius: CGFloat = 0.3
-        static let centerOffset: CGFloat = 0.2
         static let labelFontSize: CGFloat = 10
+        static let forceMultiplier: CGFloat = 0.5
+        static let forceActionDuration: TimeInterval = 0.1
     }
 
 
@@ -31,13 +31,11 @@ class RecordNode: SKNode {
     // MARK: API
 
     func runInitialAnimation(with forceVector: CGVector, delay: Int) {
-        let dX = forceVector.dx * 0.05
-        let dY = forceVector.dy * 0.05
+        let dX = forceVector.dx * Constants.forceMultiplier
+        let dY = forceVector.dy * Constants.forceMultiplier
         let force = CGVector(dx: dX, dy: dY)
 
-//        let fadeInAction = SKAction.fadeIn(withDuration: TimeInterval(delay) * 0.01)
-        let applyForceAction = SKAction.applyForce(force, duration: 0.1)
-//        let groupAction = SKAction.sequence([fadeInAction, applyForceAction])
+        let applyForceAction = SKAction.applyForce(force, duration: Constants.forceActionDuration)
         run(applyForceAction)
     }
 
@@ -56,7 +54,7 @@ class RecordNode: SKNode {
 //        addChild(rootNode)
 //        return rootNode
 
-        let rootNode = SKShapeNode(circleOfRadius: 15)
+        let rootNode = SKShapeNode(circleOfRadius: NodeConfiguration.Record.physicsBodyRadius)
         rootNode.fillColor = record.color
         addChild(rootNode)
         return rootNode

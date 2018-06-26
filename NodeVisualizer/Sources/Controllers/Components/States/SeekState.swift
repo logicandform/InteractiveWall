@@ -19,19 +19,13 @@ class SeekState: GKState {
 
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
+
+        entity.physicsComponent.physicsBody.friction = 1
+        entity.physicsComponent.physicsBody.linearDamping = 1
     }
 
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
-
-//        if case let .seekRecordAgent(targetAgent) = entity.mandate {
-//            if entity.distance(to: targetAgent) < 100 {
-//                entity.agent.behavior = RecordEntityBehavior.behavior(toSeek: targetAgent, withTargetSpeed: 0.001, avoid: entity.agentsToSeparateFrom)
-//                stateMachine?.enter(ConnectedState.self)
-//            } else {
-//                entity.agent.behavior = RecordEntityBehavior.behavior(toSeek: targetAgent)
-//            }
-//        }
     }
 
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
@@ -41,12 +35,4 @@ class SeekState: GKState {
     override func willExit(to nextState: GKState) {
         super.willExit(to: nextState)
     }
-
 }
-
-
-
-
-
-
-

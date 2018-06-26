@@ -1,11 +1,15 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
+/*
+    Abstract:
+    A 'GKComponent' that enables an entity to seek a target node (i.e. a tapped node) and creates a gravitational attraction between the two entities.
+*/
+
 import Foundation
 import SpriteKit
 import GameplayKit
 
 
-/// This class allows RecordEntity to move/seek proportional to the radius between the target (tapped/selected node) and the its own node (i.e. the related node)
 class MovementComponent: GKComponent {
 
     var renderComponent: RenderComponent {

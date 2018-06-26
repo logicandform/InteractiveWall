@@ -1,5 +1,10 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
+/*
+    Abstract:
+    A 'GKComponent' that provides an entity with its own designated 'GKStateMachine' for determining their actions.
+*/
+
 import Foundation
 import SpriteKit
 import GameplayKit
@@ -7,8 +12,8 @@ import GameplayKit
 
 class IntelligenceComponent: GKComponent {
 
-    let stateMachine: GKStateMachine
-    let initialStateClass: AnyClass
+    private(set) var stateMachine: GKStateMachine
+    private let initialStateClass: AnyClass
 
 
     init(states: [GKState]) {

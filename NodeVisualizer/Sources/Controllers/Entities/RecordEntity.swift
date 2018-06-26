@@ -6,65 +6,46 @@ import GameplayKit
 
 class RecordEntity: GKEntity {
 
-    enum RecordEntityMandate {
-        case wander
-        case seekRecordAgent(GKAgent2D)
-    }
-
-    var mandate: RecordEntityMandate
-
-    var behaviorForCurrentMandate: GKBehavior {
-        switch mandate {
-        case .wander:
-            break
-        case .seekRecordAgent(let agent):
-            return RecordEntityBehavior.behavior(seek: agent, agentsToSeparateFrom: agentsToSeparateFrom)
-        }
-        return GKBehavior()
-    }
-
-    var agent: RecordAgent {
-        guard let agent = component(ofType: RecordAgent.self) else {
-            fatalError("A RecordEntity must have a GKAgent2D component")
-        }
-        return agent
-    }
-
     var renderComponent: RenderComponent {
         guard let renderComponent = component(ofType: RenderComponent.self) else {
-            fatalError("A RecordEntity must have a Render component")
+            fatalError("A RecordEntity must have a RenderComponent")
         }
         return renderComponent
     }
 
     var physicsComponent: PhysicsComponent {
         guard let physicsComponent = component(ofType: PhysicsComponent.self) else {
-            fatalError("A RecordEntity must have a Physics component")
+            fatalError("A RecordEntity must have a PhysicsComponent")
         }
         return physicsComponent
     }
 
     var movementComponent: MovementComponent {
         guard let movementComponent = component(ofType: MovementComponent.self) else {
-            fatalError("A RecordEntity must have a Movement component")
+            fatalError("A RecordEntity must have a MovementComponent")
         }
         return movementComponent
     }
 
     var intelligenceComponent: IntelligenceComponent {
         guard let intelligenceComponent = component(ofType: IntelligenceComponent.self) else {
-            fatalError("A RecordEntity must have an Intelligence component")
+            fatalError("A RecordEntity must have an IntelligenceComponent")
         }
         return intelligenceComponent
     }
 
+    var agent: RecordAgent {
+        guard let agent = component(ofType: RecordAgent.self) else {
+            fatalError("A RecordEntity must have a GKAgent2D Component")
+        }
+        return agent
+    }
+
     private(set) var manager: EntityManager
-    var agentsToSeparateFrom: [GKAgent2D]!
 
 
     init(record: TestingEnvironment.Record, manager: EntityManager) {
         self.manager = manager
-        mandate = .wander
 
         super.init()
 

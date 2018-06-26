@@ -7,7 +7,7 @@ import GameplayKit
 
 class WanderState: GKState {
 
-    unowned var entity: RecordEntity
+    private(set) unowned var entity: RecordEntity
 
 
     required init(entity: RecordEntity) {
@@ -19,33 +19,17 @@ class WanderState: GKState {
 
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
-
-
     }
 
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
-
-
     }
 
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
-//        return stateClass is SeekState.Type
         return true
     }
 
     override func willExit(to nextState: GKState) {
         super.willExit(to: nextState)
     }
-
-
-
-
-
-
 }
-
-
-
-
-

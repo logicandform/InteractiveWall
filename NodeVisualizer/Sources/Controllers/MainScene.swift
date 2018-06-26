@@ -8,8 +8,8 @@ class MainScene: SKScene {
 
     var records: [TestingEnvironment.Record]!
     var gestureManager: GestureManager!
-    private var entityManager = EntityManager()
 
+    private var entityManager = EntityManager()
     private var lastUpdateTimeInterval: TimeInterval = 0
     private var agentToSeek: GKAgent2D!
 
@@ -68,6 +68,117 @@ class MainScene: SKScene {
 //        }
     }
 
+    private func addRecordNodesToScene() {
+        records.enumerated().forEach { index, record in
+            let recordEntity = RecordEntity(record: record, manager: entityManager)
+
+            if let recordNode = recordEntity.component(ofType: RenderComponent.self)?.recordNode {
+                recordNode.position.x = randomX()
+                recordNode.position.y = randomY()
+                recordNode.zPosition = 1
+//                recordEntity.updateAgentPositionToMatchNodePosition()
+
+                let screenBoundsConstraint = SKConstraint.positionX(SKRange(lowerLimit: 0, upperLimit: frame.width), y: SKRange(lowerLimit: 0, upperLimit: frame.height))
+                recordNode.constraints = [screenBoundsConstraint]
+
+                entityManager.add(recordEntity)
+                addChild(recordNode)
+
+                let destinationPosition = getRandomPosition()
+                let forceVector = CGVector(dx: destinationPosition.x - recordNode.position.x, dy: destinationPosition.y - recordNode.position.y)
+                recordNode.runInitialAnimation(with: forceVector, delay: index)
+            }
+        }
+    }
+
+
+    // MARK: Gesture Handlers
+
+    private func handleTapGesture(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position else {
+            return
+        }
+
+        let nodePosition = convertPoint(fromView: position)
+
+        guard let recordNode = nodes(at: nodePosition).first(where: { $0 is RecordNode }) as? RecordNode else {
+            return
+        }
+
+        switch tap.state {
+        case .ended:
+            relatedNodes(for: recordNode)
+        default:
+            return
+        }
+    }
+
+    @objc
+    private func handleSystemClickGesture(_ recognizer: NSClickGestureRecognizer) {
+        let clickPosition = recognizer.location(in: recognizer.view)
+        let nodePosition = convertPoint(fromView: clickPosition)
+
+//        seekTest(at: nodePosition)
+
+        guard let recordNode = nodes(at: nodePosition).first(where: { $0 is RecordNode }) as? RecordNode else {
+            return
+        }
+
+        print("ID: \(recordNode.record.id)")
+
+        switch recognizer.state {
+        case .ended:
+            relatedNodes(for: recordNode)
+            return
+        default:
+            return
+        }
+    }
+
+
+    // MARK: Helpers
+
+    private func relatedNodes(for node: RecordNode) {
+        if let entity = entityManager.entity(for: node.record) as? RecordEntity {
+            entity.intelligenceComponent.stateMachine.enter(TappedState.self)
+        }
+    }
+
+    private func getRandomPosition() -> CGPoint {
+        var point = CGPoint.zero
+
+        guard let position = StartingPositionType(rawValue: arc4random_uniform(4)) else {
+            return point
+        }
+
+        switch position {
+        case .top:
+            point = CGPoint(x: randomX(), y: size.height - NodeConfiguration.Record.physicsBodyRadius)
+            return point
+        case .bottom:
+            point = CGPoint(x: randomX(), y: NodeConfiguration.Record.physicsBodyRadius)
+            return point
+        case .left:
+            point = CGPoint(x: NodeConfiguration.Record.physicsBodyRadius, y: randomY())
+            return point
+        case .right:
+            point = CGPoint(x: size.width - NodeConfiguration.Record.physicsBodyRadius, y: randomY())
+            return point
+        }
+    }
+
+    private func randomX() -> CGFloat {
+        let lowestValue = Int(NodeConfiguration.Record.physicsBodyRadius)
+        let highestValue = Int(size.width - NodeConfiguration.Record.physicsBodyRadius)
+        return CGFloat(GKRandomDistribution(lowestValue: lowestValue, highestValue: highestValue).nextInt(upperBound: highestValue))
+    }
+
+    private func randomY() -> CGFloat {
+        let lowestValue = Int(NodeConfiguration.Record.physicsBodyRadius)
+        let highestValue = Int(size.height - NodeConfiguration.Record.physicsBodyRadius)
+        return CGFloat(GKRandomDistribution(lowestValue: lowestValue, highestValue: highestValue).nextInt(upperBound: highestValue))
+    }
+
     private func addLinearGravityField(to type: StartingPositionType) {
         var vector: vector_float3
         var size: CGSize
@@ -97,147 +208,5 @@ class MainScene: SKScene {
         field.region = SKRegion(size: size)
         field.position = position
         addChild(field)
-    }
-
-    private func addRecordNodesToScene() {
-        records.enumerated().forEach { index, record in
-            let recordEntity = RecordEntity(record: record, manager: entityManager)
-
-            if let recordNode = recordEntity.component(ofType: RenderComponent.self)?.recordNode {
-                recordNode.position.x = randomX()
-                recordNode.position.y = randomY()
-                recordNode.zPosition = 1
-//                recordEntity.updateAgentPositionToMatchNodePosition()
-
-                let screenBoundsConstraint = SKConstraint.positionX(SKRange(lowerLimit: 0, upperLimit: frame.width), y: SKRange(lowerLimit: 0, upperLimit: frame.height))
-                recordNode.constraints = [screenBoundsConstraint]
-
-                entityManager.add(recordEntity)
-                addChild(recordNode)
-
-//                let destinationPosition = getRandomPosition()
-//                let forceVector = CGVector(dx: destinationPosition.x - recordNode.position.x, dy: destinationPosition.y - recordNode.position.y)
-//                recordNode.runInitialAnimation(with: forceVector, delay: index)
-            }
-        }
-    }
-
-
-    // MARK: Gesture Handlers
-
-    private func handleTapGesture(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position else {
-            return
-        }
-
-        let nodePosition = convertPoint(fromView: position)
-
-        guard let recordNode = nodes(at: nodePosition).first(where: { $0 is RecordNode }) as? RecordNode else {
-            return
-        }
-
-        switch tap.state {
-        case .ended:
-            relatedNodes(for: recordNode)
-//            createGravityField(at: nodePosition, to: recordNode)
-        default:
-            return
-        }
-    }
-
-    @objc
-    private func handleSystemClickGesture(_ recognizer: NSClickGestureRecognizer) {
-        let clickPosition = recognizer.location(in: recognizer.view)
-        let nodePosition = convertPoint(fromView: clickPosition)
-
-//        seekTest(at: nodePosition)
-
-        guard let recordNode = nodes(at: nodePosition).first(where: { $0 is RecordNode }) as? RecordNode else {
-            return
-        }
-
-        print("ID: \(recordNode.record.id)")
-
-        switch recognizer.state {
-        case .ended:
-            relatedNodes(for: recordNode)
-//            useSKConstraints(node: recordNode)
-            return
-        default:
-            return
-        }
-    }
-
-
-    // MARK: Helpers
-
-    private func relatedNodes(for node: RecordNode) {
-        if let entity = entityManager.entity(for: node.record) as? RecordEntity {
-            entity.intelligenceComponent.stateMachine.enter(TappedState.self)
-        }
-    }
-
-
-    // Debug
-    private func seekTest(at point: CGPoint, to node: RecordNode? = nil) {
-        agentToSeek = GKAgent2D()
-        agentToSeek.position = vector_float2(x: Float(point.x), y: Float(point.y))
-
-        for case let entity as RecordEntity in entityManager.entities {
-            entity.mandate = .seekRecordAgent(agentToSeek)
-            if let intelligenceComponent = entity.component(ofType: IntelligenceComponent.self) {
-                intelligenceComponent.stateMachine.enter(SeekState.self)
-            }
-
-            let move = RecordEntityBehavior.behavior(toSeek: agentToSeek)
-            let agent = entity.component(ofType: RecordAgent.self)
-            agent?.behavior = move
-        }
-    }
-
-    // Debug
-    private func useSKConstraints(node: RecordNode) {
-        let constraint = SKConstraint.distance(SKRange(upperLimit: 80), to: node)
-
-        for case let node as RecordNode in children {
-            if node.record.id != 48 {
-                node.constraints?.append(constraint)
-            }
-        }
-    }
-
-    private func getRandomPosition() -> CGPoint {
-        var point = CGPoint.zero
-
-        guard let position = StartingPositionType(rawValue: arc4random_uniform(4)) else {
-            return point
-        }
-
-        switch position {
-        case .top:
-            point = CGPoint(x: randomX(), y: size.height - 20)
-            return point
-        case .bottom:
-            point = CGPoint(x: randomX(), y: 20)
-            return point
-        case .left:
-            point = CGPoint(x: 20, y: randomY())
-            return point
-        case .right:
-            point = CGPoint(x: size.width - 20, y: randomY())
-            return point
-        }
-    }
-
-    private func randomX() -> CGFloat {
-        let lowestValue = 20
-        let highestValue = Int(size.width - 20)
-        return CGFloat(GKRandomDistribution(lowestValue: lowestValue, highestValue: highestValue).nextInt(upperBound: highestValue))
-    }
-
-    private func randomY() -> CGFloat {
-        let lowestValue = 20
-        let highestValue = Int(size.height - 20)
-        return CGFloat(GKRandomDistribution(lowestValue: lowestValue, highestValue: highestValue).nextInt(upperBound: highestValue))
     }
 }

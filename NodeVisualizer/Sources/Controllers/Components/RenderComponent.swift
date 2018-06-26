@@ -1,5 +1,10 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
+/*
+    Abstract:
+    A 'GKComponent' that provides an 'SKNode' for an entity. This enables it to be represented in the SpriteKit world.
+*/
+
 import Foundation
 import SpriteKit
 import GameplayKit

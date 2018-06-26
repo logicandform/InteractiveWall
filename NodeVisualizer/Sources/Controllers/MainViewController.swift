@@ -40,13 +40,6 @@ class MainViewController: NSViewController, GestureResponder {
         socketManager.delegate = self
         gestureManager = GestureManager(responder: self)
 
-
-        // could show loading scene when we are making network request, then transistion to the main scene
-
-//        DataManager.instance.associateRecordsToRelatedRecords(then: { [weak self] records in
-//            self?.setupMainScene(with: records)
-//        })
-
         mainView.showsFPS = true
         mainView.showsNodeCount = true
         mainView.showsFields = true
@@ -55,6 +48,10 @@ class MainViewController: NSViewController, GestureResponder {
 
     override func viewWillAppear() {
         super.viewWillAppear()
+
+//        DataManager.instance.associateRecordsToRelatedRecords(then: { [weak self] records in
+//            self?.setupMainScene(with: records)
+//        })
 
         setupTestingEnvironment()
     }

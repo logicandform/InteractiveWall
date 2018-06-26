@@ -1,5 +1,10 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
+/*
+    Abstract:
+    'TestingEnvironment' provides a mock environment for debug and feature development purposes without having to make network requests every build run.
+*/
+
 import Foundation
 import AppKit
 
