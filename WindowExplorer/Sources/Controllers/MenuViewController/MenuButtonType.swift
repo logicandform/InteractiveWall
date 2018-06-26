@@ -28,7 +28,7 @@ enum MenuButtonType {
         case .search:
             return NSImage(named: "search-icon")
         case .testimony:
-            return NSImage(named: "timeline-icon")
+            return NSImage(named: "testimony-icon")
         }
     }
 
@@ -37,17 +37,17 @@ enum MenuButtonType {
         case .split:
             return NSImage(named: "multiple-person-icon")
         case .map:
-            return NSImage(named: "map-icon-active")
+            return NSImage(named: "map-icon")?.tinted(with: style.menuSelectedColor)
         case .timeline:
-            return NSImage(named: "timeline-icon-active")
+            return NSImage(named: "timeline-icon")?.tinted(with: style.menuSelectedColor)
         case .information:
-            return NSImage(named: "info-icon-active")
+            return NSImage(named: "info-icon")?.tinted(with: style.menuSelectedColor)
         case .settings:
-            return NSImage(named: "settings-icon-active")
+            return NSImage(named: "settings-icon")?.tinted(with: style.menuSelectedColor)
         case .search:
-            return NSImage(named: "search-icon-active")
+            return NSImage(named: "search-icon")?.tinted(with: style.menuSelectedColor)
         case .testimony:
-            return NSImage(named: "timeline-icon-active")
+            return NSImage(named: "testimony-icon")?.tinted(with: style.menuSelectedColor)
         }
     }
 

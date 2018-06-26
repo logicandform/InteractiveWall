@@ -19,7 +19,7 @@ enum ButtonState {
 }
 
 
-class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate {
+class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate, TestimonyDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Menu")
 
     @IBOutlet weak var menuView: NSView!
@@ -40,6 +40,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     private var scrollThresholdAchieved = false
     private var settingsMenu: SettingsMenuViewController!
     private var searchMenu: SearchViewController?
+    private var testimonyController: TestimonyViewController?
 
     private struct Constants {
         static let minimumScrollThreshold: CGFloat = 4
@@ -90,7 +91,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     }
 
     func toggle(_ type: MenuButtonType, to state: ButtonState) {
-        guard let currentState = stateForButton[type], currentState != state || type == .search, let button = viewForButtonType[type] else {
+        guard let currentState = stateForButton[type], currentState != state || type == .search || type == .testimony, let button = viewForButtonType[type] else {
             return
         }
 
@@ -123,6 +124,8 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             if state == .on {
                 toggle(.information, to: .off)
             }
+        case .testimony where state == .on:
+            displayTestimonyController()
         case .search where state == .on:
             displaySearchController()
             toggle(.settings, to: .off)
@@ -170,9 +173,9 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             if state == .off {
                 toggle(type, to: state.toggled)
             }
-        case .information, .settings, .testimony:
+        case .information, .settings:
             toggle(type, to: state.toggled)
-        case .search:
+        case .search, .testimony:
             toggle(type, to: .on)
         }
     }
@@ -218,6 +221,14 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     func searchDidClose() {
         toggle(.search, to: .off)
         searchMenu = nil
+    }
+
+
+    // MARK: TestimonyDelegate
+
+    func testimonyDidClose() {
+        toggle(.testimony, to: .off)
+        testimonyController = nil
     }
 
 
@@ -278,6 +289,16 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         } else {
             searchMenu = WindowManager.instance.display(.search, at: centeredPosition(for: searchButton, with: style.searchWindowSize)) as? SearchViewController
             searchMenu?.searchViewDelegate = self
+        }
+    }
+
+    /// Presents a testimony controller at the same height as the button, if one is already displayed; animates into position
+    private func displayTestimonyController() {
+        if let testimonyController = testimonyController {
+            testimonyController.updateOrigin(to: centeredPosition(for: testimonyButton, with: style.testimonyWindowSize), animating: true)
+        } else {
+            testimonyController = WindowManager.instance.display(.testimony, at: centeredPosition(for: testimonyButton, with: style.testimonyWindowSize)) as? TestimonyViewController
+            testimonyController?.testimonyDelegate = self
         }
     }
 

@@ -52,7 +52,7 @@ enum RecordType: String, SearchItemDisplayable {
         case .school:
             return NSImage(named: "school-icon")!
         case .theme:
-            return NSImage(named: "school-icon")!
+            return NSImage(named: "theme-icon")!
         }
     }
 
