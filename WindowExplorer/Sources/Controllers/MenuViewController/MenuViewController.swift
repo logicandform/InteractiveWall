@@ -47,7 +47,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         static let minimumScrollThreshold: CGFloat = 4
         static let imageTransitionDuration = 0.5
         static let animationDuration = 0.5
-        static let settingsTimeoutPeriod: TimeInterval = 3
+        static let settingsTimeoutPeriod: TimeInterval = 10
     }
 
     private struct Keys {
