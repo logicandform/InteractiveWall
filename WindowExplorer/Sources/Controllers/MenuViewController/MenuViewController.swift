@@ -47,7 +47,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         static let minimumScrollThreshold: CGFloat = 4
         static let imageTransitionDuration = 0.5
         static let animationDuration = 0.5
-        static let settingsTimeoutPeriod: TimeInterval = 10
+        static let settingsTimeoutPeriod: TimeInterval = 2
     }
 
     private struct Keys {
@@ -209,6 +209,10 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         }
     }
 
+    func handleSettingsTap(_ gesture: GestureRecognizer) {
+        beginSettingsTimeout()
+    }
+
 
     // MARK: GestureResponder
 
@@ -261,6 +265,19 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
 
         if let selectedType = MenuButtonType.from(Configuration.initialType) {
             toggle(selectedType, to: .on)
+        }
+    }
+
+    private func setupSettings() {
+        settingsMenu = WindowManager.instance.display(.settings, at: position(for: settingsButton, frame: style.settingsWindowSize, margins: false)) as? SettingsMenuViewController
+        settingsMenu.view.isHidden = true
+
+//        let tapGesture = TapGestureRecognizer()
+//        gestureManager.add(tapGesture, to: settingsMenu.view)
+//        tapGesture.gestureUpdated = handleSettingsTap(_:)
+
+        if let appID = appID {
+            settingsMenu.set(appID: appID)
         }
     }
 
