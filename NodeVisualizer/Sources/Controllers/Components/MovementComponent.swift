@@ -8,9 +8,6 @@ import GameplayKit
 /// This class allows RecordEntity to move/seek proportional to the radius between the target (tapped/selected node) and the its own node (i.e. the related node)
 class MovementComponent: GKComponent {
 
-    private static let strength: CGFloat = 10000
-    let dt: CGFloat = 1/60
-
     var renderComponent: RenderComponent {
         guard let renderComponent = entity?.component(ofType: RenderComponent.self) else {
             fatalError("A MovementComponent's entity must have a RenderComponent")
@@ -30,6 +27,13 @@ class MovementComponent: GKComponent {
 
     var entityToSeek: RecordEntity?
 
+    private struct Constants {
+        static let strength: CGFloat = 1000
+        static let dt: CGFloat = 1 / 5000
+    }
+
+
+    // MARK: Lifecycle
 
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
@@ -41,36 +45,32 @@ class MovementComponent: GKComponent {
             return
         }
 
-        // periodically check the radius between its own entity and the entityToSeek, and apply the appropriate physics
+        // check the radius between its own entity and the entityToSeek, and apply the appropriate physics
         let renderComponent = self.renderComponent
         let physicsComponent = self.physicsComponent
 
-        let targetEntityMass = targetEntity.renderComponent.recordNode.physicsBody!.mass * MovementComponent.strength
-        let entityMass = renderComponent.recordNode.physicsBody!.mass * MovementComponent.strength
+        let deltaX = targetEntity.renderComponent.recordNode.position.x - renderComponent.recordNode.position.x
+        let deltaY = targetEntity.renderComponent.recordNode.position.y - renderComponent.recordNode.position.y
+        let displacement = CGVector(dx: deltaX, dy: deltaY)
 
-        let displacement = CGVector(dx: targetEntity.renderComponent.recordNode.position.x - renderComponent.recordNode.position.x, dy: targetEntity.renderComponent.recordNode.position.y - renderComponent.recordNode.position.y)
-        let radius = distanceBetween(starting: renderComponent.recordNode, to: targetEntity.renderComponent.recordNode)
+        let radius = distanceOf(x: deltaX, y: deltaY)
 
+        let targetEntityMass = targetEntity.renderComponent.recordNode.physicsBody!.mass * Constants.strength * radius
+        let entityMass = renderComponent.recordNode.physicsBody!.mass * Constants.strength * radius
+
+        let unitVector = CGVector(dx: displacement.dx / radius, dy: displacement.dy / radius)
         let force = (targetEntityMass * entityMass) / (radius * radius)
-        let normal = CGVector(dx: displacement.dx / radius, dy: displacement.dy / radius)
-        let impulse = CGVector(dx: normal.dx * force * dt, dy: normal.dy * force * dt)
+        let impulse = CGVector(dx: force * Constants.dt * unitVector.dx, dy: force * Constants.dt * unitVector.dy)
 
         physicsComponent.physicsBody.velocity = CGVector(dx: physicsComponent.physicsBody.velocity.dx + impulse.dx, dy: physicsComponent.physicsBody.velocity.dy + impulse.dy)
     }
 
 
-    private func distanceBetween(starting node: SKNode, to target: SKNode) -> CGFloat {
-        let dX = Float(target.position.x - node.position.x)
-        let dY = Float(target.position.y - node.position.y)
+    // MARK: Helpers
+
+    private func distanceOf(x: CGFloat, y: CGFloat) -> CGFloat {
+        let dX = Float(x)
+        let dY = Float(y)
         return CGFloat(hypotf(dX, dY))
     }
-
-
 }
-
-
-
-
-
-
-

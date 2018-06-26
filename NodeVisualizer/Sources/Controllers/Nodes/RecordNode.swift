@@ -47,7 +47,6 @@ class RecordNode: SKNode {
     private func makeRecordNode() {
         let rootNode = makeRootNode()
         addIdLabelNode(to: rootNode)
-//        setupPhysics()
     }
 
     private func makeRootNode() -> SKShapeNode {
@@ -63,33 +62,13 @@ class RecordNode: SKNode {
         return rootNode
     }
 
-//    private func addTitleLabelNode(to root: SKNode) {
-//        let title = SKLabelNode(text: record.title)
-//        title.verticalAlignmentMode = .center
-//        title.horizontalAlignmentMode = .center
-//        title.position.y = root.frame.height / 2 * Constants.centerOffset
-//        title.fontSize = Constants.labelFontSize
-//        title.xScale = root.frame.width / title.frame.width
-//        title.yScale = title.xScale
-//        title.fontColor = .black
-//        root.addChild(title)
-//    }
-
     private func addIdLabelNode(to root: SKNode) {
         let id = SKLabelNode()
         id.text = String(record.id)
         id.verticalAlignmentMode = .center
         id.horizontalAlignmentMode = .center
-//        id.position.y = -(root.frame.height / 2 * Constants.centerOffset)
         id.fontSize = Constants.labelFontSize
         id.fontColor = .black
         root.addChild(id)
-    }
-
-    private func setupPhysics() {
-        physicsBody = SKPhysicsBody(circleOfRadius: 15)
-        physicsBody?.friction = 0
-        physicsBody?.restitution = 0
-        physicsBody?.linearDamping = 0
     }
 }

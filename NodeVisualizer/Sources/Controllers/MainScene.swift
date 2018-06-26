@@ -107,19 +107,13 @@ class MainScene: SKScene {
                 recordNode.position.x = randomX()
                 recordNode.position.y = randomY()
                 recordNode.zPosition = 1
-                recordNode.physicsBody?.fieldBitMask = 0x1 << 0
-                recordNode.physicsBody?.mass = 0.2
-                recordEntity.updateAgentPositionToMatchNodePosition()
+//                recordEntity.updateAgentPositionToMatchNodePosition()
 
                 let screenBoundsConstraint = SKConstraint.positionX(SKRange(lowerLimit: 0, upperLimit: frame.width), y: SKRange(lowerLimit: 0, upperLimit: frame.height))
                 recordNode.constraints = [screenBoundsConstraint]
 
                 entityManager.add(recordEntity)
                 addChild(recordNode)
-
-                if let intelligenceComponent = recordEntity.component(ofType: IntelligenceComponent.self) {
-                    intelligenceComponent.enterInitialState()
-                }
 
 //                let destinationPosition = getRandomPosition()
 //                let forceVector = CGVector(dx: destinationPosition.x - recordNode.position.x, dy: destinationPosition.y - recordNode.position.y)
@@ -178,29 +172,9 @@ class MainScene: SKScene {
     // MARK: Helpers
 
     private func relatedNodes(for node: RecordNode) {
-//        addFieldNode(to: node)
-        node.physicsBody?.isDynamic = false
-
-        guard let entity = entityManager.entity(for: node.record) as? RecordEntity else {
-            return
+        if let entity = entityManager.entity(for: node.record) as? RecordEntity {
+            entity.intelligenceComponent.stateMachine.enter(TappedState.self)
         }
-
-        entity.intelligenceComponent.stateMachine.enter(TappedState.self)
-    }
-
-    private func handleNonRelatedEntities(byFiltering entities: [RecordEntity]) {
-        
-    }
-
-    // TODO: use own calculations based on radius instead of field node
-    private func addFieldNode(to node: SKNode) {
-        let field = SKFieldNode.radialGravityField()
-        field.strength = 10
-        field.falloff = 1
-        field.minimumRadius = 15
-        field.categoryBitMask = 0x1 << 1
-        node.addChild(field)
-        node.physicsBody?.isDynamic = false
     }
 
 

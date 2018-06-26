@@ -7,7 +7,7 @@ struct NodeConfiguration {
 
     struct Record {
         static let physicsBodyRadius: CGFloat = 15.0
-        static let physicsBodyMass: CGFloat = 0.2
+        static let physicsBodyMass: CGFloat = 0.25
 
         static let agentMaxSpeed: Float = 200.0
         static let agentMaxAcceleration: Float = 100.0

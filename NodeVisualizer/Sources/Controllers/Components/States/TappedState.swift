@@ -20,9 +20,11 @@ class TappedState: GKState {
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
 
-        let relatedEntities = getRelatedEntites()
+        entity.physicsComponent.physicsBody.isDynamic = false
 
         // iterate through each related entity to this selected entity && enter the seeking state for each of those related entities
+        let relatedEntities = getRelatedEntites()
+
         for case let relatedEntity as RecordEntity in relatedEntities {
             relatedEntity.movementComponent.entityToSeek = entity
             relatedEntity.intelligenceComponent.stateMachine.enter(SeekState.self)
@@ -42,6 +44,8 @@ class TappedState: GKState {
     }
 
 
+    // MARK: Helpers
+
     private func getRelatedEntites() -> [GKEntity] {
         let record = entity.renderComponent.recordNode.record
         guard let relatedRecords = TestingEnvironment.instance.relatedRecordsForRecord[record] else {
@@ -51,18 +55,4 @@ class TappedState: GKState {
         let relatedEntities = entity.manager.entities(for: Array(relatedRecords))
         return relatedEntities
     }
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-

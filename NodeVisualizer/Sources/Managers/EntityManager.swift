@@ -10,10 +10,10 @@ class EntityManager {
     private(set) var entities = Set<GKEntity>()
 
     lazy var componentSystems: [GKComponentSystem] = {
-        let agentSystem = GKComponentSystem(componentClass: RecordAgent.self)
         let intelligenceSystem = GKComponentSystem(componentClass: IntelligenceComponent.self)
         let movementSystem = GKComponentSystem(componentClass: MovementComponent.self)
-        return [intelligenceSystem, movementSystem, agentSystem]
+        let agentSystem = GKComponentSystem(componentClass: RecordAgent.self)
+        return [intelligenceSystem, movementSystem]
     }()
 
 

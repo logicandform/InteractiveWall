@@ -77,8 +77,8 @@ class RecordEntity: GKEntity {
         // Connect the 'PhysicsComponent' and the 'RenderComponent'
         renderComponent.recordNode.physicsBody = physicsComponent.physicsBody
 
-        let agentComponent = RecordAgent()
-        addComponent(agentComponent)
+//        let agentComponent = RecordAgent()
+//        addComponent(agentComponent)
 
         let movementComponent = MovementComponent()
         addComponent(movementComponent)
@@ -110,10 +110,3 @@ class RecordEntity: GKEntity {
         return hypotf(dX, dY)
     }
 }
-
-
-
-
-
-
-
