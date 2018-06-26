@@ -43,6 +43,10 @@ class MainScene: SKScene {
         let deltaTime = currentTime - lastUpdateTimeInterval
         lastUpdateTimeInterval = currentTime
         entityManager.update(deltaTime)
+
+        for case let node as RecordNode in children {
+            node.zRotation = 0
+        }
     }
 
 
@@ -84,9 +88,9 @@ class MainScene: SKScene {
                 entityManager.add(recordEntity)
                 addChild(recordNode)
 
-                let destinationPosition = getRandomPosition()
-                let forceVector = CGVector(dx: destinationPosition.x - recordNode.position.x, dy: destinationPosition.y - recordNode.position.y)
-                recordNode.runInitialAnimation(with: forceVector, delay: index)
+//                let destinationPosition = getRandomPosition()
+//                let forceVector = CGVector(dx: destinationPosition.x - recordNode.position.x, dy: destinationPosition.y - recordNode.position.y)
+//                recordNode.runInitialAnimation(with: forceVector, delay: index)
             }
         }
     }
