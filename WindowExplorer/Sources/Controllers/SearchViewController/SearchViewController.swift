@@ -38,7 +38,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     weak var searchViewDelegate: SearchViewDelegate?
     private var selectedType: RecordType?
     private var selectedRecords = Set<RecordProxy>()
-    private var selectedIndexForView = [NSCollectionView: IndexPath]()
+    private var selectedIndexForView = [NSCollectionView: [IndexPath]]()
     private let relationshipHelper = RelationshipHelper()
 
     private lazy var scrollViewForCollectionView = [primaryCollectionView: primaryScrollView, secondaryCollectionView: secondaryScrollView, tertiaryCollectionView: tertiaryScrollView]
@@ -157,7 +157,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
 
         // Only allow reselected of cells in the tertiaryViewController.
-        if indexPath == selectedIndexForView[collectionView] && collectionView != tertiaryCollectionView {
+        if let path = selectedIndexForView[collectionView], path.contains(indexPath) && collectionView != tertiaryCollectionView {
             return
         }
 
@@ -247,7 +247,9 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
         // Set the highlighted state of view
         if let selectedIndex = selectedIndexForView[collectionView], searchItemView.collectionView != tertiaryCollectionView {
-            searchItemView.set(highlighted: selectedIndex == indexPath)
+            for index in selectedIndex {
+                searchItemView.set(highlighted: index == indexPath)
+            }
         } else if let record = searchItems.at(index: indexPath.item) as? RecordDisplayable {
             searchItemView.set(highlighted: isSelected(record))
         }
@@ -309,13 +311,17 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
 
         if collectionView == tertiaryCollectionView, let record = item.item as? RecordDisplayable {
-            selectedIndexForView.removeValue(forKey: collectionView)
+//            selectedIndexForView.removeValue(forKey: collectionView)
+            selectedIndexForView[collectionView] = selectedIndexForView[collectionView]?.filter({ $0 != indexPath })
             selectedRecords.insert(RecordProxy(id: record.id, type: record.type))
         } else {
             unselectItem(for: collectionView)
         }
 
-        selectedIndexForView[collectionView] = indexPath
+        if selectedIndexForView[collectionView] == nil {
+            selectedIndexForView[collectionView] = [IndexPath]()
+        }
+        selectedIndexForView[collectionView]?.append(indexPath)
         item.set(highlighted: true)
     }
 
@@ -332,14 +338,16 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
 
         selectedIndexForView.removeValue(forKey: collectionView)
-        if let item = collectionView.item(at: indexPath) as? SearchItemView {
-            item.set(highlighted: false)
-            item.set(loading: false)
+        for index in indexPath {
+            if let item = collectionView.item(at: index) as? SearchItemView {
+                item.set(highlighted: false)
+                item.set(loading: false)
+            }
         }
     }
 
     private func showResults(for view: SearchItemView) {
-        guard let collectionView = view.collectionView else {
+        guard let collectionView = view.collectionView, let indexPath = collectionView.indexPath(for: view), let indexForView = selectedIndexForView[collectionView], indexForView.contains(indexPath) else {
             return
         }
 
