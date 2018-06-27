@@ -57,6 +57,6 @@ enum RecordType: String {
     }
 
     static var allValues: [RecordType] {
-        return [.event, .artifact, .organization, .school, .theme]
+        return [.event, .artifact, .organization, .school]
     }
 }

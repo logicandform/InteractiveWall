@@ -40,16 +40,39 @@ class MainViewController: NSViewController, GestureResponder {
         socketManager.delegate = self
         gestureManager = GestureManager(responder: self)
 
-
-        // could show loading scene when we are making network request, then transistion to the main scene
-
-        DataManager.instance.associateRecordsToRelatedRecords(then: { [weak self] records in
-            self?.setupMainScene(with: records)
-        })
-
         mainView.showsFPS = true
         mainView.showsNodeCount = true
+        mainView.showsFields = true
         mainView.ignoresSiblingOrder = true
+    }
+
+    override func viewWillAppear() {
+        super.viewWillAppear()
+
+//        DataManager.instance.associateRecordsToRelatedRecords(then: { [weak self] records in
+//            self?.setupMainScene(with: records)
+//        })
+
+        setupTestingEnvironment()
+    }
+
+
+    // MARK: Testing Environment
+
+    private func setupTestingEnvironment() {
+        TestingEnvironment.instance.createTestingEnvironment { [weak self] in
+            let records = TestingEnvironment.instance.allRecords
+            self?.setupMainScene(with: records)
+        }
+    }
+
+    private func setupMainScene(with records: [TestingEnvironment.Record]) {
+        let mainScene = MainScene(size: CGSize(width: mainView.bounds.width, height: mainView.bounds.height))
+        mainScene.backgroundColor = style.darkBackground
+        mainScene.scaleMode = .aspectFit
+        mainScene.records = records
+        mainScene.gestureManager = gestureManager
+        mainView.presentScene(mainScene)
     }
 
 
@@ -59,14 +82,13 @@ class MainViewController: NSViewController, GestureResponder {
         self.records = records
 
         let mainScene = makeScene()
-        mainScene.records = records
+//        mainScene.records = records
         mainScene.gestureManager = gestureManager
-
         mainView.presentScene(mainScene)
     }
 
     private func makeScene() -> MainScene {
-        let scene = MainScene(size: CGSize(width: view.bounds.width, height: view.bounds.height))
+        let scene = MainScene(size: CGSize(width: mainView.bounds.width, height: mainView.bounds.height))
         scene.backgroundColor = style.darkBackground
         scene.scaleMode = .aspectFill
         return scene
@@ -104,16 +126,6 @@ extension MainViewController: SocketManagerDelegate {
         }
 
         return true
-    }
-
-    private func convertToScreen(_ touch: Touch) {
-        guard let screen = NSScreen.screens.at(index: touch.screen) else {
-            return
-        }
-
-        let xPos = (touch.position.x / Configuration.touchScreenSize.width * CGFloat(screen.frame.width)) + screen.frame.origin.x
-        let yPos = (1 - touch.position.y / Configuration.touchScreenSize.height) * CGFloat(screen.frame.height)
-        touch.position = CGPoint(x: xPos, y: yPos)
     }
 
     private func convert(_ touch: Touch, toScreen screen: Int) {

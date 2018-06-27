@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		22AEAEB620B67C2400DD184B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AEAEB520B67C2400DD184B /* AppDelegate.swift */; };
-		22AEAEB820B67C2400DD184B /* MainScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 22AEAEB720B67C2400DD184B /* MainScene.sks */; };
-		22AEAEBA20B67C2400DD184B /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 22AEAEB920B67C2400DD184B /* Actions.sks */; };
 		22AEAEBC20B67C2400DD184B /* MainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AEAEBB20B67C2400DD184B /* MainScene.swift */; };
 		22AEAEBE20B67C2400DD184B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AEAEBD20B67C2400DD184B /* MainViewController.swift */; };
 		22AEAEC020B67C2500DD184B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22AEAEBF20B67C2500DD184B /* Assets.xcassets */; };
@@ -53,12 +51,25 @@
 		22D6F91B20B6824300C7FB5F /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F91520B6824300C7FB5F /* TapGestureRecognizer.swift */; };
 		22D6F91C20B6824300C7FB5F /* SwipeGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F91620B6824300C7FB5F /* SwipeGestureRecognizer.swift */; };
 		CD006AE020C8A681006F0FB4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD006ADF20C8A681006F0FB4 /* Main.storyboard */; };
+		CD0FB28020D1A4AE0058A410 /* RenderComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0FB27F20D1A4AE0058A410 /* RenderComponent.swift */; };
+		CD0FB28220D1A6300058A410 /* RecordEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0FB28120D1A6300058A410 /* RecordEntity.swift */; };
+		CD0FB28420D1AA9D0058A410 /* EntityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0FB28320D1AA9D0058A410 /* EntityManager.swift */; };
+		CD0FB28820D1BFDD0058A410 /* MovementComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0FB28720D1BFDD0058A410 /* MovementComponent.swift */; };
+		CD0FB28A20D83B840058A410 /* RecordEntityBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0FB28920D83B840058A410 /* RecordEntityBehavior.swift */; };
+		CD0FB28C20D849140058A410 /* RecordAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0FB28B20D849140058A410 /* RecordAgent.swift */; };
+		CD1FC73620D9B2F700B87D02 /* IntelligenceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1FC73520D9B2F700B87D02 /* IntelligenceComponent.swift */; };
+		CD1FC73820D9B36B00B87D02 /* WanderState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1FC73720D9B36B00B87D02 /* WanderState.swift */; };
+		CD1FC73A20D9B39A00B87D02 /* SeekState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1FC73920D9B39A00B87D02 /* SeekState.swift */; };
+		CD1FC73C20D9B3AA00B87D02 /* TappedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1FC73B20D9B3AA00B87D02 /* TappedState.swift */; };
+		CD1FC73E20DB06AA00B87D02 /* TestingEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1FC73D20DB06AA00B87D02 /* TestingEnvironment.swift */; };
 		CD27F40420BCB5B900375CBC /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40320BCB5B900375CBC /* DataManager.swift */; };
 		CD27F40620BCBD5A00375CBC /* RecordFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40520BCBD5A00375CBC /* RecordFactory.swift */; };
 		CD27F40E20BCBFB700375CBC /* Province.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40C20BCBFB700375CBC /* Province.swift */; };
 		CD27F40F20BCBFB700375CBC /* LetterGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40D20BCBFB700375CBC /* LetterGroup.swift */; };
 		CD2CC5EB20B8E6D800FB3C10 /* RecordDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2CC5E920B8E6D700FB3C10 /* RecordDisplayable.swift */; };
 		CD2CC5EC20B8E6D800FB3C10 /* RecordFilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2CC5EA20B8E6D800FB3C10 /* RecordFilterType.swift */; };
+		CDA5A90820DD70B700E1CF87 /* PhysicsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */; };
+		CDA5A90A20DD751C00E1CF87 /* NodeConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5A90920DD751C00E1CF87 /* NodeConfiguration.swift */; };
 		CDC22D2820BDC6B0006BC0BE /* RecordNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC22D2720BDC6B0006BC0BE /* RecordNode.swift */; };
 		D88D9E3C5FEA8DFC85B8FEF4 /* Pods_All_NodeVisualizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A74D0C56BCB99FB5CDC067 /* Pods_All_NodeVisualizer.framework */; };
 /* End PBXBuildFile section */
@@ -66,8 +77,6 @@
 /* Begin PBXFileReference section */
 		22AEAEB220B67C2400DD184B /* NodeVisualizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NodeVisualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22AEAEB520B67C2400DD184B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		22AEAEB720B67C2400DD184B /* MainScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MainScene.sks; sourceTree = "<group>"; };
-		22AEAEB920B67C2400DD184B /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		22AEAEBB20B67C2400DD184B /* MainScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScene.swift; sourceTree = "<group>"; };
 		22AEAEBD20B67C2400DD184B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		22AEAEBF20B67C2500DD184B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -116,12 +125,25 @@
 		72B5F6840D3186BD92A6EA0D /* Pods-All-NodeVisualizer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-NodeVisualizer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-NodeVisualizer/Pods-All-NodeVisualizer.release.xcconfig"; sourceTree = "<group>"; };
 		89AF3FC4E45BBD39F89AFF7F /* Pods-All-NodeVisualizer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-NodeVisualizer.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-NodeVisualizer/Pods-All-NodeVisualizer.debug.xcconfig"; sourceTree = "<group>"; };
 		CD006ADF20C8A681006F0FB4 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		CD0FB27F20D1A4AE0058A410 /* RenderComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderComponent.swift; sourceTree = "<group>"; };
+		CD0FB28120D1A6300058A410 /* RecordEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordEntity.swift; sourceTree = "<group>"; };
+		CD0FB28320D1AA9D0058A410 /* EntityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityManager.swift; sourceTree = "<group>"; };
+		CD0FB28720D1BFDD0058A410 /* MovementComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementComponent.swift; sourceTree = "<group>"; };
+		CD0FB28920D83B840058A410 /* RecordEntityBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordEntityBehavior.swift; sourceTree = "<group>"; };
+		CD0FB28B20D849140058A410 /* RecordAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordAgent.swift; sourceTree = "<group>"; };
+		CD1FC73520D9B2F700B87D02 /* IntelligenceComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntelligenceComponent.swift; sourceTree = "<group>"; };
+		CD1FC73720D9B36B00B87D02 /* WanderState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WanderState.swift; sourceTree = "<group>"; };
+		CD1FC73920D9B39A00B87D02 /* SeekState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeekState.swift; sourceTree = "<group>"; };
+		CD1FC73B20D9B3AA00B87D02 /* TappedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TappedState.swift; sourceTree = "<group>"; };
+		CD1FC73D20DB06AA00B87D02 /* TestingEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingEnvironment.swift; sourceTree = "<group>"; };
 		CD27F40320BCB5B900375CBC /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		CD27F40520BCBD5A00375CBC /* RecordFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordFactory.swift; sourceTree = "<group>"; };
 		CD27F40C20BCBFB700375CBC /* Province.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Province.swift; sourceTree = "<group>"; };
 		CD27F40D20BCBFB700375CBC /* LetterGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LetterGroup.swift; sourceTree = "<group>"; };
 		CD2CC5E920B8E6D700FB3C10 /* RecordDisplayable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordDisplayable.swift; sourceTree = "<group>"; };
 		CD2CC5EA20B8E6D800FB3C10 /* RecordFilterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordFilterType.swift; sourceTree = "<group>"; };
+		CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsComponent.swift; sourceTree = "<group>"; };
+		CDA5A90920DD751C00E1CF87 /* NodeConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeConfiguration.swift; sourceTree = "<group>"; };
 		CDC22D2720BDC6B0006BC0BE /* RecordNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -169,8 +191,6 @@
 				22AEAED120B67C5D00DD184B /* Views */,
 				22AEAED320B67C6C00DD184B /* Gestures */,
 				22AEAEC120B67C2500DD184B /* Master.storyboard */,
-				22AEAEB720B67C2400DD184B /* MainScene.sks */,
-				22AEAEB920B67C2400DD184B /* Actions.sks */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -198,6 +218,8 @@
 				22AEAEB520B67C2400DD184B /* AppDelegate.swift */,
 				CD27F40320BCB5B900375CBC /* DataManager.swift */,
 				22AEAED520B67D2600DD184B /* GestureManager.swift */,
+				CD0FB28320D1AA9D0058A410 /* EntityManager.swift */,
+				CD1FC73D20DB06AA00B87D02 /* TestingEnvironment.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -208,7 +230,10 @@
 				CD006ADF20C8A681006F0FB4 /* Main.storyboard */,
 				22AEAEBD20B67C2400DD184B /* MainViewController.swift */,
 				22AEAEBB20B67C2400DD184B /* MainScene.swift */,
-				CDC22D2720BDC6B0006BC0BE /* RecordNode.swift */,
+				CD0FB28D20D853D70058A410 /* Entities */,
+				CD0FB28E20D853E00058A410 /* Components */,
+				CD0FB28F20D854060058A410 /* Behaviors */,
+				CDB6CE3020DDD33B0033E328 /* Nodes */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -321,6 +346,46 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		CD0FB28D20D853D70058A410 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				CD0FB28120D1A6300058A410 /* RecordEntity.swift */,
+				CDA5A90920DD751C00E1CF87 /* NodeConfiguration.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		CD0FB28E20D853E00058A410 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				CD1FC73420D9B2D500B87D02 /* States */,
+				CD0FB27F20D1A4AE0058A410 /* RenderComponent.swift */,
+				CD0FB28720D1BFDD0058A410 /* MovementComponent.swift */,
+				CD0FB28B20D849140058A410 /* RecordAgent.swift */,
+				CD1FC73520D9B2F700B87D02 /* IntelligenceComponent.swift */,
+				CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		CD0FB28F20D854060058A410 /* Behaviors */ = {
+			isa = PBXGroup;
+			children = (
+				CD0FB28920D83B840058A410 /* RecordEntityBehavior.swift */,
+			);
+			path = Behaviors;
+			sourceTree = "<group>";
+		};
+		CD1FC73420D9B2D500B87D02 /* States */ = {
+			isa = PBXGroup;
+			children = (
+				CD1FC73720D9B36B00B87D02 /* WanderState.swift */,
+				CD1FC73920D9B39A00B87D02 /* SeekState.swift */,
+				CD1FC73B20D9B3AA00B87D02 /* TappedState.swift */,
+			);
+			path = States;
+			sourceTree = "<group>";
+		};
 		CD27F40720BCBDDD00375CBC /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -328,6 +393,14 @@
 				CD27F40C20BCBFB700375CBC /* Province.swift */,
 			);
 			path = Search;
+			sourceTree = "<group>";
+		};
+		CDB6CE3020DDD33B0033E328 /* Nodes */ = {
+			isa = PBXGroup;
+			children = (
+				CDC22D2720BDC6B0006BC0BE /* RecordNode.swift */,
+			);
+			path = Nodes;
 			sourceTree = "<group>";
 		};
 		F30BE907280548AB35838D56 /* Frameworks */ = {
@@ -398,10 +471,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22AEAEB820B67C2400DD184B /* MainScene.sks in Resources */,
 				CD006AE020C8A681006F0FB4 /* Main.storyboard in Resources */,
 				22AEAEC020B67C2500DD184B /* Assets.xcassets in Resources */,
-				22AEAEBA20B67C2400DD184B /* Actions.sks in Resources */,
 				22AEAEC320B67C2500DD184B /* Master.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -467,18 +538,24 @@
 				22AEAF0020B67E2C00DD184B /* TouchState.swift in Sources */,
 				22AEAEBE20B67C2400DD184B /* MainViewController.swift in Sources */,
 				22AEAEE620B67D6800DD184B /* PacketType.swift in Sources */,
+				CDA5A90820DD70B700E1CF87 /* PhysicsComponent.swift in Sources */,
+				CD1FC73620D9B2F700B87D02 /* IntelligenceComponent.swift in Sources */,
 				22D6F90520B6810600C7FB5F /* BackgroundTimer.swift in Sources */,
 				22AEAED620B67D2700DD184B /* GestureManager.swift in Sources */,
 				22AEAEE220B67D6800DD184B /* Int.swift in Sources */,
+				CD0FB28A20D83B840058A410 /* RecordEntityBehavior.swift in Sources */,
 				22D6F90B20B6810600C7FB5F /* PriorityOrder.swift in Sources */,
 				22AEAEEA20B67D6800DD184B /* CoreGraphics.swift in Sources */,
 				22D6F90F20B681A300C7FB5F /* LastTwo.swift in Sources */,
 				22AEAEF920B67DA600DD184B /* School.swift in Sources */,
 				CD27F40F20BCBFB700375CBC /* LetterGroup.swift in Sources */,
+				CD0FB28220D1A6300058A410 /* RecordEntity.swift in Sources */,
 				22D6F91020B681A300C7FB5F /* Media.swift in Sources */,
 				22D6F90C20B6810600C7FB5F /* ResponseHandler.swift in Sources */,
+				CD1FC73A20D9B39A00B87D02 /* SeekState.swift in Sources */,
 				22D6F91920B6824300C7FB5F /* PanGestureRecognizer.swift in Sources */,
 				CD2CC5EB20B8E6D800FB3C10 /* RecordDisplayable.swift in Sources */,
+				CD1FC73820D9B36B00B87D02 /* WanderState.swift in Sources */,
 				22AEAEF820B67DA600DD184B /* Artifact.swift in Sources */,
 				22D6F91B20B6824300C7FB5F /* TapGestureRecognizer.swift in Sources */,
 				22AEAEEC20B67D6800DD184B /* NSApplication.swift in Sources */,
@@ -488,6 +565,7 @@
 				22AEAEBC20B67C2400DD184B /* MainScene.swift in Sources */,
 				22AEAEEB20B67D6800DD184B /* MapKit.swift in Sources */,
 				22D6F90320B6810600C7FB5F /* GestureHandler.swift in Sources */,
+				CD0FB28420D1AA9D0058A410 /* EntityManager.swift in Sources */,
 				22AEAF0120B67E2C00DD184B /* TouchProperties.swift in Sources */,
 				22AEAEE820B67D6800DD184B /* NSImage.swift in Sources */,
 				CD27F40620BCBD5A00375CBC /* RecordFactory.swift in Sources */,
@@ -495,18 +573,24 @@
 				22AEAEF720B67DA600DD184B /* Theme.swift in Sources */,
 				CD2CC5EC20B8E6D800FB3C10 /* RecordFilterType.swift in Sources */,
 				22D6F90620B6810600C7FB5F /* Style.swift in Sources */,
+				CD0FB28C20D849140058A410 /* RecordAgent.swift in Sources */,
+				CD1FC73E20DB06AA00B87D02 /* TestingEnvironment.swift in Sources */,
 				22D6F90420B6810600C7FB5F /* RecordType.swift in Sources */,
 				22D6F91C20B6824300C7FB5F /* SwipeGestureRecognizer.swift in Sources */,
+				CD0FB28020D1A4AE0058A410 /* RenderComponent.swift in Sources */,
 				CD27F40E20BCBFB700375CBC /* Province.swift in Sources */,
 				22AEAEB620B67C2400DD184B /* AppDelegate.swift in Sources */,
 				22AEAEF620B67DA600DD184B /* Place.swift in Sources */,
 				22AEAEEE20B67D7500DD184B /* BorderlessWindow.swift in Sources */,
 				22AEAEE920B67D6800DD184B /* NetworkConfiguration.swift in Sources */,
 				22D6F91820B6824300C7FB5F /* PinchGestureRecognizer.swift in Sources */,
+				CD0FB28820D1BFDD0058A410 /* MovementComponent.swift in Sources */,
 				22D6F91720B6824300C7FB5F /* GestureRecognizer.swift in Sources */,
 				22D6F91A20B6824300C7FB5F /* RotateGestureRecognizer.swift in Sources */,
 				CD27F40420BCB5B900375CBC /* DataManager.swift in Sources */,
+				CD1FC73C20D9B3AA00B87D02 /* TappedState.swift in Sources */,
 				22D6F90820B6810600C7FB5F /* CachingNetwork.swift in Sources */,
+				CDA5A90A20DD751C00E1CF87 /* NodeConfiguration.swift in Sources */,
 				22D6F90920B6810600C7FB5F /* JSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
