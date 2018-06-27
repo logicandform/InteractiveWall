@@ -80,6 +80,8 @@ class MainScene: SKScene {
         records.enumerated().forEach { index, record in
             let recordEntity = RecordEntity(record: record, manager: entityManager)
 
+            recordEntity.intelligenceComponent.enterInitialState()
+
             if let recordNode = recordEntity.component(ofType: RenderComponent.self)?.recordNode {
                 recordNode.position.x = randomX()
                 recordNode.position.y = randomY()

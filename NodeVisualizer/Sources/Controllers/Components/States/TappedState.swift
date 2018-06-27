@@ -24,15 +24,17 @@ class TappedState: GKState {
 
         // run animation to go to center of screen, set the field bit mask
         entity.physicsComponent.physicsBody.fieldBitMask = 0x1 << 1
-        let action = SKAction.move(to: CGPoint(x: entity.renderComponent.recordNode.scene!.frame.size.width / 2, y: entity.renderComponent.recordNode.scene!.frame.size.height / 2), duration: 4)
+        let action = SKAction.move(to: CGPoint(x: entity.renderComponent.recordNode.scene!.frame.size.width / 2, y: entity.renderComponent.recordNode.scene!.frame.size.height / 2), duration: 2.5)
 
         entity.renderComponent.recordNode.run(action)
 
-//        entity.physicsComponent.physicsBody.isDynamic = false
-//
+//        entity.animationComponent.goToPoint = true
+
         // iterate through each related entity to this selected entity && enter the seeking state for each of those related entities
         let relatedEntities = getRelatedEntites()
         entity.relatedEntities = relatedEntities
+
+        handleRelatedEntities()
 
         for case let relatedEntity in relatedEntities {
             relatedEntity.physicsComponent.physicsBody.fieldBitMask = 0x1 << 1
@@ -66,4 +68,37 @@ class TappedState: GKState {
 
         return relatedEntities
     }
+
+    private func handleRelatedEntities() {
+        let relatedEntitiesToCurrentTappedEntity = entity.relatedEntities
+
+        for relatedEntity in relatedEntitiesToCurrentTappedEntity {
+            relatedEntity.intelligenceComponent.stateMachine.enter(WanderState.self)
+            relatedEntity.renderComponent.recordNode.removeAllActions()
+            relatedEntity.physicsComponent.physicsBody.isDynamic = true
+
+            for relatedRelatedEntity in relatedEntity.relatedEntities {
+                if relatedRelatedEntity != entity {
+                    relatedRelatedEntity.physicsComponent.physicsBody.isDynamic = true
+                    relatedRelatedEntity.physicsComponent.physicsBody.fieldBitMask = 0x1 << 0
+                    relatedRelatedEntity.intelligenceComponent.stateMachine.enter(WanderState.self)
+                    relatedRelatedEntity.movementComponent.entityToSeek = nil
+                    relatedRelatedEntity.renderComponent.recordNode.removeAllActions()
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

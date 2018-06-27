@@ -34,6 +34,13 @@ class RecordEntity: GKEntity {
         return intelligenceComponent
     }
 
+    var animationComponent: AnimationComponent {
+        guard let animationComponent = component(ofType: AnimationComponent.self) else {
+            fatalError("A RecordEntity must have an AnimationComponent")
+        }
+        return animationComponent
+    }
+
     var agent: RecordAgent {
         guard let agent = component(ofType: RecordAgent.self) else {
             fatalError("A RecordEntity must have a GKAgent2D Component")
@@ -65,6 +72,9 @@ class RecordEntity: GKEntity {
 
         let movementComponent = MovementComponent()
         addComponent(movementComponent)
+
+        let animationComponent = AnimationComponent()
+        addComponent(animationComponent)
 
         let intelligenceComponent = IntelligenceComponent(states: [
             WanderState(entity: self),
