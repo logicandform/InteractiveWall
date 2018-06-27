@@ -4,6 +4,32 @@ import Foundation
 import CoreGraphics
 import AppKit
 
+
+extension CGRect {
+
+    private struct Keys {
+        static let x = "x"
+        static let y = "y"
+        static let width = "width"
+        static let height = "height"
+    }
+
+    init?(json: JSON) {
+        self.init()
+        guard let x = json[Keys.x] as? CGFloat, let y = json[Keys.y] as? CGFloat, let width = json[Keys.width] as? CGFloat, let height = json[Keys.height] as? CGFloat else {
+            return nil
+        }
+
+        self.origin = CGPoint(x: x, y: y)
+        self.size = CGSize(width: width, height: height)
+    }
+
+    func toJSON() -> JSON {
+        return [Keys.x: origin.x, Keys.y: origin.y, Keys.width: size.width, Keys.height: size.height]
+    }
+}
+
+
 extension CGPoint {
 
     var asVector: CGVector {
@@ -110,6 +136,7 @@ extension CGPoint {
     }
 }
 
+
 extension CGVector {
 
     var asPoint: CGPoint {
@@ -155,6 +182,7 @@ extension CGVector {
         lhs.dy += rhs.dy
     }
 }
+
 
 extension CGSize {
 

@@ -19,4 +19,18 @@ final class Style {
 
     // Border Style
     let borderColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
+
+    // Timeline Controller
+    let timelineSelectedColor = NSColor.blue
+
+    var timelineTitleAttributes: [NSAttributedStringKey: Any] {
+        let font = NSFont(name: "Soleil", size: 16) ?? NSFont.systemFont(ofSize: 16)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineBreakMode = .byTruncatingTail
+
+        return [.paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: NSColor.white,
+                .kern: 1]
+    }
 }

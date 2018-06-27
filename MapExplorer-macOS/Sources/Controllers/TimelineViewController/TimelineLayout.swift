@@ -1,0 +1,95 @@
+//  Copyright © 2018 JABT. All rights reserved.
+
+import Cocoa
+
+
+class TimelineLayout: NSCollectionViewFlowLayout {
+
+    var yearWidth = 240
+    var cellSize = CGSize(width: 240, height: 60)
+
+    private struct Constants {
+//        static let yearWidth = 240
+//        static let cellSize = CGSize(width: 240, height: 60)
+        static let headerHeight: CGFloat = 20
+    }
+
+
+    // MARK: Init
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.scrollDirection = .horizontal
+        self.minimumInteritemSpacing = 0
+    }
+
+
+    // MARK: Overrides
+
+    override var collectionViewContentSize: NSSize {
+        guard let source = collectionView?.dataSource as? TimelineDataSource else {
+            return .zero
+        }
+
+        let totalYears = source.lastYear - source.firstYear + 1
+        let width = CGFloat(totalYears * yearWidth)
+        return CGSize(width: width, height: itemSize.height)
+    }
+
+    override func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {
+        guard let source = collectionView?.dataSource as? TimelineDataSource else {
+            return []
+        }
+
+        var layoutAttributes = [NSCollectionViewLayoutAttributes]()
+        let minYear = source.firstYear + Int(rect.minX) / yearWidth
+        let maxYear = source.firstYear + Int(rect.maxX) / yearWidth
+
+        for year in (minYear...maxYear) {
+            // Append attributes for items
+            if let events = source.eventsForYear[year] {
+                for event in events {
+                    if let attributes = attributes(for: event, in: source) {
+                        layoutAttributes.append(attributes)
+                    }
+                }
+            }
+            // Append attributes for supplimentary views
+            if let attributes = attributes(year: year, in: source) {
+                layoutAttributes.append(attributes)
+            }
+        }
+
+        return layoutAttributes
+    }
+
+
+    // MARK: Helpers
+
+    private func attributes(for event: TimelineEvent, in source: TimelineDataSource) -> NSCollectionViewLayoutAttributes? {
+        guard let item = source.events.index(of: event), let eventsForYear = source.eventsForYear[event.start], let heightIndex = eventsForYear.index(of: event) else {
+            return nil
+        }
+
+        let indexPath = IndexPath(item: item, section: 0)
+        let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
+        let y = cellSize.height * CGFloat(heightIndex) + Constants.headerHeight
+        let x = CGFloat((event.start - source.firstYear) * yearWidth)
+        attributes.frame = CGRect(origin: CGPoint(x: x, y: y), size: cellSize)
+        return attributes
+    }
+
+    private func attributes(year: Int, in source: TimelineDataSource) -> NSCollectionViewLayoutAttributes? {
+        if year < source.firstYear {
+            return nil
+        }
+
+        let item = year - source.firstYear
+        let indexPath = IndexPath(item: item, section: 0)
+        let attributes = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: TimelineHeaderView.supplementaryKind, with: indexPath)
+        let x = CGFloat(item * yearWidth)
+        let size = CGSize(width: cellSize.width, height: Constants.headerHeight)
+        attributes.frame = CGRect(origin: CGPoint(x: x, y: 0), size: size)
+        return attributes
+    }
+}

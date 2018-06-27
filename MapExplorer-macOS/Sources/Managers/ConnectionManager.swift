@@ -15,12 +15,16 @@ final class ConnectionManager {
     /// The handler for map associated events
     var mapHandler: MapHandler?
 
+    /// The handler for timeline associated events
+    var timelineHandler: TimelineHandler?
+
     /// The state for each app indexed by it's appID
     private var stateForApp: [AppState]
 
     private struct Keys {
         static let id = "id"
         static let map = "map"
+        static let rect = "rect"
         static let group = "group"
         static let gesture = "gestureType"
         static let animated = "amimated"
@@ -32,7 +36,7 @@ final class ConnectionManager {
     /// Use Singleton
     private init() {
         let numberOfApps = Configuration.appsPerScreen * Configuration.numberOfScreens
-        let initialState = AppState(pair: nil, group: nil, type: .mapExplorer)
+        let initialState = AppState(pair: nil, group: nil, type: Configuration.initialType)
         self.stateForApp = Array(repeating: initialState, count: numberOfApps)
     }
 
@@ -66,9 +70,12 @@ final class ConnectionManager {
         for notification in MapNotification.allValues {
             DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
         }
-        DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: SettingsNotification.split.name, object: nil)
-        DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: SettingsNotification.merge.name, object: nil)
-        DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: SettingsNotification.reset.name, object: nil)
+        for notification in TimelineNotification.allValues {
+            DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
+        }
+        for notification in SettingsNotification.allValues {
+            DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
+        }
     }
 
 
@@ -89,16 +96,21 @@ final class ConnectionManager {
             setAppType(.timeline, from: id, group: group)
         case ApplicationNotification.launchNodeNetwork.name:
             setAppType(.nodeNetwork, from: id, group: group)
-        case MapNotification.position.name:
+        case MapNotification.mapRect.name:
             if let mapJSON = info[Keys.map] as? JSON, let mapRect = MKMapRect(json: mapJSON), let group = group, let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture), let animated = info[Keys.animated] as? Bool {
                 setAppState(from: id, group: group, for: .mapExplorer, momentum: state == .momentum)
                 mapHandler?.handle(mapRect, fromID: id, fromGroup: group, animated: animated)
             }
-        case MapNotification.unpair.name:
+        case TimelineNotification.rect.name:
+            if let rectJSON = info[Keys.rect] as? JSON, let rect = CGRect(json: rectJSON), let group = group, let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture), let animated = info[Keys.animated] as? Bool {
+                setAppState(from: id, group: group, for: .timeline, momentum: state == .momentum)
+                timelineHandler?.handle(rect, fromID: id, fromGroup: group, animated: animated)
+            }
+        case SettingsNotification.unpair.name:
             unpair(from: id)
-        case MapNotification.ungroup.name:
+        case SettingsNotification.ungroup.name:
             if let group = group {
-                ungroup(from: group, with: .mapExplorer)
+                ungroup(from: group)
             }
         case SettingsNotification.split.name:
             split(from: id, group: group)
@@ -107,6 +119,7 @@ final class ConnectionManager {
             syncApps(inGroup: group)
         case SettingsNotification.reset.name:
             mapHandler?.reset(animated: true)
+            timelineHandler?.reset(animated: true)
         default:
             return
         }
@@ -253,7 +266,11 @@ final class ConnectionManager {
     }
 
     /// Ungroup all apps from group with given id
-    private func ungroup(from id: Int, with type: ApplicationType) {
+    private func ungroup(from id: Int) {
+        guard let type = typeForApp(id: id) else {
+            return
+        }
+
         // Clear groups with given id
         for (app, state) in stateForApp.enumerated() {
             if let currentGroup = state.group, currentGroup == id {
@@ -286,15 +303,20 @@ final class ConnectionManager {
 
     /// From the app matching the groupID, send position notification that won't cause app's to pair but causes map to sync together
     private func syncApps(inGroup group: Int?) {
-        guard let group = group, let type = typeForApp(id: group) else {
+        guard let group = group, let type = typeForApp(id: group), appID == group else {
             return
         }
 
         switch type {
         case .mapExplorer:
-            if let mapHandler = mapHandler, mapHandler.mapID == group {
+            if let mapHandler = mapHandler {
                 let mapRect = mapHandler.mapView.visibleMapRect
                 mapHandler.send(mapRect, for: .momentum, forced: true)
+            }
+        case .timeline:
+            if let timelineHandler = timelineHandler {
+                let rect = timelineHandler.timeline.visibleRect
+                timelineHandler.send(rect, for: .momentum, forced: true)
             }
         default:
             return
@@ -305,7 +327,7 @@ final class ConnectionManager {
     private func startTimerForApp(id: Int, with type: ApplicationType) {
         switch type {
         case .mapExplorer:
-            if let mapHandler = mapHandler, mapHandler.mapID == id {
+            if let mapHandler = mapHandler, appID == id {
                 mapHandler.endUpdates()
             }
         default:

@@ -12,6 +12,7 @@ struct Configuration {
     static let serverIP = "10.58.73.211"
     static let broadcastIP = "10.58.73.255"
     static let serverURL = "http://\(serverIP):3000"
+    static let initialType = ApplicationType.timeline
     static let appsPerScreen = 2
     static let numberOfScreens = 1
     static let touchScreenSize = CGSize(width: 21564, height: 12116)

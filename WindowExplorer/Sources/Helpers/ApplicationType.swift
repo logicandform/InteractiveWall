@@ -2,6 +2,7 @@
 
 import Foundation
 
+
 enum ApplicationType {
     case mapExplorer
     case timeline

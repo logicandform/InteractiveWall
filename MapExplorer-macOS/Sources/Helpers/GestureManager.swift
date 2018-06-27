@@ -84,7 +84,7 @@ final class GestureManager {
     }
 
     func invalidateAllGestures() {
-        gestureHandlers.values.forEach({ $0.gestures.forEach({ $0.invalidate() }) })
+        gestureHandlers.values.forEach { $0.gestures.forEach { $0.invalidate() } }
     }
 
 

@@ -20,7 +20,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
     private var recordForAnnotation = [CircleAnnotation: Record]()
-    private let touchListener = TouchListener()
     private var showingAnnotationTitles = false
     private var currentSettings = Settings()
 
@@ -62,14 +61,11 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     override func viewDidLoad() {
         super.viewDidLoad()
         gestureManager = GestureManager(responder: self)
+        TouchManager.instance.register(gestureManager)
 
         setupMap()
         setupGestures()
         setupNotifications()
-        touchListener.listenToPort(named: "MapListener\(appID)")
-        touchListener.receivedTouch = { [weak self] touch in
-            self?.gestureManager.handle(touch)
-        }
     }
 
     override func viewDidAppear() {
@@ -80,7 +76,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     // MARK: Setup
 
     private func setupMap() {
-        mapHandler = MapHandler(mapView: mapView, id: appID)
+        mapHandler = MapHandler(mapView: mapView)
         ConnectionManager.instance.mapHandler = mapHandler
         let overlay = MKTileOverlay(urlTemplate: tileURL)
         overlay.canReplaceMapContent = true

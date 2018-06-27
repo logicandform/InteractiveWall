@@ -9,7 +9,7 @@ final class TouchManager: SocketManagerDelegate {
 
     private var socketManager: SocketManager?
     private var managersForTouch = [Touch: (NSWindow, GestureManager)]()
-    private var touchesForMapID = [Int: Set<Touch>]()
+    private var touchesForAppID = [Int: Set<Touch>]()
     private var touchNeedsUpdate = [Touch: Bool]()
 
 
@@ -38,18 +38,18 @@ final class TouchManager: SocketManagerDelegate {
         // Check if the touch landed on a window, else notify the proper map application.
         if let manager = manager(of: touch) {
             manager.handle(touch)
-        } else if let owner = mapOwner(of: touch) {
+        } else if let owner = appOwner(of: touch) {
             send(touch, to: owner)
 
             // If touch is outside map, send indicator touch to underlying map
-            if !map(owner, contains: touch) {
-                let underlyingMap = calculateMap(for: touch)
+            if !app(owner, contains: touch) {
+                let underlyingApp = calculateApp(for: touch)
                 touch.state = .indicator
-                send(touch, to: underlyingMap)
+                send(touch, to: underlyingApp)
             }
         } else {
-            let map = calculateMap(for: touch)
-            send(touch, to: map)
+            let app = calculateApp(for: touch)
+            send(touch, to: app)
         }
     }
 
@@ -61,13 +61,13 @@ final class TouchManager: SocketManagerDelegate {
     // MARK: Sending CF Messages
 
     /// Sends a touch to the map and updates the state of the touches for map dictionary
-    private func send(_ touch: Touch, to map: Int) {
-        let portName = "MapListener\(map)"
+    private func send(_ touch: Touch, to app: Int) {
+        let portName = "AppListener\(app)"
         if let serverPort = CFMessagePortCreateRemote(nil, portName as CFString) {
             let touchData = touch.toData()
             CFMessagePortSendRequest(serverPort, 1, touchData as CFData, 1, 1, nil, nil)
         }
-        updateTouchesForMap(with: touch, for: map)
+        updateTouchesForApp(with: touch, for: app)
     }
 
 
@@ -120,17 +120,17 @@ final class TouchManager: SocketManagerDelegate {
     }
 
     /// Updates the touches for map dictionary when a touch down or up occurs.
-    private func updateTouchesForMap(with touch: Touch, for map: Int) {
+    private func updateTouchesForApp(with touch: Touch, for app: Int) {
         switch touch.state {
         case .down:
-            if touchesForMapID[map] != nil {
-                touchesForMapID[map]!.insert(touch)
+            if touchesForAppID[app] != nil {
+                touchesForAppID[app]!.insert(touch)
             } else {
-                touchesForMapID[map] = Set([touch])
+                touchesForAppID[app] = Set([touch])
             }
         case .up:
-            if touchesForMapID[map] != nil {
-                touchesForMapID[map]!.remove(touch)
+            if touchesForAppID[app] != nil {
+                touchesForAppID[app]!.remove(touch)
             }
         case .moved:
             return
@@ -147,29 +147,29 @@ final class TouchManager: SocketManagerDelegate {
         touch.position = CGPoint(x: xPos, y: yPos)
     }
 
-    private func mapOwner(of touch: Touch) -> Int? {
-        guard let (mapID, _) = touchesForMapID.first(where: { $0.value.contains(touch) }) else {
+    private func appOwner(of touch: Touch) -> Int? {
+        guard let (appID, _) = touchesForAppID.first(where: { $0.value.contains(touch) }) else {
             return nil
         }
 
-        return mapID
+        return appID
     }
 
     /// Calculates the map index based off the x-position of the touch and the screens
-    private func calculateMap(for touch: Touch) -> Int {
+    private func calculateApp(for touch: Touch) -> Int {
         let screen = NSScreen.at(position: touch.screen)
-        let baseMapForScreen = (touch.screen - 1) * Int(Configuration.appsPerScreen)
-        let mapWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen)
-        let mapForScreen = Int((touch.position.x - screen.frame.minX) / mapWidth)
-        return baseMapForScreen + mapForScreen
+        let baseAppForScreen = (touch.screen - 1) * Int(Configuration.appsPerScreen)
+        let appWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen)
+        let appForScreen = Int((touch.position.x - screen.frame.minX) / appWidth)
+        return baseAppForScreen + appForScreen
     }
 
-    private func map(_ map: Int, contains touch: Touch) -> Bool {
+    private func app(_ app: Int, contains touch: Touch) -> Bool {
         let screen = NSScreen.at(position: touch.screen)
-        let mapWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen)
-        let mapInScreen = CGFloat(map % Configuration.appsPerScreen)
-        let minX = screen.frame.minX + (mapInScreen * mapWidth)
-        let maxX = minX + mapWidth
+        let appWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen)
+        let appInScreen = CGFloat(app % Configuration.appsPerScreen)
+        let minX = screen.frame.minX + (appInScreen * appWidth)
+        let maxX = minX + appWidth
         return touch.position.x >= minX && touch.position.x <= maxX
     }
 

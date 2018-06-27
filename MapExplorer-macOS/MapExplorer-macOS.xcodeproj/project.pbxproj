@@ -8,6 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		22004FEA20DDA66100B1E740 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22004FE920DDA66100B1E740 /* Settings.swift */; };
+		22004FED20E164AF00B1E740 /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22004FEC20E164AF00B1E740 /* TimelineViewController.swift */; };
+		22004FEF20E164CB00B1E740 /* Timeline.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22004FEE20E164CB00B1E740 /* Timeline.storyboard */; };
+		22004FF320E16CE200B1E740 /* TimelineItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22004FF120E16CE200B1E740 /* TimelineItemView.swift */; };
+		22004FF420E16CE200B1E740 /* TimelineItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22004FF220E16CE200B1E740 /* TimelineItemView.xib */; };
+		22004FF620E17A9400B1E740 /* TouchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22004FF520E17A9400B1E740 /* TouchManager.swift */; };
+		22004FF820E1A03000B1E740 /* TimelineLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22004FF720E1A03000B1E740 /* TimelineLayout.swift */; };
+		22004FFE20E2ADC200B1E740 /* TimelineEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22004FFD20E2ADC200B1E740 /* TimelineEvent.swift */; };
+		2200500220E2B17F00B1E740 /* vhec_map_points.json in Resources */ = {isa = PBXBuildFile; fileRef = 2200500120E2B17E00B1E740 /* vhec_map_points.json */; };
+		2200500420E2B8AC00B1E740 /* TimelineDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2200500320E2B8AC00B1E740 /* TimelineDataSource.swift */; };
 		220329092066F20900FFD9E2 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220329082066F20900FFD9E2 /* Data.swift */; };
 		2204621220472E3D0067D9FB /* MapHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204621120472E3C0067D9FB /* MapHandler.swift */; };
 		22046267204732A40067D9FB /* RecordNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046265204732A40067D9FB /* RecordNotifications.swift */; };
@@ -37,6 +46,11 @@
 		22318DE0202B984F0092937C /* ResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22318DDF202B984F0092937C /* ResponseHandler.swift */; };
 		226EA70120296C240067B542 /* NSImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226EA70020296C240067B542 /* NSImage.swift */; };
 		2276AE68204E75C2001FAD8B /* BorderlessWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2276AE67204E75C2001FAD8B /* BorderlessWindow.swift */; };
+		2290A03520E2E4BE00F028C4 /* FlippedCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2290A03420E2E4BE00F028C4 /* FlippedCollectionView.swift */; };
+		2290A03720E2F01500F028C4 /* TimelineHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2290A03620E2F01500F028C4 /* TimelineHeaderView.swift */; };
+		2290A03920E2F0AC00F028C4 /* TimelineHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2290A03820E2F0AC00F028C4 /* TimelineHeaderView.xib */; };
+		2290A03E20E4102A00F028C4 /* TimelineHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2290A03D20E4102A00F028C4 /* TimelineHandler.swift */; };
+		2290A04020E412E700F028C4 /* TimelineNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2290A03F20E412E700F028C4 /* TimelineNotifications.swift */; };
 		22A4986E2047492B0024B46C /* TouchState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A4986D2047492B0024B46C /* TouchState.swift */; };
 		22A49873204749700024B46C /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A49872204749700024B46C /* JSON.swift */; };
 		22AE5D1F20D2D72000D5FB9C /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AE5D1E20D2D72000D5FB9C /* ConnectionManager.swift */; };
@@ -80,6 +94,15 @@
 
 /* Begin PBXFileReference section */
 		22004FE920DDA66100B1E740 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		22004FEC20E164AF00B1E740 /* TimelineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineViewController.swift; sourceTree = "<group>"; };
+		22004FEE20E164CB00B1E740 /* Timeline.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Timeline.storyboard; sourceTree = "<group>"; };
+		22004FF120E16CE200B1E740 /* TimelineItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineItemView.swift; sourceTree = "<group>"; };
+		22004FF220E16CE200B1E740 /* TimelineItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineItemView.xib; sourceTree = "<group>"; };
+		22004FF520E17A9400B1E740 /* TouchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchManager.swift; sourceTree = "<group>"; };
+		22004FF720E1A03000B1E740 /* TimelineLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineLayout.swift; sourceTree = "<group>"; };
+		22004FFD20E2ADC200B1E740 /* TimelineEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineEvent.swift; sourceTree = "<group>"; };
+		2200500120E2B17E00B1E740 /* vhec_map_points.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vhec_map_points.json; sourceTree = "<group>"; };
+		2200500320E2B8AC00B1E740 /* TimelineDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDataSource.swift; sourceTree = "<group>"; };
 		220329082066F20900FFD9E2 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		2204621120472E3C0067D9FB /* MapHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapHandler.swift; sourceTree = "<group>"; };
 		22046265204732A40067D9FB /* RecordNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordNotifications.swift; sourceTree = "<group>"; };
@@ -112,6 +135,11 @@
 		22318DDF202B984F0092937C /* ResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseHandler.swift; sourceTree = "<group>"; };
 		226EA70020296C240067B542 /* NSImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSImage.swift; sourceTree = "<group>"; };
 		2276AE67204E75C2001FAD8B /* BorderlessWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderlessWindow.swift; sourceTree = "<group>"; };
+		2290A03420E2E4BE00F028C4 /* FlippedCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlippedCollectionView.swift; sourceTree = "<group>"; };
+		2290A03620E2F01500F028C4 /* TimelineHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineHeaderView.swift; sourceTree = "<group>"; };
+		2290A03820E2F0AC00F028C4 /* TimelineHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineHeaderView.xib; sourceTree = "<group>"; };
+		2290A03D20E4102A00F028C4 /* TimelineHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineHandler.swift; sourceTree = "<group>"; };
+		2290A03F20E412E700F028C4 /* TimelineNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineNotifications.swift; sourceTree = "<group>"; };
 		22A4986D2047492B0024B46C /* TouchState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchState.swift; sourceTree = "<group>"; };
 		22A49872204749700024B46C /* JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		22AE5D1E20D2D72000D5FB9C /* ConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
@@ -158,6 +186,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		22004FEB20E1645E00B1E740 /* TimelineViewController */ = {
+			isa = PBXGroup;
+			children = (
+				22004FEE20E164CB00B1E740 /* Timeline.storyboard */,
+				22004FEC20E164AF00B1E740 /* TimelineViewController.swift */,
+				22004FFD20E2ADC200B1E740 /* TimelineEvent.swift */,
+				22004FF720E1A03000B1E740 /* TimelineLayout.swift */,
+				2200500320E2B8AC00B1E740 /* TimelineDataSource.swift */,
+				2290A03D20E4102A00F028C4 /* TimelineHandler.swift */,
+				22004FF020E16CC200B1E740 /* Views */,
+			);
+			path = TimelineViewController;
+			sourceTree = "<group>";
+		};
+		22004FF020E16CC200B1E740 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				22004FF220E16CE200B1E740 /* TimelineItemView.xib */,
+				22004FF120E16CE200B1E740 /* TimelineItemView.swift */,
+				2290A03820E2F0AC00F028C4 /* TimelineHeaderView.xib */,
+				2290A03620E2F01500F028C4 /* TimelineHeaderView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		220462602047327A0067D9FB /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
@@ -165,6 +218,7 @@
 				22046265204732A40067D9FB /* RecordNotifications.swift */,
 				2222B13720D85BB500ECCB5D /* ApplicationNotifications.swift */,
 				2222B13D20D986AF00ECCB5D /* SettingsNotifications.swift */,
+				2290A03F20E412E700F028C4 /* TimelineNotifications.swift */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -206,6 +260,7 @@
 				22290C232028FA1E000E0573 /* Managers */,
 				22290C192028FA1E000E0573 /* Controllers */,
 				2276AE66204E75A9001FAD8B /* Windows */,
+				2290A03A20E30E4400F028C4 /* Views */,
 				22290C262028FA1E000E0573 /* Models */,
 				22290C212028FA1E000E0573 /* Helpers */,
 				22B85AEE209B7A6D0099F44E /* Gestures */,
@@ -219,6 +274,7 @@
 			children = (
 				22290C0E2028F9EC000E0573 /* Main.storyboard */,
 				22290C1D2028FA1E000E0573 /* MapViewController */,
+				22004FEB20E1645E00B1E740 /* TimelineViewController */,
 				22FEF1E4202D079B001E9596 /* GestureDemoController */,
 			);
 			path = Controllers;
@@ -259,6 +315,7 @@
 			children = (
 				22290C082028F9EC000E0573 /* AppDelegate.swift */,
 				22AE5D1E20D2D72000D5FB9C /* ConnectionManager.swift */,
+				22004FF520E17A9400B1E740 /* TouchManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -296,6 +353,7 @@
 		22290C3D2028FE99000E0573 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2200500120E2B17E00B1E740 /* vhec_map_points.json */,
 				22290C0C2028F9EC000E0573 /* Assets.xcassets */,
 			);
 			path = Resources;
@@ -316,6 +374,14 @@
 				2276AE67204E75C2001FAD8B /* BorderlessWindow.swift */,
 			);
 			path = Windows;
+			sourceTree = "<group>";
+		};
+		2290A03A20E30E4400F028C4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2290A03420E2E4BE00F028C4 /* FlippedCollectionView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		22A4986F2047493A0024B46C /* Touches */ = {
@@ -466,9 +532,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22004FF420E16CE200B1E740 /* TimelineItemView.xib in Resources */,
 				222AB400203CE9AE002BFAF2 /* Demo.storyboard in Resources */,
+				2290A03920E2F0AC00F028C4 /* TimelineHeaderView.xib in Resources */,
 				222AB408203DF8F5002BFAF2 /* Map.storyboard in Resources */,
+				22004FEF20E164CB00B1E740 /* Timeline.storyboard in Resources */,
 				22290C0D2028F9EC000E0573 /* Assets.xcassets in Resources */,
+				2200500220E2B17F00B1E740 /* vhec_map_points.json in Resources */,
 				22290C102028F9EC000E0573 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -541,25 +611,32 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2200500420E2B8AC00B1E740 /* TimelineDataSource.swift in Sources */,
 				8F64A1E720BEF88600F0D209 /* FlippedMapViewWithMiniMap.swift in Sources */,
 				22A4986E2047492B0024B46C /* TouchState.swift in Sources */,
 				22D6F91E20B6836900C7FB5F /* NSApplication.swift in Sources */,
 				22004FEA20DDA66100B1E740 /* Settings.swift in Sources */,
+				2290A03520E2E4BE00F028C4 /* FlippedCollectionView.swift in Sources */,
 				22046267204732A40067D9FB /* RecordNotifications.swift in Sources */,
 				22290C3B2028FA35000E0573 /* PacketType.swift in Sources */,
 				3F0254F22049D521004B831C /* LastTwo.swift in Sources */,
 				22AE5D1F20D2D72000D5FB9C /* ConnectionManager.swift in Sources */,
 				2222B13820D85BB500ECCB5D /* ApplicationNotifications.swift in Sources */,
+				22004FED20E164AF00B1E740 /* TimelineViewController.swift in Sources */,
 				22B1E2AA2045F2EE00BDDF14 /* AVKit.swift in Sources */,
 				2220D3FD202F7E4200B878D6 /* GestureManager.swift in Sources */,
 				22B85AF5209B7A6D0099F44E /* RotateGestureRecognizer.swift in Sources */,
 				22290C3A2028FA35000E0573 /* Int.swift in Sources */,
+				2290A03720E2F01500F028C4 /* TimelineHeaderView.swift in Sources */,
 				22FEF1DF202CFFFA001E9596 /* Touch.swift in Sources */,
+				22004FF820E1A03000B1E740 /* TimelineLayout.swift in Sources */,
 				22B85AF9209B7A6D0099F44E /* TapGestureRecognizer.swift in Sources */,
 				226EA70120296C240067B542 /* NSImage.swift in Sources */,
+				22004FF620E17A9400B1E740 /* TouchManager.swift in Sources */,
 				22FEF1E1202D005D001E9596 /* TouchProperties.swift in Sources */,
 				221C62A8203B57F7009493DA /* URL.swift in Sources */,
 				3F5FAAAC206043D700CF275B /* CircleAnnotation.swift in Sources */,
+				2290A04020E412E700F028C4 /* TimelineNotifications.swift in Sources */,
 				3F5FAAAE206043E600CF275B /* CircleAnnotationView.swift in Sources */,
 				220329092066F20900FFD9E2 /* Data.swift in Sources */,
 				22A49873204749700024B46C /* JSON.swift in Sources */,
@@ -573,6 +650,7 @@
 				22290C382028FA35000E0573 /* MapKit.swift in Sources */,
 				221C629F203B4906009493DA /* School.swift in Sources */,
 				222694C220699B53007DA6FA /* Event.swift in Sources */,
+				22004FF320E16CE200B1E740 /* TimelineItemView.swift in Sources */,
 				22B85AFA209B7A6D0099F44E /* PinchGestureRecognizer.swift in Sources */,
 				8F1A1CBB205B41AC00A59A84 /* FlippedMapView.swift in Sources */,
 				22EF0FA8202B847200571002 /* CachingNetwork.swift in Sources */,
@@ -591,7 +669,9 @@
 				22046268204732A40067D9FB /* MapNotifications.swift in Sources */,
 				22290C2D2028FA1F000E0573 /* Place.swift in Sources */,
 				22F0EDF82066D9500075E467 /* TouchListener.swift in Sources */,
+				2290A03E20E4102A00F028C4 /* TimelineHandler.swift in Sources */,
 				8F22945620773EA600731E78 /* Math.swift in Sources */,
+				22004FFE20E2ADC200B1E740 /* TimelineEvent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

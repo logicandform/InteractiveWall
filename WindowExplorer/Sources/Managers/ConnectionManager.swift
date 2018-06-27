@@ -17,7 +17,7 @@ final class ConnectionManager {
     private weak var resetTimer: Foundation.Timer?
 
     private struct Constants {
-        static let resetTimeoutPeriod: TimeInterval = 180
+        static let resetTimeoutPeriod = 180.0
     }
 
     private struct Keys {
@@ -34,7 +34,7 @@ final class ConnectionManager {
     /// Use Singleton
     private init() {
         let numberOfApps = Configuration.appsPerScreen * Configuration.numberOfScreens
-        let initialState = AppState(pair: nil, group: nil, type: .mapExplorer)
+        let initialState = AppState(pair: nil, group: nil, type: Configuration.initialType)
         self.stateForApp = Array(repeating: initialState, count: numberOfApps)
     }
 
@@ -63,8 +63,12 @@ final class ConnectionManager {
         for notification in MapNotification.allValues {
             DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
         }
-        DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: SettingsNotification.split.name, object: nil)
-        DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: SettingsNotification.merge.name, object: nil)
+        for notification in TimelineNotification.allValues {
+            DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
+        }
+        for notification in SettingsNotification.allValues {
+            DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
+        }
     }
 
 
@@ -85,17 +89,21 @@ final class ConnectionManager {
             setAppType(.timeline, from: id, group: group)
         case ApplicationNotification.launchNodeNetwork.name:
             setAppType(.nodeNetwork, from: id, group: group)
-        case MapNotification.position.name:
+        case MapNotification.mapRect.name:
             if let group = group, let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture) {
                 setAppState(from: id, group: group, for: .mapExplorer, momentum: state == .momentum)
             }
-        case MapNotification.unpair.name:
+        case TimelineNotification.rect.name:
+            if let group = group, let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture) {
+                setAppState(from: id, group: group, for: .timeline, momentum: state == .momentum)
+            }
+        case SettingsNotification.unpair.name:
             unpair(from: id)
             resetTimer?.invalidate()
-        case MapNotification.ungroup.name:
+        case SettingsNotification.ungroup.name:
             beginResetTimer()
             if let group = group {
-                ungroup(from: group, with: .mapExplorer)
+                ungroup(from: group)
             }
         case SettingsNotification.split.name:
             split(from: id, group: group)
@@ -250,7 +258,11 @@ final class ConnectionManager {
     }
 
     /// Ungroup all apps from group with given id
-    private func ungroup(from id: Int, with type: ApplicationType) {
+    private func ungroup(from id: Int) {
+        guard let type = typeForApp(id: id) else {
+            return
+        }
+
         // Clear groups with given id
         for (app, state) in stateForApp.enumerated() {
             if let currentGroup = state.group, currentGroup == id {

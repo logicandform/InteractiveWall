@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="qGn-1v-M5l">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Timeline View Controller-->
+        <scene sceneID="RH4-9z-fgx">
+            <objects>
+                <viewController id="qGn-1v-M5l" customClass="TimelineViewController" customModule="MapExplorer_macOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" wantsLayer="YES" id="xW1-Dr-xog">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="504"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BZd-7X-9rP">
+                                <rect key="frame" x="0.0" y="0.0" width="450" height="504"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="Oqa-D5-GBd"/>
+                            </imageView>
+                            <visualEffectView wantsLayer="YES" appearanceType="vibrantDark" blendingMode="withinWindow" material="dark" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="Xh4-TH-Y2b">
+                                <rect key="frame" x="0.0" y="0.0" width="450" height="504"/>
+                            </visualEffectView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="tex-Yc-gyJ">
+                                <rect key="frame" x="0.0" y="126" width="450" height="252"/>
+                                <subviews>
+                                    <visualEffectView wantsLayer="YES" appearanceType="vibrantDark" blendingMode="withinWindow" material="ultraDark" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="WqE-dL-JC8">
+                                        <rect key="frame" x="0.0" y="0.0" width="450" height="252"/>
+                                    </visualEffectView>
+                                    <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="FoW-Io-IhM">
+                                        <rect key="frame" x="0.0" y="36" width="450" height="216"/>
+                                        <clipView key="contentView" drawsBackground="NO" id="2EQ-1e-jeX">
+                                            <rect key="frame" x="0.0" y="0.0" width="450" height="216"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <collectionView id="hh4-uZ-Why" customClass="FlippedCollectionView" customModule="MapExplorer_macOS" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="450" height="158"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                    <collectionViewLayout key="collectionViewLayout" id="bJW-po-dwy" customClass="TimelineLayout" customModule="MapExplorer_macOS" customModuleProvider="target"/>
+                                                    <color key="primaryBackgroundColor" red="0.44063859179674914" green="0.44326171874999998" blue="0.42965281942173822" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </collectionView>
+                                            </subviews>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </clipView>
+                                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="YCC-Tu-WbH">
+                                            <rect key="frame" x="-100" y="-100" width="233" height="15"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </scroller>
+                                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="NTd-xJ-g9d">
+                                            <rect key="frame" x="-100" y="-100" width="16" height="216"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </scroller>
+                                    </scrollView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="WqE-dL-JC8" secondAttribute="bottom" id="5Ac-BQ-fJC"/>
+                                    <constraint firstItem="WqE-dL-JC8" firstAttribute="leading" secondItem="tex-Yc-gyJ" secondAttribute="leading" id="H0A-3r-oCm"/>
+                                    <constraint firstItem="FoW-Io-IhM" firstAttribute="top" secondItem="tex-Yc-gyJ" secondAttribute="top" id="aTq-HQ-RUP"/>
+                                    <constraint firstItem="WqE-dL-JC8" firstAttribute="top" secondItem="tex-Yc-gyJ" secondAttribute="top" id="b6t-ql-msa"/>
+                                    <constraint firstAttribute="trailing" secondItem="WqE-dL-JC8" secondAttribute="trailing" id="eO2-RU-o4c"/>
+                                    <constraint firstItem="FoW-Io-IhM" firstAttribute="leading" secondItem="tex-Yc-gyJ" secondAttribute="leading" id="fA2-N0-NH9"/>
+                                    <constraint firstItem="FoW-Io-IhM" firstAttribute="height" secondItem="tex-Yc-gyJ" secondAttribute="height" multiplier="6:7" id="tOf-xI-1an"/>
+                                    <constraint firstAttribute="trailing" secondItem="FoW-Io-IhM" secondAttribute="trailing" id="uoj-Fj-TlG"/>
+                                </constraints>
+                            </customView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="BZd-7X-9rP" secondAttribute="trailing" id="Cg8-Cj-okw"/>
+                            <constraint firstItem="tex-Yc-gyJ" firstAttribute="height" secondItem="xW1-Dr-xog" secondAttribute="height" multiplier="1:2" id="Dk9-rf-q7O"/>
+                            <constraint firstItem="BZd-7X-9rP" firstAttribute="leading" secondItem="xW1-Dr-xog" secondAttribute="leading" id="GKR-ES-zF1"/>
+                            <constraint firstItem="BZd-7X-9rP" firstAttribute="top" secondItem="xW1-Dr-xog" secondAttribute="top" id="Gp2-ef-vXP"/>
+                            <constraint firstItem="Xh4-TH-Y2b" firstAttribute="top" secondItem="xW1-Dr-xog" secondAttribute="top" id="M2F-mG-8FB"/>
+                            <constraint firstItem="tex-Yc-gyJ" firstAttribute="leading" secondItem="xW1-Dr-xog" secondAttribute="leading" id="Td9-Ei-Xbe"/>
+                            <constraint firstAttribute="trailing" secondItem="Xh4-TH-Y2b" secondAttribute="trailing" id="Wcx-fC-jg7"/>
+                            <constraint firstItem="Xh4-TH-Y2b" firstAttribute="leading" secondItem="xW1-Dr-xog" secondAttribute="leading" id="aTY-RW-vNx"/>
+                            <constraint firstAttribute="bottom" secondItem="Xh4-TH-Y2b" secondAttribute="bottom" id="ghd-iO-B1g"/>
+                            <constraint firstItem="tex-Yc-gyJ" firstAttribute="centerX" secondItem="xW1-Dr-xog" secondAttribute="centerX" id="obf-gk-UW9"/>
+                            <constraint firstAttribute="trailing" secondItem="tex-Yc-gyJ" secondAttribute="trailing" id="vXy-eR-Xdz"/>
+                            <constraint firstAttribute="bottom" secondItem="BZd-7X-9rP" secondAttribute="bottom" id="wN0-eb-Jsy"/>
+                            <constraint firstItem="tex-Yc-gyJ" firstAttribute="centerY" secondItem="xW1-Dr-xog" secondAttribute="centerY" id="yli-AJ-YmS"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="backgroudImageView" destination="BZd-7X-9rP" id="cFf-ca-35n"/>
+                        <outlet property="timelineClipView" destination="2EQ-1e-jeX" id="yoW-RT-tSB"/>
+                        <outlet property="timelineCollectionView" destination="hh4-uZ-Why" id="5IC-wt-0fY"/>
+                        <outlet property="timelineScrollView" destination="FoW-Io-IhM" id="JQ2-Ok-LVn"/>
+                    </connections>
+                </viewController>
+                <customObject id="7uZ-GQ-LBt" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="70" y="44"/>
+        </scene>
+    </scenes>
+</document>

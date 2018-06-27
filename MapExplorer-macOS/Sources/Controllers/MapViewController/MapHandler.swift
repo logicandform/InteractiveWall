@@ -4,16 +4,15 @@ import Foundation
 import MapKit
 
 
-private enum UserActivity {
+enum UserActivity {
     case idle
     case active
 }
 
 
-class MapHandler {
+final class MapHandler {
 
     let mapView: MKMapView
-    let mapID: Int
     private var activityState = UserActivity.idle
     private weak var ungroupTimer: Foundation.Timer?
 
@@ -26,8 +25,8 @@ class MapHandler {
     }
 
     private struct Constants {
-        static let ungroupTimeoutPeriod: TimeInterval = 30
-        static let verticalPanLimit: Double = 100000000
+        static let ungroupTimeoutPeriod = 30.0
+        static let verticalPanLimit = 100000000.0
         static let verticalVisibleMapRatio = 0.25
     }
 
@@ -37,22 +36,19 @@ class MapHandler {
         static let group = "group"
         static let gesture = "gestureType"
         static let animated = "amimated"
-        static let toggleOn = "toggleOn"
-        static let switchType = "switchType"
     }
 
 
     // MARK: Init
 
-    init(mapView: MKMapView, id: Int) {
+    init(mapView: MKMapView) {
         self.mapView = mapView
-        self.mapID = id
     }
 
 
     // MARK: API
 
-    /// Determines how to respond to a received mapRect from another mapView and the type of gesture that triggered the event.
+    /// Determines how to respond to a received mapRect from another mapView with the type of gesture that triggered the event.
     func handle(_ mapRect: MKMapRect, fromID: Int, fromGroup: Int, animated: Bool) {
         guard let currentGroup = group, currentGroup == fromGroup, currentGroup == fromID else {
             return
@@ -61,7 +57,7 @@ class MapHandler {
         // Filter position updates; state will be nil receiving when receiving from momentum, else id must match pair
         if pair == nil || pair! == fromID {
             activityState = .active
-            let adjustedMapRect = adjust(mapRect, toMap: mapID, fromMap: fromID)
+            let adjustedMapRect = adjust(mapRect, toMap: appID, fromMap: fromID)
             mapView.setVisibleMapRect(adjustedMapRect, animated: animated)
         }
     }
@@ -72,15 +68,15 @@ class MapHandler {
             return
         }
 
-        let currentGroup = group ?? mapID
-        let info: JSON = [Keys.id: mapID, Keys.group: currentGroup, Keys.map: mapRect.toJSON(), Keys.gesture: gestureState.rawValue, Keys.animated: animated]
-        DistributedNotificationCenter.default().postNotificationName(MapNotification.position.name, object: nil, userInfo: info, deliverImmediately: true)
+        let currentGroup = group ?? appID
+        let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.map: mapRect.toJSON(), Keys.gesture: gestureState.rawValue, Keys.animated: animated]
+        DistributedNotificationCenter.default().postNotificationName(MapNotification.mapRect.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
     func endActivity() {
         ConnectionManager.instance.set(state: AppState(pair: nil, group: group, type: .mapExplorer), forApp: appID)
-        let info: JSON = [Keys.id: mapID]
-        DistributedNotificationCenter.default().postNotificationName(MapNotification.unpair.name, object: nil, userInfo: info, deliverImmediately: true)
+        let info: JSON = [Keys.id: appID]
+        DistributedNotificationCenter.default().postNotificationName(SettingsNotification.unpair.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
     func endUpdates() {
@@ -94,7 +90,7 @@ class MapHandler {
             mapView.setVisibleMapRect(MKMapRect(origin: canadaRect.origin, size: canadaRect.size), animated: true)
         } else {
             let newWidth = canadaRect.size.width / (Double(Configuration.appsPerScreen) - 1.0)
-            let newXOrigin = ((Double(mapID).truncatingRemainder(dividingBy: Double(Configuration.appsPerScreen)) * newWidth) - (newWidth / 2)) + canadaRect.origin.x
+            let newXOrigin = ((Double(appID).truncatingRemainder(dividingBy: Double(Configuration.appsPerScreen)) * newWidth) - (newWidth / 2)) + canadaRect.origin.x
             let mapRect = MKMapRect(origin: MKMapPoint(x: newXOrigin, y: canadaRect.origin.y), size: MKMapSize(width: newWidth, height: 0.0))
             mapView.setVisibleMapRect(mapRect, animated: true)
         }
@@ -108,9 +104,9 @@ class MapHandler {
         let pairedID = pair ?? map
         let canadaRect = MapConstants.canadaRect
         if mapRect.origin.x > MKMapSizeWorld.width - mapRect.size.width {
-            xOrigin = mapRect.origin.x - MKMapSizeWorld.width + Double(mapID - pairedID) * mapRect.size.width
+            xOrigin = mapRect.origin.x - MKMapSizeWorld.width + Double(appID - pairedID) * mapRect.size.width
         } else {
-            xOrigin = mapRect.origin.x + Double(mapID - pairedID) * mapRect.size.width
+            xOrigin = mapRect.origin.x + Double(appID - pairedID) * mapRect.size.width
         }
 
         var yOrigin = mapRect.origin.y
@@ -138,13 +134,13 @@ class MapHandler {
     }
 
     private func ungroupTimerFired() {
-        guard let group = group, group == mapID else {
+        guard let group = group, group == appID else {
             return
         }
 
         if activityState == .idle {
-            let info: JSON = [Keys.id: mapID, Keys.group: mapID]
-            DistributedNotificationCenter.default().postNotificationName(MapNotification.ungroup.name, object: nil, userInfo: info, deliverImmediately: true)
+            let info: JSON = [Keys.id: appID, Keys.group: appID]
+            DistributedNotificationCenter.default().postNotificationName(SettingsNotification.ungroup.name, object: nil, userInfo: info, deliverImmediately: true)
         }
     }
 }
