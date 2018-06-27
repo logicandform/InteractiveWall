@@ -21,6 +21,13 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="vaB-gH-LFk">
+                                <rect key="frame" x="195" y="204" width="60" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="ZWV-DA-N1l"/>
+                                    <constraint firstAttribute="height" constant="30" id="s1F-8b-sPf"/>
+                                </constraints>
+                            </customView>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1rM-3a-ePD">
                                 <rect key="frame" x="18" y="158" width="121" height="21"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Show Mini Map" id="aXv-RQ-L8T">
@@ -29,6 +36,13 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="t8g-JM-0ri">
+                                <rect key="frame" x="195" y="154" width="60" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="5Mv-GN-pEH"/>
+                                    <constraint firstAttribute="height" constant="30" id="qFL-00-5qF"/>
+                                </constraints>
+                            </customView>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ijp-h9-lPP">
                                 <rect key="frame" x="18" y="79" width="45" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Events" id="Jhh-cU-3KI">
@@ -37,6 +51,13 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="6Vj-Ga-IaR">
+                                <rect key="frame" x="195" y="73" width="60" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="Omg-Ir-npN"/>
+                                    <constraint firstAttribute="height" constant="30" id="nuv-7D-haN"/>
+                                </constraints>
+                            </customView>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="FBE-J8-oig">
                                 <rect key="frame" x="18" y="47" width="88" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Organizations" id="Hpd-zo-PVy">
@@ -45,6 +66,13 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Tud-Lf-w45">
+                                <rect key="frame" x="195" y="41" width="60" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="3BO-Ba-uzm"/>
+                                    <constraint firstAttribute="height" constant="30" id="leB-mY-Cdl"/>
+                                </constraints>
+                            </customView>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TFb-oj-abs">
                                 <rect key="frame" x="18" y="15" width="56" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Artifacts" id="b50-pn-52S">
@@ -53,6 +81,13 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="eIB-MF-LWi">
+                                <rect key="frame" x="195" y="9" width="60" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="HU0-lQ-TPw"/>
+                                    <constraint firstAttribute="height" constant="30" id="thB-a9-hTM"/>
+                                </constraints>
+                            </customView>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="FnJ-sr-hYn">
                                 <rect key="frame" x="18" y="111" width="53" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Schools" id="3cD-wh-S8R">
@@ -61,29 +96,54 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="iMK-kR-tlq">
+                                <rect key="frame" x="195" y="105" width="60" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="mT1-4N-hXg"/>
+                                    <constraint firstAttribute="width" constant="60" id="wbY-AN-UgB"/>
+                                </constraints>
+                            </customView>
                         </subviews>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Tud-Lf-w45" secondAttribute="trailing" constant="20" id="1NN-wO-05i"/>
+                            <constraint firstAttribute="trailing" secondItem="iMK-kR-tlq" secondAttribute="trailing" constant="20" id="2SB-wy-aS1"/>
+                            <constraint firstItem="t8g-JM-0ri" firstAttribute="centerY" secondItem="1rM-3a-ePD" secondAttribute="centerY" id="7w0-Bw-VBo"/>
                             <constraint firstItem="TFb-oj-abs" firstAttribute="top" secondItem="FBE-J8-oig" secondAttribute="bottom" constant="15" id="9bJ-6h-mjv"/>
                             <constraint firstItem="FBE-J8-oig" firstAttribute="top" secondItem="ijp-h9-lPP" secondAttribute="bottom" constant="15" id="9oi-5z-cTd"/>
                             <constraint firstItem="1rM-3a-ePD" firstAttribute="top" secondItem="9Ya-v4-Vaa" secondAttribute="bottom" constant="30" id="EUM-Oh-SKY"/>
+                            <constraint firstItem="iMK-kR-tlq" firstAttribute="centerY" secondItem="FnJ-sr-hYn" secondAttribute="centerY" id="H99-oE-2hq"/>
+                            <constraint firstAttribute="trailing" secondItem="vaB-gH-LFk" secondAttribute="trailing" constant="20" id="NSi-gq-4L4"/>
                             <constraint firstItem="FBE-J8-oig" firstAttribute="leading" secondItem="ZeC-5C-8Vg" secondAttribute="leading" constant="20" id="NbJ-jI-NM7"/>
+                            <constraint firstItem="6Vj-Ga-IaR" firstAttribute="centerY" secondItem="ijp-h9-lPP" secondAttribute="centerY" id="OTG-E2-lcY"/>
+                            <constraint firstItem="Tud-Lf-w45" firstAttribute="centerY" secondItem="FBE-J8-oig" secondAttribute="centerY" id="Oih-uP-9JV"/>
                             <constraint firstItem="9Ya-v4-Vaa" firstAttribute="top" secondItem="ZeC-5C-8Vg" secondAttribute="top" constant="15" id="P2a-JQ-Ll2"/>
                             <constraint firstItem="TFb-oj-abs" firstAttribute="leading" secondItem="ZeC-5C-8Vg" secondAttribute="leading" constant="20" id="RqN-yb-PYT"/>
+                            <constraint firstAttribute="trailing" secondItem="6Vj-Ga-IaR" secondAttribute="trailing" constant="20" id="TOo-wR-blq"/>
                             <constraint firstAttribute="bottom" secondItem="TFb-oj-abs" secondAttribute="bottom" constant="15" id="VS0-gx-fRz"/>
                             <constraint firstItem="ijp-h9-lPP" firstAttribute="leading" secondItem="ZeC-5C-8Vg" secondAttribute="leading" constant="20" id="YH0-KX-4wT"/>
+                            <constraint firstItem="eIB-MF-LWi" firstAttribute="centerY" secondItem="TFb-oj-abs" secondAttribute="centerY" id="bgQ-Zw-Qby"/>
+                            <constraint firstAttribute="trailing" secondItem="t8g-JM-0ri" secondAttribute="trailing" constant="20" id="eHb-5u-Qji"/>
                             <constraint firstItem="1rM-3a-ePD" firstAttribute="leading" secondItem="ZeC-5C-8Vg" secondAttribute="leading" constant="20" id="fdR-sz-jDe"/>
                             <constraint firstItem="FnJ-sr-hYn" firstAttribute="top" secondItem="1rM-3a-ePD" secondAttribute="bottom" constant="30" id="jIi-fv-0ij"/>
                             <constraint firstItem="FnJ-sr-hYn" firstAttribute="leading" secondItem="ZeC-5C-8Vg" secondAttribute="leading" constant="20" id="nhC-kL-bLF"/>
                             <constraint firstItem="ijp-h9-lPP" firstAttribute="top" secondItem="FnJ-sr-hYn" secondAttribute="bottom" constant="15" id="plt-Cg-yn9"/>
+                            <constraint firstAttribute="trailing" secondItem="eIB-MF-LWi" secondAttribute="trailing" constant="20" id="tPP-Yx-P4a"/>
+                            <constraint firstItem="vaB-gH-LFk" firstAttribute="centerY" secondItem="9Ya-v4-Vaa" secondAttribute="centerY" id="wwS-Ty-xQn"/>
                             <constraint firstItem="9Ya-v4-Vaa" firstAttribute="leading" secondItem="ZeC-5C-8Vg" secondAttribute="leading" constant="20" id="zEW-gW-1lc"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="artifactsSwitchContainer" destination="eIB-MF-LWi" id="U0R-Ap-1IU"/>
                         <outlet property="artifactsText" destination="TFb-oj-abs" id="ocA-fj-1lZ"/>
+                        <outlet property="eventsSwitchContainer" destination="6Vj-Ga-IaR" id="9tH-2a-NpX"/>
                         <outlet property="eventsText" destination="ijp-h9-lPP" id="OgW-XW-sZF"/>
+                        <outlet property="labelsSwitchContainer" destination="vaB-gH-LFk" id="5SR-NM-xbT"/>
                         <outlet property="labelsText" destination="9Ya-v4-Vaa" id="Mqw-ja-RJs"/>
+                        <outlet property="miniMapSwitchContainer" destination="t8g-JM-0ri" id="yQE-WI-Mk1"/>
                         <outlet property="miniMapText" destination="1rM-3a-ePD" id="Iu9-eh-x9m"/>
+                        <outlet property="organizationsSwitchContainer" destination="Tud-Lf-w45" id="nQ8-Rg-cr6"/>
                         <outlet property="organizationsText" destination="FBE-J8-oig" id="bXL-fi-ZTQ"/>
+                        <outlet property="schoolsSwitchContainer" destination="iMK-kR-tlq" id="Mja-Bm-o4E"/>
                         <outlet property="schoolsText" destination="FnJ-sr-hYn" id="PMl-K7-X8V"/>
                     </connections>
                 </viewController>
