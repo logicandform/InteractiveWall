@@ -23,6 +23,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     static let storyboard = NSStoryboard.Name(rawValue: "Menu")
 
     @IBOutlet weak var menuView: NSView!
+    @IBOutlet weak var menuVerticalOffset: NSLayoutConstraint!
     @IBOutlet weak var splitScreenButton: MenuButton!
     @IBOutlet weak var mapToggleButton: MenuButton!
     @IBOutlet weak var timelineToggleButton: MenuButton!
@@ -60,8 +61,8 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.wantsLayer = true
-        view.layer?.backgroundColor = style.darkBackground.cgColor
+        menuView.wantsLayer = true
+        menuView.layer?.backgroundColor = style.darkBackground.cgColor
         gestureManager = GestureManager(responder: self)
         gestureManager.touchReceived = receivedTouch(_:)
         viewForButtonType = [.split: splitScreenButton, .map: mapToggleButton, .timeline: timelineToggleButton, .information: informationButton, .settings: settingsButton, .testimony: testimonyButton, .search: searchButton]
@@ -136,10 +137,8 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
 
     private func setupGestures() {
         let viewPanGesture = PanGestureRecognizer()
-        gestureManager.add(viewPanGesture, to: view)
-        viewPanGesture.gestureUpdated = { [weak self] gesture in
-            self?.handleWindowPan(gesture)
-        }
+        gestureManager.add(viewPanGesture, to: menuView)
+        viewPanGesture.gestureUpdated = handleWindowPan(_:)
     }
 
     private func setupButtons() {
@@ -184,17 +183,20 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     }
 
     func handleWindowPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let window = view.window else {
+        guard let pan = gesture as? PanGestureRecognizer, let window = menuView.window else {
             return
         }
 
         switch pan.state {
         case .recognized where abs(pan.delta.dy) > Constants.minimumScrollThreshold || scrollThresholdAchieved, .momentum where scrollThresholdAchieved:
             scrollThresholdAchieved = true
-            let origin = originAppending(delta: pan.delta, to: window)
+
+            let origin = menuView.frame.transformed(from: view.frame).transformed(from: window.frame)
+            let transformedOrigin = originAppending(delta: pan.delta, to: window, origin: origin)
             let settingsButtonFrame = settingsButton.frame
-            settingsMenu.updateOrigin(relativeTo: origin, with: settingsButtonFrame)
-            window.setFrameOrigin(origin)
+            settingsMenu.updateOrigin(relativeTo: transformedOrigin, with: settingsButtonFrame)
+            menuVerticalOffset.constant = transformedOrigin.y
+            menuView.updateConstraints()
         case .possible:
             scrollThresholdAchieved = false
         default:
@@ -207,15 +209,15 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
 
     /// Determines if the bounds of the draggable area is inside a given rect
     func draggableInside(bounds: CGRect) -> Bool {
-        guard let window = view.window else {
+        guard let window = menuView.window else {
             return false
         }
 
-        return bounds.contains(view.frame.transformed(from: window.frame))
+        return bounds.contains(menuView.frame.transformed(from: window.frame))
     }
 
     func subview(contains position: CGPoint) -> Bool {
-        return view.frame.contains(position)
+        return menuView.frame.contains(position)
     }
 
 
@@ -311,21 +313,21 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         }
     }
 
-    private func originAppending(delta: CGVector, to window: NSWindow) -> CGPoint {
+    private func originAppending(delta: CGVector, to window: NSWindow, origin: CGRect) -> CGPoint {
         guard let screen = window.screen else {
             return window.frame.origin
         }
 
-        var origin = window.frame.origin
-        origin.y += delta.dy
+        var newOrigin = origin.origin
+        newOrigin.y += delta.dy
 
-        if delta.dy < 0 && origin.y < screen.frame.minY {
-            origin.y = screen.frame.minY
-        } else if delta.dy > 0 && origin.y + window.frame.height > screen.frame.maxY {
-            origin.y = screen.frame.maxY - window.frame.height
+        if delta.dy < 0 && newOrigin.y < screen.frame.minY {
+            newOrigin.y = screen.frame.minY
+        } else if delta.dy > 0 && newOrigin.y + origin.height > screen.frame.maxY {
+            newOrigin.y = screen.frame.maxY - origin.height
         }
 
-        return origin
+        return newOrigin
     }
 
     private func centeredPosition(for button: MenuButton, with frame: CGSize) -> CGPoint {

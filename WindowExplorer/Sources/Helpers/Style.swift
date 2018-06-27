@@ -47,7 +47,7 @@ final class Style {
     let itemSpacing: CGFloat = 5
 
     // Menu Controller
-    let menuWindowSize = CGSize(width: 50, height: 350)
+    let menuWindowSize = CGSize(width: 50, height: 2160)
     let menuImageSize = CGSize(width: 50, height: 50)
     let menuSelectedColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
     let menuUnselectedColor = NSColor(calibratedRed: 1, green: 1, blue: 1, alpha: 1)
