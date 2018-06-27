@@ -225,7 +225,7 @@ class MainScene: SKScene {
 
     private func createRepulsiveField() {
         let field = SKFieldNode.radialGravityField()
-        field.strength = -20
+        field.strength = -10
         field.region = SKRegion(radius: 350)
         field.position = CGPoint(x: frame.width / 2, y: frame.height / 2)
         field.categoryBitMask = 0x1 << 0

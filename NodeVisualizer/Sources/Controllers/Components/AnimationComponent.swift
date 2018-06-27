@@ -28,7 +28,13 @@ class AnimationComponent: GKComponent {
         return physicsComponent
     }
 
-    var goToPoint: Bool = false
+    enum AnimationState {
+        case goToPoint(CGPoint)
+    }
+
+    var requestedAnimationState: AnimationState?
+
+    private var currentAnimationState: AnimationState?
 
     private struct Constants {
         static let strength: CGFloat = 1000
@@ -39,37 +45,10 @@ class AnimationComponent: GKComponent {
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
 
-        // check that entity is in the TappedState --> when moving towards center, entity should only be in TappedState
-        guard intelligenceComponent.stateMachine.currentState is TappedState, goToPoint else {
-            return
-        }
-
-        let renderComponent = self.renderComponent
-        let physicsComponent = self.physicsComponent
-
-        if let sceneFrame = renderComponent.recordNode.scene?.frame {
-            let centerPoint = CGPoint(x: sceneFrame.width / 2, y: sceneFrame.height / 2)
-
-            // check if the entity has reached the center point
-            guard !renderComponent.recordNode.contains(centerPoint) else {
-                physicsComponent.physicsBody.isDynamic = false
-                return
-            }
-
-            let deltaX = centerPoint.x - renderComponent.recordNode.position.x
-            let deltaY = centerPoint.y - renderComponent.recordNode.position.y
-            let displacement = CGVector(dx: deltaX, dy: deltaY)
-
-            let distance = distanceOf(x: deltaX, y: deltaY)
-            let unitVector = CGVector(dx: displacement.dx / distance, dy: displacement.dy / distance)
-
-            let pointMass = 0.2 * Constants.strength * distance
-            let entityMass = 0.2 * Constants.strength * distance
-
-            let force = (pointMass * entityMass) / (distance * distance)
-            let impulse = CGVector(dx: force * Constants.dt * unitVector.dx, dy: force * Constants.dt * unitVector.dy)
-
-            physicsComponent.physicsBody.velocity = CGVector(dx: physicsComponent.physicsBody.velocity.dx + impulse.dx, dy: physicsComponent.physicsBody.velocity.dy + impulse.dy)
+        // if an animation has been requested and the entity is in the TappedState, then run the animation
+        if let animationState = requestedAnimationState, intelligenceComponent.stateMachine.currentState is TappedState {
+            runAnimationFor(animationState)
+            requestedAnimationState = nil
         }
     }
 
@@ -82,23 +61,21 @@ class AnimationComponent: GKComponent {
         return CGFloat(hypotf(dX, dY))
     }
 
+    private func runAnimationFor(_ animationState: AnimationState) {
 
+        // since the component is updated every frame, if the animation is already running, then there's no need to do anything
+        if currentAnimationState != nil {
+            return
+        }
 
+        let renderComponent = self.renderComponent
 
+        switch animationState {
+        case .goToPoint(let point):
+            let moveToPointAction = SKAction.move(to: point, duration: 2)
+            renderComponent.recordNode.run(moveToPointAction)
+        }
 
-
-
-
-
+        currentAnimationState = animationState
+    }
 }
-
-
-
-
-
-
-
-
-
-
-

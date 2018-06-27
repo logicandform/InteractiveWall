@@ -21,14 +21,13 @@ class TappedState: GKState {
         super.didEnter(from: previousState)
 
         entity.physicsComponent.physicsBody.isDynamic = false
-
-        // run animation to go to center of screen, set the field bit mask
         entity.physicsComponent.physicsBody.fieldBitMask = 0x1 << 1
-        let action = SKAction.move(to: CGPoint(x: entity.renderComponent.recordNode.scene!.frame.size.width / 2, y: entity.renderComponent.recordNode.scene!.frame.size.height / 2), duration: 2.5)
 
-        entity.renderComponent.recordNode.run(action)
-
-//        entity.animationComponent.goToPoint = true
+        // run animation to go to center of screen
+        if let sceneFrame = entity.renderComponent.recordNode.scene?.frame {
+            let centerPoint = CGPoint(x: sceneFrame.width / 2, y: sceneFrame.height / 2)
+            entity.animationComponent.requestedAnimationState = .goToPoint(centerPoint)
+        }
 
         // iterate through each related entity to this selected entity && enter the seeking state for each of those related entities
         let relatedEntities = getRelatedEntites()
@@ -88,17 +87,4 @@ class TappedState: GKState {
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
