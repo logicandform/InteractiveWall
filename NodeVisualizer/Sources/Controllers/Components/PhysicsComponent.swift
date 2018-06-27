@@ -60,5 +60,6 @@ class PhysicsComponent: GKComponent {
         physicsBody.restitution = 0
         physicsBody.linearDamping = 0
         physicsBody.mass = NodeConfiguration.Record.physicsBodyMass
+        physicsBody.fieldBitMask = 0x1 << 0
     }
 }

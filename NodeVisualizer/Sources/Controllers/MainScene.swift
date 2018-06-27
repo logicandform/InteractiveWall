@@ -69,6 +69,8 @@ class MainScene: SKScene {
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         physicsWorld.gravity = .zero
 
+        createRepulsiveField()
+
 //        for type in StartingPositionType.allValues {
 //            addLinearGravityField(to: type)
 //        }
@@ -213,6 +215,18 @@ class MainScene: SKScene {
         field.strength = 10
         field.region = SKRegion(size: size)
         field.position = position
+        addChild(field)
+    }
+
+
+    // MARK: Debug
+
+    private func createRepulsiveField() {
+        let field = SKFieldNode.radialGravityField()
+        field.strength = -20
+        field.region = SKRegion(radius: 350)
+        field.position = CGPoint(x: frame.width / 2, y: frame.height / 2)
+        field.categoryBitMask = 0x1 << 0
         addChild(field)
     }
 }

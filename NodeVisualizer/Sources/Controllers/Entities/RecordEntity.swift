@@ -41,6 +41,8 @@ class RecordEntity: GKEntity {
         return agent
     }
 
+    var relatedEntities: [RecordEntity] = []
+
     private(set) var manager: EntityManager
 
 

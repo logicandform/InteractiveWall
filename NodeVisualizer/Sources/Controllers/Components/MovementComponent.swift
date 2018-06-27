@@ -26,9 +26,6 @@ class MovementComponent: GKComponent {
         return physicsComponent
     }
 
-    var relatedEntities: [RecordEntity] = []
-    var entitesToAvoid: [RecordEntity] = []
-
     var entityToSeek: RecordEntity?
 
     private struct Constants {

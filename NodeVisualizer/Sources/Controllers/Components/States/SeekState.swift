@@ -29,7 +29,7 @@ class SeekState: GKState {
     }
 
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
-        return stateClass is SeekState.Type
+        return stateClass is TappedState.Type
     }
 
     override func willExit(to nextState: GKState) {
