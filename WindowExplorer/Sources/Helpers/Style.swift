@@ -58,7 +58,6 @@ final class Style {
     let toggleUnselectedColor = NSColor(calibratedRed: 0.51, green: 0.62, blue: 0.65, alpha: 1)
     let toggleSecondaryUnselectedColor = NSColor(calibratedRed: 0.16, green: 0.18, blue: 0.19, alpha: 1)
     let toggleSwitchFrame = NSRect(x: 0, y: 0, width: 32, height: 16)
-    let toggleSwitchOffset: CGFloat = -30
 
     // Border Controller
     let borderColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
