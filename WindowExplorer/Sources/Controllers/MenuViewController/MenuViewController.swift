@@ -39,7 +39,6 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     private var mergeLocked = false
     private var scrollThresholdAchieved = false
     private var settingsMenu: SettingsMenuViewController!
-    private var settingsTimeout: Foundation.Timer?
     private var searchMenu: SearchViewController?
     private var testimonyController: TestimonyViewController?
 
@@ -47,7 +46,6 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         static let minimumScrollThreshold: CGFloat = 4
         static let imageTransitionDuration = 0.5
         static let animationDuration = 0.5
-        static let settingsTimeoutPeriod: TimeInterval = 10
     }
 
     private struct Keys {
@@ -64,6 +62,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
         gestureManager = GestureManager(responder: self)
+        gestureManager.touchReceived = receivedTouch(_:)
         viewForButtonType = [.split: splitScreenButton, .map: mapToggleButton, .timeline: timelineToggleButton, .information: informationButton, .settings: settingsButton, .testimony: testimonyButton, .search: searchButton]
 
         setupButtons()
@@ -120,9 +119,6 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             toggleSettingsPanel(to: state)
             if state == .on {
                 toggle(.information, to: .off)
-                beginSettingsTimeout()
-            } else {
-                settingsTimeout?.invalidate()
             }
         case .testimony where state == .on:
             displayTestimonyController()
@@ -244,8 +240,8 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
 
     // MARK: SettingsDelegate
 
-    func settingsGestureRecognized() {
-        beginSettingsTimeout()
+    func settingsTimeoutFired() {
+        toggle(.settings, to: .off)
     }
 
 
@@ -400,6 +396,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         DistributedNotificationCenter.default().postNotificationName(SettingsNotification.merge.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
+
     private func postTransitionNotification(for type: MenuButtonType) {
         guard let applicationType = type.applicationType else {
             return
@@ -411,10 +408,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         DistributedNotificationCenter.default().postNotificationName(SettingsNotification.transition.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
-    private func beginSettingsTimeout() {
-        settingsTimeout?.invalidate()
-        settingsTimeout = Timer.scheduledTimer(withTimeInterval: Constants.settingsTimeoutPeriod, repeats: false) { [weak self] _ in
-            self?.toggle(.settings, to: .off)
-        }
+    private func receivedTouch(_ touch: Touch) {
+        settingsMenu.resetSettingsTimeout()
     }
 }
