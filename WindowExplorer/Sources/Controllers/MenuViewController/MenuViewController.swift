@@ -202,7 +202,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         case .recognized where abs(pan.delta.dy) > Constants.minimumScrollThreshold || scrollThresholdAchieved, .momentum where scrollThresholdAchieved:
             scrollThresholdAchieved = true
             let frame = menuView.frame.transformed(from: view.frame).transformed(from: window.frame)
-            menuVerticalOffset.constant = originAppending(delta: pan.delta, to: window, frame: frame)
+            menuVerticalOffset.constant = menuOriginUpdate(delta: pan.delta, to: window, frame: frame)
             settingsMenu.updateOrigin(relativeTo: menuVerticalOffset.constant, with: settingsButton.frame)
         case .possible:
             scrollThresholdAchieved = false
@@ -334,7 +334,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         animate(view: menuView, to: CGPoint(x: x, y: y))
     }
 
-    private func originAppending(delta: CGVector, to parentWindow: NSWindow, frame: CGRect) -> CGFloat {
+    private func menuOriginUpdate(delta: CGVector, to parentWindow: NSWindow, frame: CGRect) -> CGFloat {
         guard let screen = parentWindow.screen else {
             return CGPoint.zero.y
         }
