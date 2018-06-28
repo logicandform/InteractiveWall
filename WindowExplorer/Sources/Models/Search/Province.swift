@@ -31,7 +31,7 @@ enum Province: SearchItemDisplayable {
         case "QC":
             self = .quebec
         case "SK":
-            self = .ontario
+            self = .saskatchewan
         case "NL":
             self = .newfoundland
         case "NS":
