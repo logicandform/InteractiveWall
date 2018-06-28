@@ -20,23 +20,35 @@ class TappedState: GKState {
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
 
+        let relatedEntities = getRelatedEntites()
+        entity.relatedEntities = relatedEntities
+
+        handleRelatedEntities()
+//        entity.resetEntities(entities: relatedEntities) {
+//
+//        }
+
+//        entity.resetRelatedEntities(entities: relatedEntities, excluding: entity) {
+//            print("hello")
+//        }
+
+//        entity.pleaseWork(entities: relatedEntities, excluding: entity) {
+//            print("please work")
+//        }
+
         entity.physicsComponent.physicsBody.isDynamic = false
         entity.physicsComponent.physicsBody.fieldBitMask = 0x1 << 1
 
-        // run animation to go to center of screen
+        // request animation to make the tapped entity go to a point
         if let sceneFrame = entity.renderComponent.recordNode.scene?.frame {
             let centerPoint = CGPoint(x: sceneFrame.width / 2, y: sceneFrame.height / 2)
             entity.animationComponent.requestedAnimationState = .goToPoint(centerPoint)
         }
 
+//        entity.hasReset = false
+
         // iterate through each related entity to this selected entity && enter the seeking state for each of those related entities
-        let relatedEntities = getRelatedEntites()
-        entity.relatedEntities = relatedEntities
-
-        handleRelatedEntities()
-
-        for case let relatedEntity in relatedEntities {
-            relatedEntity.physicsComponent.physicsBody.fieldBitMask = 0x1 << 1
+        for relatedEntity in relatedEntities {
             relatedEntity.movementComponent.entityToSeek = entity
             relatedEntity.intelligenceComponent.stateMachine.enter(SeekState.self)
         }
@@ -47,7 +59,12 @@ class TappedState: GKState {
     }
 
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
-        return stateClass is SeekState.Type
+        switch stateClass {
+        case is SeekState.Type, is WanderState.Type:
+            return true
+        default:
+            return false
+        }
     }
 
     override func willExit(to nextState: GKState) {
@@ -73,17 +90,11 @@ class TappedState: GKState {
 
         for relatedEntity in relatedEntitiesToCurrentTappedEntity {
             relatedEntity.intelligenceComponent.stateMachine.enter(WanderState.self)
-            relatedEntity.renderComponent.recordNode.removeAllActions()
-            relatedEntity.physicsComponent.physicsBody.isDynamic = true
 
             for relatedRelatedEntity in relatedEntity.relatedEntities {
-                if relatedRelatedEntity != entity {
-                    relatedRelatedEntity.physicsComponent.physicsBody.isDynamic = true
-                    relatedRelatedEntity.physicsComponent.physicsBody.fieldBitMask = 0x1 << 0
+//                if relatedRelatedEntity != entity {
                     relatedRelatedEntity.intelligenceComponent.stateMachine.enter(WanderState.self)
-                    relatedRelatedEntity.movementComponent.entityToSeek = nil
-                    relatedRelatedEntity.renderComponent.recordNode.removeAllActions()
-                }
+//                }
             }
         }
     }

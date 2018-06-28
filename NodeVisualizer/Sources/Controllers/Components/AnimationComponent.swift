@@ -34,21 +34,14 @@ class AnimationComponent: GKComponent {
 
     var requestedAnimationState: AnimationState?
 
-    private var currentAnimationState: AnimationState?
-
-    private struct Constants {
-        static let strength: CGFloat = 1000
-        static let dt: CGFloat = 1 / 5000
-    }
-
 
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
 
         // if an animation has been requested and the entity is in the TappedState, then run the animation
-        if let animationState = requestedAnimationState, intelligenceComponent.stateMachine.currentState is TappedState {
-            runAnimationFor(animationState)
+        if let animationState = requestedAnimationState {
             requestedAnimationState = nil
+            runAnimationFor(animationState)
         }
     }
 
@@ -62,20 +55,12 @@ class AnimationComponent: GKComponent {
     }
 
     private func runAnimationFor(_ animationState: AnimationState) {
-
-        // since the component is updated every frame, if the animation is already running, then there's no need to do anything
-        if currentAnimationState != nil {
-            return
-        }
-
         let renderComponent = self.renderComponent
 
         switch animationState {
         case .goToPoint(let point):
-            let moveToPointAction = SKAction.move(to: point, duration: 2)
+            let moveToPointAction = SKAction.move(to: point, duration: 1.2)
             renderComponent.recordNode.run(moveToPointAction)
         }
-
-        currentAnimationState = animationState
     }
 }

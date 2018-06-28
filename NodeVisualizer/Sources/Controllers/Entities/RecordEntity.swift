@@ -49,6 +49,7 @@ class RecordEntity: GKEntity {
     }
 
     var relatedEntities: [RecordEntity] = []
+    var hasReset: Bool = false
 
     private(set) var manager: EntityManager
 
@@ -89,11 +90,9 @@ class RecordEntity: GKEntity {
     }
 
 
-    func updateAgentPositionToMatchNodePosition() {
-        guard let renderComponent = component(ofType: RenderComponent.self), let agent = component(ofType: RecordAgent.self) else {
-            return
-        }
+    // MARK: API
 
+    func updateAgentPositionToMatchNodePosition() {
         agent.position = vector_float2(x: Float(renderComponent.recordNode.position.x), y: Float(renderComponent.recordNode.position.y))
     }
 
@@ -102,4 +101,62 @@ class RecordEntity: GKEntity {
         let dY = agent.position.y - otherAgent.position.y
         return hypotf(dX, dY)
     }
+
+
+
+    func resetEntities(entities: [RecordEntity], completion: @escaping () -> Void) {
+        guard let entityToReset = entities.first, !entityToReset.hasReset else {
+            completion()
+            return
+        }
+
+        entityToReset.intelligenceComponent.stateMachine.enter(WanderState.self)
+        hasReset = true
+
+        entityToReset.resetEntities(entities: entityToReset.relatedEntities) {
+            let newEntities = Array(entities[1..<entities.count])
+            self.resetEntities(entities: newEntities, completion: completion)
+        }
+    }
+
+
+
+
+
+    func resetRelatedEntities(entities: [RecordEntity], excluding: RecordEntity, completion: @escaping () -> Void) {
+        guard let entityToReset = entities.first, entityToReset != excluding else {
+            completion()
+            return
+        }
+
+        entityToReset.intelligenceComponent.stateMachine.enter(WanderState.self)
+
+        entityToReset.resetEntities(entities: entityToReset.relatedEntities) {
+            let newEntities = Array(entities[1..<entities.count])
+            self.resetRelatedEntities(entities: newEntities, excluding: self, completion: completion)
+        }
+    }
+
+    func pleaseWork(entities: [RecordEntity], excluding: RecordEntity, completion: @escaping () -> Void) {
+        guard let entityToReset = entities.first, entityToReset != excluding else {
+            completion()
+            return
+        }
+
+        entityToReset.intelligenceComponent.stateMachine.enter(WanderState.self)
+
+        entityToReset.pleaseWork(entities: entityToReset.relatedEntities, excluding: self) {
+            let newEntities = Array(entities[1..<entities.count])
+            self.pleaseWork(entities: newEntities, excluding: excluding, completion: completion)
+        }
+    }
 }
+
+
+
+
+
+
+
+
+

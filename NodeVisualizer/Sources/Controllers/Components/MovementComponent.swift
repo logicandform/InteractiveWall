@@ -40,7 +40,7 @@ class MovementComponent: GKComponent {
         super.update(deltaTime: seconds)
 
         // check to see if the record entity is in the correct state (i.e. it is seeking a tapped record node)
-        guard let intelligenceComponent = entity?.component(ofType: IntelligenceComponent.self),
+        guard let intelligenceComponent = entity?.component(ofType: IntelligenceComponent.self), 
             intelligenceComponent.stateMachine.currentState is SeekState,
             let targetEntity = entityToSeek else {
             return
