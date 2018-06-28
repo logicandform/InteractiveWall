@@ -82,7 +82,6 @@
 		22A76FEC2046477A006C0AE7 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A76FEA2046477A006C0AE7 /* PlayerViewController.swift */; };
 		22A923212044AF05003EA9BB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A923202044AF05003EA9BB /* AppDelegate.swift */; };
 		22A923252044AF05003EA9BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22A923242044AF05003EA9BB /* Assets.xcassets */; };
-		22AE5D2320D2DA0200D5FB9C /* ApplicationNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AE5D2220D2DA0200D5FB9C /* ApplicationNotifications.swift */; };
 		22AE5D2520D2DB3200D5FB9C /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AE5D2420D2DB3200D5FB9C /* ConnectionManager.swift */; };
 		22AEAF0420B67E6700DD184B /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AEAF0320B67E6700DD184B /* Math.swift */; };
 		22B1E2CD204638B900BDDF14 /* GestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2CC204638B900BDDF14 /* GestureManager.swift */; };
@@ -244,7 +243,6 @@
 		22A923242044AF05003EA9BB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		22A923292044AF05003EA9BB /* WindowExplorer.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = WindowExplorer.plist; sourceTree = "<group>"; };
 		22A9232A2044AF05003EA9BB /* WindowExplorer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WindowExplorer.entitlements; sourceTree = "<group>"; };
-		22AE5D2220D2DA0200D5FB9C /* ApplicationNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationNotifications.swift; sourceTree = "<group>"; };
 		22AE5D2420D2DB3200D5FB9C /* ConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		22AEAF0320B67E6700DD184B /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		22B1E2CC204638B900BDDF14 /* GestureManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureManager.swift; sourceTree = "<group>"; };
@@ -458,7 +456,6 @@
 			children = (
 				22A498602047349C0024B46C /* RecordNotifications.swift */,
 				A47C67E320CB07CB00C361D1 /* MapNotifications.swift */,
-				22AE5D2220D2DA0200D5FB9C /* ApplicationNotifications.swift */,
 				2222B13B20D9866900ECCB5D /* SettingsNotifications.swift */,
 				2290A04120E4196E00F028C4 /* TimelineNotifications.swift */,
 			);
@@ -980,7 +977,6 @@
 				2204623520472FDF0067D9FB /* Int.swift in Sources */,
 				226D0587204FC78100D74711 /* CachingNetwork.swift in Sources */,
 				22046246204730780067D9FB /* GestureRecognizer.swift in Sources */,
-				22AE5D2320D2DA0200D5FB9C /* ApplicationNotifications.swift in Sources */,
 				618F0C322069FFD600762C20 /* AudioController.swift in Sources */,
 				2204625D204730C70067D9FB /* TouchProperties.swift in Sources */,
 				A456F6C020C73826004534A4 /* SettingsMenuViewController.swift in Sources */,

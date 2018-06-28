@@ -83,11 +83,15 @@ class TestimonyViewController: BaseViewController, NSCollectionViewDelegateFlowL
     private func setupGestures() {
         let relatedViewPan = PanGestureRecognizer()
         gestureManager.add(relatedViewPan, to: collectionView)
-        relatedViewPan.gestureUpdated = handleCollectionViewPan(_:)
+        relatedViewPan.gestureUpdated = { [weak self] gesture in
+            self?.handleCollectionViewPan(gesture)
+        }
 
         let relatedItemTap = TapGestureRecognizer(withDelay: true)
         gestureManager.add(relatedItemTap, to: collectionView)
-        relatedItemTap.gestureUpdated = handleCollectionViewTap(_:)
+        relatedItemTap.gestureUpdated = { [weak self] gesture in
+            self?.handleCollectionViewTap(gesture)
+        }
     }
 
 

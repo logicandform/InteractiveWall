@@ -26,7 +26,6 @@ class SwipeGestureRecognizer: NSObject, GestureRecognizer {
     var fingers: Int
 
     var timer = Timer()
-
     var gestureUpdated: ((GestureRecognizer) -> Void)?
 
     init(direction: SwipeDirection, withFingers fingers: Int = Constants.minimumFingers) {

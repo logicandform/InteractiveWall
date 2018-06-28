@@ -25,8 +25,8 @@ final class ConnectionManager {
         static let map = "map"
         static let type = "type"
         static let group = "group"
-        static let gesture = "gestureType"
         static let animated = "amimated"
+        static let gesture = "gestureType"
     }
 
 

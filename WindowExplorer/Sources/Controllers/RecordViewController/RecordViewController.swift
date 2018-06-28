@@ -136,37 +136,53 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
         let collectionViewPanGesture = PanGestureRecognizer()
         gestureManager.add(collectionViewPanGesture, to: mediaView)
-        collectionViewPanGesture.gestureUpdated = handleCollectionViewPan(_:)
+        collectionViewPanGesture.gestureUpdated = { [weak self] gesture in
+            self?.handleCollectionViewPan(gesture)
+        }
 
         let collectionViewTapGesture = TapGestureRecognizer(withDelay: true)
         gestureManager.add(collectionViewTapGesture, to: mediaView)
-        collectionViewTapGesture.gestureUpdated = handleCollectionViewTap(_:)
+        collectionViewTapGesture.gestureUpdated = { [weak self] gesture in
+            self?.handleCollectionViewTap(gesture)
+        }
 
         gestureManager.add(windowPanGesture, to: relatedItemsHeader)
 
         let relatedViewPan = PanGestureRecognizer()
         gestureManager.add(relatedViewPan, to: relatedItemsView)
-        relatedViewPan.gestureUpdated = handleRelatedViewPan(_:)
+        relatedViewPan.gestureUpdated = { [weak self] gesture in
+            self?.handleRelatedViewPan(gesture)
+        }
 
         let relatedItemTap = TapGestureRecognizer(withDelay: true)
         gestureManager.add(relatedItemTap, to: relatedItemsView)
-        relatedItemTap.gestureUpdated = handleRelatedItemTap(_:)
+        relatedItemTap.gestureUpdated = { [weak self] gesture in
+            self?.handleRelatedItemTap(gesture)
+        }
 
         let stackViewPanGesture = PanGestureRecognizer()
         gestureManager.add(stackViewPanGesture, to: stackView)
-        stackViewPanGesture.gestureUpdated = handleStackViewPan(_:)
+        stackViewPanGesture.gestureUpdated = { [weak self] gesture in
+            self?.handleStackViewPan(gesture)
+        }
 
         let showRelatedItemsTap = TapGestureRecognizer()
         gestureManager.add(showRelatedItemsTap, to: showRelatedItemsArea)
-        showRelatedItemsTap.gestureUpdated = handleShowRelatedItemsTap(_:)
+        showRelatedItemsTap.gestureUpdated = { [weak self] gesture in
+            self?.handleShowRelatedItemsTap(gesture)
+        }
 
         let hideRelatedItemsTap = TapGestureRecognizer()
         gestureManager.add(hideRelatedItemsTap, to: hideRelatedItemsArea)
-        hideRelatedItemsTap.gestureUpdated = handleHideRelatedItemsTap(_:)
+        hideRelatedItemsTap.gestureUpdated = { [weak self] gesture in
+            self?.handleHideRelatedItemsTap(gesture)
+        }
 
         let arrowIndicatorTap = TapGestureRecognizer()
         gestureManager.add(arrowIndicatorTap, to: arrowIndicatorContainerView)
-        arrowIndicatorTap.gestureUpdated = handleArrowIndicatorTap(_:)
+        arrowIndicatorTap.gestureUpdated = { [weak self] gesture in
+            self?.handleArrowIndicatorTap(gesture)
+        }
     }
 
     private func setupStackview() {

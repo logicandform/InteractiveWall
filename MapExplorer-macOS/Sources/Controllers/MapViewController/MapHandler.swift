@@ -45,6 +45,10 @@ final class MapHandler {
         self.mapView = mapView
     }
 
+    deinit {
+        ungroupTimer?.invalidate()
+    }
+
 
     // MARK: API
 
@@ -82,6 +86,10 @@ final class MapHandler {
     func endUpdates() {
         activityState = .idle
         beginUngroupTimer()
+    }
+
+    func invalidate() {
+        ungroupTimer?.invalidate()
     }
 
     func reset(animated: Bool = true) {

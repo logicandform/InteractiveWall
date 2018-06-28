@@ -30,7 +30,9 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
 //
         let panGesture = PanGestureRecognizer()
         gestureManager.add(panGesture, to: rect)
-        panGesture.gestureUpdated = rectPanned(_:)
+        panGesture.gestureUpdated = { [weak self] gesture in
+            self?.rectPanned(gesture)
+        }
 
 //        let pinchGesture = PinchGestureRecognizer()
 //        gestureManager.add(pinchGesture, to: view)

@@ -44,11 +44,15 @@ class BaseViewController: NSViewController, GestureResponder {
 
         windowPanGesture = PanGestureRecognizer()
         gestureManager.add(windowPanGesture, to: windowDragArea)
-        windowPanGesture.gestureUpdated = handleWindowPan(_:)
+        windowPanGesture.gestureUpdated = { [weak self] gesture in
+            self?.handleWindowPan(gesture)
+        }
 
         let singleFingerCloseButtonTap = TapGestureRecognizer()
         gestureManager.add(singleFingerCloseButtonTap, to: dismissButton)
-        singleFingerCloseButtonTap.gestureUpdated = didTapCloseButton(_:)
+        singleFingerCloseButtonTap.gestureUpdated = { [weak self] gesture in
+            self?.didTapCloseButton(gesture)
+        }
     }
 
     private func setupWindowDragArea() {

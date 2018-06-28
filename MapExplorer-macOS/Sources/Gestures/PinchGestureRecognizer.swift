@@ -11,6 +11,7 @@ fileprivate enum PinchBehavior: String {
     case idle
 }
 
+
 class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
     private struct Pinch {

@@ -35,7 +35,9 @@ class ZoomControl: NSView {
     private func setupGestures() {
         let scrubGesture = PanGestureRecognizer()
         gestureManager.add(scrubGesture, to: seekBar)
-        scrubGesture.gestureUpdated = handleScrubGesture(_:)
+        scrubGesture.gestureUpdated = { [weak self] gesture in
+            self?.handleScrubGesture(gesture)
+        }
     }
 
 

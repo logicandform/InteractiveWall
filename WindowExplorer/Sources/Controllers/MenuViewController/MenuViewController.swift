@@ -136,7 +136,9 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     private func setupGestures() {
         let viewPanGesture = PanGestureRecognizer()
         gestureManager.add(viewPanGesture, to: view)
-        viewPanGesture.gestureUpdated = handleWindowPan(_:)
+        viewPanGesture.gestureUpdated = { [weak self] gesture in
+            self?.handleWindowPan(gesture)
+        }
     }
 
     private func setupButtons() {
@@ -264,7 +266,9 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
 
         let panGesture = PanGestureRecognizer()
         gestureManager.add(panGesture, to: button)
-        panGesture.gestureUpdated = handleWindowPan(_:)
+        panGesture.gestureUpdated = { [weak self] gesture in
+            self?.handleWindowPan(gesture)
+        }
 
         let tapGesture = TapGestureRecognizer()
         gestureManager.add(tapGesture, to: button)

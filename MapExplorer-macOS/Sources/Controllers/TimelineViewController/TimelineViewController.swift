@@ -72,11 +72,15 @@ class TimelineViewController: NSViewController, GestureResponder {
     private func setupGestures() {
         let timelinePanGesture = PanGestureRecognizer()
         gestureManager.add(timelinePanGesture, to: timelineCollectionView)
-        timelinePanGesture.gestureUpdated = didPanOnTimeline(_:)
+        timelinePanGesture.gestureUpdated = { [weak self] gesture in
+            self?.didPanOnTimeline(gesture)
+        }
 
         let timelineTapGesture = TapGestureRecognizer()
         gestureManager.add(timelineTapGesture, to: timelineCollectionView)
-        timelineTapGesture.gestureUpdated = didTapOnTimeline(_:)
+        timelineTapGesture.gestureUpdated = { [weak self] gesture in
+            self?.didTapOnTimeline(gesture)
+        }
     }
 
     private func setupNotifications() {
@@ -157,18 +161,17 @@ class TimelineViewController: NSViewController, GestureResponder {
         source.selectedIndexes.subtracting(selection).forEach { index in
             set(index, selected: false)
         }
-        // Select new indexes that are not currently selected
+        // Select indexes that are not currently selected
         selection.subtracting(source.selectedIndexes).forEach { index in
             set(index, selected: true)
         }
     }
 
     private func set(_ index: Int, selected: Bool) {
-        guard let timelineItem = timelineCollectionView.item(at: IndexPath(item: index, section: 0)) as? TimelineItemView else {
-            return
+        if let timelineItem = timelineCollectionView.item(at: IndexPath(item: index, section: 0)) as? TimelineItemView {
+            timelineItem.set(highlighted: selected)
         }
 
-        timelineItem.set(highlighted: selected)
         if selected {
             source.selectedIndexes.insert(index)
         } else {

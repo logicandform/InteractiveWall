@@ -24,10 +24,10 @@ final class TimelineHandler {
 
     private struct Keys {
         static let id = "id"
-        static let group = "group"
         static let rect = "rect"
-        static let gesture = "gestureType"
+        static let group = "group"
         static let animated = "amimated"
+        static let gesture = "gestureType"
     }
 
 
@@ -35,6 +35,10 @@ final class TimelineHandler {
 
     init(timeline: NSCollectionView) {
         self.timeline = timeline
+    }
+
+    deinit {
+        ungroupTimer?.invalidate()
     }
 
 
@@ -74,6 +78,10 @@ final class TimelineHandler {
     func endUpdates() {
         activityState = .idle
         beginUngroupTimer()
+    }
+
+    func invalidate() {
+        ungroupTimer?.invalidate()
     }
 
     func reset(animated: Bool = true) {

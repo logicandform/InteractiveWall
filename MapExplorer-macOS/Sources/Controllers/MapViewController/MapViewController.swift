@@ -88,11 +88,15 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private func setupGestures() {
         let tapGesture = TapGestureRecognizer()
         gestureManager.add(tapGesture, to: mapView)
-        tapGesture.gestureUpdated = didTapOnMap(_:)
+        tapGesture.gestureUpdated = { [weak self] gesture in
+            self?.didTapOnMap(gesture)
+        }
 
         let pinchGesture = PinchGestureRecognizer()
         gestureManager.add(pinchGesture, to: mapView)
-        pinchGesture.gestureUpdated = didPinchOnMap(_:)
+        pinchGesture.gestureUpdated = { [weak self] gesture in
+            self?.didPinchOnMap(gesture)
+        }
     }
 
     private func setupNotifications() {

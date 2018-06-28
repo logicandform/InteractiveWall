@@ -101,7 +101,9 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     private func setupGestures() {
         let singleFingerPlayerTap = TapGestureRecognizer()
         gestureManager.add(singleFingerPlayerTap, to: playerView)
-        singleFingerPlayerTap.gestureUpdated = didTapVideoPlayer(_:)
+        singleFingerPlayerTap.gestureUpdated = { [weak self] gesture in
+            self?.didTapVideoPlayer(gesture)
+        }
     }
 
 

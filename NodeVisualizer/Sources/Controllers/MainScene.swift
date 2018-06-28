@@ -55,7 +55,9 @@ class MainScene: SKScene {
     private func addGestures(to view: SKView) {
         let tapGesture = TapGestureRecognizer()
         gestureManager.add(tapGesture, to: view)
-        tapGesture.gestureUpdated = handleTapGesture(_:)
+        tapGesture.gestureUpdated = { [weak self] gesture in
+            self?.handleTapGesture(gesture)
+        }
     }
 
     private func setupSystemGesturesForTest(to view: SKView) {

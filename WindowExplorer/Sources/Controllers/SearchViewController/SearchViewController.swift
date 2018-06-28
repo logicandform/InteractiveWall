@@ -90,20 +90,28 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         collectionViews.forEach { collectionView in
             let collectionViewPan = PanGestureRecognizer()
             gestureManager.add(collectionViewPan, to: collectionView)
-            collectionViewPan.gestureUpdated = handleCollectionViewPan(_:)
+            collectionViewPan.gestureUpdated = { [weak self] gesture in
+                self?.handleCollectionViewPan(gesture)
+            }
 
             let collectionViewTap = TapGestureRecognizer(withDelay: true)
             gestureManager.add(collectionViewTap, to: collectionView)
-            collectionViewTap.gestureUpdated = handleCollectionViewTap(_:)
+            collectionViewTap.gestureUpdated = { [weak self] gesture in
+                self?.handleCollectionViewTap(gesture)
+            }
         }
 
         let collapseButtonTap = TapGestureRecognizer()
         gestureManager.add(collapseButtonTap, to: collapseButtonArea)
-        collapseButtonTap.gestureUpdated = handleCollapseButtonTap(_:)
+        collapseButtonTap.gestureUpdated = { [weak self] gesture in
+            self?.handleCollapseButtonTap(gesture)
+        }
 
         let windowDragAreaTap = TapGestureRecognizer()
         gestureManager.add(windowDragAreaTap, to: windowDragArea)
-        windowDragAreaTap.gestureUpdated = handleWindowDragAreaTap(_:)
+        windowDragAreaTap.gestureUpdated = { [weak self] gesture in
+            self?.handleWindowDragAreaTap(gesture)
+        }
     }
 
     private func setupScrollViews() {

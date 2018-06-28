@@ -89,11 +89,15 @@ class ImageViewController: MediaViewController {
     private func setupGestures() {
         let pinchGesture = PinchGestureRecognizer()
         gestureManager.add(pinchGesture, to: imageScrollView)
-        pinchGesture.gestureUpdated = didPinchImageView(_:)
+        pinchGesture.gestureUpdated = { [weak self] gesture in
+            self?.didPinchImageView(gesture)
+        }
 
         let tapGesture = TapGestureRecognizer()
         gestureManager.add(tapGesture, to: imageScrollView)
-        tapGesture.gestureUpdated = didTapImageView(_:)
+        tapGesture.gestureUpdated = { [weak self] gesture in
+            self?.didTapImageView(gesture)
+        }
     }
 
 

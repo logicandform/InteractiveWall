@@ -108,27 +108,39 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
     private func setupGestures() {
         let thumbnailViewPan = PanGestureRecognizer()
         gestureManager.add(thumbnailViewPan, to: thumbnailView)
-        thumbnailViewPan.gestureUpdated = handleThumbnailPan(_:)
+        thumbnailViewPan.gestureUpdated = { [weak self] gesture in
+            self?.handleThumbnailPan(gesture)
+        }
 
         let pinchGesture = PinchGestureRecognizer()
         gestureManager.add(pinchGesture, to: pdfView)
-        pinchGesture.gestureUpdated = handlePinch(_:)
+        pinchGesture.gestureUpdated = { [weak self] gesture in
+            self?.handlePinch(gesture)
+        }
 
         let tapGesture = TapGestureRecognizer()
         gestureManager.add(tapGesture, to: pdfView)
-        tapGesture.gestureUpdated = didTapImageView(_:)
+        tapGesture.gestureUpdated = { [weak self] gesture in
+            self?.didTapImageView(gesture)
+        }
 
         let thumbnailViewTap = TapGestureRecognizer()
         gestureManager.add(thumbnailViewTap, to: thumbnailView)
-        thumbnailViewTap.gestureUpdated = handleThumbnailItemTap(_:)
+        thumbnailViewTap.gestureUpdated = { [weak self] gesture in
+            self?.handleThumbnailItemTap(gesture)
+        }
 
         let previousPageTap = TapGestureRecognizer()
         gestureManager.add(previousPageTap, to: backTapArea)
-        previousPageTap.gestureUpdated = handleLeftArrowTap(_:)
+        previousPageTap.gestureUpdated = { [weak self] gesture in
+            self?.handleLeftArrowTap(gesture)
+        }
 
         let nextPageTap = TapGestureRecognizer()
         gestureManager.add(nextPageTap, to: forwardTapArea)
-        nextPageTap.gestureUpdated = handleRightArrowTap(_:)
+        nextPageTap.gestureUpdated = { [weak self] gesture in
+            self?.handleRightArrowTap(gesture)
+        }
     }
 
 

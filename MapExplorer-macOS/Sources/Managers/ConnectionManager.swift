@@ -13,10 +13,10 @@ final class ConnectionManager {
     static let instance = ConnectionManager()
 
     /// The handler for map associated events
-    var mapHandler: MapHandler?
+    weak var mapHandler: MapHandler?
 
     /// The handler for timeline associated events
-    var timelineHandler: TimelineHandler?
+    weak var timelineHandler: TimelineHandler?
 
     /// The state for each app indexed by it's appID
     private var stateForApp: [AppState]
@@ -102,6 +102,7 @@ final class ConnectionManager {
             if let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
                 set(type, from: id, group: group)
                 transition(group: group, to: type)
+                resetTimerForApp(id: group, with: type)
             }
         case SettingsNotification.unpair.name:
             unpair(from: id)
@@ -205,7 +206,7 @@ final class ConnectionManager {
                 if abs(appGroup - app) >= abs(appGroup - id) {
                     stateForApp[app] = AppState(pair: nil, group: closestApp, type: state.type)
                     if app == neighborID {
-                        startTimerForApp(id: app, with: state.type)
+                        resetTimerForApp(id: app, with: state.type)
                     }
                 }
             } else if state.group == nil {
@@ -321,8 +322,8 @@ final class ConnectionManager {
     }
 
     /// Starts the ungroup timer for the map handler associated with the given mapID
-    private func startTimerForApp(id: Int, with type: ApplicationType) {
-        guard appID == id else {
+    private func resetTimerForApp(id: Int?, with type: ApplicationType) {
+        guard let id = id, appID == id else {
             return
         }
 
@@ -343,8 +344,19 @@ final class ConnectionManager {
 
     /// If the current app is in the group, ask the delegate to transition controller to the new type
     private func transition(group: Int?, to type: ApplicationType) {
-        if let appDelegate = NSApplication.shared.delegate as? AppDelegate, ConnectionManager.instance.groupForApp(id: appID) == group {
-            appDelegate.transition(to: type)
+        guard let appDelegate = NSApplication.shared.delegate as? AppDelegate, ConnectionManager.instance.groupForApp(id: appID) == group else {
+            return
+        }
+
+        appDelegate.transition(to: type)
+
+        switch type {
+        case .mapExplorer:
+            timelineHandler?.invalidate()
+        case .timeline:
+            mapHandler?.invalidate()
+        default:
+            return
         }
     }
 }

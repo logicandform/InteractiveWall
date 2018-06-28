@@ -120,15 +120,21 @@ class PlayerControl: NSView {
     private func setupGestures() {
         let scrubGesture = PanGestureRecognizer()
         gestureManager.add(scrubGesture, to: contentView)
-        scrubGesture.gestureUpdated = didScrubControl(_:)
+        scrubGesture.gestureUpdated = { [weak self] gesture in
+            self?.didScrubControl(gesture)
+        }
 
         let toggleButtonTap = TapGestureRecognizer()
         gestureManager.add(toggleButtonTap, to: toggleButton)
-        toggleButtonTap.gestureUpdated = didTapToggleButton(_:)
+        toggleButtonTap.gestureUpdated = { [weak self] gesture in
+            self?.didTapToggleButton(gesture)
+        }
 
         let volumeButtonTap = TapGestureRecognizer()
         gestureManager.add(volumeButtonTap, to: volumeButton)
-        volumeButtonTap.gestureUpdated = didTapVolumeButton(_:)
+        volumeButtonTap.gestureUpdated = { [weak self] gesture in
+            self?.didTapVolumeButton(gesture)
+        }
     }
 
 
