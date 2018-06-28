@@ -34,7 +34,6 @@ class MenuButton: NSView {
         Bundle.main.loadNibNamed(MenuButton.nib, owner: self, topLevelObjects: nil)
         addSubview(contentView)
         contentView.frame = bounds
-
         wantsLayer = true
     }
 

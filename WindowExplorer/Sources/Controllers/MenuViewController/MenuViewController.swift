@@ -50,6 +50,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
 
     private struct Keys {
         static let id = "id"
+        static let type = "type"
         static let group = "group"
     }
 
@@ -69,11 +70,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
 
     override func viewDidAppear() {
         super.viewDidAppear()
-        settingsMenu = WindowManager.instance.display(.settings, at: position(for: settingsButton, frame: style.settingsWindowSize, margins: false)) as? SettingsMenuViewController
-        settingsMenu.view.isHidden = true
-        if let appID = appID {
-            settingsMenu.set(appID: appID)
-        }
+        setupSettings()
     }
 
 
@@ -95,10 +92,8 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             return
         }
 
-        // Set the new state
+        // Set the new state & transition image
         stateForButton[type] = state
-
-        // Transition image for the button
         button.toggle(to: state)
 
         switch type {
@@ -154,6 +149,14 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         setupButton(for: .search)
     }
 
+    private func setupSettings() {
+        settingsMenu = WindowManager.instance.display(.settings, at: position(for: settingsButton, frame: style.settingsWindowSize, margins: false)) as? SettingsMenuViewController
+        settingsMenu.view.isHidden = true
+        if let appID = appID {
+            settingsMenu.set(appID: appID)
+        }
+    }
+
 
     // MARK: Gesture Handling
 
@@ -171,7 +174,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             }
         case .map, .timeline:
             if state == .off {
-                toggle(type, to: state.toggled)
+                postTransitionNotification(for: type)
             }
         case .information, .settings:
             toggle(type, to: state.toggled)
@@ -245,11 +248,12 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         switch type {
         case .split:
             stateForButton[type] = .off
-        case .map:
-            button.toggle(to: .on)
-            stateForButton[type] = .on
-        case .timeline, .information, .settings, .search, .testimony:
+        case .map, .timeline, .information, .settings, .testimony, .search:
             stateForButton[type] = .off
+        }
+
+        if let selectedType = MenuButtonType.from(Configuration.initialType) {
+            toggle(selectedType, to: .on)
         }
     }
 
@@ -326,7 +330,6 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
 
         let screenBounds = NSScreen.at(position: (appID / Configuration.appsPerScreen) + 1).frame
         let windowBottom = buttonWindowPosition.origin.y + button.frame.origin.y + button.frame.height - frame.height
-
         let screenMin = screenBounds.minX
         let halfAppWidth = screenBounds.width / CGFloat(Configuration.appsPerScreen) / 2
         let halfFrameWidth = frame.width / 2
@@ -369,5 +372,16 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             info[Keys.group] = group
         }
         DistributedNotificationCenter.default().postNotificationName(SettingsNotification.merge.name, object: nil, userInfo: info, deliverImmediately: true)
+    }
+
+    private func postTransitionNotification(for type: MenuButtonType) {
+        guard let applicationType = type.applicationType else {
+            return
+        }
+        var info: JSON = [Keys.id: appID, Keys.type: applicationType.rawValue]
+        if let group = ConnectionManager.instance.groupForApp(id: appID) {
+            info[Keys.group] = group
+        }
+        DistributedNotificationCenter.default().postNotificationName(SettingsNotification.transition.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 }

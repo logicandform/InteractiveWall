@@ -41,8 +41,4 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         GeocodeHelper.instance.associateSchoolsToProvinces()
         MasterViewController.instantiate()
     }
-
-    func applicationWillTerminate(_ notification: Notification) {
-        MasterViewController.instance?.close()
-    }
 }

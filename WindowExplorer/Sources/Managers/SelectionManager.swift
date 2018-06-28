@@ -28,6 +28,10 @@ final class SelectionManager {
 
     // MARK: API
 
+    func resetSelection(group: Int) {
+        set(Set<Int>(), group: group)
+    }
+
     func syncApps(group: Int) {
         let selection = selectionForApp[group]
         postSelectionNotification(forGroup: group, with: selection)

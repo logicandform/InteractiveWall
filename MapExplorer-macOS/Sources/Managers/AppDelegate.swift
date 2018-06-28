@@ -21,6 +21,13 @@ var appID = 0
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
+    private var window: NSWindow!
+
+    private struct Keys {
+        static let group = "group"
+        static let type = "type"
+    }
+
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         let screenIndex = Int(CommandLine.arguments[1]) ?? 0
         let appIndex = Int(CommandLine.arguments[2]) ?? 0
@@ -30,7 +37,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let controller = Configuration.initialType.controller()
         let screenWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen)
         let frame = NSRect(x: screen.frame.minX + screenWidth * CGFloat(appIndex), y: screen.frame.minY, width: screenWidth, height: screen.frame.height)
-        let window = BorderlessWindow(frame: frame, controller: controller)
+        window = BorderlessWindow(frame: frame, controller: controller)
         window.setFrame(frame, display: true)
         window.makeKeyAndOrderFront(self)
 
@@ -38,7 +45,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         ConnectionManager.instance.registerForNotifications()
     }
 
-    func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
+
+    // MARK: API
+
+    func transition(to type: ApplicationType) {
+        window.contentViewController = type.controller()
     }
 }

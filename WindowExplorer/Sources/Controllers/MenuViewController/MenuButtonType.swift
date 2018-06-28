@@ -51,11 +51,33 @@ enum MenuButtonType {
         }
     }
 
+    var applicationType: ApplicationType? {
+        switch self {
+        case .map:
+            return .mapExplorer
+        case .timeline:
+            return .timeline
+        default:
+            return nil
+        }
+    }
+
     var detailImage: NSImage? {
         switch self {
         case .split:
             return NSImage(named: "Lock Icon")
         default:
+            return nil
+        }
+    }
+
+    static func from(_ type: ApplicationType) -> MenuButtonType? {
+        switch type {
+        case .mapExplorer:
+            return .map
+        case .timeline:
+            return .timeline
+        case .nodeNetwork:
             return nil
         }
     }

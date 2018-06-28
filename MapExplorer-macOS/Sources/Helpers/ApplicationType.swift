@@ -3,7 +3,8 @@
 import Foundation
 import AppKit
 
-enum ApplicationType {
+
+enum ApplicationType: String {
     case mapExplorer
     case timeline
     case nodeNetwork

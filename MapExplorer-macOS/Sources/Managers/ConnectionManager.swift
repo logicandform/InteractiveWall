@@ -25,6 +25,7 @@ final class ConnectionManager {
         static let id = "id"
         static let map = "map"
         static let rect = "rect"
+        static let type = "type"
         static let group = "group"
         static let gesture = "gestureType"
         static let animated = "amimated"
@@ -64,9 +65,6 @@ final class ConnectionManager {
     }
 
     func registerForNotifications() {
-        for notification in ApplicationNotification.allValues {
-            DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
-        }
         for notification in MapNotification.allValues {
             DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
         }
@@ -90,12 +88,6 @@ final class ConnectionManager {
         let group = info[Keys.group] as? Int
 
         switch notification.name {
-        case ApplicationNotification.launchMapExplorer.name:
-            setAppType(.mapExplorer, from: id, group: group)
-        case ApplicationNotification.launchTimeline.name:
-            setAppType(.timeline, from: id, group: group)
-        case ApplicationNotification.launchNodeNetwork.name:
-            setAppType(.nodeNetwork, from: id, group: group)
         case MapNotification.mapRect.name:
             if let mapJSON = info[Keys.map] as? JSON, let mapRect = MKMapRect(json: mapJSON), let group = group, let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture), let animated = info[Keys.animated] as? Bool {
                 setAppState(from: id, group: group, for: .mapExplorer, momentum: state == .momentum)
@@ -105,6 +97,11 @@ final class ConnectionManager {
             if let rectJSON = info[Keys.rect] as? JSON, let rect = CGRect(json: rectJSON), let group = group, let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture), let animated = info[Keys.animated] as? Bool {
                 setAppState(from: id, group: group, for: .timeline, momentum: state == .momentum)
                 timelineHandler?.handle(rect, fromID: id, fromGroup: group, animated: animated)
+            }
+        case SettingsNotification.transition.name:
+            if let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
+                set(type, from: id, group: group)
+                transition(group: group, to: type)
             }
         case SettingsNotification.unpair.name:
             unpair(from: id)
@@ -128,7 +125,7 @@ final class ConnectionManager {
 
     // MARK: Helpers
 
-    private func setAppType(_ type: ApplicationType, from id: Int, group: Int?) {
+    private func set(_ type: ApplicationType, from id: Int, group: Int?) {
         for (app, state) in stateForApp.enumerated() {
             // Check for current group
             if let appGroup = state.group, appGroup == group {
@@ -342,5 +339,12 @@ final class ConnectionManager {
     /// Returns the screen id of the given app id
     private func screen(of app: Int) -> Int {
         return (app / Configuration.appsPerScreen) + 1
+    }
+
+    /// If the current app is in the group, ask the delegate to transition controller to the new type
+    private func transition(group: Int?, to type: ApplicationType) {
+        if let appDelegate = NSApplication.shared.delegate as? AppDelegate, ConnectionManager.instance.groupForApp(id: appID) == group {
+            appDelegate.transition(to: type)
+        }
     }
 }

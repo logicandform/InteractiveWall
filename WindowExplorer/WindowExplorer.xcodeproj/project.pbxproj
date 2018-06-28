@@ -702,8 +702,8 @@
 		A4551B6720DC82E100D8C029 /* MenuButton */ = {
 			isa = PBXGroup;
 			children = (
-				A4551B6320DC38D100D8C029 /* MenuButton.swift */,
 				A4551B6520DC71D000D8C029 /* MenuButton.xib */,
+				A4551B6320DC38D100D8C029 /* MenuButton.swift */,
 			);
 			path = MenuButton;
 			sourceTree = "<group>";

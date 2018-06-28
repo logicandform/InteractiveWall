@@ -24,7 +24,6 @@
 		221C629F203B4906009493DA /* School.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C629E203B4906009493DA /* School.swift */; };
 		221C62A8203B57F7009493DA /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C62A7203B57F7009493DA /* URL.swift */; };
 		2220D3FD202F7E4200B878D6 /* GestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2220D3FC202F7E4200B878D6 /* GestureManager.swift */; };
-		2222B13820D85BB500ECCB5D /* ApplicationNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2222B13720D85BB500ECCB5D /* ApplicationNotifications.swift */; };
 		2222B13A20D85BD700ECCB5D /* ApplicationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2222B13920D85BD700ECCB5D /* ApplicationType.swift */; };
 		2222B13E20D986AF00ECCB5D /* SettingsNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2222B13D20D986AF00ECCB5D /* SettingsNotifications.swift */; };
 		222694C020699B10007DA6FA /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222694BF20699B10007DA6FA /* Record.swift */; };
@@ -111,7 +110,6 @@
 		221C629E203B4906009493DA /* School.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = School.swift; sourceTree = "<group>"; };
 		221C62A7203B57F7009493DA /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		2220D3FC202F7E4200B878D6 /* GestureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureManager.swift; sourceTree = "<group>"; };
-		2222B13720D85BB500ECCB5D /* ApplicationNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationNotifications.swift; sourceTree = "<group>"; };
 		2222B13920D85BD700ECCB5D /* ApplicationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationType.swift; sourceTree = "<group>"; };
 		2222B13D20D986AF00ECCB5D /* SettingsNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotifications.swift; sourceTree = "<group>"; };
 		222694BF20699B10007DA6FA /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
@@ -193,10 +191,10 @@
 			children = (
 				22004FEE20E164CB00B1E740 /* Timeline.storyboard */,
 				22004FEC20E164AF00B1E740 /* TimelineViewController.swift */,
+				2290A03D20E4102A00F028C4 /* TimelineHandler.swift */,
 				22004FFD20E2ADC200B1E740 /* TimelineEvent.swift */,
 				22004FF720E1A03000B1E740 /* TimelineLayout.swift */,
 				2200500320E2B8AC00B1E740 /* TimelineDataSource.swift */,
-				2290A03D20E4102A00F028C4 /* TimelineHandler.swift */,
 				22004FF020E16CC200B1E740 /* Views */,
 			);
 			path = TimelineViewController;
@@ -218,7 +216,6 @@
 			children = (
 				22046266204732A40067D9FB /* MapNotifications.swift */,
 				22046265204732A40067D9FB /* RecordNotifications.swift */,
-				2222B13720D85BB500ECCB5D /* ApplicationNotifications.swift */,
 				2222B13D20D986AF00ECCB5D /* SettingsNotifications.swift */,
 				2290A03F20E412E700F028C4 /* TimelineNotifications.swift */,
 			);
@@ -624,7 +621,6 @@
 				22290C3B2028FA35000E0573 /* PacketType.swift in Sources */,
 				3F0254F22049D521004B831C /* LastTwo.swift in Sources */,
 				22AE5D1F20D2D72000D5FB9C /* ConnectionManager.swift in Sources */,
-				2222B13820D85BB500ECCB5D /* ApplicationNotifications.swift in Sources */,
 				22004FED20E164AF00B1E740 /* TimelineViewController.swift in Sources */,
 				22B1E2AA2045F2EE00BDDF14 /* AVKit.swift in Sources */,
 				2220D3FD202F7E4200B878D6 /* GestureManager.swift in Sources */,

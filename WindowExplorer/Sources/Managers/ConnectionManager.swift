@@ -23,6 +23,7 @@ final class ConnectionManager {
     private struct Keys {
         static let id = "id"
         static let map = "map"
+        static let type = "type"
         static let group = "group"
         static let gesture = "gestureType"
         static let animated = "amimated"
@@ -57,9 +58,6 @@ final class ConnectionManager {
     }
 
     func registerForNotifications() {
-        for notification in ApplicationNotification.allValues {
-            DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
-        }
         for notification in MapNotification.allValues {
             DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
         }
@@ -83,12 +81,6 @@ final class ConnectionManager {
         let group = info[Keys.group] as? Int
 
         switch notification.name {
-        case ApplicationNotification.launchMapExplorer.name:
-            setAppType(.mapExplorer, from: id, group: group)
-        case ApplicationNotification.launchTimeline.name:
-            setAppType(.timeline, from: id, group: group)
-        case ApplicationNotification.launchNodeNetwork.name:
-            setAppType(.nodeNetwork, from: id, group: group)
         case MapNotification.mapRect.name:
             if let group = group, let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture) {
                 setAppState(from: id, group: group, for: .mapExplorer, momentum: state == .momentum)
@@ -96,6 +88,12 @@ final class ConnectionManager {
         case TimelineNotification.rect.name:
             if let group = group, let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture) {
                 setAppState(from: id, group: group, for: .timeline, momentum: state == .momentum)
+            }
+        case SettingsNotification.transition.name:
+            if let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
+                set(type, from: id, group: group)
+                updateMenus(group: group, to: type)
+                resetSelection(group: group)
             }
         case SettingsNotification.unpair.name:
             unpair(from: id)
@@ -118,7 +116,7 @@ final class ConnectionManager {
 
     // MARK: Helpers
 
-    private func setAppType(_ type: ApplicationType, from id: Int, group: Int?) {
+    private func set(_ type: ApplicationType, from id: Int, group: Int?) {
         for (app, state) in stateForApp.enumerated() {
             // Check for current group
             if let appGroup = state.group, appGroup == group {
@@ -306,11 +304,32 @@ final class ConnectionManager {
             let border = MenuManager.instance.borderForApp(id: app)
             let neighborID = app % Configuration.appsPerScreen == 0 ? app + 1 : app - 1
             let neighborPair = pairForApp(id: neighborID)
-            let split = state.group != groupForApp(id: neighborID)
-            let mergeLocked = typeForApp(id: app) != typeForApp(id: neighborID) || split && neighborPair == neighborID
+            let differentTypes = typeForApp(id: app) != typeForApp(id: neighborID)
+            let split = state.group != groupForApp(id: neighborID) || differentTypes
+            let mergeLocked = differentTypes || split && neighborPair == neighborID
             menu?.toggle(.split, to: split ? .on : .off)
             menu?.toggleMergeLock(on: mergeLocked)
             border?.set(visible: split)
+        }
+    }
+
+    /// Sets the menu button type for application in the group to on
+    private func updateMenus(group: Int?, to type: ApplicationType) {
+        guard let menuButtonType = MenuButtonType.from(type) else {
+            return
+        }
+
+        for (app, state) in stateForApp.enumerated() {
+            if state.group == group {
+                let menu = MenuManager.instance.menuForApp(id: app)
+                menu?.toggle(menuButtonType, to: .on)
+            }
+        }
+    }
+
+    private func resetSelection(group: Int?) {
+        if let group = group {
+            SelectionManager.instance.resetSelection(group: group)
         }
     }
 
