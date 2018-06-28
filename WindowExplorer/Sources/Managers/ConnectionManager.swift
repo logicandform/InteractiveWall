@@ -119,7 +119,7 @@ final class ConnectionManager {
     private func set(_ type: ApplicationType, from id: Int, group: Int?) {
         for (app, state) in stateForApp.enumerated() {
             // Check for current group
-            if let appGroup = state.group, appGroup == group {
+            if state.group == group {
                 // Check for current pair
                 if let appPair = state.pair {
                     // Check if incoming id is closer than current pair
@@ -129,8 +129,6 @@ final class ConnectionManager {
                 } else {
                     stateForApp[app] = AppState(pair: nil, group: id, type: type)
                 }
-            } else if state.group == nil, state.type == type {
-                stateForApp[app] = AppState(pair: nil, group: id, type: type)
             }
         }
         updateViews()
