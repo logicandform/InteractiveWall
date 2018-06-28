@@ -14,7 +14,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="ySR-rI-hH0">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="350"/>
+                                <rect key="frame" x="0.0" y="150" width="50" height="350"/>
                                 <subviews>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="ceY-yx-jPe" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="300" width="50" height="50"/>
@@ -85,14 +85,24 @@
                                     <constraint firstAttribute="height" constant="350" id="zrR-gc-8RL"/>
                                 </constraints>
                             </customView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="37d-Lb-7Lx" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="2Bu-EW-BoC"/>
+                                    <constraint firstAttribute="width" constant="50" id="LTZ-Wa-hny"/>
+                                </constraints>
+                            </customView>
                         </subviews>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="37d-Lb-7Lx" secondAttribute="bottom" id="5UF-1E-TPm"/>
                             <constraint firstItem="CJK-LW-WGG" firstAttribute="leading" secondItem="AdH-oQ-xB7" secondAttribute="leading" id="8z8-J5-lEy"/>
-                            <constraint firstAttribute="bottom" secondItem="ySR-rI-hH0" secondAttribute="bottom" id="PXR-tM-DVE"/>
+                            <constraint firstAttribute="bottom" secondItem="ySR-rI-hH0" secondAttribute="bottom" constant="150" id="PXR-tM-DVE"/>
                             <constraint firstItem="ySR-rI-hH0" firstAttribute="leading" secondItem="AdH-oQ-xB7" secondAttribute="leading" id="doy-f2-OoY"/>
+                            <constraint firstItem="37d-Lb-7Lx" firstAttribute="leading" secondItem="AdH-oQ-xB7" secondAttribute="leading" id="urd-zp-8aA"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="accessibilityButton" destination="37d-Lb-7Lx" id="EyT-Lp-pVA"/>
                         <outlet property="informationButton" destination="5R0-Ed-pJG" id="J99-rQ-V56"/>
                         <outlet property="mapToggleButton" destination="qAo-tK-U4U" id="Cds-Fu-Des"/>
                         <outlet property="menuVerticalOffset" destination="PXR-tM-DVE" id="Ee7-n5-oOg"/>

@@ -12,6 +12,7 @@ enum MenuButtonType {
     case settings
     case search
     case testimony
+    case accessibility
 
     var image: NSImage? {
         switch self {
@@ -29,6 +30,8 @@ enum MenuButtonType {
             return NSImage(named: "search-icon")
         case .testimony:
             return NSImage(named: "testimony-icon")
+        case .accessibility:
+            return NSImage(named: "accessibility-icon")
         }
     }
 
@@ -48,6 +51,8 @@ enum MenuButtonType {
             return NSImage(named: "search-icon")?.tinted(with: style.menuSelectedColor)
         case .testimony:
             return NSImage(named: "testimony-icon")?.tinted(with: style.menuSelectedColor)
+        case .accessibility:
+            return NSImage(named: "accessibility-icon")?.tinted(with: style.menuSelectedColor)
         }
     }
 

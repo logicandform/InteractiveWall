@@ -24,6 +24,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
 
     @IBOutlet weak var menuView: NSView!
     @IBOutlet weak var menuVerticalOffset: NSLayoutConstraint!
+    @IBOutlet weak var accessibilityButton: MenuButton!
     @IBOutlet weak var splitScreenButton: MenuButton!
     @IBOutlet weak var mapToggleButton: MenuButton!
     @IBOutlet weak var timelineToggleButton: MenuButton!
@@ -61,12 +62,11 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        menuView.wantsLayer = true
-        menuView.layer?.backgroundColor = style.darkBackground.cgColor
         gestureManager = GestureManager(responder: self)
         gestureManager.touchReceived = receivedTouch(_:)
-        viewForButtonType = [.split: splitScreenButton, .map: mapToggleButton, .timeline: timelineToggleButton, .information: informationButton, .settings: settingsButton, .testimony: testimonyButton, .search: searchButton]
+        viewForButtonType = [.split: splitScreenButton, .map: mapToggleButton, .timeline: timelineToggleButton, .information: informationButton, .settings: settingsButton, .testimony: testimonyButton, .search: searchButton, .accessibility: accessibilityButton]
 
+        setupMenu()
         setupButtons()
         setupGestures()
     }
@@ -127,6 +127,8 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             displaySearchController()
             toggle(.settings, to: .off)
             toggle(.information, to: .off)
+        case .accessibility:
+            toggleMenuAccessibility()
         default:
             return
         }
@@ -144,6 +146,11 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     private func setupButtons() {
         MenuButtonType.allValues.forEach { setupButton(for: $0) }
         toggle(.map, to: .on)
+    }
+
+    private func setupMenu() {
+        menuView.wantsLayer = true
+        menuVerticalOffset.constant = (view.frame.height / 2) - (menuView.frame.height / 2)
     }
 
     private func setupSettings() {
@@ -175,7 +182,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             if state == .off {
                 postTransitionNotification(for: type)
             }
-        case .information, .settings:
+        case .information, .settings, .accessibility:
             toggle(type, to: state.toggled)
         case .search, .testimony:
             toggle(type, to: .on, forced: true)
@@ -190,13 +197,9 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         switch pan.state {
         case .recognized where abs(pan.delta.dy) > Constants.minimumScrollThreshold || scrollThresholdAchieved, .momentum where scrollThresholdAchieved:
             scrollThresholdAchieved = true
-
             let origin = menuView.frame.transformed(from: view.frame).transformed(from: window.frame)
-            let transformedOrigin = originAppending(delta: pan.delta, to: window, origin: origin)
-            let settingsButtonFrame = settingsButton.frame
-            settingsMenu.updateOrigin(relativeTo: transformedOrigin, with: settingsButtonFrame)
-            menuVerticalOffset.constant = transformedOrigin.y
-            menuView.updateConstraints()
+            menuVerticalOffset.constant = originAppending(delta: pan.delta, to: window, origin: origin)
+            settingsMenu.updateOrigin(relativeTo: menuVerticalOffset.constant, with: settingsButton.frame)
         case .possible:
             scrollThresholdAchieved = false
         default:
@@ -217,7 +220,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     }
 
     func subview(contains position: CGPoint) -> Bool {
-        return menuView.frame.contains(position)
+        return menuView.frame.contains(position) || accessibilityButton.frame.contains(position)
     }
 
 
@@ -251,13 +254,15 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             return
         }
 
+        button.wantsLayer = true
+        button.layer?.backgroundColor = style.darkBackground.cgColor
         button.buttonType = type
         addGesture(for: type)
 
         switch type {
         case .split:
             stateForButton[type] = .off
-        case .map, .timeline, .information, .settings, .testimony, .search:
+        case .map, .timeline, .information, .settings, .testimony, .search, .accessibility:
             stateForButton[type] = .off
         }
     }
@@ -267,10 +272,12 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             return
         }
 
-        let panGesture = PanGestureRecognizer()
-        gestureManager.add(panGesture, to: button)
-        panGesture.gestureUpdated = { [weak self] gesture in
-            self?.handleWindowPan(gesture)
+        if type != .accessibility {
+            let panGesture = PanGestureRecognizer()
+            gestureManager.add(panGesture, to: button)
+            panGesture.gestureUpdated = { [weak self] gesture in
+                self?.handleWindowPan(gesture)
+            }
         }
 
         let tapGesture = TapGestureRecognizer()
@@ -313,21 +320,25 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         }
     }
 
-    private func originAppending(delta: CGVector, to window: NSWindow, origin: CGRect) -> CGPoint {
-        guard let screen = window.screen else {
-            return window.frame.origin
+    private func toggleMenuAccessibility() {
+        
+    }
+
+    private func originAppending(delta: CGVector, to parentWindow: NSWindow, origin: CGRect) -> CGFloat {
+        guard let screen = parentWindow.screen else {
+            return CGPoint.zero.y
         }
 
         var newOrigin = origin.origin
         newOrigin.y += delta.dy
 
-        if delta.dy < 0 && newOrigin.y < screen.frame.minY {
-            newOrigin.y = screen.frame.minY
+        if delta.dy < 0 && newOrigin.y < screen.frame.minY + accessibilityButton.frame.height {
+            newOrigin.y = screen.frame.minY + accessibilityButton.frame.height
         } else if delta.dy > 0 && newOrigin.y + origin.height > screen.frame.maxY {
             newOrigin.y = screen.frame.maxY - origin.height
         }
 
-        return newOrigin
+        return newOrigin.y
     }
 
     private func centeredPosition(for button: MenuButton, with frame: CGSize) -> CGPoint {
@@ -335,8 +346,10 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             return CGPoint.zero
         }
 
+        let buttonOrigin = buttonWindowPosition.transformed(from: button.frame).transformed(from: menuView.frame).origin
         let screenBounds = NSScreen.at(position: (appID / Configuration.appsPerScreen) + 1).frame
-        let windowBottom = buttonWindowPosition.origin.y + button.frame.origin.y + button.frame.height - frame.height
+        let windowBottom = buttonOrigin.y + button.frame.height - frame.height
+
         let screenMin = screenBounds.minX
         let halfAppWidth = screenBounds.width / CGFloat(Configuration.appsPerScreen) / 2
         let halfFrameWidth = frame.width / 2
@@ -354,13 +367,9 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         }
 
         let windowMargin = margins ? style.windowMargins : 0
-        let buttonOrigin = windowPosition.transformed(from: button.frame).origin
-        var x = windowPosition.maxX + windowMargin
+        let buttonOrigin = windowPosition.transformed(from: button.frame).transformed(from: menuView.frame).origin
+        let x = windowPosition.minX <= screenBounds.minX ? windowPosition.maxX + windowMargin : windowPosition.origin.x - frame.width - windowMargin
         let y = buttonOrigin.y + style.menuImageSize.height - frame.height
-
-        if windowPosition.maxX >= screenBounds.maxX {
-            x = windowPosition.origin.x - frame.width - windowMargin
-        }
 
         return CGPoint(x: x, y: y)
     }
@@ -397,5 +406,32 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
 
     private func receivedTouch(_ touch: Touch) {
         settingsMenu.resetSettingsTimeout()
+    }
+
+    /// Animates the view to the entered origin
+    private func animate(view: NSView, to origin: NSPoint) {
+        guard let window = view.window, let screen = window.screen, !gestureManager.isActive() else {
+            return
+        }
+
+        gestureManager.invalidateAllGestures()
+        window.makeKeyAndOrderFront(self)
+
+        let frame = CGRect(origin: origin, size: view.frame.size)
+        let offset = abs(window.frame.minX - origin.x) / screen.frame.width
+        let duration = max(Double(offset), Constants.animationDuration)
+
+        let test = CABasicAnimation.init()
+        test.isRemovedOnCompletion = false
+        test.keyPath = "position"
+        view.layer?.add(test, forKey: "position")
+
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = duration
+            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+            window.animator().setFrame(frame, display: true, animate: true)
+        }, completionHandler: { [weak self] in
+
+        })
     }
 }
