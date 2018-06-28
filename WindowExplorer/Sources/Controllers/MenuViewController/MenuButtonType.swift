@@ -52,7 +52,7 @@ enum MenuButtonType {
         case .testimony:
             return NSImage(named: "testimony-icon")?.tinted(with: style.menuSelectedColor)
         case .accessibility:
-            return NSImage(named: "accessibility-icon-active")
+            return NSImage(named: "accessibility-icon")?.tinted(with: style.menuAccessibilityIconColor)
         }
     }
 

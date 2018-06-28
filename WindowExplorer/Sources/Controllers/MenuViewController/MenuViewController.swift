@@ -201,8 +201,8 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         switch pan.state {
         case .recognized where abs(pan.delta.dy) > Constants.minimumScrollThreshold || scrollThresholdAchieved, .momentum where scrollThresholdAchieved:
             scrollThresholdAchieved = true
-            let origin = menuView.frame.transformed(from: view.frame).transformed(from: window.frame)
-            menuVerticalOffset.constant = originAppending(delta: pan.delta, to: window, origin: origin)
+            let frame = menuView.frame.transformed(from: view.frame).transformed(from: window.frame)
+            menuVerticalOffset.constant = originAppending(delta: pan.delta, to: window, frame: frame)
             settingsMenu.updateOrigin(relativeTo: menuVerticalOffset.constant, with: settingsButton.frame)
         case .possible:
             scrollThresholdAchieved = false
@@ -334,18 +334,18 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         animate(view: menuView, to: CGPoint(x: x, y: y))
     }
 
-    private func originAppending(delta: CGVector, to parentWindow: NSWindow, origin: CGRect) -> CGFloat {
+    private func originAppending(delta: CGVector, to parentWindow: NSWindow, frame: CGRect) -> CGFloat {
         guard let screen = parentWindow.screen else {
             return CGPoint.zero.y
         }
 
-        var newOrigin = origin.origin
+        var newOrigin = frame.origin
         newOrigin.y += delta.dy
 
         if delta.dy < 0 && newOrigin.y < screen.frame.minY + accessibilityButton.frame.height {
             newOrigin.y = screen.frame.minY + accessibilityButton.frame.height
-        } else if delta.dy > 0 && newOrigin.y + origin.height > screen.frame.maxY {
-            newOrigin.y = screen.frame.maxY - origin.height
+        } else if delta.dy > 0 && newOrigin.y + frame.height > screen.frame.maxY {
+            newOrigin.y = screen.frame.maxY - frame.height
         }
 
         return newOrigin.y
