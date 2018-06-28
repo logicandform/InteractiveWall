@@ -89,12 +89,9 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
             return
         }
 
-        let updatedVerticalPosition = verticalPosition + frame.origin.y + frame.height - view.frame.height
-        if updatedVerticalPosition < 0 {
-            view.window?.setFrameOrigin(CGPoint(x: window.frame.origin.x, y: screen.frame.minY))
-        } else {
-            view.window?.setFrameOrigin(CGPoint(x: window.frame.origin.x, y: updatedVerticalPosition))
-        }
+        let translatedPosition = verticalPosition + frame.origin.y + frame.height - view.frame.height
+        let updatedVerticalPosition = translatedPosition < 0 ? screen.frame.minY : translatedPosition
+        view.window?.setFrameOrigin(CGPoint(x: window.frame.origin.x, y: updatedVerticalPosition))
     }
 
     func resetSettingsTimeout() {

@@ -50,7 +50,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         static let minimumScrollThreshold: CGFloat = 4
         static let imageTransitionDuration = 0.5
         static let animationDuration = 0.5
-        static let positionResetInterval: TimeInterval = 3
+        static let positionResetInterval: TimeInterval = 180
     }
 
     private struct Keys {
@@ -132,11 +132,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             toggle(.settings, to: .off)
             toggle(.information, to: .off)
         case .accessibility where state == .on:
-            if let window = view.window {
-                let x = window.frame.minX
-                let y = NSScreen.at(position: (appID % Configuration.appsPerScreen) + 1).frame.minY + accessibilityButton.frame.height
-                animate(view: menuView, to: CGPoint(x: x, y: y))
-            }
+            toggleMenuAccessibility()
         default:
             return
         }
@@ -329,7 +325,13 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     }
 
     private func toggleMenuAccessibility() {
+        guard let window = view.window else {
+            return
+        }
 
+        let x = window.frame.minX
+        let y = NSScreen.at(position: (appID % Configuration.appsPerScreen) + 1).frame.minY + accessibilityButton.frame.height
+        animate(view: menuView, to: CGPoint(x: x, y: y))
     }
 
     private func originAppending(delta: CGVector, to parentWindow: NSWindow, origin: CGRect) -> CGFloat {
@@ -414,11 +416,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
 
     /// Animates the view to a new origin
     private func animate(view: NSView, to origin: NSPoint) {
-        guard let window = view.window, let screen = window.screen, !gestureManager.isActive() else {
-            return
-        }
-
-        guard let originalHeight = heightConstraintForView[view] != nil ? heightConstraintForView[view]?.constant : window.frame.height else {
+        guard let window = view.window, let screen = window.screen, !gestureManager.isActive(), let originalHeight = heightConstraintForView[view] != nil ? heightConstraintForView[view]?.constant : window.frame.height else {
             return
         }
 
