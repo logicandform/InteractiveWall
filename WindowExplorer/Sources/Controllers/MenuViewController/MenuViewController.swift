@@ -35,8 +35,10 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
 
     var gestureManager: GestureManager!
     private var appID: Int!
+    private var positionResetTimer: Foundation.Timer!
     private var viewForButtonType = [MenuButtonType: MenuButton]()
     private var stateForButton = [MenuButtonType: ButtonState]()
+    private var heightConstraintForView = [NSView: NSLayoutConstraint]()
     private var mergeLockIcon: NSView?
     private var mergeLocked = false
     private var scrollThresholdAchieved = false
@@ -48,6 +50,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         static let minimumScrollThreshold: CGFloat = 4
         static let imageTransitionDuration = 0.5
         static let animationDuration = 0.5
+        static let positionResetInterval: TimeInterval = 3
     }
 
     private struct Keys {
@@ -65,6 +68,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         gestureManager = GestureManager(responder: self)
         gestureManager.touchReceived = receivedTouch(_:)
         viewForButtonType = [.split: splitScreenButton, .map: mapToggleButton, .timeline: timelineToggleButton, .information: informationButton, .settings: settingsButton, .testimony: testimonyButton, .search: searchButton, .accessibility: accessibilityButton]
+        heightConstraintForView = [menuView: menuVerticalOffset]
 
         setupMenu()
         setupButtons()
@@ -127,8 +131,12 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             displaySearchController()
             toggle(.settings, to: .off)
             toggle(.information, to: .off)
-        case .accessibility:
-            toggleMenuAccessibility()
+        case .accessibility where state == .on:
+            if let window = view.window {
+                let x = window.frame.minX
+                let y = NSScreen.at(position: (appID % Configuration.appsPerScreen) + 1).frame.minY + accessibilityButton.frame.height
+                animate(view: menuView, to: CGPoint(x: x, y: y))
+            }
         default:
             return
         }
@@ -182,9 +190,9 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             if state == .off {
                 postTransitionNotification(for: type)
             }
-        case .information, .settings, .accessibility:
+        case .information, .settings:
             toggle(type, to: state.toggled)
-        case .search, .testimony:
+        case .search, .testimony, .accessibility:
             toggle(type, to: .on, forced: true)
         }
     }
@@ -321,7 +329,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     }
 
     private func toggleMenuAccessibility() {
-        
+
     }
 
     private func originAppending(delta: CGVector, to parentWindow: NSWindow, origin: CGRect) -> CGFloat {
@@ -347,7 +355,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         }
 
         let buttonOrigin = buttonWindowPosition.transformed(from: button.frame).transformed(from: menuView.frame).origin
-        let screenBounds = NSScreen.at(position: (appID / Configuration.appsPerScreen) + 1).frame
+        let screenBounds = NSScreen.at(appID: appID).frame
         let windowBottom = buttonOrigin.y + button.frame.height - frame.height
 
         let screenMin = screenBounds.minX
@@ -404,34 +412,56 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         DistributedNotificationCenter.default().postNotificationName(SettingsNotification.transition.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
-    private func receivedTouch(_ touch: Touch) {
-        settingsMenu.resetSettingsTimeout()
-    }
-
-    /// Animates the view to the entered origin
+    /// Animates the view to a new origin
     private func animate(view: NSView, to origin: NSPoint) {
         guard let window = view.window, let screen = window.screen, !gestureManager.isActive() else {
             return
         }
 
+        guard let originalHeight = heightConstraintForView[view] != nil ? heightConstraintForView[view]?.constant : window.frame.height else {
+            return
+        }
+
         gestureManager.invalidateAllGestures()
         window.makeKeyAndOrderFront(self)
-
+        toggle(.settings, to: .off)
         let frame = CGRect(origin: origin, size: view.frame.size)
-        let offset = abs(window.frame.minX - origin.x) / screen.frame.width
+        let offset = abs(originalHeight - origin.y) / screen.frame.height
         let duration = max(Double(offset), Constants.animationDuration)
-
-        let test = CABasicAnimation.init()
-        test.isRemovedOnCompletion = false
-        test.keyPath = "position"
-        view.layer?.add(test, forKey: "position")
 
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = duration
             NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-            window.animator().setFrame(frame, display: true, animate: true)
-        }, completionHandler: { [weak self] in
 
+            if let constraint = heightConstraintForView[view] {
+                constraint.animator().constant = origin.y
+            } else {
+                window.animator().setFrame(frame, display: true, animate: true)
+            }
+        }, completionHandler: { [weak self] in
+            self?.toggle(.accessibility, to: .off)
+            if let settingsButton = self?.settingsButton {
+                self?.settingsMenu.updateOrigin(relativeTo: origin.y, with: settingsButton.frame)
+            }
         })
+    }
+
+    private func receivedTouch(_ touch: Touch) {
+        resetPositionResetTimer()
+        settingsMenu.resetSettingsTimeout()
+    }
+
+    private func resetPositionResetTimer() {
+        guard let window = view.window else {
+            return
+        }
+
+        let verticalPosition = NSScreen.at(appID: appID).frame.midY - (menuView.frame.height / 2)
+        positionResetTimer?.invalidate()
+        positionResetTimer = Timer.scheduledTimer(withTimeInterval: Constants.positionResetInterval, repeats: false) { [weak self] _ in
+            if let menuView = self?.menuView {
+                self?.animate(view: menuView, to: CGPoint(x: window.frame.minX, y: verticalPosition))
+            }
+        }
     }
 }

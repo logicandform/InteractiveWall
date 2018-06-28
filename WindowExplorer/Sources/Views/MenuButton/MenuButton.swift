@@ -51,7 +51,12 @@ class MenuButton: NSView {
     func toggle(to status: ButtonState) {
         toggleStatus = status
         let image = status == .on ? buttonType?.selectedImage : buttonType?.image
+        let backgroundColor = status == .on ? buttonType?.selectedBackground: buttonType?.unselectedBackground
         transition(to: image, duration: Constants.imageTransitionDuration)
+
+        if let color = backgroundColor {
+            layer?.backgroundColor = color.cgColor
+        }
     }
 
     func toggleLockIcon(on: Bool) {

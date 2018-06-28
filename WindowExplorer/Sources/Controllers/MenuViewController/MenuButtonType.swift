@@ -52,7 +52,7 @@ enum MenuButtonType {
         case .testimony:
             return NSImage(named: "testimony-icon")?.tinted(with: style.menuSelectedColor)
         case .accessibility:
-            return NSImage(named: "accessibility-icon")?.tinted(with: style.menuSelectedColor)
+            return NSImage(named: "accessibility-icon-active")
         }
     }
 
@@ -89,5 +89,23 @@ enum MenuButtonType {
 
     static var allValues: [MenuButtonType] {
         return [.split, .map, .timeline, .information, .settings, .search, .testimony]
+    }
+
+    var unselectedBackground: NSColor? {
+        switch self {
+        case .accessibility:
+            return style.darkBackground
+        default:
+            return nil
+        }
+    }
+
+    var selectedBackground: NSColor? {
+        switch self {
+        case .accessibility:
+            return style.menuSelectedColor
+        default:
+            return nil
+        }
     }
 }
