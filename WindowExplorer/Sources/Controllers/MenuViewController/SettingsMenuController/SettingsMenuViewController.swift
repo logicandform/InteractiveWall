@@ -13,6 +13,12 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     @IBOutlet weak var eventsText: NSTextField!
     @IBOutlet weak var organizationsText: NSTextField!
     @IBOutlet weak var artifactsText: NSTextField!
+    @IBOutlet weak var labelsSwitchContainer: NSView!
+    @IBOutlet weak var miniMapSwitchContainer: NSView!
+    @IBOutlet weak var eventsSwitchContainer: NSView!
+    @IBOutlet weak var organizationsSwitchContainer: NSView!
+    @IBOutlet weak var artifactsSwitchContainer: NSView!
+    @IBOutlet weak var schoolsSwitchContainer: NSView!
 
     var gestureManager: GestureManager!
     private var appID: Int!
@@ -25,7 +31,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     private var artifactsSwitch: SwitchControl!
 
     private var switchForSettingType = [SettingType: SwitchControl]()
-    private var textFieldForSettingType = [SettingType: NSTextField]()
+    private var containerForSettingType = [SettingType: NSView]()
 
     private struct Keys {
         static let id = "id"
@@ -83,7 +89,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     // MARK: Setup
 
     private func setupSwitches() {
-        textFieldForSettingType = [.labels: labelsText, .miniMap: miniMapText, .schools: schoolsText, .events: eventsText, .organizations: organizationsText, .artifacts: artifactsText]
+        containerForSettingType = [.labels: labelsSwitchContainer, .miniMap: miniMapSwitchContainer, .schools: schoolsSwitchContainer, .events: eventsSwitchContainer, .organizations: organizationsSwitchContainer, .artifacts: artifactsSwitchContainer]
 
         labelsSwitch = setupSwitch(for: .labels)
         miniMapSwitch = setupSwitch(for: .miniMap, on: false)
@@ -194,7 +200,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     }
 
     private func setupSwitch(for type: SettingType, on: Bool = true) -> SwitchControl? {
-        guard let textField = textFieldForSettingType[type] else {
+        guard let container = containerForSettingType[type] else {
             return nil
         }
 
@@ -207,22 +213,23 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
             return toggle
         }()
 
-        view.addSubview(toggleSwitch)
+        container.addSubview(toggleSwitch)
         toggleSwitch.translatesAutoresizingMaskIntoConstraints = false
-        toggleSwitch.centerYAnchor.constraint(equalTo: textField.centerYAnchor).isActive = true
-        toggleSwitch.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: style.toggleSwitchOffset).isActive = true
+        toggleSwitch.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
+        toggleSwitch.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
         toggleSwitch.heightAnchor.constraint(equalToConstant: style.toggleSwitchFrame.height).isActive = true
         toggleSwitch.widthAnchor.constraint(equalToConstant: style.toggleSwitchFrame.width).isActive = true
         return toggleSwitch
     }
 
     private func setupGesture(for type: SettingType) {
-        guard let toggleSwitch = switchForSettingType[type] else {
+        guard let toggleSwitch = switchForSettingType[type], let container = containerForSettingType[type] else {
             return
         }
 
         let toggleTap = TapGestureRecognizer()
         gestureManager.add(toggleTap, to: toggleSwitch)
+        gestureManager.add(toggleTap, to: container)
         toggleTap.gestureUpdated = { [weak self] tap in
             if tap.state == .ended {
                 self?.toggle(toggleSwitch, with: type)
