@@ -325,11 +325,15 @@ final class ConnectionManager {
 
     /// Starts the ungroup timer for the map handler associated with the given mapID
     private func startTimerForApp(id: Int, with type: ApplicationType) {
+        guard appID == id else {
+            return
+        }
+
         switch type {
         case .mapExplorer:
-            if let mapHandler = mapHandler, appID == id {
-                mapHandler.endUpdates()
-            }
+            mapHandler?.endUpdates()
+        case .timeline:
+            timelineHandler?.endUpdates()
         default:
             return
         }

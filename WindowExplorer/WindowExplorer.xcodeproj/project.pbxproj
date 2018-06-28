@@ -67,6 +67,7 @@
 		2276AE65204E7150001FAD8B /* BorderlessWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2276AE64204E7150001FAD8B /* BorderlessWindow.swift */; };
 		227B5E11205611BB00F403B3 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227B5E10205611BB00F403B3 /* Style.swift */; };
 		2290A04220E4196E00F028C4 /* TimelineNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2290A04120E4196E00F028C4 /* TimelineNotifications.swift */; };
+		2290A04820E44F5A00F028C4 /* SelectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2290A04720E44F5A00F028C4 /* SelectionManager.swift */; };
 		22914F752049001B0000D4E1 /* TouchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22914F742049001B0000D4E1 /* TouchManager.swift */; };
 		22914F77204905230000D4E1 /* NSApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22914F76204905230000D4E1 /* NSApplication.swift */; };
 		22927912208E531C005E2036 /* BackgroundTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22927911208E531C005E2036 /* BackgroundTimer.swift */; };
@@ -225,6 +226,7 @@
 		2276AE64204E7150001FAD8B /* BorderlessWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderlessWindow.swift; sourceTree = "<group>"; };
 		227B5E10205611BB00F403B3 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		2290A04120E4196E00F028C4 /* TimelineNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineNotifications.swift; sourceTree = "<group>"; };
+		2290A04720E44F5A00F028C4 /* SelectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionManager.swift; sourceTree = "<group>"; };
 		22914F742049001B0000D4E1 /* TouchManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchManager.swift; sourceTree = "<group>"; };
 		22914F76204905230000D4E1 /* NSApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSApplication.swift; sourceTree = "<group>"; };
 		22927911208E531C005E2036 /* BackgroundTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTimer.swift; sourceTree = "<group>"; };
@@ -574,6 +576,7 @@
 				22AE5D2420D2DB3200D5FB9C /* ConnectionManager.swift */,
 				222A94EA20D9D50A00B4AE4E /* MenuManager.swift */,
 				22004FE320DD7A7F00B1E740 /* SettingsManager.swift */,
+				2290A04720E44F5A00F028C4 /* SelectionManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -972,6 +975,7 @@
 				A47C67E420CB07CB00C361D1 /* MapNotifications.swift in Sources */,
 				22004FE620DD7DE700B1E740 /* Settings.swift in Sources */,
 				22A76FEC2046477A006C0AE7 /* PlayerViewController.swift in Sources */,
+				2290A04820E44F5A00F028C4 /* SelectionManager.swift in Sources */,
 				D92E0F00206052C900C1C9A7 /* ArrowControl.swift in Sources */,
 				2204623520472FDF0067D9FB /* Int.swift in Sources */,
 				226D0587204FC78100D74711 /* CachingNetwork.swift in Sources */,

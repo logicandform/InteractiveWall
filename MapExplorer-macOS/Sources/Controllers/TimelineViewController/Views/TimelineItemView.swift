@@ -9,7 +9,7 @@ class TimelineItemView: NSCollectionViewItem {
     @IBOutlet weak var highlightView: NSView!
     @IBOutlet weak var titleTextField: NSTextField!
 
-    lazy var tintColor = randomColor()
+    var tintColor = style.selectedColor
     var event: TimelineEvent! {
         didSet {
             load(event)
@@ -49,11 +49,8 @@ class TimelineItemView: NSCollectionViewItem {
     // MARK: Helpers
 
     private func load(_ event: TimelineEvent) {
+        tintColor = NSColor.color(from: event.title)
         highlightView.layer?.backgroundColor = tintColor.cgColor
         titleTextField.attributedStringValue = NSAttributedString(string: event.title, attributes: style.timelineTitleAttributes)
-    }
-
-    private func randomColor() -> NSColor {
-        return NSColor(red: CGFloat(drand48()), green: CGFloat(drand48()), blue: CGFloat(drand48()), alpha: 1.0)
     }
 }

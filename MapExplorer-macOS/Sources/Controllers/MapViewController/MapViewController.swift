@@ -41,6 +41,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private struct Keys {
         static let id = "id"
         static let map = "map"
+        static let group = "group"
         static let position = "position"
         static let recordType = "recordType"
         static let status = "status"
@@ -105,15 +106,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     @objc
     func handleNotification(_ notification: NSNotification) {
-        guard let info = notification.userInfo, let id = info[Keys.id] as? Int else {
+        guard let info = notification.userInfo, ConnectionManager.instance.groupForApp(id: appID) == info[Keys.group] as? Int else {
             return
-        }
-
-        // Only respond to notifications from the same group, or if group is nil
-        if let group = ConnectionManager.instance.groupForApp(id: appID) {
-            if group != ConnectionManager.instance.groupForApp(id: id) {
-                return
-            }
         }
 
         let status = info[Keys.status] as? Bool

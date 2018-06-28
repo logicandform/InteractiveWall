@@ -10,7 +10,6 @@ final class SettingsManager {
     var settingsForApp = [Settings]()
 
     private struct Keys {
-        static let id = "id"
         static let group = "group"
         static let settings = "settings"
         static let recordType = "recordType"
@@ -29,11 +28,9 @@ final class SettingsManager {
 
     // MARK: API
 
-    func syncApps(group: Int?) {
-        if let group = group {
-            let settings = settingsForApp[group]
-            postSyncNotification(forGroup: group, with: settings)
-        }
+    func syncApps(group: Int) {
+        let settings = settingsForApp[group]
+        postSyncNotification(forGroup: group, with: settings)
     }
 
     func registerForNotifications() {
@@ -47,7 +44,7 @@ final class SettingsManager {
 
     @objc
     private func handleNotification(_ notification: NSNotification) {
-        guard let info = notification.userInfo, let id = info[Keys.id] as? Int else {
+        guard let info = notification.userInfo else {
             return
         }
 
@@ -57,19 +54,19 @@ final class SettingsManager {
         switch notification.name {
         case SettingsNotification.sync.name:
             if let json = info[Keys.settings] as? JSON, let settings = Settings(json: json) {
-                set(settings, id: id, group: group)
+                set(settings, group: group)
             }
         case SettingsNotification.filter.name:
             if let status = status, let rawRecordType = info[Keys.recordType] as? String, let recordType = RecordType(rawValue: rawRecordType) {
-                setFilter(on: status, id: id, group: group, type: recordType)
+                setFilter(on: status, group: group, type: recordType)
             }
         case SettingsNotification.labels.name:
             if let status = status {
-                setLabels(on: status, id: id, group: group)
+                setLabels(on: status, group: group)
             }
         case SettingsNotification.miniMap.name:
             if let status = status {
-                setMiniMap(on: status, id: id, group: group)
+                setMiniMap(on: status, group: group)
             }
         default:
             return
@@ -77,21 +74,15 @@ final class SettingsManager {
     }
 
     private func postSyncNotification(forGroup group: Int, with settings: Settings) {
-        let info: JSON = [Keys.id: group, Keys.settings: settings.toJSON()]
+        let info: JSON = [Keys.group: group, Keys.settings: settings.toJSON()]
         DistributedNotificationCenter.default().postNotificationName(SettingsNotification.sync.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
 
     // MARK: Helpers
 
-    private func set(_ settings: Settings, id: Int, group: Int?) {
-        let appType = ConnectionManager.instance.typeForApp(id: id)
-
+    private func set(_ settings: Settings, group: Int?) {
         for (app, state) in ConnectionManager.instance.stateForApp.enumerated() {
-            // Only receive updates for apps of the same type
-            if state.type != appType {
-                continue
-            }
 
             // Check if same group
             if state.group == group {
@@ -100,14 +91,8 @@ final class SettingsManager {
         }
     }
 
-    private func setFilter(on: Bool, id: Int, group: Int?, type: RecordType) {
-        let appType = ConnectionManager.instance.typeForApp(id: id)
-
+    private func setFilter(on: Bool, group: Int?, type: RecordType) {
         for (app, state) in ConnectionManager.instance.stateForApp.enumerated() {
-            // Only receive updates for apps of the same type
-            if state.type != appType {
-                continue
-            }
 
             // Check if same group
             if state.group == group {
@@ -116,14 +101,8 @@ final class SettingsManager {
         }
     }
 
-    private func setLabels(on: Bool, id: Int, group: Int?) {
-        let appType = ConnectionManager.instance.typeForApp(id: id)
-
+    private func setLabels(on: Bool, group: Int?) {
         for (app, state) in ConnectionManager.instance.stateForApp.enumerated() {
-            // Only receive updates for apps of the same type
-            if state.type != appType {
-                continue
-            }
 
             // Check if same group
             if state.group == group {
@@ -132,14 +111,8 @@ final class SettingsManager {
         }
     }
 
-    private func setMiniMap(on: Bool, id: Int, group: Int?) {
-        let appType = ConnectionManager.instance.typeForApp(id: id)
-
+    private func setMiniMap(on: Bool, group: Int?) {
         for (app, state) in ConnectionManager.instance.stateForApp.enumerated() {
-            // Only receive updates for apps of the same type
-            if state.type != appType {
-                continue
-            }
 
             // Check if same group
             if state.group == group {

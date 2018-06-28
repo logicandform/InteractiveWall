@@ -109,7 +109,7 @@ final class ConnectionManager {
             split(from: id, group: group)
         case SettingsNotification.merge.name:
             merge(from: id, group: group)
-            SettingsManager.instance.syncApps(group: group)
+            syncApps(group: group)
         default:
             return
         }
@@ -274,7 +274,7 @@ final class ConnectionManager {
             if state.group == nil {
                 let group = findGroupForApp(id: app, of: type)
                 stateForApp[app] = AppState(pair: nil, group: group, type: state.type)
-                SettingsManager.instance.syncApps(group: group)
+                syncApps(group: group)
             }
         }
     }
@@ -311,6 +311,13 @@ final class ConnectionManager {
             menu?.toggle(.split, to: split ? .on : .off)
             menu?.toggleMergeLock(on: mergeLocked)
             border?.set(visible: split)
+        }
+    }
+
+    private func syncApps(group: Int?) {
+        if let group = group {
+            SettingsManager.instance.syncApps(group: group)
+            SelectionManager.instance.syncApps(group: group)
         }
     }
 

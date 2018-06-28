@@ -10,6 +10,7 @@ class TimelineViewController: NSViewController, GestureResponder {
     @IBOutlet weak var timelineCollectionView: FlippedCollectionView!
     @IBOutlet weak var timelineScrollView: NSScrollView!
     @IBOutlet weak var timelineClipView: NSClipView!
+    @IBOutlet weak var timelineBackgroundView: NSView!
 
     var gestureManager: GestureManager!
     private var timelineHandler: TimelineHandler?
@@ -18,6 +19,14 @@ class TimelineViewController: NSViewController, GestureResponder {
     private struct Constants {
         static let timelineCellWidth: CGFloat = 20
         static let timelineSelectedCellWidth: CGFloat = 150
+    }
+
+    private struct Keys {
+        static let id = "id"
+        static let group = "group"
+        static let index = "index"
+        static let state = "state"
+        static let selection = "selection"
     }
 
 
@@ -39,6 +48,7 @@ class TimelineViewController: NSViewController, GestureResponder {
         setupTimeline()
         setupBackground()
         setupGestures()
+        setupNotifications()
     }
 
 
@@ -51,6 +61,7 @@ class TimelineViewController: NSViewController, GestureResponder {
         timelineCollectionView.register(NSNib(nibNamed: TimelineHeaderView.nibName, bundle: .main), forSupplementaryViewOfKind: TimelineHeaderView.supplementaryKind, withIdentifier: TimelineHeaderView.identifier)
         timelineCollectionView.dataSource = source
         timelineScrollView.horizontalScroller?.alphaValue = 0
+        timelineBackgroundView.layer?.backgroundColor = style.timelineBackgroundColor.cgColor
     }
 
     private func setupBackground() {
@@ -66,6 +77,12 @@ class TimelineViewController: NSViewController, GestureResponder {
         let timelineTapGesture = TapGestureRecognizer()
         gestureManager.add(timelineTapGesture, to: timelineCollectionView)
         timelineTapGesture.gestureUpdated = didTapOnTimeline(_:)
+    }
+
+    private func setupNotifications() {
+        for notification in TimelineNotification.allValues {
+            DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
+        }
     }
 
 
@@ -93,17 +110,69 @@ class TimelineViewController: NSViewController, GestureResponder {
     private func didTapOnTimeline(_ gesture: GestureRecognizer) {
         guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended,
             let location = tap.position,
-            let indexPath = timelineCollectionView.indexPathForItem(at: location + timelineCollectionView.visibleRect.origin),
-            let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineItemView else {
+            let indexPath = timelineCollectionView.indexPathForItem(at: location + timelineCollectionView.visibleRect.origin) else {
                 return
         }
 
-        if source.selectedIndexes.contains(indexPath.item) {
-            source.selectedIndexes.remove(indexPath.item)
-            timelineItem.set(highlighted: false)
+        let state = source.selectedIndexes.contains(indexPath.item)
+        postSelectNotification(for: indexPath.item, state: !state)
+    }
+
+
+    // MARK: Notification Handling
+
+    @objc
+    private func handleNotification(_ notification: NSNotification) {
+        guard let info = notification.userInfo, ConnectionManager.instance.groupForApp(id: appID) == info[Keys.group] as? Int else {
+            return
+        }
+
+        switch notification.name {
+        case TimelineNotification.selection.name:
+            if let selection = info[Keys.selection] as? [Int] {
+                set(Set(selection))
+            }
+        case TimelineNotification.select.name:
+            if let index = info[Keys.index] as? Int, let state = info[Keys.state] as? Bool {
+                set(index, selected: state)
+            }
+        default:
+            return
+        }
+    }
+
+
+    // MARK: Helpers
+
+    private func postSelectNotification(for index: Int, state: Bool) {
+        var info: JSON = [Keys.id: appID, Keys.index: index, Keys.state: state]
+        if let group = ConnectionManager.instance.groupForApp(id: appID) {
+            info[Keys.group] = group
+        }
+        DistributedNotificationCenter.default().postNotificationName(TimelineNotification.select.name, object: nil, userInfo: info, deliverImmediately: true)
+    }
+
+    private func set(_ selection: Set<Int>) {
+        // Unselect current indexes that are not in the new selection
+        source.selectedIndexes.subtracting(selection).forEach { index in
+            set(index, selected: false)
+        }
+        // Select new indexes that are not currently selected
+        selection.subtracting(source.selectedIndexes).forEach { index in
+            set(index, selected: true)
+        }
+    }
+
+    private func set(_ index: Int, selected: Bool) {
+        guard let timelineItem = timelineCollectionView.item(at: IndexPath(item: index, section: 0)) as? TimelineItemView else {
+            return
+        }
+
+        timelineItem.set(highlighted: selected)
+        if selected {
+            source.selectedIndexes.insert(index)
         } else {
-            source.selectedIndexes.insert(indexPath.item)
-            timelineItem.set(highlighted: true)
+            source.selectedIndexes.remove(index)
         }
     }
 }

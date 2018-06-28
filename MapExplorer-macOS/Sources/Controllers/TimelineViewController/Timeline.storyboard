@@ -14,17 +14,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="450" height="504"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BZd-7X-9rP">
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5Xa-gf-tcM">
                                 <rect key="frame" x="0.0" y="0.0" width="450" height="504"/>
-                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="Oqa-D5-GBd"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" id="8oO-uf-32z"/>
                             </imageView>
-                            <visualEffectView wantsLayer="YES" appearanceType="vibrantDark" blendingMode="withinWindow" material="dark" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="Xh4-TH-Y2b">
+                            <visualEffectView hidden="YES" wantsLayer="YES" appearanceType="vibrantDark" blendingMode="withinWindow" material="dark" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="Xh4-TH-Y2b">
                                 <rect key="frame" x="0.0" y="0.0" width="450" height="504"/>
                             </visualEffectView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="tex-Yc-gyJ">
+                            <customView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tex-Yc-gyJ">
                                 <rect key="frame" x="0.0" y="126" width="450" height="252"/>
                                 <subviews>
-                                    <visualEffectView wantsLayer="YES" appearanceType="vibrantDark" blendingMode="withinWindow" material="ultraDark" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="WqE-dL-JC8">
+                                    <visualEffectView hidden="YES" wantsLayer="YES" appearanceType="vibrantDark" blendingMode="withinWindow" material="dark" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="WqE-dL-JC8">
                                         <rect key="frame" x="0.0" y="0.0" width="450" height="252"/>
                                     </visualEffectView>
                                     <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="FoW-Io-IhM">
@@ -65,23 +65,24 @@
                             </customView>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="BZd-7X-9rP" secondAttribute="trailing" id="Cg8-Cj-okw"/>
+                            <constraint firstItem="5Xa-gf-tcM" firstAttribute="leading" secondItem="xW1-Dr-xog" secondAttribute="leading" id="2xV-cE-4HS"/>
+                            <constraint firstAttribute="trailing" secondItem="5Xa-gf-tcM" secondAttribute="trailing" id="7O3-Qa-AXA"/>
                             <constraint firstItem="tex-Yc-gyJ" firstAttribute="height" secondItem="xW1-Dr-xog" secondAttribute="height" multiplier="1:2" id="Dk9-rf-q7O"/>
-                            <constraint firstItem="BZd-7X-9rP" firstAttribute="leading" secondItem="xW1-Dr-xog" secondAttribute="leading" id="GKR-ES-zF1"/>
-                            <constraint firstItem="BZd-7X-9rP" firstAttribute="top" secondItem="xW1-Dr-xog" secondAttribute="top" id="Gp2-ef-vXP"/>
                             <constraint firstItem="Xh4-TH-Y2b" firstAttribute="top" secondItem="xW1-Dr-xog" secondAttribute="top" id="M2F-mG-8FB"/>
+                            <constraint firstAttribute="bottom" secondItem="5Xa-gf-tcM" secondAttribute="bottom" id="OJc-Q0-Ske"/>
                             <constraint firstItem="tex-Yc-gyJ" firstAttribute="leading" secondItem="xW1-Dr-xog" secondAttribute="leading" id="Td9-Ei-Xbe"/>
+                            <constraint firstItem="5Xa-gf-tcM" firstAttribute="top" secondItem="xW1-Dr-xog" secondAttribute="top" id="V7J-by-Hbg"/>
                             <constraint firstAttribute="trailing" secondItem="Xh4-TH-Y2b" secondAttribute="trailing" id="Wcx-fC-jg7"/>
                             <constraint firstItem="Xh4-TH-Y2b" firstAttribute="leading" secondItem="xW1-Dr-xog" secondAttribute="leading" id="aTY-RW-vNx"/>
                             <constraint firstAttribute="bottom" secondItem="Xh4-TH-Y2b" secondAttribute="bottom" id="ghd-iO-B1g"/>
                             <constraint firstItem="tex-Yc-gyJ" firstAttribute="centerX" secondItem="xW1-Dr-xog" secondAttribute="centerX" id="obf-gk-UW9"/>
                             <constraint firstAttribute="trailing" secondItem="tex-Yc-gyJ" secondAttribute="trailing" id="vXy-eR-Xdz"/>
-                            <constraint firstAttribute="bottom" secondItem="BZd-7X-9rP" secondAttribute="bottom" id="wN0-eb-Jsy"/>
                             <constraint firstItem="tex-Yc-gyJ" firstAttribute="centerY" secondItem="xW1-Dr-xog" secondAttribute="centerY" id="yli-AJ-YmS"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="backgroudImageView" destination="BZd-7X-9rP" id="cFf-ca-35n"/>
+                        <outlet property="backgroudImageView" destination="5Xa-gf-tcM" id="Rk0-pb-gaA"/>
+                        <outlet property="timelineBackgroundView" destination="tex-Yc-gyJ" id="OYx-1E-imI"/>
                         <outlet property="timelineClipView" destination="2EQ-1e-jeX" id="yoW-RT-tSB"/>
                         <outlet property="timelineCollectionView" destination="hh4-uZ-Why" id="5IC-wt-0fY"/>
                         <outlet property="timelineScrollView" destination="FoW-Io-IhM" id="JQ2-Ok-LVn"/>

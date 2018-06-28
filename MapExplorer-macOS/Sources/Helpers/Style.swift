@@ -21,7 +21,7 @@ final class Style {
     let borderColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
 
     // Timeline Controller
-    let timelineSelectedColor = NSColor.blue
+    let timelineBackgroundColor = NSColor(white: 0.1, alpha: 0.9)
 
     var timelineTitleAttributes: [NSAttributedStringKey: Any] {
         let font = NSFont(name: "Soleil", size: 16) ?? NSFont.systemFont(ofSize: 16)
