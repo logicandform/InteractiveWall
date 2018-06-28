@@ -9,6 +9,8 @@ class MainScene: SKScene {
     var records: [TestingEnvironment.Record]!
     var gestureManager: GestureManager!
 
+    var currentEntityInFocus: RecordEntity?
+
     private var entityManager = EntityManager()
     private var lastUpdateTimeInterval: TimeInterval = 0
     private var agentToSeek: GKAgent2D!
@@ -151,6 +153,8 @@ class MainScene: SKScene {
     private func relatedNodes(for node: RecordNode) {
         if let entity = entityManager.entity(for: node.record) as? RecordEntity {
             entity.intelligenceComponent.stateMachine.enter(TappedState.self)
+
+            currentEntityInFocus = entity
         }
     }
 
@@ -226,9 +230,16 @@ class MainScene: SKScene {
     private func createRepulsiveField() {
         let field = SKFieldNode.radialGravityField()
         field.strength = -10
+        field.falloff = -0.5
         field.region = SKRegion(radius: 350)
-        field.position = CGPoint(x: frame.width / 2, y: frame.height / 2)
+        field.position = CGPoint(x: frame.width / 2 + 5, y: frame.height / 2)
         field.categoryBitMask = 0x1 << 0
         addChild(field)
+
+//        let drag = SKFieldNode.dragField()
+//        drag.region = field.region
+//        drag.position = field.position
+//        drag.categoryBitMask = 0x1 << 0
+//        addChild(drag)
     }
 }

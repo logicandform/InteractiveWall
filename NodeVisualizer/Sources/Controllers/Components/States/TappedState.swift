@@ -23,7 +23,8 @@ class TappedState: GKState {
         let relatedEntities = getRelatedEntites()
         entity.relatedEntities = relatedEntities
 
-        handleRelatedEntities()
+        handleCurrentFocusedEntity()
+//        handleRelatedEntities()
 //        entity.resetEntities(entities: relatedEntities) {
 //
 //        }
@@ -92,9 +93,25 @@ class TappedState: GKState {
             relatedEntity.intelligenceComponent.stateMachine.enter(WanderState.self)
 
             for relatedRelatedEntity in relatedEntity.relatedEntities {
-//                if relatedRelatedEntity != entity {
-                    relatedRelatedEntity.intelligenceComponent.stateMachine.enter(WanderState.self)
-//                }
+                relatedRelatedEntity.intelligenceComponent.stateMachine.enter(WanderState.self)
+            }
+        }
+    }
+
+    private func handleCurrentFocusedEntity() {
+        guard let scene = entity.renderComponent.recordNode.scene as? MainScene, let currentFocusedEntity = scene.currentEntityInFocus else {
+            return
+        }
+
+        currentFocusedEntity.intelligenceComponent.stateMachine.enter(WanderState.self)
+
+        let relatedEntitiesToCurrentFocusedEntity = currentFocusedEntity.relatedEntities
+
+        for relatedEntity in relatedEntitiesToCurrentFocusedEntity {
+            relatedEntity.intelligenceComponent.stateMachine.enter(WanderState.self)
+
+            for relatedRelatedEntity in relatedEntity.relatedEntities {
+                relatedRelatedEntity.intelligenceComponent.stateMachine.enter(WanderState.self)
             }
         }
     }
