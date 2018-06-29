@@ -28,16 +28,18 @@ class ImageView: NSView {
 
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
+        self.wantsLayer = true
         self.layer = CALayer()
         self.layer?.contentsGravity = kCAGravityResizeAspectFill
-        self.wantsLayer = true
+        self.layer?.contentsScale = NSScreen.mainScreen.backingScaleFactor
     }
 
     required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
+        self.wantsLayer = true
         self.layer = CALayer()
         self.layer?.contentsGravity = kCAGravityResizeAspectFill
-        self.wantsLayer = true
+        self.layer?.contentsScale = NSScreen.mainScreen.backingScaleFactor
     }
 
 
@@ -54,11 +56,6 @@ class ImageView: NSView {
         transition.type = type
         layer?.add(transition, forKey: "contents")
         layer?.contentsGravity = scaling.contentsGravity
-
-        if let contentScale = layer?.contentsScale, contentScale < 2.0 {
-            layer?.contentsScale = 2.0
-        }
-
         layer?.contents = image
     }
 }
