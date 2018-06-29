@@ -186,6 +186,10 @@
 			children = (
 				22AEAECD20B67C4600DD184B /* Managers */,
 				22AEAECE20B67C4B00DD184B /* Controllers */,
+				CD0FB28D20D853D70058A410 /* Entities */,
+				CD0FB28E20D853E00058A410 /* Components */,
+				CD0FB28F20D854060058A410 /* Behaviors */,
+				CDB6CE3020DDD33B0033E328 /* Nodes */,
 				22AEAED220B67C6500DD184B /* Windows */,
 				22AEAECF20B67C5100DD184B /* Helpers */,
 				22AEAED420B67CB100DD184B /* Extensions */,
@@ -232,10 +236,6 @@
 				CD006ADF20C8A681006F0FB4 /* Main.storyboard */,
 				22AEAEBD20B67C2400DD184B /* MainViewController.swift */,
 				22AEAEBB20B67C2400DD184B /* MainScene.swift */,
-				CD0FB28D20D853D70058A410 /* Entities */,
-				CD0FB28E20D853E00058A410 /* Components */,
-				CD0FB28F20D854060058A410 /* Behaviors */,
-				CDB6CE3020DDD33B0033E328 /* Nodes */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
