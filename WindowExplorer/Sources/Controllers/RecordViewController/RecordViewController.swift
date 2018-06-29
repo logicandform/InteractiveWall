@@ -628,7 +628,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
                 strongSelf.updateRelatedItemsLayout { [weak self] in
                     if let strongSelf = self {
                         strongSelf.relatedItemsView.scroll(.zero)
-                        strongSelf.relatedRecordScrollView.updateGradient(forced: true)
                         strongSelf.fadeRelatedRecordsAndTitle(out: false, completion: {})
                     }
                 }
@@ -702,5 +701,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         let numberOfSpaces = numberOfRecords > 1 ? numberOfRecords - 1 : 0
         let height = CGFloat(numberOfRecords) * style.listItemHeight + CGFloat(numberOfSpaces) * style.itemSpacing
         relatedRecordsHeightConstraint.constant = height > maxHeight ? maxHeight : height
+        relatedRecordScrollView.updateGradient(forced: true, height: height)
     }
 }
