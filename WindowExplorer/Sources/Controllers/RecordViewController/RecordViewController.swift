@@ -625,7 +625,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             if let strongSelf = self {
                 strongSelf.relatedRecordsTypeLabel.attributedStringValue = NSAttributedString(string: titleForType, attributes: style.relatedItemsTitleAttributes)
                 strongSelf.relatedItemsView.reloadData()
-                strongSelf.updateRelatedRecordsHeight()
                 strongSelf.updateRelatedItemsLayout { [weak self] in
                     if let strongSelf = self {
                         strongSelf.relatedItemsView.scroll(.zero)
@@ -664,6 +663,8 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }, completionHandler: {
             completion?()
         })
+
+        updateRelatedRecordsHeight()
     }
 
     private func updateOrigin(from recordFrame: CGRect, at position: Int, animating: Bool) {
@@ -697,14 +698,9 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
     private func updateRelatedRecordsHeight() {
         let maxHeight = style.relatedRecordsMaxSize.height
-
-        if let height = relatedItemsView.collectionViewLayout?.collectionViewContentSize.height {
-            if height > maxHeight {
-                relatedRecordsHeightConstraint.constant = maxHeight
-            } else {
-                relatedRecordsHeightConstraint.constant = height
-            }
-            relatedRecordScrollView.updateConstraints()
-        }
+        let numberOfRecords = record.relatedRecords(of: relatedItemsFilterType).count
+        let numberOfSpaces = numberOfRecords > 1 ? numberOfRecords - 1 : 0
+        let height = CGFloat(numberOfRecords) * style.listItemHeight + CGFloat(numberOfSpaces) * style.itemSpacing
+        relatedRecordsHeightConstraint.constant = height > maxHeight ? maxHeight : height
     }
 }
