@@ -155,6 +155,8 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     private func setupSettings() {
         settingsMenu = WindowManager.instance.display(.settings, at: position(for: settingsButton, frame: style.settingsWindowSize, margins: false)) as? SettingsMenuViewController
         settingsMenu.view.isHidden = true
+        settingsMenu.settingsParent = self
+
         if let appID = appID {
             settingsMenu.set(appID: appID)
         }
@@ -264,16 +266,6 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
 
         if let selectedType = MenuButtonType.from(Configuration.initialType) {
             toggle(selectedType, to: .on)
-        }
-    }
-
-    private func setupSettings() {
-        settingsMenu = WindowManager.instance.display(.settings, at: position(for: settingsButton, frame: style.settingsWindowSize, margins: false)) as? SettingsMenuViewController
-        settingsMenu.view.isHidden = true
-        settingsMenu.settingsParent = self
-
-        if let appID = appID {
-            settingsMenu.set(appID: appID)
         }
     }
 
