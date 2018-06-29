@@ -470,7 +470,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             }
         case relatedItemsView:
             if let relatedItem = collectionView.makeItem(withIdentifier: relatedItemsFilterType.layout.identifier, for: indexPath) as? RelatedItemView {
-                relatedItem.record = record.relatedRecords(of: relatedItemsFilterType).at(index: indexPath.item)
+                relatedItem.record = record.relatedRecords(of: relatedItemsFilterType).sorted(by: { $0.priority > $1.priority }).at(index: indexPath.item)
                 relatedItem.tintColor = record.type.color
                 return relatedItem
             }
