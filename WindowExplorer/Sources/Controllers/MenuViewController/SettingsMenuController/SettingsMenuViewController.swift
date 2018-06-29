@@ -4,6 +4,11 @@ import Foundation
 import Cocoa
 
 
+protocol SettingsDelegate: class {
+    func settingsTimeoutFired()
+}
+
+
 class SettingsMenuViewController: NSViewController, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "SettingsMenu")
 
@@ -20,9 +25,11 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     @IBOutlet weak var artifactsSwitchContainer: NSView!
     @IBOutlet weak var schoolsSwitchContainer: NSView!
 
+    weak var settingsParent: SettingsDelegate?
     var gestureManager: GestureManager!
     private var appID: Int!
     private var currentSettings = Settings()
+    private var settingsTimeout: Foundation.Timer?
     private var labelsSwitch: SwitchControl!
     private var miniMapSwitch: SwitchControl!
     private var schoolsSwitch: SwitchControl!
@@ -41,6 +48,10 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         static let status = "status"
     }
 
+    private struct Constants {
+        static let settingsTimeoutPeriod = 30.0
+    }
+
 
     // MARK: Life-cycle
 
@@ -49,6 +60,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
         gestureManager = GestureManager(responder: self)
+        gestureManager.touchReceived = receivedTouch(_:)
 
         setupSwitches()
         setupGestures()
@@ -82,6 +94,13 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
             view.window?.setFrameOrigin(CGPoint(x: window.frame.origin.x, y: screen.frame.minY))
         } else {
             view.window?.setFrameOrigin(CGPoint(x: window.frame.origin.x, y: updatedVerticalPosition))
+        }
+    }
+
+    func resetSettingsTimeout() {
+        settingsTimeout?.invalidate()
+        settingsTimeout = Timer.scheduledTimer(withTimeInterval: Constants.settingsTimeoutPeriod, repeats: false) { [weak self] _ in
+            self?.settingsParent?.settingsTimeoutFired()
         }
     }
 
@@ -235,5 +254,9 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
                 self?.toggle(toggleSwitch, with: type)
             }
         }
+    }
+
+    private func receivedTouch(_ touch: Touch) {
+        resetSettingsTimeout()
     }
 }

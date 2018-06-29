@@ -19,7 +19,7 @@ enum ButtonState {
 }
 
 
-class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate, TestimonyDelegate {
+class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate, TestimonyDelegate, SettingsDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Menu")
 
     @IBOutlet weak var menuView: NSView!
@@ -62,6 +62,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
         gestureManager = GestureManager(responder: self)
+        gestureManager.touchReceived = receivedTouch(_:)
         viewForButtonType = [.split: splitScreenButton, .map: mapToggleButton, .timeline: timelineToggleButton, .information: informationButton, .settings: settingsButton, .testimony: testimonyButton, .search: searchButton]
 
         setupButtons()
@@ -154,6 +155,8 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     private func setupSettings() {
         settingsMenu = WindowManager.instance.display(.settings, at: position(for: settingsButton, frame: style.settingsWindowSize, margins: false)) as? SettingsMenuViewController
         settingsMenu.view.isHidden = true
+        settingsMenu.settingsParent = self
+
         if let appID = appID {
             settingsMenu.set(appID: appID)
         }
@@ -234,6 +237,13 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     func testimonyDidClose() {
         toggle(.testimony, to: .off)
         testimonyController = nil
+    }
+
+
+    // MARK: SettingsDelegate
+
+    func settingsTimeoutFired() {
+        toggle(.settings, to: .off)
     }
 
 
@@ -387,5 +397,9 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             info[Keys.group] = group
         }
         DistributedNotificationCenter.default().postNotificationName(SettingsNotification.transition.name, object: nil, userInfo: info, deliverImmediately: true)
+    }
+
+    private func receivedTouch(_ touch: Touch) {
+        settingsMenu.resetSettingsTimeout()
     }
 }
