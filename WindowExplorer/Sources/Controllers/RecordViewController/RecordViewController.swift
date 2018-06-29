@@ -671,7 +671,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         let offsetY = CGFloat(position * -style.controllerOffset)
         let lastScreen = NSScreen.at(position: Configuration.numberOfScreens)
         var origin = CGPoint(x: recordFrame.maxX + style.windowMargins + offsetX, y: recordFrame.maxY + offsetY - view.frame.height)
-
+        // Need to change logic here such that it can also spawn to the left (need to calculate # per column, then use that as an index to multiple it to the left) (may need to store columns in parentDelegate?)
         if origin.x > lastScreen.frame.maxX - view.frame.width / 2 {
             if lastScreen.frame.height - recordFrame.maxY < view.frame.height + style.windowMargins - 2 * offsetY {
                 // Below
@@ -682,11 +682,17 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             }
         }
 
+        if origin.y + view.frame.height + style.windowMargins < lastScreen.frame.minY {
+            close()
+        }
+
         if animating {
             animate(to: origin)
         } else {
             view.window?.setFrameOrigin(origin)
         }
+
+        // Need to set to 1 if on a new column, else
     }
 
     private func updateArrowIndicatorView(with delta: CGFloat = 0) {
