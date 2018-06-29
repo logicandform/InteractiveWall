@@ -26,9 +26,6 @@ class MovementComponent: GKComponent {
         return physicsComponent
     }
 
-    var relatedEntities: [RecordEntity] = []
-    var entitesToAvoid: [RecordEntity] = []
-
     var entityToSeek: RecordEntity?
 
     private struct Constants {
@@ -43,7 +40,7 @@ class MovementComponent: GKComponent {
         super.update(deltaTime: seconds)
 
         // check to see if the record entity is in the correct state (i.e. it is seeking a tapped record node)
-        guard let intelligenceComponent = entity?.component(ofType: IntelligenceComponent.self),
+        guard let intelligenceComponent = entity?.component(ofType: IntelligenceComponent.self), 
             intelligenceComponent.stateMachine.currentState is SeekState,
             let targetEntity = entityToSeek else {
             return

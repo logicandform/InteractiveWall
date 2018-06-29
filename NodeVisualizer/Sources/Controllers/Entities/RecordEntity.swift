@@ -34,12 +34,22 @@ class RecordEntity: GKEntity {
         return intelligenceComponent
     }
 
+    var animationComponent: AnimationComponent {
+        guard let animationComponent = component(ofType: AnimationComponent.self) else {
+            fatalError("A RecordEntity must have an AnimationComponent")
+        }
+        return animationComponent
+    }
+
     var agent: RecordAgent {
         guard let agent = component(ofType: RecordAgent.self) else {
             fatalError("A RecordEntity must have a GKAgent2D Component")
         }
         return agent
     }
+
+    var relatedEntities: [RecordEntity] = []
+    var hasReset: Bool = false
 
     private(set) var manager: EntityManager
 
@@ -64,6 +74,9 @@ class RecordEntity: GKEntity {
         let movementComponent = MovementComponent()
         addComponent(movementComponent)
 
+        let animationComponent = AnimationComponent()
+        addComponent(animationComponent)
+
         let intelligenceComponent = IntelligenceComponent(states: [
             WanderState(entity: self),
             SeekState(entity: self),
@@ -77,11 +90,9 @@ class RecordEntity: GKEntity {
     }
 
 
-    func updateAgentPositionToMatchNodePosition() {
-        guard let renderComponent = component(ofType: RenderComponent.self), let agent = component(ofType: RecordAgent.self) else {
-            return
-        }
+    // MARK: API
 
+    func updateAgentPositionToMatchNodePosition() {
         agent.position = vector_float2(x: Float(renderComponent.recordNode.position.x), y: Float(renderComponent.recordNode.position.y))
     }
 
@@ -89,5 +100,19 @@ class RecordEntity: GKEntity {
         let dX = agent.position.x - otherAgent.position.x
         let dY = agent.position.y - otherAgent.position.y
         return hypotf(dX, dY)
+    }
+
+    /// 'Reset' the entity so that proper animations and movements can take place
+    func reset() {
+        // reset its own entity
+        intelligenceComponent.stateMachine.enter(WanderState.self)
+        hasReset = true
+
+        // reset all of its related entities
+        for entity in relatedEntities {
+            if !entity.hasReset {
+                entity.reset()
+            }
+        }
     }
 }

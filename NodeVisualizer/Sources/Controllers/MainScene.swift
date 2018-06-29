@@ -8,10 +8,10 @@ class MainScene: SKScene {
 
     var records: [TestingEnvironment.Record]!
     var gestureManager: GestureManager!
+    var currentEntityInFocus: RecordEntity?
 
     private var entityManager = EntityManager()
     private var lastUpdateTimeInterval: TimeInterval = 0
-    private var agentToSeek: GKAgent2D!
 
     private enum StartingPositionType: UInt32 {
         case top = 0
@@ -44,6 +44,7 @@ class MainScene: SKScene {
         lastUpdateTimeInterval = currentTime
         entityManager.update(deltaTime)
 
+        // keep the nodes facing 0 degrees (i.e. no rotation when affected by physics simulation)
         for case let node as RecordNode in children {
             node.zRotation = 0
         }
@@ -69,6 +70,8 @@ class MainScene: SKScene {
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         physicsWorld.gravity = .zero
 
+        createRepulsiveField()
+
 //        for type in StartingPositionType.allValues {
 //            addLinearGravityField(to: type)
 //        }
@@ -77,6 +80,8 @@ class MainScene: SKScene {
     private func addRecordNodesToScene() {
         records.enumerated().forEach { index, record in
             let recordEntity = RecordEntity(record: record, manager: entityManager)
+
+            recordEntity.intelligenceComponent.enterInitialState()
 
             if let recordNode = recordEntity.component(ofType: RenderComponent.self)?.recordNode {
                 recordNode.position.x = randomX()
@@ -124,8 +129,6 @@ class MainScene: SKScene {
         let clickPosition = recognizer.location(in: recognizer.view)
         let nodePosition = convertPoint(fromView: clickPosition)
 
-//        seekTest(at: nodePosition)
-
         guard let recordNode = nodes(at: nodePosition).first(where: { $0 is RecordNode }) as? RecordNode else {
             return
         }
@@ -147,6 +150,7 @@ class MainScene: SKScene {
     private func relatedNodes(for node: RecordNode) {
         if let entity = entityManager.entity(for: node.record) as? RecordEntity {
             entity.intelligenceComponent.stateMachine.enter(TappedState.self)
+            currentEntityInFocus = entity
         }
     }
 
@@ -213,6 +217,19 @@ class MainScene: SKScene {
         field.strength = 10
         field.region = SKRegion(size: size)
         field.position = position
+        addChild(field)
+    }
+
+
+    // MARK: Debug
+
+    private func createRepulsiveField() {
+        let field = SKFieldNode.radialGravityField()
+        field.strength = -10
+        field.falloff = -0.5
+        field.region = SKRegion(radius: 350)
+        field.position = CGPoint(x: frame.width / 2 + 5, y: frame.height / 2)
+        field.categoryBitMask = 0x1 << 0
         addChild(field)
     }
 }

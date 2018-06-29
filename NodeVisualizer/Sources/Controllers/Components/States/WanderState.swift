@@ -19,6 +19,12 @@ class WanderState: GKState {
 
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
+
+        entity.physicsComponent.physicsBody.friction = 1
+        entity.physicsComponent.physicsBody.linearDamping = 1
+        entity.physicsComponent.physicsBody.isDynamic = true
+        entity.physicsComponent.physicsBody.fieldBitMask = 0x1 << 0
+        entity.renderComponent.recordNode.removeAllActions()
     }
 
     override func update(deltaTime seconds: TimeInterval) {
