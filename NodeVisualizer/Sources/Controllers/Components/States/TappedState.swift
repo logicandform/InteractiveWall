@@ -23,30 +23,20 @@ class TappedState: GKState {
         let relatedEntities = getRelatedEntites()
         entity.relatedEntities = relatedEntities
 
-        handleCurrentFocusedEntity()
-//        handleRelatedEntities()
-//        entity.resetEntities(entities: relatedEntities) {
-//
-//        }
-
-//        entity.resetRelatedEntities(entities: relatedEntities, excluding: entity) {
-//            print("hello")
-//        }
-
-//        entity.pleaseWork(entities: relatedEntities, excluding: entity) {
-//            print("please work")
-//        }
+        // reset
+        resetEntityAndRelatedEntities()
 
         entity.physicsComponent.physicsBody.isDynamic = false
         entity.physicsComponent.physicsBody.fieldBitMask = 0x1 << 1
+
+        // because we reset for all related entities and its own, make sure that we set hasReset to false before performing movements and animations
+        entity.hasReset = false
 
         // request animation to make the tapped entity go to a point
         if let sceneFrame = entity.renderComponent.recordNode.scene?.frame {
             let centerPoint = CGPoint(x: sceneFrame.width / 2, y: sceneFrame.height / 2)
             entity.animationComponent.requestedAnimationState = .goToPoint(centerPoint)
         }
-
-//        entity.hasReset = false
 
         // iterate through each related entity to this selected entity && enter the seeking state for each of those related entities
         for relatedEntity in relatedEntities {
@@ -86,33 +76,11 @@ class TappedState: GKState {
         return relatedEntities
     }
 
-    private func handleRelatedEntities() {
-        let relatedEntitiesToCurrentTappedEntity = entity.relatedEntities
-
-        for relatedEntity in relatedEntitiesToCurrentTappedEntity {
-            relatedEntity.intelligenceComponent.stateMachine.enter(WanderState.self)
-
-            for relatedRelatedEntity in relatedEntity.relatedEntities {
-                relatedRelatedEntity.intelligenceComponent.stateMachine.enter(WanderState.self)
-            }
-        }
-    }
-
-    private func handleCurrentFocusedEntity() {
-        guard let scene = entity.renderComponent.recordNode.scene as? MainScene, let currentFocusedEntity = scene.currentEntityInFocus else {
+    private func resetEntityAndRelatedEntities() {
+        guard let scene = entity.renderComponent.recordNode.scene as? MainScene, let currentEntityInFocus = scene.currentEntityInFocus else {
             return
         }
 
-        currentFocusedEntity.intelligenceComponent.stateMachine.enter(WanderState.self)
-
-        let relatedEntitiesToCurrentFocusedEntity = currentFocusedEntity.relatedEntities
-
-        for relatedEntity in relatedEntitiesToCurrentFocusedEntity {
-            relatedEntity.intelligenceComponent.stateMachine.enter(WanderState.self)
-
-            for relatedRelatedEntity in relatedEntity.relatedEntities {
-                relatedRelatedEntity.intelligenceComponent.stateMachine.enter(WanderState.self)
-            }
-        }
+        currentEntityInFocus.reset()
     }
 }

@@ -102,61 +102,17 @@ class RecordEntity: GKEntity {
         return hypotf(dX, dY)
     }
 
-
-
-    func resetEntities(entities: [RecordEntity], completion: @escaping () -> Void) {
-        guard let entityToReset = entities.first, !entityToReset.hasReset else {
-            completion()
-            return
-        }
-
-        entityToReset.intelligenceComponent.stateMachine.enter(WanderState.self)
+    /// 'Reset' the entity so that proper animations and movements can take place
+    func reset() {
+        // reset its own entity
+        intelligenceComponent.stateMachine.enter(WanderState.self)
         hasReset = true
 
-        entityToReset.resetEntities(entities: entityToReset.relatedEntities) {
-            let newEntities = Array(entities[1..<entities.count])
-            self.resetEntities(entities: newEntities, completion: completion)
-        }
-    }
-
-
-
-
-
-    func resetRelatedEntities(entities: [RecordEntity], excluding: RecordEntity, completion: @escaping () -> Void) {
-        guard let entityToReset = entities.first, entityToReset != excluding else {
-            completion()
-            return
-        }
-
-        entityToReset.intelligenceComponent.stateMachine.enter(WanderState.self)
-
-        entityToReset.resetEntities(entities: entityToReset.relatedEntities) {
-            let newEntities = Array(entities[1..<entities.count])
-            self.resetRelatedEntities(entities: newEntities, excluding: self, completion: completion)
-        }
-    }
-
-    func pleaseWork(entities: [RecordEntity], excluding: RecordEntity, completion: @escaping () -> Void) {
-        guard let entityToReset = entities.first, entityToReset != excluding else {
-            completion()
-            return
-        }
-
-        entityToReset.intelligenceComponent.stateMachine.enter(WanderState.self)
-
-        entityToReset.pleaseWork(entities: entityToReset.relatedEntities, excluding: self) {
-            let newEntities = Array(entities[1..<entities.count])
-            self.pleaseWork(entities: newEntities, excluding: excluding, completion: completion)
+        // reset all of its related entities
+        for entity in relatedEntities {
+            if !entity.hasReset {
+                entity.reset()
+            }
         }
     }
 }
-
-
-
-
-
-
-
-
-

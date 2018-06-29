@@ -42,7 +42,7 @@ class MainViewController: NSViewController, GestureResponder {
 
         mainView.showsFPS = true
         mainView.showsNodeCount = true
-//        mainView.showsFields = true
+        mainView.showsFields = true
         mainView.ignoresSiblingOrder = true
     }
 
