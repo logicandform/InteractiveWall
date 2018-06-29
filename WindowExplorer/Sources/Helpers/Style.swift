@@ -62,6 +62,9 @@ final class Style {
     // Border Controller
     let borderColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
 
+    // Zoom Control
+    let zoomControlColor = NSColor(white: 0.2, alpha: 0.8)
+
 
     // Titles
     var windowTitleAttributes: [NSAttributedStringKey: Any] {

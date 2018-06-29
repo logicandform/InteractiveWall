@@ -679,7 +679,6 @@
 			isa = PBXGroup;
 			children = (
 				8FEABD9F2064702600612C84 /* MediaViewController.swift */,
-				A447476120D8789F00346714 /* Views */,
 				D9F24E60205B03AA00B9FCB8 /* ImageViewController */,
 				22A76FE82046477A006C0AE7 /* PlayerViewController */,
 				22A76FE320464764006C0AE7 /* PDFViewControlller */,
@@ -687,13 +686,13 @@
 			path = MediaControllers;
 			sourceTree = "<group>";
 		};
-		A447476120D8789F00346714 /* Views */ = {
+		A447476120D8789F00346714 /* ZoomControl */ = {
 			isa = PBXGroup;
 			children = (
 				CD7B3CD020ADFB1400723BDB /* ZoomControl.xib */,
 				CD7B3CD220ADFB2500723BDB /* ZoomControl.swift */,
 			);
-			path = Views;
+			path = ZoomControl;
 			sourceTree = "<group>";
 		};
 		A4551B6720DC82E100D8C029 /* MenuButton */ = {
@@ -768,6 +767,7 @@
 				A457D19720C9A42900D21ABA /* SwitchControl.swift */,
 				A456617F20D9CDC400D23333 /* BorderControl.swift */,
 				A4551B6720DC82E100D8C029 /* MenuButton */,
+				A447476120D8789F00346714 /* ZoomControl */,
 			);
 			path = Views;
 			sourceTree = "<group>";

@@ -195,22 +195,23 @@
                                 </scroller>
                             </scrollView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="8eD-Q9-Rkj" customClass="ZoomControl" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="156" y="0.0" width="436" height="40"/>
+                                <rect key="frame" x="224" y="5" width="300" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="PLD-LS-6VW"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="300" id="FB0-jh-2OO"/>
+                                    <constraint firstAttribute="height" constant="30" id="PLD-LS-6VW"/>
                                 </constraints>
                             </customView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="dYk-YZ-F2X" firstAttribute="bottom" secondItem="MNf-ca-Rd2" secondAttribute="bottom" id="7Gj-eo-edM"/>
-                            <constraint firstAttribute="bottom" secondItem="8eD-Q9-Rkj" secondAttribute="bottom" id="Gfo-GY-XQU"/>
+                            <constraint firstAttribute="bottom" secondItem="8eD-Q9-Rkj" secondAttribute="bottom" constant="5" id="Gfo-GY-XQU"/>
                             <constraint firstItem="QK0-JK-wDg" firstAttribute="leading" secondItem="l0O-E9-8FM" secondAttribute="leading" id="Jcs-sa-mcD"/>
                             <constraint firstAttribute="bottom" secondItem="aNn-xH-yEO" secondAttribute="bottom" id="RqS-p3-6tb"/>
-                            <constraint firstItem="MNf-ca-Rd2" firstAttribute="bottom" secondItem="8eD-Q9-Rkj" secondAttribute="top" id="RwD-QD-D4x"/>
+                            <constraint firstItem="MNf-ca-Rd2" firstAttribute="bottom" secondItem="8eD-Q9-Rkj" secondAttribute="top" constant="-5" id="RwD-QD-D4x"/>
                             <constraint firstItem="dYk-YZ-F2X" firstAttribute="leading" secondItem="MNf-ca-Rd2" secondAttribute="leading" id="VdI-2X-rm1"/>
                             <constraint firstAttribute="trailing" secondItem="MNf-ca-Rd2" secondAttribute="trailing" constant="8" id="aEk-z9-6Hr"/>
                             <constraint firstItem="8eD-Q9-Rkj" firstAttribute="centerX" secondItem="MNf-ca-Rd2" secondAttribute="centerX" id="aMm-d5-JMG"/>
-                            <constraint firstItem="8eD-Q9-Rkj" firstAttribute="trailing" secondItem="LrV-6C-x9X" secondAttribute="trailing" constant="-40" id="bRh-VE-Jaf"/>
+                            <constraint firstItem="8eD-Q9-Rkj" firstAttribute="trailing" secondItem="LrV-6C-x9X" secondAttribute="trailing" priority="750" constant="-8" id="bRh-VE-Jaf"/>
                             <constraint firstItem="u0A-Yb-xpw" firstAttribute="trailing" secondItem="MNf-ca-Rd2" secondAttribute="trailing" id="d4e-6x-9Ho"/>
                             <constraint firstItem="u0A-Yb-xpw" firstAttribute="top" secondItem="MNf-ca-Rd2" secondAttribute="top" id="i6I-1S-ZWw"/>
                             <constraint firstItem="aNn-xH-yEO" firstAttribute="top" secondItem="QK0-JK-wDg" secondAttribute="bottom" id="iNt-qa-r8B"/>
@@ -219,7 +220,7 @@
                             <constraint firstItem="dYk-YZ-F2X" firstAttribute="top" secondItem="MNf-ca-Rd2" secondAttribute="top" id="mpj-LF-904"/>
                             <constraint firstItem="MNf-ca-Rd2" firstAttribute="leading" secondItem="aNn-xH-yEO" secondAttribute="trailing" constant="8" id="oWM-oh-agk"/>
                             <constraint firstAttribute="trailing" secondItem="QK0-JK-wDg" secondAttribute="trailing" id="og7-JT-nYV"/>
-                            <constraint firstItem="8eD-Q9-Rkj" firstAttribute="leading" secondItem="LrV-6C-x9X" secondAttribute="leading" constant="40" id="t2G-OZ-wn0"/>
+                            <constraint firstItem="8eD-Q9-Rkj" firstAttribute="leading" secondItem="LrV-6C-x9X" secondAttribute="leading" priority="750" constant="8" id="t2G-OZ-wn0"/>
                             <constraint firstItem="MNf-ca-Rd2" firstAttribute="top" secondItem="QK0-JK-wDg" secondAttribute="bottom" id="xN6-z0-1pe"/>
                             <constraint firstItem="aNn-xH-yEO" firstAttribute="leading" secondItem="l0O-E9-8FM" secondAttribute="leading" id="xQO-5l-BlL"/>
                         </constraints>

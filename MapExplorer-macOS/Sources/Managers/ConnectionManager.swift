@@ -9,7 +9,6 @@ typealias AppState = (pair: Int?, group: Int?, type: ApplicationType)
 
 /// Class used to determine which application's are paired with one another.
 final class ConnectionManager {
-
     static let instance = ConnectionManager()
 
     /// The handler for map associated events

@@ -49,6 +49,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         setupPDF()
         setupArrows()
         setupThumbnailView()
+        setupZoomControl()
         setupGestures()
         animateViewIn()
     }
@@ -74,9 +75,6 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         pdfScrollView.minMagnification = Constants.initialMagnification
         pdfScrollView.maxMagnification = Constants.maximumMagnification
         resizeToFirstPage()
-
-        zoomControl.gestureManager = gestureManager
-        zoomControl.zoomSliderUpdated = didScrubZoomSlider(_:)
     }
 
     private func setupThumbnailView() {
@@ -103,6 +101,12 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         rightArrow.centerYAnchor.constraint(equalTo: pdfView.centerYAnchor).isActive = true
         rightArrow.widthAnchor.constraint(equalToConstant: Constants.arrowWidth).isActive = true
         rightArrow.heightAnchor.constraint(equalToConstant: Constants.arrowHeight).isActive = true
+    }
+
+    private func setupZoomControl() {
+        zoomControl.gestureManager = gestureManager
+        zoomControl.zoomSliderUpdated = didScrubZoomSlider(_:)
+        zoomControl.tintColor = media.tintColor
     }
 
     private func setupGestures() {

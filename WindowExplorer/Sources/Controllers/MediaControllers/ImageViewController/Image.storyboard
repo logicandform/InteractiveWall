@@ -94,22 +94,23 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="JxA-3p-oGM" customClass="ZoomControl" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="40" y="0.0" width="560" height="40"/>
+                            <customView focusRingType="none" translatesAutoresizingMaskIntoConstraints="NO" id="JxA-3p-oGM" customClass="ZoomControl" customModule="WindowExplorer" customModuleProvider="target">
+                                <rect key="frame" x="170" y="5" width="300" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="7WH-LO-dIK"/>
+                                    <constraint firstAttribute="height" constant="30" id="7WH-LO-dIK"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="300" id="p5x-fR-I2n"/>
                                 </constraints>
                             </customView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="JxA-3p-oGM" firstAttribute="top" secondItem="WTp-wA-9SL" secondAttribute="bottom" id="3Ag-R2-ecv"/>
-                            <constraint firstItem="JxA-3p-oGM" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="40" id="3ku-Nm-0Yz"/>
+                            <constraint firstItem="JxA-3p-oGM" firstAttribute="top" secondItem="WTp-wA-9SL" secondAttribute="bottom" constant="5" id="3Ag-R2-ecv"/>
+                            <constraint firstItem="JxA-3p-oGM" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" priority="750" constant="8" id="3ku-Nm-0Yz"/>
                             <constraint firstItem="529-pd-R3M" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" id="6Jt-qE-li2"/>
                             <constraint firstItem="JxA-3p-oGM" firstAttribute="centerX" secondItem="WTp-wA-9SL" secondAttribute="centerX" id="EVK-nM-amX"/>
-                            <constraint firstAttribute="bottom" secondItem="JxA-3p-oGM" secondAttribute="bottom" id="Egh-mV-YbL"/>
+                            <constraint firstAttribute="bottom" secondItem="JxA-3p-oGM" secondAttribute="bottom" constant="5" id="Egh-mV-YbL"/>
                             <constraint firstAttribute="trailing" secondItem="WTp-wA-9SL" secondAttribute="trailing" constant="8" id="Uvu-Og-omp"/>
                             <constraint firstItem="529-pd-R3M" firstAttribute="top" secondItem="sSn-s5-6HM" secondAttribute="top" id="WnV-SU-5jv"/>
-                            <constraint firstAttribute="trailing" secondItem="JxA-3p-oGM" secondAttribute="trailing" constant="40" id="Xhc-0r-yht"/>
+                            <constraint firstAttribute="trailing" secondItem="JxA-3p-oGM" secondAttribute="trailing" priority="750" constant="8" id="Xhc-0r-yht"/>
                             <constraint firstItem="WTp-wA-9SL" firstAttribute="leading" secondItem="sSn-s5-6HM" secondAttribute="leading" constant="8" id="dsS-3c-P65"/>
                             <constraint firstAttribute="trailing" secondItem="529-pd-R3M" secondAttribute="trailing" id="qKh-TI-HmK"/>
                             <constraint firstItem="WTp-wA-9SL" firstAttribute="top" secondItem="529-pd-R3M" secondAttribute="bottom" id="yIW-4a-jsl"/>

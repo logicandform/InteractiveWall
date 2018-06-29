@@ -33,6 +33,7 @@ class ImageViewController: MediaViewController {
 
         setupScrollView()
         setupImageView()
+        setupZoomControl()
         setupGestures()
         animateViewIn()
     }
@@ -48,8 +49,6 @@ class ImageViewController: MediaViewController {
     private func setupScrollView() {
         imageScrollView.minMagnification = Constants.initialMagnification
         imageScrollView.maxMagnification = Constants.maximumMagnification
-        imageZoomControl.gestureManager = gestureManager
-        imageZoomControl.zoomSliderUpdated = didScrubZoomSlider(_:)
     }
 
     private func setupImageView() {
@@ -63,6 +62,12 @@ class ImageViewController: MediaViewController {
                 self?.addImage(image)
             }
         }
+    }
+
+    private func setupZoomControl() {
+        imageZoomControl.gestureManager = gestureManager
+        imageZoomControl.zoomSliderUpdated = didScrubZoomSlider(_:)
+        imageZoomControl.tintColor = media.tintColor
     }
 
     private func addImage(_ image: NSImage) {

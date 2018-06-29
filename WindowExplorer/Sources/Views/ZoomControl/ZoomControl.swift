@@ -4,11 +4,12 @@ import Cocoa
 
 
 class ZoomControl: NSView {
-
     static let nib = NSNib.Name(rawValue: "ZoomControl")
 
     @IBOutlet var contentView: NSView!
     @IBOutlet weak var seekBar: NSSlider!
+
+    var zoomSliderUpdated: ((CGFloat) -> Void)?
 
     var gestureManager: GestureManager! {
         didSet {
@@ -16,7 +17,17 @@ class ZoomControl: NSView {
         }
     }
 
-    var zoomSliderUpdated: ((CGFloat) -> Void)?
+    var tintColor: NSColor? {
+        didSet {
+            if let color = tintColor, let cell = seekBar.cell as? ColoredSliderCell {
+                cell.leadingColor = color
+            }
+        }
+    }
+
+    private struct Constants {
+        static let cornerRadius: CGFloat = 5
+    }
 
 
     // MARK: Init
@@ -25,12 +36,20 @@ class ZoomControl: NSView {
         super.init(coder: decoder)
 
         Bundle.main.loadNibNamed(ZoomControl.nib, owner: self, topLevelObjects: nil)
-        addSubview(contentView)
-        contentView.frame = bounds
+        setupView()
     }
 
 
     // MARK: Setup
+
+    private func setupView() {
+        wantsLayer = true
+        layer?.backgroundColor = style.zoomControlColor.cgColor
+        layer?.cornerRadius = Constants.cornerRadius
+        addSubview(contentView)
+        contentView.frame = bounds
+        contentView.autoresizingMask = .width
+    }
 
     private func setupGestures() {
         let scrubGesture = PanGestureRecognizer()
@@ -60,7 +79,6 @@ class ZoomControl: NSView {
             let positionInSeekBar = (position.x) / (seekBar.frame.width)
             let delta = Double(positionInSeekBar) * (seekBar.maxValue - seekBar.minValue)
             let scale = CGFloat(delta + seekBar.minValue)
-
             updateSeekBarPosition(to: scale)
             zoomSliderUpdated?(scale)
         default:

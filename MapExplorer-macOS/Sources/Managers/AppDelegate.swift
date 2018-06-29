@@ -6,7 +6,7 @@ import Cocoa
 struct Configuration {
     static let serverIP = "10.58.73.211"
     static let serverURL = "http://\(serverIP):3000"
-    static let initialType = ApplicationType.timeline
+    static let initialType = ApplicationType.mapExplorer
     static let appsPerScreen = 2
     static let numberOfScreens = 1
     static let touchScreenSize = CGSize(width: 21564, height: 12116)
