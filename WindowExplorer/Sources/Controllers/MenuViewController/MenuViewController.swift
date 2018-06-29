@@ -388,7 +388,6 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         DistributedNotificationCenter.default().postNotificationName(SettingsNotification.merge.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
-
     private func postTransitionNotification(for type: MenuButtonType) {
         guard let applicationType = type.applicationType else {
             return
