@@ -51,6 +51,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         static let stackViewBottomInset: CGFloat = 15
         static let expandImageViewCornerRadius: CGFloat = 2.0
         static let relatedImagesAnimationTime = 0.1
+        static let minimumRecordHeightShowing: CGFloat = 60
     }
 
 
@@ -671,6 +672,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         let offsetY = CGFloat(position * -style.controllerOffset)
         let lastScreen = NSScreen.at(position: Configuration.numberOfScreens)
         var origin = CGPoint(x: recordFrame.maxX + style.windowMargins + offsetX, y: recordFrame.maxY + offsetY - view.frame.height)
+
         if origin.x > lastScreen.frame.maxX - view.frame.width / 2 {
             if lastScreen.frame.height - recordFrame.maxY < view.frame.height + style.windowMargins - 2 * offsetY {
                 // Below
@@ -682,7 +684,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
 
         // Off screen
-        if origin.y + view.frame.height - 3 * style.windowMargins < lastScreen.frame.minY {
+        if origin.y + view.frame.height - Constants.minimumRecordHeightShowing < lastScreen.frame.minY {
             close()
         }
 
