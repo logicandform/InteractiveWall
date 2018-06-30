@@ -105,7 +105,7 @@
                         <outlet property="accessibilityButton" destination="37d-Lb-7Lx" id="EyT-Lp-pVA"/>
                         <outlet property="informationButton" destination="5R0-Ed-pJG" id="J99-rQ-V56"/>
                         <outlet property="mapToggleButton" destination="qAo-tK-U4U" id="Cds-Fu-Des"/>
-                        <outlet property="menuVerticalOffset" destination="PXR-tM-DVE" id="Ee7-n5-oOg"/>
+                        <outlet property="menuBottomConstraint" destination="PXR-tM-DVE" id="BJe-U9-6FQ"/>
                         <outlet property="menuView" destination="ySR-rI-hH0" id="oaa-9r-Hk7"/>
                         <outlet property="searchButton" destination="CJK-LW-WGG" id="7EG-sF-plG"/>
                         <outlet property="settingsButton" destination="u8e-Pu-hpK" id="PbK-YQ-CvU"/>
