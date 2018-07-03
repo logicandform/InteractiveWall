@@ -10,6 +10,9 @@ class TappedState: GKState {
     private(set) unowned var entity: RecordEntity
 
 
+    let relatedEntityManager = RelatedEntityManager()
+
+
     required init(entity: RecordEntity) {
         self.entity = entity
     }
@@ -22,6 +25,11 @@ class TappedState: GKState {
 
         let relatedEntities = getRelatedEntites()
         entity.relatedEntities = relatedEntities
+
+
+        // make level connections (5 layers deep)
+        
+
 
         // reset
         resetEntityAndRelatedEntities()

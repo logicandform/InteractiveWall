@@ -68,6 +68,7 @@
 		CD27F40F20BCBFB700375CBC /* LetterGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40D20BCBFB700375CBC /* LetterGroup.swift */; };
 		CD2CC5EB20B8E6D800FB3C10 /* RecordDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2CC5E920B8E6D700FB3C10 /* RecordDisplayable.swift */; };
 		CD2CC5EC20B8E6D800FB3C10 /* RecordFilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2CC5EA20B8E6D800FB3C10 /* RecordFilterType.swift */; };
+		CD54BF9820EBF83B00B49A37 /* EntityLevelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD54BF9720EBF83B00B49A37 /* EntityLevelManager.swift */; };
 		CDA5A90820DD70B700E1CF87 /* PhysicsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */; };
 		CDA5A90A20DD751C00E1CF87 /* NodeConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5A90920DD751C00E1CF87 /* NodeConfiguration.swift */; };
 		CDB6CE3220E4037D0033E328 /* AnimationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB6CE3120E4037D0033E328 /* AnimationComponent.swift */; };
@@ -143,6 +144,7 @@
 		CD27F40D20BCBFB700375CBC /* LetterGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LetterGroup.swift; sourceTree = "<group>"; };
 		CD2CC5E920B8E6D700FB3C10 /* RecordDisplayable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordDisplayable.swift; sourceTree = "<group>"; };
 		CD2CC5EA20B8E6D800FB3C10 /* RecordFilterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordFilterType.swift; sourceTree = "<group>"; };
+		CD54BF9720EBF83B00B49A37 /* EntityLevelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityLevelManager.swift; sourceTree = "<group>"; };
 		CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsComponent.swift; sourceTree = "<group>"; };
 		CDA5A90920DD751C00E1CF87 /* NodeConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeConfiguration.swift; sourceTree = "<group>"; };
 		CDB6CE3120E4037D0033E328 /* AnimationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationComponent.swift; sourceTree = "<group>"; };
@@ -226,6 +228,7 @@
 				22AEAED520B67D2600DD184B /* GestureManager.swift */,
 				CD0FB28320D1AA9D0058A410 /* EntityManager.swift */,
 				CD1FC73D20DB06AA00B87D02 /* TestingEnvironment.swift */,
+				CD54BF9720EBF83B00B49A37 /* EntityLevelManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -556,6 +559,7 @@
 				22D6F91020B681A300C7FB5F /* Media.swift in Sources */,
 				22D6F90C20B6810600C7FB5F /* ResponseHandler.swift in Sources */,
 				CD1FC73A20D9B39A00B87D02 /* SeekState.swift in Sources */,
+				CD54BF9820EBF83B00B49A37 /* EntityLevelManager.swift in Sources */,
 				22D6F91920B6824300C7FB5F /* PanGestureRecognizer.swift in Sources */,
 				CD2CC5EB20B8E6D800FB3C10 /* RecordDisplayable.swift in Sources */,
 				CD1FC73820D9B36B00B87D02 /* WanderState.swift in Sources */,

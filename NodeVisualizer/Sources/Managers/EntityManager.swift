@@ -5,7 +5,7 @@ import SpriteKit
 import GameplayKit
 
 
-class EntityManager {
+final class EntityManager {
 
     private(set) var entities = Set<GKEntity>()
 
@@ -25,6 +25,34 @@ class EntityManager {
             componentSystem.update(deltaTime: deltaTime)
         }
     }
+
+
+    func relatedEntities(for entity: RecordEntity) {
+
+        var entitiesInLevel = [[RecordEntity]]()
+
+
+        let relatedEntities = entity.relatedEntities
+
+
+    }
+
+
+    private func relatedEntities(for entities: [GKEntity]) {
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     func add(_ entity: GKEntity) {
         entities.insert(entity)
