@@ -334,8 +334,8 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         case primaryCollectionView:
             unselectItem(for: collectionView)
         case secondaryCollectionView:
-            selectedGroup = item.item.title
             unselectItem(for: collectionView)
+            selectedGroup = item.item.title
         default:
             break
         }
@@ -352,6 +352,10 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     // Removes all state from the currently selected view of the given collectionview
     private func unselectItem(for collectionView: NSCollectionView) {
         let indexPaths = collectionView.indexPathsForVisibleItems()
+
+        if collectionView == secondaryCollectionView {
+            selectedGroup = nil
+        }
 
         for index in indexPaths {
             if let item = collectionView.item(at: index) as? SearchItemView {
