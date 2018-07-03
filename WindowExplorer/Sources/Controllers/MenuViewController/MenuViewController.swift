@@ -328,7 +328,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
 
         let x = window.frame.minX
         let y = accessibilityButton.frame.height
-        animate(menu: menuView, to: CGPoint(x: x, y: y))
+        animateMenu(to: CGPoint(x: x, y: y))
     }
 
     private func menuOffset(given vector: CGVector) -> CGFloat {
@@ -411,8 +411,8 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         DistributedNotificationCenter.default().postNotificationName(SettingsNotification.transition.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
-    /// Animates the view to a new origin
-    private func animate(menu: NSView, to origin: NSPoint) {
+    /// Animates the menu to a new origin
+    private func animateMenu(to origin: NSPoint) {
         guard let window = view.window, let screen = window.screen, !gestureManager.isActive() else {
             return
         }
@@ -449,9 +449,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         let verticalPosition = NSScreen.at(appID: appID).frame.midY - (menuView.frame.height / 2)
         positionResetTimer?.invalidate()
         positionResetTimer = Timer.scheduledTimer(withTimeInterval: Constants.positionResetInterval, repeats: false) { [weak self] _ in
-            if let menuView = self?.menuView {
-                self?.animate(menu: menuView, to: CGPoint(x: window.frame.minX, y: verticalPosition))
-            }
+            self?.animateMenu(to: CGPoint(x: window.frame.minX, y: verticalPosition))
         }
     }
 }
