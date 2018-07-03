@@ -36,16 +36,16 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     @IBOutlet weak var tertiaryScrollViewHeight: NSLayoutConstraint!
 
     weak var searchViewDelegate: SearchViewDelegate?
-    private var selectedType: RecordType?
-    private var selectedRecords = Set<RecordProxy>()
-    private var selectedIndexForView = [NSCollectionView: [IndexPath]]()
     private let relationshipHelper = RelationshipHelper()
+    private var selectedType: RecordType?
+    private var selectedGroup: String?
+    private var selectedRecords = Set<RecordProxy>()
 
+    private lazy var focusedCollectionView: NSCollectionView = primaryCollectionView
+    private lazy var collectionViews: [NSCollectionView] = [primaryCollectionView, secondaryCollectionView, tertiaryCollectionView]
     private lazy var scrollViewForCollectionView = [primaryCollectionView: primaryScrollView, secondaryCollectionView: secondaryScrollView, tertiaryCollectionView: tertiaryScrollView]
     private lazy var heightForCollectionView = [primaryCollectionView: primaryScrollViewHeight, secondaryCollectionView: secondaryScrollViewHeight, tertiaryCollectionView: tertiaryScrollViewHeight]
     private lazy var titleViews: [NSTextField] = [titleLabel, secondaryTextField, tertiaryTextField]
-    private lazy var collectionViews: [NSCollectionView] = [primaryCollectionView, secondaryCollectionView, tertiaryCollectionView]
-    private lazy var focusedCollectionView: NSCollectionView = primaryCollectionView
     private lazy var searchItemsForView: [NSCollectionView: [SearchItemDisplayable]] = [
         primaryCollectionView: RecordType.allValues,
         secondaryCollectionView: [],
@@ -57,7 +57,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         static let searchItemHeight: CGFloat = 70
         static let defaultWindowDragAreaColor = NSColor.lightGray
         static let collectionViewMargin: CGFloat = 5
-        static let closeWindowTimeoutPeriod: TimeInterval = 300
+        static let closeWindowTimeoutPeriod = 300.0
     }
 
 
@@ -165,9 +165,21 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
 
         // Only allow reselected of cells in the tertiaryViewController.
-        if let indicesForView = selectedIndexForView[collectionView], indicesForView.contains(indexPath) && collectionView != tertiaryCollectionView {
-            return
+        switch collectionView {
+        case primaryCollectionView:
+            if searchItemView.type == selectedType {
+                return
+            }
+        case secondaryCollectionView:
+            if searchItemView.title == selectedGroup {
+                return
+            }
+        default:
+            break
         }
+//        if let indicesForView = selectedIndexForView[collectionView], indicesForView.contains(indexPath) && collectionView != tertiaryCollectionView {
+//            return
+//        }
 
         // Set the windowDragHighlight color before waiting to toggle collectionViews
         if let recordType = searchItemView.item as? RecordType {
@@ -253,17 +265,19 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             return NSCollectionViewItem()
         }
 
+        searchItemView.type = selectedType
+        searchItemView.item = searchItems.at(index: indexPath.item)
+
         // Set the highlighted state of view
-        if let selectedIndices = selectedIndexForView[collectionView], searchItemView.collectionView != tertiaryCollectionView {
-            for index in selectedIndices {
-                searchItemView.set(highlighted: index == indexPath)
-            }
+        if searchItemView.collectionView != tertiaryCollectionView {
+//            for index in selectedIndices {
+//                searchItemView.set(highlighted: index == indexPath)
+            searchItemView.set(highlighted: searchItemView.item.title == selectedGroup)
+//            }
         } else if let record = searchItems.at(index: indexPath.item) as? RecordDisplayable {
             searchItemView.set(highlighted: isSelected(record))
         }
 
-        searchItemView.type = selectedType
-        searchItemView.item = searchItems.at(index: indexPath.item)
         return searchItemView
     }
 
@@ -314,21 +328,24 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     // MARK: Helpers
 
     private func select(_ item: SearchItemView) {
-        guard let collectionView = item.collectionView, let indexPath = collectionView.indexPath(for: item) else {
+        guard let collectionView = item.collectionView else {
             return
         }
 
-        if collectionView == tertiaryCollectionView, let record = item.item as? RecordDisplayable {
-            selectedIndexForView[collectionView] = selectedIndexForView[collectionView]?.filter({ $0 != indexPath })
-            selectedRecords.insert(RecordProxy(id: record.id, type: record.type))
-        } else {
+        switch collectionView {
+        case tertiaryCollectionView:
+            if let record = item.item as? RecordDisplayable {
+                selectedRecords.insert(RecordProxy(id: record.id, type: record.type))
+            }
+        case primaryCollectionView:
             unselectItem(for: collectionView)
+        case secondaryCollectionView:
+            selectedGroup = item.item.title
+            unselectItem(for: collectionView)
+        default:
+            break
         }
 
-        if selectedIndexForView[collectionView] == nil {
-            selectedIndexForView[collectionView] = [IndexPath]()
-        }
-        selectedIndexForView[collectionView]?.append(indexPath)
         item.set(highlighted: true)
     }
 
@@ -340,11 +357,9 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     // Removes all state from the currently selected view of the given collectionview
     private func unselectItem(for collectionView: NSCollectionView) {
-        guard let indexPaths = selectedIndexForView[collectionView] else {
-            return
-        }
+        let indexPaths = collectionView.indexPathsForVisibleItems()
 
-        selectedIndexForView.removeValue(forKey: collectionView)
+//        selectedIndexForView.removeValue(forKey: collectionView)
         for index in indexPaths {
             if let item = collectionView.item(at: index) as? SearchItemView {
                 item.set(highlighted: false)
@@ -354,13 +369,13 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     }
 
     private func showResults(for view: SearchItemView) {
-        guard let collectionView = view.collectionView, let indexPath = collectionView.indexPath(for: view), let indicesForView = selectedIndexForView[collectionView], indicesForView.contains(indexPath) else {
+        guard let collectionView = view.collectionView, let indexPath = collectionView.indexPath(for: view) else {
             return
         }
 
         switch collectionView {
         case primaryCollectionView:
-            if let recordType = view.item as? RecordType {
+            if let recordType = view.item as? RecordType, recordType != selectedType {
                 selectedType = recordType
                 searchItemsForView[secondaryCollectionView] = searchItems(for: recordType)
                 secondaryTextField.attributedStringValue = title(for: recordType)
@@ -369,7 +384,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
                 toggle(to: secondaryCollectionView)
             }
         case secondaryCollectionView:
-            if let group = view.item as? LetterGroup, let type = selectedType {
+            if let group = view.item as? LetterGroup, let type = view.type, view.title != selectedGroup {
                 view.set(loading: true)
                 RecordFactory.records(for: type, in: group) { [weak self] records in
                     view.set(loading: false)
@@ -377,7 +392,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
                         self?.load(records, group: group.title)
                     }
                 }
-            } else if let province = view.item as? Province {
+            } else if let province = view.item as? Province, view.title != selectedGroup {
                 let schools = GeocodeHelper.instance.schools(for: province).sorted { $0.title < $1.title }
                 load(schools, group: province.abbreviation)
             }
@@ -443,9 +458,13 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     /// Loads records into and toggles the tertiary collection view, from intermediary group
     private func load(_ records: [RecordDisplayable], group: String) {
-        guard let selectedType = selectedType else {
+        guard let selectedType = selectedType, group == selectedGroup else {
             return
         }
+
+//        DispatchQueue.main.async { [weak self] in
+//            self?.tertiaryCollectionView.reloadData()
+//        }
 
         searchItemsForView[tertiaryCollectionView] = records
         tertiaryCollectionView.reloadData()
