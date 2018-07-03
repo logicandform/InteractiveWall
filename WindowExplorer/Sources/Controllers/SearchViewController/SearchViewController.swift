@@ -388,12 +388,12 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
                 RecordFactory.records(for: type, in: group) { [weak self] records in
                     view.set(loading: false)
                     if let records = records {
-                        self?.load(records, group: group.title)
+                        self?.load(records, group: group.title, searchItem: view)
                     }
                 }
             } else if let province = view.item as? Province, view.item.title == selectedGroup {
                 let schools = GeocodeHelper.instance.schools(for: province).sorted { $0.title < $1.title }
-                load(schools, group: province.abbreviation)
+                load(schools, group: province.abbreviation, searchItem: view)
             }
         case tertiaryCollectionView:
             if let record = view.item as? RecordDisplayable {
@@ -456,8 +456,8 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     }
 
     /// Loads records into and toggles the tertiary collection view, from intermediary group
-    private func load(_ records: [RecordDisplayable], group: String) {
-        guard let selectedType = selectedType, group == selectedGroup else {
+    private func load(_ records: [RecordDisplayable], group: String, searchItem: SearchItemView) {
+        guard let selectedType = selectedType, searchItem.item.title == selectedGroup else {
             return
         }
 
