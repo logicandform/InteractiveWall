@@ -20,10 +20,20 @@
                                     <outlet property="delegate" destination="TYK-5A-x82" id="dxv-gV-hz1"/>
                                 </connections>
                             </mapView>
+                            <containerView translatesAutoresizingMaskIntoConstraints="NO" id="Sxu-vO-kxa">
+                                <rect key="frame" x="0.0" y="1" width="600" height="417"/>
+                                <connections>
+                                    <segue destination="7BX-zz-dim" kind="embed" id="lZ6-BQ-INl"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="Sxu-vO-kxa" firstAttribute="height" secondItem="s1R-HV-vyu" secondAttribute="height" multiplier="1:1" id="Kta-kg-bCQ"/>
+                            <constraint firstItem="Sxu-vO-kxa" firstAttribute="leading" secondItem="qa6-7c-s1W" secondAttribute="leading" id="Raz-uP-kTZ"/>
                             <constraint firstAttribute="trailing" secondItem="s1R-HV-vyu" secondAttribute="trailing" id="Txz-yL-mWb"/>
                             <constraint firstItem="s1R-HV-vyu" firstAttribute="leading" secondItem="qa6-7c-s1W" secondAttribute="leading" id="b1d-fn-Hmn"/>
+                            <constraint firstAttribute="trailing" secondItem="Sxu-vO-kxa" secondAttribute="trailing" id="b3o-DJ-NRa"/>
+                            <constraint firstItem="Sxu-vO-kxa" firstAttribute="centerY" secondItem="qa6-7c-s1W" secondAttribute="centerY" id="cFS-OJ-SiM"/>
                             <constraint firstAttribute="bottom" secondItem="s1R-HV-vyu" secondAttribute="bottom" id="kkI-xz-pKq"/>
                             <constraint firstItem="s1R-HV-vyu" firstAttribute="top" secondItem="qa6-7c-s1W" secondAttribute="top" id="pOP-Ow-rrj"/>
                         </constraints>
@@ -35,6 +45,14 @@
                 <customObject id="TEP-w5-kbz" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="27" y="165.5"/>
+        </scene>
+        <!--Timeline-->
+        <scene sceneID="aEM-fT-HJF">
+            <objects>
+                <controllerPlaceholder storyboardName="Timeline" id="7BX-zz-dim" sceneMemberID="viewController"/>
+                <customObject id="Cfi-EI-6jH" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="484" y="165"/>
         </scene>
     </scenes>
 </document>

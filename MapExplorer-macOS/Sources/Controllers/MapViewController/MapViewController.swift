@@ -42,10 +42,10 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let id = "id"
         static let map = "map"
         static let group = "group"
-        static let position = "position"
-        static let recordType = "recordType"
         static let status = "status"
+        static let position = "position"
         static let settings = "settings"
+        static let recordType = "recordType"
     }
 
 
@@ -62,7 +62,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     override func viewDidLoad() {
         super.viewDidLoad()
         gestureManager = GestureManager(responder: self)
-        TouchManager.instance.register(gestureManager)
+        TouchManager.instance.register(gestureManager, for: .mapExplorer)
 
         setupMap()
         setupGestures()
@@ -110,7 +110,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     @objc
     func handleNotification(_ notification: NSNotification) {
-        guard let info = notification.userInfo, ConnectionManager.instance.groupForApp(id: appID) == info[Keys.group] as? Int else {
+        guard let info = notification.userInfo, ConnectionManager.instance.groupForApp(id: appID, type: .mapExplorer) == info[Keys.group] as? Int else {
             return
         }
 

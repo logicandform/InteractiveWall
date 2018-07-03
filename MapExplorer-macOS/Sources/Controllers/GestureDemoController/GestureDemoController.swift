@@ -4,12 +4,17 @@ import MONode
 
 class GestureDemoController: NSViewController, SocketManagerDelegate, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "Demo")
-    static let config = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 13002)
+    static let config = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 13003)
 
     let socketManager = SocketManager(networkConfiguration: config)
     var gestureManager: GestureManager!
     var updateForTouch = [Touch: Bool]()
     var rect: NSView!
+
+    static func instance() -> GestureDemoController {
+        let storyboard = NSStoryboard(name: GestureDemoController.storyboard, bundle: .main)
+        return storyboard.instantiateInitialController() as! GestureDemoController
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,24 +24,24 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
         view.wantsLayer = true
         view.layer?.backgroundColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
 
-        rect = NSView(frame: CGRect(x: 2500, y: 300, width: 400, height: 400))
+        rect = NSView(frame: CGRect(x: view.bounds.midX - 200, y: view.bounds.midY - 200, width: 400, height: 400))
         rect.wantsLayer = true
         rect.layer?.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
         view.addSubview(rect)
 
-//        let tapGesture = TapGestureRecognizer()
-//        gestureManager.add(tapGesture, to: rect)
-//        tapGesture.gestureUpdated = rectTapped(_:)
-//
+        let tapGesture = TapGestureRecognizer()
+        gestureManager.add(tapGesture, to: rect)
+        tapGesture.gestureUpdated = rectTapped(_:)
+
         let panGesture = PanGestureRecognizer()
         gestureManager.add(panGesture, to: rect)
         panGesture.gestureUpdated = { [weak self] gesture in
             self?.rectPanned(gesture)
         }
 
-//        let pinchGesture = PinchGestureRecognizer()
-//        gestureManager.add(pinchGesture, to: view)
-//        pinchGesture.gestureUpdated = rectPinched(_:)
+        let pinchGesture = PinchGestureRecognizer()
+        gestureManager.add(pinchGesture, to: view)
+        pinchGesture.gestureUpdated = rectPinched(_:)
     }
 
 
@@ -58,9 +63,12 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
 
     // MARK: Gesture handling
 
+    var big = false
+
     func rectTapped(_ gesture: GestureRecognizer) {
-        rect.frame.size.width *= 1.1
-        rect.frame.size.height *= 1.1
+        big = !big
+        let size = big ? CGSize(width: 800, height: 400) : CGSize(width: 400, height: 400)
+        rect.animator().setFrameSize(size)
     }
 
     func rectPanned(_ gesture: GestureRecognizer) {

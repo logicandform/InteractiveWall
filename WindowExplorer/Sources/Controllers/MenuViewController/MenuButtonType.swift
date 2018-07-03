@@ -81,4 +81,8 @@ enum MenuButtonType {
             return nil
         }
     }
+
+    static var allValues: [MenuButtonType] {
+        return [.split, .map, .timeline, .information, .settings, .search, .testimony]
+    }
 }

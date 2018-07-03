@@ -11,11 +11,11 @@ final class TimelineHandler {
     private weak var ungroupTimer: Foundation.Timer?
 
     private var pair: Int? {
-        return ConnectionManager.instance.pairForApp(id: appID)
+        return ConnectionManager.instance.pairForApp(id: appID, type: .timeline)
     }
 
     private var group: Int? {
-        return ConnectionManager.instance.groupForApp(id: appID)
+        return ConnectionManager.instance.groupForApp(id: appID, type: .timeline)
     }
 
     private struct Constants {
@@ -25,6 +25,7 @@ final class TimelineHandler {
     private struct Keys {
         static let id = "id"
         static let rect = "rect"
+        static let type = "type"
         static let group = "group"
         static let animated = "amimated"
         static let gesture = "gestureType"
@@ -70,8 +71,8 @@ final class TimelineHandler {
     }
 
     func endActivity() {
-        ConnectionManager.instance.set(state: AppState(pair: nil, group: group, type: .timeline), forApp: appID)
-        let info: JSON = [Keys.id: appID]
+        ConnectionManager.instance.set(AppState(pair: nil, group: group), for: .timeline, id: appID)
+        let info: JSON = [Keys.id: appID, Keys.type: ApplicationType.timeline.rawValue]
         DistributedNotificationCenter.default().postNotificationName(SettingsNotification.unpair.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
@@ -112,7 +113,7 @@ final class TimelineHandler {
         }
 
         if activityState == .idle {
-            let info: JSON = [Keys.id: appID, Keys.group: appID]
+            let info: JSON = [Keys.id: appID, Keys.type: ApplicationType.timeline.rawValue, Keys.group: appID]
             DistributedNotificationCenter.default().postNotificationName(SettingsNotification.ungroup.name, object: nil, userInfo: info, deliverImmediately: true)
         }
     }

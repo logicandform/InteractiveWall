@@ -77,8 +77,9 @@ final class SelectionManager {
     // MARK: Helpers
 
     private func set(_ indexSet: Set<Int>, group: Int?) {
-        for (app, state) in ConnectionManager.instance.stateForApp.enumerated() {
+        let appStates = ConnectionManager.instance.states(for: .timeline).enumerated()
 
+        for (app, state) in appStates {
             // Check if same group
             if state.group == group {
                 selectionForApp[app] = indexSet
@@ -87,8 +88,10 @@ final class SelectionManager {
     }
 
     private func set(index: Int, group: Int?, selected: Bool) {
-        for (app, state) in ConnectionManager.instance.stateForApp.enumerated() {
+        let appStates = ConnectionManager.instance.states(for: .timeline).enumerated()
 
+
+        for (app, state) in appStates {
             // Check if same group
             if state.group == group {
                 if selected {

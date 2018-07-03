@@ -52,6 +52,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         static let id = "id"
         static let type = "type"
         static let group = "group"
+        static let oldType = "oldType"
     }
 
 
@@ -83,30 +84,29 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     }
 
     func toggleMergeLock(on: Bool) {
-        if mergeLocked != on, let splitButton = viewForButtonType[MenuButtonType.split] {
-            mergeLocked = splitButton.toggleLockIcon(on: on)
+        if mergeLocked != on, let splitButton = viewForButtonType[.split] {
+            splitButton.toggleLockIcon(on: on)
+            mergeLocked = on
         }
     }
 
-    func toggle(_ type: MenuButtonType, to state: ButtonState) {
-        guard let currentState = stateForButton[type], currentState != state || type == .search || type == .testimony, let button = viewForButtonType[type] else {
+    func toggle(_ type: MenuButtonType, to state: ButtonState, forced: Bool = false) {
+        if let currentState = stateForButton[type], currentState == state, !forced {
             return
         }
 
         // Set the new state & transition image
         stateForButton[type] = state
-        button.toggle(to: state)
+        if let button = viewForButtonType[type] {
+            button.toggle(to: state)
+        }
 
         switch type {
         case .map where state == .on:
-            // Send notification for switch
-            // TODO: UBC-440
             toggle(.timeline, to: .off)
             toggle(.settings, to: .off)
             toggle(.information, to: .off)
         case .timeline where state == .on:
-            // Send notification for switch
-            // TODO: UBC-440
             toggle(.map, to: .off)
             toggle(.settings, to: .off)
             toggle(.information, to: .off)
@@ -143,13 +143,8 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     }
 
     private func setupButtons() {
-        setupButton(for: .split)
-        setupButton(for: .map)
-        setupButton(for: .timeline)
-        setupButton(for: .information)
-        setupButton(for: .settings)
-        setupButton(for: .testimony)
-        setupButton(for: .search)
+        MenuButtonType.allValues.forEach { setupButton(for: $0) }
+        toggle(.map, to: .on)
     }
 
     private func setupSettings() {
@@ -184,7 +179,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         case .information, .settings:
             toggle(type, to: state.toggled)
         case .search, .testimony:
-            toggle(type, to: .on)
+            toggle(type, to: .on, forced: true)
         }
     }
 
@@ -262,10 +257,6 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             stateForButton[type] = .off
         case .map, .timeline, .information, .settings, .testimony, .search:
             stateForButton[type] = .off
-        }
-
-        if let selectedType = MenuButtonType.from(Configuration.initialType) {
-            toggle(selectedType, to: .on)
         }
     }
 
@@ -373,7 +364,8 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     }
 
     private func postSplitNotification() {
-        var info: JSON = [Keys.id: appID]
+        let type = ConnectionManager.instance.typeForApp(id: appID)
+        var info: JSON = [Keys.id: appID, Keys.type: type.rawValue]
         if let group = ConnectionManager.instance.groupForApp(id: appID) {
             info[Keys.group] = group
         }
@@ -381,7 +373,8 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     }
 
     private func postMergeNotification() {
-        var info: JSON = [Keys.id: appID]
+        let type = ConnectionManager.instance.typeForApp(id: appID)
+        var info: JSON = [Keys.id: appID, Keys.type: type.rawValue]
         if let group = ConnectionManager.instance.groupForApp(id: appID) {
             info[Keys.group] = group
         }
@@ -389,10 +382,11 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     }
 
     private func postTransitionNotification(for type: MenuButtonType) {
-        guard let applicationType = type.applicationType else {
+        guard let newType = type.applicationType else {
             return
         }
-        var info: JSON = [Keys.id: appID, Keys.type: applicationType.rawValue]
+        let oldType = ConnectionManager.instance.typeForApp(id: appID)
+        var info: JSON = [Keys.id: appID, Keys.type: newType.rawValue, Keys.oldType: oldType.rawValue]
         if let group = ConnectionManager.instance.groupForApp(id: appID) {
             info[Keys.group] = group
         }

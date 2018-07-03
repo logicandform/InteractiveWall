@@ -10,7 +10,7 @@ class MenuButton: NSView {
     @IBOutlet weak var contentView: NSView!
     @IBOutlet weak var lockIcon: NSImageView!
 
-    var buttonType: MenuButtonType! {
+    var buttonType: MenuButtonType? {
         didSet {
             setupButton()
         }
@@ -41,11 +41,7 @@ class MenuButton: NSView {
     // MARK: Setup
 
     private func setupButton() {
-        guard let imageIcon = buttonType.image else {
-            return
-        }
-
-        layer?.contents = imageIcon
+        layer?.contents = buttonType?.image
         lockIcon.isHidden = true
     }
 
@@ -54,20 +50,14 @@ class MenuButton: NSView {
 
     func toggle(to status: ButtonState) {
         toggleStatus = status
-        let image = status == .on ? buttonType.selectedImage : buttonType.image
+        let image = status == .on ? buttonType?.selectedImage : buttonType?.image
         transition(to: image, duration: Constants.imageTransitionDuration)
     }
 
-    func toggleLockIcon(on: Bool) -> Bool {
-        guard buttonType.detailImage != nil else {
-            return false
-        }
-
+    func toggleLockIcon(on: Bool) {
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.imageTransitionDuration
             lockIcon.animator().isHidden = !on
         })
-
-        return on
     }
 }

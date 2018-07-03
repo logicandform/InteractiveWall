@@ -6,7 +6,6 @@ import Cocoa
 struct Configuration {
     static let serverIP = "10.58.73.211"
     static let serverURL = "http://\(serverIP):3000"
-    static let initialType = ApplicationType.mapExplorer
     static let appsPerScreen = 2
     static let numberOfScreens = 1
     static let touchScreenSize = CGSize(width: 21564, height: 12116)
@@ -21,34 +20,20 @@ var appID = 0
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    private var window: NSWindow!
-
-    private struct Keys {
-        static let group = "group"
-        static let type = "type"
-    }
-
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         let screenIndex = Int(CommandLine.arguments[1]) ?? 0
         let appIndex = Int(CommandLine.arguments[2]) ?? 0
         screenID = screenIndex
         appID = appIndex + ((screenIndex - 1) * Configuration.appsPerScreen)
         let screen = NSScreen.at(position: screenIndex)
-        let controller = Configuration.initialType.controller()
+        let controller = MapViewController.instance()
         let screenWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen)
         let frame = NSRect(x: screen.frame.minX + screenWidth * CGFloat(appIndex), y: screen.frame.minY, width: screenWidth, height: screen.frame.height)
-        window = BorderlessWindow(frame: frame, controller: controller)
+        let window = BorderlessWindow(frame: frame, controller: controller)
         window.setFrame(frame, display: true)
         window.makeKeyAndOrderFront(self)
 
         TouchManager.instance.setupPort()
         ConnectionManager.instance.registerForNotifications()
-    }
-
-
-    // MARK: API
-
-    func transition(to type: ApplicationType) {
-        window.contentViewController = type.controller()
     }
 }

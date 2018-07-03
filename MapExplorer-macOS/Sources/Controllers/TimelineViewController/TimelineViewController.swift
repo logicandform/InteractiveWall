@@ -6,11 +6,10 @@ import Cocoa
 class TimelineViewController: NSViewController, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "Timeline")
 
-    @IBOutlet weak var backgroudImageView: NSImageView!
+    @IBOutlet weak var timelineBackgroundView: NSView!
     @IBOutlet weak var timelineCollectionView: FlippedCollectionView!
     @IBOutlet weak var timelineScrollView: NSScrollView!
     @IBOutlet weak var timelineClipView: NSClipView!
-    @IBOutlet weak var timelineBackgroundView: NSView!
 
     var gestureManager: GestureManager!
     private var timelineHandler: TimelineHandler?
@@ -19,10 +18,12 @@ class TimelineViewController: NSViewController, GestureResponder {
     private struct Constants {
         static let timelineCellWidth: CGFloat = 20
         static let timelineSelectedCellWidth: CGFloat = 150
+        static let animationDuration = 0.5
     }
 
     private struct Keys {
         static let id = "id"
+        static let type = "type"
         static let group = "group"
         static let index = "index"
         static let state = "state"
@@ -38,15 +39,25 @@ class TimelineViewController: NSViewController, GestureResponder {
     }
 
 
+    // MARK: API
+
+    func fade(out: Bool) {
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = Constants.animationDuration
+            timelineBackgroundView.animator().alphaValue = out ? 0 : 1
+        })
+    }
+
+
     // MARK: Life-Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         gestureManager = GestureManager(responder: self)
-        TouchManager.instance.register(gestureManager)
+        TouchManager.instance.register(gestureManager, for: .timeline)
 
+        setupViews()
         setupTimeline()
-        setupBackground()
         setupGestures()
         setupNotifications()
     }
@@ -54,19 +65,20 @@ class TimelineViewController: NSViewController, GestureResponder {
 
     // MARK: Setup
 
+    private func setupViews() {
+        timelineBackgroundView.alphaValue = 0
+        timelineBackgroundView.wantsLayer = true
+        timelineBackgroundView.layer?.backgroundColor = style.timelineBackgroundColor.cgColor
+    }
+
     private func setupTimeline() {
         timelineHandler = TimelineHandler(timeline: timelineCollectionView)
         ConnectionManager.instance.timelineHandler = timelineHandler
+        ConnectionManager.instance.timelineViewController = self
         timelineCollectionView.register(TimelineItemView.self, forItemWithIdentifier: TimelineItemView.identifier)
         timelineCollectionView.register(NSNib(nibNamed: TimelineHeaderView.nibName, bundle: .main), forSupplementaryViewOfKind: TimelineHeaderView.supplementaryKind, withIdentifier: TimelineHeaderView.identifier)
         timelineCollectionView.dataSource = source
         timelineScrollView.horizontalScroller?.alphaValue = 0
-        timelineBackgroundView.layer?.backgroundColor = style.timelineBackgroundColor.cgColor
-    }
-
-    private func setupBackground() {
-        let name = appID % Configuration.appsPerScreen == 0 ? "MapLeft" : "MapRight"
-        backgroudImageView.image = NSImage(named: name)
     }
 
     private func setupGestures() {
@@ -84,6 +96,7 @@ class TimelineViewController: NSViewController, GestureResponder {
     }
 
     private func setupNotifications() {
+        DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: SettingsNotification.transition.name, object: nil)
         for notification in TimelineNotification.allValues {
             DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
         }
@@ -127,7 +140,7 @@ class TimelineViewController: NSViewController, GestureResponder {
 
     @objc
     private func handleNotification(_ notification: NSNotification) {
-        guard let info = notification.userInfo, ConnectionManager.instance.groupForApp(id: appID) == info[Keys.group] as? Int else {
+        guard let info = notification.userInfo else {
             return
         }
 
@@ -150,7 +163,7 @@ class TimelineViewController: NSViewController, GestureResponder {
 
     private func postSelectNotification(for index: Int, state: Bool) {
         var info: JSON = [Keys.id: appID, Keys.index: index, Keys.state: state]
-        if let group = ConnectionManager.instance.groupForApp(id: appID) {
+        if let group = ConnectionManager.instance.groupForApp(id: appID, type: .timeline) {
             info[Keys.group] = group
         }
         DistributedNotificationCenter.default().postNotificationName(TimelineNotification.select.name, object: nil, userInfo: info, deliverImmediately: true)
@@ -168,14 +181,17 @@ class TimelineViewController: NSViewController, GestureResponder {
     }
 
     private func set(_ index: Int, selected: Bool) {
-        if let timelineItem = timelineCollectionView.item(at: IndexPath(item: index, section: 0)) as? TimelineItemView {
-            timelineItem.set(highlighted: selected)
-        }
-
         if selected {
             source.selectedIndexes.insert(index)
         } else {
             source.selectedIndexes.remove(index)
+        }
+
+        // Update item view for index
+        let indexPath = IndexPath(item: index, section: 0)
+        if let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineItemView, let attributes = timelineCollectionView.collectionViewLayout?.layoutAttributesForItem(at: indexPath) {
+            timelineItem.view.layer?.zPosition = CGFloat(attributes.zIndex)
+            timelineItem.animate(to: attributes.size)
         }
     }
 }

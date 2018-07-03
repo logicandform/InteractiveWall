@@ -11,30 +11,20 @@
             <objects>
                 <viewController id="qGn-1v-M5l" customClass="TimelineViewController" customModule="MapExplorer_macOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="xW1-Dr-xog">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="489" height="359"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5Xa-gf-tcM">
-                                <rect key="frame" x="0.0" y="0.0" width="450" height="504"/>
-                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" id="8oO-uf-32z"/>
-                            </imageView>
-                            <visualEffectView hidden="YES" wantsLayer="YES" appearanceType="vibrantDark" blendingMode="withinWindow" material="dark" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="Xh4-TH-Y2b">
-                                <rect key="frame" x="0.0" y="0.0" width="450" height="504"/>
-                            </visualEffectView>
-                            <customView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tex-Yc-gyJ">
-                                <rect key="frame" x="0.0" y="126" width="450" height="252"/>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="yPT-yt-MBL">
+                                <rect key="frame" x="0.0" y="90" width="489" height="180"/>
                                 <subviews>
-                                    <visualEffectView hidden="YES" wantsLayer="YES" appearanceType="vibrantDark" blendingMode="withinWindow" material="dark" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="WqE-dL-JC8">
-                                        <rect key="frame" x="0.0" y="0.0" width="450" height="252"/>
-                                    </visualEffectView>
-                                    <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="FoW-Io-IhM">
-                                        <rect key="frame" x="0.0" y="36" width="450" height="216"/>
+                                    <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="FoW-Io-IhM">
+                                        <rect key="frame" x="0.0" y="25" width="489" height="155"/>
                                         <clipView key="contentView" drawsBackground="NO" id="2EQ-1e-jeX">
-                                            <rect key="frame" x="0.0" y="0.0" width="450" height="216"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="489" height="155"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <collectionView id="hh4-uZ-Why" customClass="FlippedCollectionView" customModule="MapExplorer_macOS" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="0.0" width="450" height="158"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="489" height="155"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                     <collectionViewLayout key="collectionViewLayout" id="bJW-po-dwy" customClass="TimelineLayout" customModule="MapExplorer_macOS" customModuleProvider="target"/>
                                                     <color key="primaryBackgroundColor" red="0.44063859179674914" green="0.44326171874999998" blue="0.42965281942173822" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -46,43 +36,29 @@
                                             <rect key="frame" x="-100" y="-100" width="233" height="15"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
-                                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="NTd-xJ-g9d">
-                                            <rect key="frame" x="-100" y="-100" width="16" height="216"/>
+                                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="NTd-xJ-g9d">
+                                            <rect key="frame" x="473" y="0.0" width="16" height="153"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="WqE-dL-JC8" secondAttribute="bottom" id="5Ac-BQ-fJC"/>
-                                    <constraint firstItem="WqE-dL-JC8" firstAttribute="leading" secondItem="tex-Yc-gyJ" secondAttribute="leading" id="H0A-3r-oCm"/>
-                                    <constraint firstItem="FoW-Io-IhM" firstAttribute="top" secondItem="tex-Yc-gyJ" secondAttribute="top" id="aTq-HQ-RUP"/>
-                                    <constraint firstItem="WqE-dL-JC8" firstAttribute="top" secondItem="tex-Yc-gyJ" secondAttribute="top" id="b6t-ql-msa"/>
-                                    <constraint firstAttribute="trailing" secondItem="WqE-dL-JC8" secondAttribute="trailing" id="eO2-RU-o4c"/>
-                                    <constraint firstItem="FoW-Io-IhM" firstAttribute="leading" secondItem="tex-Yc-gyJ" secondAttribute="leading" id="fA2-N0-NH9"/>
-                                    <constraint firstItem="FoW-Io-IhM" firstAttribute="height" secondItem="tex-Yc-gyJ" secondAttribute="height" multiplier="6:7" id="tOf-xI-1an"/>
-                                    <constraint firstAttribute="trailing" secondItem="FoW-Io-IhM" secondAttribute="trailing" id="uoj-Fj-TlG"/>
+                                    <constraint firstItem="FoW-Io-IhM" firstAttribute="leading" secondItem="yPT-yt-MBL" secondAttribute="leading" id="4Qe-YX-ym7"/>
+                                    <constraint firstItem="FoW-Io-IhM" firstAttribute="top" secondItem="yPT-yt-MBL" secondAttribute="top" id="EQv-vO-tvf"/>
+                                    <constraint firstItem="FoW-Io-IhM" firstAttribute="height" secondItem="yPT-yt-MBL" secondAttribute="height" multiplier="6:7" id="nnt-W4-iab"/>
+                                    <constraint firstAttribute="trailing" secondItem="FoW-Io-IhM" secondAttribute="trailing" id="vM7-22-8ry"/>
                                 </constraints>
                             </customView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="5Xa-gf-tcM" firstAttribute="leading" secondItem="xW1-Dr-xog" secondAttribute="leading" id="2xV-cE-4HS"/>
-                            <constraint firstAttribute="trailing" secondItem="5Xa-gf-tcM" secondAttribute="trailing" id="7O3-Qa-AXA"/>
-                            <constraint firstItem="tex-Yc-gyJ" firstAttribute="height" secondItem="xW1-Dr-xog" secondAttribute="height" multiplier="1:2" id="Dk9-rf-q7O"/>
-                            <constraint firstItem="Xh4-TH-Y2b" firstAttribute="top" secondItem="xW1-Dr-xog" secondAttribute="top" id="M2F-mG-8FB"/>
-                            <constraint firstAttribute="bottom" secondItem="5Xa-gf-tcM" secondAttribute="bottom" id="OJc-Q0-Ske"/>
-                            <constraint firstItem="tex-Yc-gyJ" firstAttribute="leading" secondItem="xW1-Dr-xog" secondAttribute="leading" id="Td9-Ei-Xbe"/>
-                            <constraint firstItem="5Xa-gf-tcM" firstAttribute="top" secondItem="xW1-Dr-xog" secondAttribute="top" id="V7J-by-Hbg"/>
-                            <constraint firstAttribute="trailing" secondItem="Xh4-TH-Y2b" secondAttribute="trailing" id="Wcx-fC-jg7"/>
-                            <constraint firstItem="Xh4-TH-Y2b" firstAttribute="leading" secondItem="xW1-Dr-xog" secondAttribute="leading" id="aTY-RW-vNx"/>
-                            <constraint firstAttribute="bottom" secondItem="Xh4-TH-Y2b" secondAttribute="bottom" id="ghd-iO-B1g"/>
-                            <constraint firstItem="tex-Yc-gyJ" firstAttribute="centerX" secondItem="xW1-Dr-xog" secondAttribute="centerX" id="obf-gk-UW9"/>
-                            <constraint firstAttribute="trailing" secondItem="tex-Yc-gyJ" secondAttribute="trailing" id="vXy-eR-Xdz"/>
-                            <constraint firstItem="tex-Yc-gyJ" firstAttribute="centerY" secondItem="xW1-Dr-xog" secondAttribute="centerY" id="yli-AJ-YmS"/>
+                            <constraint firstItem="yPT-yt-MBL" firstAttribute="height" secondItem="xW1-Dr-xog" secondAttribute="height" multiplier="1:2" id="4kl-l1-jT1"/>
+                            <constraint firstAttribute="trailing" secondItem="yPT-yt-MBL" secondAttribute="trailing" id="Shd-6P-MgF"/>
+                            <constraint firstItem="yPT-yt-MBL" firstAttribute="leading" secondItem="xW1-Dr-xog" secondAttribute="leading" id="c7y-eD-7MD"/>
+                            <constraint firstItem="yPT-yt-MBL" firstAttribute="centerY" secondItem="xW1-Dr-xog" secondAttribute="centerY" id="x80-A1-rgY"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="backgroudImageView" destination="5Xa-gf-tcM" id="Rk0-pb-gaA"/>
-                        <outlet property="timelineBackgroundView" destination="tex-Yc-gyJ" id="OYx-1E-imI"/>
+                        <outlet property="timelineBackgroundView" destination="yPT-yt-MBL" id="jUN-GU-z25"/>
                         <outlet property="timelineClipView" destination="2EQ-1e-jeX" id="yoW-RT-tSB"/>
                         <outlet property="timelineCollectionView" destination="hh4-uZ-Why" id="5IC-wt-0fY"/>
                         <outlet property="timelineScrollView" destination="FoW-Io-IhM" id="JQ2-Ok-LVn"/>
@@ -90,7 +66,7 @@
                 </viewController>
                 <customObject id="7uZ-GQ-LBt" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="70" y="44"/>
+            <point key="canvasLocation" x="89.5" y="-28.5"/>
         </scene>
     </scenes>
 </document>

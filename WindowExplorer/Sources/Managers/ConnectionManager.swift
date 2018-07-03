@@ -3,15 +3,21 @@
 import Foundation
 
 
-typealias AppState = (pair: Int?, group: Int?, type: ApplicationType)
+typealias AppState = (pair: Int?, group: Int?)
 
 
 /// Class used to determine which application's are paired with one another.
 final class ConnectionManager {
     static let instance = ConnectionManager()
 
-    /// The state for each app indexed by it's appID
-    private(set) var stateForApp: [AppState]
+    /// The current application type for an appID
+    private var typeForApp = [ApplicationType]()
+
+    /// The state for each map indexed by it's appID
+    private var stateForMap: [AppState]
+
+    /// The state for each timeline indexed by it's appID
+    private var stateForTimeline: [AppState]
 
     /// A timer used to reset the entire installation when no activity has been detected
     private weak var resetTimer: Foundation.Timer?
@@ -25,6 +31,7 @@ final class ConnectionManager {
         static let map = "map"
         static let type = "type"
         static let group = "group"
+        static let oldType = "oldType"
         static let animated = "amimated"
         static let gesture = "gestureType"
     }
@@ -35,26 +42,65 @@ final class ConnectionManager {
     /// Use Singleton
     private init() {
         let numberOfApps = Configuration.appsPerScreen * Configuration.numberOfScreens
-        let initialState = AppState(pair: nil, group: nil, type: Configuration.initialType)
-        self.stateForApp = Array(repeating: initialState, count: numberOfApps)
+        let initialState = AppState(pair: nil, group: nil)
+        self.stateForMap = Array(repeating: initialState, count: numberOfApps)
+        self.stateForTimeline = Array(repeating: initialState, count: numberOfApps)
+        self.typeForApp = Array(repeating: .mapExplorer, count: numberOfApps)
     }
 
 
     // MARK: API
 
     /// Returns the current pair for the given appID
-    func pairForApp(id: Int) -> Int? {
-        return stateForApp.at(index: id)?.pair
+    func pairForApp(id: Int, type: ApplicationType) -> Int? {
+        switch type {
+        case .mapExplorer:
+            return stateForMap.at(index: id)?.pair
+        case .timeline:
+            return stateForTimeline.at(index: id)?.pair
+        case .nodeNetwork:
+            return nil
+        }
     }
 
     /// Returns the current group for the given appID
     func groupForApp(id: Int) -> Int? {
-        return stateForApp.at(index: id)?.group
+        switch typeForApp(id: id) {
+        case .mapExplorer:
+            return stateForMap.at(index: id)?.group
+        case .timeline:
+            return stateForTimeline.at(index: id)?.group
+        case .nodeNetwork:
+            return nil
+        }
     }
 
     /// Returns the current application type for the given appID
-    func typeForApp(id: Int) -> ApplicationType? {
-        return stateForApp.at(index: id)?.type
+    func typeForApp(id: Int) -> ApplicationType {
+        return typeForApp[id]
+    }
+
+    /// Set the state of an application
+    func set(_ state: AppState, for type: ApplicationType, id: Int) {
+        switch type {
+        case .mapExplorer:
+            stateForMap[id] = state
+        case .timeline:
+            stateForTimeline[id] = state
+        case .nodeNetwork:
+            return
+        }
+    }
+
+    func states(for type: ApplicationType) -> [AppState] {
+        switch type {
+        case .mapExplorer:
+            return stateForMap
+        case .timeline:
+            return stateForTimeline
+        case .nodeNetwork:
+            return []
+        }
     }
 
     func registerForNotifications() {
@@ -90,24 +136,29 @@ final class ConnectionManager {
                 setAppState(from: id, group: group, for: .timeline, momentum: state == .momentum)
             }
         case SettingsNotification.transition.name:
-            if let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
-                set(type, from: id, group: group)
-                updateMenus(group: group, to: type)
+            if let newTypeString = info[Keys.type] as? String, let newType = ApplicationType(rawValue: newTypeString), let oldTypeString = info[Keys.oldType] as? String, let oldType = ApplicationType(rawValue: oldTypeString) {
+                transition(from: oldType, to: newType, id: id, group: group)
                 resetSelection(group: group)
             }
         case SettingsNotification.unpair.name:
-            unpair(from: id)
+            if let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
+                unpair(from: id, for: type)
+            }
             resetTimer?.invalidate()
         case SettingsNotification.ungroup.name:
             beginResetTimer()
-            if let group = group {
-                ungroup(from: group)
+            if let group = group, let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
+                ungroup(from: group, for: type)
             }
         case SettingsNotification.split.name:
-            split(from: id, group: group)
+            if let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
+                split(from: id, group: group, of: type)
+            }
         case SettingsNotification.merge.name:
-            merge(from: id, group: group)
-            syncApps(group: group)
+            if let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
+                merge(from: id, group: group, of: type)
+                syncApps(group: group, type: type)
+            }
         default:
             return
         }
@@ -116,18 +167,26 @@ final class ConnectionManager {
 
     // MARK: Helpers
 
-    private func set(_ type: ApplicationType, from id: Int, group: Int?) {
-        for (app, state) in stateForApp.enumerated() {
+    private func transition(from oldType: ApplicationType, to newType: ApplicationType, id: Int, group: Int?) {
+        let appStates = states(for: oldType).enumerated()
+
+        for (app, state) in appStates {
+            if oldType != typeForApp(id: app) {
+                continue
+            }
+
             // Check for current group
             if state.group == group {
                 // Check for current pair
                 if let appPair = state.pair {
                     // Check if incoming id is closer than current pair
-                    if abs(app - id) < abs(app - appPair) {
-                        stateForApp[app] = AppState(pair: nil, group: id, type: type)
+                    if abs(app - id) < abs(app - appPair) || appPair == id {
+                        typeForApp[app] = newType
+                        updateMenu(id: app, to: newType)
                     }
                 } else {
-                    stateForApp[app] = AppState(pair: nil, group: id, type: type)
+                    typeForApp[app] = newType
+                    updateMenu(id: app, to: newType)
                 }
             }
         }
@@ -136,12 +195,10 @@ final class ConnectionManager {
 
     /// Set all app states accordingly when a app sends its position
     private func setAppState(from id: Int, group: Int, for type: ApplicationType, momentum: Bool) {
-        for (app, state) in stateForApp.enumerated() {
-            // Only receive updates for apps of the same type
-            if type != state.type {
-                continue
-            }
+        let newState = AppState(pair: id, group: id)
+        let appStates = states(for: type).enumerated()
 
+        for (app, state) in appStates {
             // Check for current group
             if let appGroup = state.group, appGroup == group {
                 // Once paired with own screen, don't group to other screens
@@ -156,29 +213,24 @@ final class ConnectionManager {
                 if let appPair = state.pair {
                     // Check if incoming id is closer than current pair
                     if abs(app - id) < abs(app - appPair) {
-                        stateForApp[app] = AppState(pair: id, group: id, type: state.type)
+                        set(newState, for: type, id: app)
                     }
                 } else if !momentum {
-                    stateForApp[app] = AppState(pair: id, group: id, type: state.type)
+                    set(newState, for: type, id: app)
                 }
             } else if state.group == nil {
-                stateForApp[app] = AppState(pair: id, group: id, type: state.type)
+                set(newState, for: type, id: app)
             }
         }
         updateViews()
     }
 
     /// Initiates a split between applications within the screen containing the given appID
-    private func split(from id: Int, group: Int?) {
-        let type = typeForApp(id: id)
+    private func split(from id: Int, group: Int?, of type: ApplicationType) {
         let neighborID = id % Configuration.appsPerScreen == 0 ? id + 1 : id - 1
+        let appStates = states(for: type).enumerated()
 
-        for (app, state) in stateForApp.enumerated() {
-            // Only receive updates for apps of the same type
-            if type != state.type {
-                continue
-            }
-
+        for (app, state) in appStates {
             // Calculate closest appID of the screen being split
             let closestApp = abs(app - id) < abs(app - neighborID) ? id : neighborID
 
@@ -194,26 +246,22 @@ final class ConnectionManager {
                 }
                 // If app is farther or equal to the group then the app splitting, join the closest appID
                 if abs(appGroup - app) >= abs(appGroup - id) {
-                    stateForApp[app] = AppState(pair: nil, group: closestApp, type: state.type)
+                    set(AppState(pair: nil, group: closestApp), for: type, id: app)
                 }
             } else if state.group == nil {
                 // Group with the closest of the two apps being split
-                stateForApp[app] = AppState(pair: nil, group: closestApp, type: state.type)
+                set(AppState(pair: nil, group: closestApp), for: type, id: app)
             }
         }
         updateViews()
     }
 
-    private func merge(from id: Int, group: Int?) {
-        let type = typeForApp(id: id)
+    private func merge(from id: Int, group: Int?, of type: ApplicationType) {
         let neighborID = id % Configuration.appsPerScreen == 0 ? id + 1 : id - 1
+        let newState = AppState(pair: nil, group: id)
+        let appStates = states(for: type).enumerated()
 
-        for (app, state) in stateForApp.enumerated() {
-            // Only receive updates for apps of the same type
-            if type != state.type {
-                continue
-            }
-
+        for (app, state) in appStates {
             // Check for current group
             if let appGroup = state.group, appGroup == group {
                 // Once paired with own screen, don't group to other screens
@@ -228,56 +276,59 @@ final class ConnectionManager {
                 if let appPair = state.pair {
                     // Check if incoming id is closer than current pair
                     if abs(app - id) < abs(app - appPair) {
-                        stateForApp[app] = AppState(pair: nil, group: id, type: state.type)
+                        set(newState, for: type, id: app)
                     }
                 } else {
-                    stateForApp[app] = AppState(pair: nil, group: id, type: state.type)
+                    set(newState, for: type, id: app)
                 }
             } else if state.group == nil {
-                stateForApp[app] = AppState(pair: nil, group: id, type: state.type)
+                set(newState, for: type, id: app)
             } else if app == neighborID || state.group == neighborID {
                 // Force the merge of neighbor app and everyone in it's group
-                stateForApp[app] = AppState(pair: nil, group: id, type: state.type)
+                set(newState, for: type, id: app)
             }
         }
         updateViews()
     }
 
     /// If paired to the given id, will unpair else ignore
-    private func unpair(from id: Int) {
-        for (app, state) in stateForApp.enumerated() {
+    private func unpair(from id: Int, for type: ApplicationType) {
+        let appStates = states(for: type).enumerated()
+
+        for (app, state) in appStates {
             if let currentPair = state.pair, currentPair == id {
-                stateForApp[app] = AppState(pair: nil, group: state.group, type: state.type)
+                set(AppState(pair: nil, group: state.group), for: type, id: app)
             }
         }
         updateViews()
     }
 
     /// Ungroup all apps from group with given id
-    private func ungroup(from id: Int) {
-        guard let type = typeForApp(id: id) else {
-            return
-        }
+    private func ungroup(from id: Int, for type: ApplicationType) {
+        var appStates = states(for: type).enumerated()
 
         // Clear groups with given id
-        for (app, state) in stateForApp.enumerated() {
+        for (app, state) in appStates {
             if let currentGroup = state.group, currentGroup == id {
-                stateForApp[app] = AppState(pair: nil, group: nil, type: state.type)
+                set(AppState(pair: nil, group: nil), for: type, id: app)
             }
         }
+
         // Find the closest group for all ungrouped apps of the same type
-        for (app, state) in stateForApp.enumerated() {
+        appStates = states(for: type).enumerated()
+        for (app, state) in appStates {
             if state.group == nil {
                 let group = findGroupForApp(id: app, of: type)
-                stateForApp[app] = AppState(pair: nil, group: group, type: state.type)
-                syncApps(group: group)
+                set(AppState(pair: nil, group: group), for: type, id: app)
+                syncApps(group: group, type: type)
             }
         }
     }
 
     /// Find the closest group to a given app
     private func findGroupForApp(id: Int, of type: ApplicationType) -> Int? {
-        let sortedAppStates = stateForApp.enumerated().sorted {
+        let appStates = states(for: type).enumerated()
+        let sortedAppStates = appStates.sorted {
             if screen(of: $0.0) == screen(of: $1.0) {
                 return abs(id - $0.0) < abs(id - $1.0)
             }
@@ -285,8 +336,7 @@ final class ConnectionManager {
         }
 
         let externalApps = sortedAppStates.dropFirst()
-        let filteredApps = externalApps.filter { $0.1.type == type }
-        return filteredApps.compactMap({ $0.1.group }).first
+        return externalApps.compactMap({ $0.1.group }).first
     }
 
     /// Returns the screen id of the given app id
@@ -296,14 +346,18 @@ final class ConnectionManager {
 
     /// Shows / Hides borders between applications and notifies menu controllers of updates
     private func updateViews() {
+        let numberOfApps = Configuration.appsPerScreen * Configuration.numberOfScreens
+
         // Update the split button and lock view in each menu controller
-        for (app, state) in stateForApp.enumerated() {
+        for app in (0 ..< numberOfApps) {
+            let type = typeForApp(id: app)
+            let statesForType = states(for: type)
             let menu = MenuManager.instance.menuForApp(id: app)
             let border = MenuManager.instance.borderForApp(id: app)
             let neighborID = app % Configuration.appsPerScreen == 0 ? app + 1 : app - 1
-            let neighborPair = pairForApp(id: neighborID)
-            let differentTypes = typeForApp(id: app) != typeForApp(id: neighborID)
-            let split = state.group != groupForApp(id: neighborID) || differentTypes
+            let neighborPair = pairForApp(id: neighborID, type: type)
+            let differentTypes = type != typeForApp(id: neighborID)
+            let split = differentTypes || statesForType[app].group != statesForType[neighborID].group
             let mergeLocked = differentTypes || split && neighborPair == neighborID
             menu?.toggle(.split, to: split ? .on : .off)
             menu?.toggleMergeLock(on: mergeLocked)
@@ -311,17 +365,11 @@ final class ConnectionManager {
         }
     }
 
-    /// Sets the menu button type for application in the group to on
-    private func updateMenus(group: Int?, to type: ApplicationType) {
-        guard let menuButtonType = MenuButtonType.from(type) else {
-            return
-        }
-
-        for (app, state) in stateForApp.enumerated() {
-            if state.group == group {
-                let menu = MenuManager.instance.menuForApp(id: app)
-                menu?.toggle(menuButtonType, to: .on)
-            }
+    /// Sets the menu for the application id to the given type
+    private func updateMenu(id: Int, to type: ApplicationType) {
+        if let menuButtonType = MenuButtonType.from(type) {
+            let menu = MenuManager.instance.menuForApp(id: id)
+            menu?.toggle(menuButtonType, to: .on)
         }
     }
 
@@ -331,9 +379,9 @@ final class ConnectionManager {
         }
     }
 
-    private func syncApps(group: Int?) {
+    private func syncApps(group: Int?, type: ApplicationType) {
         if let group = group {
-            SettingsManager.instance.syncApps(group: group)
+            SettingsManager.instance.syncApps(group: group, type: type)
             SelectionManager.instance.syncApps(group: group)
         }
     }

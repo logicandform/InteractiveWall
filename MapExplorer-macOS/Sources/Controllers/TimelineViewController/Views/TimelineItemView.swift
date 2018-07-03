@@ -38,6 +38,22 @@ class TimelineItemView: NSCollectionViewItem {
         }
     }
 
+    func animate(to size: CGSize) {
+        if size.width > view.frame.size.width {
+            view.animator().setFrameSize(size)
+            set(highlighted: true)
+        } else {
+            let newSize = CGSize(width: size.width - 2, height: size.height - 4)
+            NSAnimationContext.runAnimationGroup({ _ in
+                NSAnimationContext.current.duration = 0.15
+                contentView.animator().setFrameSize(newSize)
+            }, completionHandler: { [weak self] in
+                self?.view.frame.size = size
+                self?.set(highlighted: false)
+            })
+        }
+    }
+
 
     // MARK: Overrides
 

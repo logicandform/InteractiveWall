@@ -17,11 +17,11 @@ final class MapHandler {
     private weak var ungroupTimer: Foundation.Timer?
 
     private var pair: Int? {
-        return ConnectionManager.instance.pairForApp(id: appID)
+        return ConnectionManager.instance.pairForApp(id: appID, type: .mapExplorer)
     }
 
     private var group: Int? {
-        return ConnectionManager.instance.groupForApp(id: appID)
+        return ConnectionManager.instance.groupForApp(id: appID, type: .mapExplorer)
     }
 
     private struct Constants {
@@ -33,6 +33,7 @@ final class MapHandler {
     private struct Keys {
         static let id = "id"
         static let map = "map"
+        static let type = "type"
         static let group = "group"
         static let gesture = "gestureType"
         static let animated = "amimated"
@@ -78,8 +79,8 @@ final class MapHandler {
     }
 
     func endActivity() {
-        ConnectionManager.instance.set(state: AppState(pair: nil, group: group, type: .mapExplorer), forApp: appID)
-        let info: JSON = [Keys.id: appID]
+        ConnectionManager.instance.set(AppState(pair: nil, group: group), for: .mapExplorer, id: appID)
+        let info: JSON = [Keys.id: appID, Keys.type: ApplicationType.mapExplorer.rawValue]
         DistributedNotificationCenter.default().postNotificationName(SettingsNotification.unpair.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
@@ -147,7 +148,7 @@ final class MapHandler {
         }
 
         if activityState == .idle {
-            let info: JSON = [Keys.id: appID, Keys.group: appID]
+            let info: JSON = [Keys.id: appID, Keys.type: ApplicationType.mapExplorer.rawValue, Keys.group: appID]
             DistributedNotificationCenter.default().postNotificationName(SettingsNotification.ungroup.name, object: nil, userInfo: info, deliverImmediately: true)
         }
     }
