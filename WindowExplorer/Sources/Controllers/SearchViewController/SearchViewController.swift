@@ -353,7 +353,9 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     private func unselectItem(for collectionView: NSCollectionView) {
         let indexPaths = collectionView.indexPathsForVisibleItems()
 
-        if collectionView == secondaryCollectionView {
+        if collectionView == primaryCollectionView {
+            selectedType = nil
+        } else if collectionView == secondaryCollectionView {
             selectedGroup = nil
         }
 
@@ -381,7 +383,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
                 toggle(to: secondaryCollectionView)
             }
         case secondaryCollectionView:
-            if let group = view.item as? LetterGroup, let type = view.type, view.title != selectedGroup {
+            if let group = view.item as? LetterGroup, let type = view.type, view.item.title == selectedGroup {
                 view.set(loading: true)
                 RecordFactory.records(for: type, in: group) { [weak self] records in
                     view.set(loading: false)
@@ -389,7 +391,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
                         self?.load(records, group: group.title)
                     }
                 }
-            } else if let province = view.item as? Province, view.title != selectedGroup {
+            } else if let province = view.item as? Province, view.item.title == selectedGroup {
                 let schools = GeocodeHelper.instance.schools(for: province).sorted { $0.title < $1.title }
                 load(schools, group: province.abbreviation)
             }
