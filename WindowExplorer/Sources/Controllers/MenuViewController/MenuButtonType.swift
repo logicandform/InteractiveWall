@@ -97,22 +97,10 @@ enum MenuButtonType {
 
     var selectedBackground: NSColor? {
         switch self {
-        case .split:
+        case .split, .accessibility:
             return style.menuSelectedColor
-        case .map:
+        case .map, .timeline, .information, .settings, .search, .testimony:
             return style.darkBackground
-        case .timeline:
-            return style.darkBackground
-        case .information:
-            return style.darkBackground
-        case .settings:
-            return style.darkBackground
-        case .search:
-            return style.darkBackground
-        case .testimony:
-            return style.darkBackground
-        case .accessibility:
-            return style.menuSelectedColor
         }
     }
 }
