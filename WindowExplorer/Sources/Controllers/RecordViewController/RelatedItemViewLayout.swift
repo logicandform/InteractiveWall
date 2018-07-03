@@ -5,13 +5,8 @@ import Cocoa
 
 
 private struct Constants {
-    static let itemSpacing: CGFloat = 5
     static let listItemsPerRow: CGFloat = 1
-    static let listItemWidth: CGFloat = 300
-    static let listItemHeight: CGFloat = 80
     static let imageItemsPerRow: CGFloat = 3
-    static let imageItemWidth: CGFloat = 180
-    static let imageItemHeight: CGFloat = 180
 }
 
 
@@ -31,9 +26,9 @@ enum RelatedItemViewLayout {
     var itemSize: CGSize {
         switch self {
         case .list:
-            return CGSize(width: Constants.listItemWidth, height: Constants.listItemHeight)
+            return CGSize(width: style.listItemWidth, height: style.listItemHeight)
         case .grid:
-            return CGSize(width: Constants.imageItemWidth, height: Constants.imageItemHeight)
+            return CGSize(width: style.imageItemWidth, height: style.imageItemHeight)
         }
     }
 
@@ -41,10 +36,10 @@ enum RelatedItemViewLayout {
         switch self {
         case .list:
             let itemsPerRow = Constants.listItemsPerRow
-            return Constants.listItemWidth * itemsPerRow + Constants.itemSpacing * (itemsPerRow - 1)
+            return style.listItemWidth * itemsPerRow + style.itemSpacing * (itemsPerRow - 1)
         case .grid:
             let itemsPerRow = Constants.imageItemsPerRow
-            return Constants.imageItemWidth * itemsPerRow + Constants.itemSpacing * (itemsPerRow - 1)
+            return style.imageItemWidth * itemsPerRow + style.itemSpacing * (itemsPerRow - 1)
         }
     }
 }

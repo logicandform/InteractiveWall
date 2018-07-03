@@ -22,9 +22,12 @@ class FadingScrollView: NSScrollView {
 
     // MARK: API
 
-    func updateGradient(forced: Bool = false, with delta: CGFloat = 0) {
-        guard canScroll else {
+    func updateGradient(forced: Bool = false, with delta: CGFloat = 0, height: CGFloat? = nil) {
+        if !canScroll(contentHeight: height) {
             updateGradientProperty(for: .none, forced: forced)
+            return
+        } else if height != nil {
+            updateGradientProperty(for: .top, forced: forced)
             return
         }
 
