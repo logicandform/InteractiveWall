@@ -21,6 +21,9 @@
 		2204621220472E3D0067D9FB /* MapHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204621120472E3C0067D9FB /* MapHandler.swift */; };
 		22046267204732A40067D9FB /* RecordNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046265204732A40067D9FB /* RecordNotifications.swift */; };
 		22046268204732A40067D9FB /* MapNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046266204732A40067D9FB /* MapNotifications.swift */; };
+		220AE85E20ED441A00F6E9AA /* TimelineControlItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220AE85C20ED441A00F6E9AA /* TimelineControlItemView.swift */; };
+		220AE85F20ED441A00F6E9AA /* TimelineControlItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220AE85D20ED441A00F6E9AA /* TimelineControlItemView.xib */; };
+		220AE86120ED48C200F6E9AA /* Months.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220AE86020ED48C200F6E9AA /* Months.swift */; };
 		221C629F203B4906009493DA /* School.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C629E203B4906009493DA /* School.swift */; };
 		221C62A8203B57F7009493DA /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C62A7203B57F7009493DA /* URL.swift */; };
 		2220D3FD202F7E4200B878D6 /* GestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2220D3FC202F7E4200B878D6 /* GestureManager.swift */; };
@@ -107,6 +110,9 @@
 		2204621120472E3C0067D9FB /* MapHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapHandler.swift; sourceTree = "<group>"; };
 		22046265204732A40067D9FB /* RecordNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordNotifications.swift; sourceTree = "<group>"; };
 		22046266204732A40067D9FB /* MapNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapNotifications.swift; sourceTree = "<group>"; };
+		220AE85C20ED441A00F6E9AA /* TimelineControlItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineControlItemView.swift; sourceTree = "<group>"; };
+		220AE85D20ED441A00F6E9AA /* TimelineControlItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineControlItemView.xib; sourceTree = "<group>"; };
+		220AE86020ED48C200F6E9AA /* Months.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Months.swift; sourceTree = "<group>"; };
 		221C629E203B4906009493DA /* School.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = School.swift; sourceTree = "<group>"; };
 		221C62A7203B57F7009493DA /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		2220D3FC202F7E4200B878D6 /* GestureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureManager.swift; sourceTree = "<group>"; };
@@ -207,6 +213,8 @@
 				22004FF120E16CE200B1E740 /* TimelineItemView.swift */,
 				2290A03820E2F0AC00F028C4 /* TimelineHeaderView.xib */,
 				2290A03620E2F01500F028C4 /* TimelineHeaderView.swift */,
+				220AE85D20ED441A00F6E9AA /* TimelineControlItemView.xib */,
+				220AE85C20ED441A00F6E9AA /* TimelineControlItemView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -305,6 +313,7 @@
 				22F0EDFB2066DA1E0075E467 /* ListenerCallback.m */,
 				8F22945520773EA600731E78 /* Math.swift */,
 				2222B13920D85BD700ECCB5D /* ApplicationType.swift */,
+				220AE86020ED48C200F6E9AA /* Months.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -534,6 +543,7 @@
 			files = (
 				22004FF420E16CE200B1E740 /* TimelineItemView.xib in Resources */,
 				222AB400203CE9AE002BFAF2 /* Demo.storyboard in Resources */,
+				220AE85F20ED441A00F6E9AA /* TimelineControlItemView.xib in Resources */,
 				2290A03920E2F0AC00F028C4 /* TimelineHeaderView.xib in Resources */,
 				222AB408203DF8F5002BFAF2 /* Map.storyboard in Resources */,
 				22004FEF20E164CB00B1E740 /* Timeline.storyboard in Resources */,
@@ -652,6 +662,7 @@
 				22004FF320E16CE200B1E740 /* TimelineItemView.swift in Sources */,
 				22B85AFA209B7A6D0099F44E /* PinchGestureRecognizer.swift in Sources */,
 				8F1A1CBB205B41AC00A59A84 /* FlippedMapView.swift in Sources */,
+				220AE85E20ED441A00F6E9AA /* TimelineControlItemView.swift in Sources */,
 				22EF0FA8202B847200571002 /* CachingNetwork.swift in Sources */,
 				22290C092028F9EC000E0573 /* AppDelegate.swift in Sources */,
 				22290C392028FA35000E0573 /* CoreGraphics.swift in Sources */,
@@ -671,6 +682,7 @@
 				2290A03E20E4102A00F028C4 /* TimelineHandler.swift in Sources */,
 				8F22945620773EA600731E78 /* Math.swift in Sources */,
 				2290A04620E4439C00F028C4 /* NSColor.swift in Sources */,
+				220AE86120ED48C200F6E9AA /* Months.swift in Sources */,
 				22004FFE20E2ADC200B1E740 /* TimelineEvent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

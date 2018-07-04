@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="TimelineControlItemView" customModule="MapExplorer_macOS" customModuleProvider="target">
+            <connections>
+                <outlet property="contentView" destination="yLY-Mg-Dei" id="Y3b-ut-fsG"/>
+                <outlet property="titleTextField" destination="8T3-kG-tDl" id="kYJ-nv-9Gd"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="275" height="77"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="yLY-Mg-Dei">
+                    <rect key="frame" x="0.0" y="20" width="275" height="38"/>
+                </customView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8T3-kG-tDl">
+                    <rect key="frame" x="6" y="30" width="263" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" id="ea1-KV-osb">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="yLY-Mg-Dei" secondAttribute="trailing" id="6xM-sM-xgc"/>
+                <constraint firstItem="yLY-Mg-Dei" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="AGU-qq-swO"/>
+                <constraint firstItem="8T3-kG-tDl" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="Exq-n7-9d9"/>
+                <constraint firstItem="8T3-kG-tDl" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="8" id="NZi-6o-nNm"/>
+                <constraint firstItem="yLY-Mg-Dei" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="Wjv-gE-smo"/>
+                <constraint firstAttribute="trailing" secondItem="8T3-kG-tDl" secondAttribute="trailing" constant="8" id="dhq-ib-UNe"/>
+                <constraint firstItem="8T3-kG-tDl" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="jCu-PN-Bd5"/>
+                <constraint firstItem="yLY-Mg-Dei" firstAttribute="height" secondItem="Hz6-mo-xeY" secondAttribute="height" multiplier="1:2" id="r4C-CS-3AH"/>
+            </constraints>
+            <point key="canvasLocation" x="36.5" y="70.5"/>
+        </customView>
+    </objects>
+</document>
