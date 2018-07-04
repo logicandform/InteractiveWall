@@ -30,8 +30,8 @@ final class RelationshipHelper: RelationshipDelegate {
             }
         } else if let controller = WindowManager.instance.display(window) as? BaseViewController {
             controller.parentDelegate = self
-            controller.updatePosition(animating: false)
             positionForController[controller] = availablePosition()
+            controller.updatePosition(animating: false)
         }
     }
 
