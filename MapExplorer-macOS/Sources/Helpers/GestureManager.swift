@@ -96,6 +96,8 @@ final class GestureManager {
             return
         }
 
+        let test = window.frame
+        let test2 = -window.frame.minX
         let windowTransform = CGAffineTransform(translationX: -window.frame.minX, y: -window.frame.minY)
         let positionInWindow = touch.position.applying(windowTransform)
 
@@ -126,7 +128,7 @@ final class GestureManager {
 
     /// Displays a touch indicator on the screen for testing
     private func displayTouchIndicator(in view: NSView, at position: CGPoint) {
-        return
+//        return
         let radius = Constants.indicatorRadius
         let frame = CGRect(origin: CGPoint(x: position.x - radius, y: position.y - radius), size: CGSize(width: 2*radius, height: 2*radius))
         let touchIndicator = NSView(frame: frame)
