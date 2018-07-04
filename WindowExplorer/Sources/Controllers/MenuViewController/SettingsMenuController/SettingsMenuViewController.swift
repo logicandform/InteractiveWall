@@ -84,17 +84,14 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         organizationsSwitch.isOn = true
     }
 
-    func updateOrigin(relativeTo button: CGPoint, with frame: NSRect) {
+    func updateOrigin(relativeTo verticalPosition: CGFloat, with buttonFrame: CGRect) {
         guard let window = view.window, let screen = window.screen else {
             return
         }
 
-        let updatedVerticalPosition = button.y + frame.origin.y + frame.height - view.frame.height
-        if updatedVerticalPosition < 0 {
-            view.window?.setFrameOrigin(CGPoint(x: window.frame.origin.x, y: screen.frame.minY))
-        } else {
-            view.window?.setFrameOrigin(CGPoint(x: window.frame.origin.x, y: updatedVerticalPosition))
-        }
+        let translatedPosition = verticalPosition + buttonFrame.origin.y + buttonFrame.height - view.frame.height
+        let updatedVerticalPosition = translatedPosition < 0 ? screen.frame.minY : translatedPosition
+        view.window?.setFrameOrigin(CGPoint(x: window.frame.origin.x, y: updatedVerticalPosition))
     }
 
     func resetSettingsTimeout() {

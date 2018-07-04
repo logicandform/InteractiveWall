@@ -10,87 +10,108 @@
             <objects>
                 <viewController id="AWf-NK-kp0" customClass="MenuViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="AdH-oQ-xB7">
-                        <rect key="frame" x="0.0" y="0.0" width="50" height="350"/>
+                        <rect key="frame" x="0.0" y="0.0" width="50" height="2160"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="ceY-yx-jPe" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="300" width="50" height="50"/>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="ySR-rI-hH0">
+                                <rect key="frame" x="0.0" y="150" width="50" height="350"/>
+                                <subviews>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="ceY-yx-jPe" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="300" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="140-p7-e7E"/>
+                                            <constraint firstAttribute="height" constant="50" id="YoZ-BQ-bOH"/>
+                                        </constraints>
+                                    </customView>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="qAo-tK-U4U" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="250" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="TCD-o5-kKP"/>
+                                            <constraint firstAttribute="height" constant="50" id="nOS-E5-StX"/>
+                                        </constraints>
+                                    </customView>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="6n8-Ku-Mg1" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="200" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="1gh-YV-e3m"/>
+                                            <constraint firstAttribute="width" constant="50" id="qiH-kc-Yox"/>
+                                        </constraints>
+                                    </customView>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="5R0-Ed-pJG" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="150" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="jbx-Xf-CUf"/>
+                                            <constraint firstAttribute="height" constant="50" id="pes-rd-KiZ"/>
+                                        </constraints>
+                                    </customView>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="u8e-Pu-hpK" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="100" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="FiY-Dg-rMc"/>
+                                            <constraint firstAttribute="height" constant="50" id="bTx-z1-5K1"/>
+                                        </constraints>
+                                    </customView>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="uLI-Vt-2Vu" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="EGx-UK-hQR"/>
+                                            <constraint firstAttribute="width" constant="50" id="d0k-XO-7dT"/>
+                                        </constraints>
+                                    </customView>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="CJK-LW-WGG" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="C6h-D1-Y5r"/>
+                                            <constraint firstAttribute="width" constant="50" id="wCC-jC-qlN"/>
+                                        </constraints>
+                                    </customView>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="140-p7-e7E"/>
-                                    <constraint firstAttribute="height" constant="50" id="YoZ-BQ-bOH"/>
+                                    <constraint firstAttribute="width" constant="50" id="64I-zO-krT"/>
+                                    <constraint firstItem="uLI-Vt-2Vu" firstAttribute="leading" secondItem="ySR-rI-hH0" secondAttribute="leading" id="PDc-rT-ogU"/>
+                                    <constraint firstItem="6n8-Ku-Mg1" firstAttribute="leading" secondItem="ySR-rI-hH0" secondAttribute="leading" id="SzY-Cb-XUW"/>
+                                    <constraint firstItem="ceY-yx-jPe" firstAttribute="top" secondItem="ySR-rI-hH0" secondAttribute="top" id="TA1-9O-i0v"/>
+                                    <constraint firstItem="qAo-tK-U4U" firstAttribute="bottom" secondItem="6n8-Ku-Mg1" secondAttribute="top" id="UxJ-4h-Yxh"/>
+                                    <constraint firstItem="5R0-Ed-pJG" firstAttribute="bottom" secondItem="u8e-Pu-hpK" secondAttribute="top" id="WAP-tX-M9G"/>
+                                    <constraint firstItem="ceY-yx-jPe" firstAttribute="leading" secondItem="ySR-rI-hH0" secondAttribute="leading" id="XTs-YH-4Bt"/>
+                                    <constraint firstItem="qAo-tK-U4U" firstAttribute="leading" secondItem="ySR-rI-hH0" secondAttribute="leading" id="Zem-pb-a33"/>
+                                    <constraint firstItem="6n8-Ku-Mg1" firstAttribute="bottom" secondItem="5R0-Ed-pJG" secondAttribute="top" id="a15-ud-C4x"/>
+                                    <constraint firstItem="u8e-Pu-hpK" firstAttribute="leading" secondItem="ySR-rI-hH0" secondAttribute="leading" id="gwQ-Zg-Nln"/>
+                                    <constraint firstAttribute="bottom" secondItem="CJK-LW-WGG" secondAttribute="bottom" id="iDV-cz-L4i"/>
+                                    <constraint firstItem="uLI-Vt-2Vu" firstAttribute="bottom" secondItem="CJK-LW-WGG" secondAttribute="top" id="kBb-qG-4fO"/>
+                                    <constraint firstItem="ceY-yx-jPe" firstAttribute="bottom" secondItem="qAo-tK-U4U" secondAttribute="top" id="pSa-aC-idb"/>
+                                    <constraint firstItem="5R0-Ed-pJG" firstAttribute="leading" secondItem="ySR-rI-hH0" secondAttribute="leading" id="sHv-iq-sLW"/>
+                                    <constraint firstItem="u8e-Pu-hpK" firstAttribute="bottom" secondItem="uLI-Vt-2Vu" secondAttribute="top" id="sVn-mo-IE3"/>
+                                    <constraint firstAttribute="height" constant="350" id="zrR-gc-8RL"/>
                                 </constraints>
                             </customView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="qAo-tK-U4U" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="250" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="nOS-E5-StX"/>
-                                </constraints>
-                            </customView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="6n8-Ku-Mg1" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="200" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="1gh-YV-e3m"/>
-                                </constraints>
-                            </customView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="5R0-Ed-pJG" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="150" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="pes-rd-KiZ"/>
-                                </constraints>
-                            </customView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="u8e-Pu-hpK" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="100" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="bTx-z1-5K1"/>
-                                </constraints>
-                            </customView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="uLI-Vt-2Vu" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="50" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="EGx-UK-hQR"/>
-                                </constraints>
-                            </customView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="CJK-LW-WGG" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="37d-Lb-7Lx" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="C6h-D1-Y5r"/>
+                                    <constraint firstAttribute="height" constant="50" id="2Bu-EW-BoC"/>
+                                    <constraint firstAttribute="width" constant="50" id="LTZ-Wa-hny"/>
                                 </constraints>
                             </customView>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="CJK-LW-WGG" secondAttribute="bottom" id="6Ew-jZ-Mg8"/>
-                            <constraint firstItem="ceY-yx-jPe" firstAttribute="leading" secondItem="AdH-oQ-xB7" secondAttribute="leading" id="7ih-Gd-OIv"/>
-                            <constraint firstItem="ceY-yx-jPe" firstAttribute="bottom" secondItem="qAo-tK-U4U" secondAttribute="top" id="A8x-Ig-WJ0"/>
-                            <constraint firstItem="CJK-LW-WGG" firstAttribute="top" secondItem="uLI-Vt-2Vu" secondAttribute="bottom" id="DHQ-lv-OYa"/>
-                            <constraint firstAttribute="trailing" secondItem="6n8-Ku-Mg1" secondAttribute="trailing" id="EaZ-Bp-62I"/>
-                            <constraint firstAttribute="trailing" secondItem="CJK-LW-WGG" secondAttribute="trailing" id="F1Q-Ig-TfO"/>
-                            <constraint firstItem="uLI-Vt-2Vu" firstAttribute="leading" secondItem="AdH-oQ-xB7" secondAttribute="leading" id="K4B-Tq-8kg"/>
-                            <constraint firstItem="qAo-tK-U4U" firstAttribute="leading" secondItem="AdH-oQ-xB7" secondAttribute="leading" id="O54-Tb-veB"/>
-                            <constraint firstAttribute="trailing" secondItem="u8e-Pu-hpK" secondAttribute="trailing" id="QL5-t5-4Cn"/>
-                            <constraint firstItem="5R0-Ed-pJG" firstAttribute="top" secondItem="6n8-Ku-Mg1" secondAttribute="bottom" id="Rdk-2s-VNw"/>
-                            <constraint firstItem="u8e-Pu-hpK" firstAttribute="top" secondItem="5R0-Ed-pJG" secondAttribute="bottom" id="SJA-jK-qlS"/>
-                            <constraint firstAttribute="trailing" secondItem="uLI-Vt-2Vu" secondAttribute="trailing" id="Xb7-42-ons"/>
-                            <constraint firstItem="u8e-Pu-hpK" firstAttribute="leading" secondItem="AdH-oQ-xB7" secondAttribute="leading" id="Xom-B2-piA"/>
-                            <constraint firstItem="CJK-LW-WGG" firstAttribute="leading" secondItem="AdH-oQ-xB7" secondAttribute="leading" id="d7d-J7-iYy"/>
-                            <constraint firstAttribute="trailing" secondItem="qAo-tK-U4U" secondAttribute="trailing" id="eXE-Q3-O6H"/>
-                            <constraint firstAttribute="trailing" secondItem="ceY-yx-jPe" secondAttribute="trailing" id="iMZ-P7-QgZ"/>
-                            <constraint firstItem="5R0-Ed-pJG" firstAttribute="leading" secondItem="AdH-oQ-xB7" secondAttribute="leading" id="iQ5-c2-NyI"/>
-                            <constraint firstAttribute="trailing" secondItem="5R0-Ed-pJG" secondAttribute="trailing" id="ipd-LD-drD"/>
-                            <constraint firstItem="ceY-yx-jPe" firstAttribute="top" secondItem="AdH-oQ-xB7" secondAttribute="top" id="kZ4-XQ-GtY"/>
-                            <constraint firstItem="6n8-Ku-Mg1" firstAttribute="top" secondItem="qAo-tK-U4U" secondAttribute="bottom" id="rWL-je-p1L"/>
-                            <constraint firstItem="uLI-Vt-2Vu" firstAttribute="top" secondItem="u8e-Pu-hpK" secondAttribute="bottom" id="tGd-lP-NSU"/>
-                            <constraint firstItem="6n8-Ku-Mg1" firstAttribute="leading" secondItem="AdH-oQ-xB7" secondAttribute="leading" id="vzj-YO-Aue"/>
+                            <constraint firstAttribute="bottom" secondItem="37d-Lb-7Lx" secondAttribute="bottom" id="5UF-1E-TPm"/>
+                            <constraint firstItem="CJK-LW-WGG" firstAttribute="leading" secondItem="AdH-oQ-xB7" secondAttribute="leading" id="8z8-J5-lEy"/>
+                            <constraint firstAttribute="bottom" secondItem="ySR-rI-hH0" secondAttribute="bottom" constant="150" id="PXR-tM-DVE"/>
+                            <constraint firstItem="ySR-rI-hH0" firstAttribute="leading" secondItem="AdH-oQ-xB7" secondAttribute="leading" id="doy-f2-OoY"/>
+                            <constraint firstItem="37d-Lb-7Lx" firstAttribute="leading" secondItem="AdH-oQ-xB7" secondAttribute="leading" id="urd-zp-8aA"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="informationButton" destination="5R0-Ed-pJG" id="AxB-U1-cWu"/>
-                        <outlet property="mapToggleButton" destination="qAo-tK-U4U" id="Gfb-kw-twW"/>
-                        <outlet property="menuView" destination="AdH-oQ-xB7" id="SPU-eJ-wgZ"/>
-                        <outlet property="searchButton" destination="CJK-LW-WGG" id="7OL-qY-0Ba"/>
-                        <outlet property="settingsButton" destination="u8e-Pu-hpK" id="NUw-lW-1Km"/>
-                        <outlet property="splitScreenButton" destination="ceY-yx-jPe" id="ijE-Uu-1hs"/>
-                        <outlet property="testimonyButton" destination="uLI-Vt-2Vu" id="Iya-YN-aPW"/>
-                        <outlet property="timelineToggleButton" destination="6n8-Ku-Mg1" id="4mi-gG-I92"/>
+                        <outlet property="accessibilityButton" destination="37d-Lb-7Lx" id="EyT-Lp-pVA"/>
+                        <outlet property="informationButton" destination="5R0-Ed-pJG" id="J99-rQ-V56"/>
+                        <outlet property="mapToggleButton" destination="qAo-tK-U4U" id="Cds-Fu-Des"/>
+                        <outlet property="menuBottomConstraint" destination="PXR-tM-DVE" id="BJe-U9-6FQ"/>
+                        <outlet property="menuView" destination="ySR-rI-hH0" id="oaa-9r-Hk7"/>
+                        <outlet property="searchButton" destination="CJK-LW-WGG" id="7EG-sF-plG"/>
+                        <outlet property="settingsButton" destination="u8e-Pu-hpK" id="PbK-YQ-CvU"/>
+                        <outlet property="splitScreenButton" destination="ceY-yx-jPe" id="OSz-77-u6j"/>
+                        <outlet property="testimonyButton" destination="uLI-Vt-2Vu" id="ngT-Qi-DQ4"/>
+                        <outlet property="timelineToggleButton" destination="6n8-Ku-Mg1" id="wWz-Pv-4qX"/>
                     </connections>
                 </viewController>
                 <customObject id="vEQ-kv-rRL" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
