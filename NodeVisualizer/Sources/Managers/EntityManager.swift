@@ -15,12 +15,20 @@ final class EntityManager {
         return [intelligenceSystem, animationSystem, movementSystem]
     }()
 
+    /// Set of all entities in the scene
     private(set) var entities = Set<GKEntity>()
+
+    /// 2D array of related entities that belong to a particular level
     private(set) var entitiesInLevel = [[RecordEntity]]()
-    private var entitiesInCurrentLevel = Set<RecordEntity>()
+
+    // Local copy of the entities that are associated with the current level
+    private var entitiesInCurrentLevel = [RecordEntity]()
+
+    // Set of all entities in all levels
+    private var allLevelEntities = Set<RecordEntity>()
 
     private struct Constants {
-        static let maxLevel = 5
+        static let maxLevel = 0
     }
 
 
@@ -32,27 +40,54 @@ final class EntityManager {
         }
     }
 
-    func relatedEntities(for entities: [RecordEntity]?, toLevel level: Int = 0) {
+    func add(_ entity: GKEntity) {
+        entities.insert(entity)
+
+        for componentSystem in componentSystems {
+            componentSystem.addComponent(foundIn: entity)
+        }
+    }
+
+    func remove(_ entity: GKEntity) {
+        entities.remove(entity)
+    }
+
+    func add(component: GKComponent, to entity: GKEntity) {
+        entity.addComponent(component)
+
+        for componentSystem in componentSystems {
+            componentSystem.addComponent(foundIn: entity)
+        }
+    }
+
+    func associateRelatedEntities(for entities: [RecordEntity]?, toLevel level: Int = 0) {
         guard let entities = entities, !entities.isEmpty else {
+            entitiesInLevel = entitiesInLevel.filter { !($0.isEmpty) }
             return
         }
 
-        // all entities that belong past the maxLevel should just go inside maxLevel (i.e. clamp to maxLevel)
-        let next = (level == Constants.maxLevel) ? Constants.maxLevel : level + 1
+        // reset the previous level entities
+        entitiesInCurrentLevel.removeAll()
+
+        // padding for 2D array
+        padEntitiesForLevel(level)
 
         for entity in entities {
-            // store entity locally for fast access check
-            entitiesInCurrentLevel.insert(entity)
+            allLevelEntities.insert(entity)
 
             // add relatedEntities to the appropriate level
             let relatedEntities = getRelatedEntities(for: entity)
 
             if !relatedEntities.isEmpty {
                 entitiesInLevel[level] += relatedEntities
+                entitiesInCurrentLevel += relatedEntities
             }
         }
 
-        relatedEntities(for: entitiesInLevel[level], toLevel: next)
+        // all entities that belong past the maxLevel should just go inside maxLevel (i.e. clamp to maxLevel)
+        let next = (level == Constants.maxLevel) ? Constants.maxLevel : level + 1
+
+        associateRelatedEntities(for: entitiesInCurrentLevel, toLevel: next)
     }
 
     func getRelatedEntities(for entity: RecordEntity) -> [RecordEntity] {
@@ -64,19 +99,6 @@ final class EntityManager {
 
         let relatedEntities = entities(for: Array(relatedRecords)).compactMap({ $0 as? RecordEntity })
         return relatedEntities
-    }
-
-
-    func add(_ entity: GKEntity) {
-        entities.insert(entity)
-
-        for componentSystem in componentSystems {
-            componentSystem.addComponent(foundIn: entity)
-        }
-    }
-
-    func remove(_ entity: GKEntity) {
-        entities.remove(entity)
     }
 
     func entities(for records: [TestingEnvironment.Record]) -> [GKEntity] {
@@ -94,7 +116,7 @@ final class EntityManager {
     func entity(for record: TestingEnvironment.Record) -> GKEntity? {
         for entity in entities {
             if let recordEntity = entity as? RecordEntity,
-                !entitiesInCurrentLevel.contains(recordEntity),
+                !allLevelEntities.contains(recordEntity),
                 recordEntity.renderComponent.recordNode.record.id == record.id {
                 return entity
             }
@@ -103,16 +125,24 @@ final class EntityManager {
         return nil
     }
 
-    func add(component: GKComponent, to entity: GKEntity) {
-        entity.addComponent(component)
-
-        for componentSystem in componentSystems {
-            componentSystem.addComponent(foundIn: entity)
+    func reset() {
+        for entity in allLevelEntities {
+            entity.reset()
         }
+
+        allLevelEntities.removeAll()
     }
 
 
     // MARK: Helpers
 
+    private func padEntitiesForLevel(_ level: Int) {
+        guard entitiesInLevel.count <= level else {
+            return
+        }
 
+        (entitiesInLevel.count...level).forEach { _ in
+            entitiesInLevel.append([])
+        }
+    }
 }

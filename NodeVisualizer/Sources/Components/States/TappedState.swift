@@ -10,9 +10,6 @@ class TappedState: GKState {
     private(set) unowned var entity: RecordEntity
 
 
-    let relatedEntityManager = RelatedEntityManager()
-
-
     required init(entity: RecordEntity) {
         self.entity = entity
     }
@@ -23,13 +20,12 @@ class TappedState: GKState {
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
 
+        // make level connections for all the entity's descendants
+        entity.manager.associateRelatedEntities(for: [entity])
+
+        // first pass iteration
         let relatedEntities = getRelatedEntites()
         entity.relatedEntities = relatedEntities
-
-
-        // make level connections (5 layers deep)
-
-
 
         // reset
         resetEntityAndRelatedEntities()
