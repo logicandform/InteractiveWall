@@ -218,7 +218,10 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
             window.animator().setFrame(frame, display: true, animate: true)
         }, completionHandler: { [weak self] in
-            self?.animating = false
+            if let strongSelf = self {
+                strongSelf.animating = false
+                WindowManager.instance.checkBounds(of: strongSelf)
+            }
         })
     }
 
@@ -683,15 +686,11 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             }
         }
 
-        // Off screen
-        if origin.y + view.frame.height - Constants.minimumRecordHeightShowing < lastScreen.frame.minY {
-            close()
-        }
-
         if animating {
             animate(to: origin)
         } else {
             view.window?.setFrameOrigin(origin)
+            WindowManager.instance.checkBounds(of: self)
         }
     }
 
