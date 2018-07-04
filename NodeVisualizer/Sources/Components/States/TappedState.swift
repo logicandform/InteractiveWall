@@ -28,7 +28,7 @@ class TappedState: GKState {
 
 
         // make level connections (5 layers deep)
-        
+
 
 
         // reset
