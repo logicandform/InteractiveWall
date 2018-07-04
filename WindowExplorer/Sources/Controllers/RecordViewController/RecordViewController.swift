@@ -51,7 +51,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         static let stackViewBottomInset: CGFloat = 15
         static let expandImageViewCornerRadius: CGFloat = 2.0
         static let relatedImagesAnimationTime = 0.1
-        static let minimumRecordHeightShowing: CGFloat = 60
     }
 
 
