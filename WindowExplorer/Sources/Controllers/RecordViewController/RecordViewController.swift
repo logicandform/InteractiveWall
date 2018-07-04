@@ -455,7 +455,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             return record.media.count
         case relatedItemsView:
             return record.filterRelatedRecords(of: relatedItemsFilterType, from: relatedRecords).count
-//            return record.relatedRecords(of: relatedItemsFilterType).count
         default:
             return 0
         }
