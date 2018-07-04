@@ -88,7 +88,7 @@ enum MenuButtonType {
     }
 
     static var allValues: [MenuButtonType] {
-        return [.split, .map, .timeline, .information, .settings, .search, .testimony]
+        return [.split, .map, .timeline, .information, .settings, .search, .testimony, .accessibility]
     }
 
     var unselectedBackground: NSColor? {
