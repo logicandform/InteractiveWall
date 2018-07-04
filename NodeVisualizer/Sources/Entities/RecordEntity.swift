@@ -96,23 +96,15 @@ class RecordEntity: GKEntity {
         agent.position = vector_float2(x: Float(renderComponent.recordNode.position.x), y: Float(renderComponent.recordNode.position.y))
     }
 
-    func distance(to otherAgent: GKAgent2D) -> Float {
-        let dX = agent.position.x - otherAgent.position.x
-        let dY = agent.position.y - otherAgent.position.y
-        return hypotf(dX, dY)
+    /// Calculates the distance between self and another entity
+    func distance(to entity: RecordEntity) -> CGFloat {
+        let dX = entity.renderComponent.recordNode.position.x - renderComponent.recordNode.position.x
+        let dY = entity.renderComponent.recordNode.position.y - renderComponent.recordNode.position.y
+        return CGFloat(hypotf(Float(dX), Float(dY)))
     }
 
     /// 'Reset' the entity so that proper animations and movements can take place
     func reset() {
-        // reset its own entity
         intelligenceComponent.stateMachine.enter(WanderState.self)
-        hasReset = true
-
-        // reset all of its related entities
-        for entity in relatedEntities {
-            if !entity.hasReset {
-                entity.reset()
-            }
-        }
     }
 }

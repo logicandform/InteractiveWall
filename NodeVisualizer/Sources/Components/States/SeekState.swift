@@ -23,7 +23,6 @@ class SeekState: GKState {
         entity.physicsComponent.physicsBody.friction = 1
         entity.physicsComponent.physicsBody.linearDamping = 1
         entity.physicsComponent.physicsBody.fieldBitMask = 0x1 << 1
-        entity.hasReset = false
     }
 
     override func update(deltaTime seconds: TimeInterval) {

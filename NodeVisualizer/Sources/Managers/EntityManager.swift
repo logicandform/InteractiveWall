@@ -21,14 +21,14 @@ final class EntityManager {
     /// 2D array of related entities that belong to a particular level
     private(set) var entitiesInLevel = [[RecordEntity]]()
 
-    // Local copy of the entities that are associated with the current level
+    /// Local copy of the entities that are associated with the current level
     private var entitiesInCurrentLevel = [RecordEntity]()
 
-    // Set of all entities in all levels
+    /// Set of all entities in all levels
     private var allLevelEntities = Set<RecordEntity>()
 
     private struct Constants {
-        static let maxLevel = 0
+        static let maxLevel = 5
     }
 
 
@@ -130,6 +130,8 @@ final class EntityManager {
             entity.reset()
         }
 
+        entitiesInLevel.removeAll()
+        entitiesInCurrentLevel.removeAll()
         allLevelEntities.removeAll()
     }
 

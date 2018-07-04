@@ -148,7 +148,7 @@ class MainScene: SKScene {
     // MARK: Helpers
 
     private func relatedNodes(for node: RecordNode) {
-        if let entity = entityManager.entity(for: node.record) as? RecordEntity {
+        if let entity = node.entity as? RecordEntity {
             entity.intelligenceComponent.stateMachine.enter(TappedState.self)
             currentEntityInFocus = entity
         }
@@ -227,7 +227,7 @@ class MainScene: SKScene {
         let field = SKFieldNode.radialGravityField()
         field.strength = -10
         field.falloff = -0.5
-        field.region = SKRegion(radius: 350)
+        field.region = SKRegion(radius: 450)
         field.position = CGPoint(x: frame.width / 2 + 5, y: frame.height / 2)
         field.categoryBitMask = 0x1 << 0
         addChild(field)
