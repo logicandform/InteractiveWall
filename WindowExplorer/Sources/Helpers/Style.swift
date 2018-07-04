@@ -40,11 +40,11 @@ final class Style {
     let relatedItemColor = NSColor(calibratedRed: 75/255, green: 91/255, blue: 100/255, alpha: 1)
     let noRelatedItemsColor = NSColor(calibratedRed: 33/255, green: 33/255, blue: 33/255, alpha: 1)
     let relatedItemBackgroundColor = NSColor(calibratedRed: 0.08, green: 0.10, blue: 0.11, alpha: 1)
-    let listItemWidth: CGFloat = 300
-    let listItemHeight: CGFloat = 80
-    let imageItemWidth: CGFloat = 180
-    let imageItemHeight: CGFloat = 180
-    let itemSpacing: CGFloat = 5
+    let relatedRecordsListItemWidth: CGFloat = 300
+    let relatedRecordsListItemHeight: CGFloat = 80
+    let relatedRecordsImageItemWidth: CGFloat = 180
+    let relatedRecordsImageItemHeight: CGFloat = 180
+    let relatedRecordsItemSpacing: CGFloat = 5
 
     // Menu Controller
     let menuWindowSize = CGSize(width: 50, height: 2160)

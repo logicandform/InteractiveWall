@@ -26,9 +26,9 @@ enum RelatedItemViewLayout {
     var itemSize: CGSize {
         switch self {
         case .list:
-            return CGSize(width: style.listItemWidth, height: style.listItemHeight)
+            return CGSize(width: style.relatedRecordsListItemWidth, height: style.relatedRecordsListItemHeight)
         case .grid:
-            return CGSize(width: style.imageItemWidth, height: style.imageItemHeight)
+            return CGSize(width: style.relatedRecordsImageItemWidth, height: style.relatedRecordsImageItemHeight)
         }
     }
 
@@ -36,10 +36,10 @@ enum RelatedItemViewLayout {
         switch self {
         case .list:
             let itemsPerRow = Constants.listItemsPerRow
-            return style.listItemWidth * itemsPerRow + style.itemSpacing * (itemsPerRow - 1)
+            return style.relatedRecordsListItemWidth * itemsPerRow + style.relatedRecordsItemSpacing * (itemsPerRow - 1)
         case .grid:
             let itemsPerRow = Constants.imageItemsPerRow
-            return style.imageItemWidth * itemsPerRow + style.itemSpacing * (itemsPerRow - 1)
+            return style.relatedRecordsImageItemWidth * itemsPerRow + style.relatedRecordsItemSpacing * (itemsPerRow - 1)
         }
     }
 
