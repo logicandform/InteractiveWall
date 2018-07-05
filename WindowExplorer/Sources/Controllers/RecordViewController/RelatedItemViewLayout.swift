@@ -42,4 +42,13 @@ enum RelatedItemViewLayout {
             return style.imageItemWidth * itemsPerRow + style.itemSpacing * (itemsPerRow - 1)
         }
     }
+
+    var itemsPerRow: CGFloat {
+        switch self {
+        case .list:
+            return Constants.listItemsPerRow
+        case .grid:
+            return Constants.imageItemsPerRow
+        }
+    }
 }
