@@ -126,7 +126,6 @@ final class GestureManager {
 
     /// Displays a touch indicator on the screen for testing
     private func displayTouchIndicator(in view: NSView, at position: CGPoint) {
-//        return
         let radius = Constants.indicatorRadius
         let frame = CGRect(origin: CGPoint(x: position.x - radius, y: position.y - radius), size: CGSize(width: 2*radius, height: 2*radius))
         let touchIndicator = NSView(frame: frame)
@@ -134,21 +133,13 @@ final class GestureManager {
         touchIndicator.layer?.cornerRadius = radius
         touchIndicator.layer?.masksToBounds = true
         touchIndicator.layer?.backgroundColor = style.selectedColor.cgColor
-//        let widthConstraint = touchIndicator.widthAnchor.constraint(equalToConstant: 2*radius)
-//        let heightConstraint = touchIndicator.heightAnchor.constraint(equalToConstant: 2*radius)
-//        widthConstraint.isActive = true
-//        heightConstraint.isActive = true
-//        touchIndicator.window?.makeKeyAndOrderFront(self)
         view.addSubview(touchIndicator)
 
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.indicatorDuration
-//            touchIndicator.animator().setFrameSize(.zero)
-//            touchIndicator.animator().setFrameOrigin(NSPoint(x: touchIndicator.frame.origin.x + radius, y: touchIndicator.frame.origin.y + radius))
+            touchIndicator.animator().alphaValue = 0.0
             touchIndicator.animator().frame.size = .zero
             touchIndicator.animator().frame.origin = CGPoint(x: touchIndicator.frame.origin.x + radius, y: touchIndicator.frame.origin.y + radius)
-//            widthConstraint.animator().constant = 0
-//            heightConstraint.animator().constant = 0
         }, completionHandler: {
             touchIndicator.removeFromSuperview()
         })
@@ -172,7 +163,6 @@ final class GestureManager {
         }
 
         for subview in view.subviews.reversed() {
-//        for subview in view.subviews {
             if let target = target(in: subview, at: positionInBounds, current: transform, flipped: view.isFlipped) {
                 return target
             }

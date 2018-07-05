@@ -20,37 +20,21 @@
                                     <outlet property="delegate" destination="TYK-5A-x82" id="dxv-gV-hz1"/>
                                 </connections>
                             </mapView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Hid-6t-J2L">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="417"/>
-                            </customView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="Hid-6t-J2L" firstAttribute="top" secondItem="qa6-7c-s1W" secondAttribute="top" id="IEf-qG-2tP"/>
                             <constraint firstAttribute="trailing" secondItem="s1R-HV-vyu" secondAttribute="trailing" id="Txz-yL-mWb"/>
-                            <constraint firstItem="Hid-6t-J2L" firstAttribute="leading" secondItem="qa6-7c-s1W" secondAttribute="leading" id="UpX-Ph-08w"/>
                             <constraint firstItem="s1R-HV-vyu" firstAttribute="leading" secondItem="qa6-7c-s1W" secondAttribute="leading" id="b1d-fn-Hmn"/>
                             <constraint firstAttribute="bottom" secondItem="s1R-HV-vyu" secondAttribute="bottom" id="kkI-xz-pKq"/>
                             <constraint firstItem="s1R-HV-vyu" firstAttribute="top" secondItem="qa6-7c-s1W" secondAttribute="top" id="pOP-Ow-rrj"/>
-                            <constraint firstAttribute="trailing" secondItem="Hid-6t-J2L" secondAttribute="trailing" id="r2R-wE-9Tp"/>
-                            <constraint firstAttribute="bottom" secondItem="Hid-6t-J2L" secondAttribute="bottom" id="uVF-aQ-Whn"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="mapView" destination="s1R-HV-vyu" id="Gig-cX-EII"/>
-                        <outlet property="testView" destination="Hid-6t-J2L" id="f2N-64-qiG"/>
                     </connections>
                 </viewController>
                 <customObject id="TEP-w5-kbz" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="27" y="165.5"/>
-        </scene>
-        <!--Timeline-->
-        <scene sceneID="aEM-fT-HJF">
-            <objects>
-                <controllerPlaceholder storyboardName="Timeline" id="7BX-zz-dim" sceneMemberID="viewController"/>
-                <customObject id="Cfi-EI-6jH" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="484" y="165"/>
         </scene>
     </scenes>
 </document>

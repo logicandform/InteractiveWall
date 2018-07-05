@@ -16,7 +16,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     static let storyboard = NSStoryboard.Name(rawValue: "Map")
 
     @IBOutlet weak var mapView: FlippedMapWithMiniMap!
-    @IBOutlet weak var testView: NSView!
 
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
@@ -64,7 +63,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         super.viewDidLoad()
         gestureManager = GestureManager(responder: self)
         TouchManager.instance.register(gestureManager, for: .mapExplorer)
-        testView.alphaValue = 0
 
         setupMap()
         setupGestures()
