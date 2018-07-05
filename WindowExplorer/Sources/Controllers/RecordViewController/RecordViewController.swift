@@ -701,9 +701,10 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
     private func updateRelatedRecordsHeight() {
         let maxHeight = style.relatedRecordsMaxSize.height
-        let numberOfRecords = record.relatedRecords(of: relatedItemsFilterType).count
-        let numberOfSpaces = numberOfRecords > 1 ? numberOfRecords - 1 : 0
-        let height = CGFloat(numberOfRecords) * style.listItemHeight + CGFloat(numberOfSpaces) * style.itemSpacing
+        let numberOfRecords = CGFloat(record.relatedRecords(of: relatedItemsFilterType).count)
+        let numberOfListSpaces = numberOfRecords > 1 ? numberOfRecords - 1 : 0
+        let numberOfGridSpaces = numberOfRecords > relatedItemsFilterType.layout.itemsPerRow ? numberOfRecords / relatedItemsFilterType.layout.itemsPerRow : 0
+        let height = relatedItemsFilterType.layout == .list ? numberOfRecords * style.listItemHeight + numberOfListSpaces * style.itemSpacing : numberOfRecords * style.imageItemHeight + numberOfGridSpaces * style.itemSpacing
         relatedRecordsHeightConstraint.constant = height > maxHeight ? maxHeight : height
         relatedRecordScrollView.updateGradient(forced: true, height: height)
     }
