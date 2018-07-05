@@ -31,6 +31,8 @@ class TappedState: GKState {
 
         // make level connections for all the entity's descendants
         entity.manager.associateRelatedEntities(for: [entity])
+
+        // reversed so that we can use popLast
         entitiesInLevel = entity.manager.entitiesInLevel.reversed()
 
         // physics
@@ -51,6 +53,11 @@ class TappedState: GKState {
 
         // iterate through each related entity to this selected entity && enter the seeking state for each of those related entities
         for relatedEntity in relatedEntities {
+
+            relatedEntity.physicsComponent.physicsBody.categoryBitMask = 0x1 << 0
+            relatedEntity.physicsComponent.physicsBody.collisionBitMask = 0x1 << 0
+            relatedEntity.physicsComponent.physicsBody.contactTestBitMask = 0x1 << 0
+
             relatedEntity.movementComponent.entityToSeek = entity
             relatedEntity.intelligenceComponent.stateMachine.enter(SeekState.self)
         }
@@ -61,7 +68,7 @@ class TappedState: GKState {
 
         elapsedTime += seconds
 
-        if elapsedTime >= 8 {
+        if elapsedTime >= 12 {
             var maximumDistance: CGFloat = 0.0
 
             // find the maximum radius between the tapped root node and its descendants for the current level
@@ -72,18 +79,26 @@ class TappedState: GKState {
                 }
             }
 
-            maximumDistance += NodeConfiguration.Record.physicsBodyRadius * 4
+            maximumDistance += NodeConfiguration.Record.physicsBodyRadius * 2
 
             // get the next level's related entities and move them to the appropriate state with the maximum radius constraint
             if let relatedEntities = entitiesInLevel.popLast() {
                 entitiesInCurrentLevel = relatedEntities
 
+                let boundingNode = entity.renderComponent.boundingDiameterNode(forRadius: maximumDistance)
+
+
                 for relatedEntity in relatedEntities {
+
+                    relatedEntity.physicsComponent.physicsBody.categoryBitMask = boundingNode!.physicsBody!.categoryBitMask
+                    relatedEntity.physicsComponent.physicsBody.contactTestBitMask = boundingNode!.physicsBody!.contactTestBitMask
+                    relatedEntity.physicsComponent.physicsBody.collisionBitMask = boundingNode!.physicsBody!.collisionBitMask
+
                     relatedEntity.movementComponent.entityToSeek = entity
                     relatedEntity.intelligenceComponent.stateMachine.enter(SeekState.self)
 
-                    let distanceConstraint = SKConstraint.distance(SKRange(lowerLimit: maximumDistance), to: centerPoint)
-                    relatedEntity.renderComponent.recordNode.constraints = [distanceConstraint]
+//                    let distanceConstraint = SKConstraint.distance(SKRange(lowerLimit: maximumDistance), to: entity.renderComponent.recordNode)
+//                    relatedEntity.renderComponent.recordNode.constraints = [distanceConstraint]
                 }
             }
 

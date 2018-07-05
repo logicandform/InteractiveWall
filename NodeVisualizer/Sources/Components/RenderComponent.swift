@@ -14,6 +14,8 @@ class RenderComponent: GKComponent {
 
     private(set) var recordNode: RecordNode
 
+    var boundingNodes = Set<SKNode>()
+
 
     init(record: TestingEnvironment.Record) {
         self.recordNode = RecordNode(record: record)
@@ -32,4 +34,34 @@ class RenderComponent: GKComponent {
     override func willRemoveFromEntity() {
         recordNode.entity = nil
     }
+
+
+    func boundingDiameterNode(forRadius radius: CGFloat) -> SKNode? {
+        guard let scene = recordNode.scene as? MainScene else {
+            return nil
+        }
+
+        let boundingNode = SKShapeNode(circleOfRadius: radius)
+        boundingNode.position = recordNode.position
+        boundingNode.isHidden = true
+
+        boundingNode.physicsBody = SKPhysicsBody(circleOfRadius: radius)
+        boundingNode.physicsBody?.categoryBitMask = 0x1 << 1
+        boundingNode.physicsBody?.contactTestBitMask = 0x1 << 1
+        boundingNode.physicsBody?.collisionBitMask = 0x1 << 1
+        boundingNode.physicsBody?.isDynamic = false
+
+        boundingNodes.insert(boundingNode)
+        scene.addChild(boundingNode)
+
+        return boundingNode
+    }
+
+
+
+
+
+
+
+
 }
