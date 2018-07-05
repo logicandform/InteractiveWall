@@ -32,7 +32,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let window = BorderlessWindow(frame: frame, controller: controller)
         window.setFrame(frame, display: true)
         window.makeKeyAndOrderFront(self)
-//        window.orderFront(self)
 
         TouchManager.instance.setupPort()
         ConnectionManager.instance.registerForNotifications()

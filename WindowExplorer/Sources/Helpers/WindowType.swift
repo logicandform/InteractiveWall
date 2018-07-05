@@ -52,6 +52,7 @@ enum WindowType: Equatable {
     }
 
     var level: NSWindow.Level {
+        // Default window level has a raw value of 30
         switch self {
         case .border:
             return NSWindow.Level(rawValue: style.borderWindowLevel)
