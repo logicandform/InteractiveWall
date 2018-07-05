@@ -14,6 +14,7 @@ final class WindowFactory {
         viewController.view.setFrameSize(type.size)
         let window = BorderlessWindow(frame: CGRect(origin: origin, size: type.size), controller: viewController)
         window.makeKeyAndOrderFront(self)
+        window.level = type.level
         return window
     }
 

@@ -1,6 +1,8 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
 import Foundation
+import Cocoa
+
 
 enum WindowType: Equatable {
     case record(RecordDisplayable)
@@ -46,6 +48,17 @@ enum WindowType: Equatable {
             return style.borderWindowSize
         case .testimony:
             return style.testimonyWindowSize
+        }
+    }
+
+    var level: NSWindow.Level {
+        switch self {
+        case .border:
+            return NSWindow.Level(rawValue: style.borderWindowLevel)
+        case .record, .image, .player, .pdf, .search, .testimony:
+            return NSWindow.Level(rawValue: style.movingWindowLevel)
+        case .menu, .settings:
+            return NSWindow.Level(rawValue: style.staticWindowLevel)
         }
     }
 

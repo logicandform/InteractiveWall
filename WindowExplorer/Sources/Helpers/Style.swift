@@ -71,6 +71,11 @@ final class Style {
     // Zoom Control
     let zoomControlColor = NSColor(white: 0.2, alpha: 0.8)
 
+    // Window Levels
+    let borderWindowLevel = 25
+    let movingWindowLevel = 26
+    let staticWindowLevel = 27
+
 
     // Titles
     var windowTitleAttributes: [NSAttributedStringKey: Any] {
