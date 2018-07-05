@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="TYK-5A-x82">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="TYK-5A-x82">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
-        <plugIn identifier="com.apple.MapKitIBPlugin" version="14113"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <plugIn identifier="com.apple.MapKitIBPlugin" version="14109"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -20,26 +20,24 @@
                                     <outlet property="delegate" destination="TYK-5A-x82" id="dxv-gV-hz1"/>
                                 </connections>
                             </mapView>
-                            <containerView translatesAutoresizingMaskIntoConstraints="NO" id="Sxu-vO-kxa">
-                                <rect key="frame" x="0.0" y="1" width="600" height="417"/>
-                                <connections>
-                                    <segue destination="7BX-zz-dim" kind="embed" id="lZ6-BQ-INl"/>
-                                </connections>
-                            </containerView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Hid-6t-J2L">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="417"/>
+                            </customView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="Sxu-vO-kxa" firstAttribute="height" secondItem="s1R-HV-vyu" secondAttribute="height" multiplier="1:1" id="Kta-kg-bCQ"/>
-                            <constraint firstItem="Sxu-vO-kxa" firstAttribute="leading" secondItem="qa6-7c-s1W" secondAttribute="leading" id="Raz-uP-kTZ"/>
+                            <constraint firstItem="Hid-6t-J2L" firstAttribute="top" secondItem="qa6-7c-s1W" secondAttribute="top" id="IEf-qG-2tP"/>
                             <constraint firstAttribute="trailing" secondItem="s1R-HV-vyu" secondAttribute="trailing" id="Txz-yL-mWb"/>
+                            <constraint firstItem="Hid-6t-J2L" firstAttribute="leading" secondItem="qa6-7c-s1W" secondAttribute="leading" id="UpX-Ph-08w"/>
                             <constraint firstItem="s1R-HV-vyu" firstAttribute="leading" secondItem="qa6-7c-s1W" secondAttribute="leading" id="b1d-fn-Hmn"/>
-                            <constraint firstAttribute="trailing" secondItem="Sxu-vO-kxa" secondAttribute="trailing" id="b3o-DJ-NRa"/>
-                            <constraint firstItem="Sxu-vO-kxa" firstAttribute="centerY" secondItem="qa6-7c-s1W" secondAttribute="centerY" id="cFS-OJ-SiM"/>
                             <constraint firstAttribute="bottom" secondItem="s1R-HV-vyu" secondAttribute="bottom" id="kkI-xz-pKq"/>
                             <constraint firstItem="s1R-HV-vyu" firstAttribute="top" secondItem="qa6-7c-s1W" secondAttribute="top" id="pOP-Ow-rrj"/>
+                            <constraint firstAttribute="trailing" secondItem="Hid-6t-J2L" secondAttribute="trailing" id="r2R-wE-9Tp"/>
+                            <constraint firstAttribute="bottom" secondItem="Hid-6t-J2L" secondAttribute="bottom" id="uVF-aQ-Whn"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="mapView" destination="s1R-HV-vyu" id="Gig-cX-EII"/>
+                        <outlet property="testView" destination="Hid-6t-J2L" id="f2N-64-qiG"/>
                     </connections>
                 </viewController>
                 <customObject id="TEP-w5-kbz" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

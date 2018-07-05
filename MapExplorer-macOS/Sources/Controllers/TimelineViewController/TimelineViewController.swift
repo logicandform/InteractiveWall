@@ -45,6 +45,8 @@ class TimelineViewController: NSViewController, GestureResponder {
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration
             timelineBackgroundView.animator().alphaValue = out ? 0 : 1
+//            timelineBackgroundView.animator().isHidden = out ? true : false
+//            view.animator().isHidden = out ? true : false
         })
     }
 
@@ -66,7 +68,9 @@ class TimelineViewController: NSViewController, GestureResponder {
     // MARK: Setup
 
     private func setupViews() {
+//        view.isHidden = true
         timelineBackgroundView.alphaValue = 0
+//        timelineBackgroundView.isHidden = true
         timelineBackgroundView.wantsLayer = true
         timelineBackgroundView.layer?.backgroundColor = style.timelineBackgroundColor.cgColor
     }
