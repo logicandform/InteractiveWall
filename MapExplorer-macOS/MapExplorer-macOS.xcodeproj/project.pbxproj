@@ -81,7 +81,7 @@
 		67C759AB770299C488231A9D /* Pods_All_MapExplorer_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */; };
 		8F1A1CBB205B41AC00A59A84 /* FlippedMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1A1CBA205B41AC00A59A84 /* FlippedMapView.swift */; };
 		8F22945620773EA600731E78 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F22945520773EA600731E78 /* Math.swift */; };
-		8F64A1E720BEF88600F0D209 /* FlippedMapViewWithMiniMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F64A1E620BEF88600F0D209 /* FlippedMapViewWithMiniMap.swift */; };
+		8F64A1E720BEF88600F0D209 /* MapViewWithMiniMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F64A1E620BEF88600F0D209 /* MapViewWithMiniMap.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -178,7 +178,7 @@
 		3F5FAAAD206043E600CF275B /* CircleAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleAnnotationView.swift; sourceTree = "<group>"; };
 		8F1A1CBA205B41AC00A59A84 /* FlippedMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlippedMapView.swift; sourceTree = "<group>"; };
 		8F22945520773EA600731E78 /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
-		8F64A1E620BEF88600F0D209 /* FlippedMapViewWithMiniMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlippedMapViewWithMiniMap.swift; sourceTree = "<group>"; };
+		8F64A1E620BEF88600F0D209 /* MapViewWithMiniMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewWithMiniMap.swift; sourceTree = "<group>"; };
 		9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_MapExplorer_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E45B0B207D66FC5A3CD5BEA /* Pods-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		D9FF0C65383B61E5A7A798B0 /* Pods-All-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-macOS.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-macOS/Pods-All-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -386,7 +386,7 @@
 			isa = PBXGroup;
 			children = (
 				8F1A1CBA205B41AC00A59A84 /* FlippedMapView.swift */,
-				8F64A1E620BEF88600F0D209 /* FlippedMapViewWithMiniMap.swift */,
+				8F64A1E620BEF88600F0D209 /* MapViewWithMiniMap.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -636,7 +636,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2200500420E2B8AC00B1E740 /* TimelineDataSource.swift in Sources */,
-				8F64A1E720BEF88600F0D209 /* FlippedMapViewWithMiniMap.swift in Sources */,
+				8F64A1E720BEF88600F0D209 /* MapViewWithMiniMap.swift in Sources */,
 				22A4986E2047492B0024B46C /* TouchState.swift in Sources */,
 				22D6F91E20B6836900C7FB5F /* NSApplication.swift in Sources */,
 				22004FEA20DDA66100B1E740 /* Settings.swift in Sources */,

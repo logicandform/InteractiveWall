@@ -15,7 +15,7 @@ struct MapConstants {
 class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, NSGestureRecognizerDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Map")
 
-    @IBOutlet weak var mapView: FlippedMapWithMiniMap!
+    @IBOutlet weak var mapView: MapViewWithMiniMap!
 
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
@@ -82,6 +82,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         let overlay = MKTileOverlay(urlTemplate: tileURL)
         overlay.canReplaceMapContent = true
         mapView.add(overlay)
+        if appID % 2 == 0 { mapView.miniMapPosition = .nw }
         createAnnotations()
     }
 
