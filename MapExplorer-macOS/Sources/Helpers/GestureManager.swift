@@ -126,7 +126,6 @@ final class GestureManager {
 
     /// Displays a touch indicator on the screen for testing
     private func displayTouchIndicator(in view: NSView, at position: CGPoint) {
-        return
         let radius = Constants.indicatorRadius
         let frame = CGRect(origin: CGPoint(x: position.x - radius, y: position.y - radius), size: CGSize(width: 2*radius, height: 2*radius))
         let touchIndicator = NSView(frame: frame)
