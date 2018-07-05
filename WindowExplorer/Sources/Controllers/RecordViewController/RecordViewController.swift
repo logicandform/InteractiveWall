@@ -675,7 +675,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         let lastScreen = NSScreen.at(position: Configuration.numberOfScreens)
         var origin = CGPoint(x: recordFrame.maxX + style.windowMargins + offsetX, y: recordFrame.maxY + offsetY - view.frame.height)
 
-        if origin.x > lastScreen.frame.maxX - view.frame.width / 2 {
+        if origin.x > lastScreen.frame.maxX - view.frame.width {
             if lastScreen.frame.height - recordFrame.maxY < view.frame.height + style.windowMargins - 2 * offsetY {
                 // Below
                 origin = CGPoint(x: lastScreen.frame.maxX - view.frame.width - style.windowMargins, y: origin.y - recordFrame.height - style.windowMargins)
