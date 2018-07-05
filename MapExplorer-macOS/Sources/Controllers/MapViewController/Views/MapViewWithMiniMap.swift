@@ -56,11 +56,10 @@ class MapViewWithMiniMap: MKMapView, MKMapViewDelegate {
         miniMap.isScrollEnabled = false
         miniMap.isZoomEnabled = false
         miniMap.isRotateEnabled = false
-
         miniMap.setVisibleMapRect(MKMapRect(origin: MapConstants.canadaRect.origin, size: MapConstants.canadaRect.size), animated: false)
         miniMap.delegate = self
         miniMap.translatesAutoresizingMaskIntoConstraints = false
-        miniMap.isHidden = false
+        miniMap.isHidden = true
         addSubview(miniMap)
         setupConstraints()
         miniMapPosition = Constants.defaultMiniMapPosition
@@ -116,7 +115,7 @@ class MapViewWithMiniMap: MKMapView, MKMapViewDelegate {
 
     override func add(_ overlay: MKOverlay) {
         super.add(overlay)
-//        miniMap.add(overlay)
+        miniMap.add(overlay)
     }
 
     override func setVisibleMapRect(_ mapRect: MKMapRect, animated animate: Bool) {
@@ -127,10 +126,8 @@ class MapViewWithMiniMap: MKMapView, MKMapViewDelegate {
 
     // MARK: MKMapViewDelegate
 
-    var tiles: MKTileOverlay!
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if let tileOverlay = overlay as? MKTileOverlay {
-            tiles = tileOverlay
             return MKTileOverlayRenderer(tileOverlay: tileOverlay)
         }
 

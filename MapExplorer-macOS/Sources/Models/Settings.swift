@@ -14,7 +14,7 @@ struct Settings {
 
     private struct Defaults {
         static let labels = true
-        static let miniMap = true
+        static let miniMap = false
         static let events = true
         static let artifacts = true
         static let schools = true
