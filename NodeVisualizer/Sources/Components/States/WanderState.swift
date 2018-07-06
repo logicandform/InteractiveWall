@@ -7,7 +7,7 @@ import GameplayKit
 
 class WanderState: GKState {
 
-    private(set) unowned var entity: RecordEntity
+    private unowned var entity: RecordEntity
 
 
     required init(entity: RecordEntity) {
@@ -24,7 +24,18 @@ class WanderState: GKState {
         entity.physicsComponent.physicsBody.linearDamping = 1
         entity.physicsComponent.physicsBody.isDynamic = true
         entity.physicsComponent.physicsBody.fieldBitMask = 0x1 << 0
+
+        entity.physicsComponent.physicsBody.categoryBitMask = 0xFFFFFFFF
+        entity.physicsComponent.physicsBody.collisionBitMask = 0xFFFFFFFF
+
         entity.renderComponent.recordNode.removeAllActions()
+        entity.movementComponent.entityToSeek = nil
+
+        let boundingNodes = entity.renderComponent.boundingNodes
+        for node in boundingNodes {
+            node.removeFromParent()
+        }
+        entity.renderComponent.boundingNodes.removeAll()
     }
 
     override func update(deltaTime seconds: TimeInterval) {

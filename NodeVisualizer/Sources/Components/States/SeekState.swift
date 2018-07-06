@@ -7,7 +7,7 @@ import GameplayKit
 
 class SeekState: GKState {
 
-    private(set) unowned var entity: RecordEntity
+    private unowned var entity: RecordEntity
 
 
     required init(entity: RecordEntity) {

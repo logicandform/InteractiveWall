@@ -48,14 +48,11 @@ class RecordEntity: GKEntity {
         return agent
     }
 
-    var relatedEntities: [RecordEntity] = []
-    var hasReset: Bool = false
-
-    private(set) var manager: EntityManager
+//    private(set) var manager: EntityManager
 
 
-    init(record: TestingEnvironment.Record, manager: EntityManager) {
-        self.manager = manager
+    init(record: TestingEnvironment.Record) {
+//        self.manager = manager
 
         super.init()
 

@@ -7,13 +7,15 @@ import GameplayKit
 
 final class EntityManager {
 
-    lazy var componentSystems: [GKComponentSystem] = {
+    private lazy var componentSystems: [GKComponentSystem] = {
         let intelligenceSystem = GKComponentSystem(componentClass: IntelligenceComponent.self)
         let movementSystem = GKComponentSystem(componentClass: MovementComponent.self)
         let agentSystem = GKComponentSystem(componentClass: RecordAgent.self)
         let animationSystem = GKComponentSystem(componentClass: AnimationComponent.self)
         return [intelligenceSystem, animationSystem, movementSystem]
     }()
+
+    static let instance = EntityManager()
 
     /// Set of all entities in the scene
     private(set) var entities = Set<GKEntity>()
@@ -28,8 +30,12 @@ final class EntityManager {
     private var allLevelEntities = Set<RecordEntity>()
 
     private struct Constants {
-        static let maxLevel = 1
+        static let maxLevel = 5
     }
+
+
+    // Use singleton instance
+    private init() { }
 
 
     // MARK: API
@@ -131,7 +137,6 @@ final class EntityManager {
         }
 
         entitiesInLevel.removeAll()
-        entitiesInCurrentLevel.removeAll()
         allLevelEntities.removeAll()
     }
 

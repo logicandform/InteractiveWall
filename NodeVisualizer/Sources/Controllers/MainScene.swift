@@ -10,7 +10,6 @@ class MainScene: SKScene {
     var gestureManager: GestureManager!
     var currentEntityInFocus: RecordEntity?
 
-    private var entityManager = EntityManager()
     private var lastUpdateTimeInterval: TimeInterval = 0
 
     private enum StartingPositionType: UInt32 {
@@ -42,7 +41,7 @@ class MainScene: SKScene {
 
         let deltaTime = currentTime - lastUpdateTimeInterval
         lastUpdateTimeInterval = currentTime
-        entityManager.update(deltaTime)
+        EntityManager.instance.update(deltaTime)
 
         // keep the nodes facing 0 degrees (i.e. no rotation when affected by physics simulation)
         for case let node as RecordNode in children {
@@ -79,7 +78,7 @@ class MainScene: SKScene {
 
     private func addRecordNodesToScene() {
         records.enumerated().forEach { index, record in
-            let recordEntity = RecordEntity(record: record, manager: entityManager)
+            let recordEntity = RecordEntity(record: record)
 
             recordEntity.intelligenceComponent.enterInitialState()
 
@@ -92,7 +91,7 @@ class MainScene: SKScene {
                 let screenBoundsConstraint = SKConstraint.positionX(SKRange(lowerLimit: 0, upperLimit: frame.width), y: SKRange(lowerLimit: 0, upperLimit: frame.height))
                 recordNode.constraints = [screenBoundsConstraint]
 
-                entityManager.add(recordEntity)
+                EntityManager.instance.add(recordEntity)
                 addChild(recordNode)
 
 //                let destinationPosition = getRandomPosition()
@@ -149,8 +148,14 @@ class MainScene: SKScene {
 
     private func relatedNodes(for node: RecordNode) {
         if let entity = node.entity as? RecordEntity {
+            // reset the entities
+
+            if entity.intelligenceComponent.stateMachine.currentState is WanderState || entity.intelligenceComponent.stateMachine.currentState is SeekState {
+                EntityManager.instance.reset()
+            }
+
+            // enter the TappedState for the entity that was tapped
             entity.intelligenceComponent.stateMachine.enter(TappedState.self)
-            currentEntityInFocus = entity
         }
     }
 

@@ -69,7 +69,7 @@ class TestingEnvironment {
     }
 
     private func makeRelatedRecordsForOrganization() {
-        for index in 51..<151 {
+        for index in 51..<61 {
             let relatedRecord = Record(id: index, color: .brown)
             relatedRecordsForOrganization.append(relatedRecord)
             associate(records: [organizationRecord], to: relatedRecord)
