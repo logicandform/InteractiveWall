@@ -7,34 +7,36 @@ import GameplayKit
 
 class AnimationComponent: GKComponent {
 
-    var renderComponent: RenderComponent {
-        guard let renderComponent = entity?.component(ofType: RenderComponent.self) else {
-            fatalError("An AnimationComponent's entity must have a RenderComponent")
-        }
-        return renderComponent
-    }
-
-    var intelligenceComponent: IntelligenceComponent {
-        guard let intelligenceComponent = entity?.component(ofType: IntelligenceComponent.self) else {
-            fatalError("An AnimationComponent's entity must have an IntelligenceComponent")
-        }
-        return intelligenceComponent
-    }
-
-    var physicsComponent: PhysicsComponent {
-        guard let physicsComponent = entity?.component(ofType: PhysicsComponent.self) else {
-            fatalError("An AnimationComponent's entity must have a PhysicsComponent")
-        }
-        return physicsComponent
-    }
-
     enum AnimationState {
         case goToPoint(CGPoint)
     }
 
     var requestedAnimationState: AnimationState?
 
+    private var renderComponent: RenderComponent {
+        guard let renderComponent = entity?.component(ofType: RenderComponent.self) else {
+            fatalError("An AnimationComponent's entity must have a RenderComponent")
+        }
+        return renderComponent
+    }
 
+    private var intelligenceComponent: IntelligenceComponent {
+        guard let intelligenceComponent = entity?.component(ofType: IntelligenceComponent.self) else {
+            fatalError("An AnimationComponent's entity must have an IntelligenceComponent")
+        }
+        return intelligenceComponent
+    }
+
+    private var physicsComponent: PhysicsComponent {
+        guard let physicsComponent = entity?.component(ofType: PhysicsComponent.self) else {
+            fatalError("An AnimationComponent's entity must have a PhysicsComponent")
+        }
+        return physicsComponent
+    }
+
+
+    // MARK: Lifecycle
+    
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
 

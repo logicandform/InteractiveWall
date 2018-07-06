@@ -13,20 +13,22 @@ import GameplayKit
 class PhysicsComponent: GKComponent {
     typealias CategoryBitMask = Int
 
-    var renderComponent: RenderComponent {
+    private(set) var physicsBody: SKPhysicsBody
+
+    private var renderComponent: RenderComponent {
         guard let renderComponent = entity?.component(ofType: RenderComponent.self) else {
             fatalError("A PhysicsComponent's entity must have a RenderComponent")
         }
         return renderComponent
     }
 
-    private(set) var physicsBody: SKPhysicsBody
-
     private struct Constants {
         static let resetBitMask: UInt32 = 0x1 << 0
     }
 
 
+    // MARK: Initializer
+    
     init(physicsBody: SKPhysicsBody) {
         self.physicsBody = physicsBody
         super.init()

@@ -107,30 +107,6 @@ final class EntityManager {
         return relatedEntities
     }
 
-    func entities(for records: [TestingEnvironment.Record]) -> [GKEntity] {
-        var recordEntities = [GKEntity]()
-
-        for record in records {
-            if let entity = entity(for: record) {
-                recordEntities.append(entity)
-            }
-        }
-
-        return recordEntities
-    }
-
-    func entity(for record: TestingEnvironment.Record) -> GKEntity? {
-        for entity in entities {
-            if let recordEntity = entity as? RecordEntity,
-                !allLevelEntities.contains(recordEntity),
-                recordEntity.renderComponent.recordNode.record.id == record.id {
-                return entity
-            }
-        }
-
-        return nil
-    }
-
     func reset() {
         for entity in allLevelEntities {
             entity.reset()
@@ -142,6 +118,30 @@ final class EntityManager {
 
 
     // MARK: Helpers
+
+    private func entities(for records: [TestingEnvironment.Record]) -> [GKEntity] {
+        var recordEntities = [GKEntity]()
+
+        for record in records {
+            if let entity = entity(for: record) {
+                recordEntities.append(entity)
+            }
+        }
+
+        return recordEntities
+    }
+
+    private func entity(for record: TestingEnvironment.Record) -> GKEntity? {
+        for entity in entities {
+            if let recordEntity = entity as? RecordEntity,
+                !allLevelEntities.contains(recordEntity),
+                recordEntity.renderComponent.recordNode.record.id == record.id {
+                return entity
+            }
+        }
+
+        return nil
+    }
 
     private func padEntitiesForLevel(_ level: Int) {
         guard entitiesInLevel.count <= level else {

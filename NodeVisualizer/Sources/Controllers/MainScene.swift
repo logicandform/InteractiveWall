@@ -148,14 +148,16 @@ class MainScene: SKScene {
 
     private func relatedNodes(for node: RecordNode) {
         if let entity = node.entity as? RecordEntity {
-            // reset the entities
-
             if entity.intelligenceComponent.stateMachine.currentState is WanderState || entity.intelligenceComponent.stateMachine.currentState is SeekState {
+                // reset the entities
                 EntityManager.instance.reset()
-            }
 
-            // enter the TappedState for the entity that was tapped
-            entity.intelligenceComponent.stateMachine.enter(TappedState.self)
+                // delay to ensure that all entities have reset and "bounced" away
+                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
+                    // tapped entity enters TappedState
+                    entity.intelligenceComponent.stateMachine.enter(TappedState.self)
+                }
+            }
         }
     }
 

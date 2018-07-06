@@ -16,6 +16,8 @@ class IntelligenceComponent: GKComponent {
     private let initialStateClass: AnyClass
 
 
+    // MARK: Initializer
+    
     init(states: [GKState]) {
         self.stateMachine = GKStateMachine(states: states)
         let firstState = states.first!
@@ -28,12 +30,16 @@ class IntelligenceComponent: GKComponent {
     }
 
 
+    // MARK: Lifecycle
+
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
 
         stateMachine.update(deltaTime: seconds)
     }
 
+
+    // MARK: API
 
     func enterInitialState() {
         stateMachine.enter(initialStateClass)

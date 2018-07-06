@@ -48,11 +48,10 @@ class RecordEntity: GKEntity {
         return agent
     }
 
-//    private(set) var manager: EntityManager
 
+    // MARK: Initializer
 
     init(record: TestingEnvironment.Record) {
-//        self.manager = manager
 
         super.init()
 

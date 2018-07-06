@@ -23,6 +23,8 @@ class RenderComponent: GKComponent {
     }
 
 
+    // MARK: Initializer
+
     init(record: TestingEnvironment.Record) {
         self.recordNode = RecordNode(record: record)
         super.init()
@@ -33,6 +35,8 @@ class RenderComponent: GKComponent {
     }
 
 
+    // MARK: Lifecycle
+    
     override func didAddToEntity() {
         recordNode.entity = entity
     }

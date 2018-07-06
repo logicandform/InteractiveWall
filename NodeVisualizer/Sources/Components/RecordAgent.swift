@@ -11,7 +11,7 @@ import GameplayKit
 
 class RecordAgent: GKAgent2D, GKAgentDelegate {
 
-    var renderComponent: RenderComponent {
+    private var renderComponent: RenderComponent {
         guard let renderComponent = entity?.component(ofType: RenderComponent.self) else {
             fatalError("A RecordEntity must have a RenderComponent")
         }
