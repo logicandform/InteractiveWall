@@ -123,7 +123,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         recordTypeSelectionView.stackview.alphaValue = 0
         recordTypeSelectionView.initialize(with: record, manager: gestureManager)
         recordTypeSelectionView.selectionCallback = didSelectRelatedItemsFilterType(_:)
-        relatedRecords = record.relatedRecords.sorted(by: { $0.priority > $1.priority })
+        relatedRecords = record.relatedRecords(of: .all)
         updateRelatedRecordsHeight()
     }
 
@@ -454,7 +454,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         case mediaView:
             return record.media.count
         case relatedItemsView:
-            return record.filterRelatedRecords(of: relatedItemsFilterType, from: relatedRecords).count
+            return relatedRecords.count
         default:
             return 0
         }
@@ -470,7 +470,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             }
         case relatedItemsView:
             if let relatedItem = collectionView.makeItem(withIdentifier: relatedItemsFilterType.layout.identifier, for: indexPath) as? RelatedItemView {
-                relatedItem.record = record.filterRelatedRecords(of: relatedItemsFilterType, from: relatedRecords).at(index: indexPath.item)
+                relatedItem.record = relatedRecords.at(index: indexPath.item)
                 relatedItem.tintColor = record.type.color
                 return relatedItem
             }
@@ -621,6 +621,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
 
         relatedItemsFilterType = type
+        relatedRecords = record.relatedRecords(of: type)
         let titleForType = type.title?.uppercased() ?? Constants.allRecordsTitle
 
         // Transitions the related records and their title by fading out & in
