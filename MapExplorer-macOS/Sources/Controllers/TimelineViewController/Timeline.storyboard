@@ -71,15 +71,15 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
-                                    <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="NUl-Dg-WwY">
+                                    <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="NUl-Dg-WwY">
                                         <rect key="frame" x="0.0" y="6" width="664" height="7"/>
                                         <clipView key="contentView" drawsBackground="NO" id="Vpd-yq-eWk">
                                             <rect key="frame" x="0.0" y="0.0" width="664" height="7"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <collectionView id="uKJ-ub-LXA">
-                                                    <rect key="frame" x="0.0" y="0.0" width="664" height="7"/>
-                                                    <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="664" height="158"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" scrollDirection="horizontal" id="Xty-b9-P8e">
                                                         <size key="itemSize" width="50" height="50"/>
                                                     </collectionViewFlowLayout>
