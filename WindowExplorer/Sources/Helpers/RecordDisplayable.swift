@@ -68,14 +68,29 @@ extension RecordDisplayable {
 
     func relatedRecords(of type: RecordFilterType) -> [RecordDisplayable] {
         if let recordType = type.recordType {
-            return relatedRecords(of: recordType).sorted(by: { $0.priority > $1.priority })
+            return relatedRecords(of: recordType)
         } else if type == .all {
-            return relatedRecords.sorted(by: { $0.priority > $1.priority })
+            return relatedRecords
         }
 
         switch type {
         case .image:
-            return relatedRecordsContainingImages().sorted(by: { $0.priority > $1.priority })
+            return relatedRecordsContainingImages()
+        default:
+            return []
+        }
+    }
+
+    func filterRelatedRecords(of type: RecordFilterType, from records: [RecordDisplayable]) -> [RecordDisplayable] {
+        if let recordType = type.recordType {
+            return records.filter { $0.type == recordType }
+        } else if type == .all {
+            return records
+        }
+
+        switch type {
+        case .image:
+            return records.filter { $0.containsImages() }
         default:
             return []
         }

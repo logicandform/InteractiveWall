@@ -123,7 +123,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         recordTypeSelectionView.stackview.alphaValue = 0
         recordTypeSelectionView.initialize(with: record, manager: gestureManager)
         recordTypeSelectionView.selectionCallback = didSelectRelatedItemsFilterType(_:)
-        relatedRecords = record.relatedRecords(of: .all)
+        relatedRecords = record.relatedRecords.sorted(by: { $0.priority > $1.priority })
         updateRelatedRecordsHeight()
     }
 
@@ -454,7 +454,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         case mediaView:
             return record.media.count
         case relatedItemsView:
-            return relatedRecords.count
+            return record.filterRelatedRecords(of: relatedItemsFilterType, from: relatedRecords).count
         default:
             return 0
         }
@@ -470,7 +470,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             }
         case relatedItemsView:
             if let relatedItem = collectionView.makeItem(withIdentifier: relatedItemsFilterType.layout.identifier, for: indexPath) as? RelatedItemView {
-                relatedItem.record = relatedRecords.at(index: indexPath.item)
+                relatedItem.record = record.filterRelatedRecords(of: relatedItemsFilterType, from: relatedRecords).at(index: indexPath.item)
                 relatedItem.tintColor = record.type.color
                 return relatedItem
             }
@@ -621,7 +621,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
 
         relatedItemsFilterType = type
-        relatedRecords = record.relatedRecords(of: type)
         let titleForType = type.title?.uppercased() ?? Constants.allRecordsTitle
 
         // Transitions the related records and their title by fading out & in
@@ -702,10 +701,10 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
     private func updateRelatedRecordsHeight() {
         let maxHeight = style.relatedRecordsMaxSize.height
-        let numberOfRecords = CGFloat(record.relatedRecords(of: relatedItemsFilterType).count)
+        let numberOfRecords = CGFloat(relatedRecords.count)
         let numberOfListSpaces = numberOfRecords > 1 ? numberOfRecords - 1 : 0
         let numberOfGridSpaces = numberOfRecords > relatedItemsFilterType.layout.itemsPerRow ? numberOfRecords / relatedItemsFilterType.layout.itemsPerRow : 0
-        let height = relatedItemsFilterType.layout == .list ? numberOfRecords * style.listItemHeight + numberOfListSpaces * style.itemSpacing : numberOfRecords * style.imageItemHeight + numberOfGridSpaces * style.itemSpacing
+        let height = relatedItemsFilterType.layout == .list ? numberOfRecords * style.relatedRecordsListItemHeight + numberOfListSpaces * style.relatedRecordsItemSpacing : numberOfRecords * style.relatedRecordsImageItemHeight + numberOfGridSpaces * style.relatedRecordsItemSpacing
         relatedRecordsHeightConstraint.constant = height > maxHeight ? maxHeight : height
         relatedRecordScrollView.updateGradient(forced: true, height: height)
     }
