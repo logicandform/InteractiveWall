@@ -7,6 +7,7 @@ enum TimelineType {
     case month
     case year
     case decade
+    case century
 }
 
 
@@ -26,8 +27,9 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     var gestureManager: GestureManager!
     private var timelineHandler: TimelineHandler?
     private let source = TimelineDataSource()
-    private var timelineType = TimelineType.decade
+    private var timelineType = TimelineType.century
     private var decades = [Int]()
+    private var years = [Int]()
     private var selectedDecade: Int?
     private var selectedYear: Int?
     private var selectedMonth: Month?
@@ -37,9 +39,11 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         static let timelineCellWidth: CGFloat = 20
         static let timelineSelectedCellWidth: CGFloat = 150
         static let animationDuration = 0.5
-        static let monthControlItemWidth: CGFloat = 70
+        static let controlItemWidth: CGFloat = 70
         static let firstDecade = 1860
         static let lastDecade = 1980
+        static let timelineControlWidth: CGFloat = 490
+        static let visibleControlItems = 7
     }
 
     private struct Keys {
@@ -84,6 +88,11 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         setupNotifications()
     }
 
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        setDate(day: 0, month: .january, year: 1880)
+    }
+
 
     // MARK: Setup
 
@@ -104,7 +113,8 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     }
 
     private func setupControls() {
-        decades = (Constants.firstDecade...Constants.lastDecade).filter { $0 % 10 == 0 }
+        years = Array(Constants.firstDecade...Constants.lastDecade)
+        decades = years.filter { $0 % 10 == 0 }
         monthCollectionView.register(TimelineControlItemView.self, forItemWithIdentifier: TimelineControlItemView.identifier)
         yearCollectionView.register(TimelineControlItemView.self, forItemWithIdentifier: TimelineControlItemView.identifier)
         decadeCollectionView.register(TimelineControlItemView.self, forItemWithIdentifier: TimelineControlItemView.identifier)
@@ -126,22 +136,22 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
             self?.didTapOnTimeline(gesture)
         }
 
-        let monthControlTap = TapGestureRecognizer()
-        gestureManager.add(monthControlTap, to: monthCollectionView)
-        monthControlTap.gestureUpdated = { [weak self] gesture in
+        addGestures(to: monthCollectionView)
+        addGestures(to: yearCollectionView)
+        addGestures(to: decadeCollectionView)
+    }
+
+    private func addGestures(to collectionView: NSCollectionView) {
+        let tapGesture = TapGestureRecognizer()
+        gestureManager.add(tapGesture, to: collectionView)
+        tapGesture.gestureUpdated = { [weak self] gesture in
             self?.didTapOnControl(gesture)
         }
 
-        let yearControlTap = TapGestureRecognizer()
-        gestureManager.add(yearControlTap, to: yearCollectionView)
-        yearControlTap.gestureUpdated = { [weak self] gesture in
-            self?.didTapOnControl(gesture)
-        }
-
-        let decadeControlTap = TapGestureRecognizer()
-        gestureManager.add(decadeControlTap, to: decadeCollectionView)
-        decadeControlTap.gestureUpdated = { [weak self] gesture in
-            self?.didTapOnControl(gesture)
+        let panGesture = PanGestureRecognizer()
+        gestureManager.add(panGesture, to: collectionView)
+        panGesture.gestureUpdated = { [weak self] gesture in
+            self?.didPanOnControl(gesture)
         }
     }
 
@@ -214,6 +224,54 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         }
     }
 
+    private func didPanOnControl(_ gesture: GestureRecognizer) {
+        guard let pan = gesture as? PanGestureRecognizer, let collectionView = gestureManager.view(for: gesture) as? NSCollectionView else {
+            return
+        }
+
+        switch pan.state {
+        case .recognized, .momentum:
+            update(collectionView, with: pan.delta)
+        default:
+            return
+        }
+    }
+
+    private lazy var positionForView: [NSView: CGFloat] = [monthCollectionView: 0, yearCollectionView: 0, decadeCollectionView: 0]
+
+    private func update(_ collectionView: NSCollectionView, with offset: CGVector, cascading: Bool = true) {
+        let maxX = collectionView.frame.width - Constants.timelineControlWidth
+        var rect = collectionView.visibleRect
+        var position = positionForView[collectionView]!
+        position -= offset.dx
+        if position > maxX {
+            position -= maxX
+        } else if position < 0 {
+            position = maxX - position
+        }
+        positionForView[collectionView] = position
+        rect.origin.x = position
+        collectionView.scrollToVisible(rect)
+
+        guard cascading else {
+            return
+        }
+
+        switch collectionView {
+        case monthCollectionView:
+            update(yearCollectionView, with: offset / 12, cascading: false)
+            update(decadeCollectionView, with: offset / 120, cascading: false)
+        case yearCollectionView:
+            update(monthCollectionView, with: offset * 12, cascading: false)
+            update(decadeCollectionView, with: offset / 10, cascading: false)
+        case decadeCollectionView:
+            update(monthCollectionView, with: offset * 120, cascading: false)
+            update(yearCollectionView, with: offset * 10, cascading: false)
+        default:
+            return
+        }
+    }
+
 
     // MARK: Notification Handling
 
@@ -243,11 +301,11 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
         switch collectionView {
         case monthCollectionView:
-            return selectedYear == nil ? 0 : Month.allValues.count
+            return Month.allValues.count + Constants.visibleControlItems
         case yearCollectionView:
-            return selectedDecade == nil ? 0 : 10
+            return years.count + Constants.visibleControlItems
         case decadeCollectionView:
-            return decades.count
+            return decades.count + Constants.visibleControlItems
         default:
             return 0
         }
@@ -257,7 +315,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         switch collectionView {
         case monthCollectionView:
             if let controlItemView = collectionView.makeItem(withIdentifier: TimelineControlItemView.identifier, for: indexPath) as? TimelineControlItemView {
-                let month = Month.allValues.at(index: indexPath.item)
+                let month = Month.allValues.at(index: indexPath.item % Month.allValues.count)
                 controlItemView.title = month?.abbreviation
                 if let selectedMonth = selectedMonth {
                     controlItemView.set(highlighted: selectedMonth == month)
@@ -266,18 +324,16 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
             }
         case yearCollectionView:
             if let controlItemView = collectionView.makeItem(withIdentifier: TimelineControlItemView.identifier, for: indexPath) as? TimelineControlItemView {
-                if let decade = selectedDecade {
-                    let year = decade + indexPath.item
-                    controlItemView.title = year.description
-                    if let selectedYear = selectedYear {
-                        controlItemView.set(highlighted: selectedYear == year)
-                    }
+                let year = years.at(index: indexPath.item % years.count)
+                controlItemView.title = year?.description
+                if let selectedYear = selectedYear {
+                    controlItemView.set(highlighted: selectedYear == year)
                 }
                 return controlItemView
             }
         case decadeCollectionView:
             if let controlItemView = collectionView.makeItem(withIdentifier: TimelineControlItemView.identifier, for: indexPath) as? TimelineControlItemView {
-                let decade = decades.at(index: indexPath.item)
+                let decade = decades.at(index: indexPath.item % decades.count)
                 controlItemView.title = decade?.description
                 if let selectedDecade = selectedDecade {
                     controlItemView.set(highlighted: selectedDecade == decade)
@@ -293,7 +349,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
         let height = collectionView.superview!.frame.size.height
-        return CGSize(width: Constants.monthControlItemWidth, height: height)
+        return CGSize(width: Constants.controlItemWidth, height: height)
     }
 
 
@@ -344,7 +400,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     private func select(decade: Int, view: TimelineControlItemView) {
         if decade == selectedDecade {
             removeSelection(for: .decade)
-            transition(to: .decade)
+            transition(to: .century)
             return
         }
 
@@ -359,7 +415,8 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     private func removeSelection(for type: TimelineType) {
         // Unhighlight items for type
-        for item in collectionView(for: type).visibleItems() {
+        let visibleItems = collectionView(for: type)?.visibleItems() ?? []
+        for item in visibleItems {
             if let controlItem = item as? TimelineControlItemView {
                 controlItem.set(highlighted: false)
             }
@@ -368,31 +425,34 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         switch type {
         case .month:
             selectedMonth = nil
-            // remove the selection view box
         case .year:
             removeSelection(for: .month)
             selectedYear = nil
-            // remove the selection view box
         case .decade:
             removeSelection(for: .year)
             selectedDecade = nil
-            // remove the selection view box
+        case .century:
+            removeSelection(for: .decade)
         }
     }
 
     private func transition(to type: TimelineType) {
         // update the layout and data source for the timeline
-        switch type {
-        case .month:
-            monthCollectionView.reloadData()
-        case .year:
-            monthCollectionView.reloadData()
-            yearCollectionView.reloadData()
-        case .decade:
-            monthCollectionView.reloadData()
-            yearCollectionView.reloadData()
-            decadeCollectionView.reloadData()
-        }
+//        switch type {
+//        case .month:
+//            monthCollectionView.reloadData()
+//        case .year:
+//            monthCollectionView.reloadData()
+//            yearCollectionView.reloadData()
+//        case .decade:
+//            monthCollectionView.reloadData()
+//            yearCollectionView.reloadData()
+//            decadeCollectionView.reloadData()
+//        case .century:
+//            monthCollectionView.reloadData()
+//            yearCollectionView.reloadData()
+//            decadeCollectionView.reloadData()
+//        }
     }
 
 
@@ -432,10 +492,78 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         }
     }
 
+    private func controlMonth() -> Month {
+        let currentX = monthCollectionView.visibleRect.origin.x + Constants.timelineControlWidth / 2
+        let maxX = CGFloat(Month.allValues.count) * Constants.controlItemWidth
+        let x = currentX.truncatingRemainder(dividingBy: maxX)
+        let index = Int(x / Constants.controlItemWidth)
+        return Month.allValues[index]
+    }
+
+    private func controlYear() -> Int {
+        let currentX = yearCollectionView.visibleRect.origin.x + Constants.timelineControlWidth / 2
+        let maxX = CGFloat(years.count) * Constants.controlItemWidth
+        let x = currentX.truncatingRemainder(dividingBy: maxX)
+        let index = Int(x / Constants.controlItemWidth)
+        return years[index]
+    }
+
+    private func controlDecade() -> Int {
+        let currentX = decadeCollectionView.visibleRect.origin.x + Constants.timelineControlWidth / 2
+        let maxX = CGFloat(decades.count) * Constants.controlItemWidth
+        let x = currentX.truncatingRemainder(dividingBy: maxX)
+        let index = Int(x / Constants.controlItemWidth)
+        return decades[index]
+    }
+
 
     // MARK: Helpers
 
-    private func collectionView(for type: TimelineType) -> NSCollectionView {
+    private func setDate(day: Int, month: Month, year: Int) {
+        let centerInset = Constants.controlItemWidth * 3
+
+        let monthMaxX = CGFloat(Month.allValues.count) * Constants.controlItemWidth
+        let monthIndex = Month.allValues.index(of: month)!
+        let monthX = CGFloat(monthIndex) * Constants.controlItemWidth
+        var monthRect = monthCollectionView.visibleRect
+        monthRect.origin.x = monthX - centerInset
+        if monthRect.origin.x < 0 {
+            monthRect.origin.x = monthMaxX + monthRect.origin.x
+        }
+        positionForView[monthCollectionView] = monthRect.origin.x
+        monthCollectionView.scrollToVisible(monthRect)
+
+        let monthOffset = (CGFloat(monthIndex) / 12 - 0.5) * Constants.controlItemWidth
+        let yearMaxX = CGFloat(years.count) * Constants.controlItemWidth
+        let yearIndex = years.index(of: year)!
+        let yearX = CGFloat(yearIndex) * Constants.controlItemWidth
+        var yearRect = yearCollectionView.visibleRect
+        yearRect.origin.x = yearX - centerInset + monthOffset
+        if yearRect.origin.x < 0 {
+            yearRect.origin.x = yearMaxX + yearRect.origin.x
+        }
+        positionForView[yearCollectionView] = yearRect.origin.x
+        yearCollectionView.scrollToVisible(yearRect)
+
+        let yearOffset = (CGFloat(year.array.last!) / 10 - 0.5) * Constants.controlItemWidth
+        let decade = decadeFor(year: year)
+        let decadeMaxX = CGFloat(decades.count) * Constants.controlItemWidth
+        let decadeIndex = decades.index(of: decade)!
+        let decadeX = CGFloat(decadeIndex) * Constants.controlItemWidth
+        var decadeRect = decadeCollectionView.visibleRect
+        decadeRect.origin.x = decadeX - centerInset + yearOffset
+        if decadeRect.origin.x < 0 {
+            decadeRect.origin.x = decadeMaxX + decadeRect.origin.x
+        }
+        positionForView[decadeCollectionView] = decadeRect.origin.x
+        decadeCollectionView.scrollToVisible(decadeRect)
+    }
+
+    private func decadeFor(year: Int) -> Int {
+        return year / 10 * 10
+    }
+
+    private func collectionView(for type: TimelineType) -> NSCollectionView? {
         switch type {
         case .month:
             return monthCollectionView
@@ -443,6 +571,8 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
             return yearCollectionView
         case .decade:
             return decadeCollectionView
+        case .century:
+            return nil
         }
     }
 }

@@ -14,7 +14,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
 
     private struct Constants {
         static let firstYear = 1867
-        static let lastYear = 1976
+        static let lastYear = 1980
     }
 
 
@@ -26,11 +26,19 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     }
 
 
+    // MARK: Helpers
+
+    func events(in range: [Int]) -> Int {
+        return range.reduce(0) { return $0 + (eventsForYear[$1]?.count ?? 0) }
+    }
+
+
     // MARK: Setup
 
     private func setupEvents() {
         events = TimelineEvent.allEvents()
-        events.forEach { event in
+        for event in events {
+            // Add to year dictionary
             if eventsForYear[event.start] != nil {
                 eventsForYear[event.start]!.append(event)
             } else {

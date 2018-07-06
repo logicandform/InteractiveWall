@@ -3,10 +3,10 @@
 import Cocoa
 
 
-class TimelineLayout: NSCollectionViewFlowLayout {
+class TimelineCenturyLayout: NSCollectionViewFlowLayout {
 
     private struct Constants {
-        static let yearWidth = 240
+        static let yearWidth = 16
         static let cellSize = CGSize(width: 240, height: 60)
         static let headerHeight: CGFloat = 20
     }
@@ -24,13 +24,7 @@ class TimelineLayout: NSCollectionViewFlowLayout {
     // MARK: Overrides
 
     override var collectionViewContentSize: NSSize {
-        guard let source = collectionView?.dataSource as? TimelineDataSource else {
-            return .zero
-        }
-
-        let totalYears = source.lastYear - source.firstYear + 1
-        let width = CGFloat(totalYears * Constants.yearWidth)
-        return CGSize(width: width, height: itemSize.height)
+        return CGSize(width: 1920, height: itemSize.height)
     }
 
     override func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {
@@ -52,9 +46,9 @@ class TimelineLayout: NSCollectionViewFlowLayout {
                 }
             }
             // Append attributes for supplimentary views
-            if let attributes = attributes(year: year, in: source) {
-                layoutAttributes.append(attributes)
-            }
+//            if let attributes = attributes(year: year, in: source) {
+//                layoutAttributes.append(attributes)
+//            }
         }
 
         return layoutAttributes

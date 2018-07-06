@@ -27,6 +27,10 @@ extension CGRect {
     func toJSON() -> JSON {
         return [Keys.x: origin.x, Keys.y: origin.y, Keys.width: size.width, Keys.height: size.height]
     }
+
+    var center: CGPoint {
+        return CGPoint(x: midX, y: midY)
+    }
 }
 
 
