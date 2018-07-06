@@ -5,9 +5,9 @@ import SpriteKit
 import GameplayKit
 
 
-class WanderState: GKState {
+class SeekState: GKState {
 
-    private(set) unowned var entity: RecordEntity
+    private unowned var entity: RecordEntity
 
 
     required init(entity: RecordEntity) {
@@ -22,9 +22,7 @@ class WanderState: GKState {
 
         entity.physicsComponent.physicsBody.friction = 1
         entity.physicsComponent.physicsBody.linearDamping = 1
-        entity.physicsComponent.physicsBody.isDynamic = true
-        entity.physicsComponent.physicsBody.fieldBitMask = 0x1 << 0
-        entity.renderComponent.recordNode.removeAllActions()
+        entity.physicsComponent.physicsBody.fieldBitMask = 0x1 << 1
     }
 
     override func update(deltaTime seconds: TimeInterval) {
@@ -32,7 +30,12 @@ class WanderState: GKState {
     }
 
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
-        return true
+        switch stateClass {
+        case is TappedState.Type, is WanderState.Type:
+            return true
+        default:
+            return false
+        }
     }
 
     override func willExit(to nextState: GKState) {

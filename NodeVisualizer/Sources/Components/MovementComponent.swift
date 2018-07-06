@@ -12,21 +12,21 @@ import GameplayKit
 
 class MovementComponent: GKComponent {
 
-    var renderComponent: RenderComponent {
+    var entityToSeek: RecordEntity?
+
+    private var renderComponent: RenderComponent {
         guard let renderComponent = entity?.component(ofType: RenderComponent.self) else {
             fatalError("A MovementComponent's entity must have a RenderComponent")
         }
         return renderComponent
     }
 
-    var physicsComponent: PhysicsComponent {
+    private var physicsComponent: PhysicsComponent {
         guard let physicsComponent = entity?.component(ofType: PhysicsComponent.self) else {
             fatalError("A MovementComponent's entity must have a PhysicsComponent")
         }
         return physicsComponent
     }
-
-    var entityToSeek: RecordEntity?
 
     private struct Constants {
         static let strength: CGFloat = 1000

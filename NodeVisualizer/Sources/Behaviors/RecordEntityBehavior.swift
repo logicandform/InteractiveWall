@@ -11,6 +11,18 @@ import GameplayKit
 
 class RecordEntityBehavior: GKBehavior {
 
+    static func behaviorToAvoidObstacles(withRadius radius: CGFloat, position: CGPoint) -> GKBehavior {
+        let behavior = RecordEntityBehavior()
+        let obstacle = GKCircleObstacle(radius: Float(radius))
+
+        let position = vector_float2(x: Float(position.x), y: Float(position.y))
+        obstacle.position = position
+
+        let avoidObstaclesGoal = GKGoal(toAvoid: [obstacle], maxPredictionTime: 10.0)
+        behavior.setWeight(100, for: avoidObstaclesGoal)
+        return behavior
+    }
+
     static func behavior(toSeek agent: GKAgent2D) -> GKBehavior {
         let behavior = RecordEntityBehavior()
         behavior.setWeight(1, for: GKGoal(toSeekAgent: agent))

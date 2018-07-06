@@ -76,10 +76,11 @@ class TestingEnvironment {
         }
         associate(records: relatedRecordsForOrganization, to: organizationRecord)
         associate(records: [schoolRecord], to: organizationRecord)
+        associate(records: [eventRecord], to: organizationRecord)
     }
 
     private func makeRelatedRecordsForEvent() {
-        for index in 62..<64 {
+        for index in 152..<154 {
             let relatedRecord = Record(id: index, color: .brown)
             relatedRecordsForEvent.append(relatedRecord)
             associate(records: [eventRecord], to: relatedRecord)

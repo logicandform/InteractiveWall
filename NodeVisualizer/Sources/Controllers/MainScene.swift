@@ -10,7 +10,6 @@ class MainScene: SKScene {
     var gestureManager: GestureManager!
     var currentEntityInFocus: RecordEntity?
 
-    private var entityManager = EntityManager()
     private var lastUpdateTimeInterval: TimeInterval = 0
 
     private enum StartingPositionType: UInt32 {
@@ -42,7 +41,7 @@ class MainScene: SKScene {
 
         let deltaTime = currentTime - lastUpdateTimeInterval
         lastUpdateTimeInterval = currentTime
-        entityManager.update(deltaTime)
+        EntityManager.instance.update(deltaTime)
 
         // keep the nodes facing 0 degrees (i.e. no rotation when affected by physics simulation)
         for case let node as RecordNode in children {
@@ -79,7 +78,7 @@ class MainScene: SKScene {
 
     private func addRecordNodesToScene() {
         records.enumerated().forEach { index, record in
-            let recordEntity = RecordEntity(record: record, manager: entityManager)
+            let recordEntity = RecordEntity(record: record)
 
             recordEntity.intelligenceComponent.enterInitialState()
 
@@ -92,7 +91,7 @@ class MainScene: SKScene {
                 let screenBoundsConstraint = SKConstraint.positionX(SKRange(lowerLimit: 0, upperLimit: frame.width), y: SKRange(lowerLimit: 0, upperLimit: frame.height))
                 recordNode.constraints = [screenBoundsConstraint]
 
-                entityManager.add(recordEntity)
+                EntityManager.instance.add(recordEntity)
                 addChild(recordNode)
 
 //                let destinationPosition = getRandomPosition()
@@ -148,9 +147,17 @@ class MainScene: SKScene {
     // MARK: Helpers
 
     private func relatedNodes(for node: RecordNode) {
-        if let entity = entityManager.entity(for: node.record) as? RecordEntity {
-            entity.intelligenceComponent.stateMachine.enter(TappedState.self)
-            currentEntityInFocus = entity
+        if let entity = node.entity as? RecordEntity {
+            if entity.intelligenceComponent.stateMachine.currentState is WanderState || entity.intelligenceComponent.stateMachine.currentState is SeekState {
+                // reset the entities
+                EntityManager.instance.reset()
+
+                // delay to ensure that all entities have reset and "bounced" away
+                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
+                    // tapped entity enters TappedState
+                    entity.intelligenceComponent.stateMachine.enter(TappedState.self)
+                }
+            }
         }
     }
 
@@ -227,7 +234,7 @@ class MainScene: SKScene {
         let field = SKFieldNode.radialGravityField()
         field.strength = -10
         field.falloff = -0.5
-        field.region = SKRegion(radius: 350)
+        field.region = SKRegion(radius: 450)
         field.position = CGPoint(x: frame.width / 2 + 5, y: frame.height / 2)
         field.categoryBitMask = 0x1 << 0
         addChild(field)

@@ -11,7 +11,7 @@ import GameplayKit
 
 class RecordAgent: GKAgent2D, GKAgentDelegate {
 
-    var renderComponent: RenderComponent {
+    private var renderComponent: RenderComponent {
         guard let renderComponent = entity?.component(ofType: RenderComponent.self) else {
             fatalError("A RecordEntity must have a RenderComponent")
         }
@@ -52,6 +52,5 @@ class RecordAgent: GKAgent2D, GKAgentDelegate {
 
     func agentDidUpdate(_ agent: GKAgent) {
         renderComponent.recordNode.position = CGPoint(x: CGFloat(position.x), y: CGFloat(position.y))
-//        renderComponent.recordNode.physicsBody?.velocity = CGVector(dx: CGFloat(velocity.x), dy: CGFloat(velocity.y))
     }
 }
