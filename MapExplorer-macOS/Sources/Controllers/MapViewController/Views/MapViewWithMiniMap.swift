@@ -23,8 +23,6 @@ class MapViewWithMiniMap: MKMapView, MKMapViewDelegate {
     private var miniMapTopConstraint: NSLayoutConstraint!
     private var miniMapBottomConstraint: NSLayoutConstraint!
 
-    private var containerView: NSView!
-
     struct Constants {
         static let miniMapWidthRatio: CGFloat = 1/4
         static let miniMapAspectRatio: CGFloat = 3/2
