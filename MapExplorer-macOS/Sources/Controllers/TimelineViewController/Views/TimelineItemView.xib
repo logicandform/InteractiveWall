@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimelineItemView" customModule="MapExplorer_macOS" customModuleProvider="target">
             <connections>
+                <outlet property="animatedHighlightView" destination="jB7-yT-mYA" id="Lhp-Qx-6YL"/>
+                <outlet property="animatedWidthConstraint" destination="PgG-4Z-Zl9" id="3ZO-QY-DFg"/>
+                <outlet property="backgroundView" destination="QrL-NI-D0P" id="UEo-2X-FUD"/>
                 <outlet property="contentView" destination="C4u-6g-tKh" id="cXA-Ye-Bzz"/>
                 <outlet property="highlightView" destination="xmo-R1-THM" id="o9M-FK-vdj"/>
                 <outlet property="titleTextField" destination="RX4-ER-hWk" id="Xgk-rH-UQF"/>
@@ -22,6 +25,18 @@
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="C4u-6g-tKh">
                     <rect key="frame" x="4" y="2" width="192" height="56"/>
                     <subviews>
+                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="QrL-NI-D0P">
+                            <rect key="frame" x="0.0" y="0.0" width="192" height="56"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="192" id="K19-Tr-jVf"/>
+                            </constraints>
+                        </customView>
+                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="jB7-yT-mYA">
+                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="56"/>
+                            <constraints>
+                                <constraint firstAttribute="width" id="PgG-4Z-Zl9"/>
+                            </constraints>
+                        </customView>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RX4-ER-hWk">
                             <rect key="frame" x="11" y="20" width="175" height="17"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="L5U-Qk-t9m">
@@ -38,12 +53,18 @@
                         </customView>
                     </subviews>
                     <constraints>
+                        <constraint firstAttribute="bottom" secondItem="QrL-NI-D0P" secondAttribute="bottom" id="BNA-ln-gvn"/>
+                        <constraint firstItem="jB7-yT-mYA" firstAttribute="top" secondItem="C4u-6g-tKh" secondAttribute="top" id="CQE-il-DYn"/>
                         <constraint firstAttribute="trailing" secondItem="RX4-ER-hWk" secondAttribute="trailing" constant="8" id="DbZ-G0-QQ5"/>
                         <constraint firstAttribute="bottom" secondItem="xmo-R1-THM" secondAttribute="bottom" id="K2j-tc-BQx"/>
                         <constraint firstItem="RX4-ER-hWk" firstAttribute="centerY" secondItem="C4u-6g-tKh" secondAttribute="centerY" id="Uhq-Sw-jBv"/>
                         <constraint firstItem="xmo-R1-THM" firstAttribute="top" secondItem="C4u-6g-tKh" secondAttribute="top" id="b6a-tf-Kvh"/>
+                        <constraint firstItem="QrL-NI-D0P" firstAttribute="top" secondItem="C4u-6g-tKh" secondAttribute="top" id="deR-EF-S1g"/>
                         <constraint firstItem="RX4-ER-hWk" firstAttribute="leading" secondItem="xmo-R1-THM" secondAttribute="trailing" constant="8" id="jy9-Gl-iBm"/>
+                        <constraint firstItem="QrL-NI-D0P" firstAttribute="leading" secondItem="jB7-yT-mYA" secondAttribute="trailing" id="mAK-YJ-xEv"/>
+                        <constraint firstItem="jB7-yT-mYA" firstAttribute="leading" secondItem="C4u-6g-tKh" secondAttribute="leading" id="nXH-Ie-mOm"/>
                         <constraint firstItem="xmo-R1-THM" firstAttribute="leading" secondItem="C4u-6g-tKh" secondAttribute="leading" id="oRy-Re-nTy"/>
+                        <constraint firstAttribute="bottom" secondItem="jB7-yT-mYA" secondAttribute="bottom" id="p0Z-qg-sLB"/>
                     </constraints>
                 </customView>
             </subviews>

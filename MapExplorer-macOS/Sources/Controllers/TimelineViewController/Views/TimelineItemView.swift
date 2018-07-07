@@ -7,6 +7,9 @@ class TimelineItemView: NSCollectionViewItem {
 
     @IBOutlet weak var contentView: NSView!
     @IBOutlet weak var highlightView: NSView!
+    @IBOutlet weak var animatedHighlightView: NSView!
+    @IBOutlet weak var animatedWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var backgroundView: NSView!
     @IBOutlet weak var titleTextField: NSTextField!
 
     var tintColor = style.selectedColor
@@ -23,6 +26,9 @@ class TimelineItemView: NSCollectionViewItem {
         super.awakeFromNib()
         contentView.wantsLayer = true
         highlightView.wantsLayer = true
+        animatedHighlightView.wantsLayer = true
+        backgroundView.wantsLayer = true
+        set(highlighted: true)
         contentView.layer?.backgroundColor = style.darkBackground.cgColor
         titleTextField.font = NSFont.monospacedDigitSystemFont(ofSize: 10, weight: .light)
     }
@@ -32,24 +38,40 @@ class TimelineItemView: NSCollectionViewItem {
 
     func set(highlighted: Bool) {
         if highlighted {
-            contentView.layer?.backgroundColor = tintColor.cgColor
+//            contentView.layer?.backgroundColor = tintColor.cgColor
+            animatedHighlightView.layer?.backgroundColor = tintColor.cgColor
         } else {
-            contentView.layer?.backgroundColor = style.darkBackground.cgColor
+//            contentView.layer?.backgroundColor = style.darkBackground.cgColor
+            animatedHighlightView.layer?.backgroundColor = style.darkBackground.cgColor
         }
     }
 
     func animate(to size: CGSize) {
         if size.width > view.frame.size.width {
-            view.animator().setFrameSize(size)
-            set(highlighted: true)
+            // Expansion animation
+            NSAnimationContext.runAnimationGroup({ _ in
+                NSAnimationContext.current.duration = 1.50
+                animatedWidthConstraint.animator().constant = view.frame.size.width
+            }, completionHandler: { [weak self] in
+                NSAnimationContext.runAnimationGroup({ _ in
+                    NSAnimationContext.current.duration = 1.50
+                    self?.animatedWidthConstraint.constant = size.width
+                    self?.view.animator().frame.size.width = size.width
+                })
+            })
         } else {
+            // Compression animation
             let newSize = CGSize(width: size.width - 2, height: size.height - 4)
             NSAnimationContext.runAnimationGroup({ _ in
-                NSAnimationContext.current.duration = 0.15
-                contentView.animator().setFrameSize(newSize)
+                NSAnimationContext.current.duration = 1.50
+//                animatedWidthConstraint.animator().constant = size.width
+                view.animator().frame.size.width = size.width
             }, completionHandler: { [weak self] in
-                self?.view.frame.size = size
-                self?.set(highlighted: false)
+                self?.view.frame.size.width = size.width
+                NSAnimationContext.runAnimationGroup({ _ in
+                    NSAnimationContext.current.duration = 1.50
+                    self?.animatedWidthConstraint.animator().constant = 0
+                })
             })
         }
     }
