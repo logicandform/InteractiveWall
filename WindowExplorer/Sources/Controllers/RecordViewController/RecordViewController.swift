@@ -454,7 +454,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         case mediaView:
             return record.media.count
         case relatedItemsView:
-            return record.relatedRecords(of: relatedItemsFilterType).count
+            return record.filterRelatedRecords(of: relatedItemsFilterType, from: relatedRecords).count
         default:
             return 0
         }
@@ -470,7 +470,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             }
         case relatedItemsView:
             if let relatedItem = collectionView.makeItem(withIdentifier: relatedItemsFilterType.layout.identifier, for: indexPath) as? RelatedItemView {
-                relatedItem.record = record.relatedRecords(of: relatedItemsFilterType).at(index: indexPath.item)
+                relatedItem.record = record.filterRelatedRecords(of: relatedItemsFilterType, from: relatedRecords).at(index: indexPath.item)
                 relatedItem.tintColor = record.type.color
                 return relatedItem
             }
@@ -701,10 +701,10 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
     private func updateRelatedRecordsHeight() {
         let maxHeight = style.relatedRecordsMaxSize.height
-        let numberOfRecords = CGFloat(record.relatedRecords(of: relatedItemsFilterType).count)
+        let numberOfRecords = CGFloat(record.filterRelatedRecords(of: relatedItemsFilterType, from: relatedRecords).count)
         let numberOfListSpaces = numberOfRecords > 1 ? numberOfRecords - 1 : 0
         let numberOfGridSpaces = numberOfRecords > relatedItemsFilterType.layout.itemsPerRow ? numberOfRecords / relatedItemsFilterType.layout.itemsPerRow : 0
-        let height = relatedItemsFilterType.layout == .list ? numberOfRecords * style.listItemHeight + numberOfListSpaces * style.itemSpacing : numberOfRecords * style.imageItemHeight + numberOfGridSpaces * style.itemSpacing
+        let height = relatedItemsFilterType.layout == .list ? numberOfRecords * style.relatedRecordsListItemHeight + numberOfListSpaces * style.relatedRecordsItemSpacing : numberOfRecords * style.relatedRecordsImageItemHeight + numberOfGridSpaces * style.relatedRecordsItemSpacing
         relatedRecordsHeightConstraint.constant = height > maxHeight ? maxHeight : height
         relatedRecordScrollView.updateGradient(forced: true, height: height)
     }
