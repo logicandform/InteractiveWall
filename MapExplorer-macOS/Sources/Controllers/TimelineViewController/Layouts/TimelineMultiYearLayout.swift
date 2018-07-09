@@ -3,10 +3,10 @@
 import Cocoa
 
 
-class TimelineYearLayout: NSCollectionViewFlowLayout {
+class TimelineMultiYearLayout: NSCollectionViewFlowLayout {
 
     private struct Constants {
-        static let yearWidth = 1920
+        static let yearWidth = 240
         static let cellSize = CGSize(width: 240, height: 60)
         static let headerHeight: CGFloat = 20
     }
@@ -96,7 +96,7 @@ class TimelineYearLayout: NSCollectionViewFlowLayout {
         let indexPath = IndexPath(item: item, section: 0)
         let attributes = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: TimelineHeaderView.supplementaryKind, with: indexPath)
         let x = CGFloat(item * Constants.yearWidth)
-        let size = CGSize(width: CGFloat(Constants.yearWidth), height: Constants.headerHeight)
+        let size = CGSize(width: Constants.cellSize.width, height: Constants.headerHeight)
         attributes.frame = CGRect(origin: CGPoint(x: x, y: 0), size: size)
         return attributes
     }
