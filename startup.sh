@@ -9,3 +9,5 @@ screen -d -m -S redis redis-server
 
 cd ~/dev/Caching-Server-UBC
 screen -d -m -S caching-server npm start
+
+open -n -a "/Users/irshdc/Library/Developer/Xcode/DerivedData/MapExplorer-cebdevedrroybgdstwjueirgqasq/Build/Products/Debug/WindowExplorer.app"
