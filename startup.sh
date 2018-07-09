@@ -10,5 +10,5 @@ screen -d -m -S caching-server npm start
 
 SERVICE='WindowExplorer'
 if !(ps ax | grep -v grep | grep "${SERVICE}" &> /dev/null); then
-    open -n -a "/Users/irshdc/Library/Developer/Xcode/DerivedData/MapExplorer-cebdevedrroybgdstwjueirgqa$
+    open -n -a "/Users/irshdc/Library/Developer/Xcode/DerivedData/MapExplorer-cebdevedrroybgdstwjueirgqasq/Build/Products/Debug/WindowExplorer.app"
 fi
