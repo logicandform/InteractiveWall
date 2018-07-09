@@ -18,7 +18,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView misplaced="YES" id="Hz6-mo-xeY">
+        <customView id="Hz6-mo-xeY">
             <rect key="frame" x="0.0" y="0.0" width="238" height="60"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
@@ -62,7 +62,6 @@
             </subviews>
             <constraints>
                 <constraint firstItem="C4u-6g-tKh" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="4" id="HHm-mQ-r1h"/>
-                <constraint firstAttribute="trailing" secondItem="C4u-6g-tKh" secondAttribute="trailing" constant="4" id="Q4F-o7-lXX"/>
                 <constraint firstAttribute="bottom" secondItem="C4u-6g-tKh" secondAttribute="bottom" constant="2" id="R4B-dG-w8D"/>
                 <constraint firstItem="C4u-6g-tKh" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="2" id="S2o-m1-wPu"/>
             </constraints>
