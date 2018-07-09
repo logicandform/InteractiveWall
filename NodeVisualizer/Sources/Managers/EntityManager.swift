@@ -29,6 +29,8 @@ final class EntityManager {
     /// Set of all entities in all levels
     private var allLevelEntities = Set<RecordEntity>()
 
+    private(set) var entitiesForLevel = [Int: [RecordEntity]]()
+
     private struct Constants {
         static let maxLevel = 5
     }

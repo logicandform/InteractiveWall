@@ -48,11 +48,13 @@ class RecordEntity: GKEntity {
         return agent
     }
 
+    var previousLevel: Int?
+    var currentLevel: Int?
+
 
     // MARK: Initializer
 
     init(record: TestingEnvironment.Record) {
-
         super.init()
 
         let renderComponent = RenderComponent(record: record)

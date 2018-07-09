@@ -29,6 +29,9 @@ class MainScene: SKScene {
     override func didMove(to view: SKView) {
         super.didMove(to: view)
 
+        NodeBoundingManager.instance.scene = self
+        NodeBoundingManager.instance.createSeekNode()
+
         addGestures(to: view)
         setupSystemGesturesForTest(to: view)
 
@@ -86,7 +89,6 @@ class MainScene: SKScene {
                 recordNode.position.x = randomX()
                 recordNode.position.y = randomY()
                 recordNode.zPosition = 1
-//                recordEntity.updateAgentPositionToMatchNodePosition()
 
                 let screenBoundsConstraint = SKConstraint.positionX(SKRange(lowerLimit: 0, upperLimit: frame.width), y: SKRange(lowerLimit: 0, upperLimit: frame.height))
                 recordNode.constraints = [screenBoundsConstraint]
@@ -137,7 +139,6 @@ class MainScene: SKScene {
         switch recognizer.state {
         case .ended:
             relatedNodes(for: recordNode)
-            return
         default:
             return
         }
@@ -148,16 +149,10 @@ class MainScene: SKScene {
 
     private func relatedNodes(for node: RecordNode) {
         if let entity = node.entity as? RecordEntity {
-            if entity.intelligenceComponent.stateMachine.currentState is WanderState || entity.intelligenceComponent.stateMachine.currentState is SeekState {
-                // reset the entities
-                EntityManager.instance.reset()
+            EntityManager.instance.associateRelatedEntities(for: [entity])
 
-                // delay to ensure that all entities have reset and "bounced" away
-                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
-                    // tapped entity enters TappedState
-                    entity.intelligenceComponent.stateMachine.enter(TappedState.self)
-                }
-            }
+            let entitiesInLevel = EntityManager.instance.entitiesInLevel
+            NodeBoundingManager.instance.createInitialBoundingNodes(forLevels: entitiesInLevel.count)
         }
     }
 
