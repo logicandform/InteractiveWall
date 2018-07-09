@@ -23,6 +23,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     @IBOutlet weak var yearScrollView: NSScrollView!
     @IBOutlet weak var decadeCollectionView: NSCollectionView!
     @IBOutlet weak var decadeScrollView: NSScrollView!
+    @IBOutlet weak var timelineIndicatorView: NSView!
 
     var gestureManager: GestureManager!
     private var timelineHandler: TimelineHandler?
@@ -44,6 +45,8 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         static let lastDecade = 1980
         static let timelineControlWidth: CGFloat = 490
         static let visibleControlItems = 7
+        static let timelineIndicatorBorderRadius: CGFloat = 8
+        static let timelineIndicatorBorderWidth: CGFloat = 2
     }
 
     private struct Keys {
@@ -97,7 +100,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     // MARK: Setup
 
     private func setupBackground() {
-//        timelineBackgroundView.alphaValue = 0
+        timelineBackgroundView.alphaValue = 0
         timelineBackgroundView.wantsLayer = true
         timelineBackgroundView.layer?.backgroundColor = style.timelineBackgroundColor.cgColor
     }
@@ -121,6 +124,10 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         monthScrollView.horizontalScroller?.alphaValue = 0
         yearScrollView.horizontalScroller?.alphaValue = 0
         decadeScrollView.horizontalScroller?.alphaValue = 0
+        timelineIndicatorView.wantsLayer = true
+        timelineIndicatorView.layer?.cornerRadius = Constants.timelineIndicatorBorderRadius
+        timelineIndicatorView.layer?.borderWidth = Constants.timelineIndicatorBorderWidth
+        timelineIndicatorView.layer?.borderColor = style.selectedColor.cgColor
     }
 
     private func setupGestures() {

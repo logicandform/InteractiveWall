@@ -140,15 +140,24 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="4K8-jG-fxe">
+                                        <rect key="frame" x="297" y="0.0" width="70" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="70" id="1Kd-t1-aUM"/>
+                                        </constraints>
+                                    </customView>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="4K8-jG-fxe" firstAttribute="centerX" secondItem="yPT-yt-MBL" secondAttribute="centerX" id="0ol-k9-KM6"/>
                                     <constraint firstItem="FoW-Io-IhM" firstAttribute="leading" secondItem="yPT-yt-MBL" secondAttribute="leading" id="4Qe-YX-ym7"/>
                                     <constraint firstItem="FoW-Io-IhM" firstAttribute="top" secondItem="yPT-yt-MBL" secondAttribute="top" id="EQv-vO-tvf"/>
                                     <constraint firstAttribute="bottom" secondItem="KrB-Xy-tIn" secondAttribute="bottom" id="NRl-Ko-fZH"/>
                                     <constraint firstItem="KrB-Xy-tIn" firstAttribute="centerX" secondItem="yPT-yt-MBL" secondAttribute="centerX" id="O8n-HQ-rPn"/>
                                     <constraint firstItem="TFZ-Kd-Lat" firstAttribute="top" secondItem="hh4-uZ-Why" secondAttribute="bottom" constant="20" id="Ulx-1e-H3c"/>
                                     <constraint firstItem="NUl-Dg-WwY" firstAttribute="top" secondItem="TFZ-Kd-Lat" secondAttribute="bottom" id="Zu3-AW-8W1"/>
+                                    <constraint firstItem="4K8-jG-fxe" firstAttribute="top" secondItem="TFZ-Kd-Lat" secondAttribute="top" id="asT-7Z-wXy"/>
                                     <constraint firstItem="KrB-Xy-tIn" firstAttribute="height" secondItem="NUl-Dg-WwY" secondAttribute="height" id="dHU-8k-gmk"/>
+                                    <constraint firstItem="4K8-jG-fxe" firstAttribute="bottom" secondItem="KrB-Xy-tIn" secondAttribute="bottom" id="fBE-ZT-pcD"/>
                                     <constraint firstItem="NUl-Dg-WwY" firstAttribute="height" secondItem="TFZ-Kd-Lat" secondAttribute="height" id="iId-wK-USU"/>
                                     <constraint firstItem="TFZ-Kd-Lat" firstAttribute="centerX" secondItem="yPT-yt-MBL" secondAttribute="centerX" id="lW2-vI-KFs"/>
                                     <constraint firstItem="FoW-Io-IhM" firstAttribute="height" secondItem="yPT-yt-MBL" secondAttribute="height" multiplier="5:6" id="nnt-W4-iab"/>
@@ -173,6 +182,7 @@
                         <outlet property="timelineBackgroundView" destination="yPT-yt-MBL" id="jUN-GU-z25"/>
                         <outlet property="timelineClipView" destination="2EQ-1e-jeX" id="yoW-RT-tSB"/>
                         <outlet property="timelineCollectionView" destination="hh4-uZ-Why" id="5IC-wt-0fY"/>
+                        <outlet property="timelineIndicatorView" destination="4K8-jG-fxe" id="e0V-ht-30f"/>
                         <outlet property="timelineScrollView" destination="FoW-Io-IhM" id="JQ2-Ok-LVn"/>
                         <outlet property="yearCollectionView" destination="uKJ-ub-LXA" id="EoM-17-pFK"/>
                         <outlet property="yearScrollView" destination="NUl-Dg-WwY" id="bqu-WL-Qi9"/>
