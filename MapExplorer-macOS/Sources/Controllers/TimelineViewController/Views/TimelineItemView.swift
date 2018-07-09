@@ -6,9 +6,9 @@ class TimelineItemView: NSCollectionViewItem {
     static let identifier = NSUserInterfaceItemIdentifier(rawValue: "TimelineItemView")
 
     @IBOutlet weak var contentView: NSView!
+    @IBOutlet weak var contentViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var highlightView: NSView!
-    @IBOutlet weak var animatedHighlightView: NSView!
-    @IBOutlet weak var animatedWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var highlightViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var backgroundView: NSView!
     @IBOutlet weak var titleTextField: NSTextField!
 
@@ -26,10 +26,10 @@ class TimelineItemView: NSCollectionViewItem {
         super.awakeFromNib()
         contentView.wantsLayer = true
         highlightView.wantsLayer = true
-        animatedHighlightView.wantsLayer = true
         backgroundView.wantsLayer = true
+        backgroundView.layer?.backgroundColor = style.darkBackground.cgColor
         set(highlighted: true)
-        contentView.layer?.backgroundColor = style.darkBackground.cgColor
+//        contentView.layer?.backgroundColor = style.darkBackground.cgColor
         titleTextField.font = NSFont.monospacedDigitSystemFont(ofSize: 10, weight: .light)
     }
 
@@ -39,10 +39,11 @@ class TimelineItemView: NSCollectionViewItem {
     func set(highlighted: Bool) {
         if highlighted {
 //            contentView.layer?.backgroundColor = tintColor.cgColor
-            animatedHighlightView.layer?.backgroundColor = tintColor.cgColor
+//            animatedHighlightView.layer?.backgroundColor = tintColor.cgColor
+//            backgroundView.layer?.backgroundColor = style.darkBackground.cgColor
         } else {
 //            contentView.layer?.backgroundColor = style.darkBackground.cgColor
-            animatedHighlightView.layer?.backgroundColor = style.darkBackground.cgColor
+//            animatedHighlightView.layer?.backgroundColor = style.darkBackground.cgColor
         }
     }
 
@@ -50,6 +51,13 @@ class TimelineItemView: NSCollectionViewItem {
         if size.width > view.frame.size.width {
             // Expansion animation
             NSAnimationContext.runAnimationGroup({ _ in
+                NSAnimationContext.current.duration = 0.16
+                view.setFrameSize(size)
+                contentView.animator().setFrameSize(size)
+                highlightViewWidthConstraint.animator().constant = size.width
+            })
+
+            /*NSAnimationContext.runAnimationGroup({ _ in
                 NSAnimationContext.current.duration = 1.50
                 animatedWidthConstraint.animator().constant = view.frame.size.width
             }, completionHandler: { [weak self] in
@@ -58,10 +66,30 @@ class TimelineItemView: NSCollectionViewItem {
                     self?.animatedWidthConstraint.constant = size.width
                     self?.view.animator().frame.size.width = size.width
                 })
-            })
+            })*/
         } else {
             // Compression animation
-            let newSize = CGSize(width: size.width - 2, height: size.height - 4)
+            NSAnimationContext.runAnimationGroup({ _ in
+                NSAnimationContext.current.duration = 0.08
+                contentView.animator().frame.size = size
+                highlightViewWidthConstraint.animator().constant = size.width
+//                contentViewWidthConstraint.animator().constant = size.width
+//                view.animator().frame.size = size
+            }, completionHandler: { [weak self] in
+                self?.view.frame.size = size
+                NSAnimationContext.runAnimationGroup({ _ in
+                    NSAnimationContext.current.duration = 0.08
+                    self?.highlightViewWidthConstraint.animator().constant = 5
+                })
+//                self?.highlightViewWidthConstraint.constant = size.width
+//                self?.view.setFrameSize(size)
+//                NSAnimationContext.runAnimationGroup({ _ in
+//                    NSAnimationContext.current.duration = 1.50
+//                    self?.highlightViewWidthConstraint.animator().constant = 5
+//                })
+            })
+
+            /*let newSize = CGSize(width: size.width - 2, height: size.height - 4)
             NSAnimationContext.runAnimationGroup({ _ in
                 NSAnimationContext.current.duration = 1.50
 //                animatedWidthConstraint.animator().constant = size.width
@@ -72,7 +100,7 @@ class TimelineItemView: NSCollectionViewItem {
                     NSAnimationContext.current.duration = 1.50
                     self?.animatedWidthConstraint.animator().constant = 0
                 })
-            })
+            })*/
         }
     }
 
