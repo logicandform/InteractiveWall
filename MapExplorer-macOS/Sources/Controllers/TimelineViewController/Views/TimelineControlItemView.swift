@@ -24,8 +24,8 @@ class TimelineControlItemView: NSCollectionViewItem {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        contentView.wantsLayer = true
         view.wantsLayer = true
+        contentView.wantsLayer = true
         contentView.layer?.backgroundColor = .clear
     }
 
