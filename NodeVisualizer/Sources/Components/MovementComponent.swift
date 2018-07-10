@@ -13,6 +13,7 @@ import GameplayKit
 class MovementComponent: GKComponent {
 
     var entityToSeek: RecordEntity?
+    var nodeToSeek: SKNode?
 
     private var renderComponent: RenderComponent {
         guard let renderComponent = entity?.component(ofType: RenderComponent.self) else {
@@ -29,7 +30,7 @@ class MovementComponent: GKComponent {
     }
 
     private struct Constants {
-        static let strength: CGFloat = 1000
+        static let strength: CGFloat = 2000
         static let dt: CGFloat = 1 / 5000
     }
 
@@ -42,21 +43,21 @@ class MovementComponent: GKComponent {
         // check to see if the record entity is in the correct state (i.e. it is seeking a tapped record node)
         guard let intelligenceComponent = entity?.component(ofType: IntelligenceComponent.self), 
             intelligenceComponent.stateMachine.currentState is SeekState,
-            let targetEntity = entityToSeek else {
+            let targetNode = nodeToSeek else {
             return
         }
 
-        // check the radius between its own entity and the entityToSeek, and apply the appropriate physics
+        // check the radius between its own entity and the nodeToSeek, and apply the appropriate physics
         let renderComponent = self.renderComponent
         let physicsComponent = self.physicsComponent
 
-        let deltaX = targetEntity.renderComponent.recordNode.position.x - renderComponent.recordNode.position.x
-        let deltaY = targetEntity.renderComponent.recordNode.position.y - renderComponent.recordNode.position.y
+        let deltaX = targetNode.position.x - renderComponent.recordNode.position.x
+        let deltaY = targetNode.position.y - renderComponent.recordNode.position.y
         let displacement = CGVector(dx: deltaX, dy: deltaY)
 
         let radius = distanceOf(x: deltaX, y: deltaY)
 
-        let targetEntityMass = targetEntity.renderComponent.recordNode.physicsBody!.mass * Constants.strength * radius
+        let targetEntityMass = targetNode.physicsBody!.mass * Constants.strength * radius
         let entityMass = renderComponent.recordNode.physicsBody!.mass * Constants.strength * radius
 
         let unitVector = CGVector(dx: displacement.dx / radius, dy: displacement.dy / radius)

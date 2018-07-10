@@ -9,12 +9,6 @@ class TappedState: GKState {
 
     private unowned var entity: RecordEntity
 
-    private var entitiesInLevel = [[RecordEntity]]()
-    private var entitiesInCurrentLevel = [RecordEntity]()
-    private var elapsedTime: TimeInterval = 0.0
-    private var levelFormationDuration: TimeInterval = 0.0
-    private var currentLevel: Int = 0
-
 
     required init(entity: RecordEntity) {
         self.entity = entity
@@ -26,19 +20,6 @@ class TappedState: GKState {
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
 
-        // reset the amount of time
-        elapsedTime = 0.0
-        levelFormationDuration = 0.0
-        currentLevel = 0
-        entitiesInLevel = []
-        entitiesInCurrentLevel = []
-
-        // make level connections for all the entity's descendants
-        EntityManager.instance.associateRelatedEntities(for: [entity])
-
-        // reversed so that we can use popLast
-        entitiesInLevel = EntityManager.instance.entitiesInLevel.reversed()
-
         // physics
         entity.physicsComponent.physicsBody.isDynamic = false
         entity.physicsComponent.physicsBody.fieldBitMask = 0x1 << 1
@@ -49,68 +30,25 @@ class TappedState: GKState {
             entity.animationComponent.requestedAnimationState = .goToPoint(centerPoint)
         }
 
-        // get the related entities for the first level
-        guard let relatedEntities = entitiesInLevel.popLast() else {
-            return
-        }
-        entitiesInCurrentLevel = relatedEntities
-        currentLevel += 1
+        // move the tapped entity and all of its descendants to the appropriate state
+        let entitiesInLevel = EntityManager.instance.entitiesInLevel
 
-        // iterate through each related entity to this selected entity && enter the seeking state for each of those related entities
-        for relatedEntity in entitiesInCurrentLevel {
-            relatedEntity.physicsComponent.physicsBody.categoryBitMask = 0x1 << 0
-            relatedEntity.physicsComponent.physicsBody.collisionBitMask = 0x1 << 0
+        for (level, entities) in entitiesInLevel.enumerated() {
+            if let boundingNode = NodeBoundingManager.instance.boundingNodesForLevel[level] {
+                for entity in entities {
+                    entity.physicsComponent.physicsBody.categoryBitMask = boundingNode.physicsBody!.categoryBitMask
+                    entity.physicsComponent.physicsBody.collisionBitMask = boundingNode.physicsBody!.collisionBitMask
+                    entity.physicsComponent.physicsBody.contactTestBitMask = boundingNode.physicsBody!.contactTestBitMask
 
-            relatedEntity.movementComponent.entityToSeek = entity
-            relatedEntity.intelligenceComponent.stateMachine.enter(SeekState.self)
+                    entity.movementComponent.nodeToSeek = NodeBoundingManager.instance.rootBoundingNode
+                    entity.intelligenceComponent.stateMachine.enter(SeekState.self)
+                }
+            }
         }
     }
 
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
-
-        guard !entitiesInLevel.isEmpty else {
-            return
-        }
-
-        elapsedTime += seconds
-
-        if elapsedTime >= 10 {
-            var maximumDistance: CGFloat = 0.0
-
-            // find the maximum radius between the tapped root node and its descendants for the current level
-            for relatedEntity in entitiesInCurrentLevel {
-                let distance = entity.distance(to: relatedEntity)
-                if distance > maximumDistance {
-                    maximumDistance = distance
-                }
-            }
-
-            maximumDistance += NodeConfiguration.Record.physicsBodyRadius * 2
-
-            // get the next level's related entities and move them to the appropriate state with the maximum radius constraint
-            if let relatedEntities = entitiesInLevel.popLast() {
-                entitiesInCurrentLevel = relatedEntities
-
-                if let boundingNode = entity.renderComponent.boundingDiameterNode(forRadius: maximumDistance, level: currentLevel) {
-                    for relatedEntity in relatedEntities {
-                        relatedEntity.physicsComponent.physicsBody.categoryBitMask = boundingNode.physicsBody!.categoryBitMask
-                        relatedEntity.physicsComponent.physicsBody.collisionBitMask = boundingNode.physicsBody!.collisionBitMask
-
-                        relatedEntity.movementComponent.entityToSeek = entity
-                        relatedEntity.intelligenceComponent.stateMachine.enter(SeekState.self)
-                    }
-                }
-
-                currentLevel += 1
-            }
-
-            // update the levelFormationDuration depending on the next level's entities
-
-
-            // reset elapsedTime
-            elapsedTime = 0.0
-        }
     }
 
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {

@@ -149,10 +149,15 @@ class MainScene: SKScene {
 
     private func relatedNodes(for node: RecordNode) {
         if let entity = node.entity as? RecordEntity {
+            // make level connections for all the entity's descendants
             EntityManager.instance.associateRelatedEntities(for: [entity])
 
+            // create initial bounding nodes for each level
             let entitiesInLevel = EntityManager.instance.entitiesInLevel
             NodeBoundingManager.instance.createInitialBoundingNodes(forLevels: entitiesInLevel.count)
+
+            // enter the TappedState for the tapped entity node
+            entity.intelligenceComponent.stateMachine.enter(TappedState.self)
         }
     }
 

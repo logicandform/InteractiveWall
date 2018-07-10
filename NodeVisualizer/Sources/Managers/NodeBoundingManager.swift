@@ -12,8 +12,11 @@ final class NodeBoundingManager {
 
     var scene: MainScene!
 
-    private var boundingNodes = Set<SKNode>()
-    private var boundingNodesForLevel = [Int: SKNode]()
+    /// The center root bounding node that "contains" the tapped entity node
+    private(set) var rootBoundingNode: SKNode?
+
+    /// Dictionary of the bounding invisible node for a particular level
+    private(set) var boundingNodesForLevel = [Int: SKNode]()
 
     private struct BoundingNodeBitMasks {
         let categoryBitMask: UInt32
@@ -44,13 +47,14 @@ final class NodeBoundingManager {
         seekNode.physicsBody?.contactTestBitMask = 0x1 << 0
         seekNode.physicsBody?.categoryBitMask = 0x1 << 0
 
-        boundingNodes.insert(seekNode)
+        rootBoundingNode = seekNode
+        boundingNodesForLevel[0] = seekNode
         scene.addChild(seekNode)
     }
 
     func createInitialBoundingNodes(forLevels levels: Int) {
         var level = 1
-        var radius: CGFloat = 20 + NodeConfiguration.Record.physicsBodyRadius * 4
+        var radius: CGFloat = 20 + NodeConfiguration.Record.physicsBodyRadius * 8
 
         while level < levels {
             let boundingNode = SKShapeNode(circleOfRadius: radius)
@@ -58,6 +62,7 @@ final class NodeBoundingManager {
 //            boundingNode.isHidden = true
 
             boundingNode.physicsBody = SKPhysicsBody(circleOfRadius: radius)
+            boundingNode.physicsBody?.mass = NodeConfiguration.Record.physicsBodyMass
             boundingNode.physicsBody?.isDynamic = false
 
             let bitMasks = boundingNodeBitMasks(forLevel: level)
@@ -68,7 +73,7 @@ final class NodeBoundingManager {
             boundingNodesForLevel[level] = boundingNode
             scene.addChild(boundingNode)
 
-            radius += NodeConfiguration.Record.physicsBodyRadius * 4
+            radius += NodeConfiguration.Record.physicsBodyRadius * 8
             level += 1
         }
     }
