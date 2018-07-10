@@ -18,10 +18,16 @@ final class NodeBoundingManager {
     /// Dictionary of the bounding invisible node for a particular level
     private(set) var boundingNodesForLevel = [Int: SKNode]()
 
+    private var elapsedTime: TimeInterval = 0.0
+
     private struct BoundingNodeBitMasks {
         let categoryBitMask: UInt32
         let contactTestBitMask: UInt32
         let collisionBitMask: UInt32
+    }
+
+    private struct Constants {
+        static let boundingNodeName = "boundingNode"
     }
 
 
@@ -32,11 +38,44 @@ final class NodeBoundingManager {
     // MARK: API
 
     func update(_ deltaTime: CFTimeInterval) {
+        elapsedTime += deltaTime
 
+        if elapsedTime > 5 {
+
+            // check the distance between the rootBoundingNode and entities in each level
+            // scale the appropriate boundingNodeForLevel
+
+            let entitiesInLevel = EntityManager.instance.entitiesInLevel
+
+            for (level, entities) in entitiesInLevel.enumerated() {
+                var maximumRadius: CGFloat = 0.0
+
+                for case let entity in entities where entity.hasCollidedWithBoundingNode {
+                    let radius = distance(to: entity)
+                    if radius > maximumRadius {
+                        maximumRadius = radius
+                    }
+                }
+
+                if let boundingNode = boundingNodesForLevel[level + 1] {
+                    let currentBoundingNodeRadius = (boundingNode.frame.height / 2)
+                    let newBoundingNodeRadius = maximumRadius + NodeConfiguration.Record.physicsBodyRadius * 4
+
+                    let scale = newBoundingNodeRadius / currentBoundingNodeRadius
+                    boundingNode.setScale(scale)
+//                    let scaleAction = SKAction.scale(by: scale, duration: 0.001)
+//                    boundingNode.run(scaleAction)
+                }
+
+            }
+
+            elapsedTime = 0.0
+        }
     }
 
     func createSeekNode() {
         let seekNode = SKShapeNode(circleOfRadius: NodeConfiguration.Record.physicsBodyRadius + 5.0)
+        seekNode.name = Constants.boundingNodeName
         seekNode.position = CGPoint(x: scene.frame.width / 2, y: scene.frame.height / 2)
 //        seekNode.isHidden = true
 
@@ -54,10 +93,11 @@ final class NodeBoundingManager {
 
     func createInitialBoundingNodes(forLevels levels: Int) {
         var level = 1
-        var radius: CGFloat = 20 + NodeConfiguration.Record.physicsBodyRadius * 8
+        var radius: CGFloat = 20 + NodeConfiguration.Record.physicsBodyRadius * 14
 
         while level < levels {
             let boundingNode = SKShapeNode(circleOfRadius: radius)
+            boundingNode.name = Constants.boundingNodeName
             boundingNode.position = CGPoint(x: scene.frame.width / 2, y: scene.frame.height / 2)
 //            boundingNode.isHidden = true
 
@@ -73,7 +113,7 @@ final class NodeBoundingManager {
             boundingNodesForLevel[level] = boundingNode
             scene.addChild(boundingNode)
 
-            radius += NodeConfiguration.Record.physicsBodyRadius * 8
+            radius += NodeConfiguration.Record.physicsBodyRadius * 14
             level += 1
         }
     }
@@ -91,6 +131,15 @@ final class NodeBoundingManager {
             contactTestBitMask: contactTestBitMask,
             collisionBitMask: collisionBitMask
         )
+    }
+
+    private func distance(to entity: RecordEntity) -> CGFloat {
+        guard let rootBoundingNode = rootBoundingNode else {
+            return 0.0
+        }
+        let dX = Float(rootBoundingNode.position.x - entity.renderComponent.recordNode.position.x)
+        let dY = Float(rootBoundingNode.position.y - entity.renderComponent.recordNode.position.y)
+        return CGFloat(hypotf(dX, dY))
     }
 
 

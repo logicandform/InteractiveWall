@@ -62,7 +62,9 @@ class AnimationComponent: GKComponent {
         switch animationState {
         case .goToPoint(let point):
             let moveToPointAction = SKAction.move(to: point, duration: 1.2)
-            renderComponent.recordNode.run(moveToPointAction)
+            renderComponent.recordNode.run(moveToPointAction) {
+                renderComponent.recordNode.removeAllActions()
+            }
         }
     }
 }
