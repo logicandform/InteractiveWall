@@ -15,12 +15,17 @@ class TimelineControlItemView: NSCollectionViewItem {
         }
     }
 
+    private struct Constants {
+        static let fadePercentage = 0.1
+    }
+
 
     // MARK: Life-cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         contentView.wantsLayer = true
+        view.wantsLayer = true
         contentView.layer?.backgroundColor = .clear
     }
 
@@ -31,9 +36,11 @@ class TimelineControlItemView: NSCollectionViewItem {
         if highlighted {
             contentView.layer?.backgroundColor = style.selectedColor.cgColor
             titleTextField.textColor = .black
+            gradient(on: true)
         } else {
             contentView.layer?.backgroundColor = .clear
             titleTextField.textColor = .white
+            gradient(on: false)
         }
     }
 
@@ -42,5 +49,21 @@ class TimelineControlItemView: NSCollectionViewItem {
 
     private func set(title: String?) {
         titleTextField.stringValue = title ?? ""
+    }
+
+    private func gradient(on: Bool) {
+        switch on {
+        case true:
+            let transparent = NSColor.clear.cgColor
+            let opaque = style.darkBackgroundOpaque.cgColor
+            let gradientLayer = CAGradientLayer()
+            gradientLayer.frame = view.bounds
+            gradientLayer.colors = [transparent, opaque, opaque, transparent]
+            gradientLayer.locations = [0.0, NSNumber(value: Constants.fadePercentage), NSNumber(value: 1.0 - Constants.fadePercentage), 1.0]
+            gradientLayer.transform = CATransform3DMakeRotation(CGFloat.pi / 2, 0, 0, 1)
+            view.layer?.mask = gradientLayer
+        case false:
+            view.layer?.mask = nil
+        }
     }
 }
