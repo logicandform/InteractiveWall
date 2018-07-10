@@ -46,21 +46,29 @@ final class GestureManager {
     }
 
     func handle(_ touch: Touch) {
+        let appType = ConnectionManager.instance.typeForApp(id: appID)
+
         switch touch.state {
         case .down:
             handleTouchDown(touch)
-            displayTouchIndicator(in: responder.view, at: touch.position)
+            if appType != .timeline {
+                displayTouchIndicator(in: responder.view, at: touch.position)
+            }
         case .moved:
             if let handler = handler(for: touch) {
                 handler.handle(touch)
-                displayTouchIndicator(in: responder.view, at: touch.position)
+                if appType != .timeline {
+                    displayTouchIndicator(in: responder.view, at: touch.position)
+                }
             }
         case .up:
             if let handler = handler(for: touch) {
                 handler.handle(touch)
             }
         case .indicator:
-            handleTouchIndicator(touch)
+            if appType != .timeline {
+                handleTouchIndicator(touch)
+            }
         }
     }
 
