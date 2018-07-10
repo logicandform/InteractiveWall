@@ -625,10 +625,15 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
         // Transitions the related records and their title by fading out & in
         fadeRelatedRecordsAndTitle(out: true, completion: { [weak self] in
+            self?.updateRelatedRecordsHeight()
+            self?.view.layoutSubtreeIfNeeded()
             if let strongSelf = self {
                 strongSelf.relatedRecordsTypeLabel.attributedStringValue = NSAttributedString(string: titleForType, attributes: style.relatedItemsTitleAttributes)
                 strongSelf.relatedItemsView.reloadData()
+
                 strongSelf.updateRelatedItemsLayout { [weak self] in
+                    self?.updateRelatedRecordsHeight()
+                    self?.view.layoutSubtreeIfNeeded()
                     if let strongSelf = self {
                         strongSelf.relatedItemsView.scroll(.zero)
                         strongSelf.fadeRelatedRecordsAndTitle(out: false, completion: {})
@@ -650,7 +655,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         var frame = window.frame
         frame.size.width += offset
         view.window?.setFrame(frame, display: true, animate: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.relatedImagesAnimationTime) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + window.animationResizeTime(frame)) {
             completion()
         }
     }
@@ -665,8 +670,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }, completionHandler: {
             completion?()
         })
-
-        updateRelatedRecordsHeight()
     }
 
     private func updateOrigin(from recordFrame: CGRect, at position: Int, animating: Bool) {
