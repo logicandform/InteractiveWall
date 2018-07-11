@@ -35,6 +35,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     private var selectedMonth: Month?
     private var selectedViewForType = [TimelineType: TimelineControlItemView]()
     private var currentDate = Constants.initialDate
+    private var timelineType: TimelineType = .year
 
     private struct Constants {
         static let timelineCellWidth: CGFloat = 20
@@ -252,7 +253,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         }
     }
 
-    private func updateControl(_ collectionView: NSCollectionView, with offset: CGVector, cascading: Bool = true) {
+    private func updateControl(_ collectionView: NSCollectionView, with offset: CGVector) {
         let days = -(offset.dx / Constants.timelineControlItemWidth)
 
         switch collectionView {
@@ -610,6 +611,29 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
             decadeRect.origin.x = decadeMaxX + decadeRect.origin.x
         }
         decadeCollectionView.scrollToVisible(decadeRect)
+
+        setTimelineDate(day: day, month: month, year: year)
+    }
+
+    private func setTimelineDate(day: CGFloat, month: Int, year: Int) {
+//        switch timelineType {
+//        case .year:
+////            let offset =
+//        default:
+//            return
+//        }
+        let monthOffset = (CGFloat(month) / 12 - 0.5) * CGFloat(style.yearLayoutYearWidth)
+        let yearMaxX = CGFloat(years.count) * CGFloat(style.yearLayoutYearWidth)
+        let yearIndex = years.index(of: year)!
+        let yearX = CGFloat(yearIndex) * CGFloat(style.yearLayoutYearWidth)
+
+        var timelineRect = timelineCollectionView.visibleRect
+        timelineRect.origin.x = yearX - timelineCollectionView.visibleRect.width / 2 + monthOffset
+//        timelineRect.origin.x = yearX - centerInset + monthOffset
+        if timelineRect.origin.x < 0 {
+            timelineRect.origin.x = yearMaxX + timelineRect.origin.x
+        }
+        timelineCollectionView.scrollToVisible(timelineRect)
     }
 
     private func decadeFor(year: Int) -> Int {

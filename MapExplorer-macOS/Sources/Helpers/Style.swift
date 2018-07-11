@@ -24,6 +24,11 @@ final class Style {
     // Timeline Controller
     let timelineBackgroundColor = NSColor(white: 0.1, alpha: 0.9)
 
+    // Layout Widths
+    let monthLayoutMonthWidth = 1920
+    let yearLayoutYearWidth = 1920
+    let centuryLayoutYearWidth = 16
+
     var timelineTitleAttributes: [NSAttributedStringKey: Any] {
         let font = NSFont(name: "Soleil", size: 16) ?? NSFont.systemFont(ofSize: 16)
         let paragraphStyle = NSMutableParagraphStyle()

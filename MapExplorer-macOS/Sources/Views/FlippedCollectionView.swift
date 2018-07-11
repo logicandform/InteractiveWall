@@ -2,6 +2,7 @@
 
 import Cocoa
 
+
 class FlippedCollectionView: NSCollectionView {
 
     override var isFlipped: Bool {

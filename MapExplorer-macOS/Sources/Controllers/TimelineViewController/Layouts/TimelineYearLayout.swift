@@ -6,7 +6,7 @@ import Cocoa
 class TimelineYearLayout: NSCollectionViewFlowLayout {
 
     private struct Constants {
-        static let yearWidth = 1920
+//        static let yearWidth = 1920
         static let cellSize = CGSize(width: 240, height: 60)
         static let headerHeight: CGFloat = 20
     }
@@ -29,7 +29,7 @@ class TimelineYearLayout: NSCollectionViewFlowLayout {
         }
 
         let totalYears = source.lastYear - source.firstYear + 1
-        let width = CGFloat(totalYears * Constants.yearWidth)
+        let width = CGFloat(totalYears * style.yearLayoutYearWidth)
         return CGSize(width: width, height: itemSize.height)
     }
 
@@ -39,8 +39,8 @@ class TimelineYearLayout: NSCollectionViewFlowLayout {
         }
 
         var layoutAttributes = [NSCollectionViewLayoutAttributes]()
-        let minYear = source.firstYear + Int(rect.minX) / Constants.yearWidth
-        let maxYear = source.firstYear + Int(rect.maxX) / Constants.yearWidth
+        let minYear = source.firstYear + Int(rect.minX) / style.yearLayoutYearWidth
+        let maxYear = source.firstYear + Int(rect.maxX) / style.yearLayoutYearWidth
 
         for year in (minYear...maxYear) {
             // Append attributes for items
@@ -80,7 +80,7 @@ class TimelineYearLayout: NSCollectionViewFlowLayout {
         let selected = source.selectedIndexes.contains(item)
         let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
         let y = Constants.cellSize.height * CGFloat(heightIndex) + Constants.headerHeight
-        let x = CGFloat((event.start - source.firstYear) * Constants.yearWidth)
+        let x = CGFloat((event.start - source.firstYear) * style.yearLayoutYearWidth)
         let width = selected ? Constants.cellSize.width * 2 : Constants.cellSize.width
         attributes.frame = CGRect(origin: CGPoint(x: x, y: y), size: CGSize(width: width, height: Constants.cellSize.height))
         attributes.zIndex = selected ? event.start + source.lastYear : event.start
@@ -95,8 +95,8 @@ class TimelineYearLayout: NSCollectionViewFlowLayout {
         let item = year - source.firstYear
         let indexPath = IndexPath(item: item, section: 0)
         let attributes = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: TimelineHeaderView.supplementaryKind, with: indexPath)
-        let x = CGFloat(item * Constants.yearWidth)
-        let size = CGSize(width: CGFloat(Constants.yearWidth), height: Constants.headerHeight)
+        let x = CGFloat(item * style.yearLayoutYearWidth)
+        let size = CGSize(width: CGFloat(style.yearLayoutYearWidth), height: Constants.headerHeight)
         attributes.frame = CGRect(origin: CGPoint(x: x, y: 0), size: size)
         return attributes
     }
