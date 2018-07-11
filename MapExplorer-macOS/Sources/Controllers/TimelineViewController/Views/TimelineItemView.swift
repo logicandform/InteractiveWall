@@ -22,7 +22,7 @@ class TimelineItemView: NSCollectionViewItem {
     private struct Constants {
         static let unselectedHighlightWidth: CGFloat = 5
         static let animationDuration = 0.3
-        static let textOffset: CGFloat = 4
+        static let textOffset: CGFloat = 10
     }
 
 
@@ -50,31 +50,9 @@ class TimelineItemView: NSCollectionViewItem {
 
     func animate(to size: CGSize) {
         if size.width > view.frame.size.width {
-            // Expansion animation
-            NSAnimationContext.runAnimationGroup({ _ in
-                NSAnimationContext.current.duration = Constants.animationDuration / 2
-                highlightViewWidthConstraint.animator().constant = view.frame.size.width
-            }, completionHandler: { [weak self] in
-                self?.view.setFrameSize(size)
-                NSAnimationContext.runAnimationGroup({ _ in
-                    NSAnimationContext.current.duration = Constants.animationDuration / 2
-                    self?.contentViewWidthConstraint.animator().constant = size.width
-                    self?.highlightViewWidthConstraint.animator().constant = size.width
-                })
-            })
+            expand(to: size)
         } else {
-            // Compression animation
-            NSAnimationContext.runAnimationGroup({ _ in
-                NSAnimationContext.current.duration = Constants.animationDuration / 2
-                contentViewWidthConstraint.animator().constant = size.width - Constants.textOffset
-                highlightViewWidthConstraint.animator().constant = size.width
-            }, completionHandler: { [weak self] in
-                self?.view.frame.size = size
-                NSAnimationContext.runAnimationGroup({ _ in
-                    NSAnimationContext.current.duration = Constants.animationDuration / 2
-                    self?.highlightViewWidthConstraint.animator().constant = Constants.unselectedHighlightWidth
-                })
-            })
+            compress(to: size)
         }
     }
 
@@ -92,5 +70,33 @@ class TimelineItemView: NSCollectionViewItem {
         tintColor = NSColor.color(from: event.title)
         highlightView.layer?.backgroundColor = tintColor.cgColor
         titleTextField.attributedStringValue = NSAttributedString(string: event.title, attributes: style.timelineTitleAttributes)
+    }
+
+    private func expand(to size: CGSize) {
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = Constants.animationDuration / 2
+            highlightViewWidthConstraint.animator().constant = view.frame.size.width
+        }, completionHandler: { [weak self] in
+            self?.view.setFrameSize(size)
+            NSAnimationContext.runAnimationGroup({ _ in
+                NSAnimationContext.current.duration = Constants.animationDuration / 2
+                self?.contentViewWidthConstraint.animator().constant = size.width
+                self?.highlightViewWidthConstraint.animator().constant = size.width
+            })
+        })
+    }
+
+    private func compress(to size: CGSize) {
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = Constants.animationDuration / 2
+            contentViewWidthConstraint.animator().constant = size.width - Constants.textOffset
+            highlightViewWidthConstraint.animator().constant = size.width
+        }, completionHandler: { [weak self] in
+            self?.view.frame.size = size
+            NSAnimationContext.runAnimationGroup({ _ in
+                NSAnimationContext.current.duration = Constants.animationDuration / 2
+                self?.highlightViewWidthConstraint.animator().constant = Constants.unselectedHighlightWidth
+            })
+        })
     }
 }
