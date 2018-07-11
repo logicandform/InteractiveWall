@@ -30,7 +30,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         super.didMove(to: view)
 
         NodeBoundingManager.instance.scene = self
-        NodeBoundingManager.instance.createSeekNode()
+        NodeBoundingManager.instance.createRootSeekNodeBoundingEntity()
 
         addGestures(to: view)
         setupSystemGesturesForTest(to: view)
@@ -101,10 +101,6 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
 
         createRepulsiveField()
-
-//        for type in StartingPositionType.allValues {
-//            addLinearGravityField(to: type)
-//        }
     }
 
     private func addRecordNodesToScene() {
@@ -123,10 +119,6 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
                 EntityManager.instance.add(recordEntity)
                 addChild(recordNode)
-
-//                let destinationPosition = getRandomPosition()
-//                let forceVector = CGVector(dx: destinationPosition.x - recordNode.position.x, dy: destinationPosition.y - recordNode.position.y)
-//                recordNode.runInitialAnimation(with: forceVector, delay: index)
             }
         }
     }
@@ -180,12 +172,11 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
             // make level connections for all the entity's descendants
             EntityManager.instance.associateRelatedEntities(for: [entity])
 
-            // create initial bounding nodes for each level
-            let entitiesInLevel = EntityManager.instance.entitiesInLevel
-            NodeBoundingManager.instance.createInitialBoundingNodes(forLevels: entitiesInLevel.count)
+            // create bounding node entities for each level
+            NodeBoundingManager.instance.createNodeBoundingEntities()
 
             // enter the TappedState for the tapped entity node
-            entity.intelligenceComponent.stateMachine.enter(TappedState.self)
+//            entity.intelligenceComponent.stateMachine.enter(TappedState.self)
         }
     }
 

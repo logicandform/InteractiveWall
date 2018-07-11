@@ -18,7 +18,12 @@ final class NodeBoundingManager {
     /// Dictionary of the bounding invisible node for a particular level
     private(set) var boundingNodesForLevel = [Int: SKNode]()
 
-    private var elapsedTime: TimeInterval = 0.0
+    private var nodeBoundingEntities = [NodeBoundingEntity]()
+
+    private lazy var componentSystems: [GKComponentSystem] = {
+        let renderSystem = GKComponentSystem(componentClass: NodeBoundingRenderComponent.self)
+        return [renderSystem]
+    }()
 
     private struct BoundingNodeBitMasks {
         let categoryBitMask: UInt32
@@ -38,68 +43,57 @@ final class NodeBoundingManager {
     // MARK: API
 
     func update(_ deltaTime: CFTimeInterval) {
-        elapsedTime += deltaTime
-
-        if elapsedTime > 5 {
-
-            // check the distance between the rootBoundingNode and entities in each level
-            // scale the appropriate boundingNodeForLevel
-
-            let entitiesInLevel = EntityManager.instance.entitiesInLevel
-
-            for (level, entities) in entitiesInLevel.enumerated() {
-                var maximumRadius: CGFloat = 0.0
-
-                for case let entity in entities where entity.hasCollidedWithBoundingNode {
-                    let radius = distance(to: entity)
-                    if radius > maximumRadius {
-                        maximumRadius = radius
-                    }
-                }
-
-                if let boundingNode = boundingNodesForLevel[level + 1] {
-                    let currentBoundingNodeRadius = (boundingNode.frame.height / 2)
-                    let newBoundingNodeRadius = maximumRadius + NodeConfiguration.Record.physicsBodyRadius * 4
-
-                    let scale = newBoundingNodeRadius / currentBoundingNodeRadius
-                    boundingNode.setScale(scale)
-//                    let scaleAction = SKAction.scale(by: scale, duration: 0.001)
-//                    boundingNode.run(scaleAction)
-                }
-
-            }
-
-            elapsedTime = 0.0
+        for componentSystem in componentSystems {
+            componentSystem.update(deltaTime: deltaTime)
         }
     }
 
-    func createSeekNode() {
-        let seekNode = SKShapeNode(circleOfRadius: NodeConfiguration.Record.physicsBodyRadius + 5.0)
-        seekNode.name = Constants.boundingNodeName
-        seekNode.position = CGPoint(x: scene.frame.width / 2, y: scene.frame.height / 2)
-//        seekNode.isHidden = true
+    func createRootSeekNodeBoundingEntity() {
+        let rootSeekNode = SKShapeNode(circleOfRadius: NodeConfiguration.Record.physicsBodyRadius + 5.0)
+        rootSeekNode.name = Constants.boundingNodeName
+        rootSeekNode.position = CGPoint(x: scene.frame.width / 2, y: scene.frame.height / 2)
 
-        seekNode.physicsBody = SKPhysicsBody(circleOfRadius: NodeConfiguration.Record.physicsBodyRadius + 5.0)
-        seekNode.physicsBody?.isDynamic = false
+        rootSeekNode.physicsBody = SKPhysicsBody(circleOfRadius: NodeConfiguration.Record.physicsBodyRadius + 5.0)
+        rootSeekNode.physicsBody?.isDynamic = false
 
-        seekNode.physicsBody?.collisionBitMask = 0x1 << 0
-        seekNode.physicsBody?.contactTestBitMask = 0x1 << 0
-        seekNode.physicsBody?.categoryBitMask = 0x1 << 0
+        rootSeekNode.physicsBody?.collisionBitMask = 0x1 << 0
+        rootSeekNode.physicsBody?.contactTestBitMask = 0x1 << 0
+        rootSeekNode.physicsBody?.categoryBitMask = 0x1 << 0
 
-        rootBoundingNode = seekNode
-        boundingNodesForLevel[0] = seekNode
-        scene.addChild(seekNode)
+        rootBoundingNode = rootSeekNode
+        scene.addChild(rootSeekNode)
+
+        let rootSeekNodeBoundingEntity = NodeBoundingEntity()
+        rootSeekNodeBoundingEntity.nodeBoundingRenderComponent.node = rootSeekNode
+        nodeBoundingEntities.append(rootSeekNodeBoundingEntity)
     }
 
-    func createInitialBoundingNodes(forLevels levels: Int) {
+    func createNodeBoundingEntities() {
+        let entitiesInLevel = EntityManager.instance.entitiesInLevel
+        createBoundingEntities(forLevels: entitiesInLevel.count)
+
+        for (level, entities) in entitiesInLevel.enumerated() {
+            guard let nodeBoundingEntity = nodeBoundingEntities.at(index: level) else { continue }
+            nodeBoundingEntity.nodeBoundingRenderComponent.contactEntities = entities
+
+            if let contactEntitiesBoundingEntity = nodeBoundingEntities.at(index: level + 1) {
+                nodeBoundingEntity.nodeBoundingRenderComponent.contactEntitiesBoundingEntity = contactEntitiesBoundingEntity
+            }
+        }
+    }
+
+
+    // MARK: Helpers
+
+    private func createBoundingEntities(forLevels levels: Int) {
         var level = 1
-        var radius: CGFloat = 20 + NodeConfiguration.Record.physicsBodyRadius * 14
+        let radius = NodeConfiguration.Record.physicsBodyRadius * 8
 
         while level < levels {
             let boundingNode = SKShapeNode(circleOfRadius: radius)
             boundingNode.name = Constants.boundingNodeName
+            boundingNode.zPosition = 1
             boundingNode.position = CGPoint(x: scene.frame.width / 2, y: scene.frame.height / 2)
-//            boundingNode.isHidden = true
 
             boundingNode.physicsBody = SKPhysicsBody(circleOfRadius: radius)
             boundingNode.physicsBody?.mass = NodeConfiguration.Record.physicsBodyMass
@@ -110,16 +104,19 @@ final class NodeBoundingManager {
             boundingNode.physicsBody?.collisionBitMask = bitMasks.collisionBitMask
             boundingNode.physicsBody?.contactTestBitMask = bitMasks.contactTestBitMask
 
-            boundingNodesForLevel[level] = boundingNode
             scene.addChild(boundingNode)
 
-            radius += NodeConfiguration.Record.physicsBodyRadius * 14
+            let nodeBoundingEntity = NodeBoundingEntity()
+            nodeBoundingEntity.nodeBoundingRenderComponent.node = boundingNode
+            nodeBoundingEntities.append(nodeBoundingEntity)
+
+            for componentSystem in componentSystems {
+                componentSystem.addComponent(foundIn: nodeBoundingEntity)
+            }
+
             level += 1
         }
     }
-
-
-    // MARK: Helpers
 
     private func boundingNodeBitMasks(forLevel level: Int) -> BoundingNodeBitMasks {
         let categoryBitMask: UInt32 = 0x1 << level
