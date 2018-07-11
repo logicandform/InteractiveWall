@@ -8,4 +8,10 @@ screen -d -m -S tiles-3 node www 4300
 cd ~/dev/Caching-Server-UBC
 screen -d -m -S caching-server npm start
 
-open -n -a "/Users/irshdc/Library/Developer/Xcode/DerivedData/MapExplorer-cebdevedrroybgdstwjueirgqasq/Build/Products/Debug/WindowExplorer.app"
+# Brings window explorer to the front if its open, otherwise opens it
+SERVICE='WindowExplorer'
+if ps ax | grep -v grep | grep "${SERVICE}" &> /dev/null; then
+    open -a "/Users/irshdc/Library/Developer/Xcode/DerivedData/MapExplorer-cebdevedrroybgdstwjueirgqasq/Build/Products/Debug/WindowExplorer.app"
+else
+    open -n -a "/Users/irshdc/Library/Developer/Xcode/DerivedData/MapExplorer-cebdevedrroybgdstwjueirgqasq/Build/Products/Debug/WindowExplorer.app"
+fi
