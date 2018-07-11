@@ -7,6 +7,7 @@ final class TimelineEvent: Hashable {
 
     let title: String
     let start: Int
+    let startMonth = Month.january
     let end: Int
 
     var hashValue: Int {

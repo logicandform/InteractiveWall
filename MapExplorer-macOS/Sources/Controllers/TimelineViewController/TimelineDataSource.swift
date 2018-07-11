@@ -6,13 +6,17 @@ import AppKit
 
 final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
 
+    var type = TimelineType.month
     var selectedIndexes = Set<Int>()
     let firstYear = Constants.firstYear
     let lastYear = Constants.lastYear
+    let width = Constants.screenWidth
     private(set) var events = [TimelineEvent]()
     private(set) var eventsForYear = [Int: [TimelineEvent]]()
+    private(set) var eventsForMonth = [Int: [Month: [TimelineEvent]]]()
 
     private struct Constants {
+        static let screenWidth: CGFloat = 1920
         static let firstYear = 1867
         static let lastYear = 1980
     }
@@ -44,6 +48,17 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
             } else {
                 eventsForYear[event.start] = [event]
             }
+
+            // Add to month dictionary
+            if eventsForMonth[event.start] != nil {
+                if eventsForMonth[event.start]![event.startMonth] != nil {
+                    eventsForMonth[event.start]![event.startMonth]!.append(event)
+                } else {
+                    eventsForMonth[event.start]![event.startMonth] = [event]
+                }
+            } else {
+                eventsForMonth[event.start] = [event.startMonth: [event]]
+            }
         }
     }
 
@@ -71,8 +86,15 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
             return NSView()
         }
 
-        let year = firstYear + indexPath.item
-        headerView.textLabel.stringValue = "\(year)"
+        switch type {
+        case .month:
+            let month = Month.allValues[indexPath.item % Month.allValues.count]
+            headerView.textLabel.stringValue = month.abbreviation
+        case .year, .decade, .century:
+            let year = firstYear + indexPath.item
+            headerView.textLabel.stringValue = year.description
+        }
+
         return headerView
     }
 }

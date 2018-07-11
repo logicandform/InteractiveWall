@@ -3,7 +3,7 @@
 import Foundation
 
 
-enum Month {
+enum Month: Int {
     case january
     case february
     case march
