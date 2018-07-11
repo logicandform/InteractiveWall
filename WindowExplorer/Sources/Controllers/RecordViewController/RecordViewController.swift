@@ -626,14 +626,12 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         // Transitions the related records and their title by fading out & in
         fadeRelatedRecordsAndTitle(out: true, completion: { [weak self] in
             self?.updateRelatedRecordsHeight()
-            self?.view.layoutSubtreeIfNeeded()
             if let strongSelf = self {
                 strongSelf.relatedRecordsTypeLabel.attributedStringValue = NSAttributedString(string: titleForType, attributes: style.relatedItemsTitleAttributes)
                 strongSelf.relatedItemsView.reloadData()
 
                 strongSelf.updateRelatedItemsLayout { [weak self] in
                     self?.updateRelatedRecordsHeight()
-                    self?.view.layoutSubtreeIfNeeded()
                     if let strongSelf = self {
                         strongSelf.relatedItemsView.scroll(.zero)
                         strongSelf.fadeRelatedRecordsAndTitle(out: false, completion: {})
@@ -711,5 +709,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         let height = relatedItemsFilterType.layout == .list ? numberOfRecords * style.relatedRecordsListItemHeight + numberOfListSpaces * style.relatedRecordsItemSpacing : CGFloat(numberOfImageRows) * style.relatedRecordsImageItemHeight + CGFloat(numberOfGridSpaces) * style.relatedRecordsItemSpacing
         relatedRecordsHeightConstraint.constant = height > maxHeight ? maxHeight : height
         relatedRecordScrollView.updateGradient(forced: true, height: height)
+        view.layoutSubtreeIfNeeded()
     }
 }
