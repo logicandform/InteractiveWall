@@ -41,7 +41,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
-                                    <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="TFZ-Kd-Lat" customClass="FadingScrollView" customModule="MapExplorer_macOS" customModuleProvider="target">
+                                    <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="TFZ-Kd-Lat">
                                         <rect key="frame" x="87" y="13" width="490" height="7"/>
                                         <clipView key="contentView" drawsBackground="NO" id="DqZ-7r-uLk">
                                             <rect key="frame" x="0.0" y="0.0" width="490" height="7"/>
@@ -74,7 +74,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
-                                    <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="NUl-Dg-WwY" customClass="FadingScrollView" customModule="MapExplorer_macOS" customModuleProvider="target">
+                                    <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="NUl-Dg-WwY">
                                         <rect key="frame" x="87" y="6" width="490" height="7"/>
                                         <clipView key="contentView" drawsBackground="NO" id="Vpd-yq-eWk">
                                             <rect key="frame" x="0.0" y="0.0" width="490" height="7"/>
@@ -107,7 +107,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
-                                    <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="KrB-Xy-tIn" customClass="FadingScrollView" customModule="MapExplorer_macOS" customModuleProvider="target">
+                                    <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="KrB-Xy-tIn">
                                         <rect key="frame" x="87" y="0.0" width="490" height="6"/>
                                         <clipView key="contentView" drawsBackground="NO" id="wSJ-l6-SxW">
                                             <rect key="frame" x="0.0" y="0.0" width="490" height="6"/>
@@ -176,16 +176,16 @@
                     </view>
                     <connections>
                         <outlet property="decadeCollectionView" destination="7yP-gS-dIq" id="vSp-ap-jXL"/>
-                        <outlet property="decadeScrollView" destination="KrB-Xy-tIn" id="CUD-7C-1nu"/>
+                        <outlet property="decadeScrollView" destination="KrB-Xy-tIn" id="S7k-tJ-ss9"/>
                         <outlet property="monthCollectionView" destination="27P-tH-KFI" id="WG3-64-NPQ"/>
-                        <outlet property="monthScrollView" destination="TFZ-Kd-Lat" id="0OX-UM-oNA"/>
+                        <outlet property="monthScrollView" destination="TFZ-Kd-Lat" id="JFh-YW-Ysq"/>
                         <outlet property="timelineBackgroundView" destination="yPT-yt-MBL" id="jUN-GU-z25"/>
                         <outlet property="timelineClipView" destination="2EQ-1e-jeX" id="yoW-RT-tSB"/>
                         <outlet property="timelineCollectionView" destination="hh4-uZ-Why" id="5IC-wt-0fY"/>
                         <outlet property="timelineIndicatorView" destination="4K8-jG-fxe" id="e0V-ht-30f"/>
                         <outlet property="timelineScrollView" destination="FoW-Io-IhM" id="JQ2-Ok-LVn"/>
                         <outlet property="yearCollectionView" destination="uKJ-ub-LXA" id="EoM-17-pFK"/>
-                        <outlet property="yearScrollView" destination="NUl-Dg-WwY" id="HGZ-DY-W0U"/>
+                        <outlet property="yearScrollView" destination="NUl-Dg-WwY" id="1du-wp-4FQ"/>
                     </connections>
                 </viewController>
                 <customObject id="7uZ-GQ-LBt" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

@@ -18,11 +18,11 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     @IBOutlet weak var timelineCollectionView: FlippedCollectionView!
     @IBOutlet weak var timelineScrollView: NSScrollView!
     @IBOutlet weak var monthCollectionView: NSCollectionView!
-    @IBOutlet weak var monthScrollView: FadingScrollView!
+    @IBOutlet weak var monthScrollView: NSScrollView!
     @IBOutlet weak var yearCollectionView: NSCollectionView!
-    @IBOutlet weak var yearScrollView: FadingScrollView!
+    @IBOutlet weak var yearScrollView: NSScrollView!
     @IBOutlet weak var decadeCollectionView: NSCollectionView!
-    @IBOutlet weak var decadeScrollView: FadingScrollView!
+    @IBOutlet weak var decadeScrollView: NSScrollView!
     @IBOutlet weak var timelineIndicatorView: NSView!
 
     var gestureManager: GestureManager!
@@ -123,12 +123,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     private func setupControls() {
         years = Array(Constants.firstDecade...Constants.lastDecade)
         decades = years.filter { $0 % 10 == 0 }
-//        monthCollectionView.register(TimelineControlItemView.self, forItemWithIdentifier: TimelineControlItemView.identifier)
-//        yearCollectionView.register(TimelineControlItemView.self, forItemWithIdentifier: TimelineControlItemView.identifier)
-//        decadeCollectionView.register(TimelineControlItemView.self, forItemWithIdentifier: TimelineControlItemView.identifier)
-//        monthScrollView.horizontalScroller?.alphaValue = 0
-//        yearScrollView.horizontalScroller?.alphaValue = 0
-//        decadeScrollView.horizontalScroller?.alphaValue = 0
         setupControls(in: monthCollectionView, scrollView: monthScrollView)
         setupControls(in: yearCollectionView, scrollView: yearScrollView)
         setupControls(in: decadeCollectionView, scrollView: decadeScrollView)
@@ -139,9 +133,9 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     }
 
     private func setupControlGradients() {
-        setupGradient(in: monthScrollView)
-        setupGradient(in: yearScrollView)
-        setupGradient(in: decadeScrollView)
+        setupHorizontalGradient(in: monthScrollView)
+        setupHorizontalGradient(in: yearScrollView)
+        setupHorizontalGradient(in: decadeScrollView)
     }
 
     private func setupGestures() {
@@ -227,7 +221,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
                 return
         }
 
-        monthScrollView.gradient(on: true)
         switch collectionView {
         case monthCollectionView:
             if let month = Month(abbreviation: title) {
@@ -429,8 +422,17 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         scrollView.horizontalScroller?.alphaValue = 0
     }
 
-    private func setupGradient(in scrollView: NSScrollView) {
-
+    private func setupHorizontalGradient(in view: NSView) {
+        view.wantsLayer = true
+        let transparent = NSColor.clear.cgColor
+        let opaque = style.darkBackgroundOpaque.cgColor
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = view.bounds
+        gradientLayer.colors = [transparent, opaque, opaque, transparent]
+        gradientLayer.locations = [0.0, NSNumber(value: Constants.fadePercentage), NSNumber(value: 1.0 - Constants.fadePercentage), 1.0]
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
+        gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
+        view.layer?.mask = gradientLayer
     }
 
     private func canSelectItem(in collectionView: NSCollectionView) -> Bool {
