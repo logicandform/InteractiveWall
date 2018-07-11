@@ -12,6 +12,7 @@ protocol GestureResponder: class {
 
 final class GestureManager {
 
+    var displayTouchIndicators = true
     private weak var responder: GestureResponder!
     private var gestureHandlers = [NSView: GestureHandler]()
 
@@ -46,18 +47,16 @@ final class GestureManager {
     }
 
     func handle(_ touch: Touch) {
-        let appType = ConnectionManager.instance.typeForApp(id: appID)
-
         switch touch.state {
         case .down:
             handleTouchDown(touch)
-            if appType != .timeline {
+            if displayTouchIndicators {
                 displayTouchIndicator(in: responder.view, at: touch.position)
             }
         case .moved:
             if let handler = handler(for: touch) {
                 handler.handle(touch)
-                if appType != .timeline {
+                if displayTouchIndicators {
                     displayTouchIndicator(in: responder.view, at: touch.position)
                 }
             }
@@ -66,7 +65,7 @@ final class GestureManager {
                 handler.handle(touch)
             }
         case .indicator:
-            if appType != .timeline {
+            if displayTouchIndicators {
                 handleTouchIndicator(touch)
             }
         }
