@@ -8,12 +8,14 @@ class FlippedMapView: MKMapView {
     fileprivate var removeLegal = true
 
     override var isFlipped: Bool {
-        return false
+        return true
     }
 
     override func layout() {
         if removeLegal {
-            self.subviews.last?.removeFromSuperview()
+            var subviews = self.subviews
+            subviews.removeLast()
+            subviews.last?.removeFromSuperview()
             removeLegal = true
         }
         super.layout()
