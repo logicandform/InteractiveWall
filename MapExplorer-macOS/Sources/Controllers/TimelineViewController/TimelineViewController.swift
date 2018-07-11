@@ -551,13 +551,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     // MARK: Helpers
 
-    private func controlDay() -> Int {
-        let xPosition = monthCollectionView.visibleRect.origin.x.truncatingRemainder(dividingBy: Constants.timelineControlItemWidth)
-        let percent = xPosition / Constants.timelineControlItemWidth
-        let day = Int(percent * CGFloat(Constants.daysPerMonth))
-        return day
-    }
-
     private func setDate(day: CGFloat, month: Int, year: Int) {
         let centerInset = Constants.controlItemWidth * 3
 
