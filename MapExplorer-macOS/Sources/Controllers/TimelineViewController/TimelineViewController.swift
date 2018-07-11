@@ -227,7 +227,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
                 return
         }
 
-        monthScrollView.layout()
+        monthScrollView.gradient(on: true)
         switch collectionView {
         case monthCollectionView:
             if let month = Month(abbreviation: title) {

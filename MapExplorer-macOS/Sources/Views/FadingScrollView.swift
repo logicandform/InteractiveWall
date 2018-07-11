@@ -11,20 +11,21 @@ class FadingScrollView: NSScrollView {
     }
 
 
-    // MARK: Overrides
-
-    override func layout() {
-        super.layout()
-        wantsLayer = true
-        let transparent = NSColor.clear.cgColor
-        let opaque = style.darkBackgroundOpaque.cgColor
-        let gradientLayer = CAGradientLayer()
-        let test = bounds
-        gradientLayer.frame = bounds
-        //        gradientLayer.frame = NSRect(x: scrollView.bounds.origin.x, y: 0, width: scrollView.bounds.width, height: scrollView.bounds.height)
-//        gradientLayer.colors = [transparent, opaque, opaque, transparent]
-        gradientLayer.locations = [0.0, NSNumber(value: Constants.fadePercentage), NSNumber(value: 1.0 - Constants.fadePercentage), 1.0]
-        gradientLayer.transform = CATransform3DMakeRotation(CGFloat.pi / 2, 0, 0, 1)
-        layer?.mask = gradientLayer
+    func gradient(on: Bool) {
+        switch on {
+        case true:
+            wantsLayer = true
+            let transparent = NSColor.clear.cgColor
+            let opaque = style.darkBackgroundOpaque.cgColor
+            let gradientLayer = CAGradientLayer()
+            gradientLayer.frame = bounds
+            gradientLayer.colors = [transparent, opaque, opaque, transparent]
+            gradientLayer.locations = [0.0, NSNumber(value: Constants.fadePercentage), NSNumber(value: 1.0 - Constants.fadePercentage), 1.0]
+            gradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
+            gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
+            layer?.mask = gradientLayer
+        case false:
+            layer?.mask = nil
+        }
     }
 }
