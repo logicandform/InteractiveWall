@@ -55,12 +55,14 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        guard let timelineItem = collectionView.makeItem(withIdentifier: TimelineItemView.identifier, for: indexPath) as? TimelineItemView else {
+        guard let timelineItem = collectionView.makeItem(withIdentifier: TimelineItemView.identifier, for: indexPath) as? TimelineItemView, let attributes = collectionView.collectionViewLayout?.layoutAttributesForItem(at: indexPath) else {
             return NSCollectionViewItem()
         }
 
         timelineItem.event = events[indexPath.item]
-        timelineItem.set(highlighted: selectedIndexes.contains(indexPath.item))
+        if selectedIndexes.contains(indexPath.item) {
+            timelineItem.animate(to: attributes.size)
+        }
         return timelineItem
     }
 

@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimelineItemView" customModule="MapExplorer_macOS" customModuleProvider="target">
             <connections>
+                <outlet property="backgroundView" destination="QrL-NI-D0P" id="UEo-2X-FUD"/>
                 <outlet property="contentView" destination="C4u-6g-tKh" id="cXA-Ye-Bzz"/>
+                <outlet property="contentViewWidthConstraint" destination="9cD-NI-NZR" id="CS7-Mz-jGj"/>
                 <outlet property="highlightView" destination="xmo-R1-THM" id="o9M-FK-vdj"/>
+                <outlet property="highlightViewWidthConstraint" destination="HxO-1w-ihB" id="0k0-Mk-Sad"/>
                 <outlet property="titleTextField" destination="RX4-ER-hWk" id="Xgk-rH-UQF"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
@@ -16,40 +19,49 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="200" height="60"/>
+            <rect key="frame" x="0.0" y="0.0" width="238" height="60"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="C4u-6g-tKh">
-                    <rect key="frame" x="4" y="2" width="192" height="56"/>
+                    <rect key="frame" x="4" y="2" width="230" height="56"/>
                     <subviews>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RX4-ER-hWk">
-                            <rect key="frame" x="11" y="20" width="175" height="17"/>
-                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="L5U-Qk-t9m">
-                                <font key="font" metaFont="system"/>
-                                <color key="textColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                            </textFieldCell>
-                        </textField>
+                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="QrL-NI-D0P">
+                            <rect key="frame" x="0.0" y="0.0" width="230" height="56"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="230" id="K19-Tr-jVf"/>
+                            </constraints>
+                        </customView>
                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="xmo-R1-THM">
                             <rect key="frame" x="0.0" y="0.0" width="5" height="56"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="5" id="HxO-1w-ihB"/>
                             </constraints>
                         </customView>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RX4-ER-hWk">
+                            <rect key="frame" x="11" y="20" width="213" height="17"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="L5U-Qk-t9m">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
                     </subviews>
                     <constraints>
+                        <constraint firstAttribute="width" constant="230" id="9cD-NI-NZR"/>
+                        <constraint firstItem="RX4-ER-hWk" firstAttribute="leading" secondItem="C4u-6g-tKh" secondAttribute="leading" constant="13" id="Af5-f1-VNZ"/>
+                        <constraint firstAttribute="bottom" secondItem="QrL-NI-D0P" secondAttribute="bottom" id="BNA-ln-gvn"/>
                         <constraint firstAttribute="trailing" secondItem="RX4-ER-hWk" secondAttribute="trailing" constant="8" id="DbZ-G0-QQ5"/>
                         <constraint firstAttribute="bottom" secondItem="xmo-R1-THM" secondAttribute="bottom" id="K2j-tc-BQx"/>
                         <constraint firstItem="RX4-ER-hWk" firstAttribute="centerY" secondItem="C4u-6g-tKh" secondAttribute="centerY" id="Uhq-Sw-jBv"/>
+                        <constraint firstItem="QrL-NI-D0P" firstAttribute="leading" secondItem="C4u-6g-tKh" secondAttribute="leading" id="a4K-Hq-T3x"/>
                         <constraint firstItem="xmo-R1-THM" firstAttribute="top" secondItem="C4u-6g-tKh" secondAttribute="top" id="b6a-tf-Kvh"/>
-                        <constraint firstItem="RX4-ER-hWk" firstAttribute="leading" secondItem="xmo-R1-THM" secondAttribute="trailing" constant="8" id="jy9-Gl-iBm"/>
+                        <constraint firstItem="QrL-NI-D0P" firstAttribute="top" secondItem="C4u-6g-tKh" secondAttribute="top" id="deR-EF-S1g"/>
                         <constraint firstItem="xmo-R1-THM" firstAttribute="leading" secondItem="C4u-6g-tKh" secondAttribute="leading" id="oRy-Re-nTy"/>
                     </constraints>
                 </customView>
             </subviews>
             <constraints>
                 <constraint firstItem="C4u-6g-tKh" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="4" id="HHm-mQ-r1h"/>
-                <constraint firstAttribute="trailing" secondItem="C4u-6g-tKh" secondAttribute="trailing" constant="4" id="Q4F-o7-lXX"/>
                 <constraint firstAttribute="bottom" secondItem="C4u-6g-tKh" secondAttribute="bottom" constant="2" id="R4B-dG-w8D"/>
                 <constraint firstItem="C4u-6g-tKh" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="2" id="S2o-m1-wPu"/>
             </constraints>
