@@ -53,8 +53,8 @@ class TimelineCenturyStackedLayout: NSCollectionViewFlowLayout {
         }
 
         var layoutAttributes = [NSCollectionViewLayoutAttributes]()
-        let minYear = source.firstYear + Int(rect.minX) / style.centuryLayoutYearWidth
-        let maxYear = source.firstYear + Int(rect.maxX) / style.centuryLayoutYearWidth
+        let minYear = source.firstYear + Int(rect.minX) / style.centuryLayoutWidth
+        let maxYear = source.firstYear + Int(rect.maxX) / style.centuryLayoutWidth
 
         for year in (minYear...maxYear) {
             // Append attributes for items
@@ -93,7 +93,7 @@ class TimelineCenturyStackedLayout: NSCollectionViewFlowLayout {
         let indexPath = IndexPath(item: item, section: 0)
         let selected = source.selectedIndexes.contains(item)
         let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
-        let x = CGFloat((event.start - source.firstYear) * style.centuryLayoutYearWidth)
+        let x = CGFloat((event.start - source.firstYear) * style.centuryLayoutWidth)
         let row = rowFor(xPosition: x)
         let y = Constants.cellSize.height * CGFloat(row) + Constants.headerHeight
         let width = selected ? Constants.cellSize.width * 2 : Constants.cellSize.width
@@ -112,7 +112,7 @@ class TimelineCenturyStackedLayout: NSCollectionViewFlowLayout {
         let item = year - source.firstYear
         let indexPath = IndexPath(item: item, section: 0)
         let attributes = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: TimelineHeaderView.supplementaryKind, with: indexPath)
-        let x = CGFloat(item * style.centuryLayoutYearWidth)
+        let x = CGFloat(item * style.centuryLayoutWidth)
         let size = CGSize(width: Constants.cellSize.width, height: Constants.headerHeight)
         attributes.frame = CGRect(origin: CGPoint(x: x, y: 0), size: size)
         return attributes
