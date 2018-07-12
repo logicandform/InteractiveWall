@@ -30,7 +30,7 @@ class MovementComponent: GKComponent {
     }
 
     private struct Constants {
-        static let strength: CGFloat = 2000
+        static let strength: CGFloat = 1000
         static let dt: CGFloat = 1 / 5000
     }
 

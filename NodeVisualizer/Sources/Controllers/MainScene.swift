@@ -30,7 +30,6 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         super.didMove(to: view)
 
         NodeBoundingManager.instance.scene = self
-        NodeBoundingManager.instance.createRootSeekNodeBoundingEntity()
 
         addGestures(to: view)
         setupSystemGesturesForTest(to: view)
@@ -169,14 +168,14 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
     private func relatedNodes(for node: RecordNode) {
         if let entity = node.entity as? RecordEntity {
-            // make level connections for all the entity's descendants
+            // make level connections for all the tapped entity's descendants
             EntityManager.instance.associateRelatedEntities(for: [entity])
 
             // create bounding node entities for each level
             NodeBoundingManager.instance.createNodeBoundingEntities()
 
             // enter the TappedState for the tapped entity node
-//            entity.intelligenceComponent.stateMachine.enter(TappedState.self)
+            entity.intelligenceComponent.stateMachine.enter(TappedState.self)
         }
     }
 

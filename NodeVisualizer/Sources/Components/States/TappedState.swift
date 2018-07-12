@@ -34,13 +34,14 @@ class TappedState: GKState {
         let entitiesInLevel = EntityManager.instance.entitiesInLevel
 
         for (level, entities) in entitiesInLevel.enumerated() {
-            if let boundingNode = NodeBoundingManager.instance.boundingNodesForLevel[level] {
+            if let nodeBoundingEntity = NodeBoundingManager.instance.nodeBoundingEntityForLevel[level],
+                let boundingNode = nodeBoundingEntity.nodeBoundingRenderComponent.node {
                 for entity in entities {
                     entity.physicsComponent.physicsBody.categoryBitMask = boundingNode.physicsBody!.categoryBitMask
                     entity.physicsComponent.physicsBody.collisionBitMask = boundingNode.physicsBody!.collisionBitMask
                     entity.physicsComponent.physicsBody.contactTestBitMask = boundingNode.physicsBody!.contactTestBitMask
 
-                    entity.movementComponent.nodeToSeek = NodeBoundingManager.instance.rootBoundingNode
+                    entity.movementComponent.nodeToSeek = NodeBoundingManager.instance.nodeBoundingEntityForLevel[0]?.nodeBoundingRenderComponent.node
                     entity.intelligenceComponent.stateMachine.enter(SeekState.self)
                 }
             }
