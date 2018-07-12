@@ -5,7 +5,7 @@ import Cocoa
 
 class TimelineCenturyLayout: NSCollectionViewFlowLayout {
 
-    let type: TimelineType = .century
+    let type = TimelineType.century
 
     private struct Constants {
         static let cellSize = CGSize(width: 240, height: 60)
@@ -34,8 +34,8 @@ class TimelineCenturyLayout: NSCollectionViewFlowLayout {
         }
 
         var layoutAttributes = [NSCollectionViewLayoutAttributes]()
-        let minYear = source.firstYear + Int(rect.minX) / type.sectionWidth
-        let maxYear = source.firstYear + Int(rect.maxX) / type.sectionWidth
+        let minYear = source.firstYear + Int(rect.minX) / type.layoutWidth
+        let maxYear = source.firstYear + Int(rect.maxX) / type.layoutWidth
 
         for year in (minYear...maxYear) {
             // Append attributes for items
@@ -75,7 +75,7 @@ class TimelineCenturyLayout: NSCollectionViewFlowLayout {
         let selected = source.selectedIndexes.contains(item)
         let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
         let y = Constants.cellSize.height * CGFloat(heightIndex) + Constants.headerHeight
-        let x = CGFloat((event.start - source.firstYear) * type.sectionWidth)
+        let x = CGFloat((event.start - source.firstYear) * type.layoutWidth)
         let width = selected ? Constants.cellSize.width * 2 : Constants.cellSize.width
         attributes.frame = CGRect(origin: CGPoint(x: x, y: y), size: CGSize(width: width, height: Constants.cellSize.height))
         attributes.zIndex = selected ? event.start + source.lastYear : event.start
@@ -90,7 +90,7 @@ class TimelineCenturyLayout: NSCollectionViewFlowLayout {
         let item = year - source.firstYear
         let indexPath = IndexPath(item: item, section: 0)
         let attributes = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: TimelineHeaderView.supplementaryKind, with: indexPath)
-        let x = CGFloat(item * type.sectionWidth)
+        let x = CGFloat(item * type.layoutWidth)
         let size = CGSize(width: Constants.cellSize.width, height: Constants.headerHeight)
         attributes.frame = CGRect(origin: CGPoint(x: x, y: 0), size: size)
         return attributes

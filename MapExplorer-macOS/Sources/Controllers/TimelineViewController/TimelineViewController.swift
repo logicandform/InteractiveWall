@@ -48,7 +48,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     private var selectedMonth: Month?
     private var selectedViewForType = [TimelineType: TimelineControlItemView]()
     private var currentDate = Constants.initialDate
-    private var timelineType: TimelineType = .year
+    private var timelineType: TimelineType = .decade
 
     private struct Constants {
         static let timelineCellWidth: CGFloat = 20
@@ -636,10 +636,10 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     private func setTimelineDate(day: CGFloat, month: Int, year: Int) {
         if timelineCollectionView.collectionViewLayout as? TimelineYearLayout != nil {
-            let monthOffset = ((CGFloat(month) + day - 0.5) / 12 - 0.5) * CGFloat(style.yearLayoutWidth)
-            let yearMaxX = CGFloat(years.count) * CGFloat(style.yearLayoutWidth)
+            let monthOffset = ((CGFloat(month) + day - 0.5) / 12 - 0.5) * CGFloat(timelineType.layoutWidth)
+            let yearMaxX = CGFloat(years.count) * CGFloat(timelineType.layoutWidth)
             let yearIndex = years.index(of: year)!
-            let yearX = CGFloat(yearIndex) * CGFloat(style.yearLayoutWidth)
+            let yearX = CGFloat(yearIndex) * CGFloat(timelineType.layoutWidth)
             var timelineRect = timelineCollectionView.visibleRect
             timelineRect.origin.x = yearX + timelineCollectionView.visibleRect.width / 2 + monthOffset
             if timelineRect.origin.x < 0 {
@@ -649,10 +649,10 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
             timelineCollectionView.scrollToVisible(timelineRect)
             timelineHandler?.send(timelineRect)
         } else if timelineCollectionView.collectionViewLayout as? TimelineDecadeLayout != nil {
-            let monthOffset = ((CGFloat(month) + day - 0.5) / 12) * CGFloat(style.decadeLayoutWidth)
-            let yearMaxX = CGFloat(years.count) * CGFloat(style.decadeLayoutWidth)
+            let monthOffset = ((CGFloat(month) + day) / 12) * CGFloat(timelineType.layoutWidth)
+            let yearMaxX = CGFloat(years.count) * CGFloat(timelineType.layoutWidth)
             let yearIndex = years.index(of: year)!
-            let yearX = CGFloat(yearIndex) * CGFloat(style.decadeLayoutWidth)
+            let yearX = CGFloat(yearIndex) * CGFloat(timelineType.layoutWidth)
             var timelineRect = timelineCollectionView.visibleRect
             timelineRect.origin.x = yearX + monthOffset
             if timelineRect.origin.x < 0 {
