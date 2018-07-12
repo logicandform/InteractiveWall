@@ -58,20 +58,28 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
     func didBegin(_ contact: SKPhysicsContact) {
         // check contact between the entities and their respective level bounding node
+        
         if contact.bodyA.node?.name == "boundingNode",
             let contactEntity = contact.bodyB.node?.entity as? RecordEntity,
             !contactEntity.hasCollidedWithBoundingNode {
             contactEntity.hasCollidedWithBoundingNode = true
         }
 
-        // check contact between the entities that are in the same level as each other
-        if let contactEntityA = contact.bodyA.node?.entity as? RecordEntity, let contactEntityB = contact.bodyB.node?.entity as? RecordEntity {
-            if contactEntityA.hasCollidedWithBoundingNode && !contactEntityB.hasCollidedWithBoundingNode {
-                contactEntityB.hasCollidedWithBoundingNode = true
-            } else if contactEntityB.hasCollidedWithBoundingNode && !contactEntityA.hasCollidedWithBoundingNode {
-                contactEntityA.hasCollidedWithBoundingNode = true
-            }
+        if let contactEntity = contact.bodyA.node?.entity as? RecordEntity,
+            !contactEntity.hasCollidedWithBoundingNode,
+            contact.bodyB.node?.name == "boundingNode" {
+            contactEntity.hasCollidedWithBoundingNode = true
         }
+
+        // check contact between the entities that are in the same level as each other
+//        if let contactEntityA = contact.bodyA.node?.entity as? RecordEntity, let contactEntityB = contact.bodyB.node?.entity as? RecordEntity {
+//            if contactEntityA.hasCollidedWithBoundingNode && !contactEntityB.hasCollidedWithBoundingNode {
+//                contactEntityB.hasCollidedWithBoundingNode = true
+//            } else if contactEntityB.hasCollidedWithBoundingNode && !contactEntityA.hasCollidedWithBoundingNode {
+//                contactEntityA.hasCollidedWithBoundingNode = true
+//            }
+//        }
+
     }
 
     func didEnd(_ contact: SKPhysicsContact) {

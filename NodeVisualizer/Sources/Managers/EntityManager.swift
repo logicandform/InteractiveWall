@@ -12,7 +12,8 @@ final class EntityManager {
         let movementSystem = GKComponentSystem(componentClass: MovementComponent.self)
         let agentSystem = GKComponentSystem(componentClass: RecordAgent.self)
         let animationSystem = GKComponentSystem(componentClass: AnimationComponent.self)
-        return [intelligenceSystem, animationSystem, movementSystem]
+        let physicsSystem = GKComponentSystem(componentClass: PhysicsComponent.self)
+        return [intelligenceSystem, physicsSystem, animationSystem, movementSystem]
     }()
 
     static let instance = EntityManager()

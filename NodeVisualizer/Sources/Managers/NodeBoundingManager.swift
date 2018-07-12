@@ -79,6 +79,7 @@ final class NodeBoundingManager {
             // create node bounding entity
             let nodeBoundingEntity = NodeBoundingEntity()
             nodeBoundingEntity.nodeBoundingRenderComponent.node = boundingNode
+            nodeBoundingEntity.nodeBoundingRenderComponent.maxRadius = radius
             nodeBoundingEntityForLevel[level] = nodeBoundingEntity
 
             for componentSystem in componentSystems {
@@ -86,7 +87,7 @@ final class NodeBoundingManager {
             }
 
             // update the minimum radius to be able to hold one full node plus an offset
-            radius += (NodeConfiguration.Record.physicsBodyRadius * 2) + Constants.boundingNodeRadiusOffset
+//            radius += (NodeConfiguration.Record.physicsBodyRadius * 2) + Constants.boundingNodeRadiusOffset
             level += 1
         }
     }
@@ -100,6 +101,9 @@ final class NodeBoundingManager {
         boundingNode.physicsBody = SKPhysicsBody(circleOfRadius: radius)
         boundingNode.physicsBody?.mass = NodeConfiguration.Record.physicsBodyMass
         boundingNode.physicsBody?.isDynamic = false
+        boundingNode.physicsBody?.friction = 0
+        boundingNode.physicsBody?.restitution = 0
+        boundingNode.physicsBody?.linearDamping = 0
 
         let bitMasks = boundingNodeBitMasks(forLevel: level)
         boundingNode.physicsBody?.categoryBitMask = bitMasks.categoryBitMask
