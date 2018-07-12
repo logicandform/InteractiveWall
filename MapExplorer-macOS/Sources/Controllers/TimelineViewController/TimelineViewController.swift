@@ -98,7 +98,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         super.viewDidAppear()
         setDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year)
         setupControlGradients()
-        setDate(day: 0, month: .january, year: 1880)
     }
 
 
