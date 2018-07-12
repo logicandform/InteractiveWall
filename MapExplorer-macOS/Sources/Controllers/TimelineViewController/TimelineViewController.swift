@@ -85,6 +85,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     override func viewDidLoad() {
         super.viewDidLoad()
         gestureManager = GestureManager(responder: self)
+        gestureManager.displayTouchIndicators = false
         TouchManager.instance.register(gestureManager, for: .timeline)
 
         setupBackground()

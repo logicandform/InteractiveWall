@@ -12,6 +12,7 @@ protocol GestureResponder: class {
 
 final class GestureManager {
 
+    var displayTouchIndicators = true
     private weak var responder: GestureResponder!
     private var gestureHandlers = [NSView: GestureHandler]()
 
@@ -49,18 +50,24 @@ final class GestureManager {
         switch touch.state {
         case .down:
             handleTouchDown(touch)
-            displayTouchIndicator(in: responder.view, at: touch.position)
+            if displayTouchIndicators {
+                displayTouchIndicator(in: responder.view, at: touch.position)
+            }
         case .moved:
             if let handler = handler(for: touch) {
                 handler.handle(touch)
-                displayTouchIndicator(in: responder.view, at: touch.position)
+                if displayTouchIndicators {
+                    displayTouchIndicator(in: responder.view, at: touch.position)
+                }
             }
         case .up:
             if let handler = handler(for: touch) {
                 handler.handle(touch)
             }
         case .indicator:
-            handleTouchIndicator(touch)
+            if displayTouchIndicators {
+                handleTouchIndicator(touch)
+            }
         }
     }
 
