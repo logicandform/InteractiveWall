@@ -9,7 +9,6 @@ class TimelineCenturyStackedLayout: NSCollectionViewFlowLayout {
     private var frameForEventInRow = [Int: CGRect]()
 
     private struct Constants {
-        static let yearWidth = 16
         static let cellSize = CGSize(width: 160, height: 24)
         static let headerHeight: CGFloat = 20
     }

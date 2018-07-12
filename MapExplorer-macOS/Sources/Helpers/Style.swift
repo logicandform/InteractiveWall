@@ -27,6 +27,7 @@ final class Style {
     // Layout Widths
     let monthLayoutWidth = 1920
     let yearLayoutWidth = 1920
+    let multiYearLayoutWidth = 240
     let centuryLayoutWidth = 16
 
     var timelineTitleAttributes: [NSAttributedStringKey: Any] {
