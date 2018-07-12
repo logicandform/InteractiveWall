@@ -8,6 +8,19 @@ enum TimelineType {
     case year
     case decade
     case century
+
+    var layoutWidth: Int {
+        switch self {
+        case .month:
+            return 1920
+        case .year:
+            return 1920
+        case .decade:
+            return 192
+        case .century:
+            return 16
+        }
+    }
 }
 
 
@@ -275,7 +288,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
             add(days: days * 120)
             updateControls()
         case timelineCollectionView:
-            days = -(offset.dx / CGFloat(style.yearLayoutWidth))
+            days = -(offset.dx / CGFloat(timelineType.layoutWidth))
             add(days: days * 12)
             updateControls(setTimeline: false)
         default:
@@ -622,10 +635,10 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     }
 
     private func setTimelineDate(day: CGFloat, month: Int, year: Int) {
-        let monthOffset = ((CGFloat(month) + day - 0.5) / 12 - 0.5) * CGFloat(style.yearLayoutWidth)
-        let yearMaxX = CGFloat(years.count) * CGFloat(style.yearLayoutWidth)
+        let monthOffset = ((CGFloat(month) + day - 0.5) / 12 - 0.5) * CGFloat(timelineType.layoutWidth)
+        let yearMaxX = CGFloat(years.count) * CGFloat(timelineType.layoutWidth)
         let yearIndex = years.index(of: year)!
-        let yearX = CGFloat(yearIndex) * CGFloat(style.yearLayoutWidth)
+        let yearX = CGFloat(yearIndex) * CGFloat(timelineType.layoutWidth)
         var timelineRect = timelineCollectionView.visibleRect
         timelineRect.origin.x = yearX + timelineCollectionView.visibleRect.width / 2 + monthOffset
         if timelineRect.origin.x < 0 {

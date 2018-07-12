@@ -5,6 +5,8 @@ import Cocoa
 
 class TimelineCenturyStackedLayout: NSCollectionViewFlowLayout {
 
+    let type: TimelineType = .century
+
     private var attributesForEvent = [TimelineEvent: NSCollectionViewLayoutAttributes]()
     private var frameForEventInRow = [Int: CGRect]()
 
@@ -52,8 +54,8 @@ class TimelineCenturyStackedLayout: NSCollectionViewFlowLayout {
         }
 
         var layoutAttributes = [NSCollectionViewLayoutAttributes]()
-        let minYear = source.firstYear + Int(rect.minX) / style.centuryLayoutWidth
-        let maxYear = source.firstYear + Int(rect.maxX) / style.centuryLayoutWidth
+        let minYear = source.firstYear + Int(rect.minX) / type.layoutWidth
+        let maxYear = source.firstYear + Int(rect.maxX) / type.layoutWidth
 
         for year in (minYear...maxYear) {
             // Append attributes for items
@@ -92,7 +94,7 @@ class TimelineCenturyStackedLayout: NSCollectionViewFlowLayout {
         let indexPath = IndexPath(item: item, section: 0)
         let selected = source.selectedIndexes.contains(item)
         let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
-        let x = CGFloat((event.start - source.firstYear) * style.centuryLayoutWidth)
+        let x = CGFloat((event.start - source.firstYear) * type.layoutWidth)
         let row = rowFor(xPosition: x)
         let y = Constants.cellSize.height * CGFloat(row) + Constants.headerHeight
         let width = selected ? Constants.cellSize.width * 2 : Constants.cellSize.width
@@ -111,7 +113,7 @@ class TimelineCenturyStackedLayout: NSCollectionViewFlowLayout {
         let item = year - source.firstYear
         let indexPath = IndexPath(item: item, section: 0)
         let attributes = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: TimelineHeaderView.supplementaryKind, with: indexPath)
-        let x = CGFloat(item * style.centuryLayoutWidth)
+        let x = CGFloat(item * type.layoutWidth)
         let size = CGSize(width: Constants.cellSize.width, height: Constants.headerHeight)
         attributes.frame = CGRect(origin: CGPoint(x: x, y: 0), size: size)
         return attributes
