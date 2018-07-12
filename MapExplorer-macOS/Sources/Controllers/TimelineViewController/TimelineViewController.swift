@@ -636,10 +636,10 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     private func setTimelineDate(day: CGFloat, month: Int, year: Int) {
         if timelineCollectionView.collectionViewLayout as? TimelineYearLayout != nil {
-            let monthOffset = ((CGFloat(month) + day - 0.5) / 12 - 0.5) * CGFloat(timelineType.layoutWidth)
-            let yearMaxX = CGFloat(years.count) * CGFloat(timelineType.layoutWidth)
+            let monthOffset = ((CGFloat(month) + day - 0.5) / 12 - 0.5) * CGFloat(timelineType.sectionWidth)
+            let yearMaxX = CGFloat(years.count) * CGFloat(timelineType.sectionWidth)
             let yearIndex = years.index(of: year)!
-            let yearX = CGFloat(yearIndex) * CGFloat(timelineType.layoutWidth)
+            let yearX = CGFloat(yearIndex) * CGFloat(timelineType.sectionWidth)
             var timelineRect = timelineCollectionView.visibleRect
             timelineRect.origin.x = yearX + timelineCollectionView.visibleRect.width / 2 + monthOffset
             if timelineRect.origin.x < 0 {
@@ -649,10 +649,10 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
             timelineCollectionView.scrollToVisible(timelineRect)
             timelineHandler?.send(timelineRect)
         } else if timelineCollectionView.collectionViewLayout as? TimelineDecadeLayout != nil {
-            let monthOffset = ((CGFloat(month) + day) / 12) * CGFloat(timelineType.layoutWidth)
-            let yearMaxX = CGFloat(years.count) * CGFloat(timelineType.layoutWidth)
+            let monthOffset = ((CGFloat(month) + day) / 12) * CGFloat(timelineType.sectionWidth)
+            let yearMaxX = CGFloat(years.count) * CGFloat(timelineType.sectionWidth)
             let yearIndex = years.index(of: year)!
-            let yearX = CGFloat(yearIndex) * CGFloat(timelineType.layoutWidth)
+            let yearX = CGFloat(yearIndex) * CGFloat(timelineType.sectionWidth)
             var timelineRect = timelineCollectionView.visibleRect
             timelineRect.origin.x = yearX + monthOffset
             if timelineRect.origin.x < 0 {
