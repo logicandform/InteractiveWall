@@ -63,7 +63,7 @@ final class NodeBoundingManager {
         }
         let dX = Float(rootBoundingNode.position.x - entity.renderComponent.recordNode.position.x)
         let dY = Float(rootBoundingNode.position.y - entity.renderComponent.recordNode.position.y)
-        return CGFloat(hypotf(dX, dY))
+        return CGFloat(hypotf(dX, dY).magnitude)
     }
 
 
@@ -71,7 +71,7 @@ final class NodeBoundingManager {
 
     private func createBoundingEntities(forLevels levels: Int) {
         var level = 0
-        var radius = NodeConfiguration.Record.physicsBodyRadius + Constants.boundingNodeRadiusOffset
+        let radius = NodeConfiguration.Record.physicsBodyRadius + Constants.boundingNodeRadiusOffset
 
         while level < levels {
             let boundingNode = createBoundingNode(ofRadius: radius, level: level)

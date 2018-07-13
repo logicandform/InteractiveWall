@@ -5,32 +5,29 @@ import SpriteKit
 import GameplayKit
 
 
-protocol NodeBoundingRenderComponentDelegate: class {
-    func changeInRadiusNotification(withRadius radius: CGFloat)
-}
-
 class NodeBoundingRenderComponent: GKComponent {
 
+    /// The bounding entity's node
     var node: SKNode?
-    weak var delegate: NodeBoundingRenderComponentDelegate?
 
-    /// the entities that this bounding node should calculate the maxRadius with
+    /// The entities that is associated with this component's bounding node. maxRadius is determined by calculating max distance between root and these entities
     var contactEntities: [RecordEntity]?
 
-    /// the previous level's node bounding entity. Use its maxRadius to scale its own bounding level node to the appropriate size
+    /// The previous level's node bounding entity. Use its maxRadius to scale its own bounding node to the appropriate size
     var previousNodeBoundingEntity: NodeBoundingEntity?
 
-    /// the maximum distance between the center of screen and the contactEntities for this bounding node
+    /// The maximum distance between the root and the contactEntities for this bounding entity
     var maxRadius: CGFloat = 0.0
 
-    /// to tell whether or not the next bounding node should update its radius
-    var shouldScaleNode: Bool = false
+    /// Determines whether or not the next bounding node should update its radius
+    var shouldScaleNode: Bool = true
 
-
-    private var previousCalculatedDistanceToFurthestEntity: CGFloat = 0.0
+    /// Local variable of the previous level's bounding node maxRadius. Used to determine its own level's bounding node maxRadius
+    private var previousLevelMaxDistance: CGFloat = 0.0
 
     private struct Constants {
-        static let offset: CGFloat = NodeConfiguration.Record.physicsBodyRadius + 15.0
+        static let minimumOffset: CGFloat = NodeConfiguration.Record.physicsBodyRadius
+        static let maximumOffset: CGFloat = NodeConfiguration.Record.physicsBodyRadius * 2
     }
 
 
@@ -58,27 +55,26 @@ class NodeBoundingRenderComponent: GKComponent {
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
 
-        guard let contactEntities = contactEntities else {
-            return
-        }
+        /*
+         Overall behavior/responsibility for this component is as follows:
+            - Each NodeBoundingRenderComponent is responsible for calculating the distance between the root (center) and its own level entities (i.e. contactEntities).
+                - This calculated distance becomes the component's maxRadius
+            - The component's level node updates its own size depending on the previous level bounding node's maxRadius
+         */
 
-
+        // scale its own bounding node by using its previous level's bounding node maxRadius
         if let previousLevelNodeBoundingEntity = previousNodeBoundingEntity, let currentNode = node, previousLevelNodeBoundingEntity.nodeBoundingRenderComponent.shouldScaleNode {
 
-            let previousLevelBoundingNodeMaxRadius = previousLevelNodeBoundingEntity.nodeBoundingRenderComponent.maxRadius + 40
+            // get the maxRadius of the previous level bounding node
+            let previousLevelBoundingNodeMaxRadius = previousLevelNodeBoundingEntity.nodeBoundingRenderComponent.maxRadius
+            let updatedPhysicsBodyRadius = previousLevelBoundingNodeMaxRadius + Constants.maximumOffset
 
-            let currentNodeRadiusWidth = currentNode.frame.width / 2
-            let currentNodeRadiusHeight = currentNode.frame.height / 2
-            let currentRadius = currentNodeRadiusWidth > currentNodeRadiusHeight ? currentNodeRadiusWidth : currentNodeRadiusHeight
-
+            // set its maxRadius to the previous level bounding node's maxRadius so that the next level bounding node can scale to the correct size
             maxRadius = previousLevelBoundingNodeMaxRadius
-            shouldScaleNode = true
+            previousLevelMaxDistance = previousLevelBoundingNodeMaxRadius
 
-//            let scale = previousLevelBoundingNodeMaxRadius / currentRadius
-//            let scaleAction = SKAction.scale(by: scale, duration: 0)
-//            currentNode.run(scaleAction)
-
-            let newPhysicsBody = SKPhysicsBody(circleOfRadius: previousLevelBoundingNodeMaxRadius)
+            // create new physicsBody based on the previous level bounding node's maxRadius. Scaling its own bounding node causes "stuck collisions" to its physicsBody
+            let newPhysicsBody = SKPhysicsBody(circleOfRadius: updatedPhysicsBodyRadius)
             newPhysicsBody.categoryBitMask = currentNode.physicsBody!.categoryBitMask
             newPhysicsBody.contactTestBitMask = currentNode.physicsBody!.contactTestBitMask
             newPhysicsBody.collisionBitMask = currentNode.physicsBody!.collisionBitMask
@@ -88,29 +84,20 @@ class NodeBoundingRenderComponent: GKComponent {
 
             currentNode.physicsBody = nil
             currentNode.physicsBody = newPhysicsBody
-
         }
 
+        guard let contactEntities = contactEntities else { return }
+        var distance: CGFloat = 0.0
 
+        // iterate through its contactEntities if it hasCollidedWithBoundingNode, and determine the max distance from the root to the contactEntity
         for contactEntity in contactEntities where contactEntity.hasCollidedWithBoundingNode {
-            let calculatedRadius = NodeBoundingManager.instance.distance(to: contactEntity) + 15.0 // use minimum radius to the edge of the contactEntity
-
-            let difference = calculatedRadius - previousCalculatedDistanceToFurthestEntity
-            let absoluteDifference = difference.magnitude
-
-            // keep track of the absolute value difference between the currentMax and the new calculatedMax. If difference is great enough, then "notify"
-//            if absoluteDifference >= 30.0 {
-                maxRadius = calculatedRadius
-                previousCalculatedDistanceToFurthestEntity = calculatedRadius
-                shouldScaleNode = true
-//            } else {
-//                shouldScaleNode = false
-//            }
+            let calculatedRadius = NodeBoundingManager.instance.distance(to: contactEntity) + Constants.minimumOffset
+            if calculatedRadius > distance {
+                distance = calculatedRadius
+            }
         }
 
-
-
-
-
+        // set the maxRadius for this level's bounding node
+        maxRadius = distance > previousLevelMaxDistance ? distance : previousLevelMaxDistance
     }
 }
