@@ -10,7 +10,6 @@ class TimelineItemView: NSCollectionViewItem {
     @IBOutlet weak var highlightView: NSView!
     @IBOutlet weak var highlightViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var backgroundView: NSView!
-    @IBOutlet weak var backgroundViewTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var titleTextField: NSTextField!
 
     var tintColor = style.selectedColor

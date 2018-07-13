@@ -5,7 +5,7 @@ import Cocoa
 
 class TimelineCenturyLayout: NSCollectionViewFlowLayout {
 
-    let type = TimelineType.century
+    let type: TimelineType = .century
 
     private struct Constants {
         static let cellSize = CGSize(width: 240, height: 60)

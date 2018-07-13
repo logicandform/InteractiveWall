@@ -8,7 +8,6 @@
         <customObject id="-2" userLabel="File's Owner" customClass="TimelineItemView" customModule="MapExplorer_macOS" customModuleProvider="target">
             <connections>
                 <outlet property="backgroundView" destination="QrL-NI-D0P" id="UEo-2X-FUD"/>
-                <outlet property="backgroundViewTrailingConstraint" destination="taJ-I4-9nB" id="3aN-42-hrQ"/>
                 <outlet property="contentView" destination="C4u-6g-tKh" id="cXA-Ye-Bzz"/>
                 <outlet property="contentViewTrailingConstraint" destination="D7t-xe-H14" id="VTR-YY-dyR"/>
                 <outlet property="highlightView" destination="xmo-R1-THM" id="o9M-FK-vdj"/>
