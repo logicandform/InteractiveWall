@@ -5,15 +5,33 @@ import SpriteKit
 import GameplayKit
 
 
+protocol NodeBoundingRenderComponentDelegate: class {
+    func changeInRadiusNotification(withRadius radius: CGFloat)
+}
+
 class NodeBoundingRenderComponent: GKComponent {
 
     var node: SKNode?
+    weak var delegate: NodeBoundingRenderComponentDelegate?
 
+    /// the entities that this bounding node should calculate the maxRadius with
     var contactEntities: [RecordEntity]?
+
+    /// the previous level's node bounding entity. Use its maxRadius to scale its own bounding level node to the appropriate size
     var previousNodeBoundingEntity: NodeBoundingEntity?
 
-    var needsUpdateFromLowerLevel = false
+    /// the maximum distance between the center of screen and the contactEntities for this bounding node
     var maxRadius: CGFloat = 0.0
+
+    /// to tell whether or not the next bounding node should update its radius
+    var shouldScaleNode: Bool = false
+
+
+    private var previousCalculatedDistanceToFurthestEntity: CGFloat = 0.0
+
+    private struct Constants {
+        static let offset: CGFloat = NodeConfiguration.Record.physicsBodyRadius + 15.0
+    }
 
 
     // MARK: Initializer
@@ -40,77 +58,59 @@ class NodeBoundingRenderComponent: GKComponent {
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
 
-        // find the max distance between the center and the contactEntities (only considering the entities that hasCollidedWithBoundingNode)
-        // store the max distance to a variable
-        // update its own bounding node size depending on the previous contactBoundingEntityNode
-
-
-
-
-
-
-
-        // check the distance between the center root seek node and the contactEntities, and then scale the contactEntitiesBoundingEntity appropriately
-        // when scaling the contactEntitiesBoundingEntity, also need to scale all of its descendant's contactEntitiesBoundingEntity (recursive)
-
-        guard !needsUpdateFromLowerLevel else {
-            // scale the size of the boundingEntity by lower level factor, then set the needsUpdateFromLowerLevel flag to false
-            return
-        }
-
         guard let contactEntities = contactEntities else {
             return
         }
 
-        var calculatedRadius: CGFloat = 0.0
 
-        for case let contactEntity in contactEntities where contactEntity.hasCollidedWithBoundingNode {
-            let radius = NodeBoundingManager.instance.distance(to: contactEntity)
-            if radius > calculatedRadius {
-                calculatedRadius = radius
-            }
+        if let previousLevelNodeBoundingEntity = previousNodeBoundingEntity, let currentNode = node, previousLevelNodeBoundingEntity.nodeBoundingRenderComponent.shouldScaleNode {
+
+            let previousLevelBoundingNodeMaxRadius = previousLevelNodeBoundingEntity.nodeBoundingRenderComponent.maxRadius + 40
+
+            let currentNodeRadiusWidth = currentNode.frame.width / 2
+            let currentNodeRadiusHeight = currentNode.frame.height / 2
+            let currentRadius = currentNodeRadiusWidth > currentNodeRadiusHeight ? currentNodeRadiusWidth : currentNodeRadiusHeight
+
+            maxRadius = previousLevelBoundingNodeMaxRadius
+            shouldScaleNode = true
+
+//            let scale = previousLevelBoundingNodeMaxRadius / currentRadius
+//            let scaleAction = SKAction.scale(by: scale, duration: 0)
+//            currentNode.run(scaleAction)
+
+            let newPhysicsBody = SKPhysicsBody(circleOfRadius: previousLevelBoundingNodeMaxRadius)
+            newPhysicsBody.categoryBitMask = currentNode.physicsBody!.categoryBitMask
+            newPhysicsBody.contactTestBitMask = currentNode.physicsBody!.contactTestBitMask
+            newPhysicsBody.collisionBitMask = currentNode.physicsBody!.collisionBitMask
+            newPhysicsBody.isDynamic = false
+            newPhysicsBody.restitution = 0
+            newPhysicsBody.friction = 0
+
+            currentNode.physicsBody = nil
+            currentNode.physicsBody = newPhysicsBody
+
         }
 
-        // only perform scale if the radius that you calculate is greater than maxRadius, and update maxRadius to the new max
-        if calculatedRadius > maxRadius {
-            maxRadius = calculatedRadius
 
-            if let boundingEntity = previousNodeBoundingEntity, let boundingEntityNode = boundingEntity.nodeBoundingRenderComponent.node {
-                let currentRadiusSize = boundingEntityNode.calculateAccumulatedFrame().height / 2
-                let scale = (calculatedRadius / currentRadiusSize) * (NodeConfiguration.Record.physicsBodyRadius * 2)
+        for contactEntity in contactEntities where contactEntity.hasCollidedWithBoundingNode {
+            let calculatedRadius = NodeBoundingManager.instance.distance(to: contactEntity) + 15.0 // use minimum radius to the edge of the contactEntity
 
-                let scaleAction = SKAction.scale(by: scale, duration: 0.5)
-                boundingEntityNode.run(scaleAction)
+            let difference = calculatedRadius - previousCalculatedDistanceToFurthestEntity
+            let absoluteDifference = difference.magnitude
 
-                // also need to scale the higher levels (update needsUpdateFromLowerLevel flag for the higher levels)
-
-
-
-            }
-
-
-
+            // keep track of the absolute value difference between the currentMax and the new calculatedMax. If difference is great enough, then "notify"
+//            if absoluteDifference >= 30.0 {
+                maxRadius = calculatedRadius
+                previousCalculatedDistanceToFurthestEntity = calculatedRadius
+                shouldScaleNode = true
+//            } else {
+//                shouldScaleNode = false
+//            }
         }
 
-        // could have a flag that turns true only when the scaling has finished for this update. This is so that scale calculations don't happen every single frame since we are doing this inside the update(deltaTime:) method
 
 
-        // later we can do a time interval check to update the maxRadius property by going through all contacted entities and finding the maximum
+
 
     }
-
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-

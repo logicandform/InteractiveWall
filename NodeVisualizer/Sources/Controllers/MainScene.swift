@@ -44,8 +44,8 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         let deltaTime = currentTime - lastUpdateTimeInterval
         lastUpdateTimeInterval = currentTime
 
-        NodeBoundingManager.instance.update(deltaTime)
         EntityManager.instance.update(deltaTime)
+        NodeBoundingManager.instance.update(deltaTime)
 
         // keep the nodes facing 0 degrees (i.e. no rotation when affected by physics simulation)
         for case let node as RecordNode in children {
@@ -57,8 +57,6 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     // MARK: SKPhysicsContactDelegate
 
     func didBegin(_ contact: SKPhysicsContact) {
-        // check contact between the entities and their respective level bounding node
-        
         if contact.bodyA.node?.name == "boundingNode",
             let contactEntity = contact.bodyB.node?.entity as? RecordEntity,
             !contactEntity.hasCollidedWithBoundingNode {
@@ -70,20 +68,6 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
             contact.bodyB.node?.name == "boundingNode" {
             contactEntity.hasCollidedWithBoundingNode = true
         }
-
-        // check contact between the entities that are in the same level as each other
-//        if let contactEntityA = contact.bodyA.node?.entity as? RecordEntity, let contactEntityB = contact.bodyB.node?.entity as? RecordEntity {
-//            if contactEntityA.hasCollidedWithBoundingNode && !contactEntityB.hasCollidedWithBoundingNode {
-//                contactEntityB.hasCollidedWithBoundingNode = true
-//            } else if contactEntityB.hasCollidedWithBoundingNode && !contactEntityA.hasCollidedWithBoundingNode {
-//                contactEntityA.hasCollidedWithBoundingNode = true
-//            }
-//        }
-
-    }
-
-    func didEnd(_ contact: SKPhysicsContact) {
-
     }
 
 
