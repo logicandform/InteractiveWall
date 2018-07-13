@@ -5,8 +5,9 @@ import Cocoa
 
 class TimelineMonthLayout: NSCollectionViewFlowLayout {
 
+    let type: TimelineType = .month
+
     private struct Constants {
-        static let monthWidth = 1920
         static let cellSize = CGSize(width: 240, height: 60)
         static let headerHeight: CGFloat = 20
     }
@@ -30,7 +31,7 @@ class TimelineMonthLayout: NSCollectionViewFlowLayout {
 
         let totalYears = source.lastYear - source.firstYear + 1
         let totalMonths = totalYears * 12
-        let width = CGFloat(totalMonths * Constants.monthWidth)
+        let width = CGFloat(totalMonths * type.sectionWidth)
         return CGSize(width: width, height: itemSize.height)
     }
 
@@ -40,10 +41,10 @@ class TimelineMonthLayout: NSCollectionViewFlowLayout {
         }
 
         var layoutAttributes = [NSCollectionViewLayoutAttributes]()
-        let yearWidth = Constants.monthWidth * 12
+        let yearWidth = type.sectionWidth * 12
         var year = source.firstYear + Int(rect.minX) / yearWidth
-        let minMonth = Int(rect.minX) / Constants.monthWidth % Month.allValues.count
-        let maxMonth = Int(rect.maxX) / Constants.monthWidth % Month.allValues.count
+        let minMonth = Int(rect.minX) / type.sectionWidth % Month.allValues.count
+        let maxMonth = Int(rect.maxX) / type.sectionWidth % Month.allValues.count
 
         let yearMax = maxMonth < minMonth ? 11 : maxMonth
         for monthIndex in (minMonth...yearMax) {
@@ -106,9 +107,9 @@ class TimelineMonthLayout: NSCollectionViewFlowLayout {
         let selected = source.selectedIndexes.contains(item)
         let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
         let y = Constants.cellSize.height * CGFloat(heightIndex) + Constants.headerHeight
-        let yearWidth = Constants.monthWidth * 12
+        let yearWidth = type.sectionWidth * 12
         let yearStart = CGFloat((event.start - source.firstYear) * yearWidth)
-        let x = yearStart + CGFloat(event.startMonth.rawValue * Constants.monthWidth)
+        let x = yearStart + CGFloat(event.startMonth.rawValue * type.sectionWidth)
         let width = selected ? Constants.cellSize.width * 2 : Constants.cellSize.width
         attributes.frame = CGRect(origin: CGPoint(x: x, y: y), size: CGSize(width: width, height: Constants.cellSize.height))
         attributes.zIndex = selected ? event.start + source.lastYear : event.start
@@ -123,10 +124,10 @@ class TimelineMonthLayout: NSCollectionViewFlowLayout {
         let item = year - source.firstYear
         let indexPath = IndexPath(item: month.rawValue, section: 0)
         let attributes = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: TimelineHeaderView.supplementaryKind, with: indexPath)
-        let yearWidth = Constants.monthWidth * 12
+        let yearWidth = type.sectionWidth * 12
         let yearStart = CGFloat(item * yearWidth)
-        let x = yearStart + CGFloat(month.rawValue * Constants.monthWidth)
-        let size = CGSize(width: CGFloat(Constants.monthWidth), height: Constants.headerHeight)
+        let x = yearStart + CGFloat(month.rawValue * type.sectionWidth)
+        let size = CGSize(width: CGFloat(type.sectionWidth), height: Constants.headerHeight)
         attributes.frame = CGRect(origin: CGPoint(x: x, y: 0), size: size)
         return attributes
     }

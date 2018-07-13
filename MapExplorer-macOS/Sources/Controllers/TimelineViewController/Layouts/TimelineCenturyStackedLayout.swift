@@ -5,11 +5,12 @@ import Cocoa
 
 class TimelineCenturyStackedLayout: NSCollectionViewFlowLayout {
 
+    let type: TimelineType = .century
+
     private var attributesForEvent = [TimelineEvent: NSCollectionViewLayoutAttributes]()
     private var frameForEventInRow = [Int: CGRect]()
 
     private struct Constants {
-        static let yearWidth = 16
         static let cellSize = CGSize(width: 160, height: 24)
         static let headerHeight: CGFloat = 20
     }
@@ -53,8 +54,8 @@ class TimelineCenturyStackedLayout: NSCollectionViewFlowLayout {
         }
 
         var layoutAttributes = [NSCollectionViewLayoutAttributes]()
-        let minYear = source.firstYear + Int(rect.minX) / Constants.yearWidth
-        let maxYear = source.firstYear + Int(rect.maxX) / Constants.yearWidth
+        let minYear = source.firstYear + Int(rect.minX) / type.sectionWidth
+        let maxYear = source.firstYear + Int(rect.maxX) / type.sectionWidth
 
         for year in (minYear...maxYear) {
             // Append attributes for items
@@ -93,7 +94,7 @@ class TimelineCenturyStackedLayout: NSCollectionViewFlowLayout {
         let indexPath = IndexPath(item: item, section: 0)
         let selected = source.selectedIndexes.contains(item)
         let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
-        let x = CGFloat((event.start - source.firstYear) * Constants.yearWidth)
+        let x = CGFloat((event.start - source.firstYear) * type.sectionWidth)
         let row = rowFor(xPosition: x)
         let y = Constants.cellSize.height * CGFloat(row) + Constants.headerHeight
         let width = selected ? Constants.cellSize.width * 2 : Constants.cellSize.width
@@ -112,7 +113,7 @@ class TimelineCenturyStackedLayout: NSCollectionViewFlowLayout {
         let item = year - source.firstYear
         let indexPath = IndexPath(item: item, section: 0)
         let attributes = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: TimelineHeaderView.supplementaryKind, with: indexPath)
-        let x = CGFloat(item * Constants.yearWidth)
+        let x = CGFloat(item * type.sectionWidth)
         let size = CGSize(width: Constants.cellSize.width, height: Constants.headerHeight)
         attributes.frame = CGRect(origin: CGPoint(x: x, y: 0), size: size)
         return attributes

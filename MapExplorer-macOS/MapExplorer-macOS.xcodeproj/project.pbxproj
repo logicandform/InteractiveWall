@@ -241,11 +241,11 @@
 		220AE86220EDA21800F6E9AA /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
-				223B146020F0335E00506604 /* TimelineMultiYearLayout.swift */,
+				22309CC920F4007500C58961 /* TimelineMonthLayout.swift */,
 				22004FF720E1A03000B1E740 /* TimelineYearLayout.swift */,
 				220AE86320EDA22B00F6E9AA /* TimelineCenturyLayout.swift */,
 				220AE86520EE8EE300F6E9AA /* TimelineCenturyStackedLayout.swift */,
-				22309CC920F4007500C58961 /* TimelineMonthLayout.swift */,
+				223B146020F0335E00506604 /* TimelineMultiYearLayout.swift */,
 			);
 			path = Layouts;
 			sourceTree = "<group>";
