@@ -84,6 +84,7 @@
 		8F1A1CBB205B41AC00A59A84 /* FlippedMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1A1CBA205B41AC00A59A84 /* FlippedMapView.swift */; };
 		8F22945620773EA600731E78 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F22945520773EA600731E78 /* Math.swift */; };
 		8F64A1E720BEF88600F0D209 /* MapViewWithMiniMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F64A1E620BEF88600F0D209 /* MapViewWithMiniMap.swift */; };
+		A454A65B20F7F95200619730 /* TimelineDecadeLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A454A65A20F7F95200619730 /* TimelineDecadeLayout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -185,6 +186,7 @@
 		8F64A1E620BEF88600F0D209 /* MapViewWithMiniMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewWithMiniMap.swift; sourceTree = "<group>"; };
 		9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_MapExplorer_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E45B0B207D66FC5A3CD5BEA /* Pods-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
+		A454A65A20F7F95200619730 /* TimelineDecadeLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDecadeLayout.swift; sourceTree = "<group>"; };
 		D9FF0C65383B61E5A7A798B0 /* Pods-All-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-macOS.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-macOS/Pods-All-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -243,6 +245,7 @@
 			children = (
 				22309CC920F4007500C58961 /* TimelineMonthLayout.swift */,
 				22004FF720E1A03000B1E740 /* TimelineYearLayout.swift */,
+				A454A65A20F7F95200619730 /* TimelineDecadeLayout.swift */,
 				220AE86320EDA22B00F6E9AA /* TimelineCenturyLayout.swift */,
 				220AE86520EE8EE300F6E9AA /* TimelineCenturyStackedLayout.swift */,
 				223B146020F0335E00506604 /* TimelineMultiYearLayout.swift */,
@@ -697,6 +700,7 @@
 				2204621220472E3D0067D9FB /* MapHandler.swift in Sources */,
 				2222B13A20D85BD700ECCB5D /* ApplicationType.swift in Sources */,
 				22318DE0202B984F0092937C /* ResponseHandler.swift in Sources */,
+				A454A65B20F7F95200619730 /* TimelineDecadeLayout.swift in Sources */,
 				22290C3C2028FA35000E0573 /* NetworkConfiguration.swift in Sources */,
 				22290C2E2028FA1F000E0573 /* Style.swift in Sources */,
 				22FEF1D6202CFE8D001E9596 /* GestureDemoController.swift in Sources */,
