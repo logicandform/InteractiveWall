@@ -6,7 +6,7 @@ import Cocoa
 
 class TimelineDecadeLayout: NSCollectionViewFlowLayout {
 
-    let type = TimelineType.decade
+    let type: TimelineType = .decade
 
     private struct Constants {
         static let cellSize = CGSize(width: 192, height: 60)
