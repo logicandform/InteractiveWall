@@ -6,10 +6,11 @@ class TimelineItemView: NSCollectionViewItem {
     static let identifier = NSUserInterfaceItemIdentifier(rawValue: "TimelineItemView")
 
     @IBOutlet weak var contentView: NSView!
-    @IBOutlet weak var contentViewWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var contentViewTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var highlightView: NSView!
     @IBOutlet weak var highlightViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var backgroundView: NSView!
+    @IBOutlet weak var backgroundViewTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var titleTextField: NSTextField!
 
     var tintColor = style.selectedColor
@@ -22,7 +23,7 @@ class TimelineItemView: NSCollectionViewItem {
     private struct Constants {
         static let unselectedHighlightWidth: CGFloat = 5
         static let animationDuration = 0.3
-        static let textOffset: CGFloat = 10
+        static let textOffset: CGFloat = 4
     }
 
 
@@ -77,10 +78,13 @@ class TimelineItemView: NSCollectionViewItem {
             NSAnimationContext.current.duration = Constants.animationDuration / 2
             highlightViewWidthConstraint.animator().constant = view.frame.size.width
         }, completionHandler: { [weak self] in
-            self?.view.setFrameSize(size)
+            if let strongSelf = self {
+                strongSelf.contentViewTrailingConstraint.constant = size.width - strongSelf.view.frame.width
+                strongSelf.view.setFrameSize(size)
+            }
             NSAnimationContext.runAnimationGroup({ _ in
                 NSAnimationContext.current.duration = Constants.animationDuration / 2
-                self?.contentViewWidthConstraint.animator().constant = size.width
+                self?.contentViewTrailingConstraint.animator().constant = Constants.textOffset
                 self?.highlightViewWidthConstraint.animator().constant = size.width
             })
         })
@@ -89,9 +93,10 @@ class TimelineItemView: NSCollectionViewItem {
     private func compress(to size: CGSize) {
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration / 2
-            contentViewWidthConstraint.animator().constant = size.width - Constants.textOffset
+            contentViewTrailingConstraint.animator().constant = size.width
             highlightViewWidthConstraint.animator().constant = size.width
         }, completionHandler: { [weak self] in
+            self?.contentViewTrailingConstraint.constant = Constants.textOffset
             self?.view.frame.size = size
             NSAnimationContext.runAnimationGroup({ _ in
                 NSAnimationContext.current.duration = Constants.animationDuration / 2
