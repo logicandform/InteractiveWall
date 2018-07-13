@@ -603,7 +603,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         }
         monthCollectionView.scrollToVisible(monthRect)
 
-        let monthOffset = (CGFloat(month) / 12 - 0.5) * Constants.controlItemWidth
+        let monthOffset = (CGFloat(month) / 12) * Constants.controlItemWidth
         let yearMaxX = CGFloat(years.count) * Constants.controlItemWidth
         let yearIndex = years.index(of: year)!
         let yearX = CGFloat(yearIndex) * Constants.controlItemWidth
@@ -614,7 +614,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         }
         yearCollectionView.scrollToVisible(yearRect)
 
-        let yearOffset = (CGFloat(year.array.last!) / 10 - 0.5) * Constants.controlItemWidth
+        let yearOffset = (CGFloat(year.array.last!) / 10) * Constants.controlItemWidth
         let decade = decadeFor(year: year)
         let decadeMaxX = CGFloat(decades.count) * Constants.controlItemWidth
         let decadeIndex = decades.index(of: decade)!
@@ -635,7 +635,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         let yearIndex = years.index(of: year)!
         let yearX = CGFloat(yearIndex) * CGFloat(timelineType.sectionWidth)
         var timelineRect = timelineCollectionView.visibleRect
-        timelineRect.origin.x = yearX + monthOffset
+        timelineRect.origin.x = yearX - timelineRect.width / 2 + monthOffset
         if timelineRect.origin.x < 0 {
             timelineRect.origin.x = yearMaxX + timelineRect.origin.x
         }
