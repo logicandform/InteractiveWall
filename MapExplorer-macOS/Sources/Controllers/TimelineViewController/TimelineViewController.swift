@@ -287,6 +287,10 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
             add(days: days * 12)
         case decadeCollectionView:
             add(days: days * 120)
+//        case timelineCollectionView where timelineCollectionView.collectionViewLayout as? TimelineMonthLayout != nil:
+//            days = -(offset.dx / CGFloat(timelineType.sectionWidth))
+//            add(days: days)
+//            updateControls()
         case timelineCollectionView:
             days = -(offset.dx / CGFloat(timelineType.sectionWidth))
             add(days: days * 12)
