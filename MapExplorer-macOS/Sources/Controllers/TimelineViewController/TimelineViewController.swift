@@ -39,6 +39,8 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     @IBOutlet weak var timelineIndicatorView: NSView!
 
     var gestureManager: GestureManager!
+    var currentDate = Constants.initialDate
+    var timelineType: TimelineType = .decade
     private var timelineHandler: TimelineHandler?
     private let source = TimelineDataSource()
     private var decades = [Int]()
@@ -47,8 +49,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     private var selectedYear: Int?
     private var selectedMonth: Month?
     private var selectedViewForType = [TimelineType: TimelineControlItemView]()
-    private var currentDate = Constants.initialDate
-    private var timelineType: TimelineType = .decade
 
     private struct Constants {
         static let timelineCellWidth: CGFloat = 20
@@ -93,6 +93,13 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
             NSAnimationContext.current.duration = Constants.animationDuration
             timelineBackgroundView.animator().alphaValue = out ? 0 : 1
         })
+    }
+
+    func update(date: (day: CGFloat, month: Int, year: Int)) {
+        currentDate.day = date.day
+        currentDate.month = date.month
+        currentDate.year = date.year
+        updateControls()
     }
 
 
@@ -590,7 +597,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     // MARK: Helpers
 
-    private func setDate(day: CGFloat, month: Int, year: Int) {
+    private func setDate(day: CGFloat, month: Int, year: Int, receivedExternally: Bool = false) {
         let centerInset = Constants.controlItemWidth * 3
 
         let dayOffset = (day - 0.5) * Constants.controlItemWidth
@@ -626,10 +633,10 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         }
         decadeCollectionView.scrollToVisible(decadeRect)
 
-        setTimelineDate(day: day, month: month, year: year)
+        setTimelineDate(day: day, month: month, year: year, receivedExternally: receivedExternally)
     }
 
-    private func setTimelineDate(day: CGFloat, month: Int, year: Int) {
+    private func setTimelineDate(day: CGFloat, month: Int, year: Int, receivedExternally: Bool = false) {
         let monthOffset = ((CGFloat(month) + day - 0.5) / 12) * CGFloat(timelineType.sectionWidth)
         let yearMaxX = CGFloat(years.count) * CGFloat(timelineType.sectionWidth)
         let yearIndex = years.index(of: year)!
@@ -641,7 +648,9 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         }
 
         timelineCollectionView.scrollToVisible(timelineRect)
-        timelineHandler?.send(timelineRect)
+        if !receivedExternally {
+            timelineHandler?.send(date: (day, month, year))
+        }
     }
 
     private func decadeFor(year: Int) -> Int {

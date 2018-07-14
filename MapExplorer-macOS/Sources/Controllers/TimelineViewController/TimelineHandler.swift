@@ -24,7 +24,9 @@ final class TimelineHandler {
 
     private struct Keys {
         static let id = "id"
-        static let rect = "rect"
+        static let day = "day"
+        static let month = "month"
+        static let year = "year"
         static let type = "type"
         static let group = "group"
         static let animated = "amimated"
@@ -46,27 +48,30 @@ final class TimelineHandler {
     // MARK: API
 
     /// Determines how to respond to a received rect from another timeline with the type of gesture that triggered the event.
-    func handle(_ rect: CGRect, fromID: Int, fromGroup: Int, animated: Bool) {
+//    func handle(_ rect: CGRect, fromID: Int, fromGroup: Int, animated: Bool) {
+    func handle(date: (day: CGFloat, month: Int, year: Int), timelineController: TimelineViewController?, fromID: Int, fromGroup: Int, animated: Bool) {
         guard let currentGroup = group, currentGroup == fromGroup, currentGroup == fromID else {
             return
         }
 
         // Filter position updates; state will be nil receiving when receiving from momentum, else id must match pair
-        if pair == nil || pair! == fromID {
+        if pair == nil || pair! == fromID, let timelineController = timelineController {
             activityState = .active
-            let adjustedRect = adjust(rect, toApp: appID, fromApp: fromID)
-            timeline.scrollToVisible(adjustedRect)
+            adjust(date: date, controller: timelineController, toApp: appID, fromApp: fromID)
+//            let adjustedRect = adjust(rect, toApp: appID, fromApp: fromID)
+//            timeline.scrollToVisible(adjustedRect)
         }
     }
 
-    func send(_ rect: CGRect, for gestureState: GestureState = .recognized, animated: Bool = false, forced: Bool = false) {
+//    func send(_ rect: CGRect, for gestureState: GestureState = .recognized, animated: Bool = false, forced: Bool = false) {
+    func send(date: (day: CGFloat, month: Int, year: Int), for gestureState: GestureState = .recognized, animated: Bool = false, forced: Bool = false) {
         // If sending from momentum but another app has interrupted, ignore
         if gestureState == .momentum && pair != nil && !forced {
             return
         }
 
         let currentGroup = group ?? appID
-        let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.rect: rect.toJSON(), Keys.gesture: gestureState.rawValue, Keys.animated: animated]
+        let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.day: date.day, Keys.month: date.month, Keys.year: date.year, Keys.gesture: gestureState.rawValue, Keys.animated: animated]
         DistributedNotificationCenter.default().postNotificationName(TimelineNotification.rect.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
@@ -92,11 +97,20 @@ final class TimelineHandler {
 
     // MARK: Helpers
 
-    private func adjust(_ rect: CGRect, toApp app: Int, fromApp pair: Int?) -> CGRect {
+//    private func adjust(_ rect: CGRect, toApp app: Int, fromApp pair: Int?) -> CGRect {
+    private func adjust(date: (day: CGFloat, month: Int, year: Int), controller: TimelineViewController, toApp app: Int, fromApp pair: Int?) {
         let pairedID = pair ?? app
-        let x = rect.origin.x + CGFloat(appID - pairedID) * rect.size.width
-
-        return CGRect(origin: CGPoint(x: x, y: rect.origin.y), size: rect.size)
+//        let x = rect.origin.x + CGFloat(appID - pairedID) * rect.size.width
+        switch controller.timelineType {
+        case .month:
+            controller.update(date: (day: date.day, month: date.month + (appID - pairedID) * controller.timelineType.sectionWidth, year: date.year))
+        case .year:
+            controller.update(date: (day: date.day, month: date.month, year: date.year + (appID - pairedID) * controller.timelineType.sectionWidth))
+        case .decade:
+            controller.update(date: (day: date.day, month: date.month, year: date.year + (appID - pairedID) * controller.timelineType.sectionWidth * 10))
+        case .century:
+            return
+        }
     }
 
     /// Resets the pairedDeviceID after a timeout period
