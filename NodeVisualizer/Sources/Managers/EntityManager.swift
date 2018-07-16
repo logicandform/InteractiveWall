@@ -24,11 +24,14 @@ final class EntityManager {
     /// 2D array of related entities that belong to a particular level
     private(set) var entitiesInLevel = [[RecordEntity]]()
 
+    /// Set of all entities in all levels
+    private(set) var allLevelEntities = Set<RecordEntity>()
+
+    /// Set of all entities that are currently in a formed state
+    private(set) var allEntitiesInFormedState = Set<RecordEntity>()
+
     /// Local copy of the entities that are associated with the current level
     private var entitiesInCurrentLevel = [RecordEntity]()
-
-    /// Set of all entities in all levels
-    private var allLevelEntities = Set<RecordEntity>()
 
     private struct Constants {
         static let maxLevel = 5
@@ -81,6 +84,7 @@ final class EntityManager {
 
         for entity in entities {
             allLevelEntities.insert(entity)
+            allEntitiesInFormedState.insert(entity)
 
             // add relatedEntities to the appropriate level
             let relatedEntities = getRelatedEntities(for: entity)
@@ -97,11 +101,16 @@ final class EntityManager {
         associateRelatedEntities(for: entitiesInCurrentLevel, toLevel: next)
     }
 
-    func reset() {
-//        for entity in allLevelEntities {
-//            entity.reset()
-//        }
+    func resetAll() {
+        for entity in allLevelEntities {
+            entity.reset()
+        }
 
+        reset()
+        allEntitiesInFormedState.removeAll()
+    }
+
+    func reset() {
         entitiesInLevel.removeAll()
         allLevelEntities.removeAll()
     }

@@ -10,17 +10,8 @@ class NodeBoundingRenderComponent: GKComponent {
     /// The bounding entity's node
     var node: SKNode?
 
-    /// The entities that is associated with this component's bounding node. maxRadius is determined by calculating max distance between root and these entities
-//    var contactEntities: [RecordEntity]?
-
-    /// The previous level's node bounding entity. Use its maxRadius to scale its own bounding node to the appropriate size
-//    var previousNodeBoundingEntity: NodeBoundingEntity?
-
     /// The maximum distance between the root and the contactEntities for this bounding entity
     var maxRadius: CGFloat = 0.0
-
-    /// Determines whether or not the next bounding node should update its radius
-    var shouldScaleNode: Bool = true
 
     /// The node bounding level that the component is responsible for
     var level: Int!
@@ -92,7 +83,7 @@ class NodeBoundingRenderComponent: GKComponent {
         let contactEntities = EntityManager.instance.entitiesInLevel[level]
         var distance: CGFloat = 0.0
 
-        // iterate through its contactEntities if it hasCollidedWithBoundingNode, and determine the max distance from the root to the contactEntity
+        // iterate through its contactEntities to see if it hasCollidedWithBoundingNode, and determine the max distance from the root to the contactEntity
         for contactEntity in contactEntities where contactEntity.hasCollidedWithBoundingNode {
             let calculatedRadius = NodeBoundingManager.instance.distance(to: contactEntity) + Constants.minimumOffset
             if calculatedRadius > distance {

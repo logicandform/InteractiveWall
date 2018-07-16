@@ -30,12 +30,6 @@ class WanderState: GKState {
 
         entity.renderComponent.recordNode.removeAllActions()
         entity.movementComponent.entityToSeek = nil
-
-        let boundingNodes = entity.renderComponent.boundingNodes
-        for node in boundingNodes {
-            node.removeFromParent()
-        }
-        entity.renderComponent.boundingNodes.removeAll()
     }
 
     override func update(deltaTime seconds: TimeInterval) {

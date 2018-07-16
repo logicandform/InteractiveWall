@@ -8,7 +8,6 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
     var records: [TestingEnvironment.Record]!
     var gestureManager: GestureManager!
-    var currentEntityInFocus: RecordEntity?
 
     private var lastUpdateTimeInterval: TimeInterval = 0
 
@@ -57,6 +56,8 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     // MARK: SKPhysicsContactDelegate
 
     func didBegin(_ contact: SKPhysicsContact) {
+        // whenever an entity comes into contact with a bounding node, set the contacted entity's hasCollidedWithBoundingNode to true
+
         if contact.bodyA.node?.name == "boundingNode",
             let contactEntity = contact.bodyB.node?.entity as? RecordEntity,
             !contactEntity.hasCollidedWithBoundingNode {
@@ -128,6 +129,8 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
             return
         }
 
+        print("ID: \(recordNode.record.id)")
+
         switch tap.state {
         case .ended:
             relatedNodes(for: recordNode)
@@ -159,20 +162,44 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     // MARK: Helpers
 
     private func relatedNodes(for node: RecordNode) {
-        if let entity = node.entity as? RecordEntity {
-            
+        guard let entity = node.entity as? RecordEntity else {
+            return
+        }
+
+        switch entity.intelligenceComponent.stateMachine.currentState {
+        case is TappedState, is SeekState:
+            // soft reset so that we can retrieve the newly tapped entity's descendant entities
             EntityManager.instance.reset()
 
-            // make level connections for all the tapped entity's descendants
-            EntityManager.instance.associateRelatedEntities(for: [entity])
+            // create entity level relationships and their appropriate bounding nodes
+            createLevelConnections(for: entity)
 
-            // create bounding node entities for each level
-//            NodeBoundingManager.instance.createNodeBoundingEntities()
-            NodeBoundingManager.instance.testNewStructure()
+            // find the difference between entitiesInFormedState and allLevelEntities, and reset those entities to a temporary stasis state
+            let difference = EntityManager.instance.allEntitiesInFormedState.symmetricDifference(EntityManager.instance.allLevelEntities)
+            for entity in difference {
+                entity.physicsComponent.physicsBody.isDynamic = true
+                entity.physicsComponent.physicsBody.fieldBitMask = 0x1 << 0
+                entity.movementComponent.entityToSeek = nil
+            }
 
-            // enter the TappedState for the tapped entity node
-            entity.intelligenceComponent.stateMachine.enter(TappedState.self)
+        case is WanderState:
+            EntityManager.instance.resetAll()
+            NodeBoundingManager.instance.reset()
+            createLevelConnections(for: entity)
+        default:
+            return
         }
+    }
+
+    private func createLevelConnections(for entity: RecordEntity) {
+        // make level connections for all the tapped entity's descendants
+        EntityManager.instance.associateRelatedEntities(for: [entity])
+
+        // create bounding node entities for each level
+        NodeBoundingManager.instance.createNodeBoundingEntities()
+
+        // enter the TappedState for the tapped entity node
+        entity.intelligenceComponent.stateMachine.enter(TappedState.self)
     }
 
     private func getRandomPosition() -> CGPoint {

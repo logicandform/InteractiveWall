@@ -41,7 +41,6 @@ class TappedState: GKState {
                     entity.physicsComponent.physicsBody.collisionBitMask = boundingNode.physicsBody!.collisionBitMask
                     entity.physicsComponent.physicsBody.contactTestBitMask = boundingNode.physicsBody!.contactTestBitMask
 
-//                    entity.movementComponent.nodeToSeek = NodeBoundingManager.instance.nodeBoundingEntityForLevel[0]?.nodeBoundingRenderComponent.node
                     entity.movementComponent.entityToSeek = self.entity
                     entity.intelligenceComponent.stateMachine.enter(SeekState.self)
                 }
@@ -54,19 +53,10 @@ class TappedState: GKState {
     }
 
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
-        switch stateClass {
-        case is SeekState.Type, is WanderState.Type:
-            return true
-        default:
-            return false
-        }
+        return true
     }
 
     override func willExit(to nextState: GKState) {
         super.willExit(to: nextState)
     }
-
-
-    // MARK: Helpers
-
 }

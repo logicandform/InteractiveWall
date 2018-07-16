@@ -14,8 +14,6 @@ class RenderComponent: GKComponent {
 
     private(set) var recordNode: RecordNode
 
-    var boundingNodes = Set<SKNode>()
-
 
     // MARK: Initializer
 

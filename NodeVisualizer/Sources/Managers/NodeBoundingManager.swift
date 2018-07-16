@@ -8,6 +8,7 @@ import GameplayKit
 // Class that manages the bounding diameter level nodes for the scene
 final class NodeBoundingManager {
 
+    /// Reference to the scene where we should add the bounding nodes to
     var scene: MainScene!
 
     /// Dictionary of the bounding invisible node entity for a particular level
@@ -29,10 +30,10 @@ final class NodeBoundingManager {
         static let boundingNodeRadiusOffset: CGFloat = 5.0
     }
 
+
+    // MARK: Singleton instance
+
     static let instance = NodeBoundingManager()
-
-
-    // Use singleton instance
     private init() { }
 
 
@@ -45,34 +46,18 @@ final class NodeBoundingManager {
     }
 
     func createNodeBoundingEntities() {
-        let entitiesInLevel = EntityManager.instance.entitiesInLevel
-        createBoundingEntities(forLevels: entitiesInLevel.count)
-
-        for (level, _) in entitiesInLevel.enumerated() {
-            guard let nodeBoundingEntity = nodeBoundingEntityForLevel[level] else { continue }
-            nodeBoundingEntity.nodeBoundingRenderComponent.level = level
-        }
-    }
-
-    func testNewStructure() {
         let entitiesInLevelCount = EntityManager.instance.entitiesInLevel.count
         let nodeBoundingEntityForLevelCount = nodeBoundingEntityForLevel.count
 
         if entitiesInLevelCount > nodeBoundingEntityForLevelCount {
-            createBoundingEntitiesTest(forLevels: entitiesInLevelCount)
-
-            for (level, _) in EntityManager.instance.entitiesInLevel.enumerated() {
-                guard let nodeBoundingEntity = nodeBoundingEntityForLevel[level] else { continue }
-                nodeBoundingEntity.nodeBoundingRenderComponent.level = level
-            }
-
+            createBoundingEntities(forLevels: entitiesInLevelCount)
         } else if entitiesInLevelCount < nodeBoundingEntityForLevelCount {
             removeEntities(ofLevels: entitiesInLevelCount)
         }
     }
 
     func reset() {
-        // reset necessary variables when tapping on a completely new unrelated node
+        removeEntities(ofLevels: 0)
     }
 
     func distance(to entity: RecordEntity) -> CGFloat {
@@ -87,7 +72,7 @@ final class NodeBoundingManager {
 
     // MARK: Helpers
 
-    private func createBoundingEntitiesTest(forLevels levels: Int) {
+    private func createBoundingEntities(forLevels levels: Int) {
         var level = nodeBoundingEntityForLevel.count
 
         var radius: CGFloat
@@ -104,55 +89,8 @@ final class NodeBoundingManager {
             let nodeBoundingEntity = NodeBoundingEntity()
             nodeBoundingEntity.nodeBoundingRenderComponent.node = boundingNode
             nodeBoundingEntity.nodeBoundingRenderComponent.maxRadius = radius
+            nodeBoundingEntity.nodeBoundingRenderComponent.level = level
             add(nodeBoundingEntity, toLevel: level)
-
-            level += 1
-        }
-    }
-
-    private func add(_ entity: NodeBoundingEntity, toLevel level: Int) {
-        nodeBoundingEntityForLevel[level] = entity
-
-        for componentSystem in componentSystems {
-            componentSystem.addComponent(foundIn: entity)
-        }
-    }
-
-    private func removeEntities(ofLevels levels: Int) {
-        var level = nodeBoundingEntityForLevel.count - 1
-
-        while level >= levels {
-            if let entityToRemove = nodeBoundingEntityForLevel[level], let nodeToRemove = entityToRemove.nodeBoundingRenderComponent.node {
-                nodeToRemove.removeFromParent()
-                nodeBoundingEntityForLevel.removeValue(forKey: level)
-
-                for componentSystem in componentSystems {
-                    componentSystem.removeComponent(foundIn: entityToRemove)
-                }
-            }
-
-            level -= 1
-        }
-    }
-
-
-
-    private func createBoundingEntities(forLevels levels: Int) {
-        var level = 0
-        let radius = NodeConfiguration.Record.physicsBodyRadius + Constants.boundingNodeRadiusOffset
-
-        while level < levels {
-            let boundingNode = createBoundingNode(ofRadius: radius, level: level)
-
-            // create node bounding entity
-            let nodeBoundingEntity = NodeBoundingEntity()
-            nodeBoundingEntity.nodeBoundingRenderComponent.node = boundingNode
-            nodeBoundingEntity.nodeBoundingRenderComponent.maxRadius = radius
-            nodeBoundingEntityForLevel[level] = nodeBoundingEntity
-
-            for componentSystem in componentSystems {
-                componentSystem.addComponent(foundIn: nodeBoundingEntity)
-            }
 
             level += 1
         }
@@ -178,6 +116,31 @@ final class NodeBoundingManager {
 
         scene.addChild(boundingNode)
         return boundingNode
+    }
+
+    private func add(_ entity: NodeBoundingEntity, toLevel level: Int) {
+        nodeBoundingEntityForLevel[level] = entity
+
+        for componentSystem in componentSystems {
+            componentSystem.addComponent(foundIn: entity)
+        }
+    }
+
+    private func removeEntities(ofLevels levels: Int) {
+        var level = nodeBoundingEntityForLevel.count - 1
+
+        while level >= levels {
+            if let entityToRemove = nodeBoundingEntityForLevel[level], let nodeToRemove = entityToRemove.nodeBoundingRenderComponent.node {
+                nodeToRemove.removeFromParent()
+                nodeBoundingEntityForLevel.removeValue(forKey: level)
+
+                for componentSystem in componentSystems {
+                    componentSystem.removeComponent(foundIn: entityToRemove)
+                }
+            }
+
+            level -= 1
+        }
     }
 
     private func boundingNodeBitMasks(forLevel level: Int) -> BoundingNodeBitMasks {

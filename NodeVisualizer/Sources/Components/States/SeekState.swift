@@ -31,12 +31,7 @@ class SeekState: GKState {
     }
 
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
-        switch stateClass {
-        case is TappedState.Type, is WanderState.Type:
-            return true
-        default:
-            return false
-        }
+        return true
     }
 
     override func willExit(to nextState: GKState) {
