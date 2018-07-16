@@ -615,7 +615,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
         let monthOffset = (CGFloat(month) / 12) * Constants.controlItemWidth
         let yearMaxX = CGFloat(years.count) * Constants.controlItemWidth
-        let yearIndex = years.index(of: year) != nil ? years.index(of: year) : year < source.firstYear ? 0 : years.count - 1
+        let yearIndex = years.index(of: year) != nil ? years.index(of: year) : year < source.firstYear ? -1 : years.count - 1
         let yearX = CGFloat(yearIndex!) * Constants.controlItemWidth
         var yearRect = yearCollectionView.visibleRect
         yearRect.origin.x = yearX - centerInset + monthOffset
@@ -627,7 +627,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         let yearOffset = (CGFloat(year.array.last!) / 10) * Constants.controlItemWidth
         let decade = decadeFor(year: year)
         let decadeMaxX = CGFloat(decades.count) * Constants.controlItemWidth
-        let decadeIndex = decades.index(of: decade) != nil ? decades.index(of: decade) : decade < Constants.firstDecade ? 0 : decades.count - 1
+        let decadeIndex = decades.index(of: decade) != nil ? decades.index(of: decade) : decade < Constants.firstDecade ? -1 : decades.count - 1
         let decadeX = CGFloat(decadeIndex!) * Constants.controlItemWidth
         var decadeRect = decadeCollectionView.visibleRect
         decadeRect.origin.x = decadeX - centerInset + yearOffset
@@ -641,7 +641,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     private func setTimelineDate(day: CGFloat, month: Int, year: Int, receivedExternally: Bool = false) {
         let monthOffset = ((CGFloat(month) + day - 0.5) / 12) * CGFloat(timelineType.sectionWidth)
-        let yearIndex = years.index(of: year) != nil ? years.index(of: year) : year < source.firstYear ? 0 : years.count - 1
+        let yearIndex = years.index(of: year) != nil ? years.index(of: year) : year < source.firstYear ? -1 : years.count - 1
         let yearX = CGFloat(yearIndex!) * CGFloat(timelineType.sectionWidth)
         var timelineRect = timelineCollectionView.visibleRect
         let timelineNewOrigin = yearX - timelineRect.width / 2 + monthOffset
