@@ -94,11 +94,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     }
 
     func update(date: (day: CGFloat, month: Int, year: Int), receivedExternally: Bool = true) {
-        if date.day < 0 {
-
-        } else if date.day > 1 {
-
-        }
         currentDate.day = date.day
         currentDate.month = date.month
         currentDate.year = date.year

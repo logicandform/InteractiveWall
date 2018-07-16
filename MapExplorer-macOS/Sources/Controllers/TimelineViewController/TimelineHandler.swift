@@ -48,7 +48,6 @@ final class TimelineHandler {
     // MARK: API
 
     /// Determines how to respond to a received rect from another timeline with the type of gesture that triggered the event.
-//    func handle(_ rect: CGRect, fromID: Int, fromGroup: Int, animated: Bool) {
     func handle(date: (day: CGFloat, month: Int, year: Int), timelineController: TimelineViewController?, fromID: Int, fromGroup: Int, animated: Bool) {
         guard let currentGroup = group, currentGroup == fromGroup, currentGroup == fromID else {
             return
@@ -61,7 +60,6 @@ final class TimelineHandler {
         }
     }
 
-//    func send(_ rect: CGRect, for gestureState: GestureState = .recognized, animated: Bool = false, forced: Bool = false) {
     func send(date: (day: CGFloat, month: Int, year: Int), for gestureState: GestureState = .recognized, animated: Bool = false, forced: Bool = false) {
         // If sending from momentum but another app has interrupted, ignore
         if gestureState == .momentum && pair != nil && !forced {
