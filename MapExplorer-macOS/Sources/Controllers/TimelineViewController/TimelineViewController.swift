@@ -320,20 +320,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         }
     }
 
-    private func correct(day: CGFloat) {
-        let truncatedDay = Int(day)
-        correct(month: currentDate.month + truncatedDay)
-        if day < 0 {
-//            correct(month: currentDate.month - abs(truncatedDay))
-            let newDay = abs(day.truncatingRemainder(dividingBy: CGFloat(truncatedDay)))
-            currentDate.day = newDay
-        } else if day > 1 {
-//            correct(month: currentDate.month + truncatedDay)
-            let newDay = day.truncatingRemainder(dividingBy: CGFloat(truncatedDay))
-            currentDate.day = newDay
-        }
-    }
-
     private func add(months: Int) {
         if months.isZero { return }
         var newMonth = currentDate.month + months
@@ -353,19 +339,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         }
     }
 
-    private func correct(month: Int) {
-
-//        correct(year: currentDate.year + monthRemainder)
-        if month < 0 {
-            let monthRemainder = month / 12 <= -1 ? month / 12 : -1
-            correct(year: currentDate.year + monthRemainder)
-            let newMonth = abs(month + (month / 12) * 12)
-            currentDate.month = newMonth
-        } else if month > 11 {
-
-        }
-    }
-
     private func add(years: Int) {
         if years.isZero { return }
         let diff = years % self.years.count
@@ -380,10 +353,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         } else {
             currentDate.year = newYear
         }
-    }
-
-    private func correct(year: Int) {
-
     }
 
     private func updateControls(receivedExternally: Bool = false) {
