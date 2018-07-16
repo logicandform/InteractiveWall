@@ -58,8 +58,6 @@ final class TimelineHandler {
         if pair == nil || pair! == fromID, let timelineController = timelineController {
             activityState = .active
             adjust(date: date, controller: timelineController, toApp: appID, fromApp: fromID)
-//            let adjustedRect = adjust(rect, toApp: appID, fromApp: fromID)
-//            timeline.scrollToVisible(adjustedRect)
         }
     }
 
@@ -97,17 +95,15 @@ final class TimelineHandler {
 
     // MARK: Helpers
 
-//    private func adjust(_ rect: CGRect, toApp app: Int, fromApp pair: Int?) -> CGRect {
     private func adjust(date: (day: CGFloat, month: Int, year: Int), controller: TimelineViewController, toApp app: Int, fromApp pair: Int?) {
         let pairedID = pair ?? app
-//        let x = rect.origin.x + CGFloat(appID - pairedID) * rect.size.width
         switch controller.timelineType {
         case .month:
-            controller.update(date: (day: date.day, month: date.month + (appID - pairedID) * controller.timelineType.sectionWidth, year: date.year))
+            controller.update(date: (day: date.day, month: date.month + (appID - pairedID), year: date.year), receivedExternally: true)
         case .year:
-            controller.update(date: (day: date.day, month: date.month, year: date.year + (appID - pairedID) * controller.timelineType.sectionWidth))
+            controller.update(date: (day: date.day, month: date.month, year: date.year + (appID - pairedID)), receivedExternally: true)
         case .decade:
-            controller.update(date: (day: date.day, month: date.month, year: date.year + (appID - pairedID) * controller.timelineType.sectionWidth * 10))
+            controller.update(date: (day: date.day, month: date.month, year: date.year + (appID - pairedID) * 10), receivedExternally: true)
         case .century:
             return
         }
