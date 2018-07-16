@@ -97,7 +97,19 @@ final class EntityManager {
         associateRelatedEntities(for: entitiesInCurrentLevel, toLevel: next)
     }
 
-    func getRelatedEntities(for entity: RecordEntity) -> [RecordEntity] {
+    func reset() {
+//        for entity in allLevelEntities {
+//            entity.reset()
+//        }
+
+        entitiesInLevel.removeAll()
+        allLevelEntities.removeAll()
+    }
+
+
+    // MARK: Helpers
+
+    private func getRelatedEntities(for entity: RecordEntity) -> [RecordEntity] {
         let record = entity.renderComponent.recordNode.record
 
         guard let relatedRecords = TestingEnvironment.instance.relatedRecordsForRecord[record] else {
@@ -107,18 +119,6 @@ final class EntityManager {
         let relatedEntities = entities(for: Array(relatedRecords)).compactMap({ $0 as? RecordEntity })
         return relatedEntities
     }
-
-    func reset() {
-        for entity in allLevelEntities {
-            entity.reset()
-        }
-
-        entitiesInLevel.removeAll()
-        allLevelEntities.removeAll()
-    }
-
-
-    // MARK: Helpers
 
     private func entities(for records: [TestingEnvironment.Record]) -> [GKEntity] {
         var recordEntities = [GKEntity]()

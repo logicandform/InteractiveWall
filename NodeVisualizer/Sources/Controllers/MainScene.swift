@@ -160,11 +160,15 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
     private func relatedNodes(for node: RecordNode) {
         if let entity = node.entity as? RecordEntity {
+            
+            EntityManager.instance.reset()
+
             // make level connections for all the tapped entity's descendants
             EntityManager.instance.associateRelatedEntities(for: [entity])
 
             // create bounding node entities for each level
-            NodeBoundingManager.instance.createNodeBoundingEntities()
+//            NodeBoundingManager.instance.createNodeBoundingEntities()
+            NodeBoundingManager.instance.testNewStructure()
 
             // enter the TappedState for the tapped entity node
             entity.intelligenceComponent.stateMachine.enter(TappedState.self)

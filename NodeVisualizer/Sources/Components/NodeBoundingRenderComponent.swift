@@ -11,16 +11,19 @@ class NodeBoundingRenderComponent: GKComponent {
     var node: SKNode?
 
     /// The entities that is associated with this component's bounding node. maxRadius is determined by calculating max distance between root and these entities
-    var contactEntities: [RecordEntity]?
+//    var contactEntities: [RecordEntity]?
 
     /// The previous level's node bounding entity. Use its maxRadius to scale its own bounding node to the appropriate size
-    var previousNodeBoundingEntity: NodeBoundingEntity?
+//    var previousNodeBoundingEntity: NodeBoundingEntity?
 
     /// The maximum distance between the root and the contactEntities for this bounding entity
     var maxRadius: CGFloat = 0.0
 
     /// Determines whether or not the next bounding node should update its radius
     var shouldScaleNode: Bool = true
+
+    /// The node bounding level that the component is responsible for
+    var level: Int!
 
     /// Local variable of the previous level's bounding node maxRadius. Used to determine its own level's bounding node maxRadius
     private var previousLevelMaxDistance: CGFloat = 0.0
@@ -63,7 +66,7 @@ class NodeBoundingRenderComponent: GKComponent {
          */
 
         // scale its own bounding node by using its previous level's bounding node maxRadius
-        if let previousLevelNodeBoundingEntity = previousNodeBoundingEntity, let currentNode = node, previousLevelNodeBoundingEntity.nodeBoundingRenderComponent.shouldScaleNode {
+        if let previousLevelNodeBoundingEntity = NodeBoundingManager.instance.nodeBoundingEntityForLevel[level - 1], let currentNode = node {
 
             // get the maxRadius of the previous level bounding node
             let previousLevelBoundingNodeMaxRadius = previousLevelNodeBoundingEntity.nodeBoundingRenderComponent.maxRadius
@@ -86,7 +89,7 @@ class NodeBoundingRenderComponent: GKComponent {
             currentNode.physicsBody = newPhysicsBody
         }
 
-        guard let contactEntities = contactEntities else { return }
+        let contactEntities = EntityManager.instance.entitiesInLevel[level]
         var distance: CGFloat = 0.0
 
         // iterate through its contactEntities if it hasCollidedWithBoundingNode, and determine the max distance from the root to the contactEntity

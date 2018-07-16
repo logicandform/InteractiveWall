@@ -41,7 +41,8 @@ class TappedState: GKState {
                     entity.physicsComponent.physicsBody.collisionBitMask = boundingNode.physicsBody!.collisionBitMask
                     entity.physicsComponent.physicsBody.contactTestBitMask = boundingNode.physicsBody!.contactTestBitMask
 
-                    entity.movementComponent.nodeToSeek = NodeBoundingManager.instance.nodeBoundingEntityForLevel[0]?.nodeBoundingRenderComponent.node
+//                    entity.movementComponent.nodeToSeek = NodeBoundingManager.instance.nodeBoundingEntityForLevel[0]?.nodeBoundingRenderComponent.node
+                    entity.movementComponent.entityToSeek = self.entity
                     entity.intelligenceComponent.stateMachine.enter(SeekState.self)
                 }
             }

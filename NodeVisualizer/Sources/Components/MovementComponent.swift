@@ -43,7 +43,7 @@ class MovementComponent: GKComponent {
         // check to see if the record entity is in the correct state (i.e. it is seeking a tapped record node)
         guard let intelligenceComponent = entity?.component(ofType: IntelligenceComponent.self), 
             intelligenceComponent.stateMachine.currentState is SeekState,
-            let targetNode = nodeToSeek else {
+            let targetNode = entityToSeek else {
             return
         }
 
@@ -51,13 +51,13 @@ class MovementComponent: GKComponent {
         let renderComponent = self.renderComponent
         let physicsComponent = self.physicsComponent
 
-        let deltaX = targetNode.position.x - renderComponent.recordNode.position.x
-        let deltaY = targetNode.position.y - renderComponent.recordNode.position.y
+        let deltaX = targetNode.renderComponent.recordNode.position.x - renderComponent.recordNode.position.x
+        let deltaY = targetNode.renderComponent.recordNode.position.y - renderComponent.recordNode.position.y
         let displacement = CGVector(dx: deltaX, dy: deltaY)
 
         let radius = distanceOf(x: deltaX, y: deltaY)
 
-        let targetEntityMass = targetNode.physicsBody!.mass * Constants.strength * radius
+        let targetEntityMass = targetNode.physicsComponent.physicsBody.mass * Constants.strength * radius
         let entityMass = renderComponent.recordNode.physicsBody!.mass * Constants.strength * radius
 
         let unitVector = CGVector(dx: displacement.dx / radius, dy: displacement.dy / radius)
