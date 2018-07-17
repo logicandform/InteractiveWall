@@ -57,7 +57,9 @@ final class TimelineHandler {
         // Filter position updates; state will be nil receiving when receiving from momentum, else id must match pair
         if pair == nil || pair! == fromID {
             activityState = .active
-            adjust(date: date, toApp: appID, fromApp: fromID)
+            if let date = adjust(date: date, toApp: appID, fromApp: fromID) {
+                timelineViewController?.updateCollectionViews(to: date)
+            }
         }
     }
 
@@ -94,21 +96,21 @@ final class TimelineHandler {
 
     // MARK: Helpers
 
-    private func adjust(date: TimelineDate, toApp app: Int, fromApp pair: Int?) {
+    private func adjust(date: TimelineDate, toApp app: Int, fromApp pair: Int?) -> TimelineDate? {
         guard let timelineViewController = timelineViewController else {
-            return
+            return nil
         }
 
         let pairedID = pair ?? app
         switch timelineViewController.timelineType {
         case .month:
-            timelineViewController.updateCollectionViews(to: TimelineDate(day: date.day, month: date.month + (appID - pairedID), year: date.year))
+            return TimelineDate(day: date.day, month: date.month + (appID - pairedID), year: date.year)
         case .year:
-            timelineViewController.updateCollectionViews(to: TimelineDate(day: date.day, month: date.month, year: date.year + (appID - pairedID)))
+            return TimelineDate(day: date.day, month: date.month, year: date.year + (appID - pairedID))
         case .decade:
-            timelineViewController.updateCollectionViews(to: TimelineDate(day: date.day, month: date.month, year: date.year + (appID - pairedID) * 10))
+            return TimelineDate(day: date.day, month: date.month, year: date.year + (appID - pairedID) * 10)
         case .century:
-            return
+            return nil
         }
     }
 
