@@ -25,6 +25,10 @@ final class Style {
     // Timeline Controller
     let timelineBackgroundColor = NSColor(white: 0.1, alpha: 0.9)
 
+    // Years
+    let firstYear = 1867
+    let lastYear = 1980
+
     var timelineTitleAttributes: [NSAttributedStringKey: Any] {
         let font = NSFont(name: "Soleil", size: 16) ?? NSFont.systemFont(ofSize: 16)
         let paragraphStyle = NSMutableParagraphStyle()

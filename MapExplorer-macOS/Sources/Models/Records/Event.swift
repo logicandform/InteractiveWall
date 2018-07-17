@@ -9,12 +9,14 @@ class Event: Record {
     let type = RecordType.event
     let title: String
     var coordinate: CLLocationCoordinate2D
+    let date: (day: CGFloat, month: Int, year: Int)?
 
     private struct Keys {
         static let id = "id"
         static let title = "title"
         static let latitude = "latitude"
         static let longitude = "longitude"
+        static let date = "date"
     }
 
 
@@ -24,12 +26,14 @@ class Event: Record {
         guard let id = json[Keys.id] as? Int,
             let title = json[Keys.title] as? String,
             let latitude = json[Keys.latitude] as? Double,
-            let longitude = json[Keys.longitude] as? Double else {
+            let longitude = json[Keys.longitude] as? Double,
+            let date = json[Keys.date] as? String else {
             return nil
         }
 
         self.id = id
         self.title = title
         self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        self.date = nil
     }
 }
