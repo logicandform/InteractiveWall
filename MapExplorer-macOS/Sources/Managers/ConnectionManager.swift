@@ -31,6 +31,7 @@ final class ConnectionManager {
     private struct Keys {
         static let id = "id"
         static let map = "map"
+        static let date = "date"
         static let day = "day"
         static let month = "month"
         static let year = "year"
@@ -129,7 +130,7 @@ final class ConnectionManager {
         case TimelineNotification.rect.name:
             if let day = info[Keys.day] as? CGFloat, let month = info[Keys.month] as? Int, let year = info[Keys.year] as? Int, let group = group, let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture), let animated = info[Keys.animated] as? Bool {
                 setAppState(from: id, group: group, for: .timeline, momentum: state == .momentum)
-                timelineHandler?.handle(date: (day, month, year), fromID: id, fromGroup: group, animated: animated)
+                timelineHandler?.handle(date: (day: day, month: month, year: year), fromID: id, fromGroup: group, animated: animated)
             }
         case SettingsNotification.transition.name:
             if let newTypeString = info[Keys.type] as? String, let newType = ApplicationType(rawValue: newTypeString), let oldTypeString = info[Keys.oldType] as? String, let oldType = ApplicationType(rawValue: oldTypeString) {
