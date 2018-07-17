@@ -12,7 +12,8 @@ final class EntityManager {
         let movementSystem = GKComponentSystem(componentClass: MovementComponent.self)
         let agentSystem = GKComponentSystem(componentClass: RecordAgent.self)
         let animationSystem = GKComponentSystem(componentClass: AnimationComponent.self)
-        return [intelligenceSystem, animationSystem, movementSystem]
+        let physicsSystem = GKComponentSystem(componentClass: PhysicsComponent.self)
+        return [intelligenceSystem, physicsSystem, animationSystem, movementSystem]
     }()
 
     static let instance = EntityManager()
@@ -23,11 +24,14 @@ final class EntityManager {
     /// 2D array of related entities that belong to a particular level
     private(set) var entitiesInLevel = [[RecordEntity]]()
 
+    /// Set of all entities in all levels
+    private(set) var allLevelEntities = Set<RecordEntity>()
+
+    /// Set of all entities that are currently in a formed state
+    private(set) var allEntitiesInFormedState = Set<RecordEntity>()
+
     /// Local copy of the entities that are associated with the current level
     private var entitiesInCurrentLevel = [RecordEntity]()
-
-    /// Set of all entities in all levels
-    private var allLevelEntities = Set<RecordEntity>()
 
     private struct Constants {
         static let maxLevel = 5
@@ -80,6 +84,7 @@ final class EntityManager {
 
         for entity in entities {
             allLevelEntities.insert(entity)
+            allEntitiesInFormedState.insert(entity)
 
             // add relatedEntities to the appropriate level
             let relatedEntities = getRelatedEntities(for: entity)
@@ -96,7 +101,28 @@ final class EntityManager {
         associateRelatedEntities(for: entitiesInCurrentLevel, toLevel: next)
     }
 
-    func getRelatedEntities(for entity: RecordEntity) -> [RecordEntity] {
+    func resetAll() {
+        for entity in allLevelEntities {
+            entity.reset()
+        }
+
+        for entity in allEntitiesInFormedState {
+            entity.reset()
+        }
+
+        allEntitiesInFormedState.removeAll()
+        reset()
+    }
+
+    func reset() {
+        entitiesInLevel.removeAll()
+        allLevelEntities.removeAll()
+    }
+
+
+    // MARK: Helpers
+
+    private func getRelatedEntities(for entity: RecordEntity) -> [RecordEntity] {
         let record = entity.renderComponent.recordNode.record
 
         guard let relatedRecords = TestingEnvironment.instance.relatedRecordsForRecord[record] else {
@@ -106,18 +132,6 @@ final class EntityManager {
         let relatedEntities = entities(for: Array(relatedRecords)).compactMap({ $0 as? RecordEntity })
         return relatedEntities
     }
-
-    func reset() {
-        for entity in allLevelEntities {
-            entity.reset()
-        }
-
-        entitiesInLevel.removeAll()
-        allLevelEntities.removeAll()
-    }
-
-
-    // MARK: Helpers
 
     private func entities(for records: [TestingEnvironment.Record]) -> [GKEntity] {
         var recordEntities = [GKEntity]()

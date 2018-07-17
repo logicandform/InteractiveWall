@@ -15,6 +15,13 @@ class PhysicsComponent: GKComponent {
 
     private(set) var physicsBody: SKPhysicsBody
 
+    private var recordEntity: RecordEntity {
+        guard let recordEntity = entity as? RecordEntity else {
+            fatalError("A PhysicsComponent's entity must be a RecordEntity")
+        }
+        return recordEntity
+    }
+
     private var renderComponent: RenderComponent {
         guard let renderComponent = entity?.component(ofType: RenderComponent.self) else {
             fatalError("A PhysicsComponent's entity must have a RenderComponent")
@@ -37,6 +44,24 @@ class PhysicsComponent: GKComponent {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+
+    // MARK: Lifecycle
+
+    override func update(deltaTime seconds: TimeInterval) {
+        super.update(deltaTime: seconds)
+
+        let contactedBodies = physicsBody.allContactedBodies()
+        for contactedBody in contactedBodies {
+            guard let contactedEntity = contactedBody.node?.entity as? RecordEntity else {
+                continue
+            }
+
+            if contactedEntity.hasCollidedWithBoundingNode && !recordEntity.hasCollidedWithBoundingNode {
+                recordEntity.hasCollidedWithBoundingNode = true
+            }
+        }
     }
 
 

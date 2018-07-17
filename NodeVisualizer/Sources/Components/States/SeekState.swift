@@ -23,6 +23,7 @@ class SeekState: GKState {
         entity.physicsComponent.physicsBody.friction = 1
         entity.physicsComponent.physicsBody.linearDamping = 1
         entity.physicsComponent.physicsBody.fieldBitMask = 0x1 << 1
+        entity.physicsComponent.physicsBody.isDynamic = true
     }
 
     override func update(deltaTime seconds: TimeInterval) {
@@ -30,12 +31,7 @@ class SeekState: GKState {
     }
 
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
-        switch stateClass {
-        case is TappedState.Type, is WanderState.Type:
-            return true
-        default:
-            return false
-        }
+        return true
     }
 
     override func willExit(to nextState: GKState) {

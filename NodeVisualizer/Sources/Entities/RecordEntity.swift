@@ -48,11 +48,13 @@ class RecordEntity: GKEntity {
         return agent
     }
 
+    /// Indicates whether or not the entity has made contact its bounding level node. This property is used to for the bounding level node's changing size.
+    var hasCollidedWithBoundingNode = false
+
 
     // MARK: Initializer
 
     init(record: TestingEnvironment.Record) {
-
         super.init()
 
         let renderComponent = RenderComponent(record: record)

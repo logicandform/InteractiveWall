@@ -4,11 +4,10 @@ import SpriteKit
 import GameplayKit
 
 
-class MainScene: SKScene {
+class MainScene: SKScene, SKPhysicsContactDelegate {
 
     var records: [TestingEnvironment.Record]!
     var gestureManager: GestureManager!
-    var currentEntityInFocus: RecordEntity?
 
     private var lastUpdateTimeInterval: TimeInterval = 0
 
@@ -29,6 +28,8 @@ class MainScene: SKScene {
     override func didMove(to view: SKView) {
         super.didMove(to: view)
 
+        NodeBoundingManager.instance.scene = self
+
         addGestures(to: view)
         setupSystemGesturesForTest(to: view)
 
@@ -41,11 +42,33 @@ class MainScene: SKScene {
 
         let deltaTime = currentTime - lastUpdateTimeInterval
         lastUpdateTimeInterval = currentTime
+
         EntityManager.instance.update(deltaTime)
+        NodeBoundingManager.instance.update(deltaTime)
 
         // keep the nodes facing 0 degrees (i.e. no rotation when affected by physics simulation)
         for case let node as RecordNode in children {
             node.zRotation = 0
+        }
+    }
+
+
+    // MARK: SKPhysicsContactDelegate
+
+    func didBegin(_ contact: SKPhysicsContact) {
+        // whenever an entity comes into contact with a bounding node, set the contacted entity's hasCollidedWithBoundingNode to true
+        if contact.bodyA.node?.name == "boundingNode",
+            let contactEntity = contact.bodyB.node?.entity as? RecordEntity,
+            !contactEntity.hasCollidedWithBoundingNode,
+            contactEntity.intelligenceComponent.stateMachine.currentState is SeekState {
+            contactEntity.hasCollidedWithBoundingNode = true
+        }
+
+        if let contactEntity = contact.bodyA.node?.entity as? RecordEntity,
+            !contactEntity.hasCollidedWithBoundingNode,
+            contactEntity.intelligenceComponent.stateMachine.currentState is SeekState,
+            contact.bodyB.node?.name == "boundingNode" {
+            contactEntity.hasCollidedWithBoundingNode = true
         }
     }
 
@@ -68,12 +91,9 @@ class MainScene: SKScene {
     private func addPhysicsToScene() {
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         physicsWorld.gravity = .zero
+        physicsWorld.contactDelegate = self
 
         createRepulsiveField()
-
-//        for type in StartingPositionType.allValues {
-//            addLinearGravityField(to: type)
-//        }
     }
 
     private func addRecordNodesToScene() {
@@ -86,17 +106,12 @@ class MainScene: SKScene {
                 recordNode.position.x = randomX()
                 recordNode.position.y = randomY()
                 recordNode.zPosition = 1
-//                recordEntity.updateAgentPositionToMatchNodePosition()
 
                 let screenBoundsConstraint = SKConstraint.positionX(SKRange(lowerLimit: 0, upperLimit: frame.width), y: SKRange(lowerLimit: 0, upperLimit: frame.height))
                 recordNode.constraints = [screenBoundsConstraint]
 
                 EntityManager.instance.add(recordEntity)
                 addChild(recordNode)
-
-//                let destinationPosition = getRandomPosition()
-//                let forceVector = CGVector(dx: destinationPosition.x - recordNode.position.x, dy: destinationPosition.y - recordNode.position.y)
-//                recordNode.runInitialAnimation(with: forceVector, delay: index)
             }
         }
     }
@@ -114,6 +129,8 @@ class MainScene: SKScene {
         guard let recordNode = nodes(at: nodePosition).first(where: { $0 is RecordNode }) as? RecordNode else {
             return
         }
+
+        print("ID: \(recordNode.record.id)")
 
         switch tap.state {
         case .ended:
@@ -137,7 +154,6 @@ class MainScene: SKScene {
         switch recognizer.state {
         case .ended:
             relatedNodes(for: recordNode)
-            return
         default:
             return
         }
@@ -146,19 +162,49 @@ class MainScene: SKScene {
 
     // MARK: Helpers
 
+    /// Sets up all the data relationships for the tapped node and starts the physics emulations
     private func relatedNodes(for node: RecordNode) {
-        if let entity = node.entity as? RecordEntity {
-            if entity.intelligenceComponent.stateMachine.currentState is WanderState || entity.intelligenceComponent.stateMachine.currentState is SeekState {
-                // reset the entities
-                EntityManager.instance.reset()
-
-                // delay to ensure that all entities have reset and "bounced" away
-                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (_) in
-                    // tapped entity enters TappedState
-                    entity.intelligenceComponent.stateMachine.enter(TappedState.self)
-                }
-            }
+        guard let entity = node.entity as? RecordEntity else {
+            return
         }
+
+        switch entity.intelligenceComponent.stateMachine.currentState {
+        case is SeekState:
+            EntityManager.instance.reset()
+            EntityManager.instance.associateRelatedEntities(for: [entity])
+
+            let difference = EntityManager.instance.allEntitiesInFormedState.symmetricDifference(EntityManager.instance.allLevelEntities)
+            if difference.isEmpty {
+                createBoundingConnections(for: entity)
+            } else {
+                createLevelConnections(for: entity)
+            }
+        case is WanderState:
+            createLevelConnections(for: entity)
+        default:
+            return
+        }
+    }
+
+    /// Create entity level relationships and their appropriate bounding nodes
+    private func createLevelConnections(for entity: RecordEntity) {
+        // reset
+        EntityManager.instance.resetAll()
+        NodeBoundingManager.instance.reset()
+
+        // make level connections for all the tapped entity's descendants
+        EntityManager.instance.associateRelatedEntities(for: [entity])
+
+        // create bounding nodes and enter tapped state
+        createBoundingConnections(for: entity)
+    }
+
+    private func createBoundingConnections(for entity: RecordEntity) {
+        // create bounding node entities for each level
+        NodeBoundingManager.instance.createNodeBoundingEntities()
+
+        // enter the TappedState for the tapped entity node
+        entity.intelligenceComponent.stateMachine.enter(TappedState.self)
     }
 
     private func getRandomPosition() -> CGPoint {

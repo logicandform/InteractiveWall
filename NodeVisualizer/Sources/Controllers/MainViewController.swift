@@ -42,7 +42,8 @@ class MainViewController: NSViewController, GestureResponder {
 
         mainView.showsFPS = true
         mainView.showsNodeCount = true
-        mainView.showsFields = true
+//        mainView.showsFields = true
+        mainView.showsPhysics = true
         mainView.ignoresSiblingOrder = true
     }
 
@@ -69,7 +70,7 @@ class MainViewController: NSViewController, GestureResponder {
     private func setupMainScene(with records: [TestingEnvironment.Record]) {
         let mainScene = MainScene(size: CGSize(width: mainView.bounds.width, height: mainView.bounds.height))
         mainScene.backgroundColor = style.darkBackground
-        mainScene.scaleMode = .aspectFit
+        mainScene.scaleMode = .aspectFill
         mainScene.records = records
         mainScene.gestureManager = gestureManager
         mainView.presentScene(mainScene)
