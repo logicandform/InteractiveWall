@@ -6,7 +6,7 @@ import AppKit
 
 final class TimelineHandler {
 
-    let timeline: NSCollectionView
+    weak var timelineViewController: TimelineViewController?
     private var activityState = UserActivity.idle
     private weak var ungroupTimer: Foundation.Timer?
 
@@ -36,8 +36,8 @@ final class TimelineHandler {
 
     // MARK: Init
 
-    init(timeline: NSCollectionView) {
-        self.timeline = timeline
+    init(timelineViewController: TimelineViewController?) {
+        self.timelineViewController = timelineViewController
     }
 
     deinit {
@@ -48,15 +48,15 @@ final class TimelineHandler {
     // MARK: API
 
     /// Determines how to respond to a received rect from another timeline with the type of gesture that triggered the event.
-    func handle(date: (day: CGFloat, month: Int, year: Int), timelineController: TimelineViewController?, fromID: Int, fromGroup: Int, animated: Bool) {
+    func handle(date: (day: CGFloat, month: Int, year: Int), fromID: Int, fromGroup: Int, animated: Bool) {
         guard let currentGroup = group, currentGroup == fromGroup, currentGroup == fromID else {
             return
         }
 
         // Filter position updates; state will be nil receiving when receiving from momentum, else id must match pair
-        if pair == nil || pair! == fromID, let timelineController = timelineController {
+        if pair == nil || pair! == fromID {
             activityState = .active
-            adjust(date: date, controller: timelineController, toApp: appID, fromApp: fromID)
+            adjust(date: date, toApp: appID, fromApp: fromID)
         }
     }
 
@@ -93,15 +93,19 @@ final class TimelineHandler {
 
     // MARK: Helpers
 
-    private func adjust(date: (day: CGFloat, month: Int, year: Int), controller: TimelineViewController, toApp app: Int, fromApp pair: Int?) {
+    private func adjust(date: (day: CGFloat, month: Int, year: Int), toApp app: Int, fromApp pair: Int?) {
+        guard let timelineViewController = timelineViewController else {
+            return
+        }
+
         let pairedID = pair ?? app
-        switch controller.timelineType {
+        switch timelineViewController.timelineType {
         case .month:
-            controller.update(date: (day: date.day, month: date.month + (appID - pairedID), year: date.year), receivedExternally: true)
+            timelineViewController.update(date: (day: date.day, month: date.month + (appID - pairedID), year: date.year))
         case .year:
-            controller.update(date: (day: date.day, month: date.month, year: date.year + (appID - pairedID)), receivedExternally: true)
+            timelineViewController.update(date: (day: date.day, month: date.month, year: date.year + (appID - pairedID)))
         case .decade:
-            controller.update(date: (day: date.day, month: date.month, year: date.year + (appID - pairedID) * 10), receivedExternally: true)
+            timelineViewController.update(date: (day: date.day, month: date.month, year: date.year + (appID - pairedID) * 10))
         case .century:
             return
         }
