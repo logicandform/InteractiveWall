@@ -55,7 +55,7 @@ final class TimelineHandler {
         if pair == nil || pair! == fromID {
             activityState = .active
             if let date = adjust(date: date, toApp: appID, fromApp: fromID) {
-                timelineViewController?.updateCollectionViews(to: date)
+                timelineViewController?.setDate(date)
             }
         }
     }
