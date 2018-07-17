@@ -3,6 +3,9 @@
 import Cocoa
 
 
+typealias TimelineDate = (day: CGFloat, month: Int, year: Int)
+
+
 enum TimelineType {
     case month
     case year
@@ -62,7 +65,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         static let timelineControlItemWidth: CGFloat = 70
         static let timelineIndicatorBorderRadius: CGFloat = 8
         static let timelineIndicatorBorderWidth: CGFloat = 2
-        static let initialDate = (day: CGFloat(0.5), month: Month.january.rawValue, year: 1880)
+        static let initialDate: TimelineDate = (day: CGFloat(0.5), month: Month.january.rawValue, year: 1880)
         static let fadePercentage = 0.1
     }
 
@@ -93,7 +96,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         })
     }
 
-    func update(date: (day: CGFloat, month: Int, year: Int)) {
+    func update(date: TimelineDate) {
         currentDate.day = date.day
         currentDate.month = date.month
         currentDate.year = date.year
@@ -118,7 +121,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     override func viewDidAppear() {
         super.viewDidAppear()
-//        setDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year, receivedExternally: false)
         setupControlGradients()
     }
 
