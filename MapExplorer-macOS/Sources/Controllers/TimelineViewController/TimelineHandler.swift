@@ -24,7 +24,6 @@ final class TimelineHandler {
 
     private struct Keys {
         static let id = "id"
-        static let date = "date"
         static let day = "day"
         static let month = "month"
         static let year = "year"
