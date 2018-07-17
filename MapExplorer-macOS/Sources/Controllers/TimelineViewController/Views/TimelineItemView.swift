@@ -34,22 +34,15 @@ class TimelineItemView: NSCollectionViewItem {
         highlightView.wantsLayer = true
         backgroundView.wantsLayer = true
         backgroundView.layer?.backgroundColor = style.darkBackground.cgColor
+        highlightViewWidthConstraint.constant = Constants.unselectedHighlightWidth
         titleTextField.font = NSFont.monospacedDigitSystemFont(ofSize: 10, weight: .light)
     }
 
 
     // MARK: API
 
-    func set(highlighted: Bool) {
-        if highlighted {
-            contentView.layer?.backgroundColor = tintColor.cgColor
-        } else {
-            contentView.layer?.backgroundColor = style.darkBackground.cgColor
-        }
-    }
-
     func animate(to size: CGSize) {
-        if size.width > view.frame.size.width {
+        if size.width >= view.frame.size.width {
             expand(to: size)
         } else {
             compress(to: size)
