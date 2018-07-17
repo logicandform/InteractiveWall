@@ -96,7 +96,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         })
     }
 
-    func update(date: TimelineDate) {
+    func updateCollectionViews(to date: TimelineDate) {
         currentDate.day = date.day
         currentDate.month = date.month
         currentDate.year = date.year

@@ -101,11 +101,11 @@ final class TimelineHandler {
         let pairedID = pair ?? app
         switch timelineViewController.timelineType {
         case .month:
-            timelineViewController.update(date: (day: date.day, month: date.month + (appID - pairedID), year: date.year))
+            timelineViewController.updateCollectionViews(to: (day: date.day, month: date.month + (appID - pairedID), year: date.year))
         case .year:
-            timelineViewController.update(date: (day: date.day, month: date.month, year: date.year + (appID - pairedID)))
+            timelineViewController.updateCollectionViews(to: (day: date.day, month: date.month, year: date.year + (appID - pairedID)))
         case .decade:
-            timelineViewController.update(date: (day: date.day, month: date.month, year: date.year + (appID - pairedID) * 10))
+            timelineViewController.updateCollectionViews(to: (day: date.day, month: date.month, year: date.year + (appID - pairedID) * 10))
         case .century:
             return
         }
