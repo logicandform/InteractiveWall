@@ -6,7 +6,7 @@ import AppKit
 
 final class TimelineHandler {
 
-    let timeline: NSCollectionView
+    weak var timelineViewController: TimelineViewController?
     private var activityState = UserActivity.idle
     private weak var ungroupTimer: Foundation.Timer?
 
@@ -24,7 +24,7 @@ final class TimelineHandler {
 
     private struct Keys {
         static let id = "id"
-        static let rect = "rect"
+        static let date = "date"
         static let type = "type"
         static let group = "group"
         static let animated = "amimated"
@@ -34,8 +34,8 @@ final class TimelineHandler {
 
     // MARK: Init
 
-    init(timeline: NSCollectionView) {
-        self.timeline = timeline
+    init(timelineViewController: TimelineViewController?) {
+        self.timelineViewController = timelineViewController
     }
 
     deinit {
@@ -46,7 +46,7 @@ final class TimelineHandler {
     // MARK: API
 
     /// Determines how to respond to a received rect from another timeline with the type of gesture that triggered the event.
-    func handle(_ rect: CGRect, fromID: Int, fromGroup: Int, animated: Bool) {
+    func handle(date: TimelineDate, fromID: Int, fromGroup: Int, animated: Bool) {
         guard let currentGroup = group, currentGroup == fromGroup, currentGroup == fromID else {
             return
         }
@@ -54,19 +54,20 @@ final class TimelineHandler {
         // Filter position updates; state will be nil receiving when receiving from momentum, else id must match pair
         if pair == nil || pair! == fromID {
             activityState = .active
-            let adjustedRect = adjust(rect, toApp: appID, fromApp: fromID)
-            timeline.scrollToVisible(adjustedRect)
+            if let date = adjust(date: date, toApp: appID, fromApp: fromID) {
+                timelineViewController?.setDate(date)
+            }
         }
     }
 
-    func send(_ rect: CGRect, for gestureState: GestureState = .recognized, animated: Bool = false, forced: Bool = false) {
+    func send(date: TimelineDate, for gestureState: GestureState = .recognized, animated: Bool = false, forced: Bool = false) {
         // If sending from momentum but another app has interrupted, ignore
         if gestureState == .momentum && pair != nil && !forced {
             return
         }
 
         let currentGroup = group ?? appID
-        let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.rect: rect.toJSON(), Keys.gesture: gestureState.rawValue, Keys.animated: animated]
+        let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.date: date.toJSON, Keys.gesture: gestureState.rawValue, Keys.animated: animated]
         DistributedNotificationCenter.default().postNotificationName(TimelineNotification.rect.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
@@ -92,11 +93,22 @@ final class TimelineHandler {
 
     // MARK: Helpers
 
-    private func adjust(_ rect: CGRect, toApp app: Int, fromApp pair: Int?) -> CGRect {
-        let pairedID = pair ?? app
-        let x = rect.origin.x + CGFloat(appID - pairedID) * rect.size.width
+    private func adjust(date: TimelineDate, toApp app: Int, fromApp pair: Int?) -> TimelineDate? {
+        guard let timelineViewController = timelineViewController else {
+            return nil
+        }
 
-        return CGRect(origin: CGPoint(x: x, y: rect.origin.y), size: rect.size)
+        let pairedID = pair ?? app
+        switch timelineViewController.timelineType {
+        case .month:
+            return TimelineDate(day: date.day, month: date.month + (appID - pairedID), year: date.year)
+        case .year:
+            return TimelineDate(day: date.day, month: date.month, year: date.year + (appID - pairedID))
+        case .decade:
+            return TimelineDate(day: date.day, month: date.month, year: date.year + (appID - pairedID) * 10)
+        case .century:
+            return nil
+        }
     }
 
     /// Resets the pairedDeviceID after a timeout period
