@@ -106,8 +106,12 @@ final class EntityManager {
             entity.reset()
         }
 
-        reset()
+        for entity in allEntitiesInFormedState {
+            entity.reset()
+        }
+
         allEntitiesInFormedState.removeAll()
+        reset()
     }
 
     func reset() {

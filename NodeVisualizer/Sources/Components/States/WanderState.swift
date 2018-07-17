@@ -27,9 +27,12 @@ class WanderState: GKState {
 
         entity.physicsComponent.physicsBody.categoryBitMask = 0xFFFFFFFF
         entity.physicsComponent.physicsBody.collisionBitMask = 0xFFFFFFFF
+        entity.physicsComponent.physicsBody.contactTestBitMask = 0xFFFFFFFF
 
         entity.renderComponent.recordNode.removeAllActions()
         entity.movementComponent.entityToSeek = nil
+
+        entity.hasCollidedWithBoundingNode = false
     }
 
     override func update(deltaTime seconds: TimeInterval) {

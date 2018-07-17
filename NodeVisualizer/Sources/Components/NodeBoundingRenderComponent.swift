@@ -11,7 +11,7 @@ class NodeBoundingRenderComponent: GKComponent {
     var node: SKNode?
 
     /// The maximum distance between the root and the contactEntities for this bounding entity
-    var maxRadius: CGFloat = 0.0
+    var maxRadius: CGFloat = NodeConfiguration.Record.physicsBodyRadius + 5.0
 
     /// The node bounding level that the component is responsible for
     var level: Int!
@@ -80,14 +80,14 @@ class NodeBoundingRenderComponent: GKComponent {
             currentNode.physicsBody = newPhysicsBody
         }
 
-        let contactEntities = EntityManager.instance.entitiesInLevel[level]
         var distance: CGFloat = 0.0
-
-        // iterate through its contactEntities to see if it hasCollidedWithBoundingNode, and determine the max distance from the root to the contactEntity
-        for contactEntity in contactEntities where contactEntity.hasCollidedWithBoundingNode {
-            let calculatedRadius = NodeBoundingManager.instance.distance(to: contactEntity) + Constants.minimumOffset
-            if calculatedRadius > distance {
-                distance = calculatedRadius
+        if let contactEntities = EntityManager.instance.entitiesInLevel.at(index: level) {
+            // iterate through its contactEntities to see if it hasCollidedWithBoundingNode, and determine the max distance from the root to the contactEntity
+            for contactEntity in contactEntities where contactEntity.hasCollidedWithBoundingNode {
+                let calculatedRadius = NodeBoundingManager.instance.distance(to: contactEntity) + Constants.minimumOffset
+                if calculatedRadius > distance {
+                    distance = calculatedRadius
+                }
             }
         }
 
