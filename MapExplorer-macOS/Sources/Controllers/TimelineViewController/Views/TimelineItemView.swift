@@ -34,7 +34,6 @@ class TimelineItemView: NSCollectionViewItem {
         highlightView.wantsLayer = true
         backgroundView.wantsLayer = true
         backgroundView.layer?.backgroundColor = style.darkBackground.cgColor
-        highlightViewWidthConstraint.constant = Constants.unselectedHighlightWidth
         titleTextField.font = NSFont.monospacedDigitSystemFont(ofSize: 10, weight: .light)
     }
 
