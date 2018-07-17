@@ -24,6 +24,7 @@ final class TimelineHandler {
 
     private struct Keys {
         static let id = "id"
+        static let date = "date"
         static let day = "day"
         static let month = "month"
         static let year = "year"
@@ -67,7 +68,7 @@ final class TimelineHandler {
         }
 
         let currentGroup = group ?? appID
-        let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.day: date.day, Keys.month: date.month, Keys.year: date.year, Keys.gesture: gestureState.rawValue, Keys.animated: animated]
+        let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.date: date.toJSON, Keys.gesture: gestureState.rawValue, Keys.animated: animated]
         DistributedNotificationCenter.default().postNotificationName(TimelineNotification.rect.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
@@ -101,11 +102,11 @@ final class TimelineHandler {
         let pairedID = pair ?? app
         switch timelineViewController.timelineType {
         case .month:
-            timelineViewController.updateCollectionViews(to: (day: date.day, month: date.month + (appID - pairedID), year: date.year))
+            timelineViewController.updateCollectionViews(to: TimelineDate(day: date.day, month: date.month + (appID - pairedID), year: date.year))
         case .year:
-            timelineViewController.updateCollectionViews(to: (day: date.day, month: date.month, year: date.year + (appID - pairedID)))
+            timelineViewController.updateCollectionViews(to: TimelineDate(day: date.day, month: date.month, year: date.year + (appID - pairedID)))
         case .decade:
-            timelineViewController.updateCollectionViews(to: (day: date.day, month: date.month, year: date.year + (appID - pairedID) * 10))
+            timelineViewController.updateCollectionViews(to: TimelineDate(day: date.day, month: date.month, year: date.year + (appID - pairedID) * 10))
         case .century:
             return
         }
