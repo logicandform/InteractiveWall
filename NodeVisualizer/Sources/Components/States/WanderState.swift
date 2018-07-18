@@ -31,6 +31,7 @@ class WanderState: GKState {
 
         entity.renderComponent.recordNode.removeAllActions()
         entity.movementComponent.entityToSeek = nil
+        entity.movementComponent.requestedMovementState = nil
 
         entity.hasCollidedWithBoundingNode = false
     }

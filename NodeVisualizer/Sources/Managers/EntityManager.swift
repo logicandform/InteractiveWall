@@ -111,10 +111,10 @@ final class EntityManager {
         }
 
         allEntitiesInFormedState.removeAll()
-        reset()
+        clearLevelEntities()
     }
 
-    func reset() {
+    func clearLevelEntities() {
         entitiesInLevel.removeAll()
         allLevelEntities.removeAll()
     }

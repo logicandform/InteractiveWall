@@ -51,6 +51,8 @@ class RecordEntity: GKEntity {
     /// Indicates whether or not the entity has made contact its bounding level node. This property is used to for the bounding level node's changing size.
     var hasCollidedWithBoundingNode = false
 
+    var levelState: (previousLevel: Int?, currentLevel: Int?) = (nil, nil)
+
 
     // MARK: Initializer
 

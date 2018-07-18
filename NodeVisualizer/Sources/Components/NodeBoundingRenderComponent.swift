@@ -13,6 +13,9 @@ class NodeBoundingRenderComponent: GKComponent {
     /// The maximum distance between the root and the contactEntities for this bounding entity
     var maxRadius: CGFloat = NodeConfiguration.Record.physicsBodyRadius + 5.0
 
+    /// The minimum radius of its own responsible level's bounding node. It is the radius of the bounding node without considering its contactEntities
+    var minRadius: CGFloat = NodeConfiguration.Record.physicsBodyRadius + 5.0
+
     /// The node bounding level that the component is responsible for
     var level: Int!
 
@@ -65,6 +68,7 @@ class NodeBoundingRenderComponent: GKComponent {
 
             // set its maxRadius to the previous level bounding node's maxRadius so that the next level bounding node can scale to the correct size
             maxRadius = previousLevelBoundingNodeMaxRadius
+            minRadius = previousLevelBoundingNodeMaxRadius
             previousLevelMaxDistance = previousLevelBoundingNodeMaxRadius
 
             // create new physicsBody based on the previous level bounding node's maxRadius. Scaling its own bounding node causes "stuck collisions" to its physicsBody

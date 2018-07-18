@@ -170,7 +170,12 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
         switch entity.intelligenceComponent.stateMachine.currentState {
         case is SeekState:
-            EntityManager.instance.reset()
+
+            for entity in EntityManager.instance.allLevelEntities {
+                entity.levelState.previousLevel = entity.levelState.currentLevel
+            }
+
+            EntityManager.instance.clearLevelEntities()
             EntityManager.instance.associateRelatedEntities(for: [entity])
 
             let difference = EntityManager.instance.allEntitiesInFormedState.symmetricDifference(EntityManager.instance.allLevelEntities)
@@ -179,8 +184,12 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
             } else {
                 createLevelConnections(for: entity)
             }
+
         case is WanderState:
             createLevelConnections(for: entity)
+
+            // remember to reset the levelStates for the entities
+
         default:
             return
         }
