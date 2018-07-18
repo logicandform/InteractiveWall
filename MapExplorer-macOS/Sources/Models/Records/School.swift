@@ -34,6 +34,6 @@ class School: Record {
         self.id = id
         self.title = title
         self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        self.dates = Dates(date: date)
+        self.dates = Dates(date)
     }
 }
