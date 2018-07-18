@@ -638,7 +638,11 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
             timelineRect.origin.x = timelineYearMaxX + timelineRect.origin.x
         }
 
+//        timelineCollectionView.scrollToVisible(timelineRect)
+        timelineCollectionView.layoutSubtreeIfNeeded()
         timelineCollectionView.scrollToVisible(timelineRect)
+
+//        timelineCollectionView.frame = timelineRect
         if isMonthLayout {
 //            timelineCollectionView.reloadData()
         }
