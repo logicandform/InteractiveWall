@@ -119,6 +119,8 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     override func viewDidAppear() {
         super.viewDidAppear()
         setupControlGradients()
+        setDate(Constants.initialDate)
+        timelineCollectionView.collectionViewLayout?.invalidateLayout()
     }
 
 
@@ -637,15 +639,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         if timelineRect.origin.x < 0 {
             timelineRect.origin.x = timelineYearMaxX + timelineRect.origin.x
         }
-
-//        timelineCollectionView.scrollToVisible(timelineRect)
-        timelineCollectionView.layoutSubtreeIfNeeded()
         timelineCollectionView.scrollToVisible(timelineRect)
-
-//        timelineCollectionView.frame = timelineRect
-        if isMonthLayout {
-//            timelineCollectionView.reloadData()
-        }
     }
 
     private func decadeFor(year: Int) -> Int {

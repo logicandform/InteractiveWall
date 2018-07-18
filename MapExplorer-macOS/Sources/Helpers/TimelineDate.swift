@@ -29,14 +29,11 @@ struct TimelineDate {
     }
 
     init?(json: JSON) {
-        if let day = json["day"] as? CGFloat, let month = json["month"] as? Int, let year = json["year"] as? Int {
-            self.day = day
-            self.month = month
-            self.year = year
-        } else {
-            self.day = 0
-            self.month = 0
-            self.year = 0
+        guard let day = json["day"] as? CGFloat, let month = json["month"] as? Int, let year = json["year"] as? Int else {
+            return nil
         }
+        self.day = day
+        self.month = month
+        self.year = year
     }
 }

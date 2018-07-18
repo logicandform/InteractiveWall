@@ -17,7 +17,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
 
     private struct Constants {
         static let screenWidth: CGFloat = 1920
-        static let firstYear = 1867
+        static let firstYear = 1860
         static let lastYear = 1980
     }
 
