@@ -40,16 +40,19 @@ class TimelineItemView: NSCollectionViewItem {
 
     // MARK: API
 
-    func set(highlighted: Bool) {
-        if highlighted {
-            contentView.layer?.backgroundColor = tintColor.cgColor
+    func set(selected: Bool, with layout: TimelineType) {
+        if selected {
+            view.frame.size.width = CGFloat(layout.sectionWidth * 2)
+            highlightViewWidthConstraint.constant = CGFloat(layout.sectionWidth * 2)
         } else {
-            contentView.layer?.backgroundColor = style.darkBackground.cgColor
+            view.frame.size.width = CGFloat(layout.sectionWidth)
+            highlightViewWidthConstraint.constant = Constants.unselectedHighlightWidth
         }
+        contentViewTrailingConstraint.constant = Constants.textOffset
     }
 
     func animate(to size: CGSize) {
-        if size.width > view.frame.size.width {
+        if size.width >= view.frame.size.width {
             expand(to: size)
         } else {
             compress(to: size)

@@ -11,7 +11,7 @@
                 <outlet property="contentView" destination="C4u-6g-tKh" id="cXA-Ye-Bzz"/>
                 <outlet property="contentViewTrailingConstraint" destination="D7t-xe-H14" id="VTR-YY-dyR"/>
                 <outlet property="highlightView" destination="xmo-R1-THM" id="o9M-FK-vdj"/>
-                <outlet property="highlightViewWidthConstraint" destination="HxO-1w-ihB" id="0k0-Mk-Sad"/>
+                <outlet property="highlightViewWidthConstraint" destination="HxO-1w-ihB" id="sal-dJ-NHp"/>
                 <outlet property="titleTextField" destination="RX4-ER-hWk" id="Xgk-rH-UQF"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
