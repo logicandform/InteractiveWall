@@ -16,7 +16,6 @@ class Dates {
 
     private struct Constants {
         let monthLength = 31
-        let startEndTransition = "-"
     }
 
 
