@@ -351,13 +351,13 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     }
 
     private func centeredPosition(for frame: CGSize) -> CGPoint {
-        guard let buttonWindowPosition = menuView.window?.frame else {
+        guard let menuWindowPosition = menuView.window?.frame else {
             return CGPoint.zero
         }
 
-        let buttonOrigin = buttonWindowPosition.transformed(from: menuView.frame).origin
+        let menuOrigin = menuWindowPosition.transformed(from: menuView.frame).origin
         let screenBounds = NSScreen.at(appID: appID).frame
-        let windowBottom = buttonOrigin.y + menuView.frame.height - frame.height
+        let windowBottom = menuOrigin.y + menuView.frame.height - frame.height
 
         let screenMin = screenBounds.minX
         let halfAppWidth = screenBounds.width / CGFloat(Configuration.appsPerScreen) / 2
