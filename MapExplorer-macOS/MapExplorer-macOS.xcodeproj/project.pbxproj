@@ -68,6 +68,7 @@
 		22B85AF8209B7A6D0099F44E /* GestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B85AF2209B7A6D0099F44E /* GestureRecognizer.swift */; };
 		22B85AF9209B7A6D0099F44E /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B85AF3209B7A6D0099F44E /* TapGestureRecognizer.swift */; };
 		22B85AFA209B7A6D0099F44E /* PinchGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B85AF4209B7A6D0099F44E /* PinchGestureRecognizer.swift */; };
+		22C00ABB21010CB5004020F0 /* TimelineDateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C00ABA21010CB5004020F0 /* TimelineDateTests.swift */; };
 		22D6F91E20B6836900C7FB5F /* NSApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F91D20B6836800C7FB5F /* NSApplication.swift */; };
 		22EF0FA8202B847200571002 /* CachingNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EF0FA7202B847200571002 /* CachingNetwork.swift */; };
 		22F0EDF82066D9500075E467 /* TouchListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F0EDF72066D9500075E467 /* TouchListener.swift */; };
@@ -87,6 +88,16 @@
 		A44F1B6520FEAF8B005FEFD1 /* TimelineDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44F1B6420FEAF8B005FEFD1 /* TimelineDate.swift */; };
 		A454A65B20F7F95200619730 /* TimelineDecadeLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A454A65A20F7F95200619730 /* TimelineDecadeLayout.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		22C00ABD21010CB5004020F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 22290BFD2028F9EC000E0573 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 22290C042028F9EC000E0573;
+			remoteInfo = "MapExplorer-macOS";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		22A923132044A1D2003EA9BB /* Embed XPC Services */ = {
@@ -166,6 +177,9 @@
 		22B85AF2209B7A6D0099F44E /* GestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureRecognizer.swift; sourceTree = "<group>"; };
 		22B85AF3209B7A6D0099F44E /* TapGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapGestureRecognizer.swift; sourceTree = "<group>"; };
 		22B85AF4209B7A6D0099F44E /* PinchGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinchGestureRecognizer.swift; sourceTree = "<group>"; };
+		22C00AB821010CB5004020F0 /* MapExplorer-macOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MapExplorer-macOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		22C00ABA21010CB5004020F0 /* TimelineDateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDateTests.swift; sourceTree = "<group>"; };
+		22C00ABC21010CB5004020F0 /* Tests.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Tests.plist; sourceTree = "<group>"; };
 		22D6F91D20B6836800C7FB5F /* NSApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSApplication.swift; sourceTree = "<group>"; };
 		22EF0FA7202B847200571002 /* CachingNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachingNetwork.swift; sourceTree = "<group>"; };
 		22F0EDF72066D9500075E467 /* TouchListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchListener.swift; sourceTree = "<group>"; };
@@ -198,6 +212,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				67C759AB770299C488231A9D /* Pods_All_MapExplorer_macOS.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		22C00AB521010CB5004020F0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,6 +283,7 @@
 				22290C3D2028FE99000E0573 /* Resources */,
 				22290C322028FA34000E0573 /* Extensions */,
 				22290C072028F9EC000E0573 /* Metadata */,
+				22C00AB921010CB5004020F0 /* Tests */,
 				22290C062028F9EC000E0573 /* Products */,
 				8F71A70A409CF5D890B51883 /* Pods */,
 				54917AC90A012134E9DA525B /* Frameworks */,
@@ -272,6 +294,7 @@
 			isa = PBXGroup;
 			children = (
 				22290C052028F9EC000E0573 /* MapExplorer-macOS.app */,
+				22C00AB821010CB5004020F0 /* MapExplorer-macOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -461,6 +484,15 @@
 			path = Gestures;
 			sourceTree = "<group>";
 		};
+		22C00AB921010CB5004020F0 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				22C00ABC21010CB5004020F0 /* Tests.plist */,
+				22C00ABA21010CB5004020F0 /* TimelineDateTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
 		22FEF1E4202D079B001E9596 /* GestureDemoController */ = {
 			isa = PBXGroup;
 			children = (
@@ -522,13 +554,31 @@
 			productReference = 22290C052028F9EC000E0573 /* MapExplorer-macOS.app */;
 			productType = "com.apple.product-type.application";
 		};
+		22C00AB721010CB5004020F0 /* MapExplorer-macOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 22C00AC121010CB5004020F0 /* Build configuration list for PBXNativeTarget "MapExplorer-macOSTests" */;
+			buildPhases = (
+				22C00AB421010CB5004020F0 /* Sources */,
+				22C00AB521010CB5004020F0 /* Frameworks */,
+				22C00AB621010CB5004020F0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				22C00ABE21010CB5004020F0 /* PBXTargetDependency */,
+			);
+			name = "MapExplorer-macOSTests";
+			productName = "MapExplorer-macOSTests";
+			productReference = 22C00AB821010CB5004020F0 /* MapExplorer-macOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		22290BFD2028F9EC000E0573 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0920;
+				LastSwiftUpdateCheck = 0940;
 				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = JABT;
 				TargetAttributes = {
@@ -541,6 +591,11 @@
 								enabled = 0;
 							};
 						};
+					};
+					22C00AB721010CB5004020F0 = {
+						CreatedOnToolsVersion = 9.4.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 22290C042028F9EC000E0573;
 					};
 				};
 			};
@@ -558,6 +613,7 @@
 			projectRoot = "";
 			targets = (
 				22290C042028F9EC000E0573 /* MapExplorer-macOS */,
+				22C00AB721010CB5004020F0 /* MapExplorer-macOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -576,6 +632,13 @@
 				22290C0D2028F9EC000E0573 /* Assets.xcassets in Resources */,
 				2200500220E2B17F00B1E740 /* vhec_map_points.json in Resources */,
 				22290C102028F9EC000E0573 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		22C00AB621010CB5004020F0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -719,7 +782,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		22C00AB421010CB5004020F0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22C00ABB21010CB5004020F0 /* TimelineDateTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		22C00ABE21010CB5004020F0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 22290C042028F9EC000E0573 /* MapExplorer-macOS */;
+			targetProxy = 22C00ABD21010CB5004020F0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		22290C0E2028F9EC000E0573 /* Main.storyboard */ = {
@@ -851,6 +930,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = NO;
@@ -859,6 +939,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "is.jabt.MapExplorer-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Metadata/MapExplorer-macOS-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
@@ -871,6 +952,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = NO;
@@ -879,8 +961,43 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "is.jabt.MapExplorer-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Metadata/MapExplorer-macOS-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
+			};
+			name = Release;
+		};
+		22C00ABF21010CB5004020F0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = M6262HME76;
+				INFOPLIST_FILE = Tests/Tests.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "is.slant.MapExplorer-macOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MapExplorer-macOS.app/Contents/MacOS/MapExplorer-macOS";
+			};
+			name = Debug;
+		};
+		22C00AC021010CB5004020F0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = M6262HME76;
+				INFOPLIST_FILE = Tests/Tests.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "is.slant.MapExplorer-macOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MapExplorer-macOS.app/Contents/MacOS/MapExplorer-macOS";
 			};
 			name = Release;
 		};
@@ -901,6 +1018,15 @@
 			buildConfigurations = (
 				22290C162028F9EC000E0573 /* Debug */,
 				22290C172028F9EC000E0573 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		22C00AC121010CB5004020F0 /* Build configuration list for PBXNativeTarget "MapExplorer-macOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				22C00ABF21010CB5004020F0 /* Debug */,
+				22C00AC021010CB5004020F0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
