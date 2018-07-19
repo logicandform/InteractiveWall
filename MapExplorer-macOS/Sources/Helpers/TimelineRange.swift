@@ -22,7 +22,7 @@ class TimelineRange {
             return
         }
 
-        let dateArray = date.componentsSeparatedBy(separators: " -,.")
+        let dateArray = date.componentsSeparatedBy(separators: " -,./")
         if dateArray.first(where: { !$0.isNumerical }) == nil {
             parseNumerical(dateArray: dateArray)
         } else {

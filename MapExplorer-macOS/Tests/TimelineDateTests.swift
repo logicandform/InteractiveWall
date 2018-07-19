@@ -6,17 +6,6 @@ import XCTest
 @testable import MapExplorer_macOS
 class TimelineDateTests: XCTestCase {
 
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-
-
     // MARK: Standard Format, Same Start/End
 
     func testStandardSingleDate() {
@@ -36,14 +25,31 @@ class TimelineDateTests: XCTestCase {
         XCTAssert(false)
     }
 
+    func testStandardSingleDateTwo() {
+        let dateRange = TimelineRange("August 19th, 1976")
+        let expectedDay = CGFloat(19.0/31.0)
+        let expectedMonth = 7
+        let expectedYear = 1976
+        if let startDay = dateRange.startDate.day, let endDay = dateRange.endDate.day, let startMonth = dateRange.startDate.month, let endMonth = dateRange.endDate.month, let startYear = dateRange.startDate.year, let endYear = dateRange.endDate.year {
+            XCTAssert(startDay.isEqual(to: expectedDay))
+            XCTAssert(endDay.isEqual(to: expectedDay))
+            XCTAssert(startMonth == expectedMonth)
+            XCTAssert(endMonth == expectedMonth)
+            XCTAssert(startYear == expectedYear)
+            XCTAssert(endYear == expectedYear)
+            return
+        }
+        XCTAssert(false)
+    }
+
 
     // MARK: Standard Format, Different Start/End
 
     func testDifferentStartEnd() {
-        let dateRange = TimelineRange("October 19, 2019 - December 1, 2125")
-        let expectedStartDay = CGFloat(19.0/31.0)
+        let dateRange = TimelineRange("January 31, 2019 - December 1, 2125")
+        let expectedStartDay = CGFloat(31.0/31.0)
         let expectedEndDay = CGFloat(1.0/31.0)
-        let expectedStartMonth = 9
+        let expectedStartMonth = 0
         let expectedEndMonth = 11
         let expectedStartYear = 2019
         let expectedEndYear = 2125
@@ -124,6 +130,43 @@ class TimelineDateTests: XCTestCase {
 
     func testTwoNumericalDates() {
         let dateRange = TimelineRange("30.12.1932-6.05.1968")
+        let expectedStartDay = CGFloat(30.0/31.0)
+        let expectedEndDay = CGFloat(6.0/31.0)
+        let expectedStartMonth = 11
+        let expectedEndMonth = 4
+        let expectedStartYear = 1932
+        let expectedEndYear = 1968
+        if let startDay = dateRange.startDate.day, let endDay = dateRange.endDate.day, let startMonth = dateRange.startDate.month, let endMonth = dateRange.endDate.month, let startYear = dateRange.startDate.year, let endYear = dateRange.endDate.year {
+            XCTAssert(startDay == expectedStartDay)
+            XCTAssert(endDay == expectedEndDay)
+            XCTAssert(startMonth == expectedStartMonth)
+            XCTAssert(endMonth == expectedEndMonth)
+            XCTAssert(startYear == expectedStartYear)
+            XCTAssert(endYear == expectedEndYear)
+            return
+        }
+        XCTAssert(false)
+    }
+
+    func testNumericalDateTwo() {
+        let dateRange = TimelineRange("30/12/1932")
+        let expectedDay = CGFloat(30.0/31.0)
+        let expectedMonth = 11
+        let expectedYear = 1932
+        if let startDay = dateRange.startDate.day, let endDay = dateRange.endDate.day, let startMonth = dateRange.startDate.month, let endMonth = dateRange.endDate.month, let startYear = dateRange.startDate.year, let endYear = dateRange.endDate.year {
+            XCTAssert(startDay == expectedDay)
+            XCTAssert(endDay == expectedDay)
+            XCTAssert(startMonth == expectedMonth)
+            XCTAssert(endMonth == expectedMonth)
+            XCTAssert(startYear == expectedYear)
+            XCTAssert(endYear == expectedYear)
+            return
+        }
+        XCTAssert(false)
+    }
+
+    func testTwoNumericalDatesTwo() {
+        let dateRange = TimelineRange("30/12/1932-6/05/1968")
         let expectedStartDay = CGFloat(30.0/31.0)
         let expectedEndDay = CGFloat(6.0/31.0)
         let expectedStartMonth = 11
