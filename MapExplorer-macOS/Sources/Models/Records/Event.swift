@@ -9,7 +9,7 @@ class Event: Record {
     let type = RecordType.event
     let title: String
     var coordinate: CLLocationCoordinate2D
-    let date: TimelineRange?
+    let dates: TimelineRange?
 
     private struct Keys {
         static let id = "id"
@@ -34,6 +34,6 @@ class Event: Record {
         self.id = id
         self.title = title
         self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        self.date = TimelineRange(date)
+        self.dates = TimelineRange(date)
     }
 }
