@@ -36,7 +36,6 @@ class TimelineRange {
     private func parseNumerical(dateArray: [String]) {
         for date in dateArray {
             if let numericalDate = Int(date) {
-
                 if startDate.day == nil, days.contains(numericalDate) {
                     startDate.day = CGFloat(numericalDate) / CGFloat(maximumDay)
                 } else if startDate.month == nil, months.contains(numericalDate) {
@@ -75,6 +74,12 @@ class TimelineRange {
             }
 
             if let day = Int(date), days.contains(day) {
+                if startDate.day == nil {
+                    startDate.day = CGFloat(day) / CGFloat(maximumDay)
+                } else {
+                    endDate.day = CGFloat(day) / CGFloat(maximumDay)
+                }
+            } else if let day = Int(date.digitsInString), days.contains(day) {
                 if startDate.day == nil {
                     startDate.day = CGFloat(day) / CGFloat(maximumDay)
                 } else {

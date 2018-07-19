@@ -42,6 +42,23 @@ class TimelineDateTests: XCTestCase {
         XCTAssert(false)
     }
 
+    func testStandardSingleDateThree() {
+        let dateRange = TimelineRange("11th May, 2010")
+        let expectedDay = CGFloat(11.0/31.0)
+        let expectedMonth = 4
+        let expectedYear = 2010
+        if let startDay = dateRange.startDate.day, let endDay = dateRange.endDate.day, let startMonth = dateRange.startDate.month, let endMonth = dateRange.endDate.month, let startYear = dateRange.startDate.year, let endYear = dateRange.endDate.year {
+            XCTAssert(startDay.isEqual(to: expectedDay))
+            XCTAssert(endDay.isEqual(to: expectedDay))
+            XCTAssert(startMonth == expectedMonth)
+            XCTAssert(endMonth == expectedMonth)
+            XCTAssert(startYear == expectedYear)
+            XCTAssert(endYear == expectedYear)
+            return
+        }
+        XCTAssert(false)
+    }
+
 
     // MARK: Standard Format, Different Start/End
 
@@ -51,6 +68,46 @@ class TimelineDateTests: XCTestCase {
         let expectedEndDay = CGFloat(1.0/31.0)
         let expectedStartMonth = 0
         let expectedEndMonth = 11
+        let expectedStartYear = 2019
+        let expectedEndYear = 2125
+        if let startDay = dateRange.startDate.day, let endDay = dateRange.endDate.day, let startMonth = dateRange.startDate.month, let endMonth = dateRange.endDate.month, let startYear = dateRange.startDate.year, let endYear = dateRange.endDate.year {
+            XCTAssert(startDay == expectedStartDay)
+            XCTAssert(endDay == expectedEndDay)
+            XCTAssert(startMonth == expectedStartMonth)
+            XCTAssert(endMonth == expectedEndMonth)
+            XCTAssert(startYear == expectedStartYear)
+            XCTAssert(endYear == expectedEndYear)
+            return
+        }
+        XCTAssert(false)
+    }
+
+    func testDifferentStartEndTwo() {
+        let dateRange = TimelineRange("June 28th, 2019 - March 1st, 2125")
+        let expectedStartDay = CGFloat(28.0/31.0)
+        let expectedEndDay = CGFloat(1.0/31.0)
+        let expectedStartMonth = 5
+        let expectedEndMonth = 2
+        let expectedStartYear = 2019
+        let expectedEndYear = 2125
+        if let startDay = dateRange.startDate.day, let endDay = dateRange.endDate.day, let startMonth = dateRange.startDate.month, let endMonth = dateRange.endDate.month, let startYear = dateRange.startDate.year, let endYear = dateRange.endDate.year {
+            XCTAssert(startDay == expectedStartDay)
+            XCTAssert(endDay == expectedEndDay)
+            XCTAssert(startMonth == expectedStartMonth)
+            XCTAssert(endMonth == expectedEndMonth)
+            XCTAssert(startYear == expectedStartYear)
+            XCTAssert(endYear == expectedEndYear)
+            return
+        }
+        XCTAssert(false)
+    }
+
+    func testDifferentStartEndThree() {
+        let dateRange = TimelineRange("1st January, 2019 - 2nd February, 2125")
+        let expectedStartDay = CGFloat(1.0/31.0)
+        let expectedEndDay = CGFloat(2.0/31.0)
+        let expectedStartMonth = 0
+        let expectedEndMonth = 1
         let expectedStartYear = 2019
         let expectedEndYear = 2125
         if let startDay = dateRange.startDate.day, let endDay = dateRange.endDate.day, let startMonth = dateRange.startDate.month, let endMonth = dateRange.endDate.month, let startYear = dateRange.startDate.year, let endYear = dateRange.endDate.year {
