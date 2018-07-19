@@ -101,14 +101,22 @@ final class TimelineHandler {
         let pairedID = pair ?? app
         switch timelineViewController.timelineType {
         case .month:
-            return TimelineDate(day: date.day, month: date.month + (appID - pairedID), year: date.year)
+            if let month = date.month {
+                return TimelineDate(day: date.day, month: month + (appID - pairedID), year: date.year)
+            }
         case .year:
-            return TimelineDate(day: date.day, month: date.month, year: date.year + (appID - pairedID))
+            if let year = date.year {
+                return TimelineDate(day: date.day, month: date.month, year: year + (appID - pairedID))
+            }
         case .decade:
-            return TimelineDate(day: date.day, month: date.month, year: date.year + (appID - pairedID) * 10)
+            if let year = date.year {
+                return TimelineDate(day: date.day, month: date.month, year: year + (appID - pairedID) * 10)
+            }
         case .century:
             return nil
         }
+
+        return nil
     }
 
     /// Resets the pairedDeviceID after a timeout period
