@@ -20,7 +20,7 @@ class NodeBoundingRenderComponent: GKComponent {
     var level: Int!
 
     /// Local variable of the previous level's bounding node maxRadius. Used to determine its own level's bounding node maxRadius
-    private var previousLevelMaxDistance: CGFloat = 0.0
+    private var previousLevelMaxDistance: CGFloat = NodeConfiguration.Record.physicsBodyRadius + 5.0
 
     private struct Constants {
         static let minimumOffset: CGFloat = NodeConfiguration.Record.physicsBodyRadius

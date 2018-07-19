@@ -43,8 +43,8 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         let deltaTime = currentTime - lastUpdateTimeInterval
         lastUpdateTimeInterval = currentTime
 
-        EntityManager.instance.update(deltaTime)
         NodeBoundingManager.instance.update(deltaTime)
+        EntityManager.instance.update(deltaTime)
 
         // keep the nodes facing 0 degrees (i.e. no rotation when affected by physics simulation)
         for case let node as RecordNode in children {

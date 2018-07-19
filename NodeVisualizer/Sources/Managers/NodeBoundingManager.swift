@@ -89,6 +89,7 @@ final class NodeBoundingManager {
             let nodeBoundingEntity = NodeBoundingEntity()
             nodeBoundingEntity.nodeBoundingRenderComponent.node = boundingNode
             nodeBoundingEntity.nodeBoundingRenderComponent.maxRadius = radius
+            nodeBoundingEntity.nodeBoundingRenderComponent.minRadius = radius
             nodeBoundingEntity.nodeBoundingRenderComponent.level = level
             add(nodeBoundingEntity, toLevel: level)
 
