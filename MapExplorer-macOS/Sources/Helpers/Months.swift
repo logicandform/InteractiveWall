@@ -18,30 +18,30 @@ enum Month: Int {
     case december
 
     init?(abbreviation: String) {
-        switch abbreviation {
-        case "JAN":
+        switch abbreviation.lowercased() {
+        case "jan":
             self = .january
-        case "FEB":
+        case "feb":
             self = .february
-        case "MAR":
+        case "mar":
             self = .march
-        case "APR":
+        case "apr":
             self = .april
-        case "MAY":
+        case "may":
             self = .may
-        case "JUN":
+        case "jun":
             self = .june
-        case "JUL":
+        case "jul":
             self = .july
-        case "AUG":
+        case "aug":
             self = .august
-        case "SEP":
+        case "sep":
             self = .september
-        case "OCT":
+        case "oct":
             self = .october
-        case "NOV":
+        case "nov":
             self = .november
-        case "DEC":
+        case "dec":
             self = .december
         default:
             return nil
