@@ -105,7 +105,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     // MARK: NSCollectionViewDataSource
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return events.count + 10
+        return events.count + years.count + 10
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
@@ -113,8 +113,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
             return NSCollectionViewItem()
         }
 
-//        timelineItem.event = events[indexPath.item % events.count]
-        timelineItem.event = events.at(index: indexPath.item % events.count)
+        timelineItem.event = events[indexPath.item]
         timelineItem.set(selected: selectedIndexes.contains(indexPath.item), with: type)
         return timelineItem
     }

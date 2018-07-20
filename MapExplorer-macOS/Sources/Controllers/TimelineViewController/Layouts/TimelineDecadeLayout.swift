@@ -30,7 +30,7 @@ class TimelineDecadeLayout: NSCollectionViewFlowLayout {
             return .zero
         }
 
-        let totalYears = source.lastYear - source.firstYear + 1
+        let totalYears = source.lastYear - source.firstYear + 11
         let width = CGFloat(totalYears * type.sectionWidth)
         return CGSize(width: width, height: itemSize.height)
     }
