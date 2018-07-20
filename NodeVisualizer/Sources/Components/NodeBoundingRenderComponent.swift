@@ -68,7 +68,7 @@ class NodeBoundingRenderComponent: GKComponent {
 
             // set its maxRadius to the previous level bounding node's maxRadius so that the next level bounding node can scale to the correct size
             maxRadius = previousLevelBoundingNodeMaxRadius
-            minRadius = previousLevelBoundingNodeMaxRadius
+            minRadius = updatedPhysicsBodyRadius
             previousLevelMaxDistance = previousLevelBoundingNodeMaxRadius
 
             // create new physicsBody based on the previous level bounding node's maxRadius. Scaling its own bounding node causes "stuck collisions" to its physicsBody

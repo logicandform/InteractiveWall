@@ -20,6 +20,7 @@ class TappedState: GKState {
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
 
+        // set the tapped entity's level to -1 since it does not belong to a well defined level
         entity.levelState.currentLevel = -1
 
         // physics
@@ -32,48 +33,21 @@ class TappedState: GKState {
             entity.animationComponent.requestedAnimationState = .goToPoint(centerPoint)
         }
 
-        // move the tapped entity and all of its descendants to the appropriate state
-        let entitiesInLevel = EntityManager.instance.entitiesInLevel
-
-        for (level, entities) in entitiesInLevel.enumerated() {
-            guard let nodeBoundingEntity = NodeBoundingManager.instance.nodeBoundingEntityForLevel[level],
-                let boundingNode = nodeBoundingEntity.nodeBoundingRenderComponent.node else {
-                    continue
-            }
-
+        // move the tapped entity's descendants to the appropriate state with appropriate movement
+        for (level, entities) in EntityManager.instance.entitiesInLevel.enumerated() {
             for entity in entities {
                 entity.levelState.currentLevel = level
 
-                if let entityPreviousLevel = entity.levelState.previousLevel, let entityCurrentLevel = entity.levelState.currentLevel {
-
-                    if entityCurrentLevel >= entityPreviousLevel {
-                        entity.movementComponent.requestedMovementState = .moveToAppropriateLevel
-                        entity.movementComponent.entityToSeek = self.entity
-
-                        entity.physicsComponent.physicsBody.categoryBitMask = 0x1 << 30
-                        entity.physicsComponent.physicsBody.collisionBitMask = 0x1 << 30
-                        entity.physicsComponent.physicsBody.contactTestBitMask = 0x1 << 30
-
-                    } else {
-                        entity.physicsComponent.physicsBody.categoryBitMask = boundingNode.physicsBody!.categoryBitMask
-                        entity.physicsComponent.physicsBody.collisionBitMask = boundingNode.physicsBody!.collisionBitMask
-                        entity.physicsComponent.physicsBody.contactTestBitMask = boundingNode.physicsBody!.contactTestBitMask
-
-                        entity.movementComponent.requestedMovementState = .seekEntity(self.entity)
-                        entity.intelligenceComponent.stateMachine.enter(SeekState.self)
-                    }
-
+                if let previousLevel = entity.levelState.previousLevel, let currentLevel = entity.levelState.currentLevel, currentLevel >= previousLevel {
+                    entity.physicsComponent.setAvoidanceProperties()
+                    entity.movementComponent.requestedMovementState = .moveToAppropriateLevel
+                    entity.movementComponent.entityToSeek = self.entity
                 } else {
-                    entity.physicsComponent.physicsBody.categoryBitMask = boundingNode.physicsBody!.categoryBitMask
-                    entity.physicsComponent.physicsBody.collisionBitMask = boundingNode.physicsBody!.collisionBitMask
-                    entity.physicsComponent.physicsBody.contactTestBitMask = boundingNode.physicsBody!.contactTestBitMask
-
+                    entity.physicsComponent.setBitMasks(forLevel: level)
                     entity.movementComponent.requestedMovementState = .seekEntity(self.entity)
                     entity.intelligenceComponent.stateMachine.enter(SeekState.self)
                 }
-
             }
-
         }
     }
 

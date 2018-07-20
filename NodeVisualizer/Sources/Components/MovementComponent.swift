@@ -47,7 +47,7 @@ class MovementComponent: GKComponent {
     private struct Constants {
         static let strength: CGFloat = 1000
         static let dt: CGFloat = 1 / 5000
-        static let distancePadding: CGFloat = -50
+        static let distancePadding: CGFloat = -15
     }
 
 
@@ -115,7 +115,14 @@ class MovementComponent: GKComponent {
         let deltaY = renderComponent.recordNode.position.y - referenceNode.position.y
         let displacement = CGVector(dx: deltaX, dy: deltaY)
         let distanceBetweenNodeAndCenter = distanceOf(x: deltaX, y: deltaY)
-        let unitVector = CGVector(dx: displacement.dx / distanceBetweenNodeAndCenter, dy: displacement.dy / distanceBetweenNodeAndCenter)
+
+        var unitVector: CGVector
+        // check whether the entity is currently in the center in order to apply a non-zero unit vector for movement
+        if distanceBetweenNodeAndCenter > 0 {
+            unitVector = CGVector(dx: displacement.dx / distanceBetweenNodeAndCenter, dy: displacement.dy / distanceBetweenNodeAndCenter)
+        } else {
+            unitVector = CGVector(dx: 0.5, dy: 0)
+        }
 
         // find the difference in distance. This gives the total distance that is left to travel for the node
         guard let currentLevel = entity.levelState.currentLevel,

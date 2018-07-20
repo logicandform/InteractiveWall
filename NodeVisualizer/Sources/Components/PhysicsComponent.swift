@@ -11,7 +11,6 @@ import GameplayKit
 
 
 class PhysicsComponent: GKComponent {
-    typealias CategoryBitMask = Int
 
     private(set) var physicsBody: SKPhysicsBody
 
@@ -60,6 +59,7 @@ class PhysicsComponent: GKComponent {
 
             if contactedEntity.hasCollidedWithBoundingNode && !recordEntity.hasCollidedWithBoundingNode {
                 recordEntity.hasCollidedWithBoundingNode = true
+                return
             }
         }
     }
@@ -67,16 +67,20 @@ class PhysicsComponent: GKComponent {
 
     // MARK: API
 
-    func setCategoryBitMask(bitmask: CategoryBitMask) {
-        physicsBody.categoryBitMask = UInt32(bitmask)
+    func setBitMasks(forLevel level: Int) {
+        if let boundingNode = NodeBoundingManager.instance.nodeBoundingEntityForLevel[level]?.nodeBoundingRenderComponent.node,
+            let boundingNodePhysicsBody = boundingNode.physicsBody {
+            physicsBody.categoryBitMask = boundingNodePhysicsBody.categoryBitMask
+            physicsBody.collisionBitMask = boundingNodePhysicsBody.collisionBitMask
+            physicsBody.contactTestBitMask = boundingNodePhysicsBody.contactTestBitMask
+        }
     }
 
-    func setFieldBitMask(bitmask: CategoryBitMask) {
-        physicsBody.fieldBitMask = UInt32(bitmask)
-    }
-
-    func reset() {
-        physicsBody.fieldBitMask = Constants.resetBitMask
+    func setAvoidanceProperties() {
+        physicsBody.categoryBitMask = 0x1 << 30
+        physicsBody.collisionBitMask = 0x1 << 30
+        physicsBody.contactTestBitMask = 0x1 << 30
+        physicsBody.isDynamic = true
     }
 
 
