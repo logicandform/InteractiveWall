@@ -11,6 +11,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     let firstYear = Constants.firstYear
     let lastYear = Constants.lastYear
     let width = Constants.screenWidth
+    private let years = Array(Constants.firstYear...Constants.lastYear)
     private(set) var events = [TimelineEvent]()
     private(set) var eventsForYear = [Int: [TimelineEvent]]()
     private(set) var eventsForMonth = [Int: [Month: [TimelineEvent]]]()
@@ -104,7 +105,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     // MARK: NSCollectionViewDataSource
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return events.count
+        return events.count + 10
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
@@ -112,7 +113,8 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
             return NSCollectionViewItem()
         }
 
-        timelineItem.event = events[indexPath.item]
+//        timelineItem.event = events[indexPath.item % events.count]
+        timelineItem.event = events.at(index: indexPath.item % events.count)
         timelineItem.set(selected: selectedIndexes.contains(indexPath.item), with: type)
         return timelineItem
     }
@@ -127,10 +129,15 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
             let month = Month.allValues[indexPath.item % Month.allValues.count]
             headerView.textLabel.stringValue = month.abbreviation
         case .year, .decade, .century:
-            let year = firstYear + indexPath.item
+            let year = firstYear + (indexPath.item % years.count)
             headerView.textLabel.stringValue = year.description
         }
 
         return headerView
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
+        let height = collectionView.superview!.frame.size.height
+        return CGSize(width: 192, height: 60)
     }
 }
