@@ -10,6 +10,7 @@ class TimelineMonthLayout: NSCollectionViewFlowLayout {
     private struct Constants {
         static let cellSize = CGSize(width: 240, height: 60)
         static let headerHeight: CGFloat = 20
+        static let infiniteScrollBuffer = 11
     }
 
 
@@ -29,7 +30,7 @@ class TimelineMonthLayout: NSCollectionViewFlowLayout {
             return .zero
         }
 
-        let totalYears = source.lastYear - source.firstYear + 1
+        let totalYears = source.lastYear - source.firstYear + Constants.infiniteScrollBuffer
         let totalMonths = totalYears * 12
         let width = CGFloat(totalMonths * type.sectionWidth)
         return CGSize(width: width, height: itemSize.height)

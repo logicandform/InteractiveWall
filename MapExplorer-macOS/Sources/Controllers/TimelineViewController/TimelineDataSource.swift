@@ -11,7 +11,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     let firstYear = Constants.firstYear
     let lastYear = Constants.lastYear
     let width = Constants.screenWidth
-    private let years = Array(Constants.firstYear...Constants.lastYear)
+    let years = Array(Constants.firstYear...Constants.lastYear)
     private(set) var events = [TimelineEvent]()
     private(set) var eventsForYear = [Int: [TimelineEvent]]()
     private(set) var eventsForMonth = [Int: [Month: [TimelineEvent]]]()
@@ -113,8 +113,8 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
             return NSCollectionViewItem()
         }
 
-        timelineItem.event = events[indexPath.item]
-        timelineItem.set(selected: selectedIndexes.contains(indexPath.item), with: type)
+        timelineItem.event = events[indexPath.item % events.count]
+        timelineItem.set(selected: selectedIndexes.contains(indexPath.item % years.count), with: type)
         return timelineItem
     }
 
@@ -133,10 +133,5 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
         }
 
         return headerView
-    }
-
-    func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
-        let height = collectionView.superview!.frame.size.height
-        return CGSize(width: 192, height: 60)
     }
 }

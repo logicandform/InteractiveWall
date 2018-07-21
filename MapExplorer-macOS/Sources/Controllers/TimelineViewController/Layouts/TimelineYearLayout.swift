@@ -10,6 +10,7 @@ class TimelineYearLayout: NSCollectionViewFlowLayout {
     private struct Constants {
         static let cellSize = CGSize(width: 240, height: 60)
         static let headerHeight: CGFloat = 20
+        static let infiniteScrollBuffer = 11
     }
 
 
@@ -29,7 +30,7 @@ class TimelineYearLayout: NSCollectionViewFlowLayout {
             return .zero
         }
 
-        let totalYears = source.lastYear - source.firstYear + 1
+        let totalYears = source.lastYear - source.firstYear + Constants.infiniteScrollBuffer
         let width = CGFloat(totalYears * type.sectionWidth)
         return CGSize(width: width, height: itemSize.height)
     }
@@ -40,8 +41,8 @@ class TimelineYearLayout: NSCollectionViewFlowLayout {
         }
 
         var layoutAttributes = [NSCollectionViewLayoutAttributes]()
-        let minYear = source.firstYear + Int(rect.minX) / type.sectionWidth
-        let maxYear = source.firstYear + Int(rect.maxX) / type.sectionWidth
+        let minYear = source.firstYear + (Int(rect.minX) / type.sectionWidth) % source.years.count
+        let maxYear = source.firstYear + (Int(rect.maxX) / type.sectionWidth) % source.years.count
 
         for year in (minYear...maxYear) {
             // Append attributes for items

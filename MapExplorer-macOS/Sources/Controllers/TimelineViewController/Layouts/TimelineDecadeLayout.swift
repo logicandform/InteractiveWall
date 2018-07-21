@@ -11,6 +11,7 @@ class TimelineDecadeLayout: NSCollectionViewFlowLayout {
     private struct Constants {
         static let cellSize = CGSize(width: 192, height: 60)
         static let headerHeight: CGFloat = 20
+        static let infiniteScrollBuffer = 11
     }
 
 
@@ -30,7 +31,7 @@ class TimelineDecadeLayout: NSCollectionViewFlowLayout {
             return .zero
         }
 
-        let totalYears = source.lastYear - source.firstYear + 11
+        let totalYears = source.lastYear - source.firstYear + Constants.infiniteScrollBuffer
         let width = CGFloat(totalYears * type.sectionWidth)
         return CGSize(width: width, height: itemSize.height)
     }
@@ -46,7 +47,8 @@ class TimelineDecadeLayout: NSCollectionViewFlowLayout {
 
         for year in (minYear...maxYear) {
             // Append attributes for items
-            if let events = source.eventsForYear[year] {
+            let yearInRange = (year - source.firstYear) % source.years.count + source.firstYear
+            if let events = source.eventsForYear[yearInRange] {
                 for event in events {
                     if let attributes = attributes(for: event, in: source) {
                         layoutAttributes.append(attributes)
