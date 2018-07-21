@@ -40,5 +40,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         MenuManager.instance.createMenusAndBorders()
         GeocodeHelper.instance.associateSchoolsToProvinces()
         MasterViewController.instantiate()
+
+        RecordFactory.record(for: .artifact, id: 580) { artifact in
+            WindowManager.instance.display(.record(artifact!), at: CGPoint(x: 200, y: 300))
+        }
     }
 }

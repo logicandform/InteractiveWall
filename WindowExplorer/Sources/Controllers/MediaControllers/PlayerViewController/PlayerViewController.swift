@@ -56,6 +56,26 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         }
     }
 
+    override func handleWindowPan(_ gesture: GestureRecognizer) {
+        guard let pan = gesture as? PanGestureRecognizer, let window = view.window, !animating else {
+            return
+        }
+
+        switch pan.state {
+        case .began:
+            parentDelegate?.controllerDidMove(self)
+        case .recognized, .momentum:
+            var origin = window.frame.origin
+            origin += pan.delta.round()
+            window.setFrameOrigin(origin)
+            audioPlayer?.location = horizontalPosition(of: window)
+        case .possible:
+            WindowManager.instance.checkBounds(of: self)
+        default:
+            return
+        }
+    }
+
 
     // MARK: Setup
 

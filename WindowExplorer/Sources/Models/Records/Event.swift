@@ -31,7 +31,9 @@ final class Event: Hashable {
         static let longitude = "longitude"
         static let mediaTitles = "mediaTitles"
         static let media = "mediaPaths"
+        static let localMedia = "fullMediaPaths"
         static let thumbnails = "thumbnailPaths"
+        static let localThumbnails = "fullThumbnailPaths"
         static let schools = "schools"
         static let organizations = "organizations"
         static let artifacts = "artifacts"
@@ -54,12 +56,14 @@ final class Event: Hashable {
         if let latitude = json[Keys.latitude] as? Double, let longitude = json[Keys.longitude] as? Double {
             self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         }
-        if let urlStrings = json[Keys.media] as? [String], let thumbnailStrings = json[Keys.thumbnails] as? [String] {
+        if let urlStrings = json[Keys.media] as? [String], let localURLStrings = json[Keys.localMedia] as? [String], let thumbnailStrings = json[Keys.thumbnails] as? [String], let localThumbnailStrings = json[Keys.localThumbnails] as? [String] {
             let urls = urlStrings.compactMap { URL.from(Configuration.serverURL + $0) }
+            let localURLs = localURLStrings.map { URL(fileURLWithPath: $0) }
             let thumbnails = thumbnailStrings.compactMap { URL.from(Configuration.serverURL + $0) }
+            let localThumbnails = localThumbnailStrings.map { URL(fileURLWithPath: $0) }
             let titles = json[Keys.mediaTitles] as? [String] ?? []
-            for (url, thumbnail) in zip(urls, thumbnails) {
-                media.append(Media(url: url, thumbnail: thumbnail, title: titles.at(index: media.count), color: type.color))
+            for (url, localURL, thumbnail, localThumbnail) in zip(seq1: urls, seq2: localURLs, seq3: thumbnails, seq4: localThumbnails) {
+                media.append(Media(url: url, localURL: localURL, thumbnail: thumbnail, localThumbnail: localThumbnail, title: titles.at(index: media.count), color: type.color))
             }
         }
         if let schoolsJSON = json[Keys.schools] as? [JSON] {

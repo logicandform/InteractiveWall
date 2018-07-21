@@ -39,7 +39,9 @@ enum MediaType {
 
 final class Media: Hashable {
     let url: URL
+    let localURL: URL
     let thumbnail: URL
+    let localThumbnail: URL
     let title: String?
     var tintColor: NSColor
     let type: MediaType
@@ -51,9 +53,11 @@ final class Media: Hashable {
 
     // MARK: Init
 
-    init(url: URL, thumbnail: URL, title: String?, color: NSColor) {
+    init(url: URL, localURL: URL, thumbnail: URL, localThumbnail: URL, title: String?, color: NSColor) {
         self.url = url
+        self.localURL = localURL
         self.thumbnail = thumbnail
+        self.localThumbnail = localThumbnail
         self.title = title
         self.tintColor = color
         self.type = MediaType(for: url)
