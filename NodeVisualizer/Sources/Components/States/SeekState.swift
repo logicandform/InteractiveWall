@@ -5,10 +5,19 @@ import SpriteKit
 import GameplayKit
 
 
-class SeekState: GKState {
+class SeekTappedEntityState: GKState {
 
     private unowned var entity: RecordEntity
 
+    private var physicsComponent: PhysicsComponent {
+        guard let physicsComponent = entity.component(ofType: PhysicsComponent.self) else {
+            fatalError("A SeekTappedEntityState's entity must have a PhysicsComponent")
+        }
+        return physicsComponent
+    }
+
+
+    // MARK: Initializer
 
     required init(entity: RecordEntity) {
         self.entity = entity
@@ -20,10 +29,19 @@ class SeekState: GKState {
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
 
-        entity.physicsComponent.physicsBody.friction = 1
-        entity.physicsComponent.physicsBody.linearDamping = 1
-        entity.physicsComponent.physicsBody.fieldBitMask = 0x1 << 1
-        entity.physicsComponent.physicsBody.isDynamic = true
+        // declare local version so that we don't compute multiple times
+        let physicsComponent = self.physicsComponent
+
+        // sticky collisions
+        physicsComponent.physicsBody.restitution = 0
+        physicsComponent.physicsBody.friction = 1
+        physicsComponent.physicsBody.linearDamping = 1
+
+        // interactable with rest of physics world
+        physicsComponent.physicsBody.isDynamic = true
+
+        // not interactable with the repulsive 'reset' radial force field
+        physicsComponent.physicsBody.fieldBitMask = 0x1 << 1
     }
 
     override func update(deltaTime seconds: TimeInterval) {

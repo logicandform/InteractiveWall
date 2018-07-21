@@ -16,7 +16,7 @@ class NodeBoundingRenderComponent: GKComponent {
     /// The minimum radius of its own responsible level's bounding node. It is the radius of the bounding node without considering its contactEntities
     var minRadius: CGFloat = NodeConfiguration.Record.physicsBodyRadius + 5.0
 
-    /// The node bounding level that the component is responsible for
+    /// The bounding node's level that the component is responsible for
     var level: Int!
 
     /// Local variable of the previous level's bounding node maxRadius. Used to determine its own level's bounding node maxRadius

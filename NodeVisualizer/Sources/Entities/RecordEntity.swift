@@ -48,9 +48,10 @@ class RecordEntity: GKEntity {
         return agent
     }
 
-    /// Indicates whether or not the entity has made contact its bounding level node. This property is used to for the bounding level node's changing size.
+    /// Indicates whether or not the entity has made contact its bounding level node. This property is used to calculate the bounding level node's changing size.
     var hasCollidedWithBoundingNode = false
 
+    /// The previous and current level that the entity belongs to
     var levelState: (previousLevel: Int?, currentLevel: Int?) = (nil, nil)
 
 
@@ -79,7 +80,8 @@ class RecordEntity: GKEntity {
 
         let intelligenceComponent = IntelligenceComponent(states: [
             WanderState(entity: self),
-            SeekState(entity: self),
+            SeekTappedEntityState(entity: self),
+            SeekBoundingLevelNodeState(entity: self),
             TappedState(entity: self)
         ])
         addComponent(intelligenceComponent)
@@ -105,6 +107,11 @@ class RecordEntity: GKEntity {
 
     /// 'Reset' the entity so that proper animations and movements can take place
     func reset() {
+        // reset RecordEntity properties
+        hasCollidedWithBoundingNode = false
+        levelState = (nil, nil)
+        
+        // enter WanderState initial state
         intelligenceComponent.stateMachine.enter(WanderState.self)
     }
 }

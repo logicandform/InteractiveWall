@@ -28,6 +28,7 @@ final class NodeBoundingManager {
     private struct Constants {
         static let boundingNodeName = "boundingNode"
         static let boundingNodeRadiusOffset: CGFloat = 5.0
+        static let initialBoundingNodeRadius = NodeConfiguration.Record.physicsBodyRadius * 15
     }
 
 
@@ -80,6 +81,7 @@ final class NodeBoundingManager {
             radius = entity.nodeBoundingRenderComponent.maxRadius
         } else {
             radius = NodeConfiguration.Record.physicsBodyRadius + Constants.boundingNodeRadiusOffset
+//            radius = Constants.initialBoundingNodeRadius
         }
 
         while level < levels {
@@ -145,9 +147,10 @@ final class NodeBoundingManager {
     }
 
     private func boundingNodeBitMasks(forLevel level: Int) -> BoundingNodeBitMasks {
-        let categoryBitMask: UInt32 = 0x1 << level
-        let contactTestBitMask: UInt32 = 0x1 << level
-        let collisionBitMask: UInt32 = 0x1 << level
+        let levelBit = 20 + level
+        let categoryBitMask: UInt32 = 0x1 << levelBit
+        let contactTestBitMask: UInt32 = 0x1 << levelBit
+        let collisionBitMask: UInt32 = 0x1 << levelBit
 
         return BoundingNodeBitMasks(
             categoryBitMask: categoryBitMask,

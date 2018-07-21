@@ -10,6 +10,8 @@ class TappedState: GKState {
     private unowned var entity: RecordEntity
 
 
+    // MARK: Initializer
+
     required init(entity: RecordEntity) {
         self.entity = entity
     }
@@ -38,15 +40,10 @@ class TappedState: GKState {
             for entity in entities {
                 entity.levelState.currentLevel = level
 
-                if let previousLevel = entity.levelState.previousLevel, let currentLevel = entity.levelState.currentLevel, currentLevel >= previousLevel {
-                    entity.physicsComponent.setAvoidanceProperties()
-                    entity.movementComponent.requestedMovementState = .moveToAppropriateLevel
-                    entity.movementComponent.entityToSeek = self.entity
-                } else {
-                    entity.physicsComponent.setBitMasks(forLevel: level)
-                    entity.movementComponent.requestedMovementState = .seekEntity(self.entity)
-                    entity.intelligenceComponent.stateMachine.enter(SeekState.self)
-                }
+                entity.physicsComponent.setLevelInteractingBitMasks(forLevel: level)
+                entity.movementComponent.requestedMovementState = .moveToAppropriateLevel
+                entity.movementComponent.entityToSeek = self.entity
+                entity.intelligenceComponent.stateMachine.enter(SeekBoundingLevelNodeState.self)
             }
         }
     }

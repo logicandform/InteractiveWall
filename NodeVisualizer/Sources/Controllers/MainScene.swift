@@ -60,13 +60,13 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         if contact.bodyA.node?.name == "boundingNode",
             let contactEntity = contact.bodyB.node?.entity as? RecordEntity,
             !contactEntity.hasCollidedWithBoundingNode,
-            contactEntity.intelligenceComponent.stateMachine.currentState is SeekState {
+            contactEntity.intelligenceComponent.stateMachine.currentState is SeekTappedEntityState {
             contactEntity.hasCollidedWithBoundingNode = true
         }
 
         if let contactEntity = contact.bodyA.node?.entity as? RecordEntity,
             !contactEntity.hasCollidedWithBoundingNode,
-            contactEntity.intelligenceComponent.stateMachine.currentState is SeekState,
+            contactEntity.intelligenceComponent.stateMachine.currentState is SeekTappedEntityState,
             contact.bodyB.node?.name == "boundingNode" {
             contactEntity.hasCollidedWithBoundingNode = true
         }
@@ -162,14 +162,14 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
     // MARK: Helpers
 
-    /// Sets up all the data relationships for the tapped node and starts the physics emulations
+    /// Sets up all the data relationships for the tapped node and starts the physics interactions
     private func relatedNodes(for node: RecordNode) {
         guard let entity = node.entity as? RecordEntity else {
             return
         }
 
         switch entity.intelligenceComponent.stateMachine.currentState {
-        case is SeekState:
+        case is SeekTappedEntityState:
 
             for entity in EntityManager.instance.allLevelEntities {
                 entity.levelState.previousLevel = entity.levelState.currentLevel
@@ -187,9 +187,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
         case is WanderState:
             createLevelConnections(for: entity)
-
-            // remember to reset the levelStates for the entities
-
+            
         default:
             return
         }
