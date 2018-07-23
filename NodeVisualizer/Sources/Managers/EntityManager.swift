@@ -1,5 +1,10 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
+/*
+    Abstract:
+    Class that manages all non-bounding node entities for the scene.
+ */
+
 import Foundation
 import SpriteKit
 import GameplayKit

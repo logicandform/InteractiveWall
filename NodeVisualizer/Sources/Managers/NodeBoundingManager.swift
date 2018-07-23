@@ -1,11 +1,15 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
+/*
+    Abstract:
+    Class that manages the bounding diameter level nodes for the scene.
+ */
+
 import Foundation
 import SpriteKit
 import GameplayKit
 
 
-// Class that manages the bounding diameter level nodes for the scene
 final class NodeBoundingManager {
 
     /// Reference to the scene where we should add the bounding nodes to
@@ -28,7 +32,6 @@ final class NodeBoundingManager {
     private struct Constants {
         static let boundingNodeName = "boundingNode"
         static let boundingNodeRadiusOffset: CGFloat = 5.0
-        static let initialBoundingNodeRadius = NodeConfiguration.Record.physicsBodyRadius * 15
     }
 
 
@@ -81,7 +84,6 @@ final class NodeBoundingManager {
             radius = entity.nodeBoundingRenderComponent.maxRadius
         } else {
             radius = NodeConfiguration.Record.physicsBodyRadius + Constants.boundingNodeRadiusOffset
-//            radius = Constants.initialBoundingNodeRadius
         }
 
         while level < levels {
@@ -146,6 +148,7 @@ final class NodeBoundingManager {
         }
     }
 
+    /// Provides the bitMasks for the bounding node's physics bodies. The bits are offset by 20 in order to make them unique from the level entity's bitMasks.
     private func boundingNodeBitMasks(forLevel level: Int) -> BoundingNodeBitMasks {
         let levelBit = 20 + level
         let categoryBitMask: UInt32 = 0x1 << levelBit

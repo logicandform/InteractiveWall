@@ -187,7 +187,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
         case is WanderState:
             createLevelConnections(for: entity)
-            
+
         default:
             return
         }

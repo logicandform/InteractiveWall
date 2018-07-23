@@ -48,6 +48,7 @@ class MovementComponent: GKComponent {
         static let strength: CGFloat = 1000
         static let dt: CGFloat = 1 / 5000
         static let distancePadding: CGFloat = -10
+        static let speed: CGFloat = 200
     }
 
 
@@ -150,7 +151,7 @@ class MovementComponent: GKComponent {
 
         } else {
             // apply velocity
-            physicsComponent.physicsBody.velocity = CGVector(dx: 200 * unitVector.dx, dy: 200 * unitVector.dy)
+            physicsComponent.physicsBody.velocity = CGVector(dx: Constants.speed * unitVector.dx, dy: Constants.speed * unitVector.dy)
         }
     }
 
