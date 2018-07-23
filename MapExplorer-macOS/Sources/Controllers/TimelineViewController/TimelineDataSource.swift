@@ -6,7 +6,7 @@ import AppKit
 
 final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
 
-    var type = TimelineType.month
+    var type = TimelineType.year
     var selectedIndexes = Set<Int>()
     let firstYear = Constants.firstYear
     let lastYear = Constants.lastYear
