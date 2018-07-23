@@ -609,7 +609,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         let monthMaxX = CGFloat(Month.allValues.count) * Constants.controlItemWidth
         let monthX = CGFloat(currentDate.month) * Constants.controlItemWidth
         var monthRect = monthCollectionView.visibleRect
-        let testMonthFrame = monthCollectionView.frame
         monthRect.origin.x = monthX - centerInset + dayOffset
         if monthRect.origin.x < 0 {
             monthRect.origin.x = monthMaxX + monthRect.origin.x
