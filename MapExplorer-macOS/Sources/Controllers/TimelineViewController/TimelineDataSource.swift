@@ -10,7 +10,6 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     var selectedIndexes = Set<Int>()
     let firstYear = Constants.firstYear
     let lastYear = Constants.lastYear
-    let width = Constants.screenWidth
     let years = Array(Constants.firstYear...Constants.lastYear)
     private(set) var events = [TimelineEvent]()
     private(set) var eventsForYear = [Int: [TimelineEvent]]()

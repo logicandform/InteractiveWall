@@ -10,7 +10,7 @@ class TimelineYearLayout: NSCollectionViewFlowLayout {
     private struct Constants {
         static let cellSize = CGSize(width: 240, height: 60)
         static let headerHeight: CGFloat = 20
-        static let infiniteScrollBuffer = 11
+        static let infiniteScrollBuffer = 2
     }
 
 
@@ -41,14 +41,15 @@ class TimelineYearLayout: NSCollectionViewFlowLayout {
         }
 
         var layoutAttributes = [NSCollectionViewLayoutAttributes]()
-        let minYear = source.firstYear + (Int(rect.minX) / type.sectionWidth) % source.years.count
-        let maxYear = source.firstYear + (Int(rect.maxX) / type.sectionWidth) % source.years.count
+        let minYear = source.firstYear + (Int(rect.minX) / type.sectionWidth)
+        let maxYear = source.firstYear + (Int(rect.maxX) / type.sectionWidth)
 
         for year in (minYear...maxYear) {
+            let yearInRange = (year - source.firstYear) % source.years.count + source.firstYear
             // Append attributes for items
-            if let events = source.eventsForYear[year] {
+            if let events = source.eventsForYear[yearInRange] {
                 for event in events {
-                    if let attributes = attributes(for: event, in: source) {
+                    if let attributes = attributes(for: event, in: source, year: year) {
                         layoutAttributes.append(attributes)
                     }
                 }
@@ -73,7 +74,7 @@ class TimelineYearLayout: NSCollectionViewFlowLayout {
 
     // MARK: Helpers
 
-    private func attributes(for event: TimelineEvent, in source: TimelineDataSource) -> NSCollectionViewLayoutAttributes? {
+    private func attributes(for event: TimelineEvent, in source: TimelineDataSource, year: Int? = nil) -> NSCollectionViewLayoutAttributes? {
         guard let item = source.events.index(of: event), let eventsForYear = source.eventsForYear[event.start], let heightIndex = eventsForYear.index(of: event) else {
             return nil
         }
@@ -82,7 +83,8 @@ class TimelineYearLayout: NSCollectionViewFlowLayout {
         let selected = source.selectedIndexes.contains(item)
         let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
         let y = Constants.cellSize.height * CGFloat(heightIndex) + Constants.headerHeight
-        let x = CGFloat((event.start - source.firstYear) * type.sectionWidth)
+        let x = year != nil ? CGFloat((year! - source.firstYear) * type.sectionWidth) : CGFloat((event.start - source.firstYear) * type.sectionWidth)
+//        let x = CGFloat((event.start - source.firstYear) * type.sectionWidth)
         let width = selected ? Constants.cellSize.width * 2 : Constants.cellSize.width
         attributes.frame = CGRect(origin: CGPoint(x: x, y: y), size: CGSize(width: width, height: Constants.cellSize.height))
         attributes.zIndex = selected ? event.start + source.lastYear : event.start

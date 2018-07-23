@@ -21,6 +21,19 @@ enum TimelineType {
             return 16
         }
     }
+
+    var itemWidth: Int {
+        switch self {
+        case .month:
+            return 240
+        case .year:
+            return 240
+        case .decade:
+            return 192
+        case .century:
+            return 16
+        }
+    }
 }
 
 
