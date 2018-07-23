@@ -306,9 +306,9 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     /// Presents a search controller at the same height as the button, if one is already displayed; animates into position
     private func displaySearchController() {
         if let searchMenu = searchMenu {
-            searchMenu.updateOrigin(to: centeredPosition(for: searchButton, with: style.searchWindowSize), animating: true)
+            searchMenu.updateOrigin(to: centeredPosition(for: style.searchWindowFrame), animating: true)
         } else {
-            searchMenu = WindowManager.instance.display(.search, at: centeredPosition(for: searchButton, with: style.searchWindowSize)) as? SearchViewController
+            searchMenu = WindowManager.instance.display(.search, at: centeredPosition(for: style.searchWindowFrame)) as? SearchViewController
             searchMenu?.searchViewDelegate = self
         }
     }
@@ -316,9 +316,9 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     /// Presents a testimony controller at the same height as the button, if one is already displayed; animates into position
     private func displayTestimonyController() {
         if let testimonyController = testimonyController {
-            testimonyController.updateOrigin(to: centeredPosition(for: testimonyButton, with: style.testimonyWindowSize), animating: true)
+            testimonyController.updateOrigin(to: centeredPosition(for: style.testimonyWindowSize), animating: true)
         } else {
-            testimonyController = WindowManager.instance.display(.testimony, at: centeredPosition(for: testimonyButton, with: style.testimonyWindowSize)) as? TestimonyViewController
+            testimonyController = WindowManager.instance.display(.testimony, at: centeredPosition(for: style.testimonyWindowSize)) as? TestimonyViewController
             testimonyController?.testimonyDelegate = self
         }
     }
@@ -350,14 +350,14 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         return newOrigin.y
     }
 
-    private func centeredPosition(for button: MenuButton, with frame: CGSize) -> CGPoint {
-        guard let buttonWindowPosition = button.window?.frame else {
+    private func centeredPosition(for frame: CGSize) -> CGPoint {
+        guard let menuWindowPosition = menuView.window?.frame else {
             return CGPoint.zero
         }
 
-        let buttonOrigin = buttonWindowPosition.transformed(from: button.frame).transformed(from: menuView.frame).origin
+        let menuOrigin = menuWindowPosition.transformed(from: menuView.frame).origin
         let screenBounds = NSScreen.at(appID: appID).frame
-        let windowBottom = buttonOrigin.y + button.frame.height - frame.height
+        let windowBottom = menuOrigin.y + menuView.frame.height - frame.height
 
         let screenMin = screenBounds.minX
         let halfAppWidth = screenBounds.width / CGFloat(Configuration.appsPerScreen) / 2

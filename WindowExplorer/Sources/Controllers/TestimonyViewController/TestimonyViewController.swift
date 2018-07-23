@@ -25,7 +25,7 @@ class TestimonyViewController: BaseViewController, NSCollectionViewDelegateFlowL
         static let testimonyCellHeight: CGFloat = 160
         static let closeWindowTimeoutPeriod = 300.0
         static let animationDuration = 1.0
-        static let windowHeaderTitle = "Testimonials"
+        static let windowHeaderTitle = "Survivors Speak"
         static let artifactTestimonyIDs = [9454, 9455, 9456, 9457, 9458, 9459, 9460, 9461, 9462, 9463, 9464, 9465]
     }
 
