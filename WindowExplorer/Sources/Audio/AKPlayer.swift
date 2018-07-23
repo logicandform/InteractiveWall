@@ -57,8 +57,9 @@ public class AKPlayer {
 
     // The underlying player node
     let playerNode = AVAudioPlayerNode()
-    private var mixer = AVAudioMixerNode()
+    private var inmixer = AVAudioMixerNode()
     private var panner = MultiChannelPanner()
+    private static var outmixer = AVAudioMixerNode()
     private var startingFrame: AVAudioFramePosition?
     private var endingFrame: AVAudioFramePosition?
     private var nextRenderFrame: AVAudioFramePosition = 0
@@ -215,19 +216,27 @@ public class AKPlayer {
         if playerNode.engine == nil {
             AudioController.shared.engine.attach(playerNode)
         }
-        if mixer.engine == nil {
-            AudioController.shared.engine.attach(mixer)
+        if inmixer.engine == nil {
+            AudioController.shared.engine.attach(inmixer)
         }
         if panner.audioNode?.engine == nil {
             AudioController.shared.engine.attach(panner.audioNode)
+        }
+        if AKPlayer.outmixer.engine == nil {
+            AudioController.shared.engine.attach(AKPlayer.outmixer)
         }
 
         let format = AVAudioFormat(standardFormatWithSampleRate: audioFile.fileFormat.sampleRate,
                                    channels: audioFile.fileFormat.channelCount)
         sampleRate = audioFile.fileFormat.sampleRate
 
-        AudioController.shared.engine.connect(playerNode, to: mixer, format: format)
-        AudioController.shared.engine.connect(mixer, to: panner.audioNode!, format: format)
+        AudioController.shared.engine.connect(playerNode, to: inmixer, format: format)
+        AudioController.shared.engine.connect(inmixer, to: panner.audioNode!, format: format)
+
+        let mixerFormat = AVAudioFormat(
+            standardFormatWithSampleRate: audioFile.fileFormat.sampleRate,
+            channels: 6)
+        AudioController.shared.engine.connect(panner.audioNode!, to: AKPlayer.outmixer, format: mixerFormat)
 
         loop.start = 0
         loop.end = duration
@@ -463,7 +472,7 @@ public class AKPlayer {
         stop()
         audioFile = nil
         buffer = nil
-        AudioController.shared.engine.detach(mixer)
+        AudioController.shared.engine.detach(inmixer)
         AudioController.shared.engine.detach(panner.audioNode!)
         AudioController.shared.engine.detach(playerNode)
     }

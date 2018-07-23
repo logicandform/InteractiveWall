@@ -641,12 +641,12 @@
 		61767FFD206895EE00970640 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
-				61767FE12068883F00970640 /* BufferedAudioBus.hpp */,
-				61767FCF206883A900970640 /* MultiChannelPanAudioUnit.h */,
-				61767FD0206883A900970640 /* MultiChannelPanAudioUnit.mm */,
 				618F0C282069F8F000762C20 /* AKPlayer.swift */,
 				618F0C34206A08CE00762C20 /* AudioComponentDescription.swift */,
 				618F0C312069FFD600762C20 /* AudioController.swift */,
+				61767FE12068883F00970640 /* BufferedAudioBus.hpp */,
+				61767FCF206883A900970640 /* MultiChannelPanAudioUnit.h */,
+				61767FD0206883A900970640 /* MultiChannelPanAudioUnit.mm */,
 				618F0C2B2069F98900762C20 /* MultiChannelPanner.swift */,
 			);
 			path = Audio;

@@ -7,6 +7,11 @@
 
 #import "BufferedAudioBus.hpp"
 
+struct Params {
+    Float32 gain;
+    Float32 location;
+};
+
 // Number of channels to pan across
 const UInt32 channels = 6;
 
@@ -25,6 +30,7 @@ const AudioUnitParameterID locationParameterID = 1;
 
 @implementation MultiChannelPanAudioUnit {
     BufferedInputBus _inputBus;
+    Params params;
 }
 
 @synthesize parameterTree = _parameterTree;
@@ -51,9 +57,9 @@ const AudioUnitParameterID locationParameterID = 1;
                              valueStrings:nil dependentParameters:nil];
 
     // Initialize the parameter values.
-    gain.value = 1;
-    location.value = 0.5;
-    
+    params.gain = 1;
+    params.location = 0.5;
+
     // Create the parameter tree.
     _parameterTree = [AUParameterTree createTreeWithChildren:@[ gain, location ]];
     
@@ -118,6 +124,22 @@ const AudioUnitParameterID locationParameterID = 1;
     return self;
 }
 
+- (Float32)gain {
+    return params.gain;
+}
+
+- (void)setGain:(Float32)gain {
+    params.gain = gain;
+}
+
+- (Float32)location {
+    return params.location;
+}
+
+- (void)setLocation:(Float32)location {
+    params.location = location;
+}
+
 - (NSArray<NSNumber *> *)channelCapabilities {
     return @[@-1, @(channels)];
 }
@@ -156,8 +178,7 @@ const AudioUnitParameterID locationParameterID = 1;
 - (AUInternalRenderBlock)internalRenderBlock {
     // Capture in locals to avoid ObjC member lookups. If "self" is captured in render, we're doing it wrong. See sample code.
     __block BufferedInputBus *input = &_inputBus;
-    __block Float32 gain = self.gain;
-    __block Float32 location = self.location;
+    __block Params* params = &self->params;
 
     return ^AUAudioUnitStatus(AudioUnitRenderActionFlags *actionFlags, const AudioTimeStamp *timestamp, AVAudioFrameCount frameCount, NSInteger outputBusNumber, AudioBufferList *outputData, const AURenderEvent *realtimeEventListHead, AURenderPullInputBlock pullInputBlock) {
         AudioUnitRenderActionFlags pullFlags = 0;
@@ -174,15 +195,15 @@ const AudioUnitParameterID locationParameterID = 1;
             Float32 channelLocation = Float32(2*channel + 1) / Float32(2 * channels);
 
             Float32 channelGain = 0;
-            if (location <= channelLocation) {
-                channelGain = Float32(channels) * (location - channelLocation) + 1;
+            if (params->location <= channelLocation) {
+                channelGain = Float32(channels) * (params->location - channelLocation) + 1;
             } else {
-                channelGain = -Float32(channels) * (location - channelLocation) + 1;
+                channelGain = -Float32(channels) * (params->location - channelLocation) + 1;
             }
             if (channelGain < 0) {
                 channelGain = 0;
             }
-            channelGain *= gain;
+            channelGain *= params->gain;
 
             vDSP_vsmul((float *)inAudioBufferList->mBuffers[0].mData, 1, &channelGain, (float *)outAudioBufferList->mBuffers[channel].mData, 1, inAudioBufferList->mBuffers[0].mDataByteSize / sizeof(Float32));
         }
