@@ -39,7 +39,7 @@ enum WindowType: Equatable {
         case .pdf:
             return style.pdfWindowSize
         case .search:
-            return style.searchWindowSize
+            return style.searchWindowFrame
         case .menu:
             return style.menuWindowSize
         case .settings:

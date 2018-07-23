@@ -197,7 +197,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
 
         let xPos = positionOfTouch.x
-        let index = Int(xPos / style.searchWindowSize.width)
+        let index = Int(xPos / style.searchWindowFrame.width)
 
         if index < collectionViews.count - 1, let correspondingCollectionView = collectionViews.at(index: index), correspondingCollectionView != focusedCollectionView {
             unselectItem(for: correspondingCollectionView)
@@ -429,7 +429,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }, completionHandler: completion)
 
         var frame = window.frame
-        frame.size.width = style.searchWindowSize.width * CGFloat(index + 1) + Constants.collectionViewMargin * CGFloat(index)
+        frame.size.width = style.searchWindowFrame.width * CGFloat(index + 1) + Constants.collectionViewMargin * CGFloat(index)
         window.setFrame(frame, display: true, animate: true)
         focusedCollectionView = view
         updateGradient(for: view)
