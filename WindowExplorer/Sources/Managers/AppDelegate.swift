@@ -14,6 +14,7 @@ struct Configuration {
     static let serverURL = "http://\(serverIP):3000"
     static let appsPerScreen = 2
     static let numberOfScreens = 1
+    static let localMediaURLs = false
     static let touchScreenSize = CGSize(width: 21564, height: 12116)
     static let refreshRate = 1.0 / 60.0
 }
@@ -40,9 +41,5 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         MenuManager.instance.createMenusAndBorders()
         GeocodeHelper.instance.associateSchoolsToProvinces()
         MasterViewController.instantiate()
-
-        RecordFactory.record(for: .artifact, id: 580) { artifact in
-            WindowManager.instance.display(.record(artifact!), at: CGPoint(x: 200, y: 300))
-        }
     }
 }

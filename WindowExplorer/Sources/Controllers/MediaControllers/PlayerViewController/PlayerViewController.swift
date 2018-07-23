@@ -15,7 +15,6 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     private var audioPlayer: AKPlayer?
 
     private struct Constants {
-        static let percentToDeallocateWindow: CGFloat = 40
         static let audioSyncInterval = 1.0 / 30.0
     }
 
@@ -42,7 +41,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         if let window = view.window {
             audioPlayer?.location = horizontalPosition(of: window)
         }
-
+        audioPlayer?.volume = playerControl.volume.gain
         playerControl.toggle()
     }
 
@@ -84,13 +83,11 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
             return
         }
 
+        let url = Configuration.localMediaURLs ? media.localURL : media.url
         let contoller = AudioController.shared
-        audioPlayer = contoller.play(url: media.url)
-        if let window = view.window {
-            audioPlayer?.location = horizontalPosition(of: window)
-        }
+        audioPlayer = contoller.play(url: url)
 
-        let player = AVPlayer(url: media.url)
+        let player = AVPlayer(url: url)
         player.isMuted = true
         playerView.player = player
         scheduleAudioSegment()

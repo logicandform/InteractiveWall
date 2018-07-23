@@ -21,8 +21,8 @@ class PlayerControl: NSView {
     @IBOutlet weak var durationLabel: NSTextField!
 
     weak var delegate: PlayerControlDelegate?
+    private(set) var volume = VolumeLevel.low
     private var duration = CMTime()
-    private var volume = VolumeLevel.low
     private var scrubbing = false
     private var currentScrubImageUpdateNumber = 0.0
     lazy private var scrubImageUpdateTimeInterval = duration.seconds / Constants.scrubImageUpdatesPerVideo

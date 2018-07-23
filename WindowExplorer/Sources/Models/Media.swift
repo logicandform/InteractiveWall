@@ -38,13 +38,14 @@ enum MediaType {
 
 
 final class Media: Hashable {
+
+    let type: MediaType
     let url: URL
     let localURL: URL
     let thumbnail: URL
     let localThumbnail: URL
     let title: String?
     var tintColor: NSColor
-    let type: MediaType
 
     var hashValue: Int {
         return url.hashValue ^ thumbnail.hashValue
@@ -54,13 +55,13 @@ final class Media: Hashable {
     // MARK: Init
 
     init(url: URL, localURL: URL, thumbnail: URL, localThumbnail: URL, title: String?, color: NSColor) {
+        self.type = MediaType(for: url)
         self.url = url
         self.localURL = localURL
         self.thumbnail = thumbnail
         self.localThumbnail = localThumbnail
         self.title = title
         self.tintColor = color
-        self.type = MediaType(for: url)
     }
 
     static func == (lhs: Media, rhs: Media) -> Bool {
