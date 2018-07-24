@@ -10,6 +10,8 @@ class TappedState: GKState {
     private unowned var entity: RecordEntity
 
 
+    // MARK: Initializer
+
     required init(entity: RecordEntity) {
         self.entity = entity
     }
@@ -19,6 +21,9 @@ class TappedState: GKState {
 
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
+
+        // set the tapped entity's level to -1 since it does not belong to a well defined level
+        entity.levelState.currentLevel = -1
 
         // physics
         entity.physicsComponent.physicsBody.isDynamic = false
@@ -30,20 +35,15 @@ class TappedState: GKState {
             entity.animationComponent.requestedAnimationState = .goToPoint(centerPoint)
         }
 
-        // move the tapped entity and all of its descendants to the appropriate state
-        let entitiesInLevel = EntityManager.instance.entitiesInLevel
+        // move the tapped entity's descendants to the appropriate state with appropriate movement
+        for (level, entities) in EntityManager.instance.entitiesInLevel.enumerated() {
+            for entity in entities {
+                entity.levelState.currentLevel = level
 
-        for (level, entities) in entitiesInLevel.enumerated() {
-            if let nodeBoundingEntity = NodeBoundingManager.instance.nodeBoundingEntityForLevel[level],
-                let boundingNode = nodeBoundingEntity.nodeBoundingRenderComponent.node {
-                for entity in entities {
-                    entity.physicsComponent.physicsBody.categoryBitMask = boundingNode.physicsBody!.categoryBitMask
-                    entity.physicsComponent.physicsBody.collisionBitMask = boundingNode.physicsBody!.collisionBitMask
-                    entity.physicsComponent.physicsBody.contactTestBitMask = boundingNode.physicsBody!.contactTestBitMask
-
-                    entity.movementComponent.entityToSeek = self.entity
-                    entity.intelligenceComponent.stateMachine.enter(SeekState.self)
-                }
+                entity.physicsComponent.setLevelInteractingBitMasks(forLevel: level)
+                entity.movementComponent.requestedMovementState = .moveToAppropriateLevel
+                entity.movementComponent.entityToSeek = self.entity
+                entity.intelligenceComponent.stateMachine.enter(SeekBoundingLevelNodeState.self)
             }
         }
     }

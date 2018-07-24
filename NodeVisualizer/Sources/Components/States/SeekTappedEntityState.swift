@@ -5,20 +5,13 @@ import SpriteKit
 import GameplayKit
 
 
-class WanderState: GKState {
+class SeekTappedEntityState: GKState {
 
     private unowned var entity: RecordEntity
 
-    private var movementComponent: MovementComponent {
-        guard let movementComponent = entity.component(ofType: MovementComponent.self) else {
-            fatalError("A WanderState's entity must have a MovementComponent")
-        }
-        return movementComponent
-    }
-
     private var physicsComponent: PhysicsComponent {
         guard let physicsComponent = entity.component(ofType: PhysicsComponent.self) else {
-            fatalError("A WanderState's entity must have a PhysicsComponent")
+            fatalError("A SeekTappedEntityState's entity must have a PhysicsComponent")
         }
         return physicsComponent
     }
@@ -36,8 +29,19 @@ class WanderState: GKState {
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
 
-        movementComponent.reset()
-        physicsComponent.reset()
+        // declare local version so that we don't compute multiple times
+        let physicsComponent = self.physicsComponent
+
+        // sticky collisions
+        physicsComponent.physicsBody.restitution = 0
+        physicsComponent.physicsBody.friction = 1
+        physicsComponent.physicsBody.linearDamping = 1
+
+        // interactable with rest of physics world
+        physicsComponent.physicsBody.isDynamic = true
+
+        // not interactable with the repulsive 'reset' radial force field
+        physicsComponent.physicsBody.fieldBitMask = 0x1 << 1
     }
 
     override func update(deltaTime seconds: TimeInterval) {

@@ -86,6 +86,7 @@ class TestingEnvironment {
             associate(records: [eventRecord], to: relatedRecord)
         }
         associate(records: relatedRecordsForEvent, to: eventRecord)
+        associate(records: [organizationRecord], to: eventRecord)
     }
 
     private func associate(records: [Record], to key: Record) {

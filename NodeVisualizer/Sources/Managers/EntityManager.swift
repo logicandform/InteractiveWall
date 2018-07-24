@@ -1,5 +1,10 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
+/*
+    Abstract:
+    Class that manages all non-bounding node entities for the scene.
+ */
+
 import Foundation
 import SpriteKit
 import GameplayKit
@@ -10,10 +15,9 @@ final class EntityManager {
     private lazy var componentSystems: [GKComponentSystem] = {
         let intelligenceSystem = GKComponentSystem(componentClass: IntelligenceComponent.self)
         let movementSystem = GKComponentSystem(componentClass: MovementComponent.self)
-        let agentSystem = GKComponentSystem(componentClass: RecordAgent.self)
         let animationSystem = GKComponentSystem(componentClass: AnimationComponent.self)
         let physicsSystem = GKComponentSystem(componentClass: PhysicsComponent.self)
-        return [intelligenceSystem, physicsSystem, animationSystem, movementSystem]
+        return [intelligenceSystem, animationSystem, movementSystem, physicsSystem]
     }()
 
     static let instance = EntityManager()
@@ -111,10 +115,10 @@ final class EntityManager {
         }
 
         allEntitiesInFormedState.removeAll()
-        reset()
+        clearLevelEntities()
     }
 
-    func reset() {
+    func clearLevelEntities() {
         entitiesInLevel.removeAll()
         allLevelEntities.removeAll()
     }

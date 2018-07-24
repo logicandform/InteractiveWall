@@ -59,7 +59,7 @@
 		CD0FB28C20D849140058A410 /* RecordAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0FB28B20D849140058A410 /* RecordAgent.swift */; };
 		CD1FC73620D9B2F700B87D02 /* IntelligenceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1FC73520D9B2F700B87D02 /* IntelligenceComponent.swift */; };
 		CD1FC73820D9B36B00B87D02 /* WanderState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1FC73720D9B36B00B87D02 /* WanderState.swift */; };
-		CD1FC73A20D9B39A00B87D02 /* SeekState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1FC73920D9B39A00B87D02 /* SeekState.swift */; };
+		CD1FC73A20D9B39A00B87D02 /* SeekTappedEntityState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1FC73920D9B39A00B87D02 /* SeekTappedEntityState.swift */; };
 		CD1FC73C20D9B3AA00B87D02 /* TappedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1FC73B20D9B3AA00B87D02 /* TappedState.swift */; };
 		CD1FC73E20DB06AA00B87D02 /* TestingEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1FC73D20DB06AA00B87D02 /* TestingEnvironment.swift */; };
 		CD27F40420BCB5B900375CBC /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40320BCB5B900375CBC /* DataManager.swift */; };
@@ -68,6 +68,7 @@
 		CD27F40F20BCBFB700375CBC /* LetterGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40D20BCBFB700375CBC /* LetterGroup.swift */; };
 		CD2CC5EB20B8E6D800FB3C10 /* RecordDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2CC5E920B8E6D700FB3C10 /* RecordDisplayable.swift */; };
 		CD2CC5EC20B8E6D800FB3C10 /* RecordFilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2CC5EA20B8E6D800FB3C10 /* RecordFilterType.swift */; };
+		CD7E53832102A11B004223D9 /* SeekBoundingLevelNodeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7E53822102A11B004223D9 /* SeekBoundingLevelNodeState.swift */; };
 		CD97E33C20F4125800BB869E /* NodeBoundingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD97E33B20F4125800BB869E /* NodeBoundingManager.swift */; };
 		CD97E33E20F5765900BB869E /* NodeBoundingEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD97E33D20F5765900BB869E /* NodeBoundingEntity.swift */; };
 		CD97E34020F584BA00BB869E /* NodeBoundingRenderComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD97E33F20F584BA00BB869E /* NodeBoundingRenderComponent.swift */; };
@@ -137,7 +138,7 @@
 		CD0FB28B20D849140058A410 /* RecordAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordAgent.swift; sourceTree = "<group>"; };
 		CD1FC73520D9B2F700B87D02 /* IntelligenceComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntelligenceComponent.swift; sourceTree = "<group>"; };
 		CD1FC73720D9B36B00B87D02 /* WanderState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WanderState.swift; sourceTree = "<group>"; };
-		CD1FC73920D9B39A00B87D02 /* SeekState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeekState.swift; sourceTree = "<group>"; };
+		CD1FC73920D9B39A00B87D02 /* SeekTappedEntityState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeekTappedEntityState.swift; sourceTree = "<group>"; };
 		CD1FC73B20D9B3AA00B87D02 /* TappedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TappedState.swift; sourceTree = "<group>"; };
 		CD1FC73D20DB06AA00B87D02 /* TestingEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingEnvironment.swift; sourceTree = "<group>"; };
 		CD27F40320BCB5B900375CBC /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
@@ -146,6 +147,7 @@
 		CD27F40D20BCBFB700375CBC /* LetterGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LetterGroup.swift; sourceTree = "<group>"; };
 		CD2CC5E920B8E6D700FB3C10 /* RecordDisplayable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordDisplayable.swift; sourceTree = "<group>"; };
 		CD2CC5EA20B8E6D800FB3C10 /* RecordFilterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordFilterType.swift; sourceTree = "<group>"; };
+		CD7E53822102A11B004223D9 /* SeekBoundingLevelNodeState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeekBoundingLevelNodeState.swift; sourceTree = "<group>"; };
 		CD97E33B20F4125800BB869E /* NodeBoundingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeBoundingManager.swift; sourceTree = "<group>"; };
 		CD97E33D20F5765900BB869E /* NodeBoundingEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeBoundingEntity.swift; sourceTree = "<group>"; };
 		CD97E33F20F584BA00BB869E /* NodeBoundingRenderComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeBoundingRenderComponent.swift; sourceTree = "<group>"; };
@@ -392,8 +394,9 @@
 			isa = PBXGroup;
 			children = (
 				CD1FC73720D9B36B00B87D02 /* WanderState.swift */,
-				CD1FC73920D9B39A00B87D02 /* SeekState.swift */,
+				CD1FC73920D9B39A00B87D02 /* SeekTappedEntityState.swift */,
 				CD1FC73B20D9B3AA00B87D02 /* TappedState.swift */,
+				CD7E53822102A11B004223D9 /* SeekBoundingLevelNodeState.swift */,
 			);
 			path = States;
 			sourceTree = "<group>";
@@ -559,12 +562,13 @@
 				22D6F90B20B6810600C7FB5F /* PriorityOrder.swift in Sources */,
 				22AEAEEA20B67D6800DD184B /* CoreGraphics.swift in Sources */,
 				22D6F90F20B681A300C7FB5F /* LastTwo.swift in Sources */,
+				CD7E53832102A11B004223D9 /* SeekBoundingLevelNodeState.swift in Sources */,
 				22AEAEF920B67DA600DD184B /* School.swift in Sources */,
 				CD27F40F20BCBFB700375CBC /* LetterGroup.swift in Sources */,
 				CD0FB28220D1A6300058A410 /* RecordEntity.swift in Sources */,
 				22D6F91020B681A300C7FB5F /* Media.swift in Sources */,
 				22D6F90C20B6810600C7FB5F /* ResponseHandler.swift in Sources */,
-				CD1FC73A20D9B39A00B87D02 /* SeekState.swift in Sources */,
+				CD1FC73A20D9B39A00B87D02 /* SeekTappedEntityState.swift in Sources */,
 				22D6F91920B6824300C7FB5F /* PanGestureRecognizer.swift in Sources */,
 				CD2CC5EB20B8E6D800FB3C10 /* RecordDisplayable.swift in Sources */,
 				CD1FC73820D9B36B00B87D02 /* WanderState.swift in Sources */,
