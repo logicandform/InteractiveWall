@@ -10,7 +10,7 @@ class TimelineDateTests: XCTestCase {
 
     func testStandardSingleDate() {
         let dateRange = TimelineRange("October 19, 2019")
-        let expectedDay = CGFloat(19.0/31.0)
+        let expectedDay = CGFloat(18.0/30.0)
         let expectedMonth = 9
         let expectedYear = 2019
         XCTAssert(dateRange.startDate.day.isEqual(to: expectedDay))
@@ -23,7 +23,7 @@ class TimelineDateTests: XCTestCase {
 
     func testStandardSingleDateTwo() {
         let dateRange = TimelineRange("August 19th, 1976")
-        let expectedDay = CGFloat(19.0/31.0)
+        let expectedDay = CGFloat(18.0/30.0)
         let expectedMonth = 7
         let expectedYear = 1976
         XCTAssert(dateRange.startDate.day.isEqual(to: expectedDay))
@@ -36,7 +36,7 @@ class TimelineDateTests: XCTestCase {
 
     func testStandardSingleDateThree() {
         let dateRange = TimelineRange("11th May, 2010")
-        let expectedDay = CGFloat(11.0/31.0)
+        let expectedDay = CGFloat(10.0/30.0)
         let expectedMonth = 4
         let expectedYear = 2010
         XCTAssert(dateRange.startDate.day.isEqual(to: expectedDay))
@@ -52,8 +52,8 @@ class TimelineDateTests: XCTestCase {
 
     func testDifferentStartEnd() {
         let dateRange = TimelineRange("January 31, 2019 - December 1, 2125")
-        let expectedStartDay = CGFloat(31.0/31.0)
-        let expectedEndDay = CGFloat(1.0/31.0)
+        let expectedStartDay = CGFloat(30.0/30.0)
+        let expectedEndDay = CGFloat(0.0/30.0)
         let expectedStartMonth = 0
         let expectedEndMonth = 11
         let expectedStartYear = 2019
@@ -68,8 +68,8 @@ class TimelineDateTests: XCTestCase {
 
     func testDifferentStartEndTwo() {
         let dateRange = TimelineRange("June 28th, 2019 - March 1st, 2125")
-        let expectedStartDay = CGFloat(28.0/31.0)
-        let expectedEndDay = CGFloat(1.0/31.0)
+        let expectedStartDay = CGFloat(27.0/30.0)
+        let expectedEndDay = CGFloat(0.0/30.0)
         let expectedStartMonth = 5
         let expectedEndMonth = 2
         let expectedStartYear = 2019
@@ -84,8 +84,8 @@ class TimelineDateTests: XCTestCase {
 
     func testDifferentStartEndThree() {
         let dateRange = TimelineRange("1st January, 2019 - 2nd February, 2125")
-        let expectedStartDay = CGFloat(1.0/31.0)
-        let expectedEndDay = CGFloat(2.0/31.0)
+        let expectedStartDay = CGFloat(0.0/30.0)
+        let expectedEndDay = CGFloat(1.0/30.0)
         let expectedStartMonth = 0
         let expectedEndMonth = 1
         let expectedStartYear = 2019
@@ -104,8 +104,8 @@ class TimelineDateTests: XCTestCase {
     func testSingleYearListed() {
         let dateRange = TimelineRange("February 7-14, 1958")
         let expectedMonth = 1
-        let expectedStartDay = CGFloat(7.0/31.0)
-        let expectedEndDay = CGFloat(14.0/31.0)
+        let expectedStartDay = CGFloat(6.0/30.0)
+        let expectedEndDay = CGFloat(13.0/30.0)
         let expectedYear = 1958
         XCTAssert(dateRange.startDate.day == expectedStartDay)
         XCTAssert(dateRange.endDate.day == expectedEndDay)
@@ -120,8 +120,8 @@ class TimelineDateTests: XCTestCase {
 
     func testAbbreviatedMonths() {
         let dateRange = TimelineRange("Apr. 25 - Jun. 13, 1784")
-        let expectedStartDay = CGFloat(25.0/31.0)
-        let expectedEndDay = CGFloat(13.0/31.0)
+        let expectedStartDay = CGFloat(24.0/30.0)
+        let expectedEndDay = CGFloat(12.0/30.0)
         let expectedStartMonth = 3
         let expectedEndMonth = 5
         let expectedYear = 1784
@@ -138,7 +138,7 @@ class TimelineDateTests: XCTestCase {
 
     func testOneNumericalDate() {
         let dateRange = TimelineRange("30-12-1932")
-        let expectedDay = CGFloat(30.0/31.0)
+        let expectedDay = CGFloat(29.0/30.0)
         let expectedMonth = 11
         let expectedYear = 1932
         XCTAssert(dateRange.startDate.day == expectedDay)
@@ -151,8 +151,8 @@ class TimelineDateTests: XCTestCase {
 
     func testTwoNumericalDates() {
         let dateRange = TimelineRange("30.12.1932-6.05.1968")
-        let expectedStartDay = CGFloat(30.0/31.0)
-        let expectedEndDay = CGFloat(6.0/31.0)
+        let expectedStartDay = CGFloat(29.0/30.0)
+        let expectedEndDay = CGFloat(5.0/30.0)
         let expectedStartMonth = 11
         let expectedEndMonth = 4
         let expectedStartYear = 1932
@@ -167,7 +167,7 @@ class TimelineDateTests: XCTestCase {
 
     func testNumericalDateTwo() {
         let dateRange = TimelineRange("30/12/1932")
-        let expectedDay = CGFloat(30.0/31.0)
+        let expectedDay = CGFloat(29.0/30.0)
         let expectedMonth = 11
         let expectedYear = 1932
         XCTAssert(dateRange.startDate.day == expectedDay)
@@ -180,8 +180,8 @@ class TimelineDateTests: XCTestCase {
 
     func testTwoNumericalDatesTwo() {
         let dateRange = TimelineRange("30/12/1932-6/05/1968")
-        let expectedStartDay = CGFloat(30.0/31.0)
-        let expectedEndDay = CGFloat(6.0/31.0)
+        let expectedStartDay = CGFloat(29.0/30.0)
+        let expectedEndDay = CGFloat(5.0/30.0)
         let expectedStartMonth = 11
         let expectedEndMonth = 4
         let expectedStartYear = 1932

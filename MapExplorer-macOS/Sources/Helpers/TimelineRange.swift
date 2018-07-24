@@ -10,8 +10,8 @@ class TimelineRange {
     var endDate: TimelineDate
 
     private struct Constants {
-        static let minimumYear = 100
-        static let maximumDay = 31
+        static let minimumYear = 32
+        static let maximumDay = 30
         static let days = Array(1...31)
         static let months = Array(1...12)
     }
@@ -27,10 +27,10 @@ class TimelineRange {
         }
 
         let dateArray = date.componentsSeparatedBy(separators: " -,./")
-        if dateArray.first(where: { !$0.isNumerical }) == nil {
-            parseNumerical(dateArray: dateArray)
-        } else {
+        if dateArray.contains(where: { !$0.isNumerical }) {
             parseNonNumerical(dateArray: dateArray)
+        } else {
+            parseNumerical(dateArray: dateArray)
         }
     }
 
@@ -47,13 +47,13 @@ class TimelineRange {
         for date in dateArray {
             if let numericalDate = Int(date) {
                 if startDay == nil, Constants.days.contains(numericalDate) {
-                    startDay = CGFloat(numericalDate) / CGFloat(Constants.maximumDay)
+                    startDay = CGFloat(numericalDate - 1) / CGFloat(Constants.maximumDay)
                 } else if startMonth == nil, Constants.months.contains(numericalDate) {
                     startMonth = numericalDate - 1
                 } else if startYear == nil, numericalDate > Constants.minimumYear {
                     startYear = numericalDate
                 } else if endDay == nil, Constants.days.contains(numericalDate) {
-                    endDay = CGFloat(numericalDate) / CGFloat(Constants.maximumDay)
+                    endDay = CGFloat(numericalDate - 1) / CGFloat(Constants.maximumDay)
                 } else if endMonth == nil, Constants.months.contains(numericalDate) {
                     endMonth = numericalDate - 1
                 } else if endYear == nil, numericalDate > Constants.minimumYear {
@@ -106,15 +106,15 @@ class TimelineRange {
 
             if let day = Int(date), Constants.days.contains(day) {
                 if startDay == nil {
-                    startDay = CGFloat(day) / CGFloat(Constants.maximumDay)
+                    startDay = CGFloat(day - 1) / CGFloat(Constants.maximumDay)
                 } else {
-                    endDay = CGFloat(day) / CGFloat(Constants.maximumDay)
+                    endDay = CGFloat(day - 1) / CGFloat(Constants.maximumDay)
                 }
             } else if let day = Int(date.digitsInString), Constants.days.contains(day) {
                 if startDay == nil {
-                    startDay = CGFloat(day) / CGFloat(Constants.maximumDay)
+                    startDay = CGFloat(day - 1) / CGFloat(Constants.maximumDay)
                 } else {
-                    endDay = CGFloat(day) / CGFloat(Constants.maximumDay)
+                    endDay = CGFloat(day - 1) / CGFloat(Constants.maximumDay)
                 }
             }
 

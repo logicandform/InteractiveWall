@@ -5,9 +5,13 @@ import Cocoa
 
 
 struct TimelineDate {
-    var day: CGFloat = 0
-    var month: Int = 0
-    var year: Int = 1880
+    var day: CGFloat = Constants.defaultDay
+    var month: Int = Constants.defaultMonth
+    var year: Int = Constants.defaultYear
+
+    var toJSON: JSON {
+        return [Keys.day: day, Keys.month: month, Keys.year: year]
+    }
 
     private struct Keys {
         static let day = "day"
@@ -15,8 +19,10 @@ struct TimelineDate {
         static let year = "year"
     }
 
-    var toJSON: JSON {
-        return [Keys.day: day, Keys.month: month, Keys.year: year]
+    private struct Constants {
+        static let defaultDay: CGFloat = 0
+        static let defaultMonth = 0
+        static let defaultYear = 1880
     }
 
 
