@@ -5,7 +5,7 @@ import Cocoa
 
 class TimelineYearLayout: NSCollectionViewFlowLayout {
 
-    let type: TimelineType = .year
+    private let type: TimelineType = .year
 
     private struct Constants {
         static let cellSize = CGSize(width: 240, height: 60)
@@ -41,8 +41,8 @@ class TimelineYearLayout: NSCollectionViewFlowLayout {
         }
 
         var layoutAttributes = [NSCollectionViewLayoutAttributes]()
-        let minYear = source.firstYear + (Int(rect.minX) / type.sectionWidth)
-        let maxYear = source.firstYear + (Int(rect.maxX) / type.sectionWidth)
+        let minYear = source.firstYear + Int(rect.minX) / type.sectionWidth
+        let maxYear = source.firstYear + Int(rect.maxX) / type.sectionWidth
 
         for year in (minYear...maxYear) {
             let yearInRange = (year - source.firstYear) % source.years.count + source.firstYear

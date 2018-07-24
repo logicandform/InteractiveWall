@@ -6,7 +6,7 @@ import AppKit
 
 final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
 
-    var type = TimelineType.month
+    var type = TimelineType.decade
     var selectedIndexes = Set<Int>()
     let firstYear = Constants.firstYear
     let lastYear = Constants.lastYear
@@ -16,7 +16,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     private(set) var eventsForMonth = [Int: [Month: [TimelineEvent]]]()
 
     private struct Constants {
-        static let screenWidth: CGFloat = 1920
+        static let screenWidth = 1920
         static let firstYear = 1860
         static let lastYear = 1980
     }
@@ -104,7 +104,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     // MARK: NSCollectionViewDataSource
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return events.count + years.count + 10
+        return events.count + years.count
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {

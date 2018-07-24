@@ -53,7 +53,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     var gestureManager: GestureManager!
     var currentDate = Constants.initialDate
-    var timelineType: TimelineType = .month
+    var timelineType: TimelineType = .decade
     private var timelineHandler: TimelineHandler?
     private let source = TimelineDataSource()
     private var decades = [Int]()
@@ -686,20 +686,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
             timelineCollectionView.reloadItems(at: timelineCollectionView.indexPathsForVisibleItems())
         }
     }
-
-//    let timelineMonthOffset = ((CGFloat(currentDate.month) + currentDate.day - 0.5) / 12) * CGFloat(timelineType.sectionWidth)
-//    let timelineMaxX = CGFloat(years.count) * CGFloat(timelineType.sectionWidth)
-//    let timelineYearIndex = years.index(of: currentDate.year) != nil ? years.index(of: currentDate.year) : currentDate.year < source.firstYear ? -1 : years.count - 1
-//    let timelineYearX = CGFloat(timelineYearIndex!) * CGFloat(timelineType.sectionWidth)
-//    var timelineRect = timelineCollectionView.visibleRect
-//    let timelineNewOrigin = timelineYearX - timelineRect.width / 2 + timelineMonthOffset
-//    let previousOrigin = timelineRect
-//    timelineRect.origin.x = timelineNewOrigin < 0 ? timelineNewOrigin + timelineMaxX : timelineNewOrigin
-//    timelineCollectionView.scrollToVisible(timelineRect)
-//    if abs(previousOrigin.origin.x - timelineRect.origin.x) > timelineMaxX / 2 {
-//      timelineCollectionView.reloadItems(at: timelineCollectionView.indexPathsForVisibleItems())
-//    }
-
 
     private func decadeFor(year: Int) -> Int {
         return year / 10 * 10

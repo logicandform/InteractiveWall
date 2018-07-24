@@ -5,7 +5,7 @@ import Cocoa
 
 class TimelineMonthLayout: NSCollectionViewFlowLayout {
 
-    let type: TimelineType = .month
+    private let type: TimelineType = .month
 
     private struct Constants {
         static let cellSize = CGSize(width: 240, height: 60)

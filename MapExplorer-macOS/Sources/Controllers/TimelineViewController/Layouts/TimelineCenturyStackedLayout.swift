@@ -5,7 +5,7 @@ import Cocoa
 
 class TimelineCenturyStackedLayout: NSCollectionViewFlowLayout {
 
-    let type: TimelineType = .century
+    private let type: TimelineType = .century
 
     private var attributesForEvent = [TimelineEvent: NSCollectionViewLayoutAttributes]()
     private var frameForEventInRow = [Int: CGRect]()
