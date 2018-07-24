@@ -30,8 +30,8 @@ class TimelineMonthLayout: NSCollectionViewFlowLayout {
             return .zero
         }
 
-        let totalYears = source.lastYear - source.firstYear + Constants.infiniteScrollBuffer
-        let totalMonths = totalYears * 12
+        let totalYears = source.lastYear - source.firstYear
+        let totalMonths = totalYears * 12 + Constants.infiniteScrollBuffer
         let width = CGFloat(totalMonths * type.sectionWidth)
         return CGSize(width: width, height: itemSize.height)
     }
@@ -50,11 +50,11 @@ class TimelineMonthLayout: NSCollectionViewFlowLayout {
         let yearMax = maxMonth < minMonth ? 11 : maxMonth
         for monthIndex in (minMonth...yearMax) {
             let month = Month.allValues[monthIndex]
-
+            let yearInRange = (year - source.firstYear) % source.years.count + source.firstYear
             // Append attributes for items
-            if let events = source.eventsForMonth[year]?[month] {
+            if let events = source.eventsForMonth[yearInRange]?[month] {
                 for event in events {
-                    if let attributes = attributes(for: event, in: source) {
+                    if let attributes = attributes(for: event, in: source, year: year) {
                         layoutAttributes.append(attributes)
                     }
                 }
@@ -99,7 +99,7 @@ class TimelineMonthLayout: NSCollectionViewFlowLayout {
 
     // MARK: Helpers
 
-    private func attributes(for event: TimelineEvent, in source: TimelineDataSource) -> NSCollectionViewLayoutAttributes? {
+    private func attributes(for event: TimelineEvent, in source: TimelineDataSource, year: Int? = nil) -> NSCollectionViewLayoutAttributes? {
         guard let item = source.events.index(of: event), let eventsForYear = source.eventsForYear[event.start], let heightIndex = eventsForYear.index(of: event) else {
             return nil
         }
