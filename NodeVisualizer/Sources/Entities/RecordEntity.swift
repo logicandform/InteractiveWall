@@ -57,7 +57,7 @@ class RecordEntity: GKEntity {
 
     // MARK: Initializer
 
-    init(record: TestingEnvironment.Record) {
+    init(record: RecordDisplayable) {
         super.init()
 
         let renderComponent = RenderComponent(record: record)
@@ -110,7 +110,7 @@ class RecordEntity: GKEntity {
         // reset RecordEntity properties
         hasCollidedWithBoundingNode = false
         levelState = (nil, nil)
-        
+
         // enter WanderState initial state
         intelligenceComponent.stateMachine.enter(WanderState.self)
     }

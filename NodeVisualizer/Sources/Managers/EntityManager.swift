@@ -105,6 +105,11 @@ final class EntityManager {
         associateRelatedEntities(for: entitiesInCurrentLevel, toLevel: next)
     }
 
+    func clearLevelEntities() {
+        entitiesInLevel.removeAll()
+        allLevelEntities.removeAll()
+    }
+
     func resetAll() {
         for entity in allLevelEntities {
             entity.reset()
@@ -118,27 +123,23 @@ final class EntityManager {
         clearLevelEntities()
     }
 
-    func clearLevelEntities() {
-        entitiesInLevel.removeAll()
-        allLevelEntities.removeAll()
-    }
-
 
     // MARK: Helpers
 
     private func getRelatedEntities(for entity: RecordEntity) -> [RecordEntity] {
         let record = entity.renderComponent.recordNode.record
+        let identifier = DataManager.RecordIdentifier(id: record.id, type: record.type)
 
-        guard let relatedRecords = TestingEnvironment.instance.relatedRecordsForRecord[record] else {
+        guard let relatedRecords = NodeConfiguration.relatedRecords(for: identifier) else {
             return []
         }
 
-        let relatedEntities = entities(for: Array(relatedRecords)).compactMap({ $0 as? RecordEntity })
+        let relatedEntities = entities(for: relatedRecords)
         return relatedEntities
     }
 
-    private func entities(for records: [TestingEnvironment.Record]) -> [GKEntity] {
-        var recordEntities = [GKEntity]()
+    private func entities(for records: [RecordDisplayable]) -> [RecordEntity] {
+        var recordEntities = [RecordEntity]()
 
         for record in records {
             if let entity = entity(for: record) {
@@ -149,12 +150,13 @@ final class EntityManager {
         return recordEntities
     }
 
-    private func entity(for record: TestingEnvironment.Record) -> GKEntity? {
+    private func entity(for record: RecordDisplayable) -> RecordEntity? {
         for entity in entities {
             if let recordEntity = entity as? RecordEntity,
+                !allLevelEntities.contains(where: { $0.renderComponent.recordNode.record.id == recordEntity.renderComponent.recordNode.record.id }),
                 !allLevelEntities.contains(recordEntity),
                 recordEntity.renderComponent.recordNode.record.id == record.id {
-                return entity
+                return recordEntity
             }
         }
 

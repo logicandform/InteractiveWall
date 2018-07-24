@@ -17,8 +17,6 @@ class MainViewController: NSViewController, GestureResponder {
     var gestureManager: GestureManager!
     var touchNeedsUpdate = [Touch: Bool]()
 
-    private var records = [RecordDisplayable]()
-
 
     // MARK: Init
 
@@ -50,15 +48,21 @@ class MainViewController: NSViewController, GestureResponder {
     override func viewWillAppear() {
         super.viewWillAppear()
 
-//        DataManager.instance.associateRecordsToRelatedRecords(then: { [weak self] records in
-//            self?.setupMainScene(with: records)
-//        })
-
-        setupTestingEnvironment()
+        if NodeConfiguration.debug {
+            setupTestingEnvironment()
+        } else {
+            setupMainEnvironment()
+        }
     }
 
 
-    // MARK: Testing Environment
+    // MARK: Setup Environment
+
+    private func setupMainEnvironment() {
+        DataManager.instance.createRecordToRelatedRecordsRelationship { [weak self] records in
+            self?.setupMainScene(with: records)
+        }
+    }
 
     private func setupTestingEnvironment() {
         TestingEnvironment.instance.createTestingEnvironment { [weak self] in
@@ -67,32 +71,21 @@ class MainViewController: NSViewController, GestureResponder {
         }
     }
 
-    private func setupMainScene(with records: [TestingEnvironment.Record]) {
-        let mainScene = MainScene(size: CGSize(width: mainView.bounds.width, height: mainView.bounds.height))
-        mainScene.backgroundColor = style.darkBackground
-        mainScene.scaleMode = .aspectFill
+
+    // MARK: Helpers
+
+    private func setupMainScene(with records: [RecordDisplayable]) {
+        let mainScene = makeMainScene()
         mainScene.records = records
         mainScene.gestureManager = gestureManager
         mainView.presentScene(mainScene)
     }
 
-
-    // MARK: Helpers
-
-    private func setupMainScene(with records: [RecordDisplayable]) {
-        self.records = records
-
-        let mainScene = makeScene()
-//        mainScene.records = records
-        mainScene.gestureManager = gestureManager
-        mainView.presentScene(mainScene)
-    }
-
-    private func makeScene() -> MainScene {
-        let scene = MainScene(size: CGSize(width: mainView.bounds.width, height: mainView.bounds.height))
-        scene.backgroundColor = style.darkBackground
-        scene.scaleMode = .aspectFill
-        return scene
+    private func makeMainScene() -> MainScene {
+        let mainScene = MainScene(size: CGSize(width: mainView.bounds.width, height: mainView.bounds.height))
+        mainScene.backgroundColor = style.darkBackground
+        mainScene.scaleMode = .aspectFill
+        return mainScene
     }
 }
 

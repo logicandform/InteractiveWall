@@ -6,7 +6,7 @@ import SpriteKit
 
 class RecordNode: SKNode {
 
-    private(set) var record: TestingEnvironment.Record
+    private(set) var record: RecordDisplayable
 
     private struct Constants {
         static let labelFontSize: CGFloat = 10
@@ -17,7 +17,7 @@ class RecordNode: SKNode {
 
     // MARK: Initializers
 
-    init(record: TestingEnvironment.Record) {
+    init(record: RecordDisplayable) {
         self.record = record
         super.init()
         makeRecordNode()
@@ -47,17 +47,17 @@ class RecordNode: SKNode {
         addIdLabelNode(to: rootNode)
     }
 
-    private func makeRootNode() -> SKShapeNode {
-//        let rootNode = SKSpriteNode()
-//        rootNode.size = CGSize(width: 20, height: 20)
-//        rootNode.color = record.color
-//        addChild(rootNode)
-//        return rootNode
-
-        let rootNode = SKShapeNode(circleOfRadius: NodeConfiguration.Record.physicsBodyRadius)
-        rootNode.fillColor = record.color
+    private func makeRootNode() -> SKSpriteNode {
+        let rootNode = SKSpriteNode()
+        rootNode.size = CGSize(width: 20, height: 20)
+        rootNode.color = record.type.color
         addChild(rootNode)
         return rootNode
+
+//        let rootNode = SKShapeNode(circleOfRadius: NodeConfiguration.Record.physicsBodyRadius)
+//        rootNode.fillColor = record.type.color
+//        addChild(rootNode)
+//        return rootNode
     }
 
     private func addIdLabelNode(to root: SKNode) {

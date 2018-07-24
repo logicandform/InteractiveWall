@@ -6,7 +6,7 @@ import GameplayKit
 
 class MainScene: SKScene, SKPhysicsContactDelegate {
 
-    var records: [TestingEnvironment.Record]!
+    var records: [RecordDisplayable]!
     var gestureManager: GestureManager!
 
     private var lastUpdateTimeInterval: TimeInterval = 0
@@ -97,7 +97,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func addRecordNodesToScene() {
-        records.enumerated().forEach { index, record in
+        records.forEach { record in
             let recordEntity = RecordEntity(record: record)
 
             recordEntity.intelligenceComponent.enterInitialState()
@@ -149,7 +149,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
             return
         }
 
-        print("ID: \(recordNode.record.id)")
+        print("ID: \(recordNode.record.id) \n Type: \(recordNode.record.type)")
 
         switch recognizer.state {
         case .ended:
