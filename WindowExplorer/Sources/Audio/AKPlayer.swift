@@ -207,7 +207,7 @@ public class AKPlayer {
     }
 
     public init() {
-        avAudioNode = panner.audioNode
+        avAudioNode = AKPlayer.outmixer
     }
 
     private func initialize() {
