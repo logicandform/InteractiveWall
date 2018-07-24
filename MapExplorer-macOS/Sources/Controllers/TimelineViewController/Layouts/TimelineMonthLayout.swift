@@ -66,7 +66,7 @@ class TimelineMonthLayout: NSCollectionViewFlowLayout {
 
         if maxMonth < minMonth {
             year += 1
-            for monthIndex in (0...minMonth) {
+            for monthIndex in (0...maxMonth) {
                 let month = Month.allValues[monthIndex]
 
                 // Append attributes for items

@@ -40,7 +40,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     var gestureManager: GestureManager!
     var currentDate = Constants.initialDate
-    var timelineType: TimelineType = .decade
+    var timelineType: TimelineType = .year
     private var timelineHandler: TimelineHandler?
     private let source = TimelineDataSource()
     private var decades = [Int]()
@@ -119,6 +119,8 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     override func viewDidAppear() {
         super.viewDidAppear()
         setupControlGradients()
+        setDate(Constants.initialDate)
+        timelineCollectionView.collectionViewLayout?.invalidateLayout()
     }
 
 
@@ -278,7 +280,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     }
 
     private func updateDate(from collectionView: NSCollectionView, with offset: CGVector) {
-        var days = -(offset.dx / Constants.timelineControlItemWidth)
+        let days = -(offset.dx / Constants.timelineControlItemWidth)
 
         switch collectionView {
         case monthCollectionView:
@@ -288,7 +290,19 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         case decadeCollectionView:
             add(days: days * 120)
         case timelineCollectionView:
-            days = -(offset.dx / CGFloat(timelineType.sectionWidth))
+            addTimelineDays(with: offset)
+        default:
+            return
+        }
+    }
+
+    private func addTimelineDays(with offset: CGVector) {
+        let days = -(offset.dx / CGFloat(timelineType.sectionWidth))
+
+        switch timelineCollectionView.collectionViewLayout {
+        case is TimelineMonthLayout:
+            add(days: days)
+        case is TimelineYearLayout, is TimelineDecadeLayout, is TimelineCenturyLayout:
             add(days: days * 12)
         default:
             return
@@ -624,13 +638,35 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         }
         decadeCollectionView.scrollToVisible(decadeRect)
 
-        let timelineMonthOffset = ((CGFloat(currentDate.month) + currentDate.day - 0.5) / 12) * CGFloat(timelineType.sectionWidth)
-        let timelineYearIndex = years.index(of: currentDate.year) != nil ? years.index(of: currentDate.year) : currentDate.year < source.firstYear ? -1 : years.count - 1
-        let timelineYearX = CGFloat(timelineYearIndex!) * CGFloat(timelineType.sectionWidth)
-        var timelineRect = timelineCollectionView.visibleRect
-        let timelineNewOrigin = timelineYearX - timelineRect.width / 2 + timelineMonthOffset
-        timelineRect.origin.x = timelineNewOrigin < 0 ? 0 : timelineNewOrigin
-        timelineCollectionView.scrollToVisible(timelineRect)
+        scrollTimeline()
+    }
+
+    private func scrollTimeline() {
+        let timelineYearMaxX = CGFloat(years.count) * CGFloat(timelineType.sectionWidth)
+        let timelineYearIndex = years.index(of: currentDate.year)!
+
+        switch timelineCollectionView.collectionViewLayout {
+        case is TimelineMonthLayout:
+            let timelineMonthOffset = ((CGFloat(currentDate.month) + currentDate.day - 0.5)) * CGFloat(timelineType.sectionWidth)
+            let timelineYearX = CGFloat(timelineYearIndex) * CGFloat(timelineType.sectionWidth) * 12
+            var timelineRect = timelineCollectionView.visibleRect
+            timelineRect.origin.x = timelineYearX - timelineRect.width / 2 + timelineMonthOffset
+            if timelineRect.origin.x < 0 {
+                timelineRect.origin.x = timelineYearMaxX + timelineRect.origin.x
+            }
+            timelineCollectionView.scrollToVisible(timelineRect)
+        case is TimelineYearLayout, is TimelineCenturyLayout, is TimelineDecadeLayout:
+            let timelineMonthOffset = ((CGFloat(currentDate.month) + currentDate.day - 0.5) / 12) * CGFloat(timelineType.sectionWidth)
+            let timelineYearX = CGFloat(timelineYearIndex) * CGFloat(timelineType.sectionWidth)
+            var timelineRect = timelineCollectionView.visibleRect
+            timelineRect.origin.x = timelineYearX - timelineRect.width / 2 + timelineMonthOffset
+            if timelineRect.origin.x < 0 {
+                timelineRect.origin.x = timelineYearMaxX + timelineRect.origin.x
+            }
+            timelineCollectionView.scrollToVisible(timelineRect)
+        default:
+            return
+        }
     }
 
     private func decadeFor(year: Int) -> Int {

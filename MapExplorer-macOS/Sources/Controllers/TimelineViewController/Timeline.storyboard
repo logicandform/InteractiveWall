@@ -26,7 +26,7 @@
                                                 <collectionView id="hh4-uZ-Why" customClass="FlippedCollectionView" customModule="MapExplorer_macOS" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="664" height="198"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                                    <collectionViewLayout key="collectionViewLayout" id="bJW-po-dwy" customClass="TimelineDecadeLayout" customModule="MapExplorer_macOS" customModuleProvider="target"/>
+                                                    <collectionViewLayout key="collectionViewLayout" id="bJW-po-dwy" customClass="TimelineYearLayout" customModule="MapExplorer_macOS" customModuleProvider="target"/>
                                                     <color key="primaryBackgroundColor" red="0.44063859179674914" green="0.44326171874999998" blue="0.42965281942173822" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </collectionView>
                                             </subviews>
