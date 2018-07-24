@@ -13,16 +13,12 @@ class TimelineDateTests: XCTestCase {
         let expectedDay = CGFloat(19.0/31.0)
         let expectedMonth = 9
         let expectedYear = 2019
-        if let startDay = dateRange.startDate.day, let endDay = dateRange.endDate.day, let startMonth = dateRange.startDate.month, let endMonth = dateRange.endDate.month, let startYear = dateRange.startDate.year, let endYear = dateRange.endDate.year {
-            XCTAssert(startDay.isEqual(to: expectedDay))
-            XCTAssert(endDay.isEqual(to: expectedDay))
-            XCTAssert(startMonth == expectedMonth)
-            XCTAssert(endMonth == expectedMonth)
-            XCTAssert(startYear == expectedYear)
-            XCTAssert(endYear == expectedYear)
-            return
-        }
-        XCTAssert(false)
+        XCTAssert(dateRange.startDate.day.isEqual(to: expectedDay))
+        XCTAssert(dateRange.endDate.day.isEqual(to: expectedDay))
+        XCTAssert(dateRange.startDate.month == expectedMonth)
+        XCTAssert(dateRange.endDate.month == expectedMonth)
+        XCTAssert(dateRange.startDate.year == expectedYear)
+        XCTAssert(dateRange.endDate.year == expectedYear)
     }
 
     func testStandardSingleDateTwo() {
@@ -30,16 +26,12 @@ class TimelineDateTests: XCTestCase {
         let expectedDay = CGFloat(19.0/31.0)
         let expectedMonth = 7
         let expectedYear = 1976
-        if let startDay = dateRange.startDate.day, let endDay = dateRange.endDate.day, let startMonth = dateRange.startDate.month, let endMonth = dateRange.endDate.month, let startYear = dateRange.startDate.year, let endYear = dateRange.endDate.year {
-            XCTAssert(startDay.isEqual(to: expectedDay))
-            XCTAssert(endDay.isEqual(to: expectedDay))
-            XCTAssert(startMonth == expectedMonth)
-            XCTAssert(endMonth == expectedMonth)
-            XCTAssert(startYear == expectedYear)
-            XCTAssert(endYear == expectedYear)
-            return
-        }
-        XCTAssert(false)
+        XCTAssert(dateRange.startDate.day.isEqual(to: expectedDay))
+        XCTAssert(dateRange.endDate.day.isEqual(to: expectedDay))
+        XCTAssert(dateRange.startDate.month == expectedMonth)
+        XCTAssert(dateRange.endDate.month == expectedMonth)
+        XCTAssert(dateRange.startDate.year == expectedYear)
+        XCTAssert(dateRange.endDate.year == expectedYear)
     }
 
     func testStandardSingleDateThree() {
@@ -47,16 +39,12 @@ class TimelineDateTests: XCTestCase {
         let expectedDay = CGFloat(11.0/31.0)
         let expectedMonth = 4
         let expectedYear = 2010
-        if let startDay = dateRange.startDate.day, let endDay = dateRange.endDate.day, let startMonth = dateRange.startDate.month, let endMonth = dateRange.endDate.month, let startYear = dateRange.startDate.year, let endYear = dateRange.endDate.year {
-            XCTAssert(startDay.isEqual(to: expectedDay))
-            XCTAssert(endDay.isEqual(to: expectedDay))
-            XCTAssert(startMonth == expectedMonth)
-            XCTAssert(endMonth == expectedMonth)
-            XCTAssert(startYear == expectedYear)
-            XCTAssert(endYear == expectedYear)
-            return
-        }
-        XCTAssert(false)
+        XCTAssert(dateRange.startDate.day.isEqual(to: expectedDay))
+        XCTAssert(dateRange.endDate.day.isEqual(to: expectedDay))
+        XCTAssert(dateRange.startDate.month == expectedMonth)
+        XCTAssert(dateRange.endDate.month == expectedMonth)
+        XCTAssert(dateRange.startDate.year == expectedYear)
+        XCTAssert(dateRange.endDate.year == expectedYear)
     }
 
 
@@ -70,16 +58,12 @@ class TimelineDateTests: XCTestCase {
         let expectedEndMonth = 11
         let expectedStartYear = 2019
         let expectedEndYear = 2125
-        if let startDay = dateRange.startDate.day, let endDay = dateRange.endDate.day, let startMonth = dateRange.startDate.month, let endMonth = dateRange.endDate.month, let startYear = dateRange.startDate.year, let endYear = dateRange.endDate.year {
-            XCTAssert(startDay == expectedStartDay)
-            XCTAssert(endDay == expectedEndDay)
-            XCTAssert(startMonth == expectedStartMonth)
-            XCTAssert(endMonth == expectedEndMonth)
-            XCTAssert(startYear == expectedStartYear)
-            XCTAssert(endYear == expectedEndYear)
-            return
-        }
-        XCTAssert(false)
+        XCTAssert(dateRange.startDate.day == expectedStartDay)
+        XCTAssert(dateRange.endDate.day == expectedEndDay)
+        XCTAssert(dateRange.startDate.month == expectedStartMonth)
+        XCTAssert(dateRange.endDate.month == expectedEndMonth)
+        XCTAssert(dateRange.startDate.year == expectedStartYear)
+        XCTAssert(dateRange.endDate.year == expectedEndYear)
     }
 
     func testDifferentStartEndTwo() {
@@ -90,16 +74,12 @@ class TimelineDateTests: XCTestCase {
         let expectedEndMonth = 2
         let expectedStartYear = 2019
         let expectedEndYear = 2125
-        if let startDay = dateRange.startDate.day, let endDay = dateRange.endDate.day, let startMonth = dateRange.startDate.month, let endMonth = dateRange.endDate.month, let startYear = dateRange.startDate.year, let endYear = dateRange.endDate.year {
-            XCTAssert(startDay == expectedStartDay)
-            XCTAssert(endDay == expectedEndDay)
-            XCTAssert(startMonth == expectedStartMonth)
-            XCTAssert(endMonth == expectedEndMonth)
-            XCTAssert(startYear == expectedStartYear)
-            XCTAssert(endYear == expectedEndYear)
-            return
-        }
-        XCTAssert(false)
+        XCTAssert(dateRange.startDate.day == expectedStartDay)
+        XCTAssert(dateRange.endDate.day == expectedEndDay)
+        XCTAssert(dateRange.startDate.month == expectedStartMonth)
+        XCTAssert(dateRange.endDate.month == expectedEndMonth)
+        XCTAssert(dateRange.startDate.year == expectedStartYear)
+        XCTAssert(dateRange.endDate.year == expectedEndYear)
     }
 
     func testDifferentStartEndThree() {
@@ -110,16 +90,12 @@ class TimelineDateTests: XCTestCase {
         let expectedEndMonth = 1
         let expectedStartYear = 2019
         let expectedEndYear = 2125
-        if let startDay = dateRange.startDate.day, let endDay = dateRange.endDate.day, let startMonth = dateRange.startDate.month, let endMonth = dateRange.endDate.month, let startYear = dateRange.startDate.year, let endYear = dateRange.endDate.year {
-            XCTAssert(startDay == expectedStartDay)
-            XCTAssert(endDay == expectedEndDay)
-            XCTAssert(startMonth == expectedStartMonth)
-            XCTAssert(endMonth == expectedEndMonth)
-            XCTAssert(startYear == expectedStartYear)
-            XCTAssert(endYear == expectedEndYear)
-            return
-        }
-        XCTAssert(false)
+        XCTAssert(dateRange.startDate.day == expectedStartDay)
+        XCTAssert(dateRange.endDate.day == expectedEndDay)
+        XCTAssert(dateRange.startDate.month == expectedStartMonth)
+        XCTAssert(dateRange.endDate.month == expectedEndMonth)
+        XCTAssert(dateRange.startDate.year == expectedStartYear)
+        XCTAssert(dateRange.endDate.year == expectedEndYear)
     }
 
 
@@ -131,16 +107,12 @@ class TimelineDateTests: XCTestCase {
         let expectedStartDay = CGFloat(7.0/31.0)
         let expectedEndDay = CGFloat(14.0/31.0)
         let expectedYear = 1958
-        if let startDay = dateRange.startDate.day, let endDay = dateRange.endDate.day, let startMonth = dateRange.startDate.month, let endMonth = dateRange.endDate.month, let startYear = dateRange.startDate.year, let endYear = dateRange.endDate.year {
-            XCTAssert(startDay == expectedStartDay)
-            XCTAssert(endDay == expectedEndDay)
-            XCTAssert(startMonth == expectedMonth)
-            XCTAssert(endMonth == expectedMonth)
-            XCTAssert(startYear == expectedYear)
-            XCTAssert(endYear == expectedYear)
-            return
-        }
-        XCTAssert(false)
+        XCTAssert(dateRange.startDate.day == expectedStartDay)
+        XCTAssert(dateRange.endDate.day == expectedEndDay)
+        XCTAssert(dateRange.startDate.month == expectedMonth)
+        XCTAssert(dateRange.endDate.month == expectedMonth)
+        XCTAssert(dateRange.startDate.year == expectedYear)
+        XCTAssert(dateRange.endDate.year == expectedYear)
     }
 
 
@@ -153,16 +125,12 @@ class TimelineDateTests: XCTestCase {
         let expectedStartMonth = 3
         let expectedEndMonth = 5
         let expectedYear = 1784
-        if let startDay = dateRange.startDate.day, let endDay = dateRange.endDate.day, let startMonth = dateRange.startDate.month, let endMonth = dateRange.endDate.month, let startYear = dateRange.startDate.year, let endYear = dateRange.endDate.year {
-            XCTAssert(startDay == expectedStartDay)
-            XCTAssert(endDay == expectedEndDay)
-            XCTAssert(startMonth == expectedStartMonth)
-            XCTAssert(endMonth == expectedEndMonth)
-            XCTAssert(startYear == expectedYear)
-            XCTAssert(endYear == expectedYear)
-            return
-        }
-        XCTAssert(false)
+        XCTAssert(dateRange.startDate.day == expectedStartDay)
+        XCTAssert(dateRange.endDate.day == expectedEndDay)
+        XCTAssert(dateRange.startDate.month == expectedStartMonth)
+        XCTAssert(dateRange.endDate.month == expectedEndMonth)
+        XCTAssert(dateRange.startDate.year == expectedYear)
+        XCTAssert(dateRange.endDate.year == expectedYear)
     }
 
 
@@ -173,16 +141,12 @@ class TimelineDateTests: XCTestCase {
         let expectedDay = CGFloat(30.0/31.0)
         let expectedMonth = 11
         let expectedYear = 1932
-        if let startDay = dateRange.startDate.day, let endDay = dateRange.endDate.day, let startMonth = dateRange.startDate.month, let endMonth = dateRange.endDate.month, let startYear = dateRange.startDate.year, let endYear = dateRange.endDate.year {
-            XCTAssert(startDay == expectedDay)
-            XCTAssert(endDay == expectedDay)
-            XCTAssert(startMonth == expectedMonth)
-            XCTAssert(endMonth == expectedMonth)
-            XCTAssert(startYear == expectedYear)
-            XCTAssert(endYear == expectedYear)
-            return
-        }
-        XCTAssert(false)
+        XCTAssert(dateRange.startDate.day == expectedDay)
+        XCTAssert(dateRange.endDate.day == expectedDay)
+        XCTAssert(dateRange.startDate.month == expectedMonth)
+        XCTAssert(dateRange.endDate.month == expectedMonth)
+        XCTAssert(dateRange.startDate.year == expectedYear)
+        XCTAssert(dateRange.endDate.year == expectedYear)
     }
 
     func testTwoNumericalDates() {
@@ -193,16 +157,12 @@ class TimelineDateTests: XCTestCase {
         let expectedEndMonth = 4
         let expectedStartYear = 1932
         let expectedEndYear = 1968
-        if let startDay = dateRange.startDate.day, let endDay = dateRange.endDate.day, let startMonth = dateRange.startDate.month, let endMonth = dateRange.endDate.month, let startYear = dateRange.startDate.year, let endYear = dateRange.endDate.year {
-            XCTAssert(startDay == expectedStartDay)
-            XCTAssert(endDay == expectedEndDay)
-            XCTAssert(startMonth == expectedStartMonth)
-            XCTAssert(endMonth == expectedEndMonth)
-            XCTAssert(startYear == expectedStartYear)
-            XCTAssert(endYear == expectedEndYear)
-            return
-        }
-        XCTAssert(false)
+        XCTAssert(dateRange.startDate.day == expectedStartDay)
+        XCTAssert(dateRange.endDate.day == expectedEndDay)
+        XCTAssert(dateRange.startDate.month == expectedStartMonth)
+        XCTAssert(dateRange.endDate.month == expectedEndMonth)
+        XCTAssert(dateRange.startDate.year == expectedStartYear)
+        XCTAssert(dateRange.endDate.year == expectedEndYear)
     }
 
     func testNumericalDateTwo() {
@@ -210,16 +170,12 @@ class TimelineDateTests: XCTestCase {
         let expectedDay = CGFloat(30.0/31.0)
         let expectedMonth = 11
         let expectedYear = 1932
-        if let startDay = dateRange.startDate.day, let endDay = dateRange.endDate.day, let startMonth = dateRange.startDate.month, let endMonth = dateRange.endDate.month, let startYear = dateRange.startDate.year, let endYear = dateRange.endDate.year {
-            XCTAssert(startDay == expectedDay)
-            XCTAssert(endDay == expectedDay)
-            XCTAssert(startMonth == expectedMonth)
-            XCTAssert(endMonth == expectedMonth)
-            XCTAssert(startYear == expectedYear)
-            XCTAssert(endYear == expectedYear)
-            return
-        }
-        XCTAssert(false)
+        XCTAssert(dateRange.startDate.day == expectedDay)
+        XCTAssert(dateRange.endDate.day == expectedDay)
+        XCTAssert(dateRange.startDate.month == expectedMonth)
+        XCTAssert(dateRange.endDate.month == expectedMonth)
+        XCTAssert(dateRange.startDate.year == expectedYear)
+        XCTAssert(dateRange.endDate.year == expectedYear)
     }
 
     func testTwoNumericalDatesTwo() {
@@ -230,15 +186,11 @@ class TimelineDateTests: XCTestCase {
         let expectedEndMonth = 4
         let expectedStartYear = 1932
         let expectedEndYear = 1968
-        if let startDay = dateRange.startDate.day, let endDay = dateRange.endDate.day, let startMonth = dateRange.startDate.month, let endMonth = dateRange.endDate.month, let startYear = dateRange.startDate.year, let endYear = dateRange.endDate.year {
-            XCTAssert(startDay == expectedStartDay)
-            XCTAssert(endDay == expectedEndDay)
-            XCTAssert(startMonth == expectedStartMonth)
-            XCTAssert(endMonth == expectedEndMonth)
-            XCTAssert(startYear == expectedStartYear)
-            XCTAssert(endYear == expectedEndYear)
-            return
-        }
-        XCTAssert(false)
+        XCTAssert(dateRange.startDate.day == expectedStartDay)
+        XCTAssert(dateRange.endDate.day == expectedEndDay)
+        XCTAssert(dateRange.startDate.month == expectedStartMonth)
+        XCTAssert(dateRange.endDate.month == expectedEndMonth)
+        XCTAssert(dateRange.startDate.year == expectedStartYear)
+        XCTAssert(dateRange.endDate.year == expectedEndYear)
     }
 }

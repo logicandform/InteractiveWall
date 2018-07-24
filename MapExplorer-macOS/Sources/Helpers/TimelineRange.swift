@@ -4,13 +4,17 @@ import Foundation
 import Cocoa
 
 
+/// Class containing a start and end date for Timeline items, as well as the ability to parse dates from a string
 class TimelineRange {
     var startDate: TimelineDate
     var endDate: TimelineDate
-    private let minimumYear = 100
-    private let maximumDay = 31
-    private let days = Array(1...31)
-    private let months = Array(1...12)
+
+    private struct Constants {
+        static let minimumYear = 100
+        static let maximumDay = 31
+        static let days = Array(1...31)
+        static let months = Array(1...12)
+    }
 
 
     // MARK: Init
@@ -34,82 +38,124 @@ class TimelineRange {
     // MARK: Helpers
 
     private func parseNumerical(dateArray: [String]) {
+        var startDay: CGFloat? = nil
+        var endDay: CGFloat? = nil
+        var startMonth: Int? = nil
+        var endMonth: Int? = nil
+        var startYear: Int? = nil
+        var endYear: Int? = nil
         for date in dateArray {
             if let numericalDate = Int(date) {
-                if startDate.day == nil, days.contains(numericalDate) {
-                    startDate.day = CGFloat(numericalDate) / CGFloat(maximumDay)
-                } else if startDate.month == nil, months.contains(numericalDate) {
-                    startDate.month = numericalDate - 1
-                } else if startDate.year == nil, numericalDate > minimumYear {
-                    startDate.year = numericalDate
-                } else if endDate.day == nil, days.contains(numericalDate) {
-                    endDate.day = CGFloat(numericalDate) / CGFloat(maximumDay)
-                } else if endDate.month == nil, months.contains(numericalDate) {
-                    endDate.month = numericalDate - 1
-                } else if endDate.year == nil, numericalDate > minimumYear {
-                    endDate.year = numericalDate
+                if startDay == nil, Constants.days.contains(numericalDate) {
+                    startDay = CGFloat(numericalDate) / CGFloat(Constants.maximumDay)
+                } else if startMonth == nil, Constants.months.contains(numericalDate) {
+                    startMonth = numericalDate - 1
+                } else if startYear == nil, numericalDate > Constants.minimumYear {
+                    startYear = numericalDate
+                } else if endDay == nil, Constants.days.contains(numericalDate) {
+                    endDay = CGFloat(numericalDate) / CGFloat(Constants.maximumDay)
+                } else if endMonth == nil, Constants.months.contains(numericalDate) {
+                    endMonth = numericalDate - 1
+                } else if endYear == nil, numericalDate > Constants.minimumYear {
+                    endYear = numericalDate
                 }
             }
         }
 
-        if endDate.year == nil {
-            endDate.year = startDate.year
+        if let day = startDay {
+            startDate.day = day
         }
-        if endDate.month == nil {
-            endDate.month = startDate.month
+        if let month = startMonth {
+            startDate.month = month
         }
-        if endDate.day == nil {
-            endDate.day = startDate.day
+        if let year = startYear {
+            startDate.year = year
+        }
+        if let day = endDay {
+            endDate.day = day
+        } else if let day = startDay {
+            endDate.day = day
+        }
+        if let month = endMonth {
+            endDate.month = month
+        } else if let month = startMonth {
+            endDate.month = month
+        }
+        if let year = endYear {
+            endDate.year = year
+        } else if let year = startYear {
+            endDate.year = year
         }
     }
 
     private func parseNonNumerical(dateArray: [String]) {
+        var startDay: CGFloat? = nil
+        var endDay: CGFloat? = nil
+        var startMonth: Int? = nil
+        var endMonth: Int? = nil
+        var startYear: Int? = nil
+        var endYear: Int? = nil
         for date in dateArray {
-            if let year = Int(date), year > minimumYear {
-                if startDate.year == nil {
-                    startDate.year = year
+            if let year = Int(date), year > Constants.minimumYear {
+                if startYear == nil {
+                    startYear = year
                 } else {
-                    endDate.year = year
+                    endYear = year
                 }
             }
 
-            if let day = Int(date), days.contains(day) {
-                if startDate.day == nil {
-                    startDate.day = CGFloat(day) / CGFloat(maximumDay)
+            if let day = Int(date), Constants.days.contains(day) {
+                if startDay == nil {
+                    startDay = CGFloat(day) / CGFloat(Constants.maximumDay)
                 } else {
-                    endDate.day = CGFloat(day) / CGFloat(maximumDay)
+                    endDay = CGFloat(day) / CGFloat(Constants.maximumDay)
                 }
-            } else if let day = Int(date.digitsInString), days.contains(day) {
-                if startDate.day == nil {
-                    startDate.day = CGFloat(day) / CGFloat(maximumDay)
+            } else if let day = Int(date.digitsInString), Constants.days.contains(day) {
+                if startDay == nil {
+                    startDay = CGFloat(day) / CGFloat(Constants.maximumDay)
                 } else {
-                    endDate.day = CGFloat(day) / CGFloat(maximumDay)
+                    endDay = CGFloat(day) / CGFloat(Constants.maximumDay)
                 }
             }
 
             if let month = Month(name: date) {
-                if startDate.month == nil {
-                    startDate.month = month.rawValue
+                if startMonth == nil {
+                    startMonth = month.rawValue
                 } else {
-                    endDate.month = month.rawValue
+                    endMonth = month.rawValue
                 }
             } else if let month = Month(abbreviation: date) {
-                if startDate.month == nil {
-                    startDate.month = month.rawValue
+                if startMonth == nil {
+                    startMonth = month.rawValue
                 } else {
-                    endDate.month = month.rawValue
+                    endMonth = month.rawValue
                 }
             }
         }
 
-        if endDate.year == nil {
-            endDate.year = startDate.year
+        if let day = startDay {
+            startDate.day = day
         }
-        if endDate.month == nil {
-            endDate.month = startDate.month
+        if let month = startMonth {
+            startDate.month = month
         }
-        if endDate.day == nil {
-            endDate.day = startDate.day
+        if let year = startYear {
+            startDate.year = year
+        }
+        if let day = endDay {
+            endDate.day = day
+        } else if let day = startDay {
+            endDate.day = day
+        }
+        if let month = endMonth {
+            endDate.month = month
+        } else if let month = startMonth {
+            endDate.month = month
+        }
+        if let year = endYear {
+            endDate.year = year
+        } else if let year = startYear {
+            endDate.year = year
         }
     }
 }
