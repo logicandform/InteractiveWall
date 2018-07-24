@@ -48,7 +48,7 @@ class MainViewController: NSViewController, GestureResponder {
     override func viewWillAppear() {
         super.viewWillAppear()
 
-        if NodeConfiguration.debug {
+        if NodeConfiguration.Environment.debug {
             setupTestingEnvironment()
         } else {
             setupMainEnvironment()

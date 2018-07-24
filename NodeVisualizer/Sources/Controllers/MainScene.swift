@@ -35,6 +35,8 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
         addPhysicsToScene()
         addRecordNodesToScene()
+
+        print("Finished loading all record entities")
     }
 
     override func update(_ currentTime: TimeInterval) {
@@ -97,9 +99,8 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func addRecordNodesToScene() {
-        records.forEach { record in
+        for record in records {
             let recordEntity = RecordEntity(record: record)
-
             recordEntity.intelligenceComponent.enterInitialState()
 
             if let recordNode = recordEntity.component(ofType: RenderComponent.self)?.recordNode {

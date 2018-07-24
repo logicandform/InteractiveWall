@@ -12,6 +12,7 @@ import GameplayKit
 
 final class EntityManager {
 
+    /// List of all GKComponentSystems. The systems will be updated in order. The order is defined to match assumptions made within components.
     private lazy var componentSystems: [GKComponentSystem] = {
         let intelligenceSystem = GKComponentSystem(componentClass: IntelligenceComponent.self)
         let movementSystem = GKComponentSystem(componentClass: MovementComponent.self)
@@ -20,13 +21,11 @@ final class EntityManager {
         return [intelligenceSystem, animationSystem, movementSystem, physicsSystem]
     }()
 
-    static let instance = EntityManager()
-
     /// Set of all entities in the scene
     private(set) var entities = Set<GKEntity>()
 
     /// 2D array of related entities that belong to a particular level
-    private(set) var entitiesInLevel = [[RecordEntity]]()
+    private(set) var entitiesInLevel = [Set<RecordEntity>]()
 
     /// Set of all entities in all levels
     private(set) var allLevelEntities = Set<RecordEntity>()
@@ -35,15 +34,16 @@ final class EntityManager {
     private(set) var allEntitiesInFormedState = Set<RecordEntity>()
 
     /// Local copy of the entities that are associated with the current level
-    private var entitiesInCurrentLevel = [RecordEntity]()
+    private var entitiesInCurrentLevel = Set<RecordEntity>()
 
     private struct Constants {
         static let maxLevel = 5
     }
 
 
-    // Use singleton instance
+    // MARK: Singleton instance
     private init() { }
+    static let instance = EntityManager()
 
 
     // MARK: API
@@ -74,7 +74,7 @@ final class EntityManager {
         }
     }
 
-    func associateRelatedEntities(for entities: [RecordEntity]?, toLevel level: Int = 0) {
+    func associateRelatedEntities(for entities: Set<RecordEntity>?, toLevel level: Int = 0) {
         guard let entities = entities, !entities.isEmpty else {
             entitiesInLevel = entitiesInLevel.filter { !($0.isEmpty) }
             return
@@ -86,16 +86,16 @@ final class EntityManager {
         // padding for 2D array
         padEntitiesForLevel(level)
 
-        for entity in entities {
-            allLevelEntities.insert(entity)
-            allEntitiesInFormedState.insert(entity)
+        // update all level entities set
+        allLevelEntities.formUnion(entities)
+        allEntitiesInFormedState.formUnion(entities)
 
+        for entity in entities {
             // add relatedEntities to the appropriate level
             let relatedEntities = getRelatedEntities(for: entity)
-
             if !relatedEntities.isEmpty {
-                entitiesInLevel[level] += relatedEntities
-                entitiesInCurrentLevel += relatedEntities
+                entitiesInLevel[level].formUnion(relatedEntities)
+                entitiesInCurrentLevel.formUnion(relatedEntities)
             }
         }
 
@@ -153,10 +153,10 @@ final class EntityManager {
     private func entity(for record: RecordDisplayable) -> RecordEntity? {
         for entity in entities {
             if let recordEntity = entity as? RecordEntity,
-                !allLevelEntities.contains(where: { $0.renderComponent.recordNode.record.id == recordEntity.renderComponent.recordNode.record.id }),
-                !allLevelEntities.contains(recordEntity),
-                recordEntity.renderComponent.recordNode.record.id == record.id {
-                return recordEntity
+                recordEntity.renderComponent.recordNode.record.id == record.id,
+                recordEntity.renderComponent.recordNode.record.type == record.type,
+                !allLevelEntities.contains(recordEntity) {
+                    return recordEntity
             }
         }
 
