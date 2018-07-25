@@ -2,7 +2,7 @@
 
 /*
     Abstract:
-    A 'GKComponent' that enables an entity to seek a target node (i.e. a tapped node) and creates a gravitational attraction between the two entities.
+    A 'GKComponent' that provides different types of physics movement for the entity.
 */
 
 import Foundation

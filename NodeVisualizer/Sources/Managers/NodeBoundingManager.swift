@@ -43,12 +43,14 @@ final class NodeBoundingManager {
 
     // MARK: API
 
+    /// Updates all component systems that the NodeBoundingManager is responsible for
     func update(_ deltaTime: CFTimeInterval) {
         for componentSystem in componentSystems {
             componentSystem.update(deltaTime: deltaTime)
         }
     }
 
+    /// Creates or removes node bounding entities from the scene depending on the most recently formed EntityManager's entitiesInLevel
     func createNodeBoundingEntities() {
         let entitiesInLevelCount = EntityManager.instance.entitiesInLevel.count
         let nodeBoundingEntityForLevelCount = nodeBoundingEntityForLevel.count
@@ -60,10 +62,12 @@ final class NodeBoundingManager {
         }
     }
 
+    /// Removes all node bounding entities from the scene
     func reset() {
         removeEntities(ofLevels: 0)
     }
 
+    /// Calculates the distance from the root bounding node to the specified entity
     func distance(to entity: RecordEntity) -> CGFloat {
         guard let rootBoundingNode = nodeBoundingEntityForLevel[0]?.nodeBoundingRenderComponent.node else {
             return 0.0
@@ -76,6 +80,7 @@ final class NodeBoundingManager {
 
     // MARK: Helpers
 
+    /// Creates and adds node bounding entities based on the difference between the `levels` to go to and the current number of elements in nodeBoundingEntityForLevel
     private func createBoundingEntities(forLevels levels: Int) {
         var level = nodeBoundingEntityForLevel.count
 
@@ -101,6 +106,7 @@ final class NodeBoundingManager {
         }
     }
 
+    /// Creates the bounding node with the appropriate physics bodies and adds it to the scene
     private func createBoundingNode(ofRadius radius: CGFloat, level: Int) -> SKNode {
         let boundingNode = SKNode()
         boundingNode.name = Constants.boundingNodeName
@@ -123,6 +129,7 @@ final class NodeBoundingManager {
         return boundingNode
     }
 
+    /// Associates the entity to its level by adding it to the nodeBoundingEntityForLevel. Adds the entity's component to the component system
     private func add(_ entity: NodeBoundingEntity, toLevel level: Int) {
         nodeBoundingEntityForLevel[level] = entity
 
@@ -131,6 +138,7 @@ final class NodeBoundingManager {
         }
     }
 
+    /// Removes node bounding entities down to the specified level. Removes the SKNode from the scene and all the entity's components from the component system
     private func removeEntities(ofLevels levels: Int) {
         var level = nodeBoundingEntityForLevel.count - 1
 

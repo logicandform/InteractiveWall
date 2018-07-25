@@ -1,5 +1,10 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
+/*
+    Abstract:
+    A RecordEntity enters this state when the user has tapped on its node in the scene. 
+ */
+
 import Foundation
 import SpriteKit
 import GameplayKit
@@ -7,6 +12,7 @@ import GameplayKit
 
 class TappedState: GKState {
 
+    /// The entity associated with this state
     private unowned var entity: RecordEntity
 
 

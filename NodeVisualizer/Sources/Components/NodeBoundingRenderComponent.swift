@@ -1,5 +1,10 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
+/*
+    Abstract:
+    A 'GKComponent' that provides a SKNode for a NodeBoundingEntity. This component is mainly responsible for updating the size of its SKNode's physicsBody and updating its maximum distance calculated from its level's entities.
+ */
+
 import Foundation
 import SpriteKit
 import GameplayKit
@@ -11,18 +16,19 @@ class NodeBoundingRenderComponent: GKComponent {
     var node: SKNode?
 
     /// The maximum distance between the root and the contactEntities for this bounding entity
-    var maxRadius: CGFloat = NodeConfiguration.Record.physicsBodyRadius + 5.0
+    var maxRadius: CGFloat = Constants.initialRadius
 
     /// The minimum radius of its own responsible level's bounding node. It is the radius of the bounding node without considering its contactEntities
-    var minRadius: CGFloat = NodeConfiguration.Record.physicsBodyRadius + 5.0
+    var minRadius: CGFloat = Constants.initialRadius
 
     /// The bounding node's level that the component is responsible for
     var level: Int!
 
     /// Local variable of the previous level's bounding node maxRadius. Used to determine its own level's bounding node maxRadius
-    private var previousLevelMaxDistance: CGFloat = NodeConfiguration.Record.physicsBodyRadius + 5.0
+    private var previousLevelMaxDistance: CGFloat = Constants.initialRadius
 
     private struct Constants {
+        static let initialRadius: CGFloat = NodeConfiguration.Record.physicsBodyRadius + 5.0
         static let minimumOffset: CGFloat = NodeConfiguration.Record.physicsBodyRadius
         static let maximumOffset: CGFloat = NodeConfiguration.Record.physicsBodyRadius * 2
     }

@@ -42,18 +42,21 @@ final class EntityManager {
 
 
     // MARK: Singleton instance
+
     private init() { }
     static let instance = EntityManager()
 
 
     // MARK: API
 
+    /// Updates all component systems that the EntityManager is responsible for
     func update(_ deltaTime: CFTimeInterval) {
         for componentSystem in componentSystems {
             componentSystem.update(deltaTime: deltaTime)
         }
     }
 
+    /// Adds the entity and all of its components to the appropriate component system
     func add(_ entity: GKEntity) {
         entities.insert(entity)
 
@@ -62,10 +65,12 @@ final class EntityManager {
         }
     }
 
+    /// Removes the entity and all its components from the component system
     func remove(_ entity: GKEntity) {
         entities.remove(entity)
     }
 
+    /// Dynamically add a new component to an entity
     func add(component: GKComponent, to entity: GKEntity) {
         entity.addComponent(component)
 
@@ -74,6 +79,7 @@ final class EntityManager {
         }
     }
 
+    /// Organizes all related descendant entities to the appropriate hierarchial level
     func associateRelatedEntities(for entities: Set<RecordEntity>?, toLevel level: Int = 0) {
         guard let entities = entities, !entities.isEmpty else {
             entitiesInLevel = entitiesInLevel.filter { !($0.isEmpty) }
@@ -105,11 +111,13 @@ final class EntityManager {
         associateRelatedEntities(for: entitiesInCurrentLevel, toLevel: next)
     }
 
+    /// Removes all elements in sets associated with leveled entities
     func clearLevelEntities() {
         entitiesInLevel.removeAll()
         allLevelEntities.removeAll()
     }
 
+    /// Resets all entities that are current formed (i.e. that are currently in their levels) to their initial state
     func resetAll() {
         for entity in allLevelEntities {
             entity.reset()

@@ -235,6 +235,7 @@
 				CD0FB28320D1AA9D0058A410 /* EntityManager.swift */,
 				CD1FC73D20DB06AA00B87D02 /* TestingEnvironment.swift */,
 				CD97E33B20F4125800BB869E /* NodeBoundingManager.swift */,
+				CDA5A90920DD751C00E1CF87 /* NodeConfiguration.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -362,7 +363,6 @@
 			children = (
 				CD0FB28120D1A6300058A410 /* RecordEntity.swift */,
 				CD97E33D20F5765900BB869E /* NodeBoundingEntity.swift */,
-				CDA5A90920DD751C00E1CF87 /* NodeConfiguration.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";

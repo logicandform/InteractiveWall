@@ -69,9 +69,6 @@ class RecordEntity: GKEntity {
         // Connect the 'PhysicsComponent' and the 'RenderComponent'
         renderComponent.recordNode.physicsBody = physicsComponent.physicsBody
 
-//        let agentComponent = RecordAgent()
-//        addComponent(agentComponent)
-
         let movementComponent = MovementComponent()
         addComponent(movementComponent)
 
@@ -105,7 +102,7 @@ class RecordEntity: GKEntity {
         return CGFloat(hypotf(Float(dX), Float(dY)))
     }
 
-    /// 'Reset' the entity so that proper animations and movements can take place
+    /// 'Reset' the entity to initial state so that proper animations and movements can take place
     func reset() {
         // reset RecordEntity properties
         hasCollidedWithBoundingNode = false

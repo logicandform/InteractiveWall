@@ -1,5 +1,10 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
+/*
+    Abstract:
+    A RecordEntity enters this state when it needs to move to its level's bounding node entity's minimum distance before seeking the TappedState's RecordEntity. Entering this intermediary state allows for more fluid movement and interaction between the entities and their level node bounding entities.
+ */
+
 import Foundation
 import SpriteKit
 import GameplayKit
@@ -7,6 +12,7 @@ import GameplayKit
 
 class SeekBoundingLevelNodeState: GKState {
 
+    /// The entity associated with this state
     private unowned var entity: RecordEntity
 
     private var physicsComponent: PhysicsComponent {

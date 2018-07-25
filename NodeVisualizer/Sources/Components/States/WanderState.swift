@@ -1,5 +1,10 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
+/*
+    Abstract:
+    This is the initial state for the RecordEntity. A RecordEntity also enters this state when it needs to 'reset' to its bare standard components and properties. 
+ */
+
 import Foundation
 import SpriteKit
 import GameplayKit
@@ -7,6 +12,7 @@ import GameplayKit
 
 class WanderState: GKState {
 
+    /// The entity associated with this state
     private unowned var entity: RecordEntity
 
     private var movementComponent: MovementComponent {
