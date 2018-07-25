@@ -32,6 +32,10 @@ class MediaViewController: BaseViewController {
         }
     }
 
+    override func subview(contains position: CGPoint) -> Bool {
+        return true
+    }
+
 
     // MARK: Gesture Handling
 
