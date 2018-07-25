@@ -212,6 +212,9 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
                 pdfRect.size = CGSize(width: scaledWidth, height: scaledHeight)
                 pdfRect.origin = CGPoint(x: pdfRect.origin.x - translationX, y: pdfRect.origin.y - translationY)
 
+                let scale = (contentViewFrame.width / Constants.maximumMagnification) / scaledWidth
+                zoomControl.updateSeekBarPosition(to: scale)
+
                 NSAnimationContext.runAnimationGroup({ _ in
                     NSAnimationContext.current.duration = Constants.doubleTapAnimationDuration
                     NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
