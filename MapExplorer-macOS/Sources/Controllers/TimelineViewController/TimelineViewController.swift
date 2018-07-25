@@ -107,9 +107,9 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     }
 
     func setDate(_ date: TimelineDate) {
-        currentDate.day = adjust(day: date.day)
-        currentDate.month = adjust(month: date.month)
         currentDate.year = adjust(year: date.year)
+        currentDate.month = adjust(month: date.month)
+        currentDate.day = adjust(day: date.day)
         scrollCollectionViews()
     }
 
@@ -324,11 +324,13 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     private func adjust(day: CGFloat) -> CGFloat {
         let months = Int(day)
-        
+
         if day < 0 {
-
+            currentDate.month = adjust(month: months + currentDate.month - 1)
+            return 1 - (abs(day) + CGFloat(months))
         } else if day > 1 {
-
+            currentDate.month = adjust(month: months + currentDate.month)
+            return day - CGFloat(months)
         }
 
         return day
@@ -339,10 +341,10 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         let remainder = month % 12
 
         if month < 0 {
-            adjust(year: currentDate.year + years - 1)
+            currentDate.year = adjust(year: currentDate.year + years - 1)
             return 12 + remainder
         } else if month > 11 {
-            adjust(year: currentDate.year + years + 1)
+            currentDate.year = adjust(year: currentDate.year + years + 1)
             return remainder
         }
 
