@@ -97,6 +97,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
     private func setupMediaView() {
         mediaView.register(MediaItemView.self, forItemWithIdentifier: MediaItemView.identifier)
+        mediaView.frame = NSRect(origin: mediaView.frame.origin, size: NSSize(width: CGFloat(record.media.count) * mediaCollectionClipView.frame.size.width, height: mediaView.frame.height))
         placeHolderImage.image = record.type.placeholder.tinted(with: record.type.color)
         pageControl.color = .white
         pageControl.translatesAutoresizingMaskIntoConstraints = false
@@ -266,23 +267,22 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         let offset = rect.origin.x / rect.width
         let index = Int(round(offset))
         let indexPath = IndexPath(item: index, section: 0)
-        guard let mediaItem = mediaView.item(at: indexPath) as? MediaItemView else {
-            return
-        }
 
-        switch tap.state {
-        case .began:
-            selectedMediaItem = mediaItem
-        case .failed:
-            selectedMediaItem = nil
-        case .ended:
-            selectedMediaItem = mediaItem
-            if let selectedMedia = selectedMediaItem?.media, let windowType = WindowType(for: selectedMedia) {
-                relationshipHelper.display(windowType)
+        if let mediaItem = mediaView.item(at: indexPath) as? MediaItemView {
+            switch tap.state {
+            case .began:
+                selectedMediaItem = mediaItem
+            case .failed:
+                selectedMediaItem = nil
+            case .ended:
+                selectedMediaItem = mediaItem
+                if let selectedMedia = selectedMediaItem?.media, let windowType = WindowType(for: selectedMedia) {
+                    relationshipHelper.display(windowType)
+                }
+                selectedMediaItem = nil
+            default:
+                return
             }
-            selectedMediaItem = nil
-        default:
-            return
         }
     }
 
