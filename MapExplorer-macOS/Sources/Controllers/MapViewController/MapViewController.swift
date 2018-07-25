@@ -34,8 +34,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let touchRadius: CGFloat = 20
         static let annotationHitSize = CGSize(width: 50, height: 50)
         static let doubleTapScale = 0.5
-        static let annotationTitleZoomLevel = Double(36000000 / Configuration.appsPerScreen)
-        static let spacingBetweenAnnotations = 0.02
+        static let annotationTitleZoomLevel = Double(92000000 / Configuration.appsPerScreen)
+        static let spacingBetweenAnnotations = 0.008
+        static let coordinateToMapPointOriginOffset = 180.0
     }
 
     private struct Keys {
@@ -178,17 +179,26 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         }
 
         let touchRect = CGRect(x: position.x - Constants.touchRadius, y: position.y - Constants.touchRadius, width: Constants.touchRadius * 2, height: Constants.touchRadius * 2)
-        for annotation in mapView.annotations {
+        let sortedAnnotations = mapView.annotations.sorted(by: { $0 is MKClusterAnnotation && !($1 is MKClusterAnnotation) })
+        for annotation in sortedAnnotations {
             let positionInView = mapView.convert(annotation.coordinate, toPointTo: mapView).inverted(in: view)
             if touchRect.contains(positionInView) {
                 if tap.state == .began {
                     if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
                         annotationView.runAnimation()
                         return
+                    } else if let annotationView = mapView.view(for: annotation) as? ClusterAnnotationView {
+                        annotationView.runAnimation()
+                        return
                     }
-                } else if tap.state == .ended, let annotation = annotation as? CircleAnnotation, let record = recordForAnnotation[annotation] {
-                    postRecordNotification(for: record, at: CGPoint(x: positionInView.x, y: positionInView.y - 20.0))
-                    return
+                } else if tap.state == .ended {
+                    if let annotation = annotation as? CircleAnnotation, let record = recordForAnnotation[annotation] {
+                        postRecordNotification(for: record, at: CGPoint(x: positionInView.x, y: positionInView.y - 20.0))
+                        return
+                    } else if let clusterAnnotation = annotation as? MKClusterAnnotation {
+                        didSelect(clusterAnnotation: clusterAnnotation)
+                        return
+                    }
                 } else if tap.state == .doubleTapped {
                     return
                 }
@@ -221,6 +231,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let annotation = annotation as? CircleAnnotation {
             return CircleAnnotationView(annotation: annotation, reuseIdentifier: CircleAnnotationView.identifier)
+        } else if let cluster = annotation as? MKClusterAnnotation {
+            return ClusterAnnotationView(annotation: cluster, reuseIdentifier: ClusterAnnotationView.identifier)
         }
 
         return MKAnnotationView()
@@ -372,5 +384,21 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                 }
             }
         }
+    }
+
+    /// Zoom into the annotations contained in the cluster
+    private func didSelect(clusterAnnotation: MKClusterAnnotation) {
+        let region = restrainSpan(for: clusterAnnotation.boundingCoordinateRegion())
+        mapView.setRegion(region, animated: true)
+    }
+
+    /// Clamps the region span between the max and min zoom levels
+    private func restrainSpan(for region: MKCoordinateRegion) -> MKCoordinateRegion {
+        var restrainedRegion = region
+        let maxLongSpan = MKCoordinateForMapPoint(MKMapPoint(x: Constants.maxZoomWidth, y: 0)).longitude + Constants.coordinateToMapPointOriginOffset
+        let minLongSpan = MKCoordinateForMapPoint(MKMapPoint(x: Constants.minZoomWidth, y: 0)).longitude + Constants.coordinateToMapPointOriginOffset
+        restrainedRegion.span.longitudeDelta = clamp(restrainedRegion.span.longitudeDelta, min: minLongSpan, max: maxLongSpan)
+
+        return restrainedRegion
     }
 }

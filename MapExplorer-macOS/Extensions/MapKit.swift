@@ -100,3 +100,32 @@ extension CLLocationCoordinate2D {
         self.longitude = long
     }
 }
+
+extension MKClusterAnnotation {
+
+    // Gives the bounding coordinate region that comfortably fits all annotations in cluster
+    func boundingCoordinateRegion() -> MKCoordinateRegion {
+        var minLat = Double.greatestFiniteMagnitude
+        var maxLat = -Double.greatestFiniteMagnitude
+        var centerLat = 0.0
+        var minLong = Double.greatestFiniteMagnitude
+        var maxLong = -Double.greatestFiniteMagnitude
+        var centerLong = 0.0
+
+        for coordinate in memberAnnotations.map({ $0.coordinate }) {
+            minLat = min(minLat, coordinate.latitude)
+            maxLat = max(maxLat, coordinate.latitude)
+            centerLat += coordinate.latitude
+            minLong = min(minLong, coordinate.longitude)
+            maxLong = max(maxLong, coordinate.longitude)
+            centerLong += coordinate.longitude
+        }
+
+        centerLat /= Double(memberAnnotations.count)
+        centerLong /= Double(memberAnnotations.count)
+        let center = CLLocationCoordinate2D(latitude: centerLat, longitude: centerLong)
+        let span = MKCoordinateSpan(latitudeDelta: (maxLat - minLat) * 2, longitudeDelta: (maxLong - minLong) * 2)
+
+        return MKCoordinateRegion(center: center, span: span)
+    }
+}

@@ -47,6 +47,7 @@ class CircleAnnotationView: MKAnnotationView {
                 return
             }
 
+            clusteringIdentifier = CircleAnnotationView.identifier
             setupAnnotations(annotation: annotation)
         }
     }

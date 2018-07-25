@@ -87,6 +87,7 @@
 		8F64A1E720BEF88600F0D209 /* MapViewWithMiniMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F64A1E620BEF88600F0D209 /* MapViewWithMiniMap.swift */; };
 		A44F1B6520FEAF8B005FEFD1 /* TimelineDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44F1B6420FEAF8B005FEFD1 /* TimelineDate.swift */; };
 		A454A65B20F7F95200619730 /* TimelineDecadeLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A454A65A20F7F95200619730 /* TimelineDecadeLayout.swift */; };
+		8FBBD1CF20F5140900D9334C /* ClusterAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBBD1CE20F5140900D9334C /* ClusterAnnotationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -199,6 +200,7 @@
 		8F1A1CBA205B41AC00A59A84 /* FlippedMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlippedMapView.swift; sourceTree = "<group>"; };
 		8F22945520773EA600731E78 /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		8F64A1E620BEF88600F0D209 /* MapViewWithMiniMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewWithMiniMap.swift; sourceTree = "<group>"; };
+		8FBBD1CE20F5140900D9334C /* ClusterAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterAnnotationView.swift; sourceTree = "<group>"; };
 		9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_MapExplorer_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E45B0B207D66FC5A3CD5BEA /* Pods-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		A44F1B6420FEAF8B005FEFD1 /* TimelineDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDate.swift; sourceTree = "<group>"; };
@@ -507,6 +509,7 @@
 			children = (
 				3F5FAAAB206043D700CF275B /* CircleAnnotation.swift */,
 				3F5FAAAD206043E600CF275B /* CircleAnnotationView.swift */,
+				8FBBD1CE20F5140900D9334C /* ClusterAnnotationView.swift */,
 			);
 			path = Annotations;
 			sourceTree = "<group>";
@@ -747,6 +750,7 @@
 				22F0EDFD2066DA1E0075E467 /* ListenerCallback.m in Sources */,
 				22B85AF7209B7A6D0099F44E /* PanGestureRecognizer.swift in Sources */,
 				222694C020699B10007DA6FA /* Record.swift in Sources */,
+				8FBBD1CF20F5140900D9334C /* ClusterAnnotationView.swift in Sources */,
 				22B85AF8209B7A6D0099F44E /* GestureRecognizer.swift in Sources */,
 				2276AE68204E75C2001FAD8B /* BorderlessWindow.swift in Sources */,
 				A44F1B6520FEAF8B005FEFD1 /* TimelineDate.swift in Sources */,

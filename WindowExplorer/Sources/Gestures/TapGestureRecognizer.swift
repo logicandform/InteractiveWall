@@ -40,6 +40,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
 
         if !delayTap {
             gestureUpdated?(self)
+            state = .recognized
             return
         }
 
@@ -47,6 +48,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         Timer.scheduledTimer(withTimeInterval: Constants.startTapThresholdTime, repeats: false) { [weak self] _ in
             if let strongSelf = self, strongSelf.state == .began {
                 strongSelf.gestureUpdated?(strongSelf)
+                strongSelf.state = .recognized
             }
         }
     }
