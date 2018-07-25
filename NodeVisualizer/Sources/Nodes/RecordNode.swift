@@ -47,17 +47,17 @@ class RecordNode: SKNode {
         addIdLabelNode(to: rootNode)
     }
 
-    private func makeRootNode() -> SKSpriteNode {
-        let rootNode = SKSpriteNode()
-        rootNode.size = CGSize(width: 20, height: 20)
-        rootNode.color = record.type.color
-        addChild(rootNode)
-        return rootNode
-
-//        let rootNode = SKShapeNode(circleOfRadius: NodeConfiguration.Record.physicsBodyRadius)
-//        rootNode.fillColor = record.type.color
+    private func makeRootNode() -> SKShapeNode {
+//        let rootNode = SKSpriteNode()
+//        rootNode.size = CGSize(width: 20, height: 20)
+//        rootNode.color = record.type.color
 //        addChild(rootNode)
 //        return rootNode
+
+        let rootNode = SKShapeNode(circleOfRadius: NodeConfiguration.Record.physicsBodyRadius)
+        rootNode.fillColor = record.type.color
+        addChild(rootNode)
+        return rootNode
     }
 
     private func addIdLabelNode(to root: SKNode) {
