@@ -12,9 +12,8 @@ final class WindowFactory {
     static func window(for type: WindowType, at origin: CGPoint) -> NSWindow {
         let viewController = controller(for: type)
         viewController.view.setFrameSize(type.size)
-        let window = BorderlessWindow(frame: CGRect(origin: origin, size: type.size), controller: viewController)
+        let window = BorderlessWindow(frame: CGRect(origin: origin, size: type.size), controller: viewController, level: type.level)
         window.makeKeyAndOrderFront(self)
-        window.level = type.level
         return window
     }
 

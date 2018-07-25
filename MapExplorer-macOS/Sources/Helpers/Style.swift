@@ -22,6 +22,10 @@ final class Style {
     // Border Style
     let borderColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
 
+    // Window Levels
+    let mapWindowLevel = NSWindow.Level(28)
+    let timelineWindowLevel = NSWindow.Level(29)
+
     // Timeline Controller
     let timelineBackgroundColor = NSColor(white: 0.1, alpha: 0.9)
 
