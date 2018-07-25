@@ -17,7 +17,7 @@ class RenderComponent: GKComponent {
 
     // MARK: Initializer
 
-    init(record: TestingEnvironment.Record) {
+    init(record: RecordDisplayable) {
         self.recordNode = RecordNode(record: record)
         super.init()
     }

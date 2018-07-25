@@ -12,6 +12,7 @@ import GameplayKit
 
 final class EntityManager {
 
+    /// List of all GKComponentSystems. The systems will be updated in order. The order is defined to match assumptions made within components.
     private lazy var componentSystems: [GKComponentSystem] = {
         let intelligenceSystem = GKComponentSystem(componentClass: IntelligenceComponent.self)
         let movementSystem = GKComponentSystem(componentClass: MovementComponent.self)
@@ -20,13 +21,11 @@ final class EntityManager {
         return [intelligenceSystem, animationSystem, movementSystem, physicsSystem]
     }()
 
-    static let instance = EntityManager()
-
     /// Set of all entities in the scene
     private(set) var entities = Set<GKEntity>()
 
     /// 2D array of related entities that belong to a particular level
-    private(set) var entitiesInLevel = [[RecordEntity]]()
+    private(set) var entitiesInLevel = [Set<RecordEntity>]()
 
     /// Set of all entities in all levels
     private(set) var allLevelEntities = Set<RecordEntity>()
@@ -35,25 +34,29 @@ final class EntityManager {
     private(set) var allEntitiesInFormedState = Set<RecordEntity>()
 
     /// Local copy of the entities that are associated with the current level
-    private var entitiesInCurrentLevel = [RecordEntity]()
+    private var entitiesInCurrentLevel = Set<RecordEntity>()
 
     private struct Constants {
         static let maxLevel = 5
     }
 
 
-    // Use singleton instance
+    // MARK: Singleton instance
+
     private init() { }
+    static let instance = EntityManager()
 
 
     // MARK: API
 
+    /// Updates all component systems that the EntityManager is responsible for
     func update(_ deltaTime: CFTimeInterval) {
         for componentSystem in componentSystems {
             componentSystem.update(deltaTime: deltaTime)
         }
     }
 
+    /// Adds the entity and all of its components to the appropriate component system
     func add(_ entity: GKEntity) {
         entities.insert(entity)
 
@@ -62,10 +65,12 @@ final class EntityManager {
         }
     }
 
+    /// Removes the entity and all its components from the component system
     func remove(_ entity: GKEntity) {
         entities.remove(entity)
     }
 
+    /// Dynamically add a new component to an entity
     func add(component: GKComponent, to entity: GKEntity) {
         entity.addComponent(component)
 
@@ -74,7 +79,8 @@ final class EntityManager {
         }
     }
 
-    func associateRelatedEntities(for entities: [RecordEntity]?, toLevel level: Int = 0) {
+    /// Organizes all related descendant entities to the appropriate hierarchial level
+    func associateRelatedEntities(for entities: Set<RecordEntity>?, toLevel level: Int = 0) {
         guard let entities = entities, !entities.isEmpty else {
             entitiesInLevel = entitiesInLevel.filter { !($0.isEmpty) }
             return
@@ -86,16 +92,16 @@ final class EntityManager {
         // padding for 2D array
         padEntitiesForLevel(level)
 
-        for entity in entities {
-            allLevelEntities.insert(entity)
-            allEntitiesInFormedState.insert(entity)
+        // update all level entities set
+        allLevelEntities.formUnion(entities)
+        allEntitiesInFormedState.formUnion(entities)
 
+        for entity in entities {
             // add relatedEntities to the appropriate level
             let relatedEntities = getRelatedEntities(for: entity)
-
             if !relatedEntities.isEmpty {
-                entitiesInLevel[level] += relatedEntities
-                entitiesInCurrentLevel += relatedEntities
+                entitiesInLevel[level].formUnion(relatedEntities)
+                entitiesInCurrentLevel.formUnion(relatedEntities)
             }
         }
 
@@ -105,6 +111,13 @@ final class EntityManager {
         associateRelatedEntities(for: entitiesInCurrentLevel, toLevel: next)
     }
 
+    /// Removes all elements in sets associated with leveled entities
+    func clearLevelEntities() {
+        entitiesInLevel.removeAll()
+        allLevelEntities.removeAll()
+    }
+
+    /// Resets all entities that are current formed (i.e. that are currently in their levels) to their initial state
     func resetAll() {
         for entity in allLevelEntities {
             entity.reset()
@@ -118,27 +131,23 @@ final class EntityManager {
         clearLevelEntities()
     }
 
-    func clearLevelEntities() {
-        entitiesInLevel.removeAll()
-        allLevelEntities.removeAll()
-    }
-
 
     // MARK: Helpers
 
     private func getRelatedEntities(for entity: RecordEntity) -> [RecordEntity] {
         let record = entity.renderComponent.recordNode.record
+        let identifier = DataManager.RecordIdentifier(id: record.id, type: record.type)
 
-        guard let relatedRecords = TestingEnvironment.instance.relatedRecordsForRecord[record] else {
+        guard let relatedRecords = NodeConfiguration.relatedRecords(for: identifier) else {
             return []
         }
 
-        let relatedEntities = entities(for: Array(relatedRecords)).compactMap({ $0 as? RecordEntity })
+        let relatedEntities = entities(for: relatedRecords)
         return relatedEntities
     }
 
-    private func entities(for records: [TestingEnvironment.Record]) -> [GKEntity] {
-        var recordEntities = [GKEntity]()
+    private func entities(for records: [RecordDisplayable]) -> [RecordEntity] {
+        var recordEntities = [RecordEntity]()
 
         for record in records {
             if let entity = entity(for: record) {
@@ -149,12 +158,13 @@ final class EntityManager {
         return recordEntities
     }
 
-    private func entity(for record: TestingEnvironment.Record) -> GKEntity? {
+    private func entity(for record: RecordDisplayable) -> RecordEntity? {
         for entity in entities {
             if let recordEntity = entity as? RecordEntity,
-                !allLevelEntities.contains(recordEntity),
-                recordEntity.renderComponent.recordNode.record.id == record.id {
-                return entity
+                recordEntity.renderComponent.recordNode.record.id == record.id,
+                recordEntity.renderComponent.recordNode.record.type == record.type,
+                !allLevelEntities.contains(recordEntity) {
+                    return recordEntity
             }
         }
 

@@ -6,7 +6,7 @@ import GameplayKit
 
 class MainScene: SKScene, SKPhysicsContactDelegate {
 
-    var records: [TestingEnvironment.Record]!
+    var records: [RecordDisplayable]!
     var gestureManager: GestureManager!
 
     private var lastUpdateTimeInterval: TimeInterval = 0
@@ -22,6 +22,10 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         }
     }
 
+    private struct Constants {
+        static let maximumUpdateDeltaTime: TimeInterval = 1.0 / 60.0
+    }
+
 
     // MARK: Lifecycle
     
@@ -35,12 +39,15 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
         addPhysicsToScene()
         addRecordNodesToScene()
+
+        print("Finished loading all record entities")
     }
 
     override func update(_ currentTime: TimeInterval) {
         super.update(currentTime)
 
-        let deltaTime = currentTime - lastUpdateTimeInterval
+        var deltaTime = currentTime - lastUpdateTimeInterval
+        deltaTime = deltaTime > Constants.maximumUpdateDeltaTime ? Constants.maximumUpdateDeltaTime : deltaTime
         lastUpdateTimeInterval = currentTime
 
         NodeBoundingManager.instance.update(deltaTime)
@@ -97,9 +104,8 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func addRecordNodesToScene() {
-        records.enumerated().forEach { index, record in
+        for record in records {
             let recordEntity = RecordEntity(record: record)
-
             recordEntity.intelligenceComponent.enterInitialState()
 
             if let recordNode = recordEntity.component(ofType: RenderComponent.self)?.recordNode {
@@ -149,7 +155,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
             return
         }
 
-        print("ID: \(recordNode.record.id)")
+        print("ID: \(recordNode.record.id) \n Type: \(recordNode.record.type)")
 
         switch recognizer.state {
         case .ended:

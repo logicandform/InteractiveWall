@@ -1,5 +1,10 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
+/*
+    Abstract:
+    A `GKComponent` that provides the actions used to move Record nodes on the screen. 
+ */
+
 import Foundation
 import SpriteKit
 import GameplayKit

@@ -57,7 +57,7 @@ class RecordEntity: GKEntity {
 
     // MARK: Initializer
 
-    init(record: TestingEnvironment.Record) {
+    init(record: RecordDisplayable) {
         super.init()
 
         let renderComponent = RenderComponent(record: record)
@@ -68,9 +68,6 @@ class RecordEntity: GKEntity {
 
         // Connect the 'PhysicsComponent' and the 'RenderComponent'
         renderComponent.recordNode.physicsBody = physicsComponent.physicsBody
-
-//        let agentComponent = RecordAgent()
-//        addComponent(agentComponent)
 
         let movementComponent = MovementComponent()
         addComponent(movementComponent)
@@ -105,12 +102,12 @@ class RecordEntity: GKEntity {
         return CGFloat(hypotf(Float(dX), Float(dY)))
     }
 
-    /// 'Reset' the entity so that proper animations and movements can take place
+    /// 'Reset' the entity to initial state so that proper animations and movements can take place
     func reset() {
         // reset RecordEntity properties
         hasCollidedWithBoundingNode = false
         levelState = (nil, nil)
-        
+
         // enter WanderState initial state
         intelligenceComponent.stateMachine.enter(WanderState.self)
     }

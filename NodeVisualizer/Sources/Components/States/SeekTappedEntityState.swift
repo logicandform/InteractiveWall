@@ -1,5 +1,10 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
+/*
+    Abstract:
+    A RecordEntity enters this state when it seeks the TappedState's RecordEntity. 
+ */
+
 import Foundation
 import SpriteKit
 import GameplayKit
@@ -7,6 +12,7 @@ import GameplayKit
 
 class SeekTappedEntityState: GKState {
 
+    /// The entity associated with this state
     private unowned var entity: RecordEntity
 
     private var physicsComponent: PhysicsComponent {
