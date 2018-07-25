@@ -22,6 +22,10 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         }
     }
 
+    private struct Constants {
+        static let maximumUpdateDeltaTime: TimeInterval = 1.0 / 60.0
+    }
+
 
     // MARK: Lifecycle
     
@@ -42,7 +46,8 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     override func update(_ currentTime: TimeInterval) {
         super.update(currentTime)
 
-        let deltaTime = currentTime - lastUpdateTimeInterval
+        var deltaTime = currentTime - lastUpdateTimeInterval
+        deltaTime = deltaTime > Constants.maximumUpdateDeltaTime ? Constants.maximumUpdateDeltaTime : deltaTime
         lastUpdateTimeInterval = currentTime
 
         NodeBoundingManager.instance.update(deltaTime)
