@@ -27,6 +27,44 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     override init() {
         super.init()
         setupEvents()
+//        let years = (Constants.firstYear...Constants.lastYear).count
+//        var countForCounts = [Int: Int]()
+//        var countForYear = [Int: Int]()
+//        for year in (Constants.firstYear...Constants.lastYear) {
+//            let count = eventsForYear[year]?.count ?? 0
+//            if !count.isZero {
+//                countForYear[year] = count
+//                print("\(count) schools starting in year: \(year).")
+//            }
+//            if let current = countForCounts[count] {
+//                countForCounts[count] = current + 1
+//            } else {
+//                countForCounts[count] = 1
+//            }
+//        }
+//
+//        for (size, count) in countForCounts.sorted(by: { $0.0 < $1.0 }) {
+//            print("There are \(count) years with size \(size).")
+//        }
+//
+//        for (size, count) in countForCounts.sorted(by: { $0.0 < $1.0 }) {
+//            let percent = Double(count) / Double(years)
+//            print("Years with size: \(size) make up \(percent) of all the years.")
+//        }
+//
+//        print("\(countForYear.keys.count) years out of \(years) have at least one school start.")
+//
+//        let sortedYears = countForYear.keys.sorted()
+//        for (index, year) in sortedYears.enumerated() {
+//            let nextIndex = index + 1
+//            if nextIndex != sortedYears.count {
+//                let nextYear = sortedYears[nextIndex]
+//                let distanceToNextYear = nextYear - year
+//                print("\(year) has a \(distanceToNextYear) year gap until next school occurance.")
+//            } else {
+//                print("\(year) is the last year.")
+//            }
+//        }
     }
 
 
