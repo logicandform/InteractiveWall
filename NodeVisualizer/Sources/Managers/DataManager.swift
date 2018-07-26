@@ -24,6 +24,7 @@ final class DataManager {
 
 
     // MARK: Singleton instance
+
     private init() {}
     static let instance = DataManager()
 
@@ -37,6 +38,19 @@ final class DataManager {
 
             self?.associateAllRecordsToRelatedRecords {
                 completion(records)
+            }
+        }
+    }
+
+
+    func createRecordRelationships(completion: @escaping () -> Void) {
+        loadNextRecordTypeRecords { [weak self] records in
+            EntityManager.instance.createRecordEntities(for: records)
+
+            self?.allRecords = records
+            self?.associateAllRecordsToRelatedRecords {
+                EntityManager.instance.createRelationshipsForAllEntities()
+                completion()
             }
         }
     }

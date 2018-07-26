@@ -104,8 +104,24 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func addRecordNodesToScene() {
-        for record in records {
-            let recordEntity = RecordEntity(record: record)
+//        for record in records {
+//            let recordEntity = RecordEntity(record: record)
+//            recordEntity.intelligenceComponent.enterInitialState()
+//
+//            if let recordNode = recordEntity.component(ofType: RenderComponent.self)?.recordNode {
+//                recordNode.position.x = randomX()
+//                recordNode.position.y = randomY()
+//                recordNode.zPosition = 1
+//
+//                let screenBoundsConstraint = SKConstraint.positionX(SKRange(lowerLimit: 0, upperLimit: frame.width), y: SKRange(lowerLimit: 0, upperLimit: frame.height))
+//                recordNode.constraints = [screenBoundsConstraint]
+//
+//                EntityManager.instance.add(recordEntity)
+//                addChild(recordNode)
+//            }
+//        }
+
+        for recordEntity in EntityManager.instance.recordEntities {
             recordEntity.intelligenceComponent.enterInitialState()
 
             if let recordNode = recordEntity.component(ofType: RenderComponent.self)?.recordNode {
@@ -115,8 +131,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
                 let screenBoundsConstraint = SKConstraint.positionX(SKRange(lowerLimit: 0, upperLimit: frame.width), y: SKRange(lowerLimit: 0, upperLimit: frame.height))
                 recordNode.constraints = [screenBoundsConstraint]
-
-                EntityManager.instance.add(recordEntity)
+                
                 addChild(recordNode)
             }
         }
