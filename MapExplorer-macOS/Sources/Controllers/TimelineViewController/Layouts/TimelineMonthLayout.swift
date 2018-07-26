@@ -114,7 +114,7 @@ class TimelineMonthLayout: NSCollectionViewFlowLayout {
         let x = yearStart + CGFloat(event.startMonth.rawValue * type.sectionWidth)
         let width = selected ? Constants.cellSize.width * 2 : Constants.cellSize.width
         attributes.frame = CGRect(origin: CGPoint(x: x, y: y), size: CGSize(width: width, height: Constants.cellSize.height))
-        attributes.zIndex = selected ? event.start + source.lastYear : event.start
+        attributes.zIndex = selected ? source.lastYear - event.start : -1
         return attributes
     }
 

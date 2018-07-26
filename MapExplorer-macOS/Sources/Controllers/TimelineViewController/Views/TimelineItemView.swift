@@ -53,7 +53,7 @@ class TimelineItemView: NSCollectionViewItem {
         contentViewTrailingConstraint.constant = Constants.textOffset
     }
 
-    func animate(to size: CGSize, with zPosition: CGFloat, from controller: NSCollectionView) {
+    func animate(to size: CGSize, with zPosition: CGFloat, originatingFrom controller: NSCollectionView) {
         if size.width >= view.frame.size.width {
             view.layer?.zPosition = zPosition
             expand(to: size, controller: controller)
