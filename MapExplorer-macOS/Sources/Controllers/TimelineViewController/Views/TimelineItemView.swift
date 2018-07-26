@@ -56,9 +56,9 @@ class TimelineItemView: NSCollectionViewItem {
     func animate(to size: CGSize, with zPosition: CGFloat, originatingFrom controller: NSCollectionView) {
         if size.width >= view.frame.size.width {
             view.layer?.zPosition = zPosition
-            expand(to: size, controller: controller)
+            expand(to: size, originatingFrom: controller)
         } else {
-            compress(to: size, zPosition: zPosition, controller: controller)
+            compress(to: size, at: zPosition, originatingFrom: controller)
         }
     }
 
@@ -78,7 +78,7 @@ class TimelineItemView: NSCollectionViewItem {
         titleTextField.attributedStringValue = NSAttributedString(string: event.title, attributes: style.timelineTitleAttributes)
     }
 
-    private func expand(to size: CGSize, controller: NSCollectionView) {
+    private func expand(to size: CGSize, originatingFrom controller: NSCollectionView) {
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration / 2
             highlightViewWidthConstraint.animator().constant = view.frame.size.width
@@ -100,7 +100,7 @@ class TimelineItemView: NSCollectionViewItem {
         })
     }
 
-    private func compress(to size: CGSize, zPosition: CGFloat, controller: NSCollectionView) {
+    private func compress(to size: CGSize, at zPosition: CGFloat, originatingFrom controller: NSCollectionView) {
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration / 2
             contentViewTrailingConstraint.animator().constant = size.width
