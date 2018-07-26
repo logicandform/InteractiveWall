@@ -109,7 +109,8 @@ class TimelineMonthLayout: NSCollectionViewFlowLayout {
         let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
         let y = Constants.cellSize.height * CGFloat(heightIndex) + Constants.headerHeight
         let yearWidth = type.sectionWidth * 12
-        let yearStart = year != nil ? CGFloat((year! - source.firstYear) * type.sectionWidth) : CGFloat((event.start - source.firstYear) * yearWidth)
+        let year = year ?? event.start
+        let yearStart = CGFloat((year - source.firstYear) * yearWidth)
         let x = yearStart + CGFloat(event.startMonth.rawValue * type.sectionWidth)
         let width = selected ? Constants.cellSize.width * 2 : Constants.cellSize.width
         attributes.frame = CGRect(origin: CGPoint(x: x, y: y), size: CGSize(width: width, height: Constants.cellSize.height))
