@@ -31,18 +31,7 @@ final class DataManager {
 
     // MARK: API
 
-    /// Loads and relates all records to their related records
-    func createRecordToRelatedRecordsRelationship(completion: @escaping ([RecordDisplayable]) -> Void) {
-        loadNextRecordTypeRecords { [weak self] records in
-            self?.allRecords = records
-
-            self?.associateAllRecordsToRelatedRecords {
-                completion(records)
-            }
-        }
-    }
-
-
+    /// Loads and relates all records to their related descendant records
     func createRecordRelationships(completion: @escaping () -> Void) {
         loadNextRecordTypeRecords { [weak self] records in
             EntityManager.instance.createRecordEntities(for: records)

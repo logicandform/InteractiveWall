@@ -59,10 +59,6 @@ class MainViewController: NSViewController, GestureResponder {
     // MARK: Setup Environment
 
     private func setupMainEnvironment() {
-//        DataManager.instance.createRecordToRelatedRecordsRelationship { [weak self] records in
-//            self?.setupMainScene(with: records)
-//        }
-
         DataManager.instance.createRecordRelationships { [weak self] in
             self?.setupMainScene(with: [])
         }
