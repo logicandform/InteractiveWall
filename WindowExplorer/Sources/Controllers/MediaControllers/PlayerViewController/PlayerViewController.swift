@@ -75,6 +75,12 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         }
     }
 
+    override func close() {
+        parentDelegate?.controllerDidClose(self)
+        WindowManager.instance.closeWindow(for: self)
+        audioPlayer?.disconnect()
+    }
+
 
     // MARK: Setup
 
@@ -84,8 +90,8 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         }
 
         let url = Configuration.localMediaURLs ? media.localURL : media.url
-        let contoller = AudioController.shared
-        audioPlayer = contoller.play(url: url)
+        let controller = AudioController.shared
+        audioPlayer = controller.play(url: url)
 
         let player = AVPlayer(url: url)
         player.isMuted = true
