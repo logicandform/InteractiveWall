@@ -79,8 +79,8 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     }
 
     override func updatePosition(animating: Bool) {
-        if let frameAndPosition = parentDelegate?.frameAndPosition(for: self), let window = view.window {
-            updateOrigin(from: frameAndPosition.frame, at: frameAndPosition.position, animating: animating)
+        super.updatePosition(animating: animating)
+        if let window = view.window {
             audioPlayer?.location = horizontalPosition(of: window)
         }
     }
