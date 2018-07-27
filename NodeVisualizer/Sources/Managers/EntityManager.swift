@@ -65,6 +65,10 @@ final class EntityManager {
     /// Adds an entity to its global cache
     func add(_ entity: GKEntity) {
         entities.insert(entity)
+
+        for componentSystem in componentSystems {
+            componentSystem.addComponent(foundIn: entity)
+        }
     }
 
     /// Removes an entity from its cache
@@ -124,11 +128,15 @@ final class EntityManager {
 
     /// Retrieves all related entities organized into their respective levels for a specified entity
     func levelledRelatedEntities(for entity: RecordEntity) {
+//        addToComponentSystems(for: [entity])
+        allLevelEntities.formUnion([entity])
+        entitiesInFormedState.formUnion([entity])
+
         if let relatedEntitiesInLevel = relatedEntitiesInLevelForRecordEntity[entity] {
             entitiesInLevel = relatedEntitiesInLevel
 
             for (_, entities) in relatedEntitiesInLevel.enumerated() {
-                addToComponentSystems(for: Array(entities))
+//                addToComponentSystems(for: Array(entities))
                 allLevelEntities.formUnion(entities)
                 entitiesInFormedState.formUnion(entities)
             }
@@ -144,7 +152,7 @@ final class EntityManager {
     /// Resets all entities that are current formed (i.e. that are currently in their levels) to their initial state
     func resetAll() {
         let entitiesToReset = allLevelEntities.union(entitiesInFormedState)
-        removeFromComponentSystems(for: Array(entitiesToReset))
+//        removeFromComponentSystems(for: Array(entitiesToReset))
 
         for entity in entitiesToReset {
             entity.reset()

@@ -6,7 +6,6 @@ import GameplayKit
 
 class MainScene: SKScene, SKPhysicsContactDelegate {
 
-    var records: [RecordDisplayable]!
     var gestureManager: GestureManager!
 
     private var lastUpdateTimeInterval: TimeInterval = 0

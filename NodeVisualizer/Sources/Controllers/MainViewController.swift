@@ -60,23 +60,21 @@ class MainViewController: NSViewController, GestureResponder {
 
     private func setupMainEnvironment() {
         DataManager.instance.createRecordRelationships { [weak self] in
-            self?.setupMainScene(with: [])
+            self?.setupMainScene()
         }
     }
 
     private func setupTestingEnvironment() {
-        TestingEnvironment.instance.createTestingEnvironment { [weak self] in
-            let records = TestingEnvironment.instance.allRecords
-            self?.setupMainScene(with: records)
+        TestingEnvironment.instance.createTestEnvironmentRecordRelationships { [weak self] in
+            self?.setupMainScene()
         }
     }
 
 
     // MARK: Helpers
 
-    private func setupMainScene(with records: [RecordDisplayable]) {
+    private func setupMainScene() {
         let mainScene = makeMainScene()
-        mainScene.records = records
         mainScene.gestureManager = gestureManager
         mainView.presentScene(mainScene)
     }

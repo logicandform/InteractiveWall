@@ -6,7 +6,7 @@ import Foundation
 class NodeConfiguration {
 
     struct Environment {
-        static let debug: Bool = false
+        static let debug: Bool = true
     }
 
     struct Record {
