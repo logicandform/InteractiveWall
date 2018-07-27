@@ -1,6 +1,10 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
 import Cocoa
+import MapKit
+import MONode
+import PromiseKit
+import AppKit
 
 
 enum TimelineType {
@@ -100,6 +104,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     // MARK: API
 
     func fade(out: Bool) {
+        timelineCollectionView.reloadItems(at: timelineCollectionView.indexPathsForVisibleItems())
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration
             timelineBackgroundView.animator().alphaValue = out ? 0 : 1

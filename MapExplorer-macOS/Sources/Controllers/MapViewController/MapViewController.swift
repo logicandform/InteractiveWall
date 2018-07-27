@@ -84,7 +84,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         overlay.canReplaceMapContent = true
         mapView.add(overlay)
         if appID % 2 == 0 { mapView.miniMapPosition = .nw }
-        createAnnotations()
+        createRecords()
     }
 
     private func setupGestures() {
@@ -259,7 +259,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     // MARK: Helpers
 
-    private func createAnnotations() {
+    private func createRecords() {
         // Schools
         let schoolChain = firstly {
             try CachingNetwork.getSchools()
@@ -279,19 +279,18 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         }
     }
 
+    private func parseNetworkResults(_ results: (schools: [School], events: [Event])) {
+        var records = [Record]()
+        records.append(contentsOf: results.schools)
+        records.append(contentsOf: results.events)
+        addToMap(records)
+    }
+
     private func update(with settings: Settings) {
         currentSettings.clone(settings)
         toggleAnnotations(for: settings)
         toggleAnnotationTitles(on: showingAnnotationTitles && settings.showLabels)
         mapView.miniMapIsHidden = !settings.showMiniMap
-    }
-
-    private func parseNetworkResults(_ results: (schools: [School], events: [Event])) {
-        var recordsToLoad = [Record]()
-        recordsToLoad.append(contentsOf: results.schools)
-        recordsToLoad.append(contentsOf: results.events)
-
-        addToMap(recordsToLoad)
     }
 
     private func postRecordNotification(for record: Record, at position: CGPoint) {

@@ -75,14 +75,14 @@ class TimelineYearLayout: NSCollectionViewFlowLayout {
     // MARK: Helpers
 
     private func attributes(for event: TimelineEvent, in source: TimelineDataSource, year: Int? = nil) -> NSCollectionViewLayoutAttributes? {
-        guard let item = source.events.index(of: event), let eventsForYear = source.eventsForYear[event.start], let heightIndex = eventsForYear.index(of: event) else {
+        guard let item = source.events.index(of: event), let eventsForYear = source.eventsForYear[event.dates.startDate.year], let heightIndex = eventsForYear.index(of: event) else {
             return nil
         }
 
         let indexPath = IndexPath(item: item, section: 0)
         let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
         let y = Constants.cellSize.height * CGFloat(heightIndex) + Constants.headerHeight
-        let year = year ?? event.start
+        let year = year ?? event.dates.startDate.year
         let x = CGFloat((year - source.firstYear) * type.sectionWidth)
         let unselectedPosition = event.start
         let selected = source.selectedIndexes.contains(item)

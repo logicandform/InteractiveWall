@@ -26,14 +26,17 @@ class School: Record {
         guard let id = json[Keys.id] as? Int,
             let title = json[Keys.title] as? String,
             let latitude = json[Keys.latitude] as? Double,
-            let longitude = json[Keys.longitude] as? Double,
-            let date = json[Keys.date] as? String else {
+            let longitude = json[Keys.longitude] as? Double else {
             return nil
         }
 
         self.id = id
         self.title = title
         self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        self.dates = TimelineRange(date)
+        if let date = json[Keys.date] as? String {
+            self.dates = TimelineRange(date)
+        } else {
+            self.dates = nil
+        }
     }
 }
