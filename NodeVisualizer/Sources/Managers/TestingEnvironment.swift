@@ -31,7 +31,7 @@ class TestingEnvironment {
         }
     }
 
-    private(set) var relatedRecordsForRecord = [DataManager.RecordIdentifier: Set<Record>]()
+    private(set) var relatedRecordsForIdentifier = [DataManager.RecordIdentifier: Set<Record>]()
 
     private lazy var schoolRecord = Record(id: Constants.schoolId, type: .school)
     private lazy var organizationRecord = Record(id: Constants.organizationId, type: .organization)
@@ -68,7 +68,7 @@ class TestingEnvironment {
     // MARK: API
 
     func createTestEnvironmentRecordRelationships(completion: @escaping () -> Void) {
-        // create all records and entities to EntityManager
+        // create all records and create record entities to EntityManager
         createArtifactRecords()
         EntityManager.instance.createRecordEntities(for: allRecords)
 
@@ -78,6 +78,7 @@ class TestingEnvironment {
 
         completion()
     }
+
 
     // MARK: Helpers
 
@@ -112,6 +113,7 @@ class TestingEnvironment {
         }
     }
 
+    /// Create association relationships between the test data
     private func createAssociations() {
         // associations for schoolRecord
         associate(records: relatedArtifactsForSchool, to: schoolRecord)
@@ -131,21 +133,21 @@ class TestingEnvironment {
         relateMainRecord(eventRecord, toArtifacts: relatedArtifactsForEvent)
     }
 
+    /// Iterates through artifacts and associates them to their respective main record (i.e. school, event, organization)
     private func relateMainRecord(_ record: Record, toArtifacts artifacts: [Record]) {
         for artifact in artifacts {
             associate(records: [record], to: artifact)
         }
     }
 
-    private func associate(records: [Record], to key: Record) {
-        let identifier = DataManager.RecordIdentifier(id: key.id, type: key.type)
+    /// Relates records to a specified record and stores it locally in dictionary
+    private func associate(records: [Record], to record: Record) {
+        let identifier = DataManager.RecordIdentifier(id: record.id, type: record.type)
 
-        if relatedRecordsForRecord[identifier] != nil {
-            for record in records {
-                relatedRecordsForRecord[identifier]?.insert(record)
-            }
+        if relatedRecordsForIdentifier[identifier] == nil {
+            relatedRecordsForIdentifier[identifier] = Set(records)
         } else {
-            relatedRecordsForRecord[identifier] = Set(records)
+            relatedRecordsForIdentifier[identifier]?.formUnion(records)
         }
     }
 }

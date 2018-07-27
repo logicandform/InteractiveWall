@@ -116,7 +116,7 @@ final class EntityManager {
     /// Creates and stores levelled relationships for all entities
     func createRelationshipsForAllEntities() {
         for case let entity as RecordEntity in entities {
-            // get all related entities organized into levels and store it locally
+            // create all related entities organized into levels and store it locally for fast access
             associateRelatedEntities(for: [entity])
             relatedEntitiesInLevelForRecordEntity[entity] = entitiesInLevel
 
