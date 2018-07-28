@@ -84,12 +84,13 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     }
 
     private struct Keys {
+        static let appID = "map"
         static let id = "id"
-        static let type = "type"
         static let group = "group"
         static let index = "index"
         static let state = "state"
         static let selection = "selection"
+        static let position = "position"
     }
 
 
@@ -242,12 +243,16 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     private func didTapOnTimeline(_ gesture: GestureRecognizer) {
         guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended,
             let location = tap.position,
-            let indexPath = timelineCollectionView.indexPathForItem(at: location + timelineCollectionView.visibleRect.origin) else {
+            let indexPath = timelineCollectionView.indexPathForItem(at: location + timelineCollectionView.visibleRect.origin),
+            let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineItemView else {
                 return
         }
 
         let state = source.selectedIndexes.contains(indexPath.item)
         postSelectNotification(for: indexPath.item, state: !state)
+        if let record = source.recordForTimelineEvent[timelineItem.event] {
+            postRecordNotification(for: record, at: CGPoint(x: 0, y: 0))
+        }
     }
 
     private func didTapOnControl(_ gesture: GestureRecognizer) {
@@ -745,5 +750,15 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         case .century:
             return nil
         }
+    }
+
+    private func postRecordNotification(for record: Record, at position: CGPoint) {
+        guard let window = view.window else {
+            return
+        }
+
+        let location = window.frame.origin + position
+        let info: JSON = [Keys.appID: appID, Keys.id: record.id, Keys.position: location.toJSON()]
+        DistributedNotificationCenter.default().postNotificationName(RecordNotification.with(record.type).name, object: nil, userInfo: info, deliverImmediately: true)
     }
 }

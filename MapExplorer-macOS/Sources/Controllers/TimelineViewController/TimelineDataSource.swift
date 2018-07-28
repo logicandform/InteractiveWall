@@ -14,10 +14,10 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     let firstYear = Constants.firstYear
     let lastYear = Constants.lastYear
     let years = Array(Constants.firstYear...Constants.lastYear)
+    var recordForTimelineEvent = [TimelineEvent: Record]()
     private(set) var events = [TimelineEvent]()
     private(set) var eventsForYear = [Int: [TimelineEvent]]()
     private(set) var eventsForMonth = [Int: [Month: [TimelineEvent]]]()
-    private var recordForTimelineEvent = [TimelineEvent: Record]()
 
     private struct Constants {
         static let screenWidth = 1920
@@ -84,7 +84,6 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
         return events.count + years.count
-//        return 133 + years.count
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
