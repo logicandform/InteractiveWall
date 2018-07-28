@@ -44,8 +44,8 @@ class TimelineItemView: NSCollectionViewItem {
     func set(selected: Bool, with layout: TimelineType, zIndex: CGFloat) {
         view.layer?.zPosition = selected ? zIndex : -1
         if selected {
-            view.frame.size.width = CGFloat(layout.itemWidth * 2)
-            highlightViewWidthConstraint.constant = CGFloat(layout.itemWidth * 2)
+//            view.frame.size.width = CGFloat(layout.itemWidth * 2)
+//            highlightViewWidthConstraint.constant = CGFloat(layout.itemWidth * 2)
         } else {
             view.frame.size.width = CGFloat(layout.itemWidth)
             highlightViewWidthConstraint.constant = Constants.unselectedHighlightWidth
