@@ -7,7 +7,7 @@ import AppKit
 final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
 
     var type = TimelineType.decade
-    var selectedIndexes = Set<Int>()
+    var selectedIndexes = [Int]()
     let firstYear = Constants.firstYear
     let lastYear = Constants.lastYear
     let years = Array(Constants.firstYear...Constants.lastYear)

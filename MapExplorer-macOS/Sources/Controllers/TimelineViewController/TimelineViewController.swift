@@ -18,7 +18,7 @@ enum TimelineType {
         case .decade:
             return 192
         case .century:
-            return 16
+            return 32
         }
     }
 
@@ -31,7 +31,7 @@ enum TimelineType {
         case .decade:
             return 192
         case .century:
-            return 16
+            return 32
         }
     }
 }
@@ -627,20 +627,20 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     private func setTimelineSelection(_ selection: Set<Int>) {
         // Unselect current indexes that are not in the new selection
-        source.selectedIndexes.subtracting(selection).forEach { index in
+        source.selectedIndexes.filter({ !selection.contains($0) }).forEach { index in
             setTimelineItem(index, selected: false)
         }
         // Select indexes that are not currently selected
-        selection.subtracting(source.selectedIndexes).forEach { index in
+        selection.filter({ !source.selectedIndexes.contains($0) }).forEach { index in
             setTimelineItem(index, selected: true)
         }
     }
 
     private func setTimelineItem(_ index: Int, selected: Bool) {
         if selected {
-            source.selectedIndexes.insert(index)
+            source.selectedIndexes.append(index)
         } else {
-            source.selectedIndexes.remove(index)
+            source.selectedIndexes = source.selectedIndexes.filter({ $0 != index })
         }
 
         // Update item view for index
