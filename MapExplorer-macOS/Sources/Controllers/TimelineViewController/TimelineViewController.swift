@@ -340,7 +340,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         switch timelineCollectionView.collectionViewLayout {
         case is TimelineMonthLayout:
             add(days: days)
-        case is TimelineYearLayout, is TimelineDecadeLayout, is TimelineCenturyLayout:
+        case is TimelineYearLayout, is TimelineDecadeLayout, is TimelineCenturyLayout, is TimelineDecadeStackedLayout:
             add(days: days * 12)
         default:
             return
@@ -733,7 +733,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
                 timelineRect.origin.x = timelineMaxX + timelineRect.origin.x
             }
             timelineCollectionView.scrollToVisible(timelineRect)
-        case is TimelineYearLayout, is TimelineCenturyLayout, is TimelineDecadeLayout:
+        case is TimelineYearLayout, is TimelineCenturyLayout, is TimelineDecadeLayout, is TimelineDecadeStackedLayout:
             let timelineMonthOffset = ((CGFloat(currentDate.month) + currentDate.day - 0.5) / 12) * CGFloat(timelineType.sectionWidth)
             let timelineYearX = CGFloat(timelineYearIndex!) * CGFloat(timelineType.sectionWidth)
             timelineRect.origin.x = timelineYearX - timelineRect.width / 2 + timelineMonthOffset
