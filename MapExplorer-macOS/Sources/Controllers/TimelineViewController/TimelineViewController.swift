@@ -646,7 +646,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         // Update item view for index
         let indexPath = IndexPath(item: index, section: 0)
         if let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineItemView, let attributes = timelineCollectionView.collectionViewLayout?.layoutAttributesForItem(at: indexPath) {
-            timelineItem.animate(to: attributes.size, with: CGFloat(attributes.zIndex), originatingFrom: timelineCollectionView)
+            timelineItem.animate(to: attributes.size, with: CGFloat(attributes.zIndex), containedIn: timelineCollectionView.frame, layout: timelineCollectionView.collectionViewLayout)
         }
     }
 
