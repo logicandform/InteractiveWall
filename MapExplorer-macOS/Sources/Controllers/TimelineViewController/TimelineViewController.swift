@@ -105,7 +105,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     // MARK: API
 
     func fade(out: Bool) {
-        timelineCollectionView.reloadItems(at: timelineCollectionView.indexPathsForVisibleItems())
+//        timelineCollectionView.reloadItems(at: timelineCollectionView.indexPathsForVisibleItems())
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration
             timelineBackgroundView.animator().alphaValue = out ? 0 : 1
@@ -251,7 +251,9 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         let state = source.selectedIndexes.contains(indexPath.item)
         postSelectNotification(for: indexPath.item, state: !state)
         if let record = source.recordForTimelineEvent[timelineItem.event] {
-            postRecordNotification(for: record, at: CGPoint(x: timelineItem.view.frame.origin.x + (timelineItem.view.frame.size.width / 2) - timelineCollectionView.visibleRect.origin.x, y: timelineItem.view.frame.transformed(from: view.frame).origin.y))
+            let transformedXPosition = timelineItem.view.frame.origin.x + (timelineItem.view.frame.size.width / 2) - timelineCollectionView.visibleRect.origin.x
+            let transformedYPosition = timelineItem.view.frame.transformed(from: timelineScrollView.frame).transformed(from: timelineBackgroundView.frame).origin.y
+            postRecordNotification(for: record, at: CGPoint(x: transformedXPosition, y: transformedYPosition))
         }
     }
 
