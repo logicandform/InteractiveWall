@@ -251,11 +251,9 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
         let state = source.selectedIndexes.contains(indexPath.item)
         postSelectNotification(for: indexPath.item, state: !state)
-        if let record = source.recordForTimelineEvent[timelineItem.event] {
-            let transformedXPosition = timelineItem.view.frame.origin.x + (timelineItem.view.frame.size.width / 2) - timelineCollectionView.visibleRect.origin.x
-            let transformedYPosition = timelineItem.view.frame.transformed(from: timelineScrollView.frame).transformed(from: timelineBackgroundView.frame).origin.y
-            postRecordNotification(for: record, at: CGPoint(x: transformedXPosition, y: transformedYPosition))
-        }
+        let transformedXPosition = timelineItem.view.frame.origin.x + (timelineItem.view.frame.size.width / 2) - timelineCollectionView.visibleRect.origin.x
+        let transformedYPosition = timelineItem.view.frame.transformed(from: timelineScrollView.frame).transformed(from: timelineBackgroundView.frame).origin.y
+        postRecordNotification(for: timelineItem.event.type, with: timelineItem.event.id, at: CGPoint(x: transformedXPosition, y: transformedYPosition))
     }
 
     private func didTapOnControl(_ gesture: GestureRecognizer) {
@@ -755,14 +753,14 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         }
     }
 
-    private func postRecordNotification(for record: Record, at position: CGPoint) {
+    private func postRecordNotification(for type: RecordType, with id: Int, at position: CGPoint) {
         guard let window = view.window else {
             return
         }
 
         let location = window.frame.origin + position
-        let info: JSON = [Keys.appID: appID, Keys.id: record.id, Keys.position: location.toJSON()]
-        DistributedNotificationCenter.default().postNotificationName(RecordNotification.with(record.type).name, object: nil, userInfo: info, deliverImmediately: true)
+        let info: JSON = [Keys.appID: appID, Keys.id: id, Keys.position: location.toJSON()]
+        DistributedNotificationCenter.default().postNotificationName(RecordNotification.with(type).name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
     private func createRecords() {

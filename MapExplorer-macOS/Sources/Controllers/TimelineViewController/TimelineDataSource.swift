@@ -14,7 +14,6 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     let firstYear = Constants.firstYear
     let lastYear = Constants.lastYear
     let years = Array(Constants.firstYear...Constants.lastYear)
-    var recordForTimelineEvent = [TimelineEvent: Record]()
     var records = [Record]() {
         didSet {
             setupEvents(for: records)
@@ -125,7 +124,6 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
         for record in records {
             if let dates = record.dates {
                 let event = TimelineEvent(id: record.id, type: record.type, title: record.title, dates: dates)
-                recordForTimelineEvent[event] = record
                 events.append(event)
 
                 // Add to year dictionary
