@@ -38,9 +38,6 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
 
     override func viewDidAppear() {
         super.viewDidAppear()
-        if let window = view.window {
-            audioPlayer?.location = horizontalPosition(of: window)
-        }
         audioPlayer?.volume = playerControl.volume.gain
         playerControl.toggle()
     }
@@ -75,6 +72,19 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         }
     }
 
+    override func close() {
+        parentDelegate?.controllerDidClose(self)
+        WindowManager.instance.closeWindow(for: self)
+        audioPlayer?.disconnect()
+    }
+
+    override func updatePosition(animating: Bool) {
+        super.updatePosition(animating: animating)
+        if let window = view.window {
+            audioPlayer?.location = horizontalPosition(of: window)
+        }
+    }
+
 
     // MARK: Setup
 
@@ -84,8 +94,8 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         }
 
         let url = Configuration.localMediaURLs ? media.localURL : media.url
-        let contoller = AudioController.shared
-        audioPlayer = contoller.play(url: url)
+        let controller = AudioController.shared
+        audioPlayer = controller.play(url: url)
 
         let player = AVPlayer(url: url)
         player.isMuted = true

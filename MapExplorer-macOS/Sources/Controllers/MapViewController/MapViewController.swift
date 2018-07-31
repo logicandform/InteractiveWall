@@ -248,11 +248,12 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     // When annotations come back into the visibleRect their title visibility updates
     func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
-        for view in views {
-            if let circleAnnotationView = view as? CircleAnnotationView {
-                circleAnnotationView.showTitle(showingAnnotationTitles && currentSettings.showLabels)
-            }
-        }
+        // TODO: UBC-521
+//        for view in views {
+//            if let circleAnnotationView = view as? CircleAnnotationView {
+//                circleAnnotationView.showTitle(showingAnnotationTitles && currentSettings.showLabels)
+//            }
+//        }
     }
 
 
