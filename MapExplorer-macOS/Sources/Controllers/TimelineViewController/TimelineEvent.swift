@@ -4,14 +4,13 @@ import Foundation
 
 
 final class TimelineEvent: Hashable {
-
+    let id: Int
+    let type: RecordType
     let title: String
-    let start: Int
-    let startMonth = Month.january
-    let end: Int
+    let dates: TimelineRange
 
     var hashValue: Int {
-        return start ^ end ^ title.hashValue
+        return dates.startDate.year ^ dates.endDate.year ^ title.hashValue
     }
 
     private struct Keys {
@@ -24,31 +23,14 @@ final class TimelineEvent: Hashable {
 
     // MARK: Init
 
-    init?(json: JSON) {
-        guard let title = json[Keys.title] as? String, let startString = json[Keys.start] as? String, let endString = json[Keys.end] as? String, let start = Int(startString), let end = Int(endString) else {
-            return nil
-        }
-
+    init(id: Int, type: RecordType, title: String, dates: TimelineRange) {
+        self.id = id
+        self.type = type
         self.title = title
-        self.start = start
-        self.end = end
-    }
-
-    init(title: String, start: Int, end: Int) {
-        self.title = title
-        self.start = start
-        self.end = end
-    }
-
-    static func allEvents() -> [TimelineEvent] {
-        guard let file = Bundle.main.url(forResource: "vhec_map_points", withExtension: "json"), let data = try? Data(contentsOf: file), let json = try? JSONSerialization.jsonObject(with: data, options: []) as? JSON, let result = json, let locations = result[Keys.locations] as? [JSON] else {
-            return []
-        }
-
-        return locations.compactMap { TimelineEvent(json: $0) }
+        self.dates = dates
     }
 
     static func == (lhs: TimelineEvent, rhs: TimelineEvent) -> Bool {
-        return lhs.title == rhs.title && lhs.start == rhs.start && lhs.end == rhs.end
+        return lhs.title == rhs.title && lhs.dates.startDate.day == rhs.dates.startDate.day && lhs.dates.startDate.month == rhs.dates.startDate.month && lhs.dates.startDate.year == rhs.dates.startDate.year && lhs.dates.endDate.day == rhs.dates.endDate.day && lhs.dates.endDate.month == rhs.dates.endDate.month && lhs.dates.endDate.year == rhs.dates.endDate.year
     }
 }

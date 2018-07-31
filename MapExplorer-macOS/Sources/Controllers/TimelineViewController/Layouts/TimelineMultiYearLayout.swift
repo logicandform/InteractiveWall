@@ -73,7 +73,7 @@ class TimelineMultiYearLayout: NSCollectionViewFlowLayout {
     // MARK: Helpers
 
     private func attributes(for event: TimelineEvent, in source: TimelineDataSource) -> NSCollectionViewLayoutAttributes? {
-        guard let item = source.events.index(of: event), let eventsForYear = source.eventsForYear[event.start], let heightIndex = eventsForYear.index(of: event) else {
+        guard let item = source.events.index(of: event), let eventsForYear = source.eventsForYear[event.dates.startDate.year], let heightIndex = eventsForYear.index(of: event) else {
             return nil
         }
 
@@ -81,10 +81,10 @@ class TimelineMultiYearLayout: NSCollectionViewFlowLayout {
         let selected = source.selectedIndexes.contains(item)
         let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
         let y = Constants.cellSize.height * CGFloat(heightIndex) + Constants.headerHeight
-        let x = CGFloat((event.start - source.firstYear) * sectionWidth)
+        let x = CGFloat((event.dates.startDate.year - source.firstYear) * sectionWidth)
         let width = selected ? Constants.cellSize.width * 2 : Constants.cellSize.width
         attributes.frame = CGRect(origin: CGPoint(x: x, y: y), size: CGSize(width: width, height: Constants.cellSize.height))
-        attributes.zIndex = selected ? event.start + source.lastYear : event.start
+        attributes.zIndex = selected ? event.dates.startDate.year + source.lastYear : event.dates.startDate.year
         return attributes
     }
 

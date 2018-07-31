@@ -19,9 +19,13 @@ class TimelineRange {
 
     // MARK: Init
 
-    init(_ date: String) {
+    init(_ date: String?) {
         startDate = TimelineDate()
         endDate = TimelineDate()
+        guard let date = date else {
+            return
+        }
+
         if date.isEmpty {
             return
         }

@@ -31,6 +31,10 @@ extension CGRect {
     var center: CGPoint {
         return CGPoint(x: midX, y: midY)
     }
+
+    func transformed(from rect: CGRect) -> CGRect {
+        return CGRect(origin: origin.transformed(from: rect), size: size)
+    }
 }
 
 
@@ -62,6 +66,11 @@ extension CGPoint {
     /// Subtracts the given view's origin from the point.
     func transformed(to view: NSView) -> CGPoint {
         return CGPoint(x: x - view.frame.origin.x, y: y - view.frame.origin.y)
+    }
+
+    /// Adds the given view's origin from the point.
+    func transformed(from frame: CGRect) -> CGPoint {
+        return CGPoint(x: x + frame.minX, y: y + frame.minY)
     }
 
     /// Subtracts the given view's origin from the point.

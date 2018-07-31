@@ -9,6 +9,7 @@ protocol Record {
     var id: Int { get }
     var coordinate: CLLocationCoordinate2D { get set }
     var title: String { get }
+    var dates: TimelineRange? { get }
 }
 
 

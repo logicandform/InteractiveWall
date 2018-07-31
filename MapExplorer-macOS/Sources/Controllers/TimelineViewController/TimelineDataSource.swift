@@ -1,6 +1,9 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
 import Foundation
+import MapKit
+import MONode
+import PromiseKit
 import AppKit
 
 
@@ -11,6 +14,12 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     let firstYear = Constants.firstYear
     let lastYear = Constants.lastYear
     let years = Array(Constants.firstYear...Constants.lastYear)
+    var records = [Record]() {
+        didSet {
+            setupEvents(for: records)
+        }
+    }
+
     private(set) var events = [TimelineEvent]()
     private(set) var eventsForYear = [Int: [TimelineEvent]]()
     private(set) var eventsForMonth = [Int: [Month: [TimelineEvent]]]()
@@ -26,7 +35,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
 
     override init() {
         super.init()
-        setupEvents()
+
 //        let years = (Constants.firstYear...Constants.lastYear).count
 //        var countForCounts = [Int: Int]()
 //        var countForYear = [Int: Int]()
@@ -68,36 +77,10 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     }
 
 
-    // MARK: Helpers
+    // MARK: API
 
     func events(in range: [Int]) -> Int {
         return range.reduce(0) { return $0 + (eventsForYear[$1]?.count ?? 0) }
-    }
-
-
-    // MARK: Setup
-
-    private func setupEvents() {
-        events = TimelineEvent.allEvents()
-        for event in events {
-            // Add to year dictionary
-            if eventsForYear[event.start] != nil {
-                eventsForYear[event.start]!.append(event)
-            } else {
-                eventsForYear[event.start] = [event]
-            }
-
-            // Add to month dictionary
-            if eventsForMonth[event.start] != nil {
-                if eventsForMonth[event.start]![event.startMonth] != nil {
-                    eventsForMonth[event.start]![event.startMonth]!.append(event)
-                } else {
-                    eventsForMonth[event.start]![event.startMonth] = [event]
-                }
-            } else {
-                eventsForMonth[event.start] = [event.startMonth: [event]]
-            }
-        }
     }
 
 
@@ -132,5 +115,35 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
         }
 
         return headerView
+    }
+
+
+    // MARK: Helpers
+
+    private func setupEvents(for records: [Record]) {
+        for record in records {
+            if let dates = record.dates {
+                let event = TimelineEvent(id: record.id, type: record.type, title: record.title, dates: dates)
+                events.append(event)
+
+                // Add to year dictionary
+                if eventsForYear[event.dates.startDate.year] != nil {
+                    eventsForYear[event.dates.startDate.year]!.append(event)
+                } else {
+                    eventsForYear[event.dates.startDate.year] = [event]
+                }
+
+                // Add to month dictionary
+                if eventsForMonth[event.dates.startDate.year] != nil, Month(rawValue: event.dates.startDate.month) != nil {
+                    if eventsForMonth[event.dates.startDate.year]![Month(rawValue: event.dates.startDate.month)!] != nil {
+                        eventsForMonth[event.dates.startDate.year]![Month(rawValue: event.dates.startDate.month)!]!.append(event)
+                    } else {
+                        eventsForMonth[event.dates.startDate.year]![Month(rawValue: event.dates.startDate.month)!] = [event]
+                    }
+                } else {
+                    eventsForMonth[event.dates.startDate.year] = [Month(rawValue: event.dates.startDate.month)!: [event]]
+                }
+            }
+        }
     }
 }

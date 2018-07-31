@@ -3,6 +3,7 @@
 import Foundation
 import MapKit
 
+
 class Event: Record {
 
     let id: Int
@@ -26,14 +27,13 @@ class Event: Record {
         guard let id = json[Keys.id] as? Int,
             let title = json[Keys.title] as? String,
             let latitude = json[Keys.latitude] as? Double,
-            let longitude = json[Keys.longitude] as? Double,
-            let date = json[Keys.date] as? String else {
+            let longitude = json[Keys.longitude] as? Double else {
             return nil
         }
 
         self.id = id
         self.title = title
         self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        self.dates = TimelineRange(date)
+        self.dates = TimelineRange(json[Keys.date] as? String)
     }
 }

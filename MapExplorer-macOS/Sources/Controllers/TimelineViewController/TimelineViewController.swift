@@ -1,6 +1,10 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
 import Cocoa
+import MapKit
+import MONode
+import PromiseKit
+import AppKit
 
 
 enum TimelineType {
@@ -80,12 +84,13 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     }
 
     private struct Keys {
+        static let appID = "map"
         static let id = "id"
-        static let type = "type"
         static let group = "group"
         static let index = "index"
         static let state = "state"
         static let selection = "selection"
+        static let position = "position"
     }
 
 
@@ -100,6 +105,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     // MARK: API
 
     func fade(out: Bool) {
+//        timelineCollectionView.reloadItems(at: timelineCollectionView.indexPathsForVisibleItems())
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration
             timelineBackgroundView.animator().alphaValue = out ? 0 : 1
@@ -153,6 +159,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         timelineCollectionView.register(NSNib(nibNamed: TimelineHeaderView.nibName, bundle: .main), forSupplementaryViewOfKind: TimelineHeaderView.supplementaryKind, withIdentifier: TimelineHeaderView.identifier)
         timelineCollectionView.dataSource = source
         timelineScrollView.horizontalScroller?.alphaValue = 0
+        createRecords()
     }
 
     private func setupControls() {
@@ -237,12 +244,16 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     private func didTapOnTimeline(_ gesture: GestureRecognizer) {
         guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended,
             let location = tap.position,
-            let indexPath = timelineCollectionView.indexPathForItem(at: location + timelineCollectionView.visibleRect.origin) else {
+            let indexPath = timelineCollectionView.indexPathForItem(at: location + timelineCollectionView.visibleRect.origin),
+            let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineItemView else {
                 return
         }
 
         let state = source.selectedIndexes.contains(indexPath.item)
         postSelectNotification(for: indexPath.item, state: !state)
+        let transformedXPosition = timelineItem.view.frame.origin.x + (timelineItem.view.frame.size.width / 2) - timelineCollectionView.visibleRect.origin.x
+        let transformedYPosition = timelineItem.view.frame.transformed(from: timelineScrollView.frame).transformed(from: timelineBackgroundView.frame).origin.y
+        postRecordNotification(for: timelineItem.event.type, with: timelineItem.event.id, at: CGPoint(x: transformedXPosition, y: transformedYPosition))
     }
 
     private func didTapOnControl(_ gesture: GestureRecognizer) {
@@ -740,5 +751,43 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         case .century:
             return nil
         }
+    }
+
+    private func postRecordNotification(for type: RecordType, with id: Int, at position: CGPoint) {
+        guard let window = view.window else {
+            return
+        }
+
+        let location = window.frame.origin + position
+        let info: JSON = [Keys.appID: appID, Keys.id: id, Keys.position: location.toJSON()]
+        DistributedNotificationCenter.default().postNotificationName(RecordNotification.with(type).name, object: nil, userInfo: info, deliverImmediately: true)
+    }
+
+    private func createRecords() {
+        // Schools
+        let schoolChain = firstly {
+            try CachingNetwork.getSchools()
+        }.catch { error in
+            print(error)
+        }
+
+        // Events
+        let eventChain = firstly {
+            try CachingNetwork.getEvents()
+        }.catch { error in
+            print(error)
+        }
+
+        when(fulfilled: schoolChain, eventChain).then { [weak self] results in
+            self?.parseNetworkResults(results)
+        }
+    }
+
+    private func parseNetworkResults(_ results: (schools: [School], events: [Event])) {
+        var records = [Record]()
+        records.append(contentsOf: results.schools)
+        records.append(contentsOf: results.events)
+        source.records = records
+        timelineCollectionView.reloadData()
     }
 }
