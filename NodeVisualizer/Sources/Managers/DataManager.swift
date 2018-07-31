@@ -24,19 +24,22 @@ final class DataManager {
 
 
     // MARK: Singleton instance
+
     private init() {}
     static let instance = DataManager()
 
 
     // MARK: API
 
-    /// Loads and relates all records to their related records
-    func createRecordToRelatedRecordsRelationship(completion: @escaping ([RecordDisplayable]) -> Void) {
+    /// Loads and relates all records to their related descendant records
+    func createRecordRelationships(completion: @escaping () -> Void) {
         loadNextRecordTypeRecords { [weak self] records in
-            self?.allRecords = records
+            EntityManager.instance.createRecordEntities(for: records)
 
+            self?.allRecords = records
             self?.associateAllRecordsToRelatedRecords {
-                completion(records)
+                EntityManager.instance.createRelationshipsForAllEntities()
+                completion()
             }
         }
     }
@@ -103,4 +106,3 @@ final class DataManager {
         }
     }
 }
-

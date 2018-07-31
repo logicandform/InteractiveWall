@@ -6,7 +6,6 @@ import GameplayKit
 
 class MainScene: SKScene, SKPhysicsContactDelegate {
 
-    var records: [RecordDisplayable]!
     var gestureManager: GestureManager!
 
     private var lastUpdateTimeInterval: TimeInterval = 0
@@ -104,8 +103,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func addRecordNodesToScene() {
-        for record in records {
-            let recordEntity = RecordEntity(record: record)
+        for case let recordEntity as RecordEntity in EntityManager.instance.entities {
             recordEntity.intelligenceComponent.enterInitialState()
 
             if let recordNode = recordEntity.component(ofType: RenderComponent.self)?.recordNode {
@@ -116,7 +114,6 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
                 let screenBoundsConstraint = SKConstraint.positionX(SKRange(lowerLimit: 0, upperLimit: frame.width), y: SKRange(lowerLimit: 0, upperLimit: frame.height))
                 recordNode.constraints = [screenBoundsConstraint]
 
-                EntityManager.instance.add(recordEntity)
                 addChild(recordNode)
             }
         }
@@ -182,9 +179,9 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
             }
 
             EntityManager.instance.clearLevelEntities()
-            EntityManager.instance.associateRelatedEntities(for: [entity])
+            EntityManager.instance.levelledRelatedEntities(for: entity)
 
-            let difference = EntityManager.instance.allEntitiesInFormedState.symmetricDifference(EntityManager.instance.allLevelEntities)
+            let difference = EntityManager.instance.entitiesInFormedState.symmetricDifference(EntityManager.instance.allLevelEntities)
             if difference.isEmpty {
                 createBoundingConnections(for: entity)
             } else {
@@ -206,7 +203,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         NodeBoundingManager.instance.reset()
 
         // make level connections for all the tapped entity's descendants
-        EntityManager.instance.associateRelatedEntities(for: [entity])
+        EntityManager.instance.levelledRelatedEntities(for: entity)
 
         // create bounding nodes and enter tapped state
         createBoundingConnections(for: entity)

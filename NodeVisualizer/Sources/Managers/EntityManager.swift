@@ -24,14 +24,20 @@ final class EntityManager {
     /// Set of all entities in the scene
     private(set) var entities = Set<GKEntity>()
 
+    /// Dictionary of 2D array of related entities that belong to a particular level for a given record entity
+    private(set) var relatedEntitiesInLevelForRecordEntity = [RecordEntity: [Set<RecordEntity>]]()
+
     /// 2D array of related entities that belong to a particular level
     private(set) var entitiesInLevel = [Set<RecordEntity>]()
 
-    /// Set of all entities in all levels
+    /// Set of all entities that currently belong to any level. Used as a cache check to make sure that all levels only contain unique entities
     private(set) var allLevelEntities = Set<RecordEntity>()
 
     /// Set of all entities that are currently in a formed state
-    private(set) var allEntitiesInFormedState = Set<RecordEntity>()
+    private(set) var entitiesInFormedState = Set<RecordEntity>()
+
+    /// Local dictionary to access a record entity for its RecordDisplayable record identifier
+    private var recordEntityForIdentifier = [DataManager.RecordIdentifier: RecordEntity]()
 
     /// Local copy of the entities that are associated with the current level
     private var entitiesInCurrentLevel = Set<RecordEntity>()
@@ -56,7 +62,7 @@ final class EntityManager {
         }
     }
 
-    /// Adds the entity and all of its components to the appropriate component system
+    /// Adds an entity to its global cache
     func add(_ entity: GKEntity) {
         entities.insert(entity)
 
@@ -65,9 +71,27 @@ final class EntityManager {
         }
     }
 
-    /// Removes the entity and all its components from the component system
+    /// Removes an entity from its cache
     func remove(_ entity: GKEntity) {
         entities.remove(entity)
+    }
+
+    /// Adds each entity's components to the component system to allow updates to occur
+    func addToComponentSystems(for entities: [RecordEntity]) {
+        for entity in entities {
+            for componentSystem in componentSystems {
+                componentSystem.addComponent(foundIn: entity)
+            }
+        }
+    }
+
+    /// Removes each entity's components from the component system so that unnecessary updates do not happen
+    func removeFromComponentSystems(for entities: [RecordEntity]) {
+        for entity in entities {
+            for componentSystem in componentSystems {
+                componentSystem.removeComponent(foundIn: entity)
+            }
+        }
     }
 
     /// Dynamically add a new component to an entity
@@ -79,8 +103,76 @@ final class EntityManager {
         }
     }
 
+    /// Creates and stores record entities from all records from database
+    func createRecordEntities(for records: [RecordDisplayable]) {
+        for record in records {
+            let identifier = DataManager.RecordIdentifier(id: record.id, type: record.type)
+            let recordEntity = RecordEntity(record: record)
+            add(recordEntity)
+            add(recordEntity, to: identifier)
+        }
+    }
+
+    /// Creates and stores levelled relationships for all entities
+    func createRelationshipsForAllEntities() {
+        for case let entity as RecordEntity in entities {
+            // create all related entities organized into levels and store it locally for fast access
+            associateRelatedEntities(for: [entity])
+            relatedEntitiesInLevelForRecordEntity[entity] = entitiesInLevel
+
+            // remove levelled related entities elements for the next entity in queue
+            entitiesInLevel.removeAll()
+            allLevelEntities.removeAll()
+        }
+    }
+
+    /// Retrieves all related entities organized into their respective levels for a specified entity
+    func levelledRelatedEntities(for entity: RecordEntity) {
+//        addToComponentSystems(for: [entity])
+        allLevelEntities.formUnion([entity])
+        entitiesInFormedState.formUnion([entity])
+
+        if let relatedEntitiesInLevel = relatedEntitiesInLevelForRecordEntity[entity] {
+            entitiesInLevel = relatedEntitiesInLevel
+
+            for (_, entities) in relatedEntitiesInLevel.enumerated() {
+//                addToComponentSystems(for: Array(entities))
+                allLevelEntities.formUnion(entities)
+                entitiesInFormedState.formUnion(entities)
+            }
+        }
+    }
+
+    /// Removes all elements in sets associated with levelled entities
+    func clearLevelEntities() {
+        entitiesInLevel.removeAll()
+        allLevelEntities.removeAll()
+    }
+
+    /// Resets all entities that are current formed (i.e. that are currently in their levels) to their initial state
+    func resetAll() {
+        let entitiesToReset = allLevelEntities.union(entitiesInFormedState)
+//        removeFromComponentSystems(for: Array(entitiesToReset))
+
+        for entity in entitiesToReset {
+            entity.reset()
+        }
+
+        entitiesInFormedState.removeAll()
+        clearLevelEntities()
+    }
+
+
+    // MARK: Helpers
+
+    private func add(_ entity: RecordEntity, to identifier: DataManager.RecordIdentifier) {
+        if recordEntityForIdentifier[identifier] == nil {
+            recordEntityForIdentifier[identifier] = entity
+        }
+    }
+
     /// Organizes all related descendant entities to the appropriate hierarchial level
-    func associateRelatedEntities(for entities: Set<RecordEntity>?, toLevel level: Int = 0) {
+    private func associateRelatedEntities(for entities: Set<RecordEntity>?, toLevel level: Int = 0) {
         guard let entities = entities, !entities.isEmpty else {
             entitiesInLevel = entitiesInLevel.filter { !($0.isEmpty) }
             return
@@ -92,9 +184,8 @@ final class EntityManager {
         // padding for 2D array
         padEntitiesForLevel(level)
 
-        // update all level entities set
+        // add the new entities that are about to be related to a level to levelledEntities
         allLevelEntities.formUnion(entities)
-        allEntitiesInFormedState.formUnion(entities)
 
         for entity in entities {
             // add relatedEntities to the appropriate level
@@ -110,29 +201,6 @@ final class EntityManager {
 
         associateRelatedEntities(for: entitiesInCurrentLevel, toLevel: next)
     }
-
-    /// Removes all elements in sets associated with leveled entities
-    func clearLevelEntities() {
-        entitiesInLevel.removeAll()
-        allLevelEntities.removeAll()
-    }
-
-    /// Resets all entities that are current formed (i.e. that are currently in their levels) to their initial state
-    func resetAll() {
-        for entity in allLevelEntities {
-            entity.reset()
-        }
-
-        for entity in allEntitiesInFormedState {
-            entity.reset()
-        }
-
-        allEntitiesInFormedState.removeAll()
-        clearLevelEntities()
-    }
-
-
-    // MARK: Helpers
 
     private func getRelatedEntities(for entity: RecordEntity) -> [RecordEntity] {
         let record = entity.renderComponent.recordNode.record
@@ -159,16 +227,13 @@ final class EntityManager {
     }
 
     private func entity(for record: RecordDisplayable) -> RecordEntity? {
-        for entity in entities {
-            if let recordEntity = entity as? RecordEntity,
-                recordEntity.renderComponent.recordNode.record.id == record.id,
-                recordEntity.renderComponent.recordNode.record.type == record.type,
-                !allLevelEntities.contains(recordEntity) {
-                    return recordEntity
-            }
+        let identifier = DataManager.RecordIdentifier(id: record.id, type: record.type)
+
+        guard let recordEntity = recordEntityForIdentifier[identifier], !allLevelEntities.contains(recordEntity) else {
+            return nil
         }
 
-        return nil
+        return recordEntity
     }
 
     private func padEntitiesForLevel(_ level: Int) {

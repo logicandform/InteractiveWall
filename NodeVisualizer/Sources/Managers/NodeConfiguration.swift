@@ -20,7 +20,7 @@ class NodeConfiguration {
     /// Returns all related records for a given identifier depending on the configuration environment
     static func relatedRecords(for identifier: DataManager.RecordIdentifier) -> [RecordDisplayable]? {
         if NodeConfiguration.Environment.debug {
-            if let relatedRecords = TestingEnvironment.instance.relatedRecordsForRecord[identifier] {
+            if let relatedRecords = TestingEnvironment.instance.relatedRecordsForIdentifier[identifier] {
                 return Array(relatedRecords)
             }
         } else {
