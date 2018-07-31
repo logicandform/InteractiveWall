@@ -21,6 +21,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     var gestureManager: GestureManager!
     private var nodeClusters = Set<NodeCluster>()
     private var lastUpdateTimeInterval: TimeInterval = 0
+    private var selectedNode: SKNode?
 
     private struct Constants {
         static let maximumUpdateDeltaTime: TimeInterval = 1.0 / 60.0
@@ -147,6 +148,48 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         switch recognizer.state {
         case .ended:
             select(recordNode)
+        default:
+            return
+        }
+    }
+
+    @objc
+    private func handleSystemPanGesture(_ recognizer: NSPanGestureRecognizer) {
+        switch recognizer.state {
+        case .began:
+            let initialPanPosition = recognizer.location(in: recognizer.view)
+            let initialNodePosition = convertPoint(fromView: initialPanPosition)
+
+            if let recordNode = nodes(at: initialNodePosition).first(where: { $0 is RecordNode }) as? RecordNode {
+                selectedNode?.removeAllActions()
+                selectedNode = recordNode
+            }
+        case .changed:
+            let pannedPosition = recognizer.location(in: recognizer.view)
+            let pannedNodePosition = convertPoint(fromView: pannedPosition)
+
+            if let selectedNode = selectedNode {
+                selectedNode.position = CGPoint(x: pannedNodePosition.x, y: pannedNodePosition.y)
+            }
+        case .ended:
+            let duration = 1.0
+            let panVelocity = recognizer.velocity(in: recognizer.view)
+            let nodeVelocity = convertPoint(fromView: panVelocity)
+
+            guard nodeVelocity.x > 0 || nodeVelocity.y > 0 else {
+                return
+            }
+
+            if let selectedNode = selectedNode {
+                let nodePanDisplacement = CGPoint(x: nodeVelocity.x * CGFloat(duration), y: nodeVelocity.y * CGFloat(duration))
+                let newNodePosition = CGPoint(x: selectedNode.position.x + nodePanDisplacement.x, y: selectedNode.position.y + nodePanDisplacement.y)
+
+                let moveToNewPositionAction = SKAction.move(to: newNodePosition, duration: duration)
+                moveToNewPositionAction.timingMode = .easeOut
+                selectedNode.run(moveToNewPositionAction) {
+                    selectedNode.removeAllActions()
+                }
+            }
         default:
             return
         }
