@@ -84,7 +84,7 @@ class TimelineYearLayout: NSCollectionViewFlowLayout {
         let y = Constants.cellSize.height * CGFloat(heightIndex) + Constants.headerHeight
         let year = year ?? event.dates.startDate.year
         let x = CGFloat((year - source.firstYear) * type.sectionWidth)
-        let unselectedPosition = event.start
+        let unselectedPosition = event.dates.startDate.year
         let selected = source.selectedIndexes.contains(item)
         let width = selected ? Constants.cellSize.width * 2 : Constants.cellSize.width
         attributes.zIndex = selected ? source.lastYear + source.selectedIndexes.index(of: item)!: unselectedPosition

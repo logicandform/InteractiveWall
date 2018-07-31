@@ -3,6 +3,7 @@
 import Foundation
 import MapKit
 
+
 class Event: Record {
 
     let id: Int

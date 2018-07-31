@@ -3,6 +3,7 @@
 import Foundation
 import MapKit
 
+
 class School: Record {
 
     let id: Int

@@ -159,6 +159,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         timelineCollectionView.register(NSNib(nibNamed: TimelineHeaderView.nibName, bundle: .main), forSupplementaryViewOfKind: TimelineHeaderView.supplementaryKind, withIdentifier: TimelineHeaderView.identifier)
         timelineCollectionView.dataSource = source
         timelineScrollView.horizontalScroller?.alphaValue = 0
+        createRecords()
     }
 
     private func setupControls() {
@@ -762,5 +763,33 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         let location = window.frame.origin + position
         let info: JSON = [Keys.appID: appID, Keys.id: record.id, Keys.position: location.toJSON()]
         DistributedNotificationCenter.default().postNotificationName(RecordNotification.with(record.type).name, object: nil, userInfo: info, deliverImmediately: true)
+    }
+
+    private func createRecords() {
+        // Schools
+        let schoolChain = firstly {
+            try CachingNetwork.getSchools()
+        }.catch { error in
+            print(error)
+        }
+
+        // Events
+        let eventChain = firstly {
+            try CachingNetwork.getEvents()
+        }.catch { error in
+            print(error)
+        }
+
+        when(fulfilled: schoolChain, eventChain).then { [weak self] results in
+            self?.parseNetworkResults(results)
+        }
+    }
+
+    private func parseNetworkResults(_ results: (schools: [School], events: [Event])) {
+        var records = [Record]()
+        records.append(contentsOf: results.schools)
+        records.append(contentsOf: results.events)
+        source.records = records
+        timelineCollectionView.reloadData()
     }
 }

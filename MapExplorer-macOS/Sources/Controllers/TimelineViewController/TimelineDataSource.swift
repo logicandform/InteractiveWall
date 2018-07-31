@@ -15,6 +15,12 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     let lastYear = Constants.lastYear
     let years = Array(Constants.firstYear...Constants.lastYear)
     var recordForTimelineEvent = [TimelineEvent: Record]()
+    var records = [Record]() {
+        didSet {
+            setupEvents(for: records)
+        }
+    }
+
     private(set) var events = [TimelineEvent]()
     private(set) var eventsForYear = [Int: [TimelineEvent]]()
     private(set) var eventsForMonth = [Int: [Month: [TimelineEvent]]]()
@@ -30,7 +36,6 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
 
     override init() {
         super.init()
-        createRecords()
 
 //        let years = (Constants.firstYear...Constants.lastYear).count
 //        var countForCounts = [Int: Int]()
@@ -116,37 +121,10 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
 
     // MARK: Helpers
 
-    private func createRecords() {
-        // Schools
-        let schoolChain = firstly {
-            try CachingNetwork.getSchools()
-        }.catch { error in
-            print(error)
-        }
-
-        // Events
-        let eventChain = firstly {
-            try CachingNetwork.getEvents()
-        }.catch { error in
-            print(error)
-        }
-
-        when(fulfilled: schoolChain, eventChain).then { [weak self] results in
-            self?.parseNetworkResults(results)
-        }
-    }
-
-    private func parseNetworkResults(_ results: (schools: [School], events: [Event])) {
-        var records = [Record]()
-        records.append(contentsOf: results.schools)
-        records.append(contentsOf: results.events)
-        setupEvents(for: records)
-    }
-
     private func setupEvents(for records: [Record]) {
         for record in records {
             if let dates = record.dates {
-                let event = TimelineEvent(title: record.title, dates: dates)
+                let event = TimelineEvent(id: record.id, type: record.type, title: record.title, dates: dates)
                 recordForTimelineEvent[event] = record
                 events.append(event)
 
