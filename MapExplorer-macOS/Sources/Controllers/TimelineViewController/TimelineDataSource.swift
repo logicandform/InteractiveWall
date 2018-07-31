@@ -7,7 +7,7 @@ import AppKit
 final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
 
     var type = TimelineType.decade
-    var selectedIndexes = Set<Int>()
+    var selectedIndexes = [Int]()
     let firstYear = Constants.firstYear
     let lastYear = Constants.lastYear
     let years = Array(Constants.firstYear...Constants.lastYear)
@@ -108,12 +108,12 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        guard let timelineItem = collectionView.makeItem(withIdentifier: TimelineItemView.identifier, for: indexPath) as? TimelineItemView else {
+        guard let timelineItem = collectionView.makeItem(withIdentifier: TimelineItemView.identifier, for: indexPath) as? TimelineItemView, let attributes = collectionView.collectionViewLayout?.layoutAttributesForItem(at: indexPath) else {
             return NSCollectionViewItem()
         }
 
         timelineItem.event = events[indexPath.item]
-        timelineItem.set(selected: selectedIndexes.contains(indexPath.item % years.count), with: type)
+        timelineItem.set(selected: selectedIndexes.contains(indexPath.item % years.count), with: type, zIndex: CGFloat(attributes.zIndex))
         return timelineItem
     }
 

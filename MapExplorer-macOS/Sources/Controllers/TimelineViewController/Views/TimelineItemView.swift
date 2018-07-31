@@ -30,6 +30,7 @@ class TimelineItemView: NSCollectionViewItem {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        view.wantsLayer = true
         contentView.wantsLayer = true
         highlightView.wantsLayer = true
         backgroundView.wantsLayer = true
@@ -40,7 +41,8 @@ class TimelineItemView: NSCollectionViewItem {
 
     // MARK: API
 
-    func set(selected: Bool, with layout: TimelineType) {
+    func set(selected: Bool, with layout: TimelineType, zIndex: CGFloat) {
+        view.layer?.zPosition = selected ? zIndex : -1
         if selected {
             view.frame.size.width = CGFloat(layout.itemWidth * 2)
             highlightViewWidthConstraint.constant = CGFloat(layout.itemWidth * 2)
@@ -51,11 +53,12 @@ class TimelineItemView: NSCollectionViewItem {
         contentViewTrailingConstraint.constant = Constants.textOffset
     }
 
-    func animate(to size: CGSize) {
+    func animate(to size: CGSize, with zPosition: CGFloat, containedIn frame: CGRect, layout: NSCollectionViewLayout?) {
         if size.width >= view.frame.size.width {
-            expand(to: size)
+            view.layer?.zPosition = zPosition
+            expand(to: size, with: layout, containedIn: frame)
         } else {
-            compress(to: size)
+            compress(to: size, at: zPosition, with: layout, containedIn: frame)
         }
     }
 
@@ -75,7 +78,7 @@ class TimelineItemView: NSCollectionViewItem {
         titleTextField.attributedStringValue = NSAttributedString(string: event.title, attributes: style.timelineTitleAttributes)
     }
 
-    private func expand(to size: CGSize) {
+    private func expand(to size: CGSize, with layout: NSCollectionViewLayout?, containedIn frame: CGRect) {
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration / 2
             highlightViewWidthConstraint.animator().constant = view.frame.size.width
@@ -88,11 +91,15 @@ class TimelineItemView: NSCollectionViewItem {
                 NSAnimationContext.current.duration = Constants.animationDuration / 2
                 self?.contentViewTrailingConstraint.animator().constant = Constants.textOffset
                 self?.highlightViewWidthConstraint.animator().constant = size.width
+            }, completionHandler: {
+                if let invalid = layout?.invalidationContext(forBoundsChange: frame) {
+                    layout?.invalidateLayout(with: invalid)
+                }
             })
         })
     }
 
-    private func compress(to size: CGSize) {
+    private func compress(to size: CGSize, at zPosition: CGFloat, with layout: NSCollectionViewLayout?, containedIn frame: CGRect) {
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration / 2
             contentViewTrailingConstraint.animator().constant = size.width
@@ -103,6 +110,11 @@ class TimelineItemView: NSCollectionViewItem {
             NSAnimationContext.runAnimationGroup({ _ in
                 NSAnimationContext.current.duration = Constants.animationDuration / 2
                 self?.highlightViewWidthConstraint.animator().constant = Constants.unselectedHighlightWidth
+            }, completionHandler: { [weak self] in
+                self?.view.layer?.zPosition = zPosition
+                if let invalid = layout?.invalidationContext(forBoundsChange: frame) {
+                    layout?.invalidateLayout(with: invalid)
+                }
             })
         })
     }

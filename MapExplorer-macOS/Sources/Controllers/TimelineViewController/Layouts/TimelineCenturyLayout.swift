@@ -8,7 +8,7 @@ class TimelineCenturyLayout: NSCollectionViewFlowLayout {
     private let type: TimelineType = .century
 
     private struct Constants {
-        static let cellSize = CGSize(width: 240, height: 60)
+        static let cellSize = CGSize(width: 32, height: 60)
         static let headerHeight: CGFloat = 20
     }
 
@@ -72,13 +72,14 @@ class TimelineCenturyLayout: NSCollectionViewFlowLayout {
         }
 
         let indexPath = IndexPath(item: item, section: 0)
-        let selected = source.selectedIndexes.contains(item)
         let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
         let y = Constants.cellSize.height * CGFloat(heightIndex) + Constants.headerHeight
         let x = CGFloat((event.start - source.firstYear) * type.sectionWidth)
+        let unselectedPosition = event.start
+        let selected = source.selectedIndexes.contains(item)
         let width = selected ? Constants.cellSize.width * 2 : Constants.cellSize.width
+        attributes.zIndex = selected ? source.lastYear + source.selectedIndexes.index(of: item)!: unselectedPosition
         attributes.frame = CGRect(origin: CGPoint(x: x, y: y), size: CGSize(width: width, height: Constants.cellSize.height))
-        attributes.zIndex = selected ? event.start + source.lastYear : event.start
         return attributes
     }
 
