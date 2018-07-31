@@ -251,7 +251,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         let state = source.selectedIndexes.contains(indexPath.item)
         postSelectNotification(for: indexPath.item, state: !state)
         if let record = source.recordForTimelineEvent[timelineItem.event] {
-            postRecordNotification(for: record, at: CGPoint(x: 0, y: 0))
+            postRecordNotification(for: record, at: CGPoint(x: timelineItem.view.frame.origin.x + (timelineItem.view.frame.size.width / 2) - timelineCollectionView.visibleRect.origin.x, y: timelineItem.view.frame.transformed(from: view.frame).origin.y))
         }
     }
 

@@ -33,10 +33,6 @@ class School: Record {
         self.id = id
         self.title = title
         self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        if let date = json[Keys.date] as? String {
-            self.dates = TimelineRange(date)
-        } else {
-            self.dates = nil
-        }
+        self.dates = TimelineRange(json[Keys.date] as? String)
     }
 }
