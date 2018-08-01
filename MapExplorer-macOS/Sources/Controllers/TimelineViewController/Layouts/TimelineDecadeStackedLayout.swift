@@ -86,9 +86,9 @@ class TimelineDecadeStackedLayout: NSCollectionViewFlowLayout {
         let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
         let year = year ?? event.dates.startDate.year
         let x = CGFloat((year - source.firstYear) * type.sectionWidth)
-        let row = rowFor(event: event, xPosition: x)
-        let y = Constants.cellSize.height * CGFloat(row) + Constants.headerHeight
         let width = CGFloat((event.dates.endDate.year - event.dates.startDate.year) + 1) * Constants.cellSize.width
+        let row = rowFor(event: event, xPosition: x, width: width)
+        let y = Constants.cellSize.height * CGFloat(row) + Constants.headerHeight
         let frame = CGRect(origin: CGPoint(x: x, y: y), size: CGSize(width: width, height: Constants.cellSize.height))
         let unselectedPosition = event.dates.startDate.year
         let selected = source.selectedIndexes.contains(item)
@@ -113,23 +113,25 @@ class TimelineDecadeStackedLayout: NSCollectionViewFlowLayout {
         return attributes
     }
 
-    private func eventExistsAt(xPosition x: CGFloat, row: Int) -> Bool {
-        guard let frame = frameForEventInRow[row] else {
-            return false
-        }
-
-        return frame.minX <= x && frame.maxX >= x
-    }
-
-    private func rowFor(event: TimelineEvent, xPosition x: CGFloat) -> Int {
+    private func rowFor(event: TimelineEvent, xPosition x: CGFloat, width: CGFloat) -> Int {
         if let frame = frameForEvent[event] {
             return Int((frame.origin.y - Constants.headerHeight) / Constants.cellSize.height)
         }
         var row = 0
-        while eventExistsAt(xPosition: x, row: row) {
+        while eventExistsAt(xPosition: x, row: row, width: width) {
             row += 1
         }
 
         return row
+    }
+
+    private func eventExistsAt(xPosition x: CGFloat, row: Int, width: CGFloat) -> Bool {
+        guard let frame = frameForEventInRow[row] else {
+            return false
+        }
+
+        return frame.contains(CGRect(x: x, y: frame.origin.y, width: width, height: 1))
+//        return frame.contains(CGPoint(x: x, y: frame.origin.y)) || frame.contains(CGPoint(x: x + width, y: frame.origin.y))
+//        return frame.minX <= x && frame.maxX >= x
     }
 }

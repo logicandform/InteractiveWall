@@ -265,7 +265,8 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
         let state = source.selectedIndexes.contains(indexPath.item)
         postSelectNotification(for: indexPath.item, state: !state)
-        let transformedXPosition = timelineItem.view.frame.origin.x + (timelineItem.view.frame.size.width / 2) - timelineCollectionView.visibleRect.origin.x
+        let translatedXPosition = timelineItem.view.frame.origin.x - timelineCollectionView.visibleRect.origin.x
+        let transformedXPosition = translatedXPosition < 0 ? 0 : translatedXPosition
         let transformedYPosition = timelineItem.view.frame.transformed(from: timelineScrollView.frame).transformed(from: timelineBackgroundView.frame).origin.y
         postRecordNotification(for: timelineItem.event.type, with: timelineItem.event.id, at: CGPoint(x: transformedXPosition, y: transformedYPosition))
     }
