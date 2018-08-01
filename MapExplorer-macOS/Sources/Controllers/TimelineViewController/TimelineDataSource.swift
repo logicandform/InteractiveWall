@@ -12,8 +12,8 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     var type = TimelineType.decade
     var selectedIndexes = [Int]()
     let firstYear = Constants.firstYear
-    let lastYear = Constants.lastYear
-    let years = Array(Constants.firstYear...Constants.lastYear)
+    var lastYear = (Calendar.current.component(.year, from: Date()) / 10) * 10 + 10
+    var years: [Int]
     var records = [Record]() {
         didSet {
             setupEvents(for: records)
@@ -37,6 +37,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     // MARK: Init
 
     override init() {
+        years = Array(Constants.firstYear...lastYear)
         super.init()
 
 //        let years = (Constants.firstYear...Constants.lastYear).count

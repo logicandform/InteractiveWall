@@ -35,7 +35,7 @@ class TimelineDecadeStackedLayout: NSCollectionViewFlowLayout {
 
         let totalYears = source.lastYear - source.firstYear + Constants.infiniteScrollBuffer
         let width = CGFloat(totalYears * type.sectionWidth)
-        return CGSize(width: width, height: itemSize.height)
+        return CGSize(width: width, height: itemSize.height * CGFloat(source.events.count))
     }
 
     override func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {
@@ -44,7 +44,7 @@ class TimelineDecadeStackedLayout: NSCollectionViewFlowLayout {
         }
 
         var layoutAttributes = [NSCollectionViewLayoutAttributes]()
-        let minYear = source.firstYear + Int(rect.minX) / type.sectionWidth
+        let minYear = source.firstYear
         let maxYear = source.firstYear + Int(rect.maxX) / type.sectionWidth
 
         for year in (minYear...maxYear) {
@@ -130,7 +130,7 @@ class TimelineDecadeStackedLayout: NSCollectionViewFlowLayout {
             return false
         }
 
-        return frame.intersects(CGRect(x: x, y: frame.origin.y, width: width, height: 1))
+        return frame.intersects(CGRect(x: x, y: frame.origin.y, width: width, height: 0))
 //        return frame.contains(CGPoint(x: x, y: frame.origin.y)) || frame.contains(CGPoint(x: x + width, y: frame.origin.y))
 //        return frame.minX <= x && frame.maxX >= x
     }

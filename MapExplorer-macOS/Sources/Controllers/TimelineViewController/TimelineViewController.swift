@@ -72,8 +72,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         static let timelineSelectedCellWidth: CGFloat = 150
         static let animationDuration = 0.5
         static let controlItemWidth: CGFloat = 70
-        static let firstDecade = 1860
-        static let lastDecade = 1980
         static let timelineControlWidth: CGFloat = 490
         static let visibleControlItems = 7
         static let timelineControlItemWidth: CGFloat = 70
@@ -177,7 +175,9 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     }
 
     private func setupControls() {
-        let roundedYears = Array(Constants.firstDecade...Constants.lastDecade)
+        let roundedFirstYear = decadeFor(year: source.firstYear)
+        let roundedLastYear = decadeFor(year: source.lastYear)
+        let roundedYears = Array(roundedFirstYear...roundedLastYear)
         decades = roundedYears.filter { $0 % 10 == 0 }
         years = Array(source.firstYear...source.lastYear)
         setupControls(in: monthCollectionView, scrollView: monthScrollView)
@@ -706,7 +706,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         let yearOffset = (CGFloat(currentDate.year.array.last!) / 10) * Constants.controlItemWidth
         let decade = decadeFor(year: currentDate.year)
         let decadeMaxX = CGFloat(decades.count) * Constants.controlItemWidth
-        let decadeIndex = decades.index(of: decade) != nil ? decades.index(of: decade) : decade < Constants.firstDecade ? -1 : decades.count - 1
+        let decadeIndex = decades.index(of: decade) != nil ? decades.index(of: decade) : decade < decades.first! ? -1 : decades.count - 1
         let decadeX = CGFloat(decadeIndex!) * Constants.controlItemWidth
         var decadeRect = decadeCollectionView.visibleRect
         decadeRect.origin.x = decadeX - centerInset + yearOffset
