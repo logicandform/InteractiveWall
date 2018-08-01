@@ -105,7 +105,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     // MARK: API
 
     func fade(out: Bool) {
-//        timelineCollectionView.reloadItems(at: timelineCollectionView.indexPathsForVisibleItems())
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration
             timelineBackgroundView.animator().alphaValue = out ? 0 : 1
@@ -138,7 +137,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     override func viewDidAppear() {
         super.viewDidAppear()
         setupControlGradients()
-        setDate(Constants.initialDate)
+        setupTimelineDate()
         timelineCollectionView.collectionViewLayout?.invalidateLayout()
     }
 
@@ -160,6 +159,21 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         timelineCollectionView.dataSource = source
         timelineScrollView.horizontalScroller?.alphaValue = 0
         createRecords()
+    }
+
+    private func setupTimelineDate() {
+        switch timelineCollectionView.collectionViewLayout {
+        case is TimelineMonthLayout:
+            setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month + appID, year: Constants.initialDate.year))
+        case is TimelineYearLayout:
+            setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year + appID))
+        case is TimelineDecadeLayout:
+            setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year + (appID * 10)))
+        case is TimelineCenturyLayout:
+            setDate(Constants.initialDate)
+        default:
+            return
+        }
     }
 
     private func setupControls() {
