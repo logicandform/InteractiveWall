@@ -22,6 +22,8 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     private var nodeClusters = Set<NodeCluster>()
     private var lastUpdateTimeInterval: TimeInterval = 0
     private var selectedNode: SKNode?
+    private var selectedNodeInitialPosition: CGPoint = .zero
+    private var timeOfPanStart = Date()
 
     private struct Constants {
         static let maximumUpdateDeltaTime: TimeInterval = 1.0 / 60.0
@@ -114,16 +116,10 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     // MARK: Gesture Handlers
 
     private func handleTapGesture(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position else {
-            return
-        }
-
+        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position else { return }
         let nodePosition = convertPoint(fromView: position)
 
-        guard let recordNode = nodes(at: nodePosition).first(where: { $0 is RecordNode }) as? RecordNode else {
-            return
-        }
-
+        guard let recordNode = nodes(at: nodePosition).first(where: { $0 is RecordNode }) as? RecordNode else { return }
         print("ID: \(recordNode.record.id)")
 
         switch tap.state {
@@ -139,10 +135,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         let clickPosition = recognizer.location(in: recognizer.view)
         let nodePosition = convertPoint(fromView: clickPosition)
 
-        guard let recordNode = nodes(at: nodePosition).first(where: { $0 is RecordNode }) as? RecordNode else {
-            return
-        }
-
+        guard let recordNode = nodes(at: nodePosition).first(where: { $0 is RecordNode }) as? RecordNode else { return }
         print("ID: \(recordNode.record.id) \n Type: \(recordNode.record.type)")
 
         switch recognizer.state {
@@ -157,8 +150,10 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     private func handleSystemPanGesture(_ recognizer: NSPanGestureRecognizer) {
         switch recognizer.state {
         case .began:
+            timeOfPanStart = Date()
             let initialPanPosition = recognizer.location(in: recognizer.view)
             let initialNodePosition = convertPoint(fromView: initialPanPosition)
+            selectedNodeInitialPosition = initialNodePosition
 
             if let recordNode = nodes(at: initialNodePosition).first(where: { $0 is RecordNode }) as? RecordNode {
                 selectedNode?.removeAllActions()
@@ -168,28 +163,33 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
             let pannedPosition = recognizer.location(in: recognizer.view)
             let pannedNodePosition = convertPoint(fromView: pannedPosition)
 
-            if let selectedNode = selectedNode {
+            if let selectedNode = selectedNode, let selectedNodeEntity = selectedNode.entity as? RecordEntity {
+                selectedNodeEntity.movementComponent.requestedMovementState = nil
                 selectedNode.position = CGPoint(x: pannedNodePosition.x, y: pannedNodePosition.y)
             }
         case .ended:
-            let duration = 1.0
-            let panVelocity = recognizer.velocity(in: recognizer.view)
-            let nodeVelocity = convertPoint(fromView: panVelocity)
+            guard abs(timeOfPanStart.timeIntervalSinceNow) < 0.1 else {
+                // don't perform any physics and update the requestedMovementState for the entity node
 
-            guard nodeVelocity.x > 0 || nodeVelocity.y > 0 else {
+                timeOfPanStart = Date()
                 return
             }
 
-            if let selectedNode = selectedNode {
-                let nodePanDisplacement = CGPoint(x: nodeVelocity.x * CGFloat(duration), y: nodeVelocity.y * CGFloat(duration))
-                let newNodePosition = CGPoint(x: selectedNode.position.x + nodePanDisplacement.x, y: selectedNode.position.y + nodePanDisplacement.y)
+            // perform the appropriate physics based on pan gesture velocity
+            let pannedTranslation = recognizer.translation(in: recognizer.view)
+            let nodePannedTranslation = convertPoint(fromView: pannedTranslation)
 
-                let moveToNewPositionAction = SKAction.move(to: newNodePosition, duration: duration)
-                moveToNewPositionAction.timingMode = .easeOut
-                selectedNode.run(moveToNewPositionAction) {
-                    selectedNode.removeAllActions()
-                }
-            }
+            let dX = nodePannedTranslation.x
+            let dY = nodePannedTranslation.y
+            let distance = CGFloat(hypotf(Float(dX), Float(dY)))
+
+            let unitVector = CGVector(dx: dX / distance, dy: dY / distance)
+            let deltaTime = abs(CGFloat(timeOfPanStart.timeIntervalSinceNow))
+            let speed = distance / deltaTime
+            let velocity = CGVector(dx: speed * unitVector.dx, dy: speed * unitVector.dy)
+
+            selectedNode?.physicsBody?.velocity = velocity
+
         default:
             return
         }
