@@ -131,7 +131,5 @@ class TimelineDecadeStackedLayout: NSCollectionViewFlowLayout {
         }
 
         return frame.intersects(CGRect(x: x, y: frame.origin.y, width: width, height: 0))
-//        return frame.contains(CGPoint(x: x, y: frame.origin.y)) || frame.contains(CGPoint(x: x + width, y: frame.origin.y))
-//        return frame.minX <= x && frame.maxX >= x
     }
 }
