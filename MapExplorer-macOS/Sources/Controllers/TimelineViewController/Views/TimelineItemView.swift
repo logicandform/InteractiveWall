@@ -41,13 +41,15 @@ class TimelineItemView: NSCollectionViewItem {
 
     // MARK: API
 
-    func set(selected: Bool, with layout: TimelineType, zIndex: CGFloat) {
-        view.layer?.zPosition = selected ? zIndex : -1
+    func set(selected: Bool, with type: TimelineType, attributes: NSCollectionViewLayoutAttributes) {
+        view.layer?.zPosition = CGFloat(attributes.zIndex)
         if selected {
-//            view.frame.size.width = CGFloat(layout.itemWidth * 2)
-//            highlightViewWidthConstraint.constant = CGFloat(layout.itemWidth * 2)
+//            view.frame.size.width = CGFloat(type.itemWidth * 2)
+            view.frame.size.width = CGFloat(attributes.frame.size.width)
+//            highlightViewWidthConstraint.constant = CGFloat(type.itemWidth * 2)
         } else {
-            view.frame.size.width = CGFloat(layout.itemWidth)
+//            view.frame.size.width = CGFloat(type.itemWidth)
+            view.frame.size.width = CGFloat(attributes.frame.size.width)
             highlightViewWidthConstraint.constant = Constants.unselectedHighlightWidth
         }
         contentViewTrailingConstraint.constant = Constants.textOffset

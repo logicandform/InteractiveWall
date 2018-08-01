@@ -78,22 +78,22 @@ class TimelineDecadeStackedLayout: NSCollectionViewFlowLayout {
     // MARK: Helpers
 
     private func attributes(for event: TimelineEvent, in source: TimelineDataSource, year: Int? = nil) -> NSCollectionViewLayoutAttributes? {
-        guard let item = source.events.index(of: event), let eventsForYear = source.eventsForYear[event.dates.startDate.year], let heightIndex = eventsForYear.index(of: event) else {
+        guard let item = source.events.index(of: event) else {
             return nil
         }
 
         let indexPath = IndexPath(item: item, section: 0)
-        let selected = source.selectedIndexes.contains(item)
         let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
-//        let y = Constants.cellSize.height * CGFloat(heightIndex) + Constants.headerHeight
         let year = year ?? event.dates.startDate.year
         let x = CGFloat((year - source.firstYear) * type.sectionWidth)
         let row = rowFor(event: event, xPosition: x)
         let y = Constants.cellSize.height * CGFloat(row) + Constants.headerHeight
         let width = CGFloat((event.dates.endDate.year - event.dates.startDate.year) + 1) * Constants.cellSize.width
         let frame = CGRect(origin: CGPoint(x: x, y: y), size: CGSize(width: width, height: Constants.cellSize.height))
+        let unselectedPosition = event.dates.startDate.year
+        let selected = source.selectedIndexes.contains(item)
         attributes.frame = frame
-        attributes.zIndex = selected ? event.dates.startDate.year + source.lastYear : event.dates.startDate.year
+        attributes.zIndex = selected ? source.lastYear + source.selectedIndexes.index(of: item)!: unselectedPosition
         frameForEventInRow[row] = frame
         frameForEvent[event] = frame
         return attributes
@@ -125,7 +125,6 @@ class TimelineDecadeStackedLayout: NSCollectionViewFlowLayout {
         if let frame = frameForEvent[event] {
             return Int((frame.origin.y - Constants.headerHeight) / Constants.cellSize.height)
         }
-
         var row = 0
         while eventExistsAt(xPosition: x, row: row) {
             row += 1
