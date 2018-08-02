@@ -55,6 +55,10 @@ class TimelineDecadeLayout: NSCollectionViewFlowLayout {
                     }
                 }
             }
+            // Append dividing line between last and first years
+            if year == source.lastYear, let attributes = attributesForDivider(in: source) {
+                layoutAttributes.append(attributes)
+            }
             // Append attributes for supplimentary views
             if let attributes = attributes(year: year, in: source) {
                 layoutAttributes.append(attributes)
@@ -104,6 +108,19 @@ class TimelineDecadeLayout: NSCollectionViewFlowLayout {
         let x = CGFloat(item * type.sectionWidth)
         let size = CGSize(width: Constants.cellSize.width, height: Constants.headerHeight)
         attributes.frame = CGRect(origin: CGPoint(x: x, y: 0), size: size)
+        return attributes
+    }
+
+    private func attributesForDivider(in source: TimelineDataSource) -> NSCollectionViewLayoutAttributes? {
+        guard let collectionView = collectionView else {
+            return nil
+        }
+
+        let item = source.lastYear
+        let indexPath = IndexPath(item: item, section: 0)
+        let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
+        let x = CGFloat(source.lastYear * type.sectionWidth)
+        attributes.frame = CGRect(x: x, y: 0, width: 5, height: 1500)
         return attributes
     }
 }
