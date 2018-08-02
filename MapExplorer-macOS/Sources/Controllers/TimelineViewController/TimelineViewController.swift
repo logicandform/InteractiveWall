@@ -245,7 +245,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         switch pan.state {
         case .recognized, .momentum:
             updateDate(from: collectionView, with: pan.delta)
-            timelineHandler?.send(date: currentDate)
+            timelineHandler?.send(date: currentDate, for: pan.state)
         case .ended:
             timelineHandler?.endActivity()
         case .possible, .failed:
