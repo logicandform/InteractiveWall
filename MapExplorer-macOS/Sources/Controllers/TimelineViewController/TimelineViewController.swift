@@ -176,7 +176,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     private func setupControls() {
         let roundedFirstYear = decadeFor(year: source.firstYear)
-        let roundedLastYear = decadeFor(year: source.lastYear)
+        let roundedLastYear = decadeFor(year: source.lastYear) - 10
         let roundedYears = Array(roundedFirstYear...roundedLastYear)
         decades = roundedYears.filter { $0 % 10 == 0 }
         years = Array(source.firstYear...source.lastYear)
@@ -266,7 +266,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         let state = source.selectedIndexes.contains(indexPath.item)
         postSelectNotification(for: indexPath.item, state: !state)
         let translatedXPosition = timelineItem.view.frame.origin.x - timelineCollectionView.visibleRect.origin.x
-        let transformedXPosition = translatedXPosition < 0 ? 0 : translatedXPosition
+        let transformedXPosition = max(0, translatedXPosition)
         let transformedYPosition = timelineItem.view.frame.transformed(from: timelineScrollView.frame).transformed(from: timelineBackgroundView.frame).origin.y
         postRecordNotification(for: timelineItem.event.type, with: timelineItem.event.id, at: CGPoint(x: transformedXPosition, y: transformedYPosition))
     }
@@ -706,7 +706,8 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         let yearOffset = (CGFloat(currentDate.year.array.last!) / 10) * Constants.controlItemWidth
         let decade = decadeFor(year: currentDate.year)
         let decadeMaxX = CGFloat(decades.count) * Constants.controlItemWidth
-        let decadeIndex = decades.index(of: decade) != nil ? decades.index(of: decade) : decade < decades.first! ? -1 : decades.count - 1
+        let decadeIndexBoundary = decade < decades.first! ? 0 : decades.count
+        let decadeIndex = decades.index(of: decade) != nil ? decades.index(of: decade) : decadeIndexBoundary
         let decadeX = CGFloat(decadeIndex!) * Constants.controlItemWidth
         var decadeRect = decadeCollectionView.visibleRect
         decadeRect.origin.x = decadeX - centerInset + yearOffset
