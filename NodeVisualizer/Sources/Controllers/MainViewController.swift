@@ -12,9 +12,10 @@ class MainViewController: NSViewController, GestureResponder {
     @IBOutlet var mainView: SKView!
 
     // MONode
-    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 13001)
+    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 13003)
     let socketManager = SocketManager(networkConfiguration: touchNetwork)
     var gestureManager: GestureManager!
+    var nodeGestureManager: NodeGestureManager!
     var touchNeedsUpdate = [Touch: Bool]()
 
 
@@ -37,6 +38,7 @@ class MainViewController: NSViewController, GestureResponder {
 
         socketManager.delegate = self
         gestureManager = GestureManager(responder: self)
+        nodeGestureManager = NodeGestureManager(responder: self)
 
         mainView.showsFPS = true
         mainView.showsNodeCount = true
@@ -76,6 +78,7 @@ class MainViewController: NSViewController, GestureResponder {
         let mainScene = makeMainScene()
         EntityManager.instance.scene = mainScene
         mainScene.gestureManager = gestureManager
+        mainScene.nodeGestureManager = nodeGestureManager
         mainView.presentScene(mainScene)
     }
 
@@ -95,7 +98,8 @@ extension MainViewController: SocketManagerDelegate {
         }
 
         convert(touch, toScreen: touch.screen)
-        gestureManager.handle(touch)
+//        gestureManager.handle(touch)
+        nodeGestureManager.handle(touch)
     }
 
     func handleError(_ message: String) {
