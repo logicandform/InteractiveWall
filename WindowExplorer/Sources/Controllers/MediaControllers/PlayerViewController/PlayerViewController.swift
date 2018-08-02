@@ -19,13 +19,6 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     }
 
 
-    // MARK: Init
-
-    deinit {
-        audioPlayer?.disconnect()
-    }
-
-
     // MARK: Life-cycle
 
     override func viewDidLoad() {
