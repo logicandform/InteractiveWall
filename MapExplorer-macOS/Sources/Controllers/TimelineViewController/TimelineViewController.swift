@@ -72,8 +72,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         static let timelineSelectedCellWidth: CGFloat = 150
         static let animationDuration = 0.5
         static let controlItemWidth: CGFloat = 70
-        static let firstDecade = 1860
-        static let lastDecade = 1980
         static let timelineControlWidth: CGFloat = 490
         static let visibleControlItems = 7
         static let timelineControlItemWidth: CGFloat = 70
@@ -177,7 +175,9 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     }
 
     private func setupControls() {
-        let roundedYears = Array(Constants.firstDecade...Constants.lastDecade)
+        let roundedFirstYear = decadeFor(year: source.firstYear)
+        let roundedLastYear = decadeFor(year: source.lastYear) - 10
+        let roundedYears = Array(roundedFirstYear...roundedLastYear)
         decades = roundedYears.filter { $0 % 10 == 0 }
         years = Array(source.firstYear...source.lastYear)
         setupControls(in: monthCollectionView, scrollView: monthScrollView)
@@ -265,7 +265,8 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
         let state = source.selectedIndexes.contains(indexPath.item)
         postSelectNotification(for: indexPath.item, state: !state)
-        let transformedXPosition = timelineItem.view.frame.origin.x + (timelineItem.view.frame.size.width / 2) - timelineCollectionView.visibleRect.origin.x
+        let translatedXPosition = timelineItem.view.frame.origin.x - timelineCollectionView.visibleRect.origin.x
+        let transformedXPosition = max(0, translatedXPosition)
         let transformedYPosition = timelineItem.view.frame.transformed(from: timelineScrollView.frame).transformed(from: timelineBackgroundView.frame).origin.y
         postRecordNotification(for: timelineItem.event.type, with: timelineItem.event.id, at: CGPoint(x: transformedXPosition, y: transformedYPosition))
     }
@@ -340,7 +341,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         switch timelineCollectionView.collectionViewLayout {
         case is TimelineMonthLayout:
             add(days: days)
-        case is TimelineYearLayout, is TimelineDecadeLayout, is TimelineCenturyLayout:
+        case is TimelineYearLayout, is TimelineDecadeLayout, is TimelineCenturyLayout, is TimelineDecadeStackedLayout:
             add(days: days * 12)
         default:
             return
@@ -705,7 +706,8 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         let yearOffset = (CGFloat(currentDate.year.array.last!) / 10) * Constants.controlItemWidth
         let decade = decadeFor(year: currentDate.year)
         let decadeMaxX = CGFloat(decades.count) * Constants.controlItemWidth
-        let decadeIndex = decades.index(of: decade) != nil ? decades.index(of: decade) : decade < Constants.firstDecade ? -1 : decades.count - 1
+        let decadeIndexBoundary = decade < decades.first! ? 0 : decades.count
+        let decadeIndex = decades.index(of: decade) != nil ? decades.index(of: decade) : decadeIndexBoundary
         let decadeX = CGFloat(decadeIndex!) * Constants.controlItemWidth
         var decadeRect = decadeCollectionView.visibleRect
         decadeRect.origin.x = decadeX - centerInset + yearOffset
@@ -733,7 +735,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
                 timelineRect.origin.x = timelineMaxX + timelineRect.origin.x
             }
             timelineCollectionView.scrollToVisible(timelineRect)
-        case is TimelineYearLayout, is TimelineCenturyLayout, is TimelineDecadeLayout:
+        case is TimelineYearLayout, is TimelineCenturyLayout, is TimelineDecadeLayout, is TimelineDecadeStackedLayout:
             let timelineMonthOffset = ((CGFloat(currentDate.month) + currentDate.day - 0.5) / 12) * CGFloat(timelineType.sectionWidth)
             let timelineYearX = CGFloat(timelineYearIndex!) * CGFloat(timelineType.sectionWidth)
             timelineRect.origin.x = timelineYearX - timelineRect.width / 2 + timelineMonthOffset

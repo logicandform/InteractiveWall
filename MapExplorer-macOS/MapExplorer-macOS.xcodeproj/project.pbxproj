@@ -89,6 +89,7 @@
 		A44F1B6120FE8232005FEFD1 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44F1B6020FE8232005FEFD1 /* String.swift */; };
 		A44F1B6520FEAF8B005FEFD1 /* TimelineDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44F1B6420FEAF8B005FEFD1 /* TimelineDate.swift */; };
 		A454A65B20F7F95200619730 /* TimelineDecadeLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A454A65A20F7F95200619730 /* TimelineDecadeLayout.swift */; };
+		A45FAC60210F796300CAE2BF /* TimelineDecadeStackedLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45FAC5F210F796300CAE2BF /* TimelineDecadeStackedLayout.swift */; };
 		A4A8761A210015F200113F95 /* TimelineRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A87619210015F200113F95 /* TimelineRange.swift */; };
 /* End PBXBuildFile section */
 
@@ -208,6 +209,7 @@
 		A44F1B6020FE8232005FEFD1 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		A44F1B6420FEAF8B005FEFD1 /* TimelineDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDate.swift; sourceTree = "<group>"; };
 		A454A65A20F7F95200619730 /* TimelineDecadeLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDecadeLayout.swift; sourceTree = "<group>"; };
+		A45FAC5F210F796300CAE2BF /* TimelineDecadeStackedLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDecadeStackedLayout.swift; sourceTree = "<group>"; };
 		A4A87619210015F200113F95 /* TimelineRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineRange.swift; sourceTree = "<group>"; };
 		D9FF0C65383B61E5A7A798B0 /* Pods-All-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-macOS.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-macOS/Pods-All-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -275,6 +277,7 @@
 				22309CC920F4007500C58961 /* TimelineMonthLayout.swift */,
 				22004FF720E1A03000B1E740 /* TimelineYearLayout.swift */,
 				A454A65A20F7F95200619730 /* TimelineDecadeLayout.swift */,
+				A45FAC5F210F796300CAE2BF /* TimelineDecadeStackedLayout.swift */,
 				220AE86320EDA22B00F6E9AA /* TimelineCenturyLayout.swift */,
 				220AE86520EE8EE300F6E9AA /* TimelineCenturyStackedLayout.swift */,
 				223B146020F0335E00506604 /* TimelineMultiYearLayout.swift */,
@@ -758,6 +761,7 @@
 				22F0EDFD2066DA1E0075E467 /* ListenerCallback.m in Sources */,
 				22B85AF7209B7A6D0099F44E /* PanGestureRecognizer.swift in Sources */,
 				222694C020699B10007DA6FA /* Record.swift in Sources */,
+				A45FAC60210F796300CAE2BF /* TimelineDecadeStackedLayout.swift in Sources */,
 				8FBBD1CF20F5140900D9334C /* ClusterAnnotationView.swift in Sources */,
 				22B85AF8209B7A6D0099F44E /* GestureRecognizer.swift in Sources */,
 				2276AE68204E75C2001FAD8B /* BorderlessWindow.swift in Sources */,
