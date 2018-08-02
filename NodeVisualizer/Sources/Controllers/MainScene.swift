@@ -179,7 +179,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         switch entityForNode.intelligenceComponent.stateMachine.currentState {
         case is SeekTappedEntityState:
             for entity in entityForNode.relatedEntities {
-                entity.levelState.previousLevel = entity.levelState.currentLevel
+                entity.clusterLevel.previousLevel = entity.clusterLevel.currentLevel
             }
 
             cluster.didSelect(entityForNode)
@@ -187,6 +187,9 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         case is WanderState:
             cluster.didSelect(entityForNode)
             entityForNode.intelligenceComponent.stateMachine.enter(TappedState.self)
+        case is TappedState:
+            cluster.reset()
+            nodeClusters.remove(cluster)
         default:
             return
         }

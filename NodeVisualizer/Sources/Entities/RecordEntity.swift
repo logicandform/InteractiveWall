@@ -75,7 +75,7 @@ final class RecordEntity: GKEntity {
     var hasCollidedWithBoundingNode = false
 
     /// The previous and current level that the entity belongs to
-    var levelState: (previousLevel: Int?, currentLevel: Int?) = (nil, nil)
+    var clusterLevel: (previousLevel: Int?, currentLevel: Int?) = (nil, nil)
 
 
     // MARK: Initializer
@@ -146,7 +146,8 @@ final class RecordEntity: GKEntity {
     func reset() {
         // reset RecordEntity properties
         hasCollidedWithBoundingNode = false
-        levelState = (nil, nil)
+        clusterLevel = (nil, nil)
+        cluster = nil
 
         // enter WanderState initial state
         intelligenceComponent.stateMachine.enter(WanderState.self)

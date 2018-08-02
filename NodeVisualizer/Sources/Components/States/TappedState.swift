@@ -29,16 +29,20 @@ class TappedState: GKState {
         super.didEnter(from: previousState)
 
         // set the tapped entity's level to -1 since it does not belong to a well defined level
-        entity.levelState.currentLevel = -1
+        entity.clusterLevel.currentLevel = -1
 
         // physics
         entity.physicsComponent.physicsBody.isDynamic = false
         entity.physicsComponent.physicsBody.fieldBitMask = 0x1 << 1
 
+        if let cluster = entity.cluster, stateMachine?.currentState is TappedState {
+            entity.animationComponent.requestedAnimationState = .goToPoint(cluster.center)
+        }
+
         // move the tapped entity's descendants to the appropriate state with appropriate movement
         for (level, entities) in entity.relatedEntitiesForLevel.enumerated() {
             for sibling in entities {
-                sibling.levelState.currentLevel = level
+                sibling.clusterLevel.currentLevel = level
                 sibling.physicsComponent.setLevelInteractingBitMasks(forLevel: level)
                 sibling.movementComponent.requestedMovementState = .moveToAppropriateLevel
                 sibling.intelligenceComponent.stateMachine.enter(SeekBoundingLevelNodeState.self)

@@ -15,6 +15,8 @@ final class NodeCluster: Hashable {
     /// Reference to the scene where we should add the bounding nodes to
     let scene: MainScene
 
+    let center: CGPoint
+
     /// Focused entity
     var selectedEntity: RecordEntity
 
@@ -47,6 +49,7 @@ final class NodeCluster: Hashable {
     init(scene: MainScene, entity: RecordEntity) {
         self.scene = scene
         self.selectedEntity = entity
+        self.center = selectedEntity.renderComponent.recordNode.frame.center
     }
 
 
@@ -117,7 +120,7 @@ final class NodeCluster: Hashable {
         let boundingNode = SKNode()
         boundingNode.name = Constants.boundingNodeName
         boundingNode.zPosition = 1
-        boundingNode.position = selectedEntity.renderComponent.recordNode.frame.center
+        boundingNode.position = center
 
         boundingNode.physicsBody = SKPhysicsBody(circleOfRadius: radius)
         boundingNode.physicsBody?.mass = NodeConfiguration.Record.physicsBodyMass

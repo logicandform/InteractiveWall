@@ -137,7 +137,7 @@ class MovementComponent: GKComponent {
         }
 
         // find the difference in distance. This gives the total distance that is left to travel for the node
-        guard let currentLevel = entity.levelState.currentLevel,
+        guard let currentLevel = entity.clusterLevel.currentLevel,
             let currentLevelBoundingEntityComponent = cluster?.nodeBoundingEntityForLevel[currentLevel]?.nodeBoundingRenderComponent else {
             return
         }
