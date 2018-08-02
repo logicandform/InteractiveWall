@@ -10,18 +10,21 @@ import SpriteKit
 import GameplayKit
 
 
+enum MovementState {
+    case seekEntity(RecordEntity?)
+    case moveToAppropriateLevel
+}
+
+
 class MovementComponent: GKComponent {
 
-    enum MovementState {
-        case seekEntity(RecordEntity?)
-        case moveToAppropriateLevel
-    }
+    var cluster: NodeCluster?
 
     /// The type of movement state that needs to be executed on the next update cycle
     var requestedMovementState: MovementState?
 
-    /// The entity that this component's entity should seek
-    var entityToSeek: RecordEntity?
+
+    // MARK: Components
 
     private var renderComponent: RenderComponent {
         guard let renderComponent = entity?.component(ofType: RenderComponent.self) else {
@@ -52,6 +55,13 @@ class MovementComponent: GKComponent {
     }
 
 
+    // MARK: API
+
+    func reset() {
+        requestedMovementState = nil
+    }
+
+
     // MARK: Lifecycle
 
     override func update(deltaTime seconds: TimeInterval) {
@@ -60,14 +70,6 @@ class MovementComponent: GKComponent {
         if let movementState = requestedMovementState {
             handleMovement(for: movementState)
         }
-    }
-
-
-    // MARK: API
-
-    func reset() {
-        requestedMovementState = nil
-        entityToSeek = nil
     }
 
 
@@ -112,7 +114,7 @@ class MovementComponent: GKComponent {
     /// Applies appropriate physics that moves the entity to the appropriate higher level before entering next state and setting its bitMasks
     private func moveToAppropriateLevel() {
         guard intelligenceComponent.stateMachine.currentState is SeekBoundingLevelNodeState,
-            let referenceNode = NodeBoundingManager.instance.nodeBoundingEntityForLevel[0]?.nodeBoundingRenderComponent.node,
+            let referenceNode = cluster?.nodeBoundingEntityForLevel[0]?.nodeBoundingRenderComponent.node,
             let entity = entity as? RecordEntity else {
             return
         }
@@ -136,7 +138,7 @@ class MovementComponent: GKComponent {
 
         // find the difference in distance. This gives the total distance that is left to travel for the node
         guard let currentLevel = entity.levelState.currentLevel,
-            let currentLevelBoundingEntityComponent = NodeBoundingManager.instance.nodeBoundingEntityForLevel[currentLevel]?.nodeBoundingRenderComponent else {
+            let currentLevelBoundingEntityComponent = cluster?.nodeBoundingEntityForLevel[currentLevel]?.nodeBoundingRenderComponent else {
             return
         }
 
@@ -146,9 +148,8 @@ class MovementComponent: GKComponent {
         if (r2 - r1) < Constants.distancePadding {
             // enter SeekState and provide the appropriate bitmasks and entityToSeek for the MovementComponent
             physicsComponent.setBitMasks(forLevel: currentLevel)
-            requestedMovementState = .seekEntity(entityToSeek)
+            requestedMovementState = .seekEntity(cluster?.selectedEntity)
             intelligenceComponent.stateMachine.enter(SeekTappedEntityState.self)
-
         } else {
             // apply velocity
             physicsComponent.physicsBody.velocity = CGVector(dx: Constants.speed * unitVector.dx, dy: Constants.speed * unitVector.dy)

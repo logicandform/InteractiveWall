@@ -6,7 +6,14 @@ import Cocoa
 let style = Style()
 
 
+enum Environment {
+    case testing
+    case production
+}
+
+
 struct Configuration {
+    static let env = Environment.production
     static let appsPerScreen = 2
     static let numberOfScreens = 1
     static let touchScreenSize = CGSize(width: 21564, height: 12116)
@@ -17,8 +24,8 @@ struct Configuration {
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
-    
-    
+
+
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // For now, hardcode screen position to be 1
 //        let screen = NSScreen.at(position: 1)
@@ -36,10 +43,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.setFrame(frame, display: true)
         window.makeKeyAndOrderFront(self)
     }
-    
+
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
-    
-    
 }

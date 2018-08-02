@@ -28,7 +28,7 @@ class RenderComponent: GKComponent {
 
 
     // MARK: Lifecycle
-    
+
     override func didAddToEntity() {
         recordNode.entity = entity
     }

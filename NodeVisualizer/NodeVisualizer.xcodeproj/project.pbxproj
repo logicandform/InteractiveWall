@@ -69,7 +69,7 @@
 		CD2CC5EB20B8E6D800FB3C10 /* RecordDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2CC5E920B8E6D700FB3C10 /* RecordDisplayable.swift */; };
 		CD2CC5EC20B8E6D800FB3C10 /* RecordFilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2CC5EA20B8E6D800FB3C10 /* RecordFilterType.swift */; };
 		CD7E53832102A11B004223D9 /* SeekBoundingLevelNodeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7E53822102A11B004223D9 /* SeekBoundingLevelNodeState.swift */; };
-		CD97E33C20F4125800BB869E /* NodeBoundingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD97E33B20F4125800BB869E /* NodeBoundingManager.swift */; };
+		CD97E33C20F4125800BB869E /* NodeCluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD97E33B20F4125800BB869E /* NodeCluster.swift */; };
 		CD97E33E20F5765900BB869E /* NodeBoundingEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD97E33D20F5765900BB869E /* NodeBoundingEntity.swift */; };
 		CD97E34020F584BA00BB869E /* NodeBoundingRenderComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD97E33F20F584BA00BB869E /* NodeBoundingRenderComponent.swift */; };
 		CDA5A90820DD70B700E1CF87 /* PhysicsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */; };
@@ -148,7 +148,7 @@
 		CD2CC5E920B8E6D700FB3C10 /* RecordDisplayable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordDisplayable.swift; sourceTree = "<group>"; };
 		CD2CC5EA20B8E6D800FB3C10 /* RecordFilterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordFilterType.swift; sourceTree = "<group>"; };
 		CD7E53822102A11B004223D9 /* SeekBoundingLevelNodeState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeekBoundingLevelNodeState.swift; sourceTree = "<group>"; };
-		CD97E33B20F4125800BB869E /* NodeBoundingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeBoundingManager.swift; sourceTree = "<group>"; };
+		CD97E33B20F4125800BB869E /* NodeCluster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeCluster.swift; sourceTree = "<group>"; };
 		CD97E33D20F5765900BB869E /* NodeBoundingEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeBoundingEntity.swift; sourceTree = "<group>"; };
 		CD97E33F20F584BA00BB869E /* NodeBoundingRenderComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeBoundingRenderComponent.swift; sourceTree = "<group>"; };
 		CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsComponent.swift; sourceTree = "<group>"; };
@@ -234,7 +234,6 @@
 				22AEAED520B67D2600DD184B /* GestureManager.swift */,
 				CD0FB28320D1AA9D0058A410 /* EntityManager.swift */,
 				CD1FC73D20DB06AA00B87D02 /* TestingEnvironment.swift */,
-				CD97E33B20F4125800BB869E /* NodeBoundingManager.swift */,
 				CDA5A90920DD751C00E1CF87 /* NodeConfiguration.swift */,
 			);
 			path = Managers;
@@ -253,6 +252,7 @@
 		22AEAECF20B67C5100DD184B /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				CD97E33B20F4125800BB869E /* NodeCluster.swift */,
 				22D6F8FB20B6810600C7FB5F /* BackgroundTimer.swift */,
 				22D6F8FE20B6810600C7FB5F /* CachingNetwork.swift */,
 				22D6F8F920B6810600C7FB5F /* GestureHandler.swift */,
@@ -436,6 +436,7 @@
 				2C578865555409B70708DCEE /* [CP] Check Pods Manifest.lock */,
 				22AEAEAE20B67C2400DD184B /* Sources */,
 				22AEAEAF20B67C2400DD184B /* Frameworks */,
+				225B1BCA2110ECF6001441BC /* Run Swiftlint */,
 				22AEAEB020B67C2400DD184B /* Resources */,
 				8F6BFB4034FA330CA3A7FD30 /* [CP] Embed Pods Frameworks */,
 			);
@@ -495,6 +496,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		225B1BCA2110ECF6001441BC /* Run Swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Swiftlint";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+		};
 		2C578865555409B70708DCEE /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -588,7 +603,7 @@
 				CD27F40620BCBD5A00375CBC /* RecordFactory.swift in Sources */,
 				22AEAF0220B67E2C00DD184B /* Touch.swift in Sources */,
 				22AEAEF720B67DA600DD184B /* Theme.swift in Sources */,
-				CD97E33C20F4125800BB869E /* NodeBoundingManager.swift in Sources */,
+				CD97E33C20F4125800BB869E /* NodeCluster.swift in Sources */,
 				CDB6CE3220E4037D0033E328 /* AnimationComponent.swift in Sources */,
 				CD2CC5EC20B8E6D800FB3C10 /* RecordFilterType.swift in Sources */,
 				22D6F90620B6810600C7FB5F /* Style.swift in Sources */,

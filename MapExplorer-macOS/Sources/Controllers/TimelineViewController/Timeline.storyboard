@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="qGn-1v-M5l">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="qGn-1v-M5l">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,7 +26,7 @@
                                                 <collectionView id="hh4-uZ-Why" customClass="FlippedCollectionView" customModule="MapExplorer_macOS" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="664" height="198"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                                    <collectionViewLayout key="collectionViewLayout" id="bJW-po-dwy" customClass="TimelineDecadeLayout" customModule="MapExplorer_macOS" customModuleProvider="target"/>
+                                                    <collectionViewLayout key="collectionViewLayout" id="bJW-po-dwy" customClass="TimelineYearLayout" customModule="MapExplorer_macOS" customModuleProvider="target"/>
                                                     <color key="primaryBackgroundColor" red="0.44063859179674914" green="0.44326171874999998" blue="0.42965281942173822" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </collectionView>
                                             </subviews>

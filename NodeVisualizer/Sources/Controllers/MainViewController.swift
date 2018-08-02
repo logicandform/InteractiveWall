@@ -27,7 +27,7 @@ class MainViewController: NSViewController, GestureResponder {
 
 
     // MARK: Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -48,7 +48,7 @@ class MainViewController: NSViewController, GestureResponder {
     override func viewWillAppear() {
         super.viewWillAppear()
 
-        if NodeConfiguration.Environment.debug {
+        if Configuration.env == .testing {
             setupTestingEnvironment()
         } else {
             setupMainEnvironment()
@@ -59,7 +59,7 @@ class MainViewController: NSViewController, GestureResponder {
     // MARK: Setup Environment
 
     private func setupMainEnvironment() {
-        DataManager.instance.createRecordRelationships { [weak self] in
+        DataManager.instance.instantiate { [weak self] in
             self?.setupMainScene()
         }
     }

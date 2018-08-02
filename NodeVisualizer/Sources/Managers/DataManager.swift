@@ -3,106 +3,78 @@
 import Foundation
 
 
+struct RecordProxy: Hashable {
+    let id: Int
+    let type: RecordType
+}
+
+
 final class DataManager {
-
-    struct RecordIdentifier: Hashable {
-        let id: Int
-        let type: RecordType
-    }
-
-    /// Local copy of all record types
-    private var allRecordTypes = RecordType.allValues
-
-    /// Local copy of all records retrieved for each record type
-    private var allRecords = [RecordDisplayable]()
-
-    /// Dictionary of the associated records for a particular record type
-    private(set) var recordsForType = [RecordType: [RecordDisplayable]]()
-
-    /// Dictionary of all related records for a record specified by its record identifier
-    private(set) var relatedRecordsForIdentifier = [RecordIdentifier: [RecordDisplayable]]()
-
-
-    // MARK: Singleton instance
-
-    private init() {}
     static let instance = DataManager()
+
+    private(set) var recordsForType = [RecordType: [RecordDisplayable]]()
+    private(set) var relatedRecordsForProxy = [RecordProxy: [RecordDisplayable]]()
+
+
+    // MARK: Init
+
+    /// Use singleton
+    private init() {}
 
 
     // MARK: API
 
     /// Loads and relates all records to their related descendant records
-    func createRecordRelationships(completion: @escaping () -> Void) {
-        loadNextRecordTypeRecords { [weak self] records in
-            EntityManager.instance.createRecordEntities(for: records)
+    func instantiate(completion: @escaping () -> Void) {
+        var types = Set(RecordType.allValues)
 
-            self?.allRecords = records
-            self?.associateAllRecordsToRelatedRecords {
-                EntityManager.instance.createRelationshipsForAllEntities()
-                completion()
-            }
+        for type in types {
+            RecordFactory.records(for: type, completion: { [weak self] records in
+                // For testing, only use a subset of the records
+                var subset = [RecordDisplayable]()
+                if let records = records {
+                    for (index, record) in records.enumerated() {
+                        if index < 100 {
+                            subset.append(record)
+                        }
+                    }
+                }
+                self?.recordsForType[type] = subset
+                types.remove(type)
+                if types.isEmpty {
+                    self?.createAssociations {
+                        EntityManager.instance.createEntityRelationships()
+                        completion()
+                    }
+                }
+            })
         }
     }
 
 
     // MARK: Helpers
 
-    /// Loads all records for all record types
-    private func loadNextRecordTypeRecords(with results: [RecordDisplayable] = [], completion: @escaping ([RecordDisplayable]) -> Void) {
-        guard let type = allRecordTypes.popLast() else {
-            completion(results)
-            return
-        }
+    private func createAssociations(completion: @escaping () -> Void) {
+        var proxies = Set(allRecords().map { RecordProxy(id: $0.id, type: $0.type) })
 
-        loadRecords(of: type) { [weak self] records in
-            var updatedResults = results
-            if let records = records {
-                updatedResults += records
-            }
-            self?.loadNextRecordTypeRecords(with: updatedResults, completion: completion)
-        }
-    }
-
-    /// Loads all records for a specified record type
-    private func loadRecords(of type: RecordType, completion: @escaping ([RecordDisplayable]?) -> Void) {
-        RecordFactory.records(for: type, completion: { [weak self] records in
-            self?.save(records, for: type)
-            completion(records)
-        })
-    }
-
-    /// Saves locally all records associated with a specified record type
-    private func save(_ records: [RecordDisplayable]?, for type: RecordType) {
-        if recordsForType[type] == nil, let records = records {
-            recordsForType[type] = records
+        for proxy in proxies {
+            RecordFactory.record(for: proxy.type, id: proxy.id, completion: { [weak self] record in
+                EntityManager.instance.createEntity(for: proxy, record: record)
+                self?.relatedRecordsForProxy[proxy] = record?.relatedRecords
+                proxies.remove(proxy)
+                if proxies.isEmpty {
+                    completion()
+                }
+            })
         }
     }
 
-    /// Retrieves and creates relationship between all related records and each record in allRecords
-    private func associateAllRecordsToRelatedRecords(completion: @escaping () -> Void) {
-        guard let record = allRecords.popLast() else {
-            completion()
-            return
+    private func allRecords() -> [RecordDisplayable] {
+        var records = [RecordDisplayable]()
+        for (_, results) in recordsForType {
+            records.append(contentsOf: results)
         }
 
-        loadDetails(for: record) { [weak self] _ in
-            self?.associateAllRecordsToRelatedRecords(completion: completion)
-        }
-    }
-
-    /// Loads the details for a particular record
-    private func loadDetails(for record: RecordDisplayable, completion: @escaping (RecordDisplayable?) -> Void) {
-        RecordFactory.record(for: record.type, id: record.id, completion: { [weak self] recordDetails in
-            let identifier = RecordIdentifier(id: record.id, type: record.type)
-            self?.associateRelatedRecords(to: identifier, with: recordDetails)
-            completion(recordDetails)
-        })
-    }
-
-    /// Creates related records to record identifier relationship using the record's details
-    private func associateRelatedRecords(to identifier: RecordIdentifier, with recordDetails: RecordDisplayable?) {
-        if relatedRecordsForIdentifier[identifier] == nil, let recordDetails = recordDetails {
-            relatedRecordsForIdentifier[identifier] = recordDetails.relatedRecords
-        }
+        return records
     }
 }

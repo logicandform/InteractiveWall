@@ -17,7 +17,7 @@ class IntelligenceComponent: GKComponent {
 
 
     // MARK: Initializer
-    
+
     init(states: [GKState]) {
         self.stateMachine = GKStateMachine(states: states)
         let firstState = states.first!

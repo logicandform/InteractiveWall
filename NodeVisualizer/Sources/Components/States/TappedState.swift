@@ -42,14 +42,12 @@ class TappedState: GKState {
         }
 
         // move the tapped entity's descendants to the appropriate state with appropriate movement
-        for (level, entities) in EntityManager.instance.entitiesInLevel.enumerated() {
-            for entity in entities {
-                entity.levelState.currentLevel = level
-
-                entity.physicsComponent.setLevelInteractingBitMasks(forLevel: level)
-                entity.movementComponent.requestedMovementState = .moveToAppropriateLevel
-                entity.movementComponent.entityToSeek = self.entity
-                entity.intelligenceComponent.stateMachine.enter(SeekBoundingLevelNodeState.self)
+        for (level, entities) in entity.relatedEntitiesForLevel.enumerated() {
+            for sibling in entities {
+                sibling.levelState.currentLevel = level
+                sibling.physicsComponent.setLevelInteractingBitMasks(forLevel: level)
+                sibling.movementComponent.requestedMovementState = .moveToAppropriateLevel
+                sibling.intelligenceComponent.stateMachine.enter(SeekBoundingLevelNodeState.self)
             }
         }
     }

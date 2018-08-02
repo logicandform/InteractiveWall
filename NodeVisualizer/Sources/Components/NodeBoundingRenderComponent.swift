@@ -12,6 +12,8 @@ import GameplayKit
 
 class NodeBoundingRenderComponent: GKComponent {
 
+    let cluster: NodeCluster
+
     /// The bounding entity's node
     var node: SKNode?
 
@@ -36,7 +38,8 @@ class NodeBoundingRenderComponent: GKComponent {
 
     // MARK: Initializer
 
-    override init() {
+    init(cluster: NodeCluster) {
+        self.cluster = cluster
         super.init()
     }
 
@@ -66,7 +69,7 @@ class NodeBoundingRenderComponent: GKComponent {
          */
 
         // scale its own bounding node by using its previous level's bounding node maxRadius
-        if let previousLevelNodeBoundingEntity = NodeBoundingManager.instance.nodeBoundingEntityForLevel[level - 1], let currentNode = node {
+        if let previousLevelNodeBoundingEntity = cluster.nodeBoundingEntityForLevel[level - 1], let currentNode = node {
 
             // get the maxRadius of the previous level bounding node
             let previousLevelBoundingNodeMaxRadius = previousLevelNodeBoundingEntity.nodeBoundingRenderComponent.maxRadius
@@ -91,10 +94,10 @@ class NodeBoundingRenderComponent: GKComponent {
         }
 
         var distance: CGFloat = 0.0
-        if let contactEntities = EntityManager.instance.entitiesInLevel.at(index: level) {
+        if let contactEntities = cluster.selectedEntity.relatedEntitiesForLevel.at(index: level) {
             // iterate through its contactEntities to see if it hasCollidedWithBoundingNode, and determine the max distance from the root to the contactEntity
             for contactEntity in contactEntities where contactEntity.hasCollidedWithBoundingNode {
-                let calculatedRadius = NodeBoundingManager.instance.distance(to: contactEntity) + Constants.minimumOffset
+                let calculatedRadius = cluster.distance(to: contactEntity) + Constants.minimumOffset
                 if calculatedRadius > distance {
                     distance = calculatedRadius
                 }

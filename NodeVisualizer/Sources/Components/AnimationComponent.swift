@@ -41,7 +41,7 @@ class AnimationComponent: GKComponent {
 
 
     // MARK: Lifecycle
-    
+
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
 

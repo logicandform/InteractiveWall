@@ -17,10 +17,10 @@ class NodeBoundingEntity: GKEntity {
 
     // MARK: Initializer
 
-    override init() {
+    init(cluster: NodeCluster) {
         super.init()
 
-        let renderComponent = NodeBoundingRenderComponent()
+        let renderComponent = NodeBoundingRenderComponent(cluster: cluster)
         addComponent(renderComponent)
     }
 

@@ -4,7 +4,30 @@ import Foundation
 import GameplayKit
 
 
-class RecordEntity: GKEntity {
+final class RecordEntity: GKEntity {
+
+    // A 2D array of related entities, each index is a new level
+    var relatedEntitiesForLevel = [Set<RecordEntity>]() {
+        didSet {
+            relatedEntities = allRelatedEntities()
+        }
+    }
+
+    var relatedEntities = Set<RecordEntity>()
+
+    var cluster: NodeCluster? {
+        didSet {
+            physicsComponent.cluster = cluster
+            movementComponent.cluster = cluster
+        }
+    }
+
+    var record: RecordDisplayable {
+        return renderComponent.recordNode.record
+    }
+
+
+    // MARK: Components
 
     var renderComponent: RenderComponent {
         guard let renderComponent = component(ofType: RenderComponent.self) else {
@@ -91,6 +114,23 @@ class RecordEntity: GKEntity {
 
     // MARK: API
 
+    func set(_ cluster: NodeCluster) {
+        self.cluster = cluster
+        for entity in relatedEntities {
+            entity.cluster = cluster
+        }
+    }
+
+    func related(to entity: RecordEntity) -> Bool {
+        for entities in relatedEntitiesForLevel {
+            if entities.contains(entity) {
+                return true
+            }
+        }
+
+        return false
+    }
+
     func updateAgentPositionToMatchNodePosition() {
         agent.position = vector_float2(x: Float(renderComponent.recordNode.position.x), y: Float(renderComponent.recordNode.position.y))
     }
@@ -110,5 +150,13 @@ class RecordEntity: GKEntity {
 
         // enter WanderState initial state
         intelligenceComponent.stateMachine.enter(WanderState.self)
+    }
+
+    private func allRelatedEntities() -> Set<RecordEntity> {
+        var relatedEntities = Set<RecordEntity>()
+        for entities in relatedEntitiesForLevel {
+            relatedEntities = relatedEntities.union(entities)
+        }
+        return relatedEntities
     }
 }

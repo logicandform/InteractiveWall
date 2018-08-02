@@ -12,6 +12,7 @@ import GameplayKit
 
 class PhysicsComponent: GKComponent {
 
+    var cluster: NodeCluster?
     private(set) var physicsBody: SKPhysicsBody
 
     private var recordEntity: RecordEntity {
@@ -36,7 +37,7 @@ class PhysicsComponent: GKComponent {
 
 
     // MARK: Initializer
-    
+
     init(physicsBody: SKPhysicsBody) {
         self.physicsBody = physicsBody
         super.init()
@@ -71,7 +72,7 @@ class PhysicsComponent: GKComponent {
 
     /// Sets the entity's bitMasks to interact with entities within its own level as well as its bounding node
     func setBitMasks(forLevel level: Int) {
-        if let boundingNode = NodeBoundingManager.instance.nodeBoundingEntityForLevel[level]?.nodeBoundingRenderComponent.node,
+        if let boundingNode = cluster?.nodeBoundingEntityForLevel[level]?.nodeBoundingRenderComponent.node,
             let boundingNodePhysicsBody = boundingNode.physicsBody {
 
             let levelBitMasks = bitMasks(forLevel: level)

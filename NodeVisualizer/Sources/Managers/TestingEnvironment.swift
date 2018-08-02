@@ -11,7 +11,7 @@ import AppKit
 
 class TestingEnvironment {
 
-    struct Record: Hashable, RecordDisplayable {
+    class Record: Hashable, RecordDisplayable {
         let id: Int
         let type: RecordType
 
@@ -19,8 +19,14 @@ class TestingEnvironment {
         let description: String? = ""
         let date: String? = ""
         let media: [Media] = []
-        let recordGroups: [RecordGroup] = []
+        var recordGroups: [RecordGroup] = []
         let priority: Int = 0
+
+
+        init(id: Int, type: RecordType) {
+            self.id = id
+            self.type = type
+        }
 
         var hashValue: Int {
             return id.hashValue
@@ -31,7 +37,7 @@ class TestingEnvironment {
         }
     }
 
-    private(set) var relatedRecordsForIdentifier = [DataManager.RecordIdentifier: Set<Record>]()
+    private(set) var relatedRecordsForIdentifier = [RecordProxy: Set<Record>]()
 
     private lazy var schoolRecord = Record(id: Constants.schoolId, type: .school)
     private lazy var organizationRecord = Record(id: Constants.organizationId, type: .organization)
@@ -70,11 +76,15 @@ class TestingEnvironment {
     func createTestEnvironmentRecordRelationships(completion: @escaping () -> Void) {
         // create all records and create record entities to EntityManager
         createArtifactRecords()
-        EntityManager.instance.createRecordEntities(for: allRecords)
+
+        for record in allRecords {
+            let proxy = RecordProxy(id: record.id, type: record.type)
+            EntityManager.instance.createEntity(for: proxy, record: record)
+        }
 
         // create associations between the records and create relationship to EntityManager
         createAssociations()
-        EntityManager.instance.createRelationshipsForAllEntities()
+        EntityManager.instance.createEntityRelationships()
 
         completion()
     }
@@ -142,7 +152,17 @@ class TestingEnvironment {
 
     /// Relates records to a specified record and stores it locally in dictionary
     private func associate(records: [Record], to record: Record) {
-        let identifier = DataManager.RecordIdentifier(id: record.id, type: record.type)
+        let identifier = RecordProxy(id: record.id, type: record.type)
+
+        let filtered = records.filter { $0 != record }
+        let orgGroup = RecordGroup(type: .organization, records: filtered.filter { $0.type == .organization })
+        let artGroup = RecordGroup(type: .organization, records: filtered.filter { $0.type == .artifact })
+        let schoolGroup = RecordGroup(type: .organization, records: filtered.filter { $0.type == .school })
+        let eventGroup = RecordGroup(type: .organization, records: filtered.filter { $0.type == .event })
+        record.recordGroups.append(orgGroup)
+        record.recordGroups.append(artGroup)
+        record.recordGroups.append(schoolGroup)
+        record.recordGroups.append(eventGroup)
 
         if relatedRecordsForIdentifier[identifier] == nil {
             relatedRecordsForIdentifier[identifier] = Set(records)

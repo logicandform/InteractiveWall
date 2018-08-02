@@ -4,22 +4,23 @@ import SpriteKit
 import GameplayKit
 
 
+private enum StartingPositionType: UInt32 {
+    case top = 0
+    case bottom = 1
+    case left = 2
+    case right = 3
+
+    static var allValues: [StartingPositionType] {
+        return [.top, .bottom, .left, .right]
+    }
+}
+
+
 class MainScene: SKScene, SKPhysicsContactDelegate {
 
     var gestureManager: GestureManager!
-
+    private var nodeClusters = Set<NodeCluster>()
     private var lastUpdateTimeInterval: TimeInterval = 0
-
-    private enum StartingPositionType: UInt32 {
-        case top = 0
-        case bottom = 1
-        case left = 2
-        case right = 3
-
-        static var allValues: [StartingPositionType] {
-            return [.top, .bottom, .left, .right]
-        }
-    }
 
     private struct Constants {
         static let maximumUpdateDeltaTime: TimeInterval = 1.0 / 60.0
@@ -27,11 +28,9 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
 
     // MARK: Lifecycle
-    
+
     override func didMove(to view: SKView) {
         super.didMove(to: view)
-
-        NodeBoundingManager.instance.scene = self
 
         addGestures(to: view)
         setupSystemGesturesForTest(to: view)
@@ -49,8 +48,10 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         deltaTime = deltaTime > Constants.maximumUpdateDeltaTime ? Constants.maximumUpdateDeltaTime : deltaTime
         lastUpdateTimeInterval = currentTime
 
-        NodeBoundingManager.instance.update(deltaTime)
         EntityManager.instance.update(deltaTime)
+        for cluster in nodeClusters {
+            cluster.update(deltaTime)
+        }
 
         // keep the nodes facing 0 degrees (i.e. no rotation when affected by physics simulation)
         for case let node as RecordNode in children {
@@ -103,10 +104,10 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func addRecordNodesToScene() {
-        for case let recordEntity as RecordEntity in EntityManager.instance.entities {
-            recordEntity.intelligenceComponent.enterInitialState()
+        for entity in EntityManager.instance.entities {
+            entity.intelligenceComponent.enterInitialState()
 
-            if let recordNode = recordEntity.component(ofType: RenderComponent.self)?.recordNode {
+            if let recordNode = entity.component(ofType: RenderComponent.self)?.recordNode {
                 recordNode.position.x = randomX()
                 recordNode.position.y = randomY()
                 recordNode.zPosition = 1
@@ -137,7 +138,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
         switch tap.state {
         case .ended:
-            relatedNodes(for: recordNode)
+            select(recordNode)
         default:
             return
         }
@@ -156,7 +157,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
         switch recognizer.state {
         case .ended:
-            relatedNodes(for: recordNode)
+            select(recordNode)
         default:
             return
         }
@@ -166,55 +167,50 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     // MARK: Helpers
 
     /// Sets up all the data relationships for the tapped node and starts the physics interactions
-    private func relatedNodes(for node: RecordNode) {
-        guard let entity = node.entity as? RecordEntity else {
+    private func select(_ node: RecordNode) {
+        guard let entityForNode = node.entity as? RecordEntity else {
             return
         }
 
-        switch entity.intelligenceComponent.stateMachine.currentState {
-        case is SeekTappedEntityState:
+        let cluster = nodeCluster(for: entityForNode)
+        entityForNode.set(cluster)
 
-            for entity in EntityManager.instance.allLevelEntities {
+        // While we only have one cluster at a time, reset the old cluster
+        if !nodeClusters.contains(cluster) {
+            for cluster in nodeClusters {
+                cluster.selectedEntity.reset()
+                for sibling in cluster.selectedEntity.relatedEntities {
+                    sibling.reset()
+                }
+                cluster.reset()
+                nodeClusters.remove(cluster)
+            }
+        }
+        nodeClusters.insert(cluster)
+
+        switch entityForNode.intelligenceComponent.stateMachine.currentState {
+        case is SeekTappedEntityState:
+            for entity in entityForNode.relatedEntities {
                 entity.levelState.previousLevel = entity.levelState.currentLevel
             }
 
-            EntityManager.instance.clearLevelEntities()
-            EntityManager.instance.levelledRelatedEntities(for: entity)
-
-            let difference = EntityManager.instance.entitiesInFormedState.symmetricDifference(EntityManager.instance.allLevelEntities)
-            if difference.isEmpty {
-                createBoundingConnections(for: entity)
-            } else {
-                createLevelConnections(for: entity)
-            }
-
+            cluster.didSelect(entityForNode)
+            entityForNode.intelligenceComponent.stateMachine.enter(TappedState.self)
         case is WanderState:
-            createLevelConnections(for: entity)
-
+            cluster.didSelect(entityForNode)
+            entityForNode.intelligenceComponent.stateMachine.enter(TappedState.self)
         default:
             return
         }
     }
 
-    /// Create entity level relationships and their appropriate bounding nodes
-    private func createLevelConnections(for entity: RecordEntity) {
-        // reset
-        EntityManager.instance.resetAll()
-        NodeBoundingManager.instance.reset()
+    private func nodeCluster(for entity: RecordEntity) -> NodeCluster {
+        if let current = entity.cluster {
+            return current
+        }
 
-        // make level connections for all the tapped entity's descendants
-        EntityManager.instance.levelledRelatedEntities(for: entity)
-
-        // create bounding nodes and enter tapped state
-        createBoundingConnections(for: entity)
-    }
-
-    private func createBoundingConnections(for entity: RecordEntity) {
-        // create bounding node entities for each level
-        NodeBoundingManager.instance.createNodeBoundingEntities()
-
-        // enter the TappedState for the tapped entity node
-        entity.intelligenceComponent.stateMachine.enter(TappedState.self)
+        let cluster = NodeCluster(scene: self, entity: entity)
+        return cluster
     }
 
     private func getRandomPosition() -> CGPoint {
@@ -259,19 +255,19 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
         switch type {
         case .top:
-            vector = vector_float3(0,-1,0)
+            vector = vector_float3(0, -1, 0)
             size = CGSize(width: frame.width, height: 20)
             position = CGPoint(x: frame.width / 2, y: frame.height - 20)
         case .bottom:
-            vector = vector_float3(0,1,0)
+            vector = vector_float3(0, 1, 0)
             size = CGSize(width: frame.width, height: 20)
             position = CGPoint(x: frame.width / 2, y: 20)
         case .left:
-            vector = vector_float3(1,0,0)
+            vector = vector_float3(1, 0, 0)
             size = CGSize(width: 20, height: frame.height)
             position = CGPoint(x: 20, y: frame.height / 2)
         case .right:
-            vector = vector_float3(-1,0,0)
+            vector = vector_float3(-1, 0, 0)
             size = CGSize(width: 20, height: frame.height)
             position = CGPoint(x: frame.width - 20, y: frame.height / 2)
         }
