@@ -57,7 +57,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     var gestureManager: GestureManager!
     var currentDate = Constants.initialDate
-    var timelineType: TimelineType = .year
+    var timelineType: TimelineType = .decade
     private var timelineHandler: TimelineHandler?
     private let source = TimelineDataSource()
     private var decades = [Int]()
@@ -165,7 +165,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
             setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month + appID, year: Constants.initialDate.year))
         case is TimelineYearLayout:
             setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year + appID))
-        case is TimelineDecadeLayout:
+        case is TimelineDecadeLayout, is TimelineDecadeStackedLayout:
             setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year + (appID * 10)))
         case is TimelineCenturyLayout:
             setDate(Constants.initialDate)
