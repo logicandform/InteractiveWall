@@ -72,8 +72,12 @@ final class NodeCluster: Hashable {
         }
     }
 
-    /// Removes all node bounding entities from the scene
+    /// Removes all entities currently formed in the cluster and removes all bounding layers
     func reset() {
+        selectedEntity.reset()
+        for relative in selectedEntity.relatedEntities {
+            relative.reset()
+        }
         removeEntities(ofLevels: 0)
     }
 
@@ -113,7 +117,7 @@ final class NodeCluster: Hashable {
         let boundingNode = SKNode()
         boundingNode.name = Constants.boundingNodeName
         boundingNode.zPosition = 1
-        boundingNode.position = CGPoint(x: scene.frame.width / 2, y: scene.frame.height / 2)
+        boundingNode.position = selectedEntity.renderComponent.recordNode.frame.center
 
         boundingNode.physicsBody = SKPhysicsBody(circleOfRadius: radius)
         boundingNode.physicsBody?.mass = NodeConfiguration.Record.physicsBodyMass

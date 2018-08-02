@@ -6,6 +6,10 @@ import AppKit
 
 extension CGRect {
 
+    var center: CGPoint {
+        return CGPoint(x: midX, y: midY)
+    }
+
     func transformed(from rect: CGRect) -> CGRect {
         return CGRect(origin: origin.transformed(from: rect), size: size)
     }

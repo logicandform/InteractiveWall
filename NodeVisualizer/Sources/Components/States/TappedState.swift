@@ -35,12 +35,6 @@ class TappedState: GKState {
         entity.physicsComponent.physicsBody.isDynamic = false
         entity.physicsComponent.physicsBody.fieldBitMask = 0x1 << 1
 
-        // request animation to make the tapped entity go to a point
-        if let sceneFrame = entity.renderComponent.recordNode.scene?.frame {
-            let centerPoint = CGPoint(x: sceneFrame.width / 2, y: sceneFrame.height / 2)
-            entity.animationComponent.requestedAnimationState = .goToPoint(centerPoint)
-        }
-
         // move the tapped entity's descendants to the appropriate state with appropriate movement
         for (level, entities) in entity.relatedEntitiesForLevel.enumerated() {
             for sibling in entities {

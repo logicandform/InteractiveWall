@@ -174,18 +174,6 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
         let cluster = nodeCluster(for: entityForNode)
         entityForNode.set(cluster)
-
-        // While we only have one cluster at a time, reset the old cluster
-        if !nodeClusters.contains(cluster) {
-            for cluster in nodeClusters {
-                cluster.selectedEntity.reset()
-                for sibling in cluster.selectedEntity.relatedEntities {
-                    sibling.reset()
-                }
-                cluster.reset()
-                nodeClusters.remove(cluster)
-            }
-        }
         nodeClusters.insert(cluster)
 
         switch entityForNode.intelligenceComponent.stateMachine.currentState {
