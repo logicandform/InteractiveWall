@@ -36,45 +36,6 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     override init() {
         years = Array(Constants.firstYear...lastYear)
         super.init()
-
-//        let years = (Constants.firstYear...Constants.lastYear).count
-//        var countForCounts = [Int: Int]()
-//        var countForYear = [Int: Int]()
-//        for year in (Constants.firstYear...Constants.lastYear) {
-//            let count = eventsForYear[year]?.count ?? 0
-//            if !count.isZero {
-//                countForYear[year] = count
-//                print("\(count) schools starting in year: \(year).")
-//            }
-//            if let current = countForCounts[count] {
-//                countForCounts[count] = current + 1
-//            } else {
-//                countForCounts[count] = 1
-//            }
-//        }
-//
-//        for (size, count) in countForCounts.sorted(by: { $0.0 < $1.0 }) {
-//            print("There are \(count) years with size \(size).")
-//        }
-//
-//        for (size, count) in countForCounts.sorted(by: { $0.0 < $1.0 }) {
-//            let percent = Double(count) / Double(years)
-//            print("Years with size: \(size) make up \(percent) of all the years.")
-//        }
-//
-//        print("\(countForYear.keys.count) years out of \(years) have at least one school start.")
-//
-//        let sortedYears = countForYear.keys.sorted()
-//        for (index, year) in sortedYears.enumerated() {
-//            let nextIndex = index + 1
-//            if nextIndex != sortedYears.count {
-//                let nextYear = sortedYears[nextIndex]
-//                let distanceToNextYear = nextYear - year
-//                print("\(year) has a \(distanceToNextYear) year gap until next school occurance.")
-//            } else {
-//                print("\(year) is the last year.")
-//            }
-//        }
     }
 
 
@@ -154,5 +115,66 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
                 }
             }
         }
+
+        printAnalytics()
+    }
+
+    private func printAnalytics() {
+        let yearCount = years.count
+        var countForCounts = [Int: Int]()
+        var countForYear = [Int: Int]()
+        for year in years {
+            let count = eventsForYear[year]?.count ?? 0
+            if !count.isZero {
+                countForYear[year] = count
+                print("\(count) schools starting in year: \(year).")
+            }
+            if let current = countForCounts[count] {
+                countForCounts[count] = current + 1
+            } else {
+                countForCounts[count] = 1
+            }
+        }
+
+        for (size, count) in countForCounts.sorted(by: { $0.0 < $1.0 }) {
+            print("There are \(count) years with size \(size).")
+        }
+
+        for (size, count) in countForCounts.sorted(by: { $0.0 < $1.0 }) {
+            let percent = Double(count) / Double(yearCount)
+            print("Years with size: \(size) make up \(percent) of all the years.")
+        }
+
+        print("\(countForYear.keys.count) years out of \(yearCount) have at least one school start.")
+
+        let sortedYears = countForYear.keys.sorted()
+        for (index, year) in sortedYears.enumerated() {
+            let nextIndex = index + 1
+            if nextIndex != sortedYears.count {
+                let nextYear = sortedYears[nextIndex]
+                let distanceToNextYear = nextYear - year
+                print("\(year) has a \(distanceToNextYear) year gap until next school occurance.")
+            } else {
+                print("\(year) is the last year.")
+            }
+        }
+
+        print("\(sortedYears.first!) is the first year")
+
+        for year in years {
+            var eventsInYear = 0
+            for event in events {
+                if event.dates.startDate.year <= year && event.dates.endDate.year >= year {
+                    eventsInYear += 1
+                }
+            }
+            print("\(eventsInYear) concurrently open in \(year)")
+        }
+
+        var totalTimeOpen = 0
+        for event in events {
+            totalTimeOpen += event.dates.endDate.year - event.dates.startDate.year + 1
+        }
+        print("Average time open is: \(totalTimeOpen / events.count)")
     }
 }
