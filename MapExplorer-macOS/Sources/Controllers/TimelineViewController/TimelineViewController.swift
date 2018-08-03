@@ -73,7 +73,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         static let animationDuration = 0.5
         static let controlItemWidth: CGFloat = 70
         static let timelineControlWidth: CGFloat = 490
-        static let visibleControlItems = 8
+        static let visibleControlItems = 7
         static let timelineControlItemWidth: CGFloat = 70
         static let timelineIndicatorBorderRadius: CGFloat = 8
         static let timelineIndicatorBorderWidth: CGFloat = 2
@@ -493,7 +493,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         case yearCollectionView:
             if indexPath.item == years.count, let border = collectionView.makeItem(withIdentifier: TimelineBorder.identifier, for: indexPath) as? TimelineBorder {
                 let x = CGFloat(years.count) * Constants.controlItemWidth
-                let frame = CGRect(x: x, y: 0, width: style.borderWidth, height: collectionView.frame.height)
+                let frame = CGRect(x: x, y: collectionView.frame.height / 4, width: style.borderWidth, height: collectionView.frame.height / 2)
                 border.set(frame: frame)
                 return border
             } else if let controlItemView = collectionView.makeItem(withIdentifier: TimelineControlItemView.identifier, for: indexPath) as? TimelineControlItemView {
@@ -508,7 +508,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         case decadeCollectionView:
             if indexPath.item == decades.count, let border = collectionView.makeItem(withIdentifier: TimelineBorder.identifier, for: indexPath) as? TimelineBorder {
                 let x = CGFloat(decades.count) * Constants.controlItemWidth
-                let frame = CGRect(x: x, y: 0, width: style.borderWidth, height: collectionView.frame.height)
+                let frame = CGRect(x: x, y: collectionView.frame.height / 4, width: style.borderWidth, height: collectionView.frame.height / 2)
                 border.set(frame: frame)
                 return border
             }
