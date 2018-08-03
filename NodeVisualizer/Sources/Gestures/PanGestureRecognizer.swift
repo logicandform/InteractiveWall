@@ -11,7 +11,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     private(set) var delta = CGVector.zero
     private(set) var lastLocation: CGPoint?
     private(set) var cumulativeDelta = CGVector.zero
-    private var timeOfLastUpdate = Date()
+    private(set) var timeOfLastUpdate = Date()
     private var positionForTouch = [Touch: CGPoint]()
 
     private struct Constants {

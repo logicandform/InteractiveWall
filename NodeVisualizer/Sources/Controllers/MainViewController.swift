@@ -77,7 +77,6 @@ class MainViewController: NSViewController, GestureResponder {
     private func setupMainScene() {
         let mainScene = makeMainScene()
         EntityManager.instance.scene = mainScene
-        mainScene.gestureManager = gestureManager
         mainScene.nodeGestureManager = nodeGestureManager
         mainView.presentScene(mainScene)
     }
@@ -98,7 +97,6 @@ extension MainViewController: SocketManagerDelegate {
         }
 
         convert(touch, toScreen: touch.screen)
-//        gestureManager.handle(touch)
         nodeGestureManager.handle(touch)
     }
 

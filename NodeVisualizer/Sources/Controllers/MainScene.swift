@@ -18,12 +18,10 @@ private enum StartingPositionType: UInt32 {
 
 class MainScene: SKScene, SKPhysicsContactDelegate {
 
-    var gestureManager: GestureManager!
     var nodeGestureManager: NodeGestureManager!
     private var nodeClusters = Set<NodeCluster>()
     private var lastUpdateTimeInterval: TimeInterval = 0
     private var selectedNode: SKNode?
-    private var selectedNodeInitialPosition: CGPoint = .zero
     private var timeOfPanStart = Date()
 
     private struct Constants {
@@ -110,6 +108,10 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
                 recordNode.zPosition = 1
                 addChild(recordNode)
 
+                let tapGesture = TapGestureRecognizer()
+                nodeGestureManager.add(tapGesture, to: recordNode)
+                tapGesture.gestureUpdated = handleTapGesture(_:)
+
                 let panGesture = PanGestureRecognizer()
                 nodeGestureManager.add(panGesture, to: recordNode)
                 panGesture.gestureUpdated = handlePanGesture(_:)
@@ -121,10 +123,10 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     // MARK: Gesture Handlers
 
     private func handleTapGesture(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position else { return }
-        let nodePosition = convertPoint(fromView: position)
+        guard let tap = gesture as? TapGestureRecognizer, let recordNode = nodeGestureManager.node(for: tap) as? RecordNode else {
+            return
+        }
 
-        guard let recordNode = nodes(at: nodePosition).first(where: { $0 is RecordNode }) as? RecordNode else { return }
         print("ID: \(recordNode.record.id)")
 
         switch tap.state {
@@ -157,7 +159,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         }
 
         switch pan.state {
-        case .changed, .momentum, .recognized:
+        case .momentum, .recognized:
             if let selectedNodeEntity = node.entity as? RecordEntity {
                 selectedNodeEntity.movementComponent.requestedMovementState = nil
 
@@ -166,6 +168,24 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
                 let recordNode = selectedNodeEntity.renderComponent.recordNode
                 recordNode.position = CGPoint(x: recordNode.position.x + nodePanDelta.x, y: recordNode.position.y + nodePanDelta.y)
+            }
+        case .ended:
+            guard pan.timeOfLastUpdate.timeIntervalSinceNow < 0.1 else {
+                return
+            }
+
+            if let selectedNodeEntity = node.entity as? RecordEntity {
+                let dX = pan.cumulativeDelta.dx
+                let dY = pan.cumulativeDelta.dy
+                let distance = CGFloat(hypotf(Float(dX), Float(dY)))
+
+                let unitVector = CGVector(dx: dX / distance, dy: dY / distance)
+                let deltaTime = abs(CGFloat(pan.timeOfLastUpdate.timeIntervalSinceNow))
+                let speed = distance / deltaTime
+                let velocity = CGVector(dx: 1.2 * speed * unitVector.dx, dy: 1.2 * speed * unitVector.dy)
+
+                let recordNode = selectedNodeEntity.renderComponent.recordNode
+                recordNode.physicsBody?.velocity = velocity
             }
         default:
             return
