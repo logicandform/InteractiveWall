@@ -56,7 +56,7 @@ class TimelineDecadeLayout: NSCollectionViewFlowLayout {
                 }
             }
             // Append dividing line between last and first years
-            if year == source.lastYear, let attributes = attributesForDivider(in: source) {
+            if year == source.lastYear, let attributes = attributesForBorder(in: source) {
                 layoutAttributes.append(attributes)
             }
             // Append attributes for supplimentary views
@@ -69,11 +69,17 @@ class TimelineDecadeLayout: NSCollectionViewFlowLayout {
     }
 
     override func layoutAttributesForItem(at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
-        guard let source = collectionView?.dataSource as? TimelineDataSource, let event = source.events.at(index: indexPath.item) else {
+        guard let source = collectionView?.dataSource as? TimelineDataSource else {
             return nil
         }
 
-        return attributes(for: event, in: source)
+        if let event = source.events.at(index: indexPath.item) {
+            return attributes(for: event, in: source)
+        } else if indexPath.item == source.events.count {
+            return attributesForBorder(in: source)
+        }
+
+        return nil
     }
 
 
@@ -111,16 +117,16 @@ class TimelineDecadeLayout: NSCollectionViewFlowLayout {
         return attributes
     }
 
-    private func attributesForDivider(in source: TimelineDataSource) -> NSCollectionViewLayoutAttributes? {
+    private func attributesForBorder(in source: TimelineDataSource) -> NSCollectionViewLayoutAttributes? {
         guard let collectionView = collectionView else {
             return nil
         }
 
-        let item = source.lastYear
+        let item = source.events.count
         let indexPath = IndexPath(item: item, section: 0)
         let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
-        let x = CGFloat(source.lastYear * type.sectionWidth)
-        attributes.frame = CGRect(x: x, y: 0, width: 5, height: 1500)
+        let x = CGFloat((source.lastYear - source.firstYear) * type.sectionWidth + type.sectionWidth)
+        attributes.frame = CGRect(x: x, y: 0, width: style.borderWidth, height: collectionView.frame.height)
         return attributes
     }
 }

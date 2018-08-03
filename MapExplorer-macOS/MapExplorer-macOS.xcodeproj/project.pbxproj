@@ -88,6 +88,8 @@
 		8FBBD1CF20F5140900D9334C /* ClusterAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBBD1CE20F5140900D9334C /* ClusterAnnotationView.swift */; };
 		A44F1B6120FE8232005FEFD1 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44F1B6020FE8232005FEFD1 /* String.swift */; };
 		A44F1B6520FEAF8B005FEFD1 /* TimelineDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44F1B6420FEAF8B005FEFD1 /* TimelineDate.swift */; };
+		A4510784211394FE0025FFD7 /* TimelineBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4510783211394FE0025FFD7 /* TimelineBorder.swift */; };
+		A45107882113BCA80025FFD7 /* TimelineBorder.xib in Resources */ = {isa = PBXBuildFile; fileRef = A45107872113BCA80025FFD7 /* TimelineBorder.xib */; };
 		A454A65B20F7F95200619730 /* TimelineDecadeLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A454A65A20F7F95200619730 /* TimelineDecadeLayout.swift */; };
 		A45FAC60210F796300CAE2BF /* TimelineDecadeStackedLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45FAC5F210F796300CAE2BF /* TimelineDecadeStackedLayout.swift */; };
 		A4A8761A210015F200113F95 /* TimelineRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A87619210015F200113F95 /* TimelineRange.swift */; };
@@ -208,6 +210,8 @@
 		9E45B0B207D66FC5A3CD5BEA /* Pods-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		A44F1B6020FE8232005FEFD1 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		A44F1B6420FEAF8B005FEFD1 /* TimelineDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDate.swift; sourceTree = "<group>"; };
+		A4510783211394FE0025FFD7 /* TimelineBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineBorder.swift; sourceTree = "<group>"; };
+		A45107872113BCA80025FFD7 /* TimelineBorder.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineBorder.xib; sourceTree = "<group>"; };
 		A454A65A20F7F95200619730 /* TimelineDecadeLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDecadeLayout.swift; sourceTree = "<group>"; };
 		A45FAC5F210F796300CAE2BF /* TimelineDecadeStackedLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDecadeStackedLayout.swift; sourceTree = "<group>"; };
 		A4A87619210015F200113F95 /* TimelineRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineRange.swift; sourceTree = "<group>"; };
@@ -256,6 +260,8 @@
 				2290A03620E2F01500F028C4 /* TimelineHeaderView.swift */,
 				220AE85D20ED441A00F6E9AA /* TimelineControlItemView.xib */,
 				220AE85C20ED441A00F6E9AA /* TimelineControlItemView.swift */,
+				A45107872113BCA80025FFD7 /* TimelineBorder.xib */,
+				A4510783211394FE0025FFD7 /* TimelineBorder.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -643,6 +649,7 @@
 				22004FEF20E164CB00B1E740 /* Timeline.storyboard in Resources */,
 				22290C0D2028F9EC000E0573 /* Assets.xcassets in Resources */,
 				2200500220E2B17F00B1E740 /* vhec_map_points.json in Resources */,
+				A45107882113BCA80025FFD7 /* TimelineBorder.xib in Resources */,
 				22290C102028F9EC000E0573 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -740,6 +747,7 @@
 				2220D3FD202F7E4200B878D6 /* GestureManager.swift in Sources */,
 				22B85AF5209B7A6D0099F44E /* RotateGestureRecognizer.swift in Sources */,
 				22290C3A2028FA35000E0573 /* Int.swift in Sources */,
+				A4510784211394FE0025FFD7 /* TimelineBorder.swift in Sources */,
 				A4A8761A210015F200113F95 /* TimelineRange.swift in Sources */,
 				2290A03720E2F01500F028C4 /* TimelineHeaderView.swift in Sources */,
 				22FEF1DF202CFFFA001E9596 /* Touch.swift in Sources */,
