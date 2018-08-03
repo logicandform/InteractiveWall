@@ -57,7 +57,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     var gestureManager: GestureManager!
     var currentDate = Constants.initialDate
-    var timelineType: TimelineType = .decade
+    var timelineType: TimelineType = .month
     private var timelineHandler: TimelineHandler?
     private let source = TimelineDataSource()
     private var decades = [Int]()

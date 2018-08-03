@@ -9,7 +9,7 @@ import AppKit
 
 final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
 
-    var type = TimelineType.decade
+    var type = TimelineType.month
     var selectedIndexes = [Int]()
     let firstYear = Constants.firstYear
     var lastYear = (Calendar.current.component(.year, from: Date()) / 10) * 10 + 10
