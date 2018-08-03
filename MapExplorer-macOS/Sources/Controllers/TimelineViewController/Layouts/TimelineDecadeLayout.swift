@@ -125,7 +125,7 @@ class TimelineDecadeLayout: NSCollectionViewFlowLayout {
         let item = source.events.count
         let indexPath = IndexPath(item: item, section: 0)
         let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
-        let x = CGFloat((source.lastYear - source.firstYear) * type.sectionWidth + type.sectionWidth)
+        let x = CGFloat(source.years.count * type.sectionWidth)
         attributes.frame = CGRect(x: x, y: 0, width: style.borderWidth, height: collectionView.frame.height)
         return attributes
     }

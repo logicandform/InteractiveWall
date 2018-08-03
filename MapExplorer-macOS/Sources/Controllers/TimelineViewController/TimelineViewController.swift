@@ -511,8 +511,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
                 let frame = CGRect(x: x, y: collectionView.frame.height / 4, width: style.borderWidth, height: collectionView.frame.height / 2)
                 border.set(frame: frame)
                 return border
-            }
-            if let controlItemView = collectionView.makeItem(withIdentifier: TimelineControlItemView.identifier, for: indexPath) as? TimelineControlItemView {
+            } else if let controlItemView = collectionView.makeItem(withIdentifier: TimelineControlItemView.identifier, for: indexPath) as? TimelineControlItemView {
                 let itemIndex = indexPath.item >= decades.count ? indexPath.item - 1 : indexPath.item
                 let decade = decades.at(index: itemIndex % decades.count)
                 controlItemView.title = decade?.description
