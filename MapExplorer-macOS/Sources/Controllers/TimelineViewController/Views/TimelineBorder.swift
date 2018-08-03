@@ -13,7 +13,7 @@ class TimelineBorder: NSCollectionViewItem {
     override func awakeFromNib() {
         super.awakeFromNib()
         view.wantsLayer = true
-        view.layer?.backgroundColor = NSColor.white.cgColor
+        view.layer?.backgroundColor = style.borderColor.cgColor
     }
 
 
