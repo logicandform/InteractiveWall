@@ -6,8 +6,8 @@ import Cocoa
 
 /// Class containing a start and end date for Timeline items, as well as the ability to parse dates from a string
 class TimelineRange {
-    var startDate: TimelineDate
-    var endDate: TimelineDate
+    let startDate: TimelineDate
+    let endDate: TimelineDate
 
     private struct Constants {
         static let minimumYear = 32
@@ -19,29 +19,29 @@ class TimelineRange {
 
     // MARK: Init
 
-    init(_ date: String?) {
-        startDate = TimelineDate()
-        endDate = TimelineDate()
-        guard let date = date else {
-            return
-        }
-
-        if date.isEmpty {
-            return
+    init?(_ date: String?) {
+        guard let date = date, !date.isEmpty else {
+            return nil
         }
 
         let dateArray = date.componentsSeparatedBy(separators: " -,./")
-        if dateArray.contains(where: { !$0.isNumerical }) {
-            parseNonNumerical(dateArray: dateArray)
+        if dateArray.contains(where: { !$0.isNumerical }), let dates = TimelineRange.parseNonNumerical(dateArray: dateArray) {
+            self.startDate = dates.startDate
+            self.endDate = dates.endDate
+        } else if let dates = TimelineRange.parseNumerical(dateArray: dateArray) {
+            self.startDate = dates.startDate
+            self.endDate = dates.endDate
         } else {
-            parseNumerical(dateArray: dateArray)
+            return nil
         }
     }
 
 
     // MARK: Helpers
 
-    private func parseNumerical(dateArray: [String]) {
+    private static func parseNumerical(dateArray: [String]) -> (startDate: TimelineDate, endDate: TimelineDate)? {
+        var start: TimelineDate? = nil
+        var end: TimelineDate? = nil
         var startDay: CGFloat? = nil
         var endDay: CGFloat? = nil
         var startMonth: Int? = nil
@@ -66,33 +66,50 @@ class TimelineRange {
             }
         }
 
-        if let day = startDay {
-            startDate.day = day
-        }
-        if let month = startMonth {
-            startDate.month = month
-        }
         if let year = startYear {
-            startDate.year = year
-        }
-        if let day = endDay {
-            endDate.day = day
-        } else if let day = startDay {
-            endDate.day = day
-        }
-        if let month = endMonth {
-            endDate.month = month
-        } else if let month = startMonth {
-            endDate.month = month
+            start = TimelineDate(day: startDay, month: startMonth, year: year)
         }
         if let year = endYear {
-            endDate.year = year
+            end = TimelineDate(day: endDay, month: endMonth, year: year)
         } else if let year = startYear {
-            endDate.year = year
+            end = TimelineDate(day: endDay, month: endMonth, year: year)
         }
+
+        if let start = start, let end = end {
+            return (startDate: start, endDate: end)
+        } else {
+            return nil
+        }
+
+//        if let day = startDay {
+//            startDate.day = day
+//        }
+//        if let month = startMonth {
+//            startDate.month = month
+//        }
+//        if let year = startYear {
+//            startDate.year = year
+//        }
+//        if let day = endDay {
+//            endDate.day = day
+//        } else if let day = startDay {
+//            endDate.day = day
+//        }
+//        if let month = endMonth {
+//            endDate.month = month
+//        } else if let month = startMonth {
+//            endDate.month = month
+//        }
+//        if let year = endYear {
+//            endDate.year = year
+//        } else if let year = startYear {
+//            endDate.year = year
+
     }
 
-    private func parseNonNumerical(dateArray: [String]) {
+    private static func parseNonNumerical(dateArray: [String]) -> (startDate: TimelineDate, endDate: TimelineDate)? {
+        var start: TimelineDate? = nil
+        var end: TimelineDate? = nil
         var startDay: CGFloat? = nil
         var endDay: CGFloat? = nil
         var startMonth: Int? = nil
@@ -137,29 +154,47 @@ class TimelineRange {
             }
         }
 
-        if let day = startDay {
-            startDate.day = day
-        }
-        if let month = startMonth {
-            startDate.month = month
-        }
         if let year = startYear {
-            startDate.year = year
-        }
-        if let day = endDay {
-            endDate.day = day
-        } else if let day = startDay {
-            endDate.day = day
-        }
-        if let month = endMonth {
-            endDate.month = month
-        } else if let month = startMonth {
-            endDate.month = month
+            start = TimelineDate(day: startDay, month: startMonth, year: year)
         }
         if let year = endYear {
-            endDate.year = year
+            end = TimelineDate(day: endDay, month: endMonth, year: year)
         } else if let year = startYear {
-            endDate.year = year
+            end = TimelineDate(day: endDay, month: endMonth, year: year)
         }
+
+        if let start = start, let end = end {
+            return (startDate: start, endDate: end)
+        } else {
+            return nil
+        }
+
+
+
+
+//        if let day = startDay {
+//            startDate.day = day
+//        }
+//        if let month = startMonth {
+//            startDate.month = month
+//        }
+//        if let year = startYear {
+//            startDate.year = year
+//        }
+//        if let day = endDay {
+//            endDate.day = day
+//        } else if let day = startDay {
+//            endDate.day = day
+//        }
+//        if let month = endMonth {
+//            endDate.month = month
+//        } else if let month = startMonth {
+//            endDate.month = month
+//        }
+//        if let year = endYear {
+//            endDate.year = year
+//        } else if let year = startYear {
+//            endDate.year = year
+//        }
     }
 }
