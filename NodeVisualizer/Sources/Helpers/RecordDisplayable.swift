@@ -54,6 +54,10 @@ struct RecordGroup {
 
 extension RecordDisplayable {
 
+    var proxy: RecordProxy {
+        return RecordProxy(id: id, type: type)
+    }
+
     var relatedRecords: [RecordDisplayable] {
         return recordGroups.reduce([]) { $0 + $1.records }
     }

@@ -12,13 +12,4 @@ class NodeConfiguration {
         static let agentMaxAcceleration: Float = 100
         static let agentRadius = Float(physicsBodyRadius)
     }
-
-    /// Returns all related records for a given identifier depending on the configuration environment
-    static func relatedRecords(for proxy: RecordProxy) -> [RecordDisplayable]? {
-        if Configuration.env == .testing, let relatedRecords = TestingEnvironment.instance.relatedRecordsForIdentifier[proxy] {
-            return Array(relatedRecords)
-        }
-
-        return DataManager.instance.relatedRecordsForProxy[proxy]
-    }
 }

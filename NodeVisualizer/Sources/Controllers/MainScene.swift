@@ -173,19 +173,11 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         }
 
         let cluster = nodeCluster(for: entityForNode)
-        entityForNode.set(cluster)
         nodeClusters.insert(cluster)
 
         switch entityForNode.intelligenceComponent.stateMachine.currentState {
-        case is SeekTappedEntityState:
-            for entity in entityForNode.relatedEntities {
-                entity.clusterLevel.previousLevel = entity.clusterLevel.currentLevel
-            }
-
-            cluster.didSelect(entityForNode)
-            entityForNode.intelligenceComponent.stateMachine.enter(TappedState.self)
-        case is WanderState:
-            cluster.didSelect(entityForNode)
+        case is SeekTappedEntityState, is WanderState:
+            cluster.select(entityForNode)
             entityForNode.intelligenceComponent.stateMachine.enter(TappedState.self)
         case is TappedState:
             cluster.reset()
@@ -200,8 +192,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
             return current
         }
 
-        let cluster = NodeCluster(scene: self, entity: entity)
-        return cluster
+        return NodeCluster(scene: self, entity: entity)
     }
 
     private func getRandomPosition() -> CGPoint {
@@ -273,6 +264,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
     // MARK: Debug
 
+    /// Should we create one of these whenever a cluster is created to clear the area?
     private func createRepulsiveField() {
         let field = SKFieldNode.radialGravityField()
         field.strength = -10

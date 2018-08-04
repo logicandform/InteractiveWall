@@ -72,7 +72,7 @@ class PhysicsComponent: GKComponent {
 
     /// Sets the entity's bitMasks to interact with entities within its own level as well as its bounding node
     func setBitMasks(forLevel level: Int) {
-        if let boundingNode = cluster?.nodeBoundingEntityForLevel[level]?.nodeBoundingRenderComponent.node,
+        if let boundingNode = cluster?.layerForLevel[level]?.nodeBoundingRenderComponent.node,
             let boundingNodePhysicsBody = boundingNode.physicsBody {
 
             let levelBitMasks = bitMasks(forLevel: level)

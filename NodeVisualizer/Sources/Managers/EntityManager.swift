@@ -16,6 +16,8 @@ final class EntityManager {
     /// Set of all entities
     private(set) var entities = Set<RecordEntity>()
 
+    var scene: MainScene?
+
     /// List of all GKComponentSystems. The systems will be updated in order. The order is defined to match assumptions made within components.
     private lazy var componentSystems: [GKComponentSystem] = {
         let intelligenceSystem = GKComponentSystem(componentClass: IntelligenceComponent.self)
@@ -39,17 +41,36 @@ final class EntityManager {
     // MARK: API
 
     /// Creates and stores record entities from all records from database
-    func createEntity(for proxy: RecordProxy, record: RecordDisplayable?) {
-        if let record = record {
-            let entity = RecordEntity(record: record)
-            entities.insert(entity)
-            addComponents(to: entity)
-        }
+    func createEntity(record: RecordDisplayable, levels: RelatedLevels) {
+        let entity = RecordEntity(record: record, levels: levels)
+        entities.insert(entity)
+        addComponents(to: entity)
     }
 
     /// Removes an entity from its cache
     func remove(_ entity: RecordEntity) {
         entities.remove(entity)
+    }
+
+    /// Returns the entities associated with the given proxies, if a entity is already with another cluster, the entity will be duplicated
+    func requestEntities(with proxies: Set<RecordProxy>, for cluster: NodeCluster) -> Set<RecordEntity> {
+        var result = Set<RecordEntity>()
+        for proxy in proxies {
+            if let entityForProxy = getEntity(for: proxy) {
+                // If entity for proxy already has a different cluster, duplicate the entity at the same position
+                if let current = entityForProxy.cluster, current != cluster {
+                    let copy = entityForProxy.clone()
+                    entities.insert(copy)
+                    addComponents(to: copy)
+                    copy.renderComponent.recordNode.position = entityForProxy.renderComponent.recordNode.position
+                    scene?.addChild(copy.renderComponent.recordNode)
+                    result.insert(copy)
+                } else {
+                    result.insert(entityForProxy)
+                }
+            }
+        }
+        return result
     }
 
     /// Updates all component systems that the EntityManager is responsible for
@@ -81,53 +102,16 @@ final class EntityManager {
         addComponents(to: entity)
     }
 
-    /// Creates and stores levelled relationships for all entities
-    func createEntityRelationships() {
-        var relativesForEntity = [RecordEntity: Set<RecordEntity>]()
-
-        // Create local store of direct related entities
-        for entity in entities {
-            let records = entity.record.relatedRecords
-            var relatedEntities = Set<RecordEntity>()
-            for record in records {
-                if let relatedEntity = getEntity(for: record) {
-                    relatedEntities.insert(relatedEntity)
-                }
-            }
-            relativesForEntity[entity] = relatedEntities
-        }
-
-        // Populate related entities set in each RecordEntity.
-        for entity in entities {
-            // Fill level 0
-            let relatives = relativesForEntity[entity] ?? []
-            entity.relatedEntitiesForLevel.insert(relatives, at: 0)
-
-            // Populate following levels based on the level 0 entities
-            for level in (1 ... Constants.maxRelatedLevel) {
-                let entitiesForPreviousLevel = entity.relatedEntitiesForLevel.at(index: level - 1) ?? []
-                var entitiesForLevel = Set<RecordEntity>()
-                for previousEntity in entitiesForPreviousLevel {
-                    let relatedEntities = relativesForEntity[previousEntity] ?? []
-                    for relatedEntity in relatedEntities {
-                        if !entity.related(to: relatedEntity) && relatedEntity != entity {
-                            entitiesForLevel.insert(relatedEntity)
-                        }
-                    }
-                }
-                if entitiesForLevel.isEmpty {
-                    break
-                }
-                entity.relatedEntitiesForLevel.insert(entitiesForLevel, at: level)
-            }
-        }
-    }
-
 
     // MARK: Helpers
 
-    private func getEntity(for record: RecordDisplayable) -> RecordEntity? {
-        return entities.first(where: { record.id == $0.record.id && record.type == $0.record.type })
+    /// Returns entity for given record, prioritizing records that are not already clustered
+    private func getEntity(for proxy: RecordProxy) -> RecordEntity? {
+        let unclustered = entities.filter { $0.cluster == nil }
+        if let match = unclustered.first(where: { proxy == $0.record.proxy }) {
+            return match
+        }
+        return entities.first(where: { proxy == $0.record.proxy })
     }
 
     private func addComponents(to entity: RecordEntity) {

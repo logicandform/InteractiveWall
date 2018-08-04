@@ -114,7 +114,7 @@ class MovementComponent: GKComponent {
     /// Applies appropriate physics that moves the entity to the appropriate higher level before entering next state and setting its bitMasks
     private func moveToAppropriateLevel() {
         guard intelligenceComponent.stateMachine.currentState is SeekBoundingLevelNodeState,
-            let referenceNode = cluster?.nodeBoundingEntityForLevel[0]?.nodeBoundingRenderComponent.node,
+            let referenceNode = cluster?.layerForLevel[0]?.nodeBoundingRenderComponent.node,
             let entity = entity as? RecordEntity else {
             return
         }
@@ -138,7 +138,7 @@ class MovementComponent: GKComponent {
 
         // find the difference in distance. This gives the total distance that is left to travel for the node
         guard let currentLevel = entity.clusterLevel.currentLevel,
-            let currentLevelBoundingEntityComponent = cluster?.nodeBoundingEntityForLevel[currentLevel]?.nodeBoundingRenderComponent else {
+            let currentLevelBoundingEntityComponent = cluster?.layerForLevel[currentLevel]?.nodeBoundingRenderComponent else {
             return
         }
 

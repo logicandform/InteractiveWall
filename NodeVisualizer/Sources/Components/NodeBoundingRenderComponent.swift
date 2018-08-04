@@ -69,7 +69,7 @@ class NodeBoundingRenderComponent: GKComponent {
          */
 
         // scale its own bounding node by using its previous level's bounding node maxRadius
-        if let previousLevelNodeBoundingEntity = cluster.nodeBoundingEntityForLevel[level - 1], let currentNode = node {
+        if let previousLevelNodeBoundingEntity = cluster.layerForLevel[level - 1], let currentNode = node {
 
             // get the maxRadius of the previous level bounding node
             let previousLevelBoundingNodeMaxRadius = previousLevelNodeBoundingEntity.nodeBoundingRenderComponent.maxRadius
@@ -94,7 +94,7 @@ class NodeBoundingRenderComponent: GKComponent {
         }
 
         var distance: CGFloat = 0.0
-        if let contactEntities = cluster.selectedEntity.relatedEntitiesForLevel.at(index: level) {
+        if let contactEntities = cluster.entitiesForLevel.at(index: level) {
             // iterate through its contactEntities to see if it hasCollidedWithBoundingNode, and determine the max distance from the root to the contactEntity
             for contactEntity in contactEntities where contactEntity.hasCollidedWithBoundingNode {
                 let calculatedRadius = cluster.distance(to: contactEntity) + Constants.minimumOffset

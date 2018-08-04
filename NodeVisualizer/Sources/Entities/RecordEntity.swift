@@ -6,26 +6,15 @@ import GameplayKit
 
 final class RecordEntity: GKEntity {
 
-    // A 2D array of related entities, each index is a new level
-    var relatedEntitiesForLevel = [Set<RecordEntity>]() {
-        didSet {
-            relatedEntities = allRelatedEntities()
-        }
-    }
-
-    var relatedEntities = Set<RecordEntity>()
-
+    let record: RecordDisplayable
+    let relatedRecordsForLevel: RelatedLevels
+    let relatedRecords: Set<RecordProxy>
     var cluster: NodeCluster? {
         didSet {
             physicsComponent.cluster = cluster
             movementComponent.cluster = cluster
         }
     }
-
-    var record: RecordDisplayable {
-        return renderComponent.recordNode.record
-    }
-
 
     // MARK: Components
 
@@ -80,24 +69,24 @@ final class RecordEntity: GKEntity {
 
     // MARK: Initializer
 
-    init(record: RecordDisplayable) {
+    init(record: RecordDisplayable, levels: RelatedLevels) {
+        self.record = record
+        self.relatedRecordsForLevel = levels
+        var relatedRecords = Set<RecordProxy>()
+        for level in levels {
+            relatedRecords.formUnion(level)
+        }
+        self.relatedRecords = relatedRecords
         super.init()
 
         let renderComponent = RenderComponent(record: record)
         addComponent(renderComponent)
-
         let physicsComponent = PhysicsComponent(physicsBody: SKPhysicsBody(circleOfRadius: NodeConfiguration.Record.physicsBodyRadius))
         addComponent(physicsComponent)
-
-        // Connect the 'PhysicsComponent' and the 'RenderComponent'
-        renderComponent.recordNode.physicsBody = physicsComponent.physicsBody
-
         let movementComponent = MovementComponent()
         addComponent(movementComponent)
-
         let animationComponent = AnimationComponent()
         addComponent(animationComponent)
-
         let intelligenceComponent = IntelligenceComponent(states: [
             WanderState(entity: self),
             SeekTappedEntityState(entity: self),
@@ -105,6 +94,8 @@ final class RecordEntity: GKEntity {
             TappedState(entity: self)
         ])
         addComponent(intelligenceComponent)
+
+        renderComponent.recordNode.physicsBody = physicsComponent.physicsBody
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -113,23 +104,6 @@ final class RecordEntity: GKEntity {
 
 
     // MARK: API
-
-    func set(_ cluster: NodeCluster) {
-        self.cluster = cluster
-        for entity in relatedEntities {
-            entity.cluster = cluster
-        }
-    }
-
-    func related(to entity: RecordEntity) -> Bool {
-        for entities in relatedEntitiesForLevel {
-            if entities.contains(entity) {
-                return true
-            }
-        }
-
-        return false
-    }
 
     func updateAgentPositionToMatchNodePosition() {
         agent.position = vector_float2(x: Float(renderComponent.recordNode.position.x), y: Float(renderComponent.recordNode.position.y))
@@ -153,11 +127,7 @@ final class RecordEntity: GKEntity {
         intelligenceComponent.stateMachine.enter(WanderState.self)
     }
 
-    private func allRelatedEntities() -> Set<RecordEntity> {
-        var relatedEntities = Set<RecordEntity>()
-        for entities in relatedEntitiesForLevel {
-            relatedEntities = relatedEntities.union(entities)
-        }
-        return relatedEntities
+    func clone() -> RecordEntity {
+        return RecordEntity(record: record, levels: relatedRecordsForLevel)
     }
 }

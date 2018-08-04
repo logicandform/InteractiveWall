@@ -51,23 +51,22 @@ class MainViewController: NSViewController, GestureResponder {
         if Configuration.env == .testing {
             setupTestingEnvironment()
         } else {
-            setupMainEnvironment()
+            setupEnvironment()
         }
     }
 
 
     // MARK: Setup Environment
 
-    private func setupMainEnvironment() {
+    private func setupEnvironment() {
         DataManager.instance.instantiate { [weak self] in
             self?.setupMainScene()
         }
     }
 
     private func setupTestingEnvironment() {
-        TestingEnvironment.instance.createTestEnvironmentRecordRelationships { [weak self] in
-            self?.setupMainScene()
-        }
+        TestingEnvironment.instance.instantiate()
+        setupMainScene()
     }
 
 
@@ -75,6 +74,7 @@ class MainViewController: NSViewController, GestureResponder {
 
     private func setupMainScene() {
         let mainScene = makeMainScene()
+        EntityManager.instance.scene = mainScene
         mainScene.gestureManager = gestureManager
         mainView.presentScene(mainScene)
     }
