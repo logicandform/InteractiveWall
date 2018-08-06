@@ -14,7 +14,7 @@ final class EntityManager {
     static let instance = EntityManager()
 
     /// Set of all entities
-    private(set) var entities = Set<RecordEntity>()
+    private(set) var entitiesForProxy = [RecordProxy: [RecordEntity]]()
 
     var scene: MainScene?
 
@@ -43,13 +43,25 @@ final class EntityManager {
     /// Creates and stores record entities from all records from database
     func createEntity(record: RecordDisplayable, levels: RelatedLevels) {
         let entity = RecordEntity(record: record, levels: levels)
-        entities.insert(entity)
+        store(entity)
         addComponents(to: entity)
     }
 
-    /// Removes an entity from its cache
-    func remove(_ entity: RecordEntity) {
-        entities.remove(entity)
+    func allEntities() -> [RecordEntity] {
+        return entitiesForProxy.reduce([]) { $0 + $1.value }
+    }
+
+    /// If entity is a duplicate it will be removed from the scene, else resets entity.
+    func release(_ entity: RecordEntity) {
+        guard let entities = entitiesForProxy[entity.record.proxy] else {
+            return
+        }
+
+        if entities.count > 1 {
+            remove(entity)
+        } else {
+            entity.reset()
+        }
     }
 
     /// Returns the entities associated with the given proxies, if a entity is already with another cluster, the entity will be duplicated
@@ -60,7 +72,7 @@ final class EntityManager {
                 // If entity for proxy already has a different cluster, duplicate the entity at the same position
                 if let current = entityForProxy.cluster, current != cluster {
                     let copy = entityForProxy.clone()
-                    entities.insert(copy)
+                    store(copy)
                     addComponents(to: copy)
                     copy.renderComponent.recordNode.position = entityForProxy.renderComponent.recordNode.position
                     scene?.addChild(copy.renderComponent.recordNode)
@@ -105,13 +117,37 @@ final class EntityManager {
 
     // MARK: Helpers
 
+    private func store(_ entity: RecordEntity) {
+        let proxy = entity.record.proxy
+        if entitiesForProxy[proxy] == nil {
+            entitiesForProxy[proxy] = [entity]
+        } else {
+            entitiesForProxy[proxy]!.append(entity)
+        }
+    }
+
+    /// Removes an entity from the scene and local cache
+    private func remove(_ entity: RecordEntity) {
+        let proxy = entity.record.proxy
+        let entities = entitiesForProxy[proxy]
+        if let index = entities?.index(where: { $0 === entity }) {
+            removeComponents(from: entity)
+            entity.renderComponent.recordNode.removeFromParent()
+            entitiesForProxy[proxy]?.remove(at: index)
+        }
+    }
+
     /// Returns entity for given record, prioritizing records that are not already clustered
     private func getEntity(for proxy: RecordProxy) -> RecordEntity? {
-        let unclustered = entities.filter { $0.cluster == nil }
-        if let match = unclustered.first(where: { proxy == $0.record.proxy }) {
-            return match
+        guard let entities = entitiesForProxy[proxy] else {
+            return nil
         }
-        return entities.first(where: { proxy == $0.record.proxy })
+
+        if let unclustered = entities.first(where: { $0.cluster == nil }) {
+            return unclustered
+        }
+
+        return entities.first
     }
 
     private func addComponents(to entity: RecordEntity) {

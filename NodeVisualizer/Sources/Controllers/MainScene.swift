@@ -104,7 +104,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func addRecordNodesToScene() {
-        for entity in EntityManager.instance.entities {
+        for entity in EntityManager.instance.allEntities() {
             entity.intelligenceComponent.enterInitialState()
 
             if let recordNode = entity.component(ofType: RenderComponent.self)?.recordNode {

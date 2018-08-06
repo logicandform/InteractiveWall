@@ -71,14 +71,12 @@ final class NodeCluster: Hashable {
     /// Removes all entities currently formed in the cluster and removes all bounding layers
     func reset() {
         // Reset all entities
-        selectedEntity.reset()
+        EntityManager.instance.release(selectedEntity)
         for level in entitiesForLevel {
             for entity in level {
-                entity.reset()
+                EntityManager.instance.release(entity)
             }
         }
-
-        // TODO: UBC-530 Call entity manager to remove duplicate entities that were required to make the cluster
 
         // Remove all layers
         for (level, _) in layerForLevel.enumerated() {
@@ -118,7 +116,7 @@ final class NodeCluster: Hashable {
 
         for proxy in proxies {
             if let entity = entities.first(where: { $0.record.proxy == proxy }) {
-                entity.reset()
+                EntityManager.instance.release(entity)
             }
         }
     }
