@@ -65,7 +65,7 @@ class MainViewController: NSViewController, GestureResponder {
     }
 
     private func setupTestingEnvironment() {
-        TestingEnvironment.instance.instantiate()
+        TestingDataManager.instance.instantiate()
         setupMainScene()
     }
 

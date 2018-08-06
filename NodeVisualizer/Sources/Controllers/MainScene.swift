@@ -32,13 +32,9 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
         super.didMove(to: view)
 
-        addGestures(to: view)
-        setupSystemGesturesForTest(to: view)
-
+        setupGestures()
         addPhysicsToScene()
         addRecordNodesToScene()
-
-        print("Finished loading all record entities")
     }
 
     override func update(_ currentTime: TimeInterval) {
@@ -54,7 +50,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         }
 
         // keep the nodes facing 0 degrees (i.e. no rotation when affected by physics simulation)
-        for case let node as RecordNode in children {
+        for node in children {
             node.zRotation = 0
         }
     }
@@ -82,25 +78,25 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
     // MARK: Setup
 
-    private func addGestures(to view: SKView) {
+    private func setupGestures() {
+        guard let view = view else {
+            return
+        }
+
         let tapGesture = TapGestureRecognizer()
         gestureManager.add(tapGesture, to: view)
         tapGesture.gestureUpdated = { [weak self] gesture in
             self?.handleTapGesture(gesture)
         }
-    }
 
-    private func setupSystemGesturesForTest(to view: SKView) {
-        let tapGesture = NSClickGestureRecognizer(target: self, action: #selector(handleSystemClickGesture(_:)))
-        view.addGestureRecognizer(tapGesture)
+        let nsTapGesture = NSClickGestureRecognizer(target: self, action: #selector(handleSystemClickGesture(_:)))
+        view.addGestureRecognizer(nsTapGesture)
     }
 
     private func addPhysicsToScene() {
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
-
-        createRepulsiveField()
     }
 
     private func addRecordNodesToScene() {
@@ -204,29 +200,29 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
         switch position {
         case .top:
-            point = CGPoint(x: randomX(), y: size.height - NodeConfiguration.Record.physicsBodyRadius)
+            point = CGPoint(x: randomX(), y: size.height - style.nodePhysicsBodyRadius)
             return point
         case .bottom:
-            point = CGPoint(x: randomX(), y: NodeConfiguration.Record.physicsBodyRadius)
+            point = CGPoint(x: randomX(), y: style.nodePhysicsBodyRadius)
             return point
         case .left:
-            point = CGPoint(x: NodeConfiguration.Record.physicsBodyRadius, y: randomY())
+            point = CGPoint(x: style.nodePhysicsBodyRadius, y: randomY())
             return point
         case .right:
-            point = CGPoint(x: size.width - NodeConfiguration.Record.physicsBodyRadius, y: randomY())
+            point = CGPoint(x: size.width - style.nodePhysicsBodyRadius, y: randomY())
             return point
         }
     }
 
     private func randomX() -> CGFloat {
-        let lowestValue = Int(NodeConfiguration.Record.physicsBodyRadius)
-        let highestValue = Int(size.width - NodeConfiguration.Record.physicsBodyRadius)
+        let lowestValue = Int(style.nodePhysicsBodyRadius)
+        let highestValue = Int(size.width - style.nodePhysicsBodyRadius)
         return CGFloat(GKRandomDistribution(lowestValue: lowestValue, highestValue: highestValue).nextInt(upperBound: highestValue))
     }
 
     private func randomY() -> CGFloat {
-        let lowestValue = Int(NodeConfiguration.Record.physicsBodyRadius)
-        let highestValue = Int(size.height - NodeConfiguration.Record.physicsBodyRadius)
+        let lowestValue = Int(style.nodePhysicsBodyRadius)
+        let highestValue = Int(size.height - style.nodePhysicsBodyRadius)
         return CGFloat(GKRandomDistribution(lowestValue: lowestValue, highestValue: highestValue).nextInt(upperBound: highestValue))
     }
 
@@ -258,20 +254,6 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         field.strength = 10
         field.region = SKRegion(size: size)
         field.position = position
-        addChild(field)
-    }
-
-
-    // MARK: Debug
-
-    /// Should we create one of these whenever a cluster is created to clear the area?
-    private func createRepulsiveField() {
-        let field = SKFieldNode.radialGravityField()
-        field.strength = -10
-        field.falloff = -0.5
-        field.region = SKRegion(radius: 450)
-        field.position = CGPoint(x: frame.width / 2 + 5, y: frame.height / 2)
-        field.categoryBitMask = 0x1 << 0
         addChild(field)
     }
 }

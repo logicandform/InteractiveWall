@@ -114,7 +114,7 @@ class PhysicsComponent: GKComponent {
         physicsBody.friction = 0
         physicsBody.restitution = 0
         physicsBody.linearDamping = 0
-        physicsBody.mass = NodeConfiguration.Record.physicsBodyMass
+        physicsBody.mass = style.nodePhysicsBodyMass
         physicsBody.fieldBitMask = 0x1 << 0
     }
 

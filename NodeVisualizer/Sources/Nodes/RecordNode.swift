@@ -54,7 +54,7 @@ class RecordNode: SKNode {
         addChild(rootNode)
         return rootNode
 
-//        let rootNode = SKShapeNode(circleOfRadius: NodeConfiguration.Record.physicsBodyRadius)
+//        let rootNode = SKShapeNode(circleOfRadius: style.physicsBodyRadius)
 //        rootNode.fillColor = record.type.color
 //        addChild(rootNode)
 //        return rootNode

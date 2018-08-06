@@ -12,6 +12,12 @@ import GameplayKit
 
 typealias EntityLevels = [Set<RecordEntity>]
 
+struct LayerBitMasks {
+    let categoryBitMask: UInt32
+    let contactTestBitMask: UInt32
+    let collisionBitMask: UInt32
+}
+
 
 final class NodeCluster: Hashable {
 
@@ -30,15 +36,9 @@ final class NodeCluster: Hashable {
         return [renderSystem]
     }()
 
-    private struct BoundingNodeBitMasks {
-        let categoryBitMask: UInt32
-        let contactTestBitMask: UInt32
-        let collisionBitMask: UInt32
-    }
-
     private struct Constants {
         static let boundingNodeName = "boundingNode"
-        static let defaultLayerRadius = NodeConfiguration.Record.physicsBodyRadius + 5
+        static let defaultLayerRadius = style.nodePhysicsBodyRadius + 5
     }
 
 
@@ -124,8 +124,8 @@ final class NodeCluster: Hashable {
     /// Requests all entities for related records of the given entity. Sets their `cluster` to `self`.
     private func attach(to entity: RecordEntity) {
         var entityLevels = EntityLevels()
-        for (index, level) in entity.relatedRecordsForLevel.enumerated() {
-            let entitiesForLevel = EntityManager.instance.requestEntities(with: level, for: self)
+        for (index, records) in entity.relatedRecordsForLevel.enumerated() {
+            let entitiesForLevel = EntityManager.instance.requestEntities(with: records, for: self)
             if entitiesForLevel.isEmpty {
                 break
             }
@@ -205,13 +205,13 @@ final class NodeCluster: Hashable {
         boundingNode.position = center
 
         boundingNode.physicsBody = SKPhysicsBody(circleOfRadius: radius)
-        boundingNode.physicsBody?.mass = NodeConfiguration.Record.physicsBodyMass
+        boundingNode.physicsBody?.mass = style.nodePhysicsBodyMass
         boundingNode.physicsBody?.isDynamic = false
         boundingNode.physicsBody?.friction = 0
         boundingNode.physicsBody?.restitution = 0
         boundingNode.physicsBody?.linearDamping = 0
 
-        let bitMasks = boundingNodeBitMasks(forLevel: level)
+        let bitMasks = layerBitMasks(forLevel: level)
         boundingNode.physicsBody?.categoryBitMask = bitMasks.categoryBitMask
         boundingNode.physicsBody?.collisionBitMask = bitMasks.collisionBitMask
         boundingNode.physicsBody?.contactTestBitMask = bitMasks.contactTestBitMask
@@ -221,13 +221,13 @@ final class NodeCluster: Hashable {
     }
 
     /// Provides the bitMasks for the bounding node's physics bodies. The bits are offset by 20 in order to make them unique from the level entity's bitMasks.
-    private func boundingNodeBitMasks(forLevel level: Int) -> BoundingNodeBitMasks {
+    private func layerBitMasks(forLevel level: Int) -> LayerBitMasks {
         let levelBit = 20 + level
         let categoryBitMask: UInt32 = 0x1 << levelBit
         let contactTestBitMask: UInt32 = 0x1 << levelBit
         let collisionBitMask: UInt32 = 0x1 << levelBit
 
-        return BoundingNodeBitMasks(
+        return LayerBitMasks(
             categoryBitMask: categoryBitMask,
             contactTestBitMask: contactTestBitMask,
             collisionBitMask: collisionBitMask

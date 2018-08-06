@@ -81,7 +81,7 @@ final class RecordEntity: GKEntity {
 
         let renderComponent = RenderComponent(record: record)
         addComponent(renderComponent)
-        let physicsComponent = PhysicsComponent(physicsBody: SKPhysicsBody(circleOfRadius: NodeConfiguration.Record.physicsBodyRadius))
+        let physicsComponent = PhysicsComponent(physicsBody: SKPhysicsBody(circleOfRadius: style.nodePhysicsBodyRadius))
         addComponent(physicsComponent)
         let movementComponent = MovementComponent()
         addComponent(movementComponent)

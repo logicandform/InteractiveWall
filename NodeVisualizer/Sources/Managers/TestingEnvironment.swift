@@ -9,8 +9,8 @@ import Foundation
 import AppKit
 
 
-class TestingEnvironment {
-    static let instance = TestingEnvironment()
+class TestingDataManager {
+    static let instance = TestingDataManager()
 
     private var records = [Record]()
     private(set) var relativesForProxy = [RecordProxy: Set<RecordProxy>]()

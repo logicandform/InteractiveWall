@@ -30,9 +30,9 @@ class NodeBoundingRenderComponent: GKComponent {
     private var previousLevelMaxDistance: CGFloat = Constants.initialRadius
 
     private struct Constants {
-        static let initialRadius: CGFloat = NodeConfiguration.Record.physicsBodyRadius + 5.0
-        static let minimumOffset: CGFloat = NodeConfiguration.Record.physicsBodyRadius
-        static let maximumOffset: CGFloat = NodeConfiguration.Record.physicsBodyRadius * 2
+        static let initialRadius: CGFloat = style.nodePhysicsBodyRadius + 5.0
+        static let minimumOffset: CGFloat = style.nodePhysicsBodyRadius
+        static let maximumOffset: CGFloat = style.nodePhysicsBodyRadius * 2
     }
 
 
