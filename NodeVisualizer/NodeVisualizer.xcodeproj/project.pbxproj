@@ -76,6 +76,7 @@
 		CDA5A90820DD70B700E1CF87 /* PhysicsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */; };
 		CDB6CE3220E4037D0033E328 /* AnimationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB6CE3120E4037D0033E328 /* AnimationComponent.swift */; };
 		CDC22D2820BDC6B0006BC0BE /* RecordNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC22D2720BDC6B0006BC0BE /* RecordNode.swift */; };
+		CDC39D44211A0A9C00CE5960 /* PanningState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC39D43211A0A9C00CE5960 /* PanningState.swift */; };
 		D88D9E3C5FEA8DFC85B8FEF4 /* Pods_All_NodeVisualizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A74D0C56BCB99FB5CDC067 /* Pods_All_NodeVisualizer.framework */; };
 /* End PBXBuildFile section */
 
@@ -155,6 +156,7 @@
 		CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsComponent.swift; sourceTree = "<group>"; };
 		CDB6CE3120E4037D0033E328 /* AnimationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationComponent.swift; sourceTree = "<group>"; };
 		CDC22D2720BDC6B0006BC0BE /* RecordNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordNode.swift; sourceTree = "<group>"; };
+		CDC39D43211A0A9C00CE5960 /* PanningState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanningState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -243,7 +245,6 @@
 				CD1FC73D20DB06AA00B87D02 /* TestingDataManager.swift */,
 				CD0FB28320D1AA9D0058A410 /* EntityManager.swift */,
 				CD1FC73D20DB06AA00B87D02 /* TestingEnvironment.swift */,
-				CDA5A90920DD751C00E1CF87 /* NodeConfiguration.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -406,6 +407,7 @@
 				CD1FC73920D9B39A00B87D02 /* SeekTappedEntityState.swift */,
 				CD1FC73B20D9B3AA00B87D02 /* TappedState.swift */,
 				CD7E53822102A11B004223D9 /* SeekBoundingLevelNodeState.swift */,
+				CDC39D43211A0A9C00CE5960 /* PanningState.swift */,
 			);
 			path = States;
 			sourceTree = "<group>";
@@ -583,6 +585,7 @@
 				22AEAED620B67D2700DD184B /* GestureManager.swift in Sources */,
 				22AEAEE220B67D6800DD184B /* Int.swift in Sources */,
 				CD0FB28A20D83B840058A410 /* RecordEntityBehavior.swift in Sources */,
+				CDC39D44211A0A9C00CE5960 /* PanningState.swift in Sources */,
 				22D6F90B20B6810600C7FB5F /* PriorityOrder.swift in Sources */,
 				22AEAEEA20B67D6800DD184B /* CoreGraphics.swift in Sources */,
 				22D6F90F20B681A300C7FB5F /* LastTwo.swift in Sources */,

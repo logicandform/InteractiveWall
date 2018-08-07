@@ -22,6 +22,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     private var nodeClusters = Set<NodeCluster>()
     private var lastUpdateTimeInterval: TimeInterval = 0
     private var selectedNode: SKNode?
+    private var selectedEntity: RecordEntity?
     private var timeOfPanStart = Date()
 
     private struct Constants {
@@ -80,14 +81,11 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
             return
         }
 
-        let tapGesture = TapGestureRecognizer()
-        gestureManager.add(tapGesture, to: view)
-        tapGesture.gestureUpdated = { [weak self] gesture in
-            self?.handleTapGesture(gesture)
-        }
-
         let nsTapGesture = NSClickGestureRecognizer(target: self, action: #selector(handleSystemClickGesture(_:)))
         view.addGestureRecognizer(nsTapGesture)
+
+        let nsPanGesture = NSPanGestureRecognizer(target: self, action: #selector(handleSystemPanGesture(_:)))
+        view.addGestureRecognizer(nsPanGesture)
     }
 
     private func addPhysics() {
@@ -107,16 +105,19 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
                 recordNode.position.y = randomY()
                 recordNode.zPosition = 1
                 addChild(recordNode)
-
-                let tapGesture = TapGestureRecognizer()
-                nodeGestureManager.add(tapGesture, to: recordNode)
-                tapGesture.gestureUpdated = handleTapGesture(_:)
-
-                let panGesture = PanGestureRecognizer()
-                nodeGestureManager.add(panGesture, to: recordNode)
-                panGesture.gestureUpdated = handlePanGesture(_:)
+                setupGestures(for: recordNode)
             }
         }
+    }
+
+    private func setupGestures(for node: SKNode) {
+        let tapGesture = TapGestureRecognizer()
+        nodeGestureManager.add(tapGesture, to: node)
+        tapGesture.gestureUpdated = handleTapGesture(_:)
+
+        let panGesture = PanGestureRecognizer()
+        nodeGestureManager.add(panGesture, to: node)
+        panGesture.gestureUpdated = handlePanGesture(_:)
     }
 
 
@@ -154,39 +155,58 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func handlePanGesture(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let node = nodeGestureManager.node(for: pan) as? RecordNode else {
+        guard let pan = gesture as? PanGestureRecognizer, let node = nodeGestureManager.node(for: pan) as? RecordNode, let entity = node.entity as? RecordEntity else {
             return
         }
 
         switch pan.state {
         case .momentum, .recognized:
-            if let selectedNodeEntity = node.entity as? RecordEntity {
-                selectedNodeEntity.movementComponent.requestedMovementState = nil
+            let deltaX = pan.delta.dx
+            let deltaY = pan.delta.dy
+            let distance = CGFloat(hypotf(Float(deltaX), Float(deltaY)))
+            let normalizedVector = CGVector(dx: deltaX / distance, dy: deltaY / distance)
 
-                let panDelta = pan.delta.round()
-                let nodePanDelta = convertPoint(fromView: panDelta)
-
-                let recordNode = selectedNodeEntity.renderComponent.recordNode
-                recordNode.position = CGPoint(x: recordNode.position.x + nodePanDelta.x, y: recordNode.position.y + nodePanDelta.y)
+            if distance <= 5, entity.intelligenceComponent.stateMachine.currentState is TappedState {
+                return
             }
+
+            if entity.intelligenceComponent.stateMachine.currentState is TappedState {
+                entity.intelligenceComponent.stateMachine.enter(PanningState.self)
+            }
+
+            // update position of record node entity
+            let newX = node.position.x + deltaX
+            let newY = node.position.y + deltaY
+            node.position = CGPoint(x: newX, y: newY)
+
+            // update velocity of the pan bounding node
+            if let panBoundingNode = entity.panBoundingNode {
+                let velocity = CGVector(dx: 5 * normalizedVector.dx, dy: 5 * normalizedVector.dy)
+                panBoundingNode.physicsBody?.velocity = velocity
+            }
+
         case .ended:
             guard pan.timeOfLastUpdate.timeIntervalSinceNow < 0.1 else {
                 return
             }
 
-            if let selectedNodeEntity = node.entity as? RecordEntity {
-                let dX = pan.cumulativeDelta.dx
-                let dY = pan.cumulativeDelta.dy
-                let distance = CGFloat(hypotf(Float(dX), Float(dY)))
-
-                let unitVector = CGVector(dx: dX / distance, dy: dY / distance)
-                let deltaTime = abs(CGFloat(pan.timeOfLastUpdate.timeIntervalSinceNow))
-                let speed = distance / deltaTime
-                let velocity = CGVector(dx: 1.2 * speed * unitVector.dx, dy: 1.2 * speed * unitVector.dy)
-
-                let recordNode = selectedNodeEntity.renderComponent.recordNode
-                recordNode.physicsBody?.velocity = velocity
+            if entity.intelligenceComponent.stateMachine.currentState is TappedState {
+                return
             }
+
+            let dX = pan.cumulativeDelta.dx
+            let dY = pan.cumulativeDelta.dy
+            let distance = CGFloat(hypotf(Float(dX), Float(dY)))
+
+            let unitVector = CGVector(dx: dX / distance, dy: dY / distance)
+            let deltaTime = abs(CGFloat(pan.timeOfLastUpdate.timeIntervalSinceNow))
+            let speed = distance / deltaTime
+            let velocity = CGVector(dx: 1.2 * speed * unitVector.dx, dy: 1.2 * speed * unitVector.dy)
+
+            if let panBoundingNode = entity.panBoundingNode {
+                panBoundingNode.physicsBody?.velocity = velocity
+            }
+
         default:
             return
         }
@@ -200,39 +220,48 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
             let pannedPosition = recognizer.location(in: recognizer.view)
             let pannedNodePosition = convertPoint(fromView: pannedPosition)
-
-            if let recordNode = nodes(at: pannedNodePosition).first(where: { $0 is RecordNode }) as? RecordNode {
-                selectedNode = recordNode
+            if let recordNode = nodes(at: pannedNodePosition).first(where: { $0 is RecordNode }) as? RecordNode, let entity = recordNode.entity as? RecordEntity {
+                selectedEntity = entity
             }
+
         case .changed:
             let pannedPosition = recognizer.location(in: recognizer.view)
             let pannedNodePosition = convertPoint(fromView: pannedPosition)
 
-            if let selectedNode = selectedNode, let selectedNodeEntity = selectedNode.entity as? RecordEntity {
-                selectedNodeEntity.movementComponent.requestedMovementState = nil
-                selectedNode.position = pannedNodePosition
-            }
-        case .ended:
-            guard abs(timeOfPanStart.timeIntervalSinceNow) < 0.1 else {
-                // don't perform any physics and update the requestedMovementState for the entity node
-
-                return
-            }
-
-            // perform the appropriate physics based on pan gesture velocity
             let pannedTranslation = recognizer.translation(in: recognizer.view)
             let nodePannedTranslation = convertPoint(fromView: pannedTranslation)
-
             let dX = nodePannedTranslation.x
             let dY = nodePannedTranslation.y
             let distance = CGFloat(hypotf(Float(dX), Float(dY)))
 
-            let unitVector = CGVector(dx: dX / distance, dy: dY / distance)
-            let deltaTime = abs(CGFloat(timeOfPanStart.timeIntervalSinceNow))
-            let speed = distance / deltaTime
-            let velocity = CGVector(dx: speed * unitVector.dx, dy: speed * unitVector.dy)
+            if distance <= 5, selectedEntity?.intelligenceComponent.stateMachine.currentState is TappedState {
+                return
+            }
 
-            selectedNode?.physicsBody?.velocity = velocity
+            if selectedEntity?.intelligenceComponent.stateMachine.currentState is TappedState {
+                selectedEntity?.intelligenceComponent.stateMachine.enter(PanningState.self)
+            }
+
+            selectedEntity?.renderComponent.recordNode.position = pannedNodePosition
+
+        case .ended:
+            if selectedEntity?.intelligenceComponent.stateMachine.currentState is TappedState {
+                return
+            }
+
+            // perform the appropriate physics based on pan gesture velocity
+            let pannedTranslation = recognizer.velocity(in: recognizer.view)
+            let nodePannedTranslation = convertPoint(fromView: pannedTranslation)
+
+            let dX = nodePannedTranslation.x
+            let dY = nodePannedTranslation.y
+
+            let p = CGPoint(x: dX * 0.2, y: dY * 0.2)
+            let pos = selectedEntity!.renderComponent.recordNode.position
+
+            selectedEntity?.renderComponent.recordNode.position = CGPoint(x: pos.x + p.x, y: pos.y + p.y)
+            selectedEntity?.intelligenceComponent.stateMachine.enter(TappedState.self)
+
         default:
             return
         }

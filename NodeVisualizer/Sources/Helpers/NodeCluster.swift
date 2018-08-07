@@ -21,7 +21,7 @@ struct LayerBitMasks {
 
 final class NodeCluster: Hashable {
 
-    let center: CGPoint
+    var center: CGPoint
     private let scene: MainScene
     private(set) var selectedEntity: RecordEntity
     private(set) var entitiesForLevel = EntityLevels()
@@ -66,6 +66,11 @@ final class NodeCluster: Hashable {
         attach(to: entity)
         setLayers(toLevel: entitiesForLevel.count)
         updateLevelsForEntities()
+    }
+
+    func updateForPanningEntity() {
+        setLayers(toLevel: 0)
+        updateLevelsForPanningEntity()
     }
 
     /// Removes all entities currently formed in the cluster and removes all bounding layers

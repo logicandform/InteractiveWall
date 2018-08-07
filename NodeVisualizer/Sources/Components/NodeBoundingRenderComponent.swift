@@ -64,6 +64,10 @@ class NodeBoundingRenderComponent: GKComponent {
             - The component's level node updates its own size depending on the previous level bounding node's maxRadius
          */
 
+        if cluster.selectedEntity.intelligenceComponent.stateMachine.currentState is PanningState {
+            return
+        }
+
         // scale its own bounding node by using its previous level's bounding node maxRadius
         if let previousLevelNodeBoundingEntity = cluster.layerForLevel[level - 1], let currentNode = node {
 
