@@ -1,14 +1,10 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
-/*
-    Abstract:
-    A 'GKComponent' that provides an 'GKAgent' for an entity. The GKAgent component provides movement to an entity based on sets of goals and constraints.
-*/
-
 import Foundation
 import GameplayKit
 
 
+/// A 'GKComponent' that provides an 'GKAgent' for an entity. The GKAgent component provides movement to an entity based on sets of goals and constraints.
 class RecordAgent: GKAgent2D, GKAgentDelegate {
 
     private var renderComponent: RenderComponent {

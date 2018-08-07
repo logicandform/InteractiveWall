@@ -5,8 +5,8 @@ import SpriteKit
 import GameplayKit
 
 
-/// A RecordEntity enters this state when it needs to move to its level's bounding node entity's minimum distance before seeking the TappedState's RecordEntity. Entering this intermediary state allows for more fluid movement and interaction between the entities and their level node bounding entities.
-class SeekBoundingLevelNodeState: GKState {
+/// This is the initial state for the RecordEntity. A RecordEntity also enters this state when it needs to 'reset' to its bare standard components and properties.
+class FallingState: GKState {
 
     /// The entity associated with this state
     private unowned var entity: RecordEntity
@@ -23,17 +23,8 @@ class SeekBoundingLevelNodeState: GKState {
 
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
-
-        // sticky collisions
-        entity.physicsBody.restitution = 0
-        entity.physicsBody.friction = 1
-        entity.physicsBody.linearDamping = 1
-
-        // interactable with rest of physics world
-        entity.physicsBody.isDynamic = true
-
-        // not interactable with the repulsive 'reset' radial force field
-        entity.physicsBody.fieldBitMask = 0x1 << 1
+        entity.physicsBody.affectedByGravity = true
+        entity.set(state: .fall)
     }
 
     override func update(deltaTime seconds: TimeInterval) {
@@ -46,5 +37,6 @@ class SeekBoundingLevelNodeState: GKState {
 
     override func willExit(to nextState: GKState) {
         super.willExit(to: nextState)
+        entity.physicsBody.affectedByGravity = false
     }
 }

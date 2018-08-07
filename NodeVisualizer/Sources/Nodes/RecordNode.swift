@@ -53,11 +53,6 @@ class RecordNode: SKNode {
         rootNode.color = record.type.color
         addChild(rootNode)
         return rootNode
-
-//        let rootNode = SKShapeNode(circleOfRadius: style.physicsBodyRadius)
-//        rootNode.fillColor = record.type.color
-//        addChild(rootNode)
-//        return rootNode
     }
 
     private func addIdLabelNode(to root: SKNode) {

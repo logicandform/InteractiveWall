@@ -24,6 +24,8 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
     private struct Constants {
         static let maximumUpdateDeltaTime: TimeInterval = 1.0 / 60.0
+        static let slowGravity = CGVector(dx: 0.02, dy: -0.03)
+        static let worldPadding: CGFloat = 100
     }
 
 
@@ -33,8 +35,8 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         super.didMove(to: view)
 
         setupGestures()
-        addPhysicsToScene()
-        addRecordNodesToScene()
+        addPhysics()
+        addNodes()
     }
 
     override func update(_ currentTime: TimeInterval) {
@@ -48,11 +50,6 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         for cluster in nodeClusters {
             cluster.update(deltaTime)
         }
-
-        // keep the nodes facing 0 degrees (i.e. no rotation when affected by physics simulation)
-        for node in children {
-            node.zRotation = 0
-        }
     }
 
 
@@ -63,13 +60,11 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         if contact.bodyA.node?.name == "boundingNode",
             let contactEntity = contact.bodyB.node?.entity as? RecordEntity,
             !contactEntity.hasCollidedWithBoundingNode,
-            contactEntity.intelligenceComponent.stateMachine.currentState is SeekTappedEntityState {
+            contactEntity.state is SeekTappedEntityState {
             contactEntity.hasCollidedWithBoundingNode = true
-        }
-
-        if let contactEntity = contact.bodyA.node?.entity as? RecordEntity,
+        } else if let contactEntity = contact.bodyA.node?.entity as? RecordEntity,
             !contactEntity.hasCollidedWithBoundingNode,
-            contactEntity.intelligenceComponent.stateMachine.currentState is SeekTappedEntityState,
+            contactEntity.state is SeekTappedEntityState,
             contact.bodyB.node?.name == "boundingNode" {
             contactEntity.hasCollidedWithBoundingNode = true
         }
@@ -93,24 +88,22 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         view.addGestureRecognizer(nsTapGesture)
     }
 
-    private func addPhysicsToScene() {
-        physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
-        physicsWorld.gravity = .zero
+    private func addPhysics() {
+        let origin = CGPoint(x: -Constants.worldPadding, y: -Constants.worldPadding)
+        let size = CGSize(width: frame.width + Constants.worldPadding * 2, height: frame.height + Constants.worldPadding * 2)
+        physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(origin: origin, size: size))
+        physicsWorld.gravity = Constants.slowGravity
         physicsWorld.contactDelegate = self
     }
 
-    private func addRecordNodesToScene() {
+    private func addNodes() {
         for entity in EntityManager.instance.allEntities() {
-            entity.intelligenceComponent.enterInitialState()
+            entity.set(state: .falling)
 
             if let recordNode = entity.component(ofType: RenderComponent.self)?.recordNode {
                 recordNode.position.x = randomX()
                 recordNode.position.y = randomY()
                 recordNode.zPosition = 1
-
-                let screenBoundsConstraint = SKConstraint.positionX(SKRange(lowerLimit: 0, upperLimit: frame.width), y: SKRange(lowerLimit: 0, upperLimit: frame.height))
-                recordNode.constraints = [screenBoundsConstraint]
-
                 addChild(recordNode)
             }
         }
@@ -171,10 +164,10 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         let cluster = nodeCluster(for: entityForNode)
         nodeClusters.insert(cluster)
 
-        switch entityForNode.intelligenceComponent.stateMachine.currentState {
-        case is SeekTappedEntityState, is WanderState:
+        switch entityForNode.state {
+        case is SeekTappedEntityState, is FallingState:
             cluster.select(entityForNode)
-            entityForNode.intelligenceComponent.stateMachine.enter(TappedState.self)
+            entityForNode.set(state: .tapped)
         case is TappedState:
             cluster.reset()
             nodeClusters.remove(cluster)
@@ -224,36 +217,5 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         let lowestValue = Int(style.nodePhysicsBodyRadius)
         let highestValue = Int(size.height - style.nodePhysicsBodyRadius)
         return CGFloat(GKRandomDistribution(lowestValue: lowestValue, highestValue: highestValue).nextInt(upperBound: highestValue))
-    }
-
-    private func addLinearGravityField(to type: StartingPositionType) {
-        var vector: vector_float3
-        var size: CGSize
-        var position: CGPoint
-
-        switch type {
-        case .top:
-            vector = vector_float3(0, -1, 0)
-            size = CGSize(width: frame.width, height: 20)
-            position = CGPoint(x: frame.width / 2, y: frame.height - 20)
-        case .bottom:
-            vector = vector_float3(0, 1, 0)
-            size = CGSize(width: frame.width, height: 20)
-            position = CGPoint(x: frame.width / 2, y: 20)
-        case .left:
-            vector = vector_float3(1, 0, 0)
-            size = CGSize(width: 20, height: frame.height)
-            position = CGPoint(x: 20, y: frame.height / 2)
-        case .right:
-            vector = vector_float3(-1, 0, 0)
-            size = CGSize(width: 20, height: frame.height)
-            position = CGPoint(x: frame.width - 20, y: frame.height / 2)
-        }
-
-        let field = SKFieldNode.linearGravityField(withVector: vector)
-        field.strength = 10
-        field.region = SKRegion(size: size)
-        field.position = position
-        addChild(field)
     }
 }

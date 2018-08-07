@@ -1,27 +1,47 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
-/*
-    Abstract:
-    A 'GKComponent' that provides an entity with its own designated 'GKStateMachine' for determining their actions.
-*/
-
 import Foundation
 import SpriteKit
 import GameplayKit
 
 
+enum EntityState {
+    case falling
+    case tapped
+    case seekCluster
+    case seekLayer
+
+    var `class`: AnyClass {
+        switch self {
+        case .falling:
+            return FallingState.self
+        case .tapped:
+            return TappedState.self
+        case .seekCluster:
+            return SeekTappedEntityState.self
+        case .seekLayer:
+            return SeekBoundingLevelNodeState.self
+        }
+    }
+}
+
+
+/// A 'GKComponent' that provides an entity with its own designated 'GKStateMachine' for determining their actions.
 class IntelligenceComponent: GKComponent {
 
     private(set) var stateMachine: GKStateMachine
-    private let initialStateClass: AnyClass
 
 
     // MARK: Initializer
 
-    init(states: [GKState]) {
+    init(for entity: RecordEntity) {
+        let states = [
+            FallingState(entity: entity),
+            SeekTappedEntityState(entity: entity),
+            SeekBoundingLevelNodeState(entity: entity),
+            TappedState(entity: entity)
+        ]
         self.stateMachine = GKStateMachine(states: states)
-        let firstState = states.first!
-        self.initialStateClass = type(of: firstState)
         super.init()
     }
 
@@ -36,12 +56,5 @@ class IntelligenceComponent: GKComponent {
         super.update(deltaTime: seconds)
 
         stateMachine.update(deltaTime: seconds)
-    }
-
-
-    // MARK: API
-
-    func enterInitialState() {
-        stateMachine.enter(initialStateClass)
     }
 }

@@ -1,14 +1,10 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
-/*
-    Abstract:
-    'RecordEntityBehavior' is a `GKBehavior` subclass that provides factory methods to create goals and behaviors for different mandates.
-*/
-
 import Foundation
 import GameplayKit
 
 
+/// 'RecordEntityBehavior' is a `GKBehavior` subclass that provides factory methods to create goals and behaviors for different mandates.
 class RecordEntityBehavior: GKBehavior {
 
     static func behaviorToAvoidObstacles(withRadius radius: CGFloat, position: CGPoint) -> GKBehavior {

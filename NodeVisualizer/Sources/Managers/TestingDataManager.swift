@@ -1,14 +1,10 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
-/*
-    Abstract:
-    'TestingEnvironment' provides a mock environment for debug and feature development purposes without having to make network requests every build run.
-*/
-
 import Foundation
 import AppKit
 
 
+/// Provides test data for debug and feature development purposes without having to make network requests every build run.
 class TestingDataManager {
     static let instance = TestingDataManager()
 

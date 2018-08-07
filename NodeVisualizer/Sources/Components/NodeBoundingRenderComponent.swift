@@ -1,15 +1,11 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
-/*
-    Abstract:
-    A 'GKComponent' that provides a SKNode for a NodeBoundingEntity. This component is mainly responsible for updating the size of its SKNode's physicsBody and updating its maximum distance calculated from its level's entities.
- */
-
 import Foundation
 import SpriteKit
 import GameplayKit
 
 
+/// A 'GKComponent' that provides a SKNode for a NodeBoundingEntity. This component is mainly responsible for updating the size of its SKNode's physicsBody and updating its maximum distance calculated from its level's entities.
 class NodeBoundingRenderComponent: GKComponent {
 
     let cluster: NodeCluster

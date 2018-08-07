@@ -1,15 +1,11 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
-/*
-    Abstract:
-    A RecordEntity enters this state when the user has tapped on its node in the scene. 
- */
-
 import Foundation
 import SpriteKit
 import GameplayKit
 
 
+/// A RecordEntity enters this state when the user has tapped on its node in the scene.
 class TappedState: GKState {
 
     /// The entity associated with this state
@@ -29,11 +25,11 @@ class TappedState: GKState {
         super.didEnter(from: previousState)
 
         // Physics
-        entity.physicsComponent.physicsBody.isDynamic = false
-        entity.physicsComponent.physicsBody.fieldBitMask = 0x1 << 1
+        entity.physicsBody.isDynamic = false
+        entity.physicsBody.fieldBitMask = 0x1 << 1
 
         if let cluster = entity.cluster, stateMachine?.currentState is TappedState {
-            entity.animationComponent.requestedAnimationState = .goToPoint(cluster.center)
+            entity.set(state: .goToPoint(cluster.center))
         }
     }
 

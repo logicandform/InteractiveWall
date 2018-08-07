@@ -47,7 +47,7 @@ final class NodeCluster: Hashable {
     init(scene: MainScene, entity: RecordEntity) {
         self.scene = scene
         self.selectedEntity = entity
-        self.center = selectedEntity.renderComponent.recordNode.frame.center
+        self.center = selectedEntity.position
     }
 
 
@@ -62,10 +62,10 @@ final class NodeCluster: Hashable {
 
     /// Updates the layers in the cluster for the selected entity and updates the levels for all current entities
     func select(_ entity: RecordEntity) {
-        compareRecords(for: entity)
+        filterRecords(for: entity)
         attach(to: entity)
         setLayers(toLevel: entitiesForLevel.count)
-        updateLevelsForSelectedEntity()
+        updateLevelsForEntities()
     }
 
     /// Removes all entities currently formed in the cluster and removes all bounding layers
@@ -89,8 +89,8 @@ final class NodeCluster: Hashable {
         guard let rootBoundingNode = layerForLevel[0]?.nodeBoundingRenderComponent.node else {
             return 0
         }
-        let dX = Float(rootBoundingNode.position.x - entity.renderComponent.recordNode.position.x)
-        let dY = Float(rootBoundingNode.position.y - entity.renderComponent.recordNode.position.y)
+        let dX = Float(rootBoundingNode.position.x - entity.position.x)
+        let dY = Float(rootBoundingNode.position.y - entity.position.y)
         return CGFloat(hypotf(dX, dY).magnitude)
     }
 
@@ -98,17 +98,17 @@ final class NodeCluster: Hashable {
     // MARK: Helpers
 
     /// Removes entities from the cluster that are not related to the new entity
-    private func compareRecords(for newEntity: RecordEntity) {
+    private func filterRecords(for newEntity: RecordEntity) {
         var oldRecords = selectedEntity.relatedRecords
         oldRecords.insert(selectedEntity.record.proxy)
         var newRecords = newEntity.relatedRecords
         newRecords.insert(newEntity.record.proxy)
         let recordsToRemove = oldRecords.subtracting(newRecords)
-        remove(recordsToRemove)
+        removeEntities(for: recordsToRemove)
     }
 
     /// Removes entities for each given proxy from `self`
-    private func remove(_ proxies: Set<RecordProxy>) {
+    private func removeEntities(for proxies: Set<RecordProxy>) {
         var entities = Set<RecordEntity>()
         for entitiesInLevel in entitiesForLevel {
             entities.formUnion(entitiesInLevel)
@@ -134,21 +134,21 @@ final class NodeCluster: Hashable {
                 entity.cluster = self
             }
         }
+        selectedEntity = entity
         entity.cluster = self
         entitiesForLevel = entityLevels
     }
 
-    private func updateLevelsForSelectedEntity() {
+    private func updateLevelsForEntities() {
         // Set selected node level to -1
-        selectedEntity.clusterLevel.currentLevel = -1
+        selectedEntity.set(level: -1)
 
         // Update the tapped entity's descendants to the appropriate state with appropriate movement
         for (level, entities) in entitiesForLevel.enumerated() {
             for entity in entities {
-                entity.clusterLevel = (previousLevel: entity.clusterLevel.currentLevel, currentLevel: level)
-                entity.physicsComponent.setLevelInteractingBitMasks(forLevel: level)
-                entity.movementComponent.requestedMovementState = .moveToAppropriateLevel
-                entity.intelligenceComponent.stateMachine.enter(SeekBoundingLevelNodeState.self)
+                entity.set(level: level)
+                entity.set(state: .moveToAppropriateLevel)
+                entity.set(state: .seekLayer)
             }
         }
     }

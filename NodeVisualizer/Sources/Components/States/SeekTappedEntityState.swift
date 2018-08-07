@@ -1,26 +1,15 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
-/*
-    Abstract:
-    A RecordEntity enters this state when it seeks the TappedState's RecordEntity. 
- */
-
 import Foundation
 import SpriteKit
 import GameplayKit
 
 
+/// A RecordEntity enters this state when it seeks the TappedState's RecordEntity.
 class SeekTappedEntityState: GKState {
 
     /// The entity associated with this state
     private unowned var entity: RecordEntity
-
-    private var physicsComponent: PhysicsComponent {
-        guard let physicsComponent = entity.component(ofType: PhysicsComponent.self) else {
-            fatalError("A SeekTappedEntityState's entity must have a PhysicsComponent")
-        }
-        return physicsComponent
-    }
 
 
     // MARK: Initializer
@@ -35,19 +24,16 @@ class SeekTappedEntityState: GKState {
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
 
-        // declare local version so that we don't compute multiple times
-        let physicsComponent = self.physicsComponent
-
         // sticky collisions
-        physicsComponent.physicsBody.restitution = 0
-        physicsComponent.physicsBody.friction = 1
-        physicsComponent.physicsBody.linearDamping = 1
+        entity.physicsBody.restitution = 0
+        entity.physicsBody.friction = 1
+        entity.physicsBody.linearDamping = 1
 
         // interactable with rest of physics world
-        physicsComponent.physicsBody.isDynamic = true
+        entity.physicsBody.isDynamic = true
 
         // not interactable with the repulsive 'reset' radial force field
-        physicsComponent.physicsBody.fieldBitMask = 0x1 << 1
+        entity.physicsBody.fieldBitMask = 0x1 << 1
     }
 
     override func update(deltaTime seconds: TimeInterval) {

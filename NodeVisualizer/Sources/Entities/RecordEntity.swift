@@ -9,6 +9,9 @@ final class RecordEntity: GKEntity {
     let record: RecordDisplayable
     let relatedRecordsForLevel: RelatedLevels
     let relatedRecords: Set<RecordProxy>
+    var hasCollidedWithBoundingNode = false
+    private(set) var clusterLevel: (previousLevel: Int?, currentLevel: Int?) = (nil, nil)
+
     var cluster: NodeCluster? {
         didSet {
             physicsComponent.cluster = cluster
@@ -16,37 +19,58 @@ final class RecordEntity: GKEntity {
         }
     }
 
+    var state: GKState? {
+        return intelligenceComponent.stateMachine.currentState
+    }
+
+    var position: CGPoint {
+        return renderComponent.recordNode.position
+    }
+
+    var physicsBody: SKPhysicsBody {
+        return physicsComponent.physicsBody
+    }
+
+    var node: RecordNode {
+        return renderComponent.recordNode
+    }
+
+    override var description: String {
+        return "( [RecordEntity] ID: \(record.id), type: \(record.type), Position: \(position), State: \(String(describing: state)) )"
+    }
+
+
     // MARK: Components
 
-    var renderComponent: RenderComponent {
+    private var renderComponent: RenderComponent {
         guard let renderComponent = component(ofType: RenderComponent.self) else {
             fatalError("A RecordEntity must have a RenderComponent")
         }
         return renderComponent
     }
 
-    var physicsComponent: PhysicsComponent {
+    private var physicsComponent: PhysicsComponent {
         guard let physicsComponent = component(ofType: PhysicsComponent.self) else {
             fatalError("A RecordEntity must have a PhysicsComponent")
         }
         return physicsComponent
     }
 
-    var movementComponent: MovementComponent {
+    private var movementComponent: MovementComponent {
         guard let movementComponent = component(ofType: MovementComponent.self) else {
             fatalError("A RecordEntity must have a MovementComponent")
         }
         return movementComponent
     }
 
-    var intelligenceComponent: IntelligenceComponent {
+    private var intelligenceComponent: IntelligenceComponent {
         guard let intelligenceComponent = component(ofType: IntelligenceComponent.self) else {
             fatalError("A RecordEntity must have an IntelligenceComponent")
         }
         return intelligenceComponent
     }
 
-    var animationComponent: AnimationComponent {
+    private var animationComponent: AnimationComponent {
         guard let animationComponent = component(ofType: AnimationComponent.self) else {
             fatalError("A RecordEntity must have an AnimationComponent")
         }
@@ -59,12 +83,6 @@ final class RecordEntity: GKEntity {
         }
         return agent
     }
-
-    /// Indicates whether or not the entity has made contact its bounding level node. This property is used to calculate the bounding level node's changing size.
-    var hasCollidedWithBoundingNode = false
-
-    /// The previous and current level that the entity belongs to
-    var clusterLevel: (previousLevel: Int?, currentLevel: Int?) = (nil, nil)
 
 
     // MARK: Initializer
@@ -80,22 +98,16 @@ final class RecordEntity: GKEntity {
         super.init()
 
         let renderComponent = RenderComponent(record: record)
-        addComponent(renderComponent)
         let physicsComponent = PhysicsComponent(physicsBody: SKPhysicsBody(circleOfRadius: style.nodePhysicsBodyRadius))
-        addComponent(physicsComponent)
         let movementComponent = MovementComponent()
-        addComponent(movementComponent)
         let animationComponent = AnimationComponent()
-        addComponent(animationComponent)
-        let intelligenceComponent = IntelligenceComponent(states: [
-            WanderState(entity: self),
-            SeekTappedEntityState(entity: self),
-            SeekBoundingLevelNodeState(entity: self),
-            TappedState(entity: self)
-        ])
-        addComponent(intelligenceComponent)
-
+        let intelligenceComponent = IntelligenceComponent(for: self)
         renderComponent.recordNode.physicsBody = physicsComponent.physicsBody
+        addComponent(movementComponent)
+        addComponent(renderComponent)
+        addComponent(physicsComponent)
+        addComponent(intelligenceComponent)
+        addComponent(animationComponent)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -105,8 +117,52 @@ final class RecordEntity: GKEntity {
 
     // MARK: API
 
+    func set(level: Int) {
+        clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: level)
+        physicsComponent.setLevelInteractingBitMasks(forLevel: level)
+    }
+
+    func set(position: CGPoint) {
+        renderComponent.recordNode.position = position
+    }
+
+    func set(state: EntityState) {
+        intelligenceComponent.stateMachine.enter(state.class)
+    }
+
+    func set(state: MovementState) {
+        movementComponent.requestedMovementState = state
+    }
+
+    func set(state: AnimationState) {
+        animationComponent.requestedAnimationState = state
+    }
+
+    func setBitMasks(forLevel level: Int) {
+        physicsComponent.setBitMasks(forLevel: level)
+    }
+
     func updateAgentPositionToMatchNodePosition() {
         agent.position = vector_float2(x: Float(renderComponent.recordNode.position.x), y: Float(renderComponent.recordNode.position.y))
+    }
+
+    func run(action: SKAction) {
+        renderComponent.recordNode.run(action) { [weak self] in
+            self?.renderComponent.recordNode.removeAllActions()
+        }
+    }
+
+    /// 'Reset' the entity to initial state so that proper animations and movements can take place
+    func reset() {
+        hasCollidedWithBoundingNode = false
+        clusterLevel = (nil, nil)
+        cluster = nil
+        physicsComponent.reset()
+        set(state: .falling)
+    }
+
+    func clone() -> RecordEntity {
+        return RecordEntity(record: record, levels: relatedRecordsForLevel)
     }
 
     /// Calculates the distance between self and another entity
@@ -114,20 +170,5 @@ final class RecordEntity: GKEntity {
         let dX = entity.renderComponent.recordNode.position.x - renderComponent.recordNode.position.x
         let dY = entity.renderComponent.recordNode.position.y - renderComponent.recordNode.position.y
         return CGFloat(hypotf(Float(dX), Float(dY)))
-    }
-
-    /// 'Reset' the entity to initial state so that proper animations and movements can take place
-    func reset() {
-        // reset RecordEntity properties
-        hasCollidedWithBoundingNode = false
-        clusterLevel = (nil, nil)
-        cluster = nil
-
-        // enter WanderState initial state
-        intelligenceComponent.stateMachine.enter(WanderState.self)
-    }
-
-    func clone() -> RecordEntity {
-        return RecordEntity(record: record, levels: relatedRecordsForLevel)
     }
 }

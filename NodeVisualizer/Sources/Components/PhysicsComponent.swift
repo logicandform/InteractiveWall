@@ -1,33 +1,14 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
-/*
-    Abstract:
-    A `GKComponent` that provides an `SKPhysicsBody` for an entity. This enables the entity to be represented in the SpriteKit physics world.
-*/
-
 import Foundation
 import SpriteKit
 import GameplayKit
 
-
+/// A `GKComponent` that provides an `SKPhysicsBody` for an entity. This enables the entity to be represented in the SpriteKit physics world.
 class PhysicsComponent: GKComponent {
 
     var cluster: NodeCluster?
     private(set) var physicsBody: SKPhysicsBody
-
-    private var recordEntity: RecordEntity {
-        guard let recordEntity = entity as? RecordEntity else {
-            fatalError("A PhysicsComponent's entity must be a RecordEntity")
-        }
-        return recordEntity
-    }
-
-    private var renderComponent: RenderComponent {
-        guard let renderComponent = entity?.component(ofType: RenderComponent.self) else {
-            fatalError("A PhysicsComponent's entity must have a RenderComponent")
-        }
-        return renderComponent
-    }
 
     private struct BitMasks {
         let categoryBitMask: UInt32
@@ -40,6 +21,8 @@ class PhysicsComponent: GKComponent {
 
     init(physicsBody: SKPhysicsBody) {
         self.physicsBody = physicsBody
+        self.physicsBody.allowsRotation = false
+        self.physicsBody.affectedByGravity = false
         super.init()
         setupInitialPhysicsBodyProperties()
     }
@@ -53,6 +36,9 @@ class PhysicsComponent: GKComponent {
 
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
+        guard let entity = entity as? RecordEntity else {
+            return
+        }
 
         let contactedBodies = physicsBody.allContactedBodies()
         for contactedBody in contactedBodies {
@@ -60,8 +46,8 @@ class PhysicsComponent: GKComponent {
                 continue
             }
 
-            if contactedEntity.hasCollidedWithBoundingNode && !recordEntity.hasCollidedWithBoundingNode {
-                recordEntity.hasCollidedWithBoundingNode = true
+            if contactedEntity.hasCollidedWithBoundingNode && !entity.hasCollidedWithBoundingNode {
+                entity.hasCollidedWithBoundingNode = true
                 return
             }
         }

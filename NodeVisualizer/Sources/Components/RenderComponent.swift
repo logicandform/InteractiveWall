@@ -1,15 +1,11 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
-/*
-    Abstract:
-    A 'GKComponent' that provides an 'SKNode' for an entity. This enables it to be represented in the SpriteKit world.
-*/
-
 import Foundation
 import SpriteKit
 import GameplayKit
 
 
+/// A 'GKComponent' that provides an 'SKNode' for an entity. This enables it to be represented in the SpriteKit world.
 class RenderComponent: GKComponent {
 
     private(set) var recordNode: RecordNode
