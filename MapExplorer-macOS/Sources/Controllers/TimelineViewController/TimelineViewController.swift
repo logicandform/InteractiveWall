@@ -153,6 +153,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         ConnectionManager.instance.timelineHandler = timelineHandler
         ConnectionManager.instance.timelineViewController = self
         timelineCollectionView.register(TimelineItemView.self, forItemWithIdentifier: TimelineItemView.identifier)
+        timelineCollectionView.register(TimelineBorder.self, forItemWithIdentifier: TimelineBorder.identifier)
         timelineCollectionView.register(NSNib(nibNamed: TimelineHeaderView.nibName, bundle: .main), forSupplementaryViewOfKind: TimelineHeaderView.supplementaryKind, withIdentifier: TimelineHeaderView.identifier)
         timelineCollectionView.dataSource = source
         timelineScrollView.horizontalScroller?.alphaValue = 0
@@ -470,9 +471,9 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         case monthCollectionView:
             return Month.allValues.count + Constants.visibleControlItems
         case yearCollectionView:
-            return years.count + Constants.visibleControlItems
+            return years.count + Constants.visibleControlItems + 1
         case decadeCollectionView:
-            return decades.count + Constants.visibleControlItems
+            return decades.count + Constants.visibleControlItems + 1
         default:
             return 0
         }
@@ -490,8 +491,14 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
                 return controlItemView
             }
         case yearCollectionView:
-            if let controlItemView = collectionView.makeItem(withIdentifier: TimelineControlItemView.identifier, for: indexPath) as? TimelineControlItemView {
-                let year = years.at(index: indexPath.item % years.count)
+            if indexPath.item == years.count, let border = collectionView.makeItem(withIdentifier: TimelineBorder.identifier, for: indexPath) as? TimelineBorder {
+                let x = CGFloat(years.count) * Constants.controlItemWidth
+                let frame = CGRect(x: x, y: collectionView.frame.height / 4, width: style.borderWidth, height: collectionView.frame.height / 2)
+                border.set(frame: frame)
+                return border
+            } else if let controlItemView = collectionView.makeItem(withIdentifier: TimelineControlItemView.identifier, for: indexPath) as? TimelineControlItemView {
+                let itemIndex = indexPath.item >= years.count ? indexPath.item - 1 : indexPath.item
+                let year = years.at(index: itemIndex % years.count)
                 controlItemView.title = year?.description
                 if let selectedYear = selectedYear {
                     controlItemView.set(highlighted: selectedYear == year)
@@ -499,8 +506,14 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
                 return controlItemView
             }
         case decadeCollectionView:
-            if let controlItemView = collectionView.makeItem(withIdentifier: TimelineControlItemView.identifier, for: indexPath) as? TimelineControlItemView {
-                let decade = decades.at(index: indexPath.item % decades.count)
+            if indexPath.item == decades.count, let border = collectionView.makeItem(withIdentifier: TimelineBorder.identifier, for: indexPath) as? TimelineBorder {
+                let x = CGFloat(decades.count) * Constants.controlItemWidth
+                let frame = CGRect(x: x, y: collectionView.frame.height / 4, width: style.borderWidth, height: collectionView.frame.height / 2)
+                border.set(frame: frame)
+                return border
+            } else if let controlItemView = collectionView.makeItem(withIdentifier: TimelineControlItemView.identifier, for: indexPath) as? TimelineControlItemView {
+                let itemIndex = indexPath.item >= decades.count ? indexPath.item - 1 : indexPath.item
+                let decade = decades.at(index: itemIndex % decades.count)
                 controlItemView.title = decade?.description
                 if let selectedDecade = selectedDecade {
                     controlItemView.set(highlighted: selectedDecade == decade)
@@ -515,8 +528,29 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     }
 
     func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
-        let height = collectionView.superview!.frame.size.height
-        return CGSize(width: Constants.controlItemWidth, height: height)
+        switch collectionView {
+        case monthCollectionView:
+            let height = collectionView.superview!.frame.size.height
+            return CGSize(width: Constants.controlItemWidth, height: height)
+        case yearCollectionView:
+            if indexPath.item == years.count {
+                return CGSize(width: style.borderWidth, height: collectionView.frame.height)
+            } else {
+                let height = collectionView.superview!.frame.size.height
+                return CGSize(width: Constants.controlItemWidth, height: height)
+            }
+        case decadeCollectionView:
+            if indexPath.item == decades.count {
+                return CGSize(width: style.borderWidth, height: collectionView.frame.height)
+            } else {
+                let height = collectionView.superview!.frame.size.height
+                return CGSize(width: Constants.controlItemWidth, height: height)
+            }
+        default:
+            break
+        }
+
+        return NSSize.zero
     }
 
 
@@ -524,6 +558,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     private func setupControls(in collectionView: NSCollectionView, scrollView: NSScrollView) {
         collectionView.register(TimelineControlItemView.self, forItemWithIdentifier: TimelineControlItemView.identifier)
+        collectionView.register(TimelineBorder.self, forItemWithIdentifier: TimelineBorder.identifier)
         scrollView.horizontalScroller?.alphaValue = 0
     }
 

@@ -2,6 +2,7 @@
 
 import Cocoa
 
+
 class TimelineItemView: NSCollectionViewItem {
     static let identifier = NSUserInterfaceItemIdentifier(rawValue: "TimelineItemView")
 

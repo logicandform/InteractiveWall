@@ -20,7 +20,8 @@ final class Style {
     let clusterColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
 
     // Border Style
-    let borderColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
+    let borderColor = NSColor(calibratedRed: 1, green: 1, blue: 1, alpha: 1)
+    let borderWidth: CGFloat = 1
 
     // Window Levels
     let mapWindowLevel = NSWindow.Level(28)

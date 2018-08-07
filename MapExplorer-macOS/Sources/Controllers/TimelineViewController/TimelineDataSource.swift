@@ -88,17 +88,25 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     // MARK: NSCollectionViewDataSource
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return events.count + years.count
+        switch type {
+        case .month:
+            return events.count + (years.count * 12)
+        case .year, .decade, .century:
+            return events.count + years.count
+        }
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        guard let timelineItem = collectionView.makeItem(withIdentifier: TimelineItemView.identifier, for: indexPath) as? TimelineItemView, let attributes = collectionView.collectionViewLayout?.layoutAttributesForItem(at: indexPath) else {
-            return NSCollectionViewItem()
+        if indexPath.item == events.count, let border = collectionView.makeItem(withIdentifier: TimelineBorder.identifier, for: indexPath) as? TimelineBorder, let attributes = collectionView.collectionViewLayout?.layoutAttributesForItem(at: indexPath) {
+            border.set(frame: attributes.frame)
+            return border
+        } else if let timelineItem = collectionView.makeItem(withIdentifier: TimelineItemView.identifier, for: indexPath) as? TimelineItemView, let attributes = collectionView.collectionViewLayout?.layoutAttributesForItem(at: indexPath) {
+            timelineItem.event = events[indexPath.item]
+            timelineItem.set(selected: selectedIndexes.contains(indexPath.item % years.count), with: type, attributes: attributes)
+            return timelineItem
         }
 
-        timelineItem.event = events[indexPath.item]
-        timelineItem.set(selected: selectedIndexes.contains(indexPath.item % years.count), with: type, attributes: attributes)
-        return timelineItem
+        return NSCollectionViewItem()
     }
 
     func collectionView(_ collectionView: NSCollectionView, viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind, at indexPath: IndexPath) -> NSView {

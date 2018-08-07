@@ -57,6 +57,10 @@ class TimelineDecadeStackedLayout: NSCollectionViewFlowLayout {
                     }
                 }
             }
+            // Append dividing line between last and first years
+            if year == source.lastYear, let attributes = attributesForBorder(in: source) {
+                layoutAttributes.append(attributes)
+            }
             // Append attributes for supplimentary views
             if let attributes = attributes(year: year, in: source) {
                 layoutAttributes.append(attributes)
@@ -67,11 +71,17 @@ class TimelineDecadeStackedLayout: NSCollectionViewFlowLayout {
     }
 
     override func layoutAttributesForItem(at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
-        guard let source = collectionView?.dataSource as? TimelineDataSource, let event = source.events.at(index: indexPath.item) else {
+        guard let source = collectionView?.dataSource as? TimelineDataSource else {
             return nil
         }
 
-        return attributes(for: event, in: source)
+        if let event = source.events.at(index: indexPath.item) {
+            return attributes(for: event, in: source)
+        } else if indexPath.item == source.events.count {
+            return attributesForBorder(in: source)
+        }
+
+        return nil
     }
 
 
@@ -110,6 +120,19 @@ class TimelineDecadeStackedLayout: NSCollectionViewFlowLayout {
         let x = CGFloat(item * type.sectionWidth)
         let size = CGSize(width: Constants.cellSize.width, height: Constants.headerHeight)
         attributes.frame = CGRect(origin: CGPoint(x: x, y: 0), size: size)
+        return attributes
+    }
+
+    private func attributesForBorder(in source: TimelineDataSource) -> NSCollectionViewLayoutAttributes? {
+        guard let collectionView = collectionView else {
+            return nil
+        }
+
+        let item = source.events.count
+        let indexPath = IndexPath(item: item, section: 0)
+        let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
+        let x = CGFloat(source.years.count * type.sectionWidth)
+        attributes.frame = CGRect(x: x, y: 0, width: style.borderWidth, height: collectionView.frame.height)
         return attributes
     }
 
