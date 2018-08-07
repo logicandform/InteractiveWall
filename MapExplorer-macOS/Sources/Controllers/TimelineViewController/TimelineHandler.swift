@@ -87,7 +87,13 @@ final class TimelineHandler {
     }
 
     func reset(animated: Bool = true) {
-        // TODO
+        guard let timelineViewController = timelineViewController, let source = timelineViewController.timelineCollectionView.dataSource as? TimelineDataSource else {
+            return
+        }
+
+        timelineViewController.setupTimelineDate()
+        source.selectedIndexes = [Int]()
+        timelineViewController.timelineCollectionView.reloadItems(at: timelineViewController.timelineCollectionView.indexPathsForVisibleItems())
     }
 
 

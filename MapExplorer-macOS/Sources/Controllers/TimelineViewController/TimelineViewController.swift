@@ -46,12 +46,16 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     @IBOutlet weak var timelineBackgroundView: NSView!
     @IBOutlet weak var timelineCollectionView: FlippedCollectionView!
+    @IBOutlet weak var timelineClipView: NSClipView!
     @IBOutlet weak var timelineScrollView: NSScrollView!
     @IBOutlet weak var monthCollectionView: NSCollectionView!
+    @IBOutlet weak var monthClipView: NSClipView!
     @IBOutlet weak var monthScrollView: NSScrollView!
     @IBOutlet weak var yearCollectionView: NSCollectionView!
+    @IBOutlet weak var yearClipView: NSClipView!
     @IBOutlet weak var yearScrollView: NSScrollView!
     @IBOutlet weak var decadeCollectionView: NSCollectionView!
+    @IBOutlet weak var decadeClipView: NSClipView!
     @IBOutlet weak var decadeScrollView: NSScrollView!
     @IBOutlet weak var timelineIndicatorView: NSView!
 
@@ -109,11 +113,11 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         })
     }
 
-    func setDate(_ date: TimelineDate) {
+    func setDate(_ date: TimelineDate, animated: Bool = false) {
         currentDate.year = adjust(year: date.year)
         currentDate.month = adjust(month: date.month)
         currentDate.day = adjust(day: date.day)
-        scrollCollectionViews()
+        scrollCollectionViews(animated: animated)
     }
 
 
@@ -135,12 +139,26 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     override func viewDidAppear() {
         super.viewDidAppear()
         setupControlGradients()
-        setupTimelineDate()
-        timelineCollectionView.collectionViewLayout?.invalidateLayout()
+        timelineHandler?.reset()
     }
 
 
     // MARK: Setup
+
+    func setupTimelineDate() {
+        switch timelineCollectionView.collectionViewLayout {
+        case is TimelineMonthLayout:
+            setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month + appID, year: Constants.initialDate.year), animated: true)
+        case is TimelineYearLayout:
+            setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year + appID), animated: true)
+        case is TimelineDecadeLayout, is TimelineDecadeStackedLayout:
+            setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year + (appID * 10)), animated: true)
+        case is TimelineCenturyLayout:
+            setDate(Constants.initialDate, animated: true)
+        default:
+            return
+        }
+    }
 
     private func setupBackground() {
         timelineBackgroundView.alphaValue = 0
@@ -156,23 +174,9 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         timelineCollectionView.register(TimelineBorder.self, forItemWithIdentifier: TimelineBorder.identifier)
         timelineCollectionView.register(NSNib(nibNamed: TimelineHeaderView.nibName, bundle: .main), forSupplementaryViewOfKind: TimelineHeaderView.supplementaryKind, withIdentifier: TimelineHeaderView.identifier)
         timelineCollectionView.dataSource = source
+        timelineCollectionView.wantsLayer = true
         timelineScrollView.horizontalScroller?.alphaValue = 0
         createRecords()
-    }
-
-    private func setupTimelineDate() {
-        switch timelineCollectionView.collectionViewLayout {
-        case is TimelineMonthLayout:
-            setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month + appID, year: Constants.initialDate.year))
-        case is TimelineYearLayout:
-            setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year + appID))
-        case is TimelineDecadeLayout, is TimelineDecadeStackedLayout:
-            setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year + (appID * 10)))
-        case is TimelineCenturyLayout:
-            setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year))
-        default:
-            return
-        }
     }
 
     private func setupControls() {
@@ -714,7 +718,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     // MARK: Helpers
 
-    private func scrollCollectionViews() {
+    private func scrollCollectionViews(animated: Bool = false) {
         let centerInset = Constants.controlItemWidth * 3
 
         let dayOffset = (currentDate.day - 0.5) * Constants.controlItemWidth
@@ -725,7 +729,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         if monthRect.origin.x < 0 {
             monthRect.origin.x = monthMaxX + monthRect.origin.x
         }
-        monthCollectionView.scrollToVisible(monthRect)
 
         let monthOffset = (CGFloat(currentDate.month) / 12) * Constants.controlItemWidth
         let yearMaxX = CGFloat(years.count) * Constants.controlItemWidth
@@ -736,7 +739,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         if yearRect.origin.x < 0 {
             yearRect.origin.x = yearMaxX + yearRect.origin.x
         }
-        yearCollectionView.scrollToVisible(yearRect)
 
         let yearOffset = (CGFloat(currentDate.year.array.last!) / 10) * Constants.controlItemWidth
         let decade = decadeFor(year: currentDate.year)
@@ -749,12 +751,21 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         if decadeRect.origin.x < 0 {
             decadeRect.origin.x = decadeMaxX + decadeRect.origin.x
         }
-        decadeCollectionView.scrollToVisible(decadeRect)
 
-        scrollTimeline()
+        if animated {
+            monthCollectionView.animate(to: monthRect.origin)
+            yearCollectionView.animate(to: yearRect.origin)
+            decadeCollectionView.animate(to: decadeRect.origin)
+        } else {
+            monthCollectionView.scrollToVisible(monthRect)
+            yearCollectionView.scrollToVisible(yearRect)
+            decadeCollectionView.scrollToVisible(decadeRect)
+        }
+
+        scrollTimeline(animated: animated)
     }
 
-    private func scrollTimeline() {
+    private func scrollTimeline(animated: Bool = false) {
         var timelineMaxX = CGFloat(years.count) * CGFloat(timelineType.sectionWidth)
         let timelineYearIndex = years.index(of: currentDate.year) != nil ? years.index(of: currentDate.year) : currentDate.year < source.firstYear ? -1 : years.count - 1
         var timelineRect = timelineCollectionView.visibleRect
@@ -777,9 +788,14 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
             if timelineRect.origin.x < 0 {
                 timelineRect.origin.x = timelineMaxX + timelineRect.origin.x
             }
-            timelineCollectionView.scrollToVisible(timelineRect)
         default:
             return
+        }
+
+        if animated {
+            timelineCollectionView.animate(to: timelineRect.origin)
+        } else {
+            timelineCollectionView.scrollToVisible(timelineRect)
         }
 
         if abs(previousRect.origin.x - timelineRect.origin.x) > timelineMaxX / 2 {
