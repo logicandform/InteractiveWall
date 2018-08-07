@@ -127,7 +127,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
             let count = eventsForYear[year]?.count ?? 0
             if !count.isZero {
                 countForYear[year] = count
-                print("\(count) schools starting in year: \(year).")
+                print("\(count) timeline events starting in year: \(year).")
             }
             if let current = countForCounts[count] {
                 countForCounts[count] = current + 1
@@ -145,7 +145,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
             print("Years with size: \(size) make up \(percent) of all the years.")
         }
 
-        print("\(countForYear.keys.count) years out of \(yearCount) have at least one school start.")
+        print("\(countForYear.keys.count) years out of \(yearCount) have at least one timeline event start.")
 
         let sortedYears = countForYear.keys.sorted()
         for (index, year) in sortedYears.enumerated() {
@@ -153,7 +153,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
             if nextIndex != sortedYears.count {
                 let nextYear = sortedYears[nextIndex]
                 let distanceToNextYear = nextYear - year
-                print("\(year) has a \(distanceToNextYear) year gap until next school occurance.")
+                print("\(year) has a \(distanceToNextYear) year gap until next timeline event occurance.")
             } else {
                 print("\(year) is the last year.")
             }
@@ -176,5 +176,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
             totalTimeOpen += event.dates.endDate.year - event.dates.startDate.year + 1
         }
         print("Average time open is: \(totalTimeOpen / events.count)")
+
+        print("Current number of timeline events is: \(events.count)")
     }
 }

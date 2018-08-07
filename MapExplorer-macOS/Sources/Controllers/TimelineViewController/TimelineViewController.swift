@@ -77,7 +77,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         static let timelineControlItemWidth: CGFloat = 70
         static let timelineIndicatorBorderRadius: CGFloat = 8
         static let timelineIndicatorBorderWidth: CGFloat = 2
-//        static let initialDate = (TimelineDate(day: CGFloat(0.5), month: Month.january.rawValue, year: 1880))
         static let initialDate = (day: CGFloat(0.5), month: Month.january.rawValue, year: 1880)
         static let fadePercentage = 0.1
     }
