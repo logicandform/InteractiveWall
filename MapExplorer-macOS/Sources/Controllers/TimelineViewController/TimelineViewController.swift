@@ -174,7 +174,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         timelineCollectionView.register(TimelineBorder.self, forItemWithIdentifier: TimelineBorder.identifier)
         timelineCollectionView.register(NSNib(nibNamed: TimelineHeaderView.nibName, bundle: .main), forSupplementaryViewOfKind: TimelineHeaderView.supplementaryKind, withIdentifier: TimelineHeaderView.identifier)
         timelineCollectionView.dataSource = source
-        timelineCollectionView.wantsLayer = true
         timelineScrollView.horizontalScroller?.alphaValue = 0
         createRecords()
     }
