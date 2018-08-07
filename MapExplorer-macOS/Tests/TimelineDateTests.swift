@@ -14,15 +14,13 @@ class TimelineDateTests: XCTestCase {
             return
         }
 
-        let expectedStartDay = CGFloat(18.0/30.0)
-        let expectedEndDay = CGFloat(0)
-        let expectedStartMonth = 9
-        let expectedEndMonth = 0
+        let expectedDay = CGFloat(18.0/30.0)
+        let expectedMonth = 9
         let expectedYear = 2019
-        XCTAssert(dateRange.startDate.day.isEqual(to: expectedStartDay))
-        XCTAssert(dateRange.endDate.day.isEqual(to: expectedEndDay))
-        XCTAssert(dateRange.startDate.month == expectedStartMonth)
-        XCTAssert(dateRange.endDate.month == expectedEndMonth)
+        XCTAssert(dateRange.startDate.day.isEqual(to: expectedDay))
+        XCTAssert(dateRange.endDate.day.isEqual(to: expectedDay))
+        XCTAssert(dateRange.startDate.month == expectedMonth)
+        XCTAssert(dateRange.endDate.month == expectedMonth)
         XCTAssert(dateRange.startDate.year == expectedYear)
         XCTAssert(dateRange.endDate.year == expectedYear)
     }
@@ -33,15 +31,13 @@ class TimelineDateTests: XCTestCase {
             return
         }
 
-        let expectedStartDay = CGFloat(18.0/30.0)
-        let expectedEndDay = CGFloat(0)
-        let expectedStartMonth = 7
-        let expectedEndMonth = 0
+        let expectedDay = CGFloat(18.0/30.0)
+        let expectedMonth = 7
         let expectedYear = 1976
-        XCTAssert(dateRange.startDate.day.isEqual(to: expectedStartDay))
-        XCTAssert(dateRange.endDate.day.isEqual(to: expectedEndDay))
-        XCTAssert(dateRange.startDate.month == expectedStartMonth)
-        XCTAssert(dateRange.endDate.month == expectedEndMonth)
+        XCTAssert(dateRange.startDate.day.isEqual(to: expectedDay))
+        XCTAssert(dateRange.endDate.day.isEqual(to: expectedDay))
+        XCTAssert(dateRange.startDate.month == expectedMonth)
+        XCTAssert(dateRange.endDate.month == expectedMonth)
         XCTAssert(dateRange.startDate.year == expectedYear)
         XCTAssert(dateRange.endDate.year == expectedYear)
     }
@@ -52,15 +48,13 @@ class TimelineDateTests: XCTestCase {
             return
         }
 
-        let expectedStartDay = CGFloat(10.0/30.0)
-        let expectedEndDay = CGFloat(0)
-        let expectedStartMonth = 4
-        let expectedEndMonth = 0
+        let expectedDay = CGFloat(10.0/30.0)
+        let expectedMonth = 4
         let expectedYear = 2010
-        XCTAssert(dateRange.startDate.day.isEqual(to: expectedStartDay))
-        XCTAssert(dateRange.endDate.day.isEqual(to: expectedEndDay))
-        XCTAssert(dateRange.startDate.month == expectedStartMonth)
-        XCTAssert(dateRange.endDate.month == expectedEndMonth)
+        XCTAssert(dateRange.startDate.day.isEqual(to: expectedDay))
+        XCTAssert(dateRange.endDate.day.isEqual(to: expectedDay))
+        XCTAssert(dateRange.startDate.month == expectedMonth)
+        XCTAssert(dateRange.endDate.month == expectedMonth)
         XCTAssert(dateRange.startDate.year == expectedYear)
         XCTAssert(dateRange.endDate.year == expectedYear)
     }
@@ -246,5 +240,13 @@ class TimelineDateTests: XCTestCase {
         XCTAssert(dateRange.endDate.month == expectedEndMonth)
         XCTAssert(dateRange.startDate.year == expectedStartYear)
         XCTAssert(dateRange.endDate.year == expectedEndYear)
+    }
+
+    func testNoInput() {
+        if TimelineRange("") == nil {
+            XCTAssert(true)
+        } else {
+        XCTAssert(false)
+        }
     }
 }

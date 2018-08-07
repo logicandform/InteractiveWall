@@ -66,6 +66,16 @@ class TimelineRange {
             }
         }
 
+        if let day = startDay, endDay == nil {
+            endDay = day
+        }
+        if let month = startMonth, endMonth == nil {
+            endMonth = month
+        }
+        if let year = startYear, endYear == nil {
+            endYear = year
+        }
+
         if let year = startYear {
             start = TimelineDate(day: startDay, month: startMonth, year: year)
         }
@@ -80,31 +90,6 @@ class TimelineRange {
         } else {
             return nil
         }
-
-//        if let day = startDay {
-//            startDate.day = day
-//        }
-//        if let month = startMonth {
-//            startDate.month = month
-//        }
-//        if let year = startYear {
-//            startDate.year = year
-//        }
-//        if let day = endDay {
-//            endDate.day = day
-//        } else if let day = startDay {
-//            endDate.day = day
-//        }
-//        if let month = endMonth {
-//            endDate.month = month
-//        } else if let month = startMonth {
-//            endDate.month = month
-//        }
-//        if let year = endYear {
-//            endDate.year = year
-//        } else if let year = startYear {
-//            endDate.year = year
-
     }
 
     private static func parseNonNumerical(dateArray: [String]) -> (startDate: TimelineDate, endDate: TimelineDate)? {
@@ -154,6 +139,16 @@ class TimelineRange {
             }
         }
 
+        if let day = startDay, endDay == nil {
+            endDay = day
+        }
+        if let month = startMonth, endMonth == nil {
+            endMonth = month
+        }
+        if let year = startYear, endYear == nil {
+            endYear = year
+        }
+
         if let year = startYear {
             start = TimelineDate(day: startDay, month: startMonth, year: year)
         }
@@ -168,33 +163,5 @@ class TimelineRange {
         } else {
             return nil
         }
-
-
-
-
-//        if let day = startDay {
-//            startDate.day = day
-//        }
-//        if let month = startMonth {
-//            startDate.month = month
-//        }
-//        if let year = startYear {
-//            startDate.year = year
-//        }
-//        if let day = endDay {
-//            endDate.day = day
-//        } else if let day = startDay {
-//            endDate.day = day
-//        }
-//        if let month = endMonth {
-//            endDate.month = month
-//        } else if let month = startMonth {
-//            endDate.month = month
-//        }
-//        if let year = endYear {
-//            endDate.year = year
-//        } else if let year = startYear {
-//            endDate.year = year
-//        }
     }
 }
