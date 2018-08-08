@@ -246,7 +246,7 @@ class TimelineDateTests: XCTestCase {
         if TimelineRange("") == nil {
             XCTAssert(true)
         } else {
-        XCTAssert(false)
+            XCTAssert(false)
         }
     }
 }
