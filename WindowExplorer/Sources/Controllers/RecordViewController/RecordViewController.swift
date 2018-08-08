@@ -537,11 +537,8 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     // MARK: Helpers
 
     private func animateCollectionView(to point: CGPoint, duration: CGFloat, for index: Int) {
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = TimeInterval(duration)
-            mediaCollectionClipView.animator().setBoundsOrigin(point)
-            }, completionHandler: { [weak self] in
-                self?.pageControl.selectedPage = UInt(index)
+        mediaView.animate(to: point, duration: duration, completion: { [weak self] in
+            self?.pageControl.selectedPage = UInt(index)
         })
     }
 
