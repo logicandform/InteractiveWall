@@ -12,6 +12,7 @@ import GameplayKit
 
 typealias EntityLevels = [Set<RecordEntity>]
 
+
 struct LayerBitMasks {
     let categoryBitMask: UInt32
     let contactTestBitMask: UInt32
@@ -65,7 +66,7 @@ final class NodeCluster: Hashable {
         filterRecords(for: entity)
         attach(to: entity)
         setLayers(toLevel: entitiesForLevel.count)
-        updateLevelsForEntities()
+        updateStatesForEntities()
     }
 
     /// Updates the layers in the cluster for when the selected entity is panning
@@ -143,6 +144,7 @@ final class NodeCluster: Hashable {
     /// Requests all entities for related records of the given entity. Sets their `cluster` to `self`.
     private func attach(to entity: RecordEntity) {
         var entityLevels = EntityLevels()
+        // Build levels for the new entity
         for (index, records) in entity.relatedRecordsForLevel.enumerated() {
             let entitiesForLevel = EntityManager.instance.requestEntities(with: records, for: self)
             if entitiesForLevel.isEmpty {
@@ -158,16 +160,13 @@ final class NodeCluster: Hashable {
         entitiesForLevel = entityLevels
     }
 
-    private func updateLevelsForEntities() {
-        // Set selected node level to -1
-        selectedEntity.set(level: -1)
+    private func updateStatesForEntities() {
+        selectedEntity.set(state: .tapped)
 
         // Update the tapped entity's descendants to the appropriate state with appropriate movement
         for (level, entities) in entitiesForLevel.enumerated() {
             for entity in entities {
-                entity.set(level: level)
-                entity.set(state: .moveToAppropriateLevel)
-                entity.set(state: .seekLayer)
+                entity.set(state: .seekLevel(level))
             }
         }
     }

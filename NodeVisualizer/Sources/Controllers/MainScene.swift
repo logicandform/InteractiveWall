@@ -50,11 +50,13 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         if contact.bodyA.node?.name == "boundingNode",
             let contactEntity = contact.bodyB.node?.entity as? RecordEntity,
             !contactEntity.hasCollidedWithBoundingNode,
-            contactEntity.state is SeekTappedEntityState {
+            case EntityState.seekEntity(_) = contactEntity.state {
             contactEntity.hasCollidedWithBoundingNode = true
-        } else if let contactEntity = contact.bodyA.node?.entity as? RecordEntity,
+        }
+
+        if let contactEntity = contact.bodyA.node?.entity as? RecordEntity,
             !contactEntity.hasCollidedWithBoundingNode,
-            contactEntity.state is SeekTappedEntityState,
+            case EntityState.seekEntity(_) = contactEntity.state,
             contact.bodyB.node?.name == "boundingNode" {
             contactEntity.hasCollidedWithBoundingNode = true
         }
@@ -115,8 +117,6 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
             return
         }
 
-        print("ID: \(recordNode.record.id)")
-
         switch tap.state {
         case .ended:
             select(recordNode)
@@ -168,9 +168,9 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     private func handleSystemClickGesture(_ recognizer: NSClickGestureRecognizer) {
         let clickPosition = recognizer.location(in: recognizer.view)
         let nodePosition = convertPoint(fromView: clickPosition)
-
-        guard let recordNode = nodes(at: nodePosition).first(where: { $0 is RecordNode }) as? RecordNode else { return }
-        print("ID: \(recordNode.record.id) \n Type: \(recordNode.record.type)")
+        guard let recordNode = nodes(at: nodePosition).first(where: { $0 is RecordNode }) as? RecordNode else {
+            return
+        }
 
         switch recognizer.state {
         case .ended:
@@ -249,10 +249,9 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         nodeClusters.insert(cluster)
 
         switch entityForNode.state {
-        case is SeekTappedEntityState, is FallingState:
+        case .seekEntity(_), .falling:
             cluster.select(entityForNode)
-            entityForNode.set(state: .tapped)
-        case is TappedState:
+        case .tapped:
             cluster.reset()
             nodeClusters.remove(cluster)
         default:

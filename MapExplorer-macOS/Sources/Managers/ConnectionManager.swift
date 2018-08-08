@@ -357,7 +357,7 @@ final class ConnectionManager {
         case .timeline:
             if let timelineHandler = timelineHandler, let timelineViewController = timelineViewController {
                 let date = timelineViewController.currentDate
-                timelineHandler.send(date: date, for: .momentum, forced: true)
+                timelineHandler.send(date: TimelineDate(date: date), for: .momentum, forced: true)
             }
         default:
             return

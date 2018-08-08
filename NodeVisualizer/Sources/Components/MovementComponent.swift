@@ -5,21 +5,15 @@ import SpriteKit
 import GameplayKit
 
 
-enum MovementState {
-    case none
-    case fall
-    case seekEntity(RecordEntity?)
-    case moveToAppropriateLevel
-}
-
-
-/// A 'GKComponent' that provides different types of physics movement for the entity.
+/// A 'GKComponent' that provides different types of physics movement based on the current `RecordState`.
 class MovementComponent: GKComponent {
 
-    var cluster: NodeCluster?
-
-    /// The type of movement state that needs to be executed on the next update cycle
-    var requestedMovementState: MovementState?
+    var state = EntityState.falling {
+        didSet {
+            exit(state: oldValue)
+            enter(state: state)
+        }
+    }
 
     private struct Constants {
         static let strength: CGFloat = 1000
@@ -36,24 +30,53 @@ class MovementComponent: GKComponent {
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
 
-        if let movementState = requestedMovementState {
-            handleMovement(for: movementState)
+
+        switch state {
+        case .falling:
+            fall()
+        case .seekEntity(let entity):
+            seek(entity)
+        case .seekLevel(let level):
+            move(to: level)
+        case .tapped:
+            // Animation only needs to be run once in the enter function.
+            break
         }
     }
 
 
     // MARK: Helpers
 
-    private func handleMovement(for state: MovementState) {
+    private func exit(state: EntityState) {
+        guard let entity = entity as? RecordEntity else {
+            return
+        }
+
         switch state {
-        case .none:
-            requestedMovementState = nil
-        case .fall:
-            fall()
-        case .seekEntity(let entity):
-            seek(entity)
-        case .moveToAppropriateLevel:
-            moveToAppropriateLevel()
+        case .falling:
+            entity.physicsBody.affectedByGravity = false
+        case .tapped:
+            entity.physicsBody.isDynamic = true
+        default:
+            break
+        }
+    }
+
+    private func enter(state: EntityState) {
+        guard let entity = entity as? RecordEntity else {
+            return
+        }
+
+        switch state {
+        case .falling:
+            entity.physicsBody.affectedByGravity = true
+        case .seekLevel(_), .seekEntity(_):
+            entity.physicsBody.restitution = 0
+            entity.physicsBody.friction = 1
+            entity.physicsBody.linearDamping = 1
+        case .tapped:
+            entity.physicsBody.isDynamic = false
+            cluster()
         }
     }
 
@@ -79,10 +102,17 @@ class MovementComponent: GKComponent {
         }
     }
 
+    private func cluster() {
+        guard let entity = entity as? RecordEntity, let cluster = entity.cluster else {
+            return
+        }
+
+        entity.set(state: .goToPoint(cluster.center))
+    }
+
     /// Applies appropriate physics that moves the entity to the appropriate higher level before entering next state and setting its bitMasks
-    private func moveToAppropriateLevel() {
-        guard let entity = entity as? RecordEntity, entity.state is SeekBoundingLevelNodeState,
-            let referenceNode = cluster?.layerForLevel[0]?.nodeBoundingRenderComponent.node else {
+    private func move(to level: Int) {
+        guard let entity = entity as? RecordEntity, let cluster = entity.cluster, let referenceNode = cluster.layerForLevel[level]?.nodeBoundingRenderComponent.node else {
             return
         }
 
@@ -102,8 +132,8 @@ class MovementComponent: GKComponent {
 
         // Find the difference in distance. This gives the total distance that is left to travel for the node
         guard let currentLevel = entity.clusterLevel.currentLevel,
-            let currentLevelBoundingEntityComponent = cluster?.layerForLevel[currentLevel]?.nodeBoundingRenderComponent else {
-            return
+            let currentLevelBoundingEntityComponent = cluster.layerForLevel[currentLevel]?.nodeBoundingRenderComponent else {
+                return
         }
 
         let r2 = currentLevelBoundingEntityComponent.minRadius
@@ -112,8 +142,7 @@ class MovementComponent: GKComponent {
         if (r2 - r1) < Constants.distancePadding {
             // Enter SeekState and provide the appropriate bitmasks and entityToSeek for the MovementComponent
             entity.setBitMasks(forLevel: currentLevel)
-            requestedMovementState = .seekEntity(cluster?.selectedEntity)
-            entity.set(state: .seekCluster)
+            state = .seekEntity(cluster.selectedEntity)
         } else {
             // Apply velocity
             entity.physicsBody.velocity = CGVector(dx: Constants.speed * unitVector.dx, dy: Constants.speed * unitVector.dy)
@@ -121,20 +150,19 @@ class MovementComponent: GKComponent {
     }
 
     /// Applies appropriate physics that emulates a gravitational pull between this component's entity and the entity that it should seek
-    private func seek(_ entityToSeek: RecordEntity?) {
-        // Check to see if the record entity is in the correct state (i.e. it is seeking a tapped record node)
-        guard let entity = entity as? RecordEntity, entity.state is SeekTappedEntityState, let targetNode = entityToSeek else {
+    private func seek(_ targetEntity: RecordEntity) {
+        guard let entity = entity as? RecordEntity else {
             return
         }
 
         // Check the radius between its own entity and the nodeToSeek, and apply the appropriate physics
-        let deltaX = targetNode.position.x - entity.position.x
-        let deltaY = targetNode.position.y - entity.position.y
+        let deltaX = targetEntity.position.x - entity.position.x
+        let deltaY = targetEntity.position.y - entity.position.y
         let displacement = CGVector(dx: deltaX, dy: deltaY)
 
         let radius = distanceOf(x: deltaX, y: deltaY)
 
-        let targetEntityMass = targetNode.physicsBody.mass * Constants.strength * radius
+        let targetEntityMass = targetEntity.physicsBody.mass * Constants.strength * radius
         let entityMass = entity.physicsBody.mass * Constants.strength * radius
 
         let unitVector = CGVector(dx: displacement.dx / radius, dy: displacement.dy / radius)
