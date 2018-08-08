@@ -21,11 +21,11 @@ struct LayerBitMasks {
 
 final class NodeCluster: Hashable {
 
-    var center: CGPoint
-    private let scene: MainScene
+    private(set) var center: CGPoint
     private(set) var selectedEntity: RecordEntity
     private(set) var entitiesForLevel = EntityLevels()
     private(set) var layerForLevel = [Int: NodeBoundingEntity]()
+    private let scene: MainScene
 
     var hashValue: Int {
         return selectedEntity.hashValue
@@ -68,9 +68,23 @@ final class NodeCluster: Hashable {
         updateLevelsForEntities()
     }
 
-    func updateForPanningEntity() {
-        setLayers(toLevel: 0)
-        updateLevelsForPanningEntity()
+    /// Updates the layers in the cluster for when the selected entity is panning
+    func updateLayerLevels(forPan panning: Bool) {
+        let level = panning ? 0 : entitiesForLevel.count
+        setLayers(toLevel: level)
+        for (level, entities) in entitiesForLevel.enumerated() {
+            for entity in entities {
+                entity.physicsComponent.setBitMasks(forLevel: level)
+            }
+        }
+    }
+
+    /// Updates the selectedEntity and its cluster to the new panned position
+    func updateClusterPosition(to position: CGPoint) {
+        center = position
+        for (_, boundingNodeEntity) in layerForLevel {
+            boundingNodeEntity.nodeBoundingRenderComponent.node?.position = position
+        }
     }
 
     /// Removes all entities currently formed in the cluster and removes all bounding layers

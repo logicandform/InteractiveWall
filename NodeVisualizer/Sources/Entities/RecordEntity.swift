@@ -107,7 +107,7 @@ final class RecordEntity: GKEntity {
             SeekTappedEntityState(entity: self),
             SeekBoundingLevelNodeState(entity: self),
             TappedState(entity: self),
-            PanningState(entity: self)
+            TappedEntityPanState(entity: self)
         ])
         addComponent(intelligenceComponent)
 

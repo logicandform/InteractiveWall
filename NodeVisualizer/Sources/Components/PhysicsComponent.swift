@@ -64,7 +64,8 @@ class PhysicsComponent: GKComponent {
             return
         }
 
-        if cluster?.selectedEntity.intelligenceComponent.stateMachine.currentState is PanningState {
+        if cluster?.selectedEntity.intelligenceComponent.stateMachine.currentState is TappedEntityPanState {
+            recordEntity.hasCollidedWithBoundingNode = false
             return
         }
 

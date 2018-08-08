@@ -102,16 +102,7 @@ final class NodeGestureManager {
     }
 
     private func target(in view: NSView, at point: CGPoint, current: CGAffineTransform, flipped: Bool) -> (SKNode, CGAffineTransform)? {
-
-        guard let skView = view as? SKView else {
-            return nil
-        }
-
-        guard skView.frame.contains(point) else {
-            return nil
-        }
-
-        guard let scene = skView.scene as? MainScene else {
+        guard let skView = view as? SKView, skView.frame.contains(point), let scene = skView.scene as? MainScene else {
             return nil
         }
 
@@ -126,29 +117,10 @@ final class NodeGestureManager {
             transform = transform.translatedBy(x: 0, y: -yDiff)
         }
 
-//        for subview in view.subviews.reversed() {
-//            if let target = target(in: subview, at: positionInBounds, current: transform, flipped: view.isFlipped) {
-//                return target
-//            }
-//        }
-
-//        let viewCanRespond = gestureHandlers.keys.contains(view) && !view.isHidden
-//        return viewCanRespond ? (view, transform) : nil
-
         guard let nodeAtPoint = scene.nodes(at: point).first(where: { $0 is RecordNode }), gestureHandlers.keys.contains(nodeAtPoint) else {
             return nil
         }
 
         return (nodeAtPoint, transform)
     }
-
-
-
-
-
-
-
-
-
-
 }

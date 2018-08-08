@@ -26,7 +26,7 @@ class TestingDataManager {
 
     func instantiate() {
         // Setup testing nodes
-        testDuplicatingNodes()
+        testNormalCase()
 
         // Store directly related records in dictionary
         for record in records {
@@ -81,6 +81,21 @@ class TestingDataManager {
             let theme = themes[index]
             associate(records: [theme], to: previousTheme)
         }
+    }
+
+    private func testNormalCase() {
+        let artifacts = createRecords(of: .artifact, count: 10)
+        records.append(contentsOf: artifacts)
+        let schools = createRecords(of: .school, count: 1)
+        records.append(contentsOf: schools)
+        let organizations = createRecords(of: .organization, count: 1)
+        records.append(contentsOf: organizations)
+        let events = createRecords(of: .event, count: 1)
+        records.append(contentsOf: events)
+
+        associate(records: artifacts, to: schools.first!)
+        associate(records: organizations, to: schools.first!)
+        associate(records: events, to: organizations.first!)
     }
 
 
