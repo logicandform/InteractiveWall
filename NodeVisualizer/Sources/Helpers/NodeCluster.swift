@@ -74,7 +74,7 @@ final class NodeCluster: Hashable {
         setLayers(toLevel: level)
         for (level, entities) in entitiesForLevel.enumerated() {
             for entity in entities {
-                entity.physicsComponent.setBitMasks(forLevel: level)
+                entity.setBitMasks(forLevel: level)
             }
         }
     }

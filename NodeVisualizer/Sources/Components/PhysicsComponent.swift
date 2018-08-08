@@ -10,30 +10,6 @@ class PhysicsComponent: GKComponent {
     var cluster: NodeCluster?
     private(set) var physicsBody: SKPhysicsBody
 
-<<<<<<< HEAD
-=======
-    private var recordEntity: RecordEntity {
-        guard let recordEntity = entity as? RecordEntity else {
-            fatalError("A PhysicsComponent's entity must be a RecordEntity")
-        }
-        return recordEntity
-    }
-
-    private var renderComponent: RenderComponent {
-        guard let renderComponent = entity?.component(ofType: RenderComponent.self) else {
-            fatalError("A PhysicsComponent's entity must have a RenderComponent")
-        }
-        return renderComponent
-    }
-
-    private var intelligenceComponent: IntelligenceComponent {
-        guard let intelligenceComponent = entity?.component(ofType: IntelligenceComponent.self) else {
-            fatalError("A PhysicsComponent's entity must have an IntelligenceComponent")
-        }
-        return intelligenceComponent
-    }
-
->>>>>>> system pan gesture without velocity
     private struct BitMasks {
         let categoryBitMask: UInt32
         let collisionBitMask: UInt32
@@ -64,8 +40,8 @@ class PhysicsComponent: GKComponent {
             return
         }
 
-        if cluster?.selectedEntity.intelligenceComponent.stateMachine.currentState is TappedEntityPanState {
-            recordEntity.hasCollidedWithBoundingNode = false
+        if cluster?.selectedEntity.state is TappedEntityPanState {
+            entity.hasCollidedWithBoundingNode = false
             return
         }
 

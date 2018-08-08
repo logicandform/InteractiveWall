@@ -101,15 +101,7 @@ final class RecordEntity: GKEntity {
         let physicsComponent = PhysicsComponent(physicsBody: SKPhysicsBody(circleOfRadius: style.nodePhysicsBodyRadius))
         let movementComponent = MovementComponent()
         let animationComponent = AnimationComponent()
-        addComponent(animationComponent)
-        let intelligenceComponent = IntelligenceComponent(states: [
-            WanderState(entity: self),
-            SeekTappedEntityState(entity: self),
-            SeekBoundingLevelNodeState(entity: self),
-            TappedState(entity: self),
-            TappedEntityPanState(entity: self)
-        ])
-        addComponent(intelligenceComponent)
+        let intelligenceComponent = IntelligenceComponent(for: self)
 
         renderComponent.recordNode.physicsBody = physicsComponent.physicsBody
         addComponent(movementComponent)

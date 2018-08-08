@@ -26,7 +26,6 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     private struct Constants {
         static let maximumUpdateDeltaTime: TimeInterval = 1.0 / 60.0
         static let panningThreshold: CGFloat = 5
-        static let panningThreshold: CGFloat = 10
         static let slowGravity = CGVector(dx: 0.02, dy: -0.03)
         static let worldPadding: CGFloat = 100
     }
@@ -141,7 +140,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         guard let pan = gesture as? PanGestureRecognizer,
             let node = nodeGestureManager.node(for: pan) as? RecordNode,
             let entity = node.entity as? RecordEntity,
-            !(entity.intelligenceComponent.stateMachine.currentState is SeekTappedEntityState) else {
+            !(entity.state is SeekTappedEntityState) else {
             return
         }
 
@@ -154,22 +153,22 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         switch pan.state {
         case .recognized:
             let distance = CGFloat(hypotf(Float(deltaX), Float(deltaY)))
-            if distance <= Constants.panningThreshold, entity.intelligenceComponent.stateMachine.currentState is TappedState {
+            if distance <= Constants.panningThreshold, entity.state is TappedState {
                 return
             }
 
-            if entity.intelligenceComponent.stateMachine.currentState is TappedState {
-                entity.intelligenceComponent.stateMachine.enter(TappedEntityPanState.self)
+            if entity.state is TappedState {
+                entity.set(state: .panTapped)
             }
 
-            entity.renderComponent.recordNode.position = position
+            entity.set(position: position)
             entity.cluster?.updateClusterPosition(to: position)
         case .momentum:
-            entity.renderComponent.recordNode.position = position
+            entity.set(position: position)
             entity.cluster?.updateClusterPosition(to: position)
         case .ended:
-            if entity.intelligenceComponent.stateMachine.currentState is TappedEntityPanState {
-                entity.intelligenceComponent.stateMachine.enter(TappedState.self)
+            if entity.state is TappedEntityPanState {
+                entity.set(state: .tapped)
             }
         default:
             return
@@ -208,36 +207,36 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
             let pannedTranslation = recognizer.translation(in: recognizer.view)
             let nodePannedTranslation = convertPoint(fromView: pannedTranslation)
             let distance = CGFloat(hypotf(Float(nodePannedTranslation.x), Float(nodePannedTranslation.y)))
-            if distance <= Constants.panningThreshold, selectedEntity?.intelligenceComponent.stateMachine.currentState is TappedState {
+            if distance <= Constants.panningThreshold, selectedEntity?.state is TappedState {
                 return
             }
 
-            if selectedEntity?.intelligenceComponent.stateMachine.currentState is TappedState {
-                selectedEntity?.intelligenceComponent.stateMachine.enter(TappedEntityPanState.self)
+            if selectedEntity?.state is TappedState {
+                selectedEntity?.set(state: .panTapped)
             }
 
-            selectedEntity?.renderComponent.recordNode.position = pannedNodePosition
+            selectedEntity?.set(position: pannedNodePosition)
             selectedEntity?.cluster?.updateClusterPosition(to: pannedNodePosition)
         case .ended:
             guard let selectedEntity = selectedEntity else {
                 return
             }
 
-            if selectedEntity.intelligenceComponent.stateMachine.currentState is TappedState {
+            if selectedEntity.state is TappedState {
                 return
             }
 
             let pannedVelocity = recognizer.velocity(in: recognizer.view)
             let nodePannedVelocity = convertPoint(fromView: pannedVelocity)
             let delta = CGPoint(x: nodePannedVelocity.x * 0.2, y: nodePannedVelocity.y * 0.2)
-            let currentPosition = selectedEntity.renderComponent.recordNode.position
+            let currentPosition = selectedEntity.position
             let newPosition = CGPoint(x: currentPosition.x + delta.x, y: currentPosition.y + delta.y)
 
-            selectedEntity.renderComponent.recordNode.position = newPosition
+            selectedEntity.set(position: newPosition)
             selectedEntity.cluster?.updateClusterPosition(to: newPosition)
 
-            if selectedEntity.intelligenceComponent.stateMachine.currentState is TappedEntityPanState {
-                selectedEntity.intelligenceComponent.stateMachine.enter(TappedState.self)
+            if selectedEntity.state is TappedEntityPanState {
+                selectedEntity.set(state: .tapped)
             }
 
             self.selectedEntity = nil

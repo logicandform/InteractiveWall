@@ -10,6 +10,7 @@ enum EntityState {
     case tapped
     case seekCluster
     case seekLayer
+    case panTapped
 
     var `class`: AnyClass {
         switch self {
@@ -21,6 +22,8 @@ enum EntityState {
             return SeekTappedEntityState.self
         case .seekLayer:
             return SeekBoundingLevelNodeState.self
+        case .panTapped:
+            return TappedEntityPanState.self
         }
     }
 }
@@ -39,7 +42,8 @@ class IntelligenceComponent: GKComponent {
             FallingState(entity: entity),
             SeekTappedEntityState(entity: entity),
             SeekBoundingLevelNodeState(entity: entity),
-            TappedState(entity: entity)
+            TappedState(entity: entity),
+            TappedEntityPanState(entity: entity)
         ]
         self.stateMachine = GKStateMachine(states: states)
         super.init()

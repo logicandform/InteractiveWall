@@ -28,13 +28,8 @@ class TappedState: GKState {
         entity.physicsBody.isDynamic = false
         entity.physicsBody.fieldBitMask = 0x1 << 1
 
-<<<<<<< HEAD
-        if let cluster = entity.cluster, stateMachine?.currentState is TappedState {
-            entity.set(state: .goToPoint(cluster.center))
-=======
         if let cluster = entity.cluster, stateMachine?.currentState is TappedState, !(previousState is TappedEntityPanState) {
-            entity.animationComponent.requestedAnimationState = .goToPoint(cluster.center)
->>>>>>> don't animate node when previous state was panning
+            entity.set(state: .goToPoint(cluster.center))
         }
     }
 
