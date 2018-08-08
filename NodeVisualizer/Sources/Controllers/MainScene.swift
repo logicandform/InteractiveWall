@@ -4,18 +4,6 @@ import SpriteKit
 import GameplayKit
 
 
-private enum StartingPositionType: UInt32 {
-    case top = 0
-    case bottom = 1
-    case left = 2
-    case right = 3
-
-    static var allValues: [StartingPositionType] {
-        return [.top, .bottom, .left, .right]
-    }
-}
-
-
 class MainScene: SKScene, SKPhysicsContactDelegate {
 
     var nodeGestureManager: NodeGestureManager!
@@ -48,6 +36,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         deltaTime = deltaTime > Constants.maximumUpdateDeltaTime ? Constants.maximumUpdateDeltaTime : deltaTime
         lastUpdateTimeInterval = currentTime
 
+        EntityManager.instance.update(deltaTime)
         for cluster in nodeClusters {
             cluster.update(deltaTime)
         }
@@ -197,7 +186,9 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         case .began:
             let pannedPosition = recognizer.location(in: recognizer.view)
             let pannedNodePosition = convertPoint(fromView: pannedPosition)
-            if let recordNode = nodes(at: pannedNodePosition).first(where: { $0 is RecordNode }) as? RecordNode, let entity = recordNode.entity as? RecordEntity {
+            if let recordNode = nodes(at: pannedNodePosition).first(where: { $0 is RecordNode }) as? RecordNode,
+                let entity = recordNode.entity as? RecordEntity,
+                !(entity.state is SeekTappedEntityState) {
                 selectedEntity = entity
             }
         case .changed:
@@ -275,29 +266,6 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         }
 
         return NodeCluster(scene: self, entity: entity)
-    }
-
-    private func getRandomPosition() -> CGPoint {
-        var point = CGPoint.zero
-
-        guard let position = StartingPositionType(rawValue: arc4random_uniform(4)) else {
-            return point
-        }
-
-        switch position {
-        case .top:
-            point = CGPoint(x: randomX(), y: size.height - style.nodePhysicsBodyRadius)
-            return point
-        case .bottom:
-            point = CGPoint(x: randomX(), y: style.nodePhysicsBodyRadius)
-            return point
-        case .left:
-            point = CGPoint(x: style.nodePhysicsBodyRadius, y: randomY())
-            return point
-        case .right:
-            point = CGPoint(x: size.width - style.nodePhysicsBodyRadius, y: randomY())
-            return point
-        }
     }
 
     private func randomX() -> CGFloat {
