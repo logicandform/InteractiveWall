@@ -26,7 +26,9 @@ struct Configuration {
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+//        let screen = NSScreen.at(position: 1)
         let screen = NSScreen.main!
+
         let controller = MainViewController.instance()
         let frame = NSRect(x: screen.frame.minX, y: screen.frame.minY, width: screen.frame.width, height: screen.frame.height)
         let window = NSWindow(contentViewController: controller)

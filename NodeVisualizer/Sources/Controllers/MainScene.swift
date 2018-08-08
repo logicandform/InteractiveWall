@@ -129,7 +129,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         guard let pan = gesture as? PanGestureRecognizer,
             let node = nodeGestureManager.node(for: pan) as? RecordNode,
             let entity = node.entity as? RecordEntity,
-            !(entity.state is SeekTappedEntityState) else {
+            entity.state.pannable else {
             return
         }
 
@@ -142,22 +142,19 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         switch pan.state {
         case .recognized:
             let distance = CGFloat(hypotf(Float(deltaX), Float(deltaY)))
-            if distance <= Constants.panningThreshold, entity.state is TappedState {
+            if distance <= Constants.panningThreshold {
                 return
             }
 
-            if entity.state is TappedState {
-                entity.set(state: .panTapped)
-            }
-
+            entity.set(state: .panning)
             entity.set(position: position)
             entity.cluster?.updateClusterPosition(to: position)
         case .momentum:
             entity.set(position: position)
             entity.cluster?.updateClusterPosition(to: position)
         case .ended:
-            if entity.state is TappedEntityPanState {
-                entity.set(state: .tapped)
+            if entity.state == .panning {
+                entity.set(state: entity.previousState)
             }
         default:
             return
@@ -188,7 +185,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
             let pannedNodePosition = convertPoint(fromView: pannedPosition)
             if let recordNode = nodes(at: pannedNodePosition).first(where: { $0 is RecordNode }) as? RecordNode,
                 let entity = recordNode.entity as? RecordEntity,
-                !(entity.state is SeekTappedEntityState) {
+                entity.state.pannable {
                 selectedEntity = entity
             }
         case .changed:
@@ -198,22 +195,15 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
             let pannedTranslation = recognizer.translation(in: recognizer.view)
             let nodePannedTranslation = convertPoint(fromView: pannedTranslation)
             let distance = CGFloat(hypotf(Float(nodePannedTranslation.x), Float(nodePannedTranslation.y)))
-            if distance <= Constants.panningThreshold, selectedEntity?.state is TappedState {
+            if distance <= Constants.panningThreshold {
                 return
             }
 
-            if selectedEntity?.state is TappedState {
-                selectedEntity?.set(state: .panTapped)
-            }
-
+            selectedEntity?.set(state: .panning)
             selectedEntity?.set(position: pannedNodePosition)
             selectedEntity?.cluster?.updateClusterPosition(to: pannedNodePosition)
         case .ended:
             guard let selectedEntity = selectedEntity else {
-                return
-            }
-
-            if selectedEntity.state is TappedState {
                 return
             }
 
@@ -225,11 +215,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
             selectedEntity.set(position: newPosition)
             selectedEntity.cluster?.updateClusterPosition(to: newPosition)
-
-            if selectedEntity.state is TappedEntityPanState {
-                selectedEntity.set(state: .tapped)
-            }
-
+            selectedEntity.set(state: selectedEntity.previousState)
             self.selectedEntity = nil
         default:
             return

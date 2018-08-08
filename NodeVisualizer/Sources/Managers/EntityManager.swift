@@ -20,7 +20,7 @@ final class EntityManager {
         let movementSystem = GKComponentSystem(componentClass: MovementComponent.self)
         let animationSystem = GKComponentSystem(componentClass: AnimationComponent.self)
         let physicsSystem = GKComponentSystem(componentClass: PhysicsComponent.self)
-        return [animationSystem, movementSystem, physicsSystem]
+        return [movementSystem, physicsSystem, animationSystem]
     }()
 
     private struct Constants {

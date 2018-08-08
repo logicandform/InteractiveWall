@@ -4,11 +4,21 @@ import Foundation
 import GameplayKit
 
 
-enum EntityState {
+enum EntityState: Equatable {
     case falling
     case tapped
     case seekEntity(RecordEntity)
     case seekLevel(Int)
+    case panning
+
+    var pannable: Bool {
+        switch self {
+        case .falling, .tapped, .panning:
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 
@@ -23,6 +33,10 @@ final class RecordEntity: GKEntity {
 
     var state: EntityState {
         return movementComponent.state
+    }
+
+    var previousState: EntityState {
+        return movementComponent.previousState
     }
 
     var position: CGPoint {
@@ -119,6 +133,9 @@ final class RecordEntity: GKEntity {
     }
 
     func set(state: EntityState) {
+        if movementComponent.state == state {
+            return
+        }
         movementComponent.state = state
 
         switch state {

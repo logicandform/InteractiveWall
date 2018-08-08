@@ -64,7 +64,7 @@ class NodeBoundingRenderComponent: GKComponent {
             - The component's level node updates its own size depending on the previous level bounding node's maxRadius
          */
 
-        if cluster.selectedEntity.state is TappedEntityPanState {
+        if cluster.selectedEntity.state == .panning {
             return
         }
 
