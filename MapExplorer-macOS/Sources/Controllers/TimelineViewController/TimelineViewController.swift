@@ -77,7 +77,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         static let timelineControlItemWidth: CGFloat = 70
         static let timelineIndicatorBorderRadius: CGFloat = 8
         static let timelineIndicatorBorderWidth: CGFloat = 2
-        static let initialDate = TimelineDate(day: CGFloat(0.5), month: Month.january.rawValue, year: 1880)
+        static let initialDate = (day: CGFloat(0.5), month: Month.january.rawValue, year: 1880)
         static let fadePercentage = 0.1
     }
 
@@ -169,7 +169,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         case is TimelineDecadeLayout, is TimelineDecadeStackedLayout:
             setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year + (appID * 10)))
         case is TimelineCenturyLayout:
-            setDate(Constants.initialDate)
+            setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year))
         default:
             return
         }
@@ -246,7 +246,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         switch pan.state {
         case .recognized, .momentum:
             updateDate(from: collectionView, with: pan.delta)
-            timelineHandler?.send(date: currentDate, for: pan.state)
+            timelineHandler?.send(date: TimelineDate(date: currentDate), for: pan.state)
         case .ended:
             timelineHandler?.endActivity()
         case .possible, .failed:
@@ -309,7 +309,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         switch pan.state {
         case .recognized, .momentum:
             updateDate(from: collectionView, with: pan.delta)
-            timelineHandler?.send(date: currentDate)
+            timelineHandler?.send(date: TimelineDate(date: currentDate))
         case .ended:
             timelineHandler?.endActivity()
         case .possible, .failed:
