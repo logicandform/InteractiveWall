@@ -137,18 +137,21 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func handlePanGesture(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let node = nodeGestureManager.node(for: pan) as? RecordNode, let entity = node.entity as? RecordEntity else {
+        guard let pan = gesture as? PanGestureRecognizer,
+            let node = nodeGestureManager.node(for: pan) as? RecordNode,
+            let entity = node.entity as? RecordEntity,
+            !(entity.intelligenceComponent.stateMachine.currentState is SeekTappedEntityState) else {
             return
         }
 
-        guard entity.intelligenceComponent.stateMachine.currentState is TappedState || entity.intelligenceComponent.stateMachine.currentState is WanderState || entity.intelligenceComponent.stateMachine.currentState is TappedEntityPanState else {
-            return
-        }
+        let deltaX = pan.delta.dx
+        let deltaY = pan.delta.dy
+        let newX = node.position.x + deltaX
+        let newY = node.position.y + deltaY
+        let position = CGPoint(x: newX, y: newY)
 
         switch pan.state {
-        case .momentum, .recognized:
-            let deltaX = pan.delta.dx
-            let deltaY = pan.delta.dy
+        case .recognized:
             let distance = CGFloat(hypotf(Float(deltaX), Float(deltaY)))
             if distance <= Constants.panningThreshold && entity.intelligenceComponent.stateMachine.currentState is TappedState {
                 return
@@ -158,27 +161,12 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
                 entity.intelligenceComponent.stateMachine.enter(TappedEntityPanState.self)
             }
 
-            // update position of record node entity
-            let newX = node.position.x + deltaX
-            let newY = node.position.y + deltaY
-            let position = CGPoint(x: newX, y: newY)
-
+            entity.renderComponent.recordNode.position = position
+            entity.cluster?.updateClusterPosition(to: position)
+        case .momentum:
             entity.renderComponent.recordNode.position = position
             entity.cluster?.updateClusterPosition(to: position)
         case .ended:
-            if entity.intelligenceComponent.stateMachine.currentState is TappedState {
-                return
-            }
-
-            let deltaX = pan.delta.dx
-            let deltaY = pan.delta.dy
-            let newX = node.position.x + deltaX
-            let newY = node.position.y + deltaY
-            let position = CGPoint(x: newX, y: newY)
-
-            entity.renderComponent.recordNode.position = position
-            entity.cluster?.updateClusterPosition(to: position)
-
             if entity.intelligenceComponent.stateMachine.currentState is TappedEntityPanState {
                 entity.intelligenceComponent.stateMachine.enter(TappedState.self)
             }
