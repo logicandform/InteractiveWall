@@ -25,6 +25,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
     private struct Constants {
         static let maximumUpdateDeltaTime: TimeInterval = 1.0 / 60.0
+        static let panningThreshold: CGFloat = 5
         static let panningThreshold: CGFloat = 10
         static let slowGravity = CGVector(dx: 0.02, dy: -0.03)
         static let worldPadding: CGFloat = 100
@@ -153,7 +154,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         switch pan.state {
         case .recognized:
             let distance = CGFloat(hypotf(Float(deltaX), Float(deltaY)))
-            if distance <= Constants.panningThreshold && entity.intelligenceComponent.stateMachine.currentState is TappedState {
+            if distance <= Constants.panningThreshold, entity.intelligenceComponent.stateMachine.currentState is TappedState {
                 return
             }
 

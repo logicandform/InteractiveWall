@@ -79,7 +79,7 @@ final class NodeCluster: Hashable {
         }
     }
 
-    /// Updates the selectedEntity and its cluster to the new panned position
+    /// Updates center point and bounding nodes to the new panned position
     func updateClusterPosition(to position: CGPoint) {
         center = position
         for (_, boundingNodeEntity) in layerForLevel {
