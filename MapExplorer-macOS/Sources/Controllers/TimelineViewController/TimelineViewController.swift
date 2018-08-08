@@ -155,7 +155,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         case is TimelineDecadeLayout, is TimelineDecadeStackedLayout:
             setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year + (appID * 10)), animated: true)
         case is TimelineCenturyLayout:
-            setDate(Constants.initialDate, animated: true)
+            setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year), animated: true)
         default:
             return
         }
