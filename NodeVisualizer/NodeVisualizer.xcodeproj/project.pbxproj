@@ -57,10 +57,6 @@
 		CD0FB28820D1BFDD0058A410 /* MovementComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0FB28720D1BFDD0058A410 /* MovementComponent.swift */; };
 		CD0FB28A20D83B840058A410 /* RecordEntityBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0FB28920D83B840058A410 /* RecordEntityBehavior.swift */; };
 		CD0FB28C20D849140058A410 /* RecordAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0FB28B20D849140058A410 /* RecordAgent.swift */; };
-		CD1FC73620D9B2F700B87D02 /* IntelligenceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1FC73520D9B2F700B87D02 /* IntelligenceComponent.swift */; };
-		CD1FC73820D9B36B00B87D02 /* FallingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1FC73720D9B36B00B87D02 /* FallingState.swift */; };
-		CD1FC73A20D9B39A00B87D02 /* SeekTappedEntityState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1FC73920D9B39A00B87D02 /* SeekTappedEntityState.swift */; };
-		CD1FC73C20D9B3AA00B87D02 /* TappedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1FC73B20D9B3AA00B87D02 /* TappedState.swift */; };
 		CD1FC73E20DB06AA00B87D02 /* TestingDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1FC73D20DB06AA00B87D02 /* TestingDataManager.swift */; };
 		CD27F40420BCB5B900375CBC /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40320BCB5B900375CBC /* DataManager.swift */; };
 		CD27F40620BCBD5A00375CBC /* RecordFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40520BCBD5A00375CBC /* RecordFactory.swift */; };
@@ -68,7 +64,6 @@
 		CD27F40F20BCBFB700375CBC /* LetterGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40D20BCBFB700375CBC /* LetterGroup.swift */; };
 		CD2CC5EB20B8E6D800FB3C10 /* RecordDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2CC5E920B8E6D700FB3C10 /* RecordDisplayable.swift */; };
 		CD2CC5EC20B8E6D800FB3C10 /* RecordFilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2CC5EA20B8E6D800FB3C10 /* RecordFilterType.swift */; };
-		CD7E53832102A11B004223D9 /* SeekBoundingLevelNodeState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7E53822102A11B004223D9 /* SeekBoundingLevelNodeState.swift */; };
 		CD97E33C20F4125800BB869E /* NodeCluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD97E33B20F4125800BB869E /* NodeCluster.swift */; };
 		CD97E33E20F5765900BB869E /* NodeBoundingEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD97E33D20F5765900BB869E /* NodeBoundingEntity.swift */; };
 		CD97E34020F584BA00BB869E /* NodeBoundingRenderComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD97E33F20F584BA00BB869E /* NodeBoundingRenderComponent.swift */; };
@@ -135,10 +130,6 @@
 		CD0FB28720D1BFDD0058A410 /* MovementComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementComponent.swift; sourceTree = "<group>"; };
 		CD0FB28920D83B840058A410 /* RecordEntityBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordEntityBehavior.swift; sourceTree = "<group>"; };
 		CD0FB28B20D849140058A410 /* RecordAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordAgent.swift; sourceTree = "<group>"; };
-		CD1FC73520D9B2F700B87D02 /* IntelligenceComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntelligenceComponent.swift; sourceTree = "<group>"; };
-		CD1FC73720D9B36B00B87D02 /* FallingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallingState.swift; sourceTree = "<group>"; };
-		CD1FC73920D9B39A00B87D02 /* SeekTappedEntityState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeekTappedEntityState.swift; sourceTree = "<group>"; };
-		CD1FC73B20D9B3AA00B87D02 /* TappedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TappedState.swift; sourceTree = "<group>"; };
 		CD1FC73D20DB06AA00B87D02 /* TestingDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingDataManager.swift; sourceTree = "<group>"; };
 		CD27F40320BCB5B900375CBC /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		CD27F40520BCBD5A00375CBC /* RecordFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordFactory.swift; sourceTree = "<group>"; };
@@ -146,7 +137,6 @@
 		CD27F40D20BCBFB700375CBC /* LetterGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LetterGroup.swift; sourceTree = "<group>"; };
 		CD2CC5E920B8E6D700FB3C10 /* RecordDisplayable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordDisplayable.swift; sourceTree = "<group>"; };
 		CD2CC5EA20B8E6D800FB3C10 /* RecordFilterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordFilterType.swift; sourceTree = "<group>"; };
-		CD7E53822102A11B004223D9 /* SeekBoundingLevelNodeState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeekBoundingLevelNodeState.swift; sourceTree = "<group>"; };
 		CD97E33B20F4125800BB869E /* NodeCluster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeCluster.swift; sourceTree = "<group>"; };
 		CD97E33D20F5765900BB869E /* NodeBoundingEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeBoundingEntity.swift; sourceTree = "<group>"; };
 		CD97E33F20F584BA00BB869E /* NodeBoundingRenderComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeBoundingRenderComponent.swift; sourceTree = "<group>"; };
@@ -375,9 +365,7 @@
 		CD0FB28E20D853E00058A410 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				CD1FC73420D9B2D500B87D02 /* States */,
 				CDB6CE3120E4037D0033E328 /* AnimationComponent.swift */,
-				CD1FC73520D9B2F700B87D02 /* IntelligenceComponent.swift */,
 				CD0FB28720D1BFDD0058A410 /* MovementComponent.swift */,
 				CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */,
 				CD0FB28B20D849140058A410 /* RecordAgent.swift */,
@@ -393,17 +381,6 @@
 				CD0FB28920D83B840058A410 /* RecordEntityBehavior.swift */,
 			);
 			path = Behaviors;
-			sourceTree = "<group>";
-		};
-		CD1FC73420D9B2D500B87D02 /* States */ = {
-			isa = PBXGroup;
-			children = (
-				CD1FC73720D9B36B00B87D02 /* FallingState.swift */,
-				CD1FC73920D9B39A00B87D02 /* SeekTappedEntityState.swift */,
-				CD1FC73B20D9B3AA00B87D02 /* TappedState.swift */,
-				CD7E53822102A11B004223D9 /* SeekBoundingLevelNodeState.swift */,
-			);
-			path = States;
 			sourceTree = "<group>";
 		};
 		CD27F40720BCBDDD00375CBC /* Search */ = {
@@ -574,7 +551,6 @@
 				22AEAEBE20B67C2400DD184B /* MainViewController.swift in Sources */,
 				22AEAEE620B67D6800DD184B /* PacketType.swift in Sources */,
 				CDA5A90820DD70B700E1CF87 /* PhysicsComponent.swift in Sources */,
-				CD1FC73620D9B2F700B87D02 /* IntelligenceComponent.swift in Sources */,
 				22D6F90520B6810600C7FB5F /* BackgroundTimer.swift in Sources */,
 				22AEAED620B67D2700DD184B /* GestureManager.swift in Sources */,
 				22AEAEE220B67D6800DD184B /* Int.swift in Sources */,
@@ -582,16 +558,13 @@
 				22D6F90B20B6810600C7FB5F /* PriorityOrder.swift in Sources */,
 				22AEAEEA20B67D6800DD184B /* CoreGraphics.swift in Sources */,
 				22D6F90F20B681A300C7FB5F /* LastTwo.swift in Sources */,
-				CD7E53832102A11B004223D9 /* SeekBoundingLevelNodeState.swift in Sources */,
 				22AEAEF920B67DA600DD184B /* School.swift in Sources */,
 				CD27F40F20BCBFB700375CBC /* LetterGroup.swift in Sources */,
 				CD0FB28220D1A6300058A410 /* RecordEntity.swift in Sources */,
 				22D6F91020B681A300C7FB5F /* Media.swift in Sources */,
 				22D6F90C20B6810600C7FB5F /* ResponseHandler.swift in Sources */,
-				CD1FC73A20D9B39A00B87D02 /* SeekTappedEntityState.swift in Sources */,
 				22D6F91920B6824300C7FB5F /* PanGestureRecognizer.swift in Sources */,
 				CD2CC5EB20B8E6D800FB3C10 /* RecordDisplayable.swift in Sources */,
-				CD1FC73820D9B36B00B87D02 /* FallingState.swift in Sources */,
 				22AEAEF820B67DA600DD184B /* Artifact.swift in Sources */,
 				22D6F91B20B6824300C7FB5F /* TapGestureRecognizer.swift in Sources */,
 				22AEAEEC20B67D6800DD184B /* NSApplication.swift in Sources */,
@@ -628,7 +601,6 @@
 				22D6F91720B6824300C7FB5F /* GestureRecognizer.swift in Sources */,
 				22D6F91A20B6824300C7FB5F /* RotateGestureRecognizer.swift in Sources */,
 				CD27F40420BCB5B900375CBC /* DataManager.swift in Sources */,
-				CD1FC73C20D9B3AA00B87D02 /* TappedState.swift in Sources */,
 				22D6F90820B6810600C7FB5F /* CachingNetwork.swift in Sources */,
 				22D6F90920B6810600C7FB5F /* JSON.swift in Sources */,
 			);

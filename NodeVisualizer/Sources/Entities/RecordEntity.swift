@@ -4,23 +4,25 @@ import Foundation
 import GameplayKit
 
 
+enum EntityState {
+    case falling
+    case tapped
+    case seekEntity(RecordEntity)
+    case seekLevel(Int)
+}
+
+
 final class RecordEntity: GKEntity {
 
     let record: RecordDisplayable
     let relatedRecordsForLevel: RelatedLevels
     let relatedRecords: Set<RecordProxy>
+    var cluster: NodeCluster?
     var hasCollidedWithBoundingNode = false
     private(set) var clusterLevel: (previousLevel: Int?, currentLevel: Int?) = (nil, nil)
 
-    var cluster: NodeCluster? {
-        didSet {
-            physicsComponent.cluster = cluster
-            movementComponent.cluster = cluster
-        }
-    }
-
-    var state: GKState? {
-        return intelligenceComponent.stateMachine.currentState
+    var state: EntityState {
+        return movementComponent.state
     }
 
     var position: CGPoint {
@@ -36,7 +38,11 @@ final class RecordEntity: GKEntity {
     }
 
     override var description: String {
-        return "( [RecordEntity] ID: \(record.id), type: \(record.type), Position: \(position), State: \(String(describing: state)) )"
+        return "( [RecordEntity] ID: \(record.id), type: \(record.type), State: \(state) )"
+    }
+
+    private struct Constants {
+        static let tappedEntitylevel = -1
     }
 
 
@@ -61,13 +67,6 @@ final class RecordEntity: GKEntity {
             fatalError("A RecordEntity must have a MovementComponent")
         }
         return movementComponent
-    }
-
-    private var intelligenceComponent: IntelligenceComponent {
-        guard let intelligenceComponent = component(ofType: IntelligenceComponent.self) else {
-            fatalError("A RecordEntity must have an IntelligenceComponent")
-        }
-        return intelligenceComponent
     }
 
     private var animationComponent: AnimationComponent {
@@ -101,12 +100,10 @@ final class RecordEntity: GKEntity {
         let physicsComponent = PhysicsComponent(physicsBody: SKPhysicsBody(circleOfRadius: style.nodePhysicsBodyRadius))
         let movementComponent = MovementComponent()
         let animationComponent = AnimationComponent()
-        let intelligenceComponent = IntelligenceComponent(for: self)
         renderComponent.recordNode.physicsBody = physicsComponent.physicsBody
         addComponent(movementComponent)
         addComponent(renderComponent)
         addComponent(physicsComponent)
-        addComponent(intelligenceComponent)
         addComponent(animationComponent)
     }
 
@@ -117,21 +114,23 @@ final class RecordEntity: GKEntity {
 
     // MARK: API
 
-    func set(level: Int) {
-        clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: level)
-        physicsComponent.setLevelInteractingBitMasks(forLevel: level)
-    }
-
     func set(position: CGPoint) {
         renderComponent.recordNode.position = position
     }
 
     func set(state: EntityState) {
-        intelligenceComponent.stateMachine.enter(state.class)
-    }
+        movementComponent.state = state
 
-    func set(state: MovementState) {
-        movementComponent.requestedMovementState = state
+        switch state {
+        case .seekLevel(let level):
+            clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: level)
+            physicsComponent.setLevelInteractingBitMasks(forLevel: level)
+        case .tapped:
+            clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: Constants.tappedEntitylevel)
+            physicsComponent.setLevelInteractingBitMasks(forLevel: Constants.tappedEntitylevel)
+        default:
+            break
+        }
     }
 
     func set(state: AnimationState) {

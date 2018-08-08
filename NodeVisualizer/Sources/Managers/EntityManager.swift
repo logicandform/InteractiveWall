@@ -17,11 +17,10 @@ final class EntityManager {
 
     /// List of all GKComponentSystems. The systems will be updated in order. The order is defined to match assumptions made within components.
     private lazy var componentSystems: [GKComponentSystem] = {
-        let intelligenceSystem = GKComponentSystem(componentClass: IntelligenceComponent.self)
         let movementSystem = GKComponentSystem(componentClass: MovementComponent.self)
         let animationSystem = GKComponentSystem(componentClass: AnimationComponent.self)
         let physicsSystem = GKComponentSystem(componentClass: PhysicsComponent.self)
-        return [intelligenceSystem, animationSystem, movementSystem, physicsSystem]
+        return [animationSystem, movementSystem, physicsSystem]
     }()
 
     private struct Constants {
