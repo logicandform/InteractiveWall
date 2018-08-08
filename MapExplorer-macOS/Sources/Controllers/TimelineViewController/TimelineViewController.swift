@@ -83,6 +83,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         static let timelineIndicatorBorderWidth: CGFloat = 2
         static let initialDate = (day: CGFloat(0.5), month: Month.january.rawValue, year: 1880)
         static let fadePercentage = 0.1
+        static let resetAnimationDuration = 1.0
     }
 
     private struct Keys {
@@ -752,9 +753,9 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         }
 
         if animated {
-            monthCollectionView.animate(to: monthRect.origin)
-            yearCollectionView.animate(to: yearRect.origin)
-            decadeCollectionView.animate(to: decadeRect.origin)
+            monthCollectionView.animate(to: monthRect.origin, duration: Constants.resetAnimationDuration)
+            yearCollectionView.animate(to: yearRect.origin, duration: Constants.resetAnimationDuration)
+            decadeCollectionView.animate(to: decadeRect.origin, duration: Constants.resetAnimationDuration)
         } else {
             monthCollectionView.scrollToVisible(monthRect)
             yearCollectionView.scrollToVisible(yearRect)
@@ -792,7 +793,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         }
 
         if animated {
-            timelineCollectionView.animate(to: timelineRect.origin)
+            timelineCollectionView.animate(to: timelineRect.origin, duration: Constants.resetAnimationDuration)
         } else {
             timelineCollectionView.scrollToVisible(timelineRect)
         }

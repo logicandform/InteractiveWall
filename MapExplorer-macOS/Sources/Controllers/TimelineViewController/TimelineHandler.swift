@@ -92,7 +92,7 @@ final class TimelineHandler {
         }
 
         timelineViewController.setupTimelineDate()
-        source.selectedIndexes = [Int]()
+        source.selectedIndexes.removeAll()
         timelineViewController.timelineCollectionView.reloadItems(at: timelineViewController.timelineCollectionView.indexPathsForVisibleItems())
     }
 

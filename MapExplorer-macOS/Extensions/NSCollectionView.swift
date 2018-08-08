@@ -6,13 +6,13 @@ import Cocoa
 
 extension NSCollectionView {
 
-    func animate(to point: NSPoint) {
+    func animate(to point: NSPoint, duration: Double) {
         guard let clipView = self.superview else {
             return
         }
 
         NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = TimeInterval(1.0)
+            NSAnimationContext.current.duration = TimeInterval(duration)
             clipView.animator().setBoundsOrigin(point)
         })
     }
