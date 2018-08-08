@@ -117,6 +117,7 @@
 		8FEABDA12064702600612C84 /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEABD9F2064702600612C84 /* MediaViewController.swift */; };
 		A407160E20AB94B800B54593 /* PriorityOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A407160D20AB94B800B54593 /* PriorityOrder.swift */; };
 		A407161220ABAE5C00B54593 /* RelationshipHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A407161120ABAE5B00B54593 /* RelationshipHelper.swift */; };
+		A4540D16211B62FC00D50395 /* NSCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4540D15211B62FC00D50395 /* NSCollectionView.swift */; };
 		A4551B6420DC38D100D8C029 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4551B6320DC38D100D8C029 /* MenuButton.swift */; };
 		A4551B6620DC71D000D8C029 /* MenuButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4551B6520DC71D000D8C029 /* MenuButton.xib */; };
 		A456618020D9CDC400D23333 /* BorderControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A456617F20D9CDC400D23333 /* BorderControl.swift */; };
@@ -284,6 +285,7 @@
 		A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_WindowExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A407160D20AB94B800B54593 /* PriorityOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityOrder.swift; sourceTree = "<group>"; };
 		A407161120ABAE5B00B54593 /* RelationshipHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipHelper.swift; sourceTree = "<group>"; };
+		A4540D15211B62FC00D50395 /* NSCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSCollectionView.swift; sourceTree = "<group>"; };
 		A4551B6320DC38D100D8C029 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		A4551B6520DC71D000D8C029 /* MenuButton.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuButton.xib; sourceTree = "<group>"; };
 		A456617F20D9CDC400D23333 /* BorderControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderControl.swift; sourceTree = "<group>"; };
@@ -375,6 +377,7 @@
 				8E4010A120487E0300E81AAA /* Collection.swift */,
 				22914F76204905230000D4E1 /* NSApplication.swift */,
 				2256D2982090CF3B009DEADE /* NSView.swift */,
+				A4540D15211B62FC00D50395 /* NSCollectionView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1058,6 +1061,7 @@
 				2256D2992090CF3B009DEADE /* NSView.swift in Sources */,
 				22A6D96B209D2936009957BB /* BaseViewController.swift in Sources */,
 				3F0902612049C6B10044F100 /* Theme.swift in Sources */,
+				A4540D16211B62FC00D50395 /* NSCollectionView.swift in Sources */,
 				22046244204730780067D9FB /* PanGestureRecognizer.swift in Sources */,
 				22927912208E531C005E2036 /* BackgroundTimer.swift in Sources */,
 				2204623820472FDF0067D9FB /* URL.swift in Sources */,
