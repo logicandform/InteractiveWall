@@ -35,10 +35,6 @@ final class RecordEntity: GKEntity {
         return movementComponent.state
     }
 
-    var previousState: EntityState {
-        return movementComponent.previousState
-    }
-
     var position: CGPoint {
         return renderComponent.recordNode.position
     }

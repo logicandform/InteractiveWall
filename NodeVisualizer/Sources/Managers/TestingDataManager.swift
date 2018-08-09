@@ -26,7 +26,7 @@ class TestingDataManager {
 
     func instantiate() {
         // Setup testing nodes
-        testSelectedNodeWithMaxRelatedLevels()
+        testDuplicatingNodes()
 
         // Store directly related records in dictionary
         for record in records {

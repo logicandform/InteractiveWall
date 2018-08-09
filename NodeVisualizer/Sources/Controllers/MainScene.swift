@@ -50,12 +50,14 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         if contact.bodyA.node?.name == "boundingNode",
             let contactEntity = contact.bodyB.node?.entity as? RecordEntity,
             !contactEntity.hasCollidedWithBoundingNode,
+            let contactEntityCluster = contactEntity.cluster,
+            contactEntityCluster.selectedEntity.state != .panning,
             case EntityState.seekEntity(_) = contactEntity.state {
             contactEntity.hasCollidedWithBoundingNode = true
-        }
-
-        if let contactEntity = contact.bodyA.node?.entity as? RecordEntity,
+        } else if let contactEntity = contact.bodyA.node?.entity as? RecordEntity,
             !contactEntity.hasCollidedWithBoundingNode,
+            let contactEntityCluster = contactEntity.cluster,
+            contactEntityCluster.selectedEntity.state != .panning,
             case EntityState.seekEntity(_) = contactEntity.state,
             contact.bodyB.node?.name == "boundingNode" {
             contactEntity.hasCollidedWithBoundingNode = true
@@ -150,11 +152,17 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
             entity.set(position: position)
             entity.cluster?.updateClusterPosition(to: position)
         case .momentum:
-            entity.set(position: position)
-            entity.cluster?.updateClusterPosition(to: position)
-        case .ended:
             if entity.state == .panning {
-                entity.set(state: entity.previousState)
+                entity.set(position: position)
+                entity.cluster?.updateClusterPosition(to: position)
+            }
+        case .possible:
+            if entity.state == .panning {
+                if entity.cluster == nil {
+                    entity.set(state: .falling)
+                } else {
+                    entity.set(state: .tapped)
+                }
             }
         default:
             return
@@ -209,14 +217,22 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
             let pannedVelocity = recognizer.velocity(in: recognizer.view)
             let nodePannedVelocity = convertPoint(fromView: pannedVelocity)
-            let delta = CGPoint(x: nodePannedVelocity.x * 0.2, y: nodePannedVelocity.y * 0.2)
+            let delta = CGPoint(x: nodePannedVelocity.x * 0.4, y: nodePannedVelocity.y * 0.4)
             let currentPosition = selectedEntity.position
             let newPosition = CGPoint(x: currentPosition.x + delta.x, y: currentPosition.y + delta.y)
 
             selectedEntity.set(position: newPosition)
             selectedEntity.cluster?.updateClusterPosition(to: newPosition)
-            selectedEntity.set(state: selectedEntity.previousState)
-            self.selectedEntity = nil
+
+            if selectedEntity.state == .panning {
+                if selectedEntity.cluster == nil {
+                    selectedEntity.set(state: .falling)
+                } else {
+                    selectedEntity.set(state: .tapped)
+                }
+
+                self.selectedEntity = nil
+            }
         default:
             return
         }

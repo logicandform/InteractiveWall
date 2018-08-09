@@ -8,11 +8,8 @@ import GameplayKit
 /// A 'GKComponent' that provides different types of physics movement based on the current `RecordState`.
 class MovementComponent: GKComponent {
 
-    var previousState = EntityState.falling
-
     var state = EntityState.falling {
         didSet {
-            previousState = oldValue
             exit(state: oldValue)
             enter(state: state)
         }
@@ -84,6 +81,7 @@ class MovementComponent: GKComponent {
             entity.physicsBody.isDynamic = false
             cluster()
         case .panning:
+            entity.node.removeAllActions()
             entity.cluster?.updateLayerLevels(forPan: true)
         }
     }
@@ -111,7 +109,7 @@ class MovementComponent: GKComponent {
     }
 
     private func cluster() {
-        guard let entity = entity as? RecordEntity, let cluster = entity.cluster, entity.previousState != .panning else {
+        guard let entity = entity as? RecordEntity, let cluster = entity.cluster else {
             return
         }
 

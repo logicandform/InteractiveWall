@@ -40,7 +40,6 @@ class PhysicsComponent: GKComponent {
         }
 
         if let cluster = entity.cluster, cluster.selectedEntity.state == .panning {
-            entity.hasCollidedWithBoundingNode = false
             return
         }
 

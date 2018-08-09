@@ -75,6 +75,7 @@ final class NodeCluster: Hashable {
         setLayers(toLevel: level)
         for (level, entities) in entitiesForLevel.enumerated() {
             for entity in entities {
+                entity.hasCollidedWithBoundingNode = false
                 entity.setBitMasks(forLevel: panning ? 0 : level)
             }
         }
