@@ -83,6 +83,37 @@ class TestingDataManager {
         }
     }
 
+    /// To see the visual representation of the cluster when a node with a maximum related level is selected
+    private func testSelectedNodeWithMaxRelatedLevels() {
+        let schoolArtifacts = createRecords(of: .artifact, count: 20)
+        records.append(contentsOf: schoolArtifacts)
+        let organizationArtifacts = createRecords(of: .artifact, count: 10)
+        records.append(contentsOf: organizationArtifacts)
+        let eventArtifacts = createRecords(of: .artifact, count: 15)
+        records.append(contentsOf: eventArtifacts)
+        let schoolOrganizations = createRecords(of: .organization, count: 30)
+        records.append(contentsOf: schoolOrganizations)
+        let schoolOrganizationArtifacts = createRecords(of: .artifact, count: 35)
+        records.append(contentsOf: schoolOrganizationArtifacts)
+
+        let schools = createRecords(of: .school, count: 2)
+        records.append(contentsOf: schools)
+        let organizations = createRecords(of: .organization, count: 2)
+        records.append(contentsOf: organizations)
+        let events = createRecords(of: .event, count: 1)
+        records.append(contentsOf: events)
+
+        associate(records: schoolArtifacts, to: schools.first!)
+        associate(records: [organizations.first!], to: schools.first!)
+        associate(records: [organizations[1]], to: organizations.first!)
+        associate(records: events, to: organizations[1])
+        associate(records: organizationArtifacts, to: organizations.first!)
+        associate(records: eventArtifacts, to: events.first!)
+        associate(records: [schools[1]], to: events.first!)
+        associate(records: schoolOrganizations, to: schools[1])
+        associate(records: schoolOrganizationArtifacts, to: schoolOrganizations.first!)
+    }
+
 
     // MARK: Helpers
 

@@ -39,6 +39,10 @@ class PhysicsComponent: GKComponent {
             return
         }
 
+        if let cluster = entity.cluster, cluster.selectedEntity.state == .panning {
+            return
+        }
+
         let contactedBodies = physicsBody.allContactedBodies()
         for contactedBody in contactedBodies {
             guard let contactedEntity = contactedBody.node?.entity as? RecordEntity else {

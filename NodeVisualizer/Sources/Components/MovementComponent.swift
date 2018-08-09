@@ -30,7 +30,6 @@ class MovementComponent: GKComponent {
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
 
-
         switch state {
         case .falling:
             fall()
@@ -40,6 +39,8 @@ class MovementComponent: GKComponent {
             move(to: level)
         case .tapped:
             // Animation only needs to be run once in the enter function.
+            break
+        case .panning:
             break
         }
     }
@@ -57,6 +58,8 @@ class MovementComponent: GKComponent {
             entity.physicsBody.affectedByGravity = false
         case .tapped:
             entity.physicsBody.isDynamic = true
+        case .panning:
+            entity.cluster?.updateLayerLevels(forPan: false)
         default:
             break
         }
@@ -77,6 +80,9 @@ class MovementComponent: GKComponent {
         case .tapped:
             entity.physicsBody.isDynamic = false
             cluster()
+        case .panning:
+            entity.node.removeAllActions()
+            entity.cluster?.updateLayerLevels(forPan: true)
         }
     }
 

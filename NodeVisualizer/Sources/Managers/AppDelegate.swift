@@ -13,7 +13,7 @@ enum Environment {
 
 
 struct Configuration {
-    static let env = Environment.production
+    static let env = Environment.testing
     static let appsPerScreen = 2
     static let numberOfScreens = 1
     static let touchScreenSize = CGSize(width: 21564, height: 12116)
@@ -26,7 +26,7 @@ struct Configuration {
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        let screen = NSScreen.main!
+        let screen = NSScreen.at(position: 1)
         let controller = MainViewController.instance()
         let frame = NSRect(x: screen.frame.minX, y: screen.frame.minY, width: screen.frame.width, height: screen.frame.height)
         let window = NSWindow(contentViewController: controller)

@@ -10,9 +10,9 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     private(set) var state = GestureState.possible
     private(set) var delta = CGVector.zero
     private(set) var lastLocation: CGPoint?
-    private var timeOfLastUpdate = Date()
+    private(set) var cumulativeDelta = CGVector.zero
+    private(set) var timeOfLastUpdate = Date()
     private var positionForTouch = [Touch: CGPoint]()
-    private var cumulativeDelta = CGVector.zero
 
     private struct Constants {
         static let recognizedThreshhold: CGFloat = 20

@@ -70,6 +70,7 @@
 		CDA5A90820DD70B700E1CF87 /* PhysicsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */; };
 		CDB6CE3220E4037D0033E328 /* AnimationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB6CE3120E4037D0033E328 /* AnimationComponent.swift */; };
 		CDC22D2820BDC6B0006BC0BE /* RecordNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC22D2720BDC6B0006BC0BE /* RecordNode.swift */; };
+		CDC39D48211B616300CE5960 /* NodeGestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC39D47211B616300CE5960 /* NodeGestureManager.swift */; };
 		D88D9E3C5FEA8DFC85B8FEF4 /* Pods_All_NodeVisualizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A74D0C56BCB99FB5CDC067 /* Pods_All_NodeVisualizer.framework */; };
 /* End PBXBuildFile section */
 
@@ -143,6 +144,7 @@
 		CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsComponent.swift; sourceTree = "<group>"; };
 		CDB6CE3120E4037D0033E328 /* AnimationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationComponent.swift; sourceTree = "<group>"; };
 		CDC22D2720BDC6B0006BC0BE /* RecordNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordNode.swift; sourceTree = "<group>"; };
+		CDC39D47211B616300CE5960 /* NodeGestureManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeGestureManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -228,8 +230,9 @@
 			children = (
 				22AEAEB520B67C2400DD184B /* AppDelegate.swift */,
 				CD27F40320BCB5B900375CBC /* DataManager.swift */,
-				CD1FC73D20DB06AA00B87D02 /* TestingDataManager.swift */,
 				CD0FB28320D1AA9D0058A410 /* EntityManager.swift */,
+				CD1FC73D20DB06AA00B87D02 /* TestingDataManager.swift */,
+				CDC39D47211B616300CE5960 /* NodeGestureManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -603,6 +606,7 @@
 				CD27F40420BCB5B900375CBC /* DataManager.swift in Sources */,
 				22D6F90820B6810600C7FB5F /* CachingNetwork.swift in Sources */,
 				22D6F90920B6810600C7FB5F /* JSON.swift in Sources */,
+				CDC39D48211B616300CE5960 /* NodeGestureManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
