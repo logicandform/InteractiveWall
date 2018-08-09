@@ -172,6 +172,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         ConnectionManager.instance.timelineHandler = timelineHandler
         ConnectionManager.instance.timelineViewController = self
         timelineCollectionView.register(TimelineItemView.self, forItemWithIdentifier: TimelineItemView.identifier)
+        timelineCollectionView.register(TimelineFlagView.self, forItemWithIdentifier: TimelineFlagView.identifier)
         timelineCollectionView.register(TimelineBorder.self, forItemWithIdentifier: TimelineBorder.identifier)
         timelineCollectionView.register(NSNib(nibNamed: TimelineHeaderView.nibName, bundle: .main), forSupplementaryViewOfKind: TimelineHeaderView.supplementaryKind, withIdentifier: TimelineHeaderView.identifier)
         timelineCollectionView.dataSource = source

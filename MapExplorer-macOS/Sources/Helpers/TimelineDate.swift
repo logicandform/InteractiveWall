@@ -4,10 +4,16 @@ import Foundation
 import Cocoa
 
 
-struct TimelineDate {
+struct TimelineDate: CustomStringConvertible {
     let day: CGFloat
     let month: Int
     let year: Int
+
+    var description: String {
+        let m = Month(rawValue: month) ?? .january
+        let d = max(Int(day * 31), 1)
+        return "\(m.title) \(d), \(year)"
+    }
 
     var toJSON: JSON {
         return [Keys.day: day, Keys.month: month, Keys.year: year]
@@ -22,7 +28,6 @@ struct TimelineDate {
     private struct Constants {
         static let defaultDay: CGFloat = 0
         static let defaultMonth = 0
-        static let defaultYear = 1880
     }
 
 

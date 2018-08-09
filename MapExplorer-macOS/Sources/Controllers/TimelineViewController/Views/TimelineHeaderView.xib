@@ -20,15 +20,25 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="7El-eZ-hu6">
+                    <rect key="frame" x="0.0" y="74" width="280" height="2"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="2" id="9Ek-Af-gjG"/>
+                    </constraints>
+                </customView>
             </subviews>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="gRl-q7-F7a" secondAttribute="trailing" constant="4" id="5Qv-uO-cIr"/>
                 <constraint firstItem="gRl-q7-F7a" firstAttribute="centerX" secondItem="c22-O7-iKe" secondAttribute="centerX" id="DIE-PF-VMH"/>
                 <constraint firstItem="gRl-q7-F7a" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="Eoa-Xx-eQ7"/>
                 <constraint firstItem="gRl-q7-F7a" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="4" id="FOM-v5-7E6"/>
+                <constraint firstItem="7El-eZ-hu6" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="NMl-Q9-Tay"/>
+                <constraint firstAttribute="trailing" secondItem="7El-eZ-hu6" secondAttribute="trailing" id="hhp-iG-sAm"/>
+                <constraint firstItem="7El-eZ-hu6" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="sdA-Nc-3xv"/>
             </constraints>
             <connections>
                 <outlet property="textLabel" destination="gRl-q7-F7a" id="6xI-23-epk"/>
+                <outlet property="topBorder" destination="7El-eZ-hu6" id="NwE-lK-ber"/>
             </connections>
             <point key="canvasLocation" x="39" y="71"/>
         </customView>

@@ -32,6 +32,19 @@ enum RecordType: String {
         }
     }
 
+    var timelineSortOrder: Int {
+        switch self {
+        case .school:
+            return 1
+        case .event:
+            return 2
+        case .organization:
+            return 3
+        case .artifact:
+            return 4
+        }
+    }
+
     static var allValues: [RecordType] {
         return [.school, .event, .organization, .artifact]
     }

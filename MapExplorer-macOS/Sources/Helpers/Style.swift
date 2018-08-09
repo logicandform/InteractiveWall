@@ -29,9 +29,22 @@ final class Style {
 
     // Timeline Controller
     let timelineBackgroundColor = NSColor(white: 0.1, alpha: 0.9)
+    let timelineBorderColor = NSColor.gray
+    let timelineHeaderText = NSColor.gray
 
     var timelineTitleAttributes: [NSAttributedStringKey: Any] {
-        let font = NSFont(name: "Soleil", size: 16) ?? NSFont.systemFont(ofSize: 16)
+        let font = NSFont(name: "Soleil", size: 14) ?? NSFont.systemFont(ofSize: 14)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineBreakMode = .byWordWrapping
+
+        return [.paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: NSColor.white,
+                .kern: 1]
+    }
+
+    var timelineDateAttributes: [NSAttributedStringKey: Any] {
+        let font = NSFont(name: "Soleil", size: 9) ?? NSFont.systemFont(ofSize: 9)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byTruncatingTail
 

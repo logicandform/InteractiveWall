@@ -5,9 +5,13 @@ import Cocoa
 
 
 /// Class containing a start and end date for Timeline items, as well as the ability to parse dates from a string
-class TimelineRange {
+class TimelineRange: CustomStringConvertible {
     let startDate: TimelineDate
     let endDate: TimelineDate
+
+    var description: String {
+        return "\(startDate) - \(endDate)"
+    }
 
     private struct Constants {
         static let minimumYear = 32

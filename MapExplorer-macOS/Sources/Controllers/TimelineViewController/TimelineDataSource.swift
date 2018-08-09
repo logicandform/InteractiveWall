@@ -61,10 +61,9 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
         if indexPath.item == events.count, let border = collectionView.makeItem(withIdentifier: TimelineBorder.identifier, for: indexPath) as? TimelineBorder, let attributes = collectionView.collectionViewLayout?.layoutAttributesForItem(at: indexPath) {
             border.set(frame: attributes.frame)
             return border
-        } else if let timelineItem = collectionView.makeItem(withIdentifier: TimelineItemView.identifier, for: indexPath) as? TimelineItemView, let attributes = collectionView.collectionViewLayout?.layoutAttributesForItem(at: indexPath) {
-            timelineItem.event = events[indexPath.item]
-            timelineItem.set(selected: selectedIndexes.contains(indexPath.item % years.count), with: type, attributes: attributes)
-            return timelineItem
+        } else if let timelineFlag = collectionView.makeItem(withIdentifier: TimelineFlagView.identifier, for: indexPath) as? TimelineFlagView {
+            timelineFlag.event = events[indexPath.item]
+            return timelineFlag
         }
 
         return NSCollectionViewItem()
@@ -91,7 +90,9 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     // MARK: Helpers
 
     private func setupEvents(for records: [Record]) {
-        for record in records {
+        let sortedRecords = records.sorted(by: { $0.type.timelineSortOrder < $1.type.timelineSortOrder })
+
+        for record in sortedRecords {
             if let dates = record.dates {
                 let event = TimelineEvent(id: record.id, type: record.type, title: record.title, dates: dates)
                 events.append(event)

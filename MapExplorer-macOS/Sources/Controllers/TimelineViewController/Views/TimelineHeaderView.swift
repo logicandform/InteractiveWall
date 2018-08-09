@@ -8,9 +8,16 @@ class TimelineHeaderView: NSView {
     static let nibName = NSNib.Name(rawValue: "TimelineHeaderView")
     static let supplementaryKind = NSCollectionView.SupplementaryElementKind(rawValue: "TimelineHeaderView")
 
-    @IBOutlet weak var textLabel: NSTextField!
+    @IBOutlet weak var textLabel: NSTextField! {
+        didSet {
+            textLabel.textColor = style.timelineHeaderText
+        }
+    }
 
-    override func draw(_ dirtyRect: NSRect) {
-        super.draw(dirtyRect)
+    @IBOutlet weak var topBorder: NSView! {
+        didSet {
+            topBorder.wantsLayer = true
+            topBorder.layer?.backgroundColor = style.timelineBorderColor.cgColor
+        }
     }
 }
