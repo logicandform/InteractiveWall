@@ -152,7 +152,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
             setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month + appID, year: Constants.initialDate.year), animated: true)
         case is TimelineYearLayout:
             setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year + appID), animated: true)
-        case is TimelineDecadeLayout, is TimelineDecadeStackedLayout:
+        case is TimelineDecadeLayout, is TimelineDecadeStackedLayout, is TimelineDecadeFlagLayout:
             setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year + (appID * 10)), animated: true)
         case is TimelineCenturyLayout:
             setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year), animated: true)
@@ -347,7 +347,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         switch timelineCollectionView.collectionViewLayout {
         case is TimelineMonthLayout:
             add(days: days)
-        case is TimelineYearLayout, is TimelineDecadeLayout, is TimelineCenturyLayout, is TimelineDecadeStackedLayout:
+        case is TimelineYearLayout, is TimelineDecadeLayout, is TimelineCenturyLayout, is TimelineDecadeStackedLayout, is TimelineDecadeFlagLayout:
             add(days: days * 12)
         default:
             return
@@ -782,7 +782,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
                 timelineRect.origin.x = timelineMaxX + timelineRect.origin.x
             }
             timelineCollectionView.scrollToVisible(timelineRect)
-        case is TimelineYearLayout, is TimelineCenturyLayout, is TimelineDecadeLayout, is TimelineDecadeStackedLayout:
+        case is TimelineYearLayout, is TimelineCenturyLayout, is TimelineDecadeLayout, is TimelineDecadeStackedLayout, is TimelineDecadeFlagLayout:
             let timelineMonthOffset = ((CGFloat(currentDate.month) + currentDate.day - 0.5) / 12) * CGFloat(timelineType.sectionWidth)
             let timelineYearX = CGFloat(timelineYearIndex!) * CGFloat(timelineType.sectionWidth)
             timelineRect.origin.x = timelineYearX - timelineRect.width / 2 + timelineMonthOffset

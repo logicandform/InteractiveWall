@@ -14,6 +14,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
         static let flagWidth: CGFloat = 180
         static let yearWidth: CGFloat = 192
         static let headerHeight: CGFloat = 20
+        static let headerOffset = 18
         static let interFlagMargin: CGFloat = 5
         static let headerFlagMargin: CGFloat = 10
         static let infiniteScrollBuffer = 11
@@ -135,7 +136,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
         let item = year - source.firstYear
         let indexPath = IndexPath(item: item, section: 0)
         let attributes = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: TimelineHeaderView.supplementaryKind, with: indexPath)
-        let x = CGFloat(item * type.sectionWidth)
+        let x = CGFloat(item * type.sectionWidth - Constants.headerOffset)
         let size = CGSize(width: Constants.yearWidth, height: Constants.headerHeight)
         attributes.frame = CGRect(origin: CGPoint(x: x, y: 0), size: size)
         return attributes
