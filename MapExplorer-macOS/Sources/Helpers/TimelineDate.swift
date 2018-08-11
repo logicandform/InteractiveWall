@@ -12,13 +12,11 @@ struct TimelineDate: CustomStringConvertible {
     private let defaultMonthUsed: Bool
 
     var description: String {
-        if defaultDayUsed, defaultMonthUsed {
+        if defaultMonthUsed {
             return "\(year)"
         } else if defaultDayUsed {
             let m = Month(rawValue: month) ?? .january
             return "\(m.title), \(year)"
-        } else if defaultMonthUsed {
-            return ""
         }
 
         let m = Month(rawValue: month) ?? .january
