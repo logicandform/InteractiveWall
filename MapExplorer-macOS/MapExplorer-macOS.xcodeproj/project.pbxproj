@@ -96,6 +96,7 @@
 		A45107882113BCA80025FFD7 /* TimelineBorder.xib in Resources */ = {isa = PBXBuildFile; fileRef = A45107872113BCA80025FFD7 /* TimelineBorder.xib */; };
 		A454A65B20F7F95200619730 /* TimelineDecadeLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A454A65A20F7F95200619730 /* TimelineDecadeLayout.swift */; };
 		A45FAC60210F796300CAE2BF /* TimelineDecadeStackedLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45FAC5F210F796300CAE2BF /* TimelineDecadeStackedLayout.swift */; };
+		A46EB937211E261C00504F7C /* TimelineControlsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A46EB936211E261C00504F7C /* TimelineControlsDataSource.swift */; };
 		A4A8761A210015F200113F95 /* TimelineRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A87619210015F200113F95 /* TimelineRange.swift */; };
 /* End PBXBuildFile section */
 
@@ -222,6 +223,7 @@
 		A45107872113BCA80025FFD7 /* TimelineBorder.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineBorder.xib; sourceTree = "<group>"; };
 		A454A65A20F7F95200619730 /* TimelineDecadeLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDecadeLayout.swift; sourceTree = "<group>"; };
 		A45FAC5F210F796300CAE2BF /* TimelineDecadeStackedLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDecadeStackedLayout.swift; sourceTree = "<group>"; };
+		A46EB936211E261C00504F7C /* TimelineControlsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineControlsDataSource.swift; sourceTree = "<group>"; };
 		A4A87619210015F200113F95 /* TimelineRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineRange.swift; sourceTree = "<group>"; };
 		D9FF0C65383B61E5A7A798B0 /* Pods-All-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-macOS.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-macOS/Pods-All-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -253,6 +255,7 @@
 				2290A03D20E4102A00F028C4 /* TimelineHandler.swift */,
 				22004FFD20E2ADC200B1E740 /* TimelineEvent.swift */,
 				2200500320E2B8AC00B1E740 /* TimelineDataSource.swift */,
+				A46EB936211E261C00504F7C /* TimelineControlsDataSource.swift */,
 				220AE86220EDA21800F6E9AA /* Layouts */,
 				22004FF020E16CC200B1E740 /* Views */,
 			);
@@ -762,6 +765,7 @@
 				2220D3FD202F7E4200B878D6 /* GestureManager.swift in Sources */,
 				22B85AF5209B7A6D0099F44E /* RotateGestureRecognizer.swift in Sources */,
 				22290C3A2028FA35000E0573 /* Int.swift in Sources */,
+				A46EB937211E261C00504F7C /* TimelineControlsDataSource.swift in Sources */,
 				A4510784211394FE0025FFD7 /* TimelineBorder.swift in Sources */,
 				A4A8761A210015F200113F95 /* TimelineRange.swift in Sources */,
 				2290A03720E2F01500F028C4 /* TimelineHeaderView.swift in Sources */,
