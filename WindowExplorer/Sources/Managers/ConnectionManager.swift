@@ -138,7 +138,6 @@ final class ConnectionManager {
         case SettingsNotification.transition.name:
             if let newTypeString = info[Keys.type] as? String, let newType = ApplicationType(rawValue: newTypeString), let oldTypeString = info[Keys.oldType] as? String, let oldType = ApplicationType(rawValue: oldTypeString) {
                 transition(from: oldType, to: newType, id: id, group: group)
-                resetSelection(group: group)
             }
         case SettingsNotification.unpair.name:
             if let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
@@ -373,16 +372,9 @@ final class ConnectionManager {
         }
     }
 
-    private func resetSelection(group: Int?) {
-        if let group = group {
-            SelectionManager.instance.resetSelection(group: group)
-        }
-    }
-
     private func syncApps(group: Int?, type: ApplicationType) {
         if let group = group {
             SettingsManager.instance.syncApps(group: group, type: type)
-            SelectionManager.instance.syncApps(group: group)
         }
     }
 

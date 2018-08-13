@@ -36,7 +36,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         WindowManager.instance.registerForNotifications()
         ConnectionManager.instance.registerForNotifications()
         SettingsManager.instance.registerForNotifications()
-        SelectionManager.instance.registerForNotifications()
         TouchManager.instance.setupTouchSocket()
         MenuManager.instance.createMenusAndBorders()
         GeocodeHelper.instance.associateSchoolsToProvinces()
