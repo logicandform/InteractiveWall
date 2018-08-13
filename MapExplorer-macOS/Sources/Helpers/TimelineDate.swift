@@ -8,8 +8,17 @@ struct TimelineDate: CustomStringConvertible {
     let day: CGFloat
     let month: Int
     let year: Int
+    private let defaultDayUsed: Bool
+    private let defaultMonthUsed: Bool
 
     var description: String {
+        if defaultMonthUsed {
+            return "\(year)"
+        } else if defaultDayUsed {
+            let m = Month(rawValue: month) ?? .january
+            return "\(m.title), \(year)"
+        }
+
         let m = Month(rawValue: month) ?? .january
         let d = max(Int(day * 31), 1)
         return "\(m.title) \(d), \(year)"
@@ -37,12 +46,16 @@ struct TimelineDate: CustomStringConvertible {
         self.day = day ?? Constants.defaultDay
         self.month = month ?? Constants.defaultMonth
         self.year = year
+        self.defaultDayUsed = day == nil ? true : false
+        self.defaultMonthUsed = month == nil ? true : false
     }
 
     init(date: (day: CGFloat, month: Int, year: Int)) {
         self.day = date.day
         self.month = date.month
         self.year = date.year
+        self.defaultDayUsed = false
+        self.defaultMonthUsed = false
     }
 
     init?(json: JSON) {
@@ -52,5 +65,7 @@ struct TimelineDate: CustomStringConvertible {
         self.day = day
         self.month = month
         self.year = year
+        self.defaultDayUsed = false
+        self.defaultMonthUsed = false
     }
 }
