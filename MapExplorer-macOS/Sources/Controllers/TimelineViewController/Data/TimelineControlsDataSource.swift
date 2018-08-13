@@ -39,9 +39,9 @@ final class TimelineControlsDataSource: NSObject, NSCollectionViewDataSource {
         case monthCollectionView:
             return Month.allValues.count + Constants.visibleControlItems
         case yearCollectionView:
-            return years.count + Constants.visibleControlItems + 1
+            return years.count + Constants.visibleControlItems
         case decadeCollectionView:
-            return decades.count + Constants.visibleControlItems + 1
+            return decades.count + Constants.visibleControlItems
         default:
             return 0
         }
@@ -56,26 +56,14 @@ final class TimelineControlsDataSource: NSObject, NSCollectionViewDataSource {
                 return controlItemView
             }
         case yearCollectionView:
-            if indexPath.item == years.count, let border = collectionView.makeItem(withIdentifier: TimelineBorder.identifier, for: indexPath) as? TimelineBorder {
-                let x = CGFloat(years.count) * Constants.controlItemWidth
-                let frame = CGRect(x: x, y: collectionView.frame.height / 4, width: style.borderWidth, height: collectionView.frame.height / 2)
-                border.set(frame: frame)
-                return border
-            } else if let controlItemView = collectionView.makeItem(withIdentifier: TimelineControlItemView.identifier, for: indexPath) as? TimelineControlItemView {
-                let itemIndex = indexPath.item >= years.count ? indexPath.item - 1 : indexPath.item
-                let year = years.at(index: itemIndex % years.count)
+            if let controlItemView = collectionView.makeItem(withIdentifier: TimelineControlItemView.identifier, for: indexPath) as? TimelineControlItemView {
+                let year = years.at(index: indexPath.item % years.count)
                 controlItemView.title = year?.description
                 return controlItemView
             }
         case decadeCollectionView:
-            if indexPath.item == decades.count, let border = collectionView.makeItem(withIdentifier: TimelineBorder.identifier, for: indexPath) as? TimelineBorder {
-                let x = CGFloat(decades.count) * Constants.controlItemWidth
-                let frame = CGRect(x: x, y: collectionView.frame.height / 4, width: style.borderWidth, height: collectionView.frame.height / 2)
-                border.set(frame: frame)
-                return border
-            } else if let controlItemView = collectionView.makeItem(withIdentifier: TimelineControlItemView.identifier, for: indexPath) as? TimelineControlItemView {
-                let itemIndex = indexPath.item >= decades.count ? indexPath.item - 1 : indexPath.item
-                let decade = decades.at(index: itemIndex % decades.count)
+            if let controlItemView = collectionView.makeItem(withIdentifier: TimelineControlItemView.identifier, for: indexPath) as? TimelineControlItemView {
+                let decade = decades.at(index: indexPath.item % decades.count)
                 controlItemView.title = decade?.description
                 return controlItemView
             }
@@ -84,5 +72,13 @@ final class TimelineControlsDataSource: NSObject, NSCollectionViewDataSource {
         }
 
         return NSCollectionViewItem()
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind, at indexPath: IndexPath) -> NSView {
+        guard let borderView = collectionView.makeSupplementaryView(ofKind: kind, withIdentifier: TimelineBorderView.identifier, for: indexPath) as? TimelineBorderView else {
+            return NSView()
+        }
+
+        return borderView
     }
 }

@@ -160,7 +160,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     }
 
     private func setupBackground() {
-        timelineBackgroundView.alphaValue = 0
+//        timelineBackgroundView.alphaValue = 0
         timelineBackgroundView.wantsLayer = true
         timelineBackgroundView.layer?.backgroundColor = style.timelineBackgroundColor.cgColor
     }
@@ -171,7 +171,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         ConnectionManager.instance.timelineViewController = self
         timelineCollectionView.register(TimelineItemView.self, forItemWithIdentifier: TimelineItemView.identifier)
         timelineCollectionView.register(TimelineFlagView.self, forItemWithIdentifier: TimelineFlagView.identifier)
-        timelineCollectionView.register(TimelineBorder.self, forItemWithIdentifier: TimelineBorder.identifier)
+        timelineCollectionView.register(NSNib(nibNamed: TimelineBorderView.nibName, bundle: .main), forSupplementaryViewOfKind: TimelineBorderView.supplementaryKind, withIdentifier: TimelineBorderView.identifier)
         timelineCollectionView.register(NSNib(nibNamed: TimelineHeaderView.nibName, bundle: .main), forSupplementaryViewOfKind: TimelineHeaderView.supplementaryKind, withIdentifier: TimelineHeaderView.identifier)
         timelineCollectionView.dataSource = source
         timelineScrollView.horizontalScroller?.alphaValue = 0
@@ -434,7 +434,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     private func setupControls(in collectionView: NSCollectionView, scrollView: NSScrollView) {
         collectionView.register(TimelineControlItemView.self, forItemWithIdentifier: TimelineControlItemView.identifier)
-        collectionView.register(TimelineBorder.self, forItemWithIdentifier: TimelineBorder.identifier)
+        collectionView.register(TimelineBorderView.self, forItemWithIdentifier: TimelineBorderView.identifier)
         scrollView.horizontalScroller?.alphaValue = 0
         collectionView.dataSource = controlsSource
     }
@@ -450,35 +450,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         gradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
         gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
         view.layer?.mask = gradientLayer
-    }
-
-
-    // MARK: NSCollectionViewDelegate
-
-    func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
-        switch collectionView {
-        case monthCollectionView:
-            let height = collectionView.superview!.frame.size.height
-            return CGSize(width: Constants.controlItemWidth, height: height)
-        case yearCollectionView:
-            if indexPath.item == source.years.count {
-                return CGSize(width: style.borderWidth, height: collectionView.frame.height)
-            } else {
-                let height = collectionView.superview!.frame.size.height
-                return CGSize(width: Constants.controlItemWidth, height: height)
-            }
-        case decadeCollectionView:
-            if indexPath.item == controlsSource.decades.count {
-                return CGSize(width: style.borderWidth, height: collectionView.frame.height)
-            } else {
-                let height = collectionView.superview!.frame.size.height
-                return CGSize(width: Constants.controlItemWidth, height: height)
-            }
-        default:
-            break
-        }
-
-        return NSSize.zero
     }
 
 

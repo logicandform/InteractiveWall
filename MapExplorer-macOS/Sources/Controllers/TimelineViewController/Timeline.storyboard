@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="qGn-1v-M5l">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="qGn-1v-M5l">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -41,7 +41,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
-                                    <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="TFZ-Kd-Lat">
+                                    <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="TFZ-Kd-Lat">
                                         <rect key="frame" x="87" y="13" width="490" height="7"/>
                                         <clipView key="contentView" drawsBackground="NO" id="DqZ-7r-uLk">
                                             <rect key="frame" x="0.0" y="0.0" width="490" height="7"/>
@@ -50,13 +50,10 @@
                                                 <collectionView id="27P-tH-KFI">
                                                     <rect key="frame" x="0.0" y="0.0" width="490" height="7"/>
                                                     <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
-                                                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" id="Wjn-VO-suE">
-                                                        <size key="itemSize" width="50" height="50"/>
-                                                    </collectionViewFlowLayout>
+                                                    <collectionViewLayout key="collectionViewLayout" id="dMH-a6-fod" customClass="TimelineControlLayout" customModule="MapExplorer_macOS" customModuleProvider="target"/>
                                                     <color key="primaryBackgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                                     <connections>
                                                         <outlet property="dataSource" destination="qGn-1v-M5l" id="IBD-2Z-kv2"/>
-                                                        <outlet property="delegate" destination="qGn-1v-M5l" id="tjO-n7-IAq"/>
                                                     </connections>
                                                 </collectionView>
                                             </subviews>
@@ -66,15 +63,15 @@
                                             <constraint firstAttribute="width" constant="490" id="gFT-5N-dWD"/>
                                         </constraints>
                                         <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="RaJ-g5-nYs">
-                                            <rect key="frame" x="0.0" y="-10" width="490" height="16"/>
+                                            <rect key="frame" x="-100" y="-100" width="490" height="16"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="qTl-2e-gOa">
-                                            <rect key="frame" x="-100" y="-100" width="16" height="21"/>
+                                            <rect key="frame" x="474" y="0.0" width="16" height="6"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
-                                    <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="NUl-Dg-WwY">
+                                    <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="NUl-Dg-WwY">
                                         <rect key="frame" x="87" y="6" width="490" height="7"/>
                                         <clipView key="contentView" drawsBackground="NO" id="Vpd-yq-eWk">
                                             <rect key="frame" x="0.0" y="0.0" width="490" height="7"/>
@@ -83,13 +80,10 @@
                                                 <collectionView id="uKJ-ub-LXA">
                                                     <rect key="frame" x="0.0" y="0.0" width="490" height="7"/>
                                                     <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
-                                                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" id="Xty-b9-P8e">
-                                                        <size key="itemSize" width="50" height="50"/>
-                                                    </collectionViewFlowLayout>
+                                                    <collectionViewLayout key="collectionViewLayout" id="uUd-uE-8Jx" customClass="TimelineControlLayout" customModule="MapExplorer_macOS" customModuleProvider="target"/>
                                                     <color key="primaryBackgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                                     <connections>
                                                         <outlet property="dataSource" destination="qGn-1v-M5l" id="O4f-yA-dSE"/>
-                                                        <outlet property="delegate" destination="qGn-1v-M5l" id="g8q-CD-cjv"/>
                                                     </connections>
                                                 </collectionView>
                                             </subviews>
@@ -99,11 +93,11 @@
                                             <constraint firstAttribute="width" constant="490" id="eBE-id-P2X"/>
                                         </constraints>
                                         <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="ExT-mm-A18">
-                                            <rect key="frame" x="0.0" y="-10" width="490" height="16"/>
+                                            <rect key="frame" x="-100" y="-100" width="490" height="16"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="xaR-am-hJg">
-                                            <rect key="frame" x="-100" y="-100" width="16" height="21"/>
+                                            <rect key="frame" x="474" y="0.0" width="16" height="6"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
@@ -116,13 +110,10 @@
                                                 <collectionView id="7yP-gS-dIq">
                                                     <rect key="frame" x="0.0" y="0.0" width="490" height="6"/>
                                                     <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
-                                                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" id="UVs-cE-qzY">
-                                                        <size key="itemSize" width="50" height="50"/>
-                                                    </collectionViewFlowLayout>
+                                                    <collectionViewLayout key="collectionViewLayout" id="vAV-hy-6G2" customClass="TimelineControlLayout" customModule="MapExplorer_macOS" customModuleProvider="target"/>
                                                     <color key="primaryBackgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                                     <connections>
                                                         <outlet property="dataSource" destination="qGn-1v-M5l" id="QVn-1K-QaB"/>
-                                                        <outlet property="delegate" destination="qGn-1v-M5l" id="tqO-6k-u4y"/>
                                                     </connections>
                                                 </collectionView>
                                             </subviews>

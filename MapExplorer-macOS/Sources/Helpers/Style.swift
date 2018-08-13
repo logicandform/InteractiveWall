@@ -19,18 +19,15 @@ final class Style {
     let organizationColor = NSColor(calibratedRed: 16/255, green: 147/255, blue: 79/255, alpha: 1)
     let clusterColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
 
-    // Border Style
-    let borderColor = NSColor(calibratedRed: 1, green: 1, blue: 1, alpha: 1)
-    let borderWidth: CGFloat = 1
-
     // Window Levels
     let mapWindowLevel = NSWindow.Level(28)
     let timelineWindowLevel = NSWindow.Level(29)
 
-    // Timeline Controller
+    // Timeline
     let timelineBackgroundColor = NSColor(white: 0.1, alpha: 0.9)
     let timelineBorderColor = NSColor.gray
     let timelineHeaderText = NSColor.gray
+    let timelineBorderWidth: CGFloat = 2
 
     var timelineTitleAttributes: [NSAttributedStringKey: Any] {
         let font = NSFont(name: "Soleil", size: 14) ?? NSFont.systemFont(ofSize: 14)

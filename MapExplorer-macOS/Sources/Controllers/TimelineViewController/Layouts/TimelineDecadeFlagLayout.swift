@@ -40,10 +40,12 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
         }
 
         itemFrames.removeAll()
-        for year in (source.firstYear...source.lastYear) {
-            if let events = source.eventsForYear[year] {
+        attributesForEvent.removeAll()
+        for year in (source.firstYear...source.lastYear + Constants.infiniteScrollBuffer) {
+            let yearInRange = (year - source.firstYear) % source.years.count + source.firstYear
+            if let events = source.eventsForYear[yearInRange] {
                 for event in events {
-                    if let flagAttributes = flagAttributes(for: event, in: source) {
+                    if let flagAttributes = flagAttributes(for: event, in: source, year: year) {
                         attributesForEvent[event] = flagAttributes
                         itemFrames.append(flagAttributes.frame)
                     }
@@ -76,13 +78,16 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
             let yearInRange = (year - source.firstYear) % source.years.count + source.firstYear
             if let events = source.eventsForYear[yearInRange] {
                 for event in events {
-                    if let attributes = attributesForEvent[event] {
+                    if let attributes = attributesForEvent[event], rect.intersects(attributes.frame) {
+                        layoutAttributes.append(attributes)
+                    } else if let attributes = attributesForEvent[event] {
+                        attributes.frame.origin.x = CGFloat((year - source.firstYear) * type.sectionWidth)
                         layoutAttributes.append(attributes)
                     }
                 }
             }
             // Append dividing line between last and first years
-            if year == source.lastYear, let attributes = attributesForBorder(in: source) {
+            if year == source.lastYear, let attributes = borderAttributes(in: source) {
                 layoutAttributes.append(attributes)
             }
             // Append attributes for supplimentary views
@@ -95,30 +100,24 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
     }
 
     override func layoutAttributesForItem(at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
-        guard let source = collectionView?.dataSource as? TimelineDataSource else {
+        guard let source = collectionView?.dataSource as? TimelineDataSource, let event = source.events.at(index: indexPath.item) else {
             return nil
         }
 
-        if let event = source.events.at(index: indexPath.item) {
-            return attributesForEvent[event]
-        } else if indexPath.item == source.events.count {
-            return attributesForBorder(in: source)
-        }
-
-        return nil
+        return attributesForEvent[event]
     }
 
 
     // MARK: Helpers
 
-    private func flagAttributes(for event: TimelineEvent, in source: TimelineDataSource, year: Int? = nil) -> NSCollectionViewLayoutAttributes? {
+    private func flagAttributes(for event: TimelineEvent, in source: TimelineDataSource, year: Int) -> NSCollectionViewLayoutAttributes? {
         guard let item = source.events.index(of: event) else {
             return nil
         }
 
         let indexPath = IndexPath(item: item, section: 0)
         let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
-        let year = year ?? event.dates.startDate.year
+        let year = year
         let x = CGFloat((year - source.firstYear) * type.sectionWidth)
         let flagHeight = TimelineFlagView.flagHeight(for: event)
         let height = flagMinY(forX: x, flagHeight: flagHeight) - Constants.headerHeight + Constants.interFlagMargin + flagHeight
@@ -142,16 +141,15 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
         return attributes
     }
 
-    private func attributesForBorder(in source: TimelineDataSource) -> NSCollectionViewLayoutAttributes? {
+    private func borderAttributes(in source: TimelineDataSource) -> NSCollectionViewLayoutAttributes? {
         guard let collectionView = collectionView else {
             return nil
         }
 
-        let item = source.events.count
-        let indexPath = IndexPath(item: item, section: 0)
-        let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
+        let indexPath = IndexPath(item: 0, section: 0)
+        let attributes = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: TimelineBorderView.supplementaryKind, with: indexPath)
         let x = CGFloat(source.years.count * type.sectionWidth)
-        attributes.frame = CGRect(x: x, y: Constants.headerHeight, width: style.borderWidth, height: collectionView.frame.height)
+        attributes.frame = CGRect(x: x, y: Constants.headerHeight, width: style.timelineBorderWidth, height: collectionView.frame.height)
         return attributes
     }
 

@@ -158,7 +158,7 @@ class TimelineMonthLayout: NSCollectionViewFlowLayout {
         let indexPath = IndexPath(item: item, section: 0)
         let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
         let x = CGFloat(source.years.count * 12 * type.sectionWidth)
-        attributes.frame = CGRect(x: x, y: 0, width: style.borderWidth, height: collectionView.frame.height)
+        attributes.frame = CGRect(x: x, y: 0, width: style.timelineBorderWidth, height: collectionView.frame.height)
         return attributes
     }
 }

@@ -49,41 +49,37 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     // MARK: NSCollectionViewDataSource
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch type {
-        case .month:
-            return events.count + (years.count * 12)
-        case .year, .decade, .century:
-            return events.count + years.count
-        }
+        return events.count
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        if indexPath.item == events.count, let border = collectionView.makeItem(withIdentifier: TimelineBorder.identifier, for: indexPath) as? TimelineBorder, let attributes = collectionView.collectionViewLayout?.layoutAttributesForItem(at: indexPath) {
-            border.set(frame: attributes.frame)
-            return border
-        } else if let timelineFlag = collectionView.makeItem(withIdentifier: TimelineFlagView.identifier, for: indexPath) as? TimelineFlagView {
-            timelineFlag.event = events[indexPath.item]
-            return timelineFlag
+        guard let timelineFlag = collectionView.makeItem(withIdentifier: TimelineFlagView.identifier, for: indexPath) as? TimelineFlagView else {
+            return NSCollectionViewItem()
         }
 
-        return NSCollectionViewItem()
+        timelineFlag.event = events[indexPath.item]
+        return timelineFlag
     }
 
     func collectionView(_ collectionView: NSCollectionView, viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind, at indexPath: IndexPath) -> NSView {
-        guard let headerView = collectionView.makeSupplementaryView(ofKind: TimelineHeaderView.supplementaryKind, withIdentifier: TimelineHeaderView.identifier, for: indexPath) as? TimelineHeaderView else {
+        switch kind {
+        case TimelineHeaderView.supplementaryKind:
+            if let headerView = collectionView.makeSupplementaryView(ofKind: kind, withIdentifier: TimelineHeaderView.identifier, for: indexPath) as? TimelineHeaderView {
+                let month = Month.allValues[indexPath.item % Month.allValues.count]
+                let year = firstYear + (indexPath.item % years.count)
+                let title = type == .month ? month.abbreviation : year.description
+                headerView.textLabel.stringValue = title
+                return headerView
+            }
+        case TimelineBorderView.supplementaryKind:
+            if let borderView = collectionView.makeSupplementaryView(ofKind: kind, withIdentifier: TimelineBorderView.identifier, for: indexPath) as? TimelineBorderView {
+                return borderView
+            }
+        default:
             return NSView()
         }
 
-        switch type {
-        case .month:
-            let month = Month.allValues[indexPath.item % Month.allValues.count]
-            headerView.textLabel.stringValue = month.abbreviation
-        case .year, .decade, .century:
-            let year = firstYear + (indexPath.item % years.count)
-            headerView.textLabel.stringValue = year.description
-        }
-
-        return headerView
+        return NSView()
     }
 
 
