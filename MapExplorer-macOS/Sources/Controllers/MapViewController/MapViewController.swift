@@ -130,10 +130,12 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             }
         case SettingsNotification.labels.name:
             if let status = status {
+                currentSettings.setLabels(on: status)
                 toggleAnnotationTitles(on: showingAnnotationTitles && status)
             }
         case SettingsNotification.miniMap.name:
             if let status = status {
+                currentSettings.setMiniMap(on: status)
                 mapView.miniMapIsHidden = !status
             }
         default:
@@ -230,6 +232,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let annotation = annotation as? CircleAnnotation {
+//            let annotationView = CircleAnnotationView(annotation: annotation, reuseIdentifier: CircleAnnotationView.identifier)
+//            annotationView.showTitle(showingAnnotationTitles && currentSettings.showLabels)
+//            return annotationView
             return CircleAnnotationView(annotation: annotation, reuseIdentifier: CircleAnnotationView.identifier)
         } else if let cluster = annotation as? MKClusterAnnotation {
             return ClusterAnnotationView(annotation: cluster, reuseIdentifier: ClusterAnnotationView.identifier)
@@ -244,6 +249,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             showingAnnotationTitles = mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel
             toggleAnnotationTitles(on: showingAnnotationTitles && currentSettings.showLabels)
         }
+//        mapView.
+//        showingAnnotationTitles = mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel
+//        toggleAnnotationTitles(on: showingAnnotationTitles && currentSettings.showLabels)
     }
 
     // When annotations come back into the visibleRect their title visibility updates

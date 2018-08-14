@@ -87,6 +87,14 @@ struct Settings {
         }
     }
 
+    mutating func setLabels(on: Bool) {
+        showLabels = on
+    }
+
+    mutating func setMiniMap(on: Bool) {
+        showMiniMap = on
+    }
+
     func displaying(_ type: RecordType) -> Bool {
         switch type {
         case .event:
