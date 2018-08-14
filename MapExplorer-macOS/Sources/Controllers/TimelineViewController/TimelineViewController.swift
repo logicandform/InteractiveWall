@@ -82,7 +82,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         static let initialDate = (day: CGFloat(0.5), month: Month.january.rawValue, year: 1880)
         static let fadePercentage = 0.1
         static let resetAnimationDuration = 1.0
-        static let interFlagMargin: CGFloat = 2
+        static let recordSpawnOffset: CGFloat = 2
     }
 
     private struct Keys {
@@ -161,7 +161,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     }
 
     private func setupBackground() {
-//        timelineBackgroundView.alphaValue = 0
+        timelineBackgroundView.alphaValue = 0
         timelineBackgroundView.wantsLayer = true
         timelineBackgroundView.layer?.backgroundColor = style.timelineBackgroundColor.cgColor
     }
@@ -265,7 +265,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         let translatedXPosition = timelineItem.view.frame.origin.x + (timelineItem.view.frame.width / 2) - timelineCollectionView.visibleRect.origin.x
         let transformedXPosition = max(0, translatedXPosition)
         var adjustedFrame = timelineItem.view.frame
-        adjustedFrame.origin.y = timelineItem.view.frame.origin.y + timelineItem.view.frame.height - TimelineFlagView.flagHeight(for: timelineItem.event) - Constants.interFlagMargin
+        adjustedFrame.origin.y = timelineItem.view.frame.origin.y + timelineItem.view.frame.height - TimelineFlagView.flagHeight(for: timelineItem.event) - Constants.recordSpawnOffset
         let transformedYPosition = adjustedFrame.transformed(from: timelineScrollView.frame).transformed(from: timelineBackgroundView.frame).origin.y
         postRecordNotification(for: timelineItem.event.type, with: timelineItem.event.id, at: CGPoint(x: transformedXPosition, y: transformedYPosition))
     }
@@ -419,18 +419,21 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         }
 
         let group = ConnectionManager.instance.groupForApp(id: appID, type: .timeline)
+        let notificationGroup = info[Keys.group] as? Int
 
-        switch notification.name {
-        case TimelineNotification.selection.name:
-            if let selection = info[Keys.selection] as? [Int], let notificationGroup = info[Keys.group] as? Int?, notificationGroup == group || notificationGroup == nil || group == nil {
-                setTimelineSelection(Set(selection))
+        if group == notificationGroup {
+            switch notification.name {
+            case TimelineNotification.selection.name:
+                if let selection = info[Keys.selection] as? [Int] {
+                    setTimelineSelection(Set(selection))
+                }
+            case TimelineNotification.select.name:
+                if let index = info[Keys.index] as? Int, let state = info[Keys.state] as? Bool {
+                    setTimelineItem(index, selected: state)
+                }
+            default:
+                return
             }
-        case TimelineNotification.select.name:
-            if let index = info[Keys.index] as? Int, let state = info[Keys.state] as? Bool, let notificationGroup = info[Keys.group] as? Int?, notificationGroup == group || notificationGroup == nil || group == nil {
-                setTimelineItem(index, selected: state)
-            }
-        default:
-            return
         }
     }
 
