@@ -130,10 +130,12 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             }
         case SettingsNotification.labels.name:
             if let status = status {
+                currentSettings.setLabels(on: status)
                 toggleAnnotationTitles(on: showingAnnotationTitles && status)
             }
         case SettingsNotification.miniMap.name:
             if let status = status {
+                currentSettings.setMiniMap(on: status)
                 mapView.miniMapIsHidden = !status
             }
         default:
