@@ -19,11 +19,13 @@ class TimelineFlagView: NSCollectionViewItem {
             load(event)
         }
     }
+    private var tintColor = style.darkBackground
 
     private struct Constants {
         static let flagWidth: CGFloat = 180
         static let interItemMargin: CGFloat = 10
         static let dateFieldHeight: CGFloat = 20
+        static let animationDuration = 0.15
     }
 
 
@@ -40,9 +42,22 @@ class TimelineFlagView: NSCollectionViewItem {
     }
 
 
+    // MARK: API
+
+    func flashTintColor() {
+        let animateColor = CABasicAnimation(keyPath: "backgroundColor")
+        animateColor.autoreverses = true
+        animateColor.fromValue = style.darkBackground.cgColor
+        animateColor.toValue = tintColor.cgColor
+        animateColor.duration = Constants.animationDuration
+        flagView.layer?.add(animateColor, forKey: "backgroundColor")
+    }
+
+
     // MARK: Helpers
 
     private func load(_ event: TimelineEvent) {
+        tintColor = event.type.color
         flagPoleView.layer?.backgroundColor = event.type.color.cgColor
         flagBottomView.layer?.backgroundColor = event.type.color.cgColor
         flagTailView.layer?.backgroundColor = event.type.color.cgColor

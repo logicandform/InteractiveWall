@@ -82,6 +82,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         static let initialDate = (day: CGFloat(0.5), month: Month.january.rawValue, year: 1880)
         static let fadePercentage = 0.1
         static let resetAnimationDuration = 1.0
+        static let recordSpawnOffset: CGFloat = 2
     }
 
     private struct Keys {
@@ -255,15 +256,17 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended,
             let location = tap.position,
             let indexPath = timelineCollectionView.indexPathForItem(at: location + timelineCollectionView.visibleRect.origin),
-            let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineItemView else {
+            let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineFlagView else {
                 return
         }
 
         let state = source.selectedIndexes.contains(indexPath.item)
         postSelectNotification(for: indexPath.item, state: !state)
-        let translatedXPosition = timelineItem.view.frame.origin.x - timelineCollectionView.visibleRect.origin.x
+        let translatedXPosition = timelineItem.view.frame.origin.x + (timelineItem.view.frame.width / 2) - timelineCollectionView.visibleRect.origin.x
         let transformedXPosition = max(0, translatedXPosition)
-        let transformedYPosition = timelineItem.view.frame.transformed(from: timelineScrollView.frame).transformed(from: timelineBackgroundView.frame).origin.y
+        var adjustedFrame = timelineItem.view.frame
+        adjustedFrame.origin.y = timelineItem.view.frame.origin.y + timelineItem.view.frame.height - TimelineFlagView.flagHeight(for: timelineItem.event) - Constants.recordSpawnOffset
+        let transformedYPosition = adjustedFrame.transformed(from: timelineScrollView.frame).transformed(from: timelineBackgroundView.frame).origin.y
         postRecordNotification(for: timelineItem.event.type, with: timelineItem.event.id, at: CGPoint(x: transformedXPosition, y: transformedYPosition))
     }
 
@@ -415,17 +418,22 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
             return
         }
 
-        switch notification.name {
-        case TimelineNotification.selection.name:
-            if let selection = info[Keys.selection] as? [Int] {
-                setTimelineSelection(Set(selection))
+        let group = ConnectionManager.instance.groupForApp(id: appID, type: .timeline)
+        let notificationGroup = info[Keys.group] as? Int
+
+        if group == notificationGroup {
+            switch notification.name {
+            case TimelineNotification.selection.name:
+                if let selection = info[Keys.selection] as? [Int] {
+                    setTimelineSelection(Set(selection))
+                }
+            case TimelineNotification.select.name:
+                if let index = info[Keys.index] as? Int, let state = info[Keys.state] as? Bool {
+                    setTimelineItem(index, selected: state)
+                }
+            default:
+                return
             }
-        case TimelineNotification.select.name:
-            if let index = info[Keys.index] as? Int, let state = info[Keys.state] as? Bool {
-                setTimelineItem(index, selected: state)
-            }
-        default:
-            return
         }
     }
 
@@ -483,8 +491,8 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
         // Update item view for index
         let indexPath = IndexPath(item: index, section: 0)
-        if let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineItemView, let attributes = timelineCollectionView.collectionViewLayout?.layoutAttributesForItem(at: indexPath) {
-            timelineItem.animate(to: attributes.size, with: CGFloat(attributes.zIndex), containedIn: timelineCollectionView.frame, layout: timelineCollectionView.collectionViewLayout)
+        if let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineFlagView {
+            timelineItem.flashTintColor()
         }
     }
 
