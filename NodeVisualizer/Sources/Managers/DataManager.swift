@@ -88,9 +88,9 @@ final class DataManager {
     private func filterSingleArtifactConnections() {
         for (proxy, relatives) in relativesForProxy {
             var filteredRelatives = Set<RecordProxy>()
-            if !shouldFilter(proxy: proxy) {
+            if !remove(proxy: proxy) {
                 for relative in relatives {
-                    if !shouldFilter(proxy: relative) {
+                    if !remove(proxy: relative) {
                         filteredRelatives.insert(relative)
                     }
                 }
@@ -101,7 +101,7 @@ final class DataManager {
         }
     }
 
-    private func shouldFilter(proxy: RecordProxy) -> Bool {
+    private func remove(proxy: RecordProxy) -> Bool {
         if proxy.type == .artifact, let relatives = relativesForProxy[proxy], relatives.count == 1 {
             return true
         }
