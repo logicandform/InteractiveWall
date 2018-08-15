@@ -113,8 +113,8 @@ class MasterViewController: NSViewController {
             screenView.layer?.backgroundColor = Constants.screenBackgroundColor
             screenView.layer?.borderWidth = Constants.screenBorderWidth
             screenView.layer?.borderColor = CGColor.black
-//            infoForScreen[screen] = ApplicationInfo(action: ControlAction.closeApplication, applications: [:], applicationTypesForMaps: [:], maps: [])
-            let action = connected(screen: screen) ? ControlAction.closeApplication : ControlAction.disconnected
+            infoForScreen[screen] = ApplicationInfo(action: ControlAction.closeApplication, applications: [:], applicationTypesForMaps: [:], maps: [])
+            let action = connected(screen: screen) ? ControlAction.launchMapExplorer : ControlAction.disconnected
             apply(action, toScreen: screen)
         }
     }
