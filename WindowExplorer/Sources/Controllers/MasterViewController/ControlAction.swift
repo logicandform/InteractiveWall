@@ -8,16 +8,14 @@ enum ControlAction {
     case launchMapExplorer
     case menuLaunchedMapExplorer
     case menuLaunchedTimeline
-    case launchTimeline
     case closeApplication
+    case reset
     case disconnected
 
     init?(title: String) {
         switch title {
         case ControlAction.launchMapExplorer.title:
             self = .launchMapExplorer
-        case ControlAction.launchTimeline.title:
-            self = .launchTimeline
         case ControlAction.closeApplication.title:
             self = .closeApplication
         default:
@@ -29,8 +27,8 @@ enum ControlAction {
         switch self {
         case .launchMapExplorer:
             return "Launch MapExplorer"
-        case .launchTimeline:
-            return "Launch Timeline"
+        case .reset:
+            return "Reset"
         case .closeApplication:
             return "Close Application"
         case .disconnected:
@@ -44,22 +42,20 @@ enum ControlAction {
 
     var image: NSImage? {
         switch self {
-        case .launchMapExplorer:
-            return NSImage(named: "map_background")
-        case .launchTimeline:
-            return NSImage(named: "timeline_background")
         case .closeApplication:
+            return NSImage(named: "connected_background")
+        case .reset:
             return NSImage(named: "connected_background")
         case .disconnected:
             return NSImage(named: "disconnected_background")
-        case .menuLaunchedMapExplorer:
-            return NSImage(named: "map_background")
-        case .menuLaunchedTimeline:
-            return NSImage(named: "timeline_background")
+        case .launchMapExplorer:
+            return NSImage(named: "connected_background")
+        case .menuLaunchedTimeline, .menuLaunchedMapExplorer:
+            return nil
         }
     }
 
-    static var allActions: [ControlAction] {
-        return [.launchMapExplorer, .launchTimeline, .closeApplication]
+    static var menuSelectionActions: [ControlAction] {
+        return [.launchMapExplorer, .reset, .closeApplication]
     }
 }

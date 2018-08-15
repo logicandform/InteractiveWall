@@ -17,19 +17,12 @@ class MasterViewController: NSViewController {
     @IBOutlet weak var leftScreen: NSView!
     @IBOutlet weak var middleScreen: NSView!
     @IBOutlet weak var rightScreen: NSView!
-    @IBOutlet weak var leftScreenCheckbox: NSButton!
-    @IBOutlet weak var middleScreenCheckbox: NSButton!
-    @IBOutlet weak var rightScreenCheckbox: NSButton!
     @IBOutlet weak var actionSelectionButton: NSPopUpButton!
 
     var infoForScreen = [Int: ApplicationInfo]()
 
     private var screens: [NSView] {
         return [leftScreen, middleScreen, rightScreen]
-    }
-
-    private var checkboxes: [NSButton] {
-        return [leftScreenCheckbox, middleScreenCheckbox, rightScreenCheckbox]
     }
 
     private struct Constants {
@@ -72,7 +65,6 @@ class MasterViewController: NSViewController {
         super.viewDidLoad()
 
         setupScreens()
-        setupCheckboxes()
         setupActionButton()
         registerForNotifications()
     }
@@ -101,11 +93,13 @@ class MasterViewController: NSViewController {
             }
 
             launchMaps(info: currentInfo, action: action, screen: screen, map: map)
-        case .launchTimeline, .menuLaunchedTimeline, .closeApplication, .disconnected:
+        case .menuLaunchedTimeline, .closeApplication, .disconnected:
             terminate(screen: screen, map: map)
             if action != .menuLaunchedTimeline {
                 infoForScreen[screen] = ApplicationInfo(action: action, applications: [:], applicationTypesForMaps: [:], maps: [])
             }
+        default:
+            break
         }
 
         transition(screen: screen, to: action)
@@ -119,23 +113,15 @@ class MasterViewController: NSViewController {
             screenView.layer?.backgroundColor = Constants.screenBackgroundColor
             screenView.layer?.borderWidth = Constants.screenBorderWidth
             screenView.layer?.borderColor = CGColor.black
-            infoForScreen[screen] = ApplicationInfo(action: ControlAction.closeApplication, applications: [:], applicationTypesForMaps: [:], maps: [])
-            let action = connected(screen: screen) ? ControlAction.launchMapExplorer : ControlAction.disconnected
+//            infoForScreen[screen] = ApplicationInfo(action: ControlAction.closeApplication, applications: [:], applicationTypesForMaps: [:], maps: [])
+            let action = connected(screen: screen) ? ControlAction.closeApplication : ControlAction.disconnected
             apply(action, toScreen: screen)
-        }
-    }
-
-    private func setupCheckboxes() {
-        checkboxes.enumerated().forEach { index, checkbox in
-            let screenIsConnected = connected(screen: index)
-            checkbox.isEnabled = screenIsConnected
-            checkbox.state = screenIsConnected ? .on : .off
         }
     }
 
     private func setupActionButton() {
         actionSelectionButton.removeAllItems()
-        ControlAction.allActions.forEach { action in
+        ControlAction.menuSelectionActions.forEach { action in
             actionSelectionButton.addItem(withTitle: action.title)
         }
     }
@@ -152,9 +138,9 @@ class MasterViewController: NSViewController {
             return
         }
 
-        checkboxes.enumerated().forEach { index, checkbox in
-            if checkbox.state == .on {
-                apply(action, toScreen: index)
+        infoForScreen.enumerated().forEach { _, info in
+            if info.value.action != ControlAction.disconnected {
+                apply(action, toScreen: info.key)
             }
         }
     }
@@ -240,8 +226,5 @@ class MasterViewController: NSViewController {
                 apply(.disconnected, toScreen: screen)
             }
         }
-
-        // Update the state of the checkboxes
-        setupCheckboxes()
     }
 }
