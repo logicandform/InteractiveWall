@@ -4,24 +4,18 @@ import Foundation
 import Cocoa
 
 
-struct Tail {
-    let event: TimelineEvent
-    let firstYear: Int
-    let lastYear: Int
-}
-
-
 class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
 
     private let type: TimelineType = .decade
 
     // Cached attributes for fast access
+    private(set) var layersForYear = [Int: [Layer]]()
+    private(set) var tailHeightForYear = [Int: CGFloat]()
     private var attributesForEvent = [TimelineEvent: NSCollectionViewLayoutAttributes]()
     private var tailAttributesForYear = [Int: NSCollectionViewLayoutAttributes]()
 
     // Intermediate state for calculating attributes
     private var flagFrameForEvent = [TimelineEvent: CGRect]()
-    private(set) var tailsForYear = [Int: [Tail]]()
 
     private struct Constants {
         static let yearWidth: CGFloat = 192
@@ -42,6 +36,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
     }
 
 
+
     // MARK: Overrides
 
     /// Let's only try to calculate this once in an init function? necessary?
@@ -53,25 +48,33 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
 
         flagFrameForEvent.removeAll()
         attributesForEvent.removeAll()
-        tailsForYear.removeAll()
+        layersForYear.removeAll()
+        tailHeightForYear.removeAll()
 
-        // Build tails for year
+        let diagram = TailDiagram()
+
+        // Fill tail diagram for events
         for year in (source.firstYear...source.lastYear) {
             if let events = source.eventsForYear[year] {
                 for event in events {
-                    let tail = Tail(event: event, firstYear: event.dates.startDate.year, lastYear: event.dates.endDate.year - 1)
-                    if tail.firstYear > tail.lastYear {
-                        continue
-                    }
-                    for year in (tail.firstYear ... tail.lastYear) {
-                        if let tails = tailsForYear[year] {
-                            tailsForYear[year] = tails + [tail]
-                        } else {
-                            tailsForYear[year] = [tail]
-                        }
+                    let start = CGFloat(event.dates.startDate.year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth
+                    let end = CGFloat(event.dates.endDate.year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth
+                    let line = Line(start: start, end: end)
+                    if !line.width.isZero {
+                        diagram.add(line)
                     }
                 }
             }
+        }
+
+        // Cache the layers for individual years for fast access
+        for year in (source.firstYear...source.lastYear) {
+            let start = CGFloat(year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth
+            let end = start + Constants.yearWidth
+            let layers = diagram.layersBetween(a: start, b: end)
+            layersForYear[year] = layers
+            let height = diagram.heightBetween(a: start, b: end)
+            tailHeightForYear[year] = height
         }
 
         // Build cache of event and tail attributes
@@ -197,24 +200,19 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
 
     // Returns all tail attributes for a given year
     private func tailAttributes(year: Int, in source: TimelineDataSource) -> NSCollectionViewLayoutAttributes? {
-        guard let tails = tailsForYear[year] else {
-            return nil
-        }
-
         let indexPath = IndexPath(item: year, section: 0)
         let attributes = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: TimelineTailView.supplementaryKind, with: indexPath)
         let x = CGFloat((year - source.firstYear) * type.sectionWidth)
         let y = Constants.headerHeight + Constants.headerFlagMargin
-        let height = CGFloat(tails.count) * style.timelineInterTailMargin + style.timelineTailWidth
+        let height = tailHeightForYear[year] ?? 0
         attributes.frame = CGRect(x: x, y: y, width: Constants.yearWidth, height: height)
         return attributes
     }
 
     /// Returns the lowest frame available at the given x position and size.
     private func frameForFlag(atX x: CGFloat, size: CGSize, year: Int, in source: TimelineDataSource) -> CGRect {
-        let eventsDuringYear = tailsForYear[year]?.count ?? 0
-        let tailPaddingForYear = CGFloat(eventsDuringYear) * style.timelineInterTailMargin
-        let minY = Constants.headerHeight + Constants.headerFlagMargin + tailPaddingForYear
+        let tailHeight = tailHeightForYear[year] ?? 0
+        let minY = Constants.headerHeight + tailHeight
         let intersectingFrames = flagFrameForEvent.values.filter { $0.minX <= x && $0.maxX > x }
         var sortedFrames = intersectingFrames.sorted(by: { $0.minY < $1.minY })
 

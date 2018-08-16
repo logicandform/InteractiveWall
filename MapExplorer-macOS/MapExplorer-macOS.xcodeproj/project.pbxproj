@@ -76,6 +76,7 @@
 		22B85AFA209B7A6D0099F44E /* PinchGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B85AF4209B7A6D0099F44E /* PinchGestureRecognizer.swift */; };
 		22C00ABB21010CB5004020F0 /* TimelineDateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C00ABA21010CB5004020F0 /* TimelineDateTests.swift */; };
 		22D6F91E20B6836900C7FB5F /* NSApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F91D20B6836800C7FB5F /* NSApplication.swift */; };
+		22E54CB42124F34E00CBF5A5 /* TailDiagram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E54CB32124F34E00CBF5A5 /* TailDiagram.swift */; };
 		22EF0FA8202B847200571002 /* CachingNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EF0FA7202B847200571002 /* CachingNetwork.swift */; };
 		22F0EDF82066D9500075E467 /* TouchListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F0EDF72066D9500075E467 /* TouchListener.swift */; };
 		22F0EDFD2066DA1E0075E467 /* ListenerCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F0EDFB2066DA1E0075E467 /* ListenerCallback.m */; };
@@ -201,6 +202,7 @@
 		22C00ABA21010CB5004020F0 /* TimelineDateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDateTests.swift; sourceTree = "<group>"; };
 		22C00ABC21010CB5004020F0 /* Tests.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Tests.plist; sourceTree = "<group>"; };
 		22D6F91D20B6836800C7FB5F /* NSApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSApplication.swift; sourceTree = "<group>"; };
+		22E54CB32124F34E00CBF5A5 /* TailDiagram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TailDiagram.swift; sourceTree = "<group>"; };
 		22EF0FA7202B847200571002 /* CachingNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachingNetwork.swift; sourceTree = "<group>"; };
 		22F0EDF72066D9500075E467 /* TouchListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchListener.swift; sourceTree = "<group>"; };
 		22F0EDFA2066DA1D0075E467 /* MapExplorer-macOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MapExplorer-macOS-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -259,7 +261,7 @@
 				22004FEE20E164CB00B1E740 /* Timeline.storyboard */,
 				22004FEC20E164AF00B1E740 /* TimelineViewController.swift */,
 				2290A03D20E4102A00F028C4 /* TimelineHandler.swift */,
-				22004FFD20E2ADC200B1E740 /* TimelineEvent.swift */,
+				22E54CB22124F31000CBF5A5 /* Models */,
 				2261A3992121FA2500EBAA02 /* Data */,
 				220AE86220EDA21800F6E9AA /* Layouts */,
 				22004FF020E16CC200B1E740 /* Views */,
@@ -542,6 +544,15 @@
 			path = Tests;
 			sourceTree = "<group>";
 		};
+		22E54CB22124F31000CBF5A5 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				22004FFD20E2ADC200B1E740 /* TimelineEvent.swift */,
+				22E54CB32124F34E00CBF5A5 /* TailDiagram.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		22FEF1E4202D079B001E9596 /* GestureDemoController */ = {
 			isa = PBXGroup;
 			children = (
@@ -778,6 +789,7 @@
 				22004FED20E164AF00B1E740 /* TimelineViewController.swift in Sources */,
 				220AE86620EE8EE300F6E9AA /* TimelineCenturyStackedLayout.swift in Sources */,
 				22B1E2AA2045F2EE00BDDF14 /* AVKit.swift in Sources */,
+				22E54CB42124F34E00CBF5A5 /* TailDiagram.swift in Sources */,
 				223B146120F0335E00506604 /* TimelineMultiYearLayout.swift in Sources */,
 				22309CCA20F4007500C58961 /* TimelineMonthLayout.swift in Sources */,
 				2220D3FD202F7E4200B878D6 /* GestureManager.swift in Sources */,

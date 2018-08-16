@@ -9,8 +9,7 @@ class TimelineTailView: NSView {
     static let nibName = NSNib.Name(rawValue: "TimelineTailView")
     static let supplementaryKind = NSCollectionView.SupplementaryElementKind(rawValue: "TimelineTailView")
 
-    private var year: Int!
-    private var tails = [Tail]() {
+    private var layers = [Layer]() {
         didSet {
             needsDisplay = true
         }
@@ -29,22 +28,23 @@ class TimelineTailView: NSView {
         // Check if tail is selected before setting color
         RecordType.school.color.setFill()
 
-        let tailsEnding = tails.filter { $0.lastYear == year }.count
-        let endingWidth = Constants.yearWidth - CGFloat(tailsEnding) * style.timelineInterTailMargin
-
-        for (index, tail) in tails.enumerated() {
-            let y = CGFloat(index * 5)
-            let width = tail.lastYear == year ? endingWidth : Constants.yearWidth
-            let line = NSBezierPath(rect: CGRect(x: 0, y: y, width: width, height: style.timelineTailWidth))
-            line.fill()
+        for (index, layer) in layers.enumerated() {
+            let y = CGFloat(index) * style.timelineInterTailMargin
+            for line in layer.lines {
+                let path = NSBezierPath(rect: CGRect(x: line.start, y: y, width: line.width, height: style.timelineTailWidth))
+                path.fill()
+            }
+            for drop in layer.drops {
+                let path = NSBezierPath(rect: CGRect(x: drop.x, y: y - style.timelineTailGap, width: style.timelineTailWidth, height: style.timelineInterTailMargin + style.timelineTailWidth))
+                path.fill()
+            }
         }
     }
 
 
     // MARK: API
 
-    func set(_ tails: [Tail], year: Int) {
-        self.tails = tails
-        self.year = year
+    func set(_ layers: [Layer]) {
+        self.layers = layers
     }
 }
