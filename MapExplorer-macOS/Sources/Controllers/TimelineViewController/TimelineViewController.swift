@@ -206,10 +206,16 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
             self?.didPanOnTimeline(gesture)
         }
 
-        let timelineTapGesture = TapGestureRecognizer()
-        gestureManager.add(timelineTapGesture, to: timelineCollectionView)
-        timelineTapGesture.gestureUpdated = { [weak self] gesture in
-            self?.didTapOnTimeline(gesture)
+//        let timelineTapGesture = TapGestureRecognizer()
+//        gestureManager.add(timelineTapGesture, to: timelineCollectionView)
+//        timelineTapGesture.gestureUpdated = { [weak self] gesture in
+//            self?.didTapOnTimeline(gesture)
+//        }
+
+        let timelineLongTapGesture = LongTapGestureRecognizer()
+        gestureManager.add(timelineLongTapGesture, to: timelineCollectionView)
+        timelineLongTapGesture.longTapUpdate = { [weak self] gesture, initialPosition in
+            self?.didLongTapOnTimeline(gesture, initialPosition)
         }
 
         addGestures(to: monthCollectionView)
@@ -253,22 +259,57 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         }
     }
 
-    private func didTapOnTimeline(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended,
-            let location = tap.position,
-            let indexPath = timelineCollectionView.indexPathForItem(at: location + timelineCollectionView.visibleRect.origin),
-            let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineFlagView else {
-                return
+    private func didLongTapOnTimeline(_ gesture: GestureRecognizer, _ position: CGPoint) {
+        guard let tap = gesture as? LongTapGestureRecognizer, let indexPath = timelineCollectionView.indexPathForItem(at: position + timelineCollectionView.visibleRect.origin), let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineFlagView else {
+            return
         }
 
-        let state = source.selectedIndexes.contains(indexPath.item)
-        postSelectNotification(for: indexPath.item, state: !state)
-        let translatedXPosition = timelineItem.view.frame.origin.x + (timelineItem.view.frame.width / 2) - timelineCollectionView.visibleRect.origin.x
-        let transformedXPosition = max(0, translatedXPosition)
-        var adjustedFrame = timelineItem.view.frame
-        adjustedFrame.origin.y = timelineItem.view.frame.origin.y + timelineItem.view.frame.height - TimelineFlagView.flagHeight(for: timelineItem.event) - Constants.recordSpawnOffset
-        let transformedYPosition = adjustedFrame.transformed(from: timelineScrollView.frame).transformed(from: timelineBackgroundView.frame).origin.y
-        postRecordNotification(for: timelineItem.event.type, with: timelineItem.event.id, at: CGPoint(x: transformedXPosition, y: transformedYPosition))
+        switch tap.state {
+        case .began:
+            postSelectNotification(for: indexPath.item, state: true)
+        case .failed:
+            postSelectNotification(for: indexPath.item, state: false)
+        case .ended:
+            postSelectNotification(for: indexPath.item, state: false)
+        default:
+            postSelectNotification(for: indexPath.item, state: false)
+        }
+    }
+
+    private func didTapOnTimeline(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, let location = tap.position, let indexPath = timelineCollectionView.indexPathForItem(at: location + timelineCollectionView.visibleRect.origin), let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineFlagView else {
+            return
+        }
+
+//        switch tap.state {
+//        case .began:
+//            postSelectNotification(for: indexPath.item, state: true)
+//        case .failed:
+//            postSelectNotification(for: indexPath.item, state: false)
+//        case .ended:
+//            postSelectNotification(for: indexPath.item, state: false)
+//        default:
+//            postSelectNotification(for: indexPath.item, state: false)
+//        }
+
+
+// Try adding a dictionary with index path and timer, then check if timer is over 0.5s or something for whether to open record, and invalidate/remove in default
+
+//        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended,
+//        guard let location = tap.position,
+//            let indexPath = timelineCollectionView.indexPathForItem(at: location + timelineCollectionView.visibleRect.origin),
+//            let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineFlagView else {
+//                return
+//        }
+
+//        let state = source.selectedIndexes.contains(indexPath.item)
+//        postSelectNotification(for: indexPath.item, state: !state)
+//        let translatedXPosition = timelineItem.view.frame.origin.x + (timelineItem.view.frame.width / 2) - timelineCollectionView.visibleRect.origin.x
+//        let transformedXPosition = max(0, translatedXPosition)
+//        var adjustedFrame = timelineItem.view.frame
+//        adjustedFrame.origin.y = timelineItem.view.frame.origin.y + timelineItem.view.frame.height - TimelineFlagView.flagHeight(for: timelineItem.event) - Constants.recordSpawnOffset
+//        let transformedYPosition = adjustedFrame.transformed(from: timelineScrollView.frame).transformed(from: timelineBackgroundView.frame).origin.y
+//        postRecordNotification(for: timelineItem.event.type, with: timelineItem.event.id, at: CGPoint(x: transformedXPosition, y: transformedYPosition))
     }
 
     private func didPanOnControl(_ gesture: GestureRecognizer) {
@@ -493,7 +534,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         // Update item view for index
         let indexPath = IndexPath(item: index, section: 0)
         if let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineFlagView {
-            timelineItem.flashTintColor()
+            timelineItem.animateFlagColor(on: selected)
         }
     }
 

@@ -76,6 +76,7 @@ final class SelectionManager {
 
 
     // MARK: Helpers
+
     private func set(_ indexSet: Set<Int>, group: Int?) {
         let appStates = ConnectionManager.instance.states(for: .timeline).enumerated()
 
