@@ -5,7 +5,7 @@ import Cocoa
 
 
 /// Class containing a start and end date for Timeline items, as well as the ability to parse dates from a string
-class TimelineRange: CustomStringConvertible {
+class TimelineRange: CustomStringConvertible, Equatable {
     let startDate: TimelineDate
     let endDate: TimelineDate
 
@@ -167,5 +167,9 @@ class TimelineRange: CustomStringConvertible {
         } else {
             return nil
         }
+    }
+
+    static func == (lhs: TimelineRange, rhs: TimelineRange) -> Bool {
+        return lhs.startDate.day == rhs.startDate.day && lhs.startDate.month == rhs.startDate.month && lhs.startDate.year == rhs.startDate.year && lhs.endDate.day == rhs.endDate.day && lhs.endDate.month == rhs.endDate.month && lhs.endDate.year == rhs.endDate.year
     }
 }

@@ -3,6 +3,7 @@
 import Foundation
 
 
+// A diagram used to plot the lines representing the durations of TimelineEvents.
 final class TailDiagram {
 
     private var layers = [Layer]()
@@ -26,9 +27,22 @@ final class TailDiagram {
         wrapLines()
     }
 
+    func addMarkers(for event: TimelineEvent, start: CGFloat, end: CGFloat) {
+        for layer in layers {
+            if layer.lines.contains(where: { $0.start == start && $0.event == event }) {
+                let marker = Marker(event: event, x: start)
+                layer.markers.append(marker)
+            }
+            if layer.lines.contains(where: { $0.end == end && $0.event == event }) {
+                let marker = Marker(event: event, x: end)
+                layer.markers.append(marker)
+            }
+        }
+    }
+
     /// Returns the maximum height for the section of the diagram between the given points
     func heightBetween(a: CGFloat, b: CGFloat) -> CGFloat {
-        let line = Line(start: a, end: b)
+        let line = Line(event: nil, start: a, end: b)
         for (index, layer) in layers.reversed().enumerated() {
             let level = layers.count - index
             if layer.lines.contains(where: { $0.overlaps(line) }) {
@@ -39,27 +53,37 @@ final class TailDiagram {
         return style.timelineTailGap
     }
 
-    /// Returns an array of layers transposed into the given area
+    /// Returns an array of layers transposed from the given area
     func layersBetween(a: CGFloat, b: CGFloat) -> [Layer] {
-        let area = Line(start: a, end: b)
-
+        let area = Line(event: nil, start: a, end: b)
         var result = [Layer]()
+
+        // Create layers with properties transposed to the given area
         for layer in layers {
             let newLayer = Layer()
-
+            // Transpose all lines to area.start
             for line in layer.lines {
                 if line.overlaps(area) {
                     let start = max(line.start - a, 0)
                     let end = min(line.end - a, area.width)
-                    let newLine = Line(start: start, end: end)
+                    let newLine = Line(event: line.event, start: start, end: end)
                     newLayer.lines.append(newLine)
                 }
             }
+            // Transpose all drops to area.start
             for drop in layer.drops {
                 if area.overlaps(x: drop.x) {
                     let x = clamp(drop.x - a, min: 0, max: area.width)
-                    let transposedDrop = Drop(x: x)
+                    let transposedDrop = Drop(event: drop.event, x: x)
                     newLayer.drops.append(transposedDrop)
+                }
+            }
+            // Transpose all markers
+            for marker in layer.markers {
+                if area.overlaps(x: marker.x) {
+                    let x = clamp(marker.x - a, min: 0, max: area.width)
+                    let transposedMarker = Marker(event: marker.event, x: x)
+                    newLayer.markers.append(transposedMarker)
                 }
             }
             if newLayer.lines.isEmpty {
@@ -85,8 +109,8 @@ final class TailDiagram {
 
             let dropPoint = previousLayer.end + style.timelineTailGap
             if let lastLine = currentLayer.lines.last, lastLine.overlaps(x: dropPoint) {
-                let tail = Line(start: dropPoint, end: lastLine.end)
-                let drop = Drop(x: dropPoint)
+                let tail = Line(event: lastLine.event, start: dropPoint, end: lastLine.end)
+                let drop = Drop(event: lastLine.event, x: dropPoint)
                 lastLine.end = dropPoint
                 currentLayer.drops.append(drop)
                 previousLayer.lines.append(tail)
@@ -98,7 +122,7 @@ final class TailDiagram {
 }
 
 
-/// Represents a vertical level within a TailDiagram
+/// Represents a vertical level within a TailDiagram. Holds both horizontal and vertical lines.
 final class Layer {
 
     // Horizontal lines
@@ -106,6 +130,9 @@ final class Layer {
 
     // Vertical lines
     var drops = [Drop]()
+
+    // Circle markers
+    var markers = [Marker]()
 
     var end: CGFloat {
         return lines.last?.end ?? 0
@@ -134,9 +161,10 @@ final class Layer {
     }
 }
 
-/// Represents a single connected line within a single Layer of a TailDiagram
+/// Represents a single horizontal line within a single Layer of a TailDiagram
 final class Line {
 
+    var event: TimelineEvent?
     var start: CGFloat
     var end: CGFloat
 
@@ -147,7 +175,8 @@ final class Line {
 
     // MARK: Init
 
-    init(start: CGFloat, end: CGFloat) {
+    init(event: TimelineEvent?, start: CGFloat, end: CGFloat) {
+        self.event = event
         self.start = start
         self.end = end
     }
@@ -166,10 +195,22 @@ final class Line {
 
 /// Represents a single vertical drop line of a TailDiagram
 final class Drop {
-
+    var event: TimelineEvent?
     var x: CGFloat
 
-    init(x: CGFloat) {
+    init(event: TimelineEvent?, x: CGFloat) {
+        self.event = event
+        self.x = x
+    }
+}
+
+/// Represents a position where a Tail begins or ends
+final class Marker {
+    var event: TimelineEvent?
+    var x: CGFloat
+
+    init(event: TimelineEvent?, x: CGFloat) {
+        self.event = event
         self.x = x
     }
 }

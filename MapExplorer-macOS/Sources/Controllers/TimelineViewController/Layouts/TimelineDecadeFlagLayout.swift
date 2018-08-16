@@ -59,10 +59,21 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
                 for event in events {
                     let start = CGFloat(event.dates.startDate.year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth
                     let end = CGFloat(event.dates.endDate.year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth
-                    let line = Line(start: start, end: end)
+                    let line = Line(event: event, start: start, end: end)
                     if !line.width.isZero {
                         diagram.add(line)
                     }
+                }
+            }
+        }
+
+        // Add start and end markers for timeline events
+        for year in (source.firstYear...source.lastYear) {
+            if let events = source.eventsForYear[year] {
+                for event in events {
+                    let start = CGFloat(event.dates.startDate.year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth
+                    let end = CGFloat(event.dates.endDate.year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth
+                    diagram.addMarkers(for: event, start: start, end: end)
                 }
             }
         }

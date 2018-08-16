@@ -25,10 +25,9 @@ class TimelineTailView: NSView {
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
 
-        // Check if tail is selected before setting color
-        RecordType.school.color.setFill()
-
         for (index, layer) in layers.enumerated() {
+            RecordType.school.color.setFill()
+            RecordType.school.color.setStroke()
             let y = CGFloat(index) * style.timelineInterTailMargin
             for line in layer.lines {
                 let path = NSBezierPath(rect: CGRect(x: line.start, y: y, width: line.width, height: style.timelineTailWidth))
@@ -37,6 +36,13 @@ class TimelineTailView: NSView {
             for drop in layer.drops {
                 let path = NSBezierPath(rect: CGRect(x: drop.x, y: y - style.timelineTailGap, width: style.timelineTailWidth, height: style.timelineInterTailMargin + style.timelineTailWidth))
                 path.fill()
+            }
+            NSColor.white.setFill()
+            for marker in layer.markers {
+                let radius = style.timelineTailCapRadius
+                let path = NSBezierPath(ovalIn: CGRect(x: marker.x - radius/2, y: y - radius/2, width: radius * 2, height: radius * 2))
+                path.fill()
+                path.stroke()
             }
         }
     }
