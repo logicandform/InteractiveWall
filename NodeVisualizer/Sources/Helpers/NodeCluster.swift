@@ -14,6 +14,9 @@ typealias EntityLevels = [Set<RecordEntity>]
 
 
 struct LayerBitMasks {
+    static let outerBoundingNodeBitMask: UInt32 = 1 << 30
+    static let clonedRecordNodeBitMask: UInt32 = 1 << 29
+
     let categoryBitMask: UInt32
     let contactTestBitMask: UInt32
     let collisionBitMask: UInt32
@@ -184,6 +187,13 @@ final class NodeCluster: Hashable {
                 addLayer(level: current)
             }
         }
+
+        // Set the outer-most layer's node bitmask to 30. 30 will be the default to interact with everything
+//        if let outerMostBoundingNode = layerForLevel[level]?.nodeBoundingRenderComponent.node {
+//            outerMostBoundingNode.physicsBody?.categoryBitMask = LayerBitMasks.outerBoundingNodeBitMask
+//            outerMostBoundingNode.physicsBody?.collisionBitMask = LayerBitMasks.outerBoundingNodeBitMask
+//            outerMostBoundingNode.physicsBody?.contactTestBitMask = LayerBitMasks.outerBoundingNodeBitMask
+//        }
     }
 
     /// Associates the entity to its level by adding it to the nodeBoundingEntityForLevel. Adds the entity's component to the component system
@@ -203,7 +213,7 @@ final class NodeCluster: Hashable {
         }
     }
 
-    /// Removes layer and it's components from the cluster
+    /// Removes layer and its components from the cluster
     private func removeLayer(level: Int) {
         guard let layer = layerForLevel[level], let node = layer.nodeBoundingRenderComponent.node else {
             return
@@ -242,9 +252,9 @@ final class NodeCluster: Hashable {
     /// Provides the bitMasks for the bounding node's physics bodies. The bits are offset by 20 in order to make them unique from the level entity's bitMasks.
     private func layerBitMasks(forLevel level: Int) -> LayerBitMasks {
         let levelBit = 20 + level
-        let categoryBitMask: UInt32 = 0x1 << levelBit
-        let contactTestBitMask: UInt32 = 0x1 << levelBit
-        let collisionBitMask: UInt32 = 0x1 << levelBit
+        let categoryBitMask: UInt32 = 1 << levelBit
+        let contactTestBitMask: UInt32 = 1 << levelBit
+        let collisionBitMask: UInt32 = 1 << levelBit
 
         return LayerBitMasks(
             categoryBitMask: categoryBitMask,

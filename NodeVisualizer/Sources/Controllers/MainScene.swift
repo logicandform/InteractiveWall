@@ -50,47 +50,19 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     // MARK: SKPhysicsContactDelegate
 
     func didBegin(_ contact: SKPhysicsContact) {
-        // whenever an entity comes into contact with a bounding node, set the contacted entity's hasCollidedWithBoundingNode to true
-//        if contact.bodyA.node?.name == "boundingNode",
-//            let contactEntity = contact.bodyB.node?.entity as? RecordEntity,
-//            !contactEntity.hasCollidedWithBoundingNode,
-//            let contactEntityCluster = contactEntity.cluster,
-//            contactEntityCluster.selectedEntity.state != .panning,
-//            case EntityState.seekEntity(_) = contactEntity.state {
-//            contactEntity.hasCollidedWithBoundingNode = true
-//        } else if let contactEntity = contact.bodyA.node?.entity as? RecordEntity,
-//            !contactEntity.hasCollidedWithBoundingNode,
-//            let contactEntityCluster = contactEntity.cluster,
-//            contactEntityCluster.selectedEntity.state != .panning,
-//            case EntityState.seekEntity(_) = contactEntity.state,
-//            contact.bodyB.node?.name == "boundingNode" {
-//            contactEntity.hasCollidedWithBoundingNode = true
-//        }
-
-
-        // when record entity comes into contact with its bounding node, set the entity to the appropriate bitmask
-
         if let contactEntity = contact.bodyA.node?.entity as? RecordEntity,
-            !contactEntity.hasCollidedWithBoundingNode,
-            case EntityState.seekEntity(_) = contactEntity.state {
-
-            if let boundingNode = contact.bodyB.node, boundingNode.name == "boundingNode" {
-                if let cluster = contactEntity.cluster {
-                    if cluster.layerForLevel.contains(where: { $0.value.nodeBoundingRenderComponent.node === boundingNode }) {
-                        contactEntity.hasCollidedWithBoundingNode = true
-                    }
-                }
-            }
-        } else if let contactEntity = contact.bodyB.node?.entity as? RecordEntity,
-            !contactEntity.hasCollidedWithBoundingNode,
-            case EntityState.seekEntity(_) = contactEntity.state {
-
-            if let boundingNode = contact.bodyA.node, boundingNode.name == "boundingNode" {
-                if let cluster = contactEntity.cluster {
-                    if cluster.layerForLevel.contains(where: { $0.value.nodeBoundingRenderComponent.node === boundingNode }) {
-                        contactEntity.hasCollidedWithBoundingNode = true
-                    }
-                }
+            let cluster = contactEntity.cluster,
+            let boundingNode = contact.bodyB.node, boundingNode.name == "boundingNode",
+            cluster.layerForLevel[cluster.layerForLevel.count - 1]?.nodeBoundingRenderComponent.node === boundingNode,
+            let currentLevel = contactEntity.clusterLevel.currentLevel {
+//            contactEntity.setBitMasks(forLevel: currentLevel)
+        } else {
+            if let contactEntity = contact.bodyB.node?.entity as? RecordEntity,
+                let cluster = contactEntity.cluster,
+                let boundingNode = contact.bodyA.node, boundingNode.name == "boundingNode",
+                cluster.layerForLevel[cluster.layerForLevel.count - 1]?.nodeBoundingRenderComponent.node === boundingNode,
+                let currentLevel = contactEntity.clusterLevel.currentLevel {
+//                contactEntity.setBitMasks(forLevel: currentLevel)
             }
         }
     }
@@ -99,6 +71,8 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
         // check if the contact is between a bounding node and a cloned record entity (collisionBitMask = 29)
         // set the cloned record entity's collision bitmask to 30
+
+        
     }
 
 

@@ -59,6 +59,7 @@ class MovementComponent: GKComponent {
         case .tapped:
             entity.physicsBody.isDynamic = true
         case .panning:
+            entity.physicsBody.isDynamic = true
             entity.cluster?.updateLayerLevels(forPan: false)
         default:
             break
@@ -149,6 +150,9 @@ class MovementComponent: GKComponent {
         if (r2 - r1) < Constants.distancePadding {
             // Enter SeekState and provide the appropriate bitmasks and entityToSeek for the MovementComponent
             entity.setBitMasks(forLevel: currentLevel)
+//            entity.physicsBody.categoryBitMask = LayerBitMasks.outerBoundingNodeBitMask
+//            entity.physicsBody.collisionBitMask = LayerBitMasks.outerBoundingNodeBitMask
+//            entity.physicsBody.contactTestBitMask = LayerBitMasks.outerBoundingNodeBitMask
             state = .seekEntity(cluster.selectedEntity)
         } else {
             // Apply velocity

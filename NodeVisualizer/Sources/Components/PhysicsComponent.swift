@@ -47,16 +47,15 @@ class PhysicsComponent: GKComponent {
         for contactedBody in contactedBodies {
             if let boundingNode = contactedBody.node, boundingNode.name == "boundingNode",
                 let currentLevel = entity.clusterLevel.currentLevel,
-                cluster.layerForLevel[currentLevel] === boundingNode,
+                cluster.layerForLevel[currentLevel]?.nodeBoundingRenderComponent.node === boundingNode,
                 !entity.hasCollidedWithBoundingNode {
                 entity.hasCollidedWithBoundingNode = true
                 return
-            } else {
-                if let contactedEntity = contactedBody.node?.entity as? RecordEntity,
-                   let contactedEntityCluster = contactedEntity.cluster, cluster === contactedEntityCluster,
-                    contactedEntity.hasCollidedWithBoundingNode, !entity.hasCollidedWithBoundingNode {
-                    entity.hasCollidedWithBoundingNode = true
-                }
+            } else if let contactedEntity = contactedBody.node?.entity as? RecordEntity,
+                let contactedEntityCluster = contactedEntity.cluster, cluster === contactedEntityCluster,
+                contactedEntity.hasCollidedWithBoundingNode, !entity.hasCollidedWithBoundingNode {
+                entity.hasCollidedWithBoundingNode = true
+                return
             }
         }
     }
@@ -110,10 +109,9 @@ class PhysicsComponent: GKComponent {
 
     /// Returns the bitMasks for the entity's level
     private func bitMasks(forLevel level: Int) -> BitMasks {
-        let levelBit = level + 1
-        let categoryBitMask: UInt32 = 0x1 << levelBit
-        let collisionBitMask: UInt32 = 0x1 << levelBit
-        let contactTestBitMask: UInt32 = 0x1 << levelBit
+        let categoryBitMask: UInt32 = 1 << level
+        let collisionBitMask: UInt32 = 1 << level
+        let contactTestBitMask: UInt32 = 1 << level
 
         return BitMasks(
             categoryBitMask: categoryBitMask,
