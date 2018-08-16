@@ -34,26 +34,29 @@ class PhysicsComponent: GKComponent {
 
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
-        guard let entity = entity as? RecordEntity else {
+
+        guard let entity = entity as? RecordEntity,
+            !entity.hasCollidedWithBoundingNode,
+            let cluster = entity.cluster,
+            cluster.selectedEntity.state != .panning else {
             return
         }
 
-        if let cluster = entity.cluster, cluster.selectedEntity.state == .panning {
-            return
-        }
-
-        // need to check if the contactedBodies belong to the same level
-
-
+        // Check if the contactedBodies belong to the same level, the same cluster, and the same bounding node
         let contactedBodies = physicsBody.allContactedBodies()
         for contactedBody in contactedBodies {
-            guard let contactedEntity = contactedBody.node?.entity as? RecordEntity else {
-                continue
-            }
-
-            if contactedEntity.hasCollidedWithBoundingNode && !entity.hasCollidedWithBoundingNode {
+            if let boundingNode = contactedBody.node, boundingNode.name == "boundingNode",
+                let currentLevel = entity.clusterLevel.currentLevel,
+                cluster.layerForLevel[currentLevel] === boundingNode,
+                !entity.hasCollidedWithBoundingNode {
                 entity.hasCollidedWithBoundingNode = true
                 return
+            } else {
+                if let contactedEntity = contactedBody.node?.entity as? RecordEntity,
+                   let contactedEntityCluster = contactedEntity.cluster, cluster === contactedEntityCluster,
+                    contactedEntity.hasCollidedWithBoundingNode, !entity.hasCollidedWithBoundingNode {
+                    entity.hasCollidedWithBoundingNode = true
+                }
             }
         }
     }

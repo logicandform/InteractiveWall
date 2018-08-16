@@ -68,6 +68,8 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 //        }
 
 
+        // when record entity comes into contact with its bounding node, set the entity to the appropriate bitmask
+
         if let contactEntity = contact.bodyA.node?.entity as? RecordEntity,
             !contactEntity.hasCollidedWithBoundingNode,
             case EntityState.seekEntity(_) = contactEntity.state {
@@ -95,6 +97,8 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
     func didEnd(_ contact: SKPhysicsContact) {
 
+        // check if the contact is between a bounding node and a cloned record entity (collisionBitMask = 29)
+        // set the cloned record entity's collision bitmask to 30
     }
 
 
