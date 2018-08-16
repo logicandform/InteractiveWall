@@ -4,7 +4,6 @@ import Cocoa
 import MapKit
 
 
-@objc
 class ClusterAnnotationView: MKAnnotationView {
     static let identifier = "ClusterView"
 
