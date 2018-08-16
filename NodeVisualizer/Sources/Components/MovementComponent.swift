@@ -81,6 +81,7 @@ class MovementComponent: GKComponent {
             entity.physicsBody.isDynamic = false
             cluster()
         case .panning:
+            entity.physicsBody.isDynamic = false
             entity.node.removeAllActions()
             entity.cluster?.updateLayerLevels(forPan: true)
         }

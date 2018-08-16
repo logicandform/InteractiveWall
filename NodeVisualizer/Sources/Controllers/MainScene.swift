@@ -40,6 +40,10 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         for cluster in nodeClusters {
             cluster.update(deltaTime)
         }
+
+        for case let node as RecordNode in children {
+            node.zRotation = 0
+        }
     }
 
 
@@ -47,21 +51,50 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
 
     func didBegin(_ contact: SKPhysicsContact) {
         // whenever an entity comes into contact with a bounding node, set the contacted entity's hasCollidedWithBoundingNode to true
-        if contact.bodyA.node?.name == "boundingNode",
-            let contactEntity = contact.bodyB.node?.entity as? RecordEntity,
+//        if contact.bodyA.node?.name == "boundingNode",
+//            let contactEntity = contact.bodyB.node?.entity as? RecordEntity,
+//            !contactEntity.hasCollidedWithBoundingNode,
+//            let contactEntityCluster = contactEntity.cluster,
+//            contactEntityCluster.selectedEntity.state != .panning,
+//            case EntityState.seekEntity(_) = contactEntity.state {
+//            contactEntity.hasCollidedWithBoundingNode = true
+//        } else if let contactEntity = contact.bodyA.node?.entity as? RecordEntity,
+//            !contactEntity.hasCollidedWithBoundingNode,
+//            let contactEntityCluster = contactEntity.cluster,
+//            contactEntityCluster.selectedEntity.state != .panning,
+//            case EntityState.seekEntity(_) = contactEntity.state,
+//            contact.bodyB.node?.name == "boundingNode" {
+//            contactEntity.hasCollidedWithBoundingNode = true
+//        }
+
+
+        if let contactEntity = contact.bodyA.node?.entity as? RecordEntity,
             !contactEntity.hasCollidedWithBoundingNode,
-            let contactEntityCluster = contactEntity.cluster,
-            contactEntityCluster.selectedEntity.state != .panning,
             case EntityState.seekEntity(_) = contactEntity.state {
-            contactEntity.hasCollidedWithBoundingNode = true
-        } else if let contactEntity = contact.bodyA.node?.entity as? RecordEntity,
+
+            if let boundingNode = contact.bodyB.node, boundingNode.name == "boundingNode" {
+                if let cluster = contactEntity.cluster {
+                    if cluster.layerForLevel.contains(where: { $0.value.nodeBoundingRenderComponent.node === boundingNode }) {
+                        contactEntity.hasCollidedWithBoundingNode = true
+                    }
+                }
+            }
+        } else if let contactEntity = contact.bodyB.node?.entity as? RecordEntity,
             !contactEntity.hasCollidedWithBoundingNode,
-            let contactEntityCluster = contactEntity.cluster,
-            contactEntityCluster.selectedEntity.state != .panning,
-            case EntityState.seekEntity(_) = contactEntity.state,
-            contact.bodyB.node?.name == "boundingNode" {
-            contactEntity.hasCollidedWithBoundingNode = true
+            case EntityState.seekEntity(_) = contactEntity.state {
+
+            if let boundingNode = contact.bodyA.node, boundingNode.name == "boundingNode" {
+                if let cluster = contactEntity.cluster {
+                    if cluster.layerForLevel.contains(where: { $0.value.nodeBoundingRenderComponent.node === boundingNode }) {
+                        contactEntity.hasCollidedWithBoundingNode = true
+                    }
+                }
+            }
         }
+    }
+
+    func didEnd(_ contact: SKPhysicsContact) {
+
     }
 
 
@@ -83,7 +116,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         let origin = CGPoint(x: -Constants.worldPadding, y: -Constants.worldPadding)
         let size = CGSize(width: frame.width + Constants.worldPadding * 2, height: frame.height + Constants.worldPadding * 2)
         physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(origin: origin, size: size))
-        physicsWorld.gravity = Constants.slowGravity
+        physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
     }
 

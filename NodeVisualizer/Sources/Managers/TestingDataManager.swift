@@ -47,7 +47,7 @@ class TestingDataManager {
 
     // MARK: Tests
 
-    /// After a school, org or event is selected. Selecting another on should duplicate nodes from the first cluster.
+    /// After a school, org or event is selected. Selecting another one should duplicate nodes from the first cluster.
     private func testDuplicatingNodes() {
         let artifacts = createRecords(of: .artifact, count: 10)
         records.append(contentsOf: artifacts)

@@ -21,7 +21,6 @@ class PhysicsComponent: GKComponent {
 
     init(physicsBody: SKPhysicsBody) {
         self.physicsBody = physicsBody
-        self.physicsBody.allowsRotation = false
         super.init()
         setupInitialPhysicsBodyProperties()
     }
@@ -43,6 +42,9 @@ class PhysicsComponent: GKComponent {
             return
         }
 
+        // need to check if the contactedBodies belong to the same level
+
+
         let contactedBodies = physicsBody.allContactedBodies()
         for contactedBody in contactedBodies {
             guard let contactedEntity = contactedBody.node?.entity as? RecordEntity else {
@@ -60,7 +62,7 @@ class PhysicsComponent: GKComponent {
     // MARK: API
 
     /// Sets the entity's bitMasks to interact with entities within its own level as well as its bounding node
-    func setBitMasks(forLevel level: Int) {
+    func setInteractingBitMasks(forLevel level: Int) {
         guard let entity = entity as? RecordEntity, let boundingNode = entity.cluster?.layerForLevel[level]?.nodeBoundingRenderComponent.node, let boundingNodePhysicsBody = boundingNode.physicsBody else {
             return
         }
@@ -72,7 +74,7 @@ class PhysicsComponent: GKComponent {
     }
 
     /// Sets the entity's bitMask to only interact with entities within its own level
-    func setLevelInteractingBitMasks(forLevel level: Int) {
+    func setRecordNodeLevelInteractingBitMasks(forLevel level: Int) {
         let levelBitMasks = bitMasks(forLevel: level)
         physicsBody.categoryBitMask = levelBitMasks.categoryBitMask
         physicsBody.collisionBitMask = levelBitMasks.collisionBitMask
@@ -105,9 +107,10 @@ class PhysicsComponent: GKComponent {
 
     /// Returns the bitMasks for the entity's level
     private func bitMasks(forLevel level: Int) -> BitMasks {
-        let categoryBitMask: UInt32 = 0x1 << level
-        let collisionBitMask: UInt32 = 0x1 << level
-        let contactTestBitMask: UInt32 = 0x1 << level
+        let levelBit = level + 1
+        let categoryBitMask: UInt32 = 0x1 << levelBit
+        let collisionBitMask: UInt32 = 0x1 << levelBit
+        let contactTestBitMask: UInt32 = 0x1 << levelBit
 
         return BitMasks(
             categoryBitMask: categoryBitMask,

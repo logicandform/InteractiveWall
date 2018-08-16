@@ -60,7 +60,7 @@ final class EntityManager {
         }
     }
 
-    /// Returns the entities associated with the given proxies, if a entity is already with another cluster, the entity will be duplicated
+    /// Returns the entities associated with the given proxies, if an entity is already with another cluster, the entity will be duplicated
     func requestEntities(with proxies: Set<RecordProxy>, for cluster: NodeCluster) -> Set<RecordEntity> {
         var result = Set<RecordEntity>()
         for proxy in proxies {

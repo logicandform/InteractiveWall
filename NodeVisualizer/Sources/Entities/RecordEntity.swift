@@ -137,10 +137,9 @@ final class RecordEntity: GKEntity {
         switch state {
         case .seekLevel(let level):
             clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: level)
-            physicsComponent.setLevelInteractingBitMasks(forLevel: level)
+            physicsComponent.setRecordNodeLevelInteractingBitMasks(forLevel: level)
         case .tapped:
             clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: Constants.tappedEntitylevel)
-            physicsComponent.setLevelInteractingBitMasks(forLevel: Constants.tappedEntitylevel)
         default:
             break
         }
@@ -151,7 +150,7 @@ final class RecordEntity: GKEntity {
     }
 
     func setBitMasks(forLevel level: Int) {
-        physicsComponent.setBitMasks(forLevel: level)
+        physicsComponent.setInteractingBitMasks(forLevel: level)
     }
 
     func updateAgentPositionToMatchNodePosition() {
