@@ -39,5 +39,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         TouchManager.instance.setupPort()
         ConnectionManager.instance.registerForNotifications()
+        SelectionManager.instance.registerForNotifications()
     }
 }
