@@ -31,7 +31,7 @@
                     <rect key="frame" x="2" y="116" width="478" height="100"/>
                     <subviews>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="31b-mQ-r5m">
-                            <rect key="frame" x="8" y="38" width="462" height="52"/>
+                            <rect key="frame" x="8" y="28" width="462" height="68"/>
                             <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Title" id="R29-Bs-Ugc">
                                 <font key="font" metaFont="system"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -39,7 +39,7 @@
                             </textFieldCell>
                         </textField>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="odF-J1-sQS">
-                            <rect key="frame" x="8" y="10" width="462" height="20"/>
+                            <rect key="frame" x="8" y="4" width="462" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="RLq-30-AgQ"/>
                             </constraints>
@@ -54,10 +54,10 @@
                         <constraint firstAttribute="trailing" secondItem="31b-mQ-r5m" secondAttribute="trailing" constant="10" id="33e-hA-oHB"/>
                         <constraint firstItem="31b-mQ-r5m" firstAttribute="leading" secondItem="SSB-xo-nqZ" secondAttribute="leading" constant="10" id="3mY-zs-LTV"/>
                         <constraint firstAttribute="height" constant="100" id="51H-6b-8Qy"/>
-                        <constraint firstAttribute="bottom" secondItem="odF-J1-sQS" secondAttribute="bottom" constant="10" id="Bas-R7-TVP"/>
+                        <constraint firstAttribute="bottom" secondItem="odF-J1-sQS" secondAttribute="bottom" constant="4" id="Bas-R7-TVP"/>
                         <constraint firstItem="odF-J1-sQS" firstAttribute="leading" secondItem="SSB-xo-nqZ" secondAttribute="leading" constant="10" id="JMk-Qk-4al"/>
-                        <constraint firstItem="odF-J1-sQS" firstAttribute="top" secondItem="31b-mQ-r5m" secondAttribute="bottom" constant="8" id="ZJU-aX-qyb"/>
-                        <constraint firstItem="31b-mQ-r5m" firstAttribute="top" secondItem="SSB-xo-nqZ" secondAttribute="top" constant="10" id="Zt5-xP-n8e"/>
+                        <constraint firstItem="odF-J1-sQS" firstAttribute="top" secondItem="31b-mQ-r5m" secondAttribute="bottom" constant="4" id="ZJU-aX-qyb"/>
+                        <constraint firstItem="31b-mQ-r5m" firstAttribute="top" secondItem="SSB-xo-nqZ" secondAttribute="top" constant="4" id="Zt5-xP-n8e"/>
                         <constraint firstAttribute="trailing" secondItem="odF-J1-sQS" secondAttribute="trailing" constant="10" id="lYJ-87-eJu"/>
                     </constraints>
                 </customView>

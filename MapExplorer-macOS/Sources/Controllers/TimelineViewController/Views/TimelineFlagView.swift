@@ -20,7 +20,7 @@ class TimelineFlagView: NSCollectionViewItem {
     private var tintColor = style.darkBackground
 
     private struct Constants {
-        static let interItemMargin: CGFloat = 10
+        static let interItemMargin: CGFloat = 4
         static let dateFieldHeight: CGFloat = 20
         static let animationDuration = 0.15
     }
