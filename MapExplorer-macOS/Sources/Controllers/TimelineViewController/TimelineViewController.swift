@@ -174,6 +174,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         timelineCollectionView.register(TimelineFlagView.self, forItemWithIdentifier: TimelineFlagView.identifier)
         timelineCollectionView.register(NSNib(nibNamed: TimelineBorderView.nibName, bundle: .main), forSupplementaryViewOfKind: TimelineBorderView.supplementaryKind, withIdentifier: TimelineBorderView.identifier)
         timelineCollectionView.register(NSNib(nibNamed: TimelineHeaderView.nibName, bundle: .main), forSupplementaryViewOfKind: TimelineHeaderView.supplementaryKind, withIdentifier: TimelineHeaderView.identifier)
+        timelineCollectionView.register(NSNib(nibNamed: TimelineTailView.nibName, bundle: .main), forSupplementaryViewOfKind: TimelineTailView.supplementaryKind, withIdentifier: TimelineTailView.identifier)
         timelineCollectionView.dataSource = source
         timelineScrollView.horizontalScroller?.alphaValue = 0
         createRecords()

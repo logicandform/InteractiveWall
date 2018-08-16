@@ -75,6 +75,13 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
             if let borderView = collectionView.makeSupplementaryView(ofKind: kind, withIdentifier: TimelineBorderView.identifier, for: indexPath) as? TimelineBorderView {
                 return borderView
             }
+        case TimelineTailView.supplementaryKind:
+            if let tailView = collectionView.makeSupplementaryView(ofKind: kind, withIdentifier: TimelineTailView.identifier, for: indexPath) as? TimelineTailView, let layout = collectionView.collectionViewLayout as? TimelineDecadeFlagLayout {
+                let year = indexPath.item
+                let tails = layout.tailsForYear[year] ?? []
+                tailView.set(tails, year: year)
+                return tailView
+            }
         default:
             return NSView()
         }

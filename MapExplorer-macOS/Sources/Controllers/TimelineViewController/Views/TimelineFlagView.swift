@@ -8,8 +8,6 @@ class TimelineFlagView: NSCollectionViewItem {
 
     @IBOutlet weak var flagView: NSView!
     @IBOutlet weak var flagPoleView: NSView!
-    @IBOutlet weak var flagBottomView: NSView!
-    @IBOutlet weak var flagTailView: NSView!
     @IBOutlet weak var titleTextField: NSTextField!
     @IBOutlet weak var dateTextField: NSTextField!
     @IBOutlet weak var flagHeightConstraint: NSLayoutConstraint!
@@ -22,7 +20,6 @@ class TimelineFlagView: NSCollectionViewItem {
     private var tintColor = style.darkBackground
 
     private struct Constants {
-        static let flagWidth: CGFloat = 180
         static let interItemMargin: CGFloat = 10
         static let dateFieldHeight: CGFloat = 20
         static let animationDuration = 0.15
@@ -36,8 +33,6 @@ class TimelineFlagView: NSCollectionViewItem {
         view.wantsLayer = true
         flagView.wantsLayer = true
         flagPoleView.wantsLayer = true
-        flagBottomView.wantsLayer = true
-        flagTailView.wantsLayer = true
         flagView.layer?.backgroundColor = style.darkBackground.cgColor
     }
 
@@ -59,15 +54,13 @@ class TimelineFlagView: NSCollectionViewItem {
     private func load(_ event: TimelineEvent) {
         tintColor = event.type.color
         flagPoleView.layer?.backgroundColor = event.type.color.cgColor
-        flagBottomView.layer?.backgroundColor = event.type.color.cgColor
-        flagTailView.layer?.backgroundColor = event.type.color.cgColor
         flagHeightConstraint.constant = TimelineFlagView.flagHeight(for: event)
         titleTextField.attributedStringValue = NSAttributedString(string: event.title, attributes: style.timelineTitleAttributes)
         dateTextField.attributedStringValue = NSAttributedString(string: event.dates.description, attributes: style.timelineDateAttributes)
     }
 
     static func flagHeight(for event: TimelineEvent) -> CGFloat {
-        let textFieldWidth = Constants.flagWidth - Constants.interItemMargin * 2
+        let textFieldWidth = style.flagWidth - Constants.interItemMargin * 2
         let title = NSAttributedString(string: event.title, attributes: style.timelineTitleAttributes)
         let titleHeight = title.height(containerWidth: textFieldWidth)
         let dateHeight = Constants.dateFieldHeight

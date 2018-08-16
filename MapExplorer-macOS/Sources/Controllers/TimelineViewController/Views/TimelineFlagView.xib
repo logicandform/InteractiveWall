@@ -8,10 +8,8 @@
         <customObject id="-2" userLabel="File's Owner" customClass="TimelineFlagView" customModule="MapExplorer_macOS" customModuleProvider="target">
             <connections>
                 <outlet property="dateTextField" destination="odF-J1-sQS" id="Cf1-4s-Kgm"/>
-                <outlet property="flagBottomView" destination="nS5-cS-1KC" id="IHT-o6-Iqa"/>
                 <outlet property="flagHeightConstraint" destination="51H-6b-8Qy" id="ccC-mF-ZrY"/>
                 <outlet property="flagPoleView" destination="5if-Jx-5sp" id="656-0J-5wB"/>
-                <outlet property="flagTailView" destination="fTW-zr-gMn" id="MAt-Nn-yks"/>
                 <outlet property="flagView" destination="SSB-xo-nqZ" id="O80-tb-VOs"/>
                 <outlet property="titleTextField" destination="31b-mQ-r5m" id="I8I-fh-19C"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
@@ -63,30 +61,12 @@
                         <constraint firstAttribute="trailing" secondItem="odF-J1-sQS" secondAttribute="trailing" constant="10" id="lYJ-87-eJu"/>
                     </constraints>
                 </customView>
-                <customView translatesAutoresizingMaskIntoConstraints="NO" id="fTW-zr-gMn">
-                    <rect key="frame" x="478" y="0.0" width="2" height="116"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="2" id="V8m-wN-cUc"/>
-                    </constraints>
-                </customView>
-                <customView translatesAutoresizingMaskIntoConstraints="NO" id="nS5-cS-1KC">
-                    <rect key="frame" x="0.0" y="116" width="480" height="2"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="2" id="9KB-9d-2nL"/>
-                    </constraints>
-                </customView>
             </subviews>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="nS5-cS-1KC" secondAttribute="trailing" id="38h-wo-jR2"/>
                 <constraint firstItem="5if-Jx-5sp" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="8fd-FY-dGC"/>
-                <constraint firstAttribute="trailing" secondItem="fTW-zr-gMn" secondAttribute="trailing" id="Ceg-qU-4Fz"/>
-                <constraint firstItem="nS5-cS-1KC" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="FLf-7b-EBF"/>
                 <constraint firstItem="SSB-xo-nqZ" firstAttribute="leading" secondItem="5if-Jx-5sp" secondAttribute="trailing" id="T5I-NF-YZy"/>
-                <constraint firstItem="fTW-zr-gMn" firstAttribute="top" secondItem="SSB-xo-nqZ" secondAttribute="bottom" id="VQ9-tA-b3J"/>
                 <constraint firstAttribute="bottom" secondItem="5if-Jx-5sp" secondAttribute="bottom" id="bYt-R5-ctb"/>
                 <constraint firstAttribute="trailing" secondItem="SSB-xo-nqZ" secondAttribute="trailing" id="d7J-zz-g5B"/>
-                <constraint firstItem="nS5-cS-1KC" firstAttribute="bottom" secondItem="SSB-xo-nqZ" secondAttribute="bottom" id="jz4-kz-b89"/>
-                <constraint firstAttribute="bottom" secondItem="fTW-zr-gMn" secondAttribute="bottom" id="vce-QT-qCZ"/>
                 <constraint firstItem="5if-Jx-5sp" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="wbi-EW-mQR"/>
                 <constraint firstItem="SSB-xo-nqZ" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="xG5-YB-kGj"/>
             </constraints>

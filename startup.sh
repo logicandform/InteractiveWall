@@ -1,12 +1,8 @@
 #!/bin/bash
 
-cd ~/dev/Tile-Server/bin
-screen -d -m -S tiles-1 node www 4100
-screen -d -m -S tiles-2 node www 4200
-screen -d -m -S tiles-3 node www 4300
-
-cd ~/dev/Caching-Server-UBC
-screen -d -m -S caching-server npm start
+while ! ping -W 1 -c 1 8.8.8.8 >&/dev/null; do
+  sleep 3
+done
 
 # Brings window explorer to the front if its open, otherwise opens it
 SERVICE='WindowExplorer'
