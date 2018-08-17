@@ -41,16 +41,12 @@ final class TailDiagram {
     }
 
     /// Returns the maximum height for the section of the diagram between the given points
-    func heightBetween(a: CGFloat, b: CGFloat) -> CGFloat {
-        let line = Line(event: nil, start: a, end: b)
-        for (index, layer) in layers.reversed().enumerated() {
-            let level = layers.count - index
-            if layer.lines.contains(where: { $0.overlaps(line) }) {
-                return CGFloat(level) * style.timelineInterTailMargin
-            }
+    func height(of layers: [Layer]) -> CGFloat {
+        if layers.count.isZero {
+            return style.timelineTailGap
         }
 
-        return style.timelineTailGap
+        return CGFloat(layers.count) * style.timelineInterTailMargin
     }
 
     /// Returns an array of layers transposed from the given area
@@ -86,7 +82,7 @@ final class TailDiagram {
                     newLayer.markers.append(transposedMarker)
                 }
             }
-            if newLayer.lines.isEmpty {
+            if newLayer.isEmpty {
                 break
             }
             result.append(newLayer)
@@ -108,14 +104,24 @@ final class TailDiagram {
             let currentLayer = layers[index]
 
             let dropPoint = previousLayer.end + style.timelineTailGap
-            if let lastLine = currentLayer.lines.last, lastLine.overlaps(x: dropPoint) {
-                let tail = Line(event: lastLine.event, start: dropPoint, end: lastLine.end)
-                let drop = Drop(event: lastLine.event, x: dropPoint)
-                lastLine.end = dropPoint
-                currentLayer.drops.append(drop)
-                previousLayer.lines.append(tail)
-                wrapLines()
-                return
+            if let lastLine = currentLayer.lines.last {
+                if lastLine.overlaps(x: dropPoint) {
+                    let tail = Line(event: lastLine.event, start: dropPoint, end: lastLine.end)
+                    let drop = Drop(event: lastLine.event, x: dropPoint)
+                    lastLine.end = dropPoint
+                    currentLayer.drops.append(drop)
+                    previousLayer.lines.append(tail)
+                    wrapLines()
+                    return
+                } else if lastLine.start > dropPoint {
+                    let tail = Line(event: lastLine.event, start: lastLine.start, end: lastLine.end)
+                    let drop = Drop(event: lastLine.event, x: lastLine.start)
+                    lastLine.end = lastLine.start
+                    currentLayer.drops.append(drop)
+                    previousLayer.lines.append(tail)
+                    wrapLines()
+                    return
+                }
             }
         }
     }
@@ -136,6 +142,10 @@ final class Layer {
 
     var end: CGFloat {
         return lines.last?.end ?? 0
+    }
+
+    var isEmpty: Bool {
+        return lines.isEmpty && drops.isEmpty && markers.isEmpty
     }
 
 

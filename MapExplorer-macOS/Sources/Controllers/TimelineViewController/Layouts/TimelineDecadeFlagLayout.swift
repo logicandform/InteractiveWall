@@ -84,8 +84,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
             let end = start + Constants.yearWidth
             let layers = diagram.layersBetween(a: start, b: end)
             layersForYear[year] = layers
-            let height = diagram.heightBetween(a: start, b: end)
-            tailHeightForYear[year] = height
+            tailHeightForYear[year] = diagram.height(of: layers)
         }
 
         // Build cache of event and tail attributes

@@ -39,13 +39,6 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     }
 
 
-    // MARK: API
-
-    func events(in range: [Int]) -> Int {
-        return range.reduce(0) { return $0 + (eventsForYear[$1]?.count ?? 0) }
-    }
-
-
     // MARK: NSCollectionViewDataSource
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
