@@ -5,6 +5,7 @@ import Cocoa
 
 struct ApplicationInfo {
     var action: ControlAction
+    var status: ScreenState
     var applications: [Int: NSRunningApplication]
     var applicationTypesForMaps: [Int: ApplicationType]
     var maps: [Int]
@@ -79,30 +80,33 @@ class MasterViewController: NSViewController {
         }
     }
 
-    func apply(_ action: ControlAction, toScreen screen: Int, on map: Int? = nil) {
+    func apply(_ action: ControlAction, status: ScreenState, toScreen screen: Int, on map: Int? = nil) {
         // Ignore action if it's current
-        if let currentInfo = infoForScreen[screen], currentInfo.action == action && map == nil {
+        if let currentInfo = infoForScreen[screen], currentInfo.action == action && map == nil && status == currentInfo.status {
             return
         }
 
         // Load new processes
-        switch action {
-        case .launchMapExplorer, .menuLaunchedMapExplorer:
-            guard let currentInfo = infoForScreen[screen] else {
-                return
-            }
+        if status == .connected {
+            switch action {
+            case .launchApplication:
+                guard let currentInfo = infoForScreen[screen] else {
+                    return
+                }
 
-            launchMaps(info: currentInfo, action: action, screen: screen, map: map)
-        case .menuLaunchedTimeline, .closeApplication, .disconnected:
-            terminate(screen: screen, map: map)
-            if action != .menuLaunchedTimeline {
-                infoForScreen[screen] = ApplicationInfo(action: action, applications: [:], applicationTypesForMaps: [:], maps: [])
+                launchMaps(info: currentInfo, action: action, status: status, screen: screen, map: map)
+            case .closeApplication:
+                terminate(screen: screen, map: map)
+                infoForScreen[screen] = ApplicationInfo(action: action, status: status, applications: [:], applicationTypesForMaps: [:], maps: [])
+            default:
+                break
             }
-        default:
-            break
+        } else {
+            terminate(screen: screen, map: map)
+            infoForScreen[screen] = ApplicationInfo(action: action, status: status, applications: [:], applicationTypesForMaps: [:], maps: [])
         }
 
-        transition(screen: screen, to: action)
+        transition(screen: screen, to: status)
     }
 
 
@@ -113,9 +117,17 @@ class MasterViewController: NSViewController {
             screenView.layer?.backgroundColor = Constants.screenBackgroundColor
             screenView.layer?.borderWidth = Constants.screenBorderWidth
             screenView.layer?.borderColor = CGColor.black
-            infoForScreen[screen] = ApplicationInfo(action: ControlAction.closeApplication, applications: [:], applicationTypesForMaps: [:], maps: [])
-            let action = connected(screen: screen) ? ControlAction.launchMapExplorer : ControlAction.disconnected
-            apply(action, toScreen: screen)
+
+            if Configuration.spawnMapsImmediately {
+                let action = connected(screen: screen) ? ControlAction.launchApplication : ControlAction.closeApplication
+                let state = connected(screen: screen) ? ScreenState.connected : ScreenState.disconnected
+                infoForScreen[screen] = ApplicationInfo(action: ControlAction.closeApplication, status: state, applications: [:], applicationTypesForMaps: [:], maps: [])
+                apply(action, status: state, toScreen: screen)
+            } else {
+                let action = ControlAction.closeApplication
+                let state = connected(screen: screen) ? ScreenState.connected : ScreenState.disconnected
+                apply(action, status: state, toScreen: screen)
+            }
         }
     }
 
@@ -139,8 +151,8 @@ class MasterViewController: NSViewController {
         }
 
         infoForScreen.enumerated().forEach { _, info in
-            if info.value.action != ControlAction.disconnected {
-                apply(action, toScreen: info.key)
+            if info.value.status != ScreenState.disconnected {
+                apply(action, status: info.value.status, toScreen: info.key)
             }
         }
     }
@@ -159,7 +171,7 @@ class MasterViewController: NSViewController {
             infoForScreen[screen]?.maps = info.maps.filter { $0 != map }
             infoForScreen[screen]?.applications = info.applications.filter { $0.key != map }
             infoForScreen[screen]?.applicationTypesForMaps = info.applicationTypesForMaps.filter { $0.key != map }
-            infoForScreen[screen]?.action = .menuLaunchedTimeline
+            infoForScreen[screen]?.action = .launchApplication
         } else if map == nil {
             info.applications.forEach { application in
                 application.value.terminate()
@@ -168,7 +180,7 @@ class MasterViewController: NSViewController {
     }
 
     /// Launch MapExplorer on the given screen
-    private func launchMaps(info: ApplicationInfo, action: ControlAction, screen: Int, map: Int? = nil) {
+    private func launchMaps(info: ApplicationInfo, action: ControlAction, status: ScreenState, screen: Int, map: Int? = nil) {
         var applications = info.applications
         var applicationTypes = info.applicationTypesForMaps
         var maps = info.maps
@@ -187,7 +199,7 @@ class MasterViewController: NSViewController {
             }
         }
 
-        infoForScreen[screen] = ApplicationInfo(action: action, applications: applications, applicationTypesForMaps: applicationTypes, maps: maps)
+        infoForScreen[screen] = ApplicationInfo(action: action, status: status, applications: applications, applicationTypesForMaps: applicationTypes, maps: maps)
     }
 
     /// Open a known application type with the required parameters
@@ -206,8 +218,8 @@ class MasterViewController: NSViewController {
         }
     }
 
-    private func transition(screen: Int, to action: ControlAction) {
-        if let screenView = screens.at(index: screen), let image = action.image {
+    private func transition(screen: Int, to status: ScreenState) {
+        if let screenView = screens.at(index: screen), let image = status.image {
             screenView.transition(to: image, duration: Constants.imageTransitionDuration)
         }
     }
@@ -220,10 +232,10 @@ class MasterViewController: NSViewController {
     @objc
     private func screensDidChange(_ notification: NSNotification) {
         infoForScreen.forEach { screen, info in
-            if connected(screen: screen) && info.action == .disconnected {
-                apply(.closeApplication, toScreen: screen)
+            if connected(screen: screen) && info.status == .disconnected {
+                apply(.closeApplication, status: .connected, toScreen: screen)
             } else if !connected(screen: screen) {
-                apply(.disconnected, toScreen: screen)
+                apply(.closeApplication, status: .disconnected, toScreen: screen)
             }
         }
     }
