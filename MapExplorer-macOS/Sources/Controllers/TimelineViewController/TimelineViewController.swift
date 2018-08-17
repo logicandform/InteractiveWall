@@ -241,6 +241,8 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     // MARK: Gesture Handling
 
+    private var curOrigin = CGPoint.zero
+
     private func didPanOnTimeline(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer, let collectionView = gestureManager.view(for: gesture) as? NSCollectionView else {
             return
@@ -248,6 +250,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
         switch pan.state {
         case .recognized, .momentum:
+            curOrigin.x += -pan.delta.dx
             updateDate(from: collectionView, with: pan.delta)
             timelineHandler?.send(date: TimelineDate(date: currentDate), for: pan.state)
         case .ended:
@@ -266,13 +269,15 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
         switch tap.state {
         case .began:
+            curOrigin = timelineCollectionView.visibleRect.origin
             postSelectNotification(for: indexPath.item, state: true)
-        case .failed:
-            postSelectNotification(for: indexPath.item, state: false)
-        case .ended:
-            postSelectNotification(for: indexPath.item, state: false)
+//        case .failed:
+//            postSelectNotification(for: indexPath.item, state: false)
+//        case .ended:
+//            postSelectNotification(for: indexPath.item, state: false)
         default:
             postSelectNotification(for: indexPath.item, state: false)
+            curOrigin = CGPoint.zero
         }
     }
 
