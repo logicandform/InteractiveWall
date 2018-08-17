@@ -70,6 +70,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
                 end(touch, with: properties)
             } else {
                 touchUpdated?(self, touch)
+                state = .recognized
             }
         }
     }
