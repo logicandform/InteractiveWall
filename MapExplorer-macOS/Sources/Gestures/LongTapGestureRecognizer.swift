@@ -14,12 +14,11 @@ class LongTapGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
-    var longTapUpdate: ((GestureRecognizer, CGPoint) -> Void)?
+    var longTapUpdate: ((GestureRecognizer, Touch) -> Void)?
     var position: CGPoint?
     private(set) var state = GestureState.possible
 
     private var positionForTouch = [Touch: CGPoint]()
-    private var doubleTapPositionAndTimeForTouch = [Touch: (position: CGPoint, time: Date)]()
     private var delayTap: Bool
 
 
@@ -33,25 +32,13 @@ class LongTapGestureRecognizer: NSObject, GestureRecognizer {
 
     func start(_ touch: Touch, with properties: TouchProperties) {
         positionForTouch[touch] = touch.position
-        doubleTapPositionAndTimeForTouch[touch] = (touch.position, Date())
-        removeExpiredDoubleTapTouches()
-
         position = touch.position
         state = .began
 
         if !delayTap {
-//            gestureUpdated?(self)
-            longTapUpdate?(self, touch.position)
+            longTapUpdate?(self, touch)
             state = .recognized
             return
-        }
-
-        // Dont update with began until startTapThresholdTime has passed
-        Timer.scheduledTimer(withTimeInterval: Constants.startTapThresholdTime, repeats: false) { [weak self] _ in
-            if let strongSelf = self, strongSelf.state == .began {
-//                strongSelf.gestureUpdated?(strongSelf)
-                strongSelf.state = .recognized
-            }
         }
     }
 
@@ -60,26 +47,13 @@ class LongTapGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func end(_ touch: Touch, with properties: TouchProperties) {
-        guard let initialPosition = positionForTouch[touch] else {
+        guard positionForTouch.keys.contains(touch) else {
             return
         }
 
         position = touch.position
-
-        switch state {
-        case .failed:
-//            gestureUpdated?(self)
-            doubleTapPositionAndTimeForTouch.removeValue(forKey: touch)
-            fallthrough
-        case .began:
-//            gestureUpdated?(self)
-            fallthrough
-        default:
-            state = .ended
-            checkForDoubleTap(with: touch)
-//            gestureUpdated?(self)
-            longTapUpdate?(self, CGPoint(x: touch.position.x, y: initialPosition.y))
-        }
+        state = .ended
+        longTapUpdate?(self, touch)
 
         reset()
         positionForTouch.removeValue(forKey: touch)
@@ -87,22 +61,5 @@ class LongTapGestureRecognizer: NSObject, GestureRecognizer {
 
     func reset() {
         state = .possible
-    }
-
-
-    // MARK: Helpers
-
-    /// Removes touchs that have gone past the time to be recognized in a double tap
-    private func removeExpiredDoubleTapTouches() {
-        doubleTapPositionAndTimeForTouch = doubleTapPositionAndTimeForTouch.filter { abs($0.value.time.timeIntervalSinceNow) < Constants.recognizeDoubleTapMaxTime }
-    }
-
-    private func checkForDoubleTap(with touch: Touch) {
-        for (initialPosition, time) in doubleTapPositionAndTimeForTouch.filter({ $0.key != touch }).values {
-            if abs(time.timeIntervalSinceNow) < Constants.recognizeDoubleTapMaxTime && initialPosition.distance(to: touch.position) < Constants.recognizeDoubleTapMaxDistance {
-                state = .doubleTapped
-                return
-            }
-        }
     }
 }

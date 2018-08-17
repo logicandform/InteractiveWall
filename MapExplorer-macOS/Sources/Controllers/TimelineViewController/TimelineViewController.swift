@@ -69,6 +69,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     private var selectedYear: Int?
     private var selectedMonth: Month?
     private var selectedViewForType = [TimelineType: TimelineControlItemView]()
+    private var indexPathForTouch = [Touch: IndexPath]()
 
     private struct Constants {
         static let timelineCellWidth: CGFloat = 20
@@ -212,10 +213,10 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 //            self?.didTapOnTimeline(gesture)
 //        }
 
-        let timelineLongTapGesture = LongTapGestureRecognizer()
+        let timelineLongTapGesture = TapGestureRecognizer(withDelay: false, cancelsOnMove: false)
         gestureManager.add(timelineLongTapGesture, to: timelineCollectionView)
-        timelineLongTapGesture.longTapUpdate = { [weak self] gesture, initialPosition in
-            self?.didLongTapOnTimeline(gesture, initialPosition)
+        timelineLongTapGesture.longTapUpdated = { [weak self] gesture, touch in
+            self?.didLongTapOnTimeline(gesture, touch)
         }
 
         addGestures(to: monthCollectionView)
@@ -241,7 +242,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     // MARK: Gesture Handling
 
-    private var curOrigin = CGPoint.zero
+
 
     private func didPanOnTimeline(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer, let collectionView = gestureManager.view(for: gesture) as? NSCollectionView else {
@@ -250,7 +251,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
         switch pan.state {
         case .recognized, .momentum:
-            curOrigin.x += -pan.delta.dx
             updateDate(from: collectionView, with: pan.delta)
             timelineHandler?.send(date: TimelineDate(date: currentDate), for: pan.state)
         case .ended:
@@ -262,22 +262,38 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         }
     }
 
-    private func didLongTapOnTimeline(_ gesture: GestureRecognizer, _ position: CGPoint) {
-        guard let tap = gesture as? LongTapGestureRecognizer, let indexPath = timelineCollectionView.indexPathForItem(at: position + timelineCollectionView.visibleRect.origin), let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineFlagView else {
+    private func didLongTapOnTimeline(_ gesture: GestureRecognizer, _ touch: Touch) {
+        guard let tap = gesture as? TapGestureRecognizer else {
             return
         }
 
         switch tap.state {
         case .began:
-            curOrigin = timelineCollectionView.visibleRect.origin
-            postSelectNotification(for: indexPath.item, state: true)
-//        case .failed:
-//            postSelectNotification(for: indexPath.item, state: false)
-//        case .ended:
-//            postSelectNotification(for: indexPath.item, state: false)
+            if let location = tap.position, let indexPath = timelineCollectionView.indexPathForItem(at: location + timelineCollectionView.visibleRect.origin) {
+                indexPathForTouch[touch] = indexPath
+                postSelectNotification(for: indexPath.item, state: true)
+            }
         default:
-            postSelectNotification(for: indexPath.item, state: false)
-            curOrigin = CGPoint.zero
+            if let indexPath = indexPathForTouch[touch], let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineFlagView {
+                postSelectNotification(for: indexPath.item, state: false)
+                let translatedXPosition = timelineItem.view.frame.origin.x + (timelineItem.view.frame.width / 2) - timelineCollectionView.visibleRect.origin.x
+                let transformedXPosition = max(0, translatedXPosition)
+                var adjustedFrame = timelineItem.view.frame
+                adjustedFrame.origin.y = timelineItem.view.frame.origin.y + timelineItem.view.frame.height - TimelineFlagView.flagHeight(for: timelineItem.event) - Constants.recordSpawnOffset
+                let transformedYPosition = adjustedFrame.transformed(from: timelineScrollView.frame).transformed(from: timelineBackgroundView.frame).origin.y
+                postRecordNotification(for: timelineItem.event.type, with: timelineItem.event.id, at: CGPoint(x: transformedXPosition, y: transformedYPosition))
+
+            } else if let location = tap.position, let indexPath = timelineCollectionView.indexPathForItem(at: location + timelineCollectionView.visibleRect.origin), let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineFlagView {
+                postSelectNotification(for: indexPath.item, state: false)
+                let translatedXPosition = timelineItem.view.frame.origin.x + (timelineItem.view.frame.width / 2) - timelineCollectionView.visibleRect.origin.x
+                let transformedXPosition = max(0, translatedXPosition)
+                var adjustedFrame = timelineItem.view.frame
+                adjustedFrame.origin.y = timelineItem.view.frame.origin.y + timelineItem.view.frame.height - TimelineFlagView.flagHeight(for: timelineItem.event) - Constants.recordSpawnOffset
+                let transformedYPosition = adjustedFrame.transformed(from: timelineScrollView.frame).transformed(from: timelineBackgroundView.frame).origin.y
+                postRecordNotification(for: timelineItem.event.type, with: timelineItem.event.id, at: CGPoint(x: transformedXPosition, y: transformedYPosition))
+            }
+
+            indexPathForTouch.removeValue(forKey: touch)
         }
     }
 
