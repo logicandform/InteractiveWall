@@ -54,12 +54,12 @@ final class DataManager {
     // MARK: Helpers
 
     private func store(_ records: [RecordDisplayable]?) {
-        // For testing, only use a subset of the records
-        let portion = subset(of: records, size: 100)
-        self.records.append(contentsOf: portion)
-        for record in portion {
-            let proxy = RecordProxy(id: record.id, type: record.type)
-            recordForProxy[proxy] = record
+        if let records = records {
+            self.records.append(contentsOf: records)
+            for record in records {
+                let proxy = RecordProxy(id: record.id, type: record.type)
+                recordForProxy[proxy] = record
+            }
         }
     }
 
@@ -71,6 +71,7 @@ final class DataManager {
                 self?.relativesForProxy[proxy] = self?.proxies(for: record?.relatedRecords)
                 proxies.remove(proxy)
                 if proxies.isEmpty {
+                    self?.filterSingleArtifactConnections()
                     self?.createLevels()
                     self?.createEntities()
                     completion()
@@ -79,8 +80,35 @@ final class DataManager {
         }
     }
 
+    private func filterSingleArtifactConnections() {
+        let unfilteredRelativesForProxy = relativesForProxy
+        for (proxy, relatives) in relativesForProxy {
+            if shouldRemove(proxy: proxy, from: unfilteredRelativesForProxy) {
+                relativesForProxy.removeValue(forKey: proxy)
+            } else {
+                for relative in relatives {
+                    if shouldRemove(proxy: relative, from: unfilteredRelativesForProxy) {
+                        relativesForProxy[proxy]?.remove(relative)
+                    }
+                }
+
+                if let relatives = relativesForProxy[proxy], relatives.isEmpty {
+                    relativesForProxy.removeValue(forKey: proxy)
+                }
+            }
+        }
+    }
+
+    private func shouldRemove(proxy: RecordProxy, from relativesForProxy: [RecordProxy: Set<RecordProxy>]) -> Bool {
+        if proxy.type == .artifact, let relatives = relativesForProxy[proxy], relatives.count == 1 {
+            return true
+        }
+
+        return false
+    }
+
     private func createLevels() {
-        let proxies = recordForProxy.keys
+        let proxies = relativesForProxy.keys
 
         // Populate related entities set in each RecordEntity.
         for proxy in proxies {
