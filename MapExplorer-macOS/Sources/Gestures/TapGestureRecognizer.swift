@@ -14,7 +14,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
-    var longTapUpdated: ((GestureRecognizer, Touch) -> Void)?
+    var touchUpdated: ((GestureRecognizer, Touch) -> Void)?
     var position: CGPoint?
     private(set) var state = GestureState.possible
 
@@ -43,7 +43,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
 
         if !delayTap {
             gestureUpdated?(self)
-            longTapUpdated?(self, touch)
+            touchUpdated?(self, touch)
             state = .recognized
             return
         }
@@ -65,13 +65,11 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         let delta = CGVector(dx: initialPosition.x - touch.position.x, dy: initialPosition.y - touch.position.y)
         let distance = sqrt(pow(delta.dx, 2) + pow(delta.dy, 2))
         if distance > Constants.maximumDistanceMoved {
+            state = .failed
             if cancelOnMove {
-                state = .failed
                 end(touch, with: properties)
             } else {
-                state = .momentum
-                longTapUpdated?(self, touch)
-                return
+                touchUpdated?(self, touch)
             }
         }
     }
@@ -94,7 +92,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
             state = .ended
             checkForDoubleTap(with: touch)
             gestureUpdated?(self)
-            longTapUpdated?(self, touch)
+            touchUpdated?(self, touch)
         }
 
         reset()

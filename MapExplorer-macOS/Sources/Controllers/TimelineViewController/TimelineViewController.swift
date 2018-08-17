@@ -212,7 +212,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
         let timelineLongTapGesture = TapGestureRecognizer(withDelay: false, cancelsOnMove: false)
         gestureManager.add(timelineLongTapGesture, to: timelineCollectionView)
-        timelineLongTapGesture.longTapUpdated = { [weak self] gesture, touch in
+        timelineLongTapGesture.touchUpdated = { [weak self] gesture, touch in
             self?.didLongTapOnTimeline(gesture, touch)
         }
 
@@ -270,10 +270,9 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
                 timeTouchStarted[touch] = Date()
                 postSelectNotification(for: indexPath.item, state: true)
             }
-        case .momentum:
+        case .failed:
             createRecordForTouch[touch] = false
-            return
-        default:
+        case .ended, .doubleTapped:
             if let indexPath = indexPathForTouch[touch], let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineFlagView {
                 postSelectNotification(for: indexPath.item, state: false)
                 if let createRecord = createRecordForTouch[touch], createRecord, let touchStartTime = timeTouchStarted[touch], Date().timeIntervalSince(touchStartTime) <= Constants.maximumTouchHold {
@@ -289,6 +288,8 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
             timeTouchStarted.removeValue(forKey: touch)
             createRecordForTouch.removeValue(forKey: touch)
             indexPathForTouch.removeValue(forKey: touch)
+        default:
+            break
         }
     }
 
