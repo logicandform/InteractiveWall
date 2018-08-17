@@ -26,8 +26,8 @@ class TimelineTailView: NSView {
         super.draw(dirtyRect)
 
         for (index, layer) in layers.enumerated() {
-            RecordType.school.color.setFill()
-            RecordType.school.color.setStroke()
+            style.timelineTailColor.setFill()
+            style.timelineTailColor.setStroke()
             let baseHeight = style.timelineTailMargin
             let layerHeight = CGFloat(index) * (style.timelineTailWidth + style.timelineTailMargin)
             let y = baseHeight + layerHeight
@@ -43,10 +43,9 @@ class TimelineTailView: NSView {
             }
             NSColor.white.setFill()
             for marker in layer.markers {
-                let radius = style.timelineTailWidth
-                let path = NSBezierPath(ovalIn: CGRect(x: marker.x - radius/2, y: y - radius/2, width: radius * 2, height: radius * 2))
+                let radius = style.timelineTailMarkerWidth
+                let path = NSBezierPath(rect: CGRect(x: marker.x, y: y, width: radius, height: radius))
                 path.fill()
-                path.stroke()
             }
         }
     }

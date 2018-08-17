@@ -60,7 +60,7 @@ class TimelineFlagView: NSCollectionViewItem {
     }
 
     static func flagHeight(for event: TimelineEvent) -> CGFloat {
-        let textFieldWidth = style.flagWidth - Constants.interItemMargin * 2
+        let textFieldWidth = style.timelineFlagWidth - Constants.interItemMargin * 2
         let title = NSAttributedString(string: event.title, attributes: style.timelineTitleAttributes)
         let titleHeight = title.height(containerWidth: textFieldWidth)
         let dateHeight = Constants.dateFieldHeight

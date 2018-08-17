@@ -173,12 +173,12 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
         let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
         let x = CGFloat((year - source.firstYear) * type.sectionWidth)
         let flagHeight = TimelineFlagView.flagHeight(for: event)
-        let flagFrame = frameForFlag(atX: x, size: CGSize(width: style.flagWidth, height: flagHeight), year: event.dates.startDate.year, in: source)
+        let flagFrame = frameForFlag(atX: x, size: CGSize(width: style.timelineFlagWidth, height: flagHeight), year: event.dates.startDate.year, in: source)
         flagFrameForEvent[event] = flagFrame
         let totalHeight = flagFrame.minY - Constants.headerHeight + flagHeight
 
         attributes.zIndex = Int(-flagHeight)
-        attributes.frame = CGRect(origin: CGPoint(x: x, y: Constants.headerHeight), size: CGSize(width: style.flagWidth, height: totalHeight))
+        attributes.frame = CGRect(origin: CGPoint(x: x, y: Constants.headerHeight), size: CGSize(width: style.timelineFlagWidth, height: totalHeight))
         return attributes
     }
 
@@ -216,13 +216,13 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
         let y = Constants.headerHeight + Constants.headerFlagMargin
         let height = tailHeightForYear[year] ?? 0
         attributes.frame = CGRect(x: x, y: y, width: Constants.yearWidth, height: height)
+        attributes.zIndex = -1000
         return attributes
     }
 
     /// Returns the lowest frame available at the given x position and size.
     private func frameForFlag(atX x: CGFloat, size: CGSize, year: Int, in source: TimelineDataSource) -> CGRect {
-        let tailHeight = tailHeightForYear[year] ?? 0
-        let minY = Constants.headerHeight + tailHeight
+        let minY = Constants.headerHeight + style.timelineTailMargin
         let intersectingFrames = flagFrameForEvent.values.filter { $0.minX <= x && $0.maxX > x }
         var sortedFrames = intersectingFrames.sorted(by: { $0.minY < $1.minY })
 

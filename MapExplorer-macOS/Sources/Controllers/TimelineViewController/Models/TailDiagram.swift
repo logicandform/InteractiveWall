@@ -101,7 +101,7 @@ final class TailDiagram {
         for index in (1 ..< layers.count) {
             let previousLayer = layers[index - 1]
             let currentLayer = layers[index]
-            let tailGap = style.timelineTailWidth + style.timelineTailMargin
+            let tailGap = style.timelineTailMargin
             let dropPoint = previousLayer.end + tailGap
 
             if let lastLine = currentLayer.lines.last {

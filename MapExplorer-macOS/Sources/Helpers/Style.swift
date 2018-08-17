@@ -28,9 +28,11 @@ final class Style {
     let timelineBorderColor = NSColor.gray
     let timelineHeaderText = NSColor.gray
     let timelineBorderWidth: CGFloat = 2
-    let flagWidth: CGFloat = 180
-    let timelineTailWidth: CGFloat = 2
-    let timelineTailMargin: CGFloat = 3
+    let timelineFlagWidth: CGFloat = 180
+    let timelineTailColor = NSColor(white: 0.2, alpha: 1)
+    let timelineTailWidth: CGFloat = 1
+    let timelineTailMargin: CGFloat = 9
+    let timelineTailMarkerWidth: CGFloat = 1
 
     var timelineTitleAttributes: [NSAttributedStringKey: Any] {
         let font = NSFont(name: "Soleil", size: 14) ?? NSFont.systemFont(ofSize: 14)

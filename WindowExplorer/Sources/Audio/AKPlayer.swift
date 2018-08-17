@@ -473,12 +473,10 @@ public class AKPlayer {
         audioFile = nil
         buffer = nil
         AudioController.shared.engine.detach(inmixer)
-        AudioController.shared.engine.detach(panner.audioNode!)
+        if let node = panner.audioNode {
+            AudioController.shared.engine.detach(node)
+        }
         AudioController.shared.engine.detach(playerNode)
-    }
-
-    deinit {
-        print("* deinit AKPlayer")
     }
 }
 
