@@ -367,10 +367,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     private func toggleAnnotations(for settings: Settings) {
-        guard let annotationsOnMap = mapView.annotations as? [CircleAnnotation] else {
-            return
-        }
-
+        let annotationsOnMap = mapView.annotations.compactMap({ $0 as? CircleAnnotation })
         let typesToDisplay = RecordType.allValues.filter { settings.displaying($0) }
         let allAnnotations = recordForAnnotation.keys
         let annotationsToDisplay = allAnnotations.filter({ typesToDisplay.contains($0.type) })
