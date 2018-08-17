@@ -69,6 +69,9 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     private var selectedYear: Int?
     private var selectedMonth: Month?
     private var selectedViewForType = [TimelineType: TimelineControlItemView]()
+    private var indexPathForTouch = [Touch: IndexPath]()
+    private var timeTouchStarted = [Touch: Date]()
+    private var createRecordForTouch = [Touch: Bool]()
 
     private struct Constants {
         static let timelineCellWidth: CGFloat = 20
@@ -83,6 +86,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         static let fadePercentage = 0.1
         static let resetAnimationDuration = 1.0
         static let recordSpawnOffset: CGFloat = 2
+        static let maximumTouchHold: TimeInterval = 1.0
     }
 
     private struct Keys {
@@ -206,10 +210,10 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
             self?.didPanOnTimeline(gesture)
         }
 
-        let timelineTapGesture = TapGestureRecognizer()
-        gestureManager.add(timelineTapGesture, to: timelineCollectionView)
-        timelineTapGesture.gestureUpdated = { [weak self] gesture in
-            self?.didTapOnTimeline(gesture)
+        let timelineLongTapGesture = TapGestureRecognizer(withDelay: false, cancelsOnMove: false)
+        gestureManager.add(timelineLongTapGesture, to: timelineCollectionView)
+        timelineLongTapGesture.touchUpdated = { [weak self] gesture, touch in
+            self?.didLongTapOnTimeline(gesture, touch)
         }
 
         addGestures(to: monthCollectionView)
@@ -253,22 +257,40 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         }
     }
 
-    private func didTapOnTimeline(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended,
-            let location = tap.position,
-            let indexPath = timelineCollectionView.indexPathForItem(at: location + timelineCollectionView.visibleRect.origin),
-            let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineFlagView else {
-                return
+    private func didLongTapOnTimeline(_ gesture: GestureRecognizer, _ touch: Touch) {
+        guard let tap = gesture as? TapGestureRecognizer else {
+            return
         }
 
-        let state = source.selectedIndexes.contains(indexPath.item)
-        postSelectNotification(for: indexPath.item, state: !state)
-        let translatedXPosition = timelineItem.view.frame.origin.x + (timelineItem.view.frame.width / 2) - timelineCollectionView.visibleRect.origin.x
-        let transformedXPosition = max(0, translatedXPosition)
-        var adjustedFrame = timelineItem.view.frame
-        adjustedFrame.origin.y = timelineItem.view.frame.origin.y + timelineItem.view.frame.height - TimelineFlagView.flagHeight(for: timelineItem.event) - Constants.recordSpawnOffset
-        let transformedYPosition = adjustedFrame.transformed(from: timelineScrollView.frame).transformed(from: timelineBackgroundView.frame).origin.y
-        postRecordNotification(for: timelineItem.event.type, with: timelineItem.event.id, at: CGPoint(x: transformedXPosition, y: transformedYPosition))
+        switch tap.state {
+        case .began:
+            if let location = tap.position, let indexPath = timelineCollectionView.indexPathForItem(at: location + timelineCollectionView.visibleRect.origin) {
+                indexPathForTouch[touch] = indexPath
+                createRecordForTouch[touch] = true
+                timeTouchStarted[touch] = Date()
+                postSelectNotification(for: indexPath.item, state: true)
+            }
+        case .failed:
+            createRecordForTouch[touch] = false
+        case .ended, .doubleTapped:
+            if let indexPath = indexPathForTouch[touch], let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineFlagView {
+                postSelectNotification(for: indexPath.item, state: false)
+                if let createRecord = createRecordForTouch[touch], createRecord, let touchStartTime = timeTouchStarted[touch], Date().timeIntervalSince(touchStartTime) <= Constants.maximumTouchHold {
+                    postRecordNotification(for: timelineItem)
+                }
+            } else if let location = tap.position, let indexPath = timelineCollectionView.indexPathForItem(at: location + timelineCollectionView.visibleRect.origin), let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineFlagView {
+                postSelectNotification(for: indexPath.item, state: false)
+                if let createRecord = createRecordForTouch[touch], createRecord, let touchStartTime = timeTouchStarted[touch], Date().timeIntervalSince(touchStartTime) <= Constants.maximumTouchHold {
+                    postRecordNotification(for: timelineItem)
+                }
+            }
+
+            timeTouchStarted.removeValue(forKey: touch)
+            createRecordForTouch.removeValue(forKey: touch)
+            indexPathForTouch.removeValue(forKey: touch)
+        default:
+            break
+        }
     }
 
     private func didPanOnControl(_ gesture: GestureRecognizer) {
@@ -493,12 +515,21 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         // Update item view for index
         let indexPath = IndexPath(item: index, section: 0)
         if let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineFlagView {
-            timelineItem.flashTintColor()
+            timelineItem.animateFlagColor(on: selected)
         }
     }
 
 
     // MARK: Helpers
+
+    private func postRecordNotification(for timelineItem: TimelineFlagView) {
+        let translatedXPosition = timelineItem.view.frame.origin.x + (timelineItem.view.frame.width / 2) - timelineCollectionView.visibleRect.origin.x
+        let transformedXPosition = max(0, translatedXPosition)
+        var adjustedFrame = timelineItem.view.frame
+        adjustedFrame.origin.y = timelineItem.view.frame.origin.y + timelineItem.view.frame.height - TimelineFlagView.flagHeight(for: timelineItem.event) - Constants.recordSpawnOffset
+        let transformedYPosition = adjustedFrame.transformed(from: timelineScrollView.frame).transformed(from: timelineBackgroundView.frame).origin.y
+        postRecordNotification(for: timelineItem.event.type, with: timelineItem.event.id, at: CGPoint(x: transformedXPosition, y: transformedYPosition))
+    }
 
     private func scrollCollectionViews(animated: Bool = false) {
         let centerInset = Constants.controlItemWidth * 3

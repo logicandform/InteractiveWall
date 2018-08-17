@@ -14,17 +14,20 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
+    var touchUpdated: ((GestureRecognizer, Touch) -> Void)?
     var position: CGPoint?
     private(set) var state = GestureState.possible
 
     private var positionForTouch = [Touch: CGPoint]()
     private var doubleTapPositionAndTimeForTouch = [Touch: (position: CGPoint, time: Date)]()
     private var delayTap: Bool
+    private var cancelOnMove: Bool
 
 
     // MARK: Init
-    init(withDelay: Bool = false) {
+    init(withDelay: Bool = false, cancelsOnMove: Bool = true) {
         self.delayTap = withDelay
+        self.cancelOnMove = cancelsOnMove
     }
 
 
@@ -40,6 +43,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
 
         if !delayTap {
             gestureUpdated?(self)
+            touchUpdated?(self, touch)
             state = .recognized
             return
         }
@@ -62,7 +66,12 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         let distance = sqrt(pow(delta.dx, 2) + pow(delta.dy, 2))
         if distance > Constants.maximumDistanceMoved {
             state = .failed
-            end(touch, with: properties)
+            if cancelOnMove {
+                end(touch, with: properties)
+            } else {
+                touchUpdated?(self, touch)
+                state = .recognized
+            }
         }
     }
 
@@ -84,6 +93,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
             state = .ended
             checkForDoubleTap(with: touch)
             gestureUpdated?(self)
+            touchUpdated?(self, touch)
         }
 
         reset()
