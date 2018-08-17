@@ -32,7 +32,7 @@ final class NodeCluster: Hashable {
 
     private struct Constants {
         static let boundingNodeName = "boundingNode"
-        static let defaultLayerRadius = style.nodePhysicsBodyRadius + 25
+        static let defaultLayerRadius = style.nodePhysicsBodyRadius + 5
     }
 
 
@@ -66,10 +66,12 @@ final class NodeCluster: Hashable {
     func updateLayerLevels(forPan panning: Bool) {
         let level = panning ? 0 : entitiesForLevel.count
         setLayers(toLevel: level)
-        for (level, entities) in entitiesForLevel.enumerated() {
-            for entity in entities {
-                entity.hasCollidedWithBoundingNode = false
-                entity.setBitMasks(forLevel: panning ? 0 : level)
+        if panning {
+            for entities in entitiesForLevel {
+                for entity in entities {
+                    entity.hasCollidedWithBoundingNode = false
+                    entity.setBitMasks(forLevel: level)
+                }
             }
         }
     }
@@ -167,6 +169,12 @@ final class NodeCluster: Hashable {
 
     /// Iterates through the levels between the current max level and the desired level and either adds or removes layers.
     private func setLayers(toLevel level: Int) {
+        // Set the outer-most layer's node bitmask back to its current level
+        if let currentOutMostBoundingEntity = layerForLevel[layerForLevel.count - 1] {
+            let currentLevel = layerForLevel.count - 1
+            currentOutMostBoundingEntity.setBitMasks(forLevel: currentLevel)
+        }
+
         let minimum = min(level + 1, layerForLevel.count)
         let maximum = max(level, layerForLevel.count)
 
@@ -178,11 +186,9 @@ final class NodeCluster: Hashable {
             }
         }
 
-        // Set the outer-most layer's node bitmask to 30. 30 will be the default to interact with everything
-        if let outerMostBoundingNode = layerForLevel[level]?.nodeBoundingRenderComponent.node {
-            outerMostBoundingNode.physicsBody?.categoryBitMask = ColliderType.outmostBoundingNode
-            outerMostBoundingNode.physicsBody?.collisionBitMask = ColliderType.outmostBoundingNode
-            outerMostBoundingNode.physicsBody?.contactTestBitMask = ColliderType.outmostBoundingNode
+        // Set the outer-most layer's node bitmask to 30 to allow interaction with everything
+        if let outMostBoundingEntity = layerForLevel[level] {
+            outMostBoundingEntity.setToOutMostBitMasks()
         }
     }
 

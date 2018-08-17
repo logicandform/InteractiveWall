@@ -138,11 +138,17 @@ final class RecordEntity: GKEntity {
         case .seekLevel(let level):
             clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: level)
             if physicsComponent.physicsBody.collisionBitMask != ColliderType.clonedRecordNode {
-                physicsComponent.setRecordNodeLevelInteractingBitMasks(forLevel: level)
+//                physicsComponent.setRecordNodeLevelInteractingBitMasks(forLevel: level)
+                physicsComponent.physicsBody.categoryBitMask = ColliderType.clonedRecordNode
+                physicsComponent.physicsBody.collisionBitMask = ColliderType.clonedRecordNode
+                physicsComponent.physicsBody.contactTestBitMask = ColliderType.outmostBoundingNode
             }
         case .seekEntity(_):
             if let currentLevel = clusterLevel.currentLevel, physicsComponent.physicsBody.collisionBitMask != ColliderType.clonedRecordNode {
-                physicsComponent.setInteractingBitMasks(forLevel: currentLevel)
+//                physicsComponent.setInteractingBitMasks(forLevel: currentLevel)
+                physicsComponent.physicsBody.categoryBitMask = ColliderType.clonedRecordNode
+                physicsComponent.physicsBody.collisionBitMask = ColliderType.clonedRecordNode
+                physicsComponent.physicsBody.contactTestBitMask = ColliderType.outmostBoundingNode
             }
         default:
             break
