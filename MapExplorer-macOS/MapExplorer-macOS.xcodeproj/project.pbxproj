@@ -99,7 +99,6 @@
 		A4510784211394FE0025FFD7 /* TimelineBorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4510783211394FE0025FFD7 /* TimelineBorderView.swift */; };
 		A45107882113BCA80025FFD7 /* TimelineBorderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A45107872113BCA80025FFD7 /* TimelineBorderView.xib */; };
 		A45146FC2125E8EE00910A25 /* SelectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45146FB2125E8EE00910A25 /* SelectionManager.swift */; };
-		A45146FE2126238500910A25 /* LongTapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45146FD2126238500910A25 /* LongTapGestureRecognizer.swift */; };
 		A454A65B20F7F95200619730 /* TimelineDecadeLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A454A65A20F7F95200619730 /* TimelineDecadeLayout.swift */; };
 		A45FAC60210F796300CAE2BF /* TimelineDecadeStackedLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45FAC5F210F796300CAE2BF /* TimelineDecadeStackedLayout.swift */; };
 		A46EB937211E261C00504F7C /* TimelineControlsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A46EB936211E261C00504F7C /* TimelineControlsDataSource.swift */; };
@@ -232,7 +231,6 @@
 		A4510783211394FE0025FFD7 /* TimelineBorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineBorderView.swift; sourceTree = "<group>"; };
 		A45107872113BCA80025FFD7 /* TimelineBorderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineBorderView.xib; sourceTree = "<group>"; };
 		A45146FB2125E8EE00910A25 /* SelectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionManager.swift; sourceTree = "<group>"; };
-		A45146FD2126238500910A25 /* LongTapGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongTapGestureRecognizer.swift; sourceTree = "<group>"; };
 		A454A65A20F7F95200619730 /* TimelineDecadeLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDecadeLayout.swift; sourceTree = "<group>"; };
 		A45FAC5F210F796300CAE2BF /* TimelineDecadeStackedLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDecadeStackedLayout.swift; sourceTree = "<group>"; };
 		A46EB936211E261C00504F7C /* TimelineControlsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineControlsDataSource.swift; sourceTree = "<group>"; };
@@ -535,7 +533,6 @@
 				22B85AF1209B7A6D0099F44E /* PanGestureRecognizer.swift */,
 				22B85AF2209B7A6D0099F44E /* GestureRecognizer.swift */,
 				22B85AF3209B7A6D0099F44E /* TapGestureRecognizer.swift */,
-				A45146FD2126238500910A25 /* LongTapGestureRecognizer.swift */,
 				22B85AF4209B7A6D0099F44E /* PinchGestureRecognizer.swift */,
 			);
 			path = Gestures;
@@ -806,7 +803,6 @@
 				A4A8761A210015F200113F95 /* TimelineRange.swift in Sources */,
 				2290A03720E2F01500F028C4 /* TimelineHeaderView.swift in Sources */,
 				22FEF1DF202CFFFA001E9596 /* Touch.swift in Sources */,
-				A45146FE2126238500910A25 /* LongTapGestureRecognizer.swift in Sources */,
 				22004FF820E1A03000B1E740 /* TimelineYearLayout.swift in Sources */,
 				22B85AF9209B7A6D0099F44E /* TapGestureRecognizer.swift in Sources */,
 				226EA70120296C240067B542 /* NSImage.swift in Sources */,

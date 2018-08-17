@@ -58,15 +58,21 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func move(_ touch: Touch, with properties: TouchProperties) {
-        guard cancelOnMove, let initialPosition = positionForTouch[touch] else {
+        guard let initialPosition = positionForTouch[touch] else {
             return
         }
 
         let delta = CGVector(dx: initialPosition.x - touch.position.x, dy: initialPosition.y - touch.position.y)
         let distance = sqrt(pow(delta.dx, 2) + pow(delta.dy, 2))
         if distance > Constants.maximumDistanceMoved {
-            state = .failed
-            end(touch, with: properties)
+            if cancelOnMove {
+                state = .failed
+                end(touch, with: properties)
+            } else {
+                state = .momentum
+                longTapUpdated?(self, touch)
+                return
+            }
         }
     }
 
