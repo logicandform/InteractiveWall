@@ -149,10 +149,11 @@ class MovementComponent: GKComponent {
 
         if (r2 - r1) < Constants.distancePadding {
             // Enter SeekState and provide the appropriate bitmasks and entityToSeek for the MovementComponent
-            entity.setBitMasks(forLevel: currentLevel)
 //            entity.physicsBody.categoryBitMask = LayerBitMasks.outerBoundingNodeBitMask
 //            entity.physicsBody.collisionBitMask = LayerBitMasks.outerBoundingNodeBitMask
 //            entity.physicsBody.contactTestBitMask = LayerBitMasks.outerBoundingNodeBitMask
+//            entity.setBitMasks(forLevel: currentLevel)
+            entity.set(state: .seekEntity(cluster.selectedEntity))
             state = .seekEntity(cluster.selectedEntity)
         } else {
             // Apply velocity

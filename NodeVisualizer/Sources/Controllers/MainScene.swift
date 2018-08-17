@@ -55,24 +55,26 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
             let boundingNode = contact.bodyB.node, boundingNode.name == "boundingNode",
             cluster.layerForLevel[cluster.layerForLevel.count - 1]?.nodeBoundingRenderComponent.node === boundingNode,
             let currentLevel = contactEntity.clusterLevel.currentLevel {
-//            contactEntity.setBitMasks(forLevel: currentLevel)
-        } else {
-            if let contactEntity = contact.bodyB.node?.entity as? RecordEntity,
-                let cluster = contactEntity.cluster,
-                let boundingNode = contact.bodyA.node, boundingNode.name == "boundingNode",
-                cluster.layerForLevel[cluster.layerForLevel.count - 1]?.nodeBoundingRenderComponent.node === boundingNode,
-                let currentLevel = contactEntity.clusterLevel.currentLevel {
-//                contactEntity.setBitMasks(forLevel: currentLevel)
-            }
+            contactEntity.setBitMasks(forLevel: currentLevel)
+        } else if let contactEntity = contact.bodyB.node?.entity as? RecordEntity,
+            let cluster = contactEntity.cluster,
+            let boundingNode = contact.bodyA.node, boundingNode.name == "boundingNode",
+            cluster.layerForLevel[cluster.layerForLevel.count - 1]?.nodeBoundingRenderComponent.node === boundingNode,
+            let currentLevel = contactEntity.clusterLevel.currentLevel {
+            contactEntity.setBitMasks(forLevel: currentLevel)
         }
     }
 
     func didEnd(_ contact: SKPhysicsContact) {
-
-        // check if the contact is between a bounding node and a cloned record entity (collisionBitMask = 29)
-        // set the cloned record entity's collision bitmask to 30
-
-        
+        if contact.bodyA.collisionBitMask == LayerBitMasks.clonedRecordNodeBitMask,
+            contact.bodyB.collisionBitMask == LayerBitMasks.outerBoundingNodeBitMask,
+            let contactEntity = contact.bodyA.node?.entity as? RecordEntity, let currentLevel = contactEntity.clusterLevel.currentLevel {
+            contactEntity.setBitMasks(forLevel: currentLevel)
+        } else if contact.bodyB.collisionBitMask == LayerBitMasks.clonedRecordNodeBitMask,
+            contact.bodyA.collisionBitMask == LayerBitMasks.outerBoundingNodeBitMask,
+            let contactEntity = contact.bodyB.node?.entity as? RecordEntity, let currentLevel = contactEntity.clusterLevel.currentLevel {
+            contactEntity.setBitMasks(forLevel: currentLevel)
+        }
     }
 
 

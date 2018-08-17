@@ -189,11 +189,11 @@ final class NodeCluster: Hashable {
         }
 
         // Set the outer-most layer's node bitmask to 30. 30 will be the default to interact with everything
-//        if let outerMostBoundingNode = layerForLevel[level]?.nodeBoundingRenderComponent.node {
-//            outerMostBoundingNode.physicsBody?.categoryBitMask = LayerBitMasks.outerBoundingNodeBitMask
-//            outerMostBoundingNode.physicsBody?.collisionBitMask = LayerBitMasks.outerBoundingNodeBitMask
-//            outerMostBoundingNode.physicsBody?.contactTestBitMask = LayerBitMasks.outerBoundingNodeBitMask
-//        }
+        if let outerMostBoundingNode = layerForLevel[level]?.nodeBoundingRenderComponent.node {
+            outerMostBoundingNode.physicsBody?.categoryBitMask = LayerBitMasks.outerBoundingNodeBitMask
+            outerMostBoundingNode.physicsBody?.collisionBitMask = LayerBitMasks.outerBoundingNodeBitMask
+            outerMostBoundingNode.physicsBody?.contactTestBitMask = LayerBitMasks.outerBoundingNodeBitMask
+        }
     }
 
     /// Associates the entity to its level by adding it to the nodeBoundingEntityForLevel. Adds the entity's component to the component system

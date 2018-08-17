@@ -29,6 +29,7 @@ final class RecordEntity: GKEntity {
     let relatedRecords: Set<RecordProxy>
     var cluster: NodeCluster?
     var hasCollidedWithBoundingNode = false
+    
     private(set) var clusterLevel: (previousLevel: Int?, currentLevel: Int?) = (nil, nil)
 
     var state: EntityState {
@@ -137,7 +138,13 @@ final class RecordEntity: GKEntity {
         switch state {
         case .seekLevel(let level):
             clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: level)
-            physicsComponent.setRecordNodeLevelInteractingBitMasks(forLevel: level)
+            if physicsComponent.physicsBody.collisionBitMask != LayerBitMasks.clonedRecordNodeBitMask {
+                physicsComponent.setRecordNodeLevelInteractingBitMasks(forLevel: level)
+            }
+        case .seekEntity(_):
+            if let currentLevel = clusterLevel.currentLevel, physicsComponent.physicsBody.collisionBitMask != LayerBitMasks.clonedRecordNodeBitMask {
+                physicsComponent.setInteractingBitMasks(forLevel: currentLevel)
+            }
         case .tapped:
             clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: Constants.tappedEntitylevel)
         default:

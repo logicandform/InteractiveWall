@@ -26,7 +26,7 @@ class TestingDataManager {
 
     func instantiate() {
         // Setup testing nodes
-        testSelectedNodeWithMaxRelatedLevels()
+        testDuplicatingNodes()
 
         // Store directly related records in dictionary
         for record in records {
@@ -49,7 +49,7 @@ class TestingDataManager {
 
     /// After a school, org or event is selected. Selecting another one should duplicate nodes from the first cluster.
     private func testDuplicatingNodes() {
-        let artifacts = createRecords(of: .artifact, count: 10)
+        let artifacts = createRecords(of: .artifact, count: 50)
         records.append(contentsOf: artifacts)
         let schools = createRecords(of: .school, count: 1)
         records.append(contentsOf: schools)
