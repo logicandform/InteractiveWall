@@ -42,11 +42,10 @@ final class TailDiagram {
 
     /// Returns the maximum height for the section of the diagram between the given points
     func height(of layers: [Layer]) -> CGFloat {
-        if layers.count.isZero {
-            return style.timelineTailGap
-        }
+        let baseHeight = style.timelineTailMargin
+        let heightOfLayers = CGFloat(layers.count) * (style.timelineTailWidth + style.timelineTailMargin)
 
-        return CGFloat(layers.count) * style.timelineInterTailMargin
+        return baseHeight + heightOfLayers
     }
 
     /// Returns an array of layers transposed from the given area
@@ -102,8 +101,9 @@ final class TailDiagram {
         for index in (1 ..< layers.count) {
             let previousLayer = layers[index - 1]
             let currentLayer = layers[index]
+            let tailGap = style.timelineTailWidth + style.timelineTailMargin
+            let dropPoint = previousLayer.end + tailGap
 
-            let dropPoint = previousLayer.end + style.timelineTailGap
             if let lastLine = currentLayer.lines.last {
                 if lastLine.overlaps(x: dropPoint) {
                     let tail = Line(event: lastLine.event, start: dropPoint, end: lastLine.end)
@@ -166,7 +166,8 @@ final class Layer {
             return true
         }
 
-        let availableStart = last.end + style.timelineTailGap
+        let tailGap = style.timelineTailWidth + style.timelineTailMargin
+        let availableStart = last.end + tailGap
         return availableStart <= line.start
     }
 }

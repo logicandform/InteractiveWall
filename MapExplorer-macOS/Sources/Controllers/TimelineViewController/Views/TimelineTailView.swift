@@ -28,18 +28,22 @@ class TimelineTailView: NSView {
         for (index, layer) in layers.enumerated() {
             RecordType.school.color.setFill()
             RecordType.school.color.setStroke()
-            let y = CGFloat(index) * style.timelineInterTailMargin
+            let baseHeight = style.timelineTailMargin
+            let layerHeight = CGFloat(index) * (style.timelineTailWidth + style.timelineTailMargin)
+            let y = baseHeight + layerHeight
+
             for line in layer.lines {
                 let path = NSBezierPath(rect: CGRect(x: line.start, y: y, width: line.width, height: style.timelineTailWidth))
                 path.fill()
             }
             for drop in layer.drops {
-                let path = NSBezierPath(rect: CGRect(x: drop.x, y: y - style.timelineTailGap, width: style.timelineTailWidth, height: style.timelineInterTailMargin + style.timelineTailWidth))
+                let tailGap = style.timelineTailWidth + style.timelineTailMargin
+                let path = NSBezierPath(rect: CGRect(x: drop.x, y: y - tailGap, width: style.timelineTailWidth, height: tailGap + style.timelineTailWidth))
                 path.fill()
             }
             NSColor.white.setFill()
             for marker in layer.markers {
-                let radius = style.timelineTailCapRadius
+                let radius = style.timelineTailWidth
                 let path = NSBezierPath(ovalIn: CGRect(x: marker.x - radius/2, y: y - radius/2, width: radius * 2, height: radius * 2))
                 path.fill()
                 path.stroke()
