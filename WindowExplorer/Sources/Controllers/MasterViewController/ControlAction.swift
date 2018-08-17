@@ -5,21 +5,18 @@ import AppKit
 
 
 enum ControlAction {
-    case launchMapExplorer
-    case menuLaunchedMapExplorer
-    case menuLaunchedTimeline
-    case launchTimeline
+    case launchApplication
     case closeApplication
-    case disconnected
+    case reset
 
     init?(title: String) {
         switch title {
-        case ControlAction.launchMapExplorer.title:
-            self = .launchMapExplorer
-        case ControlAction.launchTimeline.title:
-            self = .launchTimeline
+        case ControlAction.launchApplication.title:
+            self = .launchApplication
         case ControlAction.closeApplication.title:
             self = .closeApplication
+        case ControlAction.reset.title:
+            self = .reset
         default:
             return nil
         }
@@ -27,39 +24,16 @@ enum ControlAction {
 
     var title: String {
         switch self {
-        case .launchMapExplorer:
-            return "Launch MapExplorer"
-        case .launchTimeline:
-            return "Launch Timeline"
+        case .launchApplication:
+            return "Launch Application"
+        case .reset:
+            return "Reset"
         case .closeApplication:
             return "Close Application"
-        case .disconnected:
-            return ""
-        case .menuLaunchedTimeline:
-            return ""
-        case .menuLaunchedMapExplorer:
-            return ""
         }
     }
 
-    var image: NSImage? {
-        switch self {
-        case .launchMapExplorer:
-            return NSImage(named: "map_background")
-        case .launchTimeline:
-            return NSImage(named: "timeline_background")
-        case .closeApplication:
-            return NSImage(named: "connected_background")
-        case .disconnected:
-            return NSImage(named: "disconnected_background")
-        case .menuLaunchedMapExplorer:
-            return NSImage(named: "map_background")
-        case .menuLaunchedTimeline:
-            return NSImage(named: "timeline_background")
-        }
-    }
-
-    static var allActions: [ControlAction] {
-        return [.launchMapExplorer, .launchTimeline, .closeApplication]
+    static var menuSelectionActions: [ControlAction] {
+        return [.launchApplication, .reset, .closeApplication]
     }
 }
