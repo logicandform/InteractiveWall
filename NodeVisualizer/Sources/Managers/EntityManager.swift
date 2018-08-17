@@ -71,11 +71,7 @@ final class EntityManager {
                     store(copy)
                     addComponents(to: copy)
                     copy.set(position: entityForProxy.position)
-
-                    copy.physicsBody.categoryBitMask = LayerBitMasks.clonedRecordNodeBitMask
-                    copy.physicsBody.collisionBitMask = LayerBitMasks.clonedRecordNodeBitMask
-                    copy.physicsBody.contactTestBitMask = LayerBitMasks.outerBoundingNodeBitMask
-
+                    copy.setClonedNodeBitMasks()
                     scene?.addChild(copy.node)
                     result.insert(copy)
                 } else {

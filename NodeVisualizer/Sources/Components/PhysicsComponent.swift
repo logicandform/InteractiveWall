@@ -5,16 +5,20 @@ import SpriteKit
 import GameplayKit
 
 
+struct ColliderType {
+    static let clonedRecordNode: UInt32 = 1 << 29
+    static let outmostBoundingNode: UInt32 = 1 << 30
+
+    let categoryBitMask: UInt32
+    let collisionBitMask: UInt32
+    let contactTestBitMask: UInt32
+}
+
+
 /// A `GKComponent` that provides an `SKPhysicsBody` for an entity. This enables the entity to be represented in the SpriteKit physics world.
 class PhysicsComponent: GKComponent {
 
     private(set) var physicsBody: SKPhysicsBody
-
-    private struct BitMasks {
-        let categoryBitMask: UInt32
-        let collisionBitMask: UInt32
-        let contactTestBitMask: UInt32
-    }
 
 
     // MARK: Initializer
@@ -65,7 +69,9 @@ class PhysicsComponent: GKComponent {
 
     /// Sets the entity's bitMasks to interact with entities within its own level as well as its bounding node
     func setInteractingBitMasks(forLevel level: Int) {
-        guard let entity = entity as? RecordEntity, let boundingNode = entity.cluster?.layerForLevel[level]?.nodeBoundingRenderComponent.node, let boundingNodePhysicsBody = boundingNode.physicsBody else {
+        guard let entity = entity as? RecordEntity,
+            let boundingNode = entity.cluster?.layerForLevel[level]?.nodeBoundingRenderComponent.node,
+            let boundingNodePhysicsBody = boundingNode.physicsBody else {
             return
         }
 
@@ -81,6 +87,13 @@ class PhysicsComponent: GKComponent {
         physicsBody.categoryBitMask = levelBitMasks.categoryBitMask
         physicsBody.collisionBitMask = levelBitMasks.collisionBitMask
         physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask
+    }
+
+    /// Sets the cloned entity's bitMasks
+    func setClonedNodeBitMasks() {
+        physicsBody.categoryBitMask = ColliderType.clonedRecordNode
+        physicsBody.collisionBitMask = ColliderType.clonedRecordNode
+        physicsBody.contactTestBitMask = ColliderType.outmostBoundingNode
     }
 
     /// Reset the entity's physics body to its initial state
@@ -108,12 +121,12 @@ class PhysicsComponent: GKComponent {
     }
 
     /// Returns the bitMasks for the entity's level
-    private func bitMasks(forLevel level: Int) -> BitMasks {
+    private func bitMasks(forLevel level: Int) -> ColliderType {
         let categoryBitMask: UInt32 = 1 << level
         let collisionBitMask: UInt32 = 1 << level
         let contactTestBitMask: UInt32 = 1 << level
 
-        return BitMasks(
+        return ColliderType(
             categoryBitMask: categoryBitMask,
             collisionBitMask: collisionBitMask,
             contactTestBitMask: contactTestBitMask

@@ -29,7 +29,6 @@ final class RecordEntity: GKEntity {
     let relatedRecords: Set<RecordProxy>
     var cluster: NodeCluster?
     var hasCollidedWithBoundingNode = false
-    
     private(set) var clusterLevel: (previousLevel: Int?, currentLevel: Int?) = (nil, nil)
 
     var state: EntityState {
@@ -130,23 +129,21 @@ final class RecordEntity: GKEntity {
     }
 
     func set(state: EntityState) {
-        if movementComponent.state == state {
-            return
-        }
+        if movementComponent.state == state { return }
         movementComponent.state = state
 
         switch state {
+        case .tapped:
+            clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: Constants.tappedEntitylevel)
         case .seekLevel(let level):
             clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: level)
-            if physicsComponent.physicsBody.collisionBitMask != LayerBitMasks.clonedRecordNodeBitMask {
+            if physicsComponent.physicsBody.collisionBitMask != ColliderType.clonedRecordNode {
                 physicsComponent.setRecordNodeLevelInteractingBitMasks(forLevel: level)
             }
         case .seekEntity(_):
-            if let currentLevel = clusterLevel.currentLevel, physicsComponent.physicsBody.collisionBitMask != LayerBitMasks.clonedRecordNodeBitMask {
+            if let currentLevel = clusterLevel.currentLevel, physicsComponent.physicsBody.collisionBitMask != ColliderType.clonedRecordNode {
                 physicsComponent.setInteractingBitMasks(forLevel: currentLevel)
             }
-        case .tapped:
-            clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: Constants.tappedEntitylevel)
         default:
             break
         }
@@ -158,6 +155,10 @@ final class RecordEntity: GKEntity {
 
     func setBitMasks(forLevel level: Int) {
         physicsComponent.setInteractingBitMasks(forLevel: level)
+    }
+
+    func setClonedNodeBitMasks() {
+        physicsComponent.setClonedNodeBitMasks()
     }
 
     func updateAgentPositionToMatchNodePosition() {

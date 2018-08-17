@@ -148,15 +148,8 @@ class MovementComponent: GKComponent {
         let r1 = distanceBetweenNodeAndCenter
 
         if (r2 - r1) < Constants.distancePadding {
-            // Enter SeekState and provide the appropriate bitmasks and entityToSeek for the MovementComponent
-//            entity.physicsBody.categoryBitMask = LayerBitMasks.outerBoundingNodeBitMask
-//            entity.physicsBody.collisionBitMask = LayerBitMasks.outerBoundingNodeBitMask
-//            entity.physicsBody.contactTestBitMask = LayerBitMasks.outerBoundingNodeBitMask
-//            entity.setBitMasks(forLevel: currentLevel)
             entity.set(state: .seekEntity(cluster.selectedEntity))
-            state = .seekEntity(cluster.selectedEntity)
         } else {
-            // Apply velocity
             entity.physicsBody.velocity = CGVector(dx: Constants.speed * unitVector.dx, dy: Constants.speed * unitVector.dy)
         }
     }

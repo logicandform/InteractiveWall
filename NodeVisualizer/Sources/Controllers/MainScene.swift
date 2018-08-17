@@ -65,18 +65,6 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         }
     }
 
-    func didEnd(_ contact: SKPhysicsContact) {
-        if contact.bodyA.collisionBitMask == LayerBitMasks.clonedRecordNodeBitMask,
-            contact.bodyB.collisionBitMask == LayerBitMasks.outerBoundingNodeBitMask,
-            let contactEntity = contact.bodyA.node?.entity as? RecordEntity, let currentLevel = contactEntity.clusterLevel.currentLevel {
-            contactEntity.setBitMasks(forLevel: currentLevel)
-        } else if contact.bodyB.collisionBitMask == LayerBitMasks.clonedRecordNodeBitMask,
-            contact.bodyA.collisionBitMask == LayerBitMasks.outerBoundingNodeBitMask,
-            let contactEntity = contact.bodyB.node?.entity as? RecordEntity, let currentLevel = contactEntity.clusterLevel.currentLevel {
-            contactEntity.setBitMasks(forLevel: currentLevel)
-        }
-    }
-
 
     // MARK: Setup
 
