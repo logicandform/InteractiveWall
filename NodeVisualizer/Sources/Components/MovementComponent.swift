@@ -148,7 +148,8 @@ class MovementComponent: GKComponent {
         let r1 = distanceBetweenNodeAndCenter
 
         if (r2 - r1) < Constants.distancePadding {
-            entity.set(state: .seekEntity(cluster.selectedEntity))
+            entity.setBitMasks(forLevel: currentLevel)
+            state = .seekEntity(cluster.selectedEntity)
         } else {
             entity.physicsBody.velocity = CGVector(dx: Constants.speed * unitVector.dx, dy: Constants.speed * unitVector.dy)
         }

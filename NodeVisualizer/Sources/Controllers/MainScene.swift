@@ -56,14 +56,14 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
             let boundingNode = contact.bodyB.node, boundingNode.name == "boundingNode",
             cluster.layerForLevel[cluster.layerForLevel.count - 1]?.nodeBoundingRenderComponent.node === boundingNode,
             let currentLevel = contactEntity.clusterLevel.currentLevel {
-            contactEntity.setBitMasks(forLevel: currentLevel)
+//            contactEntity.setBitMasks(forLevel: currentLevel)
         } else if let contactEntity = contact.bodyB.node?.entity as? RecordEntity,
             let cluster = contactEntity.cluster,
             cluster.selectedEntity.state != .panning,
             let boundingNode = contact.bodyA.node, boundingNode.name == "boundingNode",
             cluster.layerForLevel[cluster.layerForLevel.count - 1]?.nodeBoundingRenderComponent.node === boundingNode,
             let currentLevel = contactEntity.clusterLevel.currentLevel {
-            contactEntity.setBitMasks(forLevel: currentLevel)
+//            contactEntity.setBitMasks(forLevel: currentLevel)
         }
     }
 

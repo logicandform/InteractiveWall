@@ -66,12 +66,10 @@ final class NodeCluster: Hashable {
     func updateLayerLevels(forPan panning: Bool) {
         let level = panning ? 0 : entitiesForLevel.count
         setLayers(toLevel: level)
-        if panning {
-            for entities in entitiesForLevel {
-                for entity in entities {
-                    entity.hasCollidedWithBoundingNode = false
-                    entity.setBitMasks(forLevel: level)
-                }
+        for (level, entities) in entitiesForLevel.enumerated() {
+            for entity in entities {
+                entity.hasCollidedWithBoundingNode = false
+                entity.setBitMasks(forLevel: level)
             }
         }
     }
