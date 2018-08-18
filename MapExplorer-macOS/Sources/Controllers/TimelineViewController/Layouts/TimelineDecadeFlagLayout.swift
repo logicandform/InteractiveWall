@@ -177,7 +177,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
         flagFrameForEvent[event] = flagFrame
         let totalHeight = flagFrame.minY - Constants.headerHeight + flagHeight
 
-        attributes.zIndex = Int(-flagHeight)
+        attributes.zIndex = Int(-totalHeight)
         attributes.frame = CGRect(origin: CGPoint(x: x, y: Constants.headerHeight), size: CGSize(width: style.timelineFlagWidth, height: totalHeight))
         return attributes
     }

@@ -40,9 +40,10 @@ class TimelineFlagView: NSCollectionViewItem {
     // MARK: API
 
     func animateFlagColor(on: Bool) {
-        flagView.layer?.backgroundColor = on ? tintColor.cgColor : style.darkBackground.cgColor
         let animateColor = CABasicAnimation(keyPath: "backgroundColor")
-        animateColor.fromValue = flagView.layer?.backgroundColor
+        animateColor.fillMode = kCAFillModeForwards
+        animateColor.isRemovedOnCompletion = false
+        animateColor.fromValue = on ? style.darkBackground.cgColor : tintColor.cgColor
         animateColor.toValue = on ? tintColor.cgColor : style.darkBackground.cgColor
         animateColor.duration = Constants.animationDuration
         flagView.layer?.add(animateColor, forKey: "backgroundColor")
