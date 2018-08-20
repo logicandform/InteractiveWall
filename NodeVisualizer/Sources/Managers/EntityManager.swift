@@ -71,9 +71,13 @@ final class EntityManager {
                     store(copy)
                     addComponents(to: copy)
                     copy.set(position: entityForProxy.position)
-//                    copy.setClonedNodeBitMasks()
-                    scene?.addChild(copy.node)
+
+                    copy.isClonedEntity = true
+                    copy.setClonedNodeBitMasks()
+                    current.clonedEntities.insert(copy)
+
                     result.insert(copy)
+                    scene?.addChild(copy.node)
                 } else {
                     result.insert(entityForProxy)
                 }

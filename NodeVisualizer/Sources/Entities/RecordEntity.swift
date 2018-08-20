@@ -29,6 +29,7 @@ final class RecordEntity: GKEntity {
     let relatedRecords: Set<RecordProxy>
     var cluster: NodeCluster?
     var hasCollidedWithBoundingNode = false
+    var isClonedEntity = false
     private(set) var clusterLevel: (previousLevel: Int?, currentLevel: Int?) = (nil, nil)
 
     var state: EntityState {
@@ -137,7 +138,10 @@ final class RecordEntity: GKEntity {
             clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: Constants.tappedEntitylevel)
         case .seekLevel(let level):
             clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: level)
-            physicsComponent.setRecordNodeLevelInteractingBitMasks(forLevel: level)
+//            physicsComponent.setRecordNodeLevelInteractingBitMasks(forLevel: level)
+            physicsComponent.updateBitMasks()
+        case .seekEntity(_):
+            physicsComponent.updateBitMasks()
         default:
             break
         }
@@ -149,6 +153,10 @@ final class RecordEntity: GKEntity {
 
     func setBitMasks(forLevel level: Int) {
         physicsComponent.setInteractingBitMasks(forLevel: level)
+    }
+
+    func updateBitMasks() {
+        physicsComponent.updateBitMasks()
     }
 
     func setClonedNodeBitMasks() {

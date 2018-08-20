@@ -57,6 +57,24 @@ class NodeBoundingRenderComponent: GKComponent {
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
 
+        if cluster.selectedEntity.state == .panning {
+            return
+        }
+
+        // Check if it is the outmost bounding layer and update the cloned entities' bitmasks
+        if cluster.layerForLevel[cluster.layerForLevel.count - 1]?.nodeBoundingRenderComponent === self, !cluster.clonedEntities.isEmpty {
+            for clonedEntity in cluster.clonedEntities {
+                let deltaX = clonedEntity.position.x - cluster.center.x
+                let deltaY = clonedEntity.position.y - cluster.center.y
+                let distance = cluster.distanceOf(x: deltaX, y: deltaY)
+                if distance > maxRadius {
+                    clonedEntity.isClonedEntity = false
+                    clonedEntity.updateBitMasks()
+                    cluster.clonedEntities.remove(clonedEntity)
+                }
+            }
+        }
+
         /*
          Overall behavior/responsibility for this component is as follows:
             - Each NodeBoundingRenderComponent is responsible for calculating the distance between the root (center) and its own level entities (i.e. contactEntities).
@@ -64,23 +82,19 @@ class NodeBoundingRenderComponent: GKComponent {
             - The component's level node updates its own size depending on the previous level bounding node's maxRadius
          */
 
-        if cluster.selectedEntity.state == .panning {
-            return
-        }
-
-        // scale its own bounding node by using its previous level's bounding node maxRadius
+        // Scale its own bounding node by using its previous level's bounding node maxRadius
         if let previousLevelNodeBoundingEntity = cluster.layerForLevel[level - 1], let currentNode = node {
 
-            // get the maxRadius of the previous level bounding node
+            // Get the maxRadius of the previous level bounding node
             let previousLevelBoundingNodeMaxRadius = previousLevelNodeBoundingEntity.nodeBoundingRenderComponent.maxRadius
             let updatedPhysicsBodyRadius = previousLevelBoundingNodeMaxRadius + Constants.maximumOffset
 
-            // set its maxRadius to the previous level bounding node's maxRadius so that the next level bounding node can scale to the correct size
+            // Set its maxRadius to the previous level bounding node's maxRadius so that the next level bounding node can scale to the correct size
             maxRadius = previousLevelBoundingNodeMaxRadius
             minRadius = updatedPhysicsBodyRadius
             previousLevelMaxDistance = previousLevelBoundingNodeMaxRadius
 
-            // create new physicsBody based on the previous level bounding node's maxRadius. Scaling its own bounding node causes "stuck collisions" to its physicsBody
+            // Create new physicsBody based on the previous level bounding node's maxRadius. Scaling its own bounding node causes "stuck collisions" to its physicsBody
             let newPhysicsBody = SKPhysicsBody(circleOfRadius: updatedPhysicsBodyRadius)
             newPhysicsBody.categoryBitMask = currentNode.physicsBody!.categoryBitMask
             newPhysicsBody.contactTestBitMask = currentNode.physicsBody!.contactTestBitMask
@@ -95,7 +109,7 @@ class NodeBoundingRenderComponent: GKComponent {
 
         var distance: CGFloat = 0.0
         if let contactEntities = cluster.entitiesForLevel.at(index: level) {
-            // iterate through its contactEntities to see if it hasCollidedWithBoundingNode, and determine the max distance from the root to the contactEntity
+            // Iterate through its contactEntities to see if it hasCollidedWithBoundingNode, and determine the max distance from the root to the contactEntity
             for contactEntity in contactEntities where contactEntity.hasCollidedWithBoundingNode {
                 let calculatedRadius = cluster.distance(to: contactEntity) + Constants.minimumOffset
                 if calculatedRadius > distance {
@@ -104,7 +118,7 @@ class NodeBoundingRenderComponent: GKComponent {
             }
         }
 
-        // set the maxRadius for this level's bounding node
+        // Set the maxRadius for this level's bounding node
         maxRadius = distance > previousLevelMaxDistance ? distance : previousLevelMaxDistance
     }
 }

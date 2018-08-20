@@ -67,6 +67,53 @@ class PhysicsComponent: GKComponent {
 
     // MARK: API
 
+    func updateBitMasks() {
+        guard let entity = entity as? RecordEntity,
+            let cluster = entity.cluster,
+            !entity.isClonedEntity else {
+            return
+        }
+
+        if cluster.selectedEntity.state == .panning {
+            setPanningBitMasks()
+        } else {
+            switch entity.state {
+            case .seekLevel(let level):
+                setSeekingLevelBitMasks(forLevel: level)
+            case .seekEntity(_):
+                setSeekingEntityBitMasks()
+            default:
+                return
+            }
+        }
+    }
+
+    private func setPanningBitMasks() {
+
+    }
+
+    private func setSeekingLevelBitMasks(forLevel level: Int) {
+        let levelBitMasks = bitMasks(forLevel: level)
+        physicsBody.categoryBitMask = levelBitMasks.categoryBitMask
+        physicsBody.collisionBitMask = levelBitMasks.collisionBitMask
+        physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask | ColliderType.outmostBoundingNode
+    }
+
+    private func setSeekingEntityBitMasks() {
+        guard let entity = entity as? RecordEntity,
+            let level = entity.clusterLevel.currentLevel,
+            let boundingNode = entity.cluster?.layerForLevel[level]?.nodeBoundingRenderComponent.node,
+            let boundingNodePhysicsBody = boundingNode.physicsBody else {
+            return
+        }
+
+        let levelBitMasks = bitMasks(forLevel: level)
+        physicsBody.categoryBitMask = levelBitMasks.categoryBitMask | boundingNodePhysicsBody.categoryBitMask
+        physicsBody.collisionBitMask = levelBitMasks.collisionBitMask | boundingNodePhysicsBody.collisionBitMask
+        physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask | boundingNodePhysicsBody.contactTestBitMask | ColliderType.outmostBoundingNode
+    }
+
+
     /// Sets the entity's bitMasks to interact with entities within its own level as well as its bounding node
     func setInteractingBitMasks(forLevel level: Int) {
         guard let entity = entity as? RecordEntity,
@@ -91,7 +138,7 @@ class PhysicsComponent: GKComponent {
 
     /// Sets the cloned entity's bitMasks
     func setClonedNodeBitMasks() {
-        physicsBody.categoryBitMask = ColliderType.clonedRecordNode
+        physicsBody.categoryBitMask = ColliderType.outmostBoundingNode
         physicsBody.collisionBitMask = ColliderType.clonedRecordNode
         physicsBody.contactTestBitMask = ColliderType.outmostBoundingNode
     }

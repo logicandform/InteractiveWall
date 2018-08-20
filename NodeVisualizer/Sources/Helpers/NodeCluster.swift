@@ -19,6 +19,7 @@ final class NodeCluster: Hashable {
     private(set) var selectedEntity: RecordEntity
     private(set) var entitiesForLevel = EntityLevels()
     private(set) var layerForLevel = [Int: NodeBoundingEntity]()
+    var clonedEntities = Set<RecordEntity>()
     private let scene: MainScene
 
     var hashValue: Int {
@@ -106,6 +107,13 @@ final class NodeCluster: Hashable {
         let dX = Float(rootBoundingNode.position.x - entity.position.x)
         let dY = Float(rootBoundingNode.position.y - entity.position.y)
         return CGFloat(hypotf(dX, dY).magnitude)
+    }
+
+    /// Calculates the distance between two points
+    func distanceOf(x: CGFloat, y: CGFloat) -> CGFloat {
+        let dX = Float(x)
+        let dY = Float(y)
+        return CGFloat(hypotf(dX, dY))
     }
 
 
