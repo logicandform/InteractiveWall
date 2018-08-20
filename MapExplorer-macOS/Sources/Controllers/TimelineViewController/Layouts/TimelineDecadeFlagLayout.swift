@@ -123,9 +123,12 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
         let maxYear = source.firstYear + Int(rect.maxX) / type.sectionWidth
 
         var years = Array(minYear...maxYear)
-        if maxYear > source.lastYear {
-            years.append(contentsOf: Array(source.firstYear...maxYear - source.lastYear + source.firstYear))
-        }
+//        if maxYear > source.lastYear {
+//            years.append(contentsOf: Array(source.firstYear...maxYear - source.lastYear + source.firstYear))
+//        }
+//        if minYear < source.firstYear + 10 {
+//            years.append(contentsOf: Array(source.lastYear...source.lastYear + Constants.infiniteScrollBuffer))
+//        }
 
         for year in years {
             // Append attributes for items
