@@ -123,7 +123,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     }
 
     private func setupBackground() {
-//        timelineBackgroundView.alphaValue = 0
+        timelineBackgroundView.alphaValue = 0
         timelineBackgroundView.wantsLayer = true
         timelineBackgroundView.layer?.backgroundColor = style.timelineBackgroundColor.cgColor
     }
@@ -561,10 +561,15 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
             timelineCollectionView.scrollToVisible(timelineRect)
         }
 
-        if abs(previousRect.origin.x - timelineRect.origin.x) > timelineMaxX / 2 {
-//            timelineCollectionView.reloadItems(at: timelineCollectionView.indexPathsForVisibleItems())
-//            timelineCollectionView.collectionViewLayout?.invalidateLayout()
-            
+        let indexPaths = timelineCollectionView.indexPathsForVisibleItems()
+        if previousRect.origin.x - timelineRect.origin.x < -(timelineMaxX / 2) {
+            for visibleIndex in indexPaths {
+                timelineCollectionView.item(at: visibleIndex)?.view.frame.origin.x += CGFloat(source.years.count * timelineType.sectionWidth)
+            }
+        } else if previousRect.origin.x - timelineRect.origin.x > timelineMaxX / 2 {
+            for visibleIndex in indexPaths {
+                timelineCollectionView.item(at: visibleIndex)?.view.frame.origin.x -= CGFloat(source.years.count * timelineType.sectionWidth)
+            }
         }
     }
 
