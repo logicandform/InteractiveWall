@@ -97,7 +97,8 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
                 }
             }
             // Don't create tails for years past the last year for now
-            if let tailAttributes = tailAttributes(year: year, in: source), year < source.lastYear {
+//            if let tailAttributes = tailAttributes(year: year, in: source), year < source.lastYear {
+            if let tailAttributes = tailAttributes(year: year, in: source) {
                 tailAttributesForYear[year] = tailAttributes
             }
         }
@@ -136,7 +137,10 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
                 }
             }
             // Append timeline tails for each year
-            if let tailAttributes = tailAttributesForYear[year] {
+            if let tailAttributes = tailAttributesForYear[yearInRange], rect.intersects(tailAttributes.frame) {
+                layoutAttributes.append(tailAttributes)
+            } else if let tailAttributes = tailAttributesForYear[yearInRange] {
+                tailAttributes.frame.origin.x = CGFloat((year - source.firstYear) * type.sectionWidth)
                 layoutAttributes.append(tailAttributes)
             }
             // Append dividing line between last and first years
