@@ -97,7 +97,6 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
                 }
             }
             // Don't create tails for years past the last year for now
-//            if let tailAttributes = tailAttributes(year: year, in: source), year < source.lastYear {
             if let tailAttributes = tailAttributes(year: year, in: source) {
                 tailAttributesForYear[year] = tailAttributes
             }
