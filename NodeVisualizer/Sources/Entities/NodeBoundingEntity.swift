@@ -27,27 +27,4 @@ class NodeBoundingEntity: GKEntity {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-
-    // MARK: API
-
-    func setBitMasks(forLevel level: Int) {
-        guard let physicsBody = nodeBoundingRenderComponent.node?.physicsBody else {
-            return
-        }
-
-        physicsBody.categoryBitMask = 1 << level
-        physicsBody.collisionBitMask = 1 << level
-        physicsBody.contactTestBitMask = 1 << level
-    }
-
-    func setToOutMostBitMasks() {
-        guard let physicsBody = nodeBoundingRenderComponent.node?.physicsBody else {
-            return
-        }
-
-        physicsBody.categoryBitMask = ColliderType.outmostBoundingNode
-        physicsBody.collisionBitMask = ColliderType.outmostBoundingNode
-        physicsBody.contactTestBitMask = ColliderType.outmostBoundingNode
-    }
 }

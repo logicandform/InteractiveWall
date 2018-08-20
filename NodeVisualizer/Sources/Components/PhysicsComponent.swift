@@ -7,7 +7,6 @@ import GameplayKit
 
 struct ColliderType {
     static let clonedRecordNode: UInt32 = 1 << 29
-    static let outmostBoundingNode: UInt32 = 1 << 30
 
     let categoryBitMask: UInt32
     let collisionBitMask: UInt32
@@ -92,7 +91,7 @@ class PhysicsComponent: GKComponent {
     func setClonedNodeBitMasks() {
         physicsBody.categoryBitMask = ColliderType.clonedRecordNode
         physicsBody.collisionBitMask = ColliderType.clonedRecordNode
-        physicsBody.contactTestBitMask = ColliderType.outmostBoundingNode
+        physicsBody.contactTestBitMask = ColliderType.clonedRecordNode
     }
 
     /// Reset the entity's physics body to its initial state

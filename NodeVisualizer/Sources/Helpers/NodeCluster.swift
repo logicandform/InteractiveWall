@@ -175,12 +175,6 @@ final class NodeCluster: Hashable {
 
     /// Iterates through the levels between the current max level and the desired level and either adds or removes layers.
     private func setLayers(toLevel level: Int) {
-        // Set the outer-most layer's node bitmask back to its current level
-        if let currentOutMostBoundingEntity = layerForLevel[layerForLevel.count - 1] {
-            let currentLevel = layerForLevel.count - 1
-            currentOutMostBoundingEntity.setBitMasks(forLevel: currentLevel)
-        }
-
         let minimum = min(level + 1, layerForLevel.count)
         let maximum = max(level, layerForLevel.count)
 
@@ -190,11 +184,6 @@ final class NodeCluster: Hashable {
             } else {
                 addLayer(level: current)
             }
-        }
-
-        // Set the outer-most layer's node bitmask to 30 to allow interaction with everything
-        if let outMostBoundingEntity = layerForLevel[level] {
-            outMostBoundingEntity.setToOutMostBitMasks()
         }
     }
 
