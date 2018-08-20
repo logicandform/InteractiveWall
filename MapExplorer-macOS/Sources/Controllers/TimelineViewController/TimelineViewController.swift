@@ -563,14 +563,14 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
 
         let indexPaths = timelineCollectionView.indexPathsForVisibleItems()
         let tailIndexPaths = timelineCollectionView.indexPathsForVisibleSupplementaryElements(ofKind: TimelineTailView.supplementaryKind)
-        if previousRect.origin.x - timelineRect.origin.x < -timelineMaxX / 2 {
+        if previousRect.origin.x - timelineRect.origin.x < -timelineMaxX + timelineClipView.frame.width {
             for visibleIndex in indexPaths {
                 timelineCollectionView.item(at: visibleIndex)?.view.frame.origin.x += CGFloat(source.years.count * timelineType.sectionWidth)
             }
             for visibleTailIndex in tailIndexPaths {
                 timelineCollectionView.supplementaryView(forElementKind: TimelineTailView.supplementaryKind, at: visibleTailIndex)?.frame.origin.x += CGFloat(source.years.count * timelineType.sectionWidth)
             }
-        } else if previousRect.origin.x - timelineRect.origin.x > timelineMaxX / 2 {
+        } else if previousRect.origin.x - timelineRect.origin.x > timelineMaxX - timelineClipView.frame.width {
             for visibleIndex in indexPaths {
                 timelineCollectionView.item(at: visibleIndex)?.view.frame.origin.x -= CGFloat(source.years.count * timelineType.sectionWidth)
             }
