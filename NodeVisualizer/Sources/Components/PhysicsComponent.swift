@@ -88,57 +88,9 @@ class PhysicsComponent: GKComponent {
         }
     }
 
-    private func setPanningBitMasks() {
-
-    }
-
-    private func setSeekingLevelBitMasks(forLevel level: Int) {
-        let levelBitMasks = bitMasks(forLevel: level)
-        physicsBody.categoryBitMask = levelBitMasks.categoryBitMask
-        physicsBody.collisionBitMask = levelBitMasks.collisionBitMask
-        physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask | ColliderType.outmostBoundingNode
-    }
-
-    private func setSeekingEntityBitMasks() {
-        guard let entity = entity as? RecordEntity,
-            let level = entity.clusterLevel.currentLevel,
-            let boundingNode = entity.cluster?.layerForLevel[level]?.nodeBoundingRenderComponent.node,
-            let boundingNodePhysicsBody = boundingNode.physicsBody else {
-            return
-        }
-
-        let levelBitMasks = bitMasks(forLevel: level)
-        physicsBody.categoryBitMask = levelBitMasks.categoryBitMask | boundingNodePhysicsBody.categoryBitMask
-        physicsBody.collisionBitMask = levelBitMasks.collisionBitMask | boundingNodePhysicsBody.collisionBitMask
-        physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask | boundingNodePhysicsBody.contactTestBitMask | ColliderType.outmostBoundingNode
-    }
-
-
-    /// Sets the entity's bitMasks to interact with entities within its own level as well as its bounding node
-    func setInteractingBitMasks(forLevel level: Int) {
-        guard let entity = entity as? RecordEntity,
-            let boundingNode = entity.cluster?.layerForLevel[level]?.nodeBoundingRenderComponent.node,
-            let boundingNodePhysicsBody = boundingNode.physicsBody else {
-            return
-        }
-
-        let levelBitMasks = bitMasks(forLevel: level)
-        physicsBody.categoryBitMask = levelBitMasks.categoryBitMask | boundingNodePhysicsBody.categoryBitMask
-        physicsBody.collisionBitMask = levelBitMasks.collisionBitMask | boundingNodePhysicsBody.collisionBitMask
-        physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask | boundingNodePhysicsBody.contactTestBitMask
-    }
-
-    /// Sets the entity's bitMask to only interact with entities within its own level
-    func setRecordNodeLevelInteractingBitMasks(forLevel level: Int) {
-        let levelBitMasks = bitMasks(forLevel: level)
-        physicsBody.categoryBitMask = levelBitMasks.categoryBitMask
-        physicsBody.collisionBitMask = levelBitMasks.collisionBitMask
-        physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask
-    }
-
     /// Sets the cloned entity's bitMasks
     func setClonedNodeBitMasks() {
-        physicsBody.categoryBitMask = ColliderType.outmostBoundingNode
+        physicsBody.categoryBitMask = ColliderType.clonedRecordNode
         physicsBody.collisionBitMask = ColliderType.clonedRecordNode
         physicsBody.contactTestBitMask = ColliderType.outmostBoundingNode
     }
@@ -165,6 +117,38 @@ class PhysicsComponent: GKComponent {
         physicsBody.restitution = 0
         physicsBody.linearDamping = 0
         physicsBody.mass = style.nodePhysicsBodyMass
+    }
+
+    private func setPanningBitMasks() {
+        guard let entity = entity as? RecordEntity, let level = entity.clusterLevel.currentLevel else {
+            return
+        }
+
+        let levelBitMasks = bitMasks(forLevel: level)
+        physicsBody.categoryBitMask = levelBitMasks.categoryBitMask
+        physicsBody.collisionBitMask = levelBitMasks.collisionBitMask
+        physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask
+    }
+
+    private func setSeekingLevelBitMasks(forLevel level: Int) {
+        let levelBitMasks = bitMasks(forLevel: level)
+        physicsBody.categoryBitMask = levelBitMasks.categoryBitMask
+        physicsBody.collisionBitMask = levelBitMasks.collisionBitMask
+        physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask
+    }
+
+    private func setSeekingEntityBitMasks() {
+        guard let entity = entity as? RecordEntity,
+            let level = entity.clusterLevel.currentLevel,
+            let boundingNode = entity.cluster?.layerForLevel[level]?.nodeBoundingRenderComponent.node,
+            let boundingNodePhysicsBody = boundingNode.physicsBody else {
+            return
+        }
+
+        let levelBitMasks = bitMasks(forLevel: level)
+        physicsBody.categoryBitMask = levelBitMasks.categoryBitMask | boundingNodePhysicsBody.categoryBitMask
+        physicsBody.collisionBitMask = levelBitMasks.collisionBitMask | boundingNodePhysicsBody.collisionBitMask
+        physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask | boundingNodePhysicsBody.contactTestBitMask
     }
 
     /// Returns the bitMasks for the entity's level

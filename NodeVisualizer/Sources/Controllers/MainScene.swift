@@ -4,7 +4,7 @@ import SpriteKit
 import GameplayKit
 
 
-class MainScene: SKScene, SKPhysicsContactDelegate {
+class MainScene: SKScene {
 
     var nodeGestureManager: NodeGestureManager!
     private var nodeClusters = Set<NodeCluster>()
@@ -47,27 +47,6 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     }
 
 
-    // MARK: SKPhysicsContactDelegate
-
-    func didBegin(_ contact: SKPhysicsContact) {
-        if let contactEntity = contact.bodyA.node?.entity as? RecordEntity,
-            let cluster = contactEntity.cluster,
-            cluster.selectedEntity.state != .panning,
-            let boundingNode = contact.bodyB.node, boundingNode.name == "boundingNode",
-            cluster.layerForLevel[cluster.layerForLevel.count - 1]?.nodeBoundingRenderComponent.node === boundingNode,
-            let currentLevel = contactEntity.clusterLevel.currentLevel {
-//            contactEntity.setBitMasks(forLevel: currentLevel)
-        } else if let contactEntity = contact.bodyB.node?.entity as? RecordEntity,
-            let cluster = contactEntity.cluster,
-            cluster.selectedEntity.state != .panning,
-            let boundingNode = contact.bodyA.node, boundingNode.name == "boundingNode",
-            cluster.layerForLevel[cluster.layerForLevel.count - 1]?.nodeBoundingRenderComponent.node === boundingNode,
-            let currentLevel = contactEntity.clusterLevel.currentLevel {
-//            contactEntity.setBitMasks(forLevel: currentLevel)
-        }
-    }
-
-
     // MARK: Setup
 
     private func setupGestures() {
@@ -87,7 +66,6 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         let size = CGSize(width: frame.width + Constants.worldPadding * 2, height: frame.height + Constants.worldPadding * 2)
         physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(origin: origin, size: size))
         physicsWorld.gravity = .zero
-        physicsWorld.contactDelegate = self
     }
 
     private func addNodes() {
