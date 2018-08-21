@@ -69,7 +69,7 @@ class PhysicsComponent: GKComponent {
     func updateBitMasks() {
         guard let entity = entity as? RecordEntity,
             let cluster = entity.cluster,
-            !entity.isClonedEntity else {
+            entity.previousCluster == nil else {
             return
         }
 

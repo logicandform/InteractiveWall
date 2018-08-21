@@ -61,20 +61,6 @@ class NodeBoundingRenderComponent: GKComponent {
             return
         }
 
-        // Check if it is the outmost bounding layer and update the cloned entities' bitmasks
-        if cluster.layerForLevel[cluster.layerForLevel.count - 1]?.nodeBoundingRenderComponent === self, !cluster.clonedEntities.isEmpty {
-            for clonedEntity in cluster.clonedEntities {
-                let deltaX = clonedEntity.position.x - cluster.center.x
-                let deltaY = clonedEntity.position.y - cluster.center.y
-                let distance = cluster.distanceOf(x: deltaX, y: deltaY)
-                if distance > maxRadius {
-                    clonedEntity.isClonedEntity = false
-                    clonedEntity.updateBitMasks()
-                    cluster.clonedEntities.remove(clonedEntity)
-                }
-            }
-        }
-
         /*
          Overall behavior/responsibility for this component is as follows:
             - Each NodeBoundingRenderComponent is responsible for calculating the distance between the root (center) and its own level entities (i.e. contactEntities).

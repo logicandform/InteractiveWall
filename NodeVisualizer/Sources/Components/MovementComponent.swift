@@ -30,6 +30,18 @@ class MovementComponent: GKComponent {
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
 
+        if let entity = entity as? RecordEntity,
+            let previousCluster = entity.previousCluster,
+            let outmostBoundingEntity = previousCluster.layerForLevel[previousCluster.layerForLevel.count - 1]?.nodeBoundingRenderComponent {
+            let deltaX = entity.position.x - previousCluster.center.x
+            let deltaY = entity.position.y - previousCluster.center.y
+            let distance = previousCluster.distanceOf(x: deltaX, y: deltaY)
+            if distance > outmostBoundingEntity.maxRadius {
+                entity.previousCluster = nil
+                entity.updateBitMasks()
+            }
+        }
+
         switch state {
         case .falling:
             fall()

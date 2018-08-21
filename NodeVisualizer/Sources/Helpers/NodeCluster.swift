@@ -19,7 +19,6 @@ final class NodeCluster: Hashable {
     private(set) var selectedEntity: RecordEntity
     private(set) var entitiesForLevel = EntityLevels()
     private(set) var layerForLevel = [Int: NodeBoundingEntity]()
-    var clonedEntities = Set<RecordEntity>()
     private let scene: MainScene
 
     var hashValue: Int {

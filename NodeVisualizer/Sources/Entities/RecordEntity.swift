@@ -28,8 +28,8 @@ final class RecordEntity: GKEntity {
     let relatedRecordsForLevel: RelatedLevels
     let relatedRecords: Set<RecordProxy>
     var cluster: NodeCluster?
+    var previousCluster: NodeCluster?
     var hasCollidedWithBoundingNode = false
-    var isClonedEntity = false
     private(set) var clusterLevel: (previousLevel: Int?, currentLevel: Int?) = (nil, nil)
 
     var state: EntityState {
@@ -173,6 +173,7 @@ final class RecordEntity: GKEntity {
         hasCollidedWithBoundingNode = false
         clusterLevel = (nil, nil)
         cluster = nil
+        previousCluster = nil
         physicsComponent.reset()
         set(state: .falling)
     }

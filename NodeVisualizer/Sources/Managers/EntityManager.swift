@@ -70,10 +70,9 @@ final class EntityManager {
                     let copy = entityForProxy.clone()
                     store(copy)
                     addComponents(to: copy)
-                    copy.isClonedEntity = true
                     copy.set(position: entityForProxy.position)
                     copy.setClonedNodeBitMasks()
-                    current.clonedEntities.insert(copy)
+                    copy.previousCluster = current
                     result.insert(copy)
                     scene?.addChild(copy.node)
                 } else {
