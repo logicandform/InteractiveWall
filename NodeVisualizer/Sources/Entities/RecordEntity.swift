@@ -28,7 +28,7 @@ final class RecordEntity: GKEntity {
     let relatedRecordsForLevel: RelatedLevels
     let relatedRecords: Set<RecordProxy>
     var cluster: NodeCluster?
-    var previousCluster: NodeCluster?
+    weak var previousCluster: NodeCluster?
     var hasCollidedWithBoundingNode = false
     private(set) var clusterLevel: (previousLevel: Int?, currentLevel: Int?) = (nil, nil)
 
