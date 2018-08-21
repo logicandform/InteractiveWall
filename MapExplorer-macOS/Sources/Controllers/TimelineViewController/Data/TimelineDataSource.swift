@@ -61,14 +61,15 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     // MARK: NSCollectionViewDataSource
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return events.count
+        return eventsWithOverflow.count
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        guard let timelineFlag = collectionView.makeItem(withIdentifier: TimelineFlagView.identifier, for: indexPath) as? TimelineFlagView, let event = eventForHashValue[indexPath.item] else {
+        guard let timelineFlag = collectionView.makeItem(withIdentifier: TimelineFlagView.identifier, for: indexPath) as? TimelineFlagView else {
             return NSCollectionViewItem()
         }
 
+        let event = eventsWithOverflow[indexPath.item]
         timelineFlag.event = event
         return timelineFlag
     }

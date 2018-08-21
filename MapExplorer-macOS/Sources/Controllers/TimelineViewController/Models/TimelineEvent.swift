@@ -12,7 +12,7 @@ final class TimelineEvent: Hashable {
     var highlighted = false
 
     var hashValue: Int {
-        return timelinePositionDate.year ^ type.hashValue ^ id
+        return timelinePositionDate.year ^ type.hashValue ^ title.hashValue
     }
 
     private struct Keys {
