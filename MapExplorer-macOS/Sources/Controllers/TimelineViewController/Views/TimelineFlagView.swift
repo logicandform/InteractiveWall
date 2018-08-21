@@ -17,7 +17,7 @@ class TimelineFlagView: NSCollectionViewItem {
             load(event)
         }
     }
-    private var tintColor = style.darkBackground
+    private var tintColor = style.timelineFlagBackgroundColor
 
     private struct Constants {
         static let interItemMargin: CGFloat = 4
@@ -33,20 +33,23 @@ class TimelineFlagView: NSCollectionViewItem {
         view.wantsLayer = true
         flagView.wantsLayer = true
         flagPoleView.wantsLayer = true
-        flagView.layer?.backgroundColor = style.darkBackground.cgColor
+        flagView.layer?.backgroundColor = style.timelineFlagBackgroundColor.cgColor
     }
 
 
     // MARK: API
 
-    func animateFlagColor(on: Bool) {
-        let animateColor = CABasicAnimation(keyPath: "backgroundColor")
-        animateColor.fillMode = kCAFillModeForwards
-        animateColor.isRemovedOnCompletion = false
-        animateColor.fromValue = on ? style.darkBackground.cgColor : tintColor.cgColor
-        animateColor.toValue = on ? tintColor.cgColor : style.darkBackground.cgColor
-        animateColor.duration = Constants.animationDuration
-        flagView.layer?.add(animateColor, forKey: "backgroundColor")
+    func set(highlighted: Bool, animated: Bool) {
+        if animated {
+            flagView.layer?.backgroundColor = highlighted ? tintColor.cgColor : style.timelineFlagBackgroundColor.cgColor
+            let animateColor = CABasicAnimation(keyPath: "backgroundColor")
+            animateColor.fromValue = highlighted ? style.timelineFlagBackgroundColor.cgColor : tintColor.cgColor
+            animateColor.toValue = highlighted ? tintColor.cgColor : style.timelineFlagBackgroundColor.cgColor
+            animateColor.duration = Constants.animationDuration
+            flagView.layer?.add(animateColor, forKey: "backgroundColor")
+        } else {
+            flagView.layer?.backgroundColor = highlighted ? tintColor.cgColor : style.timelineFlagBackgroundColor.cgColor
+        }
     }
 
 

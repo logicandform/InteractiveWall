@@ -159,18 +159,4 @@ final class DataManager {
         let proxies = records?.map { $0.proxy } ?? []
         return Set(proxies)
     }
-
-    private func subset<T>(of elements: [T]?, size: Int) -> [T] {
-        guard let elements = elements else {
-            return []
-        }
-
-        var subset = [T]()
-        for (index, element) in elements.enumerated() {
-            if index < size {
-                subset.append(element)
-            }
-        }
-        return subset
-    }
 }

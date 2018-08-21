@@ -4,10 +4,12 @@ import Foundation
 
 
 final class TimelineEvent: Hashable {
+
     let id: Int
     let type: RecordType
     let title: String
     let dates: TimelineRange
+    var selected = false
 
     var hashValue: Int {
         return dates.startDate.year ^ dates.endDate.year ^ title.hashValue

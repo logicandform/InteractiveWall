@@ -4,7 +4,7 @@ import Foundation
 import Cocoa
 
 
-struct TimelineDate: CustomStringConvertible {
+struct TimelineDate: CustomStringConvertible, Comparable {
     let day: CGFloat
     let month: Int
     let year: Int
@@ -67,5 +67,15 @@ struct TimelineDate: CustomStringConvertible {
         self.year = year
         self.defaultDayUsed = false
         self.defaultMonthUsed = false
+    }
+
+    public static func < (lhs: TimelineDate, rhs: TimelineDate) -> Bool {
+        if lhs.year == rhs.year {
+            if lhs.month == rhs.month {
+                return lhs.day < rhs.day
+            }
+            return lhs.month < rhs.month
+        }
+        return lhs.year < rhs.year
     }
 }

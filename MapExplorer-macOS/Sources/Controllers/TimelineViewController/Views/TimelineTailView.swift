@@ -26,19 +26,20 @@ class TimelineTailView: NSView {
         super.draw(dirtyRect)
 
         for (index, layer) in layers.enumerated() {
-            style.timelineTailColor.setFill()
-            style.timelineTailColor.setStroke()
             let baseHeight = style.timelineTailMargin
             let layerHeight = CGFloat(index) * (style.timelineTailWidth + style.timelineTailMargin)
             let y = baseHeight + layerHeight
 
             for line in layer.lines {
+                let color = line.event.selected ? line.event.type.color : style.timelineTailColor
+                color.setFill()
                 let path = NSBezierPath(rect: CGRect(x: line.start, y: y, width: line.width, height: style.timelineTailWidth))
                 path.fill()
             }
             for drop in layer.drops {
-                let tailGap = style.timelineTailWidth + style.timelineTailMargin
-                let path = NSBezierPath(rect: CGRect(x: drop.x, y: y - tailGap, width: style.timelineTailWidth, height: tailGap + style.timelineTailWidth))
+                let color = drop.event.selected ? drop.event.type.color : style.timelineTailColor
+                color.setFill()
+                let path = NSBezierPath(rect: CGRect(x: drop.x, y: y - style.timelineTailGap, width: style.timelineTailWidth, height: style.timelineTailGap + style.timelineTailWidth))
                 path.fill()
             }
             NSColor.white.setFill()

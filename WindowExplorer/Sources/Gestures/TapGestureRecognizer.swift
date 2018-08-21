@@ -34,7 +34,6 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         positionForTouch[touch] = touch.position
         doubleTapPositionAndTimeForTouch[touch] = (touch.position, Date())
         removeExpiredDoubleTapTouches()
-
         position = touch.position
         state = .began
 

@@ -36,7 +36,6 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
     }
 
 
-
     // MARK: Overrides
 
     /// Let's only try to calculate this once in an init function? necessary?
@@ -78,7 +77,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
             }
         }
 
-        // Cache the layers for individual years for fast access
+        // Cache the layers for each year for fast access
         for year in (source.firstYear...source.lastYear) {
             let start = CGFloat(year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth
             let end = start + Constants.yearWidth

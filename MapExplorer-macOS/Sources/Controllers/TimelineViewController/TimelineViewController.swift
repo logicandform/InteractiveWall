@@ -61,7 +61,7 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     var gestureManager: GestureManager!
     var currentDate = Constants.initialDate
-    var timelineType: TimelineType = .decade
+    private(set) var timelineType = TimelineType.decade
     private var timelineHandler: TimelineHandler?
     private let source = TimelineDataSource()
     private let controlsSource = TimelineControlsDataSource()
@@ -124,7 +124,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         scrollCollectionViews(animated: animated)
     }
 
-
     // MARK: Life-Cycle
 
     override func viewDidLoad() {
@@ -173,7 +172,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     private func setupTimeline() {
         timelineHandler = TimelineHandler(timelineViewController: self)
         ConnectionManager.instance.timelineHandler = timelineHandler
-        ConnectionManager.instance.timelineViewController = self
         timelineCollectionView.register(TimelineItemView.self, forItemWithIdentifier: TimelineItemView.identifier)
         timelineCollectionView.register(TimelineFlagView.self, forItemWithIdentifier: TimelineFlagView.identifier)
         timelineCollectionView.register(NSNib(nibNamed: TimelineBorderView.nibName, bundle: .main), forSupplementaryViewOfKind: TimelineBorderView.supplementaryKind, withIdentifier: TimelineBorderView.identifier)
@@ -268,18 +266,18 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
                 indexPathForTouch[touch] = indexPath
                 createRecordForTouch[touch] = true
                 timeTouchStarted[touch] = Date()
-                postSelectNotification(for: indexPath.item, state: true)
+                postSelectNotification(for: indexPath.item, selected: true)
             }
         case .failed:
             createRecordForTouch[touch] = false
         case .ended, .doubleTapped:
             if let indexPath = indexPathForTouch[touch], let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineFlagView {
-                postSelectNotification(for: indexPath.item, state: false)
+                postSelectNotification(for: indexPath.item, selected: false)
                 if let createRecord = createRecordForTouch[touch], createRecord, let touchStartTime = timeTouchStarted[touch], Date().timeIntervalSince(touchStartTime) <= Constants.maximumTouchHold {
                     postRecordNotification(for: timelineItem)
                 }
             } else if let location = tap.position, let indexPath = timelineCollectionView.indexPathForItem(at: location + timelineCollectionView.visibleRect.origin), let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineFlagView {
-                postSelectNotification(for: indexPath.item, state: false)
+                postSelectNotification(for: indexPath.item, selected: false)
                 if let createRecord = createRecordForTouch[touch], createRecord, let touchStartTime = timeTouchStarted[touch], Date().timeIntervalSince(touchStartTime) <= Constants.maximumTouchHold {
                     postRecordNotification(for: timelineItem)
                 }
@@ -437,26 +435,21 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     @objc
     private func handleNotification(_ notification: NSNotification) {
-        guard let info = notification.userInfo else {
+        guard let info = notification.userInfo, let group = info[Keys.group] as? Int, group == ConnectionManager.instance.groupForApp(id: appID, type: .timeline) else {
             return
         }
 
-        let group = ConnectionManager.instance.groupForApp(id: appID, type: .timeline)
-        let notificationGroup = info[Keys.group] as? Int
-
-        if group == notificationGroup {
-            switch notification.name {
-            case TimelineNotification.selection.name:
-                if let selection = info[Keys.selection] as? [Int] {
-                    setTimelineSelection(Set(selection))
-                }
-            case TimelineNotification.select.name:
-                if let index = info[Keys.index] as? Int, let state = info[Keys.state] as? Bool {
-                    setTimelineItem(index, selected: state)
-                }
-            default:
-                return
+        switch notification.name {
+        case TimelineNotification.selection.name:
+            if let selection = info[Keys.selection] as? [Int] {
+                setTimelineSelection(Set(selection))
             }
+        case TimelineNotification.select.name:
+            if let index = info[Keys.index] as? Int, let state = info[Keys.state] as? Bool {
+                setTimelineItem(index, selected: state, animated: true)
+            }
+        default:
+            return
         }
     }
 
@@ -486,8 +479,8 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     // MARK: Timeline Selection
 
-    private func postSelectNotification(for index: Int, state: Bool) {
-        var info: JSON = [Keys.id: appID, Keys.index: index, Keys.state: state]
+    private func postSelectNotification(for index: Int, selected: Bool) {
+        var info: JSON = [Keys.id: appID, Keys.index: index, Keys.state: selected]
         if let group = ConnectionManager.instance.groupForApp(id: appID, type: .timeline) {
             info[Keys.group] = group
         }
@@ -497,26 +490,33 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     private func setTimelineSelection(_ selection: Set<Int>) {
         // Unselect current indexes that are not in the new selection
         source.selectedIndexes.filter({ !selection.contains($0) }).forEach { index in
-            setTimelineItem(index, selected: false)
+            setTimelineItem(index, selected: false, animated: false)
         }
         // Select indexes that are not currently selected
         selection.filter({ !source.selectedIndexes.contains($0) }).forEach { index in
-            setTimelineItem(index, selected: true)
+            setTimelineItem(index, selected: true, animated: false)
         }
     }
 
-    private func setTimelineItem(_ index: Int, selected: Bool) {
-        if selected {
-            source.selectedIndexes.append(index)
-        } else {
-            source.selectedIndexes = source.selectedIndexes.filter({ $0 != index })
+    private func setTimelineItem(_ index: Int, selected: Bool, animated: Bool) {
+        let indexPath = IndexPath(item: index, section: 0)
+        guard let event = source.events.at(index: index) else {
+            return
         }
 
-        // Update item view for index
-        let indexPath = IndexPath(item: index, section: 0)
-        if let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineFlagView {
-            timelineItem.animateFlagColor(on: selected)
+        // Update data source
+        if selected {
+            source.selectedIndexes.insert(index)
+        } else {
+            source.selectedIndexes.remove(index)
         }
+
+        // Update views
+        event.selected = selected
+        if let timelineFlagView = timelineCollectionView.item(at: indexPath) as? TimelineFlagView {
+            timelineFlagView.set(highlighted: selected, animated: animated)
+        }
+        updateTailViews()
     }
 
 
@@ -659,15 +659,23 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         }
 
         when(fulfilled: schoolChain, eventChain).then { [weak self] results in
-            self?.parseNetworkResults(results)
+            self?.loadNetworkResults(results)
         }
     }
 
-    private func parseNetworkResults(_ results: (schools: [School], events: [Event])) {
+    private func loadNetworkResults(_ results: (schools: [School], events: [Event])) {
         var records = [Record]()
         records.append(contentsOf: results.schools)
         records.append(contentsOf: results.events)
-        source.records = records
+        source.setup(with: records)
         timelineCollectionView.reloadData()
+    }
+
+    /// Causes all timeline tail view's to redraw
+    private func updateTailViews() {
+        let tailViews = timelineCollectionView.visibleSupplementaryViews(ofKind: TimelineTailView.supplementaryKind) as [NSView]
+        for tailView in tailViews {
+            tailView.needsDisplay = true
+        }
     }
 }

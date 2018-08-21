@@ -464,7 +464,6 @@ public class AKPlayer {
         // these are only stored to check if the buffer needs to be updated in subsequent fills
         startingFrame = startFrame
         endingFrame = endFrame
-
     }
 
     /// Disconnect the node and release resources
@@ -472,11 +471,9 @@ public class AKPlayer {
         stop()
         audioFile = nil
         buffer = nil
-        AudioController.shared.engine.detach(inmixer)
-        if let node = panner.audioNode {
-            AudioController.shared.engine.detach(node)
-        }
-        AudioController.shared.engine.detach(playerNode)
+        inmixer.engine?.detach(inmixer)
+        panner.audioNode?.engine?.detach(panner.audioNode!)
+        playerNode.engine?.detach(playerNode)
     }
 }
 

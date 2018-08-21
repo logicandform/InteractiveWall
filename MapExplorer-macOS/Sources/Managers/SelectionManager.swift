@@ -8,7 +8,7 @@ final class SelectionManager {
     static let instance = SelectionManager()
 
     /// Selections for an app's timeline indexed by it's appID
-    var selectionForApp = [Set<Int>]()
+    private var selectionForApp = [Set<Int>]()
 
     private struct Keys {
         static let group = "group"
@@ -29,13 +29,20 @@ final class SelectionManager {
 
     // MARK: API
 
+    func select(item: Int) {
+        // TODO: Make timer to unselect it, reset if its the same item
+        // Handle syncing and resetting appropriately
+    }
+
     func resetSelection(group: Int) {
         set(Set<Int>(), group: group)
     }
 
     func syncApps(group: Int) {
-        let selection = selectionForApp[group]
-        postSelectionNotification(forGroup: group, with: selection)
+        if group == appID {
+            let selection = selectionForApp[group]
+            postSelectionNotification(forGroup: group, with: selection)
+        }
     }
 
     func registerForNotifications() {

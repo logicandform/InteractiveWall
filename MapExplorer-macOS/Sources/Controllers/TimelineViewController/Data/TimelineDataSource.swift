@@ -9,20 +9,14 @@ import AppKit
 
 final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
 
-    var type = TimelineType.decade
-    var selectedIndexes = [Int]()
-    let firstYear = Constants.firstYear
-    var lastYear = (Calendar.current.component(.year, from: Date()) / 10) * 10 + 10
-    var years: [Int]
-    var records = [Record]() {
-        didSet {
-            setupEvents(for: records)
-        }
-    }
-
+    var selectedIndexes = Set<Int>()
     private(set) var events = [TimelineEvent]()
     private(set) var eventsForYear = [Int: [TimelineEvent]]()
     private(set) var eventsForMonth = [Int: [Month: [TimelineEvent]]]()
+    private(set) var firstYear = Constants.firstYear
+    private(set) var lastYear = (Calendar.current.component(.year, from: Date()) / 10) * 10 + 10
+    private(set) var years: [Int]
+    private let type = TimelineType.decade
 
     private struct Constants {
         static let screenWidth = 1920
@@ -39,6 +33,30 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     }
 
 
+    // MARK: API
+
+    func setup(with records: [Record]) {
+        let sortedRecords = records.sorted(by: { $0.type.timelineSortOrder < $1.type.timelineSortOrder })
+
+        events = sortedRecords.compactMap { record in
+            if let dates = record.dates {
+                return TimelineEvent(id: record.id, type: record.type, title: record.title, dates: dates)
+            } else {
+                return nil
+            }
+        }
+
+        // Add to year dictionary
+        for event in events {
+            if eventsForYear[event.dates.startDate.year] != nil {
+                eventsForYear[event.dates.startDate.year]!.append(event)
+            } else {
+                eventsForYear[event.dates.startDate.year] = [event]
+            }
+        }
+    }
+
+
     // MARK: NSCollectionViewDataSource
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -51,6 +69,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
         }
 
         timelineFlag.event = events[indexPath.item]
+        timelineFlag.set(highlighted: selectedIndexes.contains(indexPath.item), animated: false)
         return timelineFlag
     }
 
@@ -80,37 +99,5 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
         }
 
         return NSView()
-    }
-
-
-    // MARK: Helpers
-
-    private func setupEvents(for records: [Record]) {
-        let sortedRecords = records.sorted(by: { $0.type.timelineSortOrder < $1.type.timelineSortOrder })
-
-        for record in sortedRecords {
-            if let dates = record.dates {
-                let event = TimelineEvent(id: record.id, type: record.type, title: record.title, dates: dates)
-                events.append(event)
-
-                // Add to year dictionary
-                if eventsForYear[event.dates.startDate.year] != nil {
-                    eventsForYear[event.dates.startDate.year]!.append(event)
-                } else {
-                    eventsForYear[event.dates.startDate.year] = [event]
-                }
-
-                // Add to month dictionary
-                if eventsForMonth[event.dates.startDate.year] != nil, Month(rawValue: event.dates.startDate.month) != nil {
-                    if eventsForMonth[event.dates.startDate.year]![Month(rawValue: event.dates.startDate.month)!] != nil {
-                        eventsForMonth[event.dates.startDate.year]![Month(rawValue: event.dates.startDate.month)!]!.append(event)
-                    } else {
-                        eventsForMonth[event.dates.startDate.year]![Month(rawValue: event.dates.startDate.month)!] = [event]
-                    }
-                } else {
-                    eventsForMonth[event.dates.startDate.year] = [Month(rawValue: event.dates.startDate.month)!: [event]]
-                }
-            }
-        }
     }
 }

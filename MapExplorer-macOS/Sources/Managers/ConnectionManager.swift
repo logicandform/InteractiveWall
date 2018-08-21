@@ -17,8 +17,6 @@ final class ConnectionManager {
     /// The handler for timeline associated events
     weak var timelineHandler: TimelineHandler?
 
-    weak var timelineViewController: TimelineViewController?
-
     /// The current application type for an appID
     private var typeForApp = [ApplicationType]()
 
@@ -188,11 +186,11 @@ final class ConnectionManager {
                     // Check if incoming id is closer than current pair
                     if abs(app - id) < abs(app - appPair) || appPair == id {
                         typeForApp[app] = newType
-                        transitionController(id: app, to: newType)
+                        transition(app: app, to: newType)
                     }
                 } else {
                     typeForApp[app] = newType
-                    transitionController(id: app, to: newType)
+                    transition(app: app, to: newType)
                 }
             }
         }
@@ -355,8 +353,6 @@ final class ConnectionManager {
             return
         }
 
-        SelectionManager.instance.syncApps(group: group)
-
         switch type {
         case .mapExplorer:
             if let mapHandler = mapHandler {
@@ -364,9 +360,9 @@ final class ConnectionManager {
                 mapHandler.send(mapRect, for: .momentum, forced: true)
             }
         case .timeline:
-            if let timelineHandler = timelineHandler, let timelineViewController = timelineViewController {
-                let date = timelineViewController.currentDate
-                timelineHandler.send(date: TimelineDate(date: date), for: .momentum, forced: true)
+            SelectionManager.instance.syncApps(group: group)
+            if let timelineHandler = timelineHandler, let currentDate = timelineHandler.timelineViewController?.currentDate {
+                timelineHandler.send(date: TimelineDate(date: currentDate), for: .momentum, forced: true)
             }
         default:
             return
@@ -394,9 +390,10 @@ final class ConnectionManager {
         return (app / Configuration.appsPerScreen) + 1
     }
 
-    private func transitionController(id: Int, to type: ApplicationType) {
-        if id == appID {
-            timelineViewController?.fade(out: type != .timeline)
+    // Shows / hides the timeline
+    private func transition(app: Int, to type: ApplicationType) {
+        if app == appID {
+            timelineHandler?.timelineViewController?.fade(out: type != .timeline)
         }
     }
 }

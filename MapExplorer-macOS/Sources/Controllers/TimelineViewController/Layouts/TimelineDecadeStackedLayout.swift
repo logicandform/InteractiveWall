@@ -100,10 +100,7 @@ class TimelineDecadeStackedLayout: NSCollectionViewFlowLayout {
         let row = rowFor(event: event, xPosition: x, width: width)
         let y = Constants.cellSize.height * CGFloat(row) + Constants.headerHeight
         let frame = CGRect(origin: CGPoint(x: x, y: y), size: CGSize(width: width, height: Constants.cellSize.height))
-        let unselectedPosition = event.dates.startDate.year
-        let selected = source.selectedIndexes.contains(item)
         attributes.frame = frame
-        attributes.zIndex = selected ? source.lastYear + source.selectedIndexes.index(of: item)!: unselectedPosition
         frameForEventInRow[row] = frame
         frameForEvent[event] = frame
         return attributes

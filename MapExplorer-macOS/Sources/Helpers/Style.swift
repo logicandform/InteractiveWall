@@ -28,10 +28,12 @@ final class Style {
     let timelineBorderColor = NSColor.gray
     let timelineHeaderText = NSColor.gray
     let timelineBorderWidth: CGFloat = 2
+    let timelineFlagBackgroundColor = NSColor.black.withAlphaComponent(0.8)
     let timelineFlagWidth: CGFloat = 180
     let timelineTailColor = NSColor(white: 0.2, alpha: 1)
     let timelineTailWidth: CGFloat = 1
     let timelineTailMargin: CGFloat = 9
+    lazy var timelineTailGap: CGFloat = timelineTailWidth + timelineTailMargin
     let timelineTailMarkerWidth: CGFloat = 1
 
     var timelineTitleAttributes: [NSAttributedStringKey: Any] {

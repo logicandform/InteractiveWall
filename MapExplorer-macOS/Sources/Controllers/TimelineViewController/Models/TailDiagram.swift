@@ -101,8 +101,7 @@ final class TailDiagram {
         for index in (1 ..< layers.count) {
             let previousLayer = layers[index - 1]
             let currentLayer = layers[index]
-            let tailGap = style.timelineTailMargin
-            let dropPoint = previousLayer.end + tailGap
+            let dropPoint = previousLayer.end + style.timelineTailGap
 
             if let lastLine = currentLayer.lines.last {
                 if lastLine.overlaps(x: dropPoint) {
@@ -166,8 +165,7 @@ final class Layer {
             return true
         }
 
-        let tailGap = style.timelineTailWidth + style.timelineTailMargin
-        let availableStart = last.end + tailGap
+        let availableStart = last.end + style.timelineTailGap
         return availableStart <= line.start
     }
 }
@@ -175,7 +173,7 @@ final class Layer {
 /// Represents a single horizontal line within a single Layer of a TailDiagram
 final class Line {
 
-    var event: TimelineEvent?
+    var event: TimelineEvent!
     var start: CGFloat
     var end: CGFloat
 
@@ -206,10 +204,10 @@ final class Line {
 
 /// Represents a single vertical drop line of a TailDiagram
 final class Drop {
-    var event: TimelineEvent?
+    var event: TimelineEvent
     var x: CGFloat
 
-    init(event: TimelineEvent?, x: CGFloat) {
+    init(event: TimelineEvent, x: CGFloat) {
         self.event = event
         self.x = x
     }
@@ -217,10 +215,10 @@ final class Drop {
 
 /// Represents a position where a Tail begins or ends
 final class Marker {
-    var event: TimelineEvent?
+    var event: TimelineEvent
     var x: CGFloat
 
-    init(event: TimelineEvent?, x: CGFloat) {
+    init(event: TimelineEvent, x: CGFloat) {
         self.event = event
         self.x = x
     }

@@ -92,15 +92,13 @@ class TimelineCenturyStackedLayout: NSCollectionViewFlowLayout {
         }
 
         let indexPath = IndexPath(item: item, section: 0)
-        let selected = source.selectedIndexes.contains(item)
         let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
         let x = CGFloat((event.dates.startDate.year - source.firstYear) * type.sectionWidth)
         let row = rowFor(xPosition: x)
         let y = Constants.cellSize.height * CGFloat(row) + Constants.headerHeight
-        let width = selected ? Constants.cellSize.width * 2 : Constants.cellSize.width
-        let frame = CGRect(origin: CGPoint(x: x, y: y), size: CGSize(width: width, height: Constants.cellSize.height))
+        let frame = CGRect(origin: CGPoint(x: x, y: y), size: CGSize(width: Constants.cellSize.width, height: Constants.cellSize.height))
         attributes.frame = frame
-        attributes.zIndex = selected ? event.dates.startDate.year + source.lastYear : event.dates.startDate.year
+        attributes.zIndex = event.dates.startDate.year
         frameForEventInRow[row] = frame
         return attributes
     }
