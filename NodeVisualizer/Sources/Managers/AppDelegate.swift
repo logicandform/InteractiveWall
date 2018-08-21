@@ -13,7 +13,7 @@ enum Environment {
 
 
 struct Configuration {
-    static let env = Environment.production
+    static let env = Environment.testing
     static let appsPerScreen = 2
     static let numberOfScreens = 1
     static let touchScreenSize = CGSize(width: 21564, height: 12116)

@@ -30,6 +30,18 @@ class MovementComponent: GKComponent {
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
 
+        if let entity = entity as? RecordEntity,
+            let previousCluster = entity.previousCluster,
+            let outmostBoundingEntity = previousCluster.layerForLevel[previousCluster.layerForLevel.count - 1]?.nodeBoundingRenderComponent {
+            let deltaX = entity.position.x - previousCluster.center.x
+            let deltaY = entity.position.y - previousCluster.center.y
+            let distance = previousCluster.distanceOf(x: deltaX, y: deltaY)
+            if distance > outmostBoundingEntity.maxRadius {
+                entity.previousCluster = nil
+                entity.updateBitMasks()
+            }
+        }
+
         switch state {
         case .falling:
             fall()
@@ -59,6 +71,7 @@ class MovementComponent: GKComponent {
         case .tapped:
             entity.physicsBody.isDynamic = true
         case .panning:
+            entity.physicsBody.isDynamic = true
             entity.cluster?.updateLayerLevels(forPan: false)
         default:
             break
@@ -81,6 +94,7 @@ class MovementComponent: GKComponent {
             entity.physicsBody.isDynamic = false
             cluster()
         case .panning:
+            entity.physicsBody.isDynamic = false
             entity.node.removeAllActions()
             entity.cluster?.updateLayerLevels(forPan: true)
         }
@@ -146,11 +160,8 @@ class MovementComponent: GKComponent {
         let r1 = distanceBetweenNodeAndCenter
 
         if (r2 - r1) < Constants.distancePadding {
-            // Enter SeekState and provide the appropriate bitmasks and entityToSeek for the MovementComponent
-            entity.setBitMasks(forLevel: currentLevel)
-            state = .seekEntity(cluster.selectedEntity)
+            entity.set(state: .seekEntity(cluster.selectedEntity))
         } else {
-            // Apply velocity
             entity.physicsBody.velocity = CGVector(dx: Constants.speed * unitVector.dx, dy: Constants.speed * unitVector.dy)
         }
     }

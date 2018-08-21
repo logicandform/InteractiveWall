@@ -5,23 +5,25 @@ import SpriteKit
 import GameplayKit
 
 
+struct ColliderType {
+    static let clonedRecordNode: UInt32 = 1 << 29
+
+    let categoryBitMask: UInt32
+    let collisionBitMask: UInt32
+    let contactTestBitMask: UInt32
+}
+
+
 /// A `GKComponent` that provides an `SKPhysicsBody` for an entity. This enables the entity to be represented in the SpriteKit physics world.
 class PhysicsComponent: GKComponent {
 
     private(set) var physicsBody: SKPhysicsBody
-
-    private struct BitMasks {
-        let categoryBitMask: UInt32
-        let collisionBitMask: UInt32
-        let contactTestBitMask: UInt32
-    }
 
 
     // MARK: Initializer
 
     init(physicsBody: SKPhysicsBody) {
         self.physicsBody = physicsBody
-        self.physicsBody.allowsRotation = false
         super.init()
         setupInitialPhysicsBodyProperties()
     }
@@ -35,21 +37,26 @@ class PhysicsComponent: GKComponent {
 
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
-        guard let entity = entity as? RecordEntity else {
+
+        guard let entity = entity as? RecordEntity,
+            !entity.hasCollidedWithBoundingNode,
+            let cluster = entity.cluster,
+            cluster.selectedEntity.state != .panning else {
             return
         }
 
-        if let cluster = entity.cluster, cluster.selectedEntity.state == .panning {
-            return
-        }
-
+        // Check if the contactedBodies belong to the same level, the same cluster, and the same bounding node
         let contactedBodies = physicsBody.allContactedBodies()
         for contactedBody in contactedBodies {
-            guard let contactedEntity = contactedBody.node?.entity as? RecordEntity else {
-                continue
-            }
-
-            if contactedEntity.hasCollidedWithBoundingNode && !entity.hasCollidedWithBoundingNode {
+            if let boundingNode = contactedBody.node, boundingNode.name == "boundingNode",
+                let currentLevel = entity.clusterLevel.currentLevel,
+                cluster.layerForLevel[currentLevel]?.nodeBoundingRenderComponent.node === boundingNode,
+                !entity.hasCollidedWithBoundingNode {
+                entity.hasCollidedWithBoundingNode = true
+                return
+            } else if let contactedEntity = contactedBody.node?.entity as? RecordEntity,
+                let contactedEntityCluster = contactedEntity.cluster, cluster === contactedEntityCluster,
+                contactedEntity.hasCollidedWithBoundingNode, !entity.hasCollidedWithBoundingNode {
                 entity.hasCollidedWithBoundingNode = true
                 return
             }
@@ -59,24 +66,32 @@ class PhysicsComponent: GKComponent {
 
     // MARK: API
 
-    /// Sets the entity's bitMasks to interact with entities within its own level as well as its bounding node
-    func setBitMasks(forLevel level: Int) {
-        guard let entity = entity as? RecordEntity, let boundingNode = entity.cluster?.layerForLevel[level]?.nodeBoundingRenderComponent.node, let boundingNodePhysicsBody = boundingNode.physicsBody else {
+    func updateBitMasks() {
+        guard let entity = entity as? RecordEntity,
+            let cluster = entity.cluster,
+            entity.previousCluster == nil else {
             return
         }
 
-        let levelBitMasks = bitMasks(forLevel: level)
-        physicsBody.categoryBitMask = levelBitMasks.categoryBitMask | boundingNodePhysicsBody.categoryBitMask
-        physicsBody.collisionBitMask = levelBitMasks.collisionBitMask | boundingNodePhysicsBody.collisionBitMask
-        physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask | boundingNodePhysicsBody.contactTestBitMask
+        if cluster.selectedEntity.state == .panning {
+            setPanningBitMasks()
+        } else {
+            switch entity.state {
+            case .seekLevel(let level):
+                setSeekingLevelBitMasks(forLevel: level)
+            case .seekEntity(_):
+                setSeekingEntityBitMasks()
+            default:
+                return
+            }
+        }
     }
 
-    /// Sets the entity's bitMask to only interact with entities within its own level
-    func setLevelInteractingBitMasks(forLevel level: Int) {
-        let levelBitMasks = bitMasks(forLevel: level)
-        physicsBody.categoryBitMask = levelBitMasks.categoryBitMask
-        physicsBody.collisionBitMask = levelBitMasks.collisionBitMask
-        physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask
+    /// Sets the cloned entity's bitMasks
+    func setClonedNodeBitMasks() {
+        physicsBody.categoryBitMask = ColliderType.clonedRecordNode
+        physicsBody.collisionBitMask = ColliderType.clonedRecordNode
+        physicsBody.contactTestBitMask = ColliderType.clonedRecordNode
     }
 
     /// Reset the entity's physics body to its initial state
@@ -103,13 +118,45 @@ class PhysicsComponent: GKComponent {
         physicsBody.mass = style.nodePhysicsBodyMass
     }
 
-    /// Returns the bitMasks for the entity's level
-    private func bitMasks(forLevel level: Int) -> BitMasks {
-        let categoryBitMask: UInt32 = 0x1 << level
-        let collisionBitMask: UInt32 = 0x1 << level
-        let contactTestBitMask: UInt32 = 0x1 << level
+    private func setPanningBitMasks() {
+        guard let entity = entity as? RecordEntity, let level = entity.clusterLevel.currentLevel else {
+            return
+        }
 
-        return BitMasks(
+        let levelBitMasks = bitMasks(forLevel: level)
+        physicsBody.categoryBitMask = levelBitMasks.categoryBitMask
+        physicsBody.collisionBitMask = levelBitMasks.collisionBitMask
+        physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask
+    }
+
+    private func setSeekingLevelBitMasks(forLevel level: Int) {
+        let levelBitMasks = bitMasks(forLevel: level)
+        physicsBody.categoryBitMask = levelBitMasks.categoryBitMask
+        physicsBody.collisionBitMask = levelBitMasks.collisionBitMask
+        physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask
+    }
+
+    private func setSeekingEntityBitMasks() {
+        guard let entity = entity as? RecordEntity,
+            let level = entity.clusterLevel.currentLevel,
+            let boundingNode = entity.cluster?.layerForLevel[level]?.nodeBoundingRenderComponent.node,
+            let boundingNodePhysicsBody = boundingNode.physicsBody else {
+            return
+        }
+
+        let levelBitMasks = bitMasks(forLevel: level)
+        physicsBody.categoryBitMask = levelBitMasks.categoryBitMask | boundingNodePhysicsBody.categoryBitMask
+        physicsBody.collisionBitMask = levelBitMasks.collisionBitMask | boundingNodePhysicsBody.collisionBitMask
+        physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask | boundingNodePhysicsBody.contactTestBitMask
+    }
+
+    /// Returns the bitMasks for the entity's level
+    private func bitMasks(forLevel level: Int) -> ColliderType {
+        let categoryBitMask: UInt32 = 1 << level
+        let collisionBitMask: UInt32 = 1 << level
+        let contactTestBitMask: UInt32 = 1 << level
+
+        return ColliderType(
             categoryBitMask: categoryBitMask,
             collisionBitMask: collisionBitMask,
             contactTestBitMask: contactTestBitMask

@@ -47,9 +47,9 @@ class TestingDataManager {
 
     // MARK: Tests
 
-    /// After a school, org or event is selected. Selecting another on should duplicate nodes from the first cluster.
+    /// After a school, org or event is selected. Selecting another one should duplicate nodes from the first cluster.
     private func testDuplicatingNodes() {
-        let artifacts = createRecords(of: .artifact, count: 10)
+        let artifacts = createRecords(of: .artifact, count: 5)
         records.append(contentsOf: artifacts)
         let schools = createRecords(of: .school, count: 1)
         records.append(contentsOf: schools)
@@ -85,15 +85,15 @@ class TestingDataManager {
 
     /// To see the visual representation of the cluster when a node with a maximum related level is selected
     private func testSelectedNodeWithMaxRelatedLevels() {
-        let schoolArtifacts = createRecords(of: .artifact, count: 20)
+        let schoolArtifacts = createRecords(of: .artifact, count: 5)
         records.append(contentsOf: schoolArtifacts)
         let organizationArtifacts = createRecords(of: .artifact, count: 10)
         records.append(contentsOf: organizationArtifacts)
-        let eventArtifacts = createRecords(of: .artifact, count: 15)
+        let eventArtifacts = createRecords(of: .artifact, count: 10)
         records.append(contentsOf: eventArtifacts)
-        let schoolOrganizations = createRecords(of: .organization, count: 30)
+        let schoolOrganizations = createRecords(of: .organization, count: 10)
         records.append(contentsOf: schoolOrganizations)
-        let schoolOrganizationArtifacts = createRecords(of: .artifact, count: 35)
+        let schoolOrganizationArtifacts = createRecords(of: .artifact, count: 10)
         records.append(contentsOf: schoolOrganizationArtifacts)
 
         let schools = createRecords(of: .school, count: 2)

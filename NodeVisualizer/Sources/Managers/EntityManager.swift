@@ -60,7 +60,7 @@ final class EntityManager {
         }
     }
 
-    /// Returns the entities associated with the given proxies, if a entity is already with another cluster, the entity will be duplicated
+    /// Returns the entities associated with the given proxies, if an entity is already with another cluster, the entity will be duplicated
     func requestEntities(with proxies: Set<RecordProxy>, for cluster: NodeCluster) -> Set<RecordEntity> {
         var result = Set<RecordEntity>()
         for proxy in proxies {
@@ -71,8 +71,10 @@ final class EntityManager {
                     store(copy)
                     addComponents(to: copy)
                     copy.set(position: entityForProxy.position)
-                    scene?.addChild(copy.node)
+                    copy.setClonedNodeBitMasks()
+                    copy.previousCluster = current
                     result.insert(copy)
+                    scene?.addChild(copy.node)
                 } else {
                     result.insert(entityForProxy)
                 }

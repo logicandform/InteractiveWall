@@ -13,13 +13,6 @@ import GameplayKit
 typealias EntityLevels = [Set<RecordEntity>]
 
 
-struct LayerBitMasks {
-    let categoryBitMask: UInt32
-    let contactTestBitMask: UInt32
-    let collisionBitMask: UInt32
-}
-
-
 final class NodeCluster: Hashable {
 
     private(set) var center: CGPoint
@@ -73,10 +66,10 @@ final class NodeCluster: Hashable {
     func updateLayerLevels(forPan panning: Bool) {
         let level = panning ? 0 : entitiesForLevel.count
         setLayers(toLevel: level)
-        for (level, entities) in entitiesForLevel.enumerated() {
+        for entities in entitiesForLevel {
             for entity in entities {
                 entity.hasCollidedWithBoundingNode = false
-                entity.setBitMasks(forLevel: panning ? 0 : level)
+                entity.updateBitMasks()
             }
         }
     }
@@ -113,6 +106,13 @@ final class NodeCluster: Hashable {
         let dX = Float(rootBoundingNode.position.x - entity.position.x)
         let dY = Float(rootBoundingNode.position.y - entity.position.y)
         return CGFloat(hypotf(dX, dY).magnitude)
+    }
+
+    /// Calculates the distance between two points
+    func distanceOf(x: CGFloat, y: CGFloat) -> CGFloat {
+        let dX = Float(x)
+        let dY = Float(y)
+        return CGFloat(hypotf(dX, dY))
     }
 
 
@@ -203,7 +203,7 @@ final class NodeCluster: Hashable {
         }
     }
 
-    /// Removes layer and it's components from the cluster
+    /// Removes layer and its components from the cluster
     private func removeLayer(level: Int) {
         guard let layer = layerForLevel[level], let node = layer.nodeBoundingRenderComponent.node else {
             return
@@ -240,16 +240,16 @@ final class NodeCluster: Hashable {
     }
 
     /// Provides the bitMasks for the bounding node's physics bodies. The bits are offset by 20 in order to make them unique from the level entity's bitMasks.
-    private func layerBitMasks(forLevel level: Int) -> LayerBitMasks {
+    private func layerBitMasks(forLevel level: Int) -> ColliderType {
         let levelBit = 20 + level
-        let categoryBitMask: UInt32 = 0x1 << levelBit
-        let contactTestBitMask: UInt32 = 0x1 << levelBit
-        let collisionBitMask: UInt32 = 0x1 << levelBit
+        let categoryBitMask: UInt32 = 1 << levelBit
+        let contactTestBitMask: UInt32 = 1 << levelBit
+        let collisionBitMask: UInt32 = 1 << levelBit
 
-        return LayerBitMasks(
+        return ColliderType(
             categoryBitMask: categoryBitMask,
-            contactTestBitMask: contactTestBitMask,
-            collisionBitMask: collisionBitMask
+            collisionBitMask: collisionBitMask,
+            contactTestBitMask: contactTestBitMask
         )
     }
 

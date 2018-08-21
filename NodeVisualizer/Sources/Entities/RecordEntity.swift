@@ -28,6 +28,7 @@ final class RecordEntity: GKEntity {
     let relatedRecordsForLevel: RelatedLevels
     let relatedRecords: Set<RecordProxy>
     var cluster: NodeCluster?
+    weak var previousCluster: NodeCluster?
     var hasCollidedWithBoundingNode = false
     private(set) var clusterLevel: (previousLevel: Int?, currentLevel: Int?) = (nil, nil)
 
@@ -129,18 +130,17 @@ final class RecordEntity: GKEntity {
     }
 
     func set(state: EntityState) {
-        if movementComponent.state == state {
-            return
-        }
+        if movementComponent.state == state { return }
         movementComponent.state = state
 
         switch state {
-        case .seekLevel(let level):
-            clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: level)
-            physicsComponent.setLevelInteractingBitMasks(forLevel: level)
         case .tapped:
             clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: Constants.tappedEntitylevel)
-            physicsComponent.setLevelInteractingBitMasks(forLevel: Constants.tappedEntitylevel)
+        case .seekLevel(let level):
+            clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: level)
+            physicsComponent.updateBitMasks()
+        case .seekEntity(_):
+            physicsComponent.updateBitMasks()
         default:
             break
         }
@@ -150,8 +150,12 @@ final class RecordEntity: GKEntity {
         animationComponent.requestedAnimationState = state
     }
 
-    func setBitMasks(forLevel level: Int) {
-        physicsComponent.setBitMasks(forLevel: level)
+    func updateBitMasks() {
+        physicsComponent.updateBitMasks()
+    }
+
+    func setClonedNodeBitMasks() {
+        physicsComponent.setClonedNodeBitMasks()
     }
 
     func updateAgentPositionToMatchNodePosition() {
@@ -169,6 +173,7 @@ final class RecordEntity: GKEntity {
         hasCollidedWithBoundingNode = false
         clusterLevel = (nil, nil)
         cluster = nil
+        previousCluster = nil
         physicsComponent.reset()
         set(state: .falling)
     }
