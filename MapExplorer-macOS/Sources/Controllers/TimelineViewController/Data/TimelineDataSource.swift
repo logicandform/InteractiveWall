@@ -65,12 +65,11 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        guard let timelineFlag = collectionView.makeItem(withIdentifier: TimelineFlagView.identifier, for: indexPath) as? TimelineFlagView else {
+        guard let timelineFlag = collectionView.makeItem(withIdentifier: TimelineFlagView.identifier, for: indexPath) as? TimelineFlagView, let event = eventForHashValue[indexPath.item] else {
             return NSCollectionViewItem()
         }
 
-        timelineFlag.event = events[indexPath.item]
-        timelineFlag.set(highlighted: selectedIndexes.contains(indexPath.item), animated: false)
+        timelineFlag.event = event
         return timelineFlag
     }
 

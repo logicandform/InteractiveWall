@@ -7,7 +7,7 @@ import Cocoa
 struct TimelineDate: CustomStringConvertible, Comparable {
     let day: CGFloat
     let month: Int
-    let year: Int
+    var year: Int
     private let defaultDayUsed: Bool
     private let defaultMonthUsed: Bool
 

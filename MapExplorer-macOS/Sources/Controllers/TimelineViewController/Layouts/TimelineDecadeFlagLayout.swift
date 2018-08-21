@@ -12,6 +12,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
     private(set) var layersForYear = [Int: [Layer]]()
     private(set) var tailHeightForYear = [Int: CGFloat]()
     private var attributesForEvent = [TimelineEvent: NSCollectionViewLayoutAttributes]()
+//    private var attributesForYear = [Int: [NSCollectionViewLayoutAttributes]]()
     private var tailAttributesForYear = [Int: NSCollectionViewLayoutAttributes]()
 
     // Intermediate state for calculating attributes
@@ -47,6 +48,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
 
         flagFrameForEvent.removeAll()
         attributesForEvent.removeAll()
+//        attributesForYear.removeAll()
         layersForYear.removeAll()
         tailHeightForYear.removeAll()
 
@@ -91,8 +93,17 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
             let yearInRange = (year - source.firstYear) % source.years.count + source.firstYear
             if let events = source.eventsForYear[yearInRange] {
                 for event in events {
+                    if year > source.lastYear {
+                        event.timelinePositionDate.year = year
+                    }
                     if let flagAttributes = flagAttributes(for: event, in: source, year: year) {
+//                        if attributesForYear[year] != nil {
+//                            attributesForYear[year]?.append(flagAttributes)
+//                        } else {
+//                            attributesForYear[year] = [flagAttributes]
+//                        }
                         attributesForEvent[event] = flagAttributes
+
                     }
                 }
             }
@@ -124,24 +135,34 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
 
         for year in (minYear...maxYear) {
             // Append attributes for items
+//            if let attributesInYear = attributesForYear[year] {
+//                for attributes in attributesInYear {
+//                    layoutAttributes.append(attributes)
+//                }
+//            }
             let yearInRange = (year - source.firstYear) % source.years.count + source.firstYear
             if let events = source.eventsForYear[yearInRange] {
                 for event in events {
-                    if let attributes = attributesForEvent[event], rect.intersects(attributes.frame) {
-                        layoutAttributes.append(attributes)
-                    } else if let attributes = attributesForEvent[event] {
-                        attributes.frame.origin.x = CGFloat((year - source.firstYear) * type.sectionWidth)
+                    if year > source.lastYear {
+                        event.timelinePositionDate.year = year
+                    }
+                    if let attributes = attributesForEvent[event] {
                         layoutAttributes.append(attributes)
                     }
+//                    } else if let attributes = attributesForEvent[event] {
+//                        attributes.frame.origin.x = CGFloat((year - source.firstYear) * type.sectionWidth)
+//                        layoutAttributes.append(attributes)
+//                    }
                 }
             }
             // Append timeline tails for each year
-            if let tailAttributes = tailAttributesForYear[yearInRange], rect.intersects(tailAttributes.frame) {
-                layoutAttributes.append(tailAttributes)
-            } else if let tailAttributes = tailAttributesForYear[yearInRange] {
-                tailAttributes.frame.origin.x = CGFloat((year - source.firstYear) * type.sectionWidth)
+            if let tailAttributes = tailAttributesForYear[year] {
                 layoutAttributes.append(tailAttributes)
             }
+//            } else if let tailAttributes = tailAttributesForYear[yearInRange] {
+//                tailAttributes.frame.origin.x = CGFloat((year - source.firstYear) * type.sectionWidth)
+//                layoutAttributes.append(tailAttributes)
+//            }
             // Append dividing line between last and first years
             if year == source.lastYear, let attributes = borderAttributes(in: source) {
                 layoutAttributes.append(attributes)
@@ -156,7 +177,10 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
     }
 
     override func layoutAttributesForItem(at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
-        guard let source = collectionView?.dataSource as? TimelineDataSource, let event = source.events.at(index: indexPath.item) else {
+//        guard let source = collectionView?.dataSource as? TimelineDataSource, let event = source.events.at(index: indexPath.item) else {
+//            return nil
+//        }
+        guard let source = collectionView?.dataSource as? TimelineDataSource, let event = source.eventForHashValue[indexPath.item] else {
             return nil
         }
 
@@ -167,11 +191,12 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
     // MARK: Helpers
 
     private func flagAttributes(for event: TimelineEvent, in source: TimelineDataSource, year: Int) -> NSCollectionViewLayoutAttributes? {
-        guard let item = source.events.index(of: event) else {
-            return nil
-        }
+//        guard let item = source.events.index(of: event) else {
+//            return nil
+//        }
 
-        let indexPath = IndexPath(item: item, section: 0)
+        source.eventForHashValue[event.hashValue] = event
+        let indexPath = IndexPath(item: event.hashValue, section: 0)
         let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
         let x = CGFloat((year - source.firstYear) * type.sectionWidth)
         let flagHeight = TimelineFlagView.flagHeight(for: event)

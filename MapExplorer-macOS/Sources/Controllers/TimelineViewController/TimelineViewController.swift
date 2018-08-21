@@ -561,23 +561,23 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
             timelineCollectionView.scrollToVisible(timelineRect)
         }
 
-        let indexPaths = timelineCollectionView.indexPathsForVisibleItems()
-        let tailIndexPaths = timelineCollectionView.indexPathsForVisibleSupplementaryElements(ofKind: TimelineTailView.supplementaryKind)
-        if previousRect.origin.x - timelineRect.origin.x < -timelineMaxX + timelineClipView.frame.width {
-            for visibleIndex in indexPaths {
-                timelineCollectionView.item(at: visibleIndex)?.view.frame.origin.x += CGFloat(source.years.count * timelineType.sectionWidth)
-            }
-            for visibleTailIndex in tailIndexPaths {
-                timelineCollectionView.supplementaryView(forElementKind: TimelineTailView.supplementaryKind, at: visibleTailIndex)?.frame.origin.x += CGFloat(source.years.count * timelineType.sectionWidth)
-            }
-        } else if previousRect.origin.x - timelineRect.origin.x > timelineMaxX - timelineClipView.frame.width {
-            for visibleIndex in indexPaths {
-                timelineCollectionView.item(at: visibleIndex)?.view.frame.origin.x -= CGFloat(source.years.count * timelineType.sectionWidth)
-            }
-            for visibleTailIndex in tailIndexPaths {
-                timelineCollectionView.supplementaryView(forElementKind: TimelineTailView.supplementaryKind, at: visibleTailIndex)?.frame.origin.x -= CGFloat(source.years.count * timelineType.sectionWidth)
-            }
-        }
+//        let indexPaths = timelineCollectionView.indexPathsForVisibleItems()
+//        let tailIndexPaths = timelineCollectionView.indexPathsForVisibleSupplementaryElements(ofKind: TimelineTailView.supplementaryKind)
+//        if previousRect.origin.x - timelineRect.origin.x < -timelineMaxX + timelineClipView.frame.width {
+//            for visibleIndex in indexPaths {
+//                timelineCollectionView.item(at: visibleIndex)?.view.frame.origin.x += CGFloat(source.years.count * timelineType.sectionWidth)
+//            }
+//            for visibleTailIndex in tailIndexPaths {
+//                timelineCollectionView.supplementaryView(forElementKind: TimelineTailView.supplementaryKind, at: visibleTailIndex)?.frame.origin.x += CGFloat(source.years.count * timelineType.sectionWidth)
+//            }
+//        } else if previousRect.origin.x - timelineRect.origin.x > timelineMaxX - timelineClipView.frame.width {
+//            for visibleIndex in indexPaths {
+//                timelineCollectionView.item(at: visibleIndex)?.view.frame.origin.x -= CGFloat(source.years.count * timelineType.sectionWidth)
+//            }
+//            for visibleTailIndex in tailIndexPaths {
+//                timelineCollectionView.supplementaryView(forElementKind: TimelineTailView.supplementaryKind, at: visibleTailIndex)?.frame.origin.x -= CGFloat(source.years.count * timelineType.sectionWidth)
+//            }
+//        }
     }
 
     private func decadeFor(year: Int) -> Int {
