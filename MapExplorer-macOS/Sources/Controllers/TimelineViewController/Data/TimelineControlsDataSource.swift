@@ -6,6 +6,7 @@ import Cocoa
 
 final class TimelineControlsDataSource: NSObject, NSCollectionViewDataSource {
 
+
     var monthCollectionView: NSCollectionView?
     var yearCollectionView: NSCollectionView?
     var decadeCollectionView: NSCollectionView?
@@ -25,16 +26,16 @@ final class TimelineControlsDataSource: NSObject, NSCollectionViewDataSource {
     }
 
 
-//    // MARK: Init
-//
-//    override init() {
-//        years = Array(Constants.firstYear...lastYear)
+    // MARK: Init
+
+    override init() {
+//        years = Array(1860...2020)
 //        let roundedFirstYear = (Constants.firstYear / 10) * 10
 //        let roundedLastYear = (lastYear / 10) * 10 - 10
 //        let roundedYears = Array(roundedFirstYear...roundedLastYear)
-//        decades = roundedYears.filter { $0 % 10 == 0 }
-//        super.init()
-//    }
+//        decades = years.filter { $0 % 10 == 0 }
+        super.init()
+    }
 
 
     // MARK: NSCollectionViewDataSource

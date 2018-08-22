@@ -140,9 +140,12 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     }
 
     private func setupControls() {
-        controlsSource.firstYear = source.firstYear
-        controlsSource.lastYear = source.lastYear
-        controlsSource.years = source.years
+//        controlsSource.firstYear = source.firstYear
+//        controlsSource.lastYear = source.lastYear
+//        controlsSource.years = source.years
+        controlsSource.firstYear = 1860
+        controlsSource.lastYear = 2020
+        controlsSource.years = Array(controlsSource.firstYear...controlsSource.lastYear)
         controlsSource.monthCollectionView = monthCollectionView
         controlsSource.yearCollectionView = yearCollectionView
         controlsSource.decadeCollectionView = decadeCollectionView
@@ -153,7 +156,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         timelineIndicatorView.layer?.cornerRadius = Constants.timelineIndicatorBorderRadius
         timelineIndicatorView.layer?.borderWidth = Constants.timelineIndicatorBorderWidth
         timelineIndicatorView.layer?.borderColor = style.selectedColor.cgColor
-        setupControlGradients()
+//        setupControlGradients()
     }
 
     private func setupControlGradients() {
@@ -388,6 +391,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         collectionView.register(TimelineBorderView.self, forItemWithIdentifier: TimelineBorderView.identifier)
         scrollView.horizontalScroller?.alphaValue = 0
         collectionView.dataSource = controlsSource
+        collectionView.reloadData()
     }
 
     private func setupHorizontalGradient(in view: NSView) {
@@ -615,9 +619,12 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         records.append(contentsOf: results.schools)
         records.append(contentsOf: results.events)
         source.setup(with: records)
-        setupControls()
+//        controlsSource.firstYear = source.firstYear
+//        controlsSource.lastYear = source.lastYear
+//        controlsSource.years = source.years
         timelineCollectionView.collectionViewLayout = TimelineDecadeFlagLayout()
         timelineCollectionView.dataSource = source
+        setupControls()
         timelineHandler?.reset()
         timelineCollectionView.reloadData()
     }
