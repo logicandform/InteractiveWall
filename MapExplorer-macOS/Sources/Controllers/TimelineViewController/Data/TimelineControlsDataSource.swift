@@ -9,27 +9,32 @@ final class TimelineControlsDataSource: NSObject, NSCollectionViewDataSource {
     var monthCollectionView: NSCollectionView?
     var yearCollectionView: NSCollectionView?
     var decadeCollectionView: NSCollectionView?
-    let decades: [Int]
-    private let years: [Int]
-    private let lastYear = (Calendar.current.component(.year, from: Date()) / 10) * 10 + 10
+    var years = [Int]() {
+        didSet {
+            let roundedYears = Array(firstYear...lastYear)
+            decades = roundedYears.filter { $0 % 10 == 0 }
+        }
+    }
+    var firstYear: Int!
+    var lastYear: Int!
+    var decades = [Int]()
 
     private struct Constants {
         static let visibleControlItems = 7
         static let controlItemWidth: CGFloat = 70
-        static let firstYear = 1860
     }
 
 
-    // MARK: Init
-
-    override init() {
-        years = Array(Constants.firstYear...lastYear)
-        let roundedFirstYear = (Constants.firstYear / 10) * 10
-        let roundedLastYear = (lastYear / 10) * 10 - 10
-        let roundedYears = Array(roundedFirstYear...roundedLastYear)
-        decades = roundedYears.filter { $0 % 10 == 0 }
-        super.init()
-    }
+//    // MARK: Init
+//
+//    override init() {
+//        years = Array(Constants.firstYear...lastYear)
+//        let roundedFirstYear = (Constants.firstYear / 10) * 10
+//        let roundedLastYear = (lastYear / 10) * 10 - 10
+//        let roundedYears = Array(roundedFirstYear...roundedLastYear)
+//        decades = roundedYears.filter { $0 % 10 == 0 }
+//        super.init()
+//    }
 
 
     // MARK: NSCollectionViewDataSource

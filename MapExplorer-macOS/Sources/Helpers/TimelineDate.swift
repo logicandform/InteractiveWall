@@ -8,8 +8,8 @@ struct TimelineDate: CustomStringConvertible, Comparable {
     let day: CGFloat
     let month: Int
     var year: Int
-    private let defaultDayUsed: Bool
-    private let defaultMonthUsed: Bool
+    let defaultDayUsed: Bool
+    let defaultMonthUsed: Bool
 
     var description: String {
         if defaultMonthUsed {
