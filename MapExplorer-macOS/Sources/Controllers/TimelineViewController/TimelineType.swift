@@ -34,4 +34,17 @@ enum TimelineType {
             return 32
         }
     }
+
+    var infiniteBuffer: Int {
+        switch self {
+        case .month:
+            return 2
+        case .year:
+            return 2
+        case .decade:
+            return 11
+        case .century:
+            return 0
+        }
+    }
 }

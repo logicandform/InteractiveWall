@@ -8,7 +8,7 @@ final class TimelineEvent: Hashable {
     let id: Int
     let type: RecordType
     let title: String
-    let dates: TimelineRange
+    var dates: TimelineRange
     var highlighted = false
 
     var hashValue: Int {
@@ -30,14 +30,6 @@ final class TimelineEvent: Hashable {
         self.type = type
         self.title = title
         self.dates = dates
-    }
-
-
-    // MARK: Copying
-
-    func copy(with zone: NSZone? = nil) -> Any {
-        let copy = TimelineEvent(id: id, type: type, title: title, dates: dates)
-        return copy
     }
 
 
