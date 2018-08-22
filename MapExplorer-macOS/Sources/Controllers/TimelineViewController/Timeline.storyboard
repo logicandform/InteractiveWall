@@ -15,17 +15,17 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="yPT-yt-MBL">
-                                <rect key="frame" x="0.0" y="119" width="664" height="237"/>
+                                <rect key="frame" x="0.0" y="119" width="664" height="236"/>
                                 <subviews>
                                     <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="FoW-Io-IhM">
-                                        <rect key="frame" x="0.0" y="39" width="664" height="198"/>
+                                        <rect key="frame" x="0.0" y="39" width="664" height="197"/>
                                         <clipView key="contentView" drawsBackground="NO" id="2EQ-1e-jeX">
-                                            <rect key="frame" x="0.0" y="0.0" width="664" height="198"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="664" height="197"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <collectionView id="hh4-uZ-Why" customClass="FlippedCollectionView" customModule="MapExplorer_macOS" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="0.0" width="664" height="198"/>
-                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="664" height="197"/>
+                                                    <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" scrollDirection="horizontal" id="aIQ-M3-5l0">
                                                         <size key="itemSize" width="50" height="50"/>
                                                     </collectionViewFlowLayout>
@@ -51,12 +51,9 @@
                                             <subviews>
                                                 <collectionView id="27P-tH-KFI">
                                                     <rect key="frame" x="0.0" y="0.0" width="490" height="6"/>
-                                                    <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
-                                                    <collectionViewLayout key="collectionViewLayout" id="dMH-a6-fod" customClass="TimelineControlLayout" customModule="MapExplorer_macOS" customModuleProvider="target"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                    <collectionViewLayout key="collectionViewLayout" id="ef6-Kp-FTV" customClass="TimelineControlLayout" customModule="MapExplorer_macOS" customModuleProvider="target"/>
                                                     <color key="primaryBackgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
-                                                    <connections>
-                                                        <outlet property="dataSource" destination="qGn-1v-M5l" id="IBD-2Z-kv2"/>
-                                                    </connections>
                                                 </collectionView>
                                             </subviews>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -81,12 +78,9 @@
                                             <subviews>
                                                 <collectionView id="uKJ-ub-LXA">
                                                     <rect key="frame" x="0.0" y="0.0" width="490" height="7"/>
-                                                    <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
-                                                    <collectionViewLayout key="collectionViewLayout" id="uUd-uE-8Jx" customClass="TimelineControlLayout" customModule="MapExplorer_macOS" customModuleProvider="target"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                    <collectionViewLayout key="collectionViewLayout" id="b0H-j1-6Ut" customClass="TimelineControlLayout" customModule="MapExplorer_macOS" customModuleProvider="target"/>
                                                     <color key="primaryBackgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
-                                                    <connections>
-                                                        <outlet property="dataSource" destination="qGn-1v-M5l" id="O4f-yA-dSE"/>
-                                                    </connections>
                                                 </collectionView>
                                             </subviews>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -111,12 +105,9 @@
                                             <subviews>
                                                 <collectionView id="7yP-gS-dIq">
                                                     <rect key="frame" x="0.0" y="0.0" width="490" height="6"/>
-                                                    <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
-                                                    <collectionViewLayout key="collectionViewLayout" id="vAV-hy-6G2" customClass="TimelineControlLayout" customModule="MapExplorer_macOS" customModuleProvider="target"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                                    <collectionViewLayout key="collectionViewLayout" id="pZu-R1-8Lt" customClass="TimelineControlLayout" customModule="MapExplorer_macOS" customModuleProvider="target"/>
                                                     <color key="primaryBackgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
-                                                    <connections>
-                                                        <outlet property="dataSource" destination="qGn-1v-M5l" id="QVn-1K-QaB"/>
-                                                    </connections>
                                                 </collectionView>
                                             </subviews>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>

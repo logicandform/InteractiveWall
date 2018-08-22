@@ -26,6 +26,15 @@ class TimelineControlLayout: NSCollectionViewFlowLayout {
         self.itemSize = .zero
     }
 
+    override init() {
+        super.init()
+        self.scrollDirection = .horizontal
+        self.minimumInteritemSpacing = 0
+        self.minimumLineSpacing = 0
+        self.sectionInset = NSEdgeInsetsZero
+        self.itemSize = .zero
+    }
+
 
     // MARK: Overrides
 
