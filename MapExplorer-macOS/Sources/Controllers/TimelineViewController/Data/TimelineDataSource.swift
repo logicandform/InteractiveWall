@@ -10,6 +10,7 @@ import AppKit
 final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
 
     var selectedIndexes = Set<Int>()
+    var highlightedIndexes = Set<Int>()
     private(set) var events = [TimelineEvent]()
     private(set) var eventsForYear = [Int: [TimelineEvent]]()
     private(set) var eventsForMonth = [Int: [Month: [TimelineEvent]]]()

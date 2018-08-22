@@ -281,15 +281,24 @@ final class ConnectionManager {
                     // Check if incoming id is closer than current pair
                     if abs(app - id) < abs(app - appPair) {
                         set(newState, for: type, id: app)
+                        if type == .timeline, app != id {
+                            SelectionManager.instance.merge(app: app, toGroup: id)
+                        }
                     }
                 } else {
                     set(newState, for: type, id: app)
+                    if type == .timeline, app != id {
+                        SelectionManager.instance.merge(app: app, toGroup: id)
+                    }
                 }
             } else if state.group == nil {
                 set(newState, for: type, id: app)
             } else if app == neighborID || state.group == neighborID {
                 // Force the merge of neighbor app and everyone in it's group
                 set(newState, for: type, id: app)
+                if type == .timeline, app != id {
+                    SelectionManager.instance.merge(app: app, toGroup: id)
+                }
             }
         }
     }
@@ -322,6 +331,9 @@ final class ConnectionManager {
             if state.group == nil {
                 let group = findGroupForApp(id: app, of: type)
                 set(AppState(pair: nil, group: group), for: type, id: app)
+                if type == .timeline {
+                    SelectionManager.instance.merge(app: app, toGroup: group)
+                }
                 syncApps(inGroup: group)
             }
         }
@@ -360,7 +372,6 @@ final class ConnectionManager {
                 mapHandler.send(mapRect, for: .momentum, forced: true)
             }
         case .timeline:
-            SelectionManager.instance.syncApps(group: group)
             if let timelineHandler = timelineHandler, let currentDate = timelineHandler.timelineViewController?.currentDate {
                 timelineHandler.send(date: TimelineDate(date: currentDate), for: .momentum, forced: true)
             }

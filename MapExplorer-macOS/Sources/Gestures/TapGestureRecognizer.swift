@@ -58,7 +58,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func move(_ touch: Touch, with properties: TouchProperties) {
-        guard let initialPosition = positionForTouch[touch] else {
+        guard let initialPosition = positionForTouch[touch], state != .ended else {
             return
         }
 
@@ -70,7 +70,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
                 end(touch, with: properties)
             } else {
                 touchUpdated?(self, touch)
-                state = .recognized
+                state = .ended
             }
         }
     }

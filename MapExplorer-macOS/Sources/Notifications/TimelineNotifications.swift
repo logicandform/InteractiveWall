@@ -7,12 +7,13 @@ enum TimelineNotification: String {
     case rect
     case select
     case selection
+    case highlight
 
     var name: Notification.Name {
         return Notification.Name(rawValue: rawValue)
     }
 
     static var allValues: [TimelineNotification] {
-        return [.rect, .select, .selection]
+        return [.rect, .select, .selection, .highlight]
     }
 }

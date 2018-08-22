@@ -7,41 +7,7 @@ import PromiseKit
 import AppKit
 
 
-enum TimelineType {
-    case month
-    case year
-    case decade
-    case century
-
-    var sectionWidth: Int {
-        switch self {
-        case .month:
-            return 1920
-        case .year:
-            return 1920
-        case .decade:
-            return 192
-        case .century:
-            return 32
-        }
-    }
-
-    var itemWidth: Int {
-        switch self {
-        case .month:
-            return 240
-        case .year:
-            return 240
-        case .decade:
-            return 192
-        case .century:
-            return 32
-        }
-    }
-}
-
-
-class TimelineViewController: NSViewController, GestureResponder, NSCollectionViewDelegateFlowLayout {
+class TimelineViewController: NSViewController, GestureResponder, SelectionHandler, NSCollectionViewDelegateFlowLayout {
     static let storyboard = NSStoryboard.Name(rawValue: "Timeline")
 
     @IBOutlet weak var timelineBackgroundView: NSView!
@@ -65,12 +31,9 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     private var timelineHandler: TimelineHandler?
     private let source = TimelineDataSource()
     private let controlsSource = TimelineControlsDataSource()
-    private var selectedDecade: Int?
-    private var selectedYear: Int?
-    private var selectedMonth: Month?
-    private var selectedViewForType = [TimelineType: TimelineControlItemView]()
-    private var indexPathForTouch = [Touch: IndexPath]()
-    private var timeTouchStarted = [Touch: Date]()
+
+    private var timerForTouch = [Touch: Timer]()
+    private var itemForTouch = [Touch: Int]()
     private var createRecordForTouch = [Touch: Bool]()
 
     private struct Constants {
@@ -86,16 +49,12 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         static let fadePercentage = 0.1
         static let resetAnimationDuration = 1.0
         static let recordSpawnOffset: CGFloat = 2
-        static let maximumTouchHold: TimeInterval = 1.0
+        static let longTouchDuration = 1.5
     }
 
     private struct Keys {
-        static let appID = "map"
         static let id = "id"
-        static let group = "group"
-        static let index = "index"
-        static let state = "state"
-        static let selection = "selection"
+        static let appID = "map"
         static let position = "position"
     }
 
@@ -131,12 +90,12 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         gestureManager = GestureManager(responder: self)
         gestureManager.displayTouchIndicators = false
         TouchManager.instance.register(gestureManager, for: .timeline)
+        SelectionManager.instance.delegate = self
 
         setupBackground()
         setupTimeline()
         setupControls()
         setupGestures()
-        setupNotifications()
     }
 
     override func viewDidAppear() {
@@ -227,13 +186,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         }
     }
 
-    private func setupNotifications() {
-        DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: SettingsNotification.transition.name, object: nil)
-        for notification in TimelineNotification.allValues {
-            DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
-        }
-    }
-
 
     // MARK: Gesture Handling
 
@@ -262,30 +214,26 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
         switch tap.state {
         case .began:
-            if let location = tap.position, let indexPath = timelineCollectionView.indexPathForItem(at: location + timelineCollectionView.visibleRect.origin) {
-                indexPathForTouch[touch] = indexPath
-                createRecordForTouch[touch] = true
-                timeTouchStarted[touch] = Date()
-                postSelectNotification(for: indexPath.item, selected: true)
+            if let location = tap.position,
+                let indexPath = timelineCollectionView.indexPathForItem(at: location + timelineCollectionView.visibleRect.origin) {
+                itemForTouch[touch] = indexPath.item
+                startTimer(for: touch, item: indexPath.item)
+                SelectionManager.instance.set(item: indexPath.item, selected: true)
             }
         case .failed:
             createRecordForTouch[touch] = false
         case .ended, .doubleTapped:
-            if let indexPath = indexPathForTouch[touch], let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineFlagView {
-                postSelectNotification(for: indexPath.item, selected: false)
-                if let createRecord = createRecordForTouch[touch], createRecord, let touchStartTime = timeTouchStarted[touch], Date().timeIntervalSince(touchStartTime) <= Constants.maximumTouchHold {
-                    postRecordNotification(for: timelineItem)
-                }
-            } else if let location = tap.position, let indexPath = timelineCollectionView.indexPathForItem(at: location + timelineCollectionView.visibleRect.origin), let timelineItem = timelineCollectionView.item(at: indexPath) as? TimelineFlagView {
-                postSelectNotification(for: indexPath.item, selected: false)
-                if let createRecord = createRecordForTouch[touch], createRecord, let touchStartTime = timeTouchStarted[touch], Date().timeIntervalSince(touchStartTime) <= Constants.maximumTouchHold {
+            timerForTouch[touch]?.invalidate()
+            if let item = itemForTouch[touch], let timelineItem = timelineCollectionView.item(at: IndexPath(item: item, section: 0)) as? TimelineFlagView {
+                SelectionManager.instance.set(item: item, selected: false)
+                if let status = createRecordForTouch[touch], status {
                     postRecordNotification(for: timelineItem)
                 }
             }
 
-            timeTouchStarted.removeValue(forKey: touch)
+            timerForTouch.removeValue(forKey: touch)
+            itemForTouch.removeValue(forKey: touch)
             createRecordForTouch.removeValue(forKey: touch)
-            indexPathForTouch.removeValue(forKey: touch)
         default:
             break
         }
@@ -431,29 +379,6 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
     }
 
 
-    // MARK: Notification Handling
-
-    @objc
-    private func handleNotification(_ notification: NSNotification) {
-        guard let info = notification.userInfo, let group = info[Keys.group] as? Int, group == ConnectionManager.instance.groupForApp(id: appID, type: .timeline) else {
-            return
-        }
-
-        switch notification.name {
-        case TimelineNotification.selection.name:
-            if let selection = info[Keys.selection] as? [Int] {
-                setTimelineSelection(Set(selection))
-            }
-        case TimelineNotification.select.name:
-            if let index = info[Keys.index] as? Int, let state = info[Keys.state] as? Bool {
-                setTimelineItem(index, selected: state, animated: true)
-            }
-        default:
-            return
-        }
-    }
-
-
     // MARK: Control Selection
 
     private func setupControls(in collectionView: NSCollectionView, scrollView: NSScrollView) {
@@ -465,58 +390,83 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
 
     private func setupHorizontalGradient(in view: NSView) {
         view.wantsLayer = true
-        let transparent = NSColor.clear.cgColor
+        let transparent = CGColor.clear
         let opaque = style.darkBackgroundOpaque.cgColor
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = view.bounds
         gradientLayer.colors = [transparent, opaque, opaque, transparent]
-        gradientLayer.locations = [0.0, NSNumber(value: Constants.fadePercentage), NSNumber(value: 1.0 - Constants.fadePercentage), 1.0]
+        gradientLayer.locations = [0, NSNumber(value: Constants.fadePercentage), NSNumber(value: 1 - Constants.fadePercentage), 1]
         gradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
         gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
         view.layer?.mask = gradientLayer
     }
 
 
-    // MARK: Timeline Selection
+    // MARK: SelectionHandler
 
-    private func postSelectNotification(for index: Int, selected: Bool) {
-        var info: JSON = [Keys.id: appID, Keys.index: index, Keys.state: selected]
-        if let group = ConnectionManager.instance.groupForApp(id: appID, type: .timeline) {
-            info[Keys.group] = group
+    // Updates the highlighted state of the given items, updates tail views
+    func handle(items: Set<Int>, highlighted: Bool) {
+        for item in items {
+            set(item: item, highlighted: highlighted)
         }
-        DistributedNotificationCenter.default().postNotificationName(TimelineNotification.select.name, object: nil, userInfo: info, deliverImmediately: true)
+        updateTailViews()
     }
 
-    private func setTimelineSelection(_ selection: Set<Int>) {
+    /// Updates the state of one individual item
+    func handle(item: Int, selected: Bool) {
+        set(item: item, selected: selected, animated: true)
+    }
+
+    /// Replaces the current selection with the given items
+    func replace(selection items: Set<Int>) {
         // Unselect current indexes that are not in the new selection
-        source.selectedIndexes.filter({ !selection.contains($0) }).forEach { index in
-            setTimelineItem(index, selected: false, animated: false)
+        source.selectedIndexes.filter({ !items.contains($0) }).forEach { index in
+            set(item: index, selected: false, animated: false)
         }
         // Select indexes that are not currently selected
-        selection.filter({ !source.selectedIndexes.contains($0) }).forEach { index in
-            setTimelineItem(index, selected: true, animated: false)
+        items.filter({ !source.selectedIndexes.contains($0) }).forEach { index in
+            set(item: index, selected: true, animated: false)
         }
     }
 
-    private func setTimelineItem(_ index: Int, selected: Bool, animated: Bool) {
-        let indexPath = IndexPath(item: index, section: 0)
-        guard let event = source.events.at(index: index) else {
-            return
+    /// Replaces the current highlights with the given items
+    func replace(highlighted items: Set<Int>) {
+        // Unhighlight current indexes that are not in the new highlighted indexes
+        source.highlightedIndexes.filter({ !items.contains($0) }).forEach { index in
+            set(item: index, highlighted: false)
         }
+        // Highlight indexes that are not currently highlighted
+        items.filter({ !source.highlightedIndexes.contains($0) }).forEach { index in
+            set(item: index, highlighted: true)
+        }
+        updateTailViews()
+    }
 
+    private func set(item: Int, selected: Bool, animated: Bool) {
         // Update data source
         if selected {
-            source.selectedIndexes.insert(index)
+            source.selectedIndexes.insert(item)
         } else {
-            source.selectedIndexes.remove(index)
+            source.selectedIndexes.remove(item)
         }
 
         // Update views
-        event.selected = selected
-        if let timelineFlagView = timelineCollectionView.item(at: indexPath) as? TimelineFlagView {
+        if let timelineFlagView = timelineCollectionView.item(at: IndexPath(item: item, section: 0)) as? TimelineFlagView {
             timelineFlagView.set(highlighted: selected, animated: animated)
         }
-        updateTailViews()
+    }
+
+    private func set(item: Int, highlighted: Bool) {
+        // Update data source
+        if highlighted {
+            source.highlightedIndexes.insert(item)
+        } else {
+            source.highlightedIndexes.remove(item)
+        }
+
+        // Update model
+        let event = source.events[item]
+        event.highlighted = highlighted
     }
 
 
@@ -677,5 +627,17 @@ class TimelineViewController: NSViewController, GestureResponder, NSCollectionVi
         for tailView in tailViews {
             tailView.needsDisplay = true
         }
+    }
+
+    private func startTimer(for touch: Touch, item: Int) {
+        createRecordForTouch[touch] = true
+        timerForTouch[touch] = Timer.scheduledTimer(withTimeInterval: Constants.longTouchDuration, repeats: false) { [weak self] _ in
+            self?.timerFired(for: touch, item: item)
+        }
+    }
+
+    private func timerFired(for touch: Touch, item: Int) {
+        SelectionManager.instance.highlight(item: item)
+        createRecordForTouch[touch] = false
     }
 }

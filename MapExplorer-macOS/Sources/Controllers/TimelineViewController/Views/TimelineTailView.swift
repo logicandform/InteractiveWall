@@ -31,13 +31,13 @@ class TimelineTailView: NSView {
             let y = baseHeight + layerHeight
 
             for line in layer.lines {
-                let color = line.event.selected ? line.event.type.color : style.timelineTailColor
+                let color = line.event.highlighted ? line.event.type.color : style.timelineTailColor
                 color.setFill()
                 let path = NSBezierPath(rect: CGRect(x: line.start, y: y, width: line.width, height: style.timelineTailWidth))
                 path.fill()
             }
             for drop in layer.drops {
-                let color = drop.event.selected ? drop.event.type.color : style.timelineTailColor
+                let color = drop.event.highlighted ? drop.event.type.color : style.timelineTailColor
                 color.setFill()
                 let path = NSBezierPath(rect: CGRect(x: drop.x, y: y - style.timelineTailGap, width: style.timelineTailWidth, height: style.timelineTailGap + style.timelineTailWidth))
                 path.fill()

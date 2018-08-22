@@ -9,7 +9,7 @@ final class TimelineEvent: Hashable {
     let type: RecordType
     let title: String
     let dates: TimelineRange
-    var selected = false
+    var highlighted = false
 
     var hashValue: Int {
         return dates.startDate.year ^ dates.endDate.year ^ title.hashValue

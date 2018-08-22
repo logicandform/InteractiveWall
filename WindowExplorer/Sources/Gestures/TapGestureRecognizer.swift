@@ -14,7 +14,7 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
-    var position: CGPoint?
+    private(set) var position: CGPoint?
     private(set) var state = GestureState.possible
 
     private var positionForTouch = [Touch: CGPoint]()
