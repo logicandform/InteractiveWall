@@ -12,7 +12,7 @@ final class TimelineEvent: Hashable {
     var highlighted = false
 
     var hashValue: Int {
-        return timelinePositionDate.year ^ type.hashValue ^ title.hashValue
+        return dates.startDate.year ^ type.hashValue ^ title.hashValue
     }
 
     private struct Keys {
@@ -30,10 +30,20 @@ final class TimelineEvent: Hashable {
         self.type = type
         self.title = title
         self.dates = dates
-        self.timelinePositionDate = dates.startDate
     }
 
+
+    // MARK: Copying
+
+    func copy(with zone: NSZone? = nil) -> Any {
+        let copy = TimelineEvent(id: id, type: type, title: title, dates: dates)
+        return copy
+    }
+
+
+    // MARK: Static
+
     static func == (lhs: TimelineEvent, rhs: TimelineEvent) -> Bool {
-        return lhs.title == rhs.title && lhs.type == rhs.type && lhs.id == rhs.id
+        return lhs.title == rhs.title && lhs.type == rhs.type && lhs.id == rhs.id && lhs.dates.startDate.year == rhs.dates.startDate.year
     }
 }

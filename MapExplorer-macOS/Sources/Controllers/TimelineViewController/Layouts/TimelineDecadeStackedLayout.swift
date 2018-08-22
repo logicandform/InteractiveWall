@@ -39,12 +39,11 @@ class TimelineDecadeStackedLayout: NSCollectionViewFlowLayout {
     }
 
     override func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {
-        guard let source = collectionView?.dataSource as? TimelineDataSource else {
+        guard let source = collectionView?.dataSource as? TimelineDataSource, let minYear = source.firstYear else {
             return []
         }
 
         var layoutAttributes = [NSCollectionViewLayoutAttributes]()
-        let minYear = source.firstYear
         let maxYear = source.firstYear + Int(rect.maxX) / type.sectionWidth
 
         for year in (minYear...maxYear) {

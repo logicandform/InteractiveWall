@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="qGn-1v-M5l">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="qGn-1v-M5l">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,7 +17,7 @@
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="yPT-yt-MBL">
                                 <rect key="frame" x="0.0" y="119" width="664" height="237"/>
                                 <subviews>
-                                    <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="FoW-Io-IhM">
+                                    <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="FoW-Io-IhM">
                                         <rect key="frame" x="0.0" y="39" width="664" height="198"/>
                                         <clipView key="contentView" drawsBackground="NO" id="2EQ-1e-jeX">
                                             <rect key="frame" x="0.0" y="0.0" width="664" height="198"/>
@@ -26,7 +26,9 @@
                                                 <collectionView id="hh4-uZ-Why" customClass="FlippedCollectionView" customModule="MapExplorer_macOS" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="664" height="198"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                                    <collectionViewLayout key="collectionViewLayout" id="bJW-po-dwy" customClass="TimelineDecadeFlagLayout" customModule="MapExplorer_macOS" customModuleProvider="target"/>
+                                                    <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" scrollDirection="horizontal" id="aIQ-M3-5l0">
+                                                        <size key="itemSize" width="50" height="50"/>
+                                                    </collectionViewFlowLayout>
                                                     <color key="primaryBackgroundColor" red="0.44063859179674914" green="0.44326171874999998" blue="0.42965281942173822" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </collectionView>
                                             </subviews>
@@ -37,18 +39,18 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                         <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="NTd-xJ-g9d">
-                                            <rect key="frame" x="648" y="0.0" width="16" height="197"/>
+                                            <rect key="frame" x="-100" y="-100" width="16" height="197"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
                                     <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="TFZ-Kd-Lat">
-                                        <rect key="frame" x="87" y="13" width="490" height="7"/>
+                                        <rect key="frame" x="87" y="13" width="490" height="6"/>
                                         <clipView key="contentView" drawsBackground="NO" id="DqZ-7r-uLk">
-                                            <rect key="frame" x="0.0" y="0.0" width="490" height="7"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="490" height="6"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <collectionView id="27P-tH-KFI">
-                                                    <rect key="frame" x="0.0" y="0.0" width="490" height="7"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="490" height="6"/>
                                                     <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
                                                     <collectionViewLayout key="collectionViewLayout" id="dMH-a6-fod" customClass="TimelineControlLayout" customModule="MapExplorer_macOS" customModuleProvider="target"/>
                                                     <color key="primaryBackgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
@@ -132,7 +134,7 @@
                                         </scroller>
                                     </scrollView>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="4K8-jG-fxe">
-                                        <rect key="frame" x="297" y="0.0" width="70" height="20"/>
+                                        <rect key="frame" x="297" y="0.0" width="70" height="19"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="70" id="1Kd-t1-aUM"/>
                                         </constraints>

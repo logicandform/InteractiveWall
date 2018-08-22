@@ -123,7 +123,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     }
 
     private func setupBackground() {
-        timelineBackgroundView.alphaValue = 0
+//        timelineBackgroundView.alphaValue = 0
         timelineBackgroundView.wantsLayer = true
         timelineBackgroundView.layer?.backgroundColor = style.timelineBackgroundColor.cgColor
     }
@@ -632,6 +632,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         records.append(contentsOf: results.schools)
         records.append(contentsOf: results.events)
         source.setup(with: records)
+        timelineCollectionView.collectionViewLayout = TimelineDecadeFlagLayout()
         timelineCollectionView.reloadData()
     }
 
