@@ -19,6 +19,9 @@ class NodeBoundingRenderComponent: GKComponent {
     /// The minimum radius of its own responsible level's bounding node. It is the radius of the bounding node without considering its contactEntities
     var minRadius: CGFloat = Constants.initialRadius
 
+    /// Provides a snapshot of `self` minimum radius
+    var snapshot: CGFloat?
+
     /// The bounding node's level that the component is responsible for
     var level: Int!
 
@@ -73,18 +76,23 @@ class NodeBoundingRenderComponent: GKComponent {
 
             // Get the maxRadius of the previous level bounding node
             let previousLevelBoundingNodeMaxRadius = previousLevelNodeBoundingEntity.nodeBoundingRenderComponent.maxRadius
-            let updatedPhysicsBodyRadius = previousLevelBoundingNodeMaxRadius + Constants.maximumOffset
+//            let updatedPhysicsBodyRadius = previousLevelBoundingNodeMaxRadius + Constants.maximumOffset
+
+            let updatedPhysicsBodyRadius = snapshot ?? previousLevelBoundingNodeMaxRadius + Constants.maximumOffset
 
             // Set its maxRadius to the previous level bounding node's maxRadius so that the next level bounding node can scale to the correct size
             maxRadius = previousLevelBoundingNodeMaxRadius
             minRadius = updatedPhysicsBodyRadius
             previousLevelMaxDistance = previousLevelBoundingNodeMaxRadius
 
-            if let snapshotRadius = cluster.radiusSnapshotForLayerComponent[self] {
-                maxRadius = snapshotRadius
-            } else {
-                maxRadius = previousLevelBoundingNodeMaxRadius
-            }
+//            maxRadius = snapshot ?? previousLevelBoundingNodeMaxRadius
+
+
+//            if let snapshotRadius = cluster.radiusSnapshotForLayerComponent[self] {
+//                maxRadius = snapshotRadius
+//            } else {
+//                maxRadius = previousLevelBoundingNodeMaxRadius
+//            }
 
             // Create new physicsBody based on the previous level bounding node's maxRadius. Scaling its own bounding node causes "stuck collisions" to its physicsBody
             let newPhysicsBody = SKPhysicsBody(circleOfRadius: updatedPhysicsBodyRadius)
@@ -103,8 +111,11 @@ class NodeBoundingRenderComponent: GKComponent {
         if let contactEntities = cluster.entitiesForLevel.at(index: level) {
             // Iterate through its contactEntities to see if it hasCollidedWithBoundingNode, and determine the max distance from the root to the contactEntity
             for contactEntity in contactEntities where contactEntity.hasCollidedWithBoundingNode {
-                if cluster.radiusSnapshotForLayerComponent[self] != nil {
-                    cluster.radiusSnapshotForLayerComponent.removeValue(forKey: self)
+//                if cluster.radiusSnapshotForLayerComponent[self] != nil {
+//                    cluster.radiusSnapshotForLayerComponent.removeValue(forKey: self)
+//                }
+                if snapshot != nil {
+                    snapshot = nil
                 }
                 let calculatedRadius = cluster.distance(to: contactEntity) + Constants.minimumOffset
                 if calculatedRadius > distance {
