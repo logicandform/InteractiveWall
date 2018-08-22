@@ -102,7 +102,8 @@ class MainScene: SKScene {
 
         switch tap.state {
         case .ended:
-            select(recordNode)
+//            select(recordNode)
+            break
         default:
             return
         }
@@ -232,7 +233,10 @@ class MainScene: SKScene {
         nodeClusters.insert(cluster)
 
         switch entityForNode.state {
-        case .seekEntity(_), .falling:
+        case .falling:
+            cluster.select(entityForNode)
+        case .seekEntity(_):
+            cluster.snapshot()
             cluster.select(entityForNode)
         case .tapped:
             cluster.reset()

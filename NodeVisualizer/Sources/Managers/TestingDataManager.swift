@@ -13,7 +13,7 @@ class TestingDataManager {
     private(set) var relatedLevelsForProxy = [RecordProxy: RelatedLevels]()
 
     private struct Constants {
-        static let maxRelatedLevel = 5
+        static let maxRelatedLevel = 4
     }
 
 

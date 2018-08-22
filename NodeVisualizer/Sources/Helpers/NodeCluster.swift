@@ -19,6 +19,7 @@ final class NodeCluster: Hashable {
     private(set) var selectedEntity: RecordEntity
     private(set) var entitiesForLevel = EntityLevels()
     private(set) var layerForLevel = [Int: NodeBoundingEntity]()
+    var radiusSnapshotForLayerComponent = [NodeBoundingRenderComponent: CGFloat]()
     private let scene: MainScene
 
     var hashValue: Int {
@@ -114,6 +115,15 @@ final class NodeCluster: Hashable {
         let dY = Float(y)
         return CGFloat(hypotf(dX, dY))
     }
+
+
+    func snapshot() {
+        radiusSnapshotForLayerComponent.removeAll()
+        for (_, layer) in layerForLevel {
+            radiusSnapshotForLayerComponent[layer.nodeBoundingRenderComponent] = layer.nodeBoundingRenderComponent.minRadius
+        }
+    }
+
 
 
     // MARK: Helpers

@@ -132,7 +132,9 @@ class MovementComponent: GKComponent {
 
     /// Applies appropriate physics that moves the entity to the appropriate higher level before entering next state and setting its bitMasks
     private func move(to level: Int) {
-        guard let entity = entity as? RecordEntity, let cluster = entity.cluster, let referenceNode = cluster.layerForLevel[level]?.nodeBoundingRenderComponent.node else {
+        guard let entity = entity as? RecordEntity,
+            let cluster = entity.cluster,
+            let referenceNode = cluster.layerForLevel[level]?.nodeBoundingRenderComponent.node else {
             return
         }
 
@@ -168,13 +170,17 @@ class MovementComponent: GKComponent {
 
     /// Applies appropriate physics that emulates a gravitational pull between this component's entity and the entity that it should seek
     private func seek(_ targetEntity: RecordEntity) {
-        guard let entity = entity as? RecordEntity else {
+        guard let entity = entity as? RecordEntity, let cluster = entity.cluster else {
             return
         }
 
         // Check the radius between its own entity and the nodeToSeek, and apply the appropriate physics
-        let deltaX = targetEntity.position.x - entity.position.x
-        let deltaY = targetEntity.position.y - entity.position.y
+//        let deltaX = targetEntity.position.x - entity.position.x
+//        let deltaY = targetEntity.position.y - entity.position.y
+//        let displacement = CGVector(dx: deltaX, dy: deltaY)
+
+        let deltaX = cluster.center.x - entity.position.x
+        let deltaY = cluster.center.y - entity.position.y
         let displacement = CGVector(dx: deltaX, dy: deltaY)
 
         let radius = distanceOf(x: deltaX, y: deltaY)
