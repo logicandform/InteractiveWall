@@ -60,7 +60,7 @@
                                 </customSpacing>
                             </stackView>
                             <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mSd-7i-Rsz">
-                                <rect key="frame" x="423" y="219" width="355" height="26"/>
+                                <rect key="frame" x="423" y="169" width="355" height="26"/>
                                 <popUpButtonCell key="cell" type="push" title="Load MapExplorer" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="IrS-xj-ACc" id="iaA-2B-sif">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
@@ -73,7 +73,7 @@
                                 </popUpButtonCell>
                             </popUpButton>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="o2b-t2-z8m">
-                                <rect key="frame" x="425" y="153" width="350" height="25"/>
+                                <rect key="frame" x="425" y="103" width="350" height="25"/>
                                 <buttonCell key="cell" type="roundTextured" title="Apply" bezelStyle="texturedRounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="smM-v4-yy2">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -82,24 +82,27 @@
                                     <action selector="applyButtonClicked:" target="aqO-32-87F" id="pGg-UM-W3e"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Ey-IL-u6p">
-                                <rect key="frame" x="525" y="375" width="150" height="32"/>
-                                <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pNa-5x-oXp">
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6Ey-IL-u6p">
+                                <rect key="frame" x="525" y="369" width="150" height="32"/>
+                                <buttonCell key="cell" type="push" title="Restart Scripts" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pNa-5x-oXp">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="scriptRestartButtonClicked:" target="aqO-32-87F" id="Fcu-Q4-Hw1"/>
+                                </connections>
                             </button>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="6Ey-IL-u6p" firstAttribute="top" secondItem="vLa-9A-hBT" secondAttribute="bottom" constant="50" id="0Jt-xp-qeD"/>
                             <constraint firstItem="mSd-7i-Rsz" firstAttribute="leading" secondItem="Wc8-TP-M8l" secondAttribute="leading" constant="425" id="1UH-I2-bxs"/>
-                            <constraint firstItem="mSd-7i-Rsz" firstAttribute="top" secondItem="vLa-9A-hBT" secondAttribute="bottom" constant="204" id="9aU-ST-qGi"/>
                             <constraint firstAttribute="trailing" secondItem="vLa-9A-hBT" secondAttribute="trailing" constant="8" id="ArX-hj-plD"/>
-                            <constraint firstItem="6Ey-IL-u6p" firstAttribute="leading" secondItem="Wc8-TP-M8l" secondAttribute="leading" constant="566" id="IKi-zm-mlT"/>
+                            <constraint firstItem="6Ey-IL-u6p" firstAttribute="leading" secondItem="Wc8-TP-M8l" secondAttribute="leading" constant="531" id="IKi-zm-mlT"/>
                             <constraint firstItem="o2b-t2-z8m" firstAttribute="leading" secondItem="mSd-7i-Rsz" secondAttribute="leading" id="KuM-9e-E1L"/>
                             <constraint firstItem="vLa-9A-hBT" firstAttribute="top" secondItem="Wc8-TP-M8l" secondAttribute="top" constant="8" id="PoE-hS-fFg"/>
-                            <constraint firstAttribute="trailing" secondItem="6Ey-IL-u6p" secondAttribute="trailing" constant="496" id="Prc-Da-YpA"/>
+                            <constraint firstAttribute="trailing" secondItem="6Ey-IL-u6p" secondAttribute="trailing" constant="531" id="Prc-Da-YpA"/>
                             <constraint firstItem="o2b-t2-z8m" firstAttribute="trailing" secondItem="mSd-7i-Rsz" secondAttribute="trailing" id="SJY-S9-Sie"/>
-                            <constraint firstAttribute="bottom" secondItem="o2b-t2-z8m" secondAttribute="bottom" constant="155" id="hkf-vU-EfP"/>
+                            <constraint firstAttribute="bottom" secondItem="o2b-t2-z8m" secondAttribute="bottom" constant="105" id="hkf-vU-EfP"/>
                             <constraint firstItem="o2b-t2-z8m" firstAttribute="top" secondItem="mSd-7i-Rsz" secondAttribute="bottom" constant="45" id="j8Q-op-X7O"/>
                             <constraint firstItem="vLa-9A-hBT" firstAttribute="leading" secondItem="Wc8-TP-M8l" secondAttribute="leading" constant="8" id="nIy-sN-Uve"/>
                             <constraint firstAttribute="trailing" secondItem="mSd-7i-Rsz" secondAttribute="trailing" constant="425" id="tXo-nY-zEK"/>
