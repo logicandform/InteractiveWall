@@ -6,7 +6,7 @@ import GameplayKit
 
 
 struct ColliderType {
-    static let panning: UInt32 = 1 << 20
+    static let panBoundingNode: UInt32 = 1 << 20
     static let clonedRecordNode: UInt32 = 1 << 21
 
     let categoryBitMask: UInt32

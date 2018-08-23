@@ -223,9 +223,9 @@ final class NodeCluster: Hashable {
         }
 
         if pan {
-            innerMostLayerPhysicsBody.categoryBitMask = ColliderType.panning
-            innerMostLayerPhysicsBody.collisionBitMask = ColliderType.panning
-            innerMostLayerPhysicsBody.contactTestBitMask = ColliderType.panning
+            innerMostLayerPhysicsBody.categoryBitMask = ColliderType.panBoundingNode
+            innerMostLayerPhysicsBody.collisionBitMask = ColliderType.panBoundingNode
+            innerMostLayerPhysicsBody.contactTestBitMask = ColliderType.panBoundingNode
         } else {
             let bitMasks = layerBitMasks(forLevel: 0)
             innerMostLayerPhysicsBody.categoryBitMask = bitMasks.categoryBitMask
