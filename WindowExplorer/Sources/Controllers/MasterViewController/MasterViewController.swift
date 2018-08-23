@@ -20,6 +20,9 @@ class MasterViewController: NSViewController {
     @IBOutlet weak var rightScreen: NSView!
     @IBOutlet weak var actionSelectionButton: NSPopUpButton!
     @IBOutlet weak var consoleOutputTextView: NSTextView!
+    @IBOutlet weak var consoleOutputScrollView: NSScrollView!
+    @IBOutlet weak var restartServersTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var applyButtonBottomConstraint: NSLayoutConstraint!
 
     var infoForScreen = [Int: ApplicationInfo]()
 
@@ -34,10 +37,15 @@ class MasterViewController: NSViewController {
         static let imageTransitionDuration = 2.0
         static let screenBackgroundColor = CGColor(red: 34/255, green: 34/255, blue: 34/255, alpha: 1.0)
         static let mapExplorerScriptName = "map-explorer"
+        static let restartServersButtonPosition: CGFloat = 40
+        static let applyButtonPosition: CGFloat = 75
     }
 
-    private struct SupervisorKeys {
+    private struct ConsoleKeys {
+        static let supervisorctlPath = "/usr/local/bin/supervisorctl"
+        static let datePath = "/bin/date"
         static let restartAll = "restart all"
+        static let dateArgs = "+%H:%M:%S   %d/%m/%y"
     }
 
 
@@ -142,6 +150,7 @@ class MasterViewController: NSViewController {
         consoleOutputTextView.backgroundColor = NSColor.black
         consoleOutputTextView.textColor = NSColor.white
         consoleOutputTextView.isEditable = false
+        consoleOutputScrollView.isHidden = true
     }
 
     private func setupActionButton() {
@@ -172,9 +181,30 @@ class MasterViewController: NSViewController {
 
     @IBAction func scriptRestartButtonClicked(_ sender: NSButton) {
         sender.isEnabled = false
+
+        if consoleOutputScrollView.isHidden {
+            NSAnimationContext.runAnimationGroup({ _ in
+                NSAnimationContext.current.duration = 0.5
+                consoleOutputScrollView.animator().isHidden = false
+                restartServersTopConstraint.animator().constant = Constants.restartServersButtonPosition
+                applyButtonBottomConstraint.animator().constant = Constants.applyButtonPosition
+            }, completionHandler: { [weak self] in
+                self?.runSupervisorRestart()
+                sender.isEnabled = true
+            })
+        } else {
+            runSupervisorRestart()
+            sender.isEnabled = true
+        }
+    }
+
+
+    // MARK: Helpers
+
+    private func runSupervisorRestart() {
         var outputString = ""
-        let time = runCommand(cmd: "/bin/date", args: "+%H:%M:%S   %d/%m/%y")
-        let supervisorResponse = runCommand(cmd: "/usr/local/bin/supervisorctl", args: SupervisorKeys.restartAll)
+        let time = runCommand(cmd: ConsoleKeys.datePath, args: ConsoleKeys.dateArgs)
+        let supervisorResponse = runCommand(cmd: ConsoleKeys.supervisorctlPath, args: ConsoleKeys.restartAll)
 
         time.output.forEach({ currentOutput in
             outputString += currentOutput
@@ -192,11 +222,7 @@ class MasterViewController: NSViewController {
         })
 
         consoleOutputTextView.string = outputString.components(separatedBy: NSCharacterSet.newlines).filter({ !$0.isEmpty }).joined(separator: "\n")
-        sender.isEnabled = true
     }
-
-
-    // MARK: Helpers
 
     /// Terminate the processes associated with the given screen
     private func terminate(screen: Int, map: Int? = nil) {

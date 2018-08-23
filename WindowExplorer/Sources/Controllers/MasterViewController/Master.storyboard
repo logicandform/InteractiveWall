@@ -60,7 +60,7 @@
                                 </customSpacing>
                             </stackView>
                             <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mSd-7i-Rsz">
-                                <rect key="frame" x="423" y="114" width="355" height="26"/>
+                                <rect key="frame" x="423" y="164" width="355" height="26"/>
                                 <popUpButtonCell key="cell" type="push" title="Load MapExplorer" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="IrS-xj-ACc" id="iaA-2B-sif">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
@@ -73,23 +73,13 @@
                                 </popUpButtonCell>
                             </popUpButton>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="o2b-t2-z8m">
-                                <rect key="frame" x="425" y="48" width="350" height="25"/>
+                                <rect key="frame" x="425" y="98" width="350" height="25"/>
                                 <buttonCell key="cell" type="roundTextured" title="Apply" bezelStyle="texturedRounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="smM-v4-yy2">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
                                     <action selector="applyButtonClicked:" target="aqO-32-87F" id="pGg-UM-W3e"/>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6Ey-IL-u6p">
-                                <rect key="frame" x="525" y="369" width="150" height="32"/>
-                                <buttonCell key="cell" type="push" title="Restart Scripts" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pNa-5x-oXp">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="scriptRestartButtonClicked:" target="aqO-32-87F" id="Fcu-Q4-Hw1"/>
                                 </connections>
                             </button>
                             <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s0m-G6-eA2">
@@ -121,11 +111,21 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6Ey-IL-u6p">
+                                <rect key="frame" x="525" y="279" width="150" height="32"/>
+                                <buttonCell key="cell" type="push" title="Restart Servers" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pNa-5x-oXp">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="scriptRestartButtonClicked:" target="aqO-32-87F" id="Fcu-Q4-Hw1"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="6Ey-IL-u6p" firstAttribute="top" secondItem="vLa-9A-hBT" secondAttribute="bottom" constant="50" id="0Jt-xp-qeD"/>
+                            <constraint firstItem="6Ey-IL-u6p" firstAttribute="top" secondItem="vLa-9A-hBT" secondAttribute="bottom" constant="140" id="0Jt-xp-qeD"/>
+                            <constraint firstAttribute="bottom" secondItem="s0m-G6-eA2" secondAttribute="bottom" constant="216" id="0q2-Yg-ObI"/>
                             <constraint firstItem="mSd-7i-Rsz" firstAttribute="leading" secondItem="Wc8-TP-M8l" secondAttribute="leading" constant="425" id="1UH-I2-bxs"/>
-                            <constraint firstItem="s0m-G6-eA2" firstAttribute="top" secondItem="6Ey-IL-u6p" secondAttribute="bottom" constant="25" id="30k-mv-TH8"/>
                             <constraint firstAttribute="trailing" secondItem="vLa-9A-hBT" secondAttribute="trailing" constant="8" id="ArX-hj-plD"/>
                             <constraint firstItem="6Ey-IL-u6p" firstAttribute="leading" secondItem="Wc8-TP-M8l" secondAttribute="leading" constant="531" id="IKi-zm-mlT"/>
                             <constraint firstItem="o2b-t2-z8m" firstAttribute="leading" secondItem="mSd-7i-Rsz" secondAttribute="leading" id="KuM-9e-E1L"/>
@@ -133,7 +133,7 @@
                             <constraint firstAttribute="trailing" secondItem="6Ey-IL-u6p" secondAttribute="trailing" constant="531" id="Prc-Da-YpA"/>
                             <constraint firstItem="o2b-t2-z8m" firstAttribute="trailing" secondItem="mSd-7i-Rsz" secondAttribute="trailing" id="SJY-S9-Sie"/>
                             <constraint firstAttribute="trailing" secondItem="s0m-G6-eA2" secondAttribute="trailing" constant="400" id="hBr-HQ-kB1"/>
-                            <constraint firstAttribute="bottom" secondItem="o2b-t2-z8m" secondAttribute="bottom" constant="50" id="hkf-vU-EfP"/>
+                            <constraint firstAttribute="bottom" secondItem="o2b-t2-z8m" secondAttribute="bottom" constant="100" id="hkf-vU-EfP"/>
                             <constraint firstItem="o2b-t2-z8m" firstAttribute="top" secondItem="mSd-7i-Rsz" secondAttribute="bottom" constant="45" id="j8Q-op-X7O"/>
                             <constraint firstItem="vLa-9A-hBT" firstAttribute="leading" secondItem="Wc8-TP-M8l" secondAttribute="leading" constant="8" id="nIy-sN-Uve"/>
                             <constraint firstItem="s0m-G6-eA2" firstAttribute="leading" secondItem="Wc8-TP-M8l" secondAttribute="leading" constant="400" id="pck-M0-XeY"/>
@@ -142,9 +142,12 @@
                     </view>
                     <connections>
                         <outlet property="actionSelectionButton" destination="mSd-7i-Rsz" id="DMA-Vr-zNR"/>
+                        <outlet property="applyButtonBottomConstraint" destination="hkf-vU-EfP" id="oxM-Jc-T9A"/>
+                        <outlet property="consoleOutputScrollView" destination="s0m-G6-eA2" id="rTI-RL-05K"/>
                         <outlet property="consoleOutputTextView" destination="5mz-7a-355" id="Qji-oJ-OHt"/>
                         <outlet property="leftScreen" destination="ysD-uU-Q8p" id="2IX-EL-1cA"/>
                         <outlet property="middleScreen" destination="4v1-sN-DHB" id="EI9-dg-N31"/>
+                        <outlet property="restartServersTopConstraint" destination="0Jt-xp-qeD" id="Iqi-oB-a4h"/>
                         <outlet property="rightScreen" destination="txO-Qp-bMV" id="G1H-8H-CGQ"/>
                     </connections>
                 </viewController>
