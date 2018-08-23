@@ -167,7 +167,12 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
     // MARK: Helpers
 
     private func flagAttributes(for event: TimelineEvent, in source: TimelineDataSource, year: Int) -> NSCollectionViewLayoutAttributes? {
-        guard let index = source.events.index(of: event) else {
+//        guard let index = source.events.index(of: event) else {
+//            return nil
+//        }
+        guard let index = source.events.index(where: { (currentEvent) -> Bool in
+            return currentEvent.id == event.id && currentEvent.type == event.type && currentEvent.title == event.title && currentEvent.dates == event.dates
+        }) else {
             return nil
         }
 
