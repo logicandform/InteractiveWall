@@ -19,6 +19,10 @@ class MasterViewController: NSViewController {
     @IBOutlet weak var middleScreen: NSView!
     @IBOutlet weak var rightScreen: NSView!
     @IBOutlet weak var actionSelectionButton: NSPopUpButton!
+    @IBOutlet weak var consoleOutputTextView: NSTextView!
+    @IBOutlet weak var consoleOutputScrollView: NSScrollView!
+    @IBOutlet weak var restartServersTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var applyButtonBottomConstraint: NSLayoutConstraint!
 
     var infoForScreen = [Int: ApplicationInfo]()
 
@@ -32,6 +36,16 @@ class MasterViewController: NSViewController {
         static let screenBorderWidth: CGFloat = 12
         static let imageTransitionDuration = 2.0
         static let screenBackgroundColor = CGColor(red: 34/255, green: 34/255, blue: 34/255, alpha: 1.0)
+        static let mapExplorerScriptName = "map-explorer"
+        static let restartServersButtonPosition: CGFloat = 40
+        static let applyButtonPosition: CGFloat = 75
+    }
+
+    private struct ConsoleKeys {
+        static let supervisorctlPath = "/usr/local/bin/supervisorctl"
+        static let datePath = "/bin/date"
+        static let restartAll = "restart all"
+        static let dateArgs = "+%H:%M:%S   %d/%m/%y"
     }
 
 
@@ -66,6 +80,7 @@ class MasterViewController: NSViewController {
         super.viewDidLoad()
 
         setupScreens()
+        setupConsoleOutputView()
         setupActionButton()
         registerForNotifications()
     }
@@ -131,6 +146,13 @@ class MasterViewController: NSViewController {
         }
     }
 
+    private func setupConsoleOutputView() {
+        consoleOutputTextView.backgroundColor = NSColor.black
+        consoleOutputTextView.textColor = NSColor.white
+        consoleOutputTextView.isEditable = false
+        consoleOutputScrollView.isHidden = true
+    }
+
     private func setupActionButton() {
         actionSelectionButton.removeAllItems()
         ControlAction.menuSelectionActions.forEach { action in
@@ -157,8 +179,50 @@ class MasterViewController: NSViewController {
         }
     }
 
+    @IBAction func scriptRestartButtonClicked(_ sender: NSButton) {
+        sender.isEnabled = false
+
+        if consoleOutputScrollView.isHidden {
+            NSAnimationContext.runAnimationGroup({ _ in
+                NSAnimationContext.current.duration = 0.5
+                consoleOutputScrollView.animator().isHidden = false
+                restartServersTopConstraint.animator().constant = Constants.restartServersButtonPosition
+                applyButtonBottomConstraint.animator().constant = Constants.applyButtonPosition
+            }, completionHandler: { [weak self] in
+                self?.runSupervisorRestart()
+                sender.isEnabled = true
+            })
+        } else {
+            runSupervisorRestart()
+            sender.isEnabled = true
+        }
+    }
+
 
     // MARK: Helpers
+
+    private func runSupervisorRestart() {
+        var outputString = ""
+        let time = runCommand(cmd: ConsoleKeys.datePath, args: ConsoleKeys.dateArgs)
+        let supervisorResponse = runCommand(cmd: ConsoleKeys.supervisorctlPath, args: ConsoleKeys.restartAll)
+
+        time.output.forEach({ currentOutput in
+            outputString += currentOutput
+            outputString += "\n"
+        })
+        supervisorResponse.output.forEach({ currentOutput in
+            if !currentOutput.contains(Constants.mapExplorerScriptName) {
+                outputString += currentOutput
+                outputString += "\n"
+            }
+        })
+        supervisorResponse.error.forEach({ currentOutput in
+            outputString += currentOutput
+            outputString += "\n"
+        })
+
+        consoleOutputTextView.string = outputString.components(separatedBy: NSCharacterSet.newlines).filter({ !$0.isEmpty }).joined(separator: "\n")
+    }
 
     /// Terminate the processes associated with the given screen
     private func terminate(screen: Int, map: Int? = nil) {
@@ -238,5 +302,42 @@ class MasterViewController: NSViewController {
                 apply(.closeApplication, status: .disconnected, toScreen: screen)
             }
         }
+    }
+
+    private func runCommand(cmd: String, args: String...) -> (output: [String], error: [String], exitCode: Int32) {
+        guard FileManager.default.fileExists(atPath: cmd) else {
+            return (["Failed: Command \(cmd) does not exist"], [""], -1)
+        }
+
+        var output = [String]()
+        var error = [String]()
+
+        let task = Process()
+        task.launchPath = cmd
+        task.arguments = args
+
+        let outpipe = Pipe()
+        task.standardOutput = outpipe
+        let errpipe = Pipe()
+        task.standardError = errpipe
+
+        task.launch()
+
+        let outdata = outpipe.fileHandleForReading.readDataToEndOfFile()
+        if var string = String(data: outdata, encoding: .utf8) {
+            string = string.trimmingCharacters(in: .newlines)
+            output = string.components(separatedBy: "\n")
+        }
+
+        let errdata = errpipe.fileHandleForReading.readDataToEndOfFile()
+        if var string = String(data: errdata, encoding: .utf8) {
+            string = string.trimmingCharacters(in: .newlines)
+            error = string.components(separatedBy: "\n")
+        }
+
+        task.waitUntilExit()
+        let status = task.terminationStatus
+
+        return (output, error, status)
     }
 }
