@@ -37,7 +37,9 @@ class TestimonyViewController: BaseViewController, NSCollectionViewDelegateFlowL
         windowDragArea.alphaValue = 0
         collectionView.alphaValue = 0
         relationshipHelper.parent = self
-        relationshipHelper.controllerClosed = unselectTestimonyForController(_:)
+        relationshipHelper.controllerClosed = { [weak self] in
+            self?.unselectTestimonyForController(_:)
+        }
         titleLabel.attributedStringValue = NSAttributedString(string: Constants.windowHeaderTitle, attributes: style.windowTitleAttributes)
         windowDragAreaHighlight.layer?.backgroundColor = style.testimonyColor.cgColor
 

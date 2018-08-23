@@ -33,7 +33,7 @@ class PlayerControl: NSView {
         }
     }
 
-    var gestureManager: GestureManager! {
+    unowned var gestureManager: GestureManager {
         didSet {
             setupGestures()
         }
