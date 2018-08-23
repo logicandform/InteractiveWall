@@ -331,18 +331,22 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     private func adjustCoordinates(of record: Record, current records: [Record]) -> Record {
+        guard let recordCoordinate = record.coordinate else {
+            return record
+        }
+
         var adjustedRecord = record
 
         for runnerRecord in records {
-            let recordLatitude = record.coordinate.latitude
-            let recordLongitude = record.coordinate.longitude
-            let runnerRecordLatitude = runnerRecord.coordinate.latitude
-            let runnerRecordLongitude = runnerRecord.coordinate.longitude
-            let latitudeCheck = recordLatitude + Double(Constants.spacingBetweenAnnotations) > runnerRecordLatitude && recordLatitude - Double(Constants.spacingBetweenAnnotations) < runnerRecordLatitude
-            let longitudeCheck = recordLongitude + Double(Constants.spacingBetweenAnnotations) > runnerRecordLongitude && recordLongitude - Double(Constants.spacingBetweenAnnotations) < runnerRecordLongitude
+            guard let runnerCoordiante = runnerRecord.coordinate else {
+                continue
+            }
+
+            let latitudeCheck = recordCoordinate.latitude + Double(Constants.spacingBetweenAnnotations) > runnerCoordiante.latitude && recordCoordinate.latitude - Double(Constants.spacingBetweenAnnotations) < runnerCoordiante.latitude
+            let longitudeCheck = recordCoordinate.longitude + Double(Constants.spacingBetweenAnnotations) > runnerCoordiante.longitude && recordCoordinate.longitude - Double(Constants.spacingBetweenAnnotations) < runnerCoordiante.longitude
 
             if latitudeCheck && longitudeCheck {
-                adjustedRecord.coordinate.latitude += Double(Constants.spacingBetweenAnnotations)
+                adjustedRecord.coordinate!.latitude += Double(Constants.spacingBetweenAnnotations)
                 return adjustCoordinates(of: adjustedRecord, current: records)
             }
         }
@@ -352,9 +356,11 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     private func addAnnotations(for records: [Record]) {
         records.forEach { record in
-            let annotation = CircleAnnotation(coordinate: record.coordinate, type: record.type, title: record.title)
-            recordForAnnotation[annotation] = record
-            mapView.addAnnotation(annotation)
+            if let coordinate = record.coordinate {
+                let annotation = CircleAnnotation(coordinate: coordinate, type: record.type, title: record.title)
+                recordForAnnotation[annotation] = record
+                mapView.addAnnotation(annotation)
+            }
         }
     }
 

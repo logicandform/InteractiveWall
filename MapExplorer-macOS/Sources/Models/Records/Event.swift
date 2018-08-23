@@ -9,8 +9,8 @@ class Event: Record {
     let id: Int
     let type = RecordType.event
     let title: String
-    var coordinate: CLLocationCoordinate2D
     let dates: TimelineRange?
+    var coordinate: CLLocationCoordinate2D?
 
     private struct Keys {
         static let id = "id"
@@ -25,15 +25,16 @@ class Event: Record {
 
     init?(json: JSON) {
         guard let id = json[Keys.id] as? Int,
-            let title = json[Keys.title] as? String,
-            let latitude = json[Keys.latitude] as? Double,
-            let longitude = json[Keys.longitude] as? Double else {
+            let title = json[Keys.title] as? String else {
             return nil
         }
 
         self.id = id
         self.title = title
-        self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        self.dates = TimelineRange(json[Keys.date] as? String)
+        let dateString = json[Keys.date] as? String
+        self.dates = TimelineRange(from: dateString)
+        if let latitude = json[Keys.latitude] as? Double, let longitude = json[Keys.longitude] as? Double {
+            self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        }
     }
 }

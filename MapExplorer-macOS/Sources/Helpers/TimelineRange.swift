@@ -23,7 +23,7 @@ struct TimelineRange: CustomStringConvertible, Equatable {
 
     // MARK: Init
 
-    init?(_ date: String?) {
+    init?(from date: String?) {
         guard let date = date, !date.isEmpty else {
             return nil
         }

@@ -9,8 +9,8 @@ class School: Record {
     let id: Int
     let type = RecordType.school
     let title: String
-    var coordinate: CLLocationCoordinate2D
     let dates: TimelineRange?
+    var coordinate: CLLocationCoordinate2D?
 
     private struct Keys {
         static let id = "id"
@@ -34,6 +34,7 @@ class School: Record {
         self.id = id
         self.title = title
         self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        self.dates = TimelineRange(json[Keys.date] as? String)
+        let dateString = json[Keys.date] as? String
+        self.dates = TimelineRange(from: dateString)
     }
 }
