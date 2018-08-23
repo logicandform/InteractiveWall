@@ -35,6 +35,12 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
         self.minimumInteritemSpacing = 0
     }
 
+    override init() {
+        super.init()
+        self.scrollDirection = .horizontal
+        self.minimumInteritemSpacing = 0
+    }
+
 
     // MARK: Overrides
 
@@ -53,7 +59,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
         let diagram = TailDiagram()
 
         // Fill tail diagram for events
-        for year in (source.firstYear...source.lastYear) {
+        for year in (source.firstYear...source.lastYear + Constants.infiniteScrollBuffer) {
             if let events = source.eventsForYear[year] {
                 for event in events {
                     let start = CGFloat(event.dates.startDate.year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth
@@ -67,7 +73,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
         }
 
         // Add start and end markers for timeline events
-        for year in (source.firstYear...source.lastYear) {
+        for year in (source.firstYear...source.lastYear + Constants.infiniteScrollBuffer) {
             if let events = source.eventsForYear[year] {
                 for event in events {
                     let start = CGFloat(event.dates.startDate.year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth
@@ -78,7 +84,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
         }
 
         // Cache the layers for each year for fast access
-        for year in (source.firstYear...source.lastYear) {
+        for year in (source.firstYear...source.lastYear + Constants.infiniteScrollBuffer) {
             let start = CGFloat(year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth
             let end = start + Constants.yearWidth
             let layers = diagram.layersBetween(a: start, b: end)
@@ -88,8 +94,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
 
         // Build cache of event and tail attributes
         for year in (source.firstYear...source.lastYear + Constants.infiniteScrollBuffer) {
-            let yearInRange = (year - source.firstYear) % source.years.count + source.firstYear
-            if let events = source.eventsForYear[yearInRange] {
+            if let events = source.eventsForYear[year] {
                 for event in events {
                     if let flagAttributes = flagAttributes(for: event, in: source, year: year) {
                         attributesForEvent[event] = flagAttributes
@@ -97,7 +102,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
                 }
             }
             // Don't create tails for years past the last year for now
-            if let tailAttributes = tailAttributes(year: year, in: source), year < source.lastYear {
+            if let tailAttributes = tailAttributes(year: year, in: source) {
                 tailAttributesForYear[year] = tailAttributes
             }
         }
@@ -123,14 +128,9 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
         let maxYear = source.firstYear + Int(rect.maxX) / type.sectionWidth
 
         for year in (minYear...maxYear) {
-            // Append attributes for items
-            let yearInRange = (year - source.firstYear) % source.years.count + source.firstYear
-            if let events = source.eventsForYear[yearInRange] {
+            if let events = source.eventsForYear[year] {
                 for event in events {
-                    if let attributes = attributesForEvent[event], rect.intersects(attributes.frame) {
-                        layoutAttributes.append(attributes)
-                    } else if let attributes = attributesForEvent[event] {
-                        attributes.frame.origin.x = CGFloat((year - source.firstYear) * type.sectionWidth)
+                    if let attributes = attributesForEvent[event] {
                         layoutAttributes.append(attributes)
                     }
                 }
@@ -153,10 +153,11 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
     }
 
     override func layoutAttributesForItem(at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
-        guard let source = collectionView?.dataSource as? TimelineDataSource, let event = source.events.at(index: indexPath.item) else {
+        guard let source = collectionView?.dataSource as? TimelineDataSource else {
             return nil
         }
 
+        let event = source.events[indexPath.item]
         return attributesForEvent[event]
     }
 
@@ -164,11 +165,11 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
     // MARK: Helpers
 
     private func flagAttributes(for event: TimelineEvent, in source: TimelineDataSource, year: Int) -> NSCollectionViewLayoutAttributes? {
-        guard let item = source.events.index(of: event) else {
+        guard let index = source.events.index(of: event) else {
             return nil
         }
 
-        let indexPath = IndexPath(item: item, section: 0)
+        let indexPath = IndexPath(item: index, section: 0)
         let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
         let x = CGFloat((year - source.firstYear) * type.sectionWidth)
         let flagHeight = TimelineFlagView.flagHeight(for: event)

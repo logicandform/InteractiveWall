@@ -8,11 +8,11 @@ final class TimelineEvent: Hashable {
     let id: Int
     let type: RecordType
     let title: String
-    let dates: TimelineRange
+    var dates: TimelineRange
     var highlighted = false
 
     var hashValue: Int {
-        return dates.startDate.year ^ dates.endDate.year ^ title.hashValue
+        return dates.startDate.year ^ type.hashValue ^ title.hashValue
     }
 
     private struct Keys {
@@ -32,7 +32,10 @@ final class TimelineEvent: Hashable {
         self.dates = dates
     }
 
+
+    // MARK: Static
+
     static func == (lhs: TimelineEvent, rhs: TimelineEvent) -> Bool {
-        return lhs.title == rhs.title && lhs.dates == rhs.dates
+        return lhs.title == rhs.title && lhs.type == rhs.type && lhs.id == rhs.id && lhs.dates.startDate.year == rhs.dates.startDate.year
     }
 }

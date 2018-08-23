@@ -83,6 +83,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         scrollCollectionViews(animated: animated)
     }
 
+
     // MARK: Life-Cycle
 
     override func viewDidLoad() {
@@ -94,14 +95,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
 
         setupBackground()
         setupTimeline()
-        setupControls()
         setupGestures()
-    }
-
-    override func viewDidAppear() {
-        super.viewDidAppear()
-        setupControlGradients()
-        timelineHandler?.reset()
     }
 
 
@@ -136,12 +130,14 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         timelineCollectionView.register(NSNib(nibNamed: TimelineBorderView.nibName, bundle: .main), forSupplementaryViewOfKind: TimelineBorderView.supplementaryKind, withIdentifier: TimelineBorderView.identifier)
         timelineCollectionView.register(NSNib(nibNamed: TimelineHeaderView.nibName, bundle: .main), forSupplementaryViewOfKind: TimelineHeaderView.supplementaryKind, withIdentifier: TimelineHeaderView.identifier)
         timelineCollectionView.register(NSNib(nibNamed: TimelineTailView.nibName, bundle: .main), forSupplementaryViewOfKind: TimelineTailView.supplementaryKind, withIdentifier: TimelineTailView.identifier)
-        timelineCollectionView.dataSource = source
         timelineScrollView.horizontalScroller?.alphaValue = 0
         createRecords()
     }
 
     private func setupControls() {
+        controlsSource.firstYear = source.firstYear
+        controlsSource.lastYear = source.lastYear
+        controlsSource.years = source.years
         controlsSource.monthCollectionView = monthCollectionView
         controlsSource.yearCollectionView = yearCollectionView
         controlsSource.decadeCollectionView = decadeCollectionView
@@ -152,6 +148,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         timelineIndicatorView.layer?.cornerRadius = Constants.timelineIndicatorBorderRadius
         timelineIndicatorView.layer?.borderWidth = Constants.timelineIndicatorBorderWidth
         timelineIndicatorView.layer?.borderColor = style.selectedColor.cgColor
+        setupControlGradients()
     }
 
     private func setupControlGradients() {
@@ -386,6 +383,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         collectionView.register(TimelineBorderView.self, forItemWithIdentifier: TimelineBorderView.identifier)
         scrollView.horizontalScroller?.alphaValue = 0
         collectionView.dataSource = controlsSource
+        collectionView.reloadData()
     }
 
     private func setupHorizontalGradient(in view: NSView) {
@@ -532,7 +530,6 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         var timelineMaxX = CGFloat(source.years.count) * CGFloat(timelineType.sectionWidth)
         let timelineYearIndex = source.years.index(of: currentDate.year) != nil ? source.years.index(of: currentDate.year) : currentDate.year < source.firstYear ? -1 : source.years.count - 1
         var timelineRect = timelineCollectionView.visibleRect
-        let previousRect = timelineRect
 
         switch timelineCollectionView.collectionViewLayout {
         case is TimelineMonthLayout:
@@ -559,10 +556,6 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
             timelineCollectionView.animate(to: timelineRect.origin, duration: Constants.resetAnimationDuration)
         } else {
             timelineCollectionView.scrollToVisible(timelineRect)
-        }
-
-        if abs(previousRect.origin.x - timelineRect.origin.x) > timelineMaxX / 2 {
-            timelineCollectionView.reloadItems(at: timelineCollectionView.indexPathsForVisibleItems())
         }
     }
 
@@ -618,6 +611,14 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         records.append(contentsOf: results.schools)
         records.append(contentsOf: results.events)
         source.setup(with: records)
+        setupControls()
+        setupTimelineData()
+    }
+
+    private func setupTimelineData() {
+        timelineCollectionView.collectionViewLayout = TimelineDecadeFlagLayout()
+        timelineCollectionView.dataSource = source
+        timelineHandler?.reset()
         timelineCollectionView.reloadData()
     }
 
