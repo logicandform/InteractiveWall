@@ -21,6 +21,8 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
 
     private struct Constants {
         static let screenWidth = 1920
+        static let defaultFirstYear = 1850
+        static let defaultLastYear = 2030
     }
 
 
@@ -37,8 +39,10 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
             }
         }
 
-        firstYear = (events.min(by: { $0.dates.startDate.year < $1.dates.startDate.year })!.dates.startDate.year / 10) * 10
-        lastYear = (events.max(by: { $0.dates.startDate.year < $1.dates.startDate.year })!.dates.startDate.year / 10) * 10 + 10
+        let minYear = events.min(by: { $0.dates.startDate.year < $1.dates.startDate.year })?.dates.startDate.year ?? Constants.defaultFirstYear
+        let maxYear = events.max(by: { $0.dates.startDate.year < $1.dates.startDate.year })?.dates.startDate.year ?? Constants.defaultLastYear
+        firstYear = (minYear / 10) * 10
+        lastYear = (maxYear / 10) * 10 + 10
         years = Array(firstYear...lastYear)
 
         for event in events {
