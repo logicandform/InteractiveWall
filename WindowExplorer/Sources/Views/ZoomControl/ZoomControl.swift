@@ -13,7 +13,7 @@ class ZoomControl: NSView {
 
     var zoomSliderUpdated: ((CGFloat) -> Void)?
 
-    unowned var gestureManager: GestureManager {
+    weak var gestureManager: GestureManager! {
         didSet {
             setupGestures()
         }

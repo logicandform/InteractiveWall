@@ -33,7 +33,7 @@ class PlayerControl: NSView {
         }
     }
 
-    unowned var gestureManager: GestureManager {
+    weak var gestureManager: GestureManager! {
         didSet {
             setupGestures()
         }

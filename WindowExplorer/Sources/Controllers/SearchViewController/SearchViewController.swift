@@ -67,8 +67,8 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         super.viewDidLoad()
         titleLabel.attributedStringValue = NSAttributedString(string: titleLabel.stringValue, attributes: style.windowTitleAttributes)
         relationshipHelper.parent = self
-        relationshipHelper.controllerClosed = { [weak self] in
-            self?.unselectRecordForController(_:)
+        relationshipHelper.controllerClosed = { [weak self] controller in
+            self?.unselectRecordForController(controller)
         }
 
         setupGestures()
