@@ -6,7 +6,8 @@ import GameplayKit
 
 
 struct ColliderType {
-    static let clonedRecordNode: UInt32 = 1 << 29
+    static let panning: UInt32 = 1 << 20
+    static let clonedRecordNode: UInt32 = 1 << 21
 
     let categoryBitMask: UInt32
     let collisionBitMask: UInt32
@@ -119,14 +120,17 @@ class PhysicsComponent: GKComponent {
     }
 
     private func setPanningBitMasks() {
-        guard let entity = entity as? RecordEntity, let level = entity.clusterLevel.currentLevel else {
+        guard let entity = entity as? RecordEntity,
+            let level = entity.clusterLevel.currentLevel,
+            let cluster = entity.cluster,
+            let panBoundingPhysicsBody = cluster.layerForLevel[0]?.nodeBoundingRenderComponent.node?.physicsBody else {
             return
         }
 
         let levelBitMasks = bitMasks(forLevel: level)
-        physicsBody.categoryBitMask = levelBitMasks.categoryBitMask
-        physicsBody.collisionBitMask = levelBitMasks.collisionBitMask
-        physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask
+        physicsBody.categoryBitMask = levelBitMasks.categoryBitMask | panBoundingPhysicsBody.categoryBitMask
+        physicsBody.collisionBitMask = levelBitMasks.collisionBitMask | panBoundingPhysicsBody.collisionBitMask
+        physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask | panBoundingPhysicsBody.contactTestBitMask
     }
 
     private func setSeekingLevelBitMasks(forLevel level: Int) {
