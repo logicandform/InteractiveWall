@@ -305,6 +305,10 @@ class MasterViewController: NSViewController {
     }
 
     private func runCommand(cmd: String, args: String...) -> (output: [String], error: [String], exitCode: Int32) {
+        guard FileManager.default.fileExists(atPath: cmd) else {
+            return (["Failed: Command \(cmd) does not exist"], [""], -1)
+        }
+
         var output = [String]()
         var error = [String]()
 
