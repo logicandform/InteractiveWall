@@ -107,7 +107,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     }
 
     private func setupBackground() {
-        timelineBackgroundView.alphaValue = 0
+//        timelineBackgroundView.alphaValue = 0
         timelineBackgroundView.wantsLayer = true
         timelineBackgroundView.layer?.backgroundColor = style.timelineBackgroundColor.cgColor
     }
