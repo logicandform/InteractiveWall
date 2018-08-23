@@ -19,6 +19,7 @@ class MasterViewController: NSViewController {
     @IBOutlet weak var middleScreen: NSView!
     @IBOutlet weak var rightScreen: NSView!
     @IBOutlet weak var actionSelectionButton: NSPopUpButton!
+    @IBOutlet weak var consoleOutputTextView: NSTextView!
 
     var infoForScreen = [Int: ApplicationInfo]()
 
@@ -32,6 +33,7 @@ class MasterViewController: NSViewController {
         static let screenBorderWidth: CGFloat = 12
         static let imageTransitionDuration = 2.0
         static let screenBackgroundColor = CGColor(red: 34/255, green: 34/255, blue: 34/255, alpha: 1.0)
+        static let mapExplorerScriptName = "map-explorer"
     }
 
 
@@ -66,6 +68,7 @@ class MasterViewController: NSViewController {
         super.viewDidLoad()
 
         setupScreens()
+        setupConsoleOutputView()
         setupActionButton()
         registerForNotifications()
     }
@@ -131,6 +134,13 @@ class MasterViewController: NSViewController {
         }
     }
 
+    private func setupConsoleOutputView() {
+        consoleOutputTextView.backgroundColor = NSColor.black
+        consoleOutputTextView.textColor = NSColor.white
+        consoleOutputTextView.isEditable = false
+//        consoleOutputTextView.string = "test again"
+    }
+
     private func setupActionButton() {
         actionSelectionButton.removeAllItems()
         ControlAction.menuSelectionActions.forEach { action in
@@ -158,9 +168,26 @@ class MasterViewController: NSViewController {
     }
 
     @IBAction func scriptRestartButtonClicked(_ sender: NSButton) {
-        let response = runCommand(cmd: "/bin/sh", args: "-c", "git status")
-        print(response.output)
-        print(response.error)
+        sender.isEnabled = false
+        consoleOutputTextView.string = ""
+        let time = runCommand(cmd: "/bin/date", args: "+%H:%M:%S   %d/%m/%y")
+        let supervisorResponse = runCommand(cmd: "/usr/local/bin/supervisorctl", args: "restart all")
+
+        time.output.forEach({ currentOutput in
+            consoleOutputTextView.string += currentOutput
+            consoleOutputTextView.string += "\n"
+        })
+        supervisorResponse.output.forEach({ currentOutput in
+            if !currentOutput.contains(Constants.mapExplorerScriptName) {
+                consoleOutputTextView.string += currentOutput
+                consoleOutputTextView.string += "\n"
+            }
+        })
+        supervisorResponse.error.forEach({ currentOutput in
+            consoleOutputTextView.string += currentOutput
+            consoleOutputTextView.string += "\n"
+        })
+        sender.isEnabled = true
     }
 
 

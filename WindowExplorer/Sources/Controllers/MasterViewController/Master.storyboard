@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="aqO-32-87F">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="aqO-32-87F">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
         <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
     </dependencies>
@@ -60,7 +60,7 @@
                                 </customSpacing>
                             </stackView>
                             <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mSd-7i-Rsz">
-                                <rect key="frame" x="423" y="169" width="355" height="26"/>
+                                <rect key="frame" x="423" y="114" width="355" height="26"/>
                                 <popUpButtonCell key="cell" type="push" title="Load MapExplorer" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="IrS-xj-ACc" id="iaA-2B-sif">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
@@ -73,7 +73,7 @@
                                 </popUpButtonCell>
                             </popUpButton>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="o2b-t2-z8m">
-                                <rect key="frame" x="425" y="103" width="350" height="25"/>
+                                <rect key="frame" x="425" y="48" width="350" height="25"/>
                                 <buttonCell key="cell" type="roundTextured" title="Apply" bezelStyle="texturedRounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="smM-v4-yy2">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -92,24 +92,57 @@
                                     <action selector="scriptRestartButtonClicked:" target="aqO-32-87F" id="Fcu-Q4-Hw1"/>
                                 </connections>
                             </button>
+                            <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s0m-G6-eA2">
+                                <rect key="frame" x="400" y="216" width="400" height="135"/>
+                                <clipView key="contentView" id="d1e-6a-A2M">
+                                    <rect key="frame" x="1" y="1" width="398" height="133"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textView importsGraphics="NO" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="5mz-7a-355">
+                                            <rect key="frame" x="0.0" y="0.0" width="398" height="133"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <size key="minSize" width="398" height="133"/>
+                                            <size key="maxSize" width="463" height="10000000"/>
+                                            <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        </textView>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </clipView>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="135" id="aen-RL-eFH"/>
+                                </constraints>
+                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="SEL-IR-x31">
+                                    <rect key="frame" x="-100" y="-100" width="87" height="18"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="HMg-RL-ida">
+                                    <rect key="frame" x="383" y="1" width="16" height="133"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="6Ey-IL-u6p" firstAttribute="top" secondItem="vLa-9A-hBT" secondAttribute="bottom" constant="50" id="0Jt-xp-qeD"/>
                             <constraint firstItem="mSd-7i-Rsz" firstAttribute="leading" secondItem="Wc8-TP-M8l" secondAttribute="leading" constant="425" id="1UH-I2-bxs"/>
+                            <constraint firstItem="s0m-G6-eA2" firstAttribute="top" secondItem="6Ey-IL-u6p" secondAttribute="bottom" constant="25" id="30k-mv-TH8"/>
                             <constraint firstAttribute="trailing" secondItem="vLa-9A-hBT" secondAttribute="trailing" constant="8" id="ArX-hj-plD"/>
                             <constraint firstItem="6Ey-IL-u6p" firstAttribute="leading" secondItem="Wc8-TP-M8l" secondAttribute="leading" constant="531" id="IKi-zm-mlT"/>
                             <constraint firstItem="o2b-t2-z8m" firstAttribute="leading" secondItem="mSd-7i-Rsz" secondAttribute="leading" id="KuM-9e-E1L"/>
                             <constraint firstItem="vLa-9A-hBT" firstAttribute="top" secondItem="Wc8-TP-M8l" secondAttribute="top" constant="8" id="PoE-hS-fFg"/>
                             <constraint firstAttribute="trailing" secondItem="6Ey-IL-u6p" secondAttribute="trailing" constant="531" id="Prc-Da-YpA"/>
                             <constraint firstItem="o2b-t2-z8m" firstAttribute="trailing" secondItem="mSd-7i-Rsz" secondAttribute="trailing" id="SJY-S9-Sie"/>
-                            <constraint firstAttribute="bottom" secondItem="o2b-t2-z8m" secondAttribute="bottom" constant="105" id="hkf-vU-EfP"/>
+                            <constraint firstAttribute="trailing" secondItem="s0m-G6-eA2" secondAttribute="trailing" constant="400" id="hBr-HQ-kB1"/>
+                            <constraint firstAttribute="bottom" secondItem="o2b-t2-z8m" secondAttribute="bottom" constant="50" id="hkf-vU-EfP"/>
                             <constraint firstItem="o2b-t2-z8m" firstAttribute="top" secondItem="mSd-7i-Rsz" secondAttribute="bottom" constant="45" id="j8Q-op-X7O"/>
                             <constraint firstItem="vLa-9A-hBT" firstAttribute="leading" secondItem="Wc8-TP-M8l" secondAttribute="leading" constant="8" id="nIy-sN-Uve"/>
+                            <constraint firstItem="s0m-G6-eA2" firstAttribute="leading" secondItem="Wc8-TP-M8l" secondAttribute="leading" constant="400" id="pck-M0-XeY"/>
                             <constraint firstAttribute="trailing" secondItem="mSd-7i-Rsz" secondAttribute="trailing" constant="425" id="tXo-nY-zEK"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="actionSelectionButton" destination="mSd-7i-Rsz" id="DMA-Vr-zNR"/>
+                        <outlet property="consoleOutputTextView" destination="5mz-7a-355" id="Qji-oJ-OHt"/>
                         <outlet property="leftScreen" destination="ysD-uU-Q8p" id="2IX-EL-1cA"/>
                         <outlet property="middleScreen" destination="4v1-sN-DHB" id="EI9-dg-N31"/>
                         <outlet property="rightScreen" destination="txO-Qp-bMV" id="G1H-8H-CGQ"/>
