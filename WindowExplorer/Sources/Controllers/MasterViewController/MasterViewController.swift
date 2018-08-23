@@ -36,6 +36,10 @@ class MasterViewController: NSViewController {
         static let mapExplorerScriptName = "map-explorer"
     }
 
+    private struct SupervisorKeys {
+        static let restartAll = "restart all"
+    }
+
 
     // MARK: Init
 
@@ -138,7 +142,6 @@ class MasterViewController: NSViewController {
         consoleOutputTextView.backgroundColor = NSColor.black
         consoleOutputTextView.textColor = NSColor.white
         consoleOutputTextView.isEditable = false
-//        consoleOutputTextView.string = "test again"
     }
 
     private func setupActionButton() {
@@ -169,24 +172,26 @@ class MasterViewController: NSViewController {
 
     @IBAction func scriptRestartButtonClicked(_ sender: NSButton) {
         sender.isEnabled = false
-        consoleOutputTextView.string = ""
+        var outputString = ""
         let time = runCommand(cmd: "/bin/date", args: "+%H:%M:%S   %d/%m/%y")
-        let supervisorResponse = runCommand(cmd: "/usr/local/bin/supervisorctl", args: "restart all")
+        let supervisorResponse = runCommand(cmd: "/usr/local/bin/supervisorctl", args: SupervisorKeys.restartAll)
 
         time.output.forEach({ currentOutput in
-            consoleOutputTextView.string += currentOutput
-            consoleOutputTextView.string += "\n"
+            outputString += currentOutput
+            outputString += "\n"
         })
         supervisorResponse.output.forEach({ currentOutput in
             if !currentOutput.contains(Constants.mapExplorerScriptName) {
-                consoleOutputTextView.string += currentOutput
-                consoleOutputTextView.string += "\n"
+                outputString += currentOutput
+                outputString += "\n"
             }
         })
         supervisorResponse.error.forEach({ currentOutput in
-            consoleOutputTextView.string += currentOutput
-            consoleOutputTextView.string += "\n"
+            outputString += currentOutput
+            outputString += "\n"
         })
+
+        consoleOutputTextView.string = outputString.components(separatedBy: NSCharacterSet.newlines).filter({ !$0.isEmpty }).joined(separator: "\n")
         sender.isEnabled = true
     }
 
