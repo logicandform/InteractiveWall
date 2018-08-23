@@ -305,8 +305,8 @@ class MasterViewController: NSViewController {
     }
 
     private func runCommand(cmd: String, args: String...) -> (output: [String], error: [String], exitCode: Int32) {
-        var output: [String] = []
-        var error: [String] = []
+        var output = [String]()
+        var error = [String]()
 
         let task = Process()
         task.launchPath = cmd
