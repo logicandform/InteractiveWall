@@ -141,7 +141,6 @@ final class ConnectionManager {
         case SettingsNotification.transition.name:
             if let newTypeString = info[Keys.type] as? String, let newType = ApplicationType(rawValue: newTypeString), let oldTypeString = info[Keys.oldType] as? String, let oldType = ApplicationType(rawValue: oldTypeString) {
                 transition(from: oldType, to: newType, id: id, group: group)
-                resetSelection(group: group)
             }
         case SettingsNotification.unpair.name:
             if let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
@@ -353,11 +352,6 @@ final class ConnectionManager {
         return externalApps.compactMap({ $0.1.group }).first
     }
 
-    private func resetSelection(group: Int?) {
-        if let group = group {
-            SelectionManager.instance.resetSelection(group: group)
-        }
-    }
 
     /// From the app matching the groupID, send position notification that won't cause app's to pair but causes map to sync together
     private func syncApps(inGroup group: Int?) {

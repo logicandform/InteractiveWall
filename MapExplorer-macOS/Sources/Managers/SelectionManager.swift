@@ -64,10 +64,6 @@ final class SelectionManager {
 
     // MARK: API
 
-    func resetSelection(group: Int) {
-        set(Set<Int>(), group: group)
-    }
-
     func syncApps(group: Int) {
         if group == appID {
             let selection = selectionForApp[group]
@@ -111,6 +107,7 @@ final class SelectionManager {
         for notification in notifications {
             DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
         }
+        DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: SettingsNotification.reset.name, object: nil)
     }
 
 
@@ -137,6 +134,8 @@ final class SelectionManager {
             if let index = info[Keys.index] as? Int {
                 setHighlight(index: index, group: group)
             }
+        case SettingsNotification.reset.name:
+            resetAll()
         default:
             return
         }
@@ -149,6 +148,21 @@ final class SelectionManager {
 
 
     // MARK: Helpers
+
+    private func resetAll() {
+        let appStates = ConnectionManager.instance.states(for: .timeline).enumerated()
+        let emptySet = Set<Int>()
+
+        for (app, _) in appStates {
+            selectionForApp[app] = emptySet
+            timeForHighlight[app] = [:]
+
+            if app == appID {
+                delegate?.replace(selection: emptySet)
+                delegate?.replace(highlighted: emptySet)
+            }
+        }
+    }
 
     private func set(_ items: Set<Int>, group: Int?) {
         let appStates = ConnectionManager.instance.states(for: .timeline).enumerated()
