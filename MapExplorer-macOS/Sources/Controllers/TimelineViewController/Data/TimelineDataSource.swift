@@ -129,12 +129,12 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
             return "\(year)"
         } else if date.defaultDayUsed {
             let m = Month(rawValue: date.month) ?? .january
-            return "\(m.title), \(year)"
+            return "\(m.abbreviatedTitle), \(year)"
         }
 
         let m = Month(rawValue: date.month) ?? .january
-        let d = max(Int(date.day * 31), 1)
-        return "\(m.title) \(d), \(year)"
+        let d = max(Int(date.day * 31) + 1, 1)
+        return "\(m.abbreviatedTitle) \(d), \(year)"
     }
 
     private func yearInRange(for year: Int) -> Int {
