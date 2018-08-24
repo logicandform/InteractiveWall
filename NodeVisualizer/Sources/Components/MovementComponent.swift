@@ -44,7 +44,8 @@ class MovementComponent: GKComponent {
 
         switch state {
         case .falling:
-            fall()
+            // Break for now since we may not need falling state with new design
+            break
         case .seekEntity(let entity):
             seek(entity)
         case .seekLevel(let level):
@@ -70,11 +71,11 @@ class MovementComponent: GKComponent {
             entity.physicsBody.affectedByGravity = false
         case .tapped:
             entity.physicsBody.isDynamic = true
+        case .seekLevel(_), .seekEntity(_):
+            entity.node.removeAllActions()
         case .panning:
             entity.physicsBody.isDynamic = true
             entity.cluster?.updateLayerLevels(forPan: false)
-        default:
-            break
         }
     }
 
@@ -86,13 +87,13 @@ class MovementComponent: GKComponent {
         switch state {
         case .falling:
             entity.physicsBody.affectedByGravity = true
+        case .tapped:
+            entity.physicsBody.isDynamic = false
+            cluster()
         case .seekLevel(_), .seekEntity(_):
             entity.physicsBody.restitution = 0
             entity.physicsBody.friction = 1
             entity.physicsBody.linearDamping = 1
-        case .tapped:
-            entity.physicsBody.isDynamic = false
-            cluster()
         case .panning:
             entity.physicsBody.isDynamic = false
             entity.node.removeAllActions()

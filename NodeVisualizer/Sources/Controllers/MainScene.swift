@@ -62,9 +62,6 @@ class MainScene: SKScene {
     }
 
     private func addPhysics() {
-        let origin = CGPoint(x: -Constants.worldPadding, y: -Constants.worldPadding)
-        let size = CGSize(width: frame.width + Constants.worldPadding * 2, height: frame.height + Constants.worldPadding * 2)
-        physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(origin: origin, size: size))
         physicsWorld.gravity = .zero
     }
 
