@@ -63,7 +63,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
             if let events = source.eventsForYear[year] {
                 for event in events {
                     let start = CGFloat(event.dates.startDate.year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth
-                    let end = CGFloat(event.dates.endDate.year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth
+                    let end = event.dates.endDate != nil ? CGFloat(event.dates.endDate!.year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth : CGFloat(event.dates.startDate.year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth
                     let line = Line(event: event, start: start, end: end)
                     if !line.width.isZero {
                         diagram.add(line)
@@ -77,7 +77,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
             if let events = source.eventsForYear[year] {
                 for event in events {
                     let start = CGFloat(event.dates.startDate.year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth
-                    let end = CGFloat(event.dates.endDate.year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth
+                    let end = event.dates.endDate != nil ? CGFloat(event.dates.endDate!.year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth : CGFloat(event.dates.startDate.year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth
                     diagram.addMarkers(for: event, start: start, end: end)
                 }
             }

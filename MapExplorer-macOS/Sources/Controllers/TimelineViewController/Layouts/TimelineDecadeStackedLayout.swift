@@ -95,7 +95,7 @@ class TimelineDecadeStackedLayout: NSCollectionViewFlowLayout {
         let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
         let year = year ?? event.dates.startDate.year
         let x = CGFloat((year - source.firstYear) * type.sectionWidth)
-        let width = CGFloat((event.dates.endDate.year - event.dates.startDate.year) + 1) * Constants.cellSize.width
+        let width = event.dates.endDate != nil ? CGFloat((event.dates.endDate!.year - event.dates.startDate.year) + 1) * Constants.cellSize.width : Constants.cellSize.width
         let row = rowFor(event: event, xPosition: x, width: width)
         let y = Constants.cellSize.height * CGFloat(row) + Constants.headerHeight
         let frame = CGRect(origin: CGPoint(x: x, y: y), size: CGSize(width: width, height: Constants.cellSize.height))

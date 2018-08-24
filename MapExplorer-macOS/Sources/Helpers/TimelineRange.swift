@@ -7,15 +7,19 @@ import Cocoa
 /// Class containing a start and end date for Timeline items, as well as the ability to parse dates from a string
 struct TimelineRange: CustomStringConvertible, Equatable {
     var startDate: TimelineDate
-    var endDate: TimelineDate
+    var endDate: TimelineDate?
 
     var description: String {
-        return "\(startDate) - \(endDate)"
+        if let endDate = endDate {
+            return "\(startDate) - \(endDate)"
+        } else {
+            return "\(startDate)"
+        }
     }
 
     private struct Constants {
         static let minimumYear = 32
-        static let maximumDay = 30
+        static let maximumDay = 31
         static let days = Array(1...31)
         static let months = Array(1...12)
     }
@@ -43,7 +47,7 @@ struct TimelineRange: CustomStringConvertible, Equatable {
 
     // MARK: Helpers
 
-    private static func parseNumerical(dateArray: [String]) -> (startDate: TimelineDate, endDate: TimelineDate)? {
+    private static func parseNumerical(dateArray: [String]) -> (startDate: TimelineDate, endDate: TimelineDate?)? {
         var start: TimelineDate? = nil
         var end: TimelineDate? = nil
         var startDay: CGFloat? = nil
@@ -55,18 +59,26 @@ struct TimelineRange: CustomStringConvertible, Equatable {
         for date in dateArray {
             if let numericalDate = Int(date) {
                 if startDay == nil, Constants.days.contains(numericalDate) {
-                    startDay = CGFloat(numericalDate - 1) / CGFloat(Constants.maximumDay)
+                    startDay = CGFloat(numericalDate) / CGFloat(Constants.maximumDay)
                 } else if startMonth == nil, Constants.months.contains(numericalDate) {
                     startMonth = numericalDate - 1
                 } else if startYear == nil, numericalDate > Constants.minimumYear {
                     startYear = numericalDate
                 } else if endDay == nil, Constants.days.contains(numericalDate) {
-                    endDay = CGFloat(numericalDate - 1) / CGFloat(Constants.maximumDay)
+                    endDay = CGFloat(numericalDate) / CGFloat(Constants.maximumDay)
                 } else if endMonth == nil, Constants.months.contains(numericalDate) {
                     endMonth = numericalDate - 1
                 } else if endYear == nil, numericalDate > Constants.minimumYear {
                     endYear = numericalDate
                 }
+            }
+        }
+
+        if endDay == nil && endMonth == nil && endYear == nil {
+            if let year = startYear {
+                return (startDate: TimelineDate(day: startDay, month: startMonth, year: year), endDate: nil)
+            } else {
+                return nil
             }
         }
 
@@ -96,7 +108,7 @@ struct TimelineRange: CustomStringConvertible, Equatable {
         }
     }
 
-    private static func parseNonNumerical(dateArray: [String]) -> (startDate: TimelineDate, endDate: TimelineDate)? {
+    private static func parseNonNumerical(dateArray: [String]) -> (startDate: TimelineDate, endDate: TimelineDate?)? {
         var start: TimelineDate? = nil
         var end: TimelineDate? = nil
         var startDay: CGFloat? = nil
@@ -116,15 +128,15 @@ struct TimelineRange: CustomStringConvertible, Equatable {
 
             if let day = Int(date), Constants.days.contains(day) {
                 if startDay == nil {
-                    startDay = CGFloat(day - 1) / CGFloat(Constants.maximumDay)
+                    startDay = CGFloat(day) / CGFloat(Constants.maximumDay)
                 } else {
-                    endDay = CGFloat(day - 1) / CGFloat(Constants.maximumDay)
+                    endDay = CGFloat(day) / CGFloat(Constants.maximumDay)
                 }
             } else if let day = Int(date.digitsInString), Constants.days.contains(day) {
                 if startDay == nil {
-                    startDay = CGFloat(day - 1) / CGFloat(Constants.maximumDay)
+                    startDay = CGFloat(day) / CGFloat(Constants.maximumDay)
                 } else {
-                    endDay = CGFloat(day - 1) / CGFloat(Constants.maximumDay)
+                    endDay = CGFloat(day) / CGFloat(Constants.maximumDay)
                 }
             }
 
@@ -140,6 +152,14 @@ struct TimelineRange: CustomStringConvertible, Equatable {
                 } else {
                     endMonth = month.rawValue
                 }
+            }
+        }
+
+        if endDay == nil && endMonth == nil && endYear == nil {
+            if let year = startYear {
+                return (startDate: TimelineDate(day: startDay, month: startMonth, year: year), endDate: nil)
+            } else {
+                return nil
             }
         }
 
@@ -170,6 +190,6 @@ struct TimelineRange: CustomStringConvertible, Equatable {
     }
 
     static func == (lhs: TimelineRange, rhs: TimelineRange) -> Bool {
-        return lhs.startDate.day == rhs.startDate.day && lhs.startDate.month == rhs.startDate.month && lhs.startDate.year == rhs.startDate.year && lhs.endDate.day == rhs.endDate.day && lhs.endDate.month == rhs.endDate.month && lhs.endDate.year == rhs.endDate.year
+        return lhs.startDate.day == rhs.startDate.day && lhs.startDate.month == rhs.startDate.month && lhs.startDate.year == rhs.startDate.year && lhs.endDate?.day == rhs.endDate?.day && lhs.endDate?.month == rhs.endDate?.month && lhs.endDate?.year == rhs.endDate?.year
     }
 }
