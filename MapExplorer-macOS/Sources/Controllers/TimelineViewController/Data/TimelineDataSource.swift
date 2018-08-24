@@ -81,7 +81,6 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
         timelineFlag.event = event
         timelineFlag.dateTextField.attributedStringValue = NSAttributedString(string: dateTitle(for: timelineFlag.event.dates), attributes: style.timelineDateAttributes)
         timelineFlag.set(highlighted: selectedIndexes.contains(indexPath.item), animated: false)
-
         return timelineFlag
     }
 
