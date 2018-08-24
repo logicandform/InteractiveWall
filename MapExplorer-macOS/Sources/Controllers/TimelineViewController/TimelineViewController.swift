@@ -14,34 +14,24 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     @IBOutlet weak var timelineCollectionView: FlippedCollectionView!
     @IBOutlet weak var timelineClipView: NSClipView!
     @IBOutlet weak var timelineScrollView: NSScrollView!
-    @IBOutlet weak var monthCollectionView: NSCollectionView!
-    @IBOutlet weak var monthClipView: NSClipView!
-    @IBOutlet weak var monthScrollView: NSScrollView!
-    @IBOutlet weak var yearCollectionView: NSCollectionView!
-    @IBOutlet weak var yearClipView: NSClipView!
-    @IBOutlet weak var yearScrollView: NSScrollView!
     @IBOutlet weak var decadeCollectionView: NSCollectionView!
     @IBOutlet weak var decadeClipView: NSClipView!
     @IBOutlet weak var decadeScrollView: NSScrollView!
     @IBOutlet weak var timelineIndicatorView: NSView!
 
     var gestureManager: GestureManager!
-    var currentDate = Constants.initialDate
+    private(set) var currentDate = Constants.initialDate
     private(set) var timelineType = TimelineType.decade
     private var timelineHandler: TimelineHandler?
     private let source = TimelineDataSource()
     private let controlsSource = TimelineControlsDataSource()
-
     private var timerForTouch = [Touch: Timer]()
     private var itemForTouch = [Touch: Int]()
     private var createRecordForTouch = [Touch: Bool]()
 
     private struct Constants {
-        static let timelineCellWidth: CGFloat = 20
-        static let timelineSelectedCellWidth: CGFloat = 150
         static let animationDuration = 0.5
         static let controlItemWidth: CGFloat = 70
-        static let timelineControlWidth: CGFloat = 490
         static let timelineControlItemWidth: CGFloat = 70
         static let timelineIndicatorBorderRadius: CGFloat = 8
         static let timelineIndicatorBorderWidth: CGFloat = 2
@@ -138,22 +128,12 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         controlsSource.firstYear = source.firstYear
         controlsSource.lastYear = source.lastYear
         controlsSource.years = source.years
-        controlsSource.monthCollectionView = monthCollectionView
-        controlsSource.yearCollectionView = yearCollectionView
         controlsSource.decadeCollectionView = decadeCollectionView
-        setupControls(in: monthCollectionView, scrollView: monthScrollView)
-        setupControls(in: yearCollectionView, scrollView: yearScrollView)
         setupControls(in: decadeCollectionView, scrollView: decadeScrollView)
         timelineIndicatorView.wantsLayer = true
         timelineIndicatorView.layer?.cornerRadius = Constants.timelineIndicatorBorderRadius
         timelineIndicatorView.layer?.borderWidth = Constants.timelineIndicatorBorderWidth
         timelineIndicatorView.layer?.borderColor = style.selectedColor.cgColor
-        setupControlGradients()
-    }
-
-    private func setupControlGradients() {
-        setupHorizontalGradient(in: monthScrollView)
-        setupHorizontalGradient(in: yearScrollView)
         setupHorizontalGradient(in: decadeScrollView)
     }
 
@@ -170,14 +150,8 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
             self?.didLongTapOnTimeline(gesture, touch)
         }
 
-        addGestures(to: monthCollectionView)
-        addGestures(to: yearCollectionView)
-        addGestures(to: decadeCollectionView)
-    }
-
-    private func addGestures(to collectionView: NSCollectionView) {
         let panGesture = PanGestureRecognizer()
-        gestureManager.add(panGesture, to: collectionView)
+        gestureManager.add(panGesture, to: decadeCollectionView)
         panGesture.gestureUpdated = { [weak self] gesture in
             self?.didPanOnControl(gesture)
         }
@@ -258,10 +232,6 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         let days = -(offset.dx / Constants.timelineControlItemWidth)
 
         switch collectionView {
-        case monthCollectionView:
-            add(days: days)
-        case yearCollectionView:
-            add(days: days * 12)
         case decadeCollectionView:
             add(days: days * 120)
         case timelineCollectionView:
@@ -376,30 +346,6 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     }
 
 
-    // MARK: Control Selection
-
-    private func setupControls(in collectionView: NSCollectionView, scrollView: NSScrollView) {
-        collectionView.register(TimelineControlItemView.self, forItemWithIdentifier: TimelineControlItemView.identifier)
-        collectionView.register(TimelineBorderView.self, forItemWithIdentifier: TimelineBorderView.identifier)
-        scrollView.horizontalScroller?.alphaValue = 0
-        collectionView.dataSource = controlsSource
-        collectionView.reloadData()
-    }
-
-    private func setupHorizontalGradient(in view: NSView) {
-        view.wantsLayer = true
-        let transparent = CGColor.clear
-        let opaque = style.darkBackgroundOpaque.cgColor
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = view.bounds
-        gradientLayer.colors = [transparent, opaque, opaque, transparent]
-        gradientLayer.locations = [0, NSNumber(value: Constants.fadePercentage), NSNumber(value: 1 - Constants.fadePercentage), 1]
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
-        gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
-        view.layer?.mask = gradientLayer
-    }
-
-
     // MARK: SelectionHandler
 
     // Updates the highlighted state of the given items, updates tail views
@@ -470,6 +416,27 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
 
     // MARK: Helpers
 
+    private func setupControls(in collectionView: NSCollectionView, scrollView: NSScrollView) {
+        collectionView.register(TimelineControlItemView.self, forItemWithIdentifier: TimelineControlItemView.identifier)
+        collectionView.register(TimelineBorderView.self, forItemWithIdentifier: TimelineBorderView.identifier)
+        scrollView.horizontalScroller?.alphaValue = 0
+        collectionView.dataSource = controlsSource
+        collectionView.reloadData()
+    }
+
+    private func setupHorizontalGradient(in view: NSView) {
+        view.wantsLayer = true
+        let transparent = CGColor.clear
+        let opaque = style.darkBackgroundOpaque.cgColor
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = view.bounds
+        gradientLayer.colors = [transparent, opaque, opaque, transparent]
+        gradientLayer.locations = [0, NSNumber(value: Constants.fadePercentage), NSNumber(value: 1 - Constants.fadePercentage), 1]
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
+        gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
+        view.layer?.mask = gradientLayer
+    }
+
     private func postRecordNotification(for timelineItem: TimelineFlagView) {
         let translatedXPosition = timelineItem.view.frame.origin.x + (timelineItem.view.frame.width / 2) - timelineCollectionView.visibleRect.origin.x
         let transformedXPosition = max(0, translatedXPosition)
@@ -481,25 +448,6 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
 
     private func scrollCollectionViews(animated: Bool = false) {
         let centerInset = Constants.controlItemWidth * 3
-
-        let dayOffset = (currentDate.day - 0.5) * Constants.controlItemWidth
-        let monthMaxX = CGFloat(Month.allValues.count) * Constants.controlItemWidth
-        let monthX = CGFloat(currentDate.month) * Constants.controlItemWidth
-        var monthRect = monthCollectionView.visibleRect
-        monthRect.origin.x = monthX - centerInset + dayOffset
-        if monthRect.origin.x < 0 {
-            monthRect.origin.x = monthMaxX + monthRect.origin.x
-        }
-
-        let monthOffset = (CGFloat(currentDate.month) / 12) * Constants.controlItemWidth
-        let yearMaxX = CGFloat(source.years.count) * Constants.controlItemWidth
-        let yearIndex = source.years.index(of: currentDate.year) != nil ? source.years.index(of: currentDate.year) : currentDate.year < source.firstYear ? -1 : source.years.count - 1
-        let yearX = CGFloat(yearIndex!) * Constants.controlItemWidth
-        var yearRect = yearCollectionView.visibleRect
-        yearRect.origin.x = yearX - centerInset + monthOffset
-        if yearRect.origin.x < 0 {
-            yearRect.origin.x = yearMaxX + yearRect.origin.x
-        }
 
         let yearOffset = (CGFloat(currentDate.year.array.last!) / 10) * Constants.controlItemWidth
         let decade = decadeFor(year: currentDate.year)
@@ -514,12 +462,8 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         }
 
         if animated {
-            monthCollectionView.animate(to: monthRect.origin, duration: Constants.resetAnimationDuration)
-            yearCollectionView.animate(to: yearRect.origin, duration: Constants.resetAnimationDuration)
             decadeCollectionView.animate(to: decadeRect.origin, duration: Constants.resetAnimationDuration)
         } else {
-            monthCollectionView.scrollToVisible(monthRect)
-            yearCollectionView.scrollToVisible(yearRect)
             decadeCollectionView.scrollToVisible(decadeRect)
         }
 
@@ -565,13 +509,9 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
 
     private func collectionView(for type: TimelineType) -> NSCollectionView? {
         switch type {
-        case .month:
-            return monthCollectionView
-        case .year:
-            return yearCollectionView
         case .decade:
             return decadeCollectionView
-        case .century:
+        case .month, .year, .century:
             return nil
         }
     }

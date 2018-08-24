@@ -103,8 +103,10 @@ class TimelineControlLayout: NSCollectionViewFlowLayout {
         let indexPath = IndexPath(item: 0, section: 0)
         let attributes = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: TimelineBorderView.supplementaryKind, with: indexPath)
         let x = CGFloat(items - Constants.visibleItems) * Constants.itemWidth
-        let height = collectionView?.frame.height ?? 0
-        attributes.frame = CGRect(origin: CGPoint(x: x, y: 0), size: CGSize(width: style.timelineBorderWidth, height: height))
+        let collectionViewHeight = collectionView?.frame.height ?? 0
+        let height = collectionViewHeight * 3/5
+        let y = collectionViewHeight * 1/5
+        attributes.frame = CGRect(origin: CGPoint(x: x, y: y), size: CGSize(width: style.timelineBorderWidth, height: height))
         attributes.zIndex = 10
         return attributes
     }
