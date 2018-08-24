@@ -14,7 +14,6 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     private(set) var events = [TimelineEvent]()
     private(set) var eventsForYear = [Int: [TimelineEvent]]()
     private(set) var eventsForMonth = [Int: [Month: [TimelineEvent]]]()
-    private(set) var overflowEventForPath = [Int: TimelineEvent]()
     private(set) var firstYear: Int!
     private(set) var lastYear: Int!
     private(set) var years = [Int]()
