@@ -8,13 +8,13 @@ let style = Style()
 
 
 struct Configuration {
-    static let touchPort: UInt16 = 13003
+    static let touchPort: UInt16 = 13000
     static let serverIP = "10.58.73.211"
     static let broadcastIP = "10.58.73.255"
     static let serverURL = "http://\(serverIP):3000"
     static let appsPerScreen = 2
-    static let numberOfScreens = 1
-    static let localMediaURLs = false
+    static let numberOfScreens = 3
+    static let localMediaURLs = true
     static let spawnMapsImmediately = false
     static let touchScreenSize = CGSize(width: 21564, height: 12116)
     static let refreshRate = 1.0 / 60.0

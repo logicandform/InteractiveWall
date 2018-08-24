@@ -28,7 +28,9 @@ class BaseViewController: NSViewController, GestureResponder {
     override func viewDidLoad() {
         super.viewDidLoad()
         gestureManager = GestureManager(responder: self)
-        gestureManager.touchReceived = receivedTouch(_:)
+        gestureManager.touchReceived = { [weak self] touch in
+            self?.receivedTouch(touch)
+        }
 
         setupGestures()
         setupWindowDragArea()
@@ -105,16 +107,16 @@ class BaseViewController: NSViewController, GestureResponder {
 
     func animateViewIn() {
         view.alphaValue = 0
-        NSAnimationContext.runAnimationGroup({ _ in
+        NSAnimationContext.runAnimationGroup({ [weak self] _ in
             NSAnimationContext.current.duration = Constants.animationDuration
-            view.animator().alphaValue = 1
+            self?.view.animator().alphaValue = 1
         })
     }
 
     func animateViewOut() {
-        NSAnimationContext.runAnimationGroup({ _ in
+        NSAnimationContext.runAnimationGroup({ [weak self] _ in
             NSAnimationContext.current.duration = Constants.animationDuration
-            view.animator().alphaValue = 0
+            self?.view.animator().alphaValue = 0
         }, completionHandler: { [weak self] in
             self?.close()
         })

@@ -123,7 +123,9 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         showRelatedItemsImage.isHidden = record.relatedRecords.isEmpty
         recordTypeSelectionView.stackview.alphaValue = 0
         recordTypeSelectionView.initialize(with: record, manager: gestureManager)
-        recordTypeSelectionView.selectionCallback = didSelectRelatedItemsFilterType(_:)
+        recordTypeSelectionView.selectionCallback = { [weak self] type in
+            self?.didSelectRelatedItemsFilterType(type)
+        }
         relatedRecords = record.relatedRecords.sorted(by: { $0.priority > $1.priority })
         updateRelatedRecordsHeight()
     }

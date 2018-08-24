@@ -49,9 +49,9 @@ class SearchItemView: NSCollectionViewItem {
 
     func set(loading: Bool) {
         if loading {
-            spinner.startAnimation(self)
+            spinner.startAnimation(nil)
         } else {
-            spinner.stopAnimation(self)
+            spinner.stopAnimation(nil)
         }
 
         titleTextField.isHidden = loading

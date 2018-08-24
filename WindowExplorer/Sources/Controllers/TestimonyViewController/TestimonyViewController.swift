@@ -49,10 +49,6 @@ class TestimonyViewController: BaseViewController, NSCollectionViewDelegateFlowL
         animateViewIn()
     }
 
-    override func viewDidAppear() {
-        super.viewDidAppear()
-    }
-
 
     // MARK: API
 

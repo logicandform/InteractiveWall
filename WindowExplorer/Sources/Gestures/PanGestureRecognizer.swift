@@ -27,7 +27,9 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     override init() {
         super.init()
         let miliseconds = Int(round(Configuration.refreshRate * 1000))
-        self.momentumTimer = DispatchTimer(interval: .milliseconds(miliseconds), handler: updateMomentum)
+        self.momentumTimer = DispatchTimer(interval: .milliseconds(miliseconds), handler: { [weak self] in
+            self?.updateMomentum()
+        })
     }
 
 

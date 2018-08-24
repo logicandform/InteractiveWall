@@ -60,7 +60,9 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
         gestureManager = GestureManager(responder: self)
-        gestureManager.touchReceived = receivedTouch(_:)
+        gestureManager.touchReceived = { [weak self] touch in
+            self?.receivedTouch(touch)
+        }
 
         setupSwitches()
         setupGestures()

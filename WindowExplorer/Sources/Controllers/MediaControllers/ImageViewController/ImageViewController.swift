@@ -66,7 +66,9 @@ class ImageViewController: MediaViewController {
 
     private func setupZoomControl() {
         imageZoomControl.gestureManager = gestureManager
-        imageZoomControl.zoomSliderUpdated = didScrubZoomSlider(_:)
+        imageZoomControl.zoomSliderUpdated = { [weak self] scale in
+            self?.didScrubZoomSlider(scale)
+        }
         imageZoomControl.tintColor = media.tintColor
     }
 

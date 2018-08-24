@@ -65,7 +65,9 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         gestureManager = GestureManager(responder: self)
-        gestureManager.touchReceived = receivedTouch(_:)
+        gestureManager.touchReceived = { [weak self] touch in
+            self?.receivedTouch(touch)
+        }
         viewForButtonType = [.split: splitScreenButton, .map: mapToggleButton, .timeline: timelineToggleButton, .information: informationButton, .settings: settingsButton, .testimony: testimonyButton, .search: searchButton, .accessibility: accessibilityButton]
 
         setupMenu()

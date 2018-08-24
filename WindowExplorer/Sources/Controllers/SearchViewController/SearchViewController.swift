@@ -300,9 +300,9 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     }
 
     override func animateViewOut() {
-        NSAnimationContext.runAnimationGroup({ _ in
+        NSAnimationContext.runAnimationGroup({ [weak self] _ in
             NSAnimationContext.current.duration = Constants.animationDuration
-            view.animator().alphaValue = 0
+            self?.view.animator().alphaValue = 0
         }, completionHandler: { [weak self] in
             self?.close()
         })
@@ -421,13 +421,13 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
         updateHeight(for: view)
 
-        NSAnimationContext.runAnimationGroup({ _ in
+        NSAnimationContext.runAnimationGroup({ [weak self] _ in
             NSAnimationContext.current.duration = Constants.animationDuration
             for indexOfView in 0 ..< collectionViews.count {
-                collectionViews.at(index: indexOfView)?.animator().alphaValue = indexOfView <= index ? 1 : 0
-                titleViews.at(index: indexOfView)?.animator().alphaValue = indexOfView <= index ? 1 : 0
+                self?.collectionViews.at(index: indexOfView)?.animator().alphaValue = indexOfView <= index ? 1 : 0
+                self?.titleViews.at(index: indexOfView)?.animator().alphaValue = indexOfView <= index ? 1 : 0
             }
-            collapseButtonArea.animator().alphaValue = index.isZero ? 0 : 1
+            self?.collapseButtonArea.animator().alphaValue = index.isZero ? 0 : 1
         }, completionHandler: completion)
 
         var frame = window.frame

@@ -105,7 +105,9 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
 
     private func setupZoomControl() {
         zoomControl.gestureManager = gestureManager
-        zoomControl.zoomSliderUpdated = didScrubZoomSlider(_:)
+        zoomControl.zoomSliderUpdated = { [weak self] scale in
+            self?.didScrubZoomSlider(scale)
+        }
         zoomControl.tintColor = media.tintColor
     }
 
