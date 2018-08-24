@@ -86,24 +86,19 @@ class NodeBoundingRenderComponent: GKComponent {
         // Scale its own bounding node by using its previous level's bounding node maxRadius
         if let previousLevelNodeBoundingEntity = cluster.layerForLevel[level - 1], let currentNode = node {
             let previousLevelBoundingNodeRadius = previousLevelNodeBoundingEntity.nodeBoundingRenderComponent.maxRadius
-            if previousLevelBoundingNodeRadius > currentRadius {
-                let difference = previousLevelBoundingNodeRadius - currentRadius
-                let sqrtDiff = CGFloat(sqrt(Float(difference)))
-                currentRadius += sqrtDiff
-            } else {
-                currentRadius = previousLevelBoundingNodeRadius
-            }
-
+            let difference = abs(previousLevelBoundingNodeRadius - currentRadius)
+            let sqrtDiff = CGFloat(sqrt(Float(difference)))
+            currentRadius += previousLevelBoundingNodeRadius > currentRadius ? sqrtDiff : -sqrtDiff
             minRadius = currentRadius
 
             // Create new physicsBody based on the previous level bounding node's maxRadius. Scaling its own bounding node causes "stuck collisions" to its physicsBody
-            let newPhysicsBody = SKPhysicsBody(circleOfRadius: currentRadius)
+            let newPhysicsBody = SKPhysicsBody(circleOfRadius: currentRadius + Constants.minimumOffset)
             newPhysicsBody.categoryBitMask = currentNode.physicsBody!.categoryBitMask
             newPhysicsBody.collisionBitMask = currentNode.physicsBody!.collisionBitMask
             newPhysicsBody.contactTestBitMask = currentNode.physicsBody!.contactTestBitMask
             newPhysicsBody.isDynamic = false
             newPhysicsBody.restitution = 0
-            newPhysicsBody.friction = 0
+            newPhysicsBody.friction = 1
 
             currentNode.physicsBody = nil
             currentNode.physicsBody = newPhysicsBody

@@ -115,7 +115,7 @@ final class NodeCluster: Hashable {
         let dY = Float(y)
         return CGFloat(hypotf(dX, dY))
     }
-    
+
 
     // MARK: Helpers
 
