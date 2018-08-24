@@ -20,7 +20,7 @@ struct TimelineDate: CustomStringConvertible, Comparable {
         }
 
         let m = Month(rawValue: month) ?? .january
-        let d = max(Int(day * 31) + 1, 1)
+        let d = max(Int(day * 31), 1)
         return "\(m.abbreviatedTitle) \(d), \(year)"
     }
 

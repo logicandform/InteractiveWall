@@ -133,7 +133,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
         }
 
         let m = Month(rawValue: date.month) ?? .january
-        let d = max(Int(date.day * 31) + 1, 1)
+        let d = max(Int(date.day * 31), 1)
         return "\(m.abbreviatedTitle) \(d), \(year)"
     }
 
