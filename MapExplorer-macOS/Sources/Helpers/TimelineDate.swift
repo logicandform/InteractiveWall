@@ -16,12 +16,12 @@ struct TimelineDate: CustomStringConvertible, Comparable {
             return "\(year)"
         } else if defaultDayUsed {
             let m = Month(rawValue: month) ?? .january
-            return "\(m.title), \(year)"
+            return "\(m.abbreviatedTitle), \(year)"
         }
 
         let m = Month(rawValue: month) ?? .january
         let d = max(Int(day * 31), 1)
-        return "\(m.title) \(d), \(year)"
+        return "\(m.abbreviatedTitle) \(d), \(year)"
     }
 
     var toJSON: JSON {
@@ -77,5 +77,9 @@ struct TimelineDate: CustomStringConvertible, Comparable {
             return lhs.month < rhs.month
         }
         return lhs.year < rhs.year
+    }
+
+    public static func == (lhs: TimelineDate, rhs: TimelineDate) -> Bool {
+        return lhs.day == rhs.day && lhs.month == rhs.month && lhs.year == rhs.year
     }
 }

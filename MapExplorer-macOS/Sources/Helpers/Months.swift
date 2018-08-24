@@ -137,6 +137,35 @@ enum Month: Int {
         }
     }
 
+    var abbreviatedTitle: String {
+        switch self {
+        case .january:
+            return "Jan"
+        case .february:
+            return "Feb"
+        case .march:
+            return "March"
+        case .april:
+            return "April"
+        case .may:
+            return "May"
+        case .june:
+            return "June"
+        case .july:
+            return "July"
+        case .august:
+            return "Aug"
+        case .september:
+            return "Sept"
+        case .october:
+            return "Oct"
+        case .november:
+            return "Nov"
+        case .december:
+            return "Dec"
+        }
+    }
+
     static var allValues: [Month] {
         return [.january, .february, .march, .april, .may, .june, .july, .august, .september, .october, .november, .december]
     }
