@@ -49,7 +49,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
             if event.dates.startDate.year < firstYear + type.infiniteBuffer {
                 let infiniteBufferEvent = TimelineEvent(id: event.id, type: event.type, title: event.title, dates: event.dates)
                 infiniteBufferEvent.dates.startDate.year += years.count
-                infiniteBufferEvent.dates.endDate.year += years.count
+                infiniteBufferEvent.dates.endDate?.year += years.count
                 events.append(infiniteBufferEvent)
             }
         }
@@ -116,7 +116,11 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
 
     private func dateTitle(for dates: TimelineRange) -> String {
         if dates.startDate.year > lastYear {
-            return "\(dateTitle(for: dates.startDate)) - \(dateTitle(for: dates.endDate))"
+            if let endDate = dates.endDate {
+                return "\(dateTitle(for: dates.startDate)) - \(dateTitle(for: endDate))"
+            } else {
+                return "\(dateTitle(for: dates.startDate))"
+            }
         } else {
             return dates.description
         }

@@ -62,10 +62,10 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
         for year in (source.firstYear...source.lastYear + Constants.infiniteScrollBuffer) {
             if let events = source.eventsForYear[year] {
                 for event in events {
-                    let start = CGFloat(event.dates.startDate.year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth
-                    let end = CGFloat(event.dates.endDate.year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth
-                    let line = Line(event: event, start: start, end: end)
-                    if !line.width.isZero {
+                    if let endDate = event.dates.endDate {
+                        let start = (CGFloat(event.dates.startDate.year) - CGFloat(source.firstYear)) * Constants.yearWidth
+                        let end = (CGFloat(endDate.year) - CGFloat(source.firstYear)) * Constants.yearWidth
+                        let line = Line(event: event, start: start, end: end)
                         diagram.add(line)
                     }
                 }
@@ -76,9 +76,11 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
         for year in (source.firstYear...source.lastYear + Constants.infiniteScrollBuffer) {
             if let events = source.eventsForYear[year] {
                 for event in events {
-                    let start = CGFloat(event.dates.startDate.year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth
-                    let end = CGFloat(event.dates.endDate.year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth
-                    diagram.addMarkers(for: event, start: start, end: end)
+                    if let endDate = event.dates.endDate {
+                        let start = CGFloat(event.dates.startDate.year) * Constants.yearWidth - CGFloat(source.firstYear) * Constants.yearWidth
+                        let end = (CGFloat(endDate.year) - CGFloat(source.firstYear)) * Constants.yearWidth
+                        diagram.addMarkers(for: event, start: start, end: end)
+                    }
                 }
             }
         }
