@@ -63,9 +63,10 @@ final class NodeCluster: Hashable {
     }
 
     /// Updates the layers in the cluster for when the selected entity is panning
-    func updateLayerLevels(forPan panning: Bool) {
-        let level = panning ? 0 : entitiesForLevel.count
+    func updateLayerLevels(forPan pan: Bool) {
+        let level = pan ? 0 : entitiesForLevel.count
         setLayers(toLevel: level)
+        updateInnerMostLayerBitMasks(forPan: pan)
         for entities in entitiesForLevel {
             for entity in entities {
                 entity.hasCollidedWithBoundingNode = false
@@ -216,6 +217,23 @@ final class NodeCluster: Hashable {
         }
     }
 
+    private func updateInnerMostLayerBitMasks(forPan pan: Bool) {
+        guard let innerMostLayerPhysicsBody = layerForLevel[0]?.nodeBoundingRenderComponent.node?.physicsBody else {
+            return
+        }
+
+        if pan {
+            innerMostLayerPhysicsBody.categoryBitMask = ColliderType.panBoundingNode
+            innerMostLayerPhysicsBody.collisionBitMask = ColliderType.panBoundingNode
+            innerMostLayerPhysicsBody.contactTestBitMask = ColliderType.panBoundingNode
+        } else {
+            let bitMasks = layerBitMasks(forLevel: 0)
+            innerMostLayerPhysicsBody.categoryBitMask = bitMasks.categoryBitMask
+            innerMostLayerPhysicsBody.collisionBitMask = bitMasks.collisionBitMask
+            innerMostLayerPhysicsBody.contactTestBitMask = bitMasks.contactTestBitMask
+        }
+    }
+
     /// Creates the bounding node with the appropriate physics bodies and adds it to the scene
     private func layerNode(radius: CGFloat, level: Int) -> SKNode {
         let boundingNode = SKNode()
@@ -239,9 +257,9 @@ final class NodeCluster: Hashable {
         return boundingNode
     }
 
-    /// Provides the bitMasks for the bounding node's physics bodies. The bits are offset by 20 in order to make them unique from the level entity's bitMasks.
+    /// Provides the bitMasks for the bounding node's physics bodies. The bits are offset by 10 in order to make them unique from the level entity's bitMasks.
     private func layerBitMasks(forLevel level: Int) -> ColliderType {
-        let levelBit = 20 + level
+        let levelBit = 10 + level
         let categoryBitMask: UInt32 = 1 << levelBit
         let contactTestBitMask: UInt32 = 1 << levelBit
         let collisionBitMask: UInt32 = 1 << levelBit
