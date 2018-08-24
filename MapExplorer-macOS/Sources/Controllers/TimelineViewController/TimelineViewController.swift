@@ -195,9 +195,9 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
             createRecordForTouch[touch] = false
         case .ended, .doubleTapped:
             timerForTouch[touch]?.invalidate()
-            if let item = itemForTouch[touch], let timelineItem = timelineCollectionView.item(at: IndexPath(item: item, section: 0)) as? TimelineFlagView {
+            if let item = itemForTouch[touch] {
                 SelectionManager.instance.set(item: item, selected: false)
-                if let status = createRecordForTouch[touch], status {
+                if let timelineItem = timelineCollectionView.item(at: IndexPath(item: item, section: 0)) as? TimelineFlagView, let status = createRecordForTouch[touch], status {
                     postRecordNotification(for: timelineItem)
                 }
             }
@@ -388,29 +388,62 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
 
     private func set(item: Int, selected: Bool, animated: Bool) {
         // Update data source
-        if selected {
-            source.selectedIndexes.insert(item)
-        } else {
-            source.selectedIndexes.remove(item)
-        }
+//        if selected {
+//            source.selectedIndexes.insert(item)
+//        } else {
+//            source.selectedIndexes.remove(item)
+//        }
 
         // Update views
-        if let timelineFlagView = timelineCollectionView.item(at: IndexPath(item: item, section: 0)) as? TimelineFlagView {
-            timelineFlagView.set(highlighted: selected, animated: animated)
+        let selectedEvent = source.events[item]
+//        if let timelineFlagView = timelineCollectionView.item(at: IndexPath(item: item, section: 0)) as? TimelineFlagView {
+        source.events.filter({ $0 == selectedEvent }).forEach { event in
+            guard let index = source.events.index(where: { (currentEvent) -> Bool in
+                return currentEvent.id == event.id && currentEvent.type == event.type && currentEvent.title == event.title && currentEvent.dates == event.dates
+            }) else {
+                return
+            }
+
+            if selected {
+                source.selectedIndexes.insert(index)
+            } else {
+                source.selectedIndexes.remove(index)
+            }
+            let timelineFlagView = timelineCollectionView.item(at: IndexPath(item: index, section: 0)) as? TimelineFlagView
+            timelineFlagView?.set(highlighted: selected, animated: animated)
         }
+
+
+//            timelineFlagView.set(highlighted: selected, animated: animated)
+//        }
     }
 
     private func set(item: Int, highlighted: Bool) {
         // Update data source
-        if highlighted {
-            source.highlightedIndexes.insert(item)
-        } else {
-            source.highlightedIndexes.remove(item)
-        }
+//        if highlighted {
+//            source.highlightedIndexes.insert(item)
+//        } else {
+//            source.highlightedIndexes.remove(item)
+//        }
 
         // Update model
-        let event = source.events[item]
-        event.highlighted = highlighted
+//        let event = source.events[item]
+//        event.highlighted = highlighted
+        let selectedEvent = source.events[item]
+        source.events.filter({ $0 == selectedEvent }).forEach { event in
+            guard let index = source.events.index(where: { (currentEvent) -> Bool in
+                return currentEvent.id == event.id && currentEvent.type == event.type && currentEvent.title == event.title && currentEvent.dates == event.dates
+            }) else {
+                return
+            }
+
+            if highlighted {
+                source.highlightedIndexes.insert(index)
+            } else {
+                source.highlightedIndexes.remove(index)
+            }
+            event.highlighted = highlighted
+        }
     }
 
 
