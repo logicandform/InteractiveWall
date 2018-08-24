@@ -103,7 +103,6 @@ class MainScene: SKScene {
         switch tap.state {
         case .ended:
             select(recordNode)
-            break
         default:
             return
         }

@@ -19,7 +19,6 @@ final class NodeCluster: Hashable {
     private(set) var selectedEntity: RecordEntity
     private(set) var entitiesForLevel = EntityLevels()
     private(set) var layerForLevel = [Int: NodeBoundingEntity]()
-    var radiusSnapshotForLayerComponent = [NodeBoundingRenderComponent: CGFloat]()
     private let scene: MainScene
 
     var hashValue: Int {
