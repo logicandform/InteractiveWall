@@ -115,17 +115,7 @@ final class NodeCluster: Hashable {
         let dY = Float(y)
         return CGFloat(hypotf(dX, dY))
     }
-
-    /// Takes a snapshot for each layer render component's minimum radius
-    func snapshot() {
-//        radiusSnapshotForLayerComponent.removeAll()
-        for (_, layer) in layerForLevel {
-            layer.nodeBoundingRenderComponent.snapshot = layer.nodeBoundingRenderComponent.minRadius
-//            radiusSnapshotForLayerComponent[layer.nodeBoundingRenderComponent] = layer.nodeBoundingRenderComponent.minRadius
-        }
-    }
-
-
+    
 
     // MARK: Helpers
 
