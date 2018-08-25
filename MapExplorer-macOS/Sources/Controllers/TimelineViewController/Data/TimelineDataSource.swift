@@ -18,7 +18,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     private(set) var lastYear: Int!
     private(set) var years = [Int]()
     private let type = TimelineType.decade
-    private var totalUniqueEvents: Int!
+    private var totalUniqueEvents: Int! = 0
 
     private struct Constants {
         static let screenWidth = 1920
