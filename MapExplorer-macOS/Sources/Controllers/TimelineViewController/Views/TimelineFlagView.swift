@@ -28,6 +28,7 @@ class TimelineFlagView: NSCollectionViewItem {
         static let dateFieldHeight: CGFloat = 20
         static let animationDuration = 0.15
         static let mediaImageHeight: CGFloat = 98
+        static let backgroundColorAnimationKey = "backgroundColor"
     }
 
 
@@ -55,11 +56,11 @@ class TimelineFlagView: NSCollectionViewItem {
     func set(highlighted: Bool, animated: Bool) {
         if animated {
             flagView.layer?.backgroundColor = highlighted ? tintColor.cgColor : style.timelineFlagBackgroundColor.cgColor
-            let animateColor = CABasicAnimation(keyPath: "backgroundColor")
+            let animateColor = CABasicAnimation(keyPath: Constants.backgroundColorAnimationKey)
             animateColor.fromValue = highlighted ? style.timelineFlagBackgroundColor.cgColor : tintColor.cgColor
             animateColor.toValue = highlighted ? tintColor.cgColor : style.timelineFlagBackgroundColor.cgColor
             animateColor.duration = Constants.animationDuration
-            flagView.layer?.add(animateColor, forKey: "backgroundColor")
+            flagView.layer?.add(animateColor, forKey: Constants.backgroundColorAnimationKey)
         } else {
             flagView.layer?.backgroundColor = highlighted ? tintColor.cgColor : style.timelineFlagBackgroundColor.cgColor
         }
@@ -69,6 +70,7 @@ class TimelineFlagView: NSCollectionViewItem {
     // MARK: Helpers
 
     private func load(_ event: TimelineEvent) {
+        flagView.layer?.removeAnimation(forKey: Constants.backgroundColorAnimationKey)
         tintColor = event.type.color
         flagPoleView.layer?.backgroundColor = event.type.color.cgColor
         mediaImageHeightConstraint.constant = event.thumbnail == nil ? 0 : Constants.mediaImageHeight

@@ -38,6 +38,6 @@ final class TimelineEvent: Hashable {
     // MARK: Static
 
     static func == (lhs: TimelineEvent, rhs: TimelineEvent) -> Bool {
-        return lhs.title == rhs.title && lhs.type == rhs.type && lhs.id == rhs.id && lhs.dates.startDate.year == rhs.dates.startDate.year
+        return lhs.title == rhs.title && lhs.type == rhs.type && lhs.id == rhs.id && lhs.dates == rhs.dates
     }
 }
