@@ -138,6 +138,7 @@ final class RecordEntity: GKEntity {
             clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: Constants.tappedEntitylevel)
         case .seekLevel(let level):
             clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: level)
+            hasCollidedWithBoundingNode = false
             physicsComponent.updateBitMasks()
         case .seekEntity(_):
             physicsComponent.updateBitMasks()

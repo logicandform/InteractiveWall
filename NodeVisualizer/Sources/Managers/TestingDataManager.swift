@@ -13,7 +13,7 @@ class TestingDataManager {
     private(set) var relatedLevelsForProxy = [RecordProxy: RelatedLevels]()
 
     private struct Constants {
-        static let maxRelatedLevel = 5
+        static let maxRelatedLevel = 4
     }
 
 
@@ -26,7 +26,7 @@ class TestingDataManager {
 
     func instantiate() {
         // Setup testing nodes
-        testDuplicatingNodes()
+        testSelectedNodeWithMaxRelatedLevels()
 
         // Store directly related records in dictionary
         for record in records {

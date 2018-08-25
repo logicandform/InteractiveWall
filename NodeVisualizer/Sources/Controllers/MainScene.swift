@@ -229,7 +229,7 @@ class MainScene: SKScene {
         nodeClusters.insert(cluster)
 
         switch entityForNode.state {
-        case .seekEntity(_), .falling:
+        case .falling, .seekEntity(_):
             cluster.select(entityForNode)
         case .tapped:
             cluster.reset()

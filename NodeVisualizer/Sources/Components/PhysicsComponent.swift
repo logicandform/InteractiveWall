@@ -57,6 +57,7 @@ class PhysicsComponent: GKComponent {
                 return
             } else if let contactedEntity = contactedBody.node?.entity as? RecordEntity,
                 let contactedEntityCluster = contactedEntity.cluster, cluster === contactedEntityCluster,
+                contactedEntity.clusterLevel.currentLevel == entity.clusterLevel.currentLevel,
                 contactedEntity.hasCollidedWithBoundingNode, !entity.hasCollidedWithBoundingNode {
                 entity.hasCollidedWithBoundingNode = true
                 return

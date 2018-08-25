@@ -133,7 +133,9 @@ class MovementComponent: GKComponent {
 
     /// Applies appropriate physics that moves the entity to the appropriate higher level before entering next state and setting its bitMasks
     private func move(to level: Int) {
-        guard let entity = entity as? RecordEntity, let cluster = entity.cluster, let referenceNode = cluster.layerForLevel[level]?.nodeBoundingRenderComponent.node else {
+        guard let entity = entity as? RecordEntity,
+            let cluster = entity.cluster,
+            let referenceNode = cluster.layerForLevel[level]?.nodeBoundingRenderComponent.node else {
             return
         }
 
@@ -177,7 +179,6 @@ class MovementComponent: GKComponent {
         let deltaX = targetEntity.position.x - entity.position.x
         let deltaY = targetEntity.position.y - entity.position.y
         let displacement = CGVector(dx: deltaX, dy: deltaY)
-
         let radius = distanceOf(x: deltaX, y: deltaY)
 
         let targetEntityMass = targetEntity.physicsBody.mass * Constants.strength * radius
