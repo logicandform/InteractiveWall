@@ -63,8 +63,8 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
             if let events = source.eventsForYear[year] {
                 for event in events {
                     if let endDate = event.dates.endDate {
-                        let start = (CGFloat(event.dates.startDate.year) - CGFloat(source.firstYear)) * Constants.yearWidth
-                        let end = (CGFloat(endDate.year) - CGFloat(source.firstYear)) * Constants.yearWidth
+                        let start = position(for: event.dates.startDate, in: source)
+                        let end = position(for: endDate, in: source)
                         let line = Line(event: event, start: start, end: end)
                         diagram.add(line)
                     }
@@ -173,7 +173,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
 
         let indexPath = IndexPath(item: index, section: 0)
         let attributes = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
-        let x = CGFloat((year - source.firstYear) * type.sectionWidth)
+        let x = position(for: event.dates.startDate, in: source)
         let flagHeight = TimelineFlagView.flagHeight(for: event)
         let flagFrame = frameForFlag(atX: x, size: CGSize(width: style.timelineFlagWidth, height: flagHeight), year: event.dates.startDate.year, in: source)
         flagFrameForEvent[event] = flagFrame
@@ -252,5 +252,14 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
         // Place new frame on to of last underlying frame
         let topY = sortedFrames.last!.maxY + Constants.interFlagMargin
         return CGRect(origin: CGPoint(x: x, y: topY), size: size)
+    }
+
+    /// Returns an x-position on the timeline for a given date
+    private func position(for date: TimelineDate, in source: TimelineDataSource) -> CGFloat {
+        let xYear = (CGFloat(date.year) - CGFloat(source.firstYear)) * Constants.yearWidth
+        let xMonth = CGFloat(date.month) * Constants.yearWidth / 12
+        let xDay = date.day * Constants.yearWidth / 12
+
+        return xYear + xMonth + xDay
     }
 }
