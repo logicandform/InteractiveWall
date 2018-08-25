@@ -18,6 +18,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     private(set) var lastYear: Int!
     private(set) var years = [Int]()
     private let type = TimelineType.decade
+    private var totalUniqueEvents: Int!
 
     private struct Constants {
         static let screenWidth = 1920
@@ -29,15 +30,24 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     // MARK: API
 
     func setup(with records: [Record]) {
-        let sortedRecords = records.sorted(by: { $0.type.timelineSortOrder < $1.type.timelineSortOrder })
-
-        events = sortedRecords.compactMap { record in
+        events = records.compactMap { record in
             if let dates = record.dates {
                 return TimelineEvent(id: record.id, type: record.type, title: record.title, dates: dates, thumbnail: record.thumbnail)
             } else {
                 return nil
             }
         }
+
+        events = events.sorted(by: {
+            if $0.dates.startDate != $1.dates.startDate {
+                return $0.dates.startDate < $1.dates.startDate
+            } else if $0.type.timelineSortOrder != $1.type.timelineSortOrder {
+                return $0.type.timelineSortOrder < $1.type.timelineSortOrder
+            } else {
+                return $0.id < $1.id
+            }
+        })
+        totalUniqueEvents = events.count
 
         let minYear = events.min(by: { $0.dates.startDate.year < $1.dates.startDate.year })?.dates.startDate.year ?? Constants.defaultFirstYear
         let maxYear = events.max(by: { $0.dates.startDate.year < $1.dates.startDate.year })?.dates.startDate.year ?? Constants.defaultLastYear
@@ -61,6 +71,64 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
             } else {
                 eventsForYear[event.dates.startDate.year] = [event]
             }
+        }
+    }
+
+    func set(index: Int, selected: Bool) {
+        if selected {
+            selectedIndexes.insert(index)
+            if let duplicateIndex = getDuplicateIndex(original: index) {
+                selectedIndexes.insert(duplicateIndex)
+            }
+//            if index + totalUniqueEvents < events.count {
+//                selectedIndexes.insert(index + totalUniqueEvents)
+//            } else if index - totalUniqueEvents >= 0 {
+//                selectedIndexes.insert(index - totalUniqueEvents)
+//            }
+        } else {
+            selectedIndexes.remove(index)
+            if let duplicateIndex = getDuplicateIndex(original: index) {
+                selectedIndexes.remove(duplicateIndex)
+            }
+//            if index + totalUniqueEvents < events.count {
+//                selectedIndexes.remove(index + totalUniqueEvents)
+//            } else if index - totalUniqueEvents >= 0 {
+//                selectedIndexes.remove(index - totalUniqueEvents)
+//            }
+        }
+    }
+
+    func set(index: Int, highlighted: Bool) {
+        if highlighted {
+            highlightedIndexes.insert(index)
+            if let duplicateIndex = getDuplicateIndex(original: index) {
+                highlightedIndexes.insert(duplicateIndex)
+            }
+//            if index + totalUniqueEvents < events.count {
+//                highlightedIndexes.insert(index + totalUniqueEvents)
+//            } else if index - totalUniqueEvents >= 0 {
+//                highlightedIndexes.insert(index - totalUniqueEvents)
+//            }
+        } else {
+            highlightedIndexes.remove(index)
+            if let duplicateIndex = getDuplicateIndex(original: index) {
+                highlightedIndexes.remove(duplicateIndex)
+            }
+//            if index + totalUniqueEvents < events.count {
+//                highlightedIndexes.remove(index + totalUniqueEvents)
+//            } else if index - totalUniqueEvents >= 0 {
+//                highlightedIndexes.remove(index - totalUniqueEvents)
+//            }
+        }
+    }
+
+    func getDuplicateIndex(original index: Int) -> Int? {
+        if index + totalUniqueEvents < events.count {
+            return index + totalUniqueEvents
+        } else if index - totalUniqueEvents >= 0 {
+            return index - totalUniqueEvents
+        } else {
+            return nil
         }
     }
 

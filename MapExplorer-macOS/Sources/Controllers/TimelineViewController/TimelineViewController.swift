@@ -387,46 +387,23 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     }
 
     private func set(item: Int, selected: Bool, animated: Bool) {
-        let selectedEvent = source.events[item]
-        source.events.filter({ $0 == selectedEvent }).forEach { event in
-            guard let index = source.events.index(where: { (currentEvent) -> Bool in
-                return currentEvent.id == event.id && currentEvent.type == event.type && currentEvent.title == event.title && currentEvent.dates == event.dates
-            }) else {
-                return
-            }
+        // Update data source
+        source.set(index: item, selected: selected)
 
-            // Update data source
-            if selected {
-                source.selectedIndexes.insert(index)
-            } else {
-                source.selectedIndexes.remove(index)
-            }
-
-            // Update views
-            let timelineFlagView = timelineCollectionView.item(at: IndexPath(item: index, section: 0)) as? TimelineFlagView
-            timelineFlagView?.set(highlighted: selected, animated: animated)
-        }
+        // Update views
+        let timelineFlagView = timelineCollectionView.item(at: IndexPath(item: item, section: 0)) as? TimelineFlagView
+        timelineFlagView?.set(highlighted: selected, animated: animated)
+        setDuplicate(original: item, selected: selected, animated: animated)
     }
 
     private func set(item: Int, highlighted: Bool) {
-        let selectedEvent = source.events[item]
-        source.events.filter({ $0 == selectedEvent }).forEach { event in
-            guard let index = source.events.index(where: { (currentEvent) -> Bool in
-                return currentEvent.id == event.id && currentEvent.type == event.type && currentEvent.title == event.title && currentEvent.dates == event.dates
-            }) else {
-                return
-            }
+        // Update data source
+        source.set(index: item, highlighted: highlighted)
 
-            // Update data source
-            if highlighted {
-                source.highlightedIndexes.insert(index)
-            } else {
-                source.highlightedIndexes.remove(index)
-            }
-
-            // Update model
-            event.highlighted = highlighted
-        }
+        // Update model
+        let event = source.events[item]
+        event.highlighted = highlighted
+        setDuplicate(original: item, highlighted: highlighted)
     }
 
 
@@ -530,6 +507,24 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         case .month, .year, .century:
             return nil
         }
+    }
+
+    private func setDuplicate(original item: Int, selected: Bool, animated: Bool) {
+        guard let duplicateIndex = source.getDuplicateIndex(original: item) else {
+            return
+        }
+
+        let timelineFlagView = timelineCollectionView.item(at: IndexPath(item: duplicateIndex, section: 0)) as? TimelineFlagView
+        timelineFlagView?.set(highlighted: selected, animated: animated)
+    }
+
+    private func setDuplicate(original item: Int, highlighted: Bool) {
+        guard let duplicateIndex = source.getDuplicateIndex(original: item) else {
+            return
+        }
+
+        let event = source.events[duplicateIndex]
+        event.highlighted = highlighted
     }
 
     private func postRecordNotification(for type: RecordType, with id: Int, at position: CGPoint) {

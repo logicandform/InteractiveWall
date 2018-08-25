@@ -8,7 +8,7 @@ let style = Style()
 
 
 struct Configuration {
-    static let touchPort: UInt16 = 13001
+    static let touchPort: UInt16 = 13002
     static let serverIP = "10.58.73.211"
     static let broadcastIP = "10.58.73.255"
     static let serverURL = "http://\(serverIP):3000"
