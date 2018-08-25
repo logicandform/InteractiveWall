@@ -9,11 +9,13 @@ import GameplayKit
 class MovementComponent: GKComponent {
 
     private struct Constants {
-        static let strength: CGFloat = 1000
-        static let dt: CGFloat = 1 / 5000
+        static let strength: CGFloat = 100
+        static let dt: CGFloat = 1 / 60
         static let distancePadding: CGFloat = -10
         static let speed: CGFloat = 200
     }
+
+    private var movementStrength: CGFloat = 9.8
 
 
     // MARK: Lifecycle
@@ -28,7 +30,7 @@ class MovementComponent: GKComponent {
 
         switch entity.state {
         case .seekEntity(let entity):
-            seek(entity)
+            seek(entity, deltaTime: seconds)
         case .seekLevel(let level):
             move(to: level)
         case .static, .selected, .dragging, .reset, .remove:
@@ -102,9 +104,27 @@ class MovementComponent: GKComponent {
     }
 
     /// Applies appropriate physics that emulates a gravitational pull between this component's entity and the entity that it should seek
-    private func seek(_ targetEntity: RecordEntity) {
-        guard let entity = entity as? RecordEntity else {
+    private func seek(_ targetEntity: RecordEntity, deltaTime delta: TimeInterval) {
+        guard let entity = entity as? RecordEntity, let cluster = entity.cluster else {
             return
+        }
+
+        let contactedBodies = entity.physicsBody.allContactedBodies().filter { (contactedBody) -> Bool in
+            if let contactedEntity = contactedBody.node?.entity as? RecordEntity,
+                let contactedEntityCluster = contactedEntity.cluster,
+                contactedEntityCluster !== cluster, contactedEntityCluster.selectedEntity.state != .panning,
+                contactedEntity.hasCollidedWithBoundingNode {
+                return true
+            }
+            return false
+        }
+
+        if contactedBodies.count > 0,
+            entity.physicsBody.velocity.magnitude < 100,
+            cluster.selectedEntity.state != .panning {
+            movementStrength += CGFloat(5 * CGFloat(contactedBodies.count))
+        } else {
+            movementStrength = 100
         }
 
         // Check the radius between its own entity and the nodeToSeek, and apply the appropriate physics
@@ -112,14 +132,14 @@ class MovementComponent: GKComponent {
         let deltaY = targetEntity.position.y - entity.position.y
         let displacement = CGVector(dx: deltaX, dy: deltaY)
         let radius = distanceOf(x: deltaX, y: deltaY)
+        let unitVector = CGVector(dx: displacement.dx / radius, dy: displacement.dy / radius)
 
         let targetEntityMass = style.nodePhysicsBodyMass * Constants.strength * radius
         let entityMass = style.nodePhysicsBodyMass * Constants.strength * radius
 
-        let unitVector = CGVector(dx: displacement.dx / radius, dy: displacement.dy / radius)
         let force = (targetEntityMass * entityMass) / (radius * radius)
-        let impulse = CGVector(dx: force * Constants.dt * unitVector.dx, dy: force * Constants.dt * unitVector.dy)
-
+        let dt = CGFloat(delta)
+        let impulse = CGVector(dx: force * dt * unitVector.dx, dy: force * dt * unitVector.dy)
         entity.physicsBody.velocity = CGVector(dx: entity.physicsBody.velocity.dx + impulse.dx, dy: entity.physicsBody.velocity.dy + impulse.dy)
     }
 
