@@ -80,21 +80,11 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
             if let duplicateIndex = getDuplicateIndex(original: index) {
                 selectedIndexes.insert(duplicateIndex)
             }
-//            if index + totalUniqueEvents < events.count {
-//                selectedIndexes.insert(index + totalUniqueEvents)
-//            } else if index - totalUniqueEvents >= 0 {
-//                selectedIndexes.insert(index - totalUniqueEvents)
-//            }
         } else {
             selectedIndexes.remove(index)
             if let duplicateIndex = getDuplicateIndex(original: index) {
                 selectedIndexes.remove(duplicateIndex)
             }
-//            if index + totalUniqueEvents < events.count {
-//                selectedIndexes.remove(index + totalUniqueEvents)
-//            } else if index - totalUniqueEvents >= 0 {
-//                selectedIndexes.remove(index - totalUniqueEvents)
-//            }
         }
     }
 
@@ -104,21 +94,11 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
             if let duplicateIndex = getDuplicateIndex(original: index) {
                 highlightedIndexes.insert(duplicateIndex)
             }
-//            if index + totalUniqueEvents < events.count {
-//                highlightedIndexes.insert(index + totalUniqueEvents)
-//            } else if index - totalUniqueEvents >= 0 {
-//                highlightedIndexes.insert(index - totalUniqueEvents)
-//            }
         } else {
             highlightedIndexes.remove(index)
             if let duplicateIndex = getDuplicateIndex(original: index) {
                 highlightedIndexes.remove(duplicateIndex)
             }
-//            if index + totalUniqueEvents < events.count {
-//                highlightedIndexes.remove(index + totalUniqueEvents)
-//            } else if index - totalUniqueEvents >= 0 {
-//                highlightedIndexes.remove(index - totalUniqueEvents)
-//            }
         }
     }
 
