@@ -33,7 +33,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
 
         events = sortedRecords.compactMap { record in
             if let dates = record.dates {
-                return TimelineEvent(id: record.id, type: record.type, title: record.title, dates: dates)
+                return TimelineEvent(id: record.id, type: record.type, title: record.title, dates: dates, thumbnail: record.thumbnail)
             } else {
                 return nil
             }
@@ -47,7 +47,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
 
         for event in events {
             if event.dates.startDate.year < firstYear + type.infiniteBuffer {
-                let infiniteBufferEvent = TimelineEvent(id: event.id, type: event.type, title: event.title, dates: event.dates)
+                let infiniteBufferEvent = TimelineEvent(id: event.id, type: event.type, title: event.title, dates: event.dates, thumbnail: nil)
                 infiniteBufferEvent.dates.startDate.year += years.count
                 infiniteBufferEvent.dates.endDate?.year += years.count
                 events.append(infiniteBufferEvent)

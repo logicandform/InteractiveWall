@@ -10,6 +10,7 @@ protocol Record {
     var title: String { get }
     var coordinate: CLLocationCoordinate2D? { get set }
     var dates: TimelineRange? { get }
+    var thumbnail: URL? { get }
 }
 
 

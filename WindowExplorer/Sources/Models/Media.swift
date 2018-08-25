@@ -3,6 +3,7 @@
 import Foundation
 import AppKit
 
+
 enum MediaType {
     case image
     case video

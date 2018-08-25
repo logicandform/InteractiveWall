@@ -53,6 +53,7 @@
 		22309CCA20F4007500C58961 /* TimelineMonthLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22309CC920F4007500C58961 /* TimelineMonthLayout.swift */; };
 		22318DE0202B984F0092937C /* ResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22318DDF202B984F0092937C /* ResponseHandler.swift */; };
 		223B146120F0335E00506604 /* TimelineMultiYearLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223B146020F0335E00506604 /* TimelineMultiYearLayout.swift */; };
+		225C92B92130CC6D00D629EE /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225C92B82130CC6D00D629EE /* ImageView.swift */; };
 		2261A39B2121FA7300EBAA02 /* TimelineControlLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2261A39A2121FA7300EBAA02 /* TimelineControlLayout.swift */; };
 		226B0CA121225DE300BE74E4 /* TimelineTailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226B0CA021225DE300BE74E4 /* TimelineTailView.swift */; };
 		226B0CA321225E0900BE74E4 /* TimelineTailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 226B0CA221225E0900BE74E4 /* TimelineTailView.xib */; };
@@ -179,6 +180,7 @@
 		22309CC920F4007500C58961 /* TimelineMonthLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineMonthLayout.swift; sourceTree = "<group>"; };
 		22318DDF202B984F0092937C /* ResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseHandler.swift; sourceTree = "<group>"; };
 		223B146020F0335E00506604 /* TimelineMultiYearLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineMultiYearLayout.swift; sourceTree = "<group>"; };
+		225C92B82130CC6D00D629EE /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		2261A39A2121FA7300EBAA02 /* TimelineControlLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineControlLayout.swift; sourceTree = "<group>"; };
 		226B0CA021225DE300BE74E4 /* TimelineTailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineTailView.swift; sourceTree = "<group>"; };
 		226B0CA221225E0900BE74E4 /* TimelineTailView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineTailView.xib; sourceTree = "<group>"; };
@@ -495,6 +497,7 @@
 			isa = PBXGroup;
 			children = (
 				2290A03420E2E4BE00F028C4 /* FlippedCollectionView.swift */,
+				225C92B82130CC6D00D629EE /* ImageView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -792,6 +795,7 @@
 				22290C3B2028FA35000E0573 /* PacketType.swift in Sources */,
 				3F0254F22049D521004B831C /* LastTwo.swift in Sources */,
 				22AE5D1F20D2D72000D5FB9C /* ConnectionManager.swift in Sources */,
+				225C92B92130CC6D00D629EE /* ImageView.swift in Sources */,
 				22004FED20E164AF00B1E740 /* TimelineViewController.swift in Sources */,
 				220AE86620EE8EE300F6E9AA /* TimelineCenturyStackedLayout.swift in Sources */,
 				22B1E2AA2045F2EE00BDDF14 /* AVKit.swift in Sources */,

@@ -10,6 +10,7 @@ class Event: Record {
     let type = RecordType.event
     let title: String
     let dates: TimelineRange?
+    var thumbnail: URL?
     var coordinate: CLLocationCoordinate2D?
 
     private struct Keys {
@@ -18,6 +19,7 @@ class Event: Record {
         static let latitude = "latitude"
         static let longitude = "longitude"
         static let date = "date"
+        static let thumbnails = "thumbnailPaths"
     }
 
 
@@ -35,6 +37,9 @@ class Event: Record {
         self.dates = TimelineRange(from: dateString)
         if let latitude = json[Keys.latitude] as? Double, let longitude = json[Keys.longitude] as? Double {
             self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        }
+        if let thumbnailStrings = json[Keys.thumbnails] as? [String], let firstURLString = thumbnailStrings.first {
+            self.thumbnail = URL.from(Configuration.serverURL + firstURLString)
         }
     }
 }

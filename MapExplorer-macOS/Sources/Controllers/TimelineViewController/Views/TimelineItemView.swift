@@ -63,13 +63,6 @@ class TimelineItemView: NSCollectionViewItem {
     }
 
 
-    // MARK: Overrides
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-    }
-
-
     // MARK: Helpers
 
     private func load(_ event: TimelineEvent) {

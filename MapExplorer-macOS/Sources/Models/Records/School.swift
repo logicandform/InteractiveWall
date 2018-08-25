@@ -10,6 +10,7 @@ class School: Record {
     let type = RecordType.school
     let title: String
     let dates: TimelineRange?
+    var thumbnail: URL?
     var coordinate: CLLocationCoordinate2D?
 
     private struct Keys {
@@ -18,6 +19,7 @@ class School: Record {
         static let latitude = "latitude"
         static let longitude = "longitude"
         static let date = "date"
+        static let thumbnails = "thumbnailPaths"
     }
 
 
@@ -36,5 +38,8 @@ class School: Record {
         self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         let dateString = json[Keys.date] as? String
         self.dates = TimelineRange(from: dateString)
+        if let thumbnailStrings = json[Keys.thumbnails] as? [String], let firstURLString = thumbnailStrings.first {
+            self.thumbnail = URL.from(Configuration.serverURL + firstURLString)
+        }
     }
 }
