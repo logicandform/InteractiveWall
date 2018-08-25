@@ -11,8 +11,14 @@ final class TimelineControlsDataSource: NSObject, NSCollectionViewDataSource {
     var decadeCollectionView: NSCollectionView?
     var years = [Int]() {
         didSet {
-            let roundedYears = Array(firstYear...lastYear)
-            decades = roundedYears.filter { $0 % 10 == 0 }
+            if firstYear + 10 < lastYear {
+                let decadeAdjustedLastYear = lastYear - 10
+                let roundedYears = Array(firstYear...decadeAdjustedLastYear)
+                decades = roundedYears.filter { $0 % 10 == 0 }
+            } else {
+                let roundedYears = Array(firstYear...lastYear)
+                decades = roundedYears.filter { $0 % 10 == 0 }
+            }
         }
     }
     var firstYear: Int!
