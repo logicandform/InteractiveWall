@@ -15,6 +15,7 @@ class TimelineFlagView: NSCollectionViewItem {
     @IBOutlet weak var dateTextField: NSTextField!
     @IBOutlet weak var flagHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var mediaImageHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var mediaImageTopConstraint: NSLayoutConstraint!
 
     private var tintColor = style.timelineFlagBackgroundColor
     var event: TimelineEvent! {
@@ -24,10 +25,13 @@ class TimelineFlagView: NSCollectionViewItem {
     }
 
     private struct Constants {
-        static let interItemMargin: CGFloat = 4
+        static let verticalMargin: CGFloat = 4
+        static let horizontalMargin: CGFloat = 10
         static let dateFieldHeight: CGFloat = 20
         static let animationDuration = 0.15
         static let mediaImageHeight: CGFloat = 98
+        static let mediaImageTopMargin: CGFloat = 2
+        static let horizontalTextAlignmentInset: CGFloat = 2
         static let backgroundColorAnimationKey = "backgroundColor"
     }
 
@@ -74,6 +78,7 @@ class TimelineFlagView: NSCollectionViewItem {
         tintColor = event.type.color
         flagPoleView.layer?.backgroundColor = event.type.color.cgColor
         mediaImageHeightConstraint.constant = event.thumbnail == nil ? 0 : Constants.mediaImageHeight
+        mediaImageTopConstraint.constant = event.thumbnail == nil ? 0 : Constants.mediaImageTopMargin
         flagHeightConstraint.constant = TimelineFlagView.flagHeight(for: event)
         titleTextField.attributedStringValue = NSAttributedString(string: event.title, attributes: style.timelineTitleAttributes)
         dateTextField.attributedStringValue = NSAttributedString(string: event.dates.description, attributes: style.timelineDateAttributes)
@@ -88,12 +93,13 @@ class TimelineFlagView: NSCollectionViewItem {
     }
 
     static func flagHeight(for event: TimelineEvent) -> CGFloat {
-        let textFieldWidth = style.timelineFlagWidth - Constants.interItemMargin * 2
+        let flagWidth = style.timelineItemWidth - style.timelineFlagPoleWidth
+        let textFieldWidth = flagWidth - Constants.horizontalMargin * 2
         let title = NSAttributedString(string: event.title, attributes: style.timelineTitleAttributes)
         let titleHeight = title.height(containerWidth: textFieldWidth)
         let dateHeight = Constants.dateFieldHeight
-        let margins = Constants.interItemMargin * 3
-        let imageHeight = event.thumbnail == nil ? 0 : Constants.mediaImageHeight
+        let margins = Constants.verticalMargin * 3
+        let imageHeight = event.thumbnail == nil ? 0 : Constants.mediaImageHeight + Constants.mediaImageTopMargin
 
         return titleHeight + dateHeight + margins + imageHeight
     }

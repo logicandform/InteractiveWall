@@ -12,6 +12,7 @@
                 <outlet property="flagPoleView" destination="5if-Jx-5sp" id="656-0J-5wB"/>
                 <outlet property="flagView" destination="SSB-xo-nqZ" id="O80-tb-VOs"/>
                 <outlet property="mediaImageHeightConstraint" destination="Jdk-WL-rpp" id="tPc-Ed-Sta"/>
+                <outlet property="mediaImageTopConstraint" destination="LEf-g3-wQS" id="RbV-kt-X98"/>
                 <outlet property="mediaImageView" destination="Vku-M5-RiQ" id="ki0-gd-nqd"/>
                 <outlet property="titleTextField" destination="31b-mQ-r5m" id="I8I-fh-19C"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>

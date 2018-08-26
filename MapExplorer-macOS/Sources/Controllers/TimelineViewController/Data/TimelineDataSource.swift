@@ -38,15 +38,13 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
             }
         }
 
-        events = events.sorted(by: {
-            if $0.dates.startDate != $1.dates.startDate {
-                return $0.dates.startDate < $1.dates.startDate
-            } else if $0.type.timelineSortOrder != $1.type.timelineSortOrder {
-                return $0.type.timelineSortOrder < $1.type.timelineSortOrder
-            } else {
-                return $0.id < $1.id
+        events = events.sorted { lhs, rhs in
+            if lhs.dates.startDate == rhs.dates.startDate {
+                return lhs.type.timelineSortOrder < rhs.type.timelineSortOrder
             }
-        })
+            return lhs.dates.startDate < rhs.dates.startDate
+        }
+
         totalUniqueEvents = events.count
 
         let minYear = events.min(by: { $0.dates.startDate.year < $1.dates.startDate.year })?.dates.startDate.year ?? Constants.defaultFirstYear
