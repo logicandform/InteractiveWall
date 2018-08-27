@@ -590,8 +590,8 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         toggleRelatedItems(completion: {
             let origin = CGPoint(x: window.frame.maxX + style.windowMargins, y: window.frame.minY)
             RecordFactory.record(for: record.type, id: record.id, completion: { newRecord in
-                if let loadedRecord = newRecord {
-                    WindowManager.instance.display(.record(loadedRecord), at: origin)
+                if let loadedRecord = newRecord, let controller = WindowManager.instance.display(.record(loadedRecord), at: origin) as? BaseViewController {
+                    WindowManager.instance.checkBounds(of: controller)
                 }
             })
         })
