@@ -125,9 +125,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     }
 
     private func setupControls() {
-        controlsSource.firstYear = source.firstYear
-        controlsSource.lastYear = source.lastYear
-        controlsSource.years = source.years
+        controlsSource.set(firstYear: source.firstYear, lastYear: source.lastYear)
         controlsSource.decadeCollectionView = decadeCollectionView
         setupControls(in: decadeCollectionView, scrollView: decadeScrollView)
         timelineIndicatorView.wantsLayer = true

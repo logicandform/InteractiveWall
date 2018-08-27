@@ -9,19 +9,26 @@ final class TimelineControlsDataSource: NSObject, NSCollectionViewDataSource {
     var monthCollectionView: NSCollectionView?
     var yearCollectionView: NSCollectionView?
     var decadeCollectionView: NSCollectionView?
-    var years = [Int]() {
-        didSet {
-            let roundedYears = Array(firstYear...lastYear)
-            decades = roundedYears.filter { $0 % 10 == 0 }
-        }
-    }
     var firstYear: Int!
     var lastYear: Int!
+    var years = [Int]()
     var decades = [Int]()
 
     private struct Constants {
         static let visibleControlItems = 7
         static let controlItemWidth: CGFloat = 70
+    }
+
+
+    // MARK: API
+
+    func set(firstYear: Int, lastYear: Int) {
+        self.firstYear = firstYear
+        self.lastYear = lastYear
+        years = Array(firstYear...lastYear)
+        let decadeAdjustedLastYear = lastYear - 10
+        let truncatedYears = Array(firstYear...decadeAdjustedLastYear)
+        decades = truncatedYears.filter { $0 % 10 == 0 }
     }
 
 
