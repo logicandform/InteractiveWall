@@ -6,13 +6,13 @@ import GameplayKit
 
 class MainScene: SKScene {
 
-    var nodeGestureManager: NodeGestureManager!
+    var gestureManager: NodeGestureManager!
     private var nodeClusters = Set<NodeCluster>()
-    private var lastUpdateTimeInterval: TimeInterval = 0
+    private var lastUpdateTimeInterval = 0.0
     private var selectedEntity: RecordEntity?
 
     private struct Constants {
-        static let maximumUpdateDeltaTime: TimeInterval = 1.0 / 60.0
+        static let maximumUpdateDeltaTime = 1.0 / 60.0
         static let panningThreshold: CGFloat = 5
         static let slowGravity = CGVector(dx: 0.02, dy: -0.03)
         static let worldPadding: CGFloat = 100
@@ -41,7 +41,7 @@ class MainScene: SKScene {
             cluster.update(deltaTime)
         }
 
-        for case let node as RecordNode in children {
+        for node in children {
             node.zRotation = 0
         }
     }
@@ -81,11 +81,11 @@ class MainScene: SKScene {
 
     private func setupGestures(for node: SKNode) {
         let tapGesture = TapGestureRecognizer()
-        nodeGestureManager.add(tapGesture, to: node)
+        gestureManager.add(tapGesture, to: node)
         tapGesture.gestureUpdated = handleTapGesture(_:)
 
         let panGesture = PanGestureRecognizer()
-        nodeGestureManager.add(panGesture, to: node)
+        gestureManager.add(panGesture, to: node)
         panGesture.gestureUpdated = handlePanGesture(_:)
     }
 
@@ -93,7 +93,7 @@ class MainScene: SKScene {
     // MARK: Gesture Handlers
 
     private func handleTapGesture(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let recordNode = nodeGestureManager.node(for: tap) as? RecordNode else {
+        guard let tap = gesture as? TapGestureRecognizer, let recordNode = gestureManager.node(for: tap) as? RecordNode else {
             return
         }
 
@@ -107,7 +107,7 @@ class MainScene: SKScene {
 
     private func handlePanGesture(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer,
-            let node = nodeGestureManager.node(for: pan) as? RecordNode,
+            let node = gestureManager.node(for: pan) as? RecordNode,
             let entity = node.entity as? RecordEntity,
             entity.state.pannable else {
             return

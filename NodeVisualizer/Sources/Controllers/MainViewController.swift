@@ -6,16 +6,15 @@ import GameplayKit
 import MONode
 
 
-class MainViewController: NSViewController, GestureResponder {
+class MainViewController: NSViewController, NodeGestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "Main")
+    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 13003)
 
     @IBOutlet var mainView: SKView!
 
     // MONode
-    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 13003)
     let socketManager = SocketManager(networkConfiguration: touchNetwork)
-    var gestureManager: GestureManager!
-    var nodeGestureManager: NodeGestureManager!
+    var gestureManager: NodeGestureManager!
     var touchNeedsUpdate = [Touch: Bool]()
 
 
@@ -37,8 +36,7 @@ class MainViewController: NSViewController, GestureResponder {
         }
 
         socketManager.delegate = self
-        gestureManager = GestureManager(responder: self)
-        nodeGestureManager = NodeGestureManager(responder: self)
+        gestureManager = NodeGestureManager(responder: self)
 
         mainView.showsFPS = true
         mainView.showsNodeCount = true
@@ -77,7 +75,7 @@ class MainViewController: NSViewController, GestureResponder {
     private func setupMainScene() {
         let mainScene = makeMainScene()
         EntityManager.instance.scene = mainScene
-        mainScene.nodeGestureManager = nodeGestureManager
+        mainScene.gestureManager = gestureManager
         mainView.presentScene(mainScene)
     }
 
@@ -97,7 +95,7 @@ extension MainViewController: SocketManagerDelegate {
         }
 
         convert(touch, toScreen: touch.screen)
-        nodeGestureManager.handle(touch)
+        gestureManager.handle(touch)
     }
 
     func handleError(_ message: String) {

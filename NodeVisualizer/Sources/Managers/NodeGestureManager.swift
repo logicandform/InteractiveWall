@@ -4,17 +4,22 @@ import Foundation
 import AppKit
 import SpriteKit
 
+protocol NodeGestureResponder: class {
+    var view: NSView { get }
+    var gestureManager: NodeGestureManager! { get }
+}
+
 
 final class NodeGestureManager {
 
     var touchReceived: ((Touch) -> Void)?
-    weak var responder: GestureResponder!
+    weak var responder: NodeGestureResponder!
     private var gestureHandlers = [SKNode: GestureHandler]()
 
 
     // MARK: Init
 
-    init(responder: GestureResponder) {
+    init(responder: NodeGestureResponder) {
         self.responder = responder
     }
 
