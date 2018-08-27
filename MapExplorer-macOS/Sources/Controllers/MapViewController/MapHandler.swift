@@ -13,12 +13,7 @@ enum UserActivity {
 final class MapHandler {
 
     let mapView: MKMapView
-    private var activityState = UserActivity.idle {
-        didSet {
-            let output = activityState == .active ? "Active" : "Idle"
-            print(output)
-        }
-    }
+    private var activityState = UserActivity.idle
     private weak var ungroupTimer: Foundation.Timer?
 
     private var pair: Int? {
