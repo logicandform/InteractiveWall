@@ -122,7 +122,8 @@ class MovementComponent: GKComponent {
         if contactedBodies.count > 0,
             entity.physicsBody.velocity.magnitude < 100,
             cluster.selectedEntity.state != .panning {
-            movementStrength += CGFloat(5 * CGFloat(contactedBodies.count))
+//            movementStrength += CGFloat(1.2 * CGFloat(contactedBodies.count))
+            movementStrength = 100
         } else {
             movementStrength = 100
         }

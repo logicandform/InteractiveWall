@@ -85,16 +85,16 @@ class TestingDataManager {
 
     /// To see the visual representation of the cluster when a node with a maximum related level is selected
     private func testSelectedNodeWithMaxRelatedLevels() {
-        let schoolArtifacts = createRecords(of: .artifact, count: 5)
+        let schoolArtifacts = createRecords(of: .artifact, count: 25)
         records.append(contentsOf: schoolArtifacts)
-        let organizationArtifacts = createRecords(of: .artifact, count: 10)
+        let organizationArtifacts = createRecords(of: .artifact, count: 60)
         records.append(contentsOf: organizationArtifacts)
         let eventArtifacts = createRecords(of: .artifact, count: 10)
         records.append(contentsOf: eventArtifacts)
-        let schoolOrganizations = createRecords(of: .organization, count: 10)
+        let schoolOrganizations = createRecords(of: .organization, count: 30)
         records.append(contentsOf: schoolOrganizations)
-        let schoolOrganizationArtifacts = createRecords(of: .artifact, count: 10)
-        records.append(contentsOf: schoolOrganizationArtifacts)
+        let schoolOrganizationEvents = createRecords(of: .event, count: 50)
+        records.append(contentsOf: schoolOrganizationEvents)
 
         let schools = createRecords(of: .school, count: 2)
         records.append(contentsOf: schools)
@@ -111,7 +111,7 @@ class TestingDataManager {
         associate(records: eventArtifacts, to: events.first!)
         associate(records: [schools[1]], to: events.first!)
         associate(records: schoolOrganizations, to: schools[1])
-        associate(records: schoolOrganizationArtifacts, to: schoolOrganizations.first!)
+        associate(records: schoolOrganizationEvents, to: schoolOrganizations.first!)
     }
 
 
