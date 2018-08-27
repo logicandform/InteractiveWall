@@ -66,7 +66,7 @@ final class RecordEntity: GKEntity {
         return renderComponent
     }
 
-    private var physicsComponent: PhysicsComponent {
+    var physicsComponent: PhysicsComponent {
         guard let physicsComponent = component(ofType: PhysicsComponent.self) else {
             fatalError("A RecordEntity must have a PhysicsComponent")
         }
@@ -167,6 +167,31 @@ final class RecordEntity: GKEntity {
         renderComponent.recordNode.run(action) { [weak self] in
             self?.renderComponent.recordNode.removeAllActions()
         }
+    }
+
+    func scale(action: SKAction) {
+        renderComponent.recordNode.run(action) { [weak self] in
+            self?.renderComponent.recordNode.removeAllActions()
+//            self?.scalePhysicsBodyToRecordNodeSize()
+        }
+    }
+
+    private func scalePhysicsBodyToRecordNodeSize() {
+        let width = renderComponent.recordNode.frame.width
+        let height = renderComponent.recordNode.frame.height
+        let radius = CGFloat(hypot(Float(width), Float(height)))
+        let currentPhysicsBody = physicsComponent.physicsBody
+
+        let newPhysicsBody = SKPhysicsBody(circleOfRadius: radius)
+        newPhysicsBody.categoryBitMask = currentPhysicsBody.categoryBitMask
+        newPhysicsBody.collisionBitMask = currentPhysicsBody.collisionBitMask
+        newPhysicsBody.contactTestBitMask = currentPhysicsBody.contactTestBitMask
+        newPhysicsBody.friction = currentPhysicsBody.friction
+        newPhysicsBody.restitution = currentPhysicsBody.restitution
+        newPhysicsBody.linearDamping = currentPhysicsBody.linearDamping
+
+        physicsComponent.physicsBody = newPhysicsBody
+        renderComponent.recordNode.physicsBody = newPhysicsBody
     }
 
     /// 'Reset' the entity to initial state so that proper animations and movements can take place

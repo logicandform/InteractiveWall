@@ -18,7 +18,7 @@ struct ColliderType {
 /// A `GKComponent` that provides an `SKPhysicsBody` for an entity. This enables the entity to be represented in the SpriteKit physics world.
 class PhysicsComponent: GKComponent {
 
-    private(set) var physicsBody: SKPhysicsBody
+    var physicsBody: SKPhysicsBody
 
 
     // MARK: Initializer

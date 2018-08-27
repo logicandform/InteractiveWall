@@ -20,6 +20,7 @@ final class EntityManager {
         let movementSystem = GKComponentSystem(componentClass: MovementComponent.self)
         let animationSystem = GKComponentSystem(componentClass: AnimationComponent.self)
         let physicsSystem = GKComponentSystem(componentClass: PhysicsComponent.self)
+        let renderSystem = GKComponentSystem(componentClass: RenderComponent.self)
         return [movementSystem, physicsSystem, animationSystem]
     }()
 
@@ -80,7 +81,16 @@ final class EntityManager {
                 }
             }
         }
-        return result
+
+        if result.count > 50 {
+            let array = Array(result).prefix(upTo: 50)
+            return Set(array)
+        } else {
+            return result
+        }
+
+
+//        return result.count > 10 ? randomize(entities: result, upTo: 10) : result
     }
 
     /// Updates all component systems that the EntityManager is responsible for
@@ -158,5 +168,37 @@ final class EntityManager {
         for componentSystem in componentSystems {
             componentSystem.removeComponent(foundIn: entity)
         }
+    }
+
+    // TODO: fix the duplicating and tapping on related items issue
+    private func randomize(entities: Set<RecordEntity>, upTo max: Int) -> Set<RecordEntity> {
+        let entities = Array(entities)
+        let randomizedEntities = GKRandomSource().arrayByShufflingObjects(in: entities).compactMap({ $0 as? RecordEntity })
+        let filteredRandomizedEntities = randomizedEntities.prefix(upTo: max)
+        return Set(filteredRandomizedEntities)
+    }
+}
+
+extension MutableCollection {
+    /// Shuffles the contents of this collection.
+    mutating func shuffle() {
+        let c = count
+        guard c > 1 else { return }
+
+        for (firstUnshuffled, unshuffledCount) in zip(indices, stride(from: c, to: 1, by: -1)) {
+            // Change `Int` in the next line to `IndexDistance` in < Swift 4.1
+            let d: Int = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
+            let i = index(firstUnshuffled, offsetBy: d)
+            swapAt(firstUnshuffled, i)
+        }
+    }
+}
+
+extension Sequence {
+    /// Returns an array with the contents of this sequence, shuffled.
+    func shuffled() -> [Element] {
+        var result = Array(self)
+        result.shuffle()
+        return result
     }
 }

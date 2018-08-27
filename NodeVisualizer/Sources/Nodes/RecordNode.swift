@@ -4,7 +4,7 @@ import Cocoa
 import SpriteKit
 
 
-class RecordNode: SKNode {
+class RecordNode: SKSpriteNode {
 
     private(set) var record: RecordDisplayable
 
@@ -17,10 +17,10 @@ class RecordNode: SKNode {
 
     // MARK: Initializers
 
-    init(record: RecordDisplayable) {
+    init(record: RecordDisplayable, ofSize size: CGFloat = 20) {
         self.record = record
-        super.init()
-        makeRecordNode()
+        super.init(texture: nil, color: .clear, size: .zero)
+        makeRecordNode(ofSize: size)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -28,28 +28,27 @@ class RecordNode: SKNode {
     }
 
 
-    // MARK: API
-
-    func runInitialAnimation(with forceVector: CGVector, delay: Int) {
-        let dX = forceVector.dx * Constants.forceMultiplier
-        let dY = forceVector.dy * Constants.forceMultiplier
-        let force = CGVector(dx: dX, dy: dY)
-
-        let applyForceAction = SKAction.applyForce(force, duration: Constants.forceActionDuration)
-        run(applyForceAction)
-    }
-
-
     // MARK: Helpers
 
-    private func makeRecordNode() {
-        let rootNode = makeRootNode()
-        addIdLabelNode(to: rootNode)
+    private func makeRecordNode(ofSize s: CGFloat) {
+        size = CGSize(width: s, height: s)
+        color = record.type.color
+
+        let id = SKLabelNode()
+        id.text = String(record.id)
+        id.verticalAlignmentMode = .center
+        id.horizontalAlignmentMode = .center
+        id.fontSize = Constants.labelFontSize
+        id.fontColor = .black
+        addChild(id)
+
+//        let rootNode = makeRootNode(ofSize: size)
+//        addIdLabelNode(to: rootNode)
     }
 
-    private func makeRootNode() -> SKNode {
+    private func makeRootNode(ofSize size: CGFloat) -> SKSpriteNode {
         let rootNode = SKSpriteNode()
-        rootNode.size = CGSize(width: 20, height: 20)
+        rootNode.size = CGSize(width: size, height: size)
         rootNode.color = record.type.color
         addChild(rootNode)
         return rootNode

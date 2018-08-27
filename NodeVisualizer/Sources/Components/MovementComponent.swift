@@ -90,15 +90,25 @@ class MovementComponent: GKComponent {
         case .tapped:
             entity.physicsBody.isDynamic = false
             cluster()
+            scale()
         case .seekLevel(_), .seekEntity(_):
             entity.physicsBody.restitution = 0
             entity.physicsBody.friction = 1
             entity.physicsBody.linearDamping = 1
+            scale()
         case .panning:
             entity.physicsBody.isDynamic = false
             entity.node.removeAllActions()
             entity.cluster?.updateLayerLevels(forPan: true)
         }
+    }
+
+    private func scale() {
+        guard let entity = entity as? RecordEntity else {
+            return
+        }
+
+        entity.set(state: .scale)
     }
 
     private func fall() {

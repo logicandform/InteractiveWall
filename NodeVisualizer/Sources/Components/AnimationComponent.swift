@@ -7,6 +7,7 @@ import GameplayKit
 
 enum AnimationState {
     case goToPoint(CGPoint)
+    case scale
 }
 
 
@@ -46,6 +47,32 @@ class AnimationComponent: GKComponent {
         case .goToPoint(let point):
             let moveAction = SKAction.move(to: point, duration: 1.2)
             entity.run(action: moveAction)
+
+        case .scale:
+            guard let currentLevel = entity.clusterLevel.currentLevel else {
+                return
+            }
+
+            var scaleSize: CGSize
+            switch currentLevel {
+            case 0:
+                scaleSize = CGSize(width: 40, height: 40)
+            case 1:
+                scaleSize = CGSize(width: 30, height: 30)
+            case 2:
+                scaleSize = CGSize(width: 25, height: 25)
+            case 3:
+                scaleSize = CGSize(width: 20, height: 20)
+            case 4:
+                scaleSize = CGSize(width: 15, height: 15)
+            case 5:
+                scaleSize = CGSize(width: 10, height: 10)
+            default:
+                return
+            }
+            
+            let scaleAction = SKAction.scale(to: scaleSize, duration: 1.2)
+            entity.scale(action: scaleAction)
         }
     }
 }

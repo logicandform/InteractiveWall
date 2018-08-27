@@ -26,7 +26,7 @@ class TestingDataManager {
 
     func instantiate() {
         // Setup testing nodes
-        testSelectedNodeWithMaxRelatedLevels()
+        testDuplicatingNodes()
 
         // Store directly related records in dictionary
         for record in records {
@@ -49,7 +49,7 @@ class TestingDataManager {
 
     /// After a school, org or event is selected. Selecting another one should duplicate nodes from the first cluster.
     private func testDuplicatingNodes() {
-        let artifacts = createRecords(of: .artifact, count: 5)
+        let artifacts = createRecords(of: .artifact, count: 2)
         records.append(contentsOf: artifacts)
         let schools = createRecords(of: .school, count: 1)
         records.append(contentsOf: schools)
@@ -60,8 +60,8 @@ class TestingDataManager {
 
         // Associate school, org, event to the same artifacts
         associate(records: artifacts, to: schools.first!)
-        associate(records: artifacts, to: organizations.first!)
-        associate(records: artifacts, to: events.first!)
+//        associate(records: artifacts, to: organizations.first!)
+//        associate(records: artifacts, to: events.first!)
     }
 
     /// When the school is selected, then selecting artifact #7, everything else in the cluster should be removed
