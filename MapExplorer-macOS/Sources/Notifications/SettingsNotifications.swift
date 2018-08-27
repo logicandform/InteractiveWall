@@ -16,7 +16,7 @@ enum SettingsNotification: String {
     case reset
 
     var name: Notification.Name {
-        return Notification.Name(rawValue: rawValue)
+        return Notification.Name(rawValue: "SettingsNotification_\(rawValue)")
     }
 
     static var allValues: [SettingsNotification] {

@@ -13,7 +13,12 @@ enum UserActivity {
 final class MapHandler {
 
     let mapView: MKMapView
-    private var activityState = UserActivity.idle
+    private var activityState = UserActivity.idle {
+        didSet {
+            let output = activityState == .active ? "Active" : "Idle"
+            print(output)
+        }
+    }
     private weak var ungroupTimer: Foundation.Timer?
 
     private var pair: Int? {
@@ -54,28 +59,37 @@ final class MapHandler {
     // MARK: API
 
     /// Determines how to respond to a received mapRect from another mapView with the type of gesture that triggered the event.
-    func handle(_ mapRect: MKMapRect, fromID: Int, fromGroup: Int, animated: Bool) {
+    func handle(_ mapRect: MKMapRect, fromID: Int, fromGroup: Int, syncing: Bool = false, animated: Bool = false) {
         guard let currentGroup = group, currentGroup == fromGroup, currentGroup == fromID else {
             return
         }
 
         // Filter position updates; state will be nil receiving when receiving from momentum, else id must match pair
         if pair == nil || pair! == fromID {
-            activityState = .active
+            if !syncing {
+                activityState = .active
+            }
             let adjustedMapRect = adjust(mapRect, toMap: appID, fromMap: fromID)
             mapView.setVisibleMapRect(adjustedMapRect, animated: animated)
         }
     }
 
-    func send(_ mapRect: MKMapRect, for gestureState: GestureState = .recognized, animated: Bool = false, forced: Bool = false) {
+    func send(_ mapRect: MKMapRect, for gestureState: GestureState = .recognized, animated: Bool = false) {
         // If sending from momentum but another map has interrupted, ignore
-        if gestureState == .momentum && pair != nil && !forced {
+        if gestureState == .momentum && pair != nil {
             return
         }
 
         let currentGroup = group ?? appID
         let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.map: mapRect.toJSON(), Keys.gesture: gestureState.rawValue, Keys.animated: animated]
         DistributedNotificationCenter.default().postNotificationName(MapNotification.mapRect.name, object: nil, userInfo: info, deliverImmediately: true)
+    }
+
+    /// Sends a mapRect to sync all apps in the same group
+    func syncGroup() {
+        let currentGroup = group ?? appID
+        let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.map: mapView.visibleMapRect.toJSON()]
+        DistributedNotificationCenter.default().postNotificationName(MapNotification.sync.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
     func endActivity() {

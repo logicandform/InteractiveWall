@@ -133,10 +133,18 @@ final class ConnectionManager {
                 setAppState(from: id, group: group, for: .mapExplorer, momentum: state == .momentum)
                 mapHandler?.handle(mapRect, fromID: id, fromGroup: group, animated: animated)
             }
+        case MapNotification.sync.name:
+            if let mapJSON = info[Keys.map] as? JSON, let mapRect = MKMapRect(json: mapJSON), let group = group {
+                mapHandler?.handle(mapRect, fromID: id, fromGroup: group, syncing: true)
+            }
         case TimelineNotification.rect.name:
             if let dateJSON = info[Keys.date] as? JSON, let date = TimelineDate(json: dateJSON), let group = group, let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture), let animated = info[Keys.animated] as? Bool {
                 setAppState(from: id, group: group, for: .timeline, momentum: state == .momentum)
                 timelineHandler?.handle(date: date, fromID: id, fromGroup: group, animated: animated)
+            }
+        case TimelineNotification.sync.name:
+            if let dateJSON = info[Keys.date] as? JSON, let date = TimelineDate(json: dateJSON), let group = group {
+                timelineHandler?.handle(date: date, fromID: id, fromGroup: group, syncing: true)
             }
         case SettingsNotification.transition.name:
             if let newTypeString = info[Keys.type] as? String, let newType = ApplicationType(rawValue: newTypeString), let oldTypeString = info[Keys.oldType] as? String, let oldType = ApplicationType(rawValue: oldTypeString) {
@@ -157,8 +165,8 @@ final class ConnectionManager {
         case SettingsNotification.merge.name:
             if let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
                 merge(from: id, group: group, of: type)
+                syncApps(inGroup: group, type: type)
             }
-            syncApps(inGroup: group)
         case SettingsNotification.reset.name:
             mapHandler?.reset(animated: true)
             timelineHandler?.reset(animated: true)
@@ -171,6 +179,7 @@ final class ConnectionManager {
     // MARK: Helpers
 
     private func transition(from oldType: ApplicationType, to newType: ApplicationType, id: Int, group: Int?) {
+        let newState = AppState(pair: nil, group: id)
         let appStates = states(for: oldType).enumerated()
 
         for (app, state) in appStates {
@@ -185,14 +194,17 @@ final class ConnectionManager {
                     // Check if incoming id is closer than current pair
                     if abs(app - id) < abs(app - appPair) || appPair == id {
                         typeForApp[app] = newType
+                        set(newState, for: newType, id: app)
                         transition(app: app, to: newType)
                     }
                 } else {
                     typeForApp[app] = newType
+                    set(newState, for: newType, id: app)
                     transition(app: app, to: newType)
                 }
             }
         }
+        resetTimerForApp(id: id, with: newType)
     }
 
     /// Set all app states accordingly when a app sends its position
@@ -248,13 +260,12 @@ final class ConnectionManager {
                 // If app is farther or equal to the group then the app splitting, join the closest appID
                 if abs(appGroup - app) >= abs(appGroup - id) {
                     set(AppState(pair: nil, group: closestApp), for: type, id: app)
-                    if app == neighborID {
-                        resetTimerForApp(id: app, with: type)
-                    }
+                    resetTimerForApp(id: closestApp, with: type)
                 }
             } else if state.group == nil {
                 // Group with the closest of the two apps being split
                 set(AppState(pair: nil, group: closestApp), for: type, id: app)
+                resetTimerForApp(id: closestApp, with: type)
             }
         }
     }
@@ -333,7 +344,7 @@ final class ConnectionManager {
                 if type == .timeline {
                     SelectionManager.instance.merge(app: app, toGroup: group)
                 }
-                syncApps(inGroup: group)
+                syncApps(inGroup: group, type: type)
             }
         }
     }
@@ -352,23 +363,17 @@ final class ConnectionManager {
         return externalApps.compactMap({ $0.1.group }).first
     }
 
-
     /// From the app matching the groupID, send position notification that won't cause app's to pair but causes map to sync together
-    private func syncApps(inGroup group: Int?) {
-        guard let group = group, let type = typeForApp(id: group), appID == group else {
+    private func syncApps(inGroup group: Int?, type: ApplicationType) {
+        guard let group = group, appID == group else {
             return
         }
 
         switch type {
         case .mapExplorer:
-            if let mapHandler = mapHandler {
-                let mapRect = mapHandler.mapView.visibleMapRect
-                mapHandler.send(mapRect, for: .momentum, forced: true)
-            }
+            mapHandler?.syncGroup()
         case .timeline:
-            if let timelineHandler = timelineHandler, let currentDate = timelineHandler.timelineViewController?.currentDate {
-                timelineHandler.send(date: TimelineDate(date: currentDate), for: .momentum, forced: true)
-            }
+            timelineHandler?.syncGroup()
         default:
             return
         }

@@ -46,29 +46,41 @@ final class TimelineHandler {
     // MARK: API
 
     /// Determines how to respond to a received rect from another timeline with the type of gesture that triggered the event.
-    func handle(date: TimelineDate, fromID: Int, fromGroup: Int, animated: Bool) {
+    func handle(date: TimelineDate, fromID: Int, fromGroup: Int, syncing: Bool = false, animated: Bool = false) {
         guard let currentGroup = group, currentGroup == fromGroup, currentGroup == fromID else {
             return
         }
 
         // Filter position updates; state will be nil receiving when receiving from momentum, else id must match pair
         if pair == nil || pair! == fromID {
-            activityState = .active
+            if !syncing {
+                activityState = .active
+            }
             if let date = adjust(date: date, toApp: appID, fromApp: fromID) {
                 timelineViewController?.setDate(date)
             }
         }
     }
 
-    func send(date: TimelineDate, for gestureState: GestureState = .recognized, animated: Bool = false, forced: Bool = false) {
+    func send(date: TimelineDate, for gestureState: GestureState = .recognized, animated: Bool = false) {
         // If sending from momentum but another app has interrupted, ignore
-        if gestureState == .momentum && pair != nil && !forced {
+        if gestureState == .momentum && pair != nil {
             return
         }
 
         let currentGroup = group ?? appID
         let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.date: date.toJSON, Keys.gesture: gestureState.rawValue, Keys.animated: animated]
         DistributedNotificationCenter.default().postNotificationName(TimelineNotification.rect.name, object: nil, userInfo: info, deliverImmediately: true)
+    }
+
+    func syncGroup() {
+        guard let date = timelineViewController?.currentDate else {
+            return
+        }
+
+        let currentGroup = group ?? appID
+        let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.date: TimelineDate(date: date).toJSON]
+        DistributedNotificationCenter.default().postNotificationName(TimelineNotification.sync.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
     func endActivity() {

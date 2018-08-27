@@ -167,6 +167,7 @@ final class ConnectionManager {
     // MARK: Helpers
 
     private func transition(from oldType: ApplicationType, to newType: ApplicationType, id: Int, group: Int?) {
+        let newState = AppState(pair: nil, group: id)
         let appStates = states(for: oldType).enumerated()
 
         for (app, state) in appStates {
@@ -181,10 +182,12 @@ final class ConnectionManager {
                     // Check if incoming id is closer than current pair
                     if abs(app - id) < abs(app - appPair) || appPair == id {
                         typeForApp[app] = newType
+                        set(newState, for: newType, id: app)
                         updateMenu(id: app, to: newType)
                     }
                 } else {
                     typeForApp[app] = newType
+                    set(newState, for: newType, id: app)
                     updateMenu(id: app, to: newType)
                 }
             }
@@ -322,6 +325,7 @@ final class ConnectionManager {
                 syncApps(group: group, type: type)
             }
         }
+        updateViews()
     }
 
     /// Find the closest group to a given app

@@ -10,7 +10,7 @@ enum RecordNotification: String {
     case artifact
 
     var name: Notification.Name {
-        return Notification.Name(rawValue: rawValue)
+        return Notification.Name(rawValue: "RecordNotification_\(rawValue)")
     }
 
     var type: RecordType {

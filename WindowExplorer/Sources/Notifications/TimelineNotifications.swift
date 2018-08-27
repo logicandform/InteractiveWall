@@ -9,7 +9,7 @@ enum TimelineNotification: String {
     case selection
 
     var name: Notification.Name {
-        return Notification.Name(rawValue: rawValue)
+        return Notification.Name(rawValue: "TimelineNotification_\(rawValue)")
     }
 
     static var allValues: [TimelineNotification] {

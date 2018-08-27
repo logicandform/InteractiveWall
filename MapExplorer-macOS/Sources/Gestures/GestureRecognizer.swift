@@ -32,6 +32,13 @@ extension GestureRecognizer {
 }
 
 
+enum Trigger: String {
+    case momentum
+    case animation
+    case sync
+}
+
+
 enum GestureState: String {
     case possible
     case began

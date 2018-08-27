@@ -6,7 +6,7 @@ enum MapNotification: String {
     case mapRect
 
     var name: Notification.Name {
-        return Notification.Name(rawValue: rawValue)
+        return Notification.Name(rawValue: "MapNotification_\(rawValue)")
     }
 
     static var allValues: [MapNotification] {
