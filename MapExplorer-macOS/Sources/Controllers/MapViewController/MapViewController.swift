@@ -41,7 +41,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     private struct Keys {
         static let id = "id"
-        static let map = "map"
+        static let app = "app"
+        static let type = "type"
         static let group = "group"
         static let status = "status"
         static let position = "position"
@@ -301,8 +302,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         }
 
         let location = window.frame.origin + position
-        let info: JSON = [Keys.map: appID, Keys.id: record.id, Keys.position: location.toJSON()]
-        DistributedNotificationCenter.default().postNotificationName(RecordNotification.with(record.type).name, object: nil, userInfo: info, deliverImmediately: true)
+        let info: JSON = [Keys.app: appID, Keys.id: record.id, Keys.position: location.toJSON(), Keys.type: record.type.rawValue]
+        DistributedNotificationCenter.default().postNotificationName(RecordNotification.display.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
     private func handleDoubleTap(at position: CGPoint) {

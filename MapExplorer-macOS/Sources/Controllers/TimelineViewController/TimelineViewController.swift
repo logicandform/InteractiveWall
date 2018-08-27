@@ -44,7 +44,8 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
 
     private struct Keys {
         static let id = "id"
-        static let appID = "map"
+        static let app = "app"
+        static let type = "type"
         static let position = "position"
     }
 
@@ -531,8 +532,8 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         }
 
         let location = window.frame.origin + position
-        let info: JSON = [Keys.appID: appID, Keys.id: id, Keys.position: location.toJSON()]
-        DistributedNotificationCenter.default().postNotificationName(RecordNotification.with(type).name, object: nil, userInfo: info, deliverImmediately: true)
+        let info: JSON = [Keys.app: appID, Keys.id: id, Keys.position: location.toJSON(), Keys.type: type.rawValue]
+        DistributedNotificationCenter.default().postNotificationName(RecordNotification.display.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
     private func createRecords() {
