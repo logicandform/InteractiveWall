@@ -19,7 +19,7 @@ final class TimelineHandler {
     }
 
     private struct Constants {
-        static let ungroupTimeoutPeriod = 5.0
+        static let ungroupTimeoutPeriod = 30.0
     }
 
     private struct Keys {

@@ -23,7 +23,7 @@ final class ConnectionManager {
     private weak var resetTimer: Foundation.Timer?
 
     private struct Constants {
-        static let resetTimeoutPeriod = 5.0
+        static let resetTimeoutPeriod = 180.0
     }
 
     private struct Keys {
