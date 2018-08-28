@@ -70,6 +70,10 @@ class TimelineFlagView: NSCollectionViewItem {
         }
     }
 
+    func flagContains(_ point: CGPoint) -> Bool {
+        return flagView.frame.transformed(from: view.frame).contains(point)
+    }
+
 
     // MARK: Helpers
 
