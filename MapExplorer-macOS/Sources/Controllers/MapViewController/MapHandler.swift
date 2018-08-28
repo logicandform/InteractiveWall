@@ -25,7 +25,7 @@ final class MapHandler {
     }
 
     private struct Constants {
-        static let ungroupTimeoutPeriod = 30.0
+        static let ungroupTimeoutPeriod = 5.0
         static let verticalPanLimit = 100000000.0
         static let verticalVisibleMapRatio = 0.25
     }

@@ -168,8 +168,10 @@ final class ConnectionManager {
                 syncApps(inGroup: group, type: type)
             }
         case SettingsNotification.reset.name:
-            mapHandler?.reset(animated: true)
-            timelineHandler?.reset(animated: true)
+            resetAppType(completion: { [weak self] in
+                self?.mapHandler?.reset(animated: true)
+                self?.timelineHandler?.reset(animated: true)
+            })
         default:
             return
         }
@@ -205,6 +207,15 @@ final class ConnectionManager {
             }
         }
         resetTimerForApp(id: id, with: newType)
+    }
+
+    private func resetAppType(completion: (() -> Void)? = nil) {
+        let numberOfApps = Configuration.appsPerScreen * Configuration.numberOfScreens
+        let initialState = AppState(pair: nil, group: nil)
+        stateForMap = Array(repeating: initialState, count: numberOfApps)
+        stateForTimeline = Array(repeating: initialState, count: numberOfApps)
+        typeForApp = Array(repeating: .mapExplorer, count: numberOfApps)
+        transition(app: appID, to: .mapExplorer, completion: completion)
     }
 
     /// Set all app states accordingly when a app sends its position
@@ -401,9 +412,9 @@ final class ConnectionManager {
     }
 
     // Shows / hides the timeline
-    private func transition(app: Int, to type: ApplicationType) {
+    private func transition(app: Int, to type: ApplicationType, completion: (() -> Void)? = nil) {
         if app == appID {
-            timelineHandler?.timelineViewController?.fade(out: type != .timeline)
+            timelineHandler?.timelineViewController?.fade(out: type != .timeline, completion: completion)
         }
     }
 }
