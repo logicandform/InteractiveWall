@@ -188,7 +188,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
             if let location = tap.position,
                 let indexPath = timelineCollectionView.indexPathForItem(at: location + timelineCollectionView.visibleRect.origin),
                 let item = timelineCollectionView.item(at: indexPath) as? TimelineFlagView,
-                item.flagView.frame.transformed(from: item.view.frame).contains(location + timelineCollectionView.visibleRect.origin) {
+                item.flagContains(location + timelineCollectionView.visibleRect.origin) {
                 itemForTouch[touch] = indexPath.item
                 startTimer(for: touch, item: indexPath.item)
                 SelectionManager.instance.set(item: indexPath.item, selected: true)
