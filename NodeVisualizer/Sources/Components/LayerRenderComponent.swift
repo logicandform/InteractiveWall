@@ -27,6 +27,7 @@ class LayerRenderComponent: GKComponent {
 
     private struct Constants {
         static let initialRadius: CGFloat = style.selectedNodeRadius
+        static let radiusOffsetMultipler: CGFloat = 1.05
     }
 
 
@@ -71,7 +72,7 @@ class LayerRenderComponent: GKComponent {
         if let contactEntities = cluster.entitiesForLevel.at(index: level) {
             // Iterate through its contactEntities to see if it hasCollidedWithBoundingNode, and determine the max distance from the root to the contactEntity
             for contactEntity in contactEntities where contactEntity.hasCollidedWithBoundingNode {
-                let contactEntityRadiusOffset = contactEntity.bodyRadius * 1.05
+                let contactEntityRadiusOffset = contactEntity.bodyRadius * Constants.radiusOffsetMultipler
                 let calculatedRadius = cluster.distance(to: contactEntity) + contactEntityRadiusOffset
                 if calculatedRadius > distance {
                     distance = calculatedRadius
