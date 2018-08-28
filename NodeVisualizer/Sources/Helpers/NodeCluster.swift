@@ -1,10 +1,5 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
-/*
-    Abstract:
-    Class that manages the bounding diameter level nodes for the scene.
- */
-
 import Foundation
 import SpriteKit
 import GameplayKit
@@ -12,7 +7,7 @@ import GameplayKit
 
 typealias EntityLevels = [Set<RecordEntity>]
 
-
+/// Class that creates layers for a selected entity.
 final class NodeCluster: Hashable {
 
     private(set) var center: CGPoint
