@@ -71,6 +71,7 @@ final class EntityManager {
                     let copy = entityForProxy.clone()
                     store(copy)
                     addComponents(to: copy)
+                    copy.node.scale(to: entityForProxy.node.size)
                     copy.set(position: entityForProxy.position)
                     copy.setClonedNodeBitMasks()
                     copy.previousCluster = current

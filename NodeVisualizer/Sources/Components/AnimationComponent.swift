@@ -18,7 +18,7 @@ class AnimationComponent: GKComponent {
 
     private struct Constants {
         static let moveToPointDuration: TimeInterval = 1.2
-        static let scaleToDuration: TimeInterval = 1
+        static let scaleToDuration: TimeInterval = 1.5
     }
 
 

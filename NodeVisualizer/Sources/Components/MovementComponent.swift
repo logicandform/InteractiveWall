@@ -89,11 +89,13 @@ class MovementComponent: GKComponent {
             entity.physicsBody.affectedByGravity = true
         case .tapped:
             entity.physicsBody.isDynamic = false
+            entity.node.removeAllActions()
             cluster()
         case .seekLevel(_), .seekEntity(_):
             entity.physicsBody.restitution = 0
             entity.physicsBody.friction = 1
             entity.physicsBody.linearDamping = 1
+            entity.node.removeAllActions()
             scale()
         case .panning:
             entity.physicsBody.isDynamic = false
@@ -190,8 +192,8 @@ class MovementComponent: GKComponent {
         let displacement = CGVector(dx: deltaX, dy: deltaY)
         let radius = distanceOf(x: deltaX, y: deltaY)
 
-        let targetEntityMass = targetEntity.physicsBody.mass * Constants.strength * radius
-        let entityMass = entity.physicsBody.mass * Constants.strength * radius
+        let targetEntityMass = style.nodePhysicsBodyMass * Constants.strength * radius
+        let entityMass = style.nodePhysicsBodyMass * Constants.strength * radius
 
         let unitVector = CGVector(dx: displacement.dx / radius, dy: displacement.dy / radius)
         let force = (targetEntityMass * entityMass) / (radius * radius)
