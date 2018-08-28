@@ -105,19 +105,15 @@ class MovementComponent: GKComponent {
     }
 
     private func cluster() {
-        guard let entity = entity as? RecordEntity, let cluster = entity.cluster else {
-            return
+        if let entity = entity as? RecordEntity, let cluster = entity.cluster {
+            entity.set(state: .scaleAndCenterToPoint(cluster.center))
         }
-
-        entity.set(state: .scaleAndCenterToPoint(cluster.center))
     }
 
     private func scale() {
-        guard let entity = entity as? RecordEntity else {
-            return
+        if let entity = entity as? RecordEntity {
+            entity.set(state: .scaleToLevelSize)
         }
-
-        entity.set(state: .scaleToLevelSize)
     }
 
     private func fall() {
