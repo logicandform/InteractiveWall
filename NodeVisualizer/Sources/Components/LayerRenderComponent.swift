@@ -23,12 +23,13 @@ class LayerRenderComponent: GKComponent {
     var level: Int!
 
     /// The current physics body radius of `self`
-    private var currentRadius: CGFloat = Constants.initialRadius
+    private var currentRadius: CGFloat = Constants.initialSelectedRadius
 
     private struct Constants {
         static let initialRadius: CGFloat = style.nodePhysicsBodyRadius + 5.0
         static let minimumOffset: CGFloat = style.nodePhysicsBodyRadius
         static let maximumOffset: CGFloat = style.nodePhysicsBodyRadius * 2
+        static let initialSelectedRadius: CGFloat = 45 + 5
     }
 
 

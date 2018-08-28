@@ -26,7 +26,7 @@ class TestingDataManager {
 
     func instantiate() {
         // Setup testing nodes
-        testDuplicatingNodes()
+        testRelationships()
 
         // Store directly related records in dictionary
         for record in records {
@@ -60,8 +60,8 @@ class TestingDataManager {
 
         // Associate school, org, event to the same artifacts
         associate(records: artifacts, to: schools.first!)
-//        associate(records: artifacts, to: organizations.first!)
-//        associate(records: artifacts, to: events.first!)
+        associate(records: artifacts, to: organizations.first!)
+        associate(records: artifacts, to: events.first!)
     }
 
     /// When the school is selected, then selecting artifact #7, everything else in the cluster should be removed
@@ -112,6 +112,61 @@ class TestingDataManager {
         associate(records: [schools[1]], to: events.first!)
         associate(records: schoolOrganizations, to: schools[1])
         associate(records: schoolOrganizationArtifacts, to: schoolOrganizations.first!)
+    }
+
+    func testRelationships() {
+        let school = createRecords(of: .school, count: 1)
+        records.append(contentsOf: school)
+
+        // chain 1
+        let schoolArtifact = createRecords(of: .artifact, count: 1)
+        records.append(contentsOf: schoolArtifact)
+
+        // chain 2
+        let schoolOrganization = createRecords(of: .organization, count: 1)
+        let schoolOrganizationArtifact = createRecords(of: .artifact, count: 1)
+        let schoolOrganizationArtifactSchool = createRecords(of: .school, count: 1)
+        records.append(contentsOf: schoolOrganization)
+        records.append(contentsOf: schoolOrganizationArtifact)
+        records.append(contentsOf: schoolOrganizationArtifactSchool)
+
+        // chain 3
+        let schoolEvent = createRecords(of: .event, count: 1)
+        let schoolEventArtifact = createRecords(of: .artifact, count: 1)
+        let schoolEventArtifactSchool = createRecords(of: .school, count: 1)
+        let schoolEventArtifactSchoolOrganization = createRecords(of: .organization, count: 1)
+        let schoolEventArtifactSchoolOrganizationArtifact = createRecords(of: .artifact, count: 1)
+        let schoolEventArtifactSchoolOrganizationArtifactEvent = createRecords(of: .event, count: 1)
+        records.append(contentsOf: schoolEvent)
+        records.append(contentsOf: schoolEventArtifact)
+        records.append(contentsOf: schoolEventArtifactSchool)
+        records.append(contentsOf: schoolEventArtifactSchoolOrganization)
+        records.append(contentsOf: schoolEventArtifactSchoolOrganizationArtifact)
+        records.append(contentsOf: schoolEventArtifactSchoolOrganizationArtifactEvent)
+
+        // associations
+//        associate(records: schoolArtifact, to: school.first!)
+//        associate(records: schoolOrganization, to: school.first!)
+        associate(records: schoolEvent, to: school.first!)
+//        associate(records: school, to: schoolArtifact.first!)
+//        associate(records: school, to: schoolOrganization.first!)
+        associate(records: school, to: schoolEvent.first!)
+
+//        associate(records: schoolOrganizationArtifact, to: schoolOrganization.first!)
+//        associate(records: schoolOrganization, to: schoolOrganizationArtifact.first!)
+//        associate(records: schoolOrganizationArtifactSchool, to: schoolOrganizationArtifact.first!)
+//        associate(records: schoolOrganizationArtifact, to: schoolOrganizationArtifactSchool.first!)
+
+        associate(records: schoolEventArtifact, to: schoolEvent.first!)
+        associate(records: schoolEvent, to: schoolEventArtifact.first!)
+        associate(records: schoolEventArtifactSchool, to: schoolEventArtifact.first!)
+        associate(records: schoolEventArtifact, to: schoolEventArtifactSchool.first!)
+        associate(records: schoolEventArtifactSchoolOrganization, to: schoolEventArtifactSchool.first!)
+        associate(records: schoolEventArtifactSchool, to: schoolEventArtifactSchoolOrganization.first!)
+        associate(records: schoolEventArtifactSchoolOrganizationArtifact, to: schoolEventArtifactSchoolOrganization.first!)
+        associate(records: schoolEventArtifactSchoolOrganization, to: schoolEventArtifactSchoolOrganizationArtifact.first!)
+        associate(records: schoolEventArtifactSchoolOrganizationArtifactEvent, to: schoolEventArtifactSchoolOrganizationArtifact.first!)
+        associate(records: schoolEventArtifactSchoolOrganizationArtifact, to: schoolEventArtifactSchoolOrganizationArtifactEvent.first!)
     }
 
 

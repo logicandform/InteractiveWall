@@ -88,9 +88,7 @@ class MovementComponent: GKComponent {
         case .falling:
             entity.physicsBody.affectedByGravity = true
         case .tapped:
-            entity.physicsBody.isDynamic = false
             cluster()
-            scale()
         case .seekLevel(_), .seekEntity(_):
             entity.physicsBody.restitution = 0
             entity.physicsBody.friction = 1
@@ -103,12 +101,20 @@ class MovementComponent: GKComponent {
         }
     }
 
+    private func cluster() {
+        guard let entity = entity as? RecordEntity, let cluster = entity.cluster else {
+            return
+        }
+
+        entity.set(state: .scaleAndCenterToPoint(cluster.center))
+    }
+
     private func scale() {
         guard let entity = entity as? RecordEntity else {
             return
         }
 
-        entity.set(state: .scale)
+        entity.set(state: .scaleToLevelSize)
     }
 
     private func fall() {
@@ -131,14 +137,6 @@ class MovementComponent: GKComponent {
             let leftPosition = -style.nodePhysicsBodyRadius
             entity.set(position: CGPoint(x: leftPosition, y: entity.position.y))
         }
-    }
-
-    private func cluster() {
-        guard let entity = entity as? RecordEntity, let cluster = entity.cluster else {
-            return
-        }
-
-        entity.set(state: .goToPoint(cluster.center))
     }
 
     /// Applies appropriate physics that moves the entity to the appropriate higher level before entering next state and setting its bitMasks

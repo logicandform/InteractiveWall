@@ -82,15 +82,7 @@ final class EntityManager {
             }
         }
 
-        if result.count > 50 {
-            let array = Array(result).prefix(upTo: 50)
-            return Set(array)
-        } else {
-            return result
-        }
-
-
-//        return result.count > 10 ? randomize(entities: result, upTo: 10) : result
+        return result
     }
 
     /// Updates all component systems that the EntityManager is responsible for

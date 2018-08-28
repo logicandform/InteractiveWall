@@ -66,7 +66,7 @@ final class RecordEntity: GKEntity {
         return renderComponent
     }
 
-    var physicsComponent: PhysicsComponent {
+    private var physicsComponent: PhysicsComponent {
         guard let physicsComponent = component(ofType: PhysicsComponent.self) else {
             fatalError("A RecordEntity must have a PhysicsComponent")
         }
@@ -85,13 +85,6 @@ final class RecordEntity: GKEntity {
             fatalError("A RecordEntity must have an AnimationComponent")
         }
         return animationComponent
-    }
-
-    var agent: RecordAgent {
-        guard let agent = component(ofType: RecordAgent.self) else {
-            fatalError("A RecordEntity must have a GKAgent2D Component")
-        }
-        return agent
     }
 
 
@@ -136,6 +129,7 @@ final class RecordEntity: GKEntity {
         switch state {
         case .tapped:
             clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: Constants.tappedEntitylevel)
+            physicsComponent.updateBitMasks()
         case .seekLevel(let level):
             clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: level)
             hasCollidedWithBoundingNode = false
@@ -159,39 +153,14 @@ final class RecordEntity: GKEntity {
         physicsComponent.setClonedNodeBitMasks()
     }
 
-    func updateAgentPositionToMatchNodePosition() {
-        agent.position = vector_float2(x: Float(renderComponent.recordNode.position.x), y: Float(renderComponent.recordNode.position.y))
+    func animateTappedEntity(with action: SKAction) {
+        renderComponent.recordNode.run(action)
     }
 
-    func run(action: SKAction) {
+    func scale(with action: SKAction) {
         renderComponent.recordNode.run(action) { [weak self] in
-            self?.renderComponent.recordNode.removeAllActions()
+            self?.physicsComponent.physicsBody.mass = style.nodePhysicsBodyMass
         }
-    }
-
-    func scale(action: SKAction) {
-        renderComponent.recordNode.run(action) { [weak self] in
-            self?.renderComponent.recordNode.removeAllActions()
-//            self?.scalePhysicsBodyToRecordNodeSize()
-        }
-    }
-
-    private func scalePhysicsBodyToRecordNodeSize() {
-        let width = renderComponent.recordNode.frame.width
-        let height = renderComponent.recordNode.frame.height
-        let radius = CGFloat(hypot(Float(width), Float(height)))
-        let currentPhysicsBody = physicsComponent.physicsBody
-
-        let newPhysicsBody = SKPhysicsBody(circleOfRadius: radius)
-        newPhysicsBody.categoryBitMask = currentPhysicsBody.categoryBitMask
-        newPhysicsBody.collisionBitMask = currentPhysicsBody.collisionBitMask
-        newPhysicsBody.contactTestBitMask = currentPhysicsBody.contactTestBitMask
-        newPhysicsBody.friction = currentPhysicsBody.friction
-        newPhysicsBody.restitution = currentPhysicsBody.restitution
-        newPhysicsBody.linearDamping = currentPhysicsBody.linearDamping
-
-        physicsComponent.physicsBody = newPhysicsBody
-        renderComponent.recordNode.physicsBody = newPhysicsBody
     }
 
     /// 'Reset' the entity to initial state so that proper animations and movements can take place
