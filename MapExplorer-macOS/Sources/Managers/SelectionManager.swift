@@ -7,13 +7,13 @@ import Cocoa
 // Interface for the TimelineHandler to update it's views
 protocol SelectionHandler: class {
     func handle(item: Int, selected: Bool)
-    func replace(selection: [TimelineSelection])
+    func replace(selection: Set<TimelineSelection>)
     func handle(items: Set<Int>, highlighted: Bool)
     func replace(highlighted: Set<Int>)
 }
 
 
-typealias TimelineSelection = (index: Int, app: Int)
+//typealias TimelineSelection = (index: Int, app: Int)
 
 
 /// Handles notifications for Timeline selection and highlights
@@ -23,7 +23,7 @@ final class SelectionManager {
     weak var delegate: SelectionHandler?
 
     /// Selections for an app's timeline indexed by it's appID
-    private var selectionForApp = [[TimelineSelection]]()
+    private var selectionForApp = [Set<TimelineSelection>]()
 
     /// Remaining duration of highlight for event supplied by it's id
     private var timeForHighlight = [Int: [Int: Int]]()
@@ -31,7 +31,7 @@ final class SelectionManager {
     /// The current time of the system core video clock
     private var currentTime = UInt64.min
 
-    /// The timer used to update the current time and decriment highlight times
+    /// The timer used to update the current time and decrement highlight times
     private weak var highlightTimer: Foundation.Timer?
 
     private struct Constants {
@@ -54,7 +54,7 @@ final class SelectionManager {
     /// Use Singleton
     private init() {
         let numberOfApps = Configuration.appsPerScreen * Configuration.numberOfScreens
-        self.selectionForApp = Array(repeating: [TimelineSelection](), count: numberOfApps)
+        self.selectionForApp = Array(repeating: Set<TimelineSelection>(), count: numberOfApps)
         for app in (0 ..< numberOfApps) {
             timeForHighlight[app] = [:]
         }
@@ -131,7 +131,7 @@ final class SelectionManager {
                 set(index: index, group: group, selected: state, from: id)
             }
         case TimelineNotification.selection.name:
-            if let selection = info[Keys.selection] as? [TimelineSelection] {
+            if let selection = info[Keys.selection] as? Set<TimelineSelection> {
                 set(selection, group: group)
             }
         case TimelineNotification.highlight.name:
@@ -145,7 +145,7 @@ final class SelectionManager {
         }
     }
 
-    private func postSelectionNotification(forGroup group: Int, with selection: [TimelineSelection]) {
+    private func postSelectionNotification(forGroup group: Int, with selection: Set<TimelineSelection>) {
         let info: JSON = [Keys.group: group, Keys.selection: selection]
         DistributedNotificationCenter.default().postNotificationName(TimelineNotification.selection.name, object: nil, userInfo: info, deliverImmediately: true)
     }
@@ -155,21 +155,21 @@ final class SelectionManager {
 
     private func resetAll() {
         let appStates = ConnectionManager.instance.states(for: .timeline).enumerated()
-        let emptyArray = [TimelineSelection]()
-        let emptySet = Set<Int>()
+        let emptySelectionSet = Set<TimelineSelection>()
+        let emptyIntSet = Set<Int>()
 
         for (app, _) in appStates {
-            selectionForApp[app] = emptyArray
+            selectionForApp[app] = emptySelectionSet
             timeForHighlight[app] = [:]
 
             if app == appID {
-                delegate?.replace(selection: emptyArray)
-                delegate?.replace(highlighted: emptySet)
+                delegate?.replace(selection: emptySelectionSet)
+                delegate?.replace(highlighted: emptyIntSet)
             }
         }
     }
 
-    private func set(_ items: [TimelineSelection], group: Int?) {
+    private func set(_ items: Set<TimelineSelection>, group: Int?) {
         let appStates = ConnectionManager.instance.states(for: .timeline).enumerated()
 
         for (app, state) in appStates {
@@ -185,16 +185,17 @@ final class SelectionManager {
 
     private func set(index: Int, group: Int?, selected: Bool, from id: Int) {
         let appStates = ConnectionManager.instance.states(for: .timeline).enumerated()
+        let selection = TimelineSelection(index: index, app: id)
 
         for (app, state) in appStates {
             // Check if same group
             if state.group == group, selected {
-                selectionForApp[app].append(TimelineSelection(index: index, app: id))
+                selectionForApp[app].insert(TimelineSelection(index: index, app: id))
                 if app == appID {
                     delegate?.handle(item: index, selected: selected)
                 }
-            } else if !selected, let selectionIndex = selectionForApp[app].index(where: { $0.index == index && $0.app == id }) {
-                selectionForApp[app].remove(at: selectionIndex)
+            } else if !selected, selectionForApp[app].contains(selection) {
+                selectionForApp[app].remove(selection)
                 if app == appID {
                     delegate?.handle(item: index, selected: selected)
                 }
