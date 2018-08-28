@@ -48,6 +48,14 @@ final class RecordEntity: GKEntity {
         return renderComponent.recordNode
     }
 
+    var bodyRadius: CGFloat {
+        let width = renderComponent.recordNode.frame.width
+        let height = renderComponent.recordNode.frame.height
+        let nodeRadius = CGFloat(hypot(Float(width), Float(height)))
+        let bodyRadius = nodeRadius * 1.05
+        return bodyRadius
+    }
+
     override var description: String {
         return "( [RecordEntity] ID: \(record.id), type: \(record.type), State: \(state) )"
     }
@@ -129,6 +137,7 @@ final class RecordEntity: GKEntity {
         switch state {
         case .tapped:
             clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: Constants.tappedEntitylevel)
+            hasCollidedWithBoundingNode = false
             physicsComponent.updateBitMasks()
         case .seekLevel(let level):
             clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: level)
@@ -154,7 +163,9 @@ final class RecordEntity: GKEntity {
     }
 
     func animateTappedEntity(with action: SKAction) {
-        renderComponent.recordNode.run(action)
+        renderComponent.recordNode.run(action) { [weak self] in
+            self?.physicsComponent.physicsBody.mass = style.nodePhysicsBodyMass
+        }
     }
 
     func scale(with action: SKAction) {

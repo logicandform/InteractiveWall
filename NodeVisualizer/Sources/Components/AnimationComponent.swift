@@ -18,7 +18,7 @@ class AnimationComponent: GKComponent {
 
     private struct Constants {
         static let moveToPointDuration: TimeInterval = 1.2
-        static let scaleToDuration: TimeInterval = 1.2
+        static let scaleToDuration: TimeInterval = 1
     }
 
 
@@ -27,7 +27,6 @@ class AnimationComponent: GKComponent {
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
 
-        // if an animation has been requested and the entity is in the TappedState, then run the animation
         if let animationState = requestedAnimationState {
             requestedAnimationState = nil
             runAnimationFor(animationState)
@@ -46,8 +45,8 @@ class AnimationComponent: GKComponent {
         case .scaleAndCenterToPoint(let point):
             let moveToPointAction = SKAction.move(to: point, duration: Constants.moveToPointDuration)
             let scaleAction = SKAction.scale(to: scaleSize(), duration: Constants.scaleToDuration)
-            let sequencedAction = SKAction.sequence([moveToPointAction, scaleAction])
-            entity.animateTappedEntity(with: sequencedAction)
+            let groupedAction = SKAction.group([moveToPointAction, scaleAction])
+            entity.animateTappedEntity(with: groupedAction)
         case .scaleToLevelSize:
             let scaleAction = SKAction.scale(to: scaleSize(), duration: Constants.scaleToDuration)
             entity.scale(with: scaleAction)
@@ -62,19 +61,19 @@ class AnimationComponent: GKComponent {
         var scaleSize: CGSize
         switch currentLevel {
         case -1:
-            scaleSize = CGSize(width: 45, height: 45)
+            scaleSize = style.selectedNodeSize
         case 0:
-            scaleSize = CGSize(width: 40, height: 40)
+            scaleSize = style.levelZeroNodeSize
         case 1:
-            scaleSize = CGSize(width: 30, height: 30)
+            scaleSize = style.levelOneNodeSize
         case 2:
-            scaleSize = CGSize(width: 25, height: 25)
+            scaleSize = style.levelTwoNodeSize
         case 3:
-            scaleSize = CGSize(width: 20, height: 20)
+            scaleSize = style.levelThreeNodeSize
         case 4:
-            scaleSize = CGSize(width: 15, height: 15)
+            scaleSize = style.levelFourNodeSize
         case 5:
-            scaleSize = CGSize(width: 10, height: 10)
+            scaleSize = style.levelFiveNodeSize
         default:
             return .zero
         }

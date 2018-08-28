@@ -24,6 +24,14 @@ final class Style {
     let nodeAgentMaxSpeed: Float = 200
     let nodeAgentMaxAcceleration: Float = 100
     let nodeAgentRadius = Float(15)
+    let selectedNodeSize: CGSize = CGSize(width: 45, height: 45)
+    let levelZeroNodeSize: CGSize = CGSize(width: 40, height: 40)
+    let levelOneNodeSize: CGSize = CGSize(width: 30, height: 30)
+    let levelTwoNodeSize: CGSize = CGSize(width: 25, height: 25)
+    let levelThreeNodeSize: CGSize = CGSize(width: 20, height: 20)
+    let levelFourNodeSize: CGSize = CGSize(width: 15, height: 15)
+    let levelFiveNodeSize: CGSize = CGSize(width: 10, height: 10)
+
 
     // Titles
     var windowTitleAttributes: [NSAttributedStringKey: Any] {

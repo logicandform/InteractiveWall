@@ -88,6 +88,7 @@ class MovementComponent: GKComponent {
         case .falling:
             entity.physicsBody.affectedByGravity = true
         case .tapped:
+            entity.physicsBody.isDynamic = false
             cluster()
         case .seekLevel(_), .seekEntity(_):
             entity.physicsBody.restitution = 0
@@ -170,7 +171,7 @@ class MovementComponent: GKComponent {
         let r2 = currentLevelBoundingEntityComponent.minRadius
         let r1 = distanceBetweenNodeAndCenter
 
-        if (r2 - r1) < Constants.distancePadding {
+        if (r2 - r1) < -entity.bodyRadius {
             entity.set(state: .seekEntity(cluster.selectedEntity))
         } else {
             entity.physicsBody.velocity = CGVector(dx: Constants.speed * unitVector.dx, dy: Constants.speed * unitVector.dy)

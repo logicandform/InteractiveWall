@@ -17,10 +17,10 @@ class RecordNode: SKSpriteNode {
 
     // MARK: Initializers
 
-    init(record: RecordDisplayable, ofSize size: CGFloat = 20) {
+    init(record: RecordDisplayable) {
         self.record = record
         super.init(texture: nil, color: .clear, size: .zero)
-        makeRecordNode(ofSize: size)
+        makeRecordNode()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -30,8 +30,8 @@ class RecordNode: SKSpriteNode {
 
     // MARK: Helpers
 
-    private func makeRecordNode(ofSize s: CGFloat) {
-        size = CGSize(width: s, height: s)
+    private func makeRecordNode() {
+        size = CGSize(width: 20, height: 20)
         color = record.type.color
 
         let id = SKLabelNode()

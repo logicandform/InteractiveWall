@@ -32,7 +32,7 @@ final class NodeCluster: Hashable {
 
     private struct Constants {
         static let boundingNodeName = "boundingNode"
-        static let defaultLayerRadius = style.nodePhysicsBodyRadius + 5
+        static let defaultLayerRadius: CGFloat = 45
     }
 
 
