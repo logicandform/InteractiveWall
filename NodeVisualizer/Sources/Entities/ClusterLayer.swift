@@ -5,11 +5,11 @@ import SpriteKit
 import GameplayKit
 
 
-class NodeBoundingEntity: GKEntity {
+class ClusterLayer: GKEntity {
 
-    var nodeBoundingRenderComponent: NodeBoundingRenderComponent {
-        guard let renderComponent = component(ofType: NodeBoundingRenderComponent.self) else {
-            fatalError("A NodeBoundingEntity must have a NodeBoundingRenderComponent")
+    var renderComponent: LayerRenderComponent {
+        guard let renderComponent = component(ofType: LayerRenderComponent.self) else {
+            fatalError("A NodeBoundingEntity must have a LayerRenderComponent")
         }
         return renderComponent
     }
@@ -20,7 +20,7 @@ class NodeBoundingEntity: GKEntity {
     init(cluster: NodeCluster) {
         super.init()
 
-        let renderComponent = NodeBoundingRenderComponent(cluster: cluster)
+        let renderComponent = LayerRenderComponent(cluster: cluster)
         addComponent(renderComponent)
     }
 

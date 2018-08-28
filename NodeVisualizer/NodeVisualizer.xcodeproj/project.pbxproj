@@ -51,7 +51,7 @@
 		22D6F91B20B6824300C7FB5F /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F91520B6824300C7FB5F /* TapGestureRecognizer.swift */; };
 		22D6F91C20B6824300C7FB5F /* SwipeGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F91620B6824300C7FB5F /* SwipeGestureRecognizer.swift */; };
 		CD006AE020C8A681006F0FB4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD006ADF20C8A681006F0FB4 /* Main.storyboard */; };
-		CD0FB28020D1A4AE0058A410 /* RenderComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0FB27F20D1A4AE0058A410 /* RenderComponent.swift */; };
+		CD0FB28020D1A4AE0058A410 /* RecordRenderComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0FB27F20D1A4AE0058A410 /* RecordRenderComponent.swift */; };
 		CD0FB28220D1A6300058A410 /* RecordEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0FB28120D1A6300058A410 /* RecordEntity.swift */; };
 		CD0FB28420D1AA9D0058A410 /* EntityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0FB28320D1AA9D0058A410 /* EntityManager.swift */; };
 		CD0FB28820D1BFDD0058A410 /* MovementComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0FB28720D1BFDD0058A410 /* MovementComponent.swift */; };
@@ -65,8 +65,8 @@
 		CD2CC5EB20B8E6D800FB3C10 /* RecordDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2CC5E920B8E6D700FB3C10 /* RecordDisplayable.swift */; };
 		CD2CC5EC20B8E6D800FB3C10 /* RecordFilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2CC5EA20B8E6D800FB3C10 /* RecordFilterType.swift */; };
 		CD97E33C20F4125800BB869E /* NodeCluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD97E33B20F4125800BB869E /* NodeCluster.swift */; };
-		CD97E33E20F5765900BB869E /* NodeBoundingEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD97E33D20F5765900BB869E /* NodeBoundingEntity.swift */; };
-		CD97E34020F584BA00BB869E /* NodeBoundingRenderComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD97E33F20F584BA00BB869E /* NodeBoundingRenderComponent.swift */; };
+		CD97E33E20F5765900BB869E /* ClusterLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD97E33D20F5765900BB869E /* ClusterLayer.swift */; };
+		CD97E34020F584BA00BB869E /* LayerRenderComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD97E33F20F584BA00BB869E /* LayerRenderComponent.swift */; };
 		CDA5A90820DD70B700E1CF87 /* PhysicsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */; };
 		CDB6CE3220E4037D0033E328 /* AnimationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB6CE3120E4037D0033E328 /* AnimationComponent.swift */; };
 		CDC22D2820BDC6B0006BC0BE /* RecordNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC22D2720BDC6B0006BC0BE /* RecordNode.swift */; };
@@ -125,7 +125,7 @@
 		72B5F6840D3186BD92A6EA0D /* Pods-All-NodeVisualizer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-NodeVisualizer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-NodeVisualizer/Pods-All-NodeVisualizer.release.xcconfig"; sourceTree = "<group>"; };
 		89AF3FC4E45BBD39F89AFF7F /* Pods-All-NodeVisualizer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-NodeVisualizer.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-NodeVisualizer/Pods-All-NodeVisualizer.debug.xcconfig"; sourceTree = "<group>"; };
 		CD006ADF20C8A681006F0FB4 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		CD0FB27F20D1A4AE0058A410 /* RenderComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderComponent.swift; sourceTree = "<group>"; };
+		CD0FB27F20D1A4AE0058A410 /* RecordRenderComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordRenderComponent.swift; sourceTree = "<group>"; };
 		CD0FB28120D1A6300058A410 /* RecordEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordEntity.swift; sourceTree = "<group>"; };
 		CD0FB28320D1AA9D0058A410 /* EntityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityManager.swift; sourceTree = "<group>"; };
 		CD0FB28720D1BFDD0058A410 /* MovementComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementComponent.swift; sourceTree = "<group>"; };
@@ -139,8 +139,8 @@
 		CD2CC5E920B8E6D700FB3C10 /* RecordDisplayable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordDisplayable.swift; sourceTree = "<group>"; };
 		CD2CC5EA20B8E6D800FB3C10 /* RecordFilterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordFilterType.swift; sourceTree = "<group>"; };
 		CD97E33B20F4125800BB869E /* NodeCluster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeCluster.swift; sourceTree = "<group>"; };
-		CD97E33D20F5765900BB869E /* NodeBoundingEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeBoundingEntity.swift; sourceTree = "<group>"; };
-		CD97E33F20F584BA00BB869E /* NodeBoundingRenderComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeBoundingRenderComponent.swift; sourceTree = "<group>"; };
+		CD97E33D20F5765900BB869E /* ClusterLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterLayer.swift; sourceTree = "<group>"; };
+		CD97E33F20F584BA00BB869E /* LayerRenderComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerRenderComponent.swift; sourceTree = "<group>"; };
 		CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsComponent.swift; sourceTree = "<group>"; };
 		CDB6CE3120E4037D0033E328 /* AnimationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationComponent.swift; sourceTree = "<group>"; };
 		CDC22D2720BDC6B0006BC0BE /* RecordNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordNode.swift; sourceTree = "<group>"; };
@@ -360,7 +360,7 @@
 			isa = PBXGroup;
 			children = (
 				CD0FB28120D1A6300058A410 /* RecordEntity.swift */,
-				CD97E33D20F5765900BB869E /* NodeBoundingEntity.swift */,
+				CD97E33D20F5765900BB869E /* ClusterLayer.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -372,8 +372,8 @@
 				CD0FB28720D1BFDD0058A410 /* MovementComponent.swift */,
 				CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */,
 				CD0FB28B20D849140058A410 /* RecordAgent.swift */,
-				CD0FB27F20D1A4AE0058A410 /* RenderComponent.swift */,
-				CD97E33F20F584BA00BB869E /* NodeBoundingRenderComponent.swift */,
+				CD0FB27F20D1A4AE0058A410 /* RecordRenderComponent.swift */,
+				CD97E33F20F584BA00BB869E /* LayerRenderComponent.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -579,7 +579,7 @@
 				22D6F90320B6810600C7FB5F /* GestureHandler.swift in Sources */,
 				CD0FB28420D1AA9D0058A410 /* EntityManager.swift in Sources */,
 				22AEAF0120B67E2C00DD184B /* TouchProperties.swift in Sources */,
-				CD97E34020F584BA00BB869E /* NodeBoundingRenderComponent.swift in Sources */,
+				CD97E34020F584BA00BB869E /* LayerRenderComponent.swift in Sources */,
 				22AEAEE820B67D6800DD184B /* NSImage.swift in Sources */,
 				CD27F40620BCBD5A00375CBC /* RecordFactory.swift in Sources */,
 				22AEAF0220B67E2C00DD184B /* Touch.swift in Sources */,
@@ -588,12 +588,12 @@
 				CDB6CE3220E4037D0033E328 /* AnimationComponent.swift in Sources */,
 				CD2CC5EC20B8E6D800FB3C10 /* RecordFilterType.swift in Sources */,
 				22D6F90620B6810600C7FB5F /* Style.swift in Sources */,
-				CD97E33E20F5765900BB869E /* NodeBoundingEntity.swift in Sources */,
+				CD97E33E20F5765900BB869E /* ClusterLayer.swift in Sources */,
 				CD0FB28C20D849140058A410 /* RecordAgent.swift in Sources */,
 				CD1FC73E20DB06AA00B87D02 /* TestingDataManager.swift in Sources */,
 				22D6F90420B6810600C7FB5F /* RecordType.swift in Sources */,
 				22D6F91C20B6824300C7FB5F /* SwipeGestureRecognizer.swift in Sources */,
-				CD0FB28020D1A4AE0058A410 /* RenderComponent.swift in Sources */,
+				CD0FB28020D1A4AE0058A410 /* RecordRenderComponent.swift in Sources */,
 				CD27F40E20BCBFB700375CBC /* Province.swift in Sources */,
 				22AEAEB620B67C2400DD184B /* AppDelegate.swift in Sources */,
 				22AEAEF620B67DA600DD184B /* Place.swift in Sources */,

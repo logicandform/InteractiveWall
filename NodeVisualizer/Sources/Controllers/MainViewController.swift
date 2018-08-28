@@ -8,7 +8,7 @@ import MONode
 
 class MainViewController: NSViewController, NodeGestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "Main")
-    static let touchNetwork = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 13003)
+    static let touchNetwork = NetworkConfiguration(broadcastHost: Configuration.broadcastIP, nodePort: Configuration.touchPort)
 
     @IBOutlet var mainView: SKView!
 

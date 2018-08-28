@@ -51,7 +51,7 @@ class PhysicsComponent: GKComponent {
         for contactedBody in contactedBodies {
             if let boundingNode = contactedBody.node, boundingNode.name == "boundingNode",
                 let currentLevel = entity.clusterLevel.currentLevel,
-                cluster.layerForLevel[currentLevel]?.nodeBoundingRenderComponent.node === boundingNode,
+                cluster.layerForLevel[currentLevel]?.renderComponent.node === boundingNode,
                 !entity.hasCollidedWithBoundingNode {
                 entity.hasCollidedWithBoundingNode = true
                 return
@@ -124,7 +124,7 @@ class PhysicsComponent: GKComponent {
         guard let entity = entity as? RecordEntity,
             let level = entity.clusterLevel.currentLevel,
             let cluster = entity.cluster,
-            let panBoundingPhysicsBody = cluster.layerForLevel[0]?.nodeBoundingRenderComponent.node?.physicsBody else {
+            let panBoundingPhysicsBody = cluster.layerForLevel[0]?.renderComponent.node?.physicsBody else {
             return
         }
 
@@ -144,7 +144,7 @@ class PhysicsComponent: GKComponent {
     private func setSeekingEntityBitMasks() {
         guard let entity = entity as? RecordEntity,
             let level = entity.clusterLevel.currentLevel,
-            let boundingNode = entity.cluster?.layerForLevel[level]?.nodeBoundingRenderComponent.node,
+            let boundingNode = entity.cluster?.layerForLevel[level]?.renderComponent.node,
             let boundingNodePhysicsBody = boundingNode.physicsBody else {
             return
         }

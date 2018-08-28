@@ -6,7 +6,7 @@ import GameplayKit
 
 
 /// A 'GKComponent' that provides a SKNode for a NodeBoundingEntity. This component is mainly responsible for updating the size of its SKNode's physicsBody and updating its maximum distance calculated from its level's entities.
-class NodeBoundingRenderComponent: GKComponent {
+class LayerRenderComponent: GKComponent {
 
     let cluster: NodeCluster
 
@@ -63,7 +63,7 @@ class NodeBoundingRenderComponent: GKComponent {
 
         /*
          Overall behavior/responsibility for this component is as follows:
-            - Each NodeBoundingRenderComponent is responsible for calculating the distance between the root (center) and its own level entities (i.e. contactEntities).
+            - Each LayerRenderComponent is responsible for calculating the distance between the root (center) and its own level entities (i.e. contactEntities).
                 - This calculated distance becomes the component's maxRadius
             - The component's level node updates its own size depending on the previous level bounding node's maxRadius
          */
@@ -85,7 +85,7 @@ class NodeBoundingRenderComponent: GKComponent {
 
         // Scale its own bounding node by using its previous level's bounding node maxRadius
         if let previousLevelNodeBoundingEntity = cluster.layerForLevel[level - 1], let currentNode = node {
-            let previousLevelBoundingNodeRadius = previousLevelNodeBoundingEntity.nodeBoundingRenderComponent.maxRadius
+            let previousLevelBoundingNodeRadius = previousLevelNodeBoundingEntity.renderComponent.maxRadius
             let difference = abs(previousLevelBoundingNodeRadius - currentRadius)
             let sqrtDiff = CGFloat(sqrt(Float(difference)))
             currentRadius += previousLevelBoundingNodeRadius > currentRadius ? sqrtDiff : -sqrtDiff

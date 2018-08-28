@@ -6,7 +6,7 @@ import GameplayKit
 
 
 /// A 'GKComponent' that provides an 'SKNode' for an entity. This enables it to be represented in the SpriteKit world.
-class RenderComponent: GKComponent {
+class RecordRenderComponent: GKComponent {
 
     private(set) var recordNode: RecordNode
 

@@ -69,7 +69,7 @@ class MainScene: SKScene {
         for entity in EntityManager.instance.allEntities() {
             entity.set(state: .falling)
 
-            if let recordNode = entity.component(ofType: RenderComponent.self)?.recordNode {
+            if let recordNode = entity.component(ofType: RecordRenderComponent.self)?.recordNode {
                 recordNode.position.x = randomX()
                 recordNode.position.y = randomY()
                 recordNode.zPosition = 1

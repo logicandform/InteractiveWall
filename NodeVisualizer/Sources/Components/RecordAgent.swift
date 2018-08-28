@@ -7,9 +7,9 @@ import GameplayKit
 /// A 'GKComponent' that provides an 'GKAgent' for an entity. The GKAgent component provides movement to an entity based on sets of goals and constraints.
 class RecordAgent: GKAgent2D, GKAgentDelegate {
 
-    private var renderComponent: RenderComponent {
-        guard let renderComponent = entity?.component(ofType: RenderComponent.self) else {
-            fatalError("A RecordEntity must have a RenderComponent")
+    private var renderComponent: RecordRenderComponent {
+        guard let renderComponent = entity?.component(ofType: RecordRenderComponent.self) else {
+            fatalError("A RecordEntity must have a RecordRenderComponent")
         }
         return renderComponent
     }

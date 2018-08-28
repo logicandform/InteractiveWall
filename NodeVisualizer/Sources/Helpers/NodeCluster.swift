@@ -18,7 +18,7 @@ final class NodeCluster: Hashable {
     private(set) var center: CGPoint
     private(set) var selectedEntity: RecordEntity
     private(set) var entitiesForLevel = EntityLevels()
-    private(set) var layerForLevel = [Int: NodeBoundingEntity]()
+    private(set) var layerForLevel = [Int: ClusterLayer]()
     private let scene: MainScene
 
     var hashValue: Int {
@@ -26,7 +26,7 @@ final class NodeCluster: Hashable {
     }
 
     private lazy var componentSystems: [GKComponentSystem] = {
-        let renderSystem = GKComponentSystem(componentClass: NodeBoundingRenderComponent.self)
+        let renderSystem = GKComponentSystem(componentClass: LayerRenderComponent.self)
         return [renderSystem]
     }()
 
@@ -79,7 +79,7 @@ final class NodeCluster: Hashable {
     func updateClusterPosition(to position: CGPoint) {
         center = position
         for (_, boundingNodeEntity) in layerForLevel {
-            boundingNodeEntity.nodeBoundingRenderComponent.node?.position = position
+            boundingNodeEntity.renderComponent.node?.position = position
         }
     }
 
@@ -101,7 +101,7 @@ final class NodeCluster: Hashable {
 
     /// Calculates the distance from the root bounding node to the specified entity
     func distance(to entity: RecordEntity) -> CGFloat {
-        guard let rootBoundingNode = layerForLevel[0]?.nodeBoundingRenderComponent.node else {
+        guard let rootBoundingNode = layerForLevel[0]?.renderComponent.node else {
             return 0
         }
         let dX = Float(rootBoundingNode.position.x - entity.position.x)
@@ -189,14 +189,14 @@ final class NodeCluster: Hashable {
 
     /// Associates the entity to its level by adding it to the nodeBoundingEntityForLevel. Adds the entity's component to the component system
     private func addLayer(level: Int) {
-        let radius = layerForLevel[level - 1]?.nodeBoundingRenderComponent.maxRadius ?? Constants.defaultLayerRadius
+        let radius = layerForLevel[level - 1]?.renderComponent.maxRadius ?? Constants.defaultLayerRadius
         let node = layerNode(radius: radius, level: level)
 
-        let layer = NodeBoundingEntity(cluster: self)
-        layer.nodeBoundingRenderComponent.node = node
-        layer.nodeBoundingRenderComponent.maxRadius = radius
-        layer.nodeBoundingRenderComponent.minRadius = radius
-        layer.nodeBoundingRenderComponent.level = level
+        let layer = ClusterLayer(cluster: self)
+        layer.renderComponent.node = node
+        layer.renderComponent.maxRadius = radius
+        layer.renderComponent.minRadius = radius
+        layer.renderComponent.level = level
         layerForLevel[level] = layer
 
         for componentSystem in componentSystems {
@@ -206,7 +206,7 @@ final class NodeCluster: Hashable {
 
     /// Removes layer and its components from the cluster
     private func removeLayer(level: Int) {
-        guard let layer = layerForLevel[level], let node = layer.nodeBoundingRenderComponent.node else {
+        guard let layer = layerForLevel[level], let node = layer.renderComponent.node else {
             return
         }
 
@@ -218,7 +218,7 @@ final class NodeCluster: Hashable {
     }
 
     private func updateInnerMostLayerBitMasks(forPan pan: Bool) {
-        guard let innerMostLayerPhysicsBody = layerForLevel[0]?.nodeBoundingRenderComponent.node?.physicsBody else {
+        guard let innerMostLayerPhysicsBody = layerForLevel[0]?.renderComponent.node?.physicsBody else {
             return
         }
 

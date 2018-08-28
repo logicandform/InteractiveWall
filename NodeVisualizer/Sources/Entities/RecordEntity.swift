@@ -24,12 +24,12 @@ enum EntityState: Equatable {
 
 final class RecordEntity: GKEntity {
 
-    let record: RecordDisplayable
-    let relatedRecordsForLevel: RelatedLevels
-    let relatedRecords: Set<RecordProxy>
     var cluster: NodeCluster?
     weak var previousCluster: NodeCluster?
     var hasCollidedWithBoundingNode = false
+    let record: RecordDisplayable
+    let relatedRecordsForLevel: RelatedLevels
+    let relatedRecords: Set<RecordProxy>
     private(set) var clusterLevel: (previousLevel: Int?, currentLevel: Int?) = (nil, nil)
 
     var state: EntityState {
@@ -59,9 +59,9 @@ final class RecordEntity: GKEntity {
 
     // MARK: Components
 
-    private var renderComponent: RenderComponent {
-        guard let renderComponent = component(ofType: RenderComponent.self) else {
-            fatalError("A RecordEntity must have a RenderComponent")
+    private var renderComponent: RecordRenderComponent {
+        guard let renderComponent = component(ofType: RecordRenderComponent.self) else {
+            fatalError("A RecordEntity must have a RecordRenderComponent")
         }
         return renderComponent
     }
@@ -107,7 +107,7 @@ final class RecordEntity: GKEntity {
         self.relatedRecords = relatedRecords
         super.init()
 
-        let renderComponent = RenderComponent(record: record)
+        let renderComponent = RecordRenderComponent(record: record)
         let physicsComponent = PhysicsComponent(physicsBody: SKPhysicsBody(circleOfRadius: style.nodePhysicsBodyRadius))
         let movementComponent = MovementComponent()
         let animationComponent = AnimationComponent()

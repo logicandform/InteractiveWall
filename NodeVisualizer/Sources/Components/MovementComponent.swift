@@ -32,7 +32,7 @@ class MovementComponent: GKComponent {
 
         if let entity = entity as? RecordEntity,
             let previousCluster = entity.previousCluster,
-            let outmostBoundingEntity = previousCluster.layerForLevel[previousCluster.layerForLevel.count - 1]?.nodeBoundingRenderComponent {
+            let outmostBoundingEntity = previousCluster.layerForLevel[previousCluster.layerForLevel.count - 1]?.renderComponent {
             let deltaX = entity.position.x - previousCluster.center.x
             let deltaY = entity.position.y - previousCluster.center.y
             let distance = previousCluster.distanceOf(x: deltaX, y: deltaY)
@@ -135,7 +135,7 @@ class MovementComponent: GKComponent {
     private func move(to level: Int) {
         guard let entity = entity as? RecordEntity,
             let cluster = entity.cluster,
-            let referenceNode = cluster.layerForLevel[level]?.nodeBoundingRenderComponent.node else {
+            let referenceNode = cluster.layerForLevel[level]?.renderComponent.node else {
             return
         }
 
@@ -155,7 +155,7 @@ class MovementComponent: GKComponent {
 
         // Find the difference in distance. This gives the total distance that is left to travel for the node
         guard let currentLevel = entity.clusterLevel.currentLevel,
-            let currentLevelBoundingEntityComponent = cluster.layerForLevel[currentLevel]?.nodeBoundingRenderComponent else {
+            let currentLevelBoundingEntityComponent = cluster.layerForLevel[currentLevel]?.renderComponent else {
                 return
         }
 
