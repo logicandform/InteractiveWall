@@ -350,7 +350,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     // MARK: SelectionHandler
 
     // Updates the highlighted state of the given items, updates tail views
-    func handle(items: [Int], highlighted: Bool) {
+    func handle(items: Set<Int>, highlighted: Bool) {
         for item in items {
             set(item: item, highlighted: highlighted)
         }

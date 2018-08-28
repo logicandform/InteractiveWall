@@ -8,7 +8,7 @@ import Cocoa
 protocol SelectionHandler: class {
     func handle(item: Int, selected: Bool)
     func replace(selection: [TimelineSelection])
-    func handle(items: [Int], highlighted: Bool)
+    func handle(items: Set<Int>, highlighted: Bool)
     func replace(highlighted: Set<Int>)
 }
 
@@ -241,7 +241,7 @@ final class SelectionManager {
         }
 
         if !itemsToSet.isEmpty {
-            delegate?.handle(items: Array(itemsToSet), highlighted: false)
+            delegate?.handle(items: itemsToSet, highlighted: false)
         }
     }
 }
