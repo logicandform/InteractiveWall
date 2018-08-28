@@ -13,9 +13,6 @@ protocol SelectionHandler: class {
 }
 
 
-//typealias TimelineSelection = (index: Int, app: Int)
-
-
 /// Handles notifications for Timeline selection and highlights
 final class SelectionManager {
     static let instance = SelectionManager()
@@ -68,13 +65,6 @@ final class SelectionManager {
 
     // MARK: API
 
-    func syncApps(group: Int) {
-        if group == appID {
-            let selection = selectionForApp[group]
-            postSelectionNotification(forGroup: group, with: selection)
-        }
-    }
-
     func merge(app: Int, toGroup group: Int?) {
         guard let group = group else {
             return
@@ -107,7 +97,7 @@ final class SelectionManager {
     }
 
     func registerForNotifications() {
-        let notifications: [TimelineNotification] = [.select, .selection, .highlight]
+        let notifications: [TimelineNotification] = [.select, .highlight]
         for notification in notifications {
             DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
         }
@@ -130,10 +120,6 @@ final class SelectionManager {
             if let id = info[Keys.id] as? Int, let index = info[Keys.index] as? Int, let state = info[Keys.state] as? Bool {
                 set(index: index, group: group, selected: state, from: id)
             }
-        case TimelineNotification.selection.name:
-            if let selection = info[Keys.selection] as? Set<TimelineSelection> {
-                set(selection, group: group)
-            }
         case TimelineNotification.highlight.name:
             if let index = info[Keys.index] as? Int {
                 setHighlight(index: index, group: group)
@@ -143,11 +129,6 @@ final class SelectionManager {
         default:
             return
         }
-    }
-
-    private func postSelectionNotification(forGroup group: Int, with selection: Set<TimelineSelection>) {
-        let info: JSON = [Keys.group: group, Keys.selection: selection]
-        DistributedNotificationCenter.default().postNotificationName(TimelineNotification.selection.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
 
@@ -165,20 +146,6 @@ final class SelectionManager {
             if app == appID {
                 delegate?.replace(selection: emptySelectionSet)
                 delegate?.replace(highlighted: emptyIntSet)
-            }
-        }
-    }
-
-    private func set(_ items: Set<TimelineSelection>, group: Int?) {
-        let appStates = ConnectionManager.instance.states(for: .timeline).enumerated()
-
-        for (app, state) in appStates {
-            // Check if same group
-            if state.group == group {
-                selectionForApp[app] = items
-                if app == appID {
-                    delegate?.replace(selection: items)
-                }
             }
         }
     }
