@@ -157,7 +157,7 @@ final class SelectionManager {
         for (app, state) in appStates {
             // Check if same group
             if state.group == group, selected {
-                selectionForApp[app].insert(TimelineSelection(index: index, app: id))
+                selectionForApp[app].insert(selection)
                 if app == appID {
                     delegate?.handle(item: index, selected: selected)
                 }
