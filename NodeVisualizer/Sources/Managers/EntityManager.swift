@@ -25,6 +25,7 @@ final class EntityManager {
 
     private struct Constants {
         static let maxRelatedLevel = 4
+        static let maxEntitiesPerLevel = 50
     }
 
 
@@ -60,29 +61,33 @@ final class EntityManager {
         }
     }
 
-    /// Returns the entities associated with the given proxies, if an entity is already with another cluster, the entity will be duplicated
-    func requestEntities(with proxies: Set<RecordProxy>, for cluster: NodeCluster) -> Set<RecordEntity> {
-        var result = Set<RecordEntity>()
-        for proxy in proxies {
-            if let entityForProxy = getEntity(for: proxy) {
-                // If entity for proxy already has a different cluster, duplicate the entity at the same position
-                if let current = entityForProxy.cluster, current != cluster {
-                    let copy = entityForProxy.clone()
-                    store(copy)
-                    addComponents(to: copy)
-                    copy.node.scale(to: entityForProxy.node.size)
-                    copy.set(position: entityForProxy.position)
-                    copy.setClonedNodeBitMasks()
-                    copy.previousCluster = current
-                    result.insert(copy)
-                    scene?.addChild(copy.node)
-                } else {
-                    result.insert(entityForProxy)
-                }
+    func requestEntityLevels(for entity: RecordEntity, in cluster: NodeCluster) -> EntityLevels {
+        let currentEntities = flatten(cluster.entitiesForLevel)
+        var result = EntityLevels()
+
+        // Build levels for the new entity
+        for (index, records) in entity.relatedRecordsForLevel.enumerated() {
+            // Prioritize entities that already exist in the cluster
+            var entitiesForLevel = entities(for: records, from: currentEntities, size: Constants.maxEntitiesPerLevel)
+
+            // Request the remaining entities up to to allowed size per level
+            let remainingSpace = Constants.maxEntitiesPerLevel - entitiesForLevel.count
+            let requestedProxies = records.subtracting(proxies(for: entitiesForLevel))
+            let requestedEntities = requestEntities(from: requestedProxies, size: remainingSpace, for: cluster)
+            entitiesForLevel.formUnion(requestedEntities)
+
+            // Don't insert empty levels
+            if entitiesForLevel.isEmpty {
+                break
             }
+            result.insert(entitiesForLevel, at: index)
         }
 
         return result
+    }
+
+    private func entities(for proxies: Set<RecordProxy>, from entities: Set<RecordEntity>, size: Int) -> Set<RecordEntity> {
+        return entities.filter { proxies.contains($0.record.proxy) && entities.count <= size }
     }
 
     /// Updates all component systems that the EntityManager is responsible for
@@ -116,6 +121,30 @@ final class EntityManager {
 
 
     // MARK: Helpers
+
+    /// Returns a random subset of entities associated with the given proxies up to a given size, entities in another cluster will be duplicated.
+    private func requestEntities(from proxies: Set<RecordProxy>, size: Int, for cluster: NodeCluster) -> Set<RecordEntity> {
+        guard let shuffled = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: Array(proxies)) as? [RecordProxy] else {
+            return []
+        }
+
+        var result = Set<RecordEntity>()
+        let max = min(size, shuffled.count)
+        for index in (0 ..< max) {
+            let proxy = shuffled[index]
+            if let entityForProxy = getEntity(for: proxy) {
+                if let current = entityForProxy.cluster, current != cluster {
+                    let copy = createCopy(of: entityForProxy)
+                    copy.cluster = cluster
+                    result.insert(copy)
+                } else {
+                    entityForProxy.cluster = cluster
+                    result.insert(entityForProxy)
+                }
+            }
+        }
+        return result
+    }
 
     private func store(_ entity: RecordEntity) {
         let proxy = entity.record.proxy
@@ -160,5 +189,26 @@ final class EntityManager {
         for componentSystem in componentSystems {
             componentSystem.removeComponent(foundIn: entity)
         }
+    }
+
+    private func flatten(_ levels: EntityLevels) -> Set<RecordEntity> {
+        return levels.reduce(Set<RecordEntity>()) { return $0.union($1) }
+    }
+
+    private func proxies(for entities: Set<RecordEntity>) -> Set<RecordProxy> {
+        let proxies = entities.map { $0.record.proxy }
+        return Set(proxies)
+    }
+
+    private func createCopy(of entity: RecordEntity) -> RecordEntity {
+        let copy = entity.clone()
+        store(copy)
+        addComponents(to: copy)
+        copy.set(position: entity.position)
+        copy.node.scale(to: entity.node.size)
+        copy.setClonedNodeBitMasks()
+        copy.previousCluster = entity.cluster
+        scene?.addChild(copy.node)
+        return copy
     }
 }

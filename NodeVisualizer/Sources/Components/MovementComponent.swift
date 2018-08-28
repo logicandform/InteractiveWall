@@ -30,6 +30,7 @@ class MovementComponent: GKComponent {
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
 
+        // What is this doing? Why is it called for every state?
         if let entity = entity as? RecordEntity,
             let previousCluster = entity.previousCluster,
             let outmostBoundingEntity = previousCluster.layerForLevel[previousCluster.layerForLevel.count - 1]?.renderComponent {
@@ -44,8 +45,7 @@ class MovementComponent: GKComponent {
 
         switch state {
         case .falling:
-            // Break for now since we may not need falling state with new design
-            break
+            fall()
         case .seekEntity(let entity):
             seek(entity)
         case .seekLevel(let level):

@@ -7,8 +7,8 @@ import MONode
 
 
 class MainViewController: NSViewController, NodeGestureResponder {
-    static let storyboard = NSStoryboard.Name(rawValue: "Main")
     static let touchNetwork = NetworkConfiguration(broadcastHost: Configuration.broadcastIP, nodePort: Configuration.touchPort)
+    static let storyboard = NSStoryboard.Name(rawValue: "Main")
 
     @IBOutlet var mainView: SKView!
 
@@ -30,7 +30,6 @@ class MainViewController: NSViewController, NodeGestureResponder {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         guard mainView.scene == nil else {
             return
         }

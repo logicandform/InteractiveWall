@@ -145,7 +145,7 @@ final class RecordEntity: GKEntity {
             physicsComponent.updateBitMasks()
         case .seekEntity(_):
             physicsComponent.updateBitMasks()
-        default:
+        case .falling, .panning:
             break
         }
     }

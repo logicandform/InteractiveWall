@@ -56,7 +56,6 @@ final class NodeCluster: Hashable {
 
     /// Updates the layers in the cluster for the selected entity and updates the levels for all current entities
     func select(_ entity: RecordEntity) {
-        filterRecords(for: entity)
         attach(to: entity)
         setLayers(toLevel: entitiesForLevel.count)
         updateStatesForEntities()
@@ -78,8 +77,8 @@ final class NodeCluster: Hashable {
     /// Updates center point and bounding nodes to the new panned position
     func updateClusterPosition(to position: CGPoint) {
         center = position
-        for (_, boundingNodeEntity) in layerForLevel {
-            boundingNodeEntity.renderComponent.node?.position = position
+        for (_, layer) in layerForLevel {
+            layer.renderComponent.node?.position = position
         }
     }
 
@@ -119,47 +118,19 @@ final class NodeCluster: Hashable {
 
     // MARK: Helpers
 
-    /// Removes entities from the cluster that are not related to the new entity
-    private func filterRecords(for newEntity: RecordEntity) {
-        var oldRecords = selectedEntity.relatedRecords
-        oldRecords.insert(selectedEntity.record.proxy)
-        var newRecords = newEntity.relatedRecords
-        newRecords.insert(newEntity.record.proxy)
-        let recordsToRemove = oldRecords.subtracting(newRecords)
-        removeEntities(for: recordsToRemove)
-    }
-
-    /// Removes entities for each given proxy from `self`
-    private func removeEntities(for proxies: Set<RecordProxy>) {
-        var entities = Set<RecordEntity>()
-        for entitiesInLevel in entitiesForLevel {
-            entities.formUnion(entitiesInLevel)
-        }
-
-        for proxy in proxies {
-            if let entity = entities.first(where: { $0.record.proxy == proxy }) {
-                EntityManager.instance.release(entity)
-            }
-        }
-    }
-
     /// Requests all entities for related records of the given entity. Sets their `cluster` to `self`.
     private func attach(to entity: RecordEntity) {
-        var entityLevels = EntityLevels()
-        // Build levels for the new entity
-        for (index, records) in entity.relatedRecordsForLevel.enumerated() {
-            let entitiesForLevel = EntityManager.instance.requestEntities(with: records, for: self)
-            if entitiesForLevel.isEmpty {
-                break
-            }
-            entityLevels.insert(entitiesForLevel, at: index)
-            for entity in entitiesForLevel {
-                entity.cluster = self
-            }
-        }
+        let currentEntities = flatten(entitiesForLevel)
+        let newLevels = EntityManager.instance.requestEntityLevels(for: entity, in: self)
+        let entitiesToRelease = currentEntities.subtracting(flatten(newLevels) + [entity])
+
         selectedEntity = entity
         entity.cluster = self
-        entitiesForLevel = entityLevels
+        entitiesForLevel = newLevels
+
+        for entity in entitiesToRelease {
+            EntityManager.instance.release(entity)
+        }
     }
 
     private func updateStatesForEntities() {
@@ -269,6 +240,10 @@ final class NodeCluster: Hashable {
             collisionBitMask: collisionBitMask,
             contactTestBitMask: contactTestBitMask
         )
+    }
+
+    private func flatten(_ levels: EntityLevels) -> Set<RecordEntity> {
+        return levels.reduce(Set<RecordEntity>()) { return $0.union($1) }
     }
 
     static func == (lhs: NodeCluster, rhs: NodeCluster) -> Bool {
