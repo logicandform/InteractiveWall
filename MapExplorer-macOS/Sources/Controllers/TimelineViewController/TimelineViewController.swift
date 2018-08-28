@@ -60,11 +60,11 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
 
     // MARK: API
 
-    func fade(out: Bool, completion: (() -> Void)? = nil) {
+    func fade(out: Bool) {
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration
             timelineBackgroundView.animator().alphaValue = out ? 0 : 1
-        }, completionHandler: completion)
+        })
     }
 
     func setDate(_ date: TimelineDate, animated: Bool = false) {

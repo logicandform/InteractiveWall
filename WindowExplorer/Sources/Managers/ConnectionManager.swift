@@ -23,7 +23,7 @@ final class ConnectionManager {
     private weak var resetTimer: Foundation.Timer?
 
     private struct Constants {
-        static let resetTimeoutPeriod = 180.0
+        static let resetTimeoutPeriod = 5.0
     }
 
     private struct Keys {
@@ -159,7 +159,7 @@ final class ConnectionManager {
                 syncApps(group: group, type: type)
             }
         case SettingsNotification.reset.name:
-            resetAppType()
+            reset()
         default:
             return
         }
@@ -197,7 +197,7 @@ final class ConnectionManager {
         updateViews()
     }
 
-    private func resetAppType() {
+    private func reset() {
         let numberOfApps = Configuration.appsPerScreen * Configuration.numberOfScreens
         let initialState = AppState(pair: nil, group: nil)
         stateForMap = Array(repeating: initialState, count: numberOfApps)
