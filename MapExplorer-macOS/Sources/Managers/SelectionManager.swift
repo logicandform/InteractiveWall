@@ -23,7 +23,6 @@ final class SelectionManager {
     weak var delegate: SelectionHandler?
 
     /// Selections for an app's timeline indexed by it's appID
-//    private var selectionForApp = [Set<Int>]()
     private var selectionForApp = [[TimelineSelection]]()
 
     /// Remaining duration of highlight for event supplied by it's id
@@ -55,7 +54,6 @@ final class SelectionManager {
     /// Use Singleton
     private init() {
         let numberOfApps = Configuration.appsPerScreen * Configuration.numberOfScreens
-//        self.selectionForApp = Array(repeating: Set<Int>(), count: numberOfApps)
         self.selectionForApp = Array(repeating: [TimelineSelection](), count: numberOfApps)
         for app in (0 ..< numberOfApps) {
             timeForHighlight[app] = [:]
@@ -114,9 +112,6 @@ final class SelectionManager {
             DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
         }
         DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: SettingsNotification.reset.name, object: nil)
-//        for notification in SettingsNotification.allValues {
-//            DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
-//        }
     }
 
 
@@ -145,14 +140,6 @@ final class SelectionManager {
             }
         case SettingsNotification.reset.name:
             resetAll()
-//        case SettingsNotification.split.name, SettingsNotification.ungroup.name:
-//            if let id = info[Keys.id] as? Int, let receivedGroup = group, let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
-//                split(from: id, group: receivedGroup, type: type)
-//            }
-//        case SettingsNotification.unpair.name:
-//            if let id = info[Keys.id] as? Int let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
-//                split(from: id, group: receivedGroup, type: type)
-//            }
         default:
             return
         }
@@ -165,20 +152,6 @@ final class SelectionManager {
 
 
     // MARK: Helpers
-
-//    private func split(from id: Int, group: Int, type: ApplicationType) {
-//        if type == .timeline, id != appID, group != ConnectionManager.instance.groupForApp(id: appID, type: .timeline) {
-//            for selection in selectionForApp[appID] {
-//                set(item: selection, selected: false)
-//            }
-//        }
-//    }
-//
-//    private func unpair(from id: Int, type: ApplicationType) {
-//        let state = ConnectionManager.instance.states(for: type)
-//
-//        if type == .timeline,
-//    }
 
     private func resetAll() {
         let appStates = ConnectionManager.instance.states(for: .timeline).enumerated()
@@ -226,16 +199,6 @@ final class SelectionManager {
                     delegate?.handle(item: index, selected: selected)
                 }
             }
-//            if state.group == group {
-//                if selected {
-//                    selectionForApp[app].insert(index)
-//                } else {
-//                    selectionForApp[app].remove(index)
-//                }
-//                if app == appID {
-//                    delegate?.handle(item: index, selected: selected)
-//                }
-//            }
         }
     }
 
