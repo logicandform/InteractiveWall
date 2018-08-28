@@ -7,10 +7,13 @@ import Cocoa
 // Interface for the TimelineHandler to update it's views
 protocol SelectionHandler: class {
     func handle(item: Int, selected: Bool)
-    func replace(selection: Set<Int>)
-    func handle(items: Set<Int>, highlighted: Bool)
+    func replace(selection: [TimelineSelection])
+    func handle(items: [Int], highlighted: Bool)
     func replace(highlighted: Set<Int>)
 }
+
+
+typealias TimelineSelection = (index: Int, app: Int)
 
 
 /// Handles notifications for Timeline selection and highlights
@@ -20,7 +23,8 @@ final class SelectionManager {
     weak var delegate: SelectionHandler?
 
     /// Selections for an app's timeline indexed by it's appID
-    private var selectionForApp = [Set<Int>]()
+//    private var selectionForApp = [Set<Int>]()
+    private var selectionForApp = [[TimelineSelection]]()
 
     /// Remaining duration of highlight for event supplied by it's id
     private var timeForHighlight = [Int: [Int: Int]]()
@@ -41,6 +45,7 @@ final class SelectionManager {
         static let group = "group"
         static let index = "index"
         static let state = "state"
+        static let type = "type"
         static let selection = "selection"
     }
 
@@ -50,7 +55,8 @@ final class SelectionManager {
     /// Use Singleton
     private init() {
         let numberOfApps = Configuration.appsPerScreen * Configuration.numberOfScreens
-        self.selectionForApp = Array(repeating: Set<Int>(), count: numberOfApps)
+//        self.selectionForApp = Array(repeating: Set<Int>(), count: numberOfApps)
+        self.selectionForApp = Array(repeating: [TimelineSelection](), count: numberOfApps)
         for app in (0 ..< numberOfApps) {
             timeForHighlight[app] = [:]
         }
@@ -108,6 +114,9 @@ final class SelectionManager {
             DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
         }
         DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: SettingsNotification.reset.name, object: nil)
+//        for notification in SettingsNotification.allValues {
+//            DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
+//        }
     }
 
 
@@ -123,12 +132,12 @@ final class SelectionManager {
 
         switch notification.name {
         case TimelineNotification.select.name:
-            if let index = info[Keys.index] as? Int, let state = info[Keys.state] as? Bool {
-                set(index: index, group: group, selected: state)
+            if let id = info[Keys.id] as? Int, let index = info[Keys.index] as? Int, let state = info[Keys.state] as? Bool {
+                set(index: index, group: group, selected: state, from: id)
             }
         case TimelineNotification.selection.name:
-            if let selection = info[Keys.selection] as? [Int] {
-                set(Set(selection), group: group)
+            if let selection = info[Keys.selection] as? [TimelineSelection] {
+                set(selection, group: group)
             }
         case TimelineNotification.highlight.name:
             if let index = info[Keys.index] as? Int {
@@ -136,35 +145,58 @@ final class SelectionManager {
             }
         case SettingsNotification.reset.name:
             resetAll()
+//        case SettingsNotification.split.name, SettingsNotification.ungroup.name:
+//            if let id = info[Keys.id] as? Int, let receivedGroup = group, let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
+//                split(from: id, group: receivedGroup, type: type)
+//            }
+//        case SettingsNotification.unpair.name:
+//            if let id = info[Keys.id] as? Int let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
+//                split(from: id, group: receivedGroup, type: type)
+//            }
         default:
             return
         }
     }
 
-    private func postSelectionNotification(forGroup group: Int, with selection: Set<Int>) {
-        let info: JSON = [Keys.group: group, Keys.selection: Array(selection)]
+    private func postSelectionNotification(forGroup group: Int, with selection: [TimelineSelection]) {
+        let info: JSON = [Keys.group: group, Keys.selection: selection]
         DistributedNotificationCenter.default().postNotificationName(TimelineNotification.selection.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
 
     // MARK: Helpers
 
+//    private func split(from id: Int, group: Int, type: ApplicationType) {
+//        if type == .timeline, id != appID, group != ConnectionManager.instance.groupForApp(id: appID, type: .timeline) {
+//            for selection in selectionForApp[appID] {
+//                set(item: selection, selected: false)
+//            }
+//        }
+//    }
+//
+//    private func unpair(from id: Int, type: ApplicationType) {
+//        let state = ConnectionManager.instance.states(for: type)
+//
+//        if type == .timeline,
+//    }
+
     private func resetAll() {
         let appStates = ConnectionManager.instance.states(for: .timeline).enumerated()
+        let emptyArray = [TimelineSelection]()
         let emptySet = Set<Int>()
 
         for (app, _) in appStates {
-            selectionForApp[app] = emptySet
+            selectionForApp[app] = emptyArray
             timeForHighlight[app] = [:]
 
             if app == appID {
-                delegate?.replace(selection: emptySet)
+                delegate?.replace(selection: emptyArray)
                 delegate?.replace(highlighted: emptySet)
             }
         }
     }
 
-    private func set(_ items: Set<Int>, group: Int?) {
+    private func set(_ items: [TimelineSelection], group: Int?) {
         let appStates = ConnectionManager.instance.states(for: .timeline).enumerated()
 
         for (app, state) in appStates {
@@ -178,21 +210,32 @@ final class SelectionManager {
         }
     }
 
-    private func set(index: Int, group: Int?, selected: Bool) {
+    private func set(index: Int, group: Int?, selected: Bool, from id: Int) {
         let appStates = ConnectionManager.instance.states(for: .timeline).enumerated()
 
         for (app, state) in appStates {
             // Check if same group
-            if state.group == group {
-                if selected {
-                    selectionForApp[app].insert(index)
-                } else {
-                    selectionForApp[app].remove(index)
+            if state.group == group, selected {
+                selectionForApp[app].append(TimelineSelection(index: index, app: id))
+                if app == appID {
+                    delegate?.handle(item: index, selected: selected)
                 }
+            } else if !selected, let selectionIndex = selectionForApp[app].index(where: { $0.index == index && $0.app == id }) {
+                selectionForApp[app].remove(at: selectionIndex)
                 if app == appID {
                     delegate?.handle(item: index, selected: selected)
                 }
             }
+//            if state.group == group {
+//                if selected {
+//                    selectionForApp[app].insert(index)
+//                } else {
+//                    selectionForApp[app].remove(index)
+//                }
+//                if app == appID {
+//                    delegate?.handle(item: index, selected: selected)
+//                }
+//            }
         }
     }
 
@@ -235,7 +278,7 @@ final class SelectionManager {
         }
 
         if !itemsToSet.isEmpty {
-            delegate?.handle(items: itemsToSet, highlighted: false)
+            delegate?.handle(items: Array(itemsToSet), highlighted: false)
         }
     }
 }
