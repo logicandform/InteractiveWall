@@ -26,9 +26,8 @@ class LayerRenderComponent: GKComponent {
     private var currentRadius: CGFloat = Constants.initialRadius
 
     private struct Constants {
-        static let initialRadius: CGFloat = style.nodePhysicsBodyRadius + 5.0
-        static let minimumOffset: CGFloat = style.nodePhysicsBodyRadius
-        static let maximumOffset: CGFloat = style.nodePhysicsBodyRadius * 2
+        static let initialRadius: CGFloat = style.selectedNodeRadius
+        static let radiusOffsetMultipler: CGFloat = 1.05
     }
 
 
@@ -73,7 +72,8 @@ class LayerRenderComponent: GKComponent {
         if let contactEntities = cluster.entitiesForLevel.at(index: level) {
             // Iterate through its contactEntities to see if it hasCollidedWithBoundingNode, and determine the max distance from the root to the contactEntity
             for contactEntity in contactEntities where contactEntity.hasCollidedWithBoundingNode {
-                let calculatedRadius = cluster.distance(to: contactEntity) + Constants.minimumOffset
+                let contactEntityRadiusOffset = contactEntity.bodyRadius * Constants.radiusOffsetMultipler
+                let calculatedRadius = cluster.distance(to: contactEntity) + contactEntityRadiusOffset
                 if calculatedRadius > distance {
                     distance = calculatedRadius
                 }
@@ -81,7 +81,7 @@ class LayerRenderComponent: GKComponent {
         }
 
         // Set the maxRadius for this level's bounding node
-        maxRadius = distance > Constants.initialRadius ? distance : Constants.initialRadius
+        maxRadius = distance > currentRadius ? distance : currentRadius
 
         // Scale its own bounding node by using its previous level's bounding node maxRadius
         if let previousLevelNodeBoundingEntity = cluster.layerForLevel[level - 1], let currentNode = node {
@@ -92,7 +92,7 @@ class LayerRenderComponent: GKComponent {
             minRadius = currentRadius
 
             // Create new physicsBody based on the previous level bounding node's maxRadius. Scaling its own bounding node causes "stuck collisions" to its physicsBody
-            let newPhysicsBody = SKPhysicsBody(circleOfRadius: currentRadius + Constants.minimumOffset)
+            let newPhysicsBody = SKPhysicsBody(circleOfRadius: currentRadius)
             newPhysicsBody.categoryBitMask = currentNode.physicsBody!.categoryBitMask
             newPhysicsBody.collisionBitMask = currentNode.physicsBody!.collisionBitMask
             newPhysicsBody.contactTestBitMask = currentNode.physicsBody!.contactTestBitMask

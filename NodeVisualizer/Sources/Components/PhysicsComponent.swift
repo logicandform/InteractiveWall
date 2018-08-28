@@ -8,6 +8,7 @@ import GameplayKit
 struct ColliderType {
     static let panBoundingNode: UInt32 = 1 << 20
     static let clonedRecordNode: UInt32 = 1 << 21
+    static let tappedRecordNode: UInt32 = 1 << 22
 
     let categoryBitMask: UInt32
     let collisionBitMask: UInt32
@@ -79,6 +80,8 @@ class PhysicsComponent: GKComponent {
             setPanningBitMasks()
         } else {
             switch entity.state {
+            case .tapped:
+                setTappedEntityBitMasks()
             case .seekLevel(let level):
                 setSeekingLevelBitMasks(forLevel: level)
             case .seekEntity(_):
@@ -132,6 +135,12 @@ class PhysicsComponent: GKComponent {
         physicsBody.categoryBitMask = levelBitMasks.categoryBitMask | panBoundingPhysicsBody.categoryBitMask
         physicsBody.collisionBitMask = levelBitMasks.collisionBitMask | panBoundingPhysicsBody.collisionBitMask
         physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask | panBoundingPhysicsBody.contactTestBitMask
+    }
+
+    private func setTappedEntityBitMasks() {
+        physicsBody.categoryBitMask = ColliderType.tappedRecordNode
+        physicsBody.collisionBitMask = ColliderType.tappedRecordNode
+        physicsBody.contactTestBitMask = ColliderType.tappedRecordNode
     }
 
     private func setSeekingLevelBitMasks(forLevel level: Int) {

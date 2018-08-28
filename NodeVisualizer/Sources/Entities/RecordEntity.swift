@@ -48,6 +48,14 @@ final class RecordEntity: GKEntity {
         return renderComponent.recordNode
     }
 
+    var bodyRadius: CGFloat {
+        let width = renderComponent.recordNode.frame.width
+        let height = renderComponent.recordNode.frame.height
+        let nodeRadius = CGFloat(hypot(Float(width), Float(height)))
+        let bodyRadius = nodeRadius * 1.05
+        return bodyRadius
+    }
+
     override var description: String {
         return "( [RecordEntity] ID: \(record.id), type: \(record.type), State: \(state) )"
     }
@@ -85,13 +93,6 @@ final class RecordEntity: GKEntity {
             fatalError("A RecordEntity must have an AnimationComponent")
         }
         return animationComponent
-    }
-
-    var agent: RecordAgent {
-        guard let agent = component(ofType: RecordAgent.self) else {
-            fatalError("A RecordEntity must have a GKAgent2D Component")
-        }
-        return agent
     }
 
 
@@ -136,6 +137,8 @@ final class RecordEntity: GKEntity {
         switch state {
         case .tapped:
             clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: Constants.tappedEntitylevel)
+            hasCollidedWithBoundingNode = false
+            physicsComponent.updateBitMasks()
         case .seekLevel(let level):
             clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: level)
             hasCollidedWithBoundingNode = false
@@ -159,13 +162,15 @@ final class RecordEntity: GKEntity {
         physicsComponent.setClonedNodeBitMasks()
     }
 
-    func updateAgentPositionToMatchNodePosition() {
-        agent.position = vector_float2(x: Float(renderComponent.recordNode.position.x), y: Float(renderComponent.recordNode.position.y))
+    func animateTappedEntity(with action: SKAction) {
+        renderComponent.recordNode.run(action) { [weak self] in
+            self?.physicsComponent.physicsBody.mass = style.nodePhysicsBodyMass
+        }
     }
 
-    func run(action: SKAction) {
+    func scale(with action: SKAction) {
         renderComponent.recordNode.run(action) { [weak self] in
-            self?.renderComponent.recordNode.removeAllActions()
+            self?.physicsComponent.physicsBody.mass = style.nodePhysicsBodyMass
         }
     }
 

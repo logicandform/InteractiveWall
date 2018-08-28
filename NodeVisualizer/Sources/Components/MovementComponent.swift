@@ -89,15 +89,30 @@ class MovementComponent: GKComponent {
             entity.physicsBody.affectedByGravity = true
         case .tapped:
             entity.physicsBody.isDynamic = false
+            entity.node.removeAllActions()
             cluster()
         case .seekLevel(_), .seekEntity(_):
             entity.physicsBody.restitution = 0
             entity.physicsBody.friction = 1
             entity.physicsBody.linearDamping = 1
+            entity.node.removeAllActions()
+            scale()
         case .panning:
             entity.physicsBody.isDynamic = false
             entity.node.removeAllActions()
             entity.cluster?.updateLayerLevels(forPan: true)
+        }
+    }
+
+    private func cluster() {
+        if let entity = entity as? RecordEntity, let cluster = entity.cluster {
+            entity.set(state: .scaleAndCenterToPoint(cluster.center))
+        }
+    }
+
+    private func scale() {
+        if let entity = entity as? RecordEntity {
+            entity.set(state: .scaleToLevelSize)
         }
     }
 
@@ -121,14 +136,6 @@ class MovementComponent: GKComponent {
             let leftPosition = -style.nodePhysicsBodyRadius
             entity.set(position: CGPoint(x: leftPosition, y: entity.position.y))
         }
-    }
-
-    private func cluster() {
-        guard let entity = entity as? RecordEntity, let cluster = entity.cluster else {
-            return
-        }
-
-        entity.set(state: .goToPoint(cluster.center))
     }
 
     /// Applies appropriate physics that moves the entity to the appropriate higher level before entering next state and setting its bitMasks
@@ -162,7 +169,7 @@ class MovementComponent: GKComponent {
         let r2 = currentLevelBoundingEntityComponent.minRadius
         let r1 = distanceBetweenNodeAndCenter
 
-        if (r2 - r1) < Constants.distancePadding {
+        if (r2 - r1) < -entity.bodyRadius {
             entity.set(state: .seekEntity(cluster.selectedEntity))
         } else {
             entity.physicsBody.velocity = CGVector(dx: Constants.speed * unitVector.dx, dy: Constants.speed * unitVector.dy)
@@ -181,8 +188,8 @@ class MovementComponent: GKComponent {
         let displacement = CGVector(dx: deltaX, dy: deltaY)
         let radius = distanceOf(x: deltaX, y: deltaY)
 
-        let targetEntityMass = targetEntity.physicsBody.mass * Constants.strength * radius
-        let entityMass = entity.physicsBody.mass * Constants.strength * radius
+        let targetEntityMass = style.nodePhysicsBodyMass * Constants.strength * radius
+        let entityMass = style.nodePhysicsBodyMass * Constants.strength * radius
 
         let unitVector = CGVector(dx: displacement.dx / radius, dy: displacement.dy / radius)
         let force = (targetEntityMass * entityMass) / (radius * radius)
