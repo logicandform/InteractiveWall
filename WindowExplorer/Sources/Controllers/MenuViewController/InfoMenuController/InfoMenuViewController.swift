@@ -7,9 +7,9 @@ import Cocoa
 class InfoMenuViewController: NSViewController, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "InfoMenu")
 
-    @IBOutlet weak var infoMenuScrollView: NSScrollView!
-    @IBOutlet weak var infoMenuCollectionView: NSCollectionView!
-    @IBOutlet weak var infoMenuClipView: NSClipView!
+    @IBOutlet weak var stackScrollView: FadingScrollView!
+    @IBOutlet weak var stackClipView: NSClipView!
+    @IBOutlet weak var stackView: NSStackView!
 
     var gestureManager: GestureManager!
 
@@ -55,12 +55,10 @@ class InfoMenuViewController: NSViewController, GestureResponder {
 
     private func setupLayers() {
         view.wantsLayer = true
-        infoMenuScrollView.wantsLayer = true
-        infoMenuClipView.wantsLayer = true
-        infoMenuCollectionView.wantsLayer = true
+        stackView.wantsLayer = true
+        stackClipView.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
-        infoMenuScrollView.layer?.backgroundColor = style.darkBackground.cgColor
-        infoMenuClipView.layer?.backgroundColor = style.darkBackground.cgColor
-        infoMenuCollectionView.layer?.backgroundColor = style.darkBackground.cgColor
+        stackView.layer?.backgroundColor = style.darkBackground.cgColor
+        stackClipView.layer?.backgroundColor = style.darkBackground.cgColor
     }
 }

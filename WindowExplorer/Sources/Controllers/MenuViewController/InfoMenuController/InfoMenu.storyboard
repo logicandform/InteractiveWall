@@ -3,6 +3,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
     </dependencies>
     <scenes>
         <!--Info Menu View Controller-->
@@ -13,44 +14,55 @@
                         <rect key="frame" x="0.0" y="0.0" width="275" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView wantsLayer="YES" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pGV-Yc-eeB">
+                            <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QaD-Z7-LXV" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="275" height="300"/>
-                                <clipView key="contentView" drawsBackground="NO" id="57C-zT-pGA">
+                                <clipView key="contentView" id="qg9-WW-m4e">
                                     <rect key="frame" x="1" y="1" width="273" height="298"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <collectionView id="6Ed-l1-TYV">
-                                            <rect key="frame" x="0.0" y="0.0" width="273" height="158"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                            <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="6bx-wa-sCk">
-                                                <size key="itemSize" width="50" height="50"/>
-                                            </collectionViewFlowLayout>
-                                            <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </collectionView>
+                                        <view translatesAutoresizingMaskIntoConstraints="NO" id="9q0-Fj-35f">
+                                            <rect key="frame" x="-1" y="-1" width="275" height="300"/>
+                                            <subviews>
+                                                <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IWv-Qv-o6r">
+                                                    <rect key="frame" x="0.0" y="0.0" width="275" height="300"/>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="IWv-Qv-o6r" secondAttribute="trailing" id="Agc-3f-BnW"/>
+                                                <constraint firstItem="IWv-Qv-o6r" firstAttribute="top" secondItem="9q0-Fj-35f" secondAttribute="top" id="Nmk-Ub-I7K"/>
+                                                <constraint firstAttribute="bottom" secondItem="IWv-Qv-o6r" secondAttribute="bottom" id="f6x-ug-UMG"/>
+                                                <constraint firstItem="IWv-Qv-o6r" firstAttribute="leading" secondItem="9q0-Fj-35f" secondAttribute="leading" id="l5l-Eb-SKu"/>
+                                            </constraints>
+                                        </view>
                                     </subviews>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
-                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="zxF-VN-ce1">
+                                <constraints>
+                                    <constraint firstItem="9q0-Fj-35f" firstAttribute="top" secondItem="QaD-Z7-LXV" secondAttribute="top" id="Nc8-Ur-9w9"/>
+                                    <constraint firstAttribute="trailing" secondItem="9q0-Fj-35f" secondAttribute="trailing" id="bSg-lx-YiR"/>
+                                    <constraint firstAttribute="bottom" secondItem="9q0-Fj-35f" secondAttribute="bottom" id="cje-yI-ccb"/>
+                                    <constraint firstItem="9q0-Fj-35f" firstAttribute="leading" secondItem="QaD-Z7-LXV" secondAttribute="leading" id="rBl-Vb-bfN"/>
+                                </constraints>
+                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="oJf-69-0fT">
                                     <rect key="frame" x="1" y="283" width="273" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="kge-eW-wbX">
-                                    <rect key="frame" x="234" y="1" width="15" height="143"/>
+                                <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="f1L-iX-4N4">
+                                    <rect key="frame" x="258" y="1" width="16" height="298"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="pGV-Yc-eeB" secondAttribute="trailing" id="9G2-D4-uQu"/>
-                            <constraint firstAttribute="bottom" secondItem="pGV-Yc-eeB" secondAttribute="bottom" id="aAe-dm-McI"/>
-                            <constraint firstItem="pGV-Yc-eeB" firstAttribute="leading" secondItem="YEQ-Hb-AYS" secondAttribute="leading" id="jwA-J2-v8N"/>
-                            <constraint firstItem="pGV-Yc-eeB" firstAttribute="top" secondItem="YEQ-Hb-AYS" secondAttribute="top" id="vIZ-lM-9HO"/>
+                            <constraint firstAttribute="bottom" secondItem="QaD-Z7-LXV" secondAttribute="bottom" id="ASw-RV-hLg"/>
+                            <constraint firstItem="QaD-Z7-LXV" firstAttribute="top" secondItem="YEQ-Hb-AYS" secondAttribute="top" id="Hwe-GP-mvZ"/>
+                            <constraint firstItem="QaD-Z7-LXV" firstAttribute="leading" secondItem="YEQ-Hb-AYS" secondAttribute="leading" id="JDR-2e-oth"/>
+                            <constraint firstAttribute="trailing" secondItem="QaD-Z7-LXV" secondAttribute="trailing" id="Jdf-7j-A3M"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="infoMenuClipView" destination="57C-zT-pGA" id="6Cq-vv-m99"/>
-                        <outlet property="infoMenuCollectionView" destination="6Ed-l1-TYV" id="znK-fg-CVL"/>
-                        <outlet property="infoMenuScrollView" destination="pGV-Yc-eeB" id="Tkf-0N-zG6"/>
+                        <outlet property="stackClipView" destination="qg9-WW-m4e" id="tfY-u4-eqL"/>
+                        <outlet property="stackScrollView" destination="QaD-Z7-LXV" id="us7-gv-NYU"/>
+                        <outlet property="stackView" destination="IWv-Qv-o6r" id="mRb-tE-f92"/>
                     </connections>
                 </viewController>
                 <customObject id="9ex-fm-FHx" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

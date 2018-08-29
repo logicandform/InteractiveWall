@@ -5,5 +5,5 @@ import Cocoa
 
 
 class InfoMenuItemView: NSCollectionViewItem {
-    
+
 }
