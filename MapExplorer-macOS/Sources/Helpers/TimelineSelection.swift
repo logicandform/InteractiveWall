@@ -9,13 +9,13 @@ struct TimelineSelection: Hashable {
     let app: Int
 
     var hashValue: Int {
-        return index ^ app
+        return index
     }
 
 
     // MARK: Static
 
     static func == (lhs: TimelineSelection, rhs: TimelineSelection) -> Bool {
-        return lhs.index == rhs.index && lhs.app == rhs.app
+        return lhs.index == rhs.index
     }
 }

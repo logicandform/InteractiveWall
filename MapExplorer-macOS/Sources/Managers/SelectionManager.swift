@@ -161,7 +161,7 @@ final class SelectionManager {
                 if app == appID {
                     delegate?.handle(item: index, selected: selected)
                 }
-            } else if !selected, selectionForApp[app].contains(selection) {
+            } else if !selected, selectionForApp[app].contains(where: { $0.app == id && $0.index == index }) {
                 selectionForApp[app].remove(selection)
                 if app == appID {
                     delegate?.handle(item: index, selected: selected)
