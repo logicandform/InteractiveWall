@@ -363,14 +363,14 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     }
 
     /// Replaces the current selection with the given items
-    func replace(selection items: Set<Int>) {
+    func replace(selection items: Set<TimelineSelection>) {
         // Unselect current indexes that are not in the new selection
-        source.selectedIndexes.filter({ !items.contains($0) }).forEach { index in
+        source.selectedIndexes.filter({ index in !items.contains(where: { $0.index == index }) }).forEach { index in
             set(item: index, selected: false, animated: false)
         }
         // Select indexes that are not currently selected
-        items.filter({ !source.selectedIndexes.contains($0) }).forEach { index in
-            set(item: index, selected: true, animated: false)
+        items.filter({ !source.selectedIndexes.contains($0.index) }).forEach { selection in
+            set(item: selection.index, selected: true, animated: false)
         }
     }
 

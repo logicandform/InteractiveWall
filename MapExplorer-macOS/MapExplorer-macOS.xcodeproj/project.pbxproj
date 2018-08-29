@@ -95,6 +95,7 @@
 		8F22945620773EA600731E78 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F22945520773EA600731E78 /* Math.swift */; };
 		8F64A1E720BEF88600F0D209 /* MapViewWithMiniMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F64A1E620BEF88600F0D209 /* MapViewWithMiniMap.swift */; };
 		8FBBD1CF20F5140900D9334C /* ClusterAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBBD1CE20F5140900D9334C /* ClusterAnnotationView.swift */; };
+		A44A56EE2135F35200F73D55 /* TimelineSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44A56ED2135F35200F73D55 /* TimelineSelection.swift */; };
 		A44E14F6211A392B00105F58 /* NSCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44E14F5211A392B00105F58 /* NSCollectionView.swift */; };
 		A44F1B6120FE8232005FEFD1 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44F1B6020FE8232005FEFD1 /* String.swift */; };
 		A44F1B6520FEAF8B005FEFD1 /* TimelineDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44F1B6420FEAF8B005FEFD1 /* TimelineDate.swift */; };
@@ -229,6 +230,7 @@
 		8FBBD1CE20F5140900D9334C /* ClusterAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterAnnotationView.swift; sourceTree = "<group>"; };
 		9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_MapExplorer_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E45B0B207D66FC5A3CD5BEA /* Pods-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
+		A44A56ED2135F35200F73D55 /* TimelineSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineSelection.swift; sourceTree = "<group>"; };
 		A44E14F5211A392B00105F58 /* NSCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSCollectionView.swift; sourceTree = "<group>"; };
 		A44F1B6020FE8232005FEFD1 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		A44F1B6420FEAF8B005FEFD1 /* TimelineDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDate.swift; sourceTree = "<group>"; };
@@ -410,6 +412,7 @@
 				2222B13920D85BD700ECCB5D /* ApplicationType.swift */,
 				220AE86020ED48C200F6E9AA /* Months.swift */,
 				A4A87619210015F200113F95 /* TimelineRange.swift */,
+				A44A56ED2135F35200F73D55 /* TimelineSelection.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -844,6 +847,7 @@
 				220AE85E20ED441A00F6E9AA /* TimelineControlItemView.swift in Sources */,
 				22EF0FA8202B847200571002 /* CachingNetwork.swift in Sources */,
 				22290C092028F9EC000E0573 /* AppDelegate.swift in Sources */,
+				A44A56EE2135F35200F73D55 /* TimelineSelection.swift in Sources */,
 				22290C392028FA35000E0573 /* CoreGraphics.swift in Sources */,
 				22FEF1DD202CFF68001E9596 /* GestureHandler.swift in Sources */,
 				22290C2C2028FA1F000E0573 /* MapViewController.swift in Sources */,
