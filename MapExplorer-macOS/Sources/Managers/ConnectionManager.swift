@@ -168,6 +168,7 @@ final class ConnectionManager {
                 syncApps(inGroup: group, type: type)
             }
         case SettingsNotification.reset.name:
+            reset()
             mapHandler?.reset(animated: true)
             timelineHandler?.reset(animated: true)
         default:
@@ -205,6 +206,15 @@ final class ConnectionManager {
             }
         }
         resetTimerForApp(id: id, with: newType)
+    }
+
+    private func reset() {
+        let numberOfApps = Configuration.appsPerScreen * Configuration.numberOfScreens
+        let initialState = AppState(pair: nil, group: nil)
+        stateForMap = Array(repeating: initialState, count: numberOfApps)
+        stateForTimeline = Array(repeating: initialState, count: numberOfApps)
+        typeForApp = Array(repeating: .mapExplorer, count: numberOfApps)
+        transition(app: appID, to: .mapExplorer)
     }
 
     /// Set all app states accordingly when a app sends its position

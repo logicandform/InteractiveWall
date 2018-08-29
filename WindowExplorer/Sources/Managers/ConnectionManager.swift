@@ -158,6 +158,8 @@ final class ConnectionManager {
                 merge(from: id, group: group, of: type)
                 syncApps(group: group, type: type)
             }
+        case SettingsNotification.reset.name:
+            reset()
         default:
             return
         }
@@ -191,6 +193,18 @@ final class ConnectionManager {
                     updateMenu(id: app, to: newType)
                 }
             }
+        }
+        updateViews()
+    }
+
+    private func reset() {
+        let numberOfApps = Configuration.appsPerScreen * Configuration.numberOfScreens
+        let initialState = AppState(pair: nil, group: nil)
+        stateForMap = Array(repeating: initialState, count: numberOfApps)
+        stateForTimeline = Array(repeating: initialState, count: numberOfApps)
+        typeForApp = Array(repeating: .mapExplorer, count: numberOfApps)
+        for app in (0 ..< numberOfApps) {
+            updateMenu(id: app, to: .mapExplorer)
         }
         updateViews()
     }
