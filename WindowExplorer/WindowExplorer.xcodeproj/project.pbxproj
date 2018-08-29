@@ -117,6 +117,10 @@
 		8FEABDA12064702600612C84 /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEABD9F2064702600612C84 /* MediaViewController.swift */; };
 		A407160E20AB94B800B54593 /* PriorityOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A407160D20AB94B800B54593 /* PriorityOrder.swift */; };
 		A407161220ABAE5C00B54593 /* RelationshipHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A407161120ABAE5B00B54593 /* RelationshipHelper.swift */; };
+		A44A56F52136186600F73D55 /* InfoMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44A56F42136186600F73D55 /* InfoMenuViewController.swift */; };
+		A44A56F72136188600F73D55 /* InfoMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A44A56F62136188600F73D55 /* InfoMenu.storyboard */; };
+		A44A56F921362ED000F73D55 /* InfoMenuDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44A56F821362ED000F73D55 /* InfoMenuDataSource.swift */; };
+		A44A56FB2136342000F73D55 /* InfoMenuItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44A56FA2136342000F73D55 /* InfoMenuItemView.swift */; };
 		A451470021263BC900910A25 /* ScreenState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45146FF21263BC900910A25 /* ScreenState.swift */; };
 		A4540D16211B62FC00D50395 /* NSCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4540D15211B62FC00D50395 /* NSCollectionView.swift */; };
 		A4551B6420DC38D100D8C029 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4551B6320DC38D100D8C029 /* MenuButton.swift */; };
@@ -286,6 +290,10 @@
 		A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_WindowExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A407160D20AB94B800B54593 /* PriorityOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityOrder.swift; sourceTree = "<group>"; };
 		A407161120ABAE5B00B54593 /* RelationshipHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipHelper.swift; sourceTree = "<group>"; };
+		A44A56F42136186600F73D55 /* InfoMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMenuViewController.swift; sourceTree = "<group>"; };
+		A44A56F62136188600F73D55 /* InfoMenu.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = InfoMenu.storyboard; sourceTree = "<group>"; };
+		A44A56F821362ED000F73D55 /* InfoMenuDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMenuDataSource.swift; sourceTree = "<group>"; };
+		A44A56FA2136342000F73D55 /* InfoMenuItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMenuItemView.swift; sourceTree = "<group>"; };
 		A45146FF21263BC900910A25 /* ScreenState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenState.swift; sourceTree = "<group>"; };
 		A4540D15211B62FC00D50395 /* NSCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSCollectionView.swift; sourceTree = "<group>"; };
 		A4551B6320DC38D100D8C029 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
@@ -664,6 +672,7 @@
 				A460292820B4C689000F902E /* Menu.storyboard */,
 				A460292A20B4C6A0000F902E /* MenuViewController.swift */,
 				A479487F20B89ACC00091CEC /* MenuButtonType.swift */,
+				A44A56F32136184500F73D55 /* InfoMenuController */,
 				A456F6BE20C73722004534A4 /* SettingsMenuController */,
 			);
 			path = MenuViewController;
@@ -699,6 +708,17 @@
 				CD7B3CD220ADFB2500723BDB /* ZoomControl.swift */,
 			);
 			path = ZoomControl;
+			sourceTree = "<group>";
+		};
+		A44A56F32136184500F73D55 /* InfoMenuController */ = {
+			isa = PBXGroup;
+			children = (
+				A44A56F62136188600F73D55 /* InfoMenu.storyboard */,
+				A44A56F42136186600F73D55 /* InfoMenuViewController.swift */,
+				A44A56F821362ED000F73D55 /* InfoMenuDataSource.swift */,
+				A44A56FA2136342000F73D55 /* InfoMenuItemView.swift */,
+			);
+			path = InfoMenuController;
 			sourceTree = "<group>";
 		};
 		A4551B6720DC82E100D8C029 /* MenuButton */ = {
@@ -892,6 +912,7 @@
 				1FAFF020206EDD93005DC68B /* Soleil-01.otf in Resources */,
 				2204621720472F2D0067D9FB /* PlayerControl.xib in Resources */,
 				22B85AFD209B7ADF0099F44E /* Main.storyboard in Resources */,
+				A44A56F72136188600F73D55 /* InfoMenu.storyboard in Resources */,
 				1FAFF019206EDD93005DC68B /* Soleil-05.otf in Resources */,
 				1FAFF01D206EDD93005DC68B /* Soleil-10.otf in Resources */,
 				22A76FEB2046477A006C0AE7 /* Player.storyboard in Resources */,
@@ -997,7 +1018,9 @@
 				22F309BF20A224A000BA5456 /* LetterGroup.swift in Sources */,
 				3F2FAB5B204F7D24002EDF5D /* Artifact.swift in Sources */,
 				22B1E2CD204638B900BDDF14 /* GestureManager.swift in Sources */,
+				A44A56F52136186600F73D55 /* InfoMenuViewController.swift in Sources */,
 				D9F24E5D205AFE2900B9FCB8 /* Media.swift in Sources */,
+				A44A56F921362ED000F73D55 /* InfoMenuDataSource.swift in Sources */,
 				225FBBA1208E89BA00B2CD3E /* MasterViewController.swift in Sources */,
 				22A76FE620464764006C0AE7 /* PDFViewController.swift in Sources */,
 				A460292B20B4C6A0000F902E /* MenuViewController.swift in Sources */,
@@ -1069,6 +1092,7 @@
 				22046244204730780067D9FB /* PanGestureRecognizer.swift in Sources */,
 				22927912208E531C005E2036 /* BackgroundTimer.swift in Sources */,
 				2204623820472FDF0067D9FB /* URL.swift in Sources */,
+				A44A56FB2136342000F73D55 /* InfoMenuItemView.swift in Sources */,
 				A456CE9820D0A39E0036F020 /* SettingTypes.swift in Sources */,
 				2204621820472F2D0067D9FB /* PlayerState.swift in Sources */,
 				8F2B188F20AA321700C5E0FA /* RelatedItemViewLayout.swift in Sources */,

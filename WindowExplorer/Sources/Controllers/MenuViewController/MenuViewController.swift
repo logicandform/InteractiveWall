@@ -42,6 +42,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     private var mergeLocked = false
     private var scrollThresholdAchieved = false
     private var settingsMenu: SettingsMenuViewController!
+    private var infoMenu: InfoMenuViewController!
     private var searchMenu: SearchViewController?
     private var testimonyController: TestimonyViewController?
 
@@ -78,6 +79,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     override func viewDidAppear() {
         super.viewDidAppear()
         setupSettings()
+        setupInfoMenu()
     }
 
 
@@ -169,6 +171,11 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         }
     }
 
+    private func setupInfoMenu() {
+        infoMenu = WindowManager.instance.display(.info, at: position(for: informationButton, frame: style.infoWindowSize, margins: false)) as? InfoMenuViewController
+        infoMenu.view.isHidden = true
+    }
+
 
     // MARK: Gesture Handling
 
@@ -205,6 +212,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             scrollThresholdAchieved = true
             menuBottomConstraint.constant = menuOffset(given: pan.delta)
             settingsMenu.updateOrigin(relativeTo: menuBottomConstraint.constant, with: settingsButton.frame)
+            infoMenu.updateOrigin(relativeTo: menuBottomConstraint.constant, with: informationButton.frame)
         case .possible:
             scrollThresholdAchieved = false
         default:
@@ -295,14 +303,17 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     }
 
     private func toggleSettingsPanel(to state: ButtonState) {
-        NSAnimationContext.runAnimationGroup({ _ in
+        NSAnimationContext.runAnimationGroup({ [weak self] _ in
             NSAnimationContext.current.duration = Constants.animationDuration
-            settingsMenu.view.animator().isHidden = state == .off
+            self?.settingsMenu.view.animator().isHidden = state == .off
         })
     }
 
     private func toggleInfoPanel(to state: ButtonState) {
-
+        NSAnimationContext.runAnimationGroup({ [weak self] _ in
+            NSAnimationContext.current.duration = Constants.animationDuration
+            self?.infoMenu.view.animator().isHidden = state == .off
+        })
     }
 
     /// Presents a search controller at the same height as the button, if one is already displayed; animates into position
@@ -424,6 +435,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         gestureManager.invalidateAllGestures()
         window.makeKeyAndOrderFront(self)
         toggle(.settings, to: .off)
+        toggle(.information, to: .off)
         let originalHeight = menuBottomConstraint.constant
         let offset = abs(originalHeight - origin.y) / screen.frame.height
         let duration = max(Double(offset), Constants.animationDuration)
@@ -434,8 +446,9 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             menuBottomConstraint.animator().constant = origin.y
         }, completionHandler: { [weak self] in
             self?.toggle(.accessibility, to: .off)
-            if let settingsButton = self?.settingsButton {
+            if let settingsButton = self?.settingsButton, let infoButton = self?.informationButton {
                 self?.settingsMenu.updateOrigin(relativeTo: origin.y, with: settingsButton.frame)
+                self?.infoMenu.updateOrigin(relativeTo: origin.y, with: infoButton.frame)
             }
         })
     }

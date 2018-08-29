@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="d75-j9-9Ky">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Info Menu View Controller-->
+        <scene sceneID="dBK-aD-E6k">
+            <objects>
+                <viewController id="d75-j9-9Ky" customClass="InfoMenuViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="YEQ-Hb-AYS">
+                        <rect key="frame" x="0.0" y="0.0" width="275" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <scrollView wantsLayer="YES" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pGV-Yc-eeB">
+                                <rect key="frame" x="0.0" y="0.0" width="275" height="300"/>
+                                <clipView key="contentView" drawsBackground="NO" id="57C-zT-pGA">
+                                    <rect key="frame" x="1" y="1" width="273" height="298"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <collectionView id="6Ed-l1-TYV">
+                                            <rect key="frame" x="0.0" y="0.0" width="273" height="158"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                            <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="6bx-wa-sCk">
+                                                <size key="itemSize" width="50" height="50"/>
+                                            </collectionViewFlowLayout>
+                                            <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </collectionView>
+                                    </subviews>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </clipView>
+                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="zxF-VN-ce1">
+                                    <rect key="frame" x="1" y="283" width="273" height="16"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="kge-eW-wbX">
+                                    <rect key="frame" x="234" y="1" width="15" height="143"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="pGV-Yc-eeB" secondAttribute="trailing" id="9G2-D4-uQu"/>
+                            <constraint firstAttribute="bottom" secondItem="pGV-Yc-eeB" secondAttribute="bottom" id="aAe-dm-McI"/>
+                            <constraint firstItem="pGV-Yc-eeB" firstAttribute="leading" secondItem="YEQ-Hb-AYS" secondAttribute="leading" id="jwA-J2-v8N"/>
+                            <constraint firstItem="pGV-Yc-eeB" firstAttribute="top" secondItem="YEQ-Hb-AYS" secondAttribute="top" id="vIZ-lM-9HO"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="infoMenuClipView" destination="57C-zT-pGA" id="6Cq-vv-m99"/>
+                        <outlet property="infoMenuCollectionView" destination="6Ed-l1-TYV" id="znK-fg-CVL"/>
+                        <outlet property="infoMenuScrollView" destination="pGV-Yc-eeB" id="Tkf-0N-zG6"/>
+                    </connections>
+                </viewController>
+                <customObject id="9ex-fm-FHx" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="74" y="86"/>
+        </scene>
+    </scenes>
+</document>
