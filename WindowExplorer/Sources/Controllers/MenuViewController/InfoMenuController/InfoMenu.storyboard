@@ -3,7 +3,6 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
-        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
     </dependencies>
     <scenes>
         <!--Info Menu View Controller-->
@@ -11,58 +10,51 @@
             <objects>
                 <viewController id="d75-j9-9Ky" customClass="InfoMenuViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="YEQ-Hb-AYS">
-                        <rect key="frame" x="0.0" y="0.0" width="275" height="300"/>
+                        <rect key="frame" x="0.0" y="0.0" width="500" height="600"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QaD-Z7-LXV" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="275" height="300"/>
-                                <clipView key="contentView" id="qg9-WW-m4e">
-                                    <rect key="frame" x="1" y="1" width="273" height="298"/>
+                            <scrollView wantsLayer="YES" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tdf-F3-S6C">
+                                <rect key="frame" x="0.0" y="0.0" width="500" height="600"/>
+                                <clipView key="contentView" drawsBackground="NO" id="y4f-pW-mZI">
+                                    <rect key="frame" x="1" y="1" width="498" height="598"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <view translatesAutoresizingMaskIntoConstraints="NO" id="9q0-Fj-35f">
-                                            <rect key="frame" x="-1" y="-1" width="275" height="300"/>
-                                            <subviews>
-                                                <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IWv-Qv-o6r">
-                                                    <rect key="frame" x="0.0" y="0.0" width="275" height="300"/>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="IWv-Qv-o6r" secondAttribute="trailing" id="Agc-3f-BnW"/>
-                                                <constraint firstItem="IWv-Qv-o6r" firstAttribute="top" secondItem="9q0-Fj-35f" secondAttribute="top" id="Nmk-Ub-I7K"/>
-                                                <constraint firstAttribute="bottom" secondItem="IWv-Qv-o6r" secondAttribute="bottom" id="f6x-ug-UMG"/>
-                                                <constraint firstItem="IWv-Qv-o6r" firstAttribute="leading" secondItem="9q0-Fj-35f" secondAttribute="leading" id="l5l-Eb-SKu"/>
-                                            </constraints>
-                                        </view>
+                                        <collectionView id="y0x-55-DgY">
+                                            <rect key="frame" x="0.0" y="0.0" width="498" height="158"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                            <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="xsp-KK-kEW">
+                                                <size key="itemSize" width="50" height="50"/>
+                                            </collectionViewFlowLayout>
+                                            <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </collectionView>
                                     </subviews>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <constraints>
-                                    <constraint firstItem="9q0-Fj-35f" firstAttribute="top" secondItem="QaD-Z7-LXV" secondAttribute="top" id="Nc8-Ur-9w9"/>
-                                    <constraint firstAttribute="trailing" secondItem="9q0-Fj-35f" secondAttribute="trailing" id="bSg-lx-YiR"/>
-                                    <constraint firstAttribute="bottom" secondItem="9q0-Fj-35f" secondAttribute="bottom" id="cje-yI-ccb"/>
-                                    <constraint firstItem="9q0-Fj-35f" firstAttribute="leading" secondItem="QaD-Z7-LXV" secondAttribute="leading" id="rBl-Vb-bfN"/>
+                                    <constraint firstAttribute="height" constant="600" id="0ii-3q-Rh5"/>
+                                    <constraint firstAttribute="width" constant="500" id="Kr1-Wc-JAd"/>
                                 </constraints>
-                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="oJf-69-0fT">
-                                    <rect key="frame" x="1" y="283" width="273" height="16"/>
+                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="zOF-p6-fVF">
+                                    <rect key="frame" x="1" y="583" width="398" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="f1L-iX-4N4">
-                                    <rect key="frame" x="258" y="1" width="16" height="298"/>
+                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="mDA-El-UDL">
+                                    <rect key="frame" x="234" y="1" width="15" height="143"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="QaD-Z7-LXV" secondAttribute="bottom" id="ASw-RV-hLg"/>
-                            <constraint firstItem="QaD-Z7-LXV" firstAttribute="top" secondItem="YEQ-Hb-AYS" secondAttribute="top" id="Hwe-GP-mvZ"/>
-                            <constraint firstItem="QaD-Z7-LXV" firstAttribute="leading" secondItem="YEQ-Hb-AYS" secondAttribute="leading" id="JDR-2e-oth"/>
-                            <constraint firstAttribute="trailing" secondItem="QaD-Z7-LXV" secondAttribute="trailing" id="Jdf-7j-A3M"/>
+                            <constraint firstItem="tdf-F3-S6C" firstAttribute="leading" secondItem="YEQ-Hb-AYS" secondAttribute="leading" id="FeZ-32-XjI"/>
+                            <constraint firstItem="tdf-F3-S6C" firstAttribute="top" secondItem="YEQ-Hb-AYS" secondAttribute="top" id="GAE-T2-jnN"/>
+                            <constraint firstAttribute="trailing" secondItem="tdf-F3-S6C" secondAttribute="trailing" id="HwZ-pr-WeU"/>
+                            <constraint firstAttribute="bottom" secondItem="tdf-F3-S6C" secondAttribute="bottom" id="XyJ-nw-FmT"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="stackClipView" destination="qg9-WW-m4e" id="tfY-u4-eqL"/>
-                        <outlet property="stackScrollView" destination="QaD-Z7-LXV" id="us7-gv-NYU"/>
-                        <outlet property="stackView" destination="IWv-Qv-o6r" id="mRb-tE-f92"/>
+                        <outlet property="infoClipView" destination="y4f-pW-mZI" id="f7R-aU-aAY"/>
+                        <outlet property="infoCollectionView" destination="y0x-55-DgY" id="Kgy-Kn-Sxq"/>
+                        <outlet property="infoScrollView" destination="tdf-F3-S6C" id="zjk-ZD-LRt"/>
                     </connections>
                 </viewController>
                 <customObject id="9ex-fm-FHx" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
