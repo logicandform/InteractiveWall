@@ -12,6 +12,7 @@ class InfoMenuViewController: NSViewController, NSCollectionViewDataSource, NSCo
     @IBOutlet weak var infoCollectionView: NSCollectionView!
 
     var gestureManager: GestureManager!
+    private var infoEntries = [School]()
 
 
     // MARK: Lifecycle
@@ -57,36 +58,61 @@ class InfoMenuViewController: NSViewController, NSCollectionViewDataSource, NSCo
     // MARK: NSCollectionViewDelegateFlowLayout and NSCollectionViewDataSource
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0
+        return infoEntries.count
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        return NSCollectionViewItem()
+        guard let infoView = infoCollectionView.makeItem(withIdentifier: InfoMenuItemView.identifier, for: indexPath) as? InfoMenuItemView else {
+            return NSCollectionViewItem()
+        }
+
+        infoView.titleTextField.attributedStringValue = NSMutableAttributedString(string: infoEntries[indexPath.item].title, attributes: infoEntries[indexPath.item].titleAttributes)
+        setup(textField: infoView.titleTextField)
+        if let description = infoEntries[indexPath.item].description {
+            infoView.descriptionTextField.attributedStringValue = NSMutableAttributedString(string: description, attributes: infoEntries[indexPath.item].descriptionAttributes)
+            setup(textField: infoView.descriptionTextField)
+        }
+
+        return infoView
     }
 
     func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
-        return CGSize(width: infoCollectionView.frame.size.width, height: 50)
+        return CGSize(width: infoCollectionView.frame.size.width, height: InfoMenuItemView.infoItemHeight(for: infoEntries[indexPath.item]))
     }
 
 
     // MARK: Helpers
 
     private func setupInfoData() {
-        guard let textFields = School(json: featuresJSON)?.textFields else {
+        guard let data = School(json: featuresJSON) else {
             return
         }
 
-        
+        infoEntries = [data]
     }
 
     private func setupLayers() {
         view.wantsLayer = true
-        infoScrollView.wantsLayer = true
+//        infoScrollView.wantsLayer = true
+//        infoClipView.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
-        infoScrollView.layer?.backgroundColor = style.darkBackground.cgColor
+//        infoScrollView.layer?.backgroundColor = style.darkBackground.cgColor
+//        infoClipView.layer?.backgroundColor = style.darkBackground.cgColor
+        infoScrollView.backgroundColor = NSColor.clear
+        infoClipView.backgroundColor = NSColor.clear
+        infoCollectionView.backgroundColors = [style.darkBackground]
     }
 
     private func setupCollectionView() {
+        infoCollectionView.register(InfoMenuItemView.self, forItemWithIdentifier: InfoMenuItemView.identifier)
         infoScrollView.verticalScroller?.alphaValue = 0
+    }
+
+    private func setup(textField: NSTextField) {
+        textField.drawsBackground = false
+        textField.isEditable = false
+        textField.isSelectable = false
+        textField.isBordered = false
+        textField.sizeToFit()
     }
 }

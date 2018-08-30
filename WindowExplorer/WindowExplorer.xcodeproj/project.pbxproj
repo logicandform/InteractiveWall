@@ -117,6 +117,8 @@
 		8FEABDA12064702600612C84 /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEABD9F2064702600612C84 /* MediaViewController.swift */; };
 		A407160E20AB94B800B54593 /* PriorityOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A407160D20AB94B800B54593 /* PriorityOrder.swift */; };
 		A407161220ABAE5C00B54593 /* RelationshipHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A407161120ABAE5B00B54593 /* RelationshipHelper.swift */; };
+		A44A4776213729DA000DFF90 /* InfoMenuItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A44A4775213729DA000DFF90 /* InfoMenuItemView.xib */; };
+		A44A477A213777B8000DFF90 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44A4779213777B8000DFF90 /* String.swift */; };
 		A44A56F52136186600F73D55 /* InfoMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44A56F42136186600F73D55 /* InfoMenuViewController.swift */; };
 		A44A56F72136188600F73D55 /* InfoMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A44A56F62136188600F73D55 /* InfoMenu.storyboard */; };
 		A44A56FB2136342000F73D55 /* InfoMenuItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44A56FA2136342000F73D55 /* InfoMenuItemView.swift */; };
@@ -289,6 +291,8 @@
 		A266EC238466BB27099C451B /* Pods_All_WindowExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_WindowExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A407160D20AB94B800B54593 /* PriorityOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityOrder.swift; sourceTree = "<group>"; };
 		A407161120ABAE5B00B54593 /* RelationshipHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipHelper.swift; sourceTree = "<group>"; };
+		A44A4775213729DA000DFF90 /* InfoMenuItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InfoMenuItemView.xib; sourceTree = "<group>"; };
+		A44A4779213777B8000DFF90 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		A44A56F42136186600F73D55 /* InfoMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMenuViewController.swift; sourceTree = "<group>"; };
 		A44A56F62136188600F73D55 /* InfoMenu.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = InfoMenu.storyboard; sourceTree = "<group>"; };
 		A44A56FA2136342000F73D55 /* InfoMenuItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMenuItemView.swift; sourceTree = "<group>"; };
@@ -386,6 +390,7 @@
 				22914F76204905230000D4E1 /* NSApplication.swift */,
 				2256D2982090CF3B009DEADE /* NSView.swift */,
 				A4540D15211B62FC00D50395 /* NSCollectionView.swift */,
+				A44A4779213777B8000DFF90 /* String.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -711,6 +716,7 @@
 		A44A47742137155C000DFF90 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A44A4775213729DA000DFF90 /* InfoMenuItemView.xib */,
 				A44A56FA2136342000F73D55 /* InfoMenuItemView.swift */,
 			);
 			path = Views;
@@ -914,6 +920,7 @@
 				1FAFF01B206EDD93005DC68B /* Soleil-04.otf in Resources */,
 				A4551B6620DC71D000D8C029 /* MenuButton.xib in Resources */,
 				2247670120562F65003E8790 /* MediaItemView.xib in Resources */,
+				A44A4776213729DA000DFF90 /* InfoMenuItemView.xib in Resources */,
 				1FAFF020206EDD93005DC68B /* Soleil-01.otf in Resources */,
 				2204621720472F2D0067D9FB /* PlayerControl.xib in Resources */,
 				22B85AFD209B7ADF0099F44E /* Main.storyboard in Resources */,
@@ -1027,6 +1034,7 @@
 				D9F24E5D205AFE2900B9FCB8 /* Media.swift in Sources */,
 				225FBBA1208E89BA00B2CD3E /* MasterViewController.swift in Sources */,
 				22A76FE620464764006C0AE7 /* PDFViewController.swift in Sources */,
+				A44A477A213777B8000DFF90 /* String.swift in Sources */,
 				A460292B20B4C6A0000F902E /* MenuViewController.swift in Sources */,
 				2276AE65204E7150001FAD8B /* BorderlessWindow.swift in Sources */,
 				D992E20A20533A3A00EAB698 /* RecordViewController.swift in Sources */,

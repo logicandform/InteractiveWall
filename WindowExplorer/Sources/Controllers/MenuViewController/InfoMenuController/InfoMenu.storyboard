@@ -25,7 +25,11 @@
                                             <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="xsp-KK-kEW">
                                                 <size key="itemSize" width="50" height="50"/>
                                             </collectionViewFlowLayout>
-                                            <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="primaryBackgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            <connections>
+                                                <outlet property="dataSource" destination="d75-j9-9Ky" id="Jmv-AK-yw9"/>
+                                                <outlet property="delegate" destination="d75-j9-9Ky" id="rdl-fi-Pjt"/>
+                                            </connections>
                                         </collectionView>
                                     </subviews>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
