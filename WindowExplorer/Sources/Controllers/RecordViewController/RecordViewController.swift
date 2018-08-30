@@ -591,7 +591,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             let origin = CGPoint(x: window.frame.maxX + style.windowMargins, y: window.frame.minY)
             RecordFactory.record(for: record.type, id: record.id, completion: { newRecord in
                 if let loadedRecord = newRecord, let controller = WindowManager.instance.display(.record(loadedRecord), at: origin) as? RecordViewController {
-                    controller.updatePosition(animating: false)
+                    controller.updateOrigin(from: window.frame, animating: false)
                 }
             })
         })
@@ -669,7 +669,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         })
     }
 
-    private func updateOrigin(from recordFrame: CGRect, at position: Int, animating: Bool) {
+    private func updateOrigin(from recordFrame: CGRect, at position: Int = 0, animating: Bool) {
         let offsetX = CGFloat(position * style.controllerOffset)
         let offsetY = CGFloat(position * -style.controllerOffset)
         let lastScreen = NSScreen.at(position: Configuration.numberOfScreens)
