@@ -37,6 +37,12 @@ final class Style {
     let levelThreeNodeSize = CGSize(width: levelThreeNodeRadius * 2, height: levelThreeNodeRadius * 2)
     let levelFourNodeSize = CGSize(width: levelFourNodeRadius * 2, height: levelFourNodeRadius * 2)
 
+
+    // Animations
+    let fadeAnimationDuration = 1.0
+    let moveAnimationDuration = 1.2
+    let scaleAnimationDuration = 1.2
+
     // Titles
     var windowTitleAttributes: [NSAttributedStringKey: Any] {
         let font = NSFont(name: "Soleil", size: 16) ?? NSFont.systemFont(ofSize: 16)

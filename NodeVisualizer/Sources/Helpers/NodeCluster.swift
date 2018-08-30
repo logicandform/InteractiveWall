@@ -109,6 +109,29 @@ final class NodeCluster: Hashable {
         return CGFloat(hypotf(dX, dY))
     }
 
+    static func sizeFor(level: Int?) -> CGSize {
+        guard let level = level else {
+            return style.defaultNodeSize
+        }
+
+        switch level {
+        case -1:
+            return style.selectedNodeSize
+        case 0:
+            return style.levelZeroNodeSize
+        case 1:
+            return style.levelOneNodeSize
+        case 2:
+            return style.levelTwoNodeSize
+        case 3:
+            return style.levelThreeNodeSize
+        case 4:
+            return style.levelFourNodeSize
+        default:
+            return style.defaultNodeSize
+        }
+    }
+
 
     // MARK: Helpers
 

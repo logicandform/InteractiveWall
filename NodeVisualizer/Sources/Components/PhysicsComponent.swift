@@ -99,18 +99,11 @@ class PhysicsComponent: GKComponent {
         physicsBody.contactTestBitMask = ColliderType.clonedRecordNode
     }
 
-    /// Reset the entity's physics body to its initial state
-    func reset() {
-        // semi non-sticky collisions
-        physicsBody.restitution = 0.5
-        physicsBody.friction = 0.5
-        physicsBody.linearDamping = 0.5
-
-        // interactable with rest of physics world
-        physicsBody.isDynamic = true
-
-        // set bitMasks to interact with all entities
-        resetBitMasks()
+    /// Resets the entity's bitMask to be able to interact with nothing
+    func resetBitMasks() {
+        physicsBody.categoryBitMask = 0x00000000
+        physicsBody.collisionBitMask = 0x00000000
+        physicsBody.contactTestBitMask = 0x00000000
     }
 
 
@@ -120,6 +113,8 @@ class PhysicsComponent: GKComponent {
         physicsBody.friction = 0
         physicsBody.restitution = 0
         physicsBody.linearDamping = 0
+        physicsBody.isDynamic = false
+        physicsBody.affectedByGravity = false
         physicsBody.mass = style.nodePhysicsBodyMass
     }
 
@@ -175,12 +170,5 @@ class PhysicsComponent: GKComponent {
             collisionBitMask: collisionBitMask,
             contactTestBitMask: contactTestBitMask
         )
-    }
-
-    /// Resets the entity's bitMask to be able to interact with all entities
-    private func resetBitMasks() {
-        physicsBody.categoryBitMask = 0xFFFFFFFF
-        physicsBody.collisionBitMask = 0xFFFFFFFF
-        physicsBody.contactTestBitMask = 0xFFFFFFFF
     }
 }

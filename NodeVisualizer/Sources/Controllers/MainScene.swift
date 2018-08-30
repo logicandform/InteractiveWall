@@ -26,7 +26,7 @@ class MainScene: SKScene {
 
         setupGestures()
         addPhysics()
-        addNodes()
+        addEntitiesToScene()
     }
 
     override func update(_ currentTime: TimeInterval) {
@@ -65,13 +65,18 @@ class MainScene: SKScene {
         physicsWorld.gravity = .zero
     }
 
-    private func addNodes() {
-        for entity in EntityManager.instance.allEntities() {
-            entity.set(state: .falling)
+    private func addEntitiesToScene() {
+        let entities = EntityManager.instance.allEntities()
+        let max = frame.width * CGFloat(Configuration.numberOfScreens)
+        let spacing = max / CGFloat(entities.count / 2)
+        let nodeOffset = style.defaultNodePhysicsBodyRadius / 2
 
+        for (index, entity) in entities.enumerated() {
+            let x = spacing * CGFloat(index / 2)
+            let y = index % 2 == 0 ? -nodeOffset : frame.height + nodeOffset
+            entity.initialPosition = CGPoint(x: x, y: y)
             if let recordNode = entity.component(ofType: RecordRenderComponent.self)?.recordNode {
-                recordNode.position.x = randomX()
-                recordNode.position.y = randomY()
+                recordNode.position = entity.initialPosition
                 recordNode.zPosition = 1
                 addChild(recordNode)
                 setupGestures(for: recordNode)
@@ -137,7 +142,7 @@ class MainScene: SKScene {
         case .possible:
             if entity.state == .panning {
                 if entity.cluster == nil {
-                    entity.set(state: .falling)
+                    entity.set(state: .static)
                 } else {
                     entity.set(state: .tapped)
                 }
@@ -204,7 +209,7 @@ class MainScene: SKScene {
 
             if selectedEntity.state == .panning {
                 if selectedEntity.cluster == nil {
-                    selectedEntity.set(state: .falling)
+                    selectedEntity.set(state: .static)
                 } else {
                     selectedEntity.set(state: .tapped)
                 }
@@ -229,7 +234,7 @@ class MainScene: SKScene {
         nodeClusters.insert(cluster)
 
         switch entityForNode.state {
-        case .falling, .seekEntity(_):
+        case .static, .seekEntity(_):
             cluster.select(entityForNode)
         case .tapped:
             cluster.reset()
@@ -245,17 +250,5 @@ class MainScene: SKScene {
         }
 
         return NodeCluster(scene: self, entity: entity)
-    }
-
-    private func randomX() -> CGFloat {
-        let lowestValue = Int(style.defaultNodePhysicsBodyRadius)
-        let highestValue = Int(size.width - style.defaultNodePhysicsBodyRadius)
-        return CGFloat(GKRandomDistribution(lowestValue: lowestValue, highestValue: highestValue).nextInt(upperBound: highestValue))
-    }
-
-    private func randomY() -> CGFloat {
-        let lowestValue = Int(style.defaultNodePhysicsBodyRadius)
-        let highestValue = Int(size.height - style.defaultNodePhysicsBodyRadius)
-        return CGFloat(GKRandomDistribution(lowestValue: lowestValue, highestValue: highestValue).nextInt(upperBound: highestValue))
     }
 }

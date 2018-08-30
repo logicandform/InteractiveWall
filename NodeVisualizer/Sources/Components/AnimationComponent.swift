@@ -6,20 +6,16 @@ import GameplayKit
 
 
 enum AnimationState {
-    case scaleAndCenterToPoint(CGPoint)
-    case scaleToLevelSize
+    case move(CGPoint)
+    case scale(CGSize)
+    case fade(out: Bool)
 }
 
 
 /// A `GKComponent` that provides the actions used to move Record nodes on the screen.
 class AnimationComponent: GKComponent {
 
-    var requestedAnimationState: AnimationState?
-
-    private struct Constants {
-        static let moveToPointDuration: TimeInterval = 1.2
-        static let scaleToDuration: TimeInterval = 1.3
-    }
+    var requestedAnimationStates = [AnimationState]()
 
 
     // MARK: Lifecycle
@@ -27,55 +23,35 @@ class AnimationComponent: GKComponent {
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
 
-        if let animationState = requestedAnimationState {
-            requestedAnimationState = nil
-            runAnimationFor(animationState)
-        }
+        runAnimations(for: requestedAnimationStates)
     }
 
 
     // MARK: Helpers
 
-    private func runAnimationFor(_ animationState: AnimationState) {
-        guard let entity = entity as? RecordEntity else {
+    private func runAnimations(for states: [AnimationState]) {
+        guard let entity = entity as? RecordEntity, !states.isEmpty else {
             return
         }
 
-        switch animationState {
-        case .scaleAndCenterToPoint(let point):
-            let moveToPointAction = SKAction.move(to: point, duration: Constants.moveToPointDuration)
-            let scaleAction = SKAction.scale(to: scaleSize(), duration: Constants.scaleToDuration)
-            let groupedAction = SKAction.group([moveToPointAction, scaleAction])
-            entity.animateTappedEntity(with: groupedAction)
-        case .scaleToLevelSize:
-            let scaleAction = SKAction.scale(to: scaleSize(), duration: Constants.scaleToDuration)
-            entity.scale(with: scaleAction)
-        }
+        let actions = states.map { action(for: $0) }
+        let groupedAction = SKAction.group(actions)
+        entity.perform(action: groupedAction)
+        requestedAnimationStates.removeAll()
     }
 
-    private func scaleSize() -> CGSize {
-        guard let entity = entity as? RecordEntity, let currentLevel = entity.clusterLevel.currentLevel else {
-            return .zero
+    private func action(for state: AnimationState) -> SKAction {
+        switch state {
+        case .move(let point):
+            return SKAction.move(to: point, duration: style.moveAnimationDuration)
+        case .scale(let size):
+            return SKAction.scale(to: size, duration: style.scaleAnimationDuration)
+        case .fade(let out):
+            if out {
+                return SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
+            } else {
+                return SKAction.fadeIn(withDuration: style.fadeAnimationDuration)
+            }
         }
-
-        var scaleSize: CGSize
-        switch currentLevel {
-        case -1:
-            scaleSize = style.selectedNodeSize
-        case 0:
-            scaleSize = style.levelZeroNodeSize
-        case 1:
-            scaleSize = style.levelOneNodeSize
-        case 2:
-            scaleSize = style.levelTwoNodeSize
-        case 3:
-            scaleSize = style.levelThreeNodeSize
-        case 4:
-            scaleSize = style.levelFourNodeSize
-        default:
-            return style.selectedNodeSize
-        }
-
-        return scaleSize
     }
 }

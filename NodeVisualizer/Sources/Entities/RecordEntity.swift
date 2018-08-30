@@ -5,7 +5,7 @@ import GameplayKit
 
 
 enum EntityState: Equatable {
-    case falling
+    case `static`
     case tapped
     case seekEntity(RecordEntity)
     case seekLevel(Int)
@@ -13,7 +13,7 @@ enum EntityState: Equatable {
 
     var pannable: Bool {
         switch self {
-        case .falling, .tapped, .panning:
+        case .static, .tapped, .panning:
             return true
         default:
             return false
@@ -24,12 +24,14 @@ enum EntityState: Equatable {
 
 final class RecordEntity: GKEntity {
 
-    var cluster: NodeCluster?
-    weak var previousCluster: NodeCluster?
-    var hasCollidedWithBoundingNode = false
     let record: RecordDisplayable
     let relatedRecordsForLevel: RelatedLevels
     let relatedRecords: Set<RecordProxy>
+    var hasCollidedWithBoundingNode = false
+    var initialPosition = CGPoint.zero
+    var cluster: NodeCluster?
+    weak var previousCluster: NodeCluster?
+
     private(set) var clusterLevel: (previousLevel: Int?, currentLevel: Int?) = (nil, nil)
 
     var state: EntityState {
@@ -126,6 +128,10 @@ final class RecordEntity: GKEntity {
         renderComponent.recordNode.position = position
     }
 
+    func set(size: CGSize) {
+        renderComponent.recordNode.scale(to: size)
+    }
+
     func set(state: EntityState) {
         if movementComponent.state == state { return }
         movementComponent.state = state
@@ -141,13 +147,13 @@ final class RecordEntity: GKEntity {
             physicsComponent.updateBitMasks()
         case .seekEntity(_):
             physicsComponent.updateBitMasks()
-        case .falling, .panning:
+        case .static, .panning:
             break
         }
     }
 
-    func set(state: AnimationState) {
-        animationComponent.requestedAnimationState = state
+    func set(_ states: [AnimationState]) {
+        animationComponent.requestedAnimationStates = states
     }
 
     func updateBitMasks() {
@@ -158,15 +164,9 @@ final class RecordEntity: GKEntity {
         physicsComponent.setClonedNodeBitMasks()
     }
 
-    func animateTappedEntity(with action: SKAction) {
-        renderComponent.recordNode.run(action) { [weak self] in
-            self?.physicsComponent.physicsBody.mass = style.nodePhysicsBodyMass
-        }
-    }
-
-    func scale(with action: SKAction) {
-        renderComponent.recordNode.run(action) { [weak self] in
-            self?.physicsComponent.physicsBody.mass = style.nodePhysicsBodyMass
+    func perform(action: SKAction, completion: (() -> Void)? = nil) {
+        renderComponent.recordNode.run(action) {
+            completion?()
         }
     }
 
@@ -176,8 +176,11 @@ final class RecordEntity: GKEntity {
         clusterLevel = (nil, nil)
         cluster = nil
         previousCluster = nil
-        physicsComponent.reset()
-        set(state: .falling)
+        set(state: .static)
+    }
+
+    func resetBitMasks() {
+        physicsComponent.resetBitMasks()
     }
 
     func clone() -> RecordEntity {

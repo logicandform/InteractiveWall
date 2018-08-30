@@ -8,7 +8,7 @@ import GameplayKit
 /// A 'GKComponent' that provides different types of physics movement based on the current `RecordState`.
 class MovementComponent: GKComponent {
 
-    var state = EntityState.falling {
+    var state = EntityState.static {
         didSet {
             exit(state: oldValue)
             enter(state: state)
@@ -44,14 +44,13 @@ class MovementComponent: GKComponent {
         }
 
         switch state {
-        case .falling:
-            fall()
+        case .static:
+            break
         case .seekEntity(let entity):
             seek(entity)
         case .seekLevel(let level):
             move(to: level)
         case .tapped:
-            // Animation only needs to be run once in the enter function.
             break
         case .panning:
             break
@@ -67,14 +66,13 @@ class MovementComponent: GKComponent {
         }
 
         switch state {
-        case .falling:
-            entity.physicsBody.affectedByGravity = false
+        case .static:
+            break
         case .tapped:
-            entity.physicsBody.isDynamic = true
+            break
         case .seekLevel(_), .seekEntity(_):
             entity.node.removeAllActions()
         case .panning:
-            entity.physicsBody.isDynamic = true
             entity.cluster?.updateLayerLevels(forPan: false)
         }
     }
@@ -85,13 +83,15 @@ class MovementComponent: GKComponent {
         }
 
         switch state {
-        case .falling:
-            entity.physicsBody.affectedByGravity = true
+        case .static:
+            entity.physicsBody.isDynamic = false
+            reset()
         case .tapped:
             entity.physicsBody.isDynamic = false
             entity.node.removeAllActions()
             cluster()
         case .seekLevel(_), .seekEntity(_):
+            entity.physicsBody.isDynamic = true
             entity.physicsBody.restitution = 0
             entity.physicsBody.friction = 1
             entity.physicsBody.linearDamping = 1
@@ -104,37 +104,36 @@ class MovementComponent: GKComponent {
         }
     }
 
-    private func cluster() {
-        if let entity = entity as? RecordEntity, let cluster = entity.cluster {
-            entity.set(state: .scaleAndCenterToPoint(cluster.center))
-        }
-    }
-
-    private func scale() {
-        if let entity = entity as? RecordEntity {
-            entity.set(state: .scaleToLevelSize)
-        }
-    }
-
-    private func fall() {
-        guard let entity = entity as? RecordEntity, let sceneFrame = entity.node.scene?.frame else {
+    /// Fade out, resize and set to initial position
+    private func reset() {
+        guard let entity = entity as? RecordEntity else {
             return
         }
 
-        // Limit the velocity that can accumulate from gravity / node clustering
-        entity.physicsBody.velocity.dy = clamp(entity.physicsBody.velocity.dy, min: -Constants.maxVerticalVelocity, max: Constants.maxVerticalVelocity)
-        entity.physicsBody.velocity.dx = clamp(entity.physicsBody.velocity.dx, min: -Constants.maxHorizontalVelocity, max: Constants.maxHorizontalVelocity)
-
-        // Determine if the position of the node needs to be repositioned to the top of the scene
-        if entity.position.y < -style.defaultNodePhysicsBodyRadius {
-            let topPosition = sceneFrame.height + style.defaultNodePhysicsBodyRadius
-            entity.set(position: CGPoint(x: entity.position.x, y: topPosition))
+        entity.resetBitMasks()
+        let fade = SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
+        entity.perform(action: fade) {
+            entity.set(size: style.defaultNodeSize)
+            entity.set(position: entity.initialPosition)
+            entity.node.alpha = 1
         }
+    }
 
-        // Determine if the position of the node needs to be repositioned to the left of the scene
-        if entity.position.x > sceneFrame.width + style.defaultNodePhysicsBodyRadius {
-            let leftPosition = -style.defaultNodePhysicsBodyRadius
-            entity.set(position: CGPoint(x: leftPosition, y: entity.position.y))
+    /// Move and scale to the proper size for center of cluster
+    private func cluster() {
+        if let entity = entity as? RecordEntity, let cluster = entity.cluster {
+            let moveAnimation = AnimationState.move(cluster.center)
+            let scaleAnimation = AnimationState.scale(NodeCluster.sizeFor(level: -1))
+            entity.set([moveAnimation, scaleAnimation])
+        }
+    }
+
+    /// Scale to the proper size for the current cluster level else scale to default size
+    private func scale() {
+        if let entity = entity as? RecordEntity {
+            let size = NodeCluster.sizeFor(level: entity.clusterLevel.currentLevel)
+            let scale = AnimationState.scale(size)
+            entity.set([scale])
         }
     }
 

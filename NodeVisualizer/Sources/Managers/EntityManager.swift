@@ -55,14 +55,17 @@ final class EntityManager {
         }
 
         if entities.count > 1 {
-            remove(entity)
+            let fade = SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
+            entity.perform(action: fade) { [weak self] in
+                self?.remove(entity)
+            }
         } else {
             entity.reset()
         }
     }
 
     func requestEntityLevels(for entity: RecordEntity, in cluster: NodeCluster) -> EntityLevels {
-        let currentEntities = flatten(cluster.entitiesForLevel)
+        let currentEntities = flatten(cluster.entitiesForLevel).union([cluster.selectedEntity])
         var result = EntityLevels()
 
         // Build levels for the new entity
