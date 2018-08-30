@@ -8,6 +8,7 @@ enum ControlAction {
     case launchApplication
     case closeApplication
     case reset
+    case noAction
 
     init?(title: String) {
         switch title {
@@ -30,6 +31,8 @@ enum ControlAction {
             return "Reset"
         case .closeApplication:
             return "Close Application"
+        case .noAction:
+            return ""
         }
     }
 

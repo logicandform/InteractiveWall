@@ -140,7 +140,7 @@ class MasterViewController: NSViewController {
             if Configuration.spawnMapsImmediately {
                 let action = connected(screen: screen) ? ControlAction.launchApplication : ControlAction.closeApplication
                 let state = connected(screen: screen) ? ScreenState.connected : ScreenState.disconnected
-                infoForScreen[screen] = ApplicationInfo(action: ControlAction.closeApplication, status: state, applications: [:], applicationTypesForMaps: [:], maps: [])
+                infoForScreen[screen] = ApplicationInfo(action: ControlAction.noAction, status: state, applications: [:], applicationTypesForMaps: [:], maps: [])
                 apply(action, status: state, toScreen: screen)
             } else {
                 let action = ControlAction.closeApplication
