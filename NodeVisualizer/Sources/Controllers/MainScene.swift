@@ -24,7 +24,7 @@ class MainScene: SKScene {
     override func didMove(to view: SKView) {
         super.didMove(to: view)
 
-        setupGestures()
+        setupSystemGestures()
         addPhysics()
         addEntitiesToScene()
     }
@@ -47,9 +47,26 @@ class MainScene: SKScene {
     }
 
 
+    // MARK: API
+
+    func addGestures(to node: SKNode) {
+        let tapGesture = TapGestureRecognizer()
+        gestureManager.add(tapGesture, to: node)
+        tapGesture.gestureUpdated = { [weak self] gesture in
+            self?.handleTapGesture(gesture)
+        }
+
+        let panGesture = PanGestureRecognizer()
+        gestureManager.add(panGesture, to: node)
+        panGesture.gestureUpdated = { [weak self] gesture in
+            self?.handlePanGesture(gesture)
+        }
+    }
+
+
     // MARK: Setup
 
-    private func setupGestures() {
+    private func setupSystemGestures() {
         guard let view = view else {
             return
         }
@@ -79,19 +96,9 @@ class MainScene: SKScene {
                 recordNode.position = entity.initialPosition
                 recordNode.zPosition = 1
                 addChild(recordNode)
-                setupGestures(for: recordNode)
+                addGestures(to: recordNode)
             }
         }
-    }
-
-    private func setupGestures(for node: SKNode) {
-        let tapGesture = TapGestureRecognizer()
-        gestureManager.add(tapGesture, to: node)
-        tapGesture.gestureUpdated = handleTapGesture(_:)
-
-        let panGesture = PanGestureRecognizer()
-        gestureManager.add(panGesture, to: node)
-        panGesture.gestureUpdated = handlePanGesture(_:)
     }
 
 

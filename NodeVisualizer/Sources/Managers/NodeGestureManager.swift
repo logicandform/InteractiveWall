@@ -35,10 +35,8 @@ final class NodeGestureManager {
         handler.add(gesture)
     }
 
-    func remove(nodes: [SKNode]) {
-        for node in nodes {
-            gestureHandlers.removeValue(forKey: node)
-        }
+    func remove(_ node: SKNode) {
+        gestureHandlers.removeValue(forKey: node)
     }
 
     func removeAll() {
