@@ -174,6 +174,7 @@ final class EntityManager {
             removeComponents(from: entity)
             entity.node.removeFromParent()
             entitiesForProxy[proxy]?.remove(at: index)
+            scene.gestureManager.remove(entity.node)
         }
     }
 
