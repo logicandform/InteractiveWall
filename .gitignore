@@ -13,6 +13,10 @@ fastlane/.env
 build/
 DerivedData/
 
+## Logs
+info.log
+error.log
+
 ## Various settings
 *.pbxuser
 !default.pbxuser

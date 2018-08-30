@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+
+        <!-- launchctl load window-explorer-launchd.plist -->
+        <!-- launchctl unload window-explorer-launchd.plist -->
+
+        <key>Label</key>
+        <string>window-explorer-launchd.plist</string>
+
+        <key>Program</key>
+        <string>/Users/irshdc/Library/Developer/Xcode/DerivedData/MapExplorer-cebdevedrroybgdstwjueirgqasq/Build/Products/Debug/WindowExplorer.app/Contents/MacOS/WindowExplorer</string>
+
+        <key>RunAtLoad</key>
+        <true/>
+
+        <!-- Start app once on login, restart unless app crashes -->
+        <key>KeepAlive</key>
+        <dict>
+          <key>NetworkState</key>
+          <true/>
+          <key>Crashed</key>
+        	<false/>
+        </dict>
+
+        <key>StandardErrorPath</key>
+        <string>/Users/irshdc/dev/MapExplorer/error.log</string>
+
+        <key>StandardOutPath</key>
+        <string>/Users/irshdc/dev/MapExplorer/info.log</string>
+</dict>
+</plist>
