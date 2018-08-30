@@ -24,10 +24,12 @@ final class Style {
     let timelineWindowLevel = NSWindow.Level(29)
 
     // Timeline
-    let timelineBackgroundColor = NSColor(white: 0.1, alpha: 0.9)
+    let timelineBackgroundColor = NSColor(white: 0.1, alpha: 0.95)
     let timelineBorderColor = NSColor.gray
     let timelineHeaderText = NSColor.gray
     let timelineBorderWidth: CGFloat = 2
+    let timelineHeaderHeight: CGFloat = 30
+    let timelineHeaderOffset = 18
     let timelineFlagBackgroundColor = NSColor.black.withAlphaComponent(0.8)
     let timelineItemWidth: CGFloat = 180
     let timelineFlagPoleWidth: CGFloat = 2

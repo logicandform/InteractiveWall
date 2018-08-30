@@ -9,11 +9,11 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="c22-O7-iKe" customClass="TimelineHeaderView" customModule="MapExplorer_macOS" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="280" height="76"/>
+            <rect key="frame" x="0.0" y="0.0" width="280" height="42"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gRl-q7-F7a">
-                    <rect key="frame" x="2" y="29" width="276" height="17"/>
+                    <rect key="frame" x="2" y="4" width="276" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Label" id="uk7-eA-JSI">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -21,7 +21,7 @@
                     </textFieldCell>
                 </textField>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="7El-eZ-hu6">
-                    <rect key="frame" x="0.0" y="74" width="280" height="2"/>
+                    <rect key="frame" x="0.0" y="40" width="280" height="2"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="2" id="9Ek-Af-gjG"/>
                     </constraints>
@@ -30,9 +30,9 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="gRl-q7-F7a" secondAttribute="trailing" constant="4" id="5Qv-uO-cIr"/>
                 <constraint firstItem="gRl-q7-F7a" firstAttribute="centerX" secondItem="c22-O7-iKe" secondAttribute="centerX" id="DIE-PF-VMH"/>
-                <constraint firstItem="gRl-q7-F7a" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="Eoa-Xx-eQ7"/>
                 <constraint firstItem="gRl-q7-F7a" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="4" id="FOM-v5-7E6"/>
                 <constraint firstItem="7El-eZ-hu6" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="NMl-Q9-Tay"/>
+                <constraint firstAttribute="bottom" secondItem="gRl-q7-F7a" secondAttribute="bottom" constant="4" id="fMm-uE-o3p"/>
                 <constraint firstAttribute="trailing" secondItem="7El-eZ-hu6" secondAttribute="trailing" id="hhp-iG-sAm"/>
                 <constraint firstItem="7El-eZ-hu6" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="sdA-Nc-3xv"/>
             </constraints>
@@ -40,7 +40,7 @@
                 <outlet property="textLabel" destination="gRl-q7-F7a" id="6xI-23-epk"/>
                 <outlet property="topBorder" destination="7El-eZ-hu6" id="NwE-lK-ber"/>
             </connections>
-            <point key="canvasLocation" x="39" y="71"/>
+            <point key="canvasLocation" x="39" y="54"/>
         </customView>
     </objects>
 </document>

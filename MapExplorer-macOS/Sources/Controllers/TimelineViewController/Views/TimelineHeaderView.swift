@@ -20,4 +20,20 @@ class TimelineHeaderView: NSView {
             topBorder.layer?.backgroundColor = style.timelineBorderColor.cgColor
         }
     }
+
+    private struct Constants {
+        static let tickHeight: CGFloat = 10
+        static let tickWidth: CGFloat = 2
+    }
+
+
+    // MARK: Drawing
+
+    override func draw(_ dirtyRect: NSRect) {
+        super.draw(dirtyRect)
+        style.timelineBorderColor.setFill()
+        let tick = CGRect(x: CGFloat(style.timelineHeaderOffset), y: frame.height - Constants.tickHeight, width: Constants.tickWidth, height: Constants.tickHeight)
+        let path = NSBezierPath(rect: tick)
+        path.fill()
+    }
 }

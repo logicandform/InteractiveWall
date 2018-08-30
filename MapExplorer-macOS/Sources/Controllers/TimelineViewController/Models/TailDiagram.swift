@@ -56,7 +56,7 @@ final class TailDiagram {
         // Create layers with properties transposed to the given area
         for layer in layers {
             let newLayer = Layer()
-            // Transpose all lines to area.start
+            // Transpose all lines
             for line in layer.lines {
                 if line.overlaps(area) {
                     let start = max(line.start - a, 0)
@@ -65,7 +65,7 @@ final class TailDiagram {
                     newLayer.lines.append(newLine)
                 }
             }
-            // Transpose all drops to area.start
+            // Transpose all drops
             for drop in layer.drops {
                 if area.overlaps(x: drop.x) {
                     let x = clamp(drop.x - a, min: 0, max: area.width)
