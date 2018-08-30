@@ -65,6 +65,11 @@ final class Style {
     let toggleSecondaryUnselectedColor = NSColor(calibratedRed: 0.16, green: 0.18, blue: 0.19, alpha: 1)
     let toggleSwitchFrame = NSRect(x: 0, y: 0, width: 32, height: 16)
 
+    // Info Controller
+    let infoWindowSize = CGSize(width: 500, height: 600)
+    let infoMenuItemEdgeInset: CGFloat = 10
+    let infoMenuItemBuffer: CGFloat = 15
+
     // Border Controller
     let borderColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
 

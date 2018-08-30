@@ -12,6 +12,7 @@ enum WindowType: Equatable {
     case search
     case menu
     case settings
+    case info
     case border
     case testimony
 
@@ -44,6 +45,8 @@ enum WindowType: Equatable {
             return style.menuWindowSize
         case .settings:
             return style.settingsWindowSize
+        case .info:
+            return style.infoWindowSize
         case .border:
             return style.borderWindowSize
         case .testimony:
@@ -57,7 +60,7 @@ enum WindowType: Equatable {
             return style.borderWindowLevel
         case .record, .image, .player, .pdf, .search, .testimony:
             return style.movingWindowLevel
-        case .menu, .settings:
+        case .menu, .settings, .info:
             return style.staticWindowLevel
         }
     }
