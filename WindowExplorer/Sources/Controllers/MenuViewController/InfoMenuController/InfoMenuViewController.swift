@@ -52,7 +52,7 @@ class InfoMenuViewController: NSViewController, NSCollectionViewDataSource, NSCo
     }
 
     func subview(contains position: CGPoint) -> Bool {
-        return true
+        return view.isHidden ? false : view.frame.contains(position)
     }
 
 

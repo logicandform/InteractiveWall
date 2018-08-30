@@ -18,7 +18,7 @@ struct Configuration {
     static let spawnMapsImmediately = true
     static let touchScreenSize = CGSize(width: 21564, height: 12116)
     static let refreshRate = 1.0 / 60.0
-    static let resetTimoutDuration = 10.0
+    static let resetTimoutDuration = 180.0
 }
 
 

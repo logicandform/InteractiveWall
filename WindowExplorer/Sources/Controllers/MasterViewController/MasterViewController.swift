@@ -41,6 +41,10 @@ class MasterViewController: NSViewController {
         static let applyButtonPosition: CGFloat = 75
     }
 
+    private struct Keys {
+        static let id = "id"
+    }
+
     private struct ConsoleKeys {
         static let supervisorctlPath = "/usr/local/bin/supervisorctl"
         static let datePath = "/bin/date"
@@ -172,6 +176,11 @@ class MasterViewController: NSViewController {
             return
         }
 
+        if action == .reset {
+            postResetNotification()
+            return
+        }
+
         infoForScreen.enumerated().forEach { _, info in
             if info.value.status != ScreenState.disconnected {
                 apply(action, status: info.value.status, toScreen: info.key)
@@ -200,6 +209,11 @@ class MasterViewController: NSViewController {
 
 
     // MARK: Helpers
+
+    private func postResetNotification() {
+        let info: JSON = [Keys.id: 0]
+        DistributedNotificationCenter.default().postNotificationName(SettingsNotification.reset.name, object: nil, userInfo: info, deliverImmediately: true)
+    }
 
     private func runSupervisorRestart() {
         var outputString = ""
