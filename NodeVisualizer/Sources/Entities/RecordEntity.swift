@@ -49,11 +49,7 @@ final class RecordEntity: GKEntity {
     }
 
     var bodyRadius: CGFloat {
-        let width = renderComponent.recordNode.frame.width
-        let height = renderComponent.recordNode.frame.height
-        let nodeRadius = CGFloat(hypot(Float(width), Float(height)))
-        let bodyRadius = nodeRadius * 1.05
-        return bodyRadius
+        return renderComponent.recordNode.frame.width / 2
     }
 
     override var description: String {
@@ -109,7 +105,7 @@ final class RecordEntity: GKEntity {
         super.init()
 
         let renderComponent = RecordRenderComponent(record: record)
-        let physicsComponent = PhysicsComponent(physicsBody: SKPhysicsBody(circleOfRadius: style.nodePhysicsBodyRadius))
+        let physicsComponent = PhysicsComponent(physicsBody: SKPhysicsBody(circleOfRadius: style.defaultNodePhysicsBodyRadius))
         let movementComponent = MovementComponent()
         let animationComponent = AnimationComponent()
         renderComponent.recordNode.physicsBody = physicsComponent.physicsBody

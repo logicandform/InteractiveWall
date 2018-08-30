@@ -248,14 +248,14 @@ class MainScene: SKScene {
     }
 
     private func randomX() -> CGFloat {
-        let lowestValue = Int(style.nodePhysicsBodyRadius)
-        let highestValue = Int(size.width - style.nodePhysicsBodyRadius)
+        let lowestValue = Int(style.defaultNodePhysicsBodyRadius)
+        let highestValue = Int(size.width - style.defaultNodePhysicsBodyRadius)
         return CGFloat(GKRandomDistribution(lowestValue: lowestValue, highestValue: highestValue).nextInt(upperBound: highestValue))
     }
 
     private func randomY() -> CGFloat {
-        let lowestValue = Int(style.nodePhysicsBodyRadius)
-        let highestValue = Int(size.height - style.nodePhysicsBodyRadius)
+        let lowestValue = Int(style.defaultNodePhysicsBodyRadius)
+        let highestValue = Int(size.height - style.defaultNodePhysicsBodyRadius)
         return CGFloat(GKRandomDistribution(lowestValue: lowestValue, highestValue: highestValue).nextInt(upperBound: highestValue))
     }
 }

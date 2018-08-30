@@ -25,7 +25,7 @@ final class EntityManager {
 
     private struct Constants {
         static let maxRelatedLevel = 4
-        static let maxEntitiesPerLevel = 50
+        static let maxEntitiesPerLevel = 30
     }
 
 

@@ -126,14 +126,14 @@ class MovementComponent: GKComponent {
         entity.physicsBody.velocity.dx = clamp(entity.physicsBody.velocity.dx, min: -Constants.maxHorizontalVelocity, max: Constants.maxHorizontalVelocity)
 
         // Determine if the position of the node needs to be repositioned to the top of the scene
-        if entity.position.y < -style.nodePhysicsBodyRadius {
-            let topPosition = sceneFrame.height + style.nodePhysicsBodyRadius
+        if entity.position.y < -style.defaultNodePhysicsBodyRadius {
+            let topPosition = sceneFrame.height + style.defaultNodePhysicsBodyRadius
             entity.set(position: CGPoint(x: entity.position.x, y: topPosition))
         }
 
         // Determine if the position of the node needs to be repositioned to the left of the scene
-        if entity.position.x > sceneFrame.width + style.nodePhysicsBodyRadius {
-            let leftPosition = -style.nodePhysicsBodyRadius
+        if entity.position.x > sceneFrame.width + style.defaultNodePhysicsBodyRadius {
+            let leftPosition = -style.defaultNodePhysicsBodyRadius
             entity.set(position: CGPoint(x: leftPosition, y: entity.position.y))
         }
     }
