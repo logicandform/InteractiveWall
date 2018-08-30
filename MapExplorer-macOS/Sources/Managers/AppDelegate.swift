@@ -7,9 +7,10 @@ struct Configuration {
     static let serverIP = "10.58.73.211"
     static let serverURL = "http://\(serverIP):3000"
     static let appsPerScreen = 2
-    static let numberOfScreens = 1
+    static let numberOfScreens = 2
     static let touchScreenSize = CGSize(width: 21564, height: 12116)
     static let refreshRate = 1.0 / 60.0
+    static let ungroupTimoutDuration = 10.0
 }
 
 

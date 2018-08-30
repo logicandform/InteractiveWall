@@ -22,10 +22,6 @@ final class ConnectionManager {
     /// A timer used to reset the entire installation when no activity has been detected
     private weak var resetTimer: Foundation.Timer?
 
-    private struct Constants {
-        static let resetTimeoutPeriod = 180.0
-    }
-
     private struct Keys {
         static let id = "id"
         static let map = "map"
@@ -129,11 +125,11 @@ final class ConnectionManager {
         switch notification.name {
         case MapNotification.mapRect.name:
             if let group = group, let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture) {
-                setAppState(from: id, group: group, for: .mapExplorer, momentum: state == .momentum)
+                setAppState(from: id, group: group, for: .mapExplorer, gestureState: state)
             }
         case TimelineNotification.rect.name:
             if let group = group, let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture) {
-                setAppState(from: id, group: group, for: .timeline, momentum: state == .momentum)
+                setAppState(from: id, group: group, for: .timeline, gestureState: state)
             }
         case SettingsNotification.transition.name:
             if let newTypeString = info[Keys.type] as? String, let newType = ApplicationType(rawValue: newTypeString), let oldTypeString = info[Keys.oldType] as? String, let oldType = ApplicationType(rawValue: oldTypeString) {
@@ -210,19 +206,19 @@ final class ConnectionManager {
     }
 
     /// Set all app states accordingly when a app sends its position
-    private func setAppState(from id: Int, group: Int, for type: ApplicationType, momentum: Bool) {
+    private func setAppState(from id: Int, group: Int, for type: ApplicationType, gestureState: GestureState) {
+        if gestureState.interruptible {
+            return
+        }
+
         let newState = AppState(pair: id, group: id)
         let appStates = states(for: type).enumerated()
 
         for (app, state) in appStates {
             // Check for current group
             if let appGroup = state.group, appGroup == group {
-                // Once paired with own screen, don't group to other screens
-                if screen(of: appGroup) == screen(of: app) && screen(of: app) != screen(of: id) {
-                    continue
-                }
                 // Only listen to the closest screen once paired
-                if abs(screen(of: app) - screen(of: id)) >= abs(screen(of: app) - screen(of: appGroup)), screen(of: id) != screen(of: group) {
+                if abs(screen(of: app) - screen(of: appGroup)) < abs(screen(of: app) - screen(of: id)) {
                     continue
                 }
                 // Check for current pair
@@ -231,7 +227,7 @@ final class ConnectionManager {
                     if abs(app - id) < abs(app - appPair) {
                         set(newState, for: type, id: app)
                     }
-                } else if !momentum {
+                } else {
                     set(newState, for: type, id: app)
                 }
             } else if state.group == nil {
@@ -398,7 +394,7 @@ final class ConnectionManager {
 
     private func beginResetTimer() {
         resetTimer?.invalidate()
-        resetTimer = Timer.scheduledTimer(withTimeInterval: Constants.resetTimeoutPeriod, repeats: false) { [weak self] _ in
+        resetTimer = Timer.scheduledTimer(withTimeInterval: Configuration.resetTimoutDuration, repeats: false) { [weak self] _ in
             self?.resetTimerFired()
         }
     }

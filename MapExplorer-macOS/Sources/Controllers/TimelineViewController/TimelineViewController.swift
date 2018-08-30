@@ -570,7 +570,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     private func setupTimelineData() {
         timelineCollectionView.collectionViewLayout = TimelineDecadeFlagLayout()
         timelineCollectionView.dataSource = source
-        timelineHandler?.reset()
+        timelineHandler?.reset(animated: true)
         timelineCollectionView.reloadData()
     }
 

@@ -14,7 +14,9 @@ final class MapHandler {
 
     let mapView: MKMapView
     private var activityState = UserActivity.idle
+    private var animationStart: Date?
     private weak var ungroupTimer: Foundation.Timer?
+    private weak var animationTimer: Foundation.Timer?
 
     private var pair: Int? {
         return ConnectionManager.instance.pairForApp(id: appID, type: .mapExplorer)
@@ -24,10 +26,15 @@ final class MapHandler {
         return ConnectionManager.instance.groupForApp(id: appID, type: .mapExplorer)
     }
 
+    private var animating: Bool {
+        return animationStart != nil
+    }
+
     private struct Constants {
-        static let ungroupTimeoutPeriod = 30.0
         static let verticalPanLimit = 100000000.0
         static let verticalVisibleMapRatio = 0.25
+        static let downTimeAfterSentAnimated = 0.2
+        static let accountForDateLineThreshold = 214000000.0
     }
 
     private struct Keys {
@@ -48,36 +55,77 @@ final class MapHandler {
 
     deinit {
         ungroupTimer?.invalidate()
+        animationTimer?.invalidate()
     }
 
 
     // MARK: API
 
     /// Determines how to respond to a received mapRect from another mapView with the type of gesture that triggered the event.
-    func handle(_ mapRect: MKMapRect, fromID: Int, fromGroup: Int, syncing: Bool = false, animated: Bool = false) {
-        guard let currentGroup = group, currentGroup == fromGroup, currentGroup == fromID else {
+    func handle(_ mapRect: MKMapRect, fromID: Int, syncing: Bool = false) {
+        guard let currentGroup = group, currentGroup == fromID else {
             return
         }
 
-        // Filter position updates; state will be nil receiving when receiving from momentum, else id must match pair
+        // End animation if paired with another app
+        if let pair = pair, pair != appID {
+            endAnimation()
+        }
+
+        // Filter position updates; state will be nil receiving when receiving from momentum or animation, else id must match pair
         if pair == nil || pair! == fromID {
             if !syncing {
                 activityState = .active
             }
             let adjustedMapRect = adjust(mapRect, toMap: appID, fromMap: fromID)
-            mapView.setVisibleMapRect(adjustedMapRect, animated: animated)
+            mapView.setVisibleMapRect(adjustedMapRect, animated: false)
         }
     }
 
-    func send(_ mapRect: MKMapRect, for gestureState: GestureState = .recognized, animated: Bool = false) {
-        // If sending from momentum but another map has interrupted, ignore
-        if gestureState == .momentum && pair != nil {
+    func handleReset(_ mapRect: MKMapRect, fromID: Int) {
+        if group == nil {
+            let adjustedMapRect = adjust(mapRect, toMap: appID, fromMap: fromID)
+            mapView.setVisibleMapRect(adjustedMapRect, animated: false)
+        }
+    }
+
+    func send(_ mapRect: MKMapRect, for gestureState: GestureState = .recognized) {
+        // If sending from momentum or an animation but another map has interrupted or just sent animated, ignore
+        if gestureState.interruptible && pair != nil {
             return
         }
 
+        // Stop animating if necessary
+        endAnimation()
+
         let currentGroup = group ?? appID
-        let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.map: mapRect.toJSON(), Keys.gesture: gestureState.rawValue, Keys.animated: animated]
+        let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.map: mapRect.toJSON(), Keys.gesture: gestureState.rawValue]
         DistributedNotificationCenter.default().postNotificationName(MapNotification.mapRect.name, object: nil, userInfo: info, deliverImmediately: true)
+    }
+
+    /// Replaces apples setVisibleMapRect animationed which has a bug
+    func animate(to mapRect: MKMapRect, with type: MapAnimationType) {
+        var initialOrigin = mapView.visibleMapRect.origin
+        let finalOrigin = mapRect.origin
+
+        // Adjust for international date line if necessairy
+        switch type {
+        case .clusterTap where finalOrigin.x < initialOrigin.x, .doubleTap where finalOrigin.x < initialOrigin.x:
+            initialOrigin.x -= MKMapRectWorld.size.width
+        case .reset where initialOrigin.x > Constants.accountForDateLineThreshold:
+            initialOrigin.x -= MKMapRectWorld.size.width
+        default:
+            break
+        }
+
+        let originVector = finalOrigin - initialOrigin
+        let initialMapRect = mapView.visibleMapRect
+        let scale = mapRect.size.width / initialMapRect.size.width
+
+        animationTimer?.invalidate()
+        animationTimer = Timer.scheduledTimer(withTimeInterval: Configuration.refreshRate, repeats: true) { [weak self] _ in
+            self?.animationTimerFired(for: type, initialMapRect: initialMapRect, originVector: originVector, scale: scale)
+        }
     }
 
     /// Sends a mapRect to sync all apps in the same group
@@ -98,19 +146,23 @@ final class MapHandler {
         beginUngroupTimer()
     }
 
-    func invalidate() {
-        ungroupTimer?.invalidate()
+    func endAnimation() {
+        animationTimer?.invalidate()
+        animationStart = nil
     }
 
-    func reset(animated: Bool = true) {
+    func reset(animated: Bool) {
         let canadaRect = MapConstants.canadaRect
-        if Configuration.appsPerScreen == 1 {
-            mapView.setVisibleMapRect(MKMapRect(origin: canadaRect.origin, size: canadaRect.size), animated: true)
-        } else {
-            let newWidth = canadaRect.size.width / (Double(Configuration.appsPerScreen) - 1.0)
-            let newXOrigin = ((Double(appID).truncatingRemainder(dividingBy: Double(Configuration.appsPerScreen)) * newWidth) - (newWidth / 2)) + canadaRect.origin.x
-            let mapRect = MKMapRect(origin: MKMapPoint(x: newXOrigin, y: canadaRect.origin.y), size: MKMapSize(width: newWidth, height: 0.0))
-            mapView.setVisibleMapRect(mapRect, animated: true)
+        let width = canadaRect.size.width / Double(Configuration.appsPerScreen)
+        let originX = canadaRect.origin.x + (canadaRect.size.width - width) / 2
+        let mapRect = MKMapRect(origin: MKMapPoint(x: originX, y: canadaRect.origin.y), size: MKMapSize(width: width, height: 0)).withPreservedAspectRatio(in: mapView)
+        let maxAppID = Configuration.numberOfScreens * Configuration.appsPerScreen - 1
+
+        if animated && appID == maxAppID {
+            animate(to: mapRect, with: .reset)
+        } else if !animated {
+            let adjustedMapRect = adjust(mapRect, toMap: appID, fromMap: maxAppID)
+            mapView.setVisibleMapRect(adjustedMapRect, animated: false)
         }
     }
 
@@ -118,22 +170,19 @@ final class MapHandler {
     // MARK: Helpers
 
     private func adjust(_ mapRect: MKMapRect, toMap map: Int, fromMap pair: Int?) -> MKMapRect {
-        var xOrigin = 0.0
         let pairedID = pair ?? map
         let canadaRect = MapConstants.canadaRect
-        if mapRect.origin.x > MKMapSizeWorld.width - mapRect.size.width {
-            xOrigin = mapRect.origin.x - MKMapSizeWorld.width + Double(appID - pairedID) * mapRect.size.width
-        } else {
-            xOrigin = mapRect.origin.x + Double(appID - pairedID) * mapRect.size.width
-        }
+        let offsetWidth = canadaRect.size.width / Double(Configuration.appsPerScreen)
 
+        var xOrigin = (mapRect.origin.x + mapRect.size.width).truncatingRemainder(dividingBy: MKMapSizeWorld.width) - mapRect.size.width + Double(appID - pairedID) * mapRect.size.width
         var yOrigin = mapRect.origin.y
-        if xOrigin > canadaRect.origin.x + canadaRect.size.width {
+
+        if xOrigin > canadaRect.origin.x + offsetWidth {
             let distance = xOrigin - canadaRect.origin.x + mapRect.size.width
-            xOrigin = distance.truncatingRemainder(dividingBy: canadaRect.size.width + mapRect.size.width) - mapRect.size.width + canadaRect.origin.x
+            xOrigin = distance.truncatingRemainder(dividingBy: offsetWidth + mapRect.size.width) - mapRect.size.width + canadaRect.origin.x
         } else if xOrigin + mapRect.size.width < canadaRect.origin.x {
-            let distance = canadaRect.size.width + canadaRect.origin.x - xOrigin
-            xOrigin = canadaRect.origin.x + canadaRect.size.width - distance.truncatingRemainder(dividingBy: canadaRect.size.width + mapRect.size.width)
+            let distance = offsetWidth + canadaRect.origin.x - xOrigin
+            xOrigin = canadaRect.origin.x + offsetWidth - distance.truncatingRemainder(dividingBy: offsetWidth + mapRect.size.width)
         }
 
         if mapRect.origin.y + mapRect.size.height * Constants.verticalVisibleMapRatio > Constants.verticalPanLimit {
@@ -146,7 +195,7 @@ final class MapHandler {
     /// Resets the pairedDeviceID after a timeout period
     private func beginUngroupTimer() {
         ungroupTimer?.invalidate()
-        ungroupTimer = Timer.scheduledTimer(withTimeInterval: Constants.ungroupTimeoutPeriod, repeats: false) { [weak self] _ in
+        ungroupTimer = Timer.scheduledTimer(withTimeInterval: Configuration.ungroupTimoutDuration, repeats: false) { [weak self] _ in
             self?.ungroupTimerFired()
         }
     }
@@ -155,10 +204,35 @@ final class MapHandler {
         guard let group = group, group == appID else {
             return
         }
-
         if activityState == .idle {
             let info: JSON = [Keys.id: appID, Keys.type: ApplicationType.mapExplorer.rawValue, Keys.group: appID]
             DistributedNotificationCenter.default().postNotificationName(SettingsNotification.ungroup.name, object: nil, userInfo: info, deliverImmediately: true)
+        }
+    }
+
+    /// Handles moving the map in small increment to the final position (i.e animating)
+    private func animationTimerFired(for type: MapAnimationType, initialMapRect: MKMapRect, originVector: MKMapPoint, scale: Double) {
+        if !animating {
+            animationStart = Date()
+        }
+
+        let progress = min(1.0, abs(animationStart!.timeIntervalSinceNow) / type.duration)
+
+        // Accounts for international date line
+        let originX = (initialMapRect.origin.x + originVector.x * progress).truncatingRemainder(dividingBy: MKMapRectWorld.size.width)
+        let originY = initialMapRect.origin.y + originVector.y * progress
+        let size = MKMapSize(width: initialMapRect.size.width - initialMapRect.size.width * (1 - scale) * progress, height: initialMapRect.size.height - initialMapRect.size.height * (1 - scale) * progress)
+        let mapRect = MKMapRect(origin: MKMapPoint(x: originX, y: originY), size: size)
+
+        let currentGroup = group ?? appID
+        let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.map: mapRect.toJSON(), Keys.gesture: GestureState.animated.rawValue]
+        DistributedNotificationCenter.default().postNotificationName(type.notification.name, object: nil, userInfo: info, deliverImmediately: true)
+
+        if progress == 1 {
+            endAnimation()
+            endUpdates()
+        } else if type == .reset && group != nil {
+            endAnimation()
         }
     }
 }

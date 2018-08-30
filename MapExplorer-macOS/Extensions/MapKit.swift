@@ -22,6 +22,13 @@ extension MKMapRect: Equatable {
         self.size = MKMapSize(width: width, height: height)
     }
 
+    init(coordinateRegion: MKCoordinateRegion) {
+        let origin = MKMapPointForCoordinate(CLLocationCoordinate2D(latitude: coordinateRegion.center.latitude + coordinateRegion.span.latitudeDelta / 2, longitude: coordinateRegion.center.longitude - coordinateRegion.span.longitudeDelta / 2))
+        let se = MKMapPointForCoordinate(CLLocationCoordinate2D(latitude: coordinateRegion.center.latitude - coordinateRegion.span.latitudeDelta / 2, longitude: coordinateRegion.center.longitude + coordinateRegion.span.longitudeDelta / 2))
+        let size = MKMapSize(width: se.x - origin.x, height: se.y - origin.y)
+        self.init(origin: origin, size: size)
+    }
+
     func toJSON() -> JSON {
         return [Keys.x: origin.x, Keys.y: origin.y, Keys.width: size.width, Keys.height: size.height]
     }
@@ -32,6 +39,17 @@ extension MKMapRect: Equatable {
         let se = MKMapPoint(x: ne.x, y: ne.y + self.size.height)
         let sw = MKMapPoint(x: nw.x, y: se.y)
         return (nw: nw, ne: ne, se: se, sw: sw)
+    }
+
+    func withPreservedAspectRatio(in mapView: MKMapView) -> MKMapRect {
+        let aspectRatio = mapView.visibleMapRect.size.width / mapView.visibleMapRect.size.height
+        var size = self.size
+        if size.width / size.height > aspectRatio {
+            size.height = size.width / aspectRatio
+        } else {
+            size.width = size.height * aspectRatio
+        }
+        return MKMapRect(origin: self.origin, size: size)
     }
 
     static public func == (lhs: MKMapRect, rhs: MKMapRect) -> Bool {
@@ -53,6 +71,10 @@ extension MKMapPoint: Equatable {
     static public func -= (lhs: inout MKMapPoint, rhs: MKMapPoint) {
         lhs.x -= rhs.x
         lhs.y -= rhs.y
+    }
+
+    static func - (lhs: MKMapPoint, rhs: MKMapPoint) -> MKMapPoint {
+        return MKMapPoint(x: lhs.x - rhs.x, y: lhs.y - rhs.y)
     }
 }
 

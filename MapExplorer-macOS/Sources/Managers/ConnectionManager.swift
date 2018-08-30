@@ -129,22 +129,26 @@ final class ConnectionManager {
 
         switch notification.name {
         case MapNotification.mapRect.name:
-            if let mapJSON = info[Keys.map] as? JSON, let mapRect = MKMapRect(json: mapJSON), let group = group, let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture), let animated = info[Keys.animated] as? Bool {
-                setAppState(from: id, group: group, for: .mapExplorer, momentum: state == .momentum)
-                mapHandler?.handle(mapRect, fromID: id, fromGroup: group, animated: animated)
+            if let mapJSON = info[Keys.map] as? JSON, let mapRect = MKMapRect(json: mapJSON), let group = group, let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture) {
+                setAppState(from: id, group: group, for: .mapExplorer, gestureState: state)
+                mapHandler?.handle(mapRect, fromID: id)
             }
         case MapNotification.sync.name:
-            if let mapJSON = info[Keys.map] as? JSON, let mapRect = MKMapRect(json: mapJSON), let group = group {
-                mapHandler?.handle(mapRect, fromID: id, fromGroup: group, syncing: true)
+            if let mapJSON = info[Keys.map] as? JSON, let mapRect = MKMapRect(json: mapJSON) {
+                mapHandler?.handle(mapRect, fromID: id, syncing: true)
+            }
+        case MapNotification.reset.name:
+            if let mapJSON = info[Keys.map] as? JSON, let mapRect = MKMapRect(json: mapJSON) {
+                mapHandler?.handleReset(mapRect, fromID: id)
             }
         case TimelineNotification.rect.name:
             if let dateJSON = info[Keys.date] as? JSON, let date = TimelineDate(json: dateJSON), let group = group, let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture), let animated = info[Keys.animated] as? Bool {
-                setAppState(from: id, group: group, for: .timeline, momentum: state == .momentum)
-                timelineHandler?.handle(date: date, fromID: id, fromGroup: group, animated: animated)
+                setAppState(from: id, group: group, for: .timeline, gestureState: state)
+                timelineHandler?.handle(date: date, fromID: id, animated: animated)
             }
         case TimelineNotification.sync.name:
-            if let dateJSON = info[Keys.date] as? JSON, let date = TimelineDate(json: dateJSON), let group = group {
-                timelineHandler?.handle(date: date, fromID: id, fromGroup: group, syncing: true)
+            if let dateJSON = info[Keys.date] as? JSON, let date = TimelineDate(json: dateJSON) {
+                timelineHandler?.handle(date: date, fromID: id, syncing: true)
             }
         case SettingsNotification.transition.name:
             if let newTypeString = info[Keys.type] as? String, let newType = ApplicationType(rawValue: newTypeString), let oldTypeString = info[Keys.oldType] as? String, let oldType = ApplicationType(rawValue: oldTypeString) {
@@ -179,6 +183,15 @@ final class ConnectionManager {
 
     // MARK: Helpers
 
+    private func reset() {
+        let numberOfApps = Configuration.appsPerScreen * Configuration.numberOfScreens
+        let initialState = AppState(pair: nil, group: nil)
+        stateForMap = Array(repeating: initialState, count: numberOfApps)
+        stateForTimeline = Array(repeating: initialState, count: numberOfApps)
+        typeForApp = Array(repeating: .mapExplorer, count: numberOfApps)
+        transition(app: appID, to: .mapExplorer)
+    }
+
     private func transition(from oldType: ApplicationType, to newType: ApplicationType, id: Int, group: Int?) {
         let newState = AppState(pair: nil, group: id)
         let appStates = states(for: oldType).enumerated()
@@ -208,29 +221,20 @@ final class ConnectionManager {
         resetTimerForApp(id: id, with: newType)
     }
 
-    private func reset() {
-        let numberOfApps = Configuration.appsPerScreen * Configuration.numberOfScreens
-        let initialState = AppState(pair: nil, group: nil)
-        stateForMap = Array(repeating: initialState, count: numberOfApps)
-        stateForTimeline = Array(repeating: initialState, count: numberOfApps)
-        typeForApp = Array(repeating: .mapExplorer, count: numberOfApps)
-        transition(app: appID, to: .mapExplorer)
-    }
-
     /// Set all app states accordingly when a app sends its position
-    private func setAppState(from id: Int, group: Int, for type: ApplicationType, momentum: Bool) {
+    private func setAppState(from id: Int, group: Int, for type: ApplicationType, gestureState: GestureState) {
+        if gestureState.interruptible {
+            return
+        }
+
         let newState = AppState(pair: id, group: id)
         let appStates = states(for: type).enumerated()
 
         for (app, state) in appStates {
             // Check for current group
             if let appGroup = state.group, appGroup == group {
-                // Once paired with own screen, don't group to other screens
-                if screen(of: appGroup) == screen(of: app) && screen(of: app) != screen(of: id) {
-                    continue
-                }
                 // Only listen to the closest screen once paired
-                if abs(screen(of: app) - screen(of: id)) >= abs(screen(of: app) - screen(of: appGroup)), screen(of: id) != screen(of: group) {
+                if abs(screen(of: app) - screen(of: appGroup)) < abs(screen(of: app) - screen(of: id)) {
                     continue
                 }
                 // Check for current pair
@@ -239,7 +243,7 @@ final class ConnectionManager {
                     if abs(app - id) < abs(app - appPair) {
                         set(newState, for: type, id: app)
                     }
-                } else if !momentum {
+                } else {
                     set(newState, for: type, id: app)
                 }
             } else if state.group == nil {

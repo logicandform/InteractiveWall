@@ -42,4 +42,14 @@ enum GestureState: String {
     case momentum
     case recognized
     case doubleTapped
+    case animated
+
+    var interruptible: Bool {
+        switch self {
+        case .momentum, .animated:
+            return true
+        default:
+            return false
+        }
+    }
 }

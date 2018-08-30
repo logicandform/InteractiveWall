@@ -18,10 +18,6 @@ final class TimelineHandler {
         return ConnectionManager.instance.groupForApp(id: appID, type: .timeline)
     }
 
-    private struct Constants {
-        static let ungroupTimeoutPeriod = 30.0
-    }
-
     private struct Keys {
         static let id = "id"
         static let date = "date"
@@ -46,8 +42,8 @@ final class TimelineHandler {
     // MARK: API
 
     /// Determines how to respond to a received rect from another timeline with the type of gesture that triggered the event.
-    func handle(date: TimelineDate, fromID: Int, fromGroup: Int, syncing: Bool = false, animated: Bool = false) {
-        guard let currentGroup = group, currentGroup == fromGroup, currentGroup == fromID else {
+    func handle(date: TimelineDate, fromID: Int, syncing: Bool = false, animated: Bool = false) {
+        guard let currentGroup = group, currentGroup == fromID else {
             return
         }
 
@@ -98,7 +94,7 @@ final class TimelineHandler {
         ungroupTimer?.invalidate()
     }
 
-    func reset(animated: Bool = true) {
+    func reset(animated: Bool) {
         guard let timelineViewController = timelineViewController else {
             return
         }
@@ -131,7 +127,7 @@ final class TimelineHandler {
     /// Resets the pairedDeviceID after a timeout period
     private func beginUngroupTimer() {
         ungroupTimer?.invalidate()
-        ungroupTimer = Timer.scheduledTimer(withTimeInterval: Constants.ungroupTimeoutPeriod, repeats: false) { [weak self] _ in
+        ungroupTimer = Timer.scheduledTimer(withTimeInterval: Configuration.ungroupTimoutDuration, repeats: false) { [weak self] _ in
             self?.ungroupTimerFired()
         }
     }

@@ -94,6 +94,7 @@
 		8F1A1CBB205B41AC00A59A84 /* FlippedMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1A1CBA205B41AC00A59A84 /* FlippedMapView.swift */; };
 		8F22945620773EA600731E78 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F22945520773EA600731E78 /* Math.swift */; };
 		8F64A1E720BEF88600F0D209 /* MapViewWithMiniMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F64A1E620BEF88600F0D209 /* MapViewWithMiniMap.swift */; };
+		8FB48D6D2128E1D7009980B1 /* MapAnimationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB48D6C2128E1D7009980B1 /* MapAnimationType.swift */; };
 		8FBBD1CF20F5140900D9334C /* ClusterAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBBD1CE20F5140900D9334C /* ClusterAnnotationView.swift */; };
 		A44A56EE2135F35200F73D55 /* TimelineSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44A56ED2135F35200F73D55 /* TimelineSelection.swift */; };
 		A44E14F6211A392B00105F58 /* NSCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44E14F5211A392B00105F58 /* NSCollectionView.swift */; };
@@ -227,6 +228,7 @@
 		8F1A1CBA205B41AC00A59A84 /* FlippedMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlippedMapView.swift; sourceTree = "<group>"; };
 		8F22945520773EA600731E78 /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		8F64A1E620BEF88600F0D209 /* MapViewWithMiniMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewWithMiniMap.swift; sourceTree = "<group>"; };
+		8FB48D6C2128E1D7009980B1 /* MapAnimationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnimationType.swift; sourceTree = "<group>"; };
 		8FBBD1CE20F5140900D9334C /* ClusterAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterAnnotationView.swift; sourceTree = "<group>"; };
 		9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_MapExplorer_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E45B0B207D66FC5A3CD5BEA /* Pods-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -398,6 +400,7 @@
 		22290C212028FA1E000E0573 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				8FB48D6C2128E1D7009980B1 /* MapAnimationType.swift */,
 				22290C222028FA1E000E0573 /* Style.swift */,
 				22EF0FA7202B847200571002 /* CachingNetwork.swift */,
 				22318DDF202B984F0092937C /* ResponseHandler.swift */,
@@ -786,6 +789,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8FB48D6D2128E1D7009980B1 /* MapAnimationType.swift in Sources */,
 				A44E14F6211A392B00105F58 /* NSCollectionView.swift in Sources */,
 				2200500420E2B8AC00B1E740 /* TimelineDataSource.swift in Sources */,
 				8F64A1E720BEF88600F0D209 /* MapViewWithMiniMap.swift in Sources */,

@@ -8,7 +8,7 @@ import AppKit
 
 
 struct MapConstants {
-    static let canadaRect = MKMapRect(origin: MKMapPoint(x: 23000000, y: 70000000), size: MKMapSize(width: 80000000, height: 0))
+    static let canadaRect = MKMapRect(origin: MKMapPoint(x: 23000000, y: 25000000), size: MKMapSize(width: 160000000, height: 0))
 }
 
 
@@ -29,7 +29,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     private struct Constants {
-        static let maxZoomWidth =  Double(160000000 / Configuration.appsPerScreen)
+        static let maxZoomWidth = Double(160000000 / Configuration.appsPerScreen)
         static let minZoomWidth = 424500.0
         static let touchRadius: CGFloat = 20
         static let annotationHitSize = CGSize(width: 50, height: 50)
@@ -72,7 +72,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     override func viewDidAppear() {
-        mapHandler?.reset()
+        mapHandler?.reset(animated: false)
     }
 
 
@@ -199,7 +199,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                         postRecordNotification(for: record, at: CGPoint(x: positionInView.x, y: positionInView.y - 20.0))
                         return
                     } else if let clusterAnnotation = annotation as? MKClusterAnnotation {
-                        didSelect(clusterAnnotation: clusterAnnotation)
+                        didSelect(clusterAnnotation: clusterAnnotation, at: position)
                         return
                     }
                 } else if tap.state == .doubleTapped {
@@ -315,8 +315,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             let translationY = (mapRect.size.height - scaledHeight) * (1 - Double(position.y / mapView.frame.height))
             mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
             mapRect.origin += MKMapPoint(x: translationX, y: translationY)
-            mapHandler?.send(mapRect, animated: true)
-            mapHandler?.endActivity()
+            mapHandler?.animate(to: mapRect, with: .doubleTap)
         }
     }
 
@@ -393,9 +392,13 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     /// Zoom into the annotations contained in the cluster
-    private func didSelect(clusterAnnotation: MKClusterAnnotation) {
+    private func didSelect(clusterAnnotation: MKClusterAnnotation, at position: CGPoint) {
         let region = restrainSpan(for: clusterAnnotation.boundingCoordinateRegion())
-        mapView.setRegion(region, animated: true)
+        var newMapRect = MKMapRect(coordinateRegion: region).withPreservedAspectRatio(in: mapView)
+        let translationX = (newMapRect.size.width / 2) - newMapRect.size.width * Double(position.x / mapView.frame.width)
+        let translationY = -newMapRect.size.height * (1 - Double(position.y / mapView.frame.height))
+        newMapRect.origin += MKMapPoint(x: translationX, y: translationY)
+        mapHandler?.animate(to: newMapRect, with: MapAnimationType.clusterTap)
     }
 
     /// Clamps the region span between the max and min zoom levels
