@@ -22,19 +22,16 @@ class InfoMenuItemView: NSCollectionViewItem {
 
     // MARK: Helpers
 
-    static func infoItemHeight(for record: RecordDisplayable) -> CGFloat {
+    static func infoItemHeight(for record: InfoMenuItem) -> CGFloat {
         let width = style.infoWindowSize.width
         let textFieldWidth = CGFloat(width - (style.infoMenuItemEdgeInset * 2))
         let title = NSAttributedString(string: record.title, attributes: record.titleAttributes)
         let titleHeight = title.height(containerWidth: textFieldWidth)
 
-        if let description = record.description {
-            let margins = style.infoMenuItemEdgeInset * 2 + style.infoMenuItemBuffer
-            let descriptionString = NSAttributedString(string: description, attributes: record.descriptionAttributes)
-            let descriptionHeight = descriptionString.height(containerWidth: textFieldWidth)
-            return titleHeight + descriptionHeight + margins
-        } else {
-            return titleHeight + style.infoMenuItemEdgeInset * 2
-        }
+        let margins = style.infoMenuItemEdgeInset * 2 + style.infoMenuItemBuffer
+        let descriptionString = NSAttributedString(string: record.description, attributes: record.descriptionAttributes)
+        let descriptionHeight = descriptionString.height(containerWidth: textFieldWidth)
+
+        return titleHeight + descriptionHeight + margins
     }
 }

@@ -122,6 +122,7 @@
 		A44A56F52136186600F73D55 /* InfoMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44A56F42136186600F73D55 /* InfoMenuViewController.swift */; };
 		A44A56F72136188600F73D55 /* InfoMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A44A56F62136188600F73D55 /* InfoMenu.storyboard */; };
 		A44A56FB2136342000F73D55 /* InfoMenuItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44A56FA2136342000F73D55 /* InfoMenuItemView.swift */; };
+		A44DB17D21386FED00D45A01 /* InfoMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DB17C21386FED00D45A01 /* InfoMenuItem.swift */; };
 		A451470021263BC900910A25 /* ScreenState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45146FF21263BC900910A25 /* ScreenState.swift */; };
 		A4540D16211B62FC00D50395 /* NSCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4540D15211B62FC00D50395 /* NSCollectionView.swift */; };
 		A4551B6420DC38D100D8C029 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4551B6320DC38D100D8C029 /* MenuButton.swift */; };
@@ -296,6 +297,7 @@
 		A44A56F42136186600F73D55 /* InfoMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMenuViewController.swift; sourceTree = "<group>"; };
 		A44A56F62136188600F73D55 /* InfoMenu.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = InfoMenu.storyboard; sourceTree = "<group>"; };
 		A44A56FA2136342000F73D55 /* InfoMenuItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMenuItemView.swift; sourceTree = "<group>"; };
+		A44DB17C21386FED00D45A01 /* InfoMenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMenuItem.swift; sourceTree = "<group>"; };
 		A45146FF21263BC900910A25 /* ScreenState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenState.swift; sourceTree = "<group>"; };
 		A4540D15211B62FC00D50395 /* NSCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSCollectionView.swift; sourceTree = "<group>"; };
 		A4551B6320DC38D100D8C029 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
@@ -718,6 +720,7 @@
 			children = (
 				A44A4775213729DA000DFF90 /* InfoMenuItemView.xib */,
 				A44A56FA2136342000F73D55 /* InfoMenuItemView.swift */,
+				A44DB17C21386FED00D45A01 /* InfoMenuItem.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1020,6 +1023,7 @@
 				A456F6C020C73826004534A4 /* SettingsMenuViewController.swift in Sources */,
 				2204623420472FDF0067D9FB /* NSImage.swift in Sources */,
 				D9F24E62205B040700B9FCB8 /* ImageViewController.swift in Sources */,
+				A44DB17D21386FED00D45A01 /* InfoMenuItem.swift in Sources */,
 				8F8DE19220A3EDFD006FA48B /* RelatedItemView.swift in Sources */,
 				227B5E11205611BB00F403B3 /* Style.swift in Sources */,
 				22AE5D2520D2DB3200D5FB9C /* ConnectionManager.swift in Sources */,

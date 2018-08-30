@@ -38,8 +38,8 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="Z3v-72-poE" secondAttribute="trailing" constant="10" id="KGA-K9-Byx"/>
                 <constraint firstItem="Z3v-72-poE" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="10" id="LLV-rZ-wye"/>
+                <constraint firstItem="V4e-rq-7q5" firstAttribute="top" secondItem="Z3v-72-poE" secondAttribute="bottom" constant="15" id="MXs-3V-aqy"/>
                 <constraint firstItem="Z3v-72-poE" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="10" id="NpI-f2-B8i"/>
-                <constraint firstItem="V4e-rq-7q5" firstAttribute="top" secondItem="Z3v-72-poE" secondAttribute="bottom" constant="15" id="PdR-Ue-rJn"/>
                 <constraint firstItem="V4e-rq-7q5" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="10" id="ai5-IY-rGN"/>
                 <constraint firstAttribute="trailing" secondItem="V4e-rq-7q5" secondAttribute="trailing" constant="10" id="d7I-uO-mUP"/>
             </constraints>

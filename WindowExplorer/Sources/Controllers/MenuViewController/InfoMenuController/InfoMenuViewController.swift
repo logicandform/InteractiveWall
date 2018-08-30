@@ -7,12 +7,12 @@ import Cocoa
 class InfoMenuViewController: NSViewController, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout, GestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "InfoMenu")
 
-    @IBOutlet weak var infoScrollView: NSScrollView!
+    @IBOutlet weak var infoScrollView: FadingScrollView!
     @IBOutlet weak var infoClipView: NSClipView!
     @IBOutlet weak var infoCollectionView: NSCollectionView!
 
     var gestureManager: GestureManager!
-    private var infoEntries = [School]()
+    private var infoEntries = [InfoMenuItem]()
 
 
     // MARK: Lifecycle
@@ -24,6 +24,7 @@ class InfoMenuViewController: NSViewController, NSCollectionViewDataSource, NSCo
         setupInfoData()
         setupLayers()
         setupCollectionView()
+        setupGestures()
     }
 
 
@@ -68,10 +69,8 @@ class InfoMenuViewController: NSViewController, NSCollectionViewDataSource, NSCo
 
         infoView.titleTextField.attributedStringValue = NSMutableAttributedString(string: infoEntries[indexPath.item].title, attributes: infoEntries[indexPath.item].titleAttributes)
         setup(textField: infoView.titleTextField)
-        if let description = infoEntries[indexPath.item].description {
-            infoView.descriptionTextField.attributedStringValue = NSMutableAttributedString(string: description, attributes: infoEntries[indexPath.item].descriptionAttributes)
-            setup(textField: infoView.descriptionTextField)
-        }
+        infoView.descriptionTextField.attributedStringValue = NSMutableAttributedString(string: infoEntries[indexPath.item].description, attributes: infoEntries[indexPath.item].descriptionAttributes)
+        setup(textField: infoView.descriptionTextField)
 
         return infoView
     }
@@ -81,31 +80,55 @@ class InfoMenuViewController: NSViewController, NSCollectionViewDataSource, NSCo
     }
 
 
-    // MARK: Helpers
+    // MARK: Gesture Handling
 
-    private func setupInfoData() {
-        guard let data = School(json: featuresJSON) else {
+    private func didPanOnTimeline(_ gesture: GestureRecognizer) {
+        guard let pan = gesture as? PanGestureRecognizer else {
             return
         }
 
-        infoEntries = [data]
+        switch pan.state {
+        case .recognized, .momentum:
+            var rect = infoCollectionView.visibleRect
+            rect.origin.y += pan.delta.dy
+            infoCollectionView.scrollToVisible(rect)
+            infoScrollView.updateGradient()
+        default:
+            return
+        }
+    }
+
+
+    // MARK: Helpers
+
+    private func setupInfoData() {
+        guard let interactiveData = School(json: interactiveJSON), let interactiveDescription = interactiveData.description, let featuresData = School(json: featuresJSON), let featuresDescription = featuresData.description else {
+            return
+        }
+
+        let interactiveEntry = InfoMenuItem(title: interactiveData.title, description: interactiveDescription, video: nil)
+        let featuresEntry = InfoMenuItem(title: featuresData.title, description: featuresDescription, video: nil)
+        infoEntries = [interactiveEntry, featuresEntry]
     }
 
     private func setupLayers() {
         view.wantsLayer = true
-//        infoScrollView.wantsLayer = true
-//        infoClipView.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
-//        infoScrollView.layer?.backgroundColor = style.darkBackground.cgColor
-//        infoClipView.layer?.backgroundColor = style.darkBackground.cgColor
-        infoScrollView.backgroundColor = NSColor.clear
-        infoClipView.backgroundColor = NSColor.clear
         infoCollectionView.backgroundColors = [style.darkBackground]
     }
 
     private func setupCollectionView() {
         infoCollectionView.register(InfoMenuItemView.self, forItemWithIdentifier: InfoMenuItemView.identifier)
         infoScrollView.verticalScroller?.alphaValue = 0
+        infoScrollView.updateGradient()
+    }
+
+    private func setupGestures() {
+        let panGesture = PanGestureRecognizer()
+        gestureManager.add(panGesture, to: infoCollectionView)
+        panGesture.gestureUpdated = { [weak self] gesture in
+            self?.didPanOnTimeline(gesture)
+        }
     }
 
     private func setup(textField: NSTextField) {
@@ -114,5 +137,6 @@ class InfoMenuViewController: NSViewController, NSCollectionViewDataSource, NSCo
         textField.isSelectable = false
         textField.isBordered = false
         textField.sizeToFit()
+        textField.cell?.wraps = true
     }
 }

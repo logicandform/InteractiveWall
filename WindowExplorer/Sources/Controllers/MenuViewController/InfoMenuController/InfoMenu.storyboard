@@ -13,14 +13,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="500" height="600"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView wantsLayer="YES" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tdf-F3-S6C">
+                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="tdf-F3-S6C" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="500" height="600"/>
                                 <clipView key="contentView" drawsBackground="NO" id="y4f-pW-mZI">
-                                    <rect key="frame" x="1" y="1" width="498" height="598"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="500" height="600"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <collectionView id="y0x-55-DgY">
-                                            <rect key="frame" x="0.0" y="0.0" width="498" height="158"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="500" height="600"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="xsp-KK-kEW">
                                                 <size key="itemSize" width="50" height="50"/>
@@ -35,15 +35,15 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="600" id="0ii-3q-Rh5"/>
-                                    <constraint firstAttribute="width" constant="500" id="Kr1-Wc-JAd"/>
+                                    <constraint firstAttribute="width" constant="500" id="iOQ-wY-ITn"/>
+                                    <constraint firstAttribute="height" constant="600" id="kBD-NG-zKX"/>
                                 </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="zOF-p6-fVF">
-                                    <rect key="frame" x="1" y="583" width="398" height="16"/>
+                                    <rect key="frame" x="-100" y="-100" width="398" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="mDA-El-UDL">
-                                    <rect key="frame" x="234" y="1" width="15" height="143"/>
+                                    <rect key="frame" x="-100" y="-100" width="15" height="143"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
@@ -58,7 +58,7 @@
                     <connections>
                         <outlet property="infoClipView" destination="y4f-pW-mZI" id="f7R-aU-aAY"/>
                         <outlet property="infoCollectionView" destination="y0x-55-DgY" id="Kgy-Kn-Sxq"/>
-                        <outlet property="infoScrollView" destination="tdf-F3-S6C" id="zjk-ZD-LRt"/>
+                        <outlet property="infoScrollView" destination="tdf-F3-S6C" id="x6B-tW-gsv"/>
                     </connections>
                 </viewController>
                 <customObject id="9ex-fm-FHx" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
