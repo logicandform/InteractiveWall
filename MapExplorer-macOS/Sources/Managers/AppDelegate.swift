@@ -10,7 +10,7 @@ struct Configuration {
     static let numberOfScreens = 1
     static let touchScreenSize = CGSize(width: 21564, height: 12116)
     static let refreshRate = 1.0 / 60.0
-    static let ungroupTimoutDuration = 10.0
+    static let ungroupTimoutDuration = 30.0
 }
 
 

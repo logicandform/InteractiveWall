@@ -29,6 +29,7 @@ abstract_target 'All' do
         pod 'PromiseKit', '~> 4.4'
         pod 'PromiseKit/Alamofire'
         pod 'AlamofireImage'
+        pod 'ReachabilitySwift'
     end
 
     target 'NodeVisualizer' do

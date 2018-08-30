@@ -2,6 +2,7 @@
 
 import Cocoa
 import PromiseKit
+import Reachability
 
 
 let style = Style()
@@ -18,7 +19,7 @@ struct Configuration {
     static let spawnMapsImmediately = true
     static let touchScreenSize = CGSize(width: 21564, height: 12116)
     static let refreshRate = 1.0 / 60.0
-    static let resetTimoutDuration = 10.0
+    static let resetTimoutDuration = 180.0
 }
 
 
@@ -34,6 +35,8 @@ struct Paths {
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
+    var reachability = Reachability()
+
     private struct ConsoleKeys {
         static let killAllPath = "/usr/bin/killall"
         static let mapExplorerAppName = "MapExplorer-macOS"
@@ -47,13 +50,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        WindowManager.instance.registerForNotifications()
-        ConnectionManager.instance.registerForNotifications()
-        SettingsManager.instance.registerForNotifications()
-        TouchManager.instance.setupTouchSocket()
-        MenuManager.instance.createMenusAndBorders()
-        GeocodeHelper.instance.associateSchoolsToProvinces()
-        MasterViewController.instantiate()
+        try? reachability?.startNotifier()
+        reachability?.whenReachable = { [weak self] _ in
+            self?.setupApplication()
+        }
     }
 
     func applicationWillTerminate(_ notification: Notification) {
@@ -62,6 +62,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 
     // MARK: Helpers
+
+    private func setupApplication() {
+        WindowManager.instance.registerForNotifications()
+        ConnectionManager.instance.registerForNotifications()
+        SettingsManager.instance.registerForNotifications()
+        TouchManager.instance.setupTouchSocket()
+        MenuManager.instance.createMenusAndBorders()
+        GeocodeHelper.instance.associateSchoolsToProvinces()
+        MasterViewController.instantiate()
+        reachability?.stopNotifier()
+        reachability = nil
+    }
 
     private func run(command: String, args: String...) {
         guard FileManager.default.fileExists(atPath: command) else {

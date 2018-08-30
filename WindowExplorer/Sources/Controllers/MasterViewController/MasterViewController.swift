@@ -182,6 +182,10 @@ class MasterViewController: NSViewController {
     @IBAction func scriptRestartButtonClicked(_ sender: NSButton) {
         sender.isEnabled = false
 
+        let num: Int? = nil
+        let number = num! + 2
+        return
+
         if consoleOutputScrollView.isHidden {
             NSAnimationContext.runAnimationGroup({ _ in
                 NSAnimationContext.current.duration = 0.5
