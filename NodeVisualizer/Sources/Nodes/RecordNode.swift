@@ -9,7 +9,9 @@ class RecordNode: SKSpriteNode {
     private(set) var record: RecordDisplayable
 
     private struct Constants {
-        static let labelFontSize: CGFloat = 10
+        static let textureImageName = "node_circle"
+        static let labelFontSize: CGFloat = 30
+        static let labelSystemFontSize: CGFloat = 10
     }
 
 
@@ -29,8 +31,11 @@ class RecordNode: SKSpriteNode {
     // MARK: Helpers
 
     private func makeRecordNode() {
-        size = CGSize(width: 20, height: 20)
+        size = style.defaultNodeSize
+        texture = SKTexture(imageNamed: Constants.textureImageName)
         color = record.type.color
+        colorBlendFactor = 1
+        zPosition = 1
         addIdLabelNode()
     }
 
@@ -41,6 +46,8 @@ class RecordNode: SKSpriteNode {
         id.horizontalAlignmentMode = .center
         id.fontSize = Constants.labelFontSize
         id.fontColor = .black
+        id.fontName = NSFont.boldSystemFont(ofSize: Constants.labelSystemFontSize).fontName
+        id.zPosition = 2
         addChild(id)
     }
 }

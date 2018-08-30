@@ -14,20 +14,19 @@ class LayerRenderComponent: GKComponent {
     var node: SKNode?
 
     /// The maximum distance between the root and the contactEntities for this bounding entity
-    var maxRadius: CGFloat = Constants.initialRadius
+    var maxRadius: CGFloat = Style.selectedNodeRadius
 
     /// The minimum radius of its own responsible level's bounding node. It is the radius of the bounding node without considering its contactEntities
-    var minRadius: CGFloat = Constants.initialRadius
+    var minRadius: CGFloat = Style.selectedNodeRadius
 
     /// The bounding node's level that the component is responsible for
     var level: Int!
 
-    /// The current physics body radius of `self`
-    private var currentRadius: CGFloat = Constants.initialRadius
+    /// The current bounding radius of `self`
+    private var currentRadius: CGFloat = Style.selectedNodeRadius
 
     private struct Constants {
-        static let initialRadius: CGFloat = style.selectedNodeRadius
-        static let radiusOffsetMultipler: CGFloat = 1.05
+        static let entityDistanceOffset: CGFloat = 15
     }
 
 
@@ -72,7 +71,7 @@ class LayerRenderComponent: GKComponent {
         if let contactEntities = cluster.entitiesForLevel.at(index: level) {
             // Iterate through its contactEntities to see if it hasCollidedWithBoundingNode, and determine the max distance from the root to the contactEntity
             for contactEntity in contactEntities where contactEntity.hasCollidedWithBoundingNode {
-                let contactEntityRadiusOffset = contactEntity.bodyRadius * Constants.radiusOffsetMultipler
+                let contactEntityRadiusOffset = contactEntity.bodyRadius + Constants.entityDistanceOffset
                 let calculatedRadius = cluster.distance(to: contactEntity) + contactEntityRadiusOffset
                 if calculatedRadius > distance {
                     distance = calculatedRadius

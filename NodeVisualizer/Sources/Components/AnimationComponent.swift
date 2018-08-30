@@ -72,10 +72,8 @@ class AnimationComponent: GKComponent {
             scaleSize = style.levelThreeNodeSize
         case 4:
             scaleSize = style.levelFourNodeSize
-        case 5:
-            scaleSize = style.levelFiveNodeSize
         default:
-            return .zero
+            return style.selectedNodeSize
         }
 
         return scaleSize

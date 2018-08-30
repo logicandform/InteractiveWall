@@ -27,7 +27,6 @@ final class NodeCluster: Hashable {
 
     private struct Constants {
         static let boundingNodeName = "boundingNode"
-        static let defaultLayerRadius: CGFloat = style.selectedNodeRadius
     }
 
 
@@ -115,7 +114,7 @@ final class NodeCluster: Hashable {
 
     /// Requests all entities for related records of the given entity. Sets their `cluster` to `self`.
     private func attach(to entity: RecordEntity) {
-        let currentEntities = flatten(entitiesForLevel)
+        let currentEntities = flatten(entitiesForLevel).union([selectedEntity])
         let newLevels = EntityManager.instance.requestEntityLevels(for: entity, in: self)
         let entitiesToRelease = currentEntities.subtracting(flatten(newLevels) + [entity])
 
@@ -155,7 +154,7 @@ final class NodeCluster: Hashable {
 
     /// Associates the entity to its level by adding it to the nodeBoundingEntityForLevel. Adds the entity's component to the component system
     private func addLayer(level: Int) {
-        let radius = layerForLevel[level - 1]?.renderComponent.maxRadius ?? Constants.defaultLayerRadius
+        let radius = layerForLevel[level - 1]?.renderComponent.maxRadius ?? Style.selectedNodeRadius
         let node = layerNode(radius: radius, level: level)
 
         let layer = ClusterLayer(cluster: self)
