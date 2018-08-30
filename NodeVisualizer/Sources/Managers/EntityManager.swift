@@ -89,8 +89,16 @@ final class EntityManager {
         return result
     }
 
+    /// Returns a subset of the given entities that exist in the set of proxies up to size
     private func entities(for proxies: Set<RecordProxy>, from entities: Set<RecordEntity>, size: Int) -> Set<RecordEntity> {
-        return entities.filter { proxies.contains($0.record.proxy) && entities.count <= size }
+        let filtered = entities.filter { proxies.contains($0.record.proxy) }
+        var result = Set<RecordEntity>()
+        for (index, entity) in filtered.enumerated() {
+            if index < size {
+                result.insert(entity)
+            }
+        }
+        return result
     }
 
     /// Updates all component systems that the EntityManager is responsible for
@@ -211,7 +219,8 @@ final class EntityManager {
         copy.node.scale(to: entity.node.size)
         copy.setClonedNodeBitMasks()
         copy.previousCluster = entity.cluster
-        scene?.addChild(copy.node)
+        scene.addChild(copy.node)
+        scene.addGestures(to: copy.node)
         return copy
     }
 }
