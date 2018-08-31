@@ -219,6 +219,7 @@ final class EntityManager {
         let copy = entity.clone()
         store(copy)
         addComponents(to: copy)
+        copy.initialPosition = entity.initialPosition
         copy.set(position: entity.position)
         copy.node.scale(to: entity.node.size)
         copy.setClonedNodeBitMasks()
