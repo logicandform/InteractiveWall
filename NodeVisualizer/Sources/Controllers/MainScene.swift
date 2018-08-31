@@ -148,11 +148,7 @@ class MainScene: SKScene {
             }
         case .possible:
             if entity.state == .panning {
-                if entity.cluster == nil {
-                    entity.set(state: .static)
-                } else {
-                    entity.set(state: .tapped)
-                }
+                updateStateFromPanned(entity: entity)
             }
         default:
             return
@@ -215,12 +211,7 @@ class MainScene: SKScene {
             selectedEntity.cluster?.updateClusterPosition(to: newPosition)
 
             if selectedEntity.state == .panning {
-                if selectedEntity.cluster == nil {
-                    selectedEntity.set(state: .static)
-                } else {
-                    selectedEntity.set(state: .tapped)
-                }
-
+                updateStateFromPanned(entity: selectedEntity)
                 self.selectedEntity = nil
             }
         default:
@@ -233,7 +224,7 @@ class MainScene: SKScene {
 
     /// Sets up all the data relationships for the tapped node and starts the physics interactions
     private func select(_ node: RecordNode) {
-        guard let entityForNode = node.entity as? RecordEntity, entityForNode.tappable else {
+        guard let entityForNode = node.entity as? RecordEntity, entityForNode.tappable, entityForNode.state != .panning else {
             return
         }
 
@@ -257,5 +248,31 @@ class MainScene: SKScene {
         }
 
         return NodeCluster(scene: self, entity: entity)
+    }
+
+    private func updateStateFromPanned(entity: RecordEntity) {
+        guard bounds(contains: entity) else {
+            entity.cluster?.reset()
+            return
+        }
+
+        if entity.cluster == nil {
+            entity.set(state: .static)
+        } else {
+            entity.set(state: .tapped)
+        }
+    }
+
+    private func bounds(contains entity: RecordEntity) -> Bool {
+        let xPosition = entity.node.position.x
+        let yPosition = entity.node.position.y
+        let maxX = frame.width * CGFloat(Configuration.numberOfScreens)
+        let maxY = frame.height
+
+        if xPosition < 0 || xPosition > maxX || yPosition < 0 || yPosition > maxY {
+            return false
+        }
+
+        return true
     }
 }
