@@ -36,6 +36,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
 
     private struct Keys {
         static let id = "id"
+        static let type = "type"
         static let group = "group"
         static let settings = "settings"
         static let recordType = "recordType"
@@ -127,7 +128,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
 
     private func toggle(_ switchControl: SwitchControl, with type: SettingType) {
         let recordType = type.recordType?.rawValue ?? ""
-        var info: JSON = [Keys.id: appID, Keys.recordType: recordType, Keys.status: !switchControl.isOn]
+        var info: JSON = [Keys.id: appID, Keys.recordType: recordType, Keys.status: !switchControl.isOn, Keys.type: ConnectionManager.instance.typeForApp(id: appID).rawValue]
         if let group = ConnectionManager.instance.groupForApp(id: appID) {
             info[Keys.group] = group
         }
@@ -143,9 +144,10 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
             return
         }
 
+        let notificationGroup = info[Keys.group] as? Int
         // Only respond to notifications from the same group, or if group is nil
         if let group = ConnectionManager.instance.groupForApp(id: appID) {
-            if group != ConnectionManager.instance.groupForApp(id: id) {
+            if group != notificationGroup && notificationGroup != nil {
                 return
             }
         }
