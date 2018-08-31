@@ -9,8 +9,6 @@ enum SettingType {
     case miniMap
     case schools
     case events
-    case organizations
-    case artifacts
 
     var color: NSColor {
         switch self {
@@ -22,10 +20,6 @@ enum SettingType {
             return style.schoolColor
         case .events:
             return style.eventColor
-        case .organizations:
-            return style.organizationColor
-        case .artifacts:
-            return style.artifactColor
         }
     }
 
@@ -39,10 +33,6 @@ enum SettingType {
             return style.schoolSecondarySelectedColor
         case .events:
             return style.eventSecondarySelectedColor
-        case .organizations:
-            return style.organizationSecondarySelectedColor
-        case .artifacts:
-            return style.artifactSecondarySelectedColor
         }
     }
 
@@ -52,10 +42,6 @@ enum SettingType {
             return .school
         case .events:
             return .event
-        case .organizations:
-            return .organization
-        case .artifacts:
-            return .artifact
         case .labels, .miniMap:
             return nil
         }
@@ -67,11 +53,7 @@ enum SettingType {
             return .schools
         case .event:
             return .events
-        case .organization:
-            return .organizations
-        case .artifact:
-            return .artifacts
-        case .theme:
+        case .theme, .artifact, .organization:
             return nil
         }
     }
