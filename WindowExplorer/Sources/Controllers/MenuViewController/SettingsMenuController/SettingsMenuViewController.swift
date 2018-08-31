@@ -16,13 +16,9 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     @IBOutlet weak var miniMapText: NSTextField!
     @IBOutlet weak var schoolsText: NSTextField!
     @IBOutlet weak var eventsText: NSTextField!
-    @IBOutlet weak var organizationsText: NSTextField!
-    @IBOutlet weak var artifactsText: NSTextField!
     @IBOutlet weak var labelsSwitchContainer: NSView!
     @IBOutlet weak var miniMapSwitchContainer: NSView!
     @IBOutlet weak var eventsSwitchContainer: NSView!
-    @IBOutlet weak var organizationsSwitchContainer: NSView!
-    @IBOutlet weak var artifactsSwitchContainer: NSView!
     @IBOutlet weak var schoolsSwitchContainer: NSView!
 
     weak var settingsParent: SettingsDelegate?
@@ -34,8 +30,6 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     private var miniMapSwitch: SwitchControl!
     private var schoolsSwitch: SwitchControl!
     private var eventsSwitch: SwitchControl!
-    private var organizationsSwitch: SwitchControl!
-    private var artifactsSwitch: SwitchControl!
 
     private var switchForSettingType = [SettingType: SwitchControl]()
     private var containerForSettingType = [SettingType: NSView]()
@@ -82,8 +76,6 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         miniMapSwitch.isOn = false
         schoolsSwitch.isOn = true
         eventsSwitch.isOn = true
-        artifactsSwitch.isOn = true
-        organizationsSwitch.isOn = true
     }
 
     func updateOrigin(relativeTo verticalPosition: CGFloat, with buttonFrame: CGRect) {
@@ -107,25 +99,21 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     // MARK: Setup
 
     private func setupSwitches() {
-        containerForSettingType = [.labels: labelsSwitchContainer, .miniMap: miniMapSwitchContainer, .schools: schoolsSwitchContainer, .events: eventsSwitchContainer, .organizations: organizationsSwitchContainer, .artifacts: artifactsSwitchContainer]
+        containerForSettingType = [.labels: labelsSwitchContainer, .miniMap: miniMapSwitchContainer, .schools: schoolsSwitchContainer, .events: eventsSwitchContainer]
 
         labelsSwitch = setupSwitch(for: .labels)
         miniMapSwitch = setupSwitch(for: .miniMap, on: false)
         schoolsSwitch = setupSwitch(for: .schools)
         eventsSwitch = setupSwitch(for: .events)
-        organizationsSwitch = setupSwitch(for: .organizations)
-        artifactsSwitch = setupSwitch(for: .artifacts)
 
-        switchForSettingType = [.labels: labelsSwitch, .miniMap: miniMapSwitch, .schools: schoolsSwitch, .events: eventsSwitch, .organizations: organizationsSwitch, .artifacts: artifactsSwitch]
+        switchForSettingType = [.labels: labelsSwitch, .miniMap: miniMapSwitch, .schools: schoolsSwitch, .events: eventsSwitch]
     }
 
     private func setupGestures() {
         setupGesture(for: .labels)
         setupGesture(for: .miniMap)
         setupGesture(for: .schools)
-        setupGesture(for: .artifacts)
         setupGesture(for: .events)
-        setupGesture(for: .organizations)
     }
 
     private func setupNotifications() {

@@ -21,7 +21,7 @@ enum SettingsNotification: String {
 
     static func with(_ type: SettingType) -> SettingsNotification {
         switch type {
-        case .schools, .events, .organizations, .artifacts:
+        case .schools, .events:
             return .filter
         case .labels:
             return .labels
