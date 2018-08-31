@@ -233,7 +233,7 @@ class MainScene: SKScene {
 
     /// Sets up all the data relationships for the tapped node and starts the physics interactions
     private func select(_ node: RecordNode) {
-        guard let entityForNode = node.entity as? RecordEntity, entityForNode.tappable else {
+        guard let entityForNode = node.entity as? RecordEntity, entityForNode.state != .panning, entityForNode.tappable else {
             return
         }
 
