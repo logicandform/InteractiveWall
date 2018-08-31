@@ -20,8 +20,7 @@ class MovementComponent: GKComponent {
         static let dt: CGFloat = 1 / 5000
         static let distancePadding: CGFloat = -10
         static let speed: CGFloat = 200
-        static let maxVerticalVelocity: CGFloat = 8
-        static let maxHorizontalVelocity: CGFloat = 15
+        static let tappedEntityLevel = -1
     }
 
 
@@ -30,18 +29,7 @@ class MovementComponent: GKComponent {
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
 
-        // What is this doing? Why is it called for every state?
-        if let entity = entity as? RecordEntity,
-            let previousCluster = entity.previousCluster,
-            let outmostBoundingEntity = previousCluster.layerForLevel[previousCluster.layerForLevel.count - 1]?.renderComponent {
-            let deltaX = entity.position.x - previousCluster.center.x
-            let deltaY = entity.position.y - previousCluster.center.y
-            let distance = previousCluster.distanceOf(x: deltaX, y: deltaY)
-            if distance > outmostBoundingEntity.maxRadius {
-                entity.previousCluster = nil
-                entity.updateBitMasks()
-            }
-        }
+        checkAndUpdateBitMaskIfCloned()
 
         switch state {
         case .static:
@@ -59,6 +47,24 @@ class MovementComponent: GKComponent {
 
 
     // MARK: Helpers
+
+    private func checkAndUpdateBitMaskIfCloned() {
+        if let entity = entity as? RecordEntity {
+            if let previousCluster = entity.previousCluster,
+                let outmostBoundingEntity = previousCluster.layerForLevel[previousCluster.layerForLevel.count - 1]?.renderComponent {
+                let deltaX = entity.position.x - previousCluster.center.x
+                let deltaY = entity.position.y - previousCluster.center.y
+                let distance = previousCluster.distanceOf(x: deltaX, y: deltaY)
+                if distance > outmostBoundingEntity.maxRadius {
+                    entity.previousCluster = nil
+                    entity.updateBitMasks()
+                }
+            } else if entity.physicsBody.categoryBitMask == ColliderType.clonedRecordNode {
+                entity.previousCluster = nil
+                entity.updateBitMasks()
+            }
+        }
+    }
 
     private func exit(state: EntityState) {
         guard let entity = entity as? RecordEntity else {
@@ -87,10 +93,24 @@ class MovementComponent: GKComponent {
             entity.physicsBody.isDynamic = false
             reset()
         case .tapped:
+            entity.set(level: Constants.tappedEntityLevel)
+            entity.hasCollidedWithBoundingNode = false
+            entity.updateBitMasks()
             entity.physicsBody.isDynamic = false
             entity.node.removeAllActions()
             cluster()
-        case .seekLevel(_), .seekEntity(_):
+        case .seekLevel(let level):
+            entity.set(level: level)
+            entity.hasCollidedWithBoundingNode = false
+            entity.updateBitMasks()
+            entity.physicsBody.isDynamic = true
+            entity.physicsBody.restitution = 0
+            entity.physicsBody.friction = 1
+            entity.physicsBody.linearDamping = 1
+            entity.node.removeAllActions()
+            scale()
+        case .seekEntity(_):
+            entity.updateBitMasks()
             entity.physicsBody.isDynamic = true
             entity.physicsBody.restitution = 0
             entity.physicsBody.friction = 1
@@ -111,8 +131,10 @@ class MovementComponent: GKComponent {
         }
 
         entity.resetBitMasks()
+        entity.tappable = false
         let fade = SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
         entity.perform(action: fade) {
+            entity.tappable = true
             entity.set(size: style.defaultNodeSize)
             entity.set(position: entity.initialPosition)
             entity.node.alpha = 1
@@ -136,6 +158,9 @@ class MovementComponent: GKComponent {
             entity.set([scale])
         }
     }
+
+
+    // MARK: Physics Movement
 
     /// Applies appropriate physics that moves the entity to the appropriate higher level before entering next state and setting its bitMasks
     private func move(to level: Int) {

@@ -31,7 +31,7 @@ final class RecordEntity: GKEntity {
     var initialPosition = CGPoint.zero
     var cluster: NodeCluster?
     weak var previousCluster: NodeCluster?
-
+    var tappable = true
     private(set) var clusterLevel: (previousLevel: Int?, currentLevel: Int?) = (nil, nil)
 
     var state: EntityState {
@@ -56,10 +56,6 @@ final class RecordEntity: GKEntity {
 
     override var description: String {
         return "( [RecordEntity] ID: \(record.id), type: \(record.type), State: \(state) )"
-    }
-
-    private struct Constants {
-        static let tappedEntitylevel = -1
     }
 
 
@@ -131,25 +127,14 @@ final class RecordEntity: GKEntity {
     func set(size: CGSize) {
         renderComponent.recordNode.scale(to: size)
     }
+    
+    func set(level: Int) {
+        clusterLevel = (clusterLevel.currentLevel, level)
+    }
 
     func set(state: EntityState) {
         if movementComponent.state == state { return }
         movementComponent.state = state
-
-        switch state {
-        case .tapped:
-            clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: Constants.tappedEntitylevel)
-            hasCollidedWithBoundingNode = false
-            physicsComponent.updateBitMasks()
-        case .seekLevel(let level):
-            clusterLevel = (previousLevel: clusterLevel.currentLevel, currentLevel: level)
-            hasCollidedWithBoundingNode = false
-            physicsComponent.updateBitMasks()
-        case .seekEntity(_):
-            physicsComponent.updateBitMasks()
-        case .static, .panning:
-            break
-        }
     }
 
     func set(_ states: [AnimationState]) {

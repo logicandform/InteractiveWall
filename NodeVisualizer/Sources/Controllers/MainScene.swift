@@ -121,7 +121,7 @@ class MainScene: SKScene {
         guard let pan = gesture as? PanGestureRecognizer,
             let node = gestureManager.node(for: pan) as? RecordNode,
             let entity = node.entity as? RecordEntity,
-            entity.state.pannable else {
+            entity.state.pannable, entity.tappable else {
             return
         }
 
@@ -183,7 +183,7 @@ class MainScene: SKScene {
             let pannedNodePosition = convertPoint(fromView: pannedPosition)
             if let recordNode = nodes(at: pannedNodePosition).first(where: { $0 is RecordNode }) as? RecordNode,
                 let entity = recordNode.entity as? RecordEntity,
-                entity.state.pannable {
+                entity.state.pannable, entity.tappable {
                 selectedEntity = entity
             }
         case .changed:
@@ -233,7 +233,7 @@ class MainScene: SKScene {
 
     /// Sets up all the data relationships for the tapped node and starts the physics interactions
     private func select(_ node: RecordNode) {
-        guard let entityForNode = node.entity as? RecordEntity else {
+        guard let entityForNode = node.entity as? RecordEntity, entityForNode.tappable else {
             return
         }
 

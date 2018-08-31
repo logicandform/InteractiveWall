@@ -6,6 +6,7 @@ import GameplayKit
 
 
 struct ColliderType {
+    static let staticNode: UInt32 = 0x00000000
     static let panBoundingNode: UInt32 = 1 << 20
     static let clonedRecordNode: UInt32 = 1 << 21
     static let tappedRecordNode: UInt32 = 1 << 22
@@ -99,11 +100,11 @@ class PhysicsComponent: GKComponent {
         physicsBody.contactTestBitMask = ColliderType.clonedRecordNode
     }
 
-    /// Resets the entity's bitMask to be able to interact with nothing
+    /// Resets the entity's bitMask to interact with nothing
     func resetBitMasks() {
-        physicsBody.categoryBitMask = 0x00000000
-        physicsBody.collisionBitMask = 0x00000000
-        physicsBody.contactTestBitMask = 0x00000000
+        physicsBody.categoryBitMask = ColliderType.staticNode
+        physicsBody.collisionBitMask = ColliderType.staticNode
+        physicsBody.contactTestBitMask = ColliderType.staticNode
     }
 
 
@@ -114,8 +115,8 @@ class PhysicsComponent: GKComponent {
         physicsBody.restitution = 0
         physicsBody.linearDamping = 0
         physicsBody.isDynamic = false
-        physicsBody.affectedByGravity = false
         physicsBody.mass = style.nodePhysicsBodyMass
+        resetBitMasks()
     }
 
     private func setPanningBitMasks() {

@@ -55,6 +55,8 @@ final class EntityManager {
         }
 
         if entities.count > 1 {
+            entity.tappable = false
+            entity.physicsBody.isDynamic = false
             let fade = SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
             entity.perform(action: fade) { [weak self] in
                 self?.remove(entity)
