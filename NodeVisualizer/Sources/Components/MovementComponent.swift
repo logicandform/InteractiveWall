@@ -90,19 +90,22 @@ class MovementComponent: GKComponent {
 
         switch state {
         case .static:
+            entity.tappable = false
             entity.physicsBody.isDynamic = false
             reset()
         case .tapped:
-            entity.set(level: Constants.selectedEntityLevel)
+            entity.tappable = true
             entity.hasCollidedWithBoundingNode = false
+            entity.set(level: Constants.selectedEntityLevel)
             entity.updateBitMasks()
             entity.physicsBody.isDynamic = false
             entity.node.removeAllActions()
             updateTitleFor(level: Constants.selectedEntityLevel)
             cluster()
         case .seekLevel(let level):
-            entity.set(level: level)
+            entity.tappable = true
             entity.hasCollidedWithBoundingNode = false
+            entity.set(level: level)
             entity.updateBitMasks()
             entity.physicsBody.isDynamic = true
             entity.physicsBody.restitution = 0
@@ -112,6 +115,7 @@ class MovementComponent: GKComponent {
             updateTitleFor(level: level)
             scale()
         case .seekEntity(_):
+            entity.tappable = true
             entity.updateBitMasks()
             entity.physicsBody.isDynamic = true
             entity.physicsBody.restitution = 0
@@ -133,7 +137,6 @@ class MovementComponent: GKComponent {
         }
 
         entity.resetBitMasks()
-        entity.tappable = false
         let fade = SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
         entity.perform(action: fade) {
             entity.tappable = true
@@ -157,7 +160,8 @@ class MovementComponent: GKComponent {
         if let entity = entity as? RecordEntity {
             let size = NodeCluster.sizeFor(level: entity.clusterLevel.currentLevel)
             let scale = AnimationState.scale(size)
-            entity.set([scale])
+            let fade = AnimationState.fade(out: false)
+            entity.set([scale, fade])
         }
     }
 
