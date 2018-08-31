@@ -140,7 +140,7 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
 
     @objc
     private func handleNotification(_ notification: NSNotification) {
-        guard let info = notification.userInfo, let id = info[Keys.id] as? Int else {
+        guard let info = notification.userInfo else {
             return
         }
 
