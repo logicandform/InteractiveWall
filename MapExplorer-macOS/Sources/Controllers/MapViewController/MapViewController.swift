@@ -113,7 +113,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     @objc
     func handleNotification(_ notification: NSNotification) {
-        guard let info = notification.userInfo, ConnectionManager.instance.groupForApp(id: appID, type: .mapExplorer) == info[Keys.group] as? Int else {
+        guard let info = notification.userInfo, ConnectionManager.instance.groupForApp(id: appID, type: .mapExplorer) == info[Keys.group] as? Int, let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString), type == .mapExplorer else {
             return
         }
 

@@ -182,11 +182,13 @@ final class ConnectionManager {
                         typeForApp[app] = newType
                         set(newState, for: newType, id: app)
                         updateMenu(id: app, to: newType)
+                        syncApps(group: group, type: newType)
                     }
                 } else {
                     typeForApp[app] = newType
                     set(newState, for: newType, id: app)
                     updateMenu(id: app, to: newType)
+                    syncApps(group: group, type: newType)
                 }
             }
         }

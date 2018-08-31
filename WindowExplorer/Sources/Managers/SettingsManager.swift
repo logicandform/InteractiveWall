@@ -91,7 +91,7 @@ final class SettingsManager {
     }
 
     private func postSyncNotification(forGroup group: Int, with settings: Settings) {
-        let info: JSON = [Keys.group: group, Keys.settings: settings.toJSON()]
+        let info: JSON = [Keys.group: group, Keys.settings: settings.toJSON(), Keys.type: ConnectionManager.instance.typeForApp(id: group).rawValue]
         DistributedNotificationCenter.default().postNotificationName(SettingsNotification.sync.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
