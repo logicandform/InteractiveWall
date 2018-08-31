@@ -50,10 +50,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        try? reachability?.startNotifier()
         reachability?.whenReachable = { [weak self] _ in
             self?.setupApplication()
         }
+        try? reachability?.startNotifier()
     }
 
     func applicationWillTerminate(_ notification: Notification) {
