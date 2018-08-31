@@ -20,7 +20,7 @@ class MovementComponent: GKComponent {
         static let dt: CGFloat = 1 / 5000
         static let distancePadding: CGFloat = -10
         static let speed: CGFloat = 200
-        static let tappedEntityLevel = -1
+        static let selectedEntityLevel = -1
     }
 
 
@@ -93,11 +93,12 @@ class MovementComponent: GKComponent {
             entity.physicsBody.isDynamic = false
             reset()
         case .tapped:
-            entity.set(level: Constants.tappedEntityLevel)
+            entity.set(level: Constants.selectedEntityLevel)
             entity.hasCollidedWithBoundingNode = false
             entity.updateBitMasks()
             entity.physicsBody.isDynamic = false
             entity.node.removeAllActions()
+            updateTitleFor(level: Constants.selectedEntityLevel)
             cluster()
         case .seekLevel(let level):
             entity.set(level: level)
@@ -108,6 +109,7 @@ class MovementComponent: GKComponent {
             entity.physicsBody.friction = 1
             entity.physicsBody.linearDamping = 1
             entity.node.removeAllActions()
+            updateTitleFor(level: level)
             scale()
         case .seekEntity(_):
             entity.updateBitMasks()
@@ -156,6 +158,15 @@ class MovementComponent: GKComponent {
             let size = NodeCluster.sizeFor(level: entity.clusterLevel.currentLevel)
             let scale = AnimationState.scale(size)
             entity.set([scale])
+        }
+    }
+
+    /// Fades the title node for the entity appropriately for the given level
+    private func updateTitleFor(level: Int) {
+        if let entity = entity as? RecordEntity {
+            let showTitle = level < 1 ? true : false
+            let fade = showTitle ? SKAction.fadeIn(withDuration: style.fadeAnimationDuration) : SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
+            entity.node.titleNode.run(fade)
         }
     }
 

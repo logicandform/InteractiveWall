@@ -8,6 +8,7 @@ import AlamofireImage
 class RecordNode: SKSpriteNode {
 
     private(set) var record: RecordDisplayable
+    private(set) var titleNode: SKLabelNode!
 
     private struct Constants {
         static let textureImageName = "node_circle"
@@ -56,15 +57,15 @@ class RecordNode: SKSpriteNode {
     }
 
     private func addTitleNode(for record: RecordDisplayable) {
-        let node = SKLabelNode()
-        node.text = record.id.description
-        node.verticalAlignmentMode = .center
-        node.horizontalAlignmentMode = .center
-        node.fontSize = Constants.labelFontSize
-        node.fontColor = .black
-        node.fontName = NSFont.boldSystemFont(ofSize: Constants.labelSystemFontSize).fontName
-        node.zPosition = 2
-        addChild(node)
+        titleNode = SKLabelNode()
+        titleNode.text = record.id.description
+        titleNode.verticalAlignmentMode = .center
+        titleNode.horizontalAlignmentMode = .center
+        titleNode.fontSize = Constants.labelFontSize
+        titleNode.fontColor = .black
+        titleNode.fontName = NSFont.boldSystemFont(ofSize: Constants.labelSystemFontSize).fontName
+        titleNode.zPosition = 2
+        addChild(titleNode)
     }
 }
 

@@ -127,7 +127,7 @@ final class RecordEntity: GKEntity {
     func set(size: CGSize) {
         renderComponent.recordNode.scale(to: size)
     }
-    
+
     func set(level: Int) {
         clusterLevel = (clusterLevel.currentLevel, level)
     }
