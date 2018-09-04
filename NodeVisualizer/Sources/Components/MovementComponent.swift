@@ -55,6 +55,9 @@ class MovementComponent: GKComponent {
                 let deltaX = entity.position.x - previousCluster.center.x
                 let deltaY = entity.position.y - previousCluster.center.y
                 let distance = previousCluster.distanceOf(x: deltaX, y: deltaY)
+
+                // Update bitmasks if the entity has gone outside the cluster's maxRadius or if the selected entity is panned inside the cluster's maxRadius before
+                // the entity has gone outside the maxRadius
                 if distance > outmostBoundingEntity.maxRadius || (entity.cluster?.selectedEntity.state == .panning && distance < outmostBoundingEntity.maxRadius) {
                     entity.previousCluster = nil
                     entity.updateBitMasks()
