@@ -32,15 +32,11 @@ class MovementComponent: GKComponent {
         checkAndUpdateBitMaskIfCloned()
 
         switch state {
-        case .static:
-            break
         case .seekEntity(let entity):
             seek(entity)
         case .seekLevel(let level):
             move(to: level)
-        case .tapped:
-            break
-        case .panning:
+        case .static, .selected, .panning, .reset:
             break
         }
     }
@@ -75,9 +71,7 @@ class MovementComponent: GKComponent {
         }
 
         switch state {
-        case .static:
-            break
-        case .tapped:
+        case .static, .selected, .reset:
             break
         case .seekLevel(_), .seekEntity(_):
             entity.node.removeAllActions()
@@ -93,22 +87,18 @@ class MovementComponent: GKComponent {
 
         switch state {
         case .static:
-            entity.tappable = false
-            entity.physicsBody.isDynamic = false
-            reset()
-        case .tapped:
-            entity.tappable = true
-            entity.hasCollidedWithBoundingNode = false
+            break
+        case .selected:
             entity.set(level: Constants.selectedEntityLevel)
+            entity.hasCollidedWithBoundingNode = false
             entity.updateBitMasks()
             entity.physicsBody.isDynamic = false
             entity.node.removeAllActions()
             updateTitleFor(level: Constants.selectedEntityLevel)
             cluster()
         case .seekLevel(let level):
-            entity.tappable = true
-            entity.hasCollidedWithBoundingNode = false
             entity.set(level: level)
+            entity.hasCollidedWithBoundingNode = false
             entity.updateBitMasks()
             entity.physicsBody.isDynamic = true
             entity.physicsBody.restitution = 0
@@ -118,7 +108,6 @@ class MovementComponent: GKComponent {
             updateTitleFor(level: level)
             scale()
         case .seekEntity(_):
-            entity.tappable = true
             entity.updateBitMasks()
             entity.physicsBody.isDynamic = true
             entity.physicsBody.restitution = 0
@@ -130,6 +119,9 @@ class MovementComponent: GKComponent {
             entity.physicsBody.isDynamic = false
             entity.node.removeAllActions()
             entity.cluster?.updateLayerLevels(forPan: true)
+        case .reset:
+            entity.physicsBody.isDynamic = false
+            reset()
         }
     }
 
@@ -142,10 +134,9 @@ class MovementComponent: GKComponent {
         entity.resetBitMasks()
         let fade = SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
         entity.perform(action: fade) {
-            entity.tappable = true
-            entity.set(size: style.defaultNodeSize)
-            entity.set(position: entity.initialPosition)
+            entity.reset()
             entity.node.alpha = 1
+            entity.set(state: .static)
         }
     }
 

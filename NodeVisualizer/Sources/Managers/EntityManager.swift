@@ -55,7 +55,6 @@ final class EntityManager {
         }
 
         if entities.count > 1 {
-            entity.tappable = false
             entity.resetBitMasks()
             entity.physicsBody.isDynamic = false
             let fade = SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
@@ -63,7 +62,7 @@ final class EntityManager {
                 self?.remove(entity)
             }
         } else {
-            entity.reset()
+            entity.set(state: .reset)
         }
     }
 

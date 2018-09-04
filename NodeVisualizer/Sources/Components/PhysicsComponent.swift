@@ -81,7 +81,7 @@ class PhysicsComponent: GKComponent {
             setPanningBitMasks()
         } else {
             switch entity.state {
-            case .tapped:
+            case .selected:
                 setTappedEntityBitMasks()
             case .seekLevel(let level):
                 setSeekingLevelBitMasks(forLevel: level)

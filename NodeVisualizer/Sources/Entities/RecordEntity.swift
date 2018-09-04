@@ -6,16 +6,28 @@ import GameplayKit
 
 enum EntityState: Equatable {
     case `static`
-    case tapped
+    case selected
     case seekEntity(RecordEntity)
     case seekLevel(Int)
     case panning
+    case reset
 
+    /// Determines if the current state is able to transition into the panning state
     var pannable: Bool {
         switch self {
-        case .static, .tapped, .panning:
+        case .static, .selected, .panning:
             return true
-        default:
+        case .seekEntity(_), .seekLevel(_), .reset:
+            return false
+        }
+    }
+
+    /// Determines if a RecordEntity should recognize a tap when in a given state
+    var tappable: Bool {
+        switch self {
+        case .static, .selected, .seekEntity(_):
+            return true
+        case .seekLevel(_), .panning, .reset:
             return false
         }
     }
@@ -31,7 +43,6 @@ final class RecordEntity: GKEntity {
     var initialPosition = CGPoint.zero
     var cluster: NodeCluster?
     weak var previousCluster: NodeCluster?
-    var tappable = true
     private(set) var clusterLevel: (previousLevel: Int?, currentLevel: Int?) = (nil, nil)
 
     var state: EntityState {
@@ -124,10 +135,6 @@ final class RecordEntity: GKEntity {
         renderComponent.recordNode.position = position
     }
 
-    func set(size: CGSize) {
-        renderComponent.recordNode.scale(to: size)
-    }
-
     func set(level: Int) {
         clusterLevel = (clusterLevel.currentLevel, level)
     }
@@ -157,11 +164,13 @@ final class RecordEntity: GKEntity {
 
     /// 'Reset' the entity to initial state so that proper animations and movements can take place
     func reset() {
+        resetBitMasks()
         hasCollidedWithBoundingNode = false
         clusterLevel = (nil, nil)
         cluster = nil
         previousCluster = nil
-        set(state: .static)
+        renderComponent.recordNode.scale(to: style.defaultNodeSize)
+        set(position: initialPosition)
     }
 
     func resetBitMasks() {

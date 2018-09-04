@@ -151,7 +151,7 @@ final class NodeCluster: Hashable {
     }
 
     private func updateStatesForEntities() {
-        selectedEntity.set(state: .tapped)
+        selectedEntity.set(state: .selected)
 
         // Update the tapped entity's descendants to the appropriate state with appropriate movement
         for (level, entities) in entitiesForLevel.enumerated() {
