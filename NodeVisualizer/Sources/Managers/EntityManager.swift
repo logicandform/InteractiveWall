@@ -56,6 +56,7 @@ final class EntityManager {
 
         if entities.count > 1 {
             entity.tappable = false
+            entity.resetBitMasks()
             entity.physicsBody.isDynamic = false
             let fade = SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
             entity.perform(action: fade) { [weak self] in
@@ -218,6 +219,7 @@ final class EntityManager {
         let copy = entity.clone()
         store(copy)
         addComponents(to: copy)
+        copy.initialPosition = entity.initialPosition
         copy.set(position: entity.position)
         copy.node.scale(to: entity.node.size)
         copy.setClonedNodeBitMasks()
