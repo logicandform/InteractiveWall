@@ -12,6 +12,15 @@
         <key>Program</key>
         <string>/Users/irshdc/Library/Developer/Xcode/DerivedData/MapExplorer-cebdevedrroybgdstwjueirgqasq/Build/Products/Debug/WindowExplorer.app/Contents/MacOS/WindowExplorer</string>
 
+        <!-- Start at 7am -->
+        <key>StartCalendarInterval</key>
+        <dict>
+        	<key>Hour</key>
+        	<integer>7</integer>
+        	<key>Minute</key>
+        	<integer>0</integer>
+        </dict>
+
         <!-- Start app once on login, restart if app crashes -->
         <key>KeepAlive</key>
         <dict>

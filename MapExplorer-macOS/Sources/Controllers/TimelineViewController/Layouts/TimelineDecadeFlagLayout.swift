@@ -258,6 +258,6 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
         let xMonth = CGFloat(date.month) * Constants.yearWidth / 12
         let xDay = date.day * Constants.yearWidth / 12
 
-        return xYear + xMonth + xDay
+        return round(xYear + xMonth + xDay)
     }
 }

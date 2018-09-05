@@ -31,6 +31,9 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
 
     override func viewDidAppear() {
         super.viewDidAppear()
+        if let window = view.window {
+            audioPlayer?.location = horizontalPosition(of: window)
+        }
         audioPlayer?.volume = playerControl.volume.gain
         playerControl.toggle()
     }
