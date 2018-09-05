@@ -55,14 +55,25 @@ final class EntityManager {
         }
 
         if entities.count > 1 {
-            entity.resetBitMasks()
-            entity.physicsBody.isDynamic = false
-            let fade = SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
-            entity.perform(action: fade) { [weak self] in
-                self?.remove(entity)
-            }
+            entity.set(state: .remove)
         } else {
             entity.set(state: .reset)
+        }
+    }
+
+    /// Removes an entity from the scene and local cache
+    func remove(_ entity: RecordEntity) {
+        guard entity.state == .remove else {
+            fatalError("Entity should be marked for removal. Call")
+        }
+
+        let proxy = entity.record.proxy
+        let entities = entitiesForProxy[proxy]
+        if let index = entities?.index(where: { $0 === entity }) {
+            removeComponents(from: entity)
+            entity.node.removeFromParent()
+            entitiesForProxy[proxy]?.remove(at: index)
+            scene.gestureManager.remove(entity.node)
         }
     }
 
@@ -165,18 +176,6 @@ final class EntityManager {
             entitiesForProxy[proxy] = [entity]
         } else {
             entitiesForProxy[proxy]!.append(entity)
-        }
-    }
-
-    /// Removes an entity from the scene and local cache
-    private func remove(_ entity: RecordEntity) {
-        let proxy = entity.record.proxy
-        let entities = entitiesForProxy[proxy]
-        if let index = entities?.index(where: { $0 === entity }) {
-            removeComponents(from: entity)
-            entity.node.removeFromParent()
-            entitiesForProxy[proxy]?.remove(at: index)
-            scene.gestureManager.remove(entity.node)
         }
     }
 

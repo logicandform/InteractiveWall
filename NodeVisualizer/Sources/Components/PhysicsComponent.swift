@@ -40,11 +40,7 @@ class PhysicsComponent: GKComponent {
 
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
-
-        guard let entity = entity as? RecordEntity,
-            !entity.hasCollidedWithBoundingNode,
-            let cluster = entity.cluster,
-            cluster.selectedEntity.state != .panning else {
+        guard let entity = entity as? RecordEntity, !entity.hasCollidedWithLayer, let cluster = entity.cluster, cluster.selectedEntity.state != .dragging else {
             return
         }
 
@@ -54,14 +50,14 @@ class PhysicsComponent: GKComponent {
             if let boundingNode = contactedBody.node, boundingNode.name == "boundingNode",
                 let currentLevel = entity.clusterLevel.currentLevel,
                 cluster.layerForLevel[currentLevel]?.renderComponent.node === boundingNode,
-                !entity.hasCollidedWithBoundingNode {
-                entity.hasCollidedWithBoundingNode = true
+                !entity.hasCollidedWithLayer {
+                entity.hasCollidedWithLayer = true
                 return
             } else if let contactedEntity = contactedBody.node?.entity as? RecordEntity,
                 let contactedEntityCluster = contactedEntity.cluster, cluster === contactedEntityCluster,
                 contactedEntity.clusterLevel.currentLevel == entity.clusterLevel.currentLevel,
-                contactedEntity.hasCollidedWithBoundingNode, !entity.hasCollidedWithBoundingNode {
-                entity.hasCollidedWithBoundingNode = true
+                contactedEntity.hasCollidedWithLayer, !entity.hasCollidedWithLayer {
+                entity.hasCollidedWithLayer = true
                 return
             }
         }
@@ -71,25 +67,24 @@ class PhysicsComponent: GKComponent {
     // MARK: API
 
     func updateBitMasks() {
-        guard let entity = entity as? RecordEntity,
-            let cluster = entity.cluster,
-            entity.previousCluster == nil else {
+        guard let entity = entity as? RecordEntity, let cluster = entity.cluster, entity.previousCluster == nil else {
             return
         }
 
-        if cluster.selectedEntity.state == .panning {
+        if cluster.selectedEntity.state == .dragging {
             setPanningBitMasks()
-        } else {
-            switch entity.state {
-            case .selected:
-                setTappedEntityBitMasks()
-            case .seekLevel(let level):
-                setSeekingLevelBitMasks(forLevel: level)
-            case .seekEntity(_):
-                setSeekingEntityBitMasks()
-            default:
-                return
-            }
+            return
+        }
+
+        switch entity.state {
+        case .selected:
+            setTappedEntityBitMasks()
+        case .seekLevel(let level):
+            setSeekingLevelBitMasks(forLevel: level)
+        case .seekEntity(_):
+            setSeekingEntityBitMasks()
+        default:
+            return
         }
     }
 

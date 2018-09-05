@@ -9,15 +9,16 @@ enum EntityState: Equatable {
     case selected
     case seekEntity(RecordEntity)
     case seekLevel(Int)
-    case panning
+    case dragging
     case reset
+    case remove
 
     /// Determines if the current state is able to transition into the panning state
     var pannable: Bool {
         switch self {
-        case .static, .selected, .panning:
+        case .static, .selected, .dragging, .seekEntity(_):
             return true
-        case .seekEntity(_), .seekLevel(_), .reset:
+        case .seekLevel(_), .reset, .remove:
             return false
         }
     }
@@ -27,7 +28,7 @@ enum EntityState: Equatable {
         switch self {
         case .static, .selected, .seekEntity(_):
             return true
-        case .seekLevel(_), .panning, .reset:
+        case .seekLevel(_), .dragging, .reset, .remove:
             return false
         }
     }
@@ -39,14 +40,15 @@ final class RecordEntity: GKEntity {
     let record: RecordDisplayable
     let relatedRecordsForLevel: RelatedLevels
     let relatedRecords: Set<RecordProxy>
-    var hasCollidedWithBoundingNode = false
+    var hasCollidedWithLayer = false
     var initialPosition = CGPoint.zero
     var cluster: NodeCluster?
     weak var previousCluster: NodeCluster?
+    private lazy var stateMachine = RecordStateMachine(entity: self)
     private(set) var clusterLevel: (previousLevel: Int?, currentLevel: Int?) = (nil, nil)
 
     var state: EntityState {
-        return movementComponent.state
+        return stateMachine.state
     }
 
     var position: CGPoint {
@@ -63,6 +65,10 @@ final class RecordEntity: GKEntity {
 
     var bodyRadius: CGFloat {
         return renderComponent.recordNode.frame.width / 2
+    }
+
+    var isSelected: Bool {
+        return clusterLevel.currentLevel == NodeCluster.selectedEntityLevel
     }
 
     override var description: String {
@@ -140,8 +146,9 @@ final class RecordEntity: GKEntity {
     }
 
     func set(state: EntityState) {
-        if movementComponent.state == state { return }
-        movementComponent.state = state
+        if state != stateMachine.state {
+            stateMachine.state = state
+        }
     }
 
     func set(_ states: [AnimationState]) {
@@ -165,7 +172,7 @@ final class RecordEntity: GKEntity {
     /// 'Reset' the entity to initial state so that proper animations and movements can take place
     func reset() {
         resetBitMasks()
-        hasCollidedWithBoundingNode = false
+        hasCollidedWithLayer = false
         clusterLevel = (nil, nil)
         cluster = nil
         previousCluster = nil

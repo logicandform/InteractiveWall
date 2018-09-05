@@ -5,22 +5,14 @@ import SpriteKit
 import GameplayKit
 
 
-/// A 'GKComponent' that provides different types of physics movement based on the current `RecordState`.
+/// A 'GKComponent' that provides different types of physics movement based on the current entities state.
 class MovementComponent: GKComponent {
-
-    var state = EntityState.static {
-        didSet {
-            exit(state: oldValue)
-            enter(state: state)
-        }
-    }
 
     private struct Constants {
         static let strength: CGFloat = 1000
         static let dt: CGFloat = 1 / 5000
         static let distancePadding: CGFloat = -10
         static let speed: CGFloat = 200
-        static let selectedEntityLevel = -1
     }
 
 
@@ -28,15 +20,18 @@ class MovementComponent: GKComponent {
 
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
+        guard let entity = entity as? RecordEntity else {
+            return
+        }
 
         checkAndUpdateBitMaskIfCloned()
 
-        switch state {
+        switch entity.state {
         case .seekEntity(let entity):
             seek(entity)
         case .seekLevel(let level):
             move(to: level)
-        case .static, .selected, .panning, .reset:
+        case .static, .selected, .dragging, .reset, .remove:
             break
         }
     }
@@ -54,7 +49,7 @@ class MovementComponent: GKComponent {
 
                 // Update bitmasks if the entity has gone outside the cluster's maxRadius or if the selected entity is panned inside the cluster's maxRadius before
                 // the entity has gone outside the maxRadius
-                if distance > outmostBoundingEntity.maxRadius || (entity.cluster?.selectedEntity.state == .panning && distance < outmostBoundingEntity.maxRadius) {
+                if distance > outmostBoundingEntity.maxRadius || (entity.cluster?.selectedEntity.state == .dragging && distance < outmostBoundingEntity.maxRadius) {
                     entity.previousCluster = nil
                     entity.updateBitMasks()
                 }
@@ -62,109 +57,6 @@ class MovementComponent: GKComponent {
                 entity.previousCluster = nil
                 entity.updateBitMasks()
             }
-        }
-    }
-
-    private func exit(state: EntityState) {
-        guard let entity = entity as? RecordEntity else {
-            return
-        }
-
-        switch state {
-        case .static, .selected, .reset:
-            break
-        case .seekLevel(_), .seekEntity(_):
-            entity.node.removeAllActions()
-        case .panning:
-            entity.cluster?.updateLayerLevels(forPan: false)
-        }
-    }
-
-    private func enter(state: EntityState) {
-        guard let entity = entity as? RecordEntity else {
-            return
-        }
-
-        switch state {
-        case .static:
-            break
-        case .selected:
-            entity.set(level: Constants.selectedEntityLevel)
-            entity.hasCollidedWithBoundingNode = false
-            entity.updateBitMasks()
-            entity.physicsBody.isDynamic = false
-            entity.node.removeAllActions()
-            updateTitleFor(level: Constants.selectedEntityLevel)
-            cluster()
-        case .seekLevel(let level):
-            entity.set(level: level)
-            entity.hasCollidedWithBoundingNode = false
-            entity.updateBitMasks()
-            entity.physicsBody.isDynamic = true
-            entity.physicsBody.restitution = 0
-            entity.physicsBody.friction = 1
-            entity.physicsBody.linearDamping = 1
-            entity.node.removeAllActions()
-            updateTitleFor(level: level)
-            scale()
-        case .seekEntity(_):
-            entity.updateBitMasks()
-            entity.physicsBody.isDynamic = true
-            entity.physicsBody.restitution = 0
-            entity.physicsBody.friction = 1
-            entity.physicsBody.linearDamping = 1
-            entity.node.removeAllActions()
-            scale()
-        case .panning:
-            entity.physicsBody.isDynamic = false
-            entity.node.removeAllActions()
-            entity.cluster?.updateLayerLevels(forPan: true)
-        case .reset:
-            entity.physicsBody.isDynamic = false
-            reset()
-        }
-    }
-
-    /// Fade out, resize and set to initial position
-    private func reset() {
-        guard let entity = entity as? RecordEntity else {
-            return
-        }
-
-        entity.resetBitMasks()
-        let fade = SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
-        entity.perform(action: fade) {
-            entity.reset()
-            entity.node.alpha = 1
-            entity.set(state: .static)
-        }
-    }
-
-    /// Move and scale to the proper size for center of cluster
-    private func cluster() {
-        if let entity = entity as? RecordEntity, let cluster = entity.cluster {
-            let moveAnimation = AnimationState.move(cluster.center)
-            let scaleAnimation = AnimationState.scale(NodeCluster.sizeFor(level: -1))
-            entity.set([moveAnimation, scaleAnimation])
-        }
-    }
-
-    /// Scale to the proper size for the current cluster level else scale to default size
-    private func scale() {
-        if let entity = entity as? RecordEntity {
-            let size = NodeCluster.sizeFor(level: entity.clusterLevel.currentLevel)
-            let scale = AnimationState.scale(size)
-            let fade = AnimationState.fade(out: false)
-            entity.set([scale, fade])
-        }
-    }
-
-    /// Fades the title node for the entity appropriately for the given level
-    private func updateTitleFor(level: Int) {
-        if let entity = entity as? RecordEntity {
-            let showTitle = level < 1 ? true : false
-            let fade = showTitle ? SKAction.fadeIn(withDuration: style.fadeAnimationDuration) : SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
-            entity.node.titleNode.run(fade)
         }
     }
 

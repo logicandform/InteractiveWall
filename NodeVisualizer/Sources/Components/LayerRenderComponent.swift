@@ -55,7 +55,7 @@ class LayerRenderComponent: GKComponent {
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
 
-        if cluster.selectedEntity.state == .panning {
+        if cluster.selectedEntity.state == .dragging {
             return
         }
 
@@ -69,12 +69,15 @@ class LayerRenderComponent: GKComponent {
         // Calculate the distance between the center and its own level entities
         var distance: CGFloat = 0.0
         if let contactEntities = cluster.entitiesForLevel.at(index: level) {
-            // Iterate through its contactEntities to see if it hasCollidedWithBoundingNode, and determine the max distance from the root to the contactEntity
-            for contactEntity in contactEntities where contactEntity.hasCollidedWithBoundingNode {
-                let contactEntityRadiusOffset = contactEntity.bodyRadius + Constants.entityDistanceOffset
-                let calculatedRadius = cluster.distance(to: contactEntity) + contactEntityRadiusOffset
-                if calculatedRadius > distance {
-                    distance = calculatedRadius
+            // Iterate through its contactEntities to see if it hasCollidedWithLayer, and determine the max distance from the root to the contactEntity
+            for contactEntity in contactEntities {
+                // Only use entities that have reached the layer and are not currently being dragged
+                if contactEntity.hasCollidedWithLayer && contactEntity.state != .dragging {
+                    let contactEntityRadiusOffset = contactEntity.bodyRadius + Constants.entityDistanceOffset
+                    let calculatedRadius = cluster.distance(to: contactEntity) + contactEntityRadiusOffset
+                    if calculatedRadius > distance {
+                        distance = calculatedRadius
+                    }
                 }
             }
         }

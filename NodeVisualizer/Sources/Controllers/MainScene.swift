@@ -122,6 +122,11 @@ class MainScene: SKScene {
             return
         }
 
+        // Ensure that the state for the entity is dragging if the gesture state is not in its recognized state
+        if pan.state != .recognized && entity.state != .dragging {
+            return
+        }
+
         let deltaX = pan.delta.dx
         let deltaY = pan.delta.dy
         let newX = node.position.x + deltaX
@@ -135,20 +140,46 @@ class MainScene: SKScene {
                 return
             }
 
-            entity.set(state: .panning)
+            entity.set(state: .dragging)
             entity.set(position: position)
-            entity.cluster?.updateClusterPosition(to: position)
+            if entity.isSelected {
+                entity.cluster?.set(position: position)
+            }
         case .momentum:
-            if entity.state == .panning {
-                entity.set(position: position)
-                entity.cluster?.updateClusterPosition(to: position)
+            entity.set(position: position)
+            if entity.isSelected {
+                entity.cluster?.set(position: position)
             }
         case .possible:
-            if entity.state == .panning {
-                updateStateFromPanned(entity: entity)
-            }
+            finishDrag(for: entity)
         default:
             return
+        }
+    }
+
+    private func finishDrag(for entity: RecordEntity) {
+        // Check if entity is controlling a cluster
+        if entity.isSelected {
+            // Check if entity is still within the frame of the application
+            if !frame(contains: entity) {
+                entity.cluster?.reset()
+            } else {
+                entity.set(state: .selected)
+            }
+        } else {
+            // If entity was part of a cluster, seek its selected entity
+            if let cluster = entity.cluster {
+                // Update the entity given the cluster current selected entity
+                if let level = cluster.level(for: entity) {
+                    entity.hasCollidedWithLayer = false
+                    entity.set(level: level)
+                    entity.set(state: .seekEntity(cluster.selectedEntity))
+                } else {
+                    EntityManager.instance.release(entity)
+                }
+            } else {
+                EntityManager.instance.release(entity)
+            }
         }
     }
 
@@ -180,7 +211,6 @@ class MainScene: SKScene {
         case .changed:
             let pannedPosition = recognizer.location(in: recognizer.view)
             let pannedNodePosition = convertPoint(fromView: pannedPosition)
-
             let pannedTranslation = recognizer.translation(in: recognizer.view)
             let nodePannedTranslation = convertPoint(fromView: pannedTranslation)
             let distance = CGFloat(hypotf(Float(nodePannedTranslation.x), Float(nodePannedTranslation.y)))
@@ -188,9 +218,11 @@ class MainScene: SKScene {
                 return
             }
 
-            selectedEntity?.set(state: .panning)
+            selectedEntity?.set(state: .dragging)
             selectedEntity?.set(position: pannedNodePosition)
-            selectedEntity?.cluster?.updateClusterPosition(to: pannedNodePosition)
+            if let entity = selectedEntity, entity.isSelected {
+                entity.cluster?.set(position: pannedNodePosition)
+            }
         case .ended:
             guard let selectedEntity = selectedEntity else {
                 return
@@ -203,10 +235,12 @@ class MainScene: SKScene {
             let newPosition = CGPoint(x: currentPosition.x + delta.x, y: currentPosition.y + delta.y)
 
             selectedEntity.set(position: newPosition)
-            selectedEntity.cluster?.updateClusterPosition(to: newPosition)
+            if selectedEntity.isSelected {
+                selectedEntity.cluster?.set(position: newPosition)
+            }
 
-            if selectedEntity.state == .panning {
-                updateStateFromPanned(entity: selectedEntity)
+            if selectedEntity.state == .dragging {
+                finishDrag(for: selectedEntity)
                 self.selectedEntity = nil
             }
         default:
@@ -227,8 +261,12 @@ class MainScene: SKScene {
         nodeClusters.insert(cluster)
 
         switch entityForNode.state {
-        case .static, .seekEntity(_):
+        case .static:
             cluster.select(entityForNode)
+        case .seekEntity(_):
+            if entityForNode.hasCollidedWithLayer {
+                cluster.select(entityForNode)
+            }
         case .selected:
             cluster.reset()
             nodeClusters.remove(cluster)
@@ -245,29 +283,7 @@ class MainScene: SKScene {
         return NodeCluster(scene: self, entity: entity)
     }
 
-    private func updateStateFromPanned(entity: RecordEntity) {
-        guard bounds(contains: entity) else {
-            entity.cluster?.reset()
-            return
-        }
-
-        if entity.cluster == nil {
-            entity.set(state: .reset)
-        } else {
-            entity.set(state: .selected)
-        }
-    }
-
-    private func bounds(contains entity: RecordEntity) -> Bool {
-        let xPosition = entity.node.position.x
-        let yPosition = entity.node.position.y
-        let maxX = frame.width * CGFloat(Configuration.numberOfScreens)
-        let maxY = frame.height
-
-        if xPosition < 0 || xPosition > maxX || yPosition < 0 || yPosition > maxY {
-            return false
-        }
-
-        return true
+    private func frame(contains entity: RecordEntity) -> Bool {
+        return entity.node.frame.intersects(frame)
     }
 }

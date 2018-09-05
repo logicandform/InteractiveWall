@@ -9,6 +9,7 @@ typealias EntityLevels = [Set<RecordEntity>]
 
 /// Class that creates layers for a selected entity.
 final class NodeCluster: Hashable {
+    static let selectedEntityLevel = -1
 
     private(set) var center: CGPoint
     private(set) var selectedEntity: RecordEntity
@@ -62,14 +63,14 @@ final class NodeCluster: Hashable {
         updateInnerMostLayerBitMasks(forPan: pan)
         for entities in entitiesForLevel {
             for entity in entities {
-                entity.hasCollidedWithBoundingNode = false
+                entity.hasCollidedWithLayer = false
                 entity.updateBitMasks()
             }
         }
     }
 
     /// Updates center point and bounding nodes to the new panned position
-    func updateClusterPosition(to position: CGPoint) {
+    func set(position: CGPoint) {
         center = position
         for (_, layer) in layerForLevel {
             layer.renderComponent.node?.position = position
@@ -80,9 +81,13 @@ final class NodeCluster: Hashable {
     func reset() {
         // Reset all entities
         EntityManager.instance.release(selectedEntity)
+        selectedEntity.cluster = nil
         for level in entitiesForLevel {
             for entity in level {
-                EntityManager.instance.release(entity)
+                entity.cluster = nil
+                if entity.state != .dragging {
+                    EntityManager.instance.release(entity)
+                }
             }
         }
 
@@ -107,6 +112,17 @@ final class NodeCluster: Hashable {
         let dX = Float(x)
         let dY = Float(y)
         return CGFloat(hypotf(dX, dY))
+    }
+
+    /// Returns the level for the given entity
+    func level(for entity: RecordEntity) -> Int? {
+        for (level, entities) in entitiesForLevel.enumerated() {
+            if entities.contains(entity) {
+                return level
+            }
+        }
+
+        return nil
     }
 
     static func sizeFor(level: Int?) -> CGSize {
@@ -156,7 +172,9 @@ final class NodeCluster: Hashable {
         // Update the tapped entity's descendants to the appropriate state with appropriate movement
         for (level, entities) in entitiesForLevel.enumerated() {
             for entity in entities {
-                entity.set(state: .seekLevel(level))
+                if entity.state != .dragging {
+                    entity.set(state: .seekLevel(level))
+                }
             }
         }
     }

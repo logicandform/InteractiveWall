@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22667A24213F3A2F00F15A04 /* RecordStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22667A23213F3A2F00F15A04 /* RecordStateMachine.swift */; };
 		22AEAEB620B67C2400DD184B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AEAEB520B67C2400DD184B /* AppDelegate.swift */; };
 		22AEAEBC20B67C2400DD184B /* MainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AEAEBB20B67C2400DD184B /* MainScene.swift */; };
 		22AEAEBE20B67C2400DD184B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AEAEBD20B67C2400DD184B /* MainViewController.swift */; };
@@ -74,6 +75,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		22667A23213F3A2F00F15A04 /* RecordStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordStateMachine.swift; sourceTree = "<group>"; };
 		22AEAEB220B67C2400DD184B /* NodeVisualizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NodeVisualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22AEAEB520B67C2400DD184B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22AEAEBB20B67C2400DD184B /* MainScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScene.swift; sourceTree = "<group>"; };
@@ -261,6 +263,7 @@
 				22D6F8FA20B6810600C7FB5F /* RecordType.swift */,
 				22D6F90220B6810600C7FB5F /* ResponseHandler.swift */,
 				22D6F8FC20B6810600C7FB5F /* Style.swift */,
+				22667A23213F3A2F00F15A04 /* RecordStateMachine.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -574,6 +577,7 @@
 				22AEAEBC20B67C2400DD184B /* MainScene.swift in Sources */,
 				22AEAEEB20B67D6800DD184B /* MapKit.swift in Sources */,
 				22D6F90320B6810600C7FB5F /* GestureHandler.swift in Sources */,
+				22667A24213F3A2F00F15A04 /* RecordStateMachine.swift in Sources */,
 				CD0FB28420D1AA9D0058A410 /* EntityManager.swift in Sources */,
 				22AEAF0120B67E2C00DD184B /* TouchProperties.swift in Sources */,
 				CD97E34020F584BA00BB869E /* LayerRenderComponent.swift in Sources */,
