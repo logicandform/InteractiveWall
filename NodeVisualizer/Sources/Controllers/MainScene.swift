@@ -171,7 +171,7 @@ class MainScene: SKScene {
                     entity.set(state: .seekLevel(level))
 
                     // If entity was dragged outside of its cluster, duplicate entity with its own cluster
-                    if !cluster.intersects(entity) {
+                    if !cluster.intersects(entity) && frame(contains: entity) {
                         let copy = EntityManager.instance.createCopy(of: entity)
                         createCluster(with: copy)
                     }
@@ -179,8 +179,12 @@ class MainScene: SKScene {
                     EntityManager.instance.release(entity)
                 }
             } else {
-                // Create a new cluster from the entity
-                createCluster(with: entity)
+                // Create a new cluster from the entity if within application frame
+                if !frame(contains: entity) {
+                    EntityManager.instance.release(entity)
+                } else {
+                    createCluster(with: entity)
+                }
             }
         }
     }
