@@ -156,10 +156,10 @@ class MainScene: SKScene {
         // Check if entity is controlling a cluster
         if entity.isSelected {
             // Check if entity is still within the frame of the application
-            if !frame(contains: entity) {
-                entity.cluster?.reset()
-            } else {
+            if frame(contains: entity) {
                 entity.set(state: .selected)
+            } else {
+                entity.cluster?.reset()
             }
         } else {
             // If entity was part of a cluster, seek its selected entity
@@ -180,10 +180,10 @@ class MainScene: SKScene {
                 }
             } else {
                 // Create a new cluster from the entity if within application frame
-                if !frame(contains: entity) {
-                    EntityManager.instance.release(entity)
-                } else {
+                if frame(contains: entity) {
                     createCluster(with: entity)
+                } else {
+                    EntityManager.instance.release(entity)
                 }
             }
         }
