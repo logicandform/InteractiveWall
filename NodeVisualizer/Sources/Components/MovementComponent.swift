@@ -9,13 +9,10 @@ import GameplayKit
 class MovementComponent: GKComponent {
 
     private struct Constants {
-        static let strength: CGFloat = 100
+        static let strength: CGFloat = 1
         static let dt: CGFloat = 1 / 60
-        static let distancePadding: CGFloat = -10
         static let speed: CGFloat = 200
     }
-
-    private var movementStrength: CGFloat = 9.8
 
 
     // MARK: Lifecycle
@@ -79,13 +76,8 @@ class MovementComponent: GKComponent {
         let displacement = CGVector(dx: deltaX, dy: deltaY)
         let distanceBetweenNodeAndCenter = distanceOf(x: deltaX, y: deltaY)
 
-        var unitVector: CGVector
         // Check whether the entity is currently in the center in order to apply a non-zero unit vector for movement
-        if distanceBetweenNodeAndCenter > 0 {
-            unitVector = CGVector(dx: displacement.dx / distanceBetweenNodeAndCenter, dy: displacement.dy / distanceBetweenNodeAndCenter)
-        } else {
-            unitVector = CGVector(dx: 0.5, dy: 0)
-        }
+        let unitVector = distanceBetweenNodeAndCenter > 0 ? CGVector(dx: displacement.dx / distanceBetweenNodeAndCenter, dy: displacement.dy / distanceBetweenNodeAndCenter) : CGVector(dx: 0.5, dy: 0)
 
         // Find the difference in distance. This gives the total distance that is left to travel for the node
         guard let currentLevel = entity.clusterLevel.currentLevel,
@@ -105,40 +97,21 @@ class MovementComponent: GKComponent {
 
     /// Applies appropriate physics that emulates a gravitational pull between this component's entity and the entity that it should seek
     private func seek(_ targetEntity: RecordEntity, deltaTime delta: TimeInterval) {
-        guard let entity = entity as? RecordEntity, let cluster = entity.cluster else {
+        guard let entity = entity as? RecordEntity else {
             return
         }
 
-        let contactedBodies = entity.physicsBody.allContactedBodies().filter { (contactedBody) -> Bool in
-            if let contactedEntity = contactedBody.node?.entity as? RecordEntity,
-                let contactedEntityCluster = contactedEntity.cluster,
-                contactedEntityCluster !== cluster, contactedEntityCluster.selectedEntity.state != .panning,
-                contactedEntity.hasCollidedWithBoundingNode {
-                return true
-            }
-            return false
-        }
-
-        if contactedBodies.count > 0,
-            entity.physicsBody.velocity.magnitude < 100,
-            cluster.selectedEntity.state != .panning {
-//            movementStrength += CGFloat(1.2 * CGFloat(contactedBodies.count))
-            movementStrength = 100
-        } else {
-            movementStrength = 100
-        }
-
-        // Check the radius between its own entity and the nodeToSeek, and apply the appropriate physics
+        // Check the radius between its own entity and the entity to seek, and apply the appropriate physics
         let deltaX = targetEntity.position.x - entity.position.x
         let deltaY = targetEntity.position.y - entity.position.y
         let displacement = CGVector(dx: deltaX, dy: deltaY)
         let radius = distanceOf(x: deltaX, y: deltaY)
         let unitVector = CGVector(dx: displacement.dx / radius, dy: displacement.dy / radius)
 
-        let targetEntityMass = style.nodePhysicsBodyMass * Constants.strength * radius
-        let entityMass = style.nodePhysicsBodyMass * Constants.strength * radius
+        let targetEntityMass = targetEntity.physicsBodyProperties().mass * radius
+        let entityMass = entity.physicsBodyProperties().mass * radius
 
-        let force = (targetEntityMass * entityMass) / (radius * radius)
+        let force = (targetEntityMass * entityMass) * style.forceMultiplier
         let dt = CGFloat(delta)
         let impulse = CGVector(dx: force * dt * unitVector.dx, dy: force * dt * unitVector.dy)
         entity.physicsBody.velocity = CGVector(dx: entity.physicsBody.velocity.dx + impulse.dx, dy: entity.physicsBody.velocity.dy + impulse.dy)
