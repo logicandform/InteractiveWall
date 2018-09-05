@@ -44,23 +44,25 @@ final class Style {
 
     // MARK: Physics Body Properties
 
-    let nodePhysicsBodyMass: CGFloat = 0.25
+    let defaultBodyMass: CGFloat = 0.25
     let defaultBodyRestitution: CGFloat = 0
     let defaultBodyFriction: CGFloat = 1
     let defaultLinearDamping: CGFloat = 1
 
-    let forceMultiplier: CGFloat = 1 / 50
+    let forceMultiplier: CGFloat = 1 / 2000
+    let panningMultiplier: CGFloat = 8000
+    let multiplier: CGFloat = 100
 
-    static let sameMass: CGFloat = 0.5
+    static let sameMass: CGFloat = 0.3
     static let sameRestitution: CGFloat = 0
-    static let sameFriction: CGFloat = 1
-    static let sameDamping: CGFloat = 1
+    static let sameFriction: CGFloat = 0.8
+    static let sameDamping: CGFloat = 0.8
 
     // MARK: Selected Node
-    let selectedBodyMass: CGFloat = sameMass
-    let selectedBodyRestitution: CGFloat = sameRestitution
-    let selectedBodyFriction: CGFloat = sameFriction
-    let selectedLinearDamping: CGFloat = sameDamping
+    let selectedBodyMass: CGFloat = 0.25
+    let selectedBodyRestitution: CGFloat = 0
+    let selectedBodyFriction: CGFloat = 1
+    let selectedLinearDamping: CGFloat = 1
 
     // MARK: Seeking - Level 0
     let seekingLevelZeroBodyMass: CGFloat = sameMass
@@ -94,41 +96,41 @@ final class Style {
 
 
     // MARK: hasCollidedWithBoundingNode - Level 0
-    let collidedLevelZeroBodyMass: CGFloat = 0.25
+    let collidedLevelZeroBodyMass: CGFloat = 0.5
     let collidedLevelZeroBodyRestitution: CGFloat = 0
     let collidedLevelZeroBodyFriction: CGFloat = 1
     let collidedLevelZeroBodyLinearDamping: CGFloat = 1
 
     // MARK: hasCollidedWithBoundingNode - Level 1
-    let collidedLevelOneBodyMass: CGFloat = 0.25
+    let collidedLevelOneBodyMass: CGFloat = 0.5
     let collidedLevelOneBodyRestitution: CGFloat = 0
     let collidedLevelOneBodyFriction: CGFloat = 1
     let collidedLevelOneBodyLinearDamping: CGFloat = 1
 
     // MARK: hasCollidedWithBoundingNode - Level 2
-    let collidedLevelTwoBodyMass: CGFloat = 0.25
+    let collidedLevelTwoBodyMass: CGFloat = 0.5
     let collidedLevelTwoBodyRestitution: CGFloat = 0
     let collidedLevelTwoBodyFriction: CGFloat = 1
     let collidedLevelTwoBodyLinearDamping: CGFloat = 1
 
     // MARK: hasCollidedWithBoundingNode - Level 3
-    let collidedLevelThreeBodyMass: CGFloat = 0.25
+    let collidedLevelThreeBodyMass: CGFloat = 0.5
     let collidedLevelThreeBodyRestitution: CGFloat = 0
     let collidedLevelThreeBodyFriction: CGFloat = 1
     let collidedLevelThreeBodyLinearDamping: CGFloat = 1
 
     // MARK: hasCollidedWithBoundingNode - Level 4
-    let collidedLevelFourBodyMass: CGFloat = 0.25
+    let collidedLevelFourBodyMass: CGFloat = 0.5
     let collidedLevelFourBodyRestitution: CGFloat = 0
     let collidedLevelFourBodyFriction: CGFloat = 1
     let collidedLevelFourBodyLinearDamping: CGFloat = 1
 
 
-    // MARK: Seeking while selected node is panning - Level 0
-    let seekingPannedBodyMass: CGFloat = 0.25
+    // MARK: Seeking while selected node is panning
+    let seekingPannedBodyMass: CGFloat = 0.5
     let seekingPannedBodyRestitution: CGFloat = 0
-    let seekingPannedBodyFriction: CGFloat = 0.5
-    let seekingPannedBodyLinearDamping: CGFloat = 0.5
+    let seekingPannedBodyFriction: CGFloat = 0.3
+    let seekingPannedBodyLinearDamping: CGFloat = 0.3
 
 
     // MARK: Animations

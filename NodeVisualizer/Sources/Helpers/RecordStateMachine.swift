@@ -51,6 +51,7 @@ final class RecordStateMachine {
         case .selected:
             entity.set(level: NodeCluster.selectedEntityLevel)
             entity.hasCollidedWithLayer = false
+            entity.setPhysicsBodyProperties()
             entity.updateBitMasks()
             entity.physicsBody.isDynamic = false
             entity.node.removeAllActions()
@@ -59,20 +60,16 @@ final class RecordStateMachine {
         case .seekLevel(let level):
             entity.set(level: level)
             entity.hasCollidedWithLayer = false
+            entity.setPhysicsBodyProperties()
             entity.updateBitMasks()
             entity.physicsBody.isDynamic = true
-            entity.physicsBody.restitution = 0
-            entity.physicsBody.friction = 1
-            entity.physicsBody.linearDamping = 1
             entity.node.removeAllActions()
             updateViews(level: level)
             scale()
         case .seekEntity(_):
+            entity.setPhysicsBodyProperties()
             entity.updateBitMasks()
             entity.physicsBody.isDynamic = true
-            entity.physicsBody.restitution = 0
-            entity.physicsBody.friction = 1
-            entity.physicsBody.linearDamping = 1
             entity.node.removeAllActions()
             scale()
         case .dragging:

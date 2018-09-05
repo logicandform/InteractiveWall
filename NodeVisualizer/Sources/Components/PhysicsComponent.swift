@@ -52,12 +52,14 @@ class PhysicsComponent: GKComponent {
                 cluster.layerForLevel[currentLevel]?.renderComponent.layerNode === boundingNode,
                 !entity.hasCollidedWithLayer {
                 entity.hasCollidedWithLayer = true
+                entity.setPhysicsBodyProperties()
                 return
             } else if let contactedEntity = contactedBody.node?.entity as? RecordEntity,
                 let contactedEntityCluster = contactedEntity.cluster, cluster === contactedEntityCluster,
                 contactedEntity.clusterLevel.currentLevel == entity.clusterLevel.currentLevel,
                 contactedEntity.hasCollidedWithLayer, !entity.hasCollidedWithLayer {
                 entity.hasCollidedWithLayer = true
+                entity.setPhysicsBodyProperties()
                 return
             }
         }
@@ -110,7 +112,7 @@ class PhysicsComponent: GKComponent {
         physicsBody.restitution = 0
         physicsBody.linearDamping = 0
         physicsBody.isDynamic = false
-        physicsBody.mass = style.nodePhysicsBodyMass
+        physicsBody.mass = style.defaultBodyMass
         resetBitMasks()
     }
 

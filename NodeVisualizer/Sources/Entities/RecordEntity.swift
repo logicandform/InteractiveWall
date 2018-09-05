@@ -204,19 +204,6 @@ final class RecordEntity: GKEntity {
         return CGFloat(hypotf(Float(dX), Float(dY)))
     }
 
-    /// Provides the physics body properties depending on the entity's state and level
-    func physicsBodyProperties() -> PhysicsBodyProperties {
-        if hasCollidedWithBoundingNode {
-            return propertiesForBoundingNodeCollision()
-        } else if case .seekEntity(cluster?.selectedEntity) = state {
-            return propertiesForSeekingEntity()
-        } else if cluster?.selectedEntity.state == .panning {
-            return propertiesForSeekingPanningEntity()
-        } else {
-            return defaultPhysicsBodyProperties()
-        }
-    }
-
     func setPhysicsBodyProperties() {
         let properties = physicsBodyProperties()
         physicsBody.mass = properties.mass
@@ -225,12 +212,27 @@ final class RecordEntity: GKEntity {
         physicsBody.linearDamping = properties.linearDamping
     }
 
+    /// Provides the physics body properties depending on the entity's state and level
+    func physicsBodyProperties() -> PhysicsBodyProperties {
+        if hasCollidedWithLayer {
+            return propertiesForBoundingNodeCollision()
+        } else if case .seekEntity(cluster?.selectedEntity) = state {
+            return propertiesForSeekingEntity()
+        } else if let cluster = cluster, cluster.selectedEntity.state == .dragging {
+            return propertiesForSeekingPanningEntity()
+        } else if state == .selected {
+            return propertiesForSelectedEntity()
+        } else {
+            return defaultPhysicsBodyProperties()
+        }
+    }
+
 
     // MARK: Helpers
 
     private func defaultPhysicsBodyProperties() -> PhysicsBodyProperties {
         return PhysicsBodyProperties(
-            mass: style.nodePhysicsBodyMass,
+            mass: style.defaultBodyMass,
             restitution: style.defaultBodyRestitution,
             friction: style.defaultBodyFriction,
             linearDamping: style.defaultLinearDamping)
@@ -320,6 +322,14 @@ final class RecordEntity: GKEntity {
         }
 
         return PhysicsBodyProperties(mass: mass, restitution: restitution, friction: friction, linearDamping: damping)
+    }
+
+    private func propertiesForSelectedEntity() -> PhysicsBodyProperties {
+        return PhysicsBodyProperties(
+            mass: style.selectedBodyMass,
+            restitution: style.selectedBodyRestitution,
+            friction: style.selectedBodyFriction,
+            linearDamping: style.selectedLinearDamping)
     }
 
     private func propertiesForSeekingPanningEntity() -> PhysicsBodyProperties {

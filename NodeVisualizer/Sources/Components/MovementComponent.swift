@@ -10,7 +10,6 @@ class MovementComponent: GKComponent {
 
     private struct Constants {
         static let strength: CGFloat = 1
-        static let dt: CGFloat = 1 / 60
         static let speed: CGFloat = 200
     }
 
@@ -111,7 +110,8 @@ class MovementComponent: GKComponent {
         let targetEntityMass = targetEntity.physicsBodyProperties().mass * radius
         let entityMass = entity.physicsBodyProperties().mass * radius
 
-        let force = (targetEntityMass * entityMass) * style.forceMultiplier
+        let multiplier = targetEntity.state == .dragging ? (style.panningMultiplier / (radius * radius)) : (style.forceMultiplier * style.multiplier)
+        let force = (targetEntityMass * entityMass) * multiplier
         let dt = CGFloat(delta)
         let impulse = CGVector(dx: force * dt * unitVector.dx, dy: force * dt * unitVector.dy)
         entity.physicsBody.velocity = CGVector(dx: entity.physicsBody.velocity.dx + impulse.dx, dy: entity.physicsBody.velocity.dy + impulse.dy)
