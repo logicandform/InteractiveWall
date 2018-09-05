@@ -220,7 +220,7 @@ final class ConnectionManager {
             // Check for current group
             if let appGroup = state.group, appGroup == group {
                 // Only listen to the closest screen once paired
-                if abs(screen(of: app) - screen(of: appGroup)) < abs(screen(of: app) - screen(of: id)) {
+                if abs(screen(of: app) - screen(of: id)) >= abs(screen(of: app) - screen(of: appGroup)), screen(of: id) != screen(of: group) {
                     continue
                 }
                 // Check for current pair
