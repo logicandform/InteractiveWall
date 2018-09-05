@@ -3,6 +3,7 @@
 import Foundation
 import AppKit
 
+
 class PanGestureRecognizer: NSObject, GestureRecognizer {
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
@@ -15,9 +16,9 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     private var cumulativeDelta = CGVector.zero
 
     private struct Constants {
-        static let recognizedThreshhold: CGFloat = 20
+        static let recognizedThreshold: CGFloat = 20
         static let minimumFingers = 1
-        static let minimumDeltaUpdateThreshold: Double = 4
+        static let minimumDeltaUpdateThreshold = 4.0
         static let gesturePausedTime = 0.1
     }
 
@@ -61,13 +62,12 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             return
         }
 
-        positionForTouch[touch] = touch.position
-
         switch state {
-        case .began:
+        case .began where shouldStart(with: touch, from: lastPositionOfTouch):
             state = .recognized
-            fallthrough
+            positionForTouch[touch] = touch.position
         case .recognized:
+            positionForTouch[touch] = touch.position
             recognizePanMove(with: touch, lastPosition: lastPositionOfTouch)
             if shouldUpdate(for: timeOfLastUpdate) {
                 updateForMove(with: properties)
@@ -75,6 +75,13 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         default:
             return
         }
+    }
+
+    /// Determines if the pan gesture should become recognized
+    func shouldStart(with touch: Touch, from startPosition: CGPoint) -> Bool {
+        let dx = Float(touch.position.x - startPosition.x)
+        let dy = Float(touch.position.y - startPosition.y)
+        return CGFloat(hypotf(dx, dy).magnitude) > Constants.recognizedThreshold
     }
 
     /// Sets gesture properties during a move event and calls `gestureUpdated` callback
@@ -148,9 +155,9 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     // MARK: Momentum
 
     private struct Momentum {
-        static let panInitialFrictionFactor = 1.1
-        static let panFrictionFactorScale = 0.001
-        static let panThresholdMomentumDelta: Double = 2
+        static let panInitialFrictionFactor = 1.04
+        static let panFrictionFactorScale = 0.003
+        static let panThresholdMomentumDelta = 2.0
     }
 
     private var momentumTimer: DispatchTimer!

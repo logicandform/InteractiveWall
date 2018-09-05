@@ -3,22 +3,35 @@
 import Foundation
 import AppKit
 
+
 class PanGestureRecognizer: NSObject, GestureRecognizer {
 
-    private struct Constants {
-        static let recognizedThreshhold: CGFloat = 20
-        static let minimumFingers = 1
-        static let minimumDeltaUpdateThreshold: Double = 4
-        static let gesturePausedTime = 0.1
-    }
-
     var gestureUpdated: ((GestureRecognizer) -> Void)?
+
     private(set) var state = GestureState.possible
     private(set) var delta = CGVector.zero
     private(set) var lastLocation: CGPoint?
     private var timeOfLastUpdate = Date()
     private var positionForTouch = [Touch: CGPoint]()
     private var cumulativeDelta = CGVector.zero
+
+    private struct Constants {
+        static let recognizedThreshold: CGFloat = 20
+        static let minimumFingers = 1
+        static let minimumDeltaUpdateThreshold = 4.0
+        static let gesturePausedTime = 0.1
+    }
+
+
+    // MARK: Init
+
+    override init() {
+        super.init()
+        let miliseconds = Int(round(Configuration.refreshRate * 1000))
+        self.momentumTimer = DispatchTimer(interval: .milliseconds(miliseconds), handler: { [weak self] in
+            self?.updateMomentum()
+        })
+    }
 
 
     // MARK: API
@@ -29,17 +42,15 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             reset()
             fallthrough
         case .possible:
-            momentumTimer?.invalidate()
-
+            momentumTimer.suspend()
             cumulativeDelta = .zero
             lastLocation = properties.cog
-
             state = .began
             gestureUpdated?(self)
             timeOfLastUpdate = Date()
             fallthrough
         case .recognized, .began:
-            momentumTimer?.invalidate()
+            momentumTimer.suspend()
             positionForTouch[touch] = touch.position
         default:
             return
@@ -51,21 +62,26 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
             return
         }
 
-        positionForTouch[touch] = touch.position
-
         switch state {
-        case .began:
+        case .began where shouldStart(with: touch, from: lastPositionOfTouch):
             state = .recognized
-            fallthrough
+            positionForTouch[touch] = touch.position
         case .recognized:
+            positionForTouch[touch] = touch.position
             recognizePanMove(with: touch, lastPosition: lastPositionOfTouch)
-
             if shouldUpdate(for: timeOfLastUpdate) {
                 updateForMove(with: properties)
             }
         default:
             return
         }
+    }
+
+    /// Determines if the pan gesture should become recognized
+    func shouldStart(with touch: Touch, from startPosition: CGPoint) -> Bool {
+        let dx = Float(touch.position.x - startPosition.x)
+        let dy = Float(touch.position.y - startPosition.y)
+        return CGFloat(hypotf(dx, dy).magnitude) > Constants.recognizedThreshold
     }
 
     /// Sets gesture properties during a move event and calls `gestureUpdated` callback
@@ -105,7 +121,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     func invalidate() {
-        momentumTimer?.invalidate()
+        momentumTimer.suspend()
         state = .failed
         gestureUpdated?(self)
     }
@@ -141,29 +157,23 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     private struct Momentum {
         static let panInitialFrictionFactor = 1.04
         static let panFrictionFactorScale = 0.003
-        static let panThresholdMomentumDelta: Double = 2
+        static let panThresholdMomentumDelta = 2.0
     }
 
-    private var momentumTimer: Timer?
+    private var momentumTimer: DispatchTimer!
     private var panFrictionFactor = Momentum.panInitialFrictionFactor
-
     private var panMomentumDelta = CGVector.zero
 
     private func beginMomentum() {
         panFrictionFactor = Momentum.panInitialFrictionFactor
         delta = panMomentumDelta
-
         state = .momentum
         gestureUpdated?(self)
-        momentumTimer?.invalidate()
-        momentumTimer = Timer.scheduledTimer(withTimeInterval: Configuration.refreshRate, repeats: true) { [weak self] _ in
-            self?.updateMomentum()
-        }
+        momentumTimer.resume()
     }
 
     private func updateMomentum() {
         updatePanMomentum()
-
         if delta == .zero {
             endMomentum()
             return
@@ -182,7 +192,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     private func endMomentum() {
-        momentumTimer?.invalidate()
+        momentumTimer.suspend()
         reset()
         gestureUpdated?(self)
     }

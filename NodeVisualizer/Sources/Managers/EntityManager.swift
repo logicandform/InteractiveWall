@@ -114,6 +114,20 @@ final class EntityManager {
         return result
     }
 
+    func createCopy(of entity: RecordEntity) -> RecordEntity {
+        let copy = entity.clone()
+        store(copy)
+        addComponents(to: copy)
+        copy.initialPosition = entity.initialPosition
+        copy.set(position: entity.position)
+        copy.node.scale(to: entity.node.size)
+        copy.setClonedNodeBitMasks()
+        copy.previousCluster = entity.cluster
+        scene.addChild(copy.node)
+        scene.addGestures(to: copy.node)
+        return copy
+    }
+
     /// Updates all component systems that the EntityManager is responsible for
     func update(_ deltaTime: CFTimeInterval) {
         for componentSystem in componentSystems {
@@ -211,19 +225,5 @@ final class EntityManager {
     private func proxies(for entities: Set<RecordEntity>) -> Set<RecordProxy> {
         let proxies = entities.map { $0.record.proxy }
         return Set(proxies)
-    }
-
-    private func createCopy(of entity: RecordEntity) -> RecordEntity {
-        let copy = entity.clone()
-        store(copy)
-        addComponents(to: copy)
-        copy.initialPosition = entity.initialPosition
-        copy.set(position: entity.position)
-        copy.node.scale(to: entity.node.size)
-        copy.setClonedNodeBitMasks()
-        copy.previousCluster = entity.cluster
-        scene.addChild(copy.node)
-        scene.addGestures(to: copy.node)
-        return copy
     }
 }

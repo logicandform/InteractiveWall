@@ -22,7 +22,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     private struct Pan {
-        static let recognizedThreshhold: CGFloat = 20
+        static let recognizedThreshold: CGFloat = 20
         static let minimumDeltaUpdateThreshold: Double = 4
         static let gesturePausedTime = 0.1
     }
@@ -71,7 +71,8 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
             // Pinch
             center = properties.cog
-            // Must come after postionForTouch is set
+
+            // Pan
             setTouchesForPinch()
         default:
             return
@@ -83,15 +84,16 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
             return
         }
 
-        positionForTouch[touch] = touch.position
-        updateTouchesForSpread(with: touch)
-
         switch state {
-        case .began:
+        case .began where shouldStart(with: touch, from: lastPositionOfTouch):
+            setTouchesForPinch()
             beganPinchMove()
             state = .recognized
-            fallthrough
+            positionForTouch[touch] = touch.position
+            updateTouchesForSpread(with: touch)
         case .recognized:
+            positionForTouch[touch] = touch.position
+            updateTouchesForSpread(with: touch)
             recognizePinchMove()
             recognizePanMove(with: touch, lastPosition: lastPositionOfTouch)
 
@@ -101,6 +103,13 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         default:
             return
         }
+    }
+
+    /// Determines if the pan gesture should become recognized
+    func shouldStart(with touch: Touch, from startPosition: CGPoint) -> Bool {
+        let dx = Float(touch.position.x - startPosition.x)
+        let dy = Float(touch.position.y - startPosition.y)
+        return CGFloat(hypotf(dx, dy).magnitude) > Pan.recognizedThreshold
     }
 
     /// Sets gesture properties during a move event and calls `gestureUpdated` callback

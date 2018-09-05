@@ -97,14 +97,22 @@ final class NodeCluster: Hashable {
         }
     }
 
-    /// Calculates the distance from the root bounding node to the specified entity
+    /// Calculates the distance from the center of self to the specified entity
     func distance(to entity: RecordEntity) -> CGFloat {
-        guard let rootBoundingNode = layerForLevel[0]?.renderComponent.node else {
-            return 0
-        }
-        let dX = Float(rootBoundingNode.position.x - entity.position.x)
-        let dY = Float(rootBoundingNode.position.y - entity.position.y)
+        let dX = Float(center.x - entity.position.x)
+        let dY = Float(center.y - entity.position.y)
         return CGFloat(hypotf(dX, dY).magnitude)
+    }
+
+    /// Determines if the node for the given entity interests with the clusters max radius
+    func intersects(_ entity: RecordEntity) -> Bool {
+        guard let clusterRadius = layerForLevel[layerForLevel.count - 1]?.renderComponent.maxRadius else {
+            return false
+        }
+
+        let nodeRadius = entity.node.frame.width / 2
+        let result = distance(to: entity) <= clusterRadius + nodeRadius
+        return result
     }
 
     /// Calculates the distance between two points

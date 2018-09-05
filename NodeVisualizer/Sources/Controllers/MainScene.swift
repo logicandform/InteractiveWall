@@ -135,11 +135,6 @@ class MainScene: SKScene {
 
         switch pan.state {
         case .recognized:
-            let distance = CGFloat(hypotf(Float(deltaX), Float(deltaY)))
-            if distance <= Constants.panningThreshold {
-                return
-            }
-
             entity.set(state: .dragging)
             entity.set(position: position)
             if entity.isSelected {
@@ -173,14 +168,27 @@ class MainScene: SKScene {
                 if let level = cluster.level(for: entity) {
                     entity.hasCollidedWithLayer = false
                     entity.set(level: level)
-                    entity.set(state: .seekEntity(cluster.selectedEntity))
+                    entity.set(state: .seekLevel(level))
+
+                    // If entity was dragged outside of its cluster, duplicate entity with its own cluster
+                    if !cluster.intersects(entity) {
+                        let copy = EntityManager.instance.createCopy(of: entity)
+                        createCluster(with: copy)
+                    }
                 } else {
                     EntityManager.instance.release(entity)
                 }
             } else {
-                EntityManager.instance.release(entity)
+                // Create a new cluster from the entity
+                createCluster(with: entity)
             }
         }
+    }
+
+    private func createCluster(with entity: RecordEntity) {
+        let cluster = NodeCluster(scene: self, entity: entity)
+        nodeClusters.insert(cluster)
+        cluster.select(entity)
     }
 
     @objc

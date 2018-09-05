@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		22667A24213F3A2F00F15A04 /* RecordStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22667A23213F3A2F00F15A04 /* RecordStateMachine.swift */; };
+		22667A26214088D900F15A04 /* DispatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22667A25214088D900F15A04 /* DispatchTimer.swift */; };
 		22AEAEB620B67C2400DD184B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AEAEB520B67C2400DD184B /* AppDelegate.swift */; };
 		22AEAEBC20B67C2400DD184B /* MainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AEAEBB20B67C2400DD184B /* MainScene.swift */; };
 		22AEAEBE20B67C2400DD184B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AEAEBD20B67C2400DD184B /* MainViewController.swift */; };
@@ -36,7 +37,6 @@
 		22AEAF0220B67E2C00DD184B /* Touch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AEAEFF20B67E2C00DD184B /* Touch.swift */; };
 		22D6F90320B6810600C7FB5F /* GestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F8F920B6810600C7FB5F /* GestureHandler.swift */; };
 		22D6F90420B6810600C7FB5F /* RecordType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F8FA20B6810600C7FB5F /* RecordType.swift */; };
-		22D6F90520B6810600C7FB5F /* BackgroundTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F8FB20B6810600C7FB5F /* BackgroundTimer.swift */; };
 		22D6F90620B6810600C7FB5F /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F8FC20B6810600C7FB5F /* Style.swift */; };
 		22D6F90820B6810600C7FB5F /* CachingNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F8FE20B6810600C7FB5F /* CachingNetwork.swift */; };
 		22D6F90920B6810600C7FB5F /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F8FF20B6810600C7FB5F /* JSON.swift */; };
@@ -76,6 +76,7 @@
 
 /* Begin PBXFileReference section */
 		22667A23213F3A2F00F15A04 /* RecordStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordStateMachine.swift; sourceTree = "<group>"; };
+		22667A25214088D900F15A04 /* DispatchTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchTimer.swift; sourceTree = "<group>"; };
 		22AEAEB220B67C2400DD184B /* NodeVisualizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NodeVisualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22AEAEB520B67C2400DD184B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22AEAEBB20B67C2400DD184B /* MainScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScene.swift; sourceTree = "<group>"; };
@@ -107,7 +108,6 @@
 		22AEAEFF20B67E2C00DD184B /* Touch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Touch.swift; sourceTree = "<group>"; };
 		22D6F8F920B6810600C7FB5F /* GestureHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureHandler.swift; sourceTree = "<group>"; };
 		22D6F8FA20B6810600C7FB5F /* RecordType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordType.swift; sourceTree = "<group>"; };
-		22D6F8FB20B6810600C7FB5F /* BackgroundTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundTimer.swift; sourceTree = "<group>"; };
 		22D6F8FC20B6810600C7FB5F /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		22D6F8FE20B6810600C7FB5F /* CachingNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachingNetwork.swift; sourceTree = "<group>"; };
 		22D6F8FF20B6810600C7FB5F /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
@@ -252,7 +252,6 @@
 			children = (
 				2218BF3A2118C09900153058 /* Gestures */,
 				CD97E33B20F4125800BB869E /* NodeCluster.swift */,
-				22D6F8FB20B6810600C7FB5F /* BackgroundTimer.swift */,
 				22D6F8FE20B6810600C7FB5F /* CachingNetwork.swift */,
 				22D6F8FF20B6810600C7FB5F /* JSON.swift */,
 				22D6F90020B6810600C7FB5F /* Math.swift */,
@@ -264,6 +263,7 @@
 				22D6F90220B6810600C7FB5F /* ResponseHandler.swift */,
 				22D6F8FC20B6810600C7FB5F /* Style.swift */,
 				22667A23213F3A2F00F15A04 /* RecordStateMachine.swift */,
+				22667A25214088D900F15A04 /* DispatchTimer.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -554,7 +554,6 @@
 				22AEAEBE20B67C2400DD184B /* MainViewController.swift in Sources */,
 				22AEAEE620B67D6800DD184B /* PacketType.swift in Sources */,
 				CDA5A90820DD70B700E1CF87 /* PhysicsComponent.swift in Sources */,
-				22D6F90520B6810600C7FB5F /* BackgroundTimer.swift in Sources */,
 				22AEAED620B67D2700DD184B /* GestureManager.swift in Sources */,
 				22AEAEE220B67D6800DD184B /* Int.swift in Sources */,
 				CD0FB28A20D83B840058A410 /* RecordEntityBehavior.swift in Sources */,
@@ -563,6 +562,7 @@
 				22D6F90F20B681A300C7FB5F /* LastTwo.swift in Sources */,
 				22AEAEF920B67DA600DD184B /* School.swift in Sources */,
 				CD27F40F20BCBFB700375CBC /* LetterGroup.swift in Sources */,
+				22667A26214088D900F15A04 /* DispatchTimer.swift in Sources */,
 				CD0FB28220D1A6300058A410 /* RecordEntity.swift in Sources */,
 				22D6F91020B681A300C7FB5F /* Media.swift in Sources */,
 				22D6F90C20B6810600C7FB5F /* ResponseHandler.swift in Sources */,
