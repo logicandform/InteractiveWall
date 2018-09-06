@@ -89,40 +89,36 @@ final class Style {
     let seekingLevelFourBodyFriction: CGFloat = 0.8
     let seekingLevelFourBodyLinearDamping: CGFloat = 0.8
 
-    static let collided: CGFloat = 5
-    static let rest: CGFloat = 0
-    static let friction: CGFloat = 0.37
-    static let damping: CGFloat = 0.37
 
     // MARK: hasCollidedWithBoundingNode Properties - Level 0
-    let collidedLevelZeroBodyMass: CGFloat = collided
-    let collidedLevelZeroBodyRestitution: CGFloat = rest
-    let collidedLevelZeroBodyFriction: CGFloat = friction
-    let collidedLevelZeroBodyLinearDamping: CGFloat = damping
+    let collidedLayerZeroBodyMass: CGFloat = 5
+    let collidedLayerZeroBodyRestitution: CGFloat = 0
+    let collidedLayerZeroBodyFriction: CGFloat = 0.37
+    let collidedLayerZeroBodyLinearDamping: CGFloat = 0.37
 
     // MARK: hasCollidedWithBoundingNode Properties - Level 1
-    let collidedLevelOneBodyMass: CGFloat = collided
-    let collidedLevelOneBodyRestitution: CGFloat = rest
-    let collidedLevelOneBodyFriction: CGFloat = friction
-    let collidedLevelOneBodyLinearDamping: CGFloat = damping
+    let collidedLayerOneBodyMass: CGFloat = 5
+    let collidedLayerOneBodyRestitution: CGFloat = 0
+    let collidedLayerOneBodyFriction: CGFloat = 0.37
+    let collidedLayerOneBodyLinearDamping: CGFloat = 0.37
 
     // MARK: hasCollidedWithBoundingNode Properties - Level 2
-    let collidedLevelTwoBodyMass: CGFloat = collided
-    let collidedLevelTwoBodyRestitution: CGFloat = rest
-    let collidedLevelTwoBodyFriction: CGFloat = friction
-    let collidedLevelTwoBodyLinearDamping: CGFloat = damping
+    let collidedLayerTwoBodyMass: CGFloat = 5
+    let collidedLayerTwoBodyRestitution: CGFloat = 0
+    let collidedLayerTwoBodyFriction: CGFloat = 0.37
+    let collidedLayerTwoBodyLinearDamping: CGFloat = 0.37
 
     // MARK: hasCollidedWithBoundingNode Properties - Level 3
-    let collidedLevelThreeBodyMass: CGFloat = collided
-    let collidedLevelThreeBodyRestitution: CGFloat = rest
-    let collidedLevelThreeBodyFriction: CGFloat = friction
-    let collidedLevelThreeBodyLinearDamping: CGFloat = damping
+    let collidedLayerThreeBodyMass: CGFloat = 5
+    let collidedLayerThreeBodyRestitution: CGFloat = 0
+    let collidedLayerThreeBodyFriction: CGFloat = 0.37
+    let collidedLayerThreeBodyLinearDamping: CGFloat = 0.37
 
     // MARK: hasCollidedWithBoundingNode Properties - Level 4
-    let collidedLevelFourBodyMass: CGFloat = collided
-    let collidedLevelFourBodyRestitution: CGFloat = rest
-    let collidedLevelFourBodyFriction: CGFloat = friction
-    let collidedLevelFourBodyLinearDamping: CGFloat = damping
+    let collidedLayerFourBodyMass: CGFloat = 5
+    let collidedLayerFourBodyRestitution: CGFloat = 0
+    let collidedLayerFourBodyFriction: CGFloat = 0.37
+    let collidedLayerFourBodyLinearDamping: CGFloat = 0.37
 
 
     // MARK: Seeking while selected node is panning properties
@@ -133,14 +129,12 @@ final class Style {
 
 
     // MARK: Animations
-
     let fadeAnimationDuration = 1.0
     let moveAnimationDuration = 1.2
     let scaleAnimationDuration = 1.2
 
 
     // MARK: Titles
-
     var windowTitleAttributes: [NSAttributedStringKey: Any] {
         let font = NSFont(name: "Soleil", size: 16) ?? NSFont.systemFont(ofSize: 16)
         let paragraphStyle = NSMutableParagraphStyle()

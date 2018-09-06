@@ -82,13 +82,13 @@ class PhysicsComponent: GKComponent {
         }
 
         if cluster.selectedEntity.state == .dragging {
-            setPanningBitMasks()
+            setDraggingBitMasks()
             return
         }
 
         switch entity.state {
         case .selected:
-            setTappedEntityBitMasks()
+            setSelectedEntityBitMasks()
         case .seekLevel(let level):
             setSeekingLevelBitMasks(forLevel: level)
         case .seekEntity(_):
@@ -123,9 +123,9 @@ class PhysicsComponent: GKComponent {
         var properties: PhysicsBodyProperties
 
         if entity.state == .selected {
-            properties = physicsBodyPropertiesForTappedEntity()
+            properties = physicsBodyPropertiesForSelectedEntity()
         } else if entity.cluster?.selectedEntity.state == .dragging {
-            properties = physicsBodyPropertiesForSeekingPannedEntity()
+            properties = physicsBodyPropertiesForSeekingDraggedEntity()
         } else if case .seekLevel(entity.clusterLevel.currentLevel) = entity.state {
             properties = physicsBodyPropertiesForSeekingEntity()
         } else if entity.hasCollidedWithLayer {
@@ -158,7 +158,7 @@ class PhysicsComponent: GKComponent {
 
     // MARK: Helpers - BitMasks
 
-    private func setPanningBitMasks() {
+    private func setDraggingBitMasks() {
         guard let entity = entity as? RecordEntity,
             let level = entity.clusterLevel.currentLevel,
             let cluster = entity.cluster,
@@ -172,7 +172,7 @@ class PhysicsComponent: GKComponent {
         physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask | panBoundingPhysicsBody.contactTestBitMask
     }
 
-    private func setTappedEntityBitMasks() {
+    private func setSelectedEntityBitMasks() {
         physicsBody.categoryBitMask = ColliderType.tappedRecordNode
         physicsBody.collisionBitMask = ColliderType.tappedRecordNode
         physicsBody.contactTestBitMask = ColliderType.tappedRecordNode
@@ -215,7 +215,7 @@ class PhysicsComponent: GKComponent {
 
     // MARK: Helpers - Physics Body Properties
 
-    private func physicsBodyPropertiesForTappedEntity() -> PhysicsBodyProperties {
+    private func physicsBodyPropertiesForSelectedEntity() -> PhysicsBodyProperties {
         return PhysicsBodyProperties(
             mass: style.selectedBodyMass,
             restitution: style.selectedBodyRestitution,
@@ -224,7 +224,7 @@ class PhysicsComponent: GKComponent {
             isDynamic: false)
     }
 
-    private func physicsBodyPropertiesForSeekingPannedEntity() -> PhysicsBodyProperties {
+    private func physicsBodyPropertiesForSeekingDraggedEntity() -> PhysicsBodyProperties {
         return PhysicsBodyProperties(
             mass: style.seekingPannedBodyMass,
             restitution: style.seekingPannedBodyRestitution,
@@ -245,30 +245,30 @@ class PhysicsComponent: GKComponent {
 
         switch entity.clusterLevel.currentLevel {
         case 0:
-            mass = style.collidedLevelZeroBodyMass
-            restitution = style.collidedLevelZeroBodyRestitution
-            friction = style.collidedLevelZeroBodyFriction
-            damping = style.collidedLevelZeroBodyLinearDamping
+            mass = style.collidedLayerZeroBodyMass
+            restitution = style.collidedLayerZeroBodyRestitution
+            friction = style.collidedLayerZeroBodyFriction
+            damping = style.collidedLayerZeroBodyLinearDamping
         case 1:
-            mass = style.collidedLevelOneBodyMass
-            restitution = style.collidedLevelOneBodyRestitution
-            friction = style.collidedLevelOneBodyFriction
-            damping = style.collidedLevelOneBodyLinearDamping
+            mass = style.collidedLayerOneBodyMass
+            restitution = style.collidedLayerOneBodyRestitution
+            friction = style.collidedLayerOneBodyFriction
+            damping = style.collidedLayerOneBodyLinearDamping
         case 2:
-            mass = style.collidedLevelTwoBodyMass
-            restitution = style.collidedLevelTwoBodyRestitution
-            friction = style.collidedLevelTwoBodyFriction
-            damping = style.collidedLevelTwoBodyLinearDamping
+            mass = style.collidedLayerTwoBodyMass
+            restitution = style.collidedLayerTwoBodyRestitution
+            friction = style.collidedLayerTwoBodyFriction
+            damping = style.collidedLayerTwoBodyLinearDamping
         case 3:
-            mass = style.collidedLevelThreeBodyMass
-            restitution = style.collidedLevelThreeBodyRestitution
-            friction = style.collidedLevelThreeBodyFriction
-            damping = style.collidedLevelThreeBodyLinearDamping
+            mass = style.collidedLayerThreeBodyMass
+            restitution = style.collidedLayerThreeBodyRestitution
+            friction = style.collidedLayerThreeBodyFriction
+            damping = style.collidedLayerThreeBodyLinearDamping
         case 4:
-            mass = style.collidedLevelFourBodyMass
-            restitution = style.collidedLevelFourBodyRestitution
-            friction = style.collidedLevelFourBodyFriction
-            damping = style.collidedLevelFourBodyLinearDamping
+            mass = style.collidedLayerFourBodyMass
+            restitution = style.collidedLayerFourBodyRestitution
+            friction = style.collidedLayerFourBodyFriction
+            damping = style.collidedLayerFourBodyLinearDamping
         default:
             return defaultPhysicsBodyProperties()
         }
