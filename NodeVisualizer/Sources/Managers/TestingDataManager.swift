@@ -117,20 +117,20 @@ class TestingDataManager {
 
     // MARK: Helpers
 
-    private func createRecords(of type: RecordType, count: Int) -> [Record] {
-        var result = [Record]()
+    private func createRecords(of type: RecordType, count: Int) -> [TestRecord] {
+        var result = [TestRecord]()
         let min = records.count
         let max = min + count
 
         for index in min ..< max {
-            result.append(Record(id: index, type: type))
+            result.append(TestRecord(id: index, type: type))
         }
         return result
     }
 
 
     /// Relates records to a specified record and stores it locally in dictionary
-    private func associate(records: [Record], to record: Record) {
+    private func associate(records: [TestRecord], to record: TestRecord) {
         let filtered = records.filter { $0.proxy != record.proxy }
         let orgGroup = RecordGroup(type: .organization, records: filtered.filter { $0.type == .organization })
         let artGroup = RecordGroup(type: .artifact, records: filtered.filter { $0.type == .artifact })
@@ -175,7 +175,7 @@ class TestingDataManager {
         }
     }
 
-    private func proxies(for records: [RecordDisplayable]?) -> Set<RecordProxy> {
+    private func proxies(for records: [Record]?) -> Set<RecordProxy> {
         let proxies = records?.map { $0.proxy } ?? []
         return Set(proxies)
     }
@@ -191,7 +191,7 @@ class TestingDataManager {
 }
 
 
-private class Record: Hashable, RecordDisplayable {
+private class TestRecord: Hashable, Record {
     let id: Int
     let type: RecordType
 
@@ -212,7 +212,7 @@ private class Record: Hashable, RecordDisplayable {
         return id.hashValue
     }
 
-    static func == (lhs: Record, rhs: Record) -> Bool {
+    static func == (lhs: TestRecord, rhs: TestRecord) -> Bool {
         return lhs.id == rhs.id
     }
 }

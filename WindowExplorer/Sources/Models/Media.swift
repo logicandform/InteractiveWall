@@ -18,7 +18,7 @@ enum MediaType {
         switch url.pathExtension {
         case "jpg", "png", "tiff":
             self = .image
-        case "m4v", "mov":
+        case "m4v", "mov", "mp4":
             self = .video
         case "pdf":
             self = .pdf

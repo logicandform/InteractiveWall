@@ -33,7 +33,7 @@ private struct Constants {
 }
 
 
-protocol RecordDisplayable {
+protocol Record {
     var id: Int { get }
     var title: String { get }
     var type: RecordType { get }
@@ -48,21 +48,21 @@ protocol RecordDisplayable {
 
 struct RecordGroup {
     let type: RecordType
-    let records: [RecordDisplayable]
+    let records: [Record]
 }
 
 
-extension RecordDisplayable {
+extension Record {
 
     var proxy: RecordProxy {
         return RecordProxy(id: id, type: type)
     }
 
-    var relatedRecords: [RecordDisplayable] {
+    var relatedRecords: [Record] {
         return recordGroups.reduce([]) { $0 + $1.records }
     }
 
-    func relatedRecords(of type: RecordType) -> [RecordDisplayable] {
+    func relatedRecords(of type: RecordType) -> [Record] {
         if let recordGroup = recordGroups.first(where: { $0.type == type }) {
             return recordGroup.records
         }
@@ -70,7 +70,7 @@ extension RecordDisplayable {
         return []
     }
 
-    func relatedRecords(of type: RecordFilterType) -> [RecordDisplayable] {
+    func relatedRecords(of type: RecordFilterType) -> [Record] {
         if let recordType = type.recordType {
             return relatedRecords(of: recordType)
         } else if type == .all {
@@ -85,7 +85,7 @@ extension RecordDisplayable {
         }
     }
 
-    func filterRelatedRecords(of type: RecordFilterType, from records: [RecordDisplayable]) -> [RecordDisplayable] {
+    func filterRelatedRecords(of type: RecordFilterType, from records: [Record]) -> [Record] {
         if let recordType = type.recordType {
             return records.filter { $0.type == recordType }
         }
@@ -98,7 +98,7 @@ extension RecordDisplayable {
         }
     }
 
-    func relatedRecordsContainingImages() -> [RecordDisplayable] {
+    func relatedRecordsContainingImages() -> [Record] {
         return relatedRecords.filter { $0.containsImages() }
     }
 
@@ -214,7 +214,7 @@ extension RecordDisplayable {
     }
 }
 
-extension Event: RecordDisplayable {
+extension Event: Record {
 
     var recordGroups: [RecordGroup] {
         let schoolGroup = RecordGroup(type: .school, records: relatedSchools)
@@ -226,7 +226,7 @@ extension Event: RecordDisplayable {
     }
 }
 
-extension Artifact: RecordDisplayable {
+extension Artifact: Record {
 
     var textFields: [NSTextField] {
         var labels = [NSTextField]()
@@ -260,7 +260,7 @@ extension Artifact: RecordDisplayable {
     }
 }
 
-extension Organization: RecordDisplayable {
+extension Organization: Record {
 
     var date: String? {
         return nil
@@ -276,7 +276,7 @@ extension Organization: RecordDisplayable {
     }
 }
 
-extension School: RecordDisplayable {
+extension School: Record {
 
     var recordGroups: [RecordGroup] {
         let schoolGroup = RecordGroup(type: .school, records: relatedSchools)
@@ -288,7 +288,7 @@ extension School: RecordDisplayable {
     }
 }
 
-extension Theme: RecordDisplayable {
+extension Theme: Record {
 
     var date: String? {
         return nil

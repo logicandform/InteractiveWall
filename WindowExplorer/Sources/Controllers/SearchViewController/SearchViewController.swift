@@ -270,7 +270,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         // Set the highlighted state of view
         if searchItemView.collectionView != tertiaryCollectionView {
             searchItemView.set(highlighted: searchItemView.item.title == selectedGroup)
-        } else if let record = searchItems.at(index: indexPath.item) as? RecordDisplayable {
+        } else if let record = searchItems.at(index: indexPath.item) as? Record {
             searchItemView.set(highlighted: isSelected(record))
         }
 
@@ -330,7 +330,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
         switch collectionView {
         case tertiaryCollectionView:
-            if let record = item.item as? RecordDisplayable {
+            if let record = item.item as? Record {
                 selectedRecords.insert(RecordProxy(id: record.id, type: record.type))
             }
         case primaryCollectionView:
@@ -398,7 +398,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
                 load(schools, group: province.abbreviation, searchItem: view)
             }
         case tertiaryCollectionView:
-            if let record = view.item as? RecordDisplayable {
+            if let record = view.item as? Record {
                 display(record)
             }
         default:
@@ -458,7 +458,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     }
 
     /// Loads records into and toggles the tertiary collection view, from intermediary group
-    private func load(_ records: [RecordDisplayable], group: String, searchItem: SearchItemView) {
+    private func load(_ records: [Record], group: String, searchItem: SearchItemView) {
         guard let selectedType = selectedType, searchItem.item.title == selectedGroup else {
             return
         }
@@ -471,7 +471,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         toggle(to: tertiaryCollectionView)
     }
 
-    private func display(_ record: RecordDisplayable) {
+    private func display(_ record: Record) {
         RecordFactory.record(for: record.type, id: record.id) { [weak self] record in
             if let record = record {
                 self?.relationshipHelper.display(WindowType.record(record))
@@ -488,7 +488,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         windowDragAreaHighlight.layer?.backgroundColor = recordType.color.cgColor
     }
 
-    private func isSelected(_ record: RecordDisplayable) -> Bool {
+    private func isSelected(_ record: Record) -> Bool {
         let recordProxy = RecordProxy(id: record.id, type: record.type)
         return selectedRecords.contains(recordProxy)
     }
@@ -508,7 +508,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         selectedRecords.remove(recordProxy)
 
         for view in tertiaryCollectionView.visibleItems().compactMap({ $0 as? SearchItemView }) {
-            if let record = view.item as? RecordDisplayable {
+            if let record = view.item as? Record {
                 let recordProxy = RecordProxy(id: record.id, type: record.type)
                 view.set(highlighted: selectedRecords.contains(recordProxy))
             }

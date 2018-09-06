@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="d75-j9-9Ky">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Info View Controller-->
+        <scene sceneID="dBK-aD-E6k">
+            <objects>
+                <viewController id="d75-j9-9Ky" customClass="InfoViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="YEQ-Hb-AYS">
+                        <rect key="frame" x="0.0" y="0.0" width="500" height="800"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="tdf-F3-S6C" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="500" height="800"/>
+                                <clipView key="contentView" drawsBackground="NO" id="y4f-pW-mZI">
+                                    <rect key="frame" x="0.0" y="0.0" width="500" height="800"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <collectionView id="y0x-55-DgY">
+                                            <rect key="frame" x="0.0" y="0.0" width="500" height="800"/>
+                                            <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
+                                            <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" id="xsp-KK-kEW">
+                                                <size key="itemSize" width="50" height="50"/>
+                                            </collectionViewFlowLayout>
+                                            <color key="primaryBackgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <connections>
+                                                <outlet property="dataSource" destination="d75-j9-9Ky" id="Jmv-AK-yw9"/>
+                                                <outlet property="delegate" destination="d75-j9-9Ky" id="rdl-fi-Pjt"/>
+                                            </connections>
+                                        </collectionView>
+                                    </subviews>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </clipView>
+                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="zOF-p6-fVF">
+                                    <rect key="frame" x="-100" y="-100" width="398" height="16"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="mDA-El-UDL">
+                                    <rect key="frame" x="-100" y="-100" width="16" height="263"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="6RX-75-PTJ">
+                                <rect key="frame" x="0.0" y="479" width="500" height="281"/>
+                                <subviews>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="HQE-9P-TgY">
+                                        <rect key="frame" x="0.0" y="0.0" width="500" height="40"/>
+                                        <subviews>
+                                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="ZBP-MK-oH9">
+                                                <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="ZBP-MK-oH9" secondAttribute="height" multiplier="1:1" id="r2u-lf-5xf"/>
+                                                </constraints>
+                                            </customView>
+                                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="ccU-RN-9cA">
+                                                <rect key="frame" x="460" y="0.0" width="40" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="ccU-RN-9cA" secondAttribute="height" multiplier="1:1" id="9CV-aL-vhS"/>
+                                                </constraints>
+                                            </customView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="ccU-RN-9cA" secondAttribute="bottom" id="2M3-Ya-Cv1"/>
+                                            <constraint firstAttribute="bottom" secondItem="ZBP-MK-oH9" secondAttribute="bottom" id="98A-YI-tcs"/>
+                                            <constraint firstItem="ZBP-MK-oH9" firstAttribute="top" secondItem="HQE-9P-TgY" secondAttribute="top" id="Gzr-9E-2Ou"/>
+                                            <constraint firstItem="ccU-RN-9cA" firstAttribute="top" secondItem="HQE-9P-TgY" secondAttribute="top" id="HuH-8g-ASL"/>
+                                            <constraint firstAttribute="height" constant="40" id="hRk-cX-wes"/>
+                                            <constraint firstItem="ZBP-MK-oH9" firstAttribute="leading" secondItem="HQE-9P-TgY" secondAttribute="leading" id="nKq-vv-AnQ"/>
+                                            <constraint firstAttribute="trailing" secondItem="ccU-RN-9cA" secondAttribute="trailing" id="rj0-1y-kvK"/>
+                                        </constraints>
+                                    </customView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="HQE-9P-TgY" firstAttribute="leading" secondItem="6RX-75-PTJ" secondAttribute="leading" id="1RE-Du-Oy0"/>
+                                    <constraint firstAttribute="bottom" secondItem="HQE-9P-TgY" secondAttribute="bottom" id="EFH-DM-PMG"/>
+                                    <constraint firstAttribute="width" secondItem="6RX-75-PTJ" secondAttribute="height" multiplier="16:9" id="Usg-f9-t2W"/>
+                                    <constraint firstAttribute="trailing" secondItem="HQE-9P-TgY" secondAttribute="trailing" id="oyW-ve-rY8"/>
+                                </constraints>
+                            </customView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="6RX-75-PTJ" firstAttribute="leading" secondItem="YEQ-Hb-AYS" secondAttribute="leading" id="45e-qs-luc"/>
+                            <constraint firstAttribute="trailing" secondItem="6RX-75-PTJ" secondAttribute="trailing" id="73E-eA-4M5"/>
+                            <constraint firstItem="tdf-F3-S6C" firstAttribute="leading" secondItem="YEQ-Hb-AYS" secondAttribute="leading" id="FeZ-32-XjI"/>
+                            <constraint firstAttribute="trailing" secondItem="tdf-F3-S6C" secondAttribute="trailing" id="HwZ-pr-WeU"/>
+                            <constraint firstItem="tdf-F3-S6C" firstAttribute="top" secondItem="YEQ-Hb-AYS" secondAttribute="top" id="JqM-OO-ESX"/>
+                            <constraint firstItem="6RX-75-PTJ" firstAttribute="top" secondItem="YEQ-Hb-AYS" secondAttribute="top" constant="40" id="PiS-bR-3Bc"/>
+                            <constraint firstAttribute="bottom" secondItem="tdf-F3-S6C" secondAttribute="bottom" id="XyJ-nw-FmT"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="infoClipView" destination="y4f-pW-mZI" id="f7R-aU-aAY"/>
+                        <outlet property="infoCollectionView" destination="y0x-55-DgY" id="Kgy-Kn-Sxq"/>
+                        <outlet property="infoScrollView" destination="tdf-F3-S6C" id="x6B-tW-gsv"/>
+                        <outlet property="playerControlArea" destination="HQE-9P-TgY" id="xOD-ol-Hf5"/>
+                        <outlet property="toggleButtonArea" destination="ZBP-MK-oH9" id="gwk-3h-kvg"/>
+                        <outlet property="volumeButtonArea" destination="ccU-RN-9cA" id="fGW-Oe-fKB"/>
+                    </connections>
+                </viewController>
+                <customObject id="9ex-fm-FHx" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="74" y="86"/>
+        </scene>
+    </scenes>
+</document>

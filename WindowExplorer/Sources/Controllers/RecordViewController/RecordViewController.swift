@@ -29,9 +29,9 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     @IBOutlet weak var expandImageView: NSImageView!
     @IBOutlet weak var arrowIndicatorContainerView: NSView!
 
-    var record: RecordDisplayable!
+    var record: Record!
     private let relationshipHelper = RelationshipHelper()
-    private var relatedRecords: [RecordDisplayable]!
+    private var relatedRecords: [Record]!
     private var pageControl = PageControl()
     private var showingRelatedItems = false
     private var relatedItemsFilterType = RecordFilterType.all
@@ -83,7 +83,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         detailView.wantsLayer = true
         detailView.layer?.backgroundColor = style.darkBackground.cgColor
         relatedItemsHeader.wantsLayer = true
-        relatedItemsHeader.layer?.backgroundColor = style.darkBackground.cgColor
+        relatedItemsHeader.layer?.backgroundColor = style.darkBackgroundOpaque.cgColor
         relatedItemsHeaderHighlight.wantsLayer = true
         relatedItemsHeaderHighlight.layer?.backgroundColor = record.type.color.cgColor
         windowDragAreaHighlight.layer?.backgroundColor = record.type.color.cgColor
@@ -193,8 +193,40 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         stackView.edgeInsets = stackViewEdgeInsets
         stackScrollView.updateGradient()
 
-        for label in record.textFields {
-            stackView.insertView(label, at: stackView.subviews.count, in: .top)
+        let titleAttributedString = NSAttributedString(string: record.title, attributes: style.recordLargeTitleAttributes)
+        let titleTextField = textField(for: titleAttributedString)
+        stackView.insertView(titleTextField, at: stackView.subviews.count, in: .top)
+        stackView.setCustomSpacing(style.largeTitleTrailingSpace, after: titleTextField)
+
+        if let date = record.date, let firstDate = date.split(separator: "|").first?.description {
+            var dateAttributes = style.recordDateAttributes
+            dateAttributes[.foregroundColor] = record.type.color
+            let dateAttributedString = NSAttributedString(string: firstDate, attributes: dateAttributes)
+            let dateTextField = textField(for: dateAttributedString)
+            stackView.insertView(dateTextField, at: stackView.subviews.count, in: .top)
+            stackView.setCustomSpacing(style.dateTrailingSpace, after: dateTextField)
+        }
+
+        if let description = record.description, !description.isEmpty {
+            let descriptionHeaderAttributedString = NSAttributedString(string: "Description", attributes: style.recordSmallHeaderAttributes)
+            let descriptionHeaderTextField = textField(for: descriptionHeaderAttributedString)
+            stackView.insertView(descriptionHeaderTextField, at: stackView.subviews.count, in: .top)
+            stackView.setCustomSpacing(style.smallHeaderTrailingSpace, after: descriptionHeaderTextField)
+            let descriptionAttributedString = NSAttributedString(string: description, attributes: style.recordDescriptionAttributes)
+            let descriptionTextField = textField(for: descriptionAttributedString)
+            stackView.insertView(descriptionTextField, at: stackView.subviews.count, in: .top)
+            stackView.setCustomSpacing(style.descriptionTrailingSpace, after: descriptionTextField)
+        }
+
+        if let comments = record.comments, !comments.isEmpty {
+            let commentsHeaderAttributedString = NSAttributedString(string: "Curatorial Comments", attributes: style.recordSmallHeaderAttributes)
+            let commentsHeaderTextField = textField(for: commentsHeaderAttributedString)
+            stackView.insertView(commentsHeaderTextField, at: stackView.subviews.count, in: .top)
+            stackView.setCustomSpacing(style.smallHeaderTrailingSpace, after: commentsHeaderTextField)
+            let commentsAttributedString = NSAttributedString(string: comments, attributes: style.recordDescriptionAttributes)
+            let commentsTextField = textField(for: commentsAttributedString)
+            stackView.insertView(commentsTextField, at: stackView.subviews.count, in: .top)
+            stackView.setCustomSpacing(style.descriptionTrailingSpace, after: commentsTextField)
         }
     }
 
@@ -582,7 +614,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
     }
 
-    private func selectRelatedRecord(_ record: RecordDisplayable) {
+    private func selectRelatedRecord(_ record: Record) {
         guard let window = view.window, showingRelatedItems else {
             return
         }
@@ -709,5 +741,13 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         relatedRecordsHeightConstraint.constant = height > maxHeight ? maxHeight : height
         relatedRecordScrollView.updateGradient(forced: true, height: height)
         view.layoutSubtreeIfNeeded()
+    }
+
+    private func textField(for attributedString: NSAttributedString) -> NSTextField {
+        let label = NSTextField(labelWithAttributedString: attributedString)
+        label.drawsBackground = false
+        label.isBordered = false
+        label.isSelectable = false
+        return label
     }
 }

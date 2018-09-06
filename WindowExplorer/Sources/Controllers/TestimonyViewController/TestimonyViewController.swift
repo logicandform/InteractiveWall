@@ -201,7 +201,7 @@ class TestimonyViewController: BaseViewController, NSCollectionViewDelegateFlowL
 
     // MARK: Helpers
 
-    private func load(_ records: [RecordDisplayable]) {
+    private func load(_ records: [Record]) {
         let media = records.reduce(Set<Media>()) { media, record -> Set<Media> in
             let recordMedia = Set<Media>(record.media)
             return media.union(recordMedia)

@@ -12,7 +12,7 @@ class RelatedItemListView: RelatedItemView {
 
     // MARK: Overrides
 
-    override func load(_ record: RecordDisplayable?) {
+    override func load(_ record: Record?) {
         guard let record = record else {
             return
         }

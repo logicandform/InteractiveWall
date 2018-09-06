@@ -15,8 +15,8 @@ typealias RelatedLevels = [Set<RecordProxy>]
 final class DataManager {
     static let instance = DataManager()
 
-    private(set) var records = [RecordDisplayable]()
-    private(set) var recordForProxy = [RecordProxy: RecordDisplayable]()
+    private(set) var records = [Record]()
+    private(set) var recordForProxy = [RecordProxy: Record]()
     private(set) var relativesForProxy = [RecordProxy: Set<RecordProxy>]()
     private(set) var relatedLevelsForProxy = [RecordProxy: RelatedLevels]()
 
@@ -53,7 +53,7 @@ final class DataManager {
 
     // MARK: Helpers
 
-    private func store(_ records: [RecordDisplayable]?) {
+    private func store(_ records: [Record]?) {
         if let records = records {
             self.records.append(contentsOf: records)
             for record in records {
@@ -155,7 +155,7 @@ final class DataManager {
         return false
     }
 
-    private func proxies(for records: [RecordDisplayable]?) -> Set<RecordProxy> {
+    private func proxies(for records: [Record]?) -> Set<RecordProxy> {
         let proxies = records?.map { $0.proxy } ?? []
         return Set(proxies)
     }

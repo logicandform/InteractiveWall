@@ -13,7 +13,7 @@ class RecordRenderComponent: GKComponent {
 
     // MARK: Initializer
 
-    init(record: RecordDisplayable) {
+    init(record: Record) {
         self.recordNode = RecordNode(record: record)
         super.init()
     }

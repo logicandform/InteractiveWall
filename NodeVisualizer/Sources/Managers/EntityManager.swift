@@ -38,7 +38,7 @@ final class EntityManager {
     // MARK: API
 
     /// Creates and stores record entities from all records from database
-    func createEntity(record: RecordDisplayable, levels: RelatedLevels) {
+    func createEntity(record: Record, levels: RelatedLevels) {
         let entity = RecordEntity(record: record, levels: levels)
         store(entity)
         addComponents(to: entity)

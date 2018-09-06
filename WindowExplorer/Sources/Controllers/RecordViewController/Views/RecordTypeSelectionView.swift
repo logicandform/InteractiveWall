@@ -30,7 +30,7 @@ class RecordTypeSelectionView: NSView {
 
     // MARK: API
 
-    func initialize(with record: RecordDisplayable, manager: GestureManager) {
+    func initialize(with record: Record, manager: GestureManager) {
         let filterTypesForRecord = RecordFilterType.allValues.filter { !record.relatedRecords(of: $0).isEmpty }
         filterTypesForRecord.forEach { type in
             // Use two views to increase hit area of image while image is centered

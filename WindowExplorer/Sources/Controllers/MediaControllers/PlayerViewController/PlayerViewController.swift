@@ -14,10 +14,6 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
 
     private var audioPlayer: AKPlayer?
 
-    private struct Constants {
-        static let audioSyncInterval = 1.0 / 30.0
-    }
-
 
     // MARK: Life-cycle
 
@@ -96,6 +92,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         let player = AVPlayer(url: url)
         player.isMuted = true
         playerView.player = player
+
         scheduleAudioSegment()
 
         playerControl.player = player
@@ -114,7 +111,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         }
 
         let time = player.currentTime()
-        audioPlayer?.schedule(at: time, duration: Constants.audioSyncInterval) { [weak self] in
+        audioPlayer?.schedule(at: time, duration: style.audioSyncInterval) { [weak self] in
             DispatchQueue.global(qos: .default).async {
                 self?.scheduleAudioSegment()
             }
@@ -155,12 +152,10 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
             playerStateImageView.image = image
         }
 
-        playerControl.toggleButton.image = state.smallImage
         let playerStateAlpha: CGFloat = state == .playing ? 0 : 1
-
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = 1.0
-            playerStateImageView.animator().alphaValue = playerStateAlpha
+        NSAnimationContext.runAnimationGroup({ [weak self] _ in
+            NSAnimationContext.current.duration = 1
+            self?.playerStateImageView.animator().alphaValue = playerStateAlpha
         })
 
         resetCloseWindowTimer()

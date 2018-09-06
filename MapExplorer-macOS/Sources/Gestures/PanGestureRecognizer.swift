@@ -14,9 +14,10 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     private var timeOfLastUpdate = Date()
     private var positionForTouch = [Touch: CGPoint]()
     private var cumulativeDelta = CGVector.zero
+    private var recognizedThreshold = Constants.defaultRecognizedThreshold
 
     private struct Constants {
-        static let recognizedThreshold: CGFloat = 20
+        static let defaultRecognizedThreshold: CGFloat = 20
         static let minimumFingers = 1
         static let minimumDeltaUpdateThreshold = 4.0
         static let gesturePausedTime = 0.1
@@ -31,6 +32,11 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
         self.momentumTimer = DispatchTimer(interval: .milliseconds(miliseconds), handler: { [weak self] in
             self?.updateMomentum()
         })
+    }
+
+    convenience init(recognizedThreshold: CGFloat) {
+        self.init()
+        self.recognizedThreshold = recognizedThreshold
     }
 
 
@@ -81,7 +87,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
     func shouldStart(with touch: Touch, from startPosition: CGPoint) -> Bool {
         let dx = Float(touch.position.x - startPosition.x)
         let dy = Float(touch.position.y - startPosition.y)
-        return CGFloat(hypotf(dx, dy).magnitude) > Constants.recognizedThreshold
+        return CGFloat(hypotf(dx, dy).magnitude) > recognizedThreshold
     }
 
     /// Sets gesture properties during a move event and calls `gestureUpdated` callback

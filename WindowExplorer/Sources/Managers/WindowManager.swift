@@ -87,7 +87,7 @@ final class WindowManager {
         }
     }
 
-    private func display(_ record: RecordDisplayable, at origin: CGPoint, forMap map: Int) {
+    private func display(_ record: Record, at origin: CGPoint, forMap map: Int) {
         let info = RecordInfo(id: record.id, map: map, type: record.type)
 
         if let controller = controllerForRecord[info] as? RecordViewController {

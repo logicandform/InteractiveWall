@@ -9,3 +9,10 @@ extension Collection {
         return indices.contains(index) ? self[index] : nil
     }
 }
+
+extension IndexPath {
+
+    static var zero: IndexPath {
+        return IndexPath(item: 0, section: 0)
+    }
+}

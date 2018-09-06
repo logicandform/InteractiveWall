@@ -10,7 +10,7 @@ class RelatedItemView: NSCollectionViewItem {
     @IBOutlet weak var mediaImageView: ImageView!
 
     var tintColor = style.selectedColor
-    var record: RecordDisplayable? {
+    var record: Record? {
         didSet {
             load(record)
         }
@@ -49,7 +49,7 @@ class RelatedItemView: NSCollectionViewItem {
 
     // MARK: Helpers
 
-    func load(_ record: RecordDisplayable?) {
+    func load(_ record: Record?) {
         guard let record = record else {
             return
         }

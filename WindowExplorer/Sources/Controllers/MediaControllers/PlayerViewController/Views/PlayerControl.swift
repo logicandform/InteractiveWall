@@ -47,7 +47,7 @@ class PlayerControl: NSView {
         }
     }
 
-    private var currentTime: CMTime = CMTime() {
+    private var currentTime = CMTime() {
         didSet {
             updateControl(for: currentTime)
         }
@@ -55,6 +55,7 @@ class PlayerControl: NSView {
 
     private(set) var state = PlayerState.paused {
         didSet {
+            toggleButton.image = state.smallImage
             delegate?.playerChangedState(state)
         }
     }
@@ -78,6 +79,29 @@ class PlayerControl: NSView {
 
     // MARK: API
 
+    func set(_ newState: PlayerState) {
+        if state == newState {
+            return
+        }
+
+        switch newState {
+        case .playing:
+            state = .playing
+            player?.play()
+        case .paused:
+            state = .paused
+            player?.pause()
+        case .finished:
+            return
+        }
+    }
+
+    func set(volume level: VolumeLevel) {
+        volume = level
+        volumeButton.image = volume.image
+        delegate?.playerChangedVolume(volume)
+    }
+
     func toggle() {
         if scrubbing {
             return
@@ -96,6 +120,19 @@ class PlayerControl: NSView {
         }
     }
 
+    func toggleVolume() {
+        switch volume {
+        case .mute:
+            set(volume: .low)
+        case .low:
+            set(volume: .medium)
+        case .medium:
+            set(volume: .high)
+        case .high:
+            set(volume: .mute)
+        }
+    }
+
 
     // MARK: Setup
 
@@ -110,7 +147,6 @@ class PlayerControl: NSView {
         }
 
         volumeButton.image = volume.image
-        delegate?.playerChangedVolume(volume)
 
         player.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1, 1), queue: DispatchQueue.main) { [weak self] time in
             self?.currentTime = time
@@ -118,7 +154,7 @@ class PlayerControl: NSView {
     }
 
     private func setupGestures() {
-        let scrubGesture = PanGestureRecognizer()
+        let scrubGesture = PanGestureRecognizer(recognizedThreshold: 0)
         gestureManager.add(scrubGesture, to: contentView)
         scrubGesture.gestureUpdated = { [weak self] gesture in
             self?.didScrubControl(gesture)
@@ -140,7 +176,7 @@ class PlayerControl: NSView {
 
     // MARK: Gestures
 
-    private func didScrubControl(_ gesture: GestureRecognizer) {
+    func didScrubControl(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer, let position = pan.lastLocation else {
             return
         }
@@ -197,22 +233,6 @@ class PlayerControl: NSView {
 
     private func seek(to time: CMTime) {
         player?.seek(to: time, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
-    }
-
-    private func toggleVolume() {
-        switch volume {
-        case .mute:
-            volume = .low
-        case .low:
-            volume = .medium
-        case .medium:
-            volume = .high
-        case .high:
-            volume = .mute
-        }
-
-        volumeButton.image = volume.image
-        delegate?.playerChangedVolume(volume)
     }
 
     private func string(for time: CMTime) -> String? {

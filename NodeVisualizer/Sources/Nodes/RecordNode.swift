@@ -7,7 +7,7 @@ import AlamofireImage
 
 class RecordNode: SKSpriteNode {
 
-    private(set) var record: RecordDisplayable
+    private(set) var record: Record
     private(set) var titleNode: SKLabelNode!
 
     private struct Constants {
@@ -19,7 +19,7 @@ class RecordNode: SKSpriteNode {
 
     // MARK: Initializers
 
-    init(record: RecordDisplayable) {
+    init(record: Record) {
         self.record = record
         super.init(texture: nil, color: .clear, size: .zero)
         makeNodes(for: record)
@@ -32,7 +32,7 @@ class RecordNode: SKSpriteNode {
 
     // MARK: Helpers
 
-    private func makeNodes(for record: RecordDisplayable) {
+    private func makeNodes(for record: Record) {
         texture = SKTexture(imageNamed: Constants.textureImageName)
         color = record.type.color
         colorBlendFactor = 1
@@ -42,7 +42,7 @@ class RecordNode: SKSpriteNode {
         addImageNode(for: record)
     }
 
-    private func addImageNode(for record: RecordDisplayable) {
+    private func addImageNode(for record: Record) {
         guard let media = record.media.first else {
             return
         }
@@ -56,7 +56,7 @@ class RecordNode: SKSpriteNode {
         }
     }
 
-    private func addTitleNode(for record: RecordDisplayable) {
+    private func addTitleNode(for record: Record) {
         titleNode = SKLabelNode()
         titleNode.text = record.id.description
         titleNode.verticalAlignmentMode = .center

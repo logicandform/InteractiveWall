@@ -201,8 +201,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
             return nil
         }
 
-        let indexPath = IndexPath(item: 0, section: 0)
-        let attributes = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: TimelineBorderView.supplementaryKind, with: indexPath)
+        let attributes = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: TimelineBorderView.supplementaryKind, with: .zero)
         let x = CGFloat(source.years.count * type.sectionWidth)
         attributes.frame = CGRect(x: x, y: style.timelineHeaderHeight, width: style.timelineBorderWidth, height: collectionView.frame.height)
         return attributes

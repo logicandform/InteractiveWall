@@ -37,7 +37,7 @@ enum EntityState: Equatable {
 
 final class RecordEntity: GKEntity {
 
-    let record: RecordDisplayable
+    let record: Record
     let relatedRecordsForLevel: RelatedLevels
     let relatedRecords: Set<RecordProxy>
     var hasCollidedWithLayer = false
@@ -109,7 +109,7 @@ final class RecordEntity: GKEntity {
 
     // MARK: Initializer
 
-    init(record: RecordDisplayable, levels: RelatedLevels) {
+    init(record: Record, levels: RelatedLevels) {
         self.record = record
         self.relatedRecordsForLevel = levels
         var relatedRecords = Set<RecordProxy>()

@@ -42,7 +42,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     private var mergeLocked = false
     private var scrollThresholdAchieved = false
     private var settingsMenu: SettingsMenuViewController!
-    private var infoMenu: InfoMenuViewController!
+    private var infoMenu: InfoViewController!
     private var searchMenu: SearchViewController?
     private var testimonyController: TestimonyViewController?
 
@@ -172,7 +172,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     }
 
     private func setupInfoMenu() {
-        infoMenu = WindowManager.instance.display(.info, at: position(for: informationButton, frame: style.infoWindowSize, margins: false)) as? InfoMenuViewController
+        infoMenu = WindowManager.instance.display(.info, at: position(for: informationButton, frame: style.infoWindowSize, margins: false)) as? InfoViewController
         infoMenu.view.isHidden = true
     }
 

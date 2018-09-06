@@ -4,12 +4,22 @@ import Foundation
 import CoreGraphics
 import AppKit
 
+
+extension CGFloat {
+
+    var isZero: Bool {
+        return self == 0
+    }
+}
+
+
 extension CGRect {
 
     func transformed(from rect: CGRect) -> CGRect {
         return CGRect(origin: origin.transformed(from: rect), size: size)
     }
 }
+
 
 extension CGPoint {
 
@@ -118,6 +128,7 @@ extension CGPoint {
     }
 }
 
+
 extension CGVector {
 
     var asPoint: CGPoint {
@@ -163,6 +174,7 @@ extension CGVector {
         lhs.dy += rhs.dy
     }
 }
+
 
 extension CGSize {
 

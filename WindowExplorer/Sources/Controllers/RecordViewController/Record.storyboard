@@ -139,15 +139,15 @@
                                                 <view placeholderIntrinsicWidth="380" placeholderIntrinsicHeight="310" translatesAutoresizingMaskIntoConstraints="NO" id="Bws-Xv-6hl">
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="310"/>
                                                     <subviews>
-                                                        <stackView distribution="equalSpacing" orientation="vertical" alignment="leading" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" placeholderIntrinsicWidth="404" placeholderIntrinsicHeight="310" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RgY-ah-SAv">
-                                                            <rect key="frame" x="18" y="0.0" width="378" height="310"/>
+                                                        <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" placeholderIntrinsicWidth="404" placeholderIntrinsicHeight="310" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RgY-ah-SAv">
+                                                            <rect key="frame" x="20" y="0.0" width="374" height="310"/>
                                                         </stackView>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstAttribute="bottom" secondItem="RgY-ah-SAv" secondAttribute="bottom" id="JOA-OM-fl4"/>
                                                         <constraint firstItem="RgY-ah-SAv" firstAttribute="top" secondItem="Bws-Xv-6hl" secondAttribute="top" id="fk8-fy-WkI"/>
-                                                        <constraint firstAttribute="trailing" secondItem="RgY-ah-SAv" secondAttribute="trailing" constant="18" id="hGQ-8M-xcw"/>
-                                                        <constraint firstItem="RgY-ah-SAv" firstAttribute="leading" secondItem="Bws-Xv-6hl" secondAttribute="leading" constant="18" id="x6m-kL-q2x"/>
+                                                        <constraint firstAttribute="trailing" secondItem="RgY-ah-SAv" secondAttribute="trailing" constant="20" id="hGQ-8M-xcw"/>
+                                                        <constraint firstItem="RgY-ah-SAv" firstAttribute="leading" secondItem="Bws-Xv-6hl" secondAttribute="leading" constant="20" id="x6m-kL-q2x"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>

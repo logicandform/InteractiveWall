@@ -58,8 +58,8 @@ final class WindowFactory {
             let storyboard = NSStoryboard(name: SettingsMenuViewController.storyboard, bundle: .main)
             return storyboard.instantiateInitialController() as! SettingsMenuViewController
         case .info:
-            let storyboard = NSStoryboard(name: InfoMenuViewController.storyboard, bundle: .main)
-            return storyboard.instantiateInitialController() as! InfoMenuViewController
+            let storyboard = NSStoryboard(name: InfoViewController.storyboard, bundle: .main)
+            return storyboard.instantiateInitialController() as! InfoViewController
         case .border:
             let storyboard = NSStoryboard(name: BorderViewController.storyboard, bundle: .main)
             return storyboard.instantiateInitialController() as! BorderViewController

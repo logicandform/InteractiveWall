@@ -5,6 +5,7 @@ import AppKit
 
 final class Style {
 
+    // Colors
     let darkBackground = NSColor.black.withAlphaComponent(0.85)
     let darkBackgroundOpaque = NSColor.black
     let selectedColor = NSColor(calibratedRed: 0, green: 200/255, blue: 1, alpha: 1)
@@ -15,6 +16,8 @@ final class Style {
     let eventColor = NSColor(calibratedRed: 145/255, green: 18/255, blue: 88/255, alpha: 1)
     let organizationColor = NSColor(calibratedRed: 16/255, green: 147/255, blue: 79/255, alpha: 1)
     let testimonyColor = NSColor(calibratedRed: 0.96, green: 0.51, blue: 0.07, alpha: 1)
+    let menuSelectedColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
+    let menuUnselectedColor = NSColor(calibratedRed: 1, green: 1, blue: 1, alpha: 1)
 
     // Windows
     let recordWindowSize = CGSize(width: 416, height: 650)
@@ -22,14 +25,21 @@ final class Style {
     let pdfWindowSize = CGSize(width: 600, height: 640)
     let playerWindowSize = CGSize(width: 640, height: 440)
     let searchWindowFrame = CGSize(width: 350, height: 655)
-    let searchScrollViewSize = CGSize(width: 350, height: 600)
+    let searchScrollViewSize = CGSize(width: 360, height: 600)
     let borderWindowSize = NSSize(width: 4, height: 2160)
     let testimonyWindowSize = CGSize(width: 416, height: 579)
+    let infoWindowSize = CGSize(width: 500, height: 800)
     let minMediaWindowWidth: CGFloat = 550
     let maxMediaWindowWidth: CGFloat = 700
     let minMediaWindowHeight: CGFloat = 275
     let maxMediaWindowHeight: CGFloat = 1500
     let windowMargins: CGFloat = 20
+
+    // Text
+    let largeTitleTrailingSpace: CGFloat = 6
+    let dateTrailingSpace: CGFloat = 20
+    let smallHeaderTrailingSpace: CGFloat = 4
+    let descriptionTrailingSpace: CGFloat = 10
 
     // Controllers
     let controllerOffset = 50
@@ -49,8 +59,6 @@ final class Style {
     // Menu Controller
     let menuWindowSize = CGSize(width: 50, height: 2160)
     let menuImageSize = CGSize(width: 50, height: 50)
-    let menuSelectedColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
-    let menuUnselectedColor = NSColor(calibratedRed: 1, green: 1, blue: 1, alpha: 1)
     let menuLockIconPosition = CGPoint(x: -3, y: 3)
     let menuSecondarySelectedColor = NSColor(calibratedRed: 0.06, green: 0.28, blue: 0.24, alpha: 1)
     let menuAccessibilityIconColor = NSColor(calibratedRed: 0, green: 0, blue: 0, alpha: 1)
@@ -65,11 +73,6 @@ final class Style {
     let toggleSecondaryUnselectedColor = NSColor(calibratedRed: 0.16, green: 0.18, blue: 0.19, alpha: 1)
     let toggleSwitchFrame = NSRect(x: 0, y: 0, width: 32, height: 16)
 
-    // Info Controller
-    let infoWindowSize = CGSize(width: 500, height: 600)
-    let infoMenuItemEdgeInset: CGFloat = 10
-    let infoMenuItemBuffer: CGFloat = 15
-
     // Border Controller
     let borderColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
 
@@ -81,6 +84,8 @@ final class Style {
     let movingWindowLevel = NSWindow.Level(31)
     let staticWindowLevel = NSWindow.Level(32)
 
+    // Audio
+    let audioSyncInterval = 1.0 / 30.0
 
     // Titles
     var windowTitleAttributes: [NSAttributedStringKey: Any] {
@@ -137,5 +142,57 @@ final class Style {
                 .foregroundColor: NSColor.white,
                 .font: font,
                 .baselineOffset: 0]
+    }
+
+    var recordLargeTitleAttributes: [NSAttributedStringKey: Any] {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 0
+        paragraphStyle.maximumLineHeight = 33
+        let font = NSFont(name: "Soleil", size: 28) ?? NSFont.systemFont(ofSize: 28)
+        return [.paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: NSColor.white,
+                .kern: 0.5
+        ]
+    }
+
+    var recordDateAttributes: [NSAttributedStringKey: Any] {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 0
+        paragraphStyle.paragraphSpacingBefore = 0
+        let font = NSFont(name: "Soleil", size: 14) ?? NSFont.systemFont(ofSize: 14)
+        return [.paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: NSColor.white,
+                .kern: 0.5
+        ]
+    }
+
+    var recordSmallHeaderAttributes: [NSAttributedStringKey: Any] {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 0
+        paragraphStyle.lineBreakMode = .byWordWrapping
+        paragraphStyle.paragraphSpacing = 0
+        paragraphStyle.paragraphSpacingBefore = 20
+        let font = NSFont(name: "Soleil", size: 12) ?? NSFont.systemFont(ofSize: 12)
+        return [.paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: NSColor.white,
+                .kern: 0.5
+        ]
+    }
+
+    var recordDescriptionAttributes: [NSAttributedStringKey: Any] {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 0
+        paragraphStyle.paragraphSpacing = 8
+        paragraphStyle.maximumLineHeight = 21
+        paragraphStyle.lineBreakMode = .byWordWrapping
+        let font = NSFont(name: "Soleil", size: 16) ?? NSFont.systemFont(ofSize: 16)
+        return [.paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: NSColor.white,
+                .kern: 0.5
+        ]
     }
 }

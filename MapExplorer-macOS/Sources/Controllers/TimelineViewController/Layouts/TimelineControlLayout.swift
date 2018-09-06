@@ -100,8 +100,7 @@ class TimelineControlLayout: NSCollectionViewFlowLayout {
     }
 
     private func borderAttributes() -> NSCollectionViewLayoutAttributes {
-        let indexPath = IndexPath(item: 0, section: 0)
-        let attributes = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: TimelineBorderView.supplementaryKind, with: indexPath)
+        let attributes = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: TimelineBorderView.supplementaryKind, with: .zero)
         let x = CGFloat(items - Constants.visibleItems) * Constants.itemWidth
         let collectionViewHeight = collectionView?.frame.height ?? 0
         let height = collectionViewHeight * 3/5

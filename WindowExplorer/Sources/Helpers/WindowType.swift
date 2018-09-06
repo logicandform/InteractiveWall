@@ -5,7 +5,7 @@ import Cocoa
 
 
 enum WindowType: Equatable {
-    case record(RecordDisplayable)
+    case record(Record)
     case image(Media)
     case player(Media)
     case pdf(Media)

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.AVKitIBPlugin" version="14113"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="InfoItemView" customModule="WindowExplorer" customModuleProvider="target">
+            <connections>
+                <outlet property="highlightView" destination="rXP-0a-K7j" id="1j9-Q5-7az"/>
+                <outlet property="playerControl" destination="YRC-Wy-MvU" id="D45-4L-lAK"/>
+                <outlet property="playerControlTopConstraint" destination="B5T-sT-5hh" id="bvk-gv-djE"/>
+                <outlet property="playerStateImageView" destination="72A-hH-2aC" id="PDR-6E-RKp"/>
+                <outlet property="playerView" destination="GHD-oG-q4Y" id="bcz-j5-0Z6"/>
+                <outlet property="stackView" destination="CQY-jO-dcr" id="tbM-4f-tLa"/>
+                <outlet property="titleLabel" destination="mjG-G9-Km3" id="ZDF-BG-TM8"/>
+                <outlet property="view" destination="c22-O7-iKe" id="l5U-yM-Ga5"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="c22-O7-iKe">
+            <rect key="frame" x="0.0" y="0.0" width="500" height="440"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="4R8-hS-CIt">
+                    <rect key="frame" x="0.0" y="400" width="500" height="40"/>
+                    <subviews>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mjG-G9-Km3">
+                            <rect key="frame" x="18" y="0.0" width="464" height="29"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="29" id="z8c-xa-5m8"/>
+                            </constraints>
+                            <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" usesSingleLineMode="YES" id="BJS-yk-zcP">
+                                <font key="font" size="16" name="Soleil"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="rXP-0a-K7j">
+                            <rect key="frame" x="0.0" y="0.0" width="500" height="1"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="nK4-vi-4w0"/>
+                            </constraints>
+                        </customView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="4aX-qH-Ajh"/>
+                        <constraint firstAttribute="trailing" secondItem="rXP-0a-K7j" secondAttribute="trailing" id="H3G-FA-nHU"/>
+                        <constraint firstItem="rXP-0a-K7j" firstAttribute="leading" secondItem="4R8-hS-CIt" secondAttribute="leading" id="JF5-Lg-B0M"/>
+                        <constraint firstAttribute="trailing" secondItem="mjG-G9-Km3" secondAttribute="trailing" constant="20" id="Phx-4e-fdb"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="UQB-XO-s81"/>
+                        <constraint firstAttribute="bottom" secondItem="mjG-G9-Km3" secondAttribute="bottom" id="Vtn-0L-ZE0"/>
+                        <constraint firstAttribute="bottom" secondItem="rXP-0a-K7j" secondAttribute="bottom" id="ncR-SN-Rdk"/>
+                        <constraint firstItem="mjG-G9-Km3" firstAttribute="leading" secondItem="4R8-hS-CIt" secondAttribute="leading" constant="20" id="zFn-ic-Qne"/>
+                    </constraints>
+                </customView>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="FWQ-Qg-iVl">
+                    <rect key="frame" x="0.0" y="119" width="500" height="281"/>
+                    <subviews>
+                        <avPlayerView controlsStyle="none" translatesAutoresizingMaskIntoConstraints="NO" id="GHD-oG-q4Y">
+                            <rect key="frame" x="0.0" y="0.0" width="500" height="281"/>
+                        </avPlayerView>
+                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="YRC-Wy-MvU" customClass="PlayerControl" customModule="WindowExplorer" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="500" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="qR9-mN-HJd"/>
+                            </constraints>
+                        </customView>
+                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="72A-hH-2aC">
+                            <rect key="frame" x="215" y="106" width="70" height="70"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="70" id="DmV-De-r8p"/>
+                                <constraint firstAttribute="width" constant="70" id="eOC-Fc-Pxa"/>
+                            </constraints>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="play-icon" id="5Q6-cI-8i9"/>
+                        </imageView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="72A-hH-2aC" firstAttribute="centerX" secondItem="FWQ-Qg-iVl" secondAttribute="centerX" id="06I-CS-0mC"/>
+                        <constraint firstItem="YRC-Wy-MvU" firstAttribute="top" secondItem="FWQ-Qg-iVl" secondAttribute="bottom" priority="750" id="B5T-sT-5hh"/>
+                        <constraint firstAttribute="bottom" secondItem="YRC-Wy-MvU" secondAttribute="bottom" placeholder="YES" id="Eix-nn-qPK"/>
+                        <constraint firstItem="72A-hH-2aC" firstAttribute="centerY" secondItem="FWQ-Qg-iVl" secondAttribute="centerY" id="FJm-Kc-huB"/>
+                        <constraint firstItem="GHD-oG-q4Y" firstAttribute="leading" secondItem="FWQ-Qg-iVl" secondAttribute="leading" id="Mj9-hM-POS"/>
+                        <constraint firstAttribute="trailing" secondItem="GHD-oG-q4Y" secondAttribute="trailing" id="SE8-CC-DfO"/>
+                        <constraint firstItem="YRC-Wy-MvU" firstAttribute="leading" secondItem="FWQ-Qg-iVl" secondAttribute="leading" id="a0w-7I-aQL"/>
+                        <constraint firstItem="GHD-oG-q4Y" firstAttribute="top" secondItem="FWQ-Qg-iVl" secondAttribute="top" id="aCq-gk-s5U"/>
+                        <constraint firstAttribute="width" secondItem="FWQ-Qg-iVl" secondAttribute="height" multiplier="16:9" id="bLd-i7-J4N"/>
+                        <constraint firstAttribute="bottom" secondItem="GHD-oG-q4Y" secondAttribute="bottom" id="jPg-hg-ggD"/>
+                        <constraint firstAttribute="trailing" secondItem="YRC-Wy-MvU" secondAttribute="trailing" id="yo2-Wa-4MN"/>
+                    </constraints>
+                </customView>
+                <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CQY-jO-dcr">
+                    <rect key="frame" x="20" y="99" width="460" height="0.0"/>
+                </stackView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="FWQ-Qg-iVl" firstAttribute="top" secondItem="4R8-hS-CIt" secondAttribute="bottom" id="MC3-KR-bB5"/>
+                <constraint firstItem="4R8-hS-CIt" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="N2l-jQ-nXu"/>
+                <constraint firstAttribute="trailing" secondItem="4R8-hS-CIt" secondAttribute="trailing" id="bS0-4F-civ"/>
+                <constraint firstAttribute="trailing" secondItem="CQY-jO-dcr" secondAttribute="trailing" constant="20" id="ffF-oa-CrL"/>
+                <constraint firstItem="CQY-jO-dcr" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="20" id="mkC-wN-Xqg"/>
+                <constraint firstItem="FWQ-Qg-iVl" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="o7D-47-afI"/>
+                <constraint firstAttribute="trailing" secondItem="FWQ-Qg-iVl" secondAttribute="trailing" id="upb-pH-9X5"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="CQY-jO-dcr" secondAttribute="bottom" constant="20" id="vLH-7A-O1y"/>
+                <constraint firstItem="4R8-hS-CIt" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="w1g-JX-Gdz"/>
+                <constraint firstItem="CQY-jO-dcr" firstAttribute="top" secondItem="FWQ-Qg-iVl" secondAttribute="bottom" constant="20" id="w6M-ym-WWb"/>
+            </constraints>
+            <point key="canvasLocation" x="-744" y="1195"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="play-icon" width="21" height="21"/>
+    </resources>
+</document>
