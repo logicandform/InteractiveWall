@@ -34,12 +34,6 @@ enum EntityState: Equatable {
     }
 }
 
-struct PhysicsBodyProperties {
-    let mass: CGFloat
-    let restitution: CGFloat
-    let friction: CGFloat
-    let linearDamping: CGFloat
-}
 
 final class RecordEntity: GKEntity {
 
@@ -73,8 +67,19 @@ final class RecordEntity: GKEntity {
         return renderComponent.recordNode.frame.width / 2
     }
 
+    var bodyMass: CGFloat {
+        return physicsComponent.physicsBodyProperties(for: self).mass
+    }
+
     var isSelected: Bool {
         return clusterLevel.currentLevel == NodeCluster.selectedEntityLevel
+    }
+
+    var scene: MainScene {
+        guard let scene = renderComponent.recordNode.scene as? MainScene else {
+            fatalError("A RecordNode must be presented in a MainScene")
+        }
+        return scene
     }
 
     override var description: String {
@@ -119,7 +124,7 @@ final class RecordEntity: GKEntity {
         super.init()
 
         let renderComponent = RecordRenderComponent(record: record)
-        let physicsComponent = PhysicsComponent(physicsBody: SKPhysicsBody(circleOfRadius: style.defaultNodePhysicsBodyRadius))
+        let physicsComponent = PhysicsComponent(physicsBody: SKPhysicsBody(circleOfRadius: style.defaultBodyRadius))
         let movementComponent = MovementComponent()
         renderComponent.recordNode.physicsBody = physicsComponent.physicsBody
         addComponent(movementComponent)
@@ -164,6 +169,10 @@ final class RecordEntity: GKEntity {
         physicsComponent.setClonedNodeBitMasks()
     }
 
+    func updatePhysicsBodyProperties() {
+        physicsComponent.setPhysicsBodyProperties()
+    }
+
     func perform(action: SKAction, forKey key: String) {
         renderComponent.recordNode.run(action, withKey: key)
     }
@@ -180,7 +189,6 @@ final class RecordEntity: GKEntity {
 
     /// 'Reset' the entity to initial state so that proper animations and movements can take place
     func reset() {
-        resetBitMasks()
         hasCollidedWithLayer = false
         clusterLevel = (nil, nil)
         cluster = nil
@@ -193,150 +201,17 @@ final class RecordEntity: GKEntity {
         physicsComponent.resetBitMasks()
     }
 
+    func resetPhysicsBodyProperties() {
+        physicsComponent.resetPhysicsBodyProperties()
+    }
+
     func clone() -> RecordEntity {
         return RecordEntity(record: record, levels: relatedRecordsForLevel)
     }
 
-    /// Calculates the distance between self and another entity
     func distance(to entity: RecordEntity) -> CGFloat {
         let dX = entity.renderComponent.recordNode.position.x - renderComponent.recordNode.position.x
         let dY = entity.renderComponent.recordNode.position.y - renderComponent.recordNode.position.y
         return CGFloat(hypotf(Float(dX), Float(dY)))
-    }
-
-    func setPhysicsBodyProperties() {
-        let properties = physicsBodyProperties()
-        physicsBody.mass = properties.mass
-        physicsBody.restitution = properties.restitution
-        physicsBody.friction = properties.restitution
-        physicsBody.linearDamping = properties.linearDamping
-    }
-
-    /// Provides the physics body properties depending on the entity's state and level
-    func physicsBodyProperties() -> PhysicsBodyProperties {
-        if hasCollidedWithLayer {
-            return propertiesForBoundingNodeCollision()
-        } else if case .seekEntity(cluster?.selectedEntity) = state {
-            return propertiesForSeekingEntity()
-        } else if let cluster = cluster, cluster.selectedEntity.state == .dragging {
-            return propertiesForSeekingPanningEntity()
-        } else if state == .selected {
-            return propertiesForSelectedEntity()
-        } else {
-            return defaultPhysicsBodyProperties()
-        }
-    }
-
-
-    // MARK: Helpers
-
-    private func defaultPhysicsBodyProperties() -> PhysicsBodyProperties {
-        return PhysicsBodyProperties(
-            mass: style.defaultBodyMass,
-            restitution: style.defaultBodyRestitution,
-            friction: style.defaultBodyFriction,
-            linearDamping: style.defaultLinearDamping)
-    }
-
-    private func propertiesForBoundingNodeCollision() -> PhysicsBodyProperties {
-        guard let level = clusterLevel.currentLevel else {
-            return defaultPhysicsBodyProperties()
-        }
-
-        var mass: CGFloat
-        var restitution: CGFloat
-        var friction: CGFloat
-        var damping: CGFloat
-
-        switch level {
-        case 0:
-            mass = style.collidedLevelZeroBodyMass
-            restitution = style.collidedLevelZeroBodyRestitution
-            friction = style.collidedLevelZeroBodyFriction
-            damping = style.collidedLevelZeroBodyLinearDamping
-        case 1:
-            mass = style.collidedLevelOneBodyMass
-            restitution = style.collidedLevelOneBodyRestitution
-            friction = style.collidedLevelOneBodyFriction
-            damping = style.collidedLevelOneBodyLinearDamping
-        case 2:
-            mass = style.collidedLevelTwoBodyMass
-            restitution = style.collidedLevelTwoBodyRestitution
-            friction = style.collidedLevelTwoBodyFriction
-            damping = style.collidedLevelTwoBodyLinearDamping
-        case 3:
-            mass = style.collidedLevelThreeBodyMass
-            restitution = style.collidedLevelThreeBodyRestitution
-            friction = style.collidedLevelThreeBodyFriction
-            damping = style.collidedLevelThreeBodyLinearDamping
-        case 4:
-            mass = style.collidedLevelFourBodyMass
-            restitution = style.collidedLevelFourBodyRestitution
-            friction = style.collidedLevelFourBodyFriction
-            damping = style.collidedLevelFourBodyLinearDamping
-        default:
-            return defaultPhysicsBodyProperties()
-        }
-
-        return PhysicsBodyProperties(mass: mass, restitution: restitution, friction: friction, linearDamping: damping)
-    }
-
-    private func propertiesForSeekingEntity() -> PhysicsBodyProperties {
-        guard let level = clusterLevel.currentLevel else {
-            return defaultPhysicsBodyProperties()
-        }
-
-        var mass: CGFloat
-        var restitution: CGFloat
-        var friction: CGFloat
-        var damping: CGFloat
-
-        switch level {
-        case 0:
-            mass = style.seekingLevelZeroBodyMass
-            restitution = style.seekingLevelZeroBodyRestitution
-            friction = style.seekingLevelZeroBodyFriction
-            damping = style.seekingLevelZeroBodyLinearDamping
-        case 1:
-            mass = style.seekingLevelOneBodyMass
-            restitution = style.seekingLevelOneBodyRestitution
-            friction = style.seekingLevelOneBodyFriction
-            damping = style.seekingLevelOneBodyLinearDamping
-        case 2:
-            mass = style.seekingLevelTwoBodyMass
-            restitution = style.seekingLevelTwoBodyRestitution
-            friction = style.seekingLevelTwoBodyFriction
-            damping = style.seekingLevelTwoBodyLinearDamping
-        case 3:
-            mass = style.seekingLevelThreeBodyMass
-            restitution = style.seekingLevelThreeBodyRestitution
-            friction = style.seekingLevelThreeBodyFriction
-            damping = style.seekingLevelThreeBodyLinearDamping
-        case 4:
-            mass = style.seekingLevelFourBodyMass
-            restitution = style.seekingLevelFourBodyRestitution
-            friction = style.seekingLevelFourBodyFriction
-            damping = style.seekingLevelFourBodyLinearDamping
-        default:
-            return defaultPhysicsBodyProperties()
-        }
-
-        return PhysicsBodyProperties(mass: mass, restitution: restitution, friction: friction, linearDamping: damping)
-    }
-
-    private func propertiesForSelectedEntity() -> PhysicsBodyProperties {
-        return PhysicsBodyProperties(
-            mass: style.selectedBodyMass,
-            restitution: style.selectedBodyRestitution,
-            friction: style.selectedBodyFriction,
-            linearDamping: style.selectedLinearDamping)
-    }
-
-    private func propertiesForSeekingPanningEntity() -> PhysicsBodyProperties {
-        return PhysicsBodyProperties(
-            mass: style.seekingPannedBodyMass,
-            restitution: style.seekingPannedBodyRestitution,
-            friction: style.seekingPannedBodyFriction,
-            linearDamping: style.seekingPannedBodyLinearDamping)
     }
 }

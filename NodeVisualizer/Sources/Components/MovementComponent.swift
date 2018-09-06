@@ -8,9 +8,14 @@ import GameplayKit
 /// A 'GKComponent' that provides different types of physics movement based on the current entities state.
 class MovementComponent: GKComponent {
 
+    private var screenHypot: CGFloat {
+        guard let entity = entity as? RecordEntity else { return 0 }
+        return CGFloat(hypotf(Float(entity.scene.frame.width * Constants.screenMultiplier), Float(entity.scene.frame.height * Constants.screenMultiplier)))
+    }
+
     private struct Constants {
-        static let strength: CGFloat = 1
         static let speed: CGFloat = 200
+        static let screenMultiplier: CGFloat = 0.5
     }
 
 
@@ -96,30 +101,42 @@ class MovementComponent: GKComponent {
 
     /// Applies appropriate physics that emulates a gravitational pull between this component's entity and the entity that it should seek
     private func seek(_ targetEntity: RecordEntity, deltaTime delta: TimeInterval) {
-        guard let entity = entity as? RecordEntity else {
+        guard let seekingEntity = entity as? RecordEntity else {
             return
         }
 
         // Check the radius between its own entity and the entity to seek, and apply the appropriate physics
-        let deltaX = targetEntity.position.x - entity.position.x
-        let deltaY = targetEntity.position.y - entity.position.y
+        let deltaX = targetEntity.position.x - seekingEntity.position.x
+        let deltaY = targetEntity.position.y - seekingEntity.position.y
         let displacement = CGVector(dx: deltaX, dy: deltaY)
         let radius = distanceOf(x: deltaX, y: deltaY)
         let unitVector = CGVector(dx: displacement.dx / radius, dy: displacement.dy / radius)
 
-        let targetEntityMass = targetEntity.physicsBodyProperties().mass * radius
-        let entityMass = entity.physicsBodyProperties().mass * radius
-
-        let multiplier = targetEntity.state == .dragging ? (style.panningMultiplier / (radius * radius)) : (style.forceMultiplier * style.multiplier)
-        let force = (targetEntityMass * entityMass) * multiplier
+        let force = forceFor(target: targetEntity, seeking: seekingEntity, ofRadius: radius)
         let dt = CGFloat(delta)
         let impulse = CGVector(dx: force * dt * unitVector.dx, dy: force * dt * unitVector.dy)
-        entity.physicsBody.velocity = CGVector(dx: entity.physicsBody.velocity.dx + impulse.dx, dy: entity.physicsBody.velocity.dy + impulse.dy)
+        seekingEntity.physicsBody.velocity = CGVector(dx: seekingEntity.physicsBody.velocity.dx + impulse.dx, dy: seekingEntity.physicsBody.velocity.dy + impulse.dy)
     }
 
     private func distanceOf(x: CGFloat, y: CGFloat) -> CGFloat {
         let dX = Float(x)
         let dY = Float(y)
         return CGFloat(hypotf(dX, dY))
+    }
+
+    private func forceFor(target: RecordEntity, seeking: RecordEntity, ofRadius radius: CGFloat) -> CGFloat {
+        let targetEntityMass = target.bodyMass
+        let seekingEntityMass = seeking.bodyMass
+
+        var force: CGFloat
+        if target.state == .dragging {
+            force = targetEntityMass * seekingEntityMass * style.panningForceMultiplier
+        } else if radius < screenHypot {
+            force = targetEntityMass * seekingEntityMass * style.forceMultiplier
+        } else {
+            force = targetEntityMass * seekingEntityMass * style.forceMultiplier * (radius / style.forceDivisor)
+        }
+
+        return force
     }
 }

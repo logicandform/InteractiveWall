@@ -6,7 +6,6 @@ import AppKit
 final class Style {
 
     // MARK: Generic
-
     let darkBackground = NSColor.black.withAlphaComponent(0.85)
     let selectedColor = NSColor(calibratedRed: 0, green: 200/255, blue: 1, alpha: 1)
     let unselectedRecordIcon = NSColor.gray
@@ -14,7 +13,6 @@ final class Style {
 
 
     // MARK: Records
-
     let artifactColor = NSColor(calibratedRed: 128/255, green: 1/255, blue: 206/255, alpha: 1)
     let schoolColor = NSColor(calibratedRed: 78/255, green: 106/255, blue: 200/255, alpha: 1)
     let eventColor = NSColor(calibratedRed: 145/255, green: 18/255, blue: 88/255, alpha: 1)
@@ -23,8 +21,7 @@ final class Style {
 
 
     // MARK: Node Sizes
-
-    let defaultNodePhysicsBodyRadius: CGFloat = 50
+    let defaultBodyRadius: CGFloat = 50
     let defaultNodeSize = CGSize(width: 100, height: 100)
 
     static let selectedNodeRadius: CGFloat = 150
@@ -42,95 +39,97 @@ final class Style {
     let levelFourNodeSize = CGSize(width: levelFourNodeRadius * 2, height: levelFourNodeRadius * 2)
 
 
-    // MARK: Physics Body Properties
+    // MARK: Movement Multipliers
+    let forceMultiplier: CGFloat = 40
+    let forceDivisor: CGFloat = 1000
+    let panningForceMultiplier: CGFloat = 30
 
-    let defaultBodyMass: CGFloat = 0.25
+
+    // MARK: Default Properties
+    let defaultBodyMass: CGFloat = 5
     let defaultBodyRestitution: CGFloat = 0
-    let defaultBodyFriction: CGFloat = 1
-    let defaultLinearDamping: CGFloat = 1
+    let defaultBodyFriction: CGFloat = 0
+    let defaultLinearDamping: CGFloat = 0
 
-    let forceMultiplier: CGFloat = 1 / 2000
-    let panningMultiplier: CGFloat = 8000
-    let multiplier: CGFloat = 100
 
-    static let sameMass: CGFloat = 0.3
-    static let sameRestitution: CGFloat = 0
-    static let sameFriction: CGFloat = 0.8
-    static let sameDamping: CGFloat = 0.8
-
-    // MARK: Selected Node
-    let selectedBodyMass: CGFloat = 0.25
+    // MARK: Selected Properties
+    let selectedBodyMass: CGFloat = 5
     let selectedBodyRestitution: CGFloat = 0
     let selectedBodyFriction: CGFloat = 1
     let selectedLinearDamping: CGFloat = 1
 
-    // MARK: Seeking - Level 0
-    let seekingLevelZeroBodyMass: CGFloat = sameMass
-    let seekingLevelZeroBodyRestitution: CGFloat = sameRestitution
-    let seekingLevelZeroBodyFriction: CGFloat = sameFriction
-    let seekingLevelZeroBodyLinearDamping: CGFloat = sameDamping
 
-    // MARK: Seeking - Level 1
-    let seekingLevelOneBodyMass: CGFloat = sameMass
-    let seekingLevelOneBodyRestitution: CGFloat = sameRestitution
-    let seekingLevelOneBodyFriction: CGFloat = sameFriction
-    let seekingLevelOneBodyLinearDamping: CGFloat = sameDamping
+    // MARK: Seeking Properties - Level 0
+    let seekingLevelZeroBodyMass: CGFloat = 5
+    let seekingLevelZeroBodyRestitution: CGFloat = 0.2
+    let seekingLevelZeroBodyFriction: CGFloat = 0.8
+    let seekingLevelZeroBodyLinearDamping: CGFloat = 0.8
 
-    // MARK: Seeking - Level 2
-    let seekingLevelTwoBodyMass: CGFloat = sameMass
-    let seekingLevelTwoBodyRestitution: CGFloat = sameRestitution
-    let seekingLevelTwoBodyFriction: CGFloat = sameFriction
-    let seekingLevelTwoBodyLinearDamping: CGFloat = sameDamping
+    // MARK: Seeking Properties - Level 1
+    let seekingLevelOneBodyMass: CGFloat = 5
+    let seekingLevelOneBodyRestitution: CGFloat = 0.2
+    let seekingLevelOneBodyFriction: CGFloat = 0.8
+    let seekingLevelOneBodyLinearDamping: CGFloat = 0.8
 
-    // MARK: Seeking - Level 3
-    let seekingLevelThreeBodyMass: CGFloat = sameMass
-    let seekingLevelThreeBodyRestitution: CGFloat = sameRestitution
-    let seekingLevelThreeBodyFriction: CGFloat = sameFriction
-    let seekingLevelThreeBodyLinearDamping: CGFloat = sameDamping
+    // MARK: Seeking Properties - Level 2
+    let seekingLevelTwoBodyMass: CGFloat = 5
+    let seekingLevelTwoBodyRestitution: CGFloat = 0.2
+    let seekingLevelTwoBodyFriction: CGFloat = 0.8
+    let seekingLevelTwoBodyLinearDamping: CGFloat = 0.8
 
-    // MARK: Seeking - Level 4
-    let seekingLevelFourBodyMass: CGFloat = sameMass
-    let seekingLevelFourBodyRestitution: CGFloat = sameRestitution
-    let seekingLevelFourBodyFriction: CGFloat = sameFriction
-    let seekingLevelFourBodyLinearDamping: CGFloat = sameDamping
+    // MARK: Seeking Properties - Level 3
+    let seekingLevelThreeBodyMass: CGFloat = 5
+    let seekingLevelThreeBodyRestitution: CGFloat = 0.2
+    let seekingLevelThreeBodyFriction: CGFloat = 0.8
+    let seekingLevelThreeBodyLinearDamping: CGFloat = 0.8
+
+    // MARK: Seeking Properties - Level 4
+    let seekingLevelFourBodyMass: CGFloat = 5
+    let seekingLevelFourBodyRestitution: CGFloat = 0.2
+    let seekingLevelFourBodyFriction: CGFloat = 0.8
+    let seekingLevelFourBodyLinearDamping: CGFloat = 0.8
+
+    static let collided: CGFloat = 5
+    static let rest: CGFloat = 0
+    static let friction: CGFloat = 0.37
+    static let damping: CGFloat = 0.37
+
+    // MARK: hasCollidedWithBoundingNode Properties - Level 0
+    let collidedLevelZeroBodyMass: CGFloat = collided
+    let collidedLevelZeroBodyRestitution: CGFloat = rest
+    let collidedLevelZeroBodyFriction: CGFloat = friction
+    let collidedLevelZeroBodyLinearDamping: CGFloat = damping
+
+    // MARK: hasCollidedWithBoundingNode Properties - Level 1
+    let collidedLevelOneBodyMass: CGFloat = collided
+    let collidedLevelOneBodyRestitution: CGFloat = rest
+    let collidedLevelOneBodyFriction: CGFloat = friction
+    let collidedLevelOneBodyLinearDamping: CGFloat = damping
+
+    // MARK: hasCollidedWithBoundingNode Properties - Level 2
+    let collidedLevelTwoBodyMass: CGFloat = collided
+    let collidedLevelTwoBodyRestitution: CGFloat = rest
+    let collidedLevelTwoBodyFriction: CGFloat = friction
+    let collidedLevelTwoBodyLinearDamping: CGFloat = damping
+
+    // MARK: hasCollidedWithBoundingNode Properties - Level 3
+    let collidedLevelThreeBodyMass: CGFloat = collided
+    let collidedLevelThreeBodyRestitution: CGFloat = rest
+    let collidedLevelThreeBodyFriction: CGFloat = friction
+    let collidedLevelThreeBodyLinearDamping: CGFloat = damping
+
+    // MARK: hasCollidedWithBoundingNode Properties - Level 4
+    let collidedLevelFourBodyMass: CGFloat = collided
+    let collidedLevelFourBodyRestitution: CGFloat = rest
+    let collidedLevelFourBodyFriction: CGFloat = friction
+    let collidedLevelFourBodyLinearDamping: CGFloat = damping
 
 
-    // MARK: hasCollidedWithBoundingNode - Level 0
-    let collidedLevelZeroBodyMass: CGFloat = 0.5
-    let collidedLevelZeroBodyRestitution: CGFloat = 0
-    let collidedLevelZeroBodyFriction: CGFloat = 1
-    let collidedLevelZeroBodyLinearDamping: CGFloat = 1
-
-    // MARK: hasCollidedWithBoundingNode - Level 1
-    let collidedLevelOneBodyMass: CGFloat = 0.5
-    let collidedLevelOneBodyRestitution: CGFloat = 0
-    let collidedLevelOneBodyFriction: CGFloat = 1
-    let collidedLevelOneBodyLinearDamping: CGFloat = 1
-
-    // MARK: hasCollidedWithBoundingNode - Level 2
-    let collidedLevelTwoBodyMass: CGFloat = 0.5
-    let collidedLevelTwoBodyRestitution: CGFloat = 0
-    let collidedLevelTwoBodyFriction: CGFloat = 1
-    let collidedLevelTwoBodyLinearDamping: CGFloat = 1
-
-    // MARK: hasCollidedWithBoundingNode - Level 3
-    let collidedLevelThreeBodyMass: CGFloat = 0.5
-    let collidedLevelThreeBodyRestitution: CGFloat = 0
-    let collidedLevelThreeBodyFriction: CGFloat = 1
-    let collidedLevelThreeBodyLinearDamping: CGFloat = 1
-
-    // MARK: hasCollidedWithBoundingNode - Level 4
-    let collidedLevelFourBodyMass: CGFloat = 0.5
-    let collidedLevelFourBodyRestitution: CGFloat = 0
-    let collidedLevelFourBodyFriction: CGFloat = 1
-    let collidedLevelFourBodyLinearDamping: CGFloat = 1
-
-
-    // MARK: Seeking while selected node is panning
-    let seekingPannedBodyMass: CGFloat = 0.5
-    let seekingPannedBodyRestitution: CGFloat = 0
-    let seekingPannedBodyFriction: CGFloat = 0.3
-    let seekingPannedBodyLinearDamping: CGFloat = 0.3
+    // MARK: Seeking while selected node is panning properties
+    let seekingPannedBodyMass: CGFloat = 5
+    let seekingPannedBodyRestitution: CGFloat = 0.3
+    let seekingPannedBodyFriction: CGFloat = 0.5
+    let seekingPannedBodyLinearDamping: CGFloat = 0.5
 
 
     // MARK: Animations

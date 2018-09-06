@@ -66,7 +66,7 @@ final class NodeCluster: Hashable {
         for entities in entitiesForLevel {
             for entity in entities {
                 entity.hasCollidedWithLayer = false
-                entity.setPhysicsBodyProperties()
+                entity.updatePhysicsBodyProperties()
                 entity.updateBitMasks()
             }
         }
