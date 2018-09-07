@@ -67,11 +67,6 @@ final class MapHandler {
             return
         }
 
-        // End animation if paired with another app
-        if let pair = pair, pair != appID {
-            endAnimation()
-        }
-
         // Filter position updates; state will be nil receiving when receiving from momentum or animation, else id must match pair
         if pair == nil || pair! == fromID {
             if !syncing {
@@ -201,10 +196,7 @@ final class MapHandler {
     }
 
     private func ungroupTimerFired() {
-        guard let group = group, group == appID else {
-            return
-        }
-        if activityState == .idle {
+        if let group = group, group == appID, activityState == .idle {
             let info: JSON = [Keys.id: appID, Keys.type: ApplicationType.mapExplorer.rawValue, Keys.group: appID]
             DistributedNotificationCenter.default().postNotificationName(SettingsNotification.ungroup.name, object: nil, userInfo: info, deliverImmediately: true)
         }
@@ -214,6 +206,10 @@ final class MapHandler {
     private func animationTimerFired(for type: MapAnimationType, initialMapRect: MKMapRect, originVector: MKMapPoint, scale: Double) {
         if !animating {
             animationStart = Date()
+        } else if pair != nil {
+            // End animation if interrupted
+            endAnimation()
+            return
         }
 
         let progress = min(1.0, abs(animationStart!.timeIntervalSinceNow) / type.duration)
@@ -231,8 +227,6 @@ final class MapHandler {
         if progress == 1 {
             endAnimation()
             endUpdates()
-        } else if type == .reset && group != nil {
-            endAnimation()
         }
     }
 }

@@ -95,12 +95,10 @@ final class TimelineHandler {
     }
 
     func reset(animated: Bool) {
-        guard let timelineViewController = timelineViewController else {
-            return
+        if let timelineViewController = timelineViewController {
+            timelineViewController.setupTimelineDate()
+            timelineViewController.timelineCollectionView.reloadItems(at: timelineViewController.timelineCollectionView.indexPathsForVisibleItems())
         }
-
-        timelineViewController.setupTimelineDate()
-        timelineViewController.timelineCollectionView.reloadItems(at: timelineViewController.timelineCollectionView.indexPathsForVisibleItems())
     }
 
 
@@ -133,11 +131,7 @@ final class TimelineHandler {
     }
 
     private func ungroupTimerFired() {
-        guard let group = group, group == appID else {
-            return
-        }
-
-        if activityState == .idle {
+        if let group = group, group == appID, activityState == .idle {
             let info: JSON = [Keys.id: appID, Keys.type: ApplicationType.timeline.rawValue, Keys.group: appID]
             DistributedNotificationCenter.default().postNotificationName(SettingsNotification.ungroup.name, object: nil, userInfo: info, deliverImmediately: true)
         }

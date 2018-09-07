@@ -185,17 +185,16 @@ class PlayerControl: NSView {
         case .began:
             scrubbing = true
             player?.pause()
-        case .recognized:
-            let margin = Constants.seekBarInsetMargin
-            let positionInSeekBar = Double((position.x - seekBar.frame.minX - margin) / (seekBar.frame.width - (margin * 2)))
-            let seekPosition = clamp(positionInSeekBar, min: 0, max: 1)
-
             if seekBar.frame.minX <= position.x && seekBar.frame.maxX >= position.x {
-                let timeInSeconds = seekPosition * duration.seconds
-                currentTime = CMTime(seconds: timeInSeconds, preferredTimescale: duration.timescale)
+                setCurrentTime(for: position)
+                seek(to: currentTime)
+            }
+        case .recognized:
+            if seekBar.frame.minX <= position.x && seekBar.frame.maxX >= position.x {
+                setCurrentTime(for: position)
 
                 // This is an Int b/t 0 and scrubImageUpdatesPerVideo which gives the time that should be seeked when multipled by scrubImageUpdateTimeInterval
-                let imageUpdateNumber = round(timeInSeconds / scrubImageUpdateTimeInterval)
+                let imageUpdateNumber = round(currentTime.seconds / scrubImageUpdateTimeInterval)
                 if imageUpdateNumber != currentScrubImageUpdateNumber {
                     currentScrubImageUpdateNumber = imageUpdateNumber
                     seek(to: currentTime)
@@ -230,6 +229,14 @@ class PlayerControl: NSView {
 
 
     // MARK: Helpers
+
+    private func setCurrentTime(for position: CGPoint) {
+        let margin = Constants.seekBarInsetMargin
+        let positionInSeekBar = Double((position.x - seekBar.frame.minX - margin) / (seekBar.frame.width - (margin * 2)))
+        let seekPosition = clamp(positionInSeekBar, min: 0, max: 1)
+        let timeInSeconds = seekPosition * duration.seconds
+        currentTime = CMTime(seconds: timeInSeconds, preferredTimescale: duration.timescale)
+    }
 
     private func seek(to time: CMTime) {
         player?.seek(to: time, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)

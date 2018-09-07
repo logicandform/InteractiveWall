@@ -209,11 +209,8 @@ final class ConnectionManager {
 
     /// Set all app states accordingly when a app sends its position
     private func setAppState(from id: Int, group: Int, for type: ApplicationType, gestureState: GestureState) {
-        if gestureState.interruptible {
-            return
-        }
-
-        let newState = AppState(pair: id, group: id)
+        let pair = gestureState.interruptible ? nil : id
+        let newState = AppState(pair: pair, group: id)
         let appStates = states(for: type).enumerated()
 
         for (app, state) in appStates {
