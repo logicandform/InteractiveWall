@@ -122,6 +122,9 @@ final class EntityManager {
         copy.node.scale(to: entity.node.size)
         copy.setClonedNodeBitMasks()
         copy.previousCluster = entity.cluster
+        if copy.node.parent != nil {
+            
+        }
         scene.addChild(copy.node)
         scene.addGestures(to: copy.node)
         return copy

@@ -55,8 +55,13 @@ final class NodeCluster: Hashable {
 
     /// Updates the layers in the cluster for when the selected entity is panning
     func updateLayerLevels(forPan pan: Bool) {
-        let level = pan ? 0 : entitiesForLevel.count
-        setLayers(toLevel: level)
+        if pan {
+            setLayers(toLevel: 0)
+        } else {
+            removeLayer(level: 0)
+            setLayers(toLevel: entitiesForLevel.count)
+        }
+
         updateInnerMostLayerBitMasks(forPan: pan)
         for entities in entitiesForLevel {
             for entity in entities {
