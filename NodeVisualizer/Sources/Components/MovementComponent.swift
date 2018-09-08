@@ -67,7 +67,7 @@ class MovementComponent: GKComponent {
     private func move(to level: Int) {
         guard let entity = entity as? RecordEntity,
             let cluster = entity.cluster,
-            let referenceNode = cluster.layerForLevel[level]?.renderComponent.node else {
+            let referenceNode = cluster.layerForLevel[level]?.renderComponent.layerNode else {
             return
         }
 

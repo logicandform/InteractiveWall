@@ -21,8 +21,7 @@ class MainViewController: NSViewController, NodeGestureResponder {
     // MARK: Init
 
     static func instance() -> MainViewController {
-        let vc = NSStoryboard(name: MainViewController.storyboard, bundle: .main).instantiateInitialController() as! MainViewController
-        return vc
+        return NSStoryboard(name: MainViewController.storyboard, bundle: .main).instantiateInitialController() as! MainViewController
     }
 
 
@@ -39,8 +38,8 @@ class MainViewController: NSViewController, NodeGestureResponder {
 
         mainView.showsFPS = true
         mainView.showsNodeCount = true
-//        mainView.showsFields = true
-        mainView.showsPhysics = true
+        mainView.showsFields = false
+        mainView.showsPhysics = false
         mainView.ignoresSiblingOrder = true
     }
 

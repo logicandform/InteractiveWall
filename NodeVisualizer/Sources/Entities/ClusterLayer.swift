@@ -17,10 +17,10 @@ class ClusterLayer: GKEntity {
 
     // MARK: Initializer
 
-    init(cluster: NodeCluster) {
+    init(level: Int, radius: CGFloat?, cluster: NodeCluster, center: CGPoint) {
         super.init()
 
-        let renderComponent = LayerRenderComponent(cluster: cluster)
+        let renderComponent = LayerRenderComponent(level: level, radius: radius, cluster: cluster, center: center)
         addComponent(renderComponent)
     }
 

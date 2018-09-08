@@ -35,6 +35,7 @@
 		22AEAF0020B67E2C00DD184B /* TouchState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AEAEFD20B67E2C00DD184B /* TouchState.swift */; };
 		22AEAF0120B67E2C00DD184B /* TouchProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AEAEFE20B67E2C00DD184B /* TouchProperties.swift */; };
 		22AEAF0220B67E2C00DD184B /* Touch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AEAEFF20B67E2C00DD184B /* Touch.swift */; };
+		22B6974A2143417C00FD082D /* ClusterLayerNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B697492143417C00FD082D /* ClusterLayerNode.swift */; };
 		22D6F90320B6810600C7FB5F /* GestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F8F920B6810600C7FB5F /* GestureHandler.swift */; };
 		22D6F90420B6810600C7FB5F /* RecordType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F8FA20B6810600C7FB5F /* RecordType.swift */; };
 		22D6F90620B6810600C7FB5F /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F8FC20B6810600C7FB5F /* Style.swift */; };
@@ -68,7 +69,7 @@
 		CD97E33E20F5765900BB869E /* ClusterLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD97E33D20F5765900BB869E /* ClusterLayer.swift */; };
 		CD97E34020F584BA00BB869E /* LayerRenderComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD97E33F20F584BA00BB869E /* LayerRenderComponent.swift */; };
 		CDA5A90820DD70B700E1CF87 /* PhysicsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */; };
-		CDB6CE3220E4037D0033E328 /* AnimationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB6CE3120E4037D0033E328 /* AnimationComponent.swift */; };
+		CDB6CE3220E4037D0033E328 /* AnimationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB6CE3120E4037D0033E328 /* AnimationType.swift */; };
 		CDC22D2820BDC6B0006BC0BE /* RecordNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC22D2720BDC6B0006BC0BE /* RecordNode.swift */; };
 		CDC39D48211B616300CE5960 /* NodeGestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC39D47211B616300CE5960 /* NodeGestureManager.swift */; };
 		D88D9E3C5FEA8DFC85B8FEF4 /* Pods_All_NodeVisualizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A74D0C56BCB99FB5CDC067 /* Pods_All_NodeVisualizer.framework */; };
@@ -106,6 +107,7 @@
 		22AEAEFD20B67E2C00DD184B /* TouchState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchState.swift; sourceTree = "<group>"; };
 		22AEAEFE20B67E2C00DD184B /* TouchProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchProperties.swift; sourceTree = "<group>"; };
 		22AEAEFF20B67E2C00DD184B /* Touch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Touch.swift; sourceTree = "<group>"; };
+		22B697492143417C00FD082D /* ClusterLayerNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterLayerNode.swift; sourceTree = "<group>"; };
 		22D6F8F920B6810600C7FB5F /* GestureHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureHandler.swift; sourceTree = "<group>"; };
 		22D6F8FA20B6810600C7FB5F /* RecordType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordType.swift; sourceTree = "<group>"; };
 		22D6F8FC20B6810600C7FB5F /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
@@ -142,7 +144,7 @@
 		CD97E33D20F5765900BB869E /* ClusterLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterLayer.swift; sourceTree = "<group>"; };
 		CD97E33F20F584BA00BB869E /* LayerRenderComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerRenderComponent.swift; sourceTree = "<group>"; };
 		CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsComponent.swift; sourceTree = "<group>"; };
-		CDB6CE3120E4037D0033E328 /* AnimationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationComponent.swift; sourceTree = "<group>"; };
+		CDB6CE3120E4037D0033E328 /* AnimationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationType.swift; sourceTree = "<group>"; };
 		CDC22D2720BDC6B0006BC0BE /* RecordNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordNode.swift; sourceTree = "<group>"; };
 		CDC39D47211B616300CE5960 /* NodeGestureManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeGestureManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -254,6 +256,7 @@
 				CD97E33B20F4125800BB869E /* NodeCluster.swift */,
 				22D6F8FE20B6810600C7FB5F /* CachingNetwork.swift */,
 				22D6F8FF20B6810600C7FB5F /* JSON.swift */,
+				CDB6CE3120E4037D0033E328 /* AnimationType.swift */,
 				22D6F90020B6810600C7FB5F /* Math.swift */,
 				22D6F90120B6810600C7FB5F /* PriorityOrder.swift */,
 				CD2CC5E920B8E6D700FB3C10 /* RecordDisplayable.swift */,
@@ -369,7 +372,6 @@
 		CD0FB28E20D853E00058A410 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				CDB6CE3120E4037D0033E328 /* AnimationComponent.swift */,
 				CD0FB28720D1BFDD0058A410 /* MovementComponent.swift */,
 				CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */,
 				CD0FB27F20D1A4AE0058A410 /* RecordRenderComponent.swift */,
@@ -399,6 +401,7 @@
 			isa = PBXGroup;
 			children = (
 				CDC22D2720BDC6B0006BC0BE /* RecordNode.swift */,
+				22B697492143417C00FD082D /* ClusterLayerNode.swift */,
 			);
 			path = Nodes;
 			sourceTree = "<group>";
@@ -576,6 +579,7 @@
 				22AEAEFA20B67DA600DD184B /* Event.swift in Sources */,
 				22AEAEBC20B67C2400DD184B /* MainScene.swift in Sources */,
 				22AEAEEB20B67D6800DD184B /* MapKit.swift in Sources */,
+				22B6974A2143417C00FD082D /* ClusterLayerNode.swift in Sources */,
 				22D6F90320B6810600C7FB5F /* GestureHandler.swift in Sources */,
 				22667A24213F3A2F00F15A04 /* RecordStateMachine.swift in Sources */,
 				CD0FB28420D1AA9D0058A410 /* EntityManager.swift in Sources */,
@@ -586,7 +590,7 @@
 				22AEAF0220B67E2C00DD184B /* Touch.swift in Sources */,
 				22AEAEF720B67DA600DD184B /* Theme.swift in Sources */,
 				CD97E33C20F4125800BB869E /* NodeCluster.swift in Sources */,
-				CDB6CE3220E4037D0033E328 /* AnimationComponent.swift in Sources */,
+				CDB6CE3220E4037D0033E328 /* AnimationType.swift in Sources */,
 				CD2CC5EC20B8E6D800FB3C10 /* RecordFilterType.swift in Sources */,
 				22D6F90620B6810600C7FB5F /* Style.swift in Sources */,
 				CD97E33E20F5765900BB869E /* ClusterLayer.swift in Sources */,

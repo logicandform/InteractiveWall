@@ -56,6 +56,21 @@ enum RecordType: String {
         }
     }
 
+    var nodeImageName: String {
+        switch self {
+        case .event:
+            return "event-node"
+        case .artifact:
+            return "artifact-node"
+        case .organization:
+            return "organization-node"
+        case .school:
+            return "school-node"
+        case .theme:
+            return "theme-node"
+        }
+    }
+
     static var allValues: [RecordType] {
         return [.event, .artifact, .organization, .school, .theme]
     }

@@ -13,9 +13,6 @@ class MainScene: SKScene {
 
     private struct Constants {
         static let maximumUpdateDeltaTime = 1.0 / 60.0
-        static let panningThreshold: CGFloat = 5
-        static let slowGravity = CGVector(dx: 0.02, dy: -0.03)
-        static let worldPadding: CGFloat = 100
     }
 
 
@@ -220,17 +217,11 @@ class MainScene: SKScene {
             if let recordNode = nodes(at: pannedNodePosition).first(where: { $0 is RecordNode }) as? RecordNode, let entity = recordNode.entity as? RecordEntity, entity.state.pannable {
                 selectedEntity = entity
             }
+            selectedEntity?.set(state: .dragging)
         case .changed:
             let pannedPosition = recognizer.location(in: recognizer.view)
             let pannedNodePosition = convertPoint(fromView: pannedPosition)
-            let pannedTranslation = recognizer.translation(in: recognizer.view)
-            let nodePannedTranslation = convertPoint(fromView: pannedTranslation)
-            let distance = CGFloat(hypotf(Float(nodePannedTranslation.x), Float(nodePannedTranslation.y)))
-            if distance <= Constants.panningThreshold {
-                return
-            }
 
-            selectedEntity?.set(state: .dragging)
             selectedEntity?.set(position: pannedNodePosition)
             if let entity = selectedEntity, entity.isSelected {
                 entity.cluster?.set(position: pannedNodePosition)

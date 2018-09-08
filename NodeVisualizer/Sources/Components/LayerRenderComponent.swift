@@ -8,32 +8,29 @@ import GameplayKit
 /// A 'GKComponent' that provides a SKNode for a NodeBoundingEntity. This component is mainly responsible for updating the size of its SKNode's physicsBody and updating its maximum distance calculated from its level's entities.
 class LayerRenderComponent: GKComponent {
 
+    let level: Int
     let cluster: NodeCluster
-
-    /// The bounding entity's node
-    var node: SKNode?
-
-    /// The maximum distance between the root and the contactEntities for this bounding entity
-    var maxRadius: CGFloat = Style.selectedNodeRadius
-
-    /// The minimum radius of its own responsible level's bounding node. It is the radius of the bounding node without considering its contactEntities
-    var minRadius: CGFloat = Style.selectedNodeRadius
-
-    /// The bounding node's level that the component is responsible for
-    var level: Int!
-
-    /// The current bounding radius of `self`
-    private var currentRadius: CGFloat = Style.selectedNodeRadius
+    let layerNode: ClusterLayerNode
+    var minRadius: CGFloat
+    var maxRadius: CGFloat
+    private var currentRadius: CGFloat
 
     private struct Constants {
         static let entityDistanceOffset: CGFloat = 15
+        static let defaultRadius: CGFloat = 1
     }
 
 
     // MARK: Initializer
 
-    init(cluster: NodeCluster) {
+    init(level: Int, radius: CGFloat?, cluster: NodeCluster, center: CGPoint) {
+        let radius = radius ?? Constants.defaultRadius
+        self.level = level
         self.cluster = cluster
+        self.minRadius = radius
+        self.maxRadius = radius
+        self.currentRadius = radius
+        self.layerNode = ClusterLayerNode(level: level, radius: radius, center: center)
         super.init()
     }
 
@@ -43,14 +40,6 @@ class LayerRenderComponent: GKComponent {
 
 
     // MARK: Lifecycle
-
-    override func didAddToEntity() {
-        node?.entity = entity
-    }
-
-    override func willRemoveFromEntity() {
-        node?.entity = nil
-    }
 
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
@@ -86,24 +75,18 @@ class LayerRenderComponent: GKComponent {
         maxRadius = distance > currentRadius ? distance : currentRadius
 
         // Scale its own bounding node by using its previous level's bounding node maxRadius
-        if let previousLevelNodeBoundingEntity = cluster.layerForLevel[level - 1], let currentNode = node {
+        if let previousLevelNodeBoundingEntity = cluster.layerForLevel[level - 1] {
             let previousLevelBoundingNodeRadius = previousLevelNodeBoundingEntity.renderComponent.maxRadius
             let difference = abs(previousLevelBoundingNodeRadius - currentRadius)
             let sqrtDiff = CGFloat(sqrt(Float(difference)))
             currentRadius += previousLevelBoundingNodeRadius > currentRadius ? sqrtDiff : -sqrtDiff
             minRadius = currentRadius
-
-            // Create new physicsBody based on the previous level bounding node's maxRadius. Scaling its own bounding node causes "stuck collisions" to its physicsBody
-            let newPhysicsBody = SKPhysicsBody(circleOfRadius: currentRadius)
-            newPhysicsBody.categoryBitMask = currentNode.physicsBody!.categoryBitMask
-            newPhysicsBody.collisionBitMask = currentNode.physicsBody!.collisionBitMask
-            newPhysicsBody.contactTestBitMask = currentNode.physicsBody!.contactTestBitMask
-            newPhysicsBody.isDynamic = false
-            newPhysicsBody.restitution = 0
-            newPhysicsBody.friction = 1
-
-            currentNode.physicsBody = nil
-            currentNode.physicsBody = newPhysicsBody
+            layerNode.set(radius: currentRadius)
+        } else {
+            let radius = cluster.selectedEntity.node.size.width/2
+            currentRadius = radius
+            minRadius = radius
+            layerNode.set(radius: radius)
         }
     }
 }

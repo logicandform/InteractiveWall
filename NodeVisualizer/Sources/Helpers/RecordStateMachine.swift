@@ -17,6 +17,10 @@ final class RecordStateMachine {
         }
     }
 
+    private struct Constants {
+        static let draggingLevel = -2
+    }
+
 
     // MARK: Init
 
@@ -72,8 +76,9 @@ final class RecordStateMachine {
             entity.node.removeAllActions()
             scale()
         case .dragging:
+            entity.removeAnimation(forKey: AnimationType.move(.zero).key)
             entity.physicsBody.isDynamic = false
-            entity.node.removeAllActions()
+            entity.node.setZ(level: Constants.draggingLevel)
             if entity.clusterLevel.currentLevel == NodeCluster.selectedEntityLevel {
                 entity.cluster?.updateLayerLevels(forPan: true)
             }
@@ -111,18 +116,18 @@ final class RecordStateMachine {
     /// Move and scale to the proper size for center of cluster
     private func cluster() {
         if let cluster = entity.cluster {
-            let moveAnimation = AnimationState.move(cluster.center)
-            let scaleAnimation = AnimationState.scale(NodeCluster.sizeFor(level: -1))
-            entity.set([moveAnimation, scaleAnimation])
+            let moveAnimation = AnimationType.move(cluster.center)
+            let scaleAnimation = AnimationType.scale(NodeCluster.sizeFor(level: -1))
+            entity.apply([moveAnimation, scaleAnimation])
         }
     }
 
     /// Scale to the proper size for the current cluster level else scale to default size
     private func scale() {
         let size = NodeCluster.sizeFor(level: entity.clusterLevel.currentLevel)
-        let scale = AnimationState.scale(size)
-        let fade = AnimationState.fade(out: false)
-        entity.set([scale, fade])
+        let scale = AnimationType.scale(size)
+        let fade = AnimationType.fade(out: false)
+        entity.apply([scale, fade])
     }
 
     /// Fades the title node for the entity appropriately for the given level

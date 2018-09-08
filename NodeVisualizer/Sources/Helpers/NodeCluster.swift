@@ -7,6 +7,7 @@ import GameplayKit
 
 typealias EntityLevels = [Set<RecordEntity>]
 
+
 /// Class that creates layers for a selected entity.
 final class NodeCluster: Hashable {
     static let selectedEntityLevel = -1
@@ -25,10 +26,6 @@ final class NodeCluster: Hashable {
         let renderSystem = GKComponentSystem(componentClass: LayerRenderComponent.self)
         return [renderSystem]
     }()
-
-    private struct Constants {
-        static let boundingNodeName = "boundingNode"
-    }
 
 
     // MARK: Init
@@ -73,7 +70,7 @@ final class NodeCluster: Hashable {
     func set(position: CGPoint) {
         center = position
         for (_, layer) in layerForLevel {
-            layer.renderComponent.node?.position = position
+            layer.renderComponent.layerNode.position = position
         }
     }
 
@@ -203,15 +200,11 @@ final class NodeCluster: Hashable {
 
     /// Associates the entity to its level by adding it to the nodeBoundingEntityForLevel. Adds the entity's component to the component system
     private func addLayer(level: Int) {
-        let radius = layerForLevel[level - 1]?.renderComponent.maxRadius ?? Style.selectedNodeRadius
-        let node = layerNode(radius: radius, level: level)
+        let radius = layerForLevel[level - 1]?.renderComponent.maxRadius
+        let layer = ClusterLayer(level: level, radius: radius, cluster: self, center: center)
 
-        let layer = ClusterLayer(cluster: self)
-        layer.renderComponent.node = node
-        layer.renderComponent.maxRadius = radius
-        layer.renderComponent.minRadius = radius
-        layer.renderComponent.level = level
         layerForLevel[level] = layer
+        scene.addChild(layer.renderComponent.layerNode)
 
         for componentSystem in componentSystems {
             componentSystem.addComponent(foundIn: layer)
@@ -220,11 +213,11 @@ final class NodeCluster: Hashable {
 
     /// Removes layer and its components from the cluster
     private func removeLayer(level: Int) {
-        guard let layer = layerForLevel[level], let node = layer.renderComponent.node else {
+        guard let layer = layerForLevel[level] else {
             return
         }
 
-        node.removeFromParent()
+        layer.renderComponent.layerNode.removeFromParent()
         layerForLevel.removeValue(forKey: level)
         for componentSystem in componentSystems {
             componentSystem.removeComponent(foundIn: layer)
@@ -232,57 +225,17 @@ final class NodeCluster: Hashable {
     }
 
     private func updateInnerMostLayerBitMasks(forPan pan: Bool) {
-        guard let innerMostLayerPhysicsBody = layerForLevel[0]?.renderComponent.node?.physicsBody else {
+        guard let innerMostLayerNode = layerForLevel[0]?.renderComponent.layerNode else {
             return
         }
 
         if pan {
-            innerMostLayerPhysicsBody.categoryBitMask = ColliderType.panBoundingNode
-            innerMostLayerPhysicsBody.collisionBitMask = ColliderType.panBoundingNode
-            innerMostLayerPhysicsBody.contactTestBitMask = ColliderType.panBoundingNode
+            let bitMasksForPan = ColliderType(categoryBitMask: ColliderType.panBoundingNode, collisionBitMask: ColliderType.panBoundingNode, contactTestBitMask: ColliderType.panBoundingNode)
+            innerMostLayerNode.set(bitMasksForPan)
         } else {
-            let bitMasks = layerBitMasks(forLevel: 0)
-            innerMostLayerPhysicsBody.categoryBitMask = bitMasks.categoryBitMask
-            innerMostLayerPhysicsBody.collisionBitMask = bitMasks.collisionBitMask
-            innerMostLayerPhysicsBody.contactTestBitMask = bitMasks.contactTestBitMask
+            let bitMasksForLevel = ClusterLayerNode.bitMasks(forLevel: 0)
+            innerMostLayerNode.set(bitMasksForLevel)
         }
-    }
-
-    /// Creates the bounding node with the appropriate physics bodies and adds it to the scene
-    private func layerNode(radius: CGFloat, level: Int) -> SKNode {
-        let boundingNode = SKNode()
-        boundingNode.name = Constants.boundingNodeName
-        boundingNode.zPosition = 1
-        boundingNode.position = center
-
-        boundingNode.physicsBody = SKPhysicsBody(circleOfRadius: radius)
-        boundingNode.physicsBody?.mass = style.nodePhysicsBodyMass
-        boundingNode.physicsBody?.isDynamic = false
-        boundingNode.physicsBody?.friction = 0
-        boundingNode.physicsBody?.restitution = 0
-        boundingNode.physicsBody?.linearDamping = 0
-
-        let bitMasks = layerBitMasks(forLevel: level)
-        boundingNode.physicsBody?.categoryBitMask = bitMasks.categoryBitMask
-        boundingNode.physicsBody?.collisionBitMask = bitMasks.collisionBitMask
-        boundingNode.physicsBody?.contactTestBitMask = bitMasks.contactTestBitMask
-
-        scene.addChild(boundingNode)
-        return boundingNode
-    }
-
-    /// Provides the bitMasks for the bounding node's physics bodies. The bits are offset by 10 in order to make them unique from the level entity's bitMasks.
-    private func layerBitMasks(forLevel level: Int) -> ColliderType {
-        let levelBit = 10 + level
-        let categoryBitMask: UInt32 = 1 << levelBit
-        let contactTestBitMask: UInt32 = 1 << levelBit
-        let collisionBitMask: UInt32 = 1 << levelBit
-
-        return ColliderType(
-            categoryBitMask: categoryBitMask,
-            collisionBitMask: collisionBitMask,
-            contactTestBitMask: contactTestBitMask
-        )
     }
 
     private func flatten(_ levels: EntityLevels) -> Set<RecordEntity> {

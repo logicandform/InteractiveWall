@@ -5,6 +5,7 @@ import SpriteKit
 import Alamofire
 import AlamofireImage
 
+
 class RecordNode: SKSpriteNode {
 
     private(set) var record: Record
@@ -30,16 +31,34 @@ class RecordNode: SKSpriteNode {
     }
 
 
+    // MARK: API
+
+    static func bitMasks(forLevel level: Int) -> ColliderType {
+        let categoryBitMask: UInt32 = 1 << level
+        let collisionBitMask: UInt32 = 1 << level
+        let contactTestBitMask: UInt32 = 1 << level
+
+        return ColliderType(
+            categoryBitMask: categoryBitMask,
+            collisionBitMask: collisionBitMask,
+            contactTestBitMask: contactTestBitMask
+        )
+    }
+
+    func setZ(level: Int) {
+        let index = CGFloat(10 - level)
+        zPosition = index
+        titleNode.zPosition = index
+    }
+
+
     // MARK: Helpers
 
     private func makeNodes(for record: Record) {
-        texture = SKTexture(imageNamed: Constants.textureImageName)
-        color = record.type.color
-        colorBlendFactor = 1
+        texture = SKTexture(imageNamed: record.type.nodeImageName)
         size = style.defaultNodeSize
-        zPosition = 1
         addTitleNode(for: record)
-        addImageNode(for: record)
+//        addImageNode(for: record)
     }
 
     private func addImageNode(for record: Record) {
@@ -64,7 +83,6 @@ class RecordNode: SKSpriteNode {
         titleNode.fontSize = Constants.labelFontSize
         titleNode.fontColor = .black
         titleNode.fontName = NSFont.boldSystemFont(ofSize: Constants.labelSystemFontSize).fontName
-        titleNode.zPosition = 2
         addChild(titleNode)
     }
 }

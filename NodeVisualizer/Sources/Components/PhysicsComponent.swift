@@ -47,9 +47,9 @@ class PhysicsComponent: GKComponent {
         // Check if the contactedBodies belong to the same level, the same cluster, and the same bounding node
         let contactedBodies = physicsBody.allContactedBodies()
         for contactedBody in contactedBodies {
-            if let boundingNode = contactedBody.node, boundingNode.name == "boundingNode",
+            if let boundingNode = contactedBody.node, boundingNode.name == ClusterLayerNode.nodeName,
                 let currentLevel = entity.clusterLevel.currentLevel,
-                cluster.layerForLevel[currentLevel]?.renderComponent.node === boundingNode,
+                cluster.layerForLevel[currentLevel]?.renderComponent.layerNode === boundingNode,
                 !entity.hasCollidedWithLayer {
                 entity.hasCollidedWithLayer = true
                 return
@@ -118,11 +118,11 @@ class PhysicsComponent: GKComponent {
         guard let entity = entity as? RecordEntity,
             let level = entity.clusterLevel.currentLevel,
             let cluster = entity.cluster,
-            let panBoundingPhysicsBody = cluster.layerForLevel[0]?.renderComponent.node?.physicsBody else {
+            let panBoundingPhysicsBody = cluster.layerForLevel[0]?.renderComponent.layerNode.physicsBody else {
             return
         }
 
-        let levelBitMasks = bitMasks(forLevel: level)
+        let levelBitMasks = RecordNode.bitMasks(forLevel: level)
         physicsBody.categoryBitMask = levelBitMasks.categoryBitMask | panBoundingPhysicsBody.categoryBitMask
         physicsBody.collisionBitMask = levelBitMasks.collisionBitMask | panBoundingPhysicsBody.collisionBitMask
         physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask | panBoundingPhysicsBody.contactTestBitMask
@@ -135,7 +135,7 @@ class PhysicsComponent: GKComponent {
     }
 
     private func setSeekingLevelBitMasks(forLevel level: Int) {
-        let levelBitMasks = bitMasks(forLevel: level)
+        let levelBitMasks = RecordNode.bitMasks(forLevel: level)
         physicsBody.categoryBitMask = levelBitMasks.categoryBitMask
         physicsBody.collisionBitMask = levelBitMasks.collisionBitMask
         physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask
@@ -144,27 +144,14 @@ class PhysicsComponent: GKComponent {
     private func setSeekingEntityBitMasks() {
         guard let entity = entity as? RecordEntity,
             let level = entity.clusterLevel.currentLevel,
-            let boundingNode = entity.cluster?.layerForLevel[level]?.renderComponent.node,
+            let boundingNode = entity.cluster?.layerForLevel[level]?.renderComponent.layerNode,
             let boundingNodePhysicsBody = boundingNode.physicsBody else {
             return
         }
 
-        let levelBitMasks = bitMasks(forLevel: level)
+        let levelBitMasks = RecordNode.bitMasks(forLevel: level)
         physicsBody.categoryBitMask = levelBitMasks.categoryBitMask | boundingNodePhysicsBody.categoryBitMask
         physicsBody.collisionBitMask = levelBitMasks.collisionBitMask | boundingNodePhysicsBody.collisionBitMask
         physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask | boundingNodePhysicsBody.contactTestBitMask
-    }
-
-    /// Returns the bitMasks for the entity's level
-    private func bitMasks(forLevel level: Int) -> ColliderType {
-        let categoryBitMask: UInt32 = 1 << level
-        let collisionBitMask: UInt32 = 1 << level
-        let contactTestBitMask: UInt32 = 1 << level
-
-        return ColliderType(
-            categoryBitMask: categoryBitMask,
-            collisionBitMask: collisionBitMask,
-            contactTestBitMask: contactTestBitMask
-        )
     }
 }

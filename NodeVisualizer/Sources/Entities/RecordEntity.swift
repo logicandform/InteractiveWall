@@ -99,13 +99,6 @@ final class RecordEntity: GKEntity {
         return movementComponent
     }
 
-    private var animationComponent: AnimationComponent {
-        guard let animationComponent = component(ofType: AnimationComponent.self) else {
-            fatalError("A RecordEntity must have an AnimationComponent")
-        }
-        return animationComponent
-    }
-
 
     // MARK: Initializer
 
@@ -122,12 +115,10 @@ final class RecordEntity: GKEntity {
         let renderComponent = RecordRenderComponent(record: record)
         let physicsComponent = PhysicsComponent(physicsBody: SKPhysicsBody(circleOfRadius: style.defaultNodePhysicsBodyRadius))
         let movementComponent = MovementComponent()
-        let animationComponent = AnimationComponent()
         renderComponent.recordNode.physicsBody = physicsComponent.physicsBody
         addComponent(movementComponent)
         addComponent(renderComponent)
         addComponent(physicsComponent)
-        addComponent(animationComponent)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -143,6 +134,7 @@ final class RecordEntity: GKEntity {
 
     func set(level: Int) {
         clusterLevel = (clusterLevel.currentLevel, level)
+        node.setZ(level: level)
     }
 
     func set(state: EntityState) {
@@ -151,8 +143,11 @@ final class RecordEntity: GKEntity {
         }
     }
 
-    func set(_ states: [AnimationState]) {
-        animationComponent.requestedAnimationStates = states
+    func apply(_ animations: [AnimationType]) {
+        for animation in animations {
+            let action = animation.action(duration: animation.duration)
+            perform(action: action, forKey: animation.key)
+        }
     }
 
     func updateBitMasks() {
@@ -163,10 +158,18 @@ final class RecordEntity: GKEntity {
         physicsComponent.setClonedNodeBitMasks()
     }
 
+    func perform(action: SKAction, forKey key: String) {
+        renderComponent.recordNode.run(action, withKey: key)
+    }
+
     func perform(action: SKAction, completion: (() -> Void)? = nil) {
         renderComponent.recordNode.run(action) {
             completion?()
         }
+    }
+
+    func removeAnimation(forKey key: String) {
+        renderComponent.recordNode.removeAction(forKey: key)
     }
 
     /// 'Reset' the entity to initial state so that proper animations and movements can take place
