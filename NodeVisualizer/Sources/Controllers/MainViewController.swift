@@ -11,6 +11,7 @@ class MainViewController: NSViewController, NodeGestureResponder {
     static let storyboard = NSStoryboard.Name(rawValue: "Main")
 
     @IBOutlet var mainView: SKView!
+    private var initialized = false
 
     // MONode
     let socketManager = SocketManager(networkConfiguration: touchNetwork)
@@ -46,15 +47,24 @@ class MainViewController: NSViewController, NodeGestureResponder {
     override func viewWillAppear() {
         super.viewWillAppear()
 
+        initializeIfNecessary()
+    }
+
+
+    // MARK: Setup Environment
+
+    private func initializeIfNecessary() {
+        if initialized {
+            return
+        }
+
+        initialized = true
         if Configuration.env == .testing {
             setupTestingEnvironment()
         } else {
             setupEnvironment()
         }
     }
-
-
-    // MARK: Setup Environment
 
     private func setupEnvironment() {
         DataManager.instance.instantiate { [weak self] in
