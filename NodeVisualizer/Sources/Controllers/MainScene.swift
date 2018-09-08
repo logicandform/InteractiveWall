@@ -271,8 +271,11 @@ class MainScene: SKScene {
                 cluster.select(entityForNode)
             }
         case .selected:
-            cluster.reset()
-            nodeClusters.remove(cluster)
+            // Prevent a node from being reset while its still moving to the center of the cluster
+            if aligned(entityForNode, with: cluster) {
+                cluster.reset()
+                nodeClusters.remove(cluster)
+            }
         default:
             return
         }
@@ -288,5 +291,14 @@ class MainScene: SKScene {
 
     private func frame(contains entity: RecordEntity) -> Bool {
         return entity.node.frame.intersects(frame)
+    }
+
+    /// Determines if a given entity is aligned with its cluster
+    private func aligned(_ entity: RecordEntity, with cluster: NodeCluster) -> Bool {
+        let entityX = Int(entity.position.x)
+        let entityY = Int(entity.position.y)
+        let clusterX = Int(cluster.center.x)
+        let clusterY = Int(cluster.center.y)
+        return entityX == clusterX && entityY == clusterY
     }
 }
