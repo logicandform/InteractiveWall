@@ -52,6 +52,16 @@ class RecordNode: SKSpriteNode {
     }
 
 
+    // MARK: Overrides
+
+    /// Returns true if a point is within the current radius from the center of `self`
+    override func contains(_ p: CGPoint) -> Bool {
+        let dX = Float(position.x - p.x)
+        let dY = Float(position.y - p.y)
+        return CGFloat(hypotf(dX, dY).magnitude) <= size.width/2
+    }
+
+
     // MARK: Helpers
 
     private func makeNodes(for record: Record) {

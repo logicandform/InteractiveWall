@@ -60,6 +60,12 @@ class MainScene: SKScene {
         }
     }
 
+    func recordNode(at point: CGPoint) -> RecordNode? {
+        return nodes(at: point).first { node in
+            node is RecordNode && node.contains(point)
+        } as? RecordNode
+    }
+
 
     // MARK: Setup
 
@@ -195,14 +201,14 @@ class MainScene: SKScene {
     @objc
     private func handleSystemClickGesture(_ recognizer: NSClickGestureRecognizer) {
         let clickPosition = recognizer.location(in: recognizer.view)
-        let nodePosition = convertPoint(fromView: clickPosition)
-        guard let recordNode = nodes(at: nodePosition).first(where: { $0 is RecordNode }) as? RecordNode else {
+        let point = convertPoint(fromView: clickPosition)
+        guard let node = recordNode(at: point) else {
             return
         }
 
         switch recognizer.state {
         case .ended:
-            select(recordNode)
+            select(node)
         default:
             return
         }
@@ -213,11 +219,11 @@ class MainScene: SKScene {
         switch recognizer.state {
         case .began:
             let pannedPosition = recognizer.location(in: recognizer.view)
-            let pannedNodePosition = convertPoint(fromView: pannedPosition)
-            if let recordNode = nodes(at: pannedNodePosition).first(where: { $0 is RecordNode }) as? RecordNode, let entity = recordNode.entity as? RecordEntity, entity.state.pannable {
+            let point = convertPoint(fromView: pannedPosition)
+            if let recordNode = recordNode(at: point), let entity = recordNode.entity as? RecordEntity, entity.state.pannable {
                 selectedEntity = entity
+                selectedEntity?.set(state: .dragging)
             }
-            selectedEntity?.set(state: .dragging)
         case .changed:
             let pannedPosition = recognizer.location(in: recognizer.view)
             let pannedNodePosition = convertPoint(fromView: pannedPosition)

@@ -120,7 +120,7 @@ final class NodeGestureManager {
             transform = transform.translatedBy(x: 0, y: -yDiff)
         }
 
-        guard let nodeAtPoint = scene.nodes(at: point).first(where: { $0 is RecordNode }), gestureHandlers.keys.contains(nodeAtPoint) else {
+        guard let nodeAtPoint = scene.recordNode(at: point), gestureHandlers.keys.contains(nodeAtPoint) else {
             return nil
         }
 
