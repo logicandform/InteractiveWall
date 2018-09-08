@@ -81,21 +81,21 @@ final class EntityManager {
         var result = EntityLevels()
 
         // Build levels for the new entity
-        for (index, records) in entity.relatedRecordsForLevel.enumerated() {
+        for (level, records) in entity.relatedRecordsForLevel.enumerated() {
             // Prioritize entities that already exist in the cluster
             var entitiesForLevel = entities(for: records, from: currentEntities, size: Constants.maxEntitiesPerLevel)
 
             // Request the remaining entities up to to allowed size per level
             let remainingSpace = Constants.maxEntitiesPerLevel - entitiesForLevel.count
             let requestedProxies = records.subtracting(proxies(for: entitiesForLevel))
-            let requestedEntities = requestEntities(from: requestedProxies, size: remainingSpace, for: cluster)
+            let requestedEntities = requestEntities(from: requestedProxies, size: remainingSpace, for: cluster, level: level)
             entitiesForLevel.formUnion(requestedEntities)
 
             // Don't insert empty levels
             if entitiesForLevel.isEmpty {
                 break
             }
-            result.insert(entitiesForLevel, at: index)
+            result.insert(entitiesForLevel, at: level)
         }
 
         return result
@@ -113,13 +113,15 @@ final class EntityManager {
         return result
     }
 
-    func createCopy(of entity: RecordEntity) -> RecordEntity {
+    func createCopy(of entity: RecordEntity, level: Int) -> RecordEntity {
         let copy = entity.clone()
         store(copy)
         addComponents(to: copy)
         copy.initialPosition = entity.initialPosition
         copy.set(position: entity.position)
         copy.node.scale(to: entity.node.size)
+        let showTitle = NodeCluster.showTitleFor(level: level)
+        copy.node.titleNode.alpha = showTitle ? 1 : 0
         copy.setClonedNodeBitMasks()
         copy.previousCluster = entity.cluster
         scene.addChild(copy.node)
@@ -160,7 +162,7 @@ final class EntityManager {
     // MARK: Helpers
 
     /// Returns a random subset of entities associated with the given proxies up to a given size, entities in another cluster will be duplicated.
-    private func requestEntities(from proxies: Set<RecordProxy>, size: Int, for cluster: NodeCluster) -> Set<RecordEntity> {
+    private func requestEntities(from proxies: Set<RecordProxy>, size: Int, for cluster: NodeCluster, level: Int) -> Set<RecordEntity> {
         guard let shuffled = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: Array(proxies)) as? [RecordProxy] else {
             return []
         }
@@ -171,7 +173,7 @@ final class EntityManager {
             let proxy = shuffled[index]
             if let entityForProxy = getEntity(for: proxy) {
                 if let current = entityForProxy.cluster, current != cluster {
-                    let copy = createCopy(of: entityForProxy)
+                    let copy = createCopy(of: entityForProxy, level: level)
                     copy.cluster = cluster
                     result.insert(copy)
                 } else {

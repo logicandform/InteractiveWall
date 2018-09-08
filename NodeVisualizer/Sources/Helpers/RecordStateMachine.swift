@@ -38,7 +38,7 @@ final class RecordStateMachine {
         case .seekLevel(_), .seekEntity(_):
             entity.node.removeAllActions()
         case .dragging:
-            if entity.clusterLevel.currentLevel == NodeCluster.selectedEntityLevel {
+            if entity.isSelected {
                 entity.cluster?.updateLayerLevels(forPan: false)
             }
         }
@@ -79,7 +79,7 @@ final class RecordStateMachine {
             entity.removeAnimation(forKey: AnimationType.move(.zero).key)
             entity.physicsBody.isDynamic = false
             entity.node.setZ(level: Constants.draggingLevel)
-            if entity.clusterLevel.currentLevel == NodeCluster.selectedEntityLevel {
+            if entity.isSelected {
                 entity.cluster?.updateLayerLevels(forPan: true)
             }
         case .reset:
@@ -132,7 +132,7 @@ final class RecordStateMachine {
 
     /// Fades the title node for the entity appropriately for the given level
     private func updateTitleFor(level: Int) {
-        let showTitle = level < 1 ? true : false
+        let showTitle = NodeCluster.showTitleFor(level: level)
         let fade = showTitle ? SKAction.fadeIn(withDuration: style.fadeAnimationDuration) : SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
         entity.node.titleNode.run(fade)
     }

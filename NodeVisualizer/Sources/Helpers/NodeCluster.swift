@@ -158,6 +158,11 @@ final class NodeCluster: Hashable {
         }
     }
 
+    /// Determines if a certain level should show or hide its title
+    static func showTitleFor(level: Int) -> Bool {
+        return level < 1
+    }
+
 
     // MARK: Helpers
 
