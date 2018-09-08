@@ -6,7 +6,7 @@ import GameplayKit
 import MONode
 
 
-class MainViewController: NSViewController, NodeGestureResponder {
+class MainViewController: NSViewController, NodeGestureResponder, SocketManagerDelegate {
     static let touchNetwork = NetworkConfiguration(broadcastHost: Configuration.broadcastIP, nodePort: Configuration.touchPort)
     static let storyboard = NSStoryboard.Name(rawValue: "Main")
 
@@ -29,10 +29,6 @@ class MainViewController: NSViewController, NodeGestureResponder {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard mainView.scene == nil else {
-            return
-        }
-
         socketManager.delegate = self
         gestureManager = NodeGestureManager(responder: self)
 
@@ -68,6 +64,22 @@ class MainViewController: NSViewController, NodeGestureResponder {
     }
 
 
+    // MARK: SocketManagerDelegate
+
+    func handlePacket(_ packet: Packet) {
+        guard let touch = Touch(from: packet), shouldSend(touch) else {
+            return
+        }
+
+        convert(touch, toScreen: touch.screen)
+        gestureManager.handle(touch)
+    }
+
+    func handleError(_ message: String) {
+        print("Socket error: \(message)")
+    }
+
+
     // MARK: Helpers
 
     private func setupMainScene() {
@@ -82,22 +94,6 @@ class MainViewController: NSViewController, NodeGestureResponder {
         mainScene.backgroundColor = style.darkBackground
         mainScene.scaleMode = .aspectFill
         return mainScene
-    }
-}
-
-
-extension MainViewController: SocketManagerDelegate {
-    func handlePacket(_ packet: Packet) {
-        guard let touch = Touch(from: packet), shouldSend(touch) else {
-            return
-        }
-
-        convert(touch, toScreen: touch.screen)
-        gestureManager.handle(touch)
-    }
-
-    func handleError(_ message: String) {
-        print("Socket error: \(message)")
     }
 
     private func shouldSend(_ touch: Touch) -> Bool {
