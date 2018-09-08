@@ -46,9 +46,9 @@ class RecordNode: SKSpriteNode {
     }
 
     func setZ(level: Int) {
-        let index = CGFloat(10 - level)
+        // Since titles are 1 level above the node, must multiply level by 2 to avoid undefined ordering
+        let index = CGFloat(20 - level * 2)
         zPosition = index
-        titleNode.zPosition = index
     }
 
 
@@ -68,7 +68,7 @@ class RecordNode: SKSpriteNode {
         texture = SKTexture(imageNamed: record.type.nodeImageName)
         size = style.defaultNodeSize
         addTitleNode(for: record)
-//        addImageNode(for: record)
+        addImageNode(for: record)
     }
 
     private func addImageNode(for record: Record) {
@@ -92,6 +92,7 @@ class RecordNode: SKSpriteNode {
         titleNode.horizontalAlignmentMode = .center
         titleNode.fontSize = Constants.labelFontSize
         titleNode.fontColor = .black
+        titleNode.zPosition = 1
         titleNode.fontName = NSFont.boldSystemFont(ofSize: Constants.labelSystemFontSize).fontName
         addChild(titleNode)
     }
