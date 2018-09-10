@@ -13,11 +13,11 @@ enum Environment {
 
 
 struct Configuration {
-    static let env = Environment.testing
+    static let env = Environment.production
     static let touchPort: UInt16 = 13003
-    static let serverIP = "localhost"
+    static let serverIP = "10.58.73.183"
     static let broadcastIP = "10.58.73.255"
-    static let serverURL = "http://\(serverIP):3100"
+    static let serverURL = "http://\(serverIP):3000"
     static let appsPerScreen = 2
     static let numberOfScreens = 1
     static let touchScreenSize = CGSize(width: 21564, height: 12116)

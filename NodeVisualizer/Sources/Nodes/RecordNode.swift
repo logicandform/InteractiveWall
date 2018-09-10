@@ -17,8 +17,8 @@ class RecordNode: SKSpriteNode {
         static let textureImageName = "node_circle"
         static let labelFontSize: CGFloat = 30
         static let labelSystemFontSize: CGFloat = 10
-        static let buttonSize = CGSize(width: 10, height: 10)
-        static let buttonOffset: CGFloat = 40
+        static let buttonSize = CGSize(width: 8, height: 8)
+        static let buttonOffset: CGFloat = 44
     }
 
 

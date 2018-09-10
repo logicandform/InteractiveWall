@@ -13,6 +13,7 @@ class MainScene: SKScene {
 
     private struct Constants {
         static let maximumUpdateDeltaTime = 1.0 / 60.0
+        static let windowDisplayOffset: CGFloat = 20
     }
 
     private struct Keys {
@@ -269,7 +270,7 @@ class MainScene: SKScene {
 
     /// Sets up all the data relationships for the tapped node and starts the physics interactions
     private func select(_ node: RecordNode, at position: CGPoint) {
-        guard let entity = node.entity as? RecordEntity, entity.state.tappable else {
+        guard let entity = node.entity as? RecordEntity, entity.state.tappable, let window = view?.window else {
             return
         }
 
@@ -287,7 +288,8 @@ class MainScene: SKScene {
             // Only allow actions once the node is aligned with its cluster
             if aligned(entity, with: cluster) {
                 if node.openButton(contains: position) {
-                   postRecordNotification(for: entity.record.type, id: entity.record.id, at: position)
+                    let positionInApplication = position + CGPoint(x: window.frame.minX, y: -Constants.windowDisplayOffset)
+                    postRecordNotification(for: entity.record.type, id: entity.record.id, at: positionInApplication)
                 } else if node.closeButton(contains: position) {
                     cluster.reset()
                     nodeClusters.remove(cluster)
