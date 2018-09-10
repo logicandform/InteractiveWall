@@ -78,6 +78,7 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
 
     override func viewDidAppear() {
         super.viewDidAppear()
+
         setupSettings()
         setupInfoMenu()
     }

@@ -43,19 +43,26 @@ final class Media: Hashable {
     let type: MediaType
     let url: URL
     let localURL: URL
-    let thumbnail: URL
-    let localThumbnail: URL
+    let thumbnail: URL?
+    let localThumbnail: URL?
     let title: String?
     var tintColor: NSColor
 
     var hashValue: Int {
-        return url.hashValue ^ thumbnail.hashValue
+        var hash = url.hashValue
+        if let title = title {
+            hash ^= title.hashValue
+        }
+        if let thumbnail = thumbnail {
+            hash ^= thumbnail.hashValue
+        }
+        return hash
     }
 
 
     // MARK: Init
 
-    init(url: URL, localURL: URL, thumbnail: URL, localThumbnail: URL, title: String?, color: NSColor) {
+    init(url: URL, localURL: URL, thumbnail: URL?, localThumbnail: URL?, title: String?, color: NSColor) {
         self.type = MediaType(for: url)
         self.url = url
         self.localURL = localURL

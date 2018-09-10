@@ -3,6 +3,8 @@
 import Foundation
 import Cocoa
 import AVKit
+import Alamofire
+import AlamofireImage
 
 
 class InfoItemView: NSCollectionViewItem, PlayerControlDelegate {
@@ -11,12 +13,12 @@ class InfoItemView: NSCollectionViewItem, PlayerControlDelegate {
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var highlightView: NSView!
     @IBOutlet weak var stackView: NSStackView!
+    @IBOutlet weak var mediaImageView: ImageView!
     @IBOutlet weak var playerView: AVPlayerView!
     @IBOutlet weak var playerControl: PlayerControl!
     @IBOutlet weak var playerStateImageView: NSImageView!
     @IBOutlet weak var playerControlTopConstraint: NSLayoutConstraint!
 
-    var appID: Int!
     weak var delegate: InfoViewDelegate?
     private var showingControls = false
 
@@ -45,7 +47,7 @@ class InfoItemView: NSCollectionViewItem, PlayerControlDelegate {
     // MARK: API
 
     func handlePlayer(_ tap: TapGestureRecognizer) {
-        guard let position = tap.position, playerView.frame.contains(position) else {
+        guard infoItem.media.type == .video, let position = tap.position, playerView.frame.contains(position) else {
             return
         }
 
@@ -57,6 +59,10 @@ class InfoItemView: NSCollectionViewItem, PlayerControlDelegate {
     }
 
     func handleVolume(_ tap: TapGestureRecognizer) {
+        guard infoItem.media.type == .video else {
+            return
+        }
+
         if showingControls {
             playerControl.toggleVolume()
         } else {
@@ -65,6 +71,10 @@ class InfoItemView: NSCollectionViewItem, PlayerControlDelegate {
     }
 
     func handle(_ pan: PanGestureRecognizer) {
+        guard infoItem.media.type == .video else {
+            return
+        }
+
         if showingControls {
             playerControl.didScrubControl(pan)
         }
@@ -85,19 +95,31 @@ class InfoItemView: NSCollectionViewItem, PlayerControlDelegate {
     private func load(_ item: InfoItem) {
         titleLabel.attributedStringValue = NSAttributedString(string: item.title, attributes: style.windowTitleAttributes)
         setupStackView(for: item.labels)
-        setupPlayer(for: item.media)
+
+        switch item.media.type {
+        case .video:
+            setupPlayer(for: item.media)
+        case .image:
+            setupImage(for: item.media)
+        default:
+            return
+        }
     }
 
     private func setupStackView(for labels: [InfoLabel]) {
         for label in labels {
-            let titleString = NSAttributedString(string: label.title, attributes: style.recordSmallHeaderAttributes)
-            let titleLabel = textField(for: titleString)
-            stackView.insertView(titleLabel, at: stackView.subviews.count, in: .top)
-            stackView.setCustomSpacing(style.smallHeaderTrailingSpace, after: titleLabel)
-            let descriptionString = NSAttributedString(string: label.description, attributes: style.recordDescriptionAttributes)
-            let descriptionLabel = textField(for: descriptionString)
-            stackView.insertView(descriptionLabel, at: stackView.subviews.count, in: .top)
-            stackView.setCustomSpacing(style.descriptionTrailingSpace, after: descriptionLabel)
+            if !label.title.isEmpty {
+                let titleString = NSAttributedString(string: label.title, attributes: style.recordSmallHeaderAttributes)
+                let titleLabel = textField(for: titleString)
+                stackView.insertView(titleLabel, at: stackView.subviews.count, in: .top)
+                stackView.setCustomSpacing(style.smallHeaderTrailingSpace, after: titleLabel)
+            }
+            if !label.description.isEmpty {
+                let descriptionString = NSAttributedString(string: label.description, attributes: style.recordDescriptionAttributes)
+                let descriptionLabel = textField(for: descriptionString)
+                stackView.insertView(descriptionLabel, at: stackView.subviews.count, in: .top)
+                stackView.setCustomSpacing(style.descriptionTrailingSpace, after: descriptionLabel)
+            }
         }
     }
 
@@ -115,12 +137,25 @@ class InfoItemView: NSCollectionViewItem, PlayerControlDelegate {
         playerControl.delegate = self
     }
 
+    private func setupImage(for media: Media) {
+        guard media.type == .image else {
+            return
+        }
+
+        playerView.isHidden = true
+        playerStateImageView.isHidden = true
+
+        Alamofire.request(media.url).responseImage { [weak self] response in
+            if let image = response.value {
+                self?.mediaImageView.set(image)
+            }
+        }
+    }
+
     private func setupViews() {
         highlightView.wantsLayer = true
         highlightView.layer?.backgroundColor = style.menuSelectedColor.cgColor
-
         playerControl.tintColor = style.menuSelectedColor
-
         playerStateImageView.wantsLayer = true
         playerStateImageView.layer?.cornerRadius = playerStateImageView.frame.width / 2
         playerStateImageView.layer?.backgroundColor = style.darkBackground.cgColor
@@ -167,6 +202,7 @@ class InfoItemView: NSCollectionViewItem, PlayerControlDelegate {
         label.drawsBackground = false
         label.isBordered = false
         label.isSelectable = false
+        label.sizeToFit()
         return label
     }
 }

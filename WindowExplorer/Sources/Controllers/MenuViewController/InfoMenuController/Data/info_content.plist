@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>title</key>
+		<string>Welcome</string>
+		<key>videoURL</key>
+		<string></string>
+		<key>thumbnailURL</key>
+		<string>/static/png/MapExplorerInteraction.png</string>
+		<key>localVideoURL</key>
+		<string></string>
+		<key>localThumbnailURL</key>
+		<string>/Users/irshdc/dev/Caching-Server-UBC/static/png/MapExplorerInteraction.png</string>
+		<key>sections</key>
+		<array>
+			<dict>
+				<key>title</key>
+				<string></string>
+				<key>content</key>
+				<string>Welcome to the Indian Residential School History and Dialogue Centre. We welcome your feedback on this space. If you have any questions or comments, please reach out to a staff member.</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>Colors</string>
+				<key>content</key>
+				<string>Throughout the entire installation, colours are consistent. Blue items indicate residential schools. pink items indicate events, green items indicate organizations and purple items indicate artifacts. </string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>Touch the Screen</string>
+				<key>content</key>
+				<string>Tapping a pin, dragging the timeline, or pinching the map are great ways to get started exploring the installation.</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>Individual Interaction</string>
+				<key>content</key>
+				<string>When you begin moving the map, the timeline, or interacting with the nodes, the installation will automatically create an individual session for you.</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>Group Interaction</string>
+				<key>content</key>
+				<string>If you are working alone with the installation, the aeshtetic layer may move across all screens. As more people begin using the installation it will continuously divide down into a maximum of six individual sessions.</string>
+			</dict>
+		</array>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>Interacting with the Screens</string>
+		<key>videoURL</key>
+		<string>/static/mp4/MapExplorerInteraction.mp4</string>
+		<key>thumbnailURL</key>
+		<string></string>
+		<key>localVideoURL</key>
+		<string>/Users/irshdc/dev/Caching-Server-UBC/static/mp4/MapExplorerInteraction.mp4</string>
+		<key>localThumbnailURL</key>
+		<string></string>
+		<key>sections</key>
+		<array>
+			<dict>
+				<key>title</key>
+				<string>Moving</string>
+				<key>content</key>
+				<string>You can move around the map, or the timeline, by touching and dragging a finger across the screen. On the node visualizer, you can drag elements around.</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>Selecting</string>
+				<key>content</key>
+				<string>Tap a pin on the map, a flag on the timeline, or a element on the node visualizer to select. In the timeline and map layers this will open a record, on the node visualizer this will put focus on that node.</string>
+			</dict>
+			<dict>
+				<key>title</key>
+				<string>Zooming</string>
+				<key>content</key>
+				<string>To zoom in to or out of the map you can pinch with two fingers. The timeline and node visualizer do not have the ability to zoom.</string>
+			</dict>
+		</array>
+	</dict>
+</array>
+</plist>

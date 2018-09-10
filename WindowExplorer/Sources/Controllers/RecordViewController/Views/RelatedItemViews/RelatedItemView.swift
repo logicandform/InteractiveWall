@@ -55,8 +55,8 @@ class RelatedItemView: NSCollectionViewItem {
         }
 
         let placeholder = record.type.placeholder.tinted(with: record.type.color)
-        if let media = record.media.first {
-            Alamofire.request(media.thumbnail).responseImage { [weak self] response in
+        if let media = record.media.first, let thumbnail = media.thumbnail {
+            Alamofire.request(thumbnail).responseImage { [weak self] response in
                 if let image = response.value {
                     self?.setImage(image, scaling: .aspectFill)
                 } else {

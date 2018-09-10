@@ -11,6 +11,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="InfoItemView" customModule="WindowExplorer" customModuleProvider="target">
             <connections>
                 <outlet property="highlightView" destination="rXP-0a-K7j" id="1j9-Q5-7az"/>
+                <outlet property="mediaImageView" destination="FWQ-Qg-iVl" id="RLO-rU-RbM"/>
                 <outlet property="playerControl" destination="YRC-Wy-MvU" id="D45-4L-lAK"/>
                 <outlet property="playerControlTopConstraint" destination="B5T-sT-5hh" id="bvk-gv-djE"/>
                 <outlet property="playerStateImageView" destination="72A-hH-2aC" id="PDR-6E-RKp"/>
@@ -58,7 +59,7 @@
                         <constraint firstItem="mjG-G9-Km3" firstAttribute="leading" secondItem="4R8-hS-CIt" secondAttribute="leading" constant="20" id="zFn-ic-Qne"/>
                     </constraints>
                 </customView>
-                <customView translatesAutoresizingMaskIntoConstraints="NO" id="FWQ-Qg-iVl">
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="FWQ-Qg-iVl" customClass="ImageView" customModule="WindowExplorer" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="119" width="500" height="281"/>
                     <subviews>
                         <avPlayerView controlsStyle="none" translatesAutoresizingMaskIntoConstraints="NO" id="GHD-oG-q4Y">

@@ -51,9 +51,11 @@ class MediaItemView: NSCollectionViewItem {
             return
         }
 
-        Alamofire.request(media.thumbnail).responseImage { [weak self] response in
-            if let image = response.value {
-                self?.mediaImageView.set(image)
+        if let thumbnail = media.thumbnail {
+            Alamofire.request(thumbnail).responseImage { [weak self] response in
+                if let image = response.value {
+                    self?.mediaImageView.set(image)
+                }
             }
         }
 

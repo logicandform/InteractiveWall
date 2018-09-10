@@ -59,12 +59,16 @@ class TestimonyItemView: NSCollectionViewItem {
         titleTextField.attributedStringValue = NSAttributedString(string: media.title ?? "", attributes: style.windowTitleAttributes)
 
         let placeholder = Constants.testimonyPlaceholderImage?.tinted(with: tintColor)
-        Alamofire.request(media.thumbnail).responseImage { [weak self] response in
-            if let image = response.value {
-                self?.setImage(image, scaling: .aspectFill)
-            } else {
-                self?.setImage(placeholder, scaling: .center)
+        if let thumbnail = media.thumbnail {
+            Alamofire.request(thumbnail).responseImage { [weak self] response in
+                if let image = response.value {
+                    self?.setImage(image, scaling: .aspectFill)
+                } else {
+                    self?.setImage(placeholder, scaling: .center)
+                }
             }
+        } else {
+            setImage(placeholder, scaling: .center)
         }
     }
 

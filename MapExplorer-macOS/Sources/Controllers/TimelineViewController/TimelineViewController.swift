@@ -93,18 +93,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     // MARK: Setup
 
     func setupTimelineDate() {
-        switch timelineCollectionView.collectionViewLayout {
-        case is TimelineMonthLayout:
-            setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month + appID, year: Constants.initialDate.year), animated: true)
-        case is TimelineYearLayout:
-            setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year + appID), animated: true)
-        case is TimelineDecadeLayout, is TimelineDecadeStackedLayout, is TimelineDecadeFlagLayout:
-            setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year + (appID * 10)), animated: true)
-        case is TimelineCenturyLayout:
-            setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year), animated: true)
-        default:
-            return
-        }
+        setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year + (appID * 10)), animated: true)
     }
 
     private func setupBackground() {
@@ -244,15 +233,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
 
     private func addTimelineDays(with offset: CGVector) {
         let days = -(offset.dx / CGFloat(timelineType.sectionWidth))
-
-        switch timelineCollectionView.collectionViewLayout {
-        case is TimelineMonthLayout:
-            add(days: days)
-        case is TimelineYearLayout, is TimelineDecadeLayout, is TimelineCenturyLayout, is TimelineDecadeStackedLayout, is TimelineDecadeFlagLayout:
-            add(days: days * 12)
-        default:
-            return
-        }
+        add(days: days * 12)
     }
 
     private func adjust(day: CGFloat) -> CGFloat {
@@ -419,7 +400,6 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     }
 
     private func setupHorizontalGradient(in view: NSView) {
-        view.wantsLayer = true
         let transparent = CGColor.clear
         let opaque = style.darkBackgroundOpaque.cgColor
         let gradientLayer = CAGradientLayer()
@@ -428,6 +408,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         gradientLayer.locations = [0, NSNumber(value: Constants.fadePercentage), NSNumber(value: 1 - Constants.fadePercentage), 1]
         gradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
         gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
+        view.wantsLayer = true
         view.layer?.mask = gradientLayer
     }
 
@@ -442,7 +423,6 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
 
     private func scrollCollectionViews(animated: Bool = false) {
         let centerInset = Constants.controlItemWidth * 3
-
         let yearOffset = (CGFloat(currentDate.year.array.last!) / 10) * Constants.controlItemWidth
         let decade = decadeFor(year: currentDate.year)
         let decadeMaxX = CGFloat(controlsSource.decades.count) * Constants.controlItemWidth
@@ -465,29 +445,14 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     }
 
     private func scrollTimeline(animated: Bool = false) {
-        var timelineMaxX = CGFloat(source.years.count) * CGFloat(timelineType.sectionWidth)
+        let timelineMaxX = CGFloat(source.years.count) * CGFloat(timelineType.sectionWidth)
         let timelineYearIndex = source.years.index(of: currentDate.year) != nil ? source.years.index(of: currentDate.year) : currentDate.year < source.firstYear ? -1 : source.years.count - 1
         var timelineRect = timelineCollectionView.visibleRect
-
-        switch timelineCollectionView.collectionViewLayout {
-        case is TimelineMonthLayout:
-            timelineMaxX = CGFloat(source.years.count) * CGFloat(timelineType.sectionWidth) * 12
-            let timelineMonthOffset = ((CGFloat(currentDate.month) + currentDate.day - 0.5)) * CGFloat(timelineType.sectionWidth)
-            let timelineYearX = CGFloat(timelineYearIndex!) * CGFloat(timelineType.sectionWidth) * 12
-            timelineRect.origin.x = timelineYearX - timelineRect.width / 2 + timelineMonthOffset
-            if timelineRect.origin.x < 0 {
-                timelineRect.origin.x = timelineMaxX + timelineRect.origin.x
-            }
-            timelineCollectionView.scrollToVisible(timelineRect)
-        case is TimelineYearLayout, is TimelineCenturyLayout, is TimelineDecadeLayout, is TimelineDecadeStackedLayout, is TimelineDecadeFlagLayout:
-            let timelineMonthOffset = ((CGFloat(currentDate.month) + currentDate.day - 0.5) / 12) * CGFloat(timelineType.sectionWidth)
-            let timelineYearX = CGFloat(timelineYearIndex!) * CGFloat(timelineType.sectionWidth)
-            timelineRect.origin.x = timelineYearX - timelineRect.width / 2 + timelineMonthOffset
-            if timelineRect.origin.x < 0 {
-                timelineRect.origin.x = timelineMaxX + timelineRect.origin.x
-            }
-        default:
-            return
+        let timelineMonthOffset = ((CGFloat(currentDate.month) + currentDate.day - 0.5) / 12) * CGFloat(timelineType.sectionWidth)
+        let timelineYearX = CGFloat(timelineYearIndex!) * CGFloat(timelineType.sectionWidth)
+        timelineRect.origin.x = timelineYearX - timelineRect.width / 2 + timelineMonthOffset
+        if timelineRect.origin.x < 0 {
+            timelineRect.origin.x = timelineMaxX + timelineRect.origin.x
         }
 
         if animated {

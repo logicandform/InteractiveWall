@@ -69,31 +69,7 @@ class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollec
     // MARK: Setup
 
     private func setupInfoItems() {
-        let url = URL.from(Configuration.serverURL + "/static/mp4/MapExplorerInteraction.mp4")!
-        let localURL = URL.from(Configuration.serverURL + "/Users/irshdc/dev/Caching-Server-UBC/static/mp4/MapExplorerInteraction.mp4")!
-        let thumbnailURL = URL.from(Configuration.serverURL + "/static/png/MapExplorerInteraction.png")!
-        let localThumbnailURL = URL.from(Configuration.serverURL + "/Users/irshdc/dev/Caching-Server-UBC/static/png/MapExplorerInteraction.png")!
-
-        let media = Media(url: url, localURL: localURL, thumbnail: thumbnailURL, localThumbnail: localThumbnailURL, title: "", color: style.selectedColor)
-
-
-        let label1 = InfoLabel(title: "Colors", description: "Throughout the entire installation, colours are consistent. Blue items indicate residential schools. pink items indicate events, green items indicate organizations and purple items indicate artifacts.")
-        let label2 = InfoLabel(title: "Touch the Screen", description: "Tapping a pin, dragging the timeline, or pinching the map are great ways to get started exploring the installation.")
-        let label3 = InfoLabel(title: "Individually", description: "When you begin moving the map, the timeline, or interacting with the nodes, the installation will automatically create an individual session for you.")
-        let label4 = InfoLabel(title: "Group Interaction", description: "If you are working alone with the installation, the aeshtetic layer may move across all screens. As more people begin using the installation it will continuously divide down into a maximum of six individual sessions.")
-
-        let labels = [label1, label2, label3, label4]
-
-        let testItem1 = InfoItem(title: "Title 1", labels: labels, media: media)
-        let testItem2 = InfoItem(title: "Title 2", labels: labels, media: media)
-        let testItem3 = InfoItem(title: "Title 3", labels: labels, media: media)
-        let testItem4 = InfoItem(title: "Title 4", labels: labels, media: media)
-        let testItem5 = InfoItem(title: "Title 5", labels: labels, media: media)
-        let testItem6 = InfoItem(title: "Title 6", labels: labels, media: media)
-        let testItem7 = InfoItem(title: "Title 7", labels: labels, media: media)
-        let testItem8 = InfoItem(title: "Title 8", labels: labels, media: media)
-        let testItem9 = InfoItem(title: "Title 9", labels: labels, media: media)
-        infoItems = [testItem1, testItem2, testItem3, testItem4, testItem5, testItem6, testItem7, testItem8, testItem9]
+        infoItems = parseInfoItems()
     }
 
     private func setupCollectionView() {
@@ -199,6 +175,7 @@ class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollec
             infoCollectionView.scrollToVisible(rect)
             // If the view has been panned beyond the threshold, unfocus the view
             if rectPastThreshold(rect: rect, percent: Constants.unfocusThresholdPercent) {
+                // TODO: Does this prevent slow panning to the next view? Maybe invalidating it not the right solution
                 playControlScrubGesture.invalidate()
                 focusedInfoView?.unfocus()
             }
@@ -236,12 +213,26 @@ class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollec
 
     // MARK: Helpers
 
+    /// Generates the info items from the stored plist
+    private func parseInfoItems() -> [InfoItem] {
+        if let path = Bundle.main.path(forResource: "info_content", ofType: "plist") {
+            let url = URL(fileURLWithPath: path)
+            if let data = try? Data(contentsOf: url), let plist = try? PropertyListSerialization.propertyList(from: data, options: .mutableContainers, format: nil), let itemsJSON = plist as? [JSON] {
+                return itemsJSON.compactMap { InfoItem(json: $0) }
+            }
+        }
+
+        return []
+    }
+
+    /// Animate collection view to the view at the given index
     private func animateCollectionView(to point: CGPoint, duration: CGFloat, for index: Int) {
         infoCollectionView.animate(to: point, duration: duration, completion: { [weak self] in
             self?.finishedAnimatingToItem(index: index)
         })
     }
 
+    /// Update selected page and set focused item
     private func finishedAnimatingToItem(index: Int) {
         pageControl.selectedPage = UInt(index)
         if let infoItemView = infoCollectionView.item(at: IndexPath(item: index, section: 0)) as? InfoItemView {

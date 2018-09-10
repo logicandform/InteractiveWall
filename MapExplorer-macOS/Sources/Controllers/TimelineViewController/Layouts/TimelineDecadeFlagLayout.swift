@@ -56,10 +56,10 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
 
         let diagram = TailDiagram()
 
-        // Fill tail diagram for events
+        // Fill tail diagram with school events
         for year in (source.firstYear...source.lastYear + Constants.infiniteScrollBuffer) {
             if let events = source.eventsForYear[year] {
-                for event in events {
+                for event in events where event.type == .school {
                     if let endDate = event.dates.endDate {
                         let start = position(for: event.dates.startDate, in: source)
                         let end = position(for: endDate, in: source)
@@ -70,10 +70,10 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
             }
         }
 
-        // Add start and end markers for timeline events
+        // Add start and end markers for timeline school events
         for year in (source.firstYear...source.lastYear + Constants.infiniteScrollBuffer) {
             if let events = source.eventsForYear[year] {
-                for event in events {
+                for event in events where event.type == .school {
                     if let endDate = event.dates.endDate {
                         let start = position(for: event.dates.startDate, in: source)
                         let end = position(for: endDate, in: source)

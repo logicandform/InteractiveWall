@@ -15,16 +15,16 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="yPT-yt-MBL">
-                                <rect key="frame" x="0.0" y="119" width="664" height="237"/>
+                                <rect key="frame" x="0.0" y="119" width="664" height="236"/>
                                 <subviews>
                                     <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="FoW-Io-IhM">
-                                        <rect key="frame" x="0.0" y="80" width="664" height="157"/>
+                                        <rect key="frame" x="0.0" y="80" width="664" height="156"/>
                                         <clipView key="contentView" drawsBackground="NO" id="2EQ-1e-jeX">
-                                            <rect key="frame" x="0.0" y="0.0" width="664" height="157"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="664" height="156"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <collectionView id="hh4-uZ-Why" customClass="FlippedCollectionView" customModule="MapExplorer_macOS" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="0.0" width="664" height="157"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="664" height="156"/>
                                                     <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" scrollDirection="horizontal" id="aIQ-M3-5l0">
                                                         <size key="itemSize" width="50" height="50"/>
