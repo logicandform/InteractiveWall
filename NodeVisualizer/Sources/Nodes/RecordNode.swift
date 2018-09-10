@@ -10,11 +10,15 @@ class RecordNode: SKSpriteNode {
 
     private(set) var record: Record
     private(set) var titleNode: SKLabelNode!
+    private(set) var closeNode: SKSpriteNode!
+    private(set) var openNode: SKSpriteNode!
 
     private struct Constants {
         static let textureImageName = "node_circle"
         static let labelFontSize: CGFloat = 30
         static let labelSystemFontSize: CGFloat = 10
+        static let buttonSize = CGSize(width: 10, height: 10)
+        static let buttonOffset: CGFloat = 40
     }
 
 
@@ -45,10 +49,22 @@ class RecordNode: SKSpriteNode {
         )
     }
 
+    /// Sets the zPosition of `self`
     func setZ(level: Int) {
         // Since titles are 1 level above the node, must multiply level by 2 to avoid undefined ordering
-        let index = CGFloat(20 - level * 2)
-        zPosition = index
+        zPosition = CGFloat(20 - level * 2)
+    }
+
+    func closeButton(contains point: CGPoint) -> Bool {
+        let pointFromCenter = point.transformed(to: frame) - CGPoint(x: frame.width/2, y: frame.height/2)
+        let pointInNode = CGPoint(x: pointFromCenter.x / xScale, y: pointFromCenter.y / yScale)
+        return closeNode.frame.contains(pointInNode)
+    }
+
+    func openButton(contains point: CGPoint) -> Bool {
+        let pointFromCenter = point.transformed(to: frame) - CGPoint(x: frame.width/2, y: frame.height/2)
+        let pointInNode = CGPoint(x: pointFromCenter.x / xScale, y: pointFromCenter.y / yScale)
+        return openNode.frame.contains(pointInNode)
     }
 
 
@@ -67,11 +83,13 @@ class RecordNode: SKSpriteNode {
     private func makeNodes(for record: Record) {
         texture = SKTexture(imageNamed: record.type.nodeImageName)
         size = style.defaultNodeSize
+        downloadImage(for: record)
         addTitleNode(for: record)
-        addImageNode(for: record)
+        addOpenNode()
+        addCloseNode()
     }
 
-    private func addImageNode(for record: Record) {
+    private func downloadImage(for record: Record) {
         guard let media = record.media.first else {
             return
         }
@@ -95,6 +113,24 @@ class RecordNode: SKSpriteNode {
         titleNode.zPosition = 1
         titleNode.fontName = NSFont.boldSystemFont(ofSize: Constants.labelSystemFontSize).fontName
         addChild(titleNode)
+    }
+
+    private func addOpenNode() {
+        openNode = SKSpriteNode(imageNamed: "open-button")
+        openNode.size = Constants.buttonSize
+        openNode.position = CGPoint(x: 0, y: -Constants.buttonOffset)
+        openNode.zPosition = 1
+        openNode.alpha = 0
+        addChild(openNode)
+    }
+
+    private func addCloseNode() {
+        closeNode = SKSpriteNode(imageNamed: "close-button")
+        closeNode.size = Constants.buttonSize
+        closeNode.position = CGPoint(x: 0, y: Constants.buttonOffset)
+        closeNode.zPosition = 1
+        closeNode.alpha = 0
+        addChild(closeNode)
     }
 }
 

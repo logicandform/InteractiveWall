@@ -54,7 +54,7 @@ final class RecordStateMachine {
             entity.updateBitMasks()
             entity.physicsBody.isDynamic = false
             entity.node.removeAllActions()
-            updateTitleFor(level: NodeCluster.selectedEntityLevel)
+            updateViews(level: NodeCluster.selectedEntityLevel)
             cluster()
         case .seekLevel(let level):
             entity.set(level: level)
@@ -65,7 +65,7 @@ final class RecordStateMachine {
             entity.physicsBody.friction = 1
             entity.physicsBody.linearDamping = 1
             entity.node.removeAllActions()
-            updateTitleFor(level: level)
+            updateViews(level: level)
             scale()
         case .seekEntity(_):
             entity.updateBitMasks()
@@ -131,9 +131,13 @@ final class RecordStateMachine {
     }
 
     /// Fades the title node for the entity appropriately for the given level
-    private func updateTitleFor(level: Int) {
+    private func updateViews(level: Int) {
         let showTitle = NodeCluster.showTitleFor(level: level)
-        let fade = showTitle ? SKAction.fadeIn(withDuration: style.fadeAnimationDuration) : SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
-        entity.node.titleNode.run(fade)
+        let titleAction = showTitle ? SKAction.fadeIn(withDuration: style.fadeAnimationDuration) : SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
+        entity.node.titleNode.run(titleAction)
+        let showButtons = level == NodeCluster.selectedEntityLevel
+        let buttonAction = showButtons ? SKAction.fadeIn(withDuration: style.fadeAnimationDuration) : SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
+        entity.node.closeNode.run(buttonAction)
+        entity.node.openNode.run(buttonAction)
     }
 }

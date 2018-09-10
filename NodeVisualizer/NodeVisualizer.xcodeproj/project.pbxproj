@@ -36,6 +36,7 @@
 		22AEAF0120B67E2C00DD184B /* TouchProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AEAEFE20B67E2C00DD184B /* TouchProperties.swift */; };
 		22AEAF0220B67E2C00DD184B /* Touch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AEAEFF20B67E2C00DD184B /* Touch.swift */; };
 		22B6974A2143417C00FD082D /* ClusterLayerNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B697492143417C00FD082D /* ClusterLayerNode.swift */; };
+		22CEFD432146173700981FAC /* RecordNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CEFD422146173700981FAC /* RecordNotifications.swift */; };
 		22D6F90320B6810600C7FB5F /* GestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F8F920B6810600C7FB5F /* GestureHandler.swift */; };
 		22D6F90420B6810600C7FB5F /* RecordType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F8FA20B6810600C7FB5F /* RecordType.swift */; };
 		22D6F90620B6810600C7FB5F /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F8FC20B6810600C7FB5F /* Style.swift */; };
@@ -108,6 +109,7 @@
 		22AEAEFE20B67E2C00DD184B /* TouchProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchProperties.swift; sourceTree = "<group>"; };
 		22AEAEFF20B67E2C00DD184B /* Touch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Touch.swift; sourceTree = "<group>"; };
 		22B697492143417C00FD082D /* ClusterLayerNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterLayerNode.swift; sourceTree = "<group>"; };
+		22CEFD422146173700981FAC /* RecordNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordNotifications.swift; sourceTree = "<group>"; };
 		22D6F8F920B6810600C7FB5F /* GestureHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureHandler.swift; sourceTree = "<group>"; };
 		22D6F8FA20B6810600C7FB5F /* RecordType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordType.swift; sourceTree = "<group>"; };
 		22D6F8FC20B6810600C7FB5F /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 		22AEAEB420B67C2400DD184B /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				22AEAEC120B67C2500DD184B /* Master.storyboard */,
 				22AEAECD20B67C4600DD184B /* Managers */,
 				22AEAECE20B67C4B00DD184B /* Controllers */,
 				CD0FB28D20D853D70058A410 /* Entities */,
@@ -205,7 +208,7 @@
 				22AEAED020B67C5600DD184B /* Models */,
 				22AEAED120B67C5D00DD184B /* Views */,
 				22AEAED320B67C6C00DD184B /* Gestures */,
-				22AEAEC120B67C2500DD184B /* Master.storyboard */,
+				22CEFD41214616F000981FAC /* Notifications */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -349,6 +352,14 @@
 				22AEAEFD20B67E2C00DD184B /* TouchState.swift */,
 			);
 			path = Touches;
+			sourceTree = "<group>";
+		};
+		22CEFD41214616F000981FAC /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				22CEFD422146173700981FAC /* RecordNotifications.swift */,
+			);
+			path = Notifications;
 			sourceTree = "<group>";
 		};
 		7C47AB6D52A188AD71F724E4 /* Pods */ = {
@@ -553,6 +564,7 @@
 				22AEAEF520B67DA600DD184B /* Organization.swift in Sources */,
 				22AEAEE420B67D6800DD184B /* NSView.swift in Sources */,
 				22D6F90A20B6810600C7FB5F /* Math.swift in Sources */,
+				22CEFD432146173700981FAC /* RecordNotifications.swift in Sources */,
 				22AEAF0020B67E2C00DD184B /* TouchState.swift in Sources */,
 				22AEAEBE20B67C2400DD184B /* MainViewController.swift in Sources */,
 				22AEAEE620B67D6800DD184B /* PacketType.swift in Sources */,

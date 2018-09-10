@@ -13,7 +13,7 @@ enum Environment {
 
 
 struct Configuration {
-    static let env = Environment.production
+    static let env = Environment.testing
     static let touchPort: UInt16 = 13003
     static let serverIP = "localhost"
     static let broadcastIP = "10.58.73.255"

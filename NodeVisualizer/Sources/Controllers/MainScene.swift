@@ -15,6 +15,13 @@ class MainScene: SKScene {
         static let maximumUpdateDeltaTime = 1.0 / 60.0
     }
 
+    private struct Keys {
+        static let id = "id"
+        static let app = "app"
+        static let type = "type"
+        static let position = "position"
+    }
+
 
     // MARK: Lifecycle
 
@@ -108,13 +115,13 @@ class MainScene: SKScene {
     // MARK: Gesture Handlers
 
     private func handleTapGesture(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let recordNode = gestureManager.node(for: tap) as? RecordNode else {
+        guard let tap = gesture as? TapGestureRecognizer, let recordNode = gestureManager.node(for: tap) as? RecordNode, let position = tap.position else {
             return
         }
 
         switch tap.state {
         case .ended:
-            select(recordNode)
+            select(recordNode, at: position)
         default:
             return
         }
@@ -208,7 +215,7 @@ class MainScene: SKScene {
 
         switch recognizer.state {
         case .ended:
-            select(node)
+            select(node, at: point)
         default:
             return
         }
@@ -261,26 +268,30 @@ class MainScene: SKScene {
     // MARK: Helpers
 
     /// Sets up all the data relationships for the tapped node and starts the physics interactions
-    private func select(_ node: RecordNode) {
-        guard let entityForNode = node.entity as? RecordEntity, entityForNode.state.tappable else {
+    private func select(_ node: RecordNode, at position: CGPoint) {
+        guard let entity = node.entity as? RecordEntity, entity.state.tappable else {
             return
         }
 
-        let cluster = nodeCluster(for: entityForNode)
+        let cluster = nodeCluster(for: entity)
         nodeClusters.insert(cluster)
 
-        switch entityForNode.state {
+        switch entity.state {
         case .static:
-            cluster.select(entityForNode)
+            cluster.select(entity)
         case .seekEntity(_):
-            if entityForNode.hasCollidedWithLayer {
-                cluster.select(entityForNode)
+            if entity.hasCollidedWithLayer {
+                cluster.select(entity)
             }
         case .selected:
-            // Prevent a node from being reset while its still moving to the center of the cluster
-            if aligned(entityForNode, with: cluster) {
-                cluster.reset()
-                nodeClusters.remove(cluster)
+            // Only allow actions once the node is aligned with its cluster
+            if aligned(entity, with: cluster) {
+                if node.openButton(contains: position) {
+                   postRecordNotification(for: entity.record.type, id: entity.record.id, at: position)
+                } else if node.closeButton(contains: position) {
+                    cluster.reset()
+                    nodeClusters.remove(cluster)
+                }
             }
         default:
             return
@@ -306,5 +317,10 @@ class MainScene: SKScene {
         let clusterX = Int(cluster.center.x)
         let clusterY = Int(cluster.center.y)
         return entityX == clusterX && entityY == clusterY
+    }
+
+    private func postRecordNotification(for type: RecordType, id: Int, at position: CGPoint) {
+        let info: JSON = [Keys.app: 0, Keys.id: id, Keys.position: position.toJSON(), Keys.type: type.rawValue]
+        DistributedNotificationCenter.default().postNotificationName(RecordNotification.display.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 }

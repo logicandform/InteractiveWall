@@ -437,7 +437,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         var adjustedFrame = timelineItem.view.frame
         adjustedFrame.origin.y = timelineItem.view.frame.origin.y + timelineItem.view.frame.height - TimelineFlagView.flagHeight(for: timelineItem.event) - Constants.recordSpawnOffset
         let transformedYPosition = adjustedFrame.transformed(from: timelineScrollView.frame).transformed(from: timelineBackgroundView.frame).origin.y
-        postRecordNotification(for: timelineItem.event.type, with: timelineItem.event.id, at: CGPoint(x: transformedXPosition, y: transformedYPosition))
+        postRecordNotification(for: timelineItem.event.type, id: timelineItem.event.id, at: CGPoint(x: transformedXPosition, y: transformedYPosition))
     }
 
     private func scrollCollectionViews(animated: Bool = false) {
@@ -528,7 +528,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         event.highlighted = highlighted
     }
 
-    private func postRecordNotification(for type: RecordType, with id: Int, at position: CGPoint) {
+    private func postRecordNotification(for type: RecordType, id: Int, at position: CGPoint) {
         guard let window = view.window else {
             return
         }
