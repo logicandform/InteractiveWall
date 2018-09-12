@@ -4,53 +4,43 @@ import Foundation
 import Cocoa
 
 
-enum ButtonState {
-    case on
-    case off
-
-    var toggled: ButtonState {
-        switch self {
-        case .on:
-            return .off
-        case .off:
-            return .on
-        }
-    }
+protocol SearchChild: class {
+    var delegate: SearchParent? { get set }
+    func updateOrigin(to point: CGPoint, animating: Bool)
 }
 
 
-class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate, TestimonyDelegate, SettingsDelegate {
+class MenuViewController: NSViewController, GestureResponder, SearchParent {
     static let storyboard = NSStoryboard.Name(rawValue: "Menu")
+    static let leftSideIdentifier = NSStoryboard.SceneIdentifier("MenuLeft")
+    static let rightSideIdentifier = NSStoryboard.SceneIdentifier("MenuRight")
 
-    @IBOutlet weak var menuView: NSView!
+    @IBOutlet weak var menuView: NSStackView!
+    @IBOutlet weak var infoMenuView: NSView!
+    @IBOutlet weak var settingsMenuView: NSView!
+    @IBOutlet weak var accessibilityButtonArea: NSView!
+    @IBOutlet weak var menuToggleButton: ImageView!
     @IBOutlet weak var menuBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var accessibilityButton: MenuButton!
-    @IBOutlet weak var splitScreenButton: MenuButton!
-    @IBOutlet weak var mapToggleButton: MenuButton!
-    @IBOutlet weak var timelineToggleButton: MenuButton!
-    @IBOutlet weak var informationButton: MenuButton!
-    @IBOutlet weak var settingsButton: MenuButton!
-    @IBOutlet weak var testimonyButton: MenuButton!
-    @IBOutlet weak var searchButton: MenuButton!
+    @IBOutlet weak var menuSideConstraint: NSLayoutConstraint!
+    @IBOutlet weak var infoBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var settingsTopConstraint: NSLayoutConstraint!
 
+    var appID: Int!
     var gestureManager: GestureManager!
-    private var appID: Int!
-    private var positionResetTimer: Foundation.Timer!
-    private var viewForButtonType = [MenuButtonType: MenuButton]()
-    private var stateForButton = [MenuButtonType: ButtonState]()
-    private var mergeLockIcon: NSView?
-    private var mergeLocked = false
-    private var scrollThresholdAchieved = false
-    private var settingsMenu: SettingsMenuViewController!
-    private var infoMenu: InfoViewController!
-    private var searchMenu: SearchViewController?
-    private var testimonyController: TestimonyViewController?
+    private var resetTimer: Foundation.Timer!
+    private var buttonForType = [MenuButtonType: MenuButton]()
+    private var menuToggled = false
+    private weak var searchChild: SearchChild?
+
+    private var menuSide: MenuSide {
+        return appID.isEven ? .left : .right
+    }
 
     private struct Constants {
-        static let minimumScrollThreshold: CGFloat = 4
         static let imageTransitionDuration = 0.5
-        static let animationDuration = 0.5
-        static let positionResetInterval: TimeInterval = 180
+        static let fadeAnimationDuration = 0.5
+        static let resetTimerDuration = 180.0
+        static let menuButtonSize = CGSize(width: 200, height: 50)
     }
 
     private struct Keys {
@@ -69,73 +59,77 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         gestureManager.touchReceived = { [weak self] touch in
             self?.receivedTouch(touch)
         }
-        viewForButtonType = [.split: splitScreenButton, .map: mapToggleButton, .timeline: timelineToggleButton, .information: informationButton, .settings: settingsButton, .testimony: testimonyButton, .search: searchButton, .accessibility: accessibilityButton]
 
         setupMenu()
-        setupButtons()
         setupGestures()
+        setupAccessibilityButton()
     }
 
     override func viewDidAppear() {
         super.viewDidAppear()
 
-        setupSettings()
-        setupInfoMenu()
+        centerMenu()
+        setupChildMenus()
+    }
+
+    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
+        switch segue.destinationController {
+        case let info as InfoViewController:
+            info.appID = appID
+            info.gestureManager = gestureManager
+        case let settings as SettingsViewController:
+            settings.appID = appID
+            settings.gestureManager = gestureManager
+        default:
+            return
+        }
     }
 
 
     // MARK: API
 
-    func set(appID: Int) {
-        self.appID = appID
-        settingsMenu?.set(appID: appID)
-    }
-
     func toggleMergeLock(on: Bool) {
-        if mergeLocked != on, let splitButton = viewForButtonType[.split] {
-            splitButton.toggleLockIcon(on: on)
-            mergeLocked = on
+        if let button = buttonForType[.split] {
+            button.set(locked: on)
         }
     }
 
-    func toggle(_ type: MenuButtonType, to state: ButtonState, forced: Bool = false) {
-        if let currentState = stateForButton[type], currentState == state, !forced {
+    func set(_ type: MenuButtonType, selected: Bool, forced: Bool = false) {
+        guard let button = buttonForType[type] else {
             return
         }
 
-        // Set the new state & transition image
-        stateForButton[type] = state
-        if let button = viewForButtonType[type] {
-            button.toggle(to: state)
+        if button.selected == selected && !forced {
+            return
         }
 
+        button.set(selected: selected)
+
         switch type {
-        case .map where state == .on:
-            toggle(.timeline, to: .off)
-            toggle(.settings, to: .off)
-            toggle(.information, to: .off)
-        case .timeline where state == .on:
-            toggle(.map, to: .off)
-            toggle(.settings, to: .off)
-            toggle(.information, to: .off)
+        case .map where selected:
+            set(.timeline, selected: false)
+            set(.settings, selected: false)
+            set(.information, selected: false)
+        case .timeline where selected:
+            set(.map, selected: false)
+            set(.settings, selected: false)
+            set(.information, selected: false)
         case .information:
-            toggleInfoPanel(to: state)
-            if state == .on {
-                toggle(.settings, to: .off)
+            set(infoMenuView.subviews.first, hidden: !selected, animated: true)
+            if selected {
+                set(.settings, selected: false)
             }
         case .settings:
-            toggleSettingsPanel(to: state)
-            if state == .on {
-                toggle(.information, to: .off)
+            set(settingsMenuView.subviews.first, hidden: !selected, animated: true)
+            if selected {
+                set(.information, selected: false)
             }
-        case .testimony where state == .on:
-            displayTestimonyController()
-        case .search where state == .on:
-            displaySearchController()
-            toggle(.settings, to: .off)
-            toggle(.information, to: .off)
-        case .accessibility where state == .on:
-            toggleMenuAccessibility()
+        case .search where selected:
+            displaySearchChild()
+            set(.settings, selected: false)
+            set(.information, selected: false)
+        case .accessibility where selected:
+            selectAccessibilityButton()
         default:
             return
         }
@@ -144,62 +138,77 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
 
     // MARK: Setup
 
-    private func setupGestures() {
-        let viewPanGesture = PanGestureRecognizer()
-        gestureManager.add(viewPanGesture, to: menuView)
-        viewPanGesture.gestureUpdated = { [weak self] gesture in
-            self?.handleMenuPan(gesture)
-        }
-    }
-
-    private func setupButtons() {
-        MenuButtonType.allValues.forEach { setupButton(for: $0) }
-        toggle(.map, to: .on)
-    }
-
     private func setupMenu() {
-        menuView.wantsLayer = true
-        menuBottomConstraint.constant = (view.frame.height / 2) - (menuView.frame.height / 2)
+        MenuButtonType.itemsInMenu.map {
+            createButton(for: $0)
+        }.forEach {
+            menuView.addView($0, in: .top)
+        }
+        menuToggleButton.set(menuSide.arrow)
+        set(.map, selected: true)
     }
 
-    private func setupSettings() {
-        settingsMenu = WindowManager.instance.display(.settings, at: position(for: settingsButton, frame: style.settingsWindowSize, margins: false)) as? SettingsMenuViewController
-        settingsMenu.view.isHidden = true
-        settingsMenu.settingsParent = self
-
-        if let appID = appID {
-            settingsMenu.set(appID: appID)
+    private func setupGestures() {
+        let toggleMenuTap = TapGestureRecognizer()
+        gestureManager.add(toggleMenuTap, to: menuToggleButton)
+        toggleMenuTap.gestureUpdated = { [weak self] gesture in
+            if gesture.state == .ended {
+                self?.toggleSideMenu()
+            }
         }
     }
 
-    private func setupInfoMenu() {
-        infoMenu = WindowManager.instance.display(.info, at: position(for: informationButton, frame: style.infoWindowSize, margins: false)) as? InfoViewController
-        infoMenu.view.isHidden = true
+    private func setupAccessibilityButton() {
+        let button = MenuButton(frame: .zero, side: menuSide)
+        button.set(type: .accessibility)
+        buttonForType[.accessibility] = button
+        addGestures(to: button, tap: true, pan: false)
+        accessibilityButtonArea.addSubview(button)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.leadingAnchor.constraint(equalTo: accessibilityButtonArea.leadingAnchor).isActive = true
+        button.topAnchor.constraint(equalTo: accessibilityButtonArea.topAnchor).isActive = true
+        button.trailingAnchor.constraint(equalTo: accessibilityButtonArea.trailingAnchor).isActive = true
+        button.bottomAnchor.constraint(equalTo: accessibilityButtonArea.bottomAnchor).isActive = true
     }
 
+    private func centerMenu() {
+        menuBottomConstraint.constant = view.frame.midY - menuView.frame.height / 2
+    }
+
+    /// Updates the views for each child menu to align with its associated button & set visibility
+    private func setupChildMenus() {
+        infoMenuView.subviews.first?.isHidden = true
+        settingsMenuView.subviews.first?.isHidden = true
+        if let infoButton = buttonForType[.information] {
+            infoBottomConstraint.constant = infoButton.frame.minY
+        }
+        if let settingsButton = buttonForType[.settings] {
+            settingsTopConstraint.constant = settingsButton.frame.maxY
+        }
+    }
 
     // MARK: Gesture Handling
 
     private func didSelect(type: MenuButtonType) {
-        guard let state = stateForButton[type] else {
+        guard let button = buttonForType[type] else {
             return
         }
 
         switch type {
         case .split:
-            if state == .off {
+            if !button.selected {
                 postSplitNotification()
-            } else if !mergeLocked {
+            } else if !button.locked {
                 postMergeNotification()
             }
         case .map, .timeline:
-            if state == .off {
+            if !button.selected {
                 postTransitionNotification(for: type)
             }
         case .information, .settings:
-            toggle(type, to: state.toggled)
-        case .search, .testimony, .accessibility:
-            toggle(type, to: .on, forced: true)
+            set(type, selected: !button.selected)
+        case .search, .accessibility:
+            set(type, selected: true, forced: true)
         }
     }
 
@@ -209,16 +218,19 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         }
 
         switch pan.state {
-        case .recognized where abs(pan.delta.dy) > Constants.minimumScrollThreshold || scrollThresholdAchieved, .momentum where scrollThresholdAchieved:
-            scrollThresholdAchieved = true
-            menuBottomConstraint.constant = menuOffset(given: pan.delta)
-            settingsMenu.updateOrigin(relativeTo: menuBottomConstraint.constant, with: settingsButton.frame)
-            infoMenu.updateOrigin(relativeTo: menuBottomConstraint.constant, with: informationButton.frame)
-        case .possible:
-            scrollThresholdAchieved = false
+        case .recognized, .momentum:
+            let menuBottomOffset = clamp(menuBottomConstraint.constant + pan.delta.dy, min: Constants.menuButtonSize.height, max: view.frame.height - menuView.frame.height)
+            menuBottomConstraint.constant = menuBottomOffset
         default:
             return
         }
+    }
+
+
+    // MARK: MenuDelegate
+
+    func receivedTouch(_ touch: Touch) {
+        refreshResetTimer()
     }
 
 
@@ -234,59 +246,47 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
     }
 
     func subview(contains position: CGPoint) -> Bool {
-        return menuView.frame.contains(position) || accessibilityButton.frame.contains(position)
+        if let infoButton = buttonForType[.information], infoButton.selected && infoMenuView.frame.contains(position) {
+            return true
+        }
+        if let settingsButton = buttonForType[.settings], settingsButton.selected && settingsMenuView.frame.contains(position) {
+            return true
+        }
+        return menuView.frame.contains(position) || accessibilityButtonArea.frame.contains(position) || menuToggleButton.frame.contains(position)
     }
 
 
-    // MARK: SearchViewDelegate
+    // MARK: SearchParent
 
-    func searchDidClose() {
-        toggle(.search, to: .off)
-        searchMenu = nil
-    }
-
-
-    // MARK: TestimonyDelegate
-
-    func testimonyDidClose() {
-        toggle(.testimony, to: .off)
-        testimonyController = nil
-    }
-
-
-    // MARK: SettingsDelegate
-
-    func settingsTimeoutFired() {
-        toggle(.settings, to: .off)
+    func searchChildClosed() {
+        set(.search, selected: false)
+        searchChild = nil
     }
 
 
     // MARK: Helpers
 
-    private func setupButton(for type: MenuButtonType) {
-        guard let button = viewForButtonType[type] else {
-            return
-        }
+    private func createButton(for type: MenuButtonType) -> MenuButton {
+        let button = MenuButton(frame: CGRect(origin: .zero, size: Constants.menuButtonSize), side: menuSide)
+        button.set(type: type)
+        buttonForType[type] = button
+        addGestures(to: button, tap: true, pan: true)
+        return button
+    }
 
-        button.wantsLayer = true
-        button.layer?.backgroundColor = style.darkBackground.cgColor
-        button.buttonType = type
-        addGesture(for: type)
-
-        switch type {
-        case .split:
-            stateForButton[type] = .off
-        case .map, .timeline, .information, .settings, .testimony, .search, .accessibility:
-            stateForButton[type] = .off
+    private func set(_ view: NSView?, hidden: Bool, animated: Bool) {
+        if animated {
+            NSAnimationContext.runAnimationGroup({ _ in
+                NSAnimationContext.current.duration = Constants.fadeAnimationDuration
+                view?.animator().isHidden = hidden
+            })
+        } else {
+            view?.isHidden = hidden
         }
     }
 
-    private func addGesture(for type: MenuButtonType) {
-        guard let button = viewForButtonType[type] else {
-            return
-        }
-
-        if type != .accessibility {
+    private func addGestures(to button: MenuButton, tap: Bool, pan: Bool) {
+        if pan {
             let panGesture = PanGestureRecognizer()
             gestureManager.add(panGesture, to: button)
             panGesture.gestureUpdated = { [weak self] gesture in
@@ -294,107 +294,57 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
             }
         }
 
-        let tapGesture = TapGestureRecognizer()
-        gestureManager.add(tapGesture, to: button)
-        tapGesture.gestureUpdated = { [weak self] tap in
-            if tap.state == .ended {
-                self?.didSelect(type: type)
+        if tap {
+            let tapGesture = TapGestureRecognizer()
+            gestureManager.add(tapGesture, to: button)
+            tapGesture.gestureUpdated = { [weak self] tap in
+                if tap.state == .ended {
+                    self?.didSelect(type: button.type)
+                }
             }
         }
     }
 
-    private func toggleSettingsPanel(to state: ButtonState) {
-        NSAnimationContext.runAnimationGroup({ [weak self] _ in
-            NSAnimationContext.current.duration = Constants.animationDuration
-            self?.settingsMenu.view.animator().isHidden = state == .off
-        })
-    }
-
-    private func toggleInfoPanel(to state: ButtonState) {
-        NSAnimationContext.runAnimationGroup({ [weak self] _ in
-            NSAnimationContext.current.duration = Constants.animationDuration
-            self?.infoMenu.view.animator().isHidden = state == .off
-        })
-    }
-
-    /// Presents a search controller at the same height as the button, if one is already displayed; animates into position
-    private func displaySearchController() {
-        if let searchMenu = searchMenu {
-            searchMenu.updateOrigin(to: centeredPosition(for: style.searchWindowFrame), animating: true)
-        } else {
-            searchMenu = WindowManager.instance.display(.search, at: centeredPosition(for: style.searchWindowFrame)) as? SearchViewController
-            searchMenu?.searchViewDelegate = self
-        }
-    }
-
-    /// Presents a testimony controller at the same height as the button, if one is already displayed; animates into position
-    private func displayTestimonyController() {
-        if let testimonyController = testimonyController {
-            testimonyController.updateOrigin(to: centeredPosition(for: style.testimonyWindowSize), animating: true)
-        } else {
-            testimonyController = WindowManager.instance.display(.testimony, at: centeredPosition(for: style.testimonyWindowSize)) as? TestimonyViewController
-            testimonyController?.testimonyDelegate = self
-        }
-    }
-
-    private func toggleMenuAccessibility() {
-        guard let window = view.window else {
+    /// Presents a search child at the center of the session for the current menu
+    private func displaySearchChild() {
+        guard let screen = view.window?.screen else {
             return
         }
 
-        let x = window.frame.minX
-        let y = accessibilityButton.frame.height
-        animateMenu(to: CGPoint(x: x, y: y))
+        // Calculate the origin for the search controller
+        let quarterScreen = screen.frame.width / 4
+        let center = appID.isEven ? screen.frame.minX + quarterScreen : screen.frame.maxX - quarterScreen
+        let x = center - style.searchWindowFrame.width / 2
+        let y = menuView.frame.minY - style.searchWindowFrame.height / 2
+        let origin = CGPoint(x: x, y: y)
+
+        if let searchChild = searchChild {
+            searchChild.updateOrigin(to: origin, animating: true)
+        } else {
+            searchChild = WindowManager.instance.display(.search, at: origin) as? SearchChild
+            searchChild?.delegate = self
+        }
     }
 
-    private func menuOffset(given vector: CGVector) -> CGFloat {
-        guard let screen = menuView.window?.screen else {
-            return CGPoint.zero.y
-        }
+    /// Toggles the menus side constraint to increase / decrease its visible size
+    private func toggleSideMenu() {
+        let sideOffset = menuToggled ? Constants.menuButtonSize.height : Constants.menuButtonSize.width
+        menuToggled = !menuToggled
 
-        var newOrigin = menuView.frame.origin
-        newOrigin.y += vector.dy
+        let image = menuSide.image(toggled: menuToggled)
+        menuToggleButton.transition(image, duration: Constants.fadeAnimationDuration)
 
-        if vector.dy < 0 && newOrigin.y < screen.frame.minY + accessibilityButton.frame.height {
-            newOrigin.y = screen.frame.minY + accessibilityButton.frame.height
-        } else if vector.dy > 0 && newOrigin.y + menuView.frame.height > screen.frame.maxY {
-            newOrigin.y = screen.frame.maxY - menuView.frame.height
-        }
-
-        return newOrigin.y
+        NSAnimationContext.runAnimationGroup({ [weak self] _ in
+            NSAnimationContext.current.duration = Constants.fadeAnimationDuration
+            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+            self?.menuSideConstraint.animator().constant = sideOffset
+        })
     }
 
-    private func centeredPosition(for frame: CGSize) -> CGPoint {
-        guard let menuWindowPosition = menuView.window?.frame else {
-            return CGPoint.zero
-        }
-
-        let menuOrigin = menuWindowPosition.transformed(from: menuView.frame).origin
-        let screenBounds = NSScreen.at(appID: appID).frame
-        let windowBottom = menuOrigin.y + menuView.frame.height - frame.height
-
-        let screenMin = screenBounds.minX
-        let halfAppWidth = screenBounds.width / CGFloat(Configuration.appsPerScreen) / 2
-        let halfFrameWidth = frame.width / 2
-        let offsetX = appID % Configuration.appsPerScreen == 0 ? halfAppWidth : halfAppWidth * 3
-
-        let x = offsetX + screenMin - halfFrameWidth
-        let y = max(windowBottom, screenBounds.minY)
-
-        return CGPoint(x: x, y: y)
-    }
-
-    private func position(for button: NSView, frame: CGSize, margins: Bool = true) -> CGPoint {
-        guard let windowPosition = button.window?.frame, let screenBounds = NSScreen.containing(x: windowPosition.origin.x)?.frame else {
-            return CGPoint(x: 0, y: 0)
-        }
-
-        let windowMargin = margins ? style.windowMargins : 0
-        let buttonOrigin = windowPosition.transformed(from: button.frame).transformed(from: menuView.frame).origin
-        let x = windowPosition.minX <= screenBounds.minX ? windowPosition.maxX + windowMargin : windowPosition.origin.x - frame.width - windowMargin
-        let y = buttonOrigin.y + style.menuImageSize.height - frame.height
-
-        return CGPoint(x: x, y: y)
+    private func selectAccessibilityButton() {
+        animateMenu(verticalPosition: Constants.menuButtonSize.height, completion: { [weak self] in
+            self?.set(.accessibility, selected: false)
+        })
     }
 
     private func postSplitNotification() {
@@ -427,47 +377,31 @@ class MenuViewController: NSViewController, GestureResponder, SearchViewDelegate
         DistributedNotificationCenter.default().postNotificationName(SettingsNotification.transition.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
-    /// Animates the menu to a new origin
-    private func animateMenu(to origin: NSPoint) {
+    private func animateMenu(verticalPosition: CGFloat, completion: (() -> Void)? = nil) {
         guard let window = view.window, let screen = window.screen, !gestureManager.isActive() else {
             return
         }
 
-        gestureManager.invalidateAllGestures()
-        window.makeKeyAndOrderFront(self)
-        toggle(.settings, to: .off)
-        toggle(.information, to: .off)
-        let originalHeight = menuBottomConstraint.constant
-        let offset = abs(originalHeight - origin.y) / screen.frame.height
-        let duration = max(Double(offset), Constants.animationDuration)
-
-        NSAnimationContext.runAnimationGroup({ _ in
+        let duration = TimeInterval(abs(menuBottomConstraint.constant - verticalPosition) / screen.frame.height * 2)
+        NSAnimationContext.runAnimationGroup({ [weak self] _ in
             NSAnimationContext.current.duration = duration
             NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-            menuBottomConstraint.animator().constant = origin.y
-        }, completionHandler: { [weak self] in
-            self?.toggle(.accessibility, to: .off)
-            if let settingsButton = self?.settingsButton, let infoButton = self?.informationButton {
-                self?.settingsMenu.updateOrigin(relativeTo: origin.y, with: settingsButton.frame)
-                self?.infoMenu.updateOrigin(relativeTo: origin.y, with: infoButton.frame)
-            }
-        })
+            self?.menuBottomConstraint.animator().constant = verticalPosition
+        }, completionHandler: completion)
     }
 
-    private func receivedTouch(_ touch: Touch) {
-        resetPositionResetTimer()
-        settingsMenu.resetSettingsTimeout()
+    private func refreshResetTimer() {
+        resetTimer?.invalidate()
+        resetTimer = Timer.scheduledTimer(withTimeInterval: Constants.resetTimerDuration, repeats: false) { [weak self] _ in
+            self?.resetTimerFired()
+        }
     }
 
-    private func resetPositionResetTimer() {
-        guard let window = view.window else {
-            return
-        }
-
-        let verticalPosition = NSScreen.at(appID: appID).frame.midY - (menuView.frame.height / 2)
-        positionResetTimer?.invalidate()
-        positionResetTimer = Timer.scheduledTimer(withTimeInterval: Constants.positionResetInterval, repeats: false) { [weak self] _ in
-            self?.animateMenu(to: CGPoint(x: window.frame.minX, y: verticalPosition))
-        }
+    private func resetTimerFired() {
+        gestureManager.invalidateAllGestures()
+        set(.settings, selected: false)
+        set(.information, selected: false)
+        let center = view.frame.midY - menuView.frame.height / 2
+        animateMenu(verticalPosition: center)
     }
 }

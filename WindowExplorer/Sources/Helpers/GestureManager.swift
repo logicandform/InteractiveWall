@@ -113,7 +113,6 @@ final class GestureManager {
         return handler
     }
 
-
     /// Returns the deepest possible view for the given point that is registered with a gesture handler along with the transform to that view.
     private func target(in view: NSView, at point: CGPoint, current: CGAffineTransform, flipped: Bool) -> (NSView, CGAffineTransform)? {
         guard view.frame.contains(point) else {

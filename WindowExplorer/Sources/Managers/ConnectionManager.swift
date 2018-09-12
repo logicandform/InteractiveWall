@@ -238,7 +238,7 @@ final class ConnectionManager {
 
     /// Initiates a split between applications within the screen containing the given appID
     private func split(from id: Int, group: Int?, of type: ApplicationType) {
-        let neighborID = id % Configuration.appsPerScreen == 0 ? id + 1 : id - 1
+        let neighborID = id.isEven ? id + 1 : id - 1
         let appStates = states(for: type).enumerated()
 
         for (app, state) in appStates {
@@ -268,7 +268,7 @@ final class ConnectionManager {
     }
 
     private func merge(from id: Int, group: Int?, of type: ApplicationType) {
-        let neighborID = id % Configuration.appsPerScreen == 0 ? id + 1 : id - 1
+        let neighborID = id.isEven ? id + 1 : id - 1
         let newState = AppState(pair: nil, group: id)
         let appStates = states(for: type).enumerated()
 
@@ -366,12 +366,12 @@ final class ConnectionManager {
             let statesForType = states(for: type)
             let menu = MenuManager.instance.menuForApp(id: app)
             let border = MenuManager.instance.borderForApp(id: app)
-            let neighborID = app % Configuration.appsPerScreen == 0 ? app + 1 : app - 1
+            let neighborID = app.isEven ? app + 1 : app - 1
             let neighborPair = pairForApp(id: neighborID, type: type)
             let differentTypes = type != typeForApp(id: neighborID)
             let split = differentTypes || statesForType[app].group != statesForType[neighborID].group
             let mergeLocked = differentTypes || split && neighborPair == neighborID
-            menu?.toggle(.split, to: split ? .on : .off)
+            menu?.set(.split, selected: split)
             menu?.toggleMergeLock(on: mergeLocked)
             border?.set(visible: split)
         }
@@ -381,7 +381,7 @@ final class ConnectionManager {
     private func updateMenu(id: Int, to type: ApplicationType) {
         if let menuButtonType = MenuButtonType.from(type) {
             let menu = MenuManager.instance.menuForApp(id: id)
-            menu?.toggle(menuButtonType, to: .on)
+            menu?.set(menuButtonType, selected: true)
         }
     }
 

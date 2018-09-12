@@ -10,9 +10,9 @@ enum WindowType: Equatable {
     case player(Media)
     case pdf(Media)
     case search
-    case menu
-    case settings
-    case info
+    case menu(app: Int)
+    case settings(app: Int)
+    case info(app: Int)
     case border
     case testimony
 

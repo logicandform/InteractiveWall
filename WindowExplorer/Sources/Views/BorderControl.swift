@@ -5,6 +5,7 @@ import Cocoa
 
 
 class BorderControl: NSView {
+
     let borderColor = style.borderColor.cgColor
     var isVisible: Bool = false {
         didSet {

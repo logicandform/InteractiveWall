@@ -195,7 +195,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
         let titleAttributedString = NSAttributedString(string: record.title, attributes: style.recordLargeTitleAttributes)
         let titleTextField = textField(for: titleAttributedString)
-        stackView.insertView(titleTextField, at: stackView.subviews.count, in: .top)
+        stackView.addView(titleTextField, in: .top)
         stackView.setCustomSpacing(style.largeTitleTrailingSpace, after: titleTextField)
 
         if let date = record.date, let firstDate = date.split(separator: "|").first?.description {
@@ -203,29 +203,29 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             dateAttributes[.foregroundColor] = record.type.color
             let dateAttributedString = NSAttributedString(string: firstDate, attributes: dateAttributes)
             let dateTextField = textField(for: dateAttributedString)
-            stackView.insertView(dateTextField, at: stackView.subviews.count, in: .top)
+            stackView.addView(dateTextField, in: .top)
             stackView.setCustomSpacing(style.dateTrailingSpace, after: dateTextField)
         }
 
         if let description = record.description, !description.isEmpty {
             let descriptionHeaderAttributedString = NSAttributedString(string: "Description", attributes: style.recordSmallHeaderAttributes)
             let descriptionHeaderTextField = textField(for: descriptionHeaderAttributedString)
-            stackView.insertView(descriptionHeaderTextField, at: stackView.subviews.count, in: .top)
+            stackView.addView(descriptionHeaderTextField, in: .top)
             stackView.setCustomSpacing(style.smallHeaderTrailingSpace, after: descriptionHeaderTextField)
             let descriptionAttributedString = NSAttributedString(string: description, attributes: style.recordDescriptionAttributes)
             let descriptionTextField = textField(for: descriptionAttributedString)
-            stackView.insertView(descriptionTextField, at: stackView.subviews.count, in: .top)
+            stackView.addView(descriptionTextField, in: .top)
             stackView.setCustomSpacing(style.descriptionTrailingSpace, after: descriptionTextField)
         }
 
         if let comments = record.comments, !comments.isEmpty {
             let commentsHeaderAttributedString = NSAttributedString(string: "Curatorial Comments", attributes: style.recordSmallHeaderAttributes)
             let commentsHeaderTextField = textField(for: commentsHeaderAttributedString)
-            stackView.insertView(commentsHeaderTextField, at: stackView.subviews.count, in: .top)
+            stackView.addView(commentsHeaderTextField, in: .top)
             stackView.setCustomSpacing(style.smallHeaderTrailingSpace, after: commentsHeaderTextField)
             let commentsAttributedString = NSAttributedString(string: comments, attributes: style.recordDescriptionAttributes)
             let commentsTextField = textField(for: commentsAttributedString)
-            stackView.insertView(commentsTextField, at: stackView.subviews.count, in: .top)
+            stackView.addView(commentsTextField, in: .top)
             stackView.setCustomSpacing(style.descriptionTrailingSpace, after: commentsTextField)
         }
     }

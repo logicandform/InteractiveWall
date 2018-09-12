@@ -84,7 +84,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         let overlay = MKTileOverlay(urlTemplate: tileURL)
         overlay.canReplaceMapContent = true
         mapView.add(overlay)
-        if appID % 2 == 0 { mapView.miniMapPosition = .nw }
+        if appID.isEven {
+            mapView.miniMapPosition = .nw
+        }
         createRecords()
     }
 
@@ -246,16 +248,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         if showingAnnotationTitles != (mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel) {
             showingAnnotationTitles = mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel
             toggleAnnotationTitles(on: showingAnnotationTitles && currentSettings.showLabels)
-        }
-    }
-
-    // When annotations come back into the visibleRect their title visibility updates
-    func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
-        let annotationViews = views as [AnyObject]
-        for view in annotationViews {
-            if let circleAnnotationView = view as? CircleAnnotationView {
-                circleAnnotationView.showTitle(showingAnnotationTitles && currentSettings.showLabels)
-            }
         }
     }
 

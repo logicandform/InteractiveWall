@@ -101,7 +101,7 @@ class MainScene: SKScene {
 
         for (index, entity) in entities.enumerated() {
             let x = spacing * CGFloat(index / 2)
-            let y = index % 2 == 0 ? -nodeOffset : frame.height + nodeOffset
+            let y = index.isEven ? -nodeOffset : frame.height + nodeOffset
             entity.initialPosition = CGPoint(x: x, y: y)
             if let recordNode = entity.component(ofType: RecordRenderComponent.self)?.recordNode {
                 recordNode.position = entity.initialPosition

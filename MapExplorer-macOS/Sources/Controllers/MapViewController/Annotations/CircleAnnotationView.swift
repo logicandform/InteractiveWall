@@ -15,40 +15,12 @@ class CircleAnnotationView: MKAnnotationView {
 
     private struct Constants {
         static let radii: (CGFloat, CGFloat, CGFloat, CGFloat) = (18, 14, 10, 6)
-        static let titleFontSize: CGFloat = 11.0
-        static let titleLineSpacing: CGFloat = 0.0
-        static let titleMaximumLineHeight: CGFloat = titleFontSize + 5.0
-        static let titleParagraphSpacing: CGFloat = 8.0
-        static let titleForegroundColor = NSColor.white
-        static let fontName = "Soleil"
-        static let kern: CGFloat = 0.5
         static let animationDuration = 1.0
-        static let hiddenAlpha = 0
-        static let visibleAlpha = 1
-    }
-
-    var titleAttributes: [NSAttributedStringKey: Any] {
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = Constants.titleLineSpacing
-        paragraphStyle.paragraphSpacing = Constants.titleParagraphSpacing
-        paragraphStyle.maximumLineHeight = Constants.titleMaximumLineHeight
-        paragraphStyle.lineBreakMode = .byWordWrapping
-        let font = NSFont(name: Constants.fontName, size: Constants.titleFontSize) ?? NSFont.systemFont(ofSize: Constants.titleFontSize)
-        return [.paragraphStyle: paragraphStyle,
-                .font: font,
-                .foregroundColor: Constants.titleForegroundColor,
-                .kern: Constants.kern
-        ]
     }
 
     override var annotation: MKAnnotation? {
         willSet {
-            guard let annotation = newValue as? CircleAnnotation else {
-                return
-            }
-
-            clusteringIdentifier = CircleAnnotationView.identifier
-            setupAnnotations(annotation: annotation)
+            setupCircles(for: annotation)
         }
     }
 
@@ -79,38 +51,41 @@ class CircleAnnotationView: MKAnnotationView {
 
     // MARK: Setup
 
-    private func setupAnnotations(annotation: CircleAnnotation) {
-        circle1.wantsLayer = true
-        circle2.wantsLayer = true
-        circle3.wantsLayer = true
-        center.wantsLayer = true
-        title.isEditable = false
-        title.isSelectable = false
-        title.isBezeled = false
-        title.backgroundColor = NSColor.clear
-        title.alphaValue = 0.0
-        title.attributedStringValue = NSMutableAttributedString(string: annotation.title!, attributes: titleAttributes)
-        circle3.layer?.backgroundColor = annotation.type.color.cgColor
-        circle2.layer?.backgroundColor = annotation.type.color.withAlphaComponent(0.4).cgColor
-        circle1.layer?.backgroundColor = annotation.type.color.withAlphaComponent(0.2).cgColor
-        center.layer?.backgroundColor = CGColor.white
-        circle1.layer?.cornerRadius = Constants.radii.0
-        circle2.layer?.cornerRadius = Constants.radii.1
-        circle3.layer?.cornerRadius = Constants.radii.2
-        center.layer?.cornerRadius = Constants.radii.3
-        center.alphaValue = 0
-        addSubview(circle1)
-        addSubview(circle2)
-        addSubview(circle3)
-        addSubview(center)
-        addSubview(title)
+    private func setupCircles(for annotation: MKAnnotation?) {
+        guard let annotation = annotation as? CircleAnnotation else {
+            return
+        }
 
-        self.wantsLayer = true
+        wantsLayer = true
         layer?.shadowColor = NSColor.black.cgColor
         layer?.shadowOpacity = 0.85
         layer?.shadowRadius = 4.0
         layer?.shadowOffset = CGSize(width: 0, height: 4)
         layer?.masksToBounds = false
+        clusteringIdentifier = CircleAnnotationView.identifier
+        title.isEditable = false
+        title.isSelectable = false
+        title.isBezeled = false
+        title.backgroundColor = NSColor.clear
+        title.attributedStringValue = NSMutableAttributedString(string: annotation.title ?? "", attributes: style.mapLabelAttributes)
+        circle1.wantsLayer = true
+        circle2.wantsLayer = true
+        circle3.wantsLayer = true
+        circle1.layer?.backgroundColor = annotation.type.color.withAlphaComponent(0.2).cgColor
+        circle2.layer?.backgroundColor = annotation.type.color.withAlphaComponent(0.4).cgColor
+        circle3.layer?.backgroundColor = annotation.type.color.cgColor
+        circle1.layer?.cornerRadius = Constants.radii.0
+        circle2.layer?.cornerRadius = Constants.radii.1
+        circle3.layer?.cornerRadius = Constants.radii.2
+        center.wantsLayer = true
+        center.layer?.backgroundColor = CGColor.white
+        center.layer?.cornerRadius = Constants.radii.3
+        center.alphaValue = 0
+        addSubview(title)
+        addSubview(center)
+        addSubview(circle1)
+        addSubview(circle2)
+        addSubview(circle3)
     }
 
 

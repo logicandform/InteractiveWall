@@ -1,122 +1,210 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="AWf-NK-kp0">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
     </dependencies>
     <scenes>
+        <!--Info-->
+        <scene sceneID="3EB-tB-BU6">
+            <objects>
+                <controllerPlaceholder storyboardIdentifier="Info" storyboardName="Info" id="jhG-ud-xa9" sceneMemberID="viewController"/>
+                <customObject id="Lz1-n4-X7d" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-37" y="-507"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="H7r-1A-G4F">
+            <objects>
+                <controllerPlaceholder storyboardIdentifier="Settings" storyboardName="Settings" id="gPr-XZ-xhl" sceneMemberID="viewController"/>
+                <customObject id="Z3P-ln-ok0" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-23" y="-182"/>
+        </scene>
         <!--Menu View Controller-->
         <scene sceneID="x84-Ml-acq">
             <objects>
-                <viewController id="AWf-NK-kp0" customClass="MenuViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MenuRight" id="AWf-NK-kp0" customClass="MenuViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="AdH-oQ-xB7">
-                        <rect key="frame" x="0.0" y="0.0" width="50" height="2160"/>
+                        <rect key="frame" x="0.0" y="0.0" width="550" height="1100"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="ySR-rI-hH0">
-                                <rect key="frame" x="0.0" y="150" width="50" height="350"/>
-                                <subviews>
-                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="ceY-yx-jPe" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="300" width="50" height="50"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="50" id="140-p7-e7E"/>
-                                            <constraint firstAttribute="height" constant="50" id="YoZ-BQ-bOH"/>
-                                        </constraints>
-                                    </customView>
-                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="qAo-tK-U4U" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="250" width="50" height="50"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="50" id="TCD-o5-kKP"/>
-                                            <constraint firstAttribute="height" constant="50" id="nOS-E5-StX"/>
-                                        </constraints>
-                                    </customView>
-                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="6n8-Ku-Mg1" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="200" width="50" height="50"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="1gh-YV-e3m"/>
-                                            <constraint firstAttribute="width" constant="50" id="qiH-kc-Yox"/>
-                                        </constraints>
-                                    </customView>
-                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="5R0-Ed-pJG" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="150" width="50" height="50"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="50" id="jbx-Xf-CUf"/>
-                                            <constraint firstAttribute="height" constant="50" id="pes-rd-KiZ"/>
-                                        </constraints>
-                                    </customView>
-                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="u8e-Pu-hpK" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="100" width="50" height="50"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="50" id="FiY-Dg-rMc"/>
-                                            <constraint firstAttribute="height" constant="50" id="bTx-z1-5K1"/>
-                                        </constraints>
-                                    </customView>
-                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="uLI-Vt-2Vu" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="50" height="50"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="EGx-UK-hQR"/>
-                                            <constraint firstAttribute="width" constant="50" id="d0k-XO-7dT"/>
-                                        </constraints>
-                                    </customView>
-                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="CJK-LW-WGG" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="C6h-D1-Y5r"/>
-                                            <constraint firstAttribute="width" constant="50" id="wCC-jC-qlN"/>
-                                        </constraints>
-                                    </customView>
-                                </subviews>
+                            <stackView distribution="fillEqually" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" placeholderIntrinsicWidth="50" placeholderIntrinsicHeight="350" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XOO-wB-Aer">
+                                <rect key="frame" x="500" y="300" width="200" height="350"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="64I-zO-krT"/>
-                                    <constraint firstItem="uLI-Vt-2Vu" firstAttribute="leading" secondItem="ySR-rI-hH0" secondAttribute="leading" id="PDc-rT-ogU"/>
-                                    <constraint firstItem="6n8-Ku-Mg1" firstAttribute="leading" secondItem="ySR-rI-hH0" secondAttribute="leading" id="SzY-Cb-XUW"/>
-                                    <constraint firstItem="ceY-yx-jPe" firstAttribute="top" secondItem="ySR-rI-hH0" secondAttribute="top" id="TA1-9O-i0v"/>
-                                    <constraint firstItem="qAo-tK-U4U" firstAttribute="bottom" secondItem="6n8-Ku-Mg1" secondAttribute="top" id="UxJ-4h-Yxh"/>
-                                    <constraint firstItem="5R0-Ed-pJG" firstAttribute="bottom" secondItem="u8e-Pu-hpK" secondAttribute="top" id="WAP-tX-M9G"/>
-                                    <constraint firstItem="ceY-yx-jPe" firstAttribute="leading" secondItem="ySR-rI-hH0" secondAttribute="leading" id="XTs-YH-4Bt"/>
-                                    <constraint firstItem="qAo-tK-U4U" firstAttribute="leading" secondItem="ySR-rI-hH0" secondAttribute="leading" id="Zem-pb-a33"/>
-                                    <constraint firstItem="6n8-Ku-Mg1" firstAttribute="bottom" secondItem="5R0-Ed-pJG" secondAttribute="top" id="a15-ud-C4x"/>
-                                    <constraint firstItem="u8e-Pu-hpK" firstAttribute="leading" secondItem="ySR-rI-hH0" secondAttribute="leading" id="gwQ-Zg-Nln"/>
-                                    <constraint firstAttribute="bottom" secondItem="CJK-LW-WGG" secondAttribute="bottom" id="iDV-cz-L4i"/>
-                                    <constraint firstItem="uLI-Vt-2Vu" firstAttribute="bottom" secondItem="CJK-LW-WGG" secondAttribute="top" id="kBb-qG-4fO"/>
-                                    <constraint firstItem="ceY-yx-jPe" firstAttribute="bottom" secondItem="qAo-tK-U4U" secondAttribute="top" id="pSa-aC-idb"/>
-                                    <constraint firstItem="5R0-Ed-pJG" firstAttribute="leading" secondItem="ySR-rI-hH0" secondAttribute="leading" id="sHv-iq-sLW"/>
-                                    <constraint firstItem="u8e-Pu-hpK" firstAttribute="bottom" secondItem="uLI-Vt-2Vu" secondAttribute="top" id="sVn-mo-IE3"/>
-                                    <constraint firstAttribute="height" constant="350" id="zrR-gc-8RL"/>
+                                    <constraint firstAttribute="width" constant="200" id="2Qu-TE-yRx"/>
+                                </constraints>
+                            </stackView>
+                            <containerView translatesAutoresizingMaskIntoConstraints="NO" id="aSl-0L-qLt">
+                                <rect key="frame" x="0.0" y="300" width="500" height="800"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="800" id="gq9-3W-cc8"/>
+                                    <constraint firstAttribute="width" constant="500" id="uVw-CH-aX0"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="jhG-ud-xa9" kind="embed" id="dU9-dd-qf9"/>
+                                </connections>
+                            </containerView>
+                            <containerView translatesAutoresizingMaskIntoConstraints="NO" id="Tlx-da-Mn4">
+                                <rect key="frame" x="225" y="100" width="275" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="vgt-Ge-ovv"/>
+                                    <constraint firstAttribute="width" constant="275" id="wq6-ss-I3i"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="gPr-XZ-xhl" kind="embed" id="1Bv-KD-lrO"/>
+                                </connections>
+                            </containerView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Biq-Io-5tR" customClass="ImageView" customModule="WindowExplorer" customModuleProvider="target">
+                                <rect key="frame" x="500" y="650" width="50" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="FIC-r7-x2d"/>
+                                    <constraint firstAttribute="height" constant="40" id="Zm6-f1-7Xa"/>
                                 </constraints>
                             </customView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="37d-Lb-7Lx" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="y9D-aO-cag">
+                                <rect key="frame" x="500" y="0.0" width="200" height="50"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="2Bu-EW-BoC"/>
-                                    <constraint firstAttribute="width" constant="50" id="LTZ-Wa-hny"/>
+                                    <constraint firstAttribute="height" constant="50" id="fZR-JY-PGR"/>
+                                    <constraint firstAttribute="width" constant="200" id="xJO-bc-sPI"/>
                                 </constraints>
                             </customView>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="37d-Lb-7Lx" secondAttribute="bottom" id="5UF-1E-TPm"/>
-                            <constraint firstItem="CJK-LW-WGG" firstAttribute="leading" secondItem="AdH-oQ-xB7" secondAttribute="leading" id="8z8-J5-lEy"/>
-                            <constraint firstAttribute="bottom" secondItem="ySR-rI-hH0" secondAttribute="bottom" constant="150" id="PXR-tM-DVE"/>
-                            <constraint firstItem="ySR-rI-hH0" firstAttribute="leading" secondItem="AdH-oQ-xB7" secondAttribute="leading" id="doy-f2-OoY"/>
-                            <constraint firstItem="37d-Lb-7Lx" firstAttribute="leading" secondItem="AdH-oQ-xB7" secondAttribute="leading" id="urd-zp-8aA"/>
+                            <constraint firstItem="aSl-0L-qLt" firstAttribute="top" relation="greaterThanOrEqual" secondItem="AdH-oQ-xB7" secondAttribute="top" id="5Ws-fD-FBl"/>
+                            <constraint firstItem="y9D-aO-cag" firstAttribute="leading" secondItem="XOO-wB-Aer" secondAttribute="leading" id="5gn-QE-18i"/>
+                            <constraint firstItem="XOO-wB-Aer" firstAttribute="bottom" secondItem="aSl-0L-qLt" secondAttribute="bottom" priority="200" id="6uZ-0r-i6q"/>
+                            <constraint firstItem="Tlx-da-Mn4" firstAttribute="top" relation="greaterThanOrEqual" secondItem="AdH-oQ-xB7" secondAttribute="top" id="9nq-Yn-VyI"/>
+                            <constraint firstAttribute="bottom" secondItem="XOO-wB-Aer" secondAttribute="bottom" priority="250" constant="300" id="A15-Ug-xBa"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="aSl-0L-qLt" secondAttribute="bottom" id="F5a-8V-aje"/>
+                            <constraint firstItem="XOO-wB-Aer" firstAttribute="bottom" secondItem="Tlx-da-Mn4" secondAttribute="top" priority="200" id="RkJ-Gg-fOw"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="XOO-wB-Aer" secondAttribute="bottom" constant="50" id="ZmH-8a-rf3"/>
+                            <constraint firstItem="XOO-wB-Aer" firstAttribute="leading" secondItem="Tlx-da-Mn4" secondAttribute="trailing" id="Zqc-HB-j0b"/>
+                            <constraint firstItem="XOO-wB-Aer" firstAttribute="top" secondItem="Biq-Io-5tR" secondAttribute="bottom" id="bSW-mJ-4te"/>
+                            <constraint firstAttribute="trailing" secondItem="XOO-wB-Aer" secondAttribute="leading" constant="50" id="eNL-jS-I36"/>
+                            <constraint firstAttribute="bottom" secondItem="y9D-aO-cag" secondAttribute="bottom" id="hHb-wx-hwq"/>
+                            <constraint firstItem="Biq-Io-5tR" firstAttribute="leading" secondItem="XOO-wB-Aer" secondAttribute="leading" id="iGO-DN-pY4"/>
+                            <constraint firstItem="XOO-wB-Aer" firstAttribute="leading" secondItem="aSl-0L-qLt" secondAttribute="trailing" id="kGK-15-aXY"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Tlx-da-Mn4" secondAttribute="bottom" id="q62-xb-I78"/>
+                            <constraint firstItem="XOO-wB-Aer" firstAttribute="top" relation="greaterThanOrEqual" secondItem="AdH-oQ-xB7" secondAttribute="top" id="qTH-97-cBd"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="accessibilityButton" destination="37d-Lb-7Lx" id="EyT-Lp-pVA"/>
-                        <outlet property="informationButton" destination="5R0-Ed-pJG" id="J99-rQ-V56"/>
-                        <outlet property="mapToggleButton" destination="qAo-tK-U4U" id="Cds-Fu-Des"/>
-                        <outlet property="menuBottomConstraint" destination="PXR-tM-DVE" id="BJe-U9-6FQ"/>
-                        <outlet property="menuView" destination="ySR-rI-hH0" id="oaa-9r-Hk7"/>
-                        <outlet property="searchButton" destination="CJK-LW-WGG" id="7EG-sF-plG"/>
-                        <outlet property="settingsButton" destination="u8e-Pu-hpK" id="PbK-YQ-CvU"/>
-                        <outlet property="splitScreenButton" destination="ceY-yx-jPe" id="OSz-77-u6j"/>
-                        <outlet property="testimonyButton" destination="uLI-Vt-2Vu" id="ngT-Qi-DQ4"/>
-                        <outlet property="timelineToggleButton" destination="6n8-Ku-Mg1" id="wWz-Pv-4qX"/>
+                        <outlet property="accessibilityButtonArea" destination="y9D-aO-cag" id="eFD-NG-cyt"/>
+                        <outlet property="infoBottomConstraint" destination="6uZ-0r-i6q" id="YIW-T9-3aP"/>
+                        <outlet property="infoMenuView" destination="aSl-0L-qLt" id="kQx-G9-Kov"/>
+                        <outlet property="menuBottomConstraint" destination="A15-Ug-xBa" id="9Us-6d-AU7"/>
+                        <outlet property="menuSideConstraint" destination="eNL-jS-I36" id="Gpb-lk-SRq"/>
+                        <outlet property="menuToggleButton" destination="Biq-Io-5tR" id="pFP-cY-fnU"/>
+                        <outlet property="menuView" destination="XOO-wB-Aer" id="cla-3s-HfH"/>
+                        <outlet property="settingsMenuView" destination="Tlx-da-Mn4" id="eQs-u5-wVG"/>
+                        <outlet property="settingsTopConstraint" destination="RkJ-Gg-fOw" id="NCE-TK-nVt"/>
                     </connections>
                 </viewController>
                 <customObject id="vEQ-kv-rRL" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-225" y="-25"/>
+            <point key="canvasLocation" x="-477" y="-339"/>
+        </scene>
+        <!--Menu View Controller-->
+        <scene sceneID="CWG-z3-fx2">
+            <objects>
+                <viewController storyboardIdentifier="MenuLeft" id="bnF-Jy-aEI" customClass="MenuViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="7iZ-IN-46X">
+                        <rect key="frame" x="0.0" y="0.0" width="550" height="1100"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <stackView distribution="fillEqually" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" placeholderIntrinsicWidth="50" placeholderIntrinsicHeight="350" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kWu-fr-l1x">
+                                <rect key="frame" x="-150" y="300" width="200" height="350"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="b0g-iR-Mjq"/>
+                                </constraints>
+                            </stackView>
+                            <containerView translatesAutoresizingMaskIntoConstraints="NO" id="Mf6-a3-oND">
+                                <rect key="frame" x="50" y="300" width="500" height="800"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="500" id="cbB-iO-dy1"/>
+                                    <constraint firstAttribute="height" constant="800" id="tac-Rw-Vnk"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="ML4-sp-dgz" kind="embed" id="HuH-g6-DV5"/>
+                                </connections>
+                            </containerView>
+                            <containerView translatesAutoresizingMaskIntoConstraints="NO" id="Mtd-mS-Ji1">
+                                <rect key="frame" x="50" y="100" width="275" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="275" id="GPl-FG-kSd"/>
+                                    <constraint firstAttribute="height" constant="200" id="tBZ-ne-EEa"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="kQY-9F-qFT" kind="embed" id="dWa-tI-ED0"/>
+                                </connections>
+                            </containerView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="V3P-Dx-vtf" customClass="ImageView" customModule="WindowExplorer" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="650" width="50" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="U55-uj-Zmr"/>
+                                    <constraint firstAttribute="width" constant="50" id="zcG-3q-kMj"/>
+                                </constraints>
+                            </customView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="y44-Um-Qrw">
+                                <rect key="frame" x="-150" y="0.0" width="200" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="PIX-Zf-xz4"/>
+                                    <constraint firstAttribute="width" constant="200" id="gWX-iW-ses"/>
+                                </constraints>
+                            </customView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="kWu-fr-l1x" secondAttribute="bottom" constant="50" id="5Jz-mO-Vrk"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Mf6-a3-oND" secondAttribute="bottom" id="6H7-tR-gNr"/>
+                            <constraint firstItem="Mf6-a3-oND" firstAttribute="leading" secondItem="kWu-fr-l1x" secondAttribute="trailing" id="9rs-5n-sfI"/>
+                            <constraint firstAttribute="bottom" secondItem="kWu-fr-l1x" secondAttribute="bottom" priority="250" constant="300" id="G8a-9T-A8Q"/>
+                            <constraint firstItem="Mtd-mS-Ji1" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7iZ-IN-46X" secondAttribute="top" id="NKb-OD-NM6"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Mtd-mS-Ji1" secondAttribute="bottom" id="Nuj-4N-FG6"/>
+                            <constraint firstItem="kWu-fr-l1x" firstAttribute="top" secondItem="V3P-Dx-vtf" secondAttribute="bottom" id="R3C-t3-QrG"/>
+                            <constraint firstItem="Mtd-mS-Ji1" firstAttribute="leading" secondItem="kWu-fr-l1x" secondAttribute="trailing" id="RM9-Ym-Oiu"/>
+                            <constraint firstItem="Mf6-a3-oND" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7iZ-IN-46X" secondAttribute="top" id="Rip-bB-qPw"/>
+                            <constraint firstItem="kWu-fr-l1x" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7iZ-IN-46X" secondAttribute="top" id="UQi-3a-1IB"/>
+                            <constraint firstItem="kWu-fr-l1x" firstAttribute="bottom" secondItem="Mf6-a3-oND" secondAttribute="bottom" priority="200" id="VtM-CT-Fh0"/>
+                            <constraint firstItem="kWu-fr-l1x" firstAttribute="trailing" secondItem="7iZ-IN-46X" secondAttribute="leading" constant="50" id="ZKK-yF-UVI"/>
+                            <constraint firstItem="y44-Um-Qrw" firstAttribute="trailing" secondItem="kWu-fr-l1x" secondAttribute="trailing" id="aDI-DV-Ue0"/>
+                            <constraint firstAttribute="bottom" secondItem="y44-Um-Qrw" secondAttribute="bottom" id="peE-eJ-ylu"/>
+                            <constraint firstItem="kWu-fr-l1x" firstAttribute="bottom" secondItem="Mtd-mS-Ji1" secondAttribute="top" priority="200" id="qdQ-Kf-gY9"/>
+                            <constraint firstItem="V3P-Dx-vtf" firstAttribute="trailing" secondItem="kWu-fr-l1x" secondAttribute="trailing" id="tmT-6F-axt"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="accessibilityButtonArea" destination="y44-Um-Qrw" id="bcP-Ru-joR"/>
+                        <outlet property="infoBottomConstraint" destination="VtM-CT-Fh0" id="AED-RG-uU7"/>
+                        <outlet property="infoMenuView" destination="Mf6-a3-oND" id="u47-Th-Yel"/>
+                        <outlet property="menuBottomConstraint" destination="G8a-9T-A8Q" id="SkB-7W-SQa"/>
+                        <outlet property="menuSideConstraint" destination="ZKK-yF-UVI" id="SyK-hP-QXg"/>
+                        <outlet property="menuToggleButton" destination="V3P-Dx-vtf" id="7rp-2W-Bow"/>
+                        <outlet property="menuView" destination="kWu-fr-l1x" id="27c-dy-Pz1"/>
+                        <outlet property="settingsMenuView" destination="Mtd-mS-Ji1" id="mMR-yQ-Zw7"/>
+                        <outlet property="settingsTopConstraint" destination="qdQ-Kf-gY9" id="KhY-AY-ZUH"/>
+                    </connections>
+                </viewController>
+                <customObject id="K3j-kE-Ja0" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1324" y="-339"/>
+        </scene>
+        <!--Info-->
+        <scene sceneID="nuO-yT-2lc">
+            <objects>
+                <controllerPlaceholder storyboardIdentifier="Info" storyboardName="Info" id="ML4-sp-dgz" sceneMemberID="viewController"/>
+                <customObject id="6l9-6l-pvl" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-866" y="-507"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="895-4L-2nU">
+            <objects>
+                <controllerPlaceholder storyboardIdentifier="Settings" storyboardName="Settings" id="kQY-9F-qFT" sceneMemberID="viewController"/>
+                <customObject id="jOW-cK-9y6" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-853" y="-182"/>
         </scene>
     </scenes>
 </document>

@@ -64,7 +64,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func setupApplication() {
         WindowManager.instance.registerForNotifications()
         ConnectionManager.instance.registerForNotifications()
-        SettingsManager.instance.registerForNotifications()
         TouchManager.instance.setupTouchSocket()
         MenuManager.instance.createMenusAndBorders()
         GeocodeHelper.instance.associateSchoolsToProvinces()

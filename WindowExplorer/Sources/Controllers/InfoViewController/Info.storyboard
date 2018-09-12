@@ -6,10 +6,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Info View Controller-->
+        <!--Info-->
         <scene sceneID="dBK-aD-E6k">
             <objects>
-                <viewController id="d75-j9-9Ky" customClass="InfoViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Info" storyboardIdentifier="Info" id="d75-j9-9Ky" customClass="InfoViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="YEQ-Hb-AYS">
                         <rect key="frame" x="0.0" y="0.0" width="500" height="800"/>
                         <autoresizingMask key="autoresizingMask"/>

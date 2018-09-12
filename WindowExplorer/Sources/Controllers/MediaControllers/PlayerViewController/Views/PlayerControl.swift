@@ -74,6 +74,7 @@ class PlayerControl: NSView {
         Bundle.main.loadNibNamed(PlayerControl.nib, owner: self, topLevelObjects: nil)
         addSubview(contentView)
         contentView.frame = bounds
+        contentView.autoresizingMask = .width
     }
 
 

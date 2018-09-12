@@ -4,6 +4,7 @@ import Foundation
 import AppKit
 import SpriteKit
 
+
 protocol NodeGestureResponder: class {
     var view: NSView { get }
     var gestureManager: NodeGestureManager! { get }

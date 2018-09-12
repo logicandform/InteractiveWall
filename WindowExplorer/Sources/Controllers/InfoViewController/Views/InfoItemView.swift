@@ -111,13 +111,13 @@ class InfoItemView: NSCollectionViewItem, PlayerControlDelegate {
             if !label.title.isEmpty {
                 let titleString = NSAttributedString(string: label.title, attributes: style.recordSmallHeaderAttributes)
                 let titleLabel = textField(for: titleString)
-                stackView.insertView(titleLabel, at: stackView.subviews.count, in: .top)
+                stackView.addView(titleLabel, in: .top)
                 stackView.setCustomSpacing(style.smallHeaderTrailingSpace, after: titleLabel)
             }
             if !label.description.isEmpty {
                 let descriptionString = NSAttributedString(string: label.description, attributes: style.recordDescriptionAttributes)
                 let descriptionLabel = textField(for: descriptionString)
-                stackView.insertView(descriptionLabel, at: stackView.subviews.count, in: .top)
+                stackView.addView(descriptionLabel, in: .top)
                 stackView.setCustomSpacing(style.descriptionTrailingSpace, after: descriptionLabel)
             }
         }

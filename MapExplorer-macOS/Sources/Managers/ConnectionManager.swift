@@ -251,7 +251,7 @@ final class ConnectionManager {
 
     /// Initiates a split between applications within the screen containing the given appID
     private func split(from id: Int, group: Int?, of type: ApplicationType) {
-        let neighborID = id % Configuration.appsPerScreen == 0 ? id + 1 : id - 1
+        let neighborID = id.isEven ? id + 1 : id - 1
         let appStates = states(for: type).enumerated()
 
         for (app, state) in appStates {
@@ -282,7 +282,7 @@ final class ConnectionManager {
     }
 
     private func merge(from id: Int, group: Int?, of type: ApplicationType) {
-        let neighborID = id % Configuration.appsPerScreen == 0 ? id + 1 : id - 1
+        let neighborID = id.isEven ? id + 1 : id - 1
         let newState = AppState(pair: nil, group: id)
         let appStates = states(for: type).enumerated()
 

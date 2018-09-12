@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="jcr-A7-Ddu">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="jcr-A7-Ddu">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Settings Menu View Controller-->
+        <!--Settings-->
         <scene sceneID="VMf-LX-0Ba">
             <objects>
-                <viewController id="jcr-A7-Ddu" customClass="SettingsMenuViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Settings" storyboardIdentifier="Settings" id="jcr-A7-Ddu" customClass="SettingsViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="ZeC-5C-8Vg">
                         <rect key="frame" x="0.0" y="0.0" width="275" height="187"/>
                         <autoresizingMask key="autoresizingMask"/>

@@ -4,13 +4,8 @@ import Foundation
 import Cocoa
 
 
-protocol SettingsDelegate: class {
-    func settingsTimeoutFired()
-}
-
-
-class SettingsMenuViewController: NSViewController, GestureResponder {
-    static let storyboard = NSStoryboard.Name(rawValue: "SettingsMenu")
+class SettingsViewController: NSViewController, GestureResponder {
+    static let storyboard = NSStoryboard.Name(rawValue: "Settings")
 
     @IBOutlet weak var labelsText: NSTextField!
     @IBOutlet weak var miniMapText: NSTextField!
@@ -21,16 +16,14 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
     @IBOutlet weak var eventsSwitchContainer: NSView!
     @IBOutlet weak var schoolsSwitchContainer: NSView!
 
-    weak var settingsParent: SettingsDelegate?
+    var appID: Int!
     var gestureManager: GestureManager!
-    private var appID: Int!
     private var currentSettings = Settings()
     private var settingsTimeout: Foundation.Timer?
     private var labelsSwitch: SwitchControl!
     private var miniMapSwitch: SwitchControl!
     private var schoolsSwitch: SwitchControl!
     private var eventsSwitch: SwitchControl!
-
     private var switchForSettingType = [SettingType: SwitchControl]()
     private var containerForSettingType = [SettingType: NSView]()
 
@@ -38,13 +31,9 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
         static let id = "id"
         static let type = "type"
         static let group = "group"
+        static let status = "status"
         static let settings = "settings"
         static let recordType = "recordType"
-        static let status = "status"
-    }
-
-    private struct Constants {
-        static let settingsTimeoutPeriod = 30.0
     }
 
 
@@ -52,13 +41,8 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.wantsLayer = true
-        view.layer?.backgroundColor = style.darkBackground.cgColor
-        gestureManager = GestureManager(responder: self)
-        gestureManager.touchReceived = { [weak self] touch in
-            self?.receivedTouch(touch)
-        }
 
+        setupView()
         setupSwitches()
         setupGestures()
         setupNotifications()
@@ -67,37 +51,20 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
 
     // MARK: API
 
-    func set(appID: Int) {
-        self.appID = appID
-    }
-
     func reset() {
-        view.isHidden = true
         labelsSwitch.isOn = true
         miniMapSwitch.isOn = false
         schoolsSwitch.isOn = true
         eventsSwitch.isOn = true
     }
 
-    func updateOrigin(relativeTo verticalPosition: CGFloat, with buttonFrame: CGRect) {
-        guard let window = view.window, let screen = window.screen else {
-            return
-        }
-
-        let translatedPosition = verticalPosition + buttonFrame.origin.y + buttonFrame.height - view.frame.height
-        let updatedVerticalPosition = translatedPosition < 0 ? screen.frame.minY : translatedPosition
-        view.window?.setFrameOrigin(CGPoint(x: window.frame.origin.x, y: updatedVerticalPosition))
-    }
-
-    func resetSettingsTimeout() {
-        settingsTimeout?.invalidate()
-        settingsTimeout = Timer.scheduledTimer(withTimeInterval: Constants.settingsTimeoutPeriod, repeats: false) { [weak self] _ in
-            self?.settingsParent?.settingsTimeoutFired()
-        }
-    }
-
 
     // MARK: Setup
+
+    private func setupView() {
+        view.wantsLayer = true
+        view.layer?.backgroundColor = style.darkBackground.cgColor
+    }
 
     private func setupSwitches() {
         containerForSettingType = [.labels: labelsSwitchContainer, .miniMap: miniMapSwitchContainer, .schools: schoolsSwitchContainer, .events: eventsSwitchContainer]
@@ -140,16 +107,8 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
 
     @objc
     private func handleNotification(_ notification: NSNotification) {
-        guard let info = notification.userInfo else {
+        guard let info = notification.userInfo, ConnectionManager.instance.groupForApp(id: appID) == info[Keys.group] as? Int else {
             return
-        }
-
-        let notificationGroup = info[Keys.group] as? Int
-        // Only respond to notifications from the same group, or if group is nil
-        if let group = ConnectionManager.instance.groupForApp(id: appID) {
-            if group != notificationGroup && notificationGroup != nil {
-                return
-            }
         }
 
         switch notification.name {
@@ -243,9 +202,5 @@ class SettingsMenuViewController: NSViewController, GestureResponder {
                 self?.toggle(toggleSwitch, with: type)
             }
         }
-    }
-
-    private func receivedTouch(_ touch: Touch) {
-        resetSettingsTimeout()
     }
 }

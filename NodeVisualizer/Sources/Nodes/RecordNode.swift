@@ -14,7 +14,7 @@ class RecordNode: SKSpriteNode {
     private(set) var openNode: SKSpriteNode!
 
     private struct Constants {
-        static let textureImageName = "node_circle"
+        static let circleTextureImage = "layer_node"
         static let labelFontSize: CGFloat = 30
         static let labelSystemFontSize: CGFloat = 10
         static let buttonSize = CGSize(width: 8, height: 8)
@@ -81,7 +81,9 @@ class RecordNode: SKSpriteNode {
     // MARK: Helpers
 
     private func makeNodes(for record: Record) {
-        texture = SKTexture(imageNamed: record.type.nodeImageName)
+        texture = SKTexture(imageNamed: Constants.circleTextureImage)
+        color = record.type.color
+        colorBlendFactor = 1
         size = style.defaultNodeSize
         downloadImage(for: record)
         addTitleNode(for: record)
@@ -98,7 +100,7 @@ class RecordNode: SKSpriteNode {
             if let image = response.value {
                 let rounded = image.roundedCorners()
                 self?.texture = SKTexture(image: rounded)
-                self?.colorBlendFactor = 0
+                self?.colorBlendFactor = 0.75
             }
         }
     }

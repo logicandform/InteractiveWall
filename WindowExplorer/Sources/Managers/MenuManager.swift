@@ -27,17 +27,16 @@ final class MenuManager {
             let screenFrame = NSScreen.at(position: screen).frame
 
             for appIndex in (0 ..< Configuration.appsPerScreen) {
-                let x = appIndex % 2 == 0 ? screenFrame.minX : screenFrame.maxX - style.menuWindowSize.width
+                let x = appIndex.isEven ? screenFrame.minX : screenFrame.maxX - style.menuWindowSize.width
                 let y = screenFrame.midY - style.menuWindowSize.height / 2
                 let borderXPosition = (screenFrame.size.width / 2) + screenFrame.origin.x - (style.borderWindowSize.width / 2)
+                let appID = appIndex + ((screen - 1) * Configuration.appsPerScreen)
 
-                if let menu = WindowManager.instance.display(.menu, at: CGPoint(x: x, y: y)) as? MenuViewController {
-                    let appID = appIndex + ((screen - 1) * Configuration.appsPerScreen)
-                    menu.set(appID: appID)
+                if let menu = WindowManager.instance.display(.menu(app: appID), at: CGPoint(x: x, y: y)) as? MenuViewController {
                     menuForID[appID] = menu
                 }
 
-                if appIndex % 2 == 1 {
+                if !appIndex.isEven {
                     let border = WindowManager.instance.display(.border, at: CGPoint(x: borderXPosition, y: screenFrame.minY)) as? BorderViewController
                     border?.screenID = screen
                     borderForScreen[screen] = border

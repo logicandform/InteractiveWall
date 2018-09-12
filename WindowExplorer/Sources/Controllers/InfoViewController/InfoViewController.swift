@@ -19,6 +19,7 @@ class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollec
     @IBOutlet weak var volumeButtonArea: NSView!
     @IBOutlet weak var playerControlArea: NSView!
 
+    var appID: Int!
     var gestureManager: GestureManager!
     private var infoItems = [InfoItem]()
     private var pageControl = PageControl()
@@ -36,14 +37,11 @@ class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollec
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        gestureManager = GestureManager(responder: self)
-        view.wantsLayer = true
-        view.layer?.backgroundColor = style.darkBackground.cgColor
 
-        setupInfoItems()
+        setupView()
+        setupGestures()
         setupCollectionView()
         setupPageControl()
-        setupGestures()
     }
 
     override func viewDidAppear() {
@@ -53,26 +51,15 @@ class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollec
     }
 
 
-    // MARK: API
-
-    func updateOrigin(relativeTo verticalPosition: CGFloat, with buttonFrame: CGRect) {
-        guard let window = view.window, let screen = window.screen else {
-            return
-        }
-
-        let translatedPosition = verticalPosition + buttonFrame.origin.y + buttonFrame.height - view.frame.height
-        let updatedVerticalPosition = translatedPosition < 0 ? screen.frame.minY : translatedPosition
-        view.window?.setFrameOrigin(CGPoint(x: window.frame.origin.x, y: updatedVerticalPosition))
-    }
-
-
     // MARK: Setup
 
-    private func setupInfoItems() {
-        infoItems = parseInfoItems()
+    private func setupView() {
+        view.wantsLayer = true
+        view.layer?.backgroundColor = style.darkBackground.cgColor
     }
 
     private func setupCollectionView() {
+        infoItems = parseInfoItems()
         infoCollectionView.register(InfoItemView.self, forItemWithIdentifier: InfoItemView.identifier)
         infoScrollView.horizontalScroller?.alphaValue = 0
     }

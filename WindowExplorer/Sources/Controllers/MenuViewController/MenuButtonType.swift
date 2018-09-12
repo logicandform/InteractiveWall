@@ -11,13 +11,12 @@ enum MenuButtonType {
     case information
     case settings
     case search
-    case testimony
     case accessibility
 
     var image: NSImage? {
         switch self {
         case .split:
-            return NSImage(named: "single-person-icon")
+            return NSImage(named: "split-icon")
         case .map:
             return NSImage(named: "map-icon")
         case .timeline:
@@ -28,8 +27,6 @@ enum MenuButtonType {
             return NSImage(named: "settings-icon")
         case .search:
             return NSImage(named: "search-icon")
-        case .testimony:
-            return NSImage(named: "testimony-icon")
         case .accessibility:
             return NSImage(named: "accessibility-icon")
         }
@@ -38,21 +35,19 @@ enum MenuButtonType {
     var selectedImage: NSImage? {
         switch self {
         case .split:
-            return NSImage(named: "multiple-person-icon")
+            return NSImage(named: "merge-icon")
         case .map:
-            return NSImage(named: "map-icon")?.tinted(with: style.menuSelectedColor)
+            return NSImage(named: "map-icon-active")
         case .timeline:
-            return NSImage(named: "timeline-icon")?.tinted(with: style.menuSelectedColor)
+            return NSImage(named: "timeline-icon-active")
         case .information:
-            return NSImage(named: "info-icon")?.tinted(with: style.menuSelectedColor)
+            return NSImage(named: "info-icon-active")
         case .settings:
-            return NSImage(named: "settings-icon")?.tinted(with: style.menuSelectedColor)
+            return NSImage(named: "settings-icon-active")
         case .search:
-            return NSImage(named: "search-icon")?.tinted(with: style.menuSelectedColor)
-        case .testimony:
-            return NSImage(named: "testimony-icon")?.tinted(with: style.menuSelectedColor)
+            return NSImage(named: "search-icon-active")
         case .accessibility:
-            return NSImage(named: "accessibility-icon")?.tinted(with: style.menuAccessibilityIconColor)
+            return NSImage(named: "accessibility-icon-active")
         }
     }
 
@@ -76,6 +71,39 @@ enum MenuButtonType {
         }
     }
 
+    var unselectedBackgroundColor: NSColor? {
+        return style.darkBackground
+    }
+
+    var selectedBackgroundColor: NSColor? {
+        switch self {
+        case .split, .accessibility:
+            return style.menuSelectedColor
+        case .map, .timeline, .information, .settings, .search:
+            return style.darkBackground
+        }
+    }
+
+    func title(selected: Bool, locked: Bool) -> String {
+        switch self {
+        case .split:
+            let title = selected ? "Merge" : "Split"
+            return locked ? "\(title) (Locked)" : title
+        case .map:
+            return "Map"
+        case .timeline:
+            return "Timeline"
+        case .information:
+            return "Information"
+        case .settings:
+            return "Settings"
+        case .search:
+            return "Browse"
+        case .accessibility:
+            return "Accessibility"
+        }
+    }
+
     static func from(_ type: ApplicationType) -> MenuButtonType? {
         switch type {
         case .mapExplorer:
@@ -87,20 +115,7 @@ enum MenuButtonType {
         }
     }
 
-    static var allValues: [MenuButtonType] {
-        return [.split, .map, .timeline, .information, .settings, .search, .testimony, .accessibility]
-    }
-
-    var unselectedBackground: NSColor? {
-        return style.darkBackground
-    }
-
-    var selectedBackground: NSColor? {
-        switch self {
-        case .split, .accessibility:
-            return style.menuSelectedColor
-        case .map, .timeline, .information, .settings, .search, .testimony:
-            return style.darkBackground
-        }
+    static var itemsInMenu: [MenuButtonType] {
+        return [.split, .map, .timeline, .information, .search]
     }
 }

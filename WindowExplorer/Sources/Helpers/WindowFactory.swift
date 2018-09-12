@@ -51,15 +51,22 @@ final class WindowFactory {
             let searchViewController = storyboard.instantiateInitialController() as! SearchViewController
             searchViewController.type = type
             return searchViewController
-        case .menu:
+        case let .menu(appID):
             let storyboard = NSStoryboard(name: MenuViewController.storyboard, bundle: .main)
-            return storyboard.instantiateInitialController() as! MenuViewController
-        case .settings:
-            let storyboard = NSStoryboard(name: SettingsMenuViewController.storyboard, bundle: .main)
-            return storyboard.instantiateInitialController() as! SettingsMenuViewController
-        case .info:
+            let identifier = appID.isEven ? MenuViewController.leftSideIdentifier : MenuViewController.rightSideIdentifier
+            let menuViewController = storyboard.instantiateController(withIdentifier: identifier) as! MenuViewController
+            menuViewController.appID = appID
+            return menuViewController
+        case let .settings(appID):
+            let storyboard = NSStoryboard(name: SettingsViewController.storyboard, bundle: .main)
+            let settingsViewController = storyboard.instantiateInitialController() as! SettingsViewController
+            settingsViewController.appID = appID
+            return settingsViewController
+        case let .info(appID):
             let storyboard = NSStoryboard(name: InfoViewController.storyboard, bundle: .main)
-            return storyboard.instantiateInitialController() as! InfoViewController
+            let infoViewController = storyboard.instantiateInitialController() as! InfoViewController
+            infoViewController.appID = appID
+            return infoViewController
         case .border:
             let storyboard = NSStoryboard(name: BorderViewController.storyboard, bundle: .main)
             return storyboard.instantiateInitialController() as! BorderViewController

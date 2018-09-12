@@ -3,6 +3,7 @@
 import Foundation
 import AppKit
 
+
 final class TouchManager {
     static let instance = TouchManager()
 

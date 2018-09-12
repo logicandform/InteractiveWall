@@ -18,6 +18,7 @@ final class Style {
     let testimonyColor = NSColor(calibratedRed: 0.96, green: 0.51, blue: 0.07, alpha: 1)
     let menuSelectedColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
     let menuUnselectedColor = NSColor(calibratedRed: 1, green: 1, blue: 1, alpha: 1)
+    let menuButtonBackgroundColor = NSColor(deviceWhite: 0.2, alpha: 1)
 
     // Windows
     let recordWindowSize = CGSize(width: 416, height: 650)
@@ -25,6 +26,7 @@ final class Style {
     let pdfWindowSize = CGSize(width: 600, height: 640)
     let playerWindowSize = CGSize(width: 640, height: 440)
     let searchWindowFrame = CGSize(width: 350, height: 655)
+    let menuWindowSize = CGSize(width: 700, height: 2160)
     let searchScrollViewSize = CGSize(width: 360, height: 600)
     let borderWindowSize = NSSize(width: 4, height: 2160)
     let testimonyWindowSize = CGSize(width: 416, height: 579)
@@ -57,8 +59,6 @@ final class Style {
     let relatedRecordsItemSpacing: CGFloat = 5
 
     // Menu Controller
-    let menuWindowSize = CGSize(width: 50, height: 2160)
-    let menuImageSize = CGSize(width: 50, height: 50)
     let menuLockIconPosition = CGPoint(x: -3, y: 3)
     let menuSecondarySelectedColor = NSColor(calibratedRed: 0.06, green: 0.28, blue: 0.24, alpha: 1)
     let menuAccessibilityIconColor = NSColor(calibratedRed: 0, green: 0, blue: 0, alpha: 1)

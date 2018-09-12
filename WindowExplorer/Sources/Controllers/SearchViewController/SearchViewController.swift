@@ -8,8 +8,8 @@ protocol SearchItemDisplayable {
 }
 
 
-protocol SearchViewDelegate: class {
-    func searchDidClose()
+protocol SearchParent: class {
+    func searchChildClosed()
 }
 
 
@@ -19,7 +19,7 @@ fileprivate struct RecordProxy: Hashable {
 }
 
 
-class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout {
+class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout, SearchChild {
     static let storyboard = NSStoryboard.Name(rawValue: "Search")
 
     @IBOutlet weak var primaryCollectionView: NSCollectionView!
@@ -35,7 +35,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     @IBOutlet weak var secondaryScrollViewHeight: NSLayoutConstraint!
     @IBOutlet weak var tertiaryScrollViewHeight: NSLayoutConstraint!
 
-    weak var searchViewDelegate: SearchViewDelegate?
+    weak var delegate: SearchParent?
     private let relationshipHelper = RelationshipHelper()
     private var selectedType: RecordType?
     private var selectedGroup: String?
@@ -316,7 +316,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     }
 
     override func close() {
-        searchViewDelegate?.searchDidClose()
+        delegate?.searchChildClosed()
         super.close()
     }
 

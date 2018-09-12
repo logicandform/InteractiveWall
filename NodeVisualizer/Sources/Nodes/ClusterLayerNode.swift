@@ -12,7 +12,7 @@ class ClusterLayerNode: SKSpriteNode {
     private let level: Int
 
     private struct Constants {
-        static let layerNodeImage = "layer-node"
+        static let layerNodeImage = "layer_node"
     }
 
 

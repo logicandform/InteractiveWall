@@ -60,4 +60,19 @@ final class Style {
                 .foregroundColor: NSColor.white,
                 .kern: 1]
     }
+
+    var mapLabelAttributes: [NSAttributedStringKey: Any] {
+        let fontSize: CGFloat = 11
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 0
+        paragraphStyle.paragraphSpacing = 8
+        paragraphStyle.maximumLineHeight = fontSize + 5
+        paragraphStyle.lineBreakMode = .byWordWrapping
+        let font = NSFont(name: "Soleil", size: fontSize) ?? NSFont.systemFont(ofSize: fontSize)
+        return [.paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: NSColor.white,
+                .kern: 0.5
+        ]
+    }
 }

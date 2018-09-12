@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="MenuButton" customModule="WindowExplorer" customModuleProvider="target">
+            <connections>
+                <outlet property="buttonView" destination="huK-GJ-UbB" id="kpt-fJ-Cze"/>
+                <outlet property="contentView" destination="c22-O7-iKe" id="AZO-Sh-1sn"/>
+                <outlet property="lockIcon" destination="Cgi-aC-f8G" id="iFR-cK-wPa"/>
+                <outlet property="titleField" destination="veX-29-jSz" id="5UP-Nb-7kb"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView identifier="MenuButtonRight" wantsLayer="YES" id="c22-O7-iKe">
+            <rect key="frame" x="0.0" y="0.0" width="261" height="50"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="huK-GJ-UbB">
+                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                    <subviews>
+                        <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Cgi-aC-f8G">
+                            <rect key="frame" x="37" y="37" width="10" height="10"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="10" id="Aog-rb-P52"/>
+                                <constraint firstAttribute="width" constant="10" id="Cqk-wA-rMA"/>
+                            </constraints>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="Lock Icon" id="R8Q-Ok-qfE"/>
+                        </imageView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="Cgi-aC-f8G" firstAttribute="top" secondItem="huK-GJ-UbB" secondAttribute="top" constant="3" id="593-sj-OAe"/>
+                        <constraint firstAttribute="trailing" secondItem="Cgi-aC-f8G" secondAttribute="trailing" constant="3" id="Set-fG-wCT"/>
+                        <constraint firstAttribute="width" secondItem="huK-GJ-UbB" secondAttribute="height" multiplier="1:1" id="wz5-QF-AiZ"/>
+                    </constraints>
+                </customView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" placeholderIntrinsicWidth="100" placeholderIntrinsicHeight="17" translatesAutoresizingMaskIntoConstraints="NO" id="veX-29-jSz">
+                    <rect key="frame" x="56" y="16" width="104" height="17"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" id="Jy6-6b-zWf">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstItem="veX-29-jSz" firstAttribute="leading" secondItem="huK-GJ-UbB" secondAttribute="trailing" constant="8" id="BPn-Xf-QVI"/>
+                <constraint firstItem="huK-GJ-UbB" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="HWt-IH-Kwk"/>
+                <constraint firstItem="huK-GJ-UbB" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="TdW-PW-183"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="veX-29-jSz" secondAttribute="trailing" constant="8" id="c85-iK-XJe"/>
+                <constraint firstAttribute="bottom" secondItem="huK-GJ-UbB" secondAttribute="bottom" id="qvF-VN-K9B"/>
+                <constraint firstItem="veX-29-jSz" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="zrp-N2-239"/>
+            </constraints>
+            <point key="canvasLocation" x="57.5" y="92"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="Lock Icon" width="7" height="9"/>
+    </resources>
+</document>
