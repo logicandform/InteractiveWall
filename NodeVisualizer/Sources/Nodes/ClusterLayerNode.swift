@@ -70,7 +70,7 @@ class ClusterLayerNode: SKSpriteNode {
 
     static func physicsBody(radius: CGFloat) -> SKPhysicsBody {
         let physicsBody = SKPhysicsBody(circleOfRadius: radius)
-        physicsBody.mass = style.nodePhysicsBodyMass
+        physicsBody.mass = style.defaultBodyMass
         physicsBody.isDynamic = false
         physicsBody.restitution = 0
         physicsBody.friction = 1

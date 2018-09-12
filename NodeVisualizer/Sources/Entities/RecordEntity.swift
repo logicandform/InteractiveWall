@@ -32,6 +32,32 @@ enum EntityState: Equatable {
             return false
         }
     }
+
+    /// Provides the bitmasks for a given state
+    var bitMasks: ColliderType? {
+        switch self {
+        case .selected:
+            return nil
+        default:
+            return nil
+        }
+    }
+
+    /// Provides the physics body properties for a given state
+    var physicsBodyProperties: PhysicsBodyProperties {
+        switch self {
+        case .static, .dragging:
+            return PhysicsBodyProperties.defaultProperties()
+        case .selected:
+            return PhysicsBodyProperties.propertiesForSelectedEntity()
+        case .seekLevel(let level):
+            return PhysicsBodyProperties.properties(forLevel: level)
+        case .seekEntity(let entity):
+            return PhysicsBodyProperties.properties(forLevel: entity.clusterLevel.currentLevel)
+        case .reset, .remove:
+            return PhysicsBodyProperties.propertiesForResettingAndRemovingEntity()
+        }
+    }
 }
 
 
@@ -170,7 +196,7 @@ final class RecordEntity: GKEntity {
     }
 
     func updatePhysicsBodyProperties() {
-        physicsComponent.setPhysicsBodyProperties()
+        physicsComponent.updatePhysicsBodyProperties()
     }
 
     func perform(action: SKAction, forKey key: String) {
