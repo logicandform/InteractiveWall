@@ -8,11 +8,11 @@
 		<key>videoURL</key>
 		<string></string>
 		<key>thumbnailURL</key>
-		<string>/static/png/colors.png</string>
+		<string>/static/png/MapExplorerInteraction.png</string>
 		<key>localVideoURL</key>
 		<string></string>
 		<key>localThumbnailURL</key>
-		<string>/Users/irshdc/dev/Caching-Server-UBC/static/png/colors.png</string>
+		<string>/Users/irshdc/dev/Caching-Server-UBC/static/png/MapExplorerInteraction.png</string>
 		<key>sections</key>
 		<array>
 			<dict>
@@ -43,7 +43,7 @@
 				<key>title</key>
 				<string>Group Interaction</string>
 				<key>content</key>
-				<string>If you are working alone with the installation, the aeshtetic layer may move across all screens. The installation will continuously divide down into a maximum of six individual sessions.</string>
+				<string>If you are working alone with the installation, the aeshtetic layer may move across all screens. As more people begin using the installation it will continuously divide down into a maximum of six individual sessions.</string>
 			</dict>
 		</array>
 	</dict>
@@ -77,123 +77,6 @@
 				<string>Zooming</string>
 				<key>content</key>
 				<string>To zoom in to or out of the map you can pinch with two fingers. The timeline and node visualizer do not have the ability to zoom.</string>
-			</dict>
-		</array>
-	</dict>
-	<dict>
-		<key>title</key>
-		<string>Record Viewer</string>
-		<key>videoURL</key>
-		<string>/static/mp4/RecordViewer.mov</string>
-		<key>thumbnailURL</key>
-		<string></string>
-		<key>localVideoURL</key>
-		<string>/Users/irshdc/dev/Caching-Server-UBC/static/mp4/RecordViewer.mov</string>
-		<key>localThumbnailURL</key>
-		<string></string>
-		<key>sections</key>
-		<array>
-			<dict>
-				<key>title</key>
-				<string></string>
-				<key>content</key>
-				<string>Records provide a concise, interactive window for learning and exploring. Records are made up of a media viewer, a scrollable text view, and a set of related records (if available). You can move a record by dragging in its header bar.</string>
-			</dict>
-			<dict>
-				<key>title</key>
-				<string>Related Records</string>
-				<key>content</key>
-				<string>To reveal related records, tap on the plus icon (+) in the upper right hand corner of the window – some records do not have related items.</string>
-			</dict>
-			<dict>
-				<key>title</key>
-				<string>Filtering Records</string>
-				<key>content</key>
-				<string>You can filter related records by: images, organizations, events, and artifacts. To do so, tap on one of the small icons just above the scrollview.</string>
-			</dict>
-			<dict>
-				<key>title</key>
-				<string>Media Viewer</string>
-				<key>content</key>
-				<string>Most records will have an image, you can tap on the thumbnail to view it in more detail. If a record has many thumbnails, you can scroll through them before tapping.</string>
-			</dict>
-		</array>
-	</dict>
-	<dict>
-		<key>title</key>
-		<string>Video Player</string>
-		<key>videoURL</key>
-		<string>/static/mp4/VideoPlayer.mov</string>
-		<key>thumbnailURL</key>
-		<string></string>
-		<key>localVideoURL</key>
-		<string>/Users/irshdc/dev/Caching-Server-UBC/static/mp4/VideoPlayer.mov</string>
-		<key>localThumbnailURL</key>
-		<string></string>
-		<key>sections</key>
-		<array>
-			<dict>
-				<key>title</key>
-				<string></string>
-				<key>content</key>
-				<string>Records that represent videos will have a visible play icon. To open a video player, simply tap the media viewer thumbnail.</string>
-			</dict>
-			<dict>
-				<key>title</key>
-				<string>Playback</string>
-				<key>content</key>
-				<string>To play or pause, you can either tap the icon in the bar at the bottom of the video window or tap the video itself.</string>
-			</dict>
-			<dict>
-				<key>title</key>
-				<string>Volume</string>
-				<key>content</key>
-				<string>You can adjust the volume by tapping on the icon in the bottom right corner of the viewer.</string>
-			</dict>
-			<dict>
-				<key>title</key>
-				<string>Navigating Video Content</string>
-				<key>content</key>
-				<string>You can move forwards or backwards through video content by dragging the scrubber in either direction along the control bar.</string>
-			</dict>
-		</array>
-	</dict>
-	<dict>
-		<key>title</key>
-		<string>Browsing</string>
-		<key>videoURL</key>
-		<string></string>
-		<key>thumbnailURL</key>
-		<string>/static/png/browse.png</string>
-		<key>localVideoURL</key>
-		<string></string>
-		<key>localThumbnailURL</key>
-		<string>/Users/irshdc/dev/Caching-Server-UBC/static/png/browse.png</string>
-		<key>sections</key>
-		<array>
-			<dict>
-				<key>title</key>
-				<string></string>
-				<key>content</key>
-				<string>An alternative way to find records is through the browse menu.</string>
-			</dict>
-			<dict>
-				<key>title</key>
-				<string>Categories</string>
-				<key>content</key>
-				<string>The browse menu is divided into high-level categories such as: Events, Artefacts, Organizations, Schools and Themes. </string>
-			</dict>
-			<dict>
-				<key>title</key>
-				<string>Finding a Record</string>
-				<key>content</key>
-				<string>To begin, tap the browse button in the User Menu. Then, choose a top-level category for your search. A second tier with ranges will open – for example, Schools are ranged by Province. There are 2-3 tiers for any top-level category.</string>
-			</dict>
-			<dict>
-				<key>title</key>
-				<string>Opening a Record</string>
-				<key>content</key>
-				<string>Once you’ve hit the last tier for a category, tapping on any entry will open a record.</string>
 			</dict>
 		</array>
 	</dict>
