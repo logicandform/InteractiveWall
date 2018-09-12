@@ -5,18 +5,6 @@ import SpriteKit
 import GameplayKit
 
 
-struct ColliderType {
-    static let staticNode: UInt32 = 0x00000000
-    static let panBoundingNode: UInt32 = 1 << 20
-    static let clonedRecordNode: UInt32 = 1 << 21
-    static let tappedRecordNode: UInt32 = 1 << 22
-
-    let categoryBitMask: UInt32
-    let collisionBitMask: UInt32
-    let contactTestBitMask: UInt32
-}
-
-
 /// A `GKComponent` that provides an `SKPhysicsBody` for an entity. This enables the entity to be represented in the SpriteKit physics world.
 class PhysicsComponent: GKComponent {
 
@@ -74,32 +62,23 @@ class PhysicsComponent: GKComponent {
         }
 
         if cluster.selectedEntity.state == .dragging {
-            setDraggingBitMasks()
+            let bitMasksForDraggingSelectedEntity = ColliderType.draggingBitMasks(for: entity)
+            set(bitMasksForDraggingSelectedEntity)
             return
         }
 
-        switch entity.state {
-        case .selected:
-            setSelectedEntityBitMasks()
-        case .seekLevel(let level):
-            setSeekingLevelBitMasks(forLevel: level)
-        case .seekEntity(_):
-            setSeekingEntityBitMasks()
-        default:
-            return
-        }
+        let bitMasks = entity.state.bitMasks
+        set(bitMasks)
     }
 
     func setClonedNodeBitMasks() {
-        physicsBody.categoryBitMask = ColliderType.clonedRecordNode
-        physicsBody.collisionBitMask = ColliderType.clonedRecordNode
-        physicsBody.contactTestBitMask = ColliderType.clonedRecordNode
+        let bitMasks = ColliderType.bitMasksForClonedEntity()
+        set(bitMasks)
     }
 
     func resetBitMasks() {
-        physicsBody.categoryBitMask = ColliderType.staticNode
-        physicsBody.collisionBitMask = ColliderType.staticNode
-        physicsBody.contactTestBitMask = ColliderType.staticNode
+        let bitMasks = ColliderType.resetBitMasks()
+        set(bitMasks)
     }
 
     func updatePhysicsBodyProperties() {
@@ -136,6 +115,12 @@ class PhysicsComponent: GKComponent {
         resetBitMasks()
     }
 
+    private func set(_ bitMasks: ColliderType) {
+        physicsBody.categoryBitMask = bitMasks.categoryBitMask
+        physicsBody.collisionBitMask = bitMasks.collisionBitMask
+        physicsBody.contactTestBitMask = bitMasks.contactTestBitMask
+    }
+
     private func set(_ properties: PhysicsBodyProperties) {
         physicsBody.isDynamic = properties.isDynamic
         physicsBody.mass = properties.mass
@@ -162,9 +147,8 @@ class PhysicsComponent: GKComponent {
     }
 
     private func setSelectedEntityBitMasks() {
-        physicsBody.categoryBitMask = ColliderType.tappedRecordNode
-        physicsBody.collisionBitMask = ColliderType.tappedRecordNode
-        physicsBody.contactTestBitMask = ColliderType.tappedRecordNode
+        let bitMasks = ColliderType.bitMasksForSelectedEntity()
+        set(bitMasks)
     }
 
     private func setSeekingLevelBitMasks(forLevel level: Int) {

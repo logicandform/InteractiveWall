@@ -34,12 +34,18 @@ enum EntityState: Equatable {
     }
 
     /// Provides the bitmasks for a given state
-    var bitMasks: ColliderType? {
+    var bitMasks: ColliderType {
         switch self {
+        case .static, .dragging:
+            return ColliderType.defaultBitMasks()
         case .selected:
-            return nil
-        default:
-            return nil
+            return ColliderType.bitMasksForSelectedEntity()
+        case .seekLevel(let level):
+            return ColliderType.recordNodeBitMasks(forLevel: level)
+        case .seekEntity(let entity):
+            return ColliderType.bitMasksForSeekingEntity(entity: entity)
+        case .reset, .remove:
+            return ColliderType.resetBitMasks()
         }
     }
 
