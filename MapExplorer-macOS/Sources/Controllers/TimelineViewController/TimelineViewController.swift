@@ -183,7 +183,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
             }
         case .failed:
             createRecordForTouch[touch] = false
-        case .ended, .doubleTapped:
+        case .ended:
             timerForTouch[touch]?.invalidate()
             if let item = itemForTouch[touch] {
                 SelectionManager.instance.set(item: item, selected: false)

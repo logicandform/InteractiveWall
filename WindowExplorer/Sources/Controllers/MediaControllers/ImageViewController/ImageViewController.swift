@@ -99,12 +99,6 @@ class ImageViewController: MediaViewController {
         pinchGesture.gestureUpdated = { [weak self] gesture in
             self?.didPinchImageView(gesture)
         }
-
-        let tapGesture = TapGestureRecognizer()
-        gestureManager.add(tapGesture, to: imageScrollView)
-        tapGesture.gestureUpdated = { [weak self] gesture in
-            self?.didTapImageView(gesture)
-        }
     }
 
 
@@ -134,25 +128,6 @@ class ImageViewController: MediaViewController {
                 }
                 imageRect.origin = CGPoint(x: imageRect.origin.x - translationX, y: imageRect.origin.y - translationY)
                 imageScrollView.contentView.bounds = imageRect
-            }
-        default:
-            return
-        }
-    }
-
-    private func didTapImageView(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position, !animating else {
-            return
-        }
-
-        switch tap.state {
-        case .doubleTapped:
-            if imageScrollView.magnification > imageScrollView.minMagnification {
-                imageScrollView.animator().setMagnification(imageScrollView.minMagnification, centeredAt: position)
-                imageZoomControl.updateSeekBarPosition(to: 0)
-            } else {
-                imageScrollView.animator().setMagnification(imageScrollView.maxMagnification, centeredAt: position)
-                imageZoomControl.updateSeekBarPosition(to: 1)
             }
         default:
             return

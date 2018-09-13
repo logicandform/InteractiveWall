@@ -38,7 +38,6 @@ enum GestureState {
     case failed
     case momentum
     case recognized
-    case doubleTapped
 }
 
 /// Used to differentiate between our GestureRecognizer and NSGestureRecognizer.

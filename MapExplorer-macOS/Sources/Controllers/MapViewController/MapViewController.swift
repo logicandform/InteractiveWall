@@ -159,14 +159,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                         didSelect(clusterAnnotation: clusterAnnotation, at: position)
                         return
                     }
-                } else if tap.state == .doubleTapped {
-                    return
                 }
             }
-        }
-
-        if tap.state == .doubleTapped {
-            handleDoubleTap(at: position)
         }
     }
 

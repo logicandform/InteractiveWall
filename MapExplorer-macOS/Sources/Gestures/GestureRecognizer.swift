@@ -5,19 +5,12 @@ import AppKit
 
 
 protocol GestureRecognizer: class {
-
     var gestureUpdated: ((GestureRecognizer) -> Void)? { get set }
-
     var state: GestureState { get }
-
     func start(_ touch: Touch, with properties: TouchProperties)
-
     func move(_ touch: Touch, with properties: TouchProperties)
-
     func end(_ touch: Touch, with properties: TouchProperties)
-
     func reset()
-
     func invalidate()
 }
 
@@ -40,7 +33,6 @@ enum GestureState: String {
     case failed
     case momentum
     case recognized
-    case doubleTapped
     case animated
 
     var interruptible: Bool {

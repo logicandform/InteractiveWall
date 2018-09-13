@@ -124,12 +124,6 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
             self?.handlePinch(gesture)
         }
 
-        let tapGesture = TapGestureRecognizer()
-        gestureManager.add(tapGesture, to: pdfView)
-        tapGesture.gestureUpdated = { [weak self] gesture in
-            self?.didTapImageView(gesture)
-        }
-
         let thumbnailViewTap = TapGestureRecognizer()
         gestureManager.add(thumbnailViewTap, to: thumbnailView)
         thumbnailViewTap.gestureUpdated = { [weak self] gesture in
@@ -193,36 +187,6 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
             leftArrow.isHidden = !pdfView.canGoToPreviousPage || contentViewFrame.width / pdfRect.width >= Constants.initialMagnification + 0.1
             rightArrow.isHidden = !pdfView.canGoToNextPage || contentViewFrame.width / pdfRect.width >= Constants.initialMagnification + 0.1
             pdfScrollView.contentView.bounds = pdfRect
-        default:
-            return
-        }
-    }
-
-    private func didTapImageView(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position, !animating else {
-            return
-        }
-
-        switch tap.state {
-        case .doubleTapped:
-            var pdfRect = pdfScrollView.contentView.bounds
-            let scaledWidth = Constants.doubleTapScale * pdfRect.size.width
-            let scaledHeight = Constants.doubleTapScale * pdfRect.size.height
-            if scaledWidth >= contentViewFrame.width / Constants.maximumMagnification {
-                let translationX = -(pdfRect.size.width - scaledWidth) * (position.x / contentViewFrame.width)
-                let translationY = -(pdfRect.size.height - scaledHeight) * (position.y / contentViewFrame.height)
-                pdfRect.size = CGSize(width: scaledWidth, height: scaledHeight)
-                pdfRect.origin = CGPoint(x: pdfRect.origin.x - translationX, y: pdfRect.origin.y - translationY)
-
-                let scale = (contentViewFrame.width / Constants.maximumMagnification) / scaledWidth
-                zoomControl.updateSeekBarPosition(to: scale)
-
-                NSAnimationContext.runAnimationGroup({ _ in
-                    NSAnimationContext.current.duration = Constants.doubleTapAnimationDuration
-                    NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-                    pdfScrollView.contentView.animator().bounds = pdfRect
-                })
-            }
         default:
             return
         }

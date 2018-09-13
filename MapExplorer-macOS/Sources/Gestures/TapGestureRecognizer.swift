@@ -3,15 +3,8 @@
 import Foundation
 import AppKit
 
-class TapGestureRecognizer: NSObject, GestureRecognizer {
 
-    private struct Constants {
-        static let maximumDistanceMoved: CGFloat = 20
-        static let minimumFingers = 1
-        static let startTapThresholdTime = 0.15
-        static let recognizeDoubleTapMaxTime = 0.5
-        static let recognizeDoubleTapMaxDistance: CGFloat = 40
-    }
+class TapGestureRecognizer: NSObject, GestureRecognizer {
 
     var gestureUpdated: ((GestureRecognizer) -> Void)?
     var touchUpdated: ((GestureRecognizer, Touch) -> Void)?
@@ -19,9 +12,16 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
     private(set) var state = GestureState.possible
 
     private var positionForTouch = [Touch: CGPoint]()
-    private var doubleTapPositionAndTimeForTouch = [Touch: (position: CGPoint, time: Date)]()
     private var delayTap: Bool
     private var cancelOnMove: Bool
+
+    private struct Constants {
+        static let maximumDistanceMoved: CGFloat = 20
+        static let minimumFingers = 1
+        static let delayedTapDuration = 0.15
+        static let recognizeDoubleTapMaxTime = 0.5
+        static let recognizeDoubleTapMaxDistance: CGFloat = 40
+    }
 
 
     // MARK: Init
@@ -35,25 +35,15 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
 
     func start(_ touch: Touch, with properties: TouchProperties) {
         positionForTouch[touch] = touch.position
-        doubleTapPositionAndTimeForTouch[touch] = (touch.position, Date())
-        removeExpiredDoubleTapTouches()
-
         position = touch.position
         state = .began
 
-        if !delayTap {
+        if delayTap {
+            startDelayedTimer()
+        } else {
             gestureUpdated?(self)
             touchUpdated?(self, touch)
             state = .recognized
-            return
-        }
-
-        // Dont update with began until startTapThresholdTime has passed
-        Timer.scheduledTimer(withTimeInterval: Constants.startTapThresholdTime, repeats: false) { [weak self] _ in
-            if let strongSelf = self, strongSelf.state == .began {
-                strongSelf.gestureUpdated?(strongSelf)
-                strongSelf.state = .recognized
-            }
         }
     }
 
@@ -85,13 +75,11 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
         switch state {
         case .failed:
             gestureUpdated?(self)
-            doubleTapPositionAndTimeForTouch.removeValue(forKey: touch)
         case .began:
             gestureUpdated?(self)
             fallthrough
         default:
             state = .ended
-            checkForDoubleTap(with: touch)
             gestureUpdated?(self)
             touchUpdated?(self, touch)
         }
@@ -107,17 +95,16 @@ class TapGestureRecognizer: NSObject, GestureRecognizer {
 
     // MARK: Helpers
 
-    /// Removes touchs that have gone past the time to be recognized in a double tap
-    private func removeExpiredDoubleTapTouches() {
-        doubleTapPositionAndTimeForTouch = doubleTapPositionAndTimeForTouch.filter { abs($0.value.time.timeIntervalSinceNow) < Constants.recognizeDoubleTapMaxTime }
+    private func startDelayedTimer() {
+        Timer.scheduledTimer(withTimeInterval: Constants.delayedTapDuration, repeats: false) { [weak self] _ in
+            self?.delayedTimerFired()
+        }
     }
 
-    private func checkForDoubleTap(with touch: Touch) {
-        for (initialPosition, time) in doubleTapPositionAndTimeForTouch.filter({ $0.key != touch }).values {
-            if abs(time.timeIntervalSinceNow) < Constants.recognizeDoubleTapMaxTime && initialPosition.distance(to: touch.position) < Constants.recognizeDoubleTapMaxDistance {
-                state = .doubleTapped
-                return
-            }
+    private func delayedTimerFired() {
+        if state == .began {
+            gestureUpdated?(self)
+            state = .recognized
         }
     }
 }
