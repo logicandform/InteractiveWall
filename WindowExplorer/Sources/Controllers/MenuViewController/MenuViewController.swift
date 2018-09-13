@@ -39,6 +39,7 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
     private struct Constants {
         static let imageTransitionDuration = 0.5
         static let fadeAnimationDuration = 0.5
+        static let verticalAnimationDuration = 1.2
         static let resetTimerDuration = 180.0
         static let menuButtonSize = CGSize(width: 200, height: 50)
         static let inactivePriority = NSLayoutConstraint.Priority(150)
@@ -358,8 +359,6 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
     }
 
     private func selectAccessibilityButton() {
-        infoBottomConstraint.priority = Constants.inactivePriority
-        menuBottomConstraint.priority = Constants.activePriority
         animateMenu(verticalPosition: Constants.menuButtonSize.height, completion: { [weak self] in
             self?.set(.accessibility, selected: false)
             self?.infoBottomConstraint.constant = Constants.menuButtonSize.height
@@ -398,14 +397,16 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
     }
 
     private func animateMenu(verticalPosition: CGFloat, completion: (() -> Void)? = nil) {
-        guard let window = view.window, let screen = window.screen, !gestureManager.isActive() else {
+        if animating || gestureManager.isActive() {
             return
         }
 
         animating = true
-        let duration = TimeInterval(abs(menuBottomConstraint.constant - verticalPosition) / screen.frame.height * 2)
+        infoBottomConstraint.priority = Constants.inactivePriority
+        menuBottomConstraint.priority = Constants.activePriority
+
         NSAnimationContext.runAnimationGroup({ [weak self] _ in
-            NSAnimationContext.current.duration = duration
+            NSAnimationContext.current.duration = Constants.verticalAnimationDuration
             NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
             self?.menuBottomConstraint.animator().constant = verticalPosition
         }, completionHandler: { [weak self] in
@@ -425,6 +426,8 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         gestureManager.invalidateAllGestures()
         set(.information, selected: false)
         let center = view.frame.midY - menuView.frame.height / 2
-        animateMenu(verticalPosition: center)
+        animateMenu(verticalPosition: center, completion: { [weak self] in
+            self?.infoBottomConstraint.constant = center
+        })
     }
 }
