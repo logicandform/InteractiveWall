@@ -84,11 +84,11 @@
 		<key>title</key>
 		<string>Record Viewer</string>
 		<key>videoURL</key>
-		<string>/static/mp4/RecordViewer.mov</string>
+		<string>/static/mov/RecordViewer.mov</string>
 		<key>thumbnailURL</key>
 		<string></string>
 		<key>localVideoURL</key>
-		<string>/Users/irshdc/dev/Caching-Server-UBC/static/mp4/RecordViewer.mov</string>
+		<string>/Users/irshdc/dev/Caching-Server-UBC/static/mov/RecordViewer.mov</string>
 		<key>localThumbnailURL</key>
 		<string></string>
 		<key>sections</key>
@@ -123,11 +123,11 @@
 		<key>title</key>
 		<string>Video Player</string>
 		<key>videoURL</key>
-		<string>/static/mp4/VideoPlayer.mov</string>
+		<string>/static/mov/VideoPlayer.mov</string>
 		<key>thumbnailURL</key>
 		<string></string>
 		<key>localVideoURL</key>
-		<string>/Users/irshdc/dev/Caching-Server-UBC/static/mp4/VideoPlayer.mov</string>
+		<string>/Users/irshdc/dev/Caching-Server-UBC/static/mov/VideoPlayer.mov</string>
 		<key>localThumbnailURL</key>
 		<string></string>
 		<key>sections</key>
