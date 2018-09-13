@@ -4,32 +4,32 @@ import Foundation
 import Cocoa
 
 
-protocol SearchChild: class {
-    var delegate: SearchParent? { get set }
-    func updateOrigin(to point: CGPoint, animating: Bool)
+protocol MenuDelegate: class {
+    func searchChildClosed()
 }
 
 
-class MenuViewController: NSViewController, GestureResponder, SearchParent {
+class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
     static let storyboard = NSStoryboard.Name(rawValue: "Menu")
     static let leftSideIdentifier = NSStoryboard.SceneIdentifier("MenuLeft")
     static let rightSideIdentifier = NSStoryboard.SceneIdentifier("MenuRight")
 
     @IBOutlet weak var menuView: NSStackView!
     @IBOutlet weak var infoMenuView: NSView!
-    @IBOutlet weak var settingsMenuView: NSView!
+    @IBOutlet weak var infoDragArea: NSView!
+    @IBOutlet weak var infoCloseArea: NSView!
     @IBOutlet weak var accessibilityButtonArea: NSView!
     @IBOutlet weak var menuToggleButton: ImageView!
     @IBOutlet weak var menuBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var menuSideConstraint: NSLayoutConstraint!
     @IBOutlet weak var infoBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var settingsTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var menuSideConstraint: NSLayoutConstraint!
 
     var appID: Int!
     var gestureManager: GestureManager!
     private var resetTimer: Foundation.Timer!
     private var buttonForType = [MenuButtonType: MenuButton]()
     private var menuToggled = false
+    private var animating = false
     private weak var searchChild: SearchChild?
 
     private var menuSide: MenuSide {
@@ -41,6 +41,8 @@ class MenuViewController: NSViewController, GestureResponder, SearchParent {
         static let fadeAnimationDuration = 0.5
         static let resetTimerDuration = 180.0
         static let menuButtonSize = CGSize(width: 200, height: 50)
+        static let inactivePriority = NSLayoutConstraint.Priority(150)
+        static let activePriority = NSLayoutConstraint.Priority(200)
     }
 
     private struct Keys {
@@ -69,19 +71,13 @@ class MenuViewController: NSViewController, GestureResponder, SearchParent {
         super.viewDidAppear()
 
         centerMenu()
-        setupChildMenus()
+        setupInfoMenu()
     }
 
     override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
-        switch segue.destinationController {
-        case let info as InfoViewController:
-            info.appID = appID
-            info.gestureManager = gestureManager
-        case let settings as SettingsViewController:
-            settings.appID = appID
-            settings.gestureManager = gestureManager
-        default:
-            return
+        if let infoViewController = segue.destinationController as? InfoViewController {
+            infoViewController.appID = appID
+            infoViewController.gestureManager = gestureManager
         }
     }
 
@@ -116,14 +112,6 @@ class MenuViewController: NSViewController, GestureResponder, SearchParent {
             set(.information, selected: false)
         case .information:
             set(infoMenuView.subviews.first, hidden: !selected, animated: true)
-            if selected {
-                set(.settings, selected: false)
-            }
-        case .settings:
-            set(settingsMenuView.subviews.first, hidden: !selected, animated: true)
-            if selected {
-                set(.information, selected: false)
-            }
         case .search where selected:
             displaySearchChild()
             set(.settings, selected: false)
@@ -149,6 +137,20 @@ class MenuViewController: NSViewController, GestureResponder, SearchParent {
     }
 
     private func setupGestures() {
+        let infoPanGesture  = PanGestureRecognizer()
+        gestureManager.add(infoPanGesture, to: infoDragArea)
+        infoPanGesture.gestureUpdated = { [weak self] gesture in
+            self?.handleInfoPan(gesture)
+        }
+
+        let infoCloseButtonTap = TapGestureRecognizer()
+        gestureManager.add(infoCloseButtonTap, to: infoCloseArea)
+        infoCloseButtonTap.gestureUpdated = { [weak self] gesture in
+            if gesture.state == .ended {
+                self?.set(.information, selected: false)
+            }
+        }
+
         let toggleMenuTap = TapGestureRecognizer()
         gestureManager.add(toggleMenuTap, to: menuToggleButton)
         toggleMenuTap.gestureUpdated = { [weak self] gesture in
@@ -173,19 +175,13 @@ class MenuViewController: NSViewController, GestureResponder, SearchParent {
 
     private func centerMenu() {
         menuBottomConstraint.constant = view.frame.midY - menuView.frame.height / 2
+        infoBottomConstraint.constant = view.frame.midY - menuView.frame.height / 2
     }
 
-    /// Updates the views for each child menu to align with its associated button & set visibility
-    private func setupChildMenus() {
-        infoMenuView.subviews.first?.isHidden = true
-        settingsMenuView.subviews.first?.isHidden = true
-        if let infoButton = buttonForType[.information] {
-            infoBottomConstraint.constant = infoButton.frame.minY
-        }
-        if let settingsButton = buttonForType[.settings] {
-            settingsTopConstraint.constant = settingsButton.frame.maxY
-        }
+    private func setupInfoMenu() {
+        set(infoMenuView.subviews.first, hidden: true, animated: false)
     }
+
 
     // MARK: Gesture Handling
 
@@ -212,15 +208,37 @@ class MenuViewController: NSViewController, GestureResponder, SearchParent {
         }
     }
 
-    func handleMenuPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer else {
+    func handleInfoPan(_ gesture: GestureRecognizer) {
+        guard let pan = gesture as? PanGestureRecognizer, !animating else {
             return
         }
 
         switch pan.state {
+        case .began:
+            menuBottomConstraint.priority = Constants.inactivePriority
+            infoBottomConstraint.priority = Constants.activePriority
+        case .recognized, .momentum:
+            let infoBottomOffset = clamp(infoBottomConstraint.constant + pan.delta.dy, min: 0, max: view.frame.height - infoMenuView.frame.height)
+            infoBottomConstraint.constant = infoBottomOffset
+            menuBottomConstraint.constant = menuView.frame.minY
+        default:
+            return
+        }
+    }
+
+    func handleMenuPan(_ gesture: GestureRecognizer) {
+        guard let pan = gesture as? PanGestureRecognizer, !animating else {
+            return
+        }
+
+        switch pan.state {
+        case .began:
+            infoBottomConstraint.priority = Constants.inactivePriority
+            menuBottomConstraint.priority = Constants.activePriority
         case .recognized, .momentum:
             let menuBottomOffset = clamp(menuBottomConstraint.constant + pan.delta.dy, min: Constants.menuButtonSize.height, max: view.frame.height - menuView.frame.height)
             menuBottomConstraint.constant = menuBottomOffset
+            infoBottomConstraint.constant = infoMenuView.frame.minY
         default:
             return
         }
@@ -249,14 +267,12 @@ class MenuViewController: NSViewController, GestureResponder, SearchParent {
         if let infoButton = buttonForType[.information], infoButton.selected && infoMenuView.frame.contains(position) {
             return true
         }
-        if let settingsButton = buttonForType[.settings], settingsButton.selected && settingsMenuView.frame.contains(position) {
-            return true
-        }
+
         return menuView.frame.contains(position) || accessibilityButtonArea.frame.contains(position) || menuToggleButton.frame.contains(position)
     }
 
 
-    // MARK: SearchParent
+    // MARK: MenuDelegate
 
     func searchChildClosed() {
         set(.search, selected: false)
@@ -272,17 +288,6 @@ class MenuViewController: NSViewController, GestureResponder, SearchParent {
         buttonForType[type] = button
         addGestures(to: button, tap: true, pan: true)
         return button
-    }
-
-    private func set(_ view: NSView?, hidden: Bool, animated: Bool) {
-        if animated {
-            NSAnimationContext.runAnimationGroup({ _ in
-                NSAnimationContext.current.duration = Constants.fadeAnimationDuration
-                view?.animator().isHidden = hidden
-            })
-        } else {
-            view?.isHidden = hidden
-        }
     }
 
     private func addGestures(to button: MenuButton, tap: Bool, pan: Bool) {
@@ -302,6 +307,17 @@ class MenuViewController: NSViewController, GestureResponder, SearchParent {
                     self?.didSelect(type: button.type)
                 }
             }
+        }
+    }
+
+    private func set(_ view: NSView?, hidden: Bool, animated: Bool) {
+        if animated {
+            NSAnimationContext.runAnimationGroup({ _ in
+                NSAnimationContext.current.duration = Constants.fadeAnimationDuration
+                view?.animator().alphaValue = hidden ? 0 : 1
+            })
+        } else {
+            view?.alphaValue = hidden ? 0 : 1
         }
     }
 
@@ -342,8 +358,12 @@ class MenuViewController: NSViewController, GestureResponder, SearchParent {
     }
 
     private func selectAccessibilityButton() {
+        infoBottomConstraint.priority = Constants.inactivePriority
+        menuBottomConstraint.priority = Constants.activePriority
         animateMenu(verticalPosition: Constants.menuButtonSize.height, completion: { [weak self] in
             self?.set(.accessibility, selected: false)
+            self?.infoBottomConstraint.constant = Constants.menuButtonSize.height
+            self?.menuBottomConstraint.constant = Constants.menuButtonSize.height
         })
     }
 
@@ -382,12 +402,16 @@ class MenuViewController: NSViewController, GestureResponder, SearchParent {
             return
         }
 
+        animating = true
         let duration = TimeInterval(abs(menuBottomConstraint.constant - verticalPosition) / screen.frame.height * 2)
         NSAnimationContext.runAnimationGroup({ [weak self] _ in
             NSAnimationContext.current.duration = duration
             NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
             self?.menuBottomConstraint.animator().constant = verticalPosition
-        }, completionHandler: completion)
+        }, completionHandler: { [weak self] in
+            self?.animating = false
+            completion?()
+        })
     }
 
     private func refreshResetTimer() {
@@ -399,7 +423,6 @@ class MenuViewController: NSViewController, GestureResponder, SearchParent {
 
     private func resetTimerFired() {
         gestureManager.invalidateAllGestures()
-        set(.settings, selected: false)
         set(.information, selected: false)
         let center = view.frame.midY - menuView.frame.height / 2
         animateMenu(verticalPosition: center)

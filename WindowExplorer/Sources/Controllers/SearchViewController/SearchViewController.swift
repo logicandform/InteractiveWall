@@ -8,8 +8,9 @@ protocol SearchItemDisplayable {
 }
 
 
-protocol SearchParent: class {
-    func searchChildClosed()
+protocol SearchChild: class {
+    var delegate: MenuDelegate? { get set }
+    func updateOrigin(to point: CGPoint, animating: Bool)
 }
 
 
@@ -35,7 +36,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     @IBOutlet weak var secondaryScrollViewHeight: NSLayoutConstraint!
     @IBOutlet weak var tertiaryScrollViewHeight: NSLayoutConstraint!
 
-    weak var delegate: SearchParent?
+    weak var delegate: MenuDelegate?
     private let relationshipHelper = RelationshipHelper()
     private var selectedType: RecordType?
     private var selectedGroup: String?

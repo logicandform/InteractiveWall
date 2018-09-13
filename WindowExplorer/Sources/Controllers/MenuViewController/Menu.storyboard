@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
         <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
     </dependencies>
@@ -13,14 +14,6 @@
                 <customObject id="Lz1-n4-X7d" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-37" y="-507"/>
-        </scene>
-        <!--Settings-->
-        <scene sceneID="H7r-1A-G4F">
-            <objects>
-                <controllerPlaceholder storyboardIdentifier="Settings" storyboardName="Settings" id="gPr-XZ-xhl" sceneMemberID="viewController"/>
-                <customObject id="Z3P-ln-ok0" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-23" y="-182"/>
         </scene>
         <!--Menu View Controller-->
         <scene sceneID="x84-Ml-acq">
@@ -46,16 +39,6 @@
                                     <segue destination="jhG-ud-xa9" kind="embed" id="dU9-dd-qf9"/>
                                 </connections>
                             </containerView>
-                            <containerView translatesAutoresizingMaskIntoConstraints="NO" id="Tlx-da-Mn4">
-                                <rect key="frame" x="225" y="100" width="275" height="200"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="200" id="vgt-Ge-ovv"/>
-                                    <constraint firstAttribute="width" constant="275" id="wq6-ss-I3i"/>
-                                </constraints>
-                                <connections>
-                                    <segue destination="gPr-XZ-xhl" kind="embed" id="1Bv-KD-lrO"/>
-                                </connections>
-                            </containerView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="Biq-Io-5tR" customClass="ImageView" customModule="WindowExplorer" customModuleProvider="target">
                                 <rect key="frame" x="500" y="650" width="50" height="40"/>
                                 <constraints>
@@ -70,36 +53,54 @@
                                     <constraint firstAttribute="width" constant="200" id="xJO-bc-sPI"/>
                                 </constraints>
                             </customView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="NQM-Tg-GPE">
+                                <rect key="frame" x="0.0" y="1060" width="500" height="40"/>
+                                <subviews>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="wBC-72-N7o">
+                                        <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="wBC-72-N7o" secondAttribute="height" multiplier="1:1" id="lox-FH-Ka9"/>
+                                        </constraints>
+                                    </customView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="wBC-72-N7o" secondAttribute="bottom" id="MFu-Es-Rt5"/>
+                                    <constraint firstItem="wBC-72-N7o" firstAttribute="leading" secondItem="NQM-Tg-GPE" secondAttribute="leading" id="U8R-ia-qFR"/>
+                                    <constraint firstAttribute="height" constant="40" id="cea-pV-nfS"/>
+                                    <constraint firstItem="wBC-72-N7o" firstAttribute="top" secondItem="NQM-Tg-GPE" secondAttribute="top" id="eAl-Ep-q5d"/>
+                                </constraints>
+                            </customView>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="aSl-0L-qLt" firstAttribute="top" relation="lessThanOrEqual" secondItem="XOO-wB-Aer" secondAttribute="top" priority="250" id="139-cF-lMq"/>
                             <constraint firstItem="aSl-0L-qLt" firstAttribute="top" relation="greaterThanOrEqual" secondItem="AdH-oQ-xB7" secondAttribute="top" id="5Ws-fD-FBl"/>
                             <constraint firstItem="y9D-aO-cag" firstAttribute="leading" secondItem="XOO-wB-Aer" secondAttribute="leading" id="5gn-QE-18i"/>
-                            <constraint firstItem="XOO-wB-Aer" firstAttribute="bottom" secondItem="aSl-0L-qLt" secondAttribute="bottom" priority="200" id="6uZ-0r-i6q"/>
-                            <constraint firstItem="Tlx-da-Mn4" firstAttribute="top" relation="greaterThanOrEqual" secondItem="AdH-oQ-xB7" secondAttribute="top" id="9nq-Yn-VyI"/>
-                            <constraint firstAttribute="bottom" secondItem="XOO-wB-Aer" secondAttribute="bottom" priority="250" constant="300" id="A15-Ug-xBa"/>
+                            <constraint firstAttribute="bottom" secondItem="XOO-wB-Aer" secondAttribute="bottom" priority="200" constant="300" id="A15-Ug-xBa"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="aSl-0L-qLt" secondAttribute="bottom" id="F5a-8V-aje"/>
-                            <constraint firstItem="XOO-wB-Aer" firstAttribute="bottom" secondItem="Tlx-da-Mn4" secondAttribute="top" priority="200" id="RkJ-Gg-fOw"/>
+                            <constraint firstItem="aSl-0L-qLt" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="XOO-wB-Aer" secondAttribute="bottom" priority="250" id="GRq-pG-GPN"/>
+                            <constraint firstAttribute="bottom" secondItem="aSl-0L-qLt" secondAttribute="bottom" priority="200" constant="300" id="JYC-GA-XNW"/>
+                            <constraint firstItem="NQM-Tg-GPE" firstAttribute="leading" secondItem="aSl-0L-qLt" secondAttribute="leading" id="RZx-n6-B65"/>
+                            <constraint firstItem="NQM-Tg-GPE" firstAttribute="top" secondItem="aSl-0L-qLt" secondAttribute="top" id="SmC-eN-dDc"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="XOO-wB-Aer" secondAttribute="bottom" constant="50" id="ZmH-8a-rf3"/>
-                            <constraint firstItem="XOO-wB-Aer" firstAttribute="leading" secondItem="Tlx-da-Mn4" secondAttribute="trailing" id="Zqc-HB-j0b"/>
                             <constraint firstItem="XOO-wB-Aer" firstAttribute="top" secondItem="Biq-Io-5tR" secondAttribute="bottom" id="bSW-mJ-4te"/>
                             <constraint firstAttribute="trailing" secondItem="XOO-wB-Aer" secondAttribute="leading" constant="50" id="eNL-jS-I36"/>
                             <constraint firstAttribute="bottom" secondItem="y9D-aO-cag" secondAttribute="bottom" id="hHb-wx-hwq"/>
                             <constraint firstItem="Biq-Io-5tR" firstAttribute="leading" secondItem="XOO-wB-Aer" secondAttribute="leading" id="iGO-DN-pY4"/>
                             <constraint firstItem="XOO-wB-Aer" firstAttribute="leading" secondItem="aSl-0L-qLt" secondAttribute="trailing" id="kGK-15-aXY"/>
-                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Tlx-da-Mn4" secondAttribute="bottom" id="q62-xb-I78"/>
                             <constraint firstItem="XOO-wB-Aer" firstAttribute="top" relation="greaterThanOrEqual" secondItem="AdH-oQ-xB7" secondAttribute="top" id="qTH-97-cBd"/>
+                            <constraint firstItem="NQM-Tg-GPE" firstAttribute="trailing" secondItem="aSl-0L-qLt" secondAttribute="trailing" id="xJd-sj-2u9"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="accessibilityButtonArea" destination="y9D-aO-cag" id="eFD-NG-cyt"/>
-                        <outlet property="infoBottomConstraint" destination="6uZ-0r-i6q" id="YIW-T9-3aP"/>
+                        <outlet property="infoBottomConstraint" destination="JYC-GA-XNW" id="rMs-3s-EEQ"/>
+                        <outlet property="infoCloseArea" destination="wBC-72-N7o" id="bBp-YQ-fkA"/>
+                        <outlet property="infoDragArea" destination="NQM-Tg-GPE" id="nzG-tR-82O"/>
                         <outlet property="infoMenuView" destination="aSl-0L-qLt" id="kQx-G9-Kov"/>
                         <outlet property="menuBottomConstraint" destination="A15-Ug-xBa" id="9Us-6d-AU7"/>
                         <outlet property="menuSideConstraint" destination="eNL-jS-I36" id="Gpb-lk-SRq"/>
                         <outlet property="menuToggleButton" destination="Biq-Io-5tR" id="pFP-cY-fnU"/>
                         <outlet property="menuView" destination="XOO-wB-Aer" id="cla-3s-HfH"/>
-                        <outlet property="settingsMenuView" destination="Tlx-da-Mn4" id="eQs-u5-wVG"/>
-                        <outlet property="settingsTopConstraint" destination="RkJ-Gg-fOw" id="NCE-TK-nVt"/>
                     </connections>
                 </viewController>
                 <customObject id="vEQ-kv-rRL" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -130,16 +131,6 @@
                                     <segue destination="ML4-sp-dgz" kind="embed" id="HuH-g6-DV5"/>
                                 </connections>
                             </containerView>
-                            <containerView translatesAutoresizingMaskIntoConstraints="NO" id="Mtd-mS-Ji1">
-                                <rect key="frame" x="50" y="100" width="275" height="200"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="275" id="GPl-FG-kSd"/>
-                                    <constraint firstAttribute="height" constant="200" id="tBZ-ne-EEa"/>
-                                </constraints>
-                                <connections>
-                                    <segue destination="kQY-9F-qFT" kind="embed" id="dWa-tI-ED0"/>
-                                </connections>
-                            </containerView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="V3P-Dx-vtf" customClass="ImageView" customModule="WindowExplorer" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="650" width="50" height="40"/>
                                 <constraints>
@@ -154,36 +145,54 @@
                                     <constraint firstAttribute="width" constant="200" id="gWX-iW-ses"/>
                                 </constraints>
                             </customView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="5hW-TD-b2t">
+                                <rect key="frame" x="50" y="1060" width="500" height="40"/>
+                                <subviews>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="02B-j2-5dU">
+                                        <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="02B-j2-5dU" secondAttribute="height" multiplier="1:1" id="fiZ-Du-IM4"/>
+                                        </constraints>
+                                    </customView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="6kr-rP-Dk4"/>
+                                    <constraint firstAttribute="bottom" secondItem="02B-j2-5dU" secondAttribute="bottom" id="O4x-1Z-UZB"/>
+                                    <constraint firstItem="02B-j2-5dU" firstAttribute="leading" secondItem="5hW-TD-b2t" secondAttribute="leading" id="Ov6-zx-E1Y"/>
+                                    <constraint firstItem="02B-j2-5dU" firstAttribute="top" secondItem="5hW-TD-b2t" secondAttribute="top" id="Q3I-F5-3mi"/>
+                                </constraints>
+                            </customView>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="kWu-fr-l1x" secondAttribute="bottom" constant="50" id="5Jz-mO-Vrk"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Mf6-a3-oND" secondAttribute="bottom" id="6H7-tR-gNr"/>
+                            <constraint firstItem="5hW-TD-b2t" firstAttribute="trailing" secondItem="Mf6-a3-oND" secondAttribute="trailing" id="9LM-dd-pO4"/>
                             <constraint firstItem="Mf6-a3-oND" firstAttribute="leading" secondItem="kWu-fr-l1x" secondAttribute="trailing" id="9rs-5n-sfI"/>
+                            <constraint firstAttribute="bottom" secondItem="Mf6-a3-oND" secondAttribute="bottom" priority="200" constant="300" id="EEr-mo-jf4"/>
                             <constraint firstAttribute="bottom" secondItem="kWu-fr-l1x" secondAttribute="bottom" priority="250" constant="300" id="G8a-9T-A8Q"/>
-                            <constraint firstItem="Mtd-mS-Ji1" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7iZ-IN-46X" secondAttribute="top" id="NKb-OD-NM6"/>
-                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Mtd-mS-Ji1" secondAttribute="bottom" id="Nuj-4N-FG6"/>
                             <constraint firstItem="kWu-fr-l1x" firstAttribute="top" secondItem="V3P-Dx-vtf" secondAttribute="bottom" id="R3C-t3-QrG"/>
-                            <constraint firstItem="Mtd-mS-Ji1" firstAttribute="leading" secondItem="kWu-fr-l1x" secondAttribute="trailing" id="RM9-Ym-Oiu"/>
                             <constraint firstItem="Mf6-a3-oND" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7iZ-IN-46X" secondAttribute="top" id="Rip-bB-qPw"/>
                             <constraint firstItem="kWu-fr-l1x" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7iZ-IN-46X" secondAttribute="top" id="UQi-3a-1IB"/>
-                            <constraint firstItem="kWu-fr-l1x" firstAttribute="bottom" secondItem="Mf6-a3-oND" secondAttribute="bottom" priority="200" id="VtM-CT-Fh0"/>
+                            <constraint firstItem="kWu-fr-l1x" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Mf6-a3-oND" secondAttribute="bottom" priority="250" id="VtM-CT-Fh0"/>
                             <constraint firstItem="kWu-fr-l1x" firstAttribute="trailing" secondItem="7iZ-IN-46X" secondAttribute="leading" constant="50" id="ZKK-yF-UVI"/>
                             <constraint firstItem="y44-Um-Qrw" firstAttribute="trailing" secondItem="kWu-fr-l1x" secondAttribute="trailing" id="aDI-DV-Ue0"/>
+                            <constraint firstItem="5hW-TD-b2t" firstAttribute="leading" secondItem="Mf6-a3-oND" secondAttribute="leading" id="bVm-62-bHf"/>
+                            <constraint firstItem="Mf6-a3-oND" firstAttribute="top" relation="lessThanOrEqual" secondItem="kWu-fr-l1x" secondAttribute="top" priority="250" id="dPk-BR-haY"/>
                             <constraint firstAttribute="bottom" secondItem="y44-Um-Qrw" secondAttribute="bottom" id="peE-eJ-ylu"/>
-                            <constraint firstItem="kWu-fr-l1x" firstAttribute="bottom" secondItem="Mtd-mS-Ji1" secondAttribute="top" priority="200" id="qdQ-Kf-gY9"/>
                             <constraint firstItem="V3P-Dx-vtf" firstAttribute="trailing" secondItem="kWu-fr-l1x" secondAttribute="trailing" id="tmT-6F-axt"/>
+                            <constraint firstItem="5hW-TD-b2t" firstAttribute="top" secondItem="Mf6-a3-oND" secondAttribute="top" id="vlC-Gt-UIh"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="accessibilityButtonArea" destination="y44-Um-Qrw" id="bcP-Ru-joR"/>
-                        <outlet property="infoBottomConstraint" destination="VtM-CT-Fh0" id="AED-RG-uU7"/>
+                        <outlet property="infoBottomConstraint" destination="EEr-mo-jf4" id="2Kd-cy-Uis"/>
+                        <outlet property="infoCloseArea" destination="02B-j2-5dU" id="5dB-6h-O5U"/>
+                        <outlet property="infoDragArea" destination="5hW-TD-b2t" id="J5b-Vf-f4X"/>
                         <outlet property="infoMenuView" destination="Mf6-a3-oND" id="u47-Th-Yel"/>
                         <outlet property="menuBottomConstraint" destination="G8a-9T-A8Q" id="SkB-7W-SQa"/>
                         <outlet property="menuSideConstraint" destination="ZKK-yF-UVI" id="SyK-hP-QXg"/>
                         <outlet property="menuToggleButton" destination="V3P-Dx-vtf" id="7rp-2W-Bow"/>
                         <outlet property="menuView" destination="kWu-fr-l1x" id="27c-dy-Pz1"/>
-                        <outlet property="settingsMenuView" destination="Mtd-mS-Ji1" id="mMR-yQ-Zw7"/>
-                        <outlet property="settingsTopConstraint" destination="qdQ-Kf-gY9" id="KhY-AY-ZUH"/>
                     </connections>
                 </viewController>
                 <customObject id="K3j-kE-Ja0" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -197,14 +206,6 @@
                 <customObject id="6l9-6l-pvl" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-866" y="-507"/>
-        </scene>
-        <!--Settings-->
-        <scene sceneID="895-4L-2nU">
-            <objects>
-                <controllerPlaceholder storyboardIdentifier="Settings" storyboardName="Settings" id="kQY-9F-qFT" sceneMemberID="viewController"/>
-                <customObject id="jOW-cK-9y6" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-853" y="-182"/>
         </scene>
     </scenes>
 </document>

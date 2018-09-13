@@ -30,6 +30,7 @@ class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollec
     private struct Constants {
         static let pageControlHeight: CGFloat = 20
         static let unfocusThresholdPercent: CGFloat = 0.15
+        static let fadeAnimationDuration = 0.5
     }
 
 
@@ -116,7 +117,7 @@ class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollec
     }
 
     func subview(contains position: CGPoint) -> Bool {
-        return view.isHidden ? false : view.frame.contains(position)
+        return view.frame.contains(position)
     }
 
 
@@ -162,7 +163,6 @@ class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollec
             infoCollectionView.scrollToVisible(rect)
             // If the view has been panned beyond the threshold, unfocus the view
             if rectPastThreshold(rect: rect, percent: Constants.unfocusThresholdPercent) {
-                // TODO: Does this prevent slow panning to the next view? Maybe invalidating it not the right solution
                 playControlScrubGesture.invalidate()
                 focusedInfoView?.unfocus()
             }

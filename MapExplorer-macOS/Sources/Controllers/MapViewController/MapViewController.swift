@@ -68,7 +68,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
         setupMap()
         setupGestures()
-        setupNotifications()
     }
 
     override func viewDidAppear() {
@@ -84,9 +83,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         let overlay = MKTileOverlay(urlTemplate: tileURL)
         overlay.canReplaceMapContent = true
         mapView.add(overlay)
-        if appID.isEven {
-            mapView.miniMapPosition = .nw
-        }
+        mapView.miniMapPosition = appID.isEven ? .nw : .ne
         createRecords()
     }
 
@@ -101,48 +98,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         gestureManager.add(pinchGesture, to: mapView)
         pinchGesture.gestureUpdated = { [weak self] gesture in
             self?.didPinchOnMap(gesture)
-        }
-    }
-
-    private func setupNotifications() {
-        for notification in SettingsNotification.allValues {
-            DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
-        }
-    }
-
-
-    // MARK: API
-
-    @objc
-    func handleNotification(_ notification: NSNotification) {
-        guard let info = notification.userInfo, ConnectionManager.instance.groupForApp(id: appID, type: .mapExplorer) == info[Keys.group] as? Int, let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString), type == .mapExplorer else {
-            return
-        }
-
-        let status = info[Keys.status] as? Bool
-
-        switch notification.name {
-        case SettingsNotification.sync.name:
-            if let json = info[Keys.settings] as? JSON, let settings = Settings(json: json) {
-                update(with: settings)
-            }
-        case SettingsNotification.filter.name:
-            if let status = status, let rawRecordType = info[Keys.recordType] as? String, let recordType = RecordType(rawValue: rawRecordType) {
-                currentSettings.set(recordType, on: status)
-                toggleAnnotations(for: currentSettings)
-            }
-        case SettingsNotification.labels.name:
-            if let status = status {
-                currentSettings.setLabels(on: status)
-                toggleAnnotationTitles(on: showingAnnotationTitles && status)
-            }
-        case SettingsNotification.miniMap.name:
-            if let status = status {
-                currentSettings.setMiniMap(on: status)
-                mapView.miniMapIsHidden = !status
-            }
-        default:
-            return
         }
     }
 
@@ -243,14 +198,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         return MKAnnotationView()
     }
 
-    // When the map region changes, if annotationTitleZoomLevel is crossed the annotations title visibilty updates
-    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        if showingAnnotationTitles != (mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel) {
-            showingAnnotationTitles = mapView.visibleMapRect.size.width < Constants.annotationTitleZoomLevel
-            toggleAnnotationTitles(on: showingAnnotationTitles && currentSettings.showLabels)
-        }
-    }
-
 
     // MARK: Helpers
 
@@ -279,13 +226,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         records.append(contentsOf: results.schools)
         records.append(contentsOf: results.events)
         addToMap(records)
-    }
-
-    private func update(with settings: Settings) {
-        currentSettings.clone(settings)
-        toggleAnnotations(for: settings)
-        toggleAnnotationTitles(on: showingAnnotationTitles && settings.showLabels)
-        mapView.miniMapIsHidden = !settings.showMiniMap
     }
 
     private func postRecordNotification(for record: Record, at position: CGPoint) {
@@ -352,33 +292,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                 let annotation = CircleAnnotation(coordinate: coordinate, type: record.type, title: record.title)
                 recordForAnnotation[annotation] = record
                 mapView.addAnnotation(annotation)
-            }
-        }
-    }
-
-    private func toggleAnnotationTitles(on: Bool) {
-        for annotation in mapView.annotations {
-            if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
-                annotationView.showTitle(on)
-            }
-        }
-    }
-
-    private func toggleAnnotations(for settings: Settings) {
-        let annotationsOnMap = mapView.annotations.compactMap({ $0 as? CircleAnnotation })
-        let typesToDisplay = RecordType.allValues.filter { settings.displaying($0) }
-        let allAnnotations = recordForAnnotation.keys
-        let annotationsToDisplay = allAnnotations.filter({ typesToDisplay.contains($0.type) })
-
-        for annotation in allAnnotations {
-            if annotationsToDisplay.contains(annotation) {
-                if !annotationsOnMap.contains(annotation) {
-                    mapView.addAnnotation(annotation)
-                }
-            } else {
-                if annotationsOnMap.contains(annotation) {
-                    mapView.removeAnnotation(annotation)
-                }
             }
         }
     }

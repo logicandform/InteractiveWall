@@ -31,7 +31,7 @@
                     <rect key="frame" x="0.0" y="400" width="500" height="40"/>
                     <subviews>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mjG-G9-Km3">
-                            <rect key="frame" x="18" y="0.0" width="464" height="29"/>
+                            <rect key="frame" x="46" y="0.0" width="448" height="29"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="29" id="z8c-xa-5m8"/>
                             </constraints>
@@ -47,16 +47,39 @@
                                 <constraint firstAttribute="height" constant="1" id="nK4-vi-4w0"/>
                             </constraints>
                         </customView>
+                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="HGm-xj-jIM">
+                            <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                            <subviews>
+                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="c3j-DD-CvL">
+                                    <rect key="frame" x="10" y="10" width="20" height="20"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="20" id="0EA-yg-6rd"/>
+                                        <constraint firstAttribute="width" constant="20" id="7AY-Us-QaC"/>
+                                    </constraints>
+                                    <imageCell key="cell" enabled="NO" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="close button" id="vyg-M5-4ka"/>
+                                </imageView>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="c3j-DD-CvL" firstAttribute="centerY" secondItem="HGm-xj-jIM" secondAttribute="centerY" id="1In-VJ-gqy"/>
+                                <constraint firstAttribute="width" secondItem="HGm-xj-jIM" secondAttribute="height" multiplier="1:1" id="3uY-sg-Qcu"/>
+                                <constraint firstItem="c3j-DD-CvL" firstAttribute="centerX" secondItem="HGm-xj-jIM" secondAttribute="centerX" id="G3v-9v-aL2"/>
+                                <constraint firstAttribute="height" constant="40" id="Jk6-2q-3tH"/>
+                                <constraint firstAttribute="width" constant="40" id="Pca-gr-Cut"/>
+                            </constraints>
+                        </customView>
                     </subviews>
                     <constraints>
+                        <constraint firstItem="HGm-xj-jIM" firstAttribute="top" secondItem="4R8-hS-CIt" secondAttribute="top" id="3JX-Uh-8Vm"/>
                         <constraint firstAttribute="height" constant="40" id="4aX-qH-Ajh"/>
                         <constraint firstAttribute="trailing" secondItem="rXP-0a-K7j" secondAttribute="trailing" id="H3G-FA-nHU"/>
                         <constraint firstItem="rXP-0a-K7j" firstAttribute="leading" secondItem="4R8-hS-CIt" secondAttribute="leading" id="JF5-Lg-B0M"/>
-                        <constraint firstAttribute="trailing" secondItem="mjG-G9-Km3" secondAttribute="trailing" constant="20" id="Phx-4e-fdb"/>
+                        <constraint firstAttribute="trailing" secondItem="mjG-G9-Km3" secondAttribute="trailing" constant="8" id="Phx-4e-fdb"/>
+                        <constraint firstAttribute="bottom" secondItem="HGm-xj-jIM" secondAttribute="bottom" id="U71-j8-MXG"/>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="UQB-XO-s81"/>
                         <constraint firstAttribute="bottom" secondItem="mjG-G9-Km3" secondAttribute="bottom" id="Vtn-0L-ZE0"/>
+                        <constraint firstItem="mjG-G9-Km3" firstAttribute="leading" secondItem="HGm-xj-jIM" secondAttribute="trailing" constant="8" id="X4i-el-0nj"/>
+                        <constraint firstItem="HGm-xj-jIM" firstAttribute="leading" secondItem="4R8-hS-CIt" secondAttribute="leading" id="ZqJ-oQ-KAd"/>
                         <constraint firstAttribute="bottom" secondItem="rXP-0a-K7j" secondAttribute="bottom" id="ncR-SN-Rdk"/>
-                        <constraint firstItem="mjG-G9-Km3" firstAttribute="leading" secondItem="4R8-hS-CIt" secondAttribute="leading" constant="20" id="zFn-ic-Qne"/>
                     </constraints>
                 </customView>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="FWQ-Qg-iVl" customClass="ImageView" customModule="WindowExplorer" customModuleProvider="target">
@@ -114,6 +137,7 @@
         </customView>
     </objects>
     <resources>
+        <image name="close button" width="15" height="15"/>
         <image name="play-icon" width="21" height="21"/>
     </resources>
 </document>
