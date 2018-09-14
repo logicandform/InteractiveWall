@@ -51,22 +51,28 @@ final class RecordStateMachine {
         case .selected:
             entity.set(level: NodeCluster.selectedEntityLevel)
             entity.hasCollidedWithLayer = false
-            entity.updatePhysicsBodyProperties()
             entity.updateBitMasks()
+            entity.physicsBody.isDynamic = false
             entity.node.removeAllActions()
             updateViews(level: NodeCluster.selectedEntityLevel)
             cluster()
         case .seekLevel(let level):
             entity.set(level: level)
             entity.hasCollidedWithLayer = false
-            entity.updatePhysicsBodyProperties()
             entity.updateBitMasks()
+            entity.physicsBody.isDynamic = true
+            entity.physicsBody.restitution = 0
+            entity.physicsBody.friction = 1
+            entity.physicsBody.linearDamping = 1
             entity.node.removeAllActions()
             updateViews(level: level)
             scale()
         case .seekEntity(_):
-            entity.updatePhysicsBodyProperties()
             entity.updateBitMasks()
+            entity.physicsBody.isDynamic = true
+            entity.physicsBody.restitution = 0
+            entity.physicsBody.friction = 1
+            entity.physicsBody.linearDamping = 1
             entity.node.removeAllActions()
             scale()
         case .dragging:
@@ -77,12 +83,8 @@ final class RecordStateMachine {
                 entity.cluster?.updateLayerLevels(forPan: true)
             }
         case .reset:
-            entity.resetPhysicsBodyProperties()
-            entity.resetBitMasks()
             reset()
         case .remove:
-            entity.resetPhysicsBodyProperties()
-            entity.resetBitMasks()
             remove()
         }
     }
@@ -90,6 +92,8 @@ final class RecordStateMachine {
     /// Fade out, resize and set to initial position
     private func reset() {
         let entity = self.entity
+        entity.resetBitMasks()
+        entity.physicsBody.isDynamic = false
         let fade = SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
         entity.perform(action: fade) {
             entity.reset()
@@ -101,6 +105,8 @@ final class RecordStateMachine {
 
     private func remove() {
         let entity = self.entity
+        entity.resetBitMasks()
+        entity.physicsBody.isDynamic = false
         let fade = SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
         entity.perform(action: fade) {
             EntityManager.instance.remove(entity)
