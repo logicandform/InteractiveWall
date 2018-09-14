@@ -226,7 +226,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         var records = [Record]()
         records.append(contentsOf: results.schools)
         records.append(contentsOf: results.events)
-        records.append(contentsOf: result.collections)
+        records.append(contentsOf: results.collections)
         addToMap(records)
     }
 
