@@ -32,7 +32,8 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     func setup(with records: [Record]) {
         events = records.compactMap { record in
             if let dates = record.dates {
-                return TimelineEvent(id: record.id, type: record.type, title: record.title, dates: dates, thumbnail: record.thumbnail)
+                let title = record.shortestTitle()
+                return TimelineEvent(id: record.id, type: record.type, title: title, dates: dates, thumbnail: record.thumbnail)
             } else {
                 return nil
             }

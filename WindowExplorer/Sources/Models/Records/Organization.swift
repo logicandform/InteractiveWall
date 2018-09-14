@@ -7,8 +7,9 @@ import MapKit
 final class Organization: Hashable {
 
     let id: Int
-    let title: String
     let type = RecordType.organization
+    let title: String
+    let shortTitle: String
     let description: String?
     var media = [Media]()
     var relatedSchools = [School]()
@@ -24,6 +25,7 @@ final class Organization: Hashable {
     private struct Keys {
         static let id = "id"
         static let title = "title"
+        static let shortTitle = "shortTitle"
         static let description = "description"
         static let mediaTitles = "mediaTitles"
         static let media = "mediaPaths"
@@ -40,12 +42,13 @@ final class Organization: Hashable {
     // MARK: Init
 
     init?(json: JSON) {
-        guard let id = json[Keys.id] as? Int, let title = json[Keys.title] as? String else {
+        guard let id = json[Keys.id] as? Int, let title = json[Keys.title] as? String, let shortTitle = json[Keys.shortTitle] as? String else {
             return nil
         }
 
         self.id = id
         self.title = title
+        self.shortTitle = shortTitle
         self.description = json[Keys.description] as? String
 
         if let urlStrings = json[Keys.media] as? [String], let localURLStrings = json[Keys.localMedia] as? [String], let thumbnailStrings = json[Keys.thumbnails] as? [String], let localThumbnailStrings = json[Keys.localThumbnails] as? [String] {

@@ -4,12 +4,36 @@ import Foundation
 import MapKit
 
 
+enum ArtifactType {
+    case archival
+    case library
+    case museum
+    case rg10
+
+    init?(string: String?) {
+        switch string {
+        case "Archival Item":
+            self = .archival
+        case "Library Item":
+            self = .library
+        case "Museum Work":
+            self = .museum
+        case "RG10 File":
+            self = .rg10
+        default:
+            return nil
+        }
+    }
+}
+
+
 final class Artifact: Hashable {
 
     let id: Int
-    let title: String
     let type = RecordType.artifact
-    let subtitle: String?
+    let title: String
+    let shortTitle: String
+    let artifactType: ArtifactType?
     let date: String?
     let description: String?
     let comments: String?
@@ -28,7 +52,8 @@ final class Artifact: Hashable {
     private struct Keys {
         static let id = "id"
         static let title = "title"
-        static let subtitle = "subtitle"
+        static let shortTitle = "shortTitle"
+        static let artifactType = "artifactType"
         static let date = "date"
         static let description = "description"
         static let mediaTitles = "mediaTitles"
@@ -48,13 +73,16 @@ final class Artifact: Hashable {
     // MARK: Init
 
     init?(json: JSON) {
-        guard let id = json[Keys.id] as? Int, let title = json[Keys.title] as? String else {
+        guard let id = json[Keys.id] as? Int,
+            let title = json[Keys.title] as? String,
+            let shortTitle = json[Keys.shortTitle] as? String else {
             return nil
         }
 
         self.id = id
         self.title = title
-        self.subtitle = json[Keys.subtitle] as? String
+        self.shortTitle = shortTitle
+        self.artifactType = ArtifactType(string: json[Keys.artifactType] as? String)
         self.date = json[Keys.date] as? String
         self.description = json[Keys.description] as? String
         self.comments = json[Keys.comments] as? String

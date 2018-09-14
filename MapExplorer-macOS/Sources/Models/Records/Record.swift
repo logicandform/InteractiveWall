@@ -8,9 +8,22 @@ protocol Record {
     var type: RecordType { get }
     var id: Int { get }
     var title: String { get }
+    var shortTitle: String { get }
     var coordinate: CLLocationCoordinate2D? { get set }
     var dates: TimelineRange? { get }
     var thumbnail: URL? { get }
+}
+
+
+extension Record {
+
+    func shortestTitle() -> String {
+        if shortTitle.isEmpty {
+            return title
+        }
+
+        return shortTitle.count < title.count ? shortTitle : title
+    }
 }
 
 

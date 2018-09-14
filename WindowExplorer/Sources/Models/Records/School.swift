@@ -7,8 +7,9 @@ import MapKit
 final class School: Hashable {
 
     let id: Int
-    let title: String
     let type = RecordType.school
+    let title: String
+    let shortTitle: String
     let date: String?
     let description: String?
     var coordinate: CLLocationCoordinate2D?
@@ -27,6 +28,7 @@ final class School: Hashable {
     private struct Keys {
         static let id = "id"
         static let title = "title"
+        static let shortTitle = "shortTitle"
         static let date = "date"
         static let description = "description"
         static let latitude = "latitude"
@@ -47,12 +49,13 @@ final class School: Hashable {
     // MARK: Init
 
     init?(json: JSON) {
-        guard let id = json[Keys.id] as? Int, let title = json[Keys.title] as? String else {
+        guard let id = json[Keys.id] as? Int, let title = json[Keys.title] as? String, let shortTitle = json[Keys.shortTitle] as? String else {
             return nil
         }
 
         self.id = id
         self.title = title
+        self.shortTitle = shortTitle
         self.date = json[Keys.date] as? String
         self.description = json[Keys.description] as? String
 

@@ -7,8 +7,9 @@ import MapKit
 
 protocol Record: SearchItemDisplayable {
     var id: Int { get }
-    var title: String { get }
     var type: RecordType { get }
+    var title: String { get }
+    var shortTitle: String { get }
     var description: String? { get }
     var comments: String? { get }
     var date: String? { get }
@@ -29,6 +30,14 @@ extension Record {
 
     var relatedRecords: [Record] {
         return recordGroups.reduce([]) { $0 + $1.records }
+    }
+
+    func shortestTitle() -> String {
+        if shortTitle.isEmpty {
+            return title
+        }
+
+        return shortTitle.count < title.count ? shortTitle : title
     }
 
     func relatedRecords(type: RecordType) -> [Record] {

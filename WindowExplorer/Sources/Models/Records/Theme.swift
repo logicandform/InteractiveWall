@@ -2,11 +2,13 @@
 
 import Foundation
 
+
 final class Theme: Hashable {
 
     let id: Int
-    let title: String
     let type = RecordType.theme
+    let title: String
+    let shortTitle: String
     let description: String?
     var relatedSchools = [School]()
     var relatedOrganizations = [Organization]()
@@ -21,6 +23,7 @@ final class Theme: Hashable {
     private struct Keys {
         static let id = "id"
         static let title = "title"
+        static let shortTitle = "shortTitle"
         static let description = "description"
         static let schools = "schools"
         static let organizations = "organizations"
@@ -32,12 +35,13 @@ final class Theme: Hashable {
     // MARK: Init
 
     init?(json: JSON) {
-        guard let id = json[Keys.id] as? Int, let title = json[Keys.title] as? String else {
+        guard let id = json[Keys.id] as? Int, let title = json[Keys.title] as? String, let shortTitle = json[Keys.shortTitle] as? String else {
             return nil
         }
 
         self.id = id
         self.title = title
+        self.shortTitle = shortTitle
         self.description = json[Keys.description] as? String
 
         if let schoolsJSON = json[Keys.schools] as? [JSON] {

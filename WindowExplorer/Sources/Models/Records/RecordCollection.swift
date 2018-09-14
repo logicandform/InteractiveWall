@@ -4,11 +4,39 @@ import Foundation
 import MapKit
 
 
+enum CollectionType {
+    case map
+    case timeline
+    case themes
+    case singular
+    case testimony
+
+    init?(string: String?) {
+        switch string?.lowercased() {
+        case "map":
+            self = .map
+        case "timeline":
+            self = .timeline
+        case "themes":
+            self = .themes
+        case "stand-alone":
+            self = .singular
+        case "survivors speak":
+            self = .testimony
+        default:
+            return nil
+        }
+    }
+}
+
+
 final class RecordCollection: Hashable {
 
     let id: Int
-    let title: String
     let type = RecordType.collection
+    let collectionType: CollectionType?
+    let title: String
+    let shortTitle: String
     let date: String?
     let description: String?
     var coordinate: CLLocationCoordinate2D?
@@ -27,6 +55,8 @@ final class RecordCollection: Hashable {
     private struct Keys {
         static let id = "id"
         static let title = "title"
+        static let shortTitle = "shortTitle"
+        static let presentation = "presentationType"
         static let date = "date"
         static let description = "description"
         static let latitude = "latitude"
@@ -47,12 +77,16 @@ final class RecordCollection: Hashable {
     // MARK: Init
 
     init?(json: JSON) {
-        guard let id = json[Keys.id] as? Int, let title = json[Keys.title] as? String else {
+        guard let id = json[Keys.id] as? Int,
+            let title = json[Keys.title] as? String,
+            let shortTitle = json[Keys.shortTitle] as? String else {
             return nil
         }
 
         self.id = id
+        self.collectionType = CollectionType(string: json[Keys.presentation] as? String)
         self.title = title
+        self.shortTitle = shortTitle
         self.date = json[Keys.date] as? String
         self.description = json[Keys.description] as? String
 

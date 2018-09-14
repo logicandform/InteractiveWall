@@ -10,7 +10,7 @@ class PriorityOrder {
         static let description = 1
         static let coordinate = 1
         static let comment = 1
-        static let media = 2
+        static let media = 3
         static let relatedSchools = 1
         static let relatedOrganizations = 1
         static let relatedArtifacts = 1

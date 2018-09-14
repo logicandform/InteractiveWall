@@ -291,7 +291,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private func addAnnotations(for records: [Record]) {
         records.forEach { record in
             if let coordinate = record.coordinate {
-                let annotation = CircleAnnotation(coordinate: coordinate, type: record.type, title: record.title)
+                let title = record.shortestTitle()
+                let annotation = CircleAnnotation(coordinate: coordinate, type: record.type, title: title)
                 recordForAnnotation[annotation] = record
                 mapView.addAnnotation(annotation)
             }
