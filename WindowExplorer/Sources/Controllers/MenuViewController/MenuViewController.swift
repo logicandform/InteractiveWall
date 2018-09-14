@@ -106,11 +106,9 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         case .map where selected:
             set(.timeline, selected: false)
             set(.settings, selected: false)
-            set(.information, selected: false)
         case .timeline where selected:
             set(.map, selected: false)
             set(.settings, selected: false)
-            set(.information, selected: false)
         case .information:
             set(infoMenuView.subviews.first, hidden: !selected, animated: true)
         case .search where selected:
@@ -201,6 +199,7 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         case .map, .timeline:
             if !button.selected {
                 postTransitionNotification(for: type)
+                set(.information, selected: false)
             }
         case .information, .settings:
             set(type, selected: !button.selected)
