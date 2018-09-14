@@ -28,7 +28,7 @@ enum MenuButtonType {
         case .search:
             return NSImage(named: "search-icon")
         case .accessibility:
-            return NSImage(named: "menu_arrow_down")
+            return NSImage(named: "accessibility-icon")
         }
     }
 
@@ -47,7 +47,7 @@ enum MenuButtonType {
         case .search:
             return NSImage(named: "search-icon-active")
         case .accessibility:
-            return NSImage(named: "menu_arrow_down")
+            return NSImage(named: "accessibility-icon-active")
         }
     }
 
