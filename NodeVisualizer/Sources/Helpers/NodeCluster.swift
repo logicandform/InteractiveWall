@@ -66,6 +66,7 @@ final class NodeCluster: Hashable {
         for entities in entitiesForLevel {
             for entity in entities {
                 entity.hasCollidedWithLayer = false
+                entity.updatePhysicsBodyProperties()
                 entity.updateBitMasks()
             }
         }
@@ -240,10 +241,10 @@ final class NodeCluster: Hashable {
         }
 
         if pan {
-            let bitMasksForPan = ColliderType(categoryBitMask: ColliderType.panBoundingNode, collisionBitMask: ColliderType.panBoundingNode, contactTestBitMask: ColliderType.panBoundingNode)
+            let bitMasksForPan = ColliderType.bitMasksForPanningLayer()
             innerMostLayerNode.set(bitMasksForPan)
         } else {
-            let bitMasksForLevel = ClusterLayerNode.bitMasks(forLevel: 0)
+            let bitMasksForLevel = ColliderType.layerNodeBitMasks(forLevel: 0)
             innerMostLayerNode.set(bitMasksForLevel)
         }
     }

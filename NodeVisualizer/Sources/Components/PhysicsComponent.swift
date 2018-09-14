@@ -5,18 +5,6 @@ import SpriteKit
 import GameplayKit
 
 
-struct ColliderType {
-    static let staticNode: UInt32 = 0x00000000
-    static let panBoundingNode: UInt32 = 1 << 20
-    static let clonedRecordNode: UInt32 = 1 << 21
-    static let tappedRecordNode: UInt32 = 1 << 22
-
-    let categoryBitMask: UInt32
-    let collisionBitMask: UInt32
-    let contactTestBitMask: UInt32
-}
-
-
 /// A `GKComponent` that provides an `SKPhysicsBody` for an entity. This enables the entity to be represented in the SpriteKit physics world.
 class PhysicsComponent: GKComponent {
 
@@ -52,12 +40,14 @@ class PhysicsComponent: GKComponent {
                 cluster.layerForLevel[currentLevel]?.renderComponent.layerNode === boundingNode,
                 !entity.hasCollidedWithLayer {
                 entity.hasCollidedWithLayer = true
+                entity.updatePhysicsBodyProperties()
                 return
             } else if let contactedEntity = contactedBody.node?.entity as? RecordEntity,
                 let contactedEntityCluster = contactedEntity.cluster, cluster === contactedEntityCluster,
                 contactedEntity.clusterLevel.currentLevel == entity.clusterLevel.currentLevel,
                 contactedEntity.hasCollidedWithLayer, !entity.hasCollidedWithLayer {
                 entity.hasCollidedWithLayer = true
+                entity.updatePhysicsBodyProperties()
                 return
             }
         }
@@ -72,86 +62,70 @@ class PhysicsComponent: GKComponent {
         }
 
         if cluster.selectedEntity.state == .dragging {
-            setPanningBitMasks()
+            let bitMasksForDraggingSelectedEntity = ColliderType.draggingBitMasks(for: entity)
+            set(bitMasksForDraggingSelectedEntity)
             return
         }
 
-        switch entity.state {
-        case .selected:
-            setTappedEntityBitMasks()
-        case .seekLevel(let level):
-            setSeekingLevelBitMasks(forLevel: level)
-        case .seekEntity(_):
-            setSeekingEntityBitMasks()
-        default:
-            return
-        }
+        let bitMasks = entity.state.bitMasks
+        set(bitMasks)
     }
 
-    /// Sets the cloned entity's bitMasks
     func setClonedNodeBitMasks() {
-        physicsBody.categoryBitMask = ColliderType.clonedRecordNode
-        physicsBody.collisionBitMask = ColliderType.clonedRecordNode
-        physicsBody.contactTestBitMask = ColliderType.clonedRecordNode
+        let bitMasks = ColliderType.bitMasksForClonedEntity()
+        set(bitMasks)
     }
 
-    /// Resets the entity's bitMask to interact with nothing
     func resetBitMasks() {
-        physicsBody.categoryBitMask = ColliderType.staticNode
-        physicsBody.collisionBitMask = ColliderType.staticNode
-        physicsBody.contactTestBitMask = ColliderType.staticNode
+        let bitMasks = ColliderType.resetBitMasks()
+        set(bitMasks)
+    }
+
+    func updatePhysicsBodyProperties() {
+        if let entity = entity as? RecordEntity {
+            let properties = physicsBodyProperties(for: entity)
+            set(properties)
+        }
+    }
+
+    func physicsBodyProperties(for entity: RecordEntity) -> PhysicsBodyProperties {
+        var properties: PhysicsBodyProperties
+
+        if entity.cluster?.selectedEntity.state == .dragging {
+            properties = PhysicsBodyProperties.propertiesForSeekingDraggingEntity()
+        } else if entity.hasCollidedWithLayer {
+            properties = PhysicsBodyProperties.propertiesForLayerCollidedEntity(entity: entity)
+        } else {
+            properties = entity.state.physicsBodyProperties
+        }
+
+        return properties
+    }
+
+    func resetPhysicsBodyProperties() {
+        let properties = PhysicsBodyProperties.propertiesForResettingAndRemovingEntity()
+        set(properties)
     }
 
 
     // MARK: Helpers
 
     private func setupInitialPhysicsBodyProperties() {
-        physicsBody.friction = 0
-        physicsBody.restitution = 0
-        physicsBody.linearDamping = 0
-        physicsBody.isDynamic = false
-        physicsBody.mass = style.nodePhysicsBodyMass
+        resetPhysicsBodyProperties()
         resetBitMasks()
     }
 
-    private func setPanningBitMasks() {
-        guard let entity = entity as? RecordEntity,
-            let level = entity.clusterLevel.currentLevel,
-            let cluster = entity.cluster,
-            let panBoundingPhysicsBody = cluster.layerForLevel[0]?.renderComponent.layerNode.physicsBody else {
-            return
-        }
-
-        let levelBitMasks = RecordNode.bitMasks(forLevel: level)
-        physicsBody.categoryBitMask = levelBitMasks.categoryBitMask | panBoundingPhysicsBody.categoryBitMask
-        physicsBody.collisionBitMask = levelBitMasks.collisionBitMask | panBoundingPhysicsBody.collisionBitMask
-        physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask | panBoundingPhysicsBody.contactTestBitMask
+    private func set(_ bitMasks: ColliderType) {
+        physicsBody.categoryBitMask = bitMasks.categoryBitMask
+        physicsBody.collisionBitMask = bitMasks.collisionBitMask
+        physicsBody.contactTestBitMask = bitMasks.contactTestBitMask
     }
 
-    private func setTappedEntityBitMasks() {
-        physicsBody.categoryBitMask = ColliderType.tappedRecordNode
-        physicsBody.collisionBitMask = ColliderType.tappedRecordNode
-        physicsBody.contactTestBitMask = ColliderType.tappedRecordNode
-    }
-
-    private func setSeekingLevelBitMasks(forLevel level: Int) {
-        let levelBitMasks = RecordNode.bitMasks(forLevel: level)
-        physicsBody.categoryBitMask = levelBitMasks.categoryBitMask
-        physicsBody.collisionBitMask = levelBitMasks.collisionBitMask
-        physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask
-    }
-
-    private func setSeekingEntityBitMasks() {
-        guard let entity = entity as? RecordEntity,
-            let level = entity.clusterLevel.currentLevel,
-            let boundingNode = entity.cluster?.layerForLevel[level]?.renderComponent.layerNode,
-            let boundingNodePhysicsBody = boundingNode.physicsBody else {
-            return
-        }
-
-        let levelBitMasks = RecordNode.bitMasks(forLevel: level)
-        physicsBody.categoryBitMask = levelBitMasks.categoryBitMask | boundingNodePhysicsBody.categoryBitMask
-        physicsBody.collisionBitMask = levelBitMasks.collisionBitMask | boundingNodePhysicsBody.collisionBitMask
-        physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask | boundingNodePhysicsBody.contactTestBitMask
+    private func set(_ properties: PhysicsBodyProperties) {
+        physicsBody.isDynamic = properties.isDynamic
+        physicsBody.mass = properties.mass
+        physicsBody.restitution = properties.restitution
+        physicsBody.friction = properties.friction
+        physicsBody.linearDamping = properties.linearDamping
     }
 }
