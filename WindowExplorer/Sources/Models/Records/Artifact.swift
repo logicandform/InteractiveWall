@@ -8,17 +8,20 @@ enum ArtifactType {
     case archival
     case library
     case museum
+    case resource
     case rg10
 
     init?(string: String?) {
-        switch string {
-        case "Archival Item":
+        switch string?.lowercased() {
+        case "archival item":
             self = .archival
-        case "Library Item":
+        case "library item":
             self = .library
-        case "Museum Work":
+        case "museum work":
             self = .museum
-        case "RG10 File":
+        case "resource":
+            self = .resource
+        case "rg10 file":
             self = .rg10
         default:
             return nil
