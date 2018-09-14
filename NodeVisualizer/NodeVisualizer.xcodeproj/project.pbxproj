@@ -73,8 +73,6 @@
 		CDB6CE3220E4037D0033E328 /* AnimationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB6CE3120E4037D0033E328 /* AnimationType.swift */; };
 		CDC22D2820BDC6B0006BC0BE /* RecordNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC22D2720BDC6B0006BC0BE /* RecordNode.swift */; };
 		CDC39D48211B616300CE5960 /* NodeGestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC39D47211B616300CE5960 /* NodeGestureManager.swift */; };
-		CDEAB97A2149A213009780D9 /* PhysicsBodyProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEAB9792149A213009780D9 /* PhysicsBodyProperties.swift */; };
-		CDEAB97C2149AA36009780D9 /* ColliderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDEAB97B2149AA36009780D9 /* ColliderType.swift */; };
 		D88D9E3C5FEA8DFC85B8FEF4 /* Pods_All_NodeVisualizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A74D0C56BCB99FB5CDC067 /* Pods_All_NodeVisualizer.framework */; };
 /* End PBXBuildFile section */
 
@@ -151,8 +149,6 @@
 		CDB6CE3120E4037D0033E328 /* AnimationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationType.swift; sourceTree = "<group>"; };
 		CDC22D2720BDC6B0006BC0BE /* RecordNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordNode.swift; sourceTree = "<group>"; };
 		CDC39D47211B616300CE5960 /* NodeGestureManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeGestureManager.swift; sourceTree = "<group>"; };
-		CDEAB9792149A213009780D9 /* PhysicsBodyProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsBodyProperties.swift; sourceTree = "<group>"; };
-		CDEAB97B2149AA36009780D9 /* ColliderType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColliderType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -261,13 +257,9 @@
 			children = (
 				2218BF3A2118C09900153058 /* Gestures */,
 				CD97E33B20F4125800BB869E /* NodeCluster.swift */,
-				CDB6CE3120E4037D0033E328 /* AnimationType.swift */,
-				CDEAB97B2149AA36009780D9 /* ColliderType.swift */,
-				CDEAB9792149A213009780D9 /* PhysicsBodyProperties.swift */,
-				22667A23213F3A2F00F15A04 /* RecordStateMachine.swift */,
-				22D6F8FC20B6810600C7FB5F /* Style.swift */,
 				22D6F8FE20B6810600C7FB5F /* CachingNetwork.swift */,
 				22D6F8FF20B6810600C7FB5F /* JSON.swift */,
+				CDB6CE3120E4037D0033E328 /* AnimationType.swift */,
 				22D6F90020B6810600C7FB5F /* Math.swift */,
 				22D6F90120B6810600C7FB5F /* PriorityOrder.swift */,
 				CD2CC5E920B8E6D700FB3C10 /* RecordDisplayable.swift */,
@@ -275,6 +267,8 @@
 				CD2CC5EA20B8E6D800FB3C10 /* RecordFilterType.swift */,
 				22D6F8FA20B6810600C7FB5F /* RecordType.swift */,
 				22D6F90220B6810600C7FB5F /* ResponseHandler.swift */,
+				22D6F8FC20B6810600C7FB5F /* Style.swift */,
+				22667A23213F3A2F00F15A04 /* RecordStateMachine.swift */,
 				22667A25214088D900F15A04 /* DispatchTimer.swift */,
 			);
 			path = Helpers;
@@ -567,7 +561,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CDC22D2820BDC6B0006BC0BE /* RecordNode.swift in Sources */,
-				CDEAB97C2149AA36009780D9 /* ColliderType.swift in Sources */,
 				22AEAEF520B67DA600DD184B /* Organization.swift in Sources */,
 				22AEAEE420B67D6800DD184B /* NSView.swift in Sources */,
 				22D6F90A20B6810600C7FB5F /* Math.swift in Sources */,
@@ -587,7 +580,6 @@
 				22667A26214088D900F15A04 /* DispatchTimer.swift in Sources */,
 				CD0FB28220D1A6300058A410 /* RecordEntity.swift in Sources */,
 				22D6F91020B681A300C7FB5F /* Media.swift in Sources */,
-				CDEAB97A2149A213009780D9 /* PhysicsBodyProperties.swift in Sources */,
 				22D6F90C20B6810600C7FB5F /* ResponseHandler.swift in Sources */,
 				22D6F91920B6824300C7FB5F /* PanGestureRecognizer.swift in Sources */,
 				CD2CC5EB20B8E6D800FB3C10 /* RecordDisplayable.swift in Sources */,

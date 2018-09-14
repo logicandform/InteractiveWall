@@ -8,14 +8,11 @@ import GameplayKit
 /// A 'GKComponent' that provides different types of physics movement based on the current entities state.
 class MovementComponent: GKComponent {
 
-    private var screenHypot: CGFloat {
-        guard let entity = entity as? RecordEntity else { return 0 }
-        return CGFloat(hypotf(Float(entity.scene.frame.width * Constants.screenMultiplier), Float(entity.scene.frame.height * Constants.screenMultiplier)))
-    }
-
     private struct Constants {
+        static let strength: CGFloat = 1000
+        static let dt: CGFloat = 1 / 5000
+        static let distancePadding: CGFloat = -10
         static let speed: CGFloat = 200
-        static let screenMultiplier: CGFloat = 0.5
     }
 
 
@@ -31,7 +28,7 @@ class MovementComponent: GKComponent {
 
         switch entity.state {
         case .seekEntity(let entity):
-            seek(entity, deltaTime: seconds)
+            seek(entity)
         case .seekLevel(let level):
             move(to: level)
         case .static, .selected, .dragging, .reset, .remove:
@@ -80,8 +77,13 @@ class MovementComponent: GKComponent {
         let displacement = CGVector(dx: deltaX, dy: deltaY)
         let distanceBetweenNodeAndCenter = distanceOf(x: deltaX, y: deltaY)
 
+        var unitVector: CGVector
         // Check whether the entity is currently in the center in order to apply a non-zero unit vector for movement
-        let unitVector = distanceBetweenNodeAndCenter > 0 ? CGVector(dx: displacement.dx / distanceBetweenNodeAndCenter, dy: displacement.dy / distanceBetweenNodeAndCenter) : CGVector(dx: 0.5, dy: 0)
+        if distanceBetweenNodeAndCenter > 0 {
+            unitVector = CGVector(dx: displacement.dx / distanceBetweenNodeAndCenter, dy: displacement.dy / distanceBetweenNodeAndCenter)
+        } else {
+            unitVector = CGVector(dx: 0.5, dy: 0)
+        }
 
         // Find the difference in distance. This gives the total distance that is left to travel for the node
         guard let currentLevel = entity.clusterLevel.currentLevel,
@@ -100,43 +102,30 @@ class MovementComponent: GKComponent {
     }
 
     /// Applies appropriate physics that emulates a gravitational pull between this component's entity and the entity that it should seek
-    private func seek(_ targetEntity: RecordEntity, deltaTime delta: TimeInterval) {
-        guard let seekingEntity = entity as? RecordEntity else {
+    private func seek(_ targetEntity: RecordEntity) {
+        guard let entity = entity as? RecordEntity else {
             return
         }
 
-        // Check the radius between its own entity and the entity to seek, and apply the appropriate physics
-        let deltaX = targetEntity.position.x - seekingEntity.position.x
-        let deltaY = targetEntity.position.y - seekingEntity.position.y
+        // Check the radius between its own entity and the nodeToSeek, and apply the appropriate physics
+        let deltaX = targetEntity.position.x - entity.position.x
+        let deltaY = targetEntity.position.y - entity.position.y
         let displacement = CGVector(dx: deltaX, dy: deltaY)
         let radius = distanceOf(x: deltaX, y: deltaY)
-        let unitVector = CGVector(dx: displacement.dx / radius, dy: displacement.dy / radius)
 
-        let force = forceFor(target: targetEntity, seeking: seekingEntity, ofRadius: radius)
-        let dt = CGFloat(delta)
-        let impulse = CGVector(dx: force * dt * unitVector.dx, dy: force * dt * unitVector.dy)
-        seekingEntity.physicsBody.velocity = CGVector(dx: seekingEntity.physicsBody.velocity.dx + impulse.dx, dy: seekingEntity.physicsBody.velocity.dy + impulse.dy)
+        let targetEntityMass = style.nodePhysicsBodyMass * Constants.strength * radius
+        let entityMass = style.nodePhysicsBodyMass * Constants.strength * radius
+
+        let unitVector = CGVector(dx: displacement.dx / radius, dy: displacement.dy / radius)
+        let force = (targetEntityMass * entityMass) / (radius * radius)
+        let impulse = CGVector(dx: force * Constants.dt * unitVector.dx, dy: force * Constants.dt * unitVector.dy)
+
+        entity.physicsBody.velocity = CGVector(dx: entity.physicsBody.velocity.dx + impulse.dx, dy: entity.physicsBody.velocity.dy + impulse.dy)
     }
 
     private func distanceOf(x: CGFloat, y: CGFloat) -> CGFloat {
         let dX = Float(x)
         let dY = Float(y)
         return CGFloat(hypotf(dX, dY))
-    }
-
-    private func forceFor(target: RecordEntity, seeking: RecordEntity, ofRadius radius: CGFloat) -> CGFloat {
-        let targetEntityMass = target.bodyMass
-        let seekingEntityMass = seeking.bodyMass
-
-        var force: CGFloat
-        if target.state == .dragging {
-            force = targetEntityMass * seekingEntityMass * style.panningForceMultiplier
-        } else if radius < screenHypot {
-            force = targetEntityMass * seekingEntityMass * style.forceMultiplier
-        } else {
-            force = targetEntityMass * seekingEntityMass * style.forceMultiplier * (radius / style.forceDivisor)
-        }
-
-        return force
     }
 }

@@ -32,38 +32,6 @@ enum EntityState: Equatable {
             return false
         }
     }
-
-    /// Provides the bitmasks for a given state
-    var bitMasks: ColliderType {
-        switch self {
-        case .static, .dragging:
-            return ColliderType.defaultBitMasks()
-        case .selected:
-            return ColliderType.bitMasksForSelectedEntity()
-        case .seekLevel(let level):
-            return ColliderType.bitMasks(forLevel: level)
-        case .seekEntity(let entity):
-            return ColliderType.bitMasksForSeekingEntity(entity: entity)
-        case .reset, .remove:
-            return ColliderType.resetBitMasks()
-        }
-    }
-
-    /// Provides the physics body properties for a given state
-    var physicsBodyProperties: PhysicsBodyProperties {
-        switch self {
-        case .static, .dragging:
-            return PhysicsBodyProperties.defaultProperties()
-        case .selected:
-            return PhysicsBodyProperties.propertiesForSelectedEntity()
-        case .seekLevel(let level):
-            return PhysicsBodyProperties.properties(forLevel: level)
-        case .seekEntity(let entity):
-            return PhysicsBodyProperties.properties(forLevel: entity.clusterLevel.currentLevel)
-        case .reset, .remove:
-            return PhysicsBodyProperties.propertiesForResettingAndRemovingEntity()
-        }
-    }
 }
 
 
@@ -99,19 +67,8 @@ final class RecordEntity: GKEntity {
         return renderComponent.recordNode.frame.width / 2
     }
 
-    var bodyMass: CGFloat {
-        return physicsComponent.physicsBodyProperties(for: self).mass
-    }
-
     var isSelected: Bool {
         return clusterLevel.currentLevel == NodeCluster.selectedEntityLevel
-    }
-
-    var scene: MainScene {
-        guard let scene = renderComponent.recordNode.scene as? MainScene else {
-            fatalError("A RecordNode must be presented in a MainScene")
-        }
-        return scene
     }
 
     override var description: String {
@@ -156,7 +113,7 @@ final class RecordEntity: GKEntity {
         super.init()
 
         let renderComponent = RecordRenderComponent(record: record)
-        let physicsComponent = PhysicsComponent(physicsBody: SKPhysicsBody(circleOfRadius: style.defaultBodyRadius))
+        let physicsComponent = PhysicsComponent(physicsBody: SKPhysicsBody(circleOfRadius: style.defaultNodePhysicsBodyRadius))
         let movementComponent = MovementComponent()
         renderComponent.recordNode.physicsBody = physicsComponent.physicsBody
         addComponent(movementComponent)
@@ -201,10 +158,6 @@ final class RecordEntity: GKEntity {
         physicsComponent.setClonedNodeBitMasks()
     }
 
-    func updatePhysicsBodyProperties() {
-        physicsComponent.updatePhysicsBodyProperties()
-    }
-
     func perform(action: SKAction, forKey key: String) {
         renderComponent.recordNode.run(action, withKey: key)
     }
@@ -221,6 +174,7 @@ final class RecordEntity: GKEntity {
 
     /// 'Reset' the entity to initial state so that proper animations and movements can take place
     func reset() {
+        resetBitMasks()
         hasCollidedWithLayer = false
         clusterLevel = (nil, nil)
         cluster = nil
@@ -233,14 +187,11 @@ final class RecordEntity: GKEntity {
         physicsComponent.resetBitMasks()
     }
 
-    func resetPhysicsBodyProperties() {
-        physicsComponent.resetPhysicsBodyProperties()
-    }
-
     func clone() -> RecordEntity {
         return RecordEntity(record: record, levels: relatedRecordsForLevel)
     }
 
+    /// Calculates the distance between self and another entity
     func distance(to entity: RecordEntity) -> CGFloat {
         let dX = entity.renderComponent.recordNode.position.x - renderComponent.recordNode.position.x
         let dY = entity.renderComponent.recordNode.position.y - renderComponent.recordNode.position.y
