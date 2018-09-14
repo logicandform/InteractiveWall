@@ -72,17 +72,21 @@ extension Record {
 
         switch type {
         case .image:
-            return records.filter { $0.containsImages() }
+            return records.filter { $0.containsImage() }
         default:
             return []
         }
     }
 
     func relatedRecordsContainingImages() -> [Record] {
-        return relatedRecords.filter { $0.containsImages() }
+        return relatedRecords.filter { $0.containsImage() }
     }
 
-    func containsImages() -> Bool {
+    private func containsImage() -> Bool {
+        if let artifact = self as? Artifact, artifact.artifactType == .rg10 {
+            return false
+        }
+
         for item in media {
             if item.type == .image || item.type == .pdf {
                 return true
