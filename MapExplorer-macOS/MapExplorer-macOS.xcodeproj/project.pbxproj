@@ -47,6 +47,7 @@
 		22290C3C2028FA35000E0573 /* NetworkConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C372028FA34000E0573 /* NetworkConfiguration.swift */; };
 		222AB400203CE9AE002BFAF2 /* Demo.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 222AB3FF203CE9AE002BFAF2 /* Demo.storyboard */; };
 		222AB408203DF8F5002BFAF2 /* Map.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 222AB407203DF8F5002BFAF2 /* Map.storyboard */; };
+		222D1BC2214B3EF7007417B8 /* RecordCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222D1BC1214B3EF7007417B8 /* RecordCollection.swift */; };
 		22318DE0202B984F0092937C /* ResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22318DDF202B984F0092937C /* ResponseHandler.swift */; };
 		225C92B92130CC6D00D629EE /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225C92B82130CC6D00D629EE /* ImageView.swift */; };
 		2261A39B2121FA7300EBAA02 /* TimelineControlLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2261A39A2121FA7300EBAA02 /* TimelineControlLayout.swift */; };
@@ -170,6 +171,7 @@
 		22290C372028FA34000E0573 /* NetworkConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkConfiguration.swift; sourceTree = "<group>"; };
 		222AB3FF203CE9AE002BFAF2 /* Demo.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Demo.storyboard; sourceTree = "<group>"; };
 		222AB407203DF8F5002BFAF2 /* Map.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Map.storyboard; sourceTree = "<group>"; };
+		222D1BC1214B3EF7007417B8 /* RecordCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCollection.swift; sourceTree = "<group>"; };
 		22318DDF202B984F0092937C /* ResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseHandler.swift; sourceTree = "<group>"; };
 		225C92B82130CC6D00D629EE /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		2261A39A2121FA7300EBAA02 /* TimelineControlLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineControlLayout.swift; sourceTree = "<group>"; };
@@ -515,6 +517,7 @@
 				222694BF20699B10007DA6FA /* Record.swift */,
 				221C629E203B4906009493DA /* School.swift */,
 				222694C120699B53007DA6FA /* Event.swift */,
+				222D1BC1214B3EF7007417B8 /* RecordCollection.swift */,
 			);
 			path = Records;
 			sourceTree = "<group>";
@@ -788,6 +791,7 @@
 				22004FED20E164AF00B1E740 /* TimelineViewController.swift in Sources */,
 				22B1E2AA2045F2EE00BDDF14 /* AVKit.swift in Sources */,
 				22E54CB42124F34E00CBF5A5 /* TailDiagram.swift in Sources */,
+				222D1BC2214B3EF7007417B8 /* RecordCollection.swift in Sources */,
 				22667A28214088EF00F15A04 /* DispatchTimer.swift in Sources */,
 				2220D3FD202F7E4200B878D6 /* GestureManager.swift in Sources */,
 				22B85AF5209B7A6D0099F44E /* RotateGestureRecognizer.swift in Sources */,

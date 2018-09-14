@@ -210,15 +210,23 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
             print(error)
         }
 
-        when(fulfilled: schoolChain, eventChain).then { [weak self] results in
+        // Collections
+        let collectionsChain = firstly {
+            try CachingNetwork.getCollections(type: .map)
+        }.catch { error in
+            print(error)
+        }
+
+        when(fulfilled: schoolChain, eventChain, collectionsChain).then { [weak self] results in
             self?.parseNetworkResults(results)
         }
     }
 
-    private func parseNetworkResults(_ results: (schools: [School], events: [Event])) {
+    private func parseNetworkResults(_ results: (schools: [School], events: [Event], collections: [RecordCollection])) {
         var records = [Record]()
         records.append(contentsOf: results.schools)
         records.append(contentsOf: results.events)
+        records.append(contentsOf: result.collections)
         addToMap(records)
     }
 

@@ -66,6 +66,7 @@ class MenuButton: NSView {
 
         self.type = type
         buttonView.layer?.contents = type.image
+        buttonView.layer?.contentsGravity = kCAGravityCenter
         let buttonBackgroundColor = selected ? type.selectedBackgroundColor : type.unselectedBackgroundColor
         buttonView.layer?.backgroundColor = buttonBackgroundColor?.cgColor
         updateTitle()

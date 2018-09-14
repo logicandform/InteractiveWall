@@ -3,6 +3,7 @@
 import Foundation
 import MapKit
 
+
 final class Artifact: Hashable {
 
     let id: Int

@@ -18,7 +18,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     private(set) var lastYear: Int!
     private(set) var years = [Int]()
     private let type = TimelineType.decade
-    private var totalUniqueEvents: Int! = 0
+    private var uniqueEvents = 0
 
     private struct Constants {
         static let screenWidth = 1920
@@ -45,8 +45,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
             return lhs.dates.startDate < rhs.dates.startDate
         }
 
-        totalUniqueEvents = events.count
-
+        uniqueEvents = events.count
         let minYear = events.min(by: { $0.dates.startDate.year < $1.dates.startDate.year })?.dates.startDate.year ?? Constants.defaultFirstYear
         let maxYear = events.max(by: { $0.dates.startDate.year < $1.dates.startDate.year })?.dates.startDate.year ?? Constants.defaultLastYear
         firstYear = (minYear / 10) * 10
@@ -101,10 +100,10 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     }
 
     func getDuplicateIndex(original index: Int) -> Int? {
-        if index + totalUniqueEvents < events.count {
-            return index + totalUniqueEvents
-        } else if index - totalUniqueEvents >= 0 {
-            return index - totalUniqueEvents
+        if index + uniqueEvents < events.count {
+            return index + uniqueEvents
+        } else if index - uniqueEvents >= 0 {
+            return index - uniqueEvents
         } else {
             return nil
         }

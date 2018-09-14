@@ -36,4 +36,15 @@ final class ResponseHandler {
 
         return json.compactMap { Event(json: $0) }
     }
+
+
+    // MARK: Collections
+
+    static func serializeCollections(from json: Any) throws -> [RecordCollection] {
+        guard let json = json as? [JSON] else {
+            throw NetworkError.badResponse
+        }
+
+        return json.compactMap { RecordCollection(json: $0) }
+    }
 }

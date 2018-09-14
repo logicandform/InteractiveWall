@@ -18,6 +18,8 @@ final class RecordFactory {
             organization(id: id, completion: completion)
         case .theme:
             theme(id: id, completion: completion)
+        case .collection:
+            collection(id: id, completion: completion)
         }
     }
 
@@ -33,6 +35,8 @@ final class RecordFactory {
             organizations(ids: ids, completion: completion)
         case .theme:
             themes(ids: ids, completion: completion)
+        case .collection:
+            completion(nil)
         }
     }
 
@@ -48,6 +52,8 @@ final class RecordFactory {
             organizations(for: group, completion: completion)
         case .theme:
             themes(for: group, completion: completion)
+        case .collection:
+            completion(nil)
         }
     }
 
@@ -63,6 +69,8 @@ final class RecordFactory {
             organizations(completion: completion)
         case .theme:
             themes(completion: completion)
+        case .collection:
+            collections(completion: completion)
         }
     }
 
@@ -316,6 +324,31 @@ final class RecordFactory {
             try CachingNetwork.getThemes(in: group)
         }.then { themes -> Void in
             completion(themes)
+        }.catch { error in
+            print(error)
+            completion(nil)
+        }
+    }
+
+
+    // MARK: Collections
+
+    private static func collection(id: Int, completion: @escaping ((Record?) -> Void)) {
+        firstly {
+            CachingNetwork.getCollection(by: id)
+        }.then { collection -> Void in
+            completion(collection)
+        }.catch { error in
+            print(error)
+            completion(nil)
+        }
+    }
+
+    private static func collections(completion: @escaping (([Record]?) -> Void)) {
+        firstly {
+            try CachingNetwork.getCollections()
+        }.then { collections -> Void in
+            completion(collections)
         }.catch { error in
             print(error)
             completion(nil)

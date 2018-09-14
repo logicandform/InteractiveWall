@@ -518,15 +518,23 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
             print(error)
         }
 
-        when(fulfilled: schoolChain, eventChain).then { [weak self] results in
+        // Collections
+        let collectionChain = firstly {
+            try CachingNetwork.getCollections(type: .timeline)
+        }.catch { error in
+            print(error)
+        }
+
+        when(fulfilled: schoolChain, eventChain, collectionChain).then { [weak self] results in
             self?.loadNetworkResults(results)
         }
     }
 
-    private func loadNetworkResults(_ results: (schools: [School], events: [Event])) {
+    private func loadNetworkResults(_ results: (schools: [School], events: [Event], collections: [RecordCollection])) {
         var records = [Record]()
         records.append(contentsOf: results.schools)
         records.append(contentsOf: results.events)
+        records.append(contentsOf: results.collections)
         source.setup(with: records)
         setupControls()
         setupTimelineData()

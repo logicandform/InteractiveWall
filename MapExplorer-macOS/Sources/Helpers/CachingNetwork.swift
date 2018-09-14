@@ -22,6 +22,7 @@ final class CachingNetwork {
         static let places = Configuration.serverURL + "/places/all/%d"
         static let schools = Configuration.serverURL + "/schools/all/%d"
         static let events = Configuration.serverURL + "/events/all/%d"
+        static let collections = Configuration.serverURL + "/collections/all/%d"
     }
 
     private struct Constants {
@@ -82,6 +83,38 @@ final class CachingNetwork {
             let next = page + Constants.batchSize
             let result = load + events
             return try getEvents(page: next, load: result)
+        }
+    }
+
+
+    // MARK: Collections
+
+    static func getCollections(page: Int = 0, load: [RecordCollection] = []) throws -> Promise<[RecordCollection]> {
+        let url = String(format: Endpoints.collections, page)
+
+        return Alamofire.request(url).responseJSON().then { json in
+            guard let collections = try? ResponseHandler.serializeCollections(from: json), !collections.isEmpty else {
+                return Promise(value: load)
+            }
+
+            let next = page + Constants.batchSize
+            let result = load + collections
+            return try getCollections(page: next, load: result)
+        }
+    }
+
+    static func getCollections(type: CollectionType, page: Int = 0, load: [RecordCollection] = []) throws -> Promise<[RecordCollection]> {
+        let url = String(format: Endpoints.collections, page)
+
+        return Alamofire.request(url).responseJSON().then { json in
+            guard let collections = try? ResponseHandler.serializeCollections(from: json), !collections.isEmpty else {
+                return Promise(value: load)
+            }
+
+            let next = page + Constants.batchSize
+            let filtered = collections.filter { $0.collectionType == type }
+            let result = load + filtered
+            return try getCollections(page: next, load: result)
         }
     }
 }

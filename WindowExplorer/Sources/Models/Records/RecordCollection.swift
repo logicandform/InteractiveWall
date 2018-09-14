@@ -4,17 +4,20 @@ import Foundation
 import MapKit
 
 
-final class Organization: Hashable {
+final class RecordCollection: Hashable {
 
     let id: Int
     let title: String
-    let type = RecordType.organization
+    let type = RecordType.collection
+    let date: String?
     let description: String?
+    var coordinate: CLLocationCoordinate2D?
     var media = [Media]()
     var relatedSchools = [School]()
     var relatedOrganizations = [Organization]()
     var relatedArtifacts = [Artifact]()
     var relatedEvents = [Event]()
+    var relatedThemes = [Theme]()
     lazy var priority = PriorityOrder.priority(for: self)
 
     var hashValue: Int {
@@ -24,7 +27,10 @@ final class Organization: Hashable {
     private struct Keys {
         static let id = "id"
         static let title = "title"
+        static let date = "date"
         static let description = "description"
+        static let latitude = "latitude"
+        static let longitude = "longitude"
         static let mediaTitles = "mediaTitles"
         static let media = "mediaPaths"
         static let localMedia = "fullMediaPaths"
@@ -34,6 +40,7 @@ final class Organization: Hashable {
         static let organizations = "organizations"
         static let artifacts = "artifacts"
         static let events = "events"
+        static let themes = "themes"
     }
 
 
@@ -46,7 +53,12 @@ final class Organization: Hashable {
 
         self.id = id
         self.title = title
+        self.date = json[Keys.date] as? String
         self.description = json[Keys.description] as? String
+
+        if let latitude = json[Keys.latitude] as? Double, let longitude = json[Keys.longitude] as? Double {
+            self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        }
 
         if let urlStrings = json[Keys.media] as? [String], let localURLStrings = json[Keys.localMedia] as? [String], let thumbnailStrings = json[Keys.thumbnails] as? [String], let localThumbnailStrings = json[Keys.localThumbnails] as? [String] {
             let urls = urlStrings.compactMap { URL.from(Configuration.serverURL + $0) }
@@ -74,9 +86,13 @@ final class Organization: Hashable {
             let events = eventsJSON.compactMap { Event(json: $0) }
             self.relatedEvents = events
         }
+        if let themesJSON = json[Keys.themes] as? [JSON] {
+            let themes = themesJSON.compactMap { Theme(json: $0) }
+            self.relatedThemes = themes
+        }
     }
 
-    static func == (lhs: Organization, rhs: Organization) -> Bool {
+    static func == (lhs: RecordCollection, rhs: RecordCollection) -> Bool {
         return lhs.id == rhs.id
     }
 }

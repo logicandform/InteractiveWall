@@ -55,7 +55,7 @@ class ZoomControl: NSView {
     }
 
     private func setupGestures() {
-        let scrubGesture = PanGestureRecognizer()
+        let scrubGesture = PanGestureRecognizer(recognizedThreshold: 0)
         gestureManager.add(scrubGesture, to: seekBar)
         scrubGesture.gestureUpdated = { [weak self] gesture in
             self?.handleScrubGesture(gesture)
@@ -90,7 +90,7 @@ class ZoomControl: NSView {
         }
 
         switch pan.state {
-        case .recognized:
+        case .began, .recognized:
             let positionInSeekBar = (position.x) / (seekBar.frame.width)
             let delta = Double(positionInSeekBar) * (seekBar.maxValue - seekBar.minValue)
             let scale = CGFloat(delta + seekBar.minValue)

@@ -38,6 +38,8 @@ final class CachingNetwork {
         static let themes = Configuration.serverURL + "/themes/all/%d"
         static let themeByID = Configuration.serverURL + "/themes/find/%d"
         static let themesInGroup = Configuration.serverURL + "/themes/group/%@/%d"
+        static let collections = Configuration.serverURL + "/collections/all/%d"
+        static let collectionsByID = Configuration.serverURL + "/collections/find/%d"
     }
 
     private struct Constants {
@@ -292,6 +294,31 @@ final class CachingNetwork {
             let next = page + Constants.batchSize
             let result = load + themes
             return try getThemes(in: group, page: next, load: result)
+        }
+    }
+
+
+    // MARK: Collections
+
+    static func getCollections(page: Int = 0, load: [RecordCollection] = []) throws -> Promise<[RecordCollection]> {
+        let url = String(format: Endpoints.collections, page)
+
+        return Alamofire.request(url).responseJSON().then { json in
+            guard let collections = try? ResponseHandler.serializeCollections(from: json), !collections.isEmpty else {
+                return Promise(value: load)
+            }
+
+            let next = page + Constants.batchSize
+            let result = load + collections
+            return try getCollections(page: next, load: result)
+        }
+    }
+
+    static func getCollection(by id: Int) -> Promise<RecordCollection> {
+        let url = String(format: Endpoints.collectionsByID, id)
+
+        return Alamofire.request(url).responseJSON().then { json in
+            try ResponseHandler.serializeCollection(from: json)
         }
     }
 }

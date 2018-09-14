@@ -3,6 +3,7 @@
 import Foundation
 import MapKit
 
+
 final class Place: Hashable {
 
     let id: Int

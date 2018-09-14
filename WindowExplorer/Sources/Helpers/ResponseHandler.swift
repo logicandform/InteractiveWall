@@ -176,4 +176,31 @@ final class ResponseHandler {
 
         return theme
     }
+
+
+    // MARK: Collections
+
+    static func serializeCollections(from json: Any) throws -> [RecordCollection] {
+        guard let json = json as? [JSON] else {
+            throw NetworkError.badResponse
+        }
+
+        return json.compactMap { RecordCollection(json: $0) }
+    }
+
+    static func serializeCollection(from json: Any) throws -> RecordCollection {
+        guard let json = json as? JSON else {
+            throw NetworkError.badResponse
+        }
+
+        if json.isEmpty {
+            throw NetworkError.notFound
+        }
+
+        guard let collection = RecordCollection(json: json) else {
+            throw NetworkError.serializationError
+        }
+
+        return collection
+    }
 }

@@ -205,6 +205,8 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             let dateTextField = textField(for: dateAttributedString)
             stackView.addView(dateTextField, in: .top)
             stackView.setCustomSpacing(style.dateTrailingSpace, after: dateTextField)
+        } else {
+            stackView.setCustomSpacing(style.missingDateTitleTrailingSpace, after: titleTextField)
         }
 
         if let description = record.description, !description.isEmpty {
@@ -488,7 +490,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         case mediaView:
             return record.media.count
         case relatedItemsView:
-            return record.filterRelatedRecords(of: relatedItemsFilterType, from: relatedRecords).count
+            return record.filterRelatedRecords(type: relatedItemsFilterType, from: relatedRecords).count
         default:
             return 0
         }
@@ -504,7 +506,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             }
         case relatedItemsView:
             if let relatedItem = collectionView.makeItem(withIdentifier: relatedItemsFilterType.layout.identifier, for: indexPath) as? RelatedItemView {
-                relatedItem.record = record.filterRelatedRecords(of: relatedItemsFilterType, from: relatedRecords).at(index: indexPath.item)
+                relatedItem.record = record.filterRelatedRecords(type: relatedItemsFilterType, from: relatedRecords).at(index: indexPath.item)
                 relatedItem.tintColor = record.type.color
                 return relatedItem
             }
@@ -733,7 +735,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
     private func updateRelatedRecordsHeight() {
         let maxHeight = style.relatedRecordsMaxSize.height
-        let numberOfRecords = CGFloat(record.filterRelatedRecords(of: relatedItemsFilterType, from: relatedRecords).count)
+        let numberOfRecords = CGFloat(record.filterRelatedRecords(type: relatedItemsFilterType, from: relatedRecords).count)
         let numberOfListSpaces = numberOfRecords > 1 ? numberOfRecords - 1 : 0
         let numberOfGridSpaces = numberOfRecords > relatedItemsFilterType.layout.itemsPerRow ? Int(numberOfRecords / relatedItemsFilterType.layout.itemsPerRow) : 0
         let numberOfImageRows = numberOfGridSpaces > 0 ? numberOfGridSpaces + 1 : numberOfRecords > 0 ? 1 : 0

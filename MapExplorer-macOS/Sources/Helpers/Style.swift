@@ -17,6 +17,7 @@ final class Style {
     let schoolColor = NSColor(calibratedRed: 78/255, green: 106/255, blue: 200/255, alpha: 1)
     let eventColor = NSColor(calibratedRed: 145/255, green: 18/255, blue: 88/255, alpha: 1)
     let organizationColor = NSColor(calibratedRed: 16/255, green: 147/255, blue: 79/255, alpha: 1)
+    let collectionColor = NSColor.orange
     let clusterColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
 
     // Window Levels

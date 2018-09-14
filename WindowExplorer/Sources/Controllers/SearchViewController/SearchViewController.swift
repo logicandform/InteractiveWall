@@ -48,7 +48,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     private lazy var heightForCollectionView = [primaryCollectionView: primaryScrollViewHeight, secondaryCollectionView: secondaryScrollViewHeight, tertiaryCollectionView: tertiaryScrollViewHeight]
     private lazy var titleViews: [NSTextField] = [titleLabel, secondaryTextField, tertiaryTextField]
     private lazy var searchItemsForView: [NSCollectionView: [SearchItemDisplayable]] = [
-        primaryCollectionView: RecordType.allValues,
+        primaryCollectionView: RecordType.searchValues,
         secondaryCollectionView: [],
         tertiaryCollectionView: []
     ]
@@ -441,7 +441,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     /// Returns a collection of search items used as the second level of a search query
     private func searchItems(for type: RecordType) -> [SearchItemDisplayable] {
         switch type {
-        case .event, .artifact, .organization, .theme:
+        case .event, .artifact, .organization, .theme, .collection:
             return LetterGroup.allValues
         case .school:
             return Province.allValues
@@ -451,7 +451,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     /// Returns the attributed string to present as a tile in the window drag area
     private func title(for type: RecordType) -> NSAttributedString {
         switch type {
-        case .event, .artifact, .organization, .theme:
+        case .event, .artifact, .organization, .theme, .collection:
             return NSAttributedString(string: "Range", attributes: style.windowTitleAttributes)
         case .school:
             return NSAttributedString(string: "Province", attributes: style.windowTitleAttributes)

@@ -19,6 +19,7 @@ enum RecordType: String {
     case event
     case organization
     case artifact
+    case collection
 
     var color: NSColor {
         switch self {
@@ -30,6 +31,8 @@ enum RecordType: String {
             return style.organizationColor
         case .artifact:
             return style.artifactColor
+        case .collection:
+            return style.collectionColor
         }
     }
 
@@ -43,10 +46,12 @@ enum RecordType: String {
             return 3
         case .artifact:
             return 4
+        case .collection:
+            return 5
         }
     }
 
     static var allValues: [RecordType] {
-        return [.school, .event, .organization, .artifact]
+        return [.school, .event, .organization, .artifact, .collection]
     }
 }
