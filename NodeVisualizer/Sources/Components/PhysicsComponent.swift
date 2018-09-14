@@ -128,47 +128,4 @@ class PhysicsComponent: GKComponent {
         physicsBody.friction = properties.friction
         physicsBody.linearDamping = properties.linearDamping
     }
-
-
-    // MARK: Helpers - BitMasks
-
-    private func setDraggingBitMasks() {
-        guard let entity = entity as? RecordEntity,
-            let level = entity.clusterLevel.currentLevel,
-            let cluster = entity.cluster,
-            let panBoundingPhysicsBody = cluster.layerForLevel[0]?.renderComponent.layerNode.physicsBody else {
-            return
-        }
-
-        let levelBitMasks = RecordNode.bitMasks(forLevel: level)
-        physicsBody.categoryBitMask = levelBitMasks.categoryBitMask | panBoundingPhysicsBody.categoryBitMask
-        physicsBody.collisionBitMask = levelBitMasks.collisionBitMask | panBoundingPhysicsBody.collisionBitMask
-        physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask | panBoundingPhysicsBody.contactTestBitMask
-    }
-
-    private func setSelectedEntityBitMasks() {
-        let bitMasks = ColliderType.bitMasksForSelectedEntity()
-        set(bitMasks)
-    }
-
-    private func setSeekingLevelBitMasks(forLevel level: Int) {
-        let levelBitMasks = RecordNode.bitMasks(forLevel: level)
-        physicsBody.categoryBitMask = levelBitMasks.categoryBitMask
-        physicsBody.collisionBitMask = levelBitMasks.collisionBitMask
-        physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask
-    }
-
-    private func setSeekingEntityBitMasks() {
-        guard let entity = entity as? RecordEntity,
-            let level = entity.clusterLevel.currentLevel,
-            let boundingNode = entity.cluster?.layerForLevel[level]?.renderComponent.layerNode,
-            let boundingNodePhysicsBody = boundingNode.physicsBody else {
-            return
-        }
-
-        let levelBitMasks = RecordNode.bitMasks(forLevel: level)
-        physicsBody.categoryBitMask = levelBitMasks.categoryBitMask | boundingNodePhysicsBody.categoryBitMask
-        physicsBody.collisionBitMask = levelBitMasks.collisionBitMask | boundingNodePhysicsBody.collisionBitMask
-        physicsBody.contactTestBitMask = levelBitMasks.contactTestBitMask | boundingNodePhysicsBody.contactTestBitMask
-    }
 }

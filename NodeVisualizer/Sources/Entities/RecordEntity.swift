@@ -41,7 +41,7 @@ enum EntityState: Equatable {
         case .selected:
             return ColliderType.bitMasksForSelectedEntity()
         case .seekLevel(let level):
-            return ColliderType.recordNodeBitMasks(forLevel: level)
+            return ColliderType.bitMasks(forLevel: level)
         case .seekEntity(let entity):
             return ColliderType.bitMasksForSeekingEntity(entity: entity)
         case .reset, .remove:

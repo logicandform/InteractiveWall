@@ -48,8 +48,8 @@ final class Style {
     // MARK: Default Properties
     let defaultBodyMass: CGFloat = 5
     let defaultBodyRestitution: CGFloat = 0
-    let defaultBodyFriction: CGFloat = 0
-    let defaultLinearDamping: CGFloat = 0
+    let defaultBodyFriction: CGFloat = 1
+    let defaultLinearDamping: CGFloat = 1
 
 
     // MARK: Selected Properties

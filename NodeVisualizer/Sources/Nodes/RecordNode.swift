@@ -37,18 +37,6 @@ class RecordNode: SKSpriteNode {
 
     // MARK: API
 
-    static func bitMasks(forLevel level: Int) -> ColliderType {
-        let categoryBitMask: UInt32 = 1 << level
-        let collisionBitMask: UInt32 = 1 << level
-        let contactTestBitMask: UInt32 = 1 << level
-
-        return ColliderType(
-            categoryBitMask: categoryBitMask,
-            collisionBitMask: collisionBitMask,
-            contactTestBitMask: contactTestBitMask
-        )
-    }
-
     /// Sets the zPosition of `self`
     func setZ(level: Int) {
         // Since titles are 1 level above the node, must multiply level by 2 to avoid undefined ordering

@@ -37,7 +37,7 @@ struct ColliderType {
         return ColliderType(categoryBitMask: ColliderType.clonedRecordNode, collisionBitMask: ColliderType.clonedRecordNode, contactTestBitMask: ColliderType.clonedRecordNode)
     }
 
-    static func recordNodeBitMasks(forLevel level: Int) -> ColliderType {
+    static func bitMasks(forLevel level: Int) -> ColliderType {
         let categoryBitMask: UInt32 = 1 << level
         let collisionBitMask: UInt32 = 1 << level
         let contactTestBitMask: UInt32 = 1 << level
@@ -68,7 +68,7 @@ struct ColliderType {
                 return ColliderType.defaultBitMasks()
         }
 
-        let levelBitMasks = ColliderType.recordNodeBitMasks(forLevel: level)
+        let levelBitMasks = ColliderType.bitMasks(forLevel: level)
         let categoryBitMask = levelBitMasks.categoryBitMask | layerNodePhysicsBody.categoryBitMask
         let collisionBitMask = levelBitMasks.collisionBitMask | layerNodePhysicsBody.collisionBitMask
         let contactTestBitMask = levelBitMasks.contactTestBitMask | layerNodePhysicsBody.contactTestBitMask
@@ -81,7 +81,7 @@ struct ColliderType {
                 return ColliderType.defaultBitMasks()
         }
 
-        let levelBitMasks = ColliderType.recordNodeBitMasks(forLevel: level)
+        let levelBitMasks = ColliderType.bitMasks(forLevel: level)
         let categoryBitMask = levelBitMasks.categoryBitMask | layerNodePhysicsBody.categoryBitMask
         let collisionBitMask = levelBitMasks.collisionBitMask | layerNodePhysicsBody.collisionBitMask
         let contactTestBitMask = levelBitMasks.contactTestBitMask | layerNodePhysicsBody.contactTestBitMask
