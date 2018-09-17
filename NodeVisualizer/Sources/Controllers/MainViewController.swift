@@ -43,34 +43,24 @@ class MainViewController: NSViewController, NodeGestureResponder, SocketManagerD
     override func viewWillAppear() {
         super.viewWillAppear()
 
-        initializeIfNecessary()
-    }
-
-
-    // MARK: Setup Environment
-
-    private func initializeIfNecessary() {
-        if initialized {
-            return
-        }
-
-        initialized = true
-        if Configuration.env == .testing {
-            setupTestingEnvironment()
-        } else {
-            setupEnvironment()
+        if !initialized {
+            initialized = true
+            setupEntities()
+            setupMainScene()
         }
     }
 
-    private func setupEnvironment() {
-        DataManager.instance.instantiate { [weak self] in
-            self?.setupMainScene()
-        }
-    }
 
-    private func setupTestingEnvironment() {
-        TestingDataManager.instance.instantiate()
-        setupMainScene()
+    // MARK: Setup
+
+    private func setupEntities() {
+        switch Configuration.env {
+        case .production:
+            RecordManager.instance.createEntities()
+        case .testing:
+            TestingDataManager.instance.instantiate()
+            TestingDataManager.instance.createEntities()
+        }
     }
 
 
@@ -126,8 +116,8 @@ class MainViewController: NSViewController, NodeGestureResponder, SocketManagerD
 
     private func convert(_ touch: Touch, toScreen screen: Int) {
         let screen = NSScreen.at(position: screen)
-        let xPos = (touch.position.x / Configuration.touchScreenSize.width * CGFloat(screen.frame.width)) + screen.frame.origin.x
-        let yPos = (1 - touch.position.y / Configuration.touchScreenSize.height) * CGFloat(screen.frame.height)
+        let xPos = (touch.position.x / Configuration.touchScreen.size.width * CGFloat(screen.frame.width)) + screen.frame.origin.x
+        let yPos = (1 - touch.position.y / Configuration.touchScreen.size.height) * CGFloat(screen.frame.height)
         touch.position = CGPoint(x: xPos, y: yPos)
     }
 }

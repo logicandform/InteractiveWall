@@ -6,12 +6,6 @@ import Cocoa
 let style = Style()
 
 
-enum Environment {
-    case testing
-    case production
-}
-
-
 struct Configuration {
     static let env = Environment.production
     static let touchPort: UInt16 = 13003
@@ -20,7 +14,7 @@ struct Configuration {
     static let serverURL = "http://\(serverIP):3000"
     static let appsPerScreen = 2
     static let numberOfScreens = 1
-    static let touchScreenSize = CGSize(width: 21564, height: 12116)
+    static let touchScreen = TouchScreen.ur9850
     static let refreshRate = 1.0 / 60.0
     static let loadMapsOnFirstScreen = false
 }
@@ -30,15 +24,28 @@ struct Configuration {
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        prepareApplication()
+    }
+
+
+    // MARK: Helpers
+
+    private func prepareApplication() {
+        if Configuration.env == .production {
+            RecordManager.instance.initialize { [weak self] in
+                self?.setupApplication()
+            }
+        } else {
+            setupApplication()
+        }
+    }
+
+    private func setupApplication() {
         let screen = NSScreen.at(position: 1)
         let controller = MainViewController.instance()
         let frame = NSRect(x: screen.frame.minX, y: screen.frame.minY, width: screen.frame.width, height: screen.frame.height)
         let window = NSWindow(contentViewController: controller)
         window.setFrame(frame, display: true)
         window.makeKeyAndOrderFront(self)
-    }
-
-    func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
     }
 }

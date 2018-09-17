@@ -3,8 +3,8 @@
 import Foundation
 import PromiseKit
 
-final class RecordFactory {
 
+final class RecordNetwork {
 
     static func record(for type: RecordType, id: Int, completion: @escaping ((Record?) -> Void)) {
         switch type {
@@ -18,6 +18,25 @@ final class RecordFactory {
             organization(id: id, completion: completion)
         case .theme:
             theme(id: id, completion: completion)
+        case .collection:
+            collection(id: id, completion: completion)
+        }
+    }
+
+    static func records(for type: RecordType, ids: [Int], completion: @escaping (([Record]?) -> Void)) {
+        switch type {
+        case .artifact:
+            artifacts(ids: ids, completion: completion)
+        case .school:
+            schools(ids: ids, completion: completion)
+        case .event:
+            events(ids: ids, completion: completion)
+        case .organization:
+            organizations(ids: ids, completion: completion)
+        case .theme:
+            themes(ids: ids, completion: completion)
+        case .collection:
+            completion(nil)
         }
     }
 
@@ -33,6 +52,8 @@ final class RecordFactory {
             organizations(for: group, completion: completion)
         case .theme:
             themes(for: group, completion: completion)
+        case .collection:
+            completion(nil)
         }
     }
 
@@ -48,6 +69,8 @@ final class RecordFactory {
             organizations(completion: completion)
         case .theme:
             themes(completion: completion)
+        case .collection:
+            collections(completion: completion)
         }
     }
 
@@ -70,6 +93,19 @@ final class RecordFactory {
             CachingNetwork.getArtifact(by: id)
         }.then { artifact -> Void in
             completion(artifact)
+        }.catch { error in
+            print(error)
+            completion(nil)
+        }
+    }
+
+    private static func artifacts(ids: [Int], completion: @escaping (([Record]?) -> Void)) {
+        let promises = ids.map { CachingNetwork.getArtifact(by: $0) }
+
+        firstly {
+            when(fulfilled: promises)
+        }.then { artifacts -> Void in
+            completion(artifacts)
         }.catch { error in
             print(error)
             completion(nil)
@@ -112,6 +148,19 @@ final class RecordFactory {
         }
     }
 
+    private static func schools(ids: [Int], completion: @escaping (([Record]?) -> Void)) {
+        let promises = ids.map { CachingNetwork.getTheme(by: $0) }
+
+        firstly {
+            when(fulfilled: promises)
+        }.then { schools -> Void in
+            completion(schools)
+        }.catch { error in
+            print(error)
+            completion(nil)
+        }
+    }
+
     private static func schools(completion: @escaping (([Record]?) -> Void)) {
         firstly {
             try CachingNetwork.getSchools()
@@ -142,6 +191,19 @@ final class RecordFactory {
             CachingNetwork.getEvent(by: id)
         }.then { event -> Void in
             completion(event)
+        }.catch { error in
+            print(error)
+            completion(nil)
+        }
+    }
+
+    private static func events(ids: [Int], completion: @escaping (([Record]?) -> Void)) {
+        let promises = ids.map { CachingNetwork.getTheme(by: $0) }
+
+        firstly {
+            when(fulfilled: promises)
+        }.then { events -> Void in
+            completion(events)
         }.catch { error in
             print(error)
             completion(nil)
@@ -184,6 +246,19 @@ final class RecordFactory {
         }
     }
 
+    private static func organizations(ids: [Int], completion: @escaping (([Record]?) -> Void)) {
+        let promises = ids.map { CachingNetwork.getTheme(by: $0) }
+
+        firstly {
+            when(fulfilled: promises)
+        }.then { organizations -> Void in
+            completion(organizations)
+        }.catch { error in
+            print(error)
+            completion(nil)
+        }
+    }
+
     private static func organizations(completion: @escaping (([Record]?) -> Void)) {
         firstly {
             try CachingNetwork.getOrganizations()
@@ -220,6 +295,19 @@ final class RecordFactory {
         }
     }
 
+    private static func themes(ids: [Int], completion: @escaping (([Record]?) -> Void)) {
+        let promises = ids.map { CachingNetwork.getTheme(by: $0) }
+
+        firstly {
+            when(fulfilled: promises)
+        }.then { themes -> Void in
+            completion(themes)
+        }.catch { error in
+            print(error)
+            completion(nil)
+        }
+    }
+
     private static func themes(completion: @escaping (([Record]?) -> Void)) {
         firstly {
             try CachingNetwork.getThemes()
@@ -236,6 +324,31 @@ final class RecordFactory {
             try CachingNetwork.getThemes(in: group)
         }.then { themes -> Void in
             completion(themes)
+        }.catch { error in
+            print(error)
+            completion(nil)
+        }
+    }
+
+
+    // MARK: Collections
+
+    private static func collection(id: Int, completion: @escaping ((Record?) -> Void)) {
+        firstly {
+            CachingNetwork.getCollection(by: id)
+        }.then { collection -> Void in
+            completion(collection)
+        }.catch { error in
+            print(error)
+            completion(nil)
+        }
+    }
+
+    private static func collections(completion: @escaping (([Record]?) -> Void)) {
+        firstly {
+            try CachingNetwork.getCollections()
+        }.then { collections -> Void in
+            completion(collections)
         }.catch { error in
             print(error)
             completion(nil)

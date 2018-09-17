@@ -37,9 +37,7 @@
 		22290C0D2028F9EC000E0573 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22290C0C2028F9EC000E0573 /* Assets.xcassets */; };
 		22290C102028F9EC000E0573 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22290C0E2028F9EC000E0573 /* Main.storyboard */; };
 		22290C2C2028FA1F000E0573 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C1F2028FA1E000E0573 /* MapViewController.swift */; };
-		22290C2D2028FA1F000E0573 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C202028FA1E000E0573 /* Place.swift */; };
 		22290C2E2028FA1F000E0573 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C222028FA1E000E0573 /* Style.swift */; };
-		22290C302028FA1F000E0573 /* Discipline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C272028FA1E000E0573 /* Discipline.swift */; };
 		22290C382028FA35000E0573 /* MapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C332028FA34000E0573 /* MapKit.swift */; };
 		22290C392028FA35000E0573 /* CoreGraphics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C342028FA34000E0573 /* CoreGraphics.swift */; };
 		22290C3A2028FA35000E0573 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C352028FA34000E0573 /* Int.swift */; };
@@ -52,6 +50,10 @@
 		225C92B92130CC6D00D629EE /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225C92B82130CC6D00D629EE /* ImageView.swift */; };
 		2261A39B2121FA7300EBAA02 /* TimelineControlLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2261A39A2121FA7300EBAA02 /* TimelineControlLayout.swift */; };
 		22667A28214088EF00F15A04 /* DispatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22667A27214088EF00F15A04 /* DispatchTimer.swift */; };
+		226A451A214F1FA300860F0E /* RecordType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226A4519214F1FA300860F0E /* RecordType.swift */; };
+		226A451C214F23B500860F0E /* RecordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226A451B214F23B500860F0E /* RecordManager.swift */; };
+		226A451E214F246600860F0E /* RecordNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226A451D214F246600860F0E /* RecordNetwork.swift */; };
+		226A4524214F342200860F0E /* TouchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226A4523214F342200860F0E /* TouchScreen.swift */; };
 		226B0CA121225DE300BE74E4 /* TimelineTailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226B0CA021225DE300BE74E4 /* TimelineTailView.swift */; };
 		226B0CA321225E0900BE74E4 /* TimelineTailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 226B0CA221225E0900BE74E4 /* TimelineTailView.xib */; };
 		226EA70120296C240067B542 /* NSImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226EA70020296C240067B542 /* NSImage.swift */; };
@@ -161,9 +163,7 @@
 		22290C112028F9EC000E0573 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		22290C122028F9EC000E0573 /* MapExplorer_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MapExplorer_macOS.entitlements; sourceTree = "<group>"; };
 		22290C1F2028FA1E000E0573 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
-		22290C202028FA1E000E0573 /* Place.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		22290C222028FA1E000E0573 /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
-		22290C272028FA1E000E0573 /* Discipline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Discipline.swift; sourceTree = "<group>"; };
 		22290C332028FA34000E0573 /* MapKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapKit.swift; sourceTree = "<group>"; };
 		22290C342028FA34000E0573 /* CoreGraphics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreGraphics.swift; sourceTree = "<group>"; };
 		22290C352028FA34000E0573 /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
@@ -176,6 +176,10 @@
 		225C92B82130CC6D00D629EE /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		2261A39A2121FA7300EBAA02 /* TimelineControlLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineControlLayout.swift; sourceTree = "<group>"; };
 		22667A27214088EF00F15A04 /* DispatchTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchTimer.swift; sourceTree = "<group>"; };
+		226A4519214F1FA300860F0E /* RecordType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordType.swift; sourceTree = "<group>"; };
+		226A451B214F23B500860F0E /* RecordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordManager.swift; sourceTree = "<group>"; };
+		226A451D214F246600860F0E /* RecordNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordNetwork.swift; sourceTree = "<group>"; };
+		226A4523214F342200860F0E /* TouchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchScreen.swift; sourceTree = "<group>"; };
 		226B0CA021225DE300BE74E4 /* TimelineTailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineTailView.swift; sourceTree = "<group>"; };
 		226B0CA221225E0900BE74E4 /* TimelineTailView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineTailView.xib; sourceTree = "<group>"; };
 		226EA70020296C240067B542 /* NSImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSImage.swift; sourceTree = "<group>"; };
@@ -400,6 +404,9 @@
 				A4A87619210015F200113F95 /* TimelineRange.swift */,
 				A44A56ED2135F35200F73D55 /* TimelineSelection.swift */,
 				22667A27214088EF00F15A04 /* DispatchTimer.swift */,
+				226A4519214F1FA300860F0E /* RecordType.swift */,
+				226A451D214F246600860F0E /* RecordNetwork.swift */,
+				226A4523214F342200860F0E /* TouchScreen.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -411,6 +418,7 @@
 				22AE5D1E20D2D72000D5FB9C /* ConnectionManager.swift */,
 				22004FF520E17A9400B1E740 /* TouchManager.swift */,
 				A45146FB2125E8EE00910A25 /* SelectionManager.swift */,
+				226A451B214F23B500860F0E /* RecordManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -419,7 +427,6 @@
 			isa = PBXGroup;
 			children = (
 				22A49871204749500024B46C /* Records */,
-				22A49870204749470024B46C /* Annotations */,
 				22A4986F2047493A0024B46C /* Touches */,
 				3F0254F12049D521004B831C /* LastTwo.swift */,
 				22004FE920DDA66100B1E740 /* Settings.swift */,
@@ -500,15 +507,6 @@
 				22FEF1E0202D005D001E9596 /* TouchProperties.swift */,
 			);
 			path = Touches;
-			sourceTree = "<group>";
-		};
-		22A49870204749470024B46C /* Annotations */ = {
-			isa = PBXGroup;
-			children = (
-				22290C272028FA1E000E0573 /* Discipline.swift */,
-				22290C202028FA1E000E0573 /* Place.swift */,
-			);
-			path = Annotations;
 			sourceTree = "<group>";
 		};
 		22A49871204749500024B46C /* Records */ = {
@@ -781,6 +779,8 @@
 				22A4986E2047492B0024B46C /* TouchState.swift in Sources */,
 				22D6F91E20B6836900C7FB5F /* NSApplication.swift in Sources */,
 				22004FEA20DDA66100B1E740 /* Settings.swift in Sources */,
+				226A451E214F246600860F0E /* RecordNetwork.swift in Sources */,
+				226A4524214F342200860F0E /* TouchScreen.swift in Sources */,
 				2290A03520E2E4BE00F028C4 /* FlippedCollectionView.swift in Sources */,
 				22046267204732A40067D9FB /* RecordNotifications.swift in Sources */,
 				221A66DC211B7181004525F5 /* TimelineFlagView.swift in Sources */,
@@ -793,6 +793,7 @@
 				22E54CB42124F34E00CBF5A5 /* TailDiagram.swift in Sources */,
 				222D1BC2214B3EF7007417B8 /* RecordCollection.swift in Sources */,
 				22667A28214088EF00F15A04 /* DispatchTimer.swift in Sources */,
+				226A451C214F23B500860F0E /* RecordManager.swift in Sources */,
 				2220D3FD202F7E4200B878D6 /* GestureManager.swift in Sources */,
 				22B85AF5209B7A6D0099F44E /* RotateGestureRecognizer.swift in Sources */,
 				22290C3A2028FA35000E0573 /* Int.swift in Sources */,
@@ -814,7 +815,6 @@
 				22A49873204749700024B46C /* JSON.swift in Sources */,
 				A44F1B6120FE8232005FEFD1 /* String.swift in Sources */,
 				2222B13E20D986AF00ECCB5D /* SettingsNotifications.swift in Sources */,
-				22290C302028FA1F000E0573 /* Discipline.swift in Sources */,
 				22F0EDFD2066DA1E0075E467 /* ListenerCallback.m in Sources */,
 				22B85AF7209B7A6D0099F44E /* PanGestureRecognizer.swift in Sources */,
 				222694C020699B10007DA6FA /* Record.swift in Sources */,
@@ -840,6 +840,7 @@
 				22B85AF6209B7A6D0099F44E /* SwipeGestureRecognizer.swift in Sources */,
 				2261A39B2121FA7300EBAA02 /* TimelineControlLayout.swift in Sources */,
 				2204621220472E3D0067D9FB /* MapHandler.swift in Sources */,
+				226A451A214F1FA300860F0E /* RecordType.swift in Sources */,
 				2222B13A20D85BD700ECCB5D /* ApplicationType.swift in Sources */,
 				22318DE0202B984F0092937C /* ResponseHandler.swift in Sources */,
 				22CABB5D212CA493009B7AEC /* TimelineType.swift in Sources */,
@@ -847,7 +848,6 @@
 				22290C2E2028FA1F000E0573 /* Style.swift in Sources */,
 				22FEF1D6202CFE8D001E9596 /* GestureDemoController.swift in Sources */,
 				22046268204732A40067D9FB /* MapNotifications.swift in Sources */,
-				22290C2D2028FA1F000E0573 /* Place.swift in Sources */,
 				22F0EDF82066D9500075E467 /* TouchListener.swift in Sources */,
 				A45146FC2125E8EE00910A25 /* SelectionManager.swift in Sources */,
 				2290A03E20E4102A00F028C4 /* TimelineHandler.swift in Sources */,

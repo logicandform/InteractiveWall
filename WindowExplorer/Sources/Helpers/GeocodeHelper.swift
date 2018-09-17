@@ -30,11 +30,9 @@ final class GeocodeHelper {
     // MARK: API
 
     func associateSchoolsToProvinces() {
-        RecordFactory.records(for: .school) { [weak self] schools in
-            if let schools = schools as? [School] {
-                self?.schools = Set(schools)
-                self?.handle(.next)
-            }
+        if let schoolRecords = RecordFactory.records(for: .school) as? [School] {
+            schools = Set(schoolRecords)
+            handle(.next)
         }
     }
 

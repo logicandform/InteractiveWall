@@ -60,11 +60,8 @@ class TestimonyViewController: BaseViewController, NSCollectionViewDelegateFlowL
     // MARK: Setup
 
     private func setupTestimonies() {
-        RecordFactory.records(for: .artifact, ids: Constants.artifactTestimonyIDs) { [weak self] artifacts in
-            if let artifacts = artifacts {
-                self?.load(artifacts)
-            }
-        }
+        let records = RecordFactory.records(for: .artifact, ids: Constants.artifactTestimonyIDs)
+        load(records)
     }
 
     private func setupCollectionView() {

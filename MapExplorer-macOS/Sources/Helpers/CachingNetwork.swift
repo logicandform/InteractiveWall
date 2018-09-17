@@ -19,7 +19,6 @@ enum NetworkError: Error {
 final class CachingNetwork {
 
     private struct Endpoints {
-        static let places = Configuration.serverURL + "/places/all/%d"
         static let schools = Configuration.serverURL + "/schools/all/%d"
         static let events = Configuration.serverURL + "/events/all/%d"
         static let collections = Configuration.serverURL + "/collections/all/%d"
@@ -34,23 +33,6 @@ final class CachingNetwork {
         let base64Credentials = credentialData.base64EncodedString(options: [])
         return ["Authorization": "Basic \(base64Credentials)"]
     }()
-
-
-    // MARK: Places
-
-    static func getPlaces(page: Int = 0, load: [Place] = []) throws -> Promise<[Place]> {
-        let url = String(format: Endpoints.places, page)
-
-        return Alamofire.request(url).responseJSON().then { json in
-            guard let places = try? ResponseHandler.serializePlaces(from: json), !places.isEmpty else {
-                return Promise(value: load)
-            }
-
-            let next = page + Constants.batchSize
-            let result = load + places
-            return try getPlaces(page: next, load: result)
-        }
-    }
 
 
     // MARK: Schools

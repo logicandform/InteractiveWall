@@ -11,7 +11,7 @@ struct RecordGroup {
 }
 
 
-class Record: Hashable, SearchItemDisplayable {
+class Record: Hashable {
 
     let type: RecordType
     let id: Int
@@ -45,6 +45,10 @@ class Record: Hashable, SearchItemDisplayable {
 
     var relatedRecords: [Record] {
         return recordGroups.reduce([]) { $0 + $1.records }
+    }
+
+    var proxy: RecordProxy {
+        return RecordProxy(id: id, type: type)
     }
 
     var hashValue: Int {
@@ -128,61 +132,10 @@ class Record: Hashable, SearchItemDisplayable {
         return []
     }
 
-    func relatedRecords(filterType type: RecordFilterType) -> [Record] {
-        if let recordType = type.recordType {
-            return relatedRecords(type: recordType)
-        } else if type == .all {
-            return relatedRecords
-        }
-
-        switch type {
-        case .image:
-            return relatedRecordsContainingImages()
-        default:
-            return []
-        }
-    }
-
-    func filterRelatedRecords(type: RecordFilterType, from records: [Record]) -> [Record] {
-        if let recordType = type.recordType {
-            return records.filter { $0.type == recordType }
-        } else if type == .all {
-            return records
-        }
-
-        switch type {
-        case .image:
-            return records.filter { $0.containsImage() }
-        default:
-            return []
-        }
-    }
-
 
     // MARK: Hashable
 
     static func == (lhs: Record, rhs: Record) -> Bool {
         return lhs.id == rhs.id && lhs.type == rhs.type && lhs.title == rhs.title
-    }
-
-
-    // MARK: Helpers
-
-    private func relatedRecordsContainingImages() -> [Record] {
-        return relatedRecords.filter { $0.containsImage() }
-    }
-
-    private func containsImage() -> Bool {
-        if let artifact = self as? Artifact, artifact.artifactType == .rg10 {
-            return false
-        }
-
-        for item in media {
-            if item.type == .image || item.type == .pdf {
-                return true
-            }
-        }
-
-        return false
     }
 }

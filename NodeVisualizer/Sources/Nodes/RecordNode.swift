@@ -19,6 +19,7 @@ class RecordNode: SKSpriteNode {
         static let labelSystemFontSize: CGFloat = 10
         static let buttonSize = CGSize(width: 8, height: 8)
         static let buttonOffset: CGFloat = 44
+        static let imageColorBlendPercent: CGFloat = 0.75
     }
 
 
@@ -92,15 +93,15 @@ class RecordNode: SKSpriteNode {
     }
 
     private func downloadImage(for record: Record) {
-        guard let media = record.media.first else {
+        guard let media = record.media.first, let thumbnail = media.thumbnail else {
             return
         }
 
-        Alamofire.request(media.thumbnail).responseImage { [weak self] response in
+        Alamofire.request(thumbnail).responseImage { [weak self] response in
             if let image = response.value {
                 let rounded = image.roundedCorners()
                 self?.texture = SKTexture(image: rounded)
-                self?.colorBlendFactor = 0.75
+                self?.colorBlendFactor = Constants.imageColorBlendPercent
             }
         }
     }

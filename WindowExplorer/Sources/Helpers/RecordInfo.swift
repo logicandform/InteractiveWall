@@ -6,14 +6,14 @@ import AppKit
 
 struct RecordInfo: Hashable {
     let id: Int
-    let map: Int
+    let app: Int
     let type: RecordType
 
     var hashValue: Int {
-        return id.hashValue + map.hashValue + type.hashValue
+        return id.hashValue + app.hashValue + type.hashValue
     }
 
     static func == (lhs: RecordInfo, rhs: RecordInfo) -> Bool {
-        return lhs.id == rhs.id && lhs.map == rhs.map && lhs.type == rhs.type
+        return lhs.id == rhs.id && lhs.app == rhs.app && lhs.type == rhs.type
     }
 }

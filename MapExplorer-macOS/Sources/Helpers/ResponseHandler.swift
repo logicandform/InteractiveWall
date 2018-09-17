@@ -2,18 +2,8 @@
 
 import Foundation
 
+
 final class ResponseHandler {
-
-
-    // MARK: Places
-
-    static func serializePlaces(from json: Any) throws -> [Place] {
-        guard let placesJSON = json as? [JSON] else {
-            throw NetworkError.badResponse
-        }
-
-        return placesJSON.compactMap { Place(json: $0) }
-    }
 
 
     // MARK: Schools

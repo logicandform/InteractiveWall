@@ -473,10 +473,8 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     }
 
     private func display(_ record: Record) {
-        RecordFactory.record(for: record.type, id: record.id) { [weak self] record in
-            if let record = record {
-                self?.relationshipHelper.display(WindowType.record(record))
-            }
+        if let record = RecordFactory.record(for: record.type, id: record.id) {
+            relationshipHelper.display(WindowType.record(record))
         }
     }
 

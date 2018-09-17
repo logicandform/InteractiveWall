@@ -35,8 +35,9 @@ class TestingDataManager {
 
         // Create relationship levels in dictionary
         createLevelsForRecords()
+    }
 
-        // Create entities from records
+    func createEntities() {
         for record in records {
             let proxy = RecordProxy(id: record.id, type: record.type)
             let levelsForProxy = relatedLevelsForProxy[proxy] ?? []
@@ -117,31 +118,28 @@ class TestingDataManager {
 
     // MARK: Helpers
 
-    private func createRecords(of type: RecordType, count: Int) -> [TestRecord] {
-        var result = [TestRecord]()
+    private func createRecords(of type: RecordType, count: Int) -> [Record] {
+        var result = [Record]()
         let min = records.count
         let max = min + count
 
         for index in min ..< max {
-            result.append(TestRecord(id: index, type: type))
+            if let record = testRecord(id: index, type: type) {
+                result.append(record)
+            }
         }
         return result
     }
 
 
     /// Relates records to a specified record and stores it locally in dictionary
-    private func associate(records: [TestRecord], to record: TestRecord) {
+    private func associate(records: [Record], to record: Record) {
         let filtered = records.filter { $0.proxy != record.proxy }
-        let orgGroup = RecordGroup(type: .organization, records: filtered.filter { $0.type == .organization })
-        let artGroup = RecordGroup(type: .artifact, records: filtered.filter { $0.type == .artifact })
-        let schoolGroup = RecordGroup(type: .school, records: filtered.filter { $0.type == .school })
-        let eventGroup = RecordGroup(type: .event, records: filtered.filter { $0.type == .event })
-        let themeGroup = RecordGroup(type: .theme, records: filtered.filter { $0.type == .theme })
-        record.recordGroups.append(orgGroup)
-        record.recordGroups.append(artGroup)
-        record.recordGroups.append(schoolGroup)
-        record.recordGroups.append(eventGroup)
-        record.recordGroups.append(themeGroup)
+        record.relatedOrganizations = filtered.compactMap { $0 as? Organization }
+        record.relatedArtifacts = filtered.compactMap { $0 as? Artifact }
+        record.relatedSchools = filtered.compactMap { $0 as? School }
+        record.relatedEvents = filtered.compactMap { $0 as? Event }
+        record.relatedThemes = filtered.compactMap { $0 as? Theme }
     }
 
     private func createLevelsForRecords() {
@@ -188,31 +186,25 @@ class TestingDataManager {
         }
         return false
     }
-}
 
+    func testRecord(id: Int, type: RecordType) -> Record? {
+        let json: JSON = [
+            "id": id,
+            "title": "\(id)",
+            "shortTitle": "\(id)",
+        ]
 
-private class TestRecord: Hashable, Record {
-    let id: Int
-    let type: RecordType
-
-    let title: String = ""
-    let description: String? = ""
-    let date: String? = ""
-    let media: [Media] = []
-    var recordGroups: [RecordGroup] = []
-    let priority: Int = 0
-
-
-    init(id: Int, type: RecordType) {
-        self.id = id
-        self.type = type
-    }
-
-    var hashValue: Int {
-        return id.hashValue
-    }
-
-    static func == (lhs: TestRecord, rhs: TestRecord) -> Bool {
-        return lhs.id == rhs.id
+        switch type {
+        case .school:
+            return School(json: json)
+        case .artifact:
+            return Artifact(json: json)
+        case .organization:
+            return Organization(json: json)
+        case .event:
+            return Event(json: json)
+        case .theme:
+            return Theme(json: json)
+        }
     }
 }

@@ -78,12 +78,8 @@ struct Settings {
         switch type {
         case .event:
             displayEvents = on
-        case .artifact:
-            displayArtifacts = on
         case .school:
             displaySchools = on
-        case .organization:
-            displayOrganizations = on
         case .collection:
             return
         }
@@ -101,12 +97,8 @@ struct Settings {
         switch type {
         case .event:
             return displayEvents
-        case .artifact:
-            return displayArtifacts
         case .school:
             return displaySchools
-        case .organization:
-            return displayOrganizations
         case .collection:
             return false
         }

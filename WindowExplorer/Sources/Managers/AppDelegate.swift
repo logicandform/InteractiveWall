@@ -9,15 +9,15 @@ let style = Style()
 
 
 struct Configuration {
-    static let touchPort: UInt16 = 13003
+    static let touchPort: UInt16 = 13001
     static let serverIP = "localhost"
     static let broadcastIP = "10.58.73.255"
     static let serverURL = "http://\(serverIP):3100"
     static let appsPerScreen = 2
     static let numberOfScreens = 1
     static let localMediaURLs = false
-    static let spawnMapsImmediately = true
-    static let touchScreenSize = CGSize(width: 21564, height: 12116)
+    static let spawnMapsImmediately = false
+    static let touchScreen = TouchScreen.ur9850
     static let refreshRate = 1.0 / 60.0
     static let resetTimoutDuration = 180.0
 }
@@ -49,7 +49,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         reachability?.whenReachable = { [weak self] _ in
-            self?.setupApplication()
+            self?.prepareApplication()
         }
         try? reachability?.startNotifier()
     }
@@ -60,6 +60,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 
     // MARK: Helpers
+
+    private func prepareApplication() {
+        RecordManager.instance.initialize { [weak self] in
+            self?.setupApplication()
+        }
+    }
 
     private func setupApplication() {
         WindowManager.instance.registerForNotifications()

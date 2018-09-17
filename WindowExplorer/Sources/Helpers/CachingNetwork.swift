@@ -64,45 +64,6 @@ final class CachingNetwork {
     }
 
 
-    // MARK: Places
-
-    static func getPlaces(page: Int = 0, load: [Place] = []) throws -> Promise<[Place]> {
-        let url = String(format: Endpoints.places, page)
-
-        return Alamofire.request(url).responseJSON().then { json in
-            guard let places = try? ResponseHandler.serializePlaces(from: json), !places.isEmpty else {
-                return Promise(value: load)
-            }
-
-            let next = page + Constants.batchSize
-            let result = load + places
-            return try getPlaces(page: next, load: result)
-        }
-    }
-
-    static func getPlace(by id: Int) -> Promise<Place> {
-        let url = String(format: Endpoints.placeByID, id)
-
-        return Alamofire.request(url).responseJSON().then { json in
-            try ResponseHandler.serializePlace(from: json)
-        }
-    }
-
-    static func getPlaces(in group: LetterGroup, page: Int = 0, load: [Place] = []) throws -> Promise<[Place]> {
-        let url = String(format: Endpoints.placesInGroup, group.rawValue, page)
-
-        return Alamofire.request(url).responseJSON().then { json in
-            guard let places = try? ResponseHandler.serializePlaces(from: json), !places.isEmpty else {
-                return Promise(value: load)
-            }
-
-            let next = page + Constants.batchSize
-            let result = load + places
-            return try getPlaces(in: group, page: next, load: result)
-        }
-    }
-
-
     // MARK: Organizations
 
     static func getOrganizations(page: Int = 0, load: [Organization] = []) throws -> Promise<[Organization]> {

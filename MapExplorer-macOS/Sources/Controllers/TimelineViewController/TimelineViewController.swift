@@ -111,7 +111,9 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         timelineCollectionView.register(NSNib(nibNamed: TimelineHeaderView.nibName, bundle: .main), forSupplementaryViewOfKind: TimelineHeaderView.supplementaryKind, withIdentifier: TimelineHeaderView.identifier)
         timelineCollectionView.register(NSNib(nibNamed: TimelineTailView.nibName, bundle: .main), forSupplementaryViewOfKind: TimelineTailView.supplementaryKind, withIdentifier: TimelineTailView.identifier)
         timelineScrollView.horizontalScroller?.alphaValue = 0
-        createRecords()
+        setupDataSource()
+        setupControls()
+        setupTimelineLayout()
     }
 
     private func setupControls() {
@@ -503,44 +505,16 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         DistributedNotificationCenter.default().postNotificationName(RecordNotification.display.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
-    private func createRecords() {
-        // Schools
-        let schoolChain = firstly {
-            try CachingNetwork.getSchools()
-        }.catch { error in
-            print(error)
-        }
+    private func setupDataSource() {
+        let schools = RecordManager.instance.records(for: .school)
+        let events = RecordManager.instance.records(for: .event)
+        let collections = RecordManager.instance.records(for: .collection).compactMap { $0 as? RecordCollection }.filter { $0.collectionType == .timeline }
+        let records: [Record] = schools + events + collections
 
-        // Events
-        let eventChain = firstly {
-            try CachingNetwork.getEvents()
-        }.catch { error in
-            print(error)
-        }
-
-        // Collections
-        let collectionChain = firstly {
-            try CachingNetwork.getCollections(type: .timeline)
-        }.catch { error in
-            print(error)
-        }
-
-        when(fulfilled: schoolChain, eventChain, collectionChain).then { [weak self] results in
-            self?.loadNetworkResults(results)
-        }
-    }
-
-    private func loadNetworkResults(_ results: (schools: [School], events: [Event], collections: [RecordCollection])) {
-        var records = [Record]()
-        records.append(contentsOf: results.schools)
-        records.append(contentsOf: results.events)
-        records.append(contentsOf: results.collections)
         source.setup(with: records)
-        setupControls()
-        setupTimelineData()
     }
 
-    private func setupTimelineData() {
+    private func setupTimelineLayout() {
         timelineCollectionView.collectionViewLayout = TimelineDecadeFlagLayout()
         timelineCollectionView.dataSource = source
         timelineHandler?.reset(animated: true)

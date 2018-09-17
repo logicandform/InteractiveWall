@@ -84,7 +84,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         overlay.canReplaceMapContent = true
         mapView.add(overlay)
         mapView.miniMapPosition = appID.isEven ? .nw : .ne
-        createRecords()
+        addRecordsToMap()
     }
 
     private func setupGestures() {
@@ -195,41 +195,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     // MARK: Helpers
 
-    private func createRecords() {
-        // Schools
-        let schoolChain = firstly {
-            try CachingNetwork.getSchools()
-        }.catch { error in
-            print(error)
-        }
-
-        // Events
-        let eventChain = firstly {
-            try CachingNetwork.getEvents()
-        }.catch { error in
-            print(error)
-        }
-
-        // Collections
-        let collectionsChain = firstly {
-            try CachingNetwork.getCollections(type: .map)
-        }.catch { error in
-            print(error)
-        }
-
-        when(fulfilled: schoolChain, eventChain, collectionsChain).then { [weak self] results in
-            self?.parseNetworkResults(results)
-        }
-    }
-
-    private func parseNetworkResults(_ results: (schools: [School], events: [Event], collections: [RecordCollection])) {
-        var records = [Record]()
-        records.append(contentsOf: results.schools)
-        records.append(contentsOf: results.events)
-        records.append(contentsOf: results.collections)
-        addToMap(records)
-    }
-
     private func postRecordNotification(for record: Record, at position: CGPoint) {
         guard let window = view.window else {
             return
@@ -240,52 +205,42 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         DistributedNotificationCenter.default().postNotificationName(RecordNotification.display.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
-    private func handleDoubleTap(at position: CGPoint) {
-        var mapRect = mapView.visibleMapRect
-        let scaledWidth = Constants.doubleTapScale * mapRect.size.width
-        let scaledHeight = Constants.doubleTapScale * mapRect.size.height
-        if scaledWidth >= Constants.minZoomWidth {
-            let translationX = (mapRect.size.width - scaledWidth) * Double(position.x / mapView.frame.width)
-            let translationY = (mapRect.size.height - scaledHeight) * (1 - Double(position.y / mapView.frame.height))
-            mapRect.size = MKMapSize(width: scaledWidth, height: scaledHeight)
-            mapRect.origin += MKMapPoint(x: translationX, y: translationY)
-            mapHandler?.animate(to: mapRect, with: .doubleTap)
-        }
-    }
+    private func addRecordsToMap() {
+        let schools = RecordManager.instance.records(for: .school)
+        let events = RecordManager.instance.records(for: .event)
+        let collections = RecordManager.instance.records(for: .collection).compactMap { $0 as? RecordCollection }.filter { $0.collectionType == .map }
+        let records: [Record] = schools + events + collections
 
-    private func addToMap(_ records: [Record]) {
         var adjustedRecords = [Record]()
-
         for record in records {
-            let adjustedRecord = adjustCoordinates(of: record, current: adjustedRecords)
-            adjustedRecords.append(adjustedRecord)
+            if let adjustedRecord = adjustCoordinate(of: record, current: adjustedRecords) {
+                adjustedRecords.append(adjustedRecord)
+            }
         }
 
         addAnnotations(for: adjustedRecords)
     }
 
-    private func adjustCoordinates(of record: Record, current records: [Record]) -> Record {
-        guard let recordCoordinate = record.coordinate else {
-            return record
+    private func adjustCoordinate(of record: Record, current records: [Record]) -> Record? {
+        guard let coordinate = record.coordinate else {
+            return nil
         }
 
-        var adjustedRecord = record
-
-        for runnerRecord in records {
-            guard let runnerCoordiante = runnerRecord.coordinate else {
+        for next in records {
+            guard let fixedCoordinate = next.coordinate else {
                 continue
             }
 
-            let latitudeCheck = recordCoordinate.latitude + Double(Constants.spacingBetweenAnnotations) > runnerCoordiante.latitude && recordCoordinate.latitude - Double(Constants.spacingBetweenAnnotations) < runnerCoordiante.latitude
-            let longitudeCheck = recordCoordinate.longitude + Double(Constants.spacingBetweenAnnotations) > runnerCoordiante.longitude && recordCoordinate.longitude - Double(Constants.spacingBetweenAnnotations) < runnerCoordiante.longitude
+            let latitudeConflict = coordinate.latitude + Double(Constants.spacingBetweenAnnotations) > fixedCoordinate.latitude && coordinate.latitude - Double(Constants.spacingBetweenAnnotations) < fixedCoordinate.latitude
+            let longitudeConflict = coordinate.longitude + Double(Constants.spacingBetweenAnnotations) > fixedCoordinate.longitude && coordinate.longitude - Double(Constants.spacingBetweenAnnotations) < fixedCoordinate.longitude
 
-            if latitudeCheck && longitudeCheck {
-                adjustedRecord.coordinate!.latitude += Double(Constants.spacingBetweenAnnotations)
-                return adjustCoordinates(of: adjustedRecord, current: records)
+            if latitudeConflict && longitudeConflict {
+                record.coordinate!.latitude -= Double(Constants.spacingBetweenAnnotations)
+                return adjustCoordinate(of: record, current: records)
             }
         }
 
-        return adjustedRecord
+        return record
     }
 
     private func addAnnotations(for records: [Record]) {

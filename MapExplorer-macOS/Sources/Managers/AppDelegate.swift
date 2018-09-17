@@ -8,7 +8,7 @@ struct Configuration {
     static let serverURL = "http://\(serverIP):3100"
     static let appsPerScreen = 2
     static let numberOfScreens = 1
-    static let touchScreenSize = CGSize(width: 21564, height: 12116)
+    static let touchScreen = TouchScreen.ur9850
     static let refreshRate = 1.0 / 60.0
     static let ungroupTimoutDuration = 30.0
 }
@@ -22,6 +22,15 @@ var appID = 0
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        RecordManager.instance.initialize { [weak self] in
+            self?.setupApplication()
+        }
+    }
+
+
+    // MARK: Helpers
+
+    private func setupApplication() {
         let screenIndex = Int(CommandLine.arguments[1]) ?? 0
         let appIndex = Int(CommandLine.arguments[2]) ?? 0
         screenID = screenIndex

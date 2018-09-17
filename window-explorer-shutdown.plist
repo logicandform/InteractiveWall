@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+
+        <!-- launchctl load -w window-explorer-shutdown.plist -->
+        <!-- launchctl unload -w window-explorer-shutdown.plist -->
+
+        <key>Label</key>
+        <string>window-explorer-shutdown.plist</string>
+
+        <key>Program</key>
+        <string>/Users/Tim/Xcode/UBC/MapExplorer/shutdown.sh</string>
+
+        <!-- Run at 7pm -->
+        <key>StartCalendarInterval</key>
+        <dict>
+        	<key>Hour</key>
+        	<integer>19</integer>
+        	<key>Minute</key>
+        	<integer>0</integer>
+        </dict>
+
+        <key>StandardErrorPath</key>
+        <string>/Users/irshdc/dev/MapExplorer/error.log</string>
+
+        <key>StandardOutPath</key>
+        <string>/Users/irshdc/dev/MapExplorer/info.log</string>
+</dict>
+</plist>
