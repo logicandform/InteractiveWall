@@ -5,16 +5,16 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Testimony View Controller-->
+        <!--Record Collection View Controller-->
         <scene sceneID="dVs-qO-myv">
             <objects>
-                <viewController id="Br5-Pb-O0I" customClass="TestimonyViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Br5-Pb-O0I" customClass="RecordCollectionViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="I0N-k6-TNG">
-                        <rect key="frame" x="0.0" y="0.0" width="416" height="579"/>
+                        <rect key="frame" x="0.0" y="0.0" width="416" height="720"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="oMV-1r-Wl3">
-                                <rect key="frame" x="0.0" y="539" width="416" height="40"/>
+                                <rect key="frame" x="0.0" y="680" width="416" height="40"/>
                                 <subviews>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="6MS-GT-ooe">
                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -65,16 +65,16 @@
                                     <constraint firstAttribute="trailing" secondItem="Os9-An-9ST" secondAttribute="trailing" id="wLb-bN-M3W"/>
                                 </constraints>
                             </customView>
-                            <scrollView wantsLayer="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XBj-Xh-EdN" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="416" height="534"/>
+                            <scrollView wantsLayer="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XBj-Xh-EdN" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
+                                <rect key="frame" x="15" y="20" width="386" height="660"/>
                                 <clipView key="contentView" drawsBackground="NO" id="R4d-54-FPP">
-                                    <rect key="frame" x="0.0" y="0.0" width="416" height="534"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="386" height="660"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <collectionView id="Db6-vA-kMp">
-                                            <rect key="frame" x="0.0" y="0.0" width="416" height="534"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="386" height="660"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                            <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="5" minimumLineSpacing="5" id="KKY-Qs-SOP">
+                                            <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="KKY-Qs-SOP">
                                                 <size key="itemSize" width="300" height="80"/>
                                             </collectionViewFlowLayout>
                                             <color key="primaryBackgroundColor" red="0.025183623660000001" green="0.93838995700000005" blue="0.1151539907" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -87,30 +87,51 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <constraints>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="Efb-aG-Af0"/>
-                                    <constraint firstAttribute="height" constant="534" id="FZD-Ie-5pC"/>
+                                    <constraint firstAttribute="height" constant="660" placeholder="YES" id="FZD-Ie-5pC"/>
                                 </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="5BZ-9f-VGD">
                                     <rect key="frame" x="-100" y="-100" width="300" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="zpx-AJ-fLv">
-                                    <rect key="frame" x="-100" y="-100" width="16" height="529"/>
+                                <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="zpx-AJ-fLv">
+                                    <rect key="frame" x="370" y="0.0" width="16" height="660"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="r1e-KB-R9v">
+                                <rect key="frame" x="0.0" y="0.0" width="416" height="20"/>
+                                <subviews>
+                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="g05-7Q-i7E">
+                                        <rect key="frame" x="198" y="0.0" width="20" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="20" id="XJs-UI-xX0"/>
+                                            <constraint firstAttribute="height" constant="20" id="bQf-Ob-iab"/>
+                                        </constraints>
+                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="down_arrow_indicator" id="kqh-4K-WKl"/>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="g05-7Q-i7E" firstAttribute="centerY" secondItem="r1e-KB-R9v" secondAttribute="centerY" id="44N-ss-s3E"/>
+                                    <constraint firstItem="g05-7Q-i7E" firstAttribute="centerX" secondItem="r1e-KB-R9v" secondAttribute="centerX" id="VB5-uN-4hZ"/>
+                                    <constraint firstAttribute="height" constant="20" id="v0E-vv-ppA"/>
+                                </constraints>
+                            </customView>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="oMV-1r-Wl3" secondAttribute="trailing" id="0fx-BX-Rh9"/>
                             <constraint firstItem="oMV-1r-Wl3" firstAttribute="leading" secondItem="I0N-k6-TNG" secondAttribute="leading" id="GCO-c9-p0X"/>
+                            <constraint firstAttribute="trailing" secondItem="r1e-KB-R9v" secondAttribute="trailing" id="KFa-mA-qpz"/>
+                            <constraint firstAttribute="bottom" secondItem="r1e-KB-R9v" secondAttribute="bottom" id="Vae-qY-S15"/>
                             <constraint firstItem="oMV-1r-Wl3" firstAttribute="top" secondItem="I0N-k6-TNG" secondAttribute="top" id="Zgy-f4-1fq"/>
-                            <constraint firstAttribute="bottom" secondItem="XBj-Xh-EdN" secondAttribute="bottom" id="aSk-Yn-95X"/>
-                            <constraint firstItem="XBj-Xh-EdN" firstAttribute="leading" secondItem="I0N-k6-TNG" secondAttribute="leading" id="gYW-uc-gD8"/>
-                            <constraint firstAttribute="trailing" secondItem="XBj-Xh-EdN" secondAttribute="trailing" id="vth-h8-GSl"/>
-                            <constraint firstItem="XBj-Xh-EdN" firstAttribute="top" secondItem="oMV-1r-Wl3" secondAttribute="bottom" constant="5" id="wF6-Vp-bH1"/>
+                            <constraint firstItem="r1e-KB-R9v" firstAttribute="top" secondItem="XBj-Xh-EdN" secondAttribute="bottom" id="eVQ-fh-tzo"/>
+                            <constraint firstItem="r1e-KB-R9v" firstAttribute="leading" secondItem="I0N-k6-TNG" secondAttribute="leading" id="fJR-kh-iI0"/>
+                            <constraint firstItem="XBj-Xh-EdN" firstAttribute="leading" secondItem="I0N-k6-TNG" secondAttribute="leading" constant="15" id="gYW-uc-gD8"/>
+                            <constraint firstAttribute="trailing" secondItem="XBj-Xh-EdN" secondAttribute="trailing" constant="15" id="vth-h8-GSl"/>
+                            <constraint firstItem="XBj-Xh-EdN" firstAttribute="top" secondItem="oMV-1r-Wl3" secondAttribute="bottom" id="wF6-Vp-bH1"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="arrowIndicatorContainer" destination="r1e-KB-R9v" id="gh5-RY-4P2"/>
                         <outlet property="collectionClipView" destination="R4d-54-FPP" id="JaR-Eh-ijD"/>
                         <outlet property="collectionScrollView" destination="XBj-Xh-EdN" id="HQM-a0-uyg"/>
                         <outlet property="collectionView" destination="Db6-vA-kMp" id="WUv-zl-2Zv"/>
@@ -122,10 +143,11 @@
                 </viewController>
                 <customObject id="uBE-LK-sXo" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-29" y="253.5"/>
+            <point key="canvasLocation" x="-29" y="253"/>
         </scene>
     </scenes>
     <resources>
         <image name="close button" width="15" height="15"/>
+        <image name="down_arrow_indicator" width="31" height="11"/>
     </resources>
 </document>

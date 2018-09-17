@@ -22,10 +22,10 @@ final class WindowFactory {
 
     private static func controller(for type: WindowType) -> NSViewController {
         switch type {
-        case let .record(displayable):
+        case let .record(model):
             let storyboard = NSStoryboard(name: RecordViewController.storyboard, bundle: .main)
             let recordViewController = storyboard.instantiateInitialController() as! RecordViewController
-            recordViewController.record = displayable
+            recordViewController.record = model
             recordViewController.type = type
             return recordViewController
         case let .image(media):
@@ -70,9 +70,12 @@ final class WindowFactory {
         case .border:
             let storyboard = NSStoryboard(name: BorderViewController.storyboard, bundle: .main)
             return storyboard.instantiateInitialController() as! BorderViewController
-        case .testimony:
-            let storyboard = NSStoryboard(name: TestimonyViewController.storyboard, bundle: .main)
-            return storyboard.instantiateInitialController() as! TestimonyViewController
+        case let .collection(model):
+            let storyboard = NSStoryboard(name: RecordCollectionViewController.storyboard, bundle: .main)
+            let collectionViewController = storyboard.instantiateInitialController() as! RecordCollectionViewController
+            collectionViewController.record = model
+            collectionViewController.type = type
+            return collectionViewController
         }
     }
 }

@@ -45,14 +45,14 @@
 		2204625D204730C70067D9FB /* TouchProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046252204730C70067D9FB /* TouchProperties.swift */; };
 		2222B13C20D9866900ECCB5D /* SettingsNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2222B13B20D9866900ECCB5D /* SettingsNotifications.swift */; };
 		2222C7BF20DC020200B76D12 /* RelatedItemListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2204620C20472DE80067D9FB /* RelatedItemListView.xib */; };
-		2222C7C320DC028000B76D12 /* TestimonyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2222C7C120DC028000B76D12 /* TestimonyViewController.swift */; };
-		2222C7C620DC028D00B76D12 /* Testimony.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2222C7C520DC028D00B76D12 /* Testimony.storyboard */; };
+		2222C7C320DC028000B76D12 /* RecordCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2222C7C120DC028000B76D12 /* RecordCollectionViewController.swift */; };
+		2222C7C620DC028D00B76D12 /* Collection.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2222C7C520DC028D00B76D12 /* Collection.storyboard */; };
 		2224125E206BFE9F008E7A9D /* RecordType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2224125D206BFE9F008E7A9D /* RecordType.swift */; };
 		222A94EB20D9D50A00B4AE4E /* MenuManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222A94EA20D9D50A00B4AE4E /* MenuManager.swift */; };
 		222D1BC0214B198B007417B8 /* RecordCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222D1BBF214B198B007417B8 /* RecordCollection.swift */; };
 		222D1BC4214C8505007417B8 /* RecordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222D1BC3214C8505007417B8 /* RecordManager.swift */; };
-		222EA54020DC14F400DB16CA /* TestimonyItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222EA53E20DC14F400DB16CA /* TestimonyItemView.swift */; };
-		222EA54120DC14F400DB16CA /* TestimonyItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 222EA53F20DC14F400DB16CA /* TestimonyItemView.xib */; };
+		222EA54020DC14F400DB16CA /* RecordCollectionItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222EA53E20DC14F400DB16CA /* RecordCollectionItemView.swift */; };
+		222EA54120DC14F400DB16CA /* RecordCollectionItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 222EA53F20DC14F400DB16CA /* RecordCollectionItemView.xib */; };
 		223613E720509D920024145C /* LastTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223613E620509D920024145C /* LastTwo.swift */; };
 		2243C7DD2093A10F00CE2CA0 /* ApplicationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2243C7DC2093A10F00CE2CA0 /* ApplicationType.swift */; };
 		2247670020562F65003E8790 /* MediaItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224766FE20562F65003E8790 /* MediaItemView.swift */; };
@@ -64,6 +64,8 @@
 		225FBBA3208E89C200B2CD3E /* Master.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 225FBBA2208E89C200B2CD3E /* Master.storyboard */; };
 		225FBBA5208EAF9400B2CD3E /* ControlAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225FBBA4208EAF9400B2CD3E /* ControlAction.swift */; };
 		226A4526214F343800860F0E /* TouchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226A4525214F343800860F0E /* TouchScreen.swift */; };
+		226A45292150230200860F0E /* InfoCollectionItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226A45272150230200860F0E /* InfoCollectionItemView.swift */; };
+		226A452A2150230200860F0E /* InfoCollectionItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 226A45282150230200860F0E /* InfoCollectionItemView.xib */; };
 		226D0582204FC38700D74711 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226D0581204FC38600D74711 /* Event.swift */; };
 		226D0587204FC78100D74711 /* CachingNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226D0586204FC78100D74711 /* CachingNetwork.swift */; };
 		226D0589204FC7BC00D74711 /* ResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226D0588204FC7BC00D74711 /* ResponseHandler.swift */; };
@@ -215,14 +217,14 @@
 		2204624E204730C70067D9FB /* School.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = School.swift; sourceTree = "<group>"; };
 		22046252204730C70067D9FB /* TouchProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchProperties.swift; sourceTree = "<group>"; };
 		2222B13B20D9866900ECCB5D /* SettingsNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotifications.swift; sourceTree = "<group>"; };
-		2222C7C120DC028000B76D12 /* TestimonyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestimonyViewController.swift; sourceTree = "<group>"; };
-		2222C7C520DC028D00B76D12 /* Testimony.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Testimony.storyboard; sourceTree = "<group>"; };
+		2222C7C120DC028000B76D12 /* RecordCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCollectionViewController.swift; sourceTree = "<group>"; };
+		2222C7C520DC028D00B76D12 /* Collection.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Collection.storyboard; sourceTree = "<group>"; };
 		2224125D206BFE9F008E7A9D /* RecordType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordType.swift; sourceTree = "<group>"; };
 		222A94EA20D9D50A00B4AE4E /* MenuManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuManager.swift; sourceTree = "<group>"; };
 		222D1BBF214B198B007417B8 /* RecordCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCollection.swift; sourceTree = "<group>"; };
 		222D1BC3214C8505007417B8 /* RecordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordManager.swift; sourceTree = "<group>"; };
-		222EA53E20DC14F400DB16CA /* TestimonyItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestimonyItemView.swift; sourceTree = "<group>"; };
-		222EA53F20DC14F400DB16CA /* TestimonyItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TestimonyItemView.xib; sourceTree = "<group>"; };
+		222EA53E20DC14F400DB16CA /* RecordCollectionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCollectionItemView.swift; sourceTree = "<group>"; };
+		222EA53F20DC14F400DB16CA /* RecordCollectionItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecordCollectionItemView.xib; sourceTree = "<group>"; };
 		223613E620509D920024145C /* LastTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastTwo.swift; sourceTree = "<group>"; };
 		2243C7DC2093A10F00CE2CA0 /* ApplicationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationType.swift; sourceTree = "<group>"; };
 		224766FE20562F65003E8790 /* MediaItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaItemView.swift; sourceTree = "<group>"; };
@@ -234,6 +236,8 @@
 		225FBBA2208E89C200B2CD3E /* Master.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Master.storyboard; sourceTree = "<group>"; };
 		225FBBA4208EAF9400B2CD3E /* ControlAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlAction.swift; sourceTree = "<group>"; };
 		226A4525214F343800860F0E /* TouchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchScreen.swift; sourceTree = "<group>"; };
+		226A45272150230200860F0E /* InfoCollectionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoCollectionItemView.swift; sourceTree = "<group>"; };
+		226A45282150230200860F0E /* InfoCollectionItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InfoCollectionItemView.xib; sourceTree = "<group>"; };
 		226D0581204FC38600D74711 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		226D0586204FC78100D74711 /* CachingNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachingNetwork.swift; sourceTree = "<group>"; };
 		226D0588204FC7BC00D74711 /* ResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseHandler.swift; sourceTree = "<group>"; };
@@ -431,21 +435,23 @@
 			path = Gestures;
 			sourceTree = "<group>";
 		};
-		2222C7C020DC024F00B76D12 /* TestimonyViewController */ = {
+		2222C7C020DC024F00B76D12 /* RecordCollectionViewController */ = {
 			isa = PBXGroup;
 			children = (
-				2222C7C520DC028D00B76D12 /* Testimony.storyboard */,
-				2222C7C120DC028000B76D12 /* TestimonyViewController.swift */,
+				2222C7C520DC028D00B76D12 /* Collection.storyboard */,
+				2222C7C120DC028000B76D12 /* RecordCollectionViewController.swift */,
 				222EA53D20DC117C00DB16CA /* Views */,
 			);
-			path = TestimonyViewController;
+			path = RecordCollectionViewController;
 			sourceTree = "<group>";
 		};
 		222EA53D20DC117C00DB16CA /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				222EA53F20DC14F400DB16CA /* TestimonyItemView.xib */,
-				222EA53E20DC14F400DB16CA /* TestimonyItemView.swift */,
+				222EA53F20DC14F400DB16CA /* RecordCollectionItemView.xib */,
+				222EA53E20DC14F400DB16CA /* RecordCollectionItemView.swift */,
+				226A45282150230200860F0E /* InfoCollectionItemView.xib */,
+				226A45272150230200860F0E /* InfoCollectionItemView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -626,7 +632,7 @@
 				8F5D5B9220A116CC00B9CBA9 /* MenuViewController */,
 				D992E20620533A0400EAB698 /* RecordViewController */,
 				22B85AFF209CF0D80099F44E /* SearchViewController */,
-				2222C7C020DC024F00B76D12 /* TestimonyViewController */,
+				2222C7C020DC024F00B76D12 /* RecordCollectionViewController */,
 				A44A56F32136184500F73D55 /* InfoViewController */,
 				A456F6BE20C73722004534A4 /* SettingsViewController */,
 			);
@@ -926,7 +932,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				225FBBA3208E89C200B2CD3E /* Master.storyboard in Resources */,
-				2222C7C620DC028D00B76D12 /* Testimony.storyboard in Resources */,
+				2222C7C620DC028D00B76D12 /* Collection.storyboard in Resources */,
 				1FAFF01C206EDD93005DC68B /* Soleil-09.otf in Resources */,
 				A456618520D9D43B00D23333 /* Border.storyboard in Resources */,
 				22A76FE720464764006C0AE7 /* PDF.storyboard in Resources */,
@@ -958,8 +964,9 @@
 				1FAFF022206EDD93005DC68B /* Soleil-02.otf in Resources */,
 				D992E20D20533A6200EAB698 /* Record.storyboard in Resources */,
 				1FAFF01A206EDD93005DC68B /* Soleil-00.otf in Resources */,
-				222EA54120DC14F400DB16CA /* TestimonyItemView.xib in Resources */,
+				222EA54120DC14F400DB16CA /* RecordCollectionItemView.xib in Resources */,
 				1FAFF018206EDD93005DC68B /* Soleil-03.otf in Resources */,
+				226A452A2150230200860F0E /* InfoCollectionItemView.xib in Resources */,
 				22B85B03209CF1040099F44E /* Search.storyboard in Resources */,
 				D9F24E64205B041200B9FCB8 /* Image.storyboard in Resources */,
 			);
@@ -1088,11 +1095,11 @@
 				2204621920472F2D0067D9FB /* PlayerControl.swift in Sources */,
 				22004FE420DD7A7F00B1E740 /* SettingsManager.swift in Sources */,
 				22B1E2CF204638CA00BDDF14 /* GestureHandler.swift in Sources */,
-				2222C7C320DC028000B76D12 /* TestimonyViewController.swift in Sources */,
+				2222C7C320DC028000B76D12 /* RecordCollectionViewController.swift in Sources */,
 				22A49878204749C30024B46C /* TouchState.swift in Sources */,
 				2204623720472FDF0067D9FB /* PacketType.swift in Sources */,
 				D9F24E5B2059DD1900B9FCB8 /* RecordNetwork.swift in Sources */,
-				222EA54020DC14F400DB16CA /* TestimonyItemView.swift in Sources */,
+				222EA54020DC14F400DB16CA /* RecordCollectionItemView.swift in Sources */,
 				223613E720509D920024145C /* LastTwo.swift in Sources */,
 				2204623320472FDF0067D9FB /* CoreGraphics.swift in Sources */,
 				8FA62A08206BFAFC004E6092 /* RecordInfo.swift in Sources */,
@@ -1143,6 +1150,7 @@
 				22046259204730C70067D9FB /* School.swift in Sources */,
 				226D0582204FC38700D74711 /* Event.swift in Sources */,
 				22AEAF0420B67E6700DD184B /* Math.swift in Sources */,
+				226A45292150230200860F0E /* InfoCollectionItemView.swift in Sources */,
 				222D1BC4214C8505007417B8 /* RecordManager.swift in Sources */,
 				22B85B07209CF5200099F44E /* SearchItemView.swift in Sources */,
 				A4551B6420DC38D100D8C029 /* MenuButton.swift in Sources */,

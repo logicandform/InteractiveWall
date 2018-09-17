@@ -393,7 +393,7 @@ final class ConnectionManager {
 
     private func beginResetTimer() {
         resetTimer?.invalidate()
-        resetTimer = Timer.scheduledTimer(withTimeInterval: Configuration.resetTimoutDuration, repeats: false) { [weak self] _ in
+        resetTimer = Timer.scheduledTimer(withTimeInterval: Configuration.resetTimeoutDuration, repeats: false) { [weak self] _ in
             self?.resetTimerFired()
         }
     }

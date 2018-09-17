@@ -16,13 +16,13 @@ final class Style {
     let eventColor = NSColor(calibratedRed: 145/255, green: 18/255, blue: 88/255, alpha: 1)
     let organizationColor = NSColor(calibratedRed: 16/255, green: 147/255, blue: 79/255, alpha: 1)
     let collectionColor = NSColor.orange
-    let testimonyColor = NSColor(calibratedRed: 0.96, green: 0.51, blue: 0.07, alpha: 1)
     let menuSelectedColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
     let menuUnselectedColor = NSColor(calibratedRed: 1, green: 1, blue: 1, alpha: 1)
     let menuButtonBackgroundColor = NSColor(deviceWhite: 0.2, alpha: 1)
 
     // Windows
     let recordWindowSize = CGSize(width: 416, height: 650)
+    let collectionRecordWindowSize = CGSize(width: 416, height: 650)
     let imageWindowSize = CGSize(width: 640, height: 410)
     let pdfWindowSize = CGSize(width: 600, height: 640)
     let playerWindowSize = CGSize(width: 640, height: 440)
@@ -30,7 +30,6 @@ final class Style {
     let menuWindowSize = CGSize(width: 700, height: 2160)
     let searchScrollViewSize = CGSize(width: 360, height: 600)
     let borderWindowSize = NSSize(width: 4, height: 2160)
-    let testimonyWindowSize = CGSize(width: 416, height: 579)
     let infoWindowSize = CGSize(width: 500, height: 800)
     let minMediaWindowWidth: CGFloat = 550
     let maxMediaWindowWidth: CGFloat = 700
@@ -147,10 +146,11 @@ final class Style {
     }
 
     var recordLargeTitleAttributes: [NSAttributedStringKey: Any] {
+        let fontSize: CGFloat = 28
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 0
-        paragraphStyle.maximumLineHeight = 33
-        let font = NSFont(name: "Soleil", size: 28) ?? NSFont.systemFont(ofSize: 28)
+        paragraphStyle.maximumLineHeight = fontSize + 5
+        let font = NSFont(name: "Soleil", size: fontSize) ?? NSFont.systemFont(ofSize: fontSize)
         return [.paragraphStyle: paragraphStyle,
                 .font: font,
                 .foregroundColor: NSColor.white,
@@ -185,12 +185,13 @@ final class Style {
     }
 
     var recordDescriptionAttributes: [NSAttributedStringKey: Any] {
+        let fontSize: CGFloat = 16
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 0
         paragraphStyle.paragraphSpacing = 8
-        paragraphStyle.maximumLineHeight = 21
+        paragraphStyle.maximumLineHeight = fontSize + 5
         paragraphStyle.lineBreakMode = .byWordWrapping
-        let font = NSFont(name: "Soleil", size: 16) ?? NSFont.systemFont(ofSize: 16)
+        let font = NSFont(name: "Soleil", size: fontSize) ?? NSFont.systemFont(ofSize: fontSize)
         return [.paragraphStyle: paragraphStyle,
                 .font: font,
                 .foregroundColor: NSColor.white,

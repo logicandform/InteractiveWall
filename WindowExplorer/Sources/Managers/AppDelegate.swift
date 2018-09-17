@@ -19,7 +19,8 @@ struct Configuration {
     static let spawnMapsImmediately = false
     static let touchScreen = TouchScreen.ur9850
     static let refreshRate = 1.0 / 60.0
-    static let resetTimoutDuration = 180.0
+    static let resetTimeoutDuration = 180.0
+    static let closeWindowTimeoutDuration = 180.0
 }
 
 

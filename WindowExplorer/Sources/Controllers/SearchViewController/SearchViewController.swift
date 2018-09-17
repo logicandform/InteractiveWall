@@ -58,7 +58,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         static let searchItemHeight: CGFloat = 70
         static let defaultWindowDragAreaColor = NSColor.lightGray
         static let collectionViewMargin: CGFloat = 5
-        static let closeWindowTimeoutPeriod = 300.0
     }
 
 
@@ -309,10 +308,9 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         })
     }
 
-    override func resetCloseWindowTimer() {
-        closeWindowTimer?.invalidate()
-        closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Constants.closeWindowTimeoutPeriod, repeats: false) { [weak self] _ in
-            self?.closeTimerFired()
+    override func closeWindowTimerFired() {
+        if relationshipHelper.isEmpty() {
+            animateViewOut()
         }
     }
 
@@ -344,12 +342,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
 
         item.set(highlighted: true)
-    }
-
-    private func closeTimerFired() {
-        if relationshipHelper.isEmpty() {
-            animateViewOut()
-        }
     }
 
     // Removes all state from the currently selected view of the given collectionview

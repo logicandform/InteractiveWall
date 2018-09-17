@@ -18,7 +18,6 @@ class BaseViewController: NSViewController, GestureResponder {
     weak var closeWindowTimer: Foundation.Timer?
 
     private struct Constants {
-        static let closeWindowTimeoutPeriod: TimeInterval = 300
         static let animationDuration = 0.5
     }
 
@@ -73,9 +72,13 @@ class BaseViewController: NSViewController, GestureResponder {
 
     func resetCloseWindowTimer() {
         closeWindowTimer?.invalidate()
-        closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Constants.closeWindowTimeoutPeriod, repeats: false) { [weak self] _ in
-            self?.animateViewOut()
+        closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Configuration.closeWindowTimeoutDuration, repeats: false) { [weak self] _ in
+            self?.closeWindowTimerFired()
         }
+    }
+
+    func closeWindowTimerFired() {
+        animateViewOut()
     }
 
     func animate(to origin: NSPoint) {

@@ -171,13 +171,13 @@
                                         </scroller>
                                     </scrollView>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="EXh-d9-a5i">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="20"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="416" height="20"/>
                                         <subviews>
                                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VQM-S5-OoI">
-                                                <rect key="frame" x="199" y="2" width="17" height="17"/>
+                                                <rect key="frame" x="199" y="0.0" width="20" height="20"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="17" id="Kcm-4v-8zt"/>
-                                                    <constraint firstAttribute="width" constant="17" id="SxH-HT-MfA"/>
+                                                    <constraint firstAttribute="height" constant="20" id="Kcm-4v-8zt"/>
+                                                    <constraint firstAttribute="width" constant="20" id="SxH-HT-MfA"/>
                                                 </constraints>
                                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="down_arrow_indicator" id="u2l-fZ-VH0"/>
                                             </imageView>
@@ -250,7 +250,7 @@
                                     <constraint firstItem="Zeo-g9-VHC" firstAttribute="centerX" secondItem="ufY-Kg-vBR" secondAttribute="centerX" id="e06-73-OD5"/>
                                     <constraint firstItem="FBg-bp-lkB" firstAttribute="leading" secondItem="83q-cx-wcX" secondAttribute="leading" id="fiA-kL-6Ij"/>
                                     <constraint firstAttribute="width" constant="416" id="gCO-Bx-Eu3"/>
-                                    <constraint firstAttribute="trailing" secondItem="EXh-d9-a5i" secondAttribute="trailing" constant="2" id="gNf-II-it3"/>
+                                    <constraint firstAttribute="trailing" secondItem="EXh-d9-a5i" secondAttribute="trailing" id="gNf-II-it3"/>
                                     <constraint firstAttribute="trailing" secondItem="ufY-Kg-vBR" secondAttribute="trailing" id="isU-1a-I8R"/>
                                     <constraint firstItem="ufY-Kg-vBR" firstAttribute="top" secondItem="83q-cx-wcX" secondAttribute="top" constant="40" id="ktu-Si-a2l"/>
                                     <constraint firstItem="bUk-IU-mgC" firstAttribute="top" secondItem="83q-cx-wcX" secondAttribute="top" constant="50" id="mU4-gf-iwB"/>

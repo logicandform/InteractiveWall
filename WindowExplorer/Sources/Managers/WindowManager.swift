@@ -75,28 +75,29 @@ final class WindowManager {
     @objc
     private func handleNotification(_ notification: NSNotification) {
         guard let info = notification.userInfo,
-            let map = info[Keys.app] as? Int,
+            let app = info[Keys.app] as? Int,
             let id = info[Keys.id] as? Int,
             let typeString = info[Keys.type] as? String,
             let type = RecordType(rawValue: typeString),
             let locationJSON = info[Keys.position] as? JSON,
             let location = CGPoint(json: locationJSON),
-            let record = RecordManager.instance.record(for: type, id: id) else {
+            let record = RecordManager.instance.record(for: type, id: id),
+            let windowType = WindowType(for: record) else {
             return
         }
 
-        let windowType = WindowType.record(record)
         let originX = location.x - windowType.size.width / 2
         let originY = max(style.windowMargins, location.y - windowType.size.height)
-        display(record, at: CGPoint(x: originX, y: originY), app: map)
+        let recordInfo = RecordInfo(id: record.id, app: app, type: record.type)
+        display(recordInfo, for: windowType, at: CGPoint(x: originX, y: originY), app: app)
     }
 
-    private func display(_ record: Record, at origin: CGPoint, app: Int) {
-        let info = RecordInfo(id: record.id, app: app, type: record.type)
-
+    private func display(_ info: RecordInfo, for windowType: WindowType, at origin: CGPoint, app: Int) {
         if let controller = controllerForRecord[info] as? RecordViewController {
             controller.animate(to: origin)
-        } else if let controller = display(.record(record), at: origin) {
+        } else if let controller = controllerForRecord[info] as? RecordCollectionViewController {
+            controller.animate(to: origin)
+        } else if let controller = display(windowType, at: origin) {
             controllerForRecord[info] = controller
         }
     }

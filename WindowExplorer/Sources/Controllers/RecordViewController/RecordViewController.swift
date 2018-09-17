@@ -40,7 +40,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private struct Constants {
         static let allRecordsTitle = "RECORDS"
         static let animationDuration = 0.5
-        static let closeWindowTimeoutPeriod = 300.0
         static let animationDistanceThreshold: CGFloat = 20
         static let showRelatedItemViewRotation: CGFloat = 45
         static let relatedItemsViewMargin: CGFloat = 12
@@ -91,8 +90,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         expandImageView.layer?.cornerRadius = Constants.expandImageViewCornerRadius
         expandImageView.layer?.backgroundColor = style.darkBackground.cgColor
         expandImageView.isHidden = record.media.isEmpty
-        arrowIndicatorContainerView.wantsLayer = true
-        arrowIndicatorContainerView.layer?.backgroundColor = style.darkBackground.cgColor
     }
 
     private func setupMediaView() {
@@ -193,7 +190,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         stackView.edgeInsets = stackViewEdgeInsets
         stackScrollView.updateGradient()
 
-        let titleAttributedString = NSAttributedString(string: record.title, attributes: style.recordLargeTitleAttributes)
+        let titleAttributedString = NSAttributedString(string: record.shortestTitle(), attributes: style.recordLargeTitleAttributes)
         let titleTextField = textField(for: titleAttributedString)
         stackView.addView(titleTextField, in: .top)
         stackView.setCustomSpacing(style.largeTitleTrailingSpace, after: titleTextField)
@@ -261,6 +258,12 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         })
     }
 
+    override func closeWindowTimerFired() {
+        if relationshipHelper.isEmpty() {
+            animateViewOut()
+        }
+    }
+
 
     // MARK: Gesture Handling
 
@@ -281,7 +284,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             let margin = offset.truncatingRemainder(dividingBy: 1)
             let duration = margin < 0.5 ? margin : 1 - margin
             let origin = CGPoint(x: rect.width * index, y: 0)
-            animateCollectionView(to: origin, duration: duration, for: Int(index))
+            animateCollectionView(to: origin, duration: Double(duration), for: Int(index))
         default:
             return
         }
@@ -551,13 +554,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         })
     }
 
-    override func resetCloseWindowTimer() {
-        closeWindowTimer?.invalidate()
-        closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Constants.closeWindowTimeoutPeriod, repeats: false) { [weak self] _ in
-            self?.closeTimerFired()
-        }
-    }
-
     override func close() {
         parentDelegate?.controllerDidClose(self)
         WindowManager.instance.closeWindow(for: self)
@@ -572,7 +568,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
     // MARK: Helpers
 
-    private func animateCollectionView(to point: CGPoint, duration: CGFloat, for index: Int) {
+    private func animateCollectionView(to point: CGPoint, duration: TimeInterval, for index: Int) {
         mediaView.animate(to: point, duration: duration, completion: { [weak self] in
             self?.pageControl.selectedPage = UInt(index)
         })
@@ -623,16 +619,10 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
         toggleRelatedItems(completion: {
             let origin = CGPoint(x: window.frame.maxX + style.windowMargins, y: window.frame.minY)
-            if let controller = WindowManager.instance.display(.record(record), at: origin) as? RecordViewController {
+            if let windowType = WindowType(for: record), let controller = WindowManager.instance.display(windowType, at: origin) as? RecordViewController {
                 controller.updateOrigin(from: window.frame, animating: false)
             }
         })
-    }
-
-    private func closeTimerFired() {
-        if relationshipHelper.isEmpty() {
-            animateViewOut()
-        }
     }
 
     /// If the position of the controller is close enough to the origin of animation returns false

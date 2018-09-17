@@ -5,22 +5,23 @@ import Alamofire
 import AlamofireImage
 
 
-class TestimonyItemView: NSCollectionViewItem {
-    static let identifier = NSUserInterfaceItemIdentifier(rawValue: "TestimonyItemView")
+class RecordCollectionItemView: NSCollectionViewItem {
+    static let identifier = NSUserInterfaceItemIdentifier(rawValue: "RecordCollectionItemView")
 
     @IBOutlet weak var mediaImageView: ImageView!
     @IBOutlet weak var titleTextField: NSTextField!
 
-    var tintColor = style.testimonyColor
-    var testimony: Media? {
+    var tintColor = style.collectionColor
+    var record: Record? {
         didSet {
-            load(testimony)
+            load(record)
         }
     }
 
-    struct Constants {
-        static let testimonyPlaceholderImage = NSImage(named: "testimony-placeholder")
+    private struct Constants {
         static let imageTransitionDuration = 0.3
+        static let screenEdgeMargin: CGFloat = 15
+        static let interItemMargin: CGFloat = 5
     }
 
 
@@ -39,7 +40,7 @@ class TestimonyItemView: NSCollectionViewItem {
         if highlighted {
             view.layer?.backgroundColor = tintColor.cgColor
         } else {
-            view.layer?.backgroundColor = style.darkBackground.cgColor
+            view.layer?.backgroundColor = CGColor.clear
         }
     }
 
@@ -51,15 +52,15 @@ class TestimonyItemView: NSCollectionViewItem {
 
     // MARK: Helpers
 
-    private func load(_ media: Media?) {
-        guard let media = media else {
+    private func load(_ record: Record?) {
+        guard let record = record else {
             return
         }
 
-        titleTextField.attributedStringValue = NSAttributedString(string: media.title ?? "", attributes: style.windowTitleAttributes)
+        titleTextField.attributedStringValue = NSAttributedString(string: record.shortestTitle(), attributes: style.recordSmallHeaderAttributes)
 
-        let placeholder = Constants.testimonyPlaceholderImage?.tinted(with: tintColor)
-        if let thumbnail = media.thumbnail {
+        let placeholder = record.type.placeholder.tinted(with: record.type.color)
+        if let media = record.media.first, let thumbnail = media.thumbnail {
             Alamofire.request(thumbnail).responseImage { [weak self] response in
                 if let image = response.value {
                     self?.setImage(image, scaling: .aspectFill)

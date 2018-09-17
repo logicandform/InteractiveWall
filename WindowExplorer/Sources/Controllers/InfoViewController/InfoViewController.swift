@@ -173,7 +173,7 @@ class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollec
             let margin = offset.truncatingRemainder(dividingBy: 1)
             let duration = margin < 0.5 ? margin : 1 - margin
             let origin = CGPoint(x: rect.width * index, y: 0)
-            animateCollectionView(to: origin, duration: duration, for: Int(index))
+            animateCollectionView(to: origin, duration: Double(duration), for: Int(index))
         default:
             return
         }
@@ -213,7 +213,7 @@ class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollec
     }
 
     /// Animate collection view to the view at the given index
-    private func animateCollectionView(to point: CGPoint, duration: CGFloat, for index: Int) {
+    private func animateCollectionView(to point: CGPoint, duration: TimeInterval, for index: Int) {
         infoCollectionView.animate(to: point, duration: duration, completion: { [weak self] in
             self?.finishedAnimatingToItem(index: index)
         })

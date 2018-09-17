@@ -14,7 +14,7 @@ enum WindowType: Equatable {
     case settings(app: Int)
     case info(app: Int)
     case border
-    case testimony
+    case collection(Record)
 
     init?(for media: Media) {
         switch media.type {
@@ -26,6 +26,15 @@ enum WindowType: Equatable {
             self = .pdf(media)
         case .unknown:
             return nil
+        }
+    }
+
+    init?(for record: Record) {
+        switch record.type {
+        case .school, .artifact, .organization, .event, .theme:
+            self = .record(record)
+        case .collection:
+            self = .collection(record)
         }
     }
 
@@ -49,8 +58,8 @@ enum WindowType: Equatable {
             return style.infoWindowSize
         case .border:
             return style.borderWindowSize
-        case .testimony:
-            return style.testimonyWindowSize
+        case .collection:
+            return style.collectionRecordWindowSize
         }
     }
 
@@ -58,7 +67,7 @@ enum WindowType: Equatable {
         switch self {
         case .border:
             return style.borderWindowLevel
-        case .record, .image, .player, .pdf, .search, .testimony:
+        case .record, .image, .player, .pdf, .search, .collection:
             return style.movingWindowLevel
         case .menu, .settings, .info:
             return style.staticWindowLevel
@@ -75,6 +84,8 @@ enum WindowType: Equatable {
             return lhsMedia == rhsMedia
         case let (.pdf(lhsMedia), .pdf(rhsMedia)):
             return lhsMedia == rhsMedia
+        case let (.collection(lhsModel), .collection(rhsModel)):
+            return lhsModel == rhsModel
         default:
             return false
         }
