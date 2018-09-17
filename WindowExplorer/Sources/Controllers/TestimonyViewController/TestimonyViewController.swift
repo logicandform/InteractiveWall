@@ -60,7 +60,7 @@ class TestimonyViewController: BaseViewController, NSCollectionViewDelegateFlowL
     // MARK: Setup
 
     private func setupTestimonies() {
-        let records = RecordFactory.records(for: .artifact, ids: Constants.artifactTestimonyIDs)
+        let records = RecordManager.instance.records(for: .artifact, ids: Constants.artifactTestimonyIDs)
         load(records)
     }
 

@@ -70,7 +70,7 @@ class SearchItemView: NSCollectionViewItem {
         }
 
         if let group = item as? LetterGroup, let type = type {
-            RecordFactory.count(for: type, in: group) { [weak self] count in
+            RecordNetwork.count(for: type, in: group) { [weak self] count in
                 if let count = count {
                     self?.attributionTextField.stringValue = "\(count)"
                 }

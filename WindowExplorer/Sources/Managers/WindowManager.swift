@@ -81,7 +81,7 @@ final class WindowManager {
             let type = RecordType(rawValue: typeString),
             let locationJSON = info[Keys.position] as? JSON,
             let location = CGPoint(json: locationJSON),
-            let record = RecordFactory.record(for: type, id: id) else {
+            let record = RecordManager.instance.record(for: type, id: id) else {
             return
         }
 

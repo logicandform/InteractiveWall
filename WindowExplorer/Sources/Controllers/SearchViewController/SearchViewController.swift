@@ -388,7 +388,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         case secondaryCollectionView:
             if let group = view.item as? LetterGroup, let type = view.type, view.item.title == selectedGroup {
                 view.set(loading: true)
-                RecordFactory.records(for: type, in: group) { [weak self] records in
+                RecordNetwork.records(for: type, in: group) { [weak self] records in
                     view.set(loading: false)
                     if let records = records {
                         self?.load(records, group: group.title, searchItem: view)
@@ -473,7 +473,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     }
 
     private func display(_ record: Record) {
-        if let record = RecordFactory.record(for: record.type, id: record.id) {
+        if let record = RecordManager.instance.record(for: record.type, id: record.id) {
             relationshipHelper.display(WindowType.record(record))
         }
     }
