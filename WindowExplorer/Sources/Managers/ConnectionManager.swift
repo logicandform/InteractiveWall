@@ -364,12 +364,12 @@ final class ConnectionManager {
     private func updateViews() {
         let numberOfApps = Configuration.appsPerScreen * Configuration.numberOfScreens
 
-        // Update the split button and lock view in each menu controller
         for app in (0 ..< numberOfApps) {
             let type = typeForApp(id: app)
             let statesForType = states(for: type)
+
+            // Update menu for app
             let menu = MenuManager.instance.menuForApp(id: app)
-            let border = MenuManager.instance.borderForApp(id: app)
             let neighborID = app.isEven ? app + 1 : app - 1
             let neighborPair = pairForApp(id: neighborID, type: type)
             let differentTypes = type != typeForApp(id: neighborID)
@@ -377,7 +377,15 @@ final class ConnectionManager {
             let mergeLocked = differentTypes || split && neighborPair == neighborID
             menu?.set(.split, selected: split)
             menu?.toggleMergeLock(on: mergeLocked)
-            border?.set(visible: split)
+
+            // Update border for app
+            let borderNeighborID = app + 1
+            if let borderNeighborType = typeForApp.at(index: borderNeighborID) {
+                let border = MenuManager.instance.borderForApp(id: app)
+                let borderDifferentTypes = type != borderNeighborType
+                let borderSplit = borderDifferentTypes || statesForType[app].group != statesForType[borderNeighborID].group
+                border?.set(visible: borderSplit)
+            }
         }
     }
 

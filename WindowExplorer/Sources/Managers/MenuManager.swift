@@ -10,8 +10,8 @@ final class MenuManager {
     // MenuViewControllers indexed by their associated appID
     private var menuForID = [Int: MenuViewController]()
 
-    // BorderViewControllers indexed by their associated screenID
-    private var borderForScreen = [Int: BorderViewController]()
+    // BorderViewControllers indexed by their associated appID
+    private var borderForApp = [Int: BorderViewController]()
 
 
     // MARK: Init
@@ -27,19 +27,21 @@ final class MenuManager {
             let screenFrame = NSScreen.at(position: screen).frame
 
             for appIndex in (0 ..< Configuration.appsPerScreen) {
-                let x = appIndex.isEven ? screenFrame.minX : screenFrame.maxX - style.menuWindowSize.width
-                let y = screenFrame.midY - screenFrame.height / 2
-                let borderXPosition = (screenFrame.size.width / 2) + screenFrame.origin.x - (style.borderWindowSize.width / 2)
                 let appID = appIndex + ((screen - 1) * Configuration.appsPerScreen)
 
-                if let menu = WindowManager.instance.display(.menu(app: appID), at: CGPoint(x: x, y: y)) as? MenuViewController {
+                // Setup Menus
+                let menuX = appIndex.isEven ? screenFrame.minX : screenFrame.maxX - style.menuWindowSize.width
+                let menuY = screenFrame.midY - screenFrame.height / 2
+                if let menu = WindowManager.instance.display(.menu(app: appID), at: CGPoint(x: menuX, y: menuY)) as? MenuViewController {
                     menuForID[appID] = menu
                 }
 
-                if !appIndex.isEven {
-                    let border = WindowManager.instance.display(.border, at: CGPoint(x: borderXPosition, y: screenFrame.minY)) as? BorderViewController
-                    border?.screenID = screen
-                    borderForScreen[screen] = border
+                // Setup Borders
+                let borderX = appIndex.isEven ? screenFrame.midX - style.borderWindowSize.width / 2 : screenFrame.maxX - style.borderWindowSize.width / 2
+                let maxID = Configuration.numberOfScreens * Configuration.appsPerScreen - 1
+                if appID < maxID {
+                    let border = WindowManager.instance.display(.border, at: CGPoint(x: borderX, y: 0)) as? BorderViewController
+                    borderForApp[appID] = border
                 }
             }
         }
@@ -50,7 +52,6 @@ final class MenuManager {
     }
 
     func borderForApp(id: Int) -> BorderViewController? {
-        let screen = (id / Configuration.appsPerScreen) + 1
-        return borderForScreen[screen]
+        return borderForApp[id]
     }
 }

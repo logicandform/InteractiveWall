@@ -160,7 +160,7 @@ final class TouchManager: SocketManagerDelegate {
     private func calculateApp(for touch: Touch) -> (Int, ApplicationType) {
         let screen = NSScreen.at(position: touch.screen)
         let baseAppForScreen = (touch.screen - 1) * Int(Configuration.appsPerScreen)
-        let appWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen) - 1
+        let appWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen) + 1
         let appForScreen = Int((touch.position.x - screen.frame.minX) / appWidth)
         let app = baseAppForScreen + appForScreen
         let type = ConnectionManager.instance.typeForApp(id: app)

@@ -9,8 +9,6 @@ class BorderViewController: NSViewController {
 
     @IBOutlet weak var border: BorderControl!
 
-    var screenID: Int!
-
 
     // MARK: API
 
