@@ -37,6 +37,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let annotationTitleZoomLevel = Double(92000000 / Configuration.appsPerScreen)
         static let spacingBetweenAnnotations = 0.008
         static let coordinateToMapPointOriginOffset = 180.0
+        static let animationDuration = 0.5
     }
 
     private struct Keys {
@@ -75,10 +76,20 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
 
+    // MARK: API
+
+    func fade(out: Bool) {
+        NSAnimationContext.runAnimationGroup({ _ in
+            NSAnimationContext.current.duration = Constants.animationDuration
+            view.animator().alphaValue = out ? 0 : 1
+        })
+    }
+
+
     // MARK: Setup
 
     private func setupMap() {
-        mapHandler = MapHandler(mapView: mapView)
+        mapHandler = MapHandler(mapView: mapView, controller: self)
         ConnectionManager.instance.mapHandler = mapHandler
         let overlay = MKTileOverlay(urlTemplate: tileURL)
         overlay.canReplaceMapContent = true

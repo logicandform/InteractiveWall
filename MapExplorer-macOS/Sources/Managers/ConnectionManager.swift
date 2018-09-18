@@ -23,6 +23,9 @@ final class ConnectionManager {
     /// The state for each map indexed by it's appID
     private var stateForMap: [AppState]
 
+    /// The state for each node indexed by it's appID
+    private var stateForNode: [AppState]
+
     /// The state for each timeline indexed by it's appID
     private var stateForTimeline: [AppState]
 
@@ -46,6 +49,7 @@ final class ConnectionManager {
         let initialState = AppState(pair: nil, group: nil)
         self.stateForMap = Array(repeating: initialState, count: numberOfApps)
         self.stateForTimeline = Array(repeating: initialState, count: numberOfApps)
+        self.stateForNode = Array(repeating: initialState, count: numberOfApps)
         self.typeForApp = Array(repeating: .mapExplorer, count: numberOfApps)
     }
 
@@ -100,7 +104,7 @@ final class ConnectionManager {
         case .timeline:
             return stateForTimeline
         case .nodeNetwork:
-            return []
+            return stateForNode
         }
     }
 
@@ -413,8 +417,20 @@ final class ConnectionManager {
 
     // Shows / hides the timeline
     private func transition(app: Int, to type: ApplicationType) {
-        if app == appID {
-            timelineHandler?.timelineViewController?.fade(out: type != .timeline)
+        guard app == appID else {
+            return
+        }
+
+        switch type {
+        case .mapExplorer:
+            timelineHandler?.timelineViewController?.fade(out: true)
+            mapHandler?.mapViewController?.fade(out: false)
+        case .timeline:
+            mapHandler?.mapViewController?.fade(out: false)
+            timelineHandler?.timelineViewController?.fade(out: false)
+        case .nodeNetwork:
+            timelineHandler?.timelineViewController?.fade(out: true)
+            mapHandler?.mapViewController?.fade(out: true)
         }
     }
 }

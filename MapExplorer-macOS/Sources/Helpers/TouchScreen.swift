@@ -7,7 +7,7 @@ enum TouchScreen {
     case ur9851
     case small
 
-    var size: CGSize {
+    var touchSize: CGSize {
         switch self {
         case .ur9851:
             return CGSize(width: 21564, height: 12116)

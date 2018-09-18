@@ -142,8 +142,8 @@ final class TouchManager: SocketManagerDelegate {
     /// Converts a position received from a touch screen to the coordinate of the current devices bounds.
     private func convert(_ touch: Touch, toScreen screen: Int) {
         let screen = NSScreen.at(position: screen)
-        let xPos = (touch.position.x / Configuration.touchScreen.size.width * CGFloat(screen.frame.width)) + screen.frame.origin.x
-        let yPos = (1 - touch.position.y / Configuration.touchScreen.size.height) * CGFloat(screen.frame.height)
+        let xPos = (touch.position.x / Configuration.touchScreen.touchSize.width * CGFloat(screen.frame.width)) + screen.frame.origin.x
+        let yPos = (1 - touch.position.y / Configuration.touchScreen.touchSize.height) * CGFloat(screen.frame.height)
         touch.position = CGPoint(x: xPos, y: yPos)
     }
 
@@ -160,7 +160,7 @@ final class TouchManager: SocketManagerDelegate {
     private func calculateApp(for touch: Touch) -> (Int, ApplicationType) {
         let screen = NSScreen.at(position: touch.screen)
         let baseAppForScreen = (touch.screen - 1) * Int(Configuration.appsPerScreen)
-        let appWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen)
+        let appWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen) - 1
         let appForScreen = Int((touch.position.x - screen.frame.minX) / appWidth)
         let app = baseAppForScreen + appForScreen
         let type = ConnectionManager.instance.typeForApp(id: app)

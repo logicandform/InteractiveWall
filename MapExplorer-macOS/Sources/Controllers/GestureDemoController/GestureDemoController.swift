@@ -133,8 +133,8 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
             return
         }
 
-        let xPos = (touch.position.x / Configuration.touchScreen.size.width * CGFloat(screen.frame.width)) + screen.frame.origin.x
-        let yPos = (1 - touch.position.y / Configuration.touchScreen.size.height) * CGFloat(screen.frame.height)
+        let xPos = (touch.position.x / Configuration.touchScreen.touchSize.width * CGFloat(screen.frame.width)) + screen.frame.origin.x
+        let yPos = (1 - touch.position.y / Configuration.touchScreen.touchSize.height) * CGFloat(screen.frame.height)
         touch.position = CGPoint(x: xPos, y: yPos)
     }
 }

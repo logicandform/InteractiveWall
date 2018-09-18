@@ -28,7 +28,7 @@ final class MenuManager {
 
             for appIndex in (0 ..< Configuration.appsPerScreen) {
                 let x = appIndex.isEven ? screenFrame.minX : screenFrame.maxX - style.menuWindowSize.width
-                let y = screenFrame.midY - style.menuWindowSize.height / 2
+                let y = screenFrame.midY - screenFrame.height / 2
                 let borderXPosition = (screenFrame.size.width / 2) + screenFrame.origin.x - (style.borderWindowSize.width / 2)
                 let appID = appIndex + ((screen - 1) * Configuration.appsPerScreen)
 

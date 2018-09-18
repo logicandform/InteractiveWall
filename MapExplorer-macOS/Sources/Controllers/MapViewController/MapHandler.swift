@@ -13,6 +13,7 @@ enum UserActivity {
 final class MapHandler {
 
     let mapView: MKMapView
+    weak var mapViewController: MapViewController?
     private var activityState = UserActivity.idle
     private var animationStart: Date?
     private weak var ungroupTimer: Foundation.Timer?
@@ -49,8 +50,9 @@ final class MapHandler {
 
     // MARK: Init
 
-    init(mapView: MKMapView) {
+    init(mapView: MKMapView, controller: MapViewController) {
         self.mapView = mapView
+        self.mapViewController = controller
     }
 
     deinit {

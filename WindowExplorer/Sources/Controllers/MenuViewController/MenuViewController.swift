@@ -105,15 +105,20 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         switch type {
         case .map where selected:
             set(.timeline, selected: false)
-            set(.settings, selected: false)
+            set(.nodeNetwork, selected: false)
+            set(.information, selected: false)
         case .timeline where selected:
             set(.map, selected: false)
-            set(.settings, selected: false)
+            set(.nodeNetwork, selected: false)
+            set(.information, selected: false)
+        case .nodeNetwork where selected:
+            set(.map, selected: false)
+            set(.timeline, selected: false)
+            set(.information, selected: false)
         case .information:
             set(infoMenuView.subviews.first, hidden: !selected, animated: true)
         case .search where selected:
             displaySearchChild()
-            set(.settings, selected: false)
             set(.information, selected: false)
         case .accessibility where selected:
             selectAccessibilityButton()
@@ -196,7 +201,7 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
             } else if !button.locked {
                 postMergeNotification()
             }
-        case .map, .timeline:
+        case .map, .timeline, .nodeNetwork:
             if !button.selected {
                 postTransitionNotification(for: type)
                 set(.information, selected: false)

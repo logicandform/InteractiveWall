@@ -16,6 +16,9 @@ final class ConnectionManager {
     /// The state for each map indexed by it's appID
     private var stateForMap: [AppState]
 
+    /// The state for each node indexed by it's appID
+    private var stateForNode: [AppState]
+
     /// The state for each timeline indexed by it's appID
     private var stateForTimeline: [AppState]
 
@@ -41,6 +44,7 @@ final class ConnectionManager {
         let initialState = AppState(pair: nil, group: nil)
         self.stateForMap = Array(repeating: initialState, count: numberOfApps)
         self.stateForTimeline = Array(repeating: initialState, count: numberOfApps)
+        self.stateForNode = Array(repeating: initialState, count: numberOfApps)
         self.typeForApp = Array(repeating: .mapExplorer, count: numberOfApps)
     }
 
@@ -95,7 +99,7 @@ final class ConnectionManager {
         case .timeline:
             return stateForTimeline
         case .nodeNetwork:
-            return []
+            return stateForNode
         }
     }
 

@@ -8,6 +8,7 @@ enum MenuButtonType {
     case split
     case map
     case timeline
+    case nodeNetwork
     case information
     case settings
     case search
@@ -21,6 +22,8 @@ enum MenuButtonType {
             return NSImage(named: "map-icon")
         case .timeline:
             return NSImage(named: "timeline-icon")
+        case .nodeNetwork:
+            return NSImage(named: "node-icon")
         case .information:
             return NSImage(named: "info-icon")
         case .settings:
@@ -40,6 +43,8 @@ enum MenuButtonType {
             return NSImage(named: "map-icon-active")
         case .timeline:
             return NSImage(named: "timeline-icon-active")
+        case .nodeNetwork:
+            return NSImage(named: "node-icon-active")
         case .information:
             return NSImage(named: "info-icon-active")
         case .settings:
@@ -57,6 +62,8 @@ enum MenuButtonType {
             return .mapExplorer
         case .timeline:
             return .timeline
+        case .nodeNetwork:
+            return .nodeNetwork
         default:
             return nil
         }
@@ -79,7 +86,7 @@ enum MenuButtonType {
         switch self {
         case .split, .accessibility:
             return style.menuSelectedColor
-        case .map, .timeline, .information, .settings, .search:
+        case .map, .timeline, .nodeNetwork, .information, .settings, .search:
             return style.darkBackground
         }
     }
@@ -93,6 +100,8 @@ enum MenuButtonType {
             return "Map"
         case .timeline:
             return "Timeline"
+        case .nodeNetwork:
+            return "Node Network"
         case .information:
             return "Information"
         case .settings:
@@ -111,11 +120,11 @@ enum MenuButtonType {
         case .timeline:
             return .timeline
         case .nodeNetwork:
-            return nil
+            return .nodeNetwork
         }
     }
 
     static var itemsInMenu: [MenuButtonType] {
-        return [.split, .map, .timeline, .information, .search]
+        return [.split, .map, .timeline, .nodeNetwork, .information, .search]
     }
 }
