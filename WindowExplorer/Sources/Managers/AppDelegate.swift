@@ -16,8 +16,8 @@ struct Configuration {
     static let appsPerScreen = 2
     static let numberOfScreens = 1
     static let localMediaURLs = false
-    static let spawnMapsImmediately = false
-    static let touchScreen = TouchScreen.ur9850
+    static let launchOnLoad = true
+    static let touchScreen = TouchScreen.small
     static let refreshRate = 1.0 / 60.0
     static let resetTimeoutDuration = 180.0
     static let closeWindowTimeoutDuration = 180.0
@@ -28,6 +28,7 @@ struct Paths {
 //    static let mapExplorer = "/Users/irshdc/Library/Developer/Xcode/DerivedData/MapExplorer-cebdevedrroybgdstwjueirgqasq/Build/Products/Debug/MapExplorer-macOS.app"
 //    static let mapExplorer = "/Users/juneha/Library/Developer/Xcode/DerivedData/MapExplorer-egvtpmlvcohzalbqgbyfrerzbcdi/Build/Products/Debug/MapExplorer-macOS.app"
     static let mapExplorer = "/Users/Tim/Library/Developer/Xcode/DerivedData/MapExplorer-btnxiobgycwlwddqfdkwxqhmpeum/Build/Products/Debug/MapExplorer-macOS.app"
+    static let nodeNetwork = "/Users/Tim/Library/Developer/Xcode/DerivedData/MapExplorer-btnxiobgycwlwddqfdkwxqhmpeum/Build/Products/Debug/NodeVisualizer.app"
 }
 
 
@@ -38,14 +39,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private struct ConsoleKeys {
         static let killAllPath = "/usr/bin/killall"
-        static let mapExplorerAppName = "MapExplorer-macOS"
     }
 
 
     // MARK: Lifecycle
 
     func applicationWillFinishLaunching(_ notification: Notification) {
-        run(command: ConsoleKeys.killAllPath, args: ConsoleKeys.mapExplorerAppName)
+        run(command: ConsoleKeys.killAllPath, args: ApplicationType.mapExplorer.appName)
+        run(command: ConsoleKeys.killAllPath, args: ApplicationType.nodeNetwork.appName)
     }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {

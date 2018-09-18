@@ -38,18 +38,18 @@ final class TouchManager: SocketManagerDelegate {
         // Check if the touch landed on a window, else notify the proper map application.
         if let manager = manager(of: touch) {
             manager.handle(touch)
-        } else if let owner = appOwner(of: touch) {
-            send(touch, to: owner)
+        } else if let (id, type) = appOwner(of: touch) {
+            send(touch, to: id, type: type)
 
             // If touch is outside map, send indicator touch to underlying map
-            if !app(owner, contains: touch) {
-                let underlyingApp = calculateApp(for: touch)
+            if !app(id, contains: touch) {
+                let (underlyingApp, underlyingType) = calculateApp(for: touch)
                 touch.state = .indicator
-                send(touch, to: underlyingApp)
+                send(touch, to: underlyingApp, type: underlyingType)
             }
         } else {
-            let app = calculateApp(for: touch)
-            send(touch, to: app)
+            let (app, type) = calculateApp(for: touch)
+            send(touch, to: app, type: type)
         }
     }
 
@@ -61,8 +61,8 @@ final class TouchManager: SocketManagerDelegate {
     // MARK: Sending CF Messages
 
     /// Sends a touch to the map and updates the state of the touches for map dictionary
-    private func send(_ touch: Touch, to app: Int) {
-        let portName = "AppListener\(app)"
+    private func send(_ touch: Touch, to app: Int, type: ApplicationType) {
+        let portName = type.port(app: app)
         if let serverPort = CFMessagePortCreateRemote(nil, portName as CFString) {
             let touchData = touch.toData()
             CFMessagePortSendRequest(serverPort, 1, touchData as CFData, 1, 1, nil, nil)
@@ -147,21 +147,24 @@ final class TouchManager: SocketManagerDelegate {
         touch.position = CGPoint(x: xPos, y: yPos)
     }
 
-    private func appOwner(of touch: Touch) -> Int? {
+    private func appOwner(of touch: Touch) -> (Int, ApplicationType)? {
         guard let (appID, _) = touchesForAppID.first(where: { $0.value.contains(touch) }) else {
             return nil
         }
 
-        return appID
+        let type = ConnectionManager.instance.typeForApp(id: appID)
+        return (appID, type)
     }
 
     /// Calculates the map index based off the x-position of the touch and the screens
-    private func calculateApp(for touch: Touch) -> Int {
+    private func calculateApp(for touch: Touch) -> (Int, ApplicationType) {
         let screen = NSScreen.at(position: touch.screen)
         let baseAppForScreen = (touch.screen - 1) * Int(Configuration.appsPerScreen)
         let appWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen)
         let appForScreen = Int((touch.position.x - screen.frame.minX) / appWidth)
-        return baseAppForScreen + appForScreen
+        let app = baseAppForScreen + appForScreen
+        let type = ConnectionManager.instance.typeForApp(id: app)
+        return (app, type)
     }
 
     private func app(_ app: Int, contains touch: Touch) -> Bool {

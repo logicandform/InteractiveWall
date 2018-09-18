@@ -81,6 +81,9 @@ final class Style {
     let zoomControlColor = NSColor(white: 0.2, alpha: 0.8)
 
     // Window Levels
+    let nodeWindowLevel = NSWindow.Level(27)
+    let mapWindowLevel = NSWindow.Level(28)
+    let timelineWindowLevel = NSWindow.Level(29)
     let borderWindowLevel = NSWindow.Level(30)
     let movingWindowLevel = NSWindow.Level(31)
     let staticWindowLevel = NSWindow.Level(32)

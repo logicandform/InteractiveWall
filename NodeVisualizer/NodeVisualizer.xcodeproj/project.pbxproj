@@ -12,6 +12,9 @@
 		226A4518214EF36200860F0E /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226A4517214EF36200860F0E /* Record.swift */; };
 		226A4520214F329500860F0E /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226A451F214F329500860F0E /* Environment.swift */; };
 		226A4522214F338C00860F0E /* TouchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226A4521214F338C00860F0E /* TouchScreen.swift */; };
+		22A1232121509410009DC176 /* TouchListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A1232021509410009DC176 /* TouchListener.swift */; };
+		22A1232421509460009DC176 /* ListenerCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 22A1232321509460009DC176 /* ListenerCallback.m */; };
+		22A1232E21509806009DC176 /* AnimationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A1232D21509805009DC176 /* AnimationType.swift */; };
 		22AEAEB620B67C2400DD184B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AEAEB520B67C2400DD184B /* AppDelegate.swift */; };
 		22AEAEBC20B67C2400DD184B /* MainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AEAEBB20B67C2400DD184B /* MainScene.swift */; };
 		22AEAEBE20B67C2400DD184B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AEAEBD20B67C2400DD184B /* MainViewController.swift */; };
@@ -71,7 +74,6 @@
 		CD97E33E20F5765900BB869E /* ClusterLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD97E33D20F5765900BB869E /* ClusterLayer.swift */; };
 		CD97E34020F584BA00BB869E /* LayerRenderComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD97E33F20F584BA00BB869E /* LayerRenderComponent.swift */; };
 		CDA5A90820DD70B700E1CF87 /* PhysicsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */; };
-		CDB6CE3220E4037D0033E328 /* AnimationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB6CE3120E4037D0033E328 /* AnimationType.swift */; };
 		CDC22D2820BDC6B0006BC0BE /* RecordNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC22D2720BDC6B0006BC0BE /* RecordNode.swift */; };
 		CDC39D48211B616300CE5960 /* NodeGestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC39D47211B616300CE5960 /* NodeGestureManager.swift */; };
 		D88D9E3C5FEA8DFC85B8FEF4 /* Pods_All_NodeVisualizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A74D0C56BCB99FB5CDC067 /* Pods_All_NodeVisualizer.framework */; };
@@ -83,6 +85,11 @@
 		226A4517214EF36200860F0E /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		226A451F214F329500860F0E /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		226A4521214F338C00860F0E /* TouchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchScreen.swift; sourceTree = "<group>"; };
+		22A1232021509410009DC176 /* TouchListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchListener.swift; sourceTree = "<group>"; };
+		22A123222150945F009DC176 /* NodeVisualizer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NodeVisualizer-Bridging-Header.h"; sourceTree = "<group>"; };
+		22A1232321509460009DC176 /* ListenerCallback.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListenerCallback.m; sourceTree = "<group>"; };
+		22A12325215094B1009DC176 /* ListenerCallback.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListenerCallback.h; sourceTree = "<group>"; };
+		22A1232D21509805009DC176 /* AnimationType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AnimationType.swift; path = Sources/Helpers/AnimationType.swift; sourceTree = SOURCE_ROOT; };
 		22AEAEB220B67C2400DD184B /* NodeVisualizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NodeVisualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22AEAEB520B67C2400DD184B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22AEAEBB20B67C2400DD184B /* MainScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScene.swift; sourceTree = "<group>"; };
@@ -148,7 +155,6 @@
 		CD97E33D20F5765900BB869E /* ClusterLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterLayer.swift; sourceTree = "<group>"; };
 		CD97E33F20F584BA00BB869E /* LayerRenderComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerRenderComponent.swift; sourceTree = "<group>"; };
 		CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsComponent.swift; sourceTree = "<group>"; };
-		CDB6CE3120E4037D0033E328 /* AnimationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationType.swift; sourceTree = "<group>"; };
 		CDC22D2720BDC6B0006BC0BE /* RecordNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordNode.swift; sourceTree = "<group>"; };
 		CDC39D47211B616300CE5960 /* NodeGestureManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeGestureManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -168,6 +174,7 @@
 		2218BF3A2118C09900153058 /* Gestures */ = {
 			isa = PBXGroup;
 			children = (
+				CDC39D47211B616300CE5960 /* NodeGestureManager.swift */,
 				22AEAED520B67D2600DD184B /* GestureManager.swift */,
 				22D6F8F920B6810600C7FB5F /* GestureHandler.swift */,
 			);
@@ -220,6 +227,7 @@
 			children = (
 				22AEAEC420B67C2500DD184B /* Info.plist */,
 				22AEAEC520B67C2500DD184B /* NodeVisualizer.entitlements */,
+				22A123222150945F009DC176 /* NodeVisualizer-Bridging-Header.h */,
 			);
 			path = Metadata;
 			sourceTree = "<group>";
@@ -239,7 +247,6 @@
 				CD27F40320BCB5B900375CBC /* RecordManager.swift */,
 				CD0FB28320D1AA9D0058A410 /* EntityManager.swift */,
 				CD1FC73D20DB06AA00B87D02 /* TestingDataManager.swift */,
-				CDC39D47211B616300CE5960 /* NodeGestureManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -258,10 +265,10 @@
 			isa = PBXGroup;
 			children = (
 				2218BF3A2118C09900153058 /* Gestures */,
+				22A1232D21509805009DC176 /* AnimationType.swift */,
 				CD97E33B20F4125800BB869E /* NodeCluster.swift */,
 				22D6F8FE20B6810600C7FB5F /* CachingNetwork.swift */,
 				22D6F8FF20B6810600C7FB5F /* JSON.swift */,
-				CDB6CE3120E4037D0033E328 /* AnimationType.swift */,
 				22D6F90020B6810600C7FB5F /* Math.swift */,
 				22D6F90120B6810600C7FB5F /* PriorityOrder.swift */,
 				CD27F40520BCBD5A00375CBC /* RecordNetwork.swift */,
@@ -273,6 +280,9 @@
 				22667A25214088D900F15A04 /* DispatchTimer.swift */,
 				226A451F214F329500860F0E /* Environment.swift */,
 				226A4521214F338C00860F0E /* TouchScreen.swift */,
+				22A1232021509410009DC176 /* TouchListener.swift */,
+				22A12325215094B1009DC176 /* ListenerCallback.h */,
+				22A1232321509460009DC176 /* ListenerCallback.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -463,6 +473,7 @@
 				TargetAttributes = {
 					22AEAEB120B67C2400DD184B = {
 						CreatedOnToolsVersion = 9.3.1;
+						LastSwiftMigration = 0940;
 					};
 				};
 			};
@@ -577,6 +588,7 @@
 				226A4518214EF36200860F0E /* Record.swift in Sources */,
 				CD0FB28A20D83B840058A410 /* RecordEntityBehavior.swift in Sources */,
 				22D6F90B20B6810600C7FB5F /* PriorityOrder.swift in Sources */,
+				22A1232E21509806009DC176 /* AnimationType.swift in Sources */,
 				22AEAEEA20B67D6800DD184B /* CoreGraphics.swift in Sources */,
 				226A4522214F338C00860F0E /* TouchScreen.swift in Sources */,
 				22D6F90F20B681A300C7FB5F /* LastTwo.swift in Sources */,
@@ -586,6 +598,7 @@
 				CD0FB28220D1A6300058A410 /* RecordEntity.swift in Sources */,
 				22D6F91020B681A300C7FB5F /* Media.swift in Sources */,
 				22D6F90C20B6810600C7FB5F /* ResponseHandler.swift in Sources */,
+				22A1232121509410009DC176 /* TouchListener.swift in Sources */,
 				22D6F91920B6824300C7FB5F /* PanGestureRecognizer.swift in Sources */,
 				22AEAEF820B67DA600DD184B /* Artifact.swift in Sources */,
 				22D6F91B20B6824300C7FB5F /* TapGestureRecognizer.swift in Sources */,
@@ -607,9 +620,9 @@
 				22AEAF0220B67E2C00DD184B /* Touch.swift in Sources */,
 				22AEAEF720B67DA600DD184B /* Theme.swift in Sources */,
 				CD97E33C20F4125800BB869E /* NodeCluster.swift in Sources */,
-				CDB6CE3220E4037D0033E328 /* AnimationType.swift in Sources */,
 				CD2CC5EC20B8E6D800FB3C10 /* RecordFilterType.swift in Sources */,
 				22D6F90620B6810600C7FB5F /* Style.swift in Sources */,
+				22A1232421509460009DC176 /* ListenerCallback.m in Sources */,
 				CD97E33E20F5765900BB869E /* ClusterLayer.swift in Sources */,
 				CD1FC73E20DB06AA00B87D02 /* TestingDataManager.swift in Sources */,
 				22D6F90420B6810600C7FB5F /* RecordType.swift in Sources */,
@@ -762,6 +775,7 @@
 			baseConfigurationReference = 89AF3FC4E45BBD39F89AFF7F /* Pods-All-NodeVisualizer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Metadata/NodeVisualizer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -773,6 +787,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = is.slant.NodeVisualizer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Metadata/NodeVisualizer-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
@@ -782,6 +798,7 @@
 			baseConfigurationReference = 72B5F6840D3186BD92A6EA0D /* Pods-All-NodeVisualizer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Metadata/NodeVisualizer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -793,6 +810,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = is.slant.NodeVisualizer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Metadata/NodeVisualizer-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 			};
 			name = Release;

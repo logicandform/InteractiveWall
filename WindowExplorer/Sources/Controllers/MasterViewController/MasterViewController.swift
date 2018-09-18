@@ -3,53 +3,29 @@
 import Cocoa
 
 
-struct ApplicationInfo {
-    var action: ControlAction
-    var status: ScreenState
-    var applications: [Int: NSRunningApplication]
-    var applicationTypesForMaps: [Int: ApplicationType]
-    var maps: [Int]
-}
-
-
 class MasterViewController: NSViewController {
     static var instance: MasterViewController?
+    static let storyboard = NSStoryboard.Name(rawValue: "Master")
 
-    @IBOutlet weak var leftScreen: NSView!
-    @IBOutlet weak var middleScreen: NSView!
-    @IBOutlet weak var rightScreen: NSView!
     @IBOutlet weak var actionSelectionButton: NSPopUpButton!
     @IBOutlet weak var consoleOutputTextView: NSTextView!
-    @IBOutlet weak var consoleOutputScrollView: NSScrollView!
-    @IBOutlet weak var restartServersTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var applyButtonBottomConstraint: NSLayoutConstraint!
 
-    var infoForScreen = [Int: ApplicationInfo]()
+    // Stores the map / timeline app for its associated id
+    private var applicationForID = [Int: NSRunningApplication]()
 
-    private var screens: [NSView] {
-        return [leftScreen, middleScreen, rightScreen]
-    }
+    // The node application that runs behind all other apps
+    private var nodeApplication: NSRunningApplication?
 
     private struct Constants {
-        static let storyboard = NSStoryboard.Name(rawValue: "Master")
         static let windowTitle = "Control Center"
-        static let screenBorderWidth: CGFloat = 12
-        static let imageTransitionDuration = 2.0
-        static let screenBackgroundColor = CGColor(red: 34/255, green: 34/255, blue: 34/255, alpha: 1.0)
-        static let mapExplorerScriptName = "map-explorer"
-        static let restartServersButtonPosition: CGFloat = 40
-        static let applyButtonPosition: CGFloat = 75
     }
 
-    private struct Keys {
-        static let id = "id"
-    }
-
-    private struct ConsoleKeys {
-        static let supervisorctlPath = "/usr/local/bin/supervisorctl"
+    private struct Commands {
         static let datePath = "/bin/date"
         static let restartAll = "restart all"
         static let dateArgs = "+%H:%M:%S   %d/%m/%y"
+        static let mapExplorerScript = "map-explorer"
+        static let supervisorctlPath = "/usr/local/bin/supervisorctl"
     }
 
 
@@ -61,7 +37,7 @@ class MasterViewController: NSViewController {
             return
         }
 
-        let storyboard = NSStoryboard(name: Constants.storyboard, bundle: .main)
+        let storyboard = NSStoryboard(name: MasterViewController.storyboard, bundle: .main)
         let controller = storyboard.instantiateInitialController() as! MasterViewController
         let screen = NSScreen.mainScreen
         let window = NSWindow()
@@ -71,6 +47,10 @@ class MasterViewController: NSViewController {
         window.setFrame(CGRect(origin: origin, size: controller.view.frame.size), display: true)
         window.makeKeyAndOrderFront(self)
         MasterViewController.instance = controller
+        if Configuration.launchOnLoad {
+            controller.launchMaps()
+            controller.launchNodeNetwork()
+        }
     }
 
     deinit {
@@ -83,89 +63,47 @@ class MasterViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupScreens()
-        setupConsoleOutputView()
-        setupActionButton()
-        registerForNotifications()
+        setupActions()
     }
 
 
     // MARK: API
 
-    /// Terminates all currently running applications
-    func close() {
-        screens.enumerated().forEach { screen, _ in
-            terminate(screen: screen)
+    func launchMaps() {
+        for screenID in (1 ... Configuration.numberOfScreens) {
+            for appIndex in (0 ..< Configuration.appsPerScreen) {
+                let appID = (screenID - 1) * Configuration.appsPerScreen + appIndex
+
+                if applicationForID[appID] == nil, let application = open(.mapExplorer, screenID: screenID, appID: appID) {
+                    applicationForID[appID] = application
+                }
+            }
         }
     }
 
-    func apply(_ action: ControlAction, status: ScreenState, toScreen screen: Int, on map: Int? = nil) {
-        // Ignore action if it's current
-        if let currentInfo = infoForScreen[screen], currentInfo.action == action && map == nil && status == currentInfo.status {
-            return
+    func launchNodeNetwork() {
+        if nodeApplication == nil {
+            nodeApplication = open(.nodeNetwork, screenID: nil, appID: nil)
         }
+    }
 
-        // Load new processes
-        if status == .connected {
-            switch action {
-            case .launchApplication:
-                guard let currentInfo = infoForScreen[screen] else {
-                    return
-                }
-
-                launchMaps(info: currentInfo, action: action, status: status, screen: screen, map: map)
-            case .closeApplication:
-                terminate(screen: screen, map: map)
-                infoForScreen[screen] = ApplicationInfo(action: action, status: status, applications: [:], applicationTypesForMaps: [:], maps: [])
-            default:
-                break
-            }
-        } else {
-            terminate(screen: screen, map: map)
-            infoForScreen[screen] = ApplicationInfo(action: action, status: status, applications: [:], applicationTypesForMaps: [:], maps: [])
+    func close() {
+        for (id, app) in applicationForID {
+            app.terminate()
+            applicationForID.removeValue(forKey: id)
         }
-
-        transition(screen: screen, to: status)
+        nodeApplication?.terminate()
+        nodeApplication = nil
     }
 
 
     // MARK: Setup
 
-    private func setupScreens() {
-        screens.enumerated().forEach { screen, screenView in
-            screenView.layer?.backgroundColor = Constants.screenBackgroundColor
-            screenView.layer?.borderWidth = Constants.screenBorderWidth
-            screenView.layer?.borderColor = CGColor.black
-
-            if Configuration.spawnMapsImmediately {
-                let action = connected(screen: screen) ? ControlAction.launchApplication : ControlAction.closeApplication
-                let state = connected(screen: screen) ? ScreenState.connected : ScreenState.disconnected
-                infoForScreen[screen] = ApplicationInfo(action: ControlAction.noAction, status: state, applications: [:], applicationTypesForMaps: [:], maps: [])
-                apply(action, status: state, toScreen: screen)
-            } else {
-                let action = ControlAction.closeApplication
-                let state = connected(screen: screen) ? ScreenState.connected : ScreenState.disconnected
-                apply(action, status: state, toScreen: screen)
-            }
-        }
-    }
-
-    private func setupConsoleOutputView() {
-        consoleOutputTextView.backgroundColor = NSColor.black
-        consoleOutputTextView.textColor = NSColor.white
-        consoleOutputTextView.isEditable = false
-        consoleOutputScrollView.isHidden = true
-    }
-
-    private func setupActionButton() {
+    private func setupActions() {
         actionSelectionButton.removeAllItems()
         ControlAction.menuSelectionActions.forEach { action in
             actionSelectionButton.addItem(withTitle: action.title)
         }
-    }
-
-    private func registerForNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(screensDidChange(_:)), name: NSApplication.didChangeScreenParametersNotification, object: nil)
     }
 
 
@@ -176,56 +114,35 @@ class MasterViewController: NSViewController {
             return
         }
 
-        if action == .reset {
-            postResetNotification()
-            return
-        }
-
-        infoForScreen.enumerated().forEach { _, info in
-            if info.value.status != ScreenState.disconnected {
-                apply(action, status: info.value.status, toScreen: info.key)
-            }
-        }
-    }
-
-    @IBAction func scriptRestartButtonClicked(_ sender: NSButton) {
-        sender.isEnabled = false
-
-        if consoleOutputScrollView.isHidden {
-            NSAnimationContext.runAnimationGroup({ _ in
-                NSAnimationContext.current.duration = 0.5
-                consoleOutputScrollView.animator().isHidden = false
-                restartServersTopConstraint.animator().constant = Constants.restartServersButtonPosition
-                applyButtonBottomConstraint.animator().constant = Constants.applyButtonPosition
-            }, completionHandler: { [weak self] in
-                self?.runSupervisorRestart()
-                sender.isEnabled = true
-            })
-        } else {
+        switch action {
+        case .launchEverything:
+            launchMaps()
+            launchNodeNetwork()
+        case .launchMaps:
+            launchMaps()
+        case .launchNodeNetwork:
+            launchNodeNetwork()
+        case .closeApplication:
+            close()
+        case .restartServers:
             runSupervisorRestart()
-            sender.isEnabled = true
         }
     }
 
 
     // MARK: Helpers
 
-    private func postResetNotification() {
-        let info: JSON = [Keys.id: 0]
-        DistributedNotificationCenter.default().postNotificationName(SettingsNotification.reset.name, object: nil, userInfo: info, deliverImmediately: true)
-    }
-
     private func runSupervisorRestart() {
         var outputString = ""
-        let time = runCommand(cmd: ConsoleKeys.datePath, args: ConsoleKeys.dateArgs)
-        let supervisorResponse = runCommand(cmd: ConsoleKeys.supervisorctlPath, args: ConsoleKeys.restartAll)
+        let time = runCommand(cmd: Commands.datePath, args: Commands.dateArgs)
+        let supervisorResponse = runCommand(cmd: Commands.supervisorctlPath, args: Commands.restartAll)
 
         time.output.forEach({ currentOutput in
             outputString += currentOutput
             outputString += "\n"
         })
         supervisorResponse.output.forEach({ currentOutput in
-            if !currentOutput.contains(Constants.mapExplorerScriptName) {
+            if !currentOutput.contains(Commands.mapExplorerScript) {
                 outputString += currentOutput
                 outputString += "\n"
             }
@@ -238,52 +155,16 @@ class MasterViewController: NSViewController {
         consoleOutputTextView.string = outputString.components(separatedBy: NSCharacterSet.newlines).filter({ !$0.isEmpty }).joined(separator: "\n")
     }
 
-    /// Terminate the processes associated with the given screen
-    private func terminate(screen: Int, map: Int? = nil) {
-        guard let info = infoForScreen[screen] else {
-            return
-        }
-
-        if let map = map, info.maps.contains(map) {
-            info.applications[map]?.terminate()
-            infoForScreen[screen]?.maps = info.maps.filter { $0 != map }
-            infoForScreen[screen]?.applications = info.applications.filter { $0.key != map }
-            infoForScreen[screen]?.applicationTypesForMaps = info.applicationTypesForMaps.filter { $0.key != map }
-            infoForScreen[screen]?.action = .launchApplication
-        } else if map == nil {
-            info.applications.forEach { application in
-                application.value.terminate()
-            }
-        }
-    }
-
-    /// Launch MapExplorer on the given screen
-    private func launchMaps(info: ApplicationInfo, action: ControlAction, status: ScreenState, screen: Int, map: Int? = nil) {
-        var applications = info.applications
-        var applicationTypes = info.applicationTypesForMaps
-        var maps = info.maps
-
-        if let map = map, !maps.contains(map), let application = open(.mapExplorer, screenID: screen + 1, appID: map) {
-            applications[map] = application
-            applicationTypes[map] = .mapExplorer
-            maps.append(map)
-        } else {
-            for map in 0 ..< Configuration.appsPerScreen {
-                if !maps.contains(map), let application = open(.mapExplorer, screenID: screen + 1, appID: map) {
-                    applications[map] = application
-                    applicationTypes[map] = .mapExplorer
-                    maps.append(map)
-                }
-            }
-        }
-
-        infoForScreen[screen] = ApplicationInfo(action: action, status: status, applications: applications, applicationTypesForMaps: applicationTypes, maps: maps)
-    }
 
     /// Open a known application type with the required parameters
     @discardableResult
-    private func open(_ application: ApplicationType, screenID: Int, appID: Int) -> NSRunningApplication? {
-        let args = [String(screenID), String(appID)]
+    private func open(_ application: ApplicationType, screenID: Int?, appID: Int?) -> NSRunningApplication? {
+        var args = [String]()
+
+        if let screen = screenID, let app = appID {
+            args.append(String(screen))
+            args.append(String(app))
+        }
 
         do {
             let url = URL(fileURLWithPath: application.path)
@@ -293,28 +174,6 @@ class MasterViewController: NSViewController {
         } catch {
             print("Failed to open application at path: \(application.path).")
             return nil
-        }
-    }
-
-    private func transition(screen: Int, to status: ScreenState) {
-        if let screenView = screens.at(index: screen), let image = status.image {
-            screenView.transition(to: image, duration: Constants.imageTransitionDuration)
-        }
-    }
-
-    /// Returns true of the given screen is currently connected
-    private func connected(screen: Int) -> Bool {
-        return NSScreen.screens.count > screen + 1
-    }
-
-    @objc
-    private func screensDidChange(_ notification: NSNotification) {
-        infoForScreen.forEach { screen, info in
-            if connected(screen: screen) && info.status == .disconnected {
-                apply(.closeApplication, status: .connected, toScreen: screen)
-            } else if !connected(screen: screen) {
-                apply(.closeApplication, status: .disconnected, toScreen: screen)
-            }
         }
     }
 

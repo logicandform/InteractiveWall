@@ -544,11 +544,11 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     override func animateViewOut() {
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration
+            relatedItemsHeader.animator().alphaValue = 0
             detailView.animator().alphaValue = 0
             relatedItemsView.animator().alphaValue = 0
             windowDragArea.animator().alphaValue = 0
             recordTypeSelectionView.stackview.animator().alphaValue = 0
-            relatedItemsHeader.animator().alphaValue = 0
         }, completionHandler: { [weak self] in
             self?.close()
         })

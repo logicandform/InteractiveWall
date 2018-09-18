@@ -18,6 +18,9 @@ final class Style {
     let organizationColor = NSColor(calibratedRed: 16/255, green: 147/255, blue: 79/255, alpha: 1)
     let imageFilterTypeColor = NSColor.red
 
+    // Windows
+    let nodeWindowLevel = NSWindow.Level(27)
+
     // Nodes
     let nodePhysicsBodyMass: CGFloat = 0.25
     let defaultNodePhysicsBodyRadius: CGFloat = 50

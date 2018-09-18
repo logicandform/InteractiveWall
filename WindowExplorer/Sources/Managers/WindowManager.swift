@@ -38,7 +38,7 @@ final class WindowManager {
             windows.removeValue(forKey: window)
             window.close()
 
-            if controller is RecordViewController, let info = controllerForRecord.first(where: { $0.value == controller }) {
+            if let info = controllerForRecord.first(where: { $0.value == controller }) {
                 controllerForRecord.removeValue(forKey: info.key)
             }
         }

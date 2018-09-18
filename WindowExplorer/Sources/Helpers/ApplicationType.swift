@@ -13,7 +13,25 @@ enum ApplicationType: String {
         case .mapExplorer, .timeline:
             return Paths.mapExplorer
         case .nodeNetwork:
-            return ""
+            return Paths.nodeNetwork
+        }
+    }
+
+    var appName: String {
+        switch self {
+        case .mapExplorer, .timeline:
+            return "MapExplorer-macOS"
+        case .nodeNetwork:
+            return "NodeVisualizer"
+        }
+    }
+
+    func port(app: Int) -> String {
+        switch self {
+        case .mapExplorer, .timeline:
+            return "AppListener\(app)"
+        case .nodeNetwork:
+            return "NodeListener"
         }
     }
 }

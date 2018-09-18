@@ -4,15 +4,15 @@ import Foundation
 
 
 enum TouchScreen {
-    case ur9850
+    case ur9851
     case small
 
     var size: CGSize {
         switch self {
-        case .ur9850:
+        case .ur9851:
             return CGSize(width: 21564, height: 12116)
         case .small:
-            return CGSize(width: 4095, height: 2242.5)
+            return CGSize(width: 4095, height: 4095)
         }
     }
 }

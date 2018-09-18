@@ -8,13 +8,11 @@ let style = Style()
 
 struct Configuration {
     static let env = Environment.production
-    static let touchPort: UInt16 = 13003
-    static let serverIP = "10.58.73.183"
-    static let broadcastIP = "10.58.73.255"
-    static let serverURL = "http://\(serverIP):3000"
+    static let serverIP = "localhost"
+    static let serverURL = "http://\(serverIP):3100"
     static let appsPerScreen = 2
     static let numberOfScreens = 1
-    static let touchScreen = TouchScreen.ur9850
+    static let touchScreen = TouchScreen.small
     static let refreshRate = 1.0 / 60.0
     static let loadMapsOnFirstScreen = false
 }
@@ -41,10 +39,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func setupApplication() {
-        let screen = NSScreen.at(position: 1)
         let controller = MainViewController.instance()
-        let frame = NSRect(x: screen.frame.minX, y: screen.frame.minY, width: screen.frame.width, height: screen.frame.height)
-        let window = NSWindow(contentViewController: controller)
+        let startScreen = NSScreen.at(position: 1)
+        let endScreen = NSScreen.at(position: Configuration.numberOfScreens)
+        let width = endScreen.frame.maxX - startScreen.frame.minX
+        let frame = NSRect(x: startScreen.frame.minX, y: startScreen.frame.minY, width: width, height: startScreen.frame.height)
+        let window = BorderlessWindow(frame: frame, controller: controller, level: style.nodeWindowLevel)
         window.setFrame(frame, display: true)
         window.makeKeyAndOrderFront(self)
     }

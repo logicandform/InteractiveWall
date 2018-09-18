@@ -19,7 +19,7 @@ class RecordCollectionViewController: BaseViewController, NSCollectionViewDelega
     private struct Constants {
         static let textCellHeight: CGFloat = 200
         static let mediaCellHeight: CGFloat = 160
-        static let animationDuration = 1.0
+        static let animationDuration = 0.5
     }
 
 
@@ -62,6 +62,7 @@ class RecordCollectionViewController: BaseViewController, NSCollectionViewDelega
     private func setupViews() {
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
+        view.alphaValue = 0
         windowDragArea.alphaValue = 0
         collectionView.alphaValue = 0
         titleLabel.attributedStringValue = NSAttributedString(string: record.shortestTitle(), attributes: style.windowTitleAttributes)
@@ -103,6 +104,7 @@ class RecordCollectionViewController: BaseViewController, NSCollectionViewDelega
             NSAnimationContext.current.duration = Constants.animationDuration
             windowDragArea.animator().alphaValue = 1
             collectionView.animator().alphaValue = 1
+            view.animator().alphaValue = 1
         })
     }
 
@@ -111,6 +113,7 @@ class RecordCollectionViewController: BaseViewController, NSCollectionViewDelega
             NSAnimationContext.current.duration = Constants.animationDuration
             windowDragArea.animator().alphaValue = 0
             collectionView.animator().alphaValue = 0
+            view.animator().alphaValue = 0
         }, completionHandler: { [weak self] in
             self?.close()
         })

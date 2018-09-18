@@ -5,19 +5,24 @@ import AppKit
 
 
 enum ControlAction {
-    case launchApplication
+    case launchEverything
+    case launchMaps
+    case launchNodeNetwork
     case closeApplication
-    case reset
-    case noAction
+    case restartServers
 
     init?(title: String) {
         switch title {
-        case ControlAction.launchApplication.title:
-            self = .launchApplication
+        case ControlAction.launchEverything.title:
+            self = .launchEverything
+        case ControlAction.launchMaps.title:
+            self = .launchMaps
+        case ControlAction.launchNodeNetwork.title:
+            self = .launchNodeNetwork
         case ControlAction.closeApplication.title:
             self = .closeApplication
-        case ControlAction.reset.title:
-            self = .reset
+        case ControlAction.restartServers.title:
+            self = .restartServers
         default:
             return nil
         }
@@ -25,18 +30,20 @@ enum ControlAction {
 
     var title: String {
         switch self {
-        case .launchApplication:
-            return "Launch Application"
-        case .reset:
-            return "Reset"
+        case .launchEverything:
+            return "Launch All Applications"
+        case .launchMaps:
+            return "Launch Maps"
+        case .launchNodeNetwork:
+            return "Launch Node Network"
         case .closeApplication:
-            return "Close Application"
-        case .noAction:
-            return ""
+            return "Close Applications"
+        case .restartServers:
+            return "Restart Servers"
         }
     }
 
     static var menuSelectionActions: [ControlAction] {
-        return [.launchApplication, .reset, .closeApplication]
+        return [.launchEverything, .launchMaps, .launchNodeNetwork, .closeApplication, .restartServers]
     }
 }
