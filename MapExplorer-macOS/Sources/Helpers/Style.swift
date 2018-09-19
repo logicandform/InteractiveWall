@@ -63,7 +63,7 @@ final class Style {
     }
 
     var mapLabelAttributes: [NSAttributedStringKey: Any] {
-        let fontSize: CGFloat = 11
+        let fontSize: CGFloat = 22
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 0
         paragraphStyle.paragraphSpacing = 8

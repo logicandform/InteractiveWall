@@ -77,8 +77,10 @@ enum WindowType: Equatable {
             return style.recordWindowLevel
         case .menu, .settings, .info:
             return style.menuWindowLevel
-        case .indicator, .master:
+        case .indicator:
             return style.touchIndicatorWindowLevel
+        case .master:
+            return style.masterWindowLevel
         }
     }
 

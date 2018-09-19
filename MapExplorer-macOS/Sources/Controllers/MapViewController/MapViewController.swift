@@ -21,6 +21,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private var mapHandler: MapHandler?
     private var recordForAnnotation = [CircleAnnotation: Record]()
     private var currentSettings = Settings()
+    private var lastUpdateRect = MapConstants.canadaRect
 
     private var tileURL: String {
         let tileID = max(screenID, 1)
@@ -28,15 +29,16 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     private struct Constants {
-        static let maxZoomWidth = Double(160000000 / Configuration.appsPerScreen)
+        static let maxZoomWidth = MapConstants.canadaRect.size.width / Double(Configuration.appsPerScreen)
         static let minZoomWidth = 424500.0
         static let touchRadius: CGFloat = 20
         static let annotationHitSize = CGSize(width: 50, height: 50)
         static let doubleTapScale = 0.5
-        static let annotationTitleZoomLevel = Double(92000000 / Configuration.appsPerScreen)
         static let spacingBetweenAnnotations = 0.008
         static let coordinateToMapPointOriginOffset = 180.0
         static let animationDuration = 0.5
+        static let recordWindowOffset: CGFloat = 20
+        static let mapTitleUpdateThreshold = 10000000.0
     }
 
     private struct Keys {
@@ -163,7 +165,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
                     }
                 } else if tap.state == .ended {
                     if let annotation = annotation as? CircleAnnotation, let record = recordForAnnotation[annotation] {
-                        postRecordNotification(for: record, at: CGPoint(x: positionInView.x, y: positionInView.y - 20.0))
+                        postRecordNotification(for: record, at: CGPoint(x: positionInView.x, y: positionInView.y - Constants.recordWindowOffset))
                         return
                     } else if let clusterAnnotation = annotation as? MKClusterAnnotation {
                         didSelect(clusterAnnotation: clusterAnnotation, at: position)
@@ -200,6 +202,26 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         }
 
         return MKAnnotationView()
+    }
+
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        guard shouldUpdateTextSize(for: mapView.visibleMapRect) else {
+            return
+        }
+
+        let annotations = mapView.annotations
+        let scale = textScale(for: mapView.visibleMapRect)
+        lastUpdateRect = mapView.visibleMapRect
+
+        for annotation in annotations {
+            if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
+                annotationView.setTitle(scale: scale)
+            }
+        }
+    }
+
+    private func shouldUpdateTextSize(for mapRect: MKMapRect) -> Bool {
+        return abs(lastUpdateRect.size.width - mapRect.size.width) >= Constants.mapTitleUpdateThreshold
     }
 
 
@@ -282,5 +304,12 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         restrainedRegion.span.longitudeDelta = clamp(restrainedRegion.span.longitudeDelta, min: minLongSpan, max: maxLongSpan)
 
         return restrainedRegion
+    }
+
+    private func textScale(for mapRect: MKMapRect) -> CGFloat {
+        let mapScalePercent = (mapRect.size.width - Constants.minZoomWidth) / (Constants.maxZoomWidth - Constants.minZoomWidth)
+        let scaleFactor = 1 - mapScalePercent
+        let clamped = clamp(scaleFactor, min: 0.5, max: 1)
+        return CGFloat(clamped)
     }
 }

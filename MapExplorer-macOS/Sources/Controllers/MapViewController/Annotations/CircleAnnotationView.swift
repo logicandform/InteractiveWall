@@ -11,7 +11,7 @@ class CircleAnnotationView: MKAnnotationView {
     private let circle2 = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.1, y: -Constants.radii.1), size: CGSize(width: Constants.radii.1 * 2.0, height: Constants.radii.1 * 2.0)))
     private let circle3 = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.2, y: -Constants.radii.2), size: CGSize(width: Constants.radii.2 * 2.0, height: Constants.radii.2 * 2.0)))
     private let center = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radii.3, y: -Constants.radii.3), size: CGSize(width: Constants.radii.3 * 2.0, height: Constants.radii.3 * 2.0)))
-    private let title = NSTextField(frame: NSRect(x: 18, y: -8, width: 500, height: 15))
+    private let title = CATextLayer()
 
     private struct Constants {
         static let radii: (CGFloat, CGFloat, CGFloat, CGFloat) = (18, 14, 10, 6)
@@ -34,18 +34,10 @@ class CircleAnnotationView: MKAnnotationView {
         animateOuterCircle()
     }
 
-    func showTitle(_ show: Bool) {
-        let alphaValue: CGFloat = show ? 1 : 0
-
-        if title.alphaValue != alphaValue {
-            let animation = CABasicAnimation(keyPath: "opacity")
-            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-            animation.fromValue = show ? 0 : 1
-            animation.toValue = alphaValue
-            animation.duration = Constants.animationDuration
-            title.layer?.add(animation, forKey: "opacity")
-            title.alphaValue = alphaValue
-        }
+    func setTitle(scale: CGFloat) {
+        let transform = CGAffineTransform.identity
+        let scaled = transform.scaledBy(x: scale, y: scale)
+        title.setAffineTransform(scaled)
     }
 
 
@@ -57,17 +49,16 @@ class CircleAnnotationView: MKAnnotationView {
         }
 
         wantsLayer = true
-        layer?.shadowColor = NSColor.black.cgColor
         layer?.shadowOpacity = 0.85
-        layer?.shadowRadius = 4.0
+        layer?.shadowRadius = 4
         layer?.shadowOffset = CGSize(width: 0, height: 4)
         layer?.masksToBounds = false
         clusteringIdentifier = CircleAnnotationView.identifier
-        title.isEditable = false
-        title.isSelectable = false
-        title.isBezeled = false
-        title.backgroundColor = NSColor.clear
-        title.attributedStringValue = NSMutableAttributedString(string: annotation.title ?? "", attributes: style.mapLabelAttributes)
+        title.backgroundColor = CGColor.clear
+        title.string = NSMutableAttributedString(string: annotation.title ?? "", attributes: style.mapLabelAttributes)
+        title.anchorPoint = CGPoint(x: 0, y: 0.5)
+        let titleSize = title.preferredFrameSize()
+        title.frame = CGRect(origin: CGPoint(x: 20, y: -titleSize.height/2), size: titleSize)
         circle1.wantsLayer = true
         circle2.wantsLayer = true
         circle3.wantsLayer = true
@@ -81,7 +72,7 @@ class CircleAnnotationView: MKAnnotationView {
         center.layer?.backgroundColor = CGColor.white
         center.layer?.cornerRadius = Constants.radii.3
         center.alphaValue = 0
-        addSubview(title)
+        layer?.addSublayer(title)
         addSubview(center)
         addSubview(circle1)
         addSubview(circle2)
