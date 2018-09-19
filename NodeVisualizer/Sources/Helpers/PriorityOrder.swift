@@ -37,7 +37,13 @@ class PriorityOrder {
             priority += Priority.coordinate
         }
         if !record.media.isEmpty {
-            priority += Priority.media
+            if let artifact = record as? Artifact {
+                if artifact.artifactType != .rg10 {
+                    priority += Priority.media
+                }
+            } else {
+                priority += Priority.media
+            }
         }
         if !record.relatedRecords(type: .artifact).isEmpty {
             priority += Priority.relatedSchools
