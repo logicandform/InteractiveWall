@@ -76,6 +76,12 @@ final class WindowFactory {
             collectionViewController.record = model
             collectionViewController.type = type
             return collectionViewController
+        case .indicator:
+            let storyboard = NSStoryboard(name: IndicatorViewController.storyboard, bundle: .main)
+            return storyboard.instantiateInitialController() as! IndicatorViewController
+        case .master:
+            let storyboard = NSStoryboard(name: MasterViewController.storyboard, bundle: .main)
+            return storyboard.instantiateInitialController() as! MasterViewController
         }
     }
 }

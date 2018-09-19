@@ -47,8 +47,6 @@ final class TouchManager {
                 managerForTouch.removeValue(forKey: touch)
                 manager.handle(touch)
             }
-        case .indicator:
-            handleTouchIndicator(touch)
         }
     }
 
@@ -58,14 +56,6 @@ final class TouchManager {
         }
 
         managerForTouch[touch] = manager
-        manager.handle(touch)
-    }
-
-    private func handleTouchIndicator(_ touch: Touch) {
-        guard let type = ConnectionManager.instance.typeForApp(id: appID), type == .mapExplorer, let manager = managerForType[type] else {
-            return
-        }
-
         manager.handle(touch)
     }
 }

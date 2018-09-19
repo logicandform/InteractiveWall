@@ -54,8 +54,6 @@ final class NodeGestureManager {
             if let handler = handler(for: touch) {
                 handler.handle(touch)
             }
-        case .indicator:
-            return
         }
     }
 

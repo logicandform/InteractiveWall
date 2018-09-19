@@ -56,8 +56,6 @@ final class GestureManager {
             if let handler = handler(for: touch) {
                 handler.handle(touch)
             }
-        case .indicator:
-            return
         }
     }
 

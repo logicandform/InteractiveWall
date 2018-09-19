@@ -120,8 +120,6 @@ class GestureDemoController: NSViewController, SocketManagerDelegate, GestureRes
             let update = updateForTouch[touch]!
             updateForTouch[touch] = !update
             return update
-        case .indicator:
-            return false
         }
 
         return true

@@ -7,6 +7,15 @@ enum TouchScreen {
     case ur9851
     case small
 
+    var frameSize: CGSize {
+        switch self {
+        case .ur9851:
+            return CGSize(width: 3840, height: 2160)
+        case .small:
+            return CGSize(width: 1920, height: 1080)
+        }
+    }
+
     var touchSize: CGSize {
         switch self {
         case .ur9851:

@@ -9,11 +9,14 @@ class MasterViewController: NSViewController {
 
     @IBOutlet weak var actionSelectionButton: NSPopUpButton!
     @IBOutlet weak var consoleOutputTextView: NSTextView!
+    @IBOutlet weak var titleTextField: NSTextField!
+    @IBOutlet weak var windowDragArea: NSView!
+    @IBOutlet weak var windowDragAreaHighlight: NSView!
 
     // Stores the map / timeline app for its associated id
     private var applicationForID = [Int: NSRunningApplication]()
 
-    // The node application that runs behind all other apps
+    // The node network application
     private var nodeApplication: NSRunningApplication?
 
     private struct Constants {
@@ -31,25 +34,11 @@ class MasterViewController: NSViewController {
 
     // MARK: Init
 
-    /// Used to lazy load static singleton instance
     static func instantiate() {
-        guard MasterViewController.instance == nil else {
-            return
-        }
-
-        let storyboard = NSStoryboard(name: MasterViewController.storyboard, bundle: .main)
-        let controller = storyboard.instantiateInitialController() as! MasterViewController
-        let screen = NSScreen.mainScreen
-        let window = NSWindow()
-        let origin = CGPoint(x: screen.frame.midX - controller.view.frame.width/2, y: screen.frame.midY - controller.view.frame.height/2)
-        window.contentViewController = controller
-        window.title = Constants.windowTitle
-        window.setFrame(CGRect(origin: origin, size: controller.view.frame.size), display: true)
-        window.makeKeyAndOrderFront(self)
-        MasterViewController.instance = controller
-        if Configuration.launchOnLoad {
-            controller.launchMaps()
-            controller.launchNodeNetwork()
+        if MasterViewController.instance == nil {
+            let screen = NSScreen.mainScreen
+            let origin = CGPoint(x: screen.frame.midX - style.masterWindowSize.width/2, y: screen.frame.midY - style.masterWindowSize.height/2)
+            MasterViewController.instance = WindowManager.instance.display(.master, at: origin) as? MasterViewController
         }
     }
 
@@ -63,29 +52,17 @@ class MasterViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupView()
         setupActions()
+        setupGestures()
+        if Configuration.launchOnLoad {
+            launchMaps()
+            launchNodeNetwork()
+        }
     }
 
 
     // MARK: API
-
-    func launchMaps() {
-        for screenID in (1 ... Configuration.numberOfScreens) {
-            for appIndex in (0 ..< Configuration.appsPerScreen) {
-                let appID = (screenID - 1) * Configuration.appsPerScreen + appIndex
-
-                if applicationForID[appID] == nil, let application = open(.mapExplorer, screenID: screenID, appID: appID) {
-                    applicationForID[appID] = application
-                }
-            }
-        }
-    }
-
-    func launchNodeNetwork() {
-        if nodeApplication == nil {
-            nodeApplication = open(.nodeNetwork, screenID: nil, appID: nil)
-        }
-    }
 
     func close() {
         for (id, app) in applicationForID {
@@ -99,11 +76,59 @@ class MasterViewController: NSViewController {
 
     // MARK: Setup
 
+    private func setupView() {
+        view.wantsLayer = true
+        view.layer?.backgroundColor = style.darkBackground.cgColor
+        titleTextField.attributedStringValue = NSAttributedString(string: "Control Center", attributes: style.windowTitleAttributes)
+        windowDragAreaHighlight.wantsLayer = true
+        windowDragAreaHighlight.layer?.backgroundColor = style.selectedColor.cgColor
+    }
+
+    private func setupGestures() {
+        let mousePan = NSPanGestureRecognizer(target: self, action: #selector(handleMousePan(_:)))
+        windowDragArea.addGestureRecognizer(mousePan)
+    }
+
+    private func launchMaps() {
+        for screenID in (1 ... Configuration.numberOfScreens) {
+            for appIndex in (0 ..< Configuration.appsPerScreen) {
+                let appID = (screenID - 1) * Configuration.appsPerScreen + appIndex
+
+                if applicationForID[appID] == nil, let application = open(.mapExplorer, screenID: screenID, appID: appID) {
+                    applicationForID[appID] = application
+                }
+            }
+        }
+    }
+
+    private func launchNodeNetwork() {
+        if nodeApplication == nil {
+            nodeApplication = open(.nodeNetwork, screenID: nil, appID: nil)
+        }
+    }
+
     private func setupActions() {
         actionSelectionButton.removeAllItems()
         ControlAction.menuSelectionActions.forEach { action in
             actionSelectionButton.addItem(withTitle: action.title)
         }
+    }
+
+
+    // MARK: Gesture Handling
+
+    @objc
+    private func handleMousePan(_ gesture: NSPanGestureRecognizer) {
+        guard let window = view.window, let screen = window.screen else {
+            return
+        }
+
+        // Constrain to the main screens bounds
+        var origin = window.frame.origin
+        origin += gesture.translation(in: nil)
+        origin.x = clamp(origin.x, min: 0, max: screen.frame.maxX - view.frame.width)
+        origin.y = clamp(origin.y, min: 0, max: screen.frame.maxY - view.frame.height)
+        window.setFrameOrigin(origin)
     }
 
 
@@ -188,7 +213,6 @@ class MasterViewController: NSViewController {
         let task = Process()
         task.launchPath = cmd
         task.arguments = args
-
         let outpipe = Pipe()
         task.standardOutput = outpipe
         let errpipe = Pipe()

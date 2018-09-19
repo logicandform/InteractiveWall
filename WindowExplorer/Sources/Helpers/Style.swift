@@ -27,10 +27,11 @@ final class Style {
     let pdfWindowSize = CGSize(width: 600, height: 640)
     let playerWindowSize = CGSize(width: 640, height: 440)
     let searchWindowFrame = CGSize(width: 350, height: 655)
-    let menuWindowSize = CGSize(width: 700, height: 2160)
+    let menuWindowWidth: CGFloat = 700
     let searchScrollViewSize = CGSize(width: 360, height: 600)
-    let borderWindowSize = NSSize(width: 4, height: 2160)
+    let borderWindowWidth: CGFloat = 4
     let infoWindowSize = CGSize(width: 500, height: 800)
+    let masterWindowSize = CGSize(width: 600, height: 400)
     let minMediaWindowWidth: CGFloat = 550
     let maxMediaWindowWidth: CGFloat = 700
     let minMediaWindowHeight: CGFloat = 275
@@ -85,8 +86,9 @@ final class Style {
     let mapWindowLevel = NSWindow.Level(28)
     let timelineWindowLevel = NSWindow.Level(29)
     let borderWindowLevel = NSWindow.Level(30)
-    let movingWindowLevel = NSWindow.Level(31)
-    let staticWindowLevel = NSWindow.Level(32)
+    let recordWindowLevel = NSWindow.Level(31)
+    let menuWindowLevel = NSWindow.Level(32)
+    let touchIndicatorWindowLevel = NSWindow.Level(33)
 
     // Audio
     let audioSyncInterval = 1.0 / 30.0

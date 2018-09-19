@@ -33,20 +33,17 @@ final class TouchManager: SocketManagerDelegate {
             return
         }
 
+        // Convert the touch's position to the coordinates of the screen
         convert(touch, toScreen: touch.screen)
 
-        // Check if the touch landed on a window, else notify the proper map application.
+        // Pass the touch to the indicator view controller
+        IndicatorViewController.instance?.displayIndicator(for: touch)
+
+        // Check if the touch landed on a window, else notify the proper map application
         if let manager = manager(of: touch) {
             manager.handle(touch)
         } else if let (id, type) = appOwner(of: touch) {
             send(touch, to: id, type: type)
-
-            // If touch is outside map, send indicator touch to underlying map
-            if !app(id, contains: touch) {
-                let (underlyingApp, underlyingType) = calculateApp(for: touch)
-                touch.state = .indicator
-                send(touch, to: underlyingApp, type: underlyingType)
-            }
         } else {
             let (app, type) = calculateApp(for: touch)
             send(touch, to: app, type: type)
@@ -91,8 +88,6 @@ final class TouchManager: SocketManagerDelegate {
                 managersForTouch.removeValue(forKey: touch)
                 return manager
             }
-        case .indicator:
-            return nil
         }
 
         return nil
@@ -133,8 +128,6 @@ final class TouchManager: SocketManagerDelegate {
                 touchesForAppID[app]!.remove(touch)
             }
         case .moved:
-            return
-        case .indicator:
             return
         }
     }
@@ -188,8 +181,6 @@ final class TouchManager: SocketManagerDelegate {
                 touchNeedsUpdate[touch] = !update
                 return update
             }
-        case .indicator:
-            return true
         }
 
         return true

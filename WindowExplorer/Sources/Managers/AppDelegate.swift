@@ -12,7 +12,7 @@ struct Configuration {
     static let touchPort: UInt16 = 13001
     static let serverIP = "10.58.73.183"
     static let broadcastIP = "10.58.73.255"
-    static let serverURL = "http://\(serverIP):3100"
+    static let serverURL = "http://\(serverIP):3000"
     static let appsPerScreen = 2
     static let numberOfScreens = 1
     static let localMediaURLs = false
@@ -77,6 +77,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         MenuManager.instance.createMenusAndBorders()
         GeocodeHelper.instance.associateSchoolsToProvinces()
         MasterViewController.instantiate()
+        IndicatorViewController.instantiate()
         reachability?.stopNotifier()
         reachability = nil
     }
@@ -90,7 +91,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let task = Process()
         task.launchPath = command
         task.arguments = args
-
         let outpipe = Pipe()
         task.standardOutput = outpipe
         let errpipe = Pipe()

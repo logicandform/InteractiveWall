@@ -2,6 +2,7 @@
 
 import Foundation
 
+
 class GestureHandler {
 
     private(set) var touches = Set<Touch>()
@@ -42,8 +43,6 @@ class GestureHandler {
             handleTouchUp(touch)
         case .moved:
             handleTouchMoved(touch)
-        case .indicator:
-            return
         }
     }
 

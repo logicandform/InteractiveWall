@@ -12,14 +12,8 @@ protocol GestureResponder: class {
 
 final class GestureManager {
 
-    var displayTouchIndicators = true
     private weak var responder: GestureResponder!
     private var gestureHandlers = [NSView: GestureHandler]()
-
-    private struct Constants {
-        static let indicatorRadius: CGFloat = 4
-        static let indicatorDuration = 0.6
-    }
 
 
     // MARK: Init
@@ -50,23 +44,13 @@ final class GestureManager {
         switch touch.state {
         case .down:
             handleTouchDown(touch)
-            if displayTouchIndicators {
-                displayTouchIndicator(in: responder.view, at: touch.position)
-            }
         case .moved:
             if let handler = handler(for: touch) {
                 handler.handle(touch)
-                if displayTouchIndicators {
-                    displayTouchIndicator(in: responder.view, at: touch.position)
-                }
             }
         case .up:
             if let handler = handler(for: touch) {
                 handler.handle(touch)
-            }
-        case .indicator:
-            if displayTouchIndicators {
-                handleTouchIndicator(touch)
             }
         }
     }
@@ -112,16 +96,6 @@ final class GestureManager {
         }
     }
 
-    private func handleTouchIndicator(_ touch: Touch) {
-        guard let window = responder.view.window else {
-            return
-        }
-
-        let windowTransform = CGAffineTransform(translationX: -window.frame.minX, y: -window.frame.minY)
-        touch.position = touch.position.applying(windowTransform)
-        displayTouchIndicator(in: responder.view, at: touch.position)
-    }
-
     /// Returns a handler from the gestures dictionary if it exists for the given view
     private func handler(for touch: Touch) -> GestureHandler? {
         guard let handler = gestureHandlers.values.first(where: { $0.owns(touch) }) else {
@@ -129,27 +103,6 @@ final class GestureManager {
         }
 
         return handler
-    }
-
-    /// Displays a touch indicator on the screen for testing
-    private func displayTouchIndicator(in view: NSView, at position: CGPoint) {
-        let radius = Constants.indicatorRadius
-        let frame = CGRect(origin: CGPoint(x: position.x - radius, y: position.y - radius), size: CGSize(width: 2*radius, height: 2*radius))
-        let touchIndicator = NSView(frame: frame)
-        touchIndicator.wantsLayer = true
-        touchIndicator.layer?.cornerRadius = radius
-        touchIndicator.layer?.masksToBounds = true
-        touchIndicator.layer?.backgroundColor = style.selectedColor.cgColor
-        view.addSubview(touchIndicator)
-
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = Constants.indicatorDuration
-            touchIndicator.animator().alphaValue = 0.0
-            touchIndicator.animator().frame.size = .zero
-            touchIndicator.animator().frame.origin = CGPoint(x: touchIndicator.frame.origin.x + radius, y: touchIndicator.frame.origin.y + radius)
-        }, completionHandler: {
-            touchIndicator.removeFromSuperview()
-        })
     }
 
     /// Returns the deepest possible view for the given point that is registered with a gesture handler along with the transform to that view.

@@ -15,6 +15,8 @@ enum WindowType: Equatable {
     case info(app: Int)
     case border
     case collection(Record)
+    case indicator
+    case master
 
     init?(for media: Media) {
         switch media.type {
@@ -51,15 +53,19 @@ enum WindowType: Equatable {
         case .search:
             return style.searchWindowFrame
         case .menu:
-            return style.menuWindowSize
+            return CGSize(width: style.menuWindowWidth, height: Configuration.touchScreen.frameSize.height)
         case .settings:
             return style.settingsWindowSize
         case .info:
             return style.infoWindowSize
         case .border:
-            return style.borderWindowSize
+            return CGSize(width: style.borderWindowWidth, height: Configuration.touchScreen.frameSize.height)
         case .collection:
             return style.collectionRecordWindowSize
+        case .indicator:
+            return CGSize(width: Configuration.touchScreen.frameSize.width * CGFloat(Configuration.numberOfScreens), height: Configuration.touchScreen.frameSize.height)
+        case .master:
+            return style.masterWindowSize
         }
     }
 
@@ -68,9 +74,11 @@ enum WindowType: Equatable {
         case .border:
             return style.borderWindowLevel
         case .record, .image, .player, .pdf, .search, .collection:
-            return style.movingWindowLevel
+            return style.recordWindowLevel
         case .menu, .settings, .info:
-            return style.staticWindowLevel
+            return style.menuWindowLevel
+        case .indicator, .master:
+            return style.touchIndicatorWindowLevel
         }
     }
 

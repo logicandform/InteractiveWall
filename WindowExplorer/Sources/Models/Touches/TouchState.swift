@@ -7,7 +7,6 @@ enum TouchState: Int {
     case down
     case up
     case moved
-    case indicator
 
     init?(from type: PacketType) {
         switch type {

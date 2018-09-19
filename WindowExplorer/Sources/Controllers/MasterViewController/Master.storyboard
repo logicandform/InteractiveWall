@@ -66,16 +66,50 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="3F4-Er-svo">
+                                <rect key="frame" x="0.0" y="343" width="582" height="40"/>
+                                <subviews>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5jl-LF-iwh">
+                                        <rect key="frame" x="18" y="0.0" width="546" height="29"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="29" id="z7E-eP-UCC"/>
+                                        </constraints>
+                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" usesSingleLineMode="YES" id="OWl-X1-Hhx">
+                                            <font key="font" size="16" name="Soleil"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="zfK-zf-EJw">
+                                        <rect key="frame" x="0.0" y="0.0" width="582" height="1"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="xY5-oA-Mx7"/>
+                                        </constraints>
+                                    </customView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="zfK-zf-EJw" secondAttribute="trailing" id="2kW-oa-S1q"/>
+                                    <constraint firstAttribute="trailing" secondItem="5jl-LF-iwh" secondAttribute="trailing" constant="20" id="462-Bn-4IQ"/>
+                                    <constraint firstItem="zfK-zf-EJw" firstAttribute="leading" secondItem="3F4-Er-svo" secondAttribute="leading" id="XTD-DK-107"/>
+                                    <constraint firstAttribute="bottom" secondItem="5jl-LF-iwh" secondAttribute="bottom" id="aKe-o6-ekP"/>
+                                    <constraint firstItem="5jl-LF-iwh" firstAttribute="leading" secondItem="3F4-Er-svo" secondAttribute="leading" constant="20" id="dIg-rg-Sn8"/>
+                                    <constraint firstAttribute="height" constant="40" id="ftW-2H-iE0"/>
+                                    <constraint firstAttribute="bottom" secondItem="zfK-zf-EJw" secondAttribute="bottom" id="sXs-lK-Ael"/>
+                                </constraints>
+                            </customView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="mSd-7i-Rsz" firstAttribute="leading" secondItem="Wc8-TP-M8l" secondAttribute="leading" constant="100" id="1UH-I2-bxs"/>
                             <constraint firstItem="s0m-G6-eA2" firstAttribute="width" secondItem="mSd-7i-Rsz" secondAttribute="width" id="5kU-IA-z0j"/>
+                            <constraint firstItem="3F4-Er-svo" firstAttribute="top" secondItem="Wc8-TP-M8l" secondAttribute="top" id="BHZ-o8-3Ew"/>
                             <constraint firstItem="o2b-t2-z8m" firstAttribute="leading" secondItem="mSd-7i-Rsz" secondAttribute="leading" id="KuM-9e-E1L"/>
+                            <constraint firstAttribute="trailing" secondItem="3F4-Er-svo" secondAttribute="trailing" id="Muf-zl-blU"/>
                             <constraint firstItem="mSd-7i-Rsz" firstAttribute="top" secondItem="s0m-G6-eA2" secondAttribute="bottom" constant="20" id="N9j-rN-LKR"/>
                             <constraint firstItem="s0m-G6-eA2" firstAttribute="top" secondItem="Wc8-TP-M8l" secondAttribute="top" constant="100" id="QL9-u1-KO4"/>
                             <constraint firstItem="o2b-t2-z8m" firstAttribute="trailing" secondItem="mSd-7i-Rsz" secondAttribute="trailing" id="SJY-S9-Sie"/>
                             <constraint firstItem="s0m-G6-eA2" firstAttribute="centerX" secondItem="Wc8-TP-M8l" secondAttribute="centerX" id="dsh-hN-A66"/>
                             <constraint firstAttribute="bottom" secondItem="o2b-t2-z8m" secondAttribute="bottom" constant="100" id="hkf-vU-EfP"/>
+                            <constraint firstItem="3F4-Er-svo" firstAttribute="leading" secondItem="Wc8-TP-M8l" secondAttribute="leading" id="iPV-Wa-qRy"/>
                             <constraint firstItem="o2b-t2-z8m" firstAttribute="top" secondItem="mSd-7i-Rsz" secondAttribute="bottom" constant="20" id="j8Q-op-X7O"/>
                             <constraint firstAttribute="trailing" secondItem="mSd-7i-Rsz" secondAttribute="trailing" constant="100" id="tXo-nY-zEK"/>
                         </constraints>
@@ -83,6 +117,9 @@
                     <connections>
                         <outlet property="actionSelectionButton" destination="mSd-7i-Rsz" id="DMA-Vr-zNR"/>
                         <outlet property="consoleOutputTextView" destination="5mz-7a-355" id="Qji-oJ-OHt"/>
+                        <outlet property="titleTextField" destination="5jl-LF-iwh" id="44E-bl-g5s"/>
+                        <outlet property="windowDragArea" destination="3F4-Er-svo" id="Ldn-4h-BDh"/>
+                        <outlet property="windowDragAreaHighlight" destination="zfK-zf-EJw" id="XH0-iq-DlI"/>
                     </connections>
                 </viewController>
                 <customObject id="l4p-uW-eK2" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

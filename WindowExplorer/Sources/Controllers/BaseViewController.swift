@@ -195,7 +195,7 @@ class BaseViewController: NSViewController, GestureResponder {
             if windowPanGesture.state == .momentum {
                 windowPanGesture.invalidate()
             }
-        case .moved, .indicator:
+        case .moved:
             return
         }
     }

@@ -54,6 +54,8 @@
 		222EA54020DC14F400DB16CA /* RecordCollectionItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222EA53E20DC14F400DB16CA /* RecordCollectionItemView.swift */; };
 		222EA54120DC14F400DB16CA /* RecordCollectionItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 222EA53F20DC14F400DB16CA /* RecordCollectionItemView.xib */; };
 		223613E720509D920024145C /* LastTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223613E620509D920024145C /* LastTwo.swift */; };
+		2236F7602151EC2D00AD8148 /* IndicatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2236F75E2151EC2D00AD8148 /* IndicatorViewController.swift */; };
+		2236F7632151EC4A00AD8148 /* Indicator.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2236F7622151EC4A00AD8148 /* Indicator.storyboard */; };
 		2243C7DD2093A10F00CE2CA0 /* ApplicationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2243C7DC2093A10F00CE2CA0 /* ApplicationType.swift */; };
 		2247670020562F65003E8790 /* MediaItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224766FE20562F65003E8790 /* MediaItemView.swift */; };
 		2247670120562F65003E8790 /* MediaItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 224766FF20562F65003E8790 /* MediaItemView.xib */; };
@@ -225,6 +227,8 @@
 		222EA53E20DC14F400DB16CA /* RecordCollectionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCollectionItemView.swift; sourceTree = "<group>"; };
 		222EA53F20DC14F400DB16CA /* RecordCollectionItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecordCollectionItemView.xib; sourceTree = "<group>"; };
 		223613E620509D920024145C /* LastTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastTwo.swift; sourceTree = "<group>"; };
+		2236F75E2151EC2D00AD8148 /* IndicatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorViewController.swift; sourceTree = "<group>"; };
+		2236F7622151EC4A00AD8148 /* Indicator.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Indicator.storyboard; sourceTree = "<group>"; };
 		2243C7DC2093A10F00CE2CA0 /* ApplicationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationType.swift; sourceTree = "<group>"; };
 		224766FE20562F65003E8790 /* MediaItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaItemView.swift; sourceTree = "<group>"; };
 		224766FF20562F65003E8790 /* MediaItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MediaItemView.xib; sourceTree = "<group>"; };
@@ -454,6 +458,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		2236F75D2151EC0800AD8148 /* IndicatorViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2236F7622151EC4A00AD8148 /* Indicator.storyboard */,
+				2236F75E2151EC2D00AD8148 /* IndicatorViewController.swift */,
+			);
+			path = IndicatorViewController;
+			sourceTree = "<group>";
+		};
 		225FBB9F208E899900B2CD3E /* MasterViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -632,6 +645,7 @@
 				2222C7C020DC024F00B76D12 /* RecordCollectionViewController */,
 				A44A56F32136184500F73D55 /* InfoViewController */,
 				A456F6BE20C73722004534A4 /* SettingsViewController */,
+				2236F75D2151EC0800AD8148 /* IndicatorViewController */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -957,6 +971,7 @@
 				22CFCF62214875CD00EBD1A6 /* MenuButtonLeft.xib in Resources */,
 				22A76FEB2046477A006C0AE7 /* Player.storyboard in Resources */,
 				1FAFF01E206EDD93005DC68B /* Soleil-11.otf in Resources */,
+				2236F7632151EC4A00AD8148 /* Indicator.storyboard in Resources */,
 				1FAFF01F206EDD93005DC68B /* Soleil-08.otf in Resources */,
 				1FAFF022206EDD93005DC68B /* Soleil-02.otf in Resources */,
 				D992E20D20533A6200EAB698 /* Record.storyboard in Resources */,
@@ -1092,6 +1107,7 @@
 				2204621920472F2D0067D9FB /* PlayerControl.swift in Sources */,
 				22004FE420DD7A7F00B1E740 /* SettingsManager.swift in Sources */,
 				22B1E2CF204638CA00BDDF14 /* GestureHandler.swift in Sources */,
+				2236F7602151EC2D00AD8148 /* IndicatorViewController.swift in Sources */,
 				2222C7C320DC028000B76D12 /* RecordCollectionViewController.swift in Sources */,
 				22A49878204749C30024B46C /* TouchState.swift in Sources */,
 				2204623720472FDF0067D9FB /* PacketType.swift in Sources */,
