@@ -20,7 +20,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
     private var recordForAnnotation = [CircleAnnotation: Record]()
-    private var showingAnnotationTitles = false
     private var currentSettings = Settings()
 
     private var tileURL: String {

@@ -8,11 +8,12 @@ let style = Style()
 
 struct Configuration {
     static let env = Environment.production
-    static let serverIP = "localhost"
-    static let serverURL = "http://\(serverIP):3100"
+    static let serverIP = "10.58.73.183"
+    static let broadcastIP = "10.58.73.255"
+    static let serverURL = "http://\(serverIP):3000"
     static let appsPerScreen = 2
     static let numberOfScreens = 1
-    static let touchScreen = TouchScreen.small
+    static let touchScreen = TouchScreen.ur9851
     static let refreshRate = 1.0 / 60.0
     static let loadMapsOnFirstScreen = false
 }

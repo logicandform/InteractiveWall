@@ -13,7 +13,7 @@ struct Params {
 };
 
 // Number of channels to pan across
-const UInt32 channels = 2;
+const UInt32 channels = 6;
 
 const AudioUnitParameterID gainParameterID = 0;
 const AudioUnitParameterID locationParameterID = 1;

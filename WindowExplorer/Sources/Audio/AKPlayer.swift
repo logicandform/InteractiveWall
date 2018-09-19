@@ -235,7 +235,7 @@ public class AKPlayer {
 
         let mixerFormat = AVAudioFormat(
             standardFormatWithSampleRate: audioFile.fileFormat.sampleRate,
-            channels: 2)
+            channels: 6)
         AudioController.shared.engine.connect(panner.audioNode!, to: AKPlayer.outmixer, format: mixerFormat)
 
         loop.start = 0
