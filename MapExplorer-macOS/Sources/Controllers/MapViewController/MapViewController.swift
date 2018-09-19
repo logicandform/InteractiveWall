@@ -21,7 +21,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private var mapHandler: MapHandler?
     private var recordForAnnotation = [CircleAnnotation: Record]()
     private var currentSettings = Settings()
-    private var lastUpdateRect = MapConstants.canadaRect
+    private var currentTextScale: CGFloat = 1
 
     private var tileURL: String {
         let tileID = max(screenID, 1)
@@ -205,23 +205,19 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        guard shouldUpdateTextSize(for: mapView.visibleMapRect) else {
+        let scale = textScale(for: mapView.visibleMapRect)
+        if scale == currentTextScale {
             return
         }
 
+        currentTextScale = scale
         let annotations = mapView.annotations
-        let scale = textScale(for: mapView.visibleMapRect)
-        lastUpdateRect = mapView.visibleMapRect
 
         for annotation in annotations {
             if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
                 annotationView.setTitle(scale: scale)
             }
         }
-    }
-
-    private func shouldUpdateTextSize(for mapRect: MKMapRect) -> Bool {
-        return abs(lastUpdateRect.size.width - mapRect.size.width) >= Constants.mapTitleUpdateThreshold
     }
 
 
@@ -308,8 +304,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     private func textScale(for mapRect: MKMapRect) -> CGFloat {
         let mapScalePercent = (mapRect.size.width - Constants.minZoomWidth) / (Constants.maxZoomWidth - Constants.minZoomWidth)
-        let scaleFactor = 1 - mapScalePercent
-        let clamped = clamp(scaleFactor, min: 0.5, max: 1)
+        let scaleFactor = (1 - mapScalePercent).rounded(toPlaces: 1)
+        let clamped = clamp(scaleFactor, min: 0.4, max: 1)
         return CGFloat(clamped)
     }
 }

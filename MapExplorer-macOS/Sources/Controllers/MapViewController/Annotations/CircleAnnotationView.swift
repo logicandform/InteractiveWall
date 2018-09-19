@@ -3,6 +3,8 @@
 
 import Foundation
 import MapKit
+import CoreGraphics
+
 
 class CircleAnnotationView: MKAnnotationView {
     static let identifier = "CircleAnnotationView"
@@ -37,7 +39,9 @@ class CircleAnnotationView: MKAnnotationView {
     func setTitle(scale: CGFloat) {
         let transform = CGAffineTransform.identity
         let scaled = transform.scaledBy(x: scale, y: scale)
-        title.setAffineTransform(scaled)
+        CATransaction.suppressAnimations { [weak self] in
+            self?.title.setAffineTransform(scaled)
+        }
     }
 
 

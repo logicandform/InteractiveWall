@@ -81,6 +81,7 @@
 		22EF0FA8202B847200571002 /* CachingNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EF0FA7202B847200571002 /* CachingNetwork.swift */; };
 		22F0EDF82066D9500075E467 /* TouchListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F0EDF72066D9500075E467 /* TouchListener.swift */; };
 		22F0EDFD2066DA1E0075E467 /* ListenerCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F0EDFB2066DA1E0075E467 /* ListenerCallback.m */; };
+		22F3EBA8215313CB00FCFF6B /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F3EBA7215313CB00FCFF6B /* Animations.swift */; };
 		22FEF1D6202CFE8D001E9596 /* GestureDemoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1CF202CFE8C001E9596 /* GestureDemoController.swift */; };
 		22FEF1DD202CFF68001E9596 /* GestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1DC202CFF68001E9596 /* GestureHandler.swift */; };
 		22FEF1DF202CFFFA001E9596 /* Touch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1DE202CFFFA001E9596 /* Touch.swift */; };
@@ -211,6 +212,7 @@
 		22F0EDFA2066DA1D0075E467 /* MapExplorer-macOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MapExplorer-macOS-Bridging-Header.h"; sourceTree = "<group>"; };
 		22F0EDFB2066DA1E0075E467 /* ListenerCallback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListenerCallback.m; sourceTree = "<group>"; };
 		22F0EDFC2066DA1E0075E467 /* ListenerCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListenerCallback.h; sourceTree = "<group>"; };
+		22F3EBA7215313CB00FCFF6B /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
 		22FEF1CF202CFE8C001E9596 /* GestureDemoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureDemoController.swift; sourceTree = "<group>"; };
 		22FEF1DC202CFF68001E9596 /* GestureHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureHandler.swift; sourceTree = "<group>"; };
 		22FEF1DE202CFFFA001E9596 /* Touch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Touch.swift; sourceTree = "<group>"; };
@@ -451,6 +453,7 @@
 				2290A04520E4439C00F028C4 /* NSColor.swift */,
 				A44F1B6020FE8232005FEFD1 /* String.swift */,
 				A44E14F5211A392B00105F58 /* NSCollectionView.swift */,
+				22F3EBA7215313CB00FCFF6B /* Animations.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -834,6 +837,7 @@
 				22290C092028F9EC000E0573 /* AppDelegate.swift in Sources */,
 				A44A56EE2135F35200F73D55 /* TimelineSelection.swift in Sources */,
 				22290C392028FA35000E0573 /* CoreGraphics.swift in Sources */,
+				22F3EBA8215313CB00FCFF6B /* Animations.swift in Sources */,
 				22FEF1DD202CFF68001E9596 /* GestureHandler.swift in Sources */,
 				22290C2C2028FA1F000E0573 /* MapViewController.swift in Sources */,
 				3F2FAB5D204F7D9E002EDF5D /* Collection.swift in Sources */,
