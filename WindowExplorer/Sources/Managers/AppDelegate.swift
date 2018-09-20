@@ -16,7 +16,7 @@ struct Configuration {
     static let appsPerScreen = 2
     static let numberOfScreens = 1
     static let localMediaURLs = false
-    static let launchOnLoad = true
+    static let launchOnLoad = false
     static let touchScreen = TouchScreen.ur9851
     static let refreshRate = 1.0 / 60.0
     static let resetTimeoutDuration = 180.0
@@ -65,19 +65,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // MARK: Helpers
 
     private func prepareApplication() {
-        RecordManager.instance.initialize { [weak self] in
-            self?.setupApplication()
-        }
+        setupApplication()
+
+//        RecordManager.instance.initialize { [weak self] in
+//            self?.setupApplication()
+//        }
     }
 
     private func setupApplication() {
-        WindowManager.instance.registerForNotifications()
-        ConnectionManager.instance.registerForNotifications()
-        TouchManager.instance.setupTouchSocket()
-        MenuManager.instance.createMenusAndBorders()
-        GeocodeHelper.instance.associateSchoolsToProvinces()
+//        WindowManager.instance.registerForNotifications()
+//        ConnectionManager.instance.registerForNotifications()
+//        TouchManager.instance.setupTouchSocket()
+//        MenuManager.instance.createMenusAndBorders()
+//        GeocodeHelper.instance.associateSchoolsToProvinces()
         MasterViewController.instantiate()
-        IndicatorViewController.instantiate()
+//        IndicatorViewController.instantiate()
         reachability?.stopNotifier()
         reachability = nil
     }

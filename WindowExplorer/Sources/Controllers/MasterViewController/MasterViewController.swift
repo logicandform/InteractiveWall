@@ -7,20 +7,22 @@ class MasterViewController: NSViewController {
     static var instance: MasterViewController?
     static let storyboard = NSStoryboard.Name(rawValue: "Master")
 
-    @IBOutlet weak var actionSelectionButton: NSPopUpButton!
-    @IBOutlet weak var consoleOutputTextView: NSTextView!
     @IBOutlet weak var titleTextField: NSTextField!
     @IBOutlet weak var windowDragArea: NSView!
     @IBOutlet weak var windowDragAreaHighlight: NSView!
+    @IBOutlet weak var actionSelectionButton: NSPopUpButton!
+    @IBOutlet weak var consoleTextView: NSTextView!
+    @IBOutlet weak var consoleScrollView: NSScrollView!
+    @IBOutlet weak var statusTextField: NSTextField!
+    @IBOutlet weak var screensTextField: NSTextField!
 
-    // Stores the map / timeline app for its associated id
     private var applicationForID = [Int: NSRunningApplication]()
-
-    // The node network application
     private var nodeApplication: NSRunningApplication?
 
     private struct Constants {
         static let windowTitle = "Control Center"
+        static let consoleOutputFont = NSFont(name: "Menlo", size: 15)
+        static let consoleOutputFontColor = style.selectedColor
     }
 
     private struct Commands {
@@ -55,9 +57,10 @@ class MasterViewController: NSViewController {
         setupView()
         setupActions()
         setupGestures()
+        updateConnectedScreens()
+        registerForNotifications()
         if Configuration.launchOnLoad {
-            launchMaps()
-            launchNodeNetwork()
+            launch()
         }
     }
 
@@ -82,6 +85,10 @@ class MasterViewController: NSViewController {
         titleTextField.attributedStringValue = NSAttributedString(string: "Control Center", attributes: style.windowTitleAttributes)
         windowDragAreaHighlight.wantsLayer = true
         windowDragAreaHighlight.layer?.backgroundColor = style.selectedColor.cgColor
+        consoleTextView.font = Constants.consoleOutputFont
+        consoleTextView.textColor = Constants.consoleOutputFontColor
+        let state = Configuration.launchOnLoad ? ApplicationState.running : ApplicationState.stopped
+        set(state: state)
     }
 
     private func setupGestures() {
@@ -89,7 +96,8 @@ class MasterViewController: NSViewController {
         windowDragArea.addGestureRecognizer(mousePan)
     }
 
-    private func launchMaps() {
+    private func launch() {
+        // Open maps
         for screenID in (1 ... Configuration.numberOfScreens) {
             for appIndex in (0 ..< Configuration.appsPerScreen) {
                 let appID = (screenID - 1) * Configuration.appsPerScreen + appIndex
@@ -99,9 +107,7 @@ class MasterViewController: NSViewController {
                 }
             }
         }
-    }
-
-    private func launchNodeNetwork() {
+        // Open node network
         if nodeApplication == nil {
             nodeApplication = open(.nodeNetwork, screenID: nil, appID: nil)
         }
@@ -112,6 +118,10 @@ class MasterViewController: NSViewController {
         ControlAction.menuSelectionActions.forEach { action in
             actionSelectionButton.addItem(withTitle: action.title)
         }
+    }
+
+    private func registerForNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(screensDidChange(_:)), name: NSApplication.didChangeScreenParametersNotification, object: nil)
     }
 
 
@@ -140,14 +150,9 @@ class MasterViewController: NSViewController {
         }
 
         switch action {
-        case .launchEverything:
-            launchMaps()
-            launchNodeNetwork()
-        case .launchMaps:
-            launchMaps()
-        case .launchNodeNetwork:
-            launchNodeNetwork()
-        case .closeApplication:
+        case .launch:
+            launch()
+        case .close:
             close()
         case .restartServers:
             runSupervisorRestart()
@@ -156,6 +161,22 @@ class MasterViewController: NSViewController {
 
 
     // MARK: Helpers
+
+    private func set(state: ApplicationState) {
+        statusTextField.stringValue = state.title
+        statusTextField.textColor = state.color
+    }
+
+    private func updateConnectedScreens() {
+        let screenCount = NSScreen.screens.count - 1
+        screensTextField.stringValue = String(screenCount)
+        screensTextField.textColor = screenCount >= Configuration.numberOfScreens ? .green : .red
+    }
+
+    @objc
+    private func screensDidChange(_ notification: NSNotification) {
+        updateConnectedScreens()
+    }
 
     private func runSupervisorRestart() {
         var outputString = ""
@@ -177,7 +198,7 @@ class MasterViewController: NSViewController {
             outputString += "\n"
         })
 
-        consoleOutputTextView.string = outputString.components(separatedBy: NSCharacterSet.newlines).filter({ !$0.isEmpty }).joined(separator: "\n")
+        consoleTextView.string = outputString.components(separatedBy: NSCharacterSet.newlines).filter({ !$0.isEmpty }).joined(separator: "\n")
     }
 
 

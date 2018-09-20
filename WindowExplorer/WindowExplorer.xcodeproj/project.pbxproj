@@ -102,6 +102,7 @@
 		22CFCF662149A1A100EBD1A6 /* MenuSide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CFCF652149A1A100EBD1A6 /* MenuSide.swift */; };
 		22F309BC20A2220C00BA5456 /* Province.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F309BB20A2220C00BA5456 /* Province.swift */; };
 		22F309BF20A224A000BA5456 /* LetterGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F309BE20A224A000BA5456 /* LetterGroup.swift */; };
+		22F3EBAA21533A3500FCFF6B /* ApplicationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F3EBA921533A3500FCFF6B /* ApplicationState.swift */; };
 		3F09025F2048E0E70044F100 /* Organization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F09025E2048E0E70044F100 /* Organization.swift */; };
 		3F0902612049C6B10044F100 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0902602049C6B10044F100 /* Theme.swift */; };
 		3F2FAB5B204F7D24002EDF5D /* Artifact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2FAB5A204F7D24002EDF5D /* Artifact.swift */; };
@@ -278,6 +279,7 @@
 		22CFCF652149A1A100EBD1A6 /* MenuSide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSide.swift; sourceTree = "<group>"; };
 		22F309BB20A2220C00BA5456 /* Province.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Province.swift; sourceTree = "<group>"; };
 		22F309BE20A224A000BA5456 /* LetterGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterGroup.swift; sourceTree = "<group>"; };
+		22F3EBA921533A3500FCFF6B /* ApplicationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationState.swift; sourceTree = "<group>"; };
 		2B994FF43C43BAD129E83037 /* Pods-All-WindowExplorer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-WindowExplorer.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer.debug.xcconfig"; sourceTree = "<group>"; };
 		3F09025E2048E0E70044F100 /* Organization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Organization.swift; sourceTree = "<group>"; };
 		3F0902602049C6B10044F100 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -672,6 +674,7 @@
 				A407160D20AB94B800B54593 /* PriorityOrder.swift */,
 				22AEAF0320B67E6700DD184B /* Math.swift */,
 				226A4525214F343800860F0E /* TouchScreen.swift */,
+				22F3EBA921533A3500FCFF6B /* ApplicationState.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1143,6 +1146,7 @@
 				2204623620472FDF0067D9FB /* AVKit.swift in Sources */,
 				D9F24E5F205B01A000B9FCB8 /* WindowType.swift in Sources */,
 				22914F752049001B0000D4E1 /* TouchManager.swift in Sources */,
+				22F3EBAA21533A3500FCFF6B /* ApplicationState.swift in Sources */,
 				D507D33B2072FD2B0003CEA7 /* ColoredSliderCell.swift in Sources */,
 				A407161220ABAE5C00B54593 /* RelationshipHelper.swift in Sources */,
 				2256D2992090CF3B009DEADE /* NSView.swift in Sources */,
