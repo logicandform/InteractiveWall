@@ -31,7 +31,6 @@ final class ConnectionManager {
         static let type = "type"
         static let group = "group"
         static let oldType = "oldType"
-        static let animated = "amimated"
         static let gesture = "gestureType"
     }
 
@@ -135,6 +134,10 @@ final class ConnectionManager {
             if let group = group, let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture) {
                 setAppState(from: id, group: group, for: .timeline, gestureState: state)
             }
+        case TimelineNotification.vertical.name:
+            if let group = group, let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture) {
+                setAppState(from: id, group: group, for: .timeline, gestureState: state)
+            }
         case SettingsNotification.transition.name:
             if let newTypeString = info[Keys.type] as? String, let newType = ApplicationType(rawValue: newTypeString), let oldTypeString = info[Keys.oldType] as? String, let oldType = ApplicationType(rawValue: oldTypeString) {
                 transition(from: oldType, to: newType, id: id, group: group)
@@ -160,6 +163,10 @@ final class ConnectionManager {
             }
         case SettingsNotification.reset.name:
             reset()
+        case SettingsNotification.accessibility.name:
+            let group = group ?? id
+            setAppState(from: id, group: group, for: .timeline, gestureState: .animated)
+            MenuManager.instance.menuForApp(id: id)?.handleAccessibilityNotification()
         default:
             return
         }

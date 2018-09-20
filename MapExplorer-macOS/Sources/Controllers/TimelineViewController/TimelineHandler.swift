@@ -23,14 +23,14 @@ final class TimelineHandler {
         static let date = "date"
         static let type = "type"
         static let group = "group"
-        static let animated = "amimated"
+        static let vertical = "vertical"
         static let gesture = "gestureType"
     }
 
 
     // MARK: Init
 
-    init(timelineViewController: TimelineViewController?) {
+    init(timelineViewController: TimelineViewController) {
         self.timelineViewController = timelineViewController
     }
 
@@ -42,7 +42,7 @@ final class TimelineHandler {
     // MARK: API
 
     /// Determines how to respond to a received rect from another timeline with the type of gesture that triggered the event.
-    func handle(date: TimelineDate, fromID: Int, syncing: Bool = false, animated: Bool = false) {
+    func handle(date: TimelineDate, fromID: Int, syncing: Bool = false) {
         guard let currentGroup = group, currentGroup == fromID else {
             return
         }
@@ -53,30 +53,62 @@ final class TimelineHandler {
                 activityState = .active
             }
             if let date = adjust(date: date, toApp: appID, fromApp: fromID) {
-                timelineViewController?.setDate(date)
+                timelineViewController?.set(date: date, animated: false)
             }
         }
     }
 
-    func send(date: TimelineDate, for gestureState: GestureState = .recognized, animated: Bool = false) {
+    func handle(verticalPosition: CGFloat, fromID: Int, syncing: Bool = false) {
+        guard let currentGroup = group, currentGroup == fromID else {
+            return
+        }
+
+        // Filter position updates; state will be nil receiving when receiving from momentum, else id must match pair
+        if pair == nil || pair! == fromID {
+            if !syncing {
+                activityState = .active
+            }
+            timelineViewController?.set(verticalPosition: verticalPosition, animated: false)
+        }
+    }
+
+    func send(date: TimelineDate, for gestureState: GestureState = .recognized) {
         // If sending from momentum but another app has interrupted, ignore
         if gestureState == .momentum && pair != nil {
             return
         }
 
         let currentGroup = group ?? appID
-        let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.date: date.toJSON, Keys.gesture: gestureState.rawValue, Keys.animated: animated]
+        let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.date: date.toJSON, Keys.gesture: gestureState.rawValue]
         DistributedNotificationCenter.default().postNotificationName(TimelineNotification.rect.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
-    func syncGroup() {
-        guard let date = timelineViewController?.currentDate else {
+    func send(verticalPosition offset: CGFloat, for gestureState: GestureState = .recognized) {
+        // If sending from momentum but another app has interrupted, ignore
+        if gestureState == .momentum && pair != nil {
             return
         }
 
         let currentGroup = group ?? appID
-        let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.date: TimelineDate(date: date).toJSON]
+        let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.vertical: offset, Keys.gesture: gestureState.rawValue]
+        DistributedNotificationCenter.default().postNotificationName(TimelineNotification.vertical.name, object: nil, userInfo: info, deliverImmediately: true)
+    }
+
+    func syncGroup() {
+        guard let controller = timelineViewController else {
+            return
+        }
+
+        let currentGroup = group ?? appID
+        let position = controller.timelineBottomConstraint.constant
+        let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.date: TimelineDate(date: controller.currentDate).toJSON, Keys.vertical: position]
         DistributedNotificationCenter.default().postNotificationName(TimelineNotification.sync.name, object: nil, userInfo: info, deliverImmediately: true)
+    }
+
+    func handleAccessibilityNotification(fromID: Int) {
+        if let currentGroup = group, currentGroup == fromID {
+            timelineViewController?.set(verticalPosition: 0, animated: true)
+        }
     }
 
     func endActivity() {
@@ -95,31 +127,15 @@ final class TimelineHandler {
     }
 
     func reset(animated: Bool) {
-        if let timelineViewController = timelineViewController {
-            timelineViewController.setupTimelineDate()
-            timelineViewController.timelineCollectionView.reloadItems(at: timelineViewController.timelineCollectionView.indexPathsForVisibleItems())
-        }
+        timelineViewController?.reset(animated: animated)
     }
 
 
     // MARK: Helpers
 
     private func adjust(date: TimelineDate, toApp app: Int, fromApp pair: Int?) -> TimelineDate? {
-        guard let timelineViewController = timelineViewController else {
-            return nil
-        }
-
         let pairedID = pair ?? app
-        switch timelineViewController.timelineType {
-        case .month:
-            return TimelineDate(day: date.day, month: date.month + (appID - pairedID), year: date.year)
-        case .year:
-            return TimelineDate(day: date.day, month: date.month, year: date.year + (appID - pairedID))
-        case .decade:
-            return TimelineDate(day: date.day, month: date.month, year: date.year + (appID - pairedID) * 10)
-        case .century:
-            return nil
-        }
+        return TimelineDate(day: date.day, month: date.month, year: date.year + (appID - pairedID) * TimelineDecadeFlagLayout.yearsPerScreen)
     }
 
     /// Resets the pairedDeviceID after a timeout period

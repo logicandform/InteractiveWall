@@ -44,7 +44,6 @@ final class MapHandler {
         static let type = "type"
         static let group = "group"
         static let gesture = "gestureType"
-        static let animated = "amimated"
     }
 
 

@@ -14,20 +14,22 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     @IBOutlet weak var timelineCollectionView: FlippedCollectionView!
     @IBOutlet weak var timelineClipView: NSClipView!
     @IBOutlet weak var timelineScrollView: NSScrollView!
+    @IBOutlet weak var timelineBaseView: NSView!
     @IBOutlet weak var decadeCollectionView: NSCollectionView!
     @IBOutlet weak var decadeClipView: NSClipView!
     @IBOutlet weak var decadeScrollView: NSScrollView!
     @IBOutlet weak var timelineIndicatorView: NSView!
+    @IBOutlet weak var timelineBottomConstraint: NSLayoutConstraint!
 
     var gestureManager: GestureManager!
     private(set) var currentDate = Constants.initialDate
-    private(set) var timelineType = TimelineType.decade
     private var timelineHandler: TimelineHandler?
     private let source = TimelineDataSource()
     private let controlsSource = TimelineControlsDataSource()
     private var timerForTouch = [Touch: Timer]()
     private var itemForTouch = [Touch: Int]()
     private var createRecordForTouch = [Touch: Bool]()
+    private var animating = false
 
     private struct Constants {
         static let animationDuration = 0.5
@@ -40,6 +42,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         static let resetAnimationDuration = 1.0
         static let recordSpawnOffset: CGFloat = 2
         static let longTouchDuration = 1.5
+        static let verticalAnimationDuration = 1.2
     }
 
     private struct Keys {
@@ -58,6 +61,26 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     }
 
 
+    // MARK: Life-Cycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        gestureManager = GestureManager(responder: self)
+        TouchManager.instance.register(gestureManager, for: .timeline)
+        SelectionManager.instance.delegate = self
+
+        setupViews()
+        setupTimeline()
+        setupGestures()
+    }
+
+    override func viewDidAppear() {
+        super.viewDidAppear()
+
+        reset(animated: false)
+    }
+
+
     // MARK: API
 
     func fade(out: Bool) {
@@ -67,35 +90,39 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         })
     }
 
-    func setDate(_ date: TimelineDate, animated: Bool = false) {
+    func set(date: TimelineDate, animated: Bool) {
         currentDate.year = adjust(year: date.year)
         currentDate.month = adjust(month: date.month)
         currentDate.day = adjust(day: date.day)
         scrollCollectionViews(animated: animated)
     }
 
+    func set(verticalPosition: CGFloat, animated: Bool) {
+        if !animated {
+            timelineBottomConstraint.constant = verticalPosition
+            return
+        }
 
-    // MARK: Life-Cycle
+        animating = true
+        NSAnimationContext.runAnimationGroup({ [weak self] _ in
+            NSAnimationContext.current.duration = Constants.verticalAnimationDuration
+            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+            self?.timelineBottomConstraint.animator().constant = verticalPosition
+            }, completionHandler: { [weak self] in
+                self?.animating = false
+        })
+    }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        gestureManager = GestureManager(responder: self)
-        TouchManager.instance.register(gestureManager, for: .timeline)
-        SelectionManager.instance.delegate = self
-
-        setupBackground()
-        setupTimeline()
-        setupGestures()
+    func reset(animated: Bool) {
+        set(date: TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year + (appID * TimelineDecadeFlagLayout.yearsPerScreen)), animated: animated)
+        let center = view.frame.height / 2 - timelineBackgroundView.frame.height / 2
+        set(verticalPosition: center, animated: animated)
     }
 
 
     // MARK: Setup
 
-    func setupTimelineDate() {
-        setDate(TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year + (appID * 10)), animated: true)
-    }
-
-    private func setupBackground() {
+    private func setupViews() {
         timelineBackgroundView.alphaValue = 0
         timelineBackgroundView.wantsLayer = true
         timelineBackgroundView.layer?.backgroundColor = style.timelineBackgroundColor.cgColor
@@ -143,6 +170,12 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         gestureManager.add(panGesture, to: decadeCollectionView)
         panGesture.gestureUpdated = { [weak self] gesture in
             self?.didPanOnControl(gesture)
+        }
+
+        let basePanGesture = PanGestureRecognizer()
+        gestureManager.add(basePanGesture, to: timelineBaseView)
+        basePanGesture.gestureUpdated = { [weak self] gesture in
+            self?.didPanTimelineBase(gesture)
         }
     }
 
@@ -209,7 +242,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         switch pan.state {
         case .recognized, .momentum:
             updateDate(from: collectionView, with: pan.delta)
-            timelineHandler?.send(date: TimelineDate(date: currentDate))
+            timelineHandler?.send(date: TimelineDate(date: currentDate), for: pan.state)
         case .ended:
             timelineHandler?.endActivity()
         case .possible, .failed:
@@ -218,6 +251,27 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
             return
         }
     }
+
+    private func didPanTimelineBase(_ gesture: GestureRecognizer) {
+        guard let pan = gesture as? PanGestureRecognizer, !animating else {
+            return
+        }
+
+        switch pan.state {
+        case .recognized, .momentum:
+            let offset = clamp(timelineBottomConstraint.constant + pan.delta.dy, min: 0, max: view.frame.height - timelineBackgroundView.frame.height)
+            timelineHandler?.send(verticalPosition: offset, for: pan.state)
+        case .ended:
+            timelineHandler?.endActivity()
+        case .possible, .failed:
+            timelineHandler?.endUpdates()
+        default:
+            return
+        }
+    }
+
+
+    // MARK: Date Functions
 
     private func updateDate(from collectionView: NSCollectionView, with offset: CGVector) {
         let days = -(offset.dx / Constants.timelineControlItemWidth)
@@ -233,7 +287,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     }
 
     private func addTimelineDays(with offset: CGVector) {
-        let days = -(offset.dx / CGFloat(timelineType.sectionWidth))
+        let days = -(offset.dx / TimelineDecadeFlagLayout.yearWidth)
         add(days: days * 12)
     }
 
@@ -446,11 +500,11 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     }
 
     private func scrollTimeline(animated: Bool = false) {
-        let timelineMaxX = CGFloat(source.years.count) * CGFloat(timelineType.sectionWidth)
+        let timelineMaxX = CGFloat(source.years.count) * TimelineDecadeFlagLayout.yearWidth
         let timelineYearIndex = source.years.index(of: currentDate.year) != nil ? source.years.index(of: currentDate.year) : currentDate.year < source.firstYear ? -1 : source.years.count - 1
         var timelineRect = timelineCollectionView.visibleRect
-        let timelineMonthOffset = ((CGFloat(currentDate.month) + currentDate.day - 0.5) / 12) * CGFloat(timelineType.sectionWidth)
-        let timelineYearX = CGFloat(timelineYearIndex!) * CGFloat(timelineType.sectionWidth)
+        let timelineMonthOffset = ((CGFloat(currentDate.month) + currentDate.day - 0.5) / 12) * TimelineDecadeFlagLayout.yearWidth
+        let timelineYearX = CGFloat(timelineYearIndex!) * TimelineDecadeFlagLayout.yearWidth
         timelineRect.origin.x = timelineYearX - timelineRect.width / 2 + timelineMonthOffset
         if timelineRect.origin.x < 0 {
             timelineRect.origin.x = timelineMaxX + timelineRect.origin.x
@@ -465,15 +519,6 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
 
     private func decadeFor(year: Int) -> Int {
         return year / 10 * 10
-    }
-
-    private func collectionView(for type: TimelineType) -> NSCollectionView? {
-        switch type {
-        case .decade:
-            return decadeCollectionView
-        case .month, .year, .century:
-            return nil
-        }
     }
 
     private func setDuplicate(original item: Int, selected: Bool, animated: Bool) {
@@ -516,7 +561,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     private func setupTimelineLayout() {
         timelineCollectionView.collectionViewLayout = TimelineDecadeFlagLayout()
         timelineCollectionView.dataSource = source
-        timelineHandler?.reset(animated: true)
+        reset(animated: false)
         timelineCollectionView.reloadData()
     }
 

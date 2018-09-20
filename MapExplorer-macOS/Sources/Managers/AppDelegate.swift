@@ -4,8 +4,8 @@ import Cocoa
 
 
 struct Configuration {
-    static let serverIP = "10.58.73.183"
-    static let serverURL = "http://\(serverIP):3000"
+    static let serverIP = "localhost"
+    static let serverURL = "http://\(serverIP):3100"
     static let appsPerScreen = 2
     static let numberOfScreens = 1
     static let touchScreen = TouchScreen.pct2485
@@ -36,17 +36,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         screenID = screenIndex
         appID = appIndex + ((screenIndex - 1) * Configuration.appsPerScreen)
         let screen = NSScreen.at(position: screenIndex)
-        let mapController = MapViewController.instance()
-        let timelineController = TimelineViewController.instance()
         let screenWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen)
         let frame = NSRect(x: screen.frame.minX + screenWidth * CGFloat(appIndex), y: screen.frame.minY, width: screenWidth, height: screen.frame.height)
+
+        // Setup Map Window
+        let mapController = MapViewController.instance()
         let mapWindow = BorderlessWindow(frame: frame, controller: mapController, level: style.mapWindowLevel)
-        let timelineWindow = BorderlessWindow(frame: frame, controller: timelineController, level: style.timelineWindowLevel)
         mapWindow.setFrame(frame, display: true)
         mapWindow.makeKeyAndOrderFront(self)
+
+        // Setup Timeline Window
+        let timelineController = TimelineViewController.instance()
+        let timelineWindow = BorderlessWindow(frame: frame, controller: timelineController, level: style.timelineWindowLevel)
         timelineWindow.setFrame(frame, display: true)
         timelineWindow.makeKeyAndOrderFront(self)
 
+        // Setup Managers
         TouchManager.instance.setupPort()
         ConnectionManager.instance.registerForNotifications()
         SelectionManager.instance.registerForNotifications()

@@ -5,6 +5,10 @@ workspace 'MapExplorer'
 abstract_target 'All' do
     pod 'MONode', :git => 'git@github.com:SlantDesign/mo.git'
     pod 'Alamofire', '~> 4.7'
+    pod 'PromiseKit', '~> 4.4'
+    pod 'PromiseKit/Alamofire'
+    pod 'AlamofireImage'
+
 
     target 'MapExplorer-iOS' do
         project 'MapExplorer-iOS/MapExplorer-iOS.xcodeproj'
@@ -16,28 +20,17 @@ abstract_target 'All' do
     target 'MapExplorer-macOS' do
         project 'MapExplorer-macOS/MapExplorer-macOS.xcodeproj'
         platform :osx, '10.13'
-
-        pod 'PromiseKit', '~> 4.4'
-        pod 'PromiseKit/Alamofire'
-        pod 'AlamofireImage'
     end
 
     target 'WindowExplorer' do
         project 'WindowExplorer/WindowExplorer.xcodeproj'
         platform :osx, '10.13'
 
-        pod 'PromiseKit', '~> 4.4'
-        pod 'PromiseKit/Alamofire'
-        pod 'AlamofireImage'
         pod 'ReachabilitySwift'
     end
 
     target 'NodeVisualizer' do
         project 'NodeVisualizer/NodeVisualizer.xcodeproj'
         platform :osx, '10.13'
-
-        pod 'PromiseKit', '~> 4.4'
-        pod 'PromiseKit/Alamofire'
-        pod 'AlamofireImage'
     end
 end

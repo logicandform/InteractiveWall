@@ -13,15 +13,12 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     var highlightedIndexes = Set<Int>()
     private(set) var events = [TimelineEvent]()
     private(set) var eventsForYear = [Int: [TimelineEvent]]()
-    private(set) var eventsForMonth = [Int: [Month: [TimelineEvent]]]()
     private(set) var firstYear: Int!
     private(set) var lastYear: Int!
     private(set) var years = [Int]()
-    private let type = TimelineType.decade
     private var uniqueEvents = 0
 
     private struct Constants {
-        static let screenWidth = 1920
         static let defaultFirstYear = 1850
         static let defaultLastYear = 2030
     }
@@ -54,7 +51,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
         years = Array(firstYear...lastYear)
 
         for event in events {
-            if event.dates.startDate.year < firstYear + type.infiniteBuffer {
+            if event.dates.startDate.year < firstYear + TimelineDecadeFlagLayout.infiniteScrollBuffer {
                 let infiniteBufferEvent = TimelineEvent(id: event.id, type: event.type, title: event.title, dates: event.dates, thumbnail: nil)
                 infiniteBufferEvent.dates.startDate.year += years.count
                 infiniteBufferEvent.dates.endDate?.year += years.count
@@ -133,10 +130,8 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
         switch kind {
         case TimelineHeaderView.supplementaryKind:
             if let headerView = collectionView.makeSupplementaryView(ofKind: kind, withIdentifier: TimelineHeaderView.identifier, for: indexPath) as? TimelineHeaderView {
-                let month = Month.allValues[indexPath.item % Month.allValues.count]
                 let year = firstYear + (indexPath.item % years.count)
-                let title = type == .month ? month.abbreviation : year.description
-                headerView.textLabel.stringValue = title
+                headerView.textLabel.stringValue = year.description
                 return headerView
             }
         case TimelineBorderView.supplementaryKind:

@@ -36,7 +36,7 @@ final class ConnectionManager {
         static let type = "type"
         static let group = "group"
         static let oldType = "oldType"
-        static let animated = "amimated"
+        static let vertical = "vertical"
         static let gesture = "gestureType"
     }
 
@@ -146,13 +146,19 @@ final class ConnectionManager {
                 mapHandler?.handleReset(mapRect, fromID: id)
             }
         case TimelineNotification.rect.name:
-            if let dateJSON = info[Keys.date] as? JSON, let date = TimelineDate(json: dateJSON), let group = group, let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture), let animated = info[Keys.animated] as? Bool {
+            if let dateJSON = info[Keys.date] as? JSON, let date = TimelineDate(json: dateJSON), let group = group, let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture) {
                 setAppState(from: id, group: group, for: .timeline, gestureState: state)
-                timelineHandler?.handle(date: date, fromID: id, animated: animated)
+                timelineHandler?.handle(date: date, fromID: id)
+            }
+        case TimelineNotification.vertical.name:
+            if let position = info[Keys.vertical] as? CGFloat, let group = group, let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture) {
+                setAppState(from: id, group: group, for: .timeline, gestureState: state)
+                timelineHandler?.handle(verticalPosition: position, fromID: id)
             }
         case TimelineNotification.sync.name:
-            if let dateJSON = info[Keys.date] as? JSON, let date = TimelineDate(json: dateJSON) {
+            if let dateJSON = info[Keys.date] as? JSON, let date = TimelineDate(json: dateJSON), let position = info[Keys.vertical] as? CGFloat {
                 timelineHandler?.handle(date: date, fromID: id, syncing: true)
+                timelineHandler?.handle(verticalPosition: position, fromID: id, syncing: true)
             }
         case SettingsNotification.transition.name:
             if let newTypeString = info[Keys.type] as? String, let newType = ApplicationType(rawValue: newTypeString), let oldTypeString = info[Keys.oldType] as? String, let oldType = ApplicationType(rawValue: oldTypeString) {
@@ -179,6 +185,10 @@ final class ConnectionManager {
             reset()
             mapHandler?.reset(animated: true)
             timelineHandler?.reset(animated: true)
+        case SettingsNotification.accessibility.name:
+            let group = group ?? id
+            setAppState(from: id, group: group, for: .timeline, gestureState: .animated)
+            timelineHandler?.handleAccessibilityNotification(fromID: id)
         default:
             return
         }

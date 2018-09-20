@@ -249,16 +249,20 @@
 			inputPaths = (
 				"${SRCROOT}/../Pods/Target Support Files/Pods-All-MapExplorer-iOS/Pods-All-MapExplorer-iOS-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire-iOS/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/AlamofireImage-iOS/AlamofireImage.framework",
 				"${BUILT_PRODUCTS_DIR}/C4/C4.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket-iOS/CocoaAsyncSocket.framework",
 				"${BUILT_PRODUCTS_DIR}/MONode-iOS/MONode.framework",
+				"${BUILT_PRODUCTS_DIR}/PromiseKit.default-Alamofire-CorePromise/PromiseKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/C4.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MONode.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

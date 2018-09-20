@@ -42,7 +42,7 @@ class TimelineItemView: NSCollectionViewItem {
 
     // MARK: API
 
-    func set(selected: Bool, with type: TimelineType, attributes: NSCollectionViewLayoutAttributes) {
+    func set(selected: Bool, attributes: NSCollectionViewLayoutAttributes) {
         view.layer?.zPosition = CGFloat(attributes.zIndex)
         if selected {
             view.frame.size.width = CGFloat(attributes.frame.size.width)

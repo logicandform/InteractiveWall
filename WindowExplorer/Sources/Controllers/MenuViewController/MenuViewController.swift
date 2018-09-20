@@ -40,7 +40,6 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         static let imageTransitionDuration = 0.5
         static let fadeAnimationDuration = 0.5
         static let verticalAnimationDuration = 1.2
-        static let resetTimerDuration = 180.0
         static let menuButtonSize = CGSize(width: 200, height: 50)
         static let inactivePriority = NSLayoutConstraint.Priority(150)
         static let activePriority = NSLayoutConstraint.Priority(200)
@@ -121,10 +120,16 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
             displaySearchChild()
             set(.information, selected: false)
         case .accessibility where selected:
-            selectAccessibilityButton()
+            postAccessibilityNotification()
         default:
             return
         }
+    }
+
+    func handleAccessibilityNotification() {
+        animateMenu(verticalPosition: Constants.menuButtonSize.height, completion: { [weak self] in
+            self?.set(.accessibility, selected: false)
+        })
     }
 
 
@@ -362,12 +367,12 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         })
     }
 
-    private func selectAccessibilityButton() {
-        animateMenu(verticalPosition: Constants.menuButtonSize.height, completion: { [weak self] in
-            self?.set(.accessibility, selected: false)
-            self?.infoBottomConstraint.constant = Constants.menuButtonSize.height
-            self?.menuBottomConstraint.constant = Constants.menuButtonSize.height
-        })
+    private func postAccessibilityNotification() {
+        var info: JSON = [Keys.id: appID]
+        if let group = ConnectionManager.instance.groupForApp(id: appID) {
+            info[Keys.group] = group
+        }
+        DistributedNotificationCenter.default().postNotificationName(SettingsNotification.accessibility.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
     private func postSplitNotification() {
@@ -421,7 +426,7 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
 
     private func refreshResetTimer() {
         resetTimer?.invalidate()
-        resetTimer = Timer.scheduledTimer(withTimeInterval: Constants.resetTimerDuration, repeats: false) { [weak self] _ in
+        resetTimer = Timer.scheduledTimer(withTimeInterval: Configuration.menuResetTimeoutDuration, repeats: false) { [weak self] _ in
             self?.resetTimerFired()
         }
     }
@@ -430,8 +435,6 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         gestureManager.invalidateAllGestures()
         set(.information, selected: false)
         let center = view.frame.midY - menuView.frame.height / 2
-        animateMenu(verticalPosition: center, completion: { [weak self] in
-            self?.infoBottomConstraint.constant = center
-        })
+        animateMenu(verticalPosition: center)
     }
 }

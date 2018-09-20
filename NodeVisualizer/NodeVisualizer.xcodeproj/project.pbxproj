@@ -546,17 +546,17 @@
 			inputPaths = (
 				"${SRCROOT}/../Pods/Target Support Files/Pods-All-NodeVisualizer/Pods-All-NodeVisualizer-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire-macOS/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/AlamofireImage-macOS/AlamofireImage.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket-macOS/CocoaAsyncSocket.framework",
 				"${BUILT_PRODUCTS_DIR}/MONode-macOS/MONode.framework",
-				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
-				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
+				"${BUILT_PRODUCTS_DIR}/PromiseKit.root-Alamofire-CorePromise-Foundation-QuartzCore/PromiseKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MONode.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -773,6 +773,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Metadata/NodeVisualizer.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = M6262HME76;
@@ -783,6 +784,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = is.slant.NodeVisualizer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Metadata/NodeVisualizer-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
@@ -796,6 +798,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Metadata/NodeVisualizer.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = M6262HME76;
@@ -806,6 +809,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = is.slant.NodeVisualizer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Metadata/NodeVisualizer-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 			};

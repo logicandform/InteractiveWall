@@ -14,6 +14,7 @@ enum SettingsNotification: String {
     case labels
     case miniMap
     case reset
+    case accessibility
 
     var name: Notification.Name {
         return Notification.Name(rawValue: "SettingsNotification_\(rawValue)")
@@ -31,6 +32,6 @@ enum SettingsNotification: String {
     }
 
     static var allValues: [SettingsNotification] {
-        return [.transition, .unpair, .ungroup, .sync, .split, .merge, .filter, .labels, .miniMap, .reset]
+        return [.transition, .unpair, .ungroup, .sync, .split, .merge, .filter, .labels, .miniMap, .reset, .accessibility]
     }
 }

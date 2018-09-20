@@ -30,7 +30,7 @@ final class Style {
     let timelineHeaderText = NSColor.gray
     let timelineBorderWidth: CGFloat = 2
     let timelineHeaderHeight: CGFloat = 30
-    let timelineHeaderOffset = 18
+    let timelineHeaderOffset: CGFloat = 18
     let timelineFlagBackgroundColor = NSColor.black.withAlphaComponent(0.8)
     let timelineItemWidth: CGFloat = 180
     let timelineFlagPoleWidth: CGFloat = 2

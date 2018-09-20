@@ -18,6 +18,8 @@ PODS:
     - PromiseKit/CorePromise
   - PromiseKit/QuartzCore (4.5.2):
     - PromiseKit/CorePromise
+  - PromiseKit/UIKit (4.5.2):
+    - PromiseKit/CorePromise
   - ReachabilitySwift (4.1.0)
 
 DEPENDENCIES:
@@ -56,6 +58,6 @@ SPEC CHECKSUMS:
   PromiseKit: 743e497a5f505a470d3bbbf4ce0663c1268af0a4
   ReachabilitySwift: 6849231cd4e06559f3b9ef4a97a0a0f96d41e09f
 
-PODFILE CHECKSUM: 6d9214514bc62bffcebb6efa77f11a98af7dd665
+PODFILE CHECKSUM: 20dc147da59fcf76d8b856ec53359de2bd98ba68
 
 COCOAPODS: 1.5.3

@@ -10,7 +10,7 @@ struct RecordInfo: Hashable {
     let type: RecordType
 
     var hashValue: Int {
-        return id.hashValue + app.hashValue + type.hashValue
+        return id.hashValue ^ app.hashValue ^ type.hashValue
     }
 
     static func == (lhs: RecordInfo, rhs: RecordInfo) -> Bool {

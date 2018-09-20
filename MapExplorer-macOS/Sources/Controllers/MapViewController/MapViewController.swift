@@ -73,6 +73,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     override func viewDidAppear() {
+        super.viewDidAppear()
+
         mapHandler?.reset(animated: false)
     }
 

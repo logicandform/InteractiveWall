@@ -5,6 +5,7 @@ import Foundation
 
 enum TimelineNotification: String {
     case rect
+    case vertical
     case select
     case selection
 
@@ -13,6 +14,6 @@ enum TimelineNotification: String {
     }
 
     static var allValues: [TimelineNotification] {
-        return [.rect, .select, .selection]
+        return [.rect, .vertical, .select, .selection]
     }
 }
