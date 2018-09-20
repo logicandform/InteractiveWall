@@ -9,15 +9,15 @@ let style = Style()
 
 
 struct Configuration {
-    static let touchPort: UInt16 = 13003
+    static let touchPort: UInt16 = 13001
     static let serverIP = "10.58.73.183"
     static let broadcastIP = "10.58.73.255"
     static let serverURL = "http://\(serverIP):3000"
     static let appsPerScreen = 2
     static let numberOfScreens = 1
     static let localMediaURLs = false
-    static let launchOnLoad = false
-    static let touchScreen = TouchScreen.ur9851
+    static let launchOnLoad = true
+    static let touchScreen = TouchScreen.pct2485
     static let refreshRate = 1.0 / 60.0
     static let resetTimeoutDuration = 180.0
     static let closeWindowTimeoutDuration = 180.0
@@ -65,21 +65,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // MARK: Helpers
 
     private func prepareApplication() {
-        setupApplication()
-
-//        RecordManager.instance.initialize { [weak self] in
-//            self?.setupApplication()
-//        }
+        RecordManager.instance.initialize { [weak self] in
+            self?.setupApplication()
+        }
     }
 
     private func setupApplication() {
-//        WindowManager.instance.registerForNotifications()
-//        ConnectionManager.instance.registerForNotifications()
-//        TouchManager.instance.setupTouchSocket()
-//        MenuManager.instance.createMenusAndBorders()
-//        GeocodeHelper.instance.associateSchoolsToProvinces()
+        WindowManager.instance.registerForNotifications()
+        ConnectionManager.instance.registerForNotifications()
+        TouchManager.instance.setupTouchSocket()
+        MenuManager.instance.createMenusAndBorders()
+        GeocodeHelper.instance.associateSchoolsToProvinces()
         MasterViewController.instantiate()
-//        IndicatorViewController.instantiate()
+        IndicatorViewController.instantiate()
         reachability?.stopNotifier()
         reachability = nil
     }

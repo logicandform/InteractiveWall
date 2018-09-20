@@ -11,7 +11,6 @@
 		22667A26214088D900F15A04 /* DispatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22667A25214088D900F15A04 /* DispatchTimer.swift */; };
 		226A4518214EF36200860F0E /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226A4517214EF36200860F0E /* Record.swift */; };
 		226A4520214F329500860F0E /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226A451F214F329500860F0E /* Environment.swift */; };
-		226A4522214F338C00860F0E /* TouchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226A4521214F338C00860F0E /* TouchScreen.swift */; };
 		22A1232121509410009DC176 /* TouchListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A1232021509410009DC176 /* TouchListener.swift */; };
 		22A1232421509460009DC176 /* ListenerCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 22A1232321509460009DC176 /* ListenerCallback.m */; };
 		22A1232E21509806009DC176 /* AnimationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A1232D21509805009DC176 /* AnimationType.swift */; };
@@ -84,7 +83,6 @@
 		22667A25214088D900F15A04 /* DispatchTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchTimer.swift; sourceTree = "<group>"; };
 		226A4517214EF36200860F0E /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		226A451F214F329500860F0E /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
-		226A4521214F338C00860F0E /* TouchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchScreen.swift; sourceTree = "<group>"; };
 		22A1232021509410009DC176 /* TouchListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchListener.swift; sourceTree = "<group>"; };
 		22A123222150945F009DC176 /* NodeVisualizer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NodeVisualizer-Bridging-Header.h"; sourceTree = "<group>"; };
 		22A1232321509460009DC176 /* ListenerCallback.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListenerCallback.m; sourceTree = "<group>"; };
@@ -279,7 +277,6 @@
 				22667A23213F3A2F00F15A04 /* RecordStateMachine.swift */,
 				22667A25214088D900F15A04 /* DispatchTimer.swift */,
 				226A451F214F329500860F0E /* Environment.swift */,
-				226A4521214F338C00860F0E /* TouchScreen.swift */,
 				22A1232021509410009DC176 /* TouchListener.swift */,
 				22A12325215094B1009DC176 /* ListenerCallback.h */,
 				22A1232321509460009DC176 /* ListenerCallback.m */,
@@ -590,7 +587,6 @@
 				22D6F90B20B6810600C7FB5F /* PriorityOrder.swift in Sources */,
 				22A1232E21509806009DC176 /* AnimationType.swift in Sources */,
 				22AEAEEA20B67D6800DD184B /* CoreGraphics.swift in Sources */,
-				226A4522214F338C00860F0E /* TouchScreen.swift in Sources */,
 				22D6F90F20B681A300C7FB5F /* LastTwo.swift in Sources */,
 				22AEAEF920B67DA600DD184B /* School.swift in Sources */,
 				CD27F40F20BCBFB700375CBC /* LetterGroup.swift in Sources */,
