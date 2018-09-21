@@ -5,7 +5,7 @@ import Cocoa
 
 
 class BorderViewController: NSViewController {
-    static let storyboard = NSStoryboard.Name(rawValue: "Border")
+    static let storyboard = "Border"
 
     @IBOutlet weak var border: BorderControl!
 

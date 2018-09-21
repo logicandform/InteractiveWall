@@ -288,7 +288,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
     /// Returns true if enough time has passed to send send the next update
     private func shouldUpdate(for time: Date) -> Bool {
-        return abs(time.timeIntervalSinceNow) > Configuration.refreshRate
+        return abs(time.timeIntervalSinceNow) > GestureManager.refreshRate
     }
 
 
@@ -326,7 +326,7 @@ class PinchGestureRecognizer: NSObject, GestureRecognizer {
         state = .momentum
         gestureUpdated?(self)
         momentumTimer?.invalidate()
-        momentumTimer = Timer.scheduledTimer(withTimeInterval: Configuration.refreshRate, repeats: true) { [weak self] _ in
+        momentumTimer = Timer.scheduledTimer(withTimeInterval: GestureManager.refreshRate, repeats: true) { [weak self] _ in
             self?.updateMomentum()
         }
     }

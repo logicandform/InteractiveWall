@@ -4,12 +4,11 @@ import Cocoa
 
 
 struct Configuration {
-    static let serverIP = "localhost"
-    static let serverURL = "http://\(serverIP):3100"
+    static let serverIP = "10.58.73.183"
+    static let serverURL = "http://\(serverIP):3000"
     static let appsPerScreen = 2
     static let numberOfScreens = 1
-    static let touchScreen = TouchScreen.pct2485
-    static let refreshRate = 1.0 / 60.0
+    static let touchScreen = TouchScreen.ur9851
     static let ungroupTimoutDuration = 30.0
 }
 

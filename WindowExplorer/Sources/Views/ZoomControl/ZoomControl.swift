@@ -4,7 +4,7 @@ import Cocoa
 
 
 class ZoomControl: NSView {
-    static let nib = NSNib.Name(rawValue: "ZoomControl")
+    static let nib = "ZoomControl"
 
     @IBOutlet var contentView: NSView!
     @IBOutlet weak var seekBar: NSSlider!

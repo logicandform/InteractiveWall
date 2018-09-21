@@ -6,7 +6,7 @@ import Alamofire
 import AlamofireImage
 
 class ImageViewController: MediaViewController {
-    static let storyboard = NSStoryboard.Name(rawValue: "Image")
+    static let storyboard = "Image"
 
     @IBOutlet weak var imageScrollView: RegularScrollView!
     @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!

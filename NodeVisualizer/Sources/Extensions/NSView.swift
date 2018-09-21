@@ -6,7 +6,7 @@ import AppKit
 extension NSView {
 
     /// Animates the transition of the view's layer contents to a new image
-    func transition(to image: NSImage?, duration: TimeInterval, type: String = kCATransitionFade) {
+    func transition(to image: NSImage?, duration: TimeInterval, type: CATransitionType = .fade) {
         let transition = CATransition()
         transition.duration = duration
         transition.type = type
@@ -43,7 +43,6 @@ extension NSScrollView {
     private var verticalOffsetForBottom: CGFloat {
         let scrollViewHeight = bounds.size.height
         let scrollViewContentSizeHeight = contentView.documentRect.size.height
-
         return scrollViewContentSizeHeight - scrollViewHeight
     }
 }

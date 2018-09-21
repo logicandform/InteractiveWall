@@ -5,7 +5,7 @@ import PromiseKit
 
 
 class RecordCollectionViewController: BaseViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource {
-    static let storyboard = NSStoryboard.Name(rawValue: "Collection")
+    static let storyboard = "Collection"
 
     @IBOutlet weak var collectionView: NSCollectionView!
     @IBOutlet weak var collectionClipView: NSClipView!

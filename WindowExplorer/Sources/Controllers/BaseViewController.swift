@@ -97,7 +97,7 @@ class BaseViewController: NSViewController, GestureResponder {
 
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = duration
-            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
             window.animator().setFrame(frame, display: true, animate: true)
         }, completionHandler: { [weak self] in
             self?.animating = false

@@ -21,7 +21,7 @@ fileprivate struct RecordProxy: Hashable {
 
 
 class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout, SearchChild {
-    static let storyboard = NSStoryboard.Name(rawValue: "Search")
+    static let storyboard = "Search"
 
     @IBOutlet weak var primaryCollectionView: NSCollectionView!
     @IBOutlet weak var secondaryCollectionView: NSCollectionView!

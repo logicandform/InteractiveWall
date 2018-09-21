@@ -11,7 +11,7 @@ protocol PlayerControlDelegate: class {
 
 
 class PlayerControl: NSView {
-    static let nib = NSNib.Name(rawValue: "PlayerControl")
+    static let nib = "PlayerControl"
 
     @IBOutlet weak var toggleButton: NSImageView!
     @IBOutlet weak var volumeButton: NSImageView!
@@ -116,7 +116,7 @@ class PlayerControl: NSView {
             state = .playing
             player?.play()
         case .finished:
-            seek(to: CMTimeMake(0, duration.timescale))
+            seek(to: CMTimeMake(value: 0, timescale: duration.timescale))
             state = .paused
         }
     }
@@ -149,7 +149,7 @@ class PlayerControl: NSView {
 
         volumeButton.image = volume.image
 
-        player.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1, 1), queue: DispatchQueue.main) { [weak self] time in
+        player.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1, preferredTimescale: 1), queue: DispatchQueue.main) { [weak self] time in
             self?.currentTime = time
         }
     }
@@ -240,7 +240,7 @@ class PlayerControl: NSView {
     }
 
     private func seek(to time: CMTime) {
-        player?.seek(to: time, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+        player?.seek(to: time, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
     }
 
     private func string(for time: CMTime) -> String? {

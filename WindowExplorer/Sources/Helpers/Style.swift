@@ -95,7 +95,7 @@ final class Style {
     let audioSyncInterval = 1.0 / 30.0
 
     // Titles
-    var windowTitleAttributes: [NSAttributedStringKey: Any] {
+    var windowTitleAttributes: [NSAttributedString.Key: Any] {
         let font = NSFont(name: "Soleil", size: 16) ?? NSFont.systemFont(ofSize: 16)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byTruncatingTail
@@ -106,7 +106,7 @@ final class Style {
                 .kern: 1.5]
     }
 
-    var relatedItemsTitleAttributes: [NSAttributedStringKey: Any] {
+    var relatedItemsTitleAttributes: [NSAttributedString.Key: Any] {
         let font = NSFont(name: "Soleil", size: 13) ?? NSFont.systemFont(ofSize: 13)
 
         return [.font: font,
@@ -115,7 +115,7 @@ final class Style {
                 .baselineOffset: font.fontName == "Soleil" ? 1 : 0]
     }
 
-    var mediaItemTitleAttributes: [NSAttributedStringKey: Any] {
+    var mediaItemTitleAttributes: [NSAttributedString.Key: Any] {
         let font = NSFont(name: "Soleil", size: 13) ?? NSFont.systemFont(ofSize: 13)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byTruncatingTail
@@ -126,7 +126,7 @@ final class Style {
                 .kern: 0.5]
     }
 
-    var relatedItemViewTitleAttributes: [NSAttributedStringKey: Any] {
+    var relatedItemViewTitleAttributes: [NSAttributedString.Key: Any] {
         let font = NSFont(name: "Soleil-Bold", size: 11) ?? NSFont.systemFont(ofSize: 11)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byTruncatingTail
@@ -137,7 +137,7 @@ final class Style {
                 .font: font]
     }
 
-    var relatedItemViewDescriptionAttributes: [NSAttributedStringKey: Any] {
+    var relatedItemViewDescriptionAttributes: [NSAttributedString.Key: Any] {
         let font = NSFont(name: "Soleil", size: 10) ?? NSFont.systemFont(ofSize: 10)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byCharWrapping
@@ -151,7 +151,7 @@ final class Style {
                 .baselineOffset: 0]
     }
 
-    var recordLargeTitleAttributes: [NSAttributedStringKey: Any] {
+    var recordLargeTitleAttributes: [NSAttributedString.Key: Any] {
         let fontSize: CGFloat = 28
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 0
@@ -164,7 +164,7 @@ final class Style {
         ]
     }
 
-    var recordDateAttributes: [NSAttributedStringKey: Any] {
+    var recordDateAttributes: [NSAttributedString.Key: Any] {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 0
         paragraphStyle.paragraphSpacingBefore = 0
@@ -176,7 +176,7 @@ final class Style {
         ]
     }
 
-    var recordSmallHeaderAttributes: [NSAttributedStringKey: Any] {
+    var recordSmallHeaderAttributes: [NSAttributedString.Key: Any] {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 0
         paragraphStyle.lineBreakMode = .byWordWrapping
@@ -190,7 +190,7 @@ final class Style {
         ]
     }
 
-    var recordDescriptionAttributes: [NSAttributedStringKey: Any] {
+    var recordDescriptionAttributes: [NSAttributedString.Key: Any] {
         let fontSize: CGFloat = 16
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 0

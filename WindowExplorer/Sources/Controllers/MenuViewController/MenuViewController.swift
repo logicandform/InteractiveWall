@@ -10,9 +10,9 @@ protocol MenuDelegate: class {
 
 
 class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
-    static let storyboard = NSStoryboard.Name(rawValue: "Menu")
-    static let leftSideIdentifier = NSStoryboard.SceneIdentifier("MenuLeft")
-    static let rightSideIdentifier = NSStoryboard.SceneIdentifier("MenuRight")
+    static let storyboard = "Menu"
+    static let leftSideIdentifier = "MenuLeft"
+    static let rightSideIdentifier = "MenuRight"
 
     @IBOutlet weak var menuView: NSStackView!
     @IBOutlet weak var infoMenuView: NSView!
@@ -362,7 +362,7 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
 
         NSAnimationContext.runAnimationGroup({ [weak self] _ in
             NSAnimationContext.current.duration = Constants.fadeAnimationDuration
-            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
             self?.menuSideConstraint.animator().constant = sideOffset
         })
     }
@@ -416,7 +416,7 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
 
         NSAnimationContext.runAnimationGroup({ [weak self] _ in
             NSAnimationContext.current.duration = Constants.verticalAnimationDuration
-            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
             self?.menuBottomConstraint.animator().constant = verticalPosition
         }, completionHandler: { [weak self] in
             self?.animating = false

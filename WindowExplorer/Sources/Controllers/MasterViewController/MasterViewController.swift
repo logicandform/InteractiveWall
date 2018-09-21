@@ -5,7 +5,7 @@ import Cocoa
 
 class MasterViewController: NSViewController {
     static var instance: MasterViewController?
-    static let storyboard = NSStoryboard.Name(rawValue: "Master")
+    static let storyboard = "Master"
 
     @IBOutlet weak var titleTextField: NSTextField!
     @IBOutlet weak var windowDragArea: NSView!

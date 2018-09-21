@@ -107,9 +107,9 @@ final class MapHandler {
         // Adjust for international date line if necessairy
         switch type {
         case .clusterTap where finalOrigin.x < initialOrigin.x, .doubleTap where finalOrigin.x < initialOrigin.x:
-            initialOrigin.x -= MKMapRectWorld.size.width
+            initialOrigin.x -= MKMapRect.world.size.width
         case .reset where initialOrigin.x > Constants.accountForDateLineThreshold:
-            initialOrigin.x -= MKMapRectWorld.size.width
+            initialOrigin.x -= MKMapRect.world.size.width
         default:
             break
         }
@@ -119,7 +119,7 @@ final class MapHandler {
         let scale = mapRect.size.width / initialMapRect.size.width
 
         animationTimer?.invalidate()
-        animationTimer = Timer.scheduledTimer(withTimeInterval: Configuration.refreshRate, repeats: true) { [weak self] _ in
+        animationTimer = Timer.scheduledTimer(withTimeInterval: GestureManager.refreshRate, repeats: true) { [weak self] _ in
             self?.animationTimerFired(for: type, initialMapRect: initialMapRect, originVector: originVector, scale: scale)
         }
     }
@@ -170,7 +170,7 @@ final class MapHandler {
         let canadaRect = MapConstants.canadaRect
         let offsetWidth = canadaRect.size.width / Double(Configuration.appsPerScreen)
 
-        var xOrigin = (mapRect.origin.x + mapRect.size.width).truncatingRemainder(dividingBy: MKMapSizeWorld.width) - mapRect.size.width + Double(appID - pairedID) * mapRect.size.width
+        var xOrigin = (mapRect.origin.x + mapRect.size.width).truncatingRemainder(dividingBy: MKMapSize.world.width) - mapRect.size.width + Double(appID - pairedID) * mapRect.size.width
         var yOrigin = mapRect.origin.y
 
         if xOrigin > canadaRect.origin.x + offsetWidth {
@@ -185,7 +185,7 @@ final class MapHandler {
             yOrigin = Constants.verticalPanLimit - mapRect.size.height * Constants.verticalVisibleMapRatio
         }
 
-        return MKMapRect(origin: MKMapPointMake(xOrigin, yOrigin), size: mapRect.size)
+        return MKMapRect(origin: MKMapPoint(x: xOrigin, y: yOrigin), size: mapRect.size)
     }
 
     /// Resets the pairedDeviceID after a timeout period
@@ -216,7 +216,7 @@ final class MapHandler {
         let progress = min(1.0, abs(animationStart!.timeIntervalSinceNow) / type.duration)
 
         // Accounts for international date line
-        let originX = (initialMapRect.origin.x + originVector.x * progress).truncatingRemainder(dividingBy: MKMapRectWorld.size.width)
+        let originX = (initialMapRect.origin.x + originVector.x * progress).truncatingRemainder(dividingBy: MKMapRect.world.size.width)
         let originY = initialMapRect.origin.y + originVector.y * progress
         let size = MKMapSize(width: initialMapRect.size.width - initialMapRect.size.width * (1 - scale) * progress, height: initialMapRect.size.height - initialMapRect.size.height * (1 - scale) * progress)
         let mapRect = MKMapRect(origin: MKMapPoint(x: originX, y: originY), size: size)

@@ -10,7 +10,7 @@ protocol InfoViewDelegate: class {
 
 
 class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout, GestureResponder, InfoViewDelegate {
-    static let storyboard = NSStoryboard.Name(rawValue: "Info")
+    static let storyboard = "Info"
 
     @IBOutlet weak var infoScrollView: FadingScrollView!
     @IBOutlet weak var infoClipView: NSClipView!

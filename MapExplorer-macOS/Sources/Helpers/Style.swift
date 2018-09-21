@@ -40,7 +40,7 @@ final class Style {
     lazy var timelineTailGap: CGFloat = timelineTailWidth + timelineTailMargin
     let timelineTailMarkerWidth: CGFloat = 1
 
-    var timelineTitleAttributes: [NSAttributedStringKey: Any] {
+    var timelineTitleAttributes: [NSAttributedString.Key: Any] {
         let font = NSFont(name: "Soleil", size: 14) ?? NSFont.systemFont(ofSize: 14)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byWordWrapping
@@ -51,7 +51,7 @@ final class Style {
                 .kern: 1]
     }
 
-    var timelineDateAttributes: [NSAttributedStringKey: Any] {
+    var timelineDateAttributes: [NSAttributedString.Key: Any] {
         let font = NSFont(name: "Soleil", size: 9) ?? NSFont.systemFont(ofSize: 9)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byTruncatingTail
@@ -62,7 +62,7 @@ final class Style {
                 .kern: 1]
     }
 
-    var mapLabelAttributes: [NSAttributedStringKey: Any] {
+    var mapLabelAttributes: [NSAttributedString.Key: Any] {
         let fontSize: CGFloat = 26
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 0

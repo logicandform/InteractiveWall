@@ -6,7 +6,7 @@ import AppKit
 
 
 class PlayerViewController: MediaViewController, PlayerControlDelegate {
-    static let storyboard = NSStoryboard.Name(rawValue: "Player")
+    static let storyboard = "Player"
 
     @IBOutlet weak var playerView: AVPlayerView!
     @IBOutlet weak var playerControl: PlayerControl!

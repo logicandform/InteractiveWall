@@ -3,6 +3,7 @@
 import Foundation
 import MapKit
 
+
 extension MKMapRect: Equatable {
 
     private struct Keys {
@@ -23,8 +24,8 @@ extension MKMapRect: Equatable {
     }
 
     init(coordinateRegion: MKCoordinateRegion) {
-        let origin = MKMapPointForCoordinate(CLLocationCoordinate2D(latitude: coordinateRegion.center.latitude + coordinateRegion.span.latitudeDelta / 2, longitude: coordinateRegion.center.longitude - coordinateRegion.span.longitudeDelta / 2))
-        let se = MKMapPointForCoordinate(CLLocationCoordinate2D(latitude: coordinateRegion.center.latitude - coordinateRegion.span.latitudeDelta / 2, longitude: coordinateRegion.center.longitude + coordinateRegion.span.longitudeDelta / 2))
+        let origin = MKMapPoint(CLLocationCoordinate2D(latitude: coordinateRegion.center.latitude + coordinateRegion.span.latitudeDelta / 2, longitude: coordinateRegion.center.longitude - coordinateRegion.span.longitudeDelta / 2))
+        let se = MKMapPoint(CLLocationCoordinate2D(latitude: coordinateRegion.center.latitude - coordinateRegion.span.latitudeDelta / 2, longitude: coordinateRegion.center.longitude + coordinateRegion.span.longitudeDelta / 2))
         let size = MKMapSize(width: se.x - origin.x, height: se.y - origin.y)
         self.init(origin: origin, size: size)
     }
@@ -78,6 +79,7 @@ extension MKMapPoint: Equatable {
     }
 }
 
+
 extension MKMapSize: Equatable {
 
     static public func == (lhs: MKMapSize, rhs: MKMapSize) -> Bool {
@@ -99,6 +101,7 @@ extension MKMapSize: Equatable {
         lhs.height /= rhs
     }
 }
+
 
 extension CLLocationCoordinate2D {
 
@@ -122,6 +125,7 @@ extension CLLocationCoordinate2D {
         self.longitude = long
     }
 }
+
 
 extension MKClusterAnnotation {
 

@@ -13,7 +13,7 @@ struct MapConstants {
 
 
 class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, NSGestureRecognizerDelegate {
-    static let storyboard = NSStoryboard.Name(rawValue: "Map")
+    static let storyboard = "Map"
 
     @IBOutlet weak var mapView: MapViewWithMiniMap!
 
@@ -96,7 +96,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         ConnectionManager.instance.mapHandler = mapHandler
         let overlay = MKTileOverlay(urlTemplate: tileURL)
         overlay.canReplaceMapContent = true
-        mapView.add(overlay)
+        mapView.addOverlay(overlay)
         mapView.miniMapPosition = appID.isEven ? .nw : .ne
         addRecordsToMap()
     }
@@ -297,8 +297,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     /// Clamps the region span between the max and min zoom levels
     private func restrainSpan(for region: MKCoordinateRegion) -> MKCoordinateRegion {
         var restrainedRegion = region
-        let maxLongSpan = MKCoordinateForMapPoint(MKMapPoint(x: Constants.maxZoomWidth, y: 0)).longitude + Constants.coordinateToMapPointOriginOffset
-        let minLongSpan = MKCoordinateForMapPoint(MKMapPoint(x: Constants.minZoomWidth, y: 0)).longitude + Constants.coordinateToMapPointOriginOffset
+        let maxLongSpan = MKMapPoint(x: Constants.maxZoomWidth, y: 0).coordinate.longitude + Constants.coordinateToMapPointOriginOffset
+        let minLongSpan = MKMapPoint(x: Constants.minZoomWidth, y: 0).coordinate.longitude + Constants.coordinateToMapPointOriginOffset
         restrainedRegion.span.longitudeDelta = clamp(restrainedRegion.span.longitudeDelta, min: minLongSpan, max: maxLongSpan)
 
         return restrainedRegion

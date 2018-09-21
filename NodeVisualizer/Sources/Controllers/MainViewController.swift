@@ -6,7 +6,7 @@ import GameplayKit
 
 
 class MainViewController: NSViewController, NodeGestureResponder {
-    static let storyboard = NSStoryboard.Name(rawValue: "Main")
+    static let storyboard = "Main"
 
     @IBOutlet var mainView: SKView!
 

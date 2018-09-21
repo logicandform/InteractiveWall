@@ -4,7 +4,7 @@ import Cocoa
 import Quartz
 
 class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDataSource {
-    static let storyboard = NSStoryboard.Name(rawValue: "PDF")
+    static let storyboard = "PDF"
 
     @IBOutlet weak var pdfView: PDFView!
     @IBOutlet weak var pdfScrollView: NSScrollView!

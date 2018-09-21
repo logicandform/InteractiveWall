@@ -5,8 +5,8 @@ import Cocoa
 
 class TimelineHeaderView: NSView {
     static let identifier = NSUserInterfaceItemIdentifier(rawValue: "TimelineHeaderView")
-    static let nibName = NSNib.Name(rawValue: "TimelineHeaderView")
-    static let supplementaryKind = NSCollectionView.SupplementaryElementKind(rawValue: "TimelineHeaderView")
+    static let nibName = "TimelineHeaderView"
+    static let supplementaryKind = "TimelineHeaderView"
 
     @IBOutlet weak var textLabel: NSTextField! {
         didSet {

@@ -89,7 +89,7 @@ class CircleAnnotationView: MKAnnotationView {
     private func animateCenter() {
         let animateScale = CABasicAnimation(keyPath: "transform.scale")
         animateScale.autoreverses = true
-        animateScale.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        animateScale.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         animateScale.fromValue = 0
         animateScale.toValue = 1
         animateScale.duration = 0.3
@@ -97,7 +97,7 @@ class CircleAnnotationView: MKAnnotationView {
 
         let animateCenter = CABasicAnimation(keyPath: "position")
         animateCenter.autoreverses = true
-        animateCenter.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        animateCenter.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         animateCenter.fromValue = [-0, -0]
         animateCenter.toValue = [-Constants.radii.3, -Constants.radii.3]
         animateCenter.duration = 0.3
@@ -105,7 +105,7 @@ class CircleAnnotationView: MKAnnotationView {
 
         let animateAlpha = CABasicAnimation(keyPath: "opacity")
         animateAlpha.autoreverses = true
-        animateAlpha.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        animateAlpha.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         animateAlpha.fromValue = 0
         animateAlpha.toValue = 0.8
         animateAlpha.duration = 0.3
@@ -116,7 +116,7 @@ class CircleAnnotationView: MKAnnotationView {
         let scale: CGFloat = 0.25
         let animateScale = CABasicAnimation(keyPath: "transform.scale")
         animateScale.autoreverses = true
-        animateScale.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        animateScale.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         animateScale.fromValue = 1
         animateScale.toValue = 1 + scale
         animateScale.duration = 0.1
@@ -124,7 +124,7 @@ class CircleAnnotationView: MKAnnotationView {
 
         let animateCenter = CABasicAnimation(keyPath: "position")
         animateCenter.autoreverses = true
-        animateCenter.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        animateCenter.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         animateCenter.fromValue = [-Constants.radii.2, -Constants.radii.2]
         animateCenter.toValue = [-Constants.radii.2-Constants.radii.2*scale, -Constants.radii.2-Constants.radii.2*scale]
         animateCenter.duration = 0.1
@@ -135,7 +135,7 @@ class CircleAnnotationView: MKAnnotationView {
         let scale: CGFloat = 0.3
         let animateScale = CABasicAnimation(keyPath: "transform.scale")
         animateScale.autoreverses = true
-        animateScale.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        animateScale.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         animateScale.fromValue = 1
         animateScale.toValue = 1.0 + scale
         animateScale.duration = 0.2
@@ -143,7 +143,7 @@ class CircleAnnotationView: MKAnnotationView {
 
         let animateCenter = CABasicAnimation(keyPath: "position")
         animateCenter.autoreverses = true
-        animateCenter.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        animateCenter.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         animateCenter.fromValue = [-Constants.radii.1, -Constants.radii.1]
         animateCenter.toValue = [-Constants.radii.1-(Constants.radii.1*scale), (-Constants.radii.1-(Constants.radii.1*scale))]
         animateCenter.duration = 0.2
@@ -154,7 +154,7 @@ class CircleAnnotationView: MKAnnotationView {
         let scale: CGFloat = 0.25
         let animateScale = CABasicAnimation(keyPath: "transform.scale")
         animateScale.autoreverses = true
-        animateScale.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        animateScale.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         animateScale.fromValue = 1
         animateScale.toValue = 1.25
         animateScale.duration = 0.3
@@ -162,7 +162,7 @@ class CircleAnnotationView: MKAnnotationView {
 
         let animateCenter = CABasicAnimation(keyPath: "position")
         animateCenter.autoreverses = true
-        animateCenter.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        animateCenter.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         animateCenter.fromValue = [-Constants.radii.0, -Constants.radii.0]
         animateCenter.toValue = [-Constants.radii.0-(Constants.radii.0*scale), -Constants.radii.0-(Constants.radii.0*scale)]
         animateCenter.duration = 0.3

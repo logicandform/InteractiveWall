@@ -5,8 +5,8 @@ import Cocoa
 
 
 class MenuButton: NSView {
-    static let leftMenuButton = NSNib.Name(rawValue: "MenuButtonLeft")
-    static let rightMenuButton = NSNib.Name(rawValue: "MenuButtonRight")
+    static let leftMenuButton = "MenuButtonLeft"
+    static let rightMenuButton = "MenuButtonRight"
 
     @IBOutlet weak var contentView: NSView!
     @IBOutlet weak var buttonView: NSView!

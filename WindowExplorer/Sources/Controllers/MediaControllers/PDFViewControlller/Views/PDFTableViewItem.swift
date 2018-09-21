@@ -5,7 +5,7 @@ import Quartz
 
 class PDFTableViewItem: NSView {
     static let interfaceIdentifier = NSUserInterfaceItemIdentifier(rawValue: "PDFTableViewItem")
-    static let nibName = NSNib.Name(rawValue: "PDFTableViewItem")
+    static let nibName = "PDFTableViewItem"
 
     @IBOutlet weak var imageView: NSImageView!
     @IBOutlet weak var textField: NSTextField!

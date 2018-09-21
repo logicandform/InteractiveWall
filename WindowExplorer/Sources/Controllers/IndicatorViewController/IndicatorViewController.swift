@@ -4,7 +4,7 @@ import Cocoa
 
 
 class IndicatorViewController: NSViewController {
-    static let storyboard = NSStoryboard.Name(rawValue: "Indicator")
+    static let storyboard = "Indicator"
     static var instance: IndicatorViewController?
 
     private struct Constants {

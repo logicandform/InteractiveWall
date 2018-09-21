@@ -3,7 +3,7 @@
 import MONode
 
 class GestureDemoController: NSViewController, SocketManagerDelegate, GestureResponder {
-    static let storyboard = NSStoryboard.Name(rawValue: "Demo")
+    static let storyboard = "Demo"
     static let config = NetworkConfiguration(broadcastHost: "10.58.73.255", nodePort: 13003)
 
     let socketManager = SocketManager(networkConfiguration: config)

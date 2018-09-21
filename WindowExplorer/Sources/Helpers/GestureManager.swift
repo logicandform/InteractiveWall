@@ -14,6 +14,7 @@ protocol GestureResponder: class {
 
 
 final class GestureManager {
+    static let refreshRate = 1.0 / 60.0
 
     var touchReceived: ((Touch) -> Void)?
     weak var responder: GestureResponder!

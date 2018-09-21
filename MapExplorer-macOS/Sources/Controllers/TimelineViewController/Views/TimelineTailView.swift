@@ -6,8 +6,8 @@ import Cocoa
 
 class TimelineTailView: NSView {
     static let identifier = NSUserInterfaceItemIdentifier(rawValue: "TimelineTailView")
-    static let nibName = NSNib.Name(rawValue: "TimelineTailView")
-    static let supplementaryKind = NSCollectionView.SupplementaryElementKind(rawValue: "TimelineTailView")
+    static let nibName = "TimelineTailView"
+    static let supplementaryKind = "TimelineTailView"
 
     private var layers = [Layer]() {
         didSet {

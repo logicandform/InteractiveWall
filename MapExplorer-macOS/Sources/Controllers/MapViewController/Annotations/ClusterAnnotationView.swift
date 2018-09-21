@@ -29,7 +29,7 @@ class ClusterAnnotationView: MKAnnotationView {
         let scale: CGFloat = 0.25
         let animateScale = CABasicAnimation(keyPath: "transform.scale")
         animateScale.autoreverses = true
-        animateScale.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        animateScale.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         animateScale.fromValue = 1
         animateScale.toValue = 1 + scale
         animateScale.duration = 0.1
@@ -37,7 +37,7 @@ class ClusterAnnotationView: MKAnnotationView {
 
         let animateCenter = CABasicAnimation(keyPath: "position")
         animateCenter.autoreverses = true
-        animateCenter.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        animateCenter.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         animateCenter.fromValue = [-Constants.radius, -Constants.radius]
         animateCenter.toValue = [-Constants.radius-Constants.radius*scale, -Constants.radius-Constants.radius*scale]
         animateCenter.duration = 0.1

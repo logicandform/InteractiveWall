@@ -45,8 +45,8 @@ public class ArrowControl: NSControl {
         bezierPath.line(to: NSPoint(x: drawRightArrow ? bounds.maxX-lineWidth*0.5 : bounds.minX+lineWidth*0.5, y: bounds.midY))
         bezierPath.line(to: NSPoint(x: drawRightArrow ? bounds.minX : bounds.maxX, y: bounds.minY))
         bezierPath.lineWidth = lineWidth
-        bezierPath.lineCapStyle = .roundLineCapStyle
-        bezierPath.lineJoinStyle = .roundLineJoinStyle
+        bezierPath.lineCapStyle = .round
+        bezierPath.lineJoinStyle = .round
         (self.mouseDown ? self.color : self.color.withAlphaComponent(0.33)).setStroke()
         bezierPath.stroke()
     }

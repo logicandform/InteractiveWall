@@ -4,10 +4,6 @@ import AppKit
 
 extension NSImage {
 
-    convenience init?(named name: String) {
-        self.init(named: NSImage.Name(rawValue: name))
-    }
-
     func tinted(with tint: NSColor) -> NSImage {
         guard let tinted = self.copy() as? NSImage else {
             return self

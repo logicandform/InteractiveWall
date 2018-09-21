@@ -8,7 +8,7 @@ import AppKit
 
 
 class TimelineViewController: NSViewController, GestureResponder, SelectionHandler, NSCollectionViewDelegateFlowLayout {
-    static let storyboard = NSStoryboard.Name(rawValue: "Timeline")
+    static let storyboard = "Timeline"
 
     @IBOutlet weak var timelineBackgroundView: NSView!
     @IBOutlet weak var timelineCollectionView: FlippedCollectionView!
@@ -106,7 +106,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         animating = true
         NSAnimationContext.runAnimationGroup({ [weak self] _ in
             NSAnimationContext.current.duration = Constants.verticalAnimationDuration
-            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
             self?.timelineBottomConstraint.animator().constant = verticalPosition
             }, completionHandler: { [weak self] in
                 self?.animating = false

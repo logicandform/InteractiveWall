@@ -5,7 +5,7 @@ import Cocoa
 
 
 class SettingsViewController: NSViewController, GestureResponder {
-    static let storyboard = NSStoryboard.Name(rawValue: "Settings")
+    static let storyboard = "Settings"
 
     @IBOutlet weak var labelsText: NSTextField!
     @IBOutlet weak var miniMapText: NSTextField!

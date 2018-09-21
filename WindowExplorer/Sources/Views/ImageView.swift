@@ -9,16 +9,16 @@ enum ImageScaling {
     case resize
     case aspectFit
 
-    var contentsGravity: String {
+    var contentsGravity: CALayerContentsGravity {
         switch self {
         case .aspectFill:
-            return kCAGravityResizeAspectFill
+            return .resizeAspectFill
         case .center:
-            return kCAGravityCenter
+            return .center
         case .resize:
-            return kCAGravityResize
+            return .resize
         case .aspectFit:
-            return kCAGravityResizeAspect
+            return .resizeAspect
         }
     }
 }
@@ -30,7 +30,7 @@ class ImageView: NSView {
         super.init(frame: frameRect)
         self.wantsLayer = true
         self.layer = CALayer()
-        self.layer?.contentsGravity = kCAGravityResizeAspectFill
+        self.layer?.contentsGravity = .resizeAspectFill
         self.layer?.contentsScale = NSScreen.mainScreen.backingScaleFactor
     }
 
@@ -38,7 +38,7 @@ class ImageView: NSView {
         super.init(coder: decoder)
         self.wantsLayer = true
         self.layer = CALayer()
-        self.layer?.contentsGravity = kCAGravityResizeAspectFill
+        self.layer?.contentsGravity = .resizeAspectFill
         self.layer?.contentsScale = NSScreen.mainScreen.backingScaleFactor
     }
 
@@ -50,7 +50,7 @@ class ImageView: NSView {
         layer?.contents = image
     }
 
-    func transition(_ image: NSImage?, duration: TimeInterval, scaling: ImageScaling = .aspectFill, type: String = kCATransitionFade) {
+    func transition(_ image: NSImage?, duration: TimeInterval, scaling: ImageScaling = .aspectFill, type: CATransitionType = .fade) {
         let transition = CATransition()
         transition.duration = duration
         transition.type = type

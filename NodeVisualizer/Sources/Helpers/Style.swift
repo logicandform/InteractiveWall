@@ -46,7 +46,7 @@ final class Style {
     let scaleAnimationDuration = 1.2
 
     // Titles
-    var windowTitleAttributes: [NSAttributedStringKey: Any] {
+    var windowTitleAttributes: [NSAttributedString.Key: Any] {
         let font = NSFont(name: "Soleil", size: 16) ?? NSFont.systemFont(ofSize: 16)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byTruncatingTail

@@ -111,9 +111,9 @@ class MapViewWithMiniMap: MKMapView, MKMapViewDelegate {
         super.layout()
     }
 
-    override func add(_ overlay: MKOverlay) {
-        super.add(overlay)
-        miniMap.add(overlay)
+    override func addOverlay(_ overlay: MKOverlay) {
+        super.addOverlay(overlay)
+        miniMap.addOverlay(overlay)
     }
 
     override func setVisibleMapRect(_ mapRect: MKMapRect, animated animate: Bool) {
@@ -161,8 +161,8 @@ class MapViewWithMiniMap: MKMapView, MKMapViewDelegate {
     /// Update the location rect on the miniMap to track the current location of the main map
     private func updateMiniMap(with mapRect: MKMapRect) {
         let mapPoints = mapRect.corners()
-        let nw = miniMap.convert(MKCoordinateForMapPoint(mapPoints.nw), toPointTo: miniMap)
-        let se = miniMap.convert(MKCoordinateForMapPoint(mapPoints.se), toPointTo: miniMap)
+        let nw = miniMap.convert(mapPoints.nw.coordinate, toPointTo: miniMap)
+        let se = miniMap.convert(mapPoints.se.coordinate, toPointTo: miniMap)
         let width = se.x - nw.x
         let height = nw.y - se.y
         let frame = NSRect(x: nw.x, y: nw.y, width: width, height: height)

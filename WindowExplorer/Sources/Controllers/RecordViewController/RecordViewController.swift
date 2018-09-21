@@ -4,7 +4,7 @@ import Cocoa
 import AppKit
 
 class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource, NSTableViewDataSource, NSTableViewDelegate {
-    static let storyboard = NSStoryboard.Name(rawValue: "Record")
+    static let storyboard = "Record"
 
     @IBOutlet weak var detailView: NSView!
     @IBOutlet weak var relatedItemsHeader: NSView!
@@ -248,7 +248,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = duration
-            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
             window.animator().setFrame(frame, display: true, animate: true)
         }, completionHandler: { [weak self] in
             if let strongSelf = self {

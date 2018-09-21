@@ -28,7 +28,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
 
     override init() {
         super.init()
-        let miliseconds = Int(round(Configuration.refreshRate * 1000))
+        let miliseconds = Int(round(GestureManager.refreshRate * 1000))
         self.momentumTimer = DispatchTimer(interval: .milliseconds(miliseconds), handler: { [weak self] in
             self?.updateMomentum()
         })
@@ -154,7 +154,7 @@ class PanGestureRecognizer: NSObject, GestureRecognizer {
 
     /// Returns true if enough time has passed to send send the next update
     private func shouldUpdate(for time: Date) -> Bool {
-        return abs(time.timeIntervalSinceNow) > Configuration.refreshRate
+        return abs(time.timeIntervalSinceNow) > GestureManager.refreshRate
     }
 
 

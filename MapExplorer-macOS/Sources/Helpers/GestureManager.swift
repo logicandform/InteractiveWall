@@ -11,6 +11,7 @@ protocol GestureResponder: class {
 
 
 final class GestureManager {
+    static let refreshRate = 1.0 / 60.0
 
     private weak var responder: GestureResponder!
     private var gestureHandlers = [NSView: GestureHandler]()
