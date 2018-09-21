@@ -258,7 +258,12 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
     // MARK: MenuDelegate
 
     func receivedTouch(_ touch: Touch) {
-        refreshResetTimer()
+        switch touch.state {
+        case .down, .up:
+            refreshResetTimer()
+        case .moved:
+            break
+        }
     }
 
 

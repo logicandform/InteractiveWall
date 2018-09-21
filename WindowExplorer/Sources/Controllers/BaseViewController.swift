@@ -194,6 +194,7 @@ class BaseViewController: NSViewController, GestureResponder {
             resetCloseWindowTimer()
             if windowPanGesture.state == .momentum {
                 windowPanGesture.invalidate()
+                WindowManager.instance.checkBounds(of: self)
             }
         case .moved:
             return
