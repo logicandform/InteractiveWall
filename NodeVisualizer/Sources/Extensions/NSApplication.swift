@@ -12,7 +12,7 @@ extension NSScreen {
     }
 
     static func at(position index: Int) -> NSScreen {
-        let screen = NSScreen.screens.sorted { $0.frame.minX < $1.frame.minX }.dropFirst().at(index: index)
+        let screen = NSScreen.screens.sorted { $0.frame.minX < $1.frame.minX }.at(index: index)
         return screen ?? NSScreen.main!
     }
 

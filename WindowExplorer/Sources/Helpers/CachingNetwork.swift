@@ -46,12 +46,6 @@ final class CachingNetwork {
         static let batchSize = 20
     }
 
-    private static let credentials: [String: String] = {
-        let credentialData = "tim:ph@wRaBa63Dr".data(using: String.Encoding.utf8)!
-        let base64Credentials = credentialData.base64EncodedString(options: [])
-        return ["Authorization": "Basic \(base64Credentials)"]
-    }()
-
 
     // MARK: Generic
 

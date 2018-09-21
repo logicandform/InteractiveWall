@@ -95,8 +95,7 @@ class MainScene: SKScene {
 
     private func addEntitiesToScene() {
         let entities = EntityManager.instance.allEntities()
-        let max = frame.width * CGFloat(Configuration.numberOfScreens)
-        let spacing = max / CGFloat(entities.count / 2)
+        let spacing = frame.width / CGFloat(entities.count / 2)
         let nodeOffset = style.defaultNodePhysicsBodyRadius / 2
 
         for (index, entity) in entities.enumerated() {
