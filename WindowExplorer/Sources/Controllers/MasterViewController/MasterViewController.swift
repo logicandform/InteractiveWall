@@ -102,7 +102,7 @@ class MasterViewController: NSViewController {
             for appIndex in (0 ..< Configuration.appsPerScreen) {
                 let appID = (screenID - 1) * Configuration.appsPerScreen + appIndex
 
-                if applicationForID[appID] == nil, let application = open(.mapExplorer, screenID: screenID, appID: appID) {
+                if applicationForID[appID] == nil, let application = open(.mapExplorer, screenID: screenID, appID: appIndex) {
                     applicationForID[appID] = application
                 }
             }

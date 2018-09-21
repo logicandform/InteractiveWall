@@ -7,7 +7,7 @@ struct Configuration {
     static let serverIP = "10.58.73.183"
     static let serverURL = "http://\(serverIP):3000"
     static let appsPerScreen = 2
-    static let numberOfScreens = 1
+    static let numberOfScreens = 3
     static let touchScreen = TouchScreen.ur9851
     static let ungroupTimoutDuration = 30.0
 }
@@ -35,8 +35,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         screenID = screenIndex
         appID = appIndex + ((screenIndex - 1) * Configuration.appsPerScreen)
         let screen = NSScreen.at(position: screenIndex)
-        let screenWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen)
-        let frame = NSRect(x: screen.frame.minX + screenWidth * CGFloat(appIndex), y: screen.frame.minY, width: screenWidth, height: screen.frame.height)
+        let appWidth = screen.frame.width / CGFloat(Configuration.appsPerScreen)
+        let frame = NSRect(x: screen.frame.minX + appWidth * CGFloat(appIndex), y: screen.frame.minY, width: appWidth, height: screen.frame.height)
 
         // Setup Map Window
         let mapController = MapViewController.instance()
