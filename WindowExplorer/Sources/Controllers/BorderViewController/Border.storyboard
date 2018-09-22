@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="qqN-7p-iud">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="qqN-7p-iud">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -10,14 +11,19 @@
             <objects>
                 <viewController id="qqN-7p-iud" customClass="BorderViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="oAq-Ij-c8P">
-                        <rect key="frame" x="0.0" y="0.0" width="4" height="2160"/>
+                        <rect key="frame" x="0.0" y="0.0" width="4" height="400"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yhC-Ta-DuV" customClass="BorderControl" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="4" height="2160"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="yhC-Ta-DuV" customClass="BorderControl" customModule="WindowExplorer" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="4" height="400"/>
                             </customView>
                         </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="yhC-Ta-DuV" secondAttribute="trailing" id="K9U-O3-XtK"/>
+                            <constraint firstItem="yhC-Ta-DuV" firstAttribute="top" secondItem="oAq-Ij-c8P" secondAttribute="top" id="L1U-QE-TCm"/>
+                            <constraint firstItem="yhC-Ta-DuV" firstAttribute="leading" secondItem="oAq-Ij-c8P" secondAttribute="leading" id="ec0-8s-g0n"/>
+                            <constraint firstAttribute="bottom" secondItem="yhC-Ta-DuV" secondAttribute="bottom" id="ijT-Hm-La5"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="border" destination="yhC-Ta-DuV" id="g9n-YB-nCG"/>
@@ -25,7 +31,7 @@
                 </viewController>
                 <customObject id="uMk-IY-NQM" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="107" y="124"/>
+            <point key="canvasLocation" x="176.5" y="108"/>
         </scene>
     </scenes>
 </document>

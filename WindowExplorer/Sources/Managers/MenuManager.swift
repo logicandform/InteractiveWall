@@ -37,10 +37,11 @@ final class MenuManager {
                 }
 
                 // Setup Borders
-                let borderX = appIndex.isEven ? screenFrame.midX - style.borderWindowWidth / 2 : screenFrame.maxX - style.borderWindowWidth / 2
+                let borderWidth = appIndex.isEven ? style.borderWindowWidth : style.borderWindowWidth * 2
+                let borderX = appIndex.isEven ? screenFrame.midX - borderWidth / 2 : screenFrame.maxX - borderWidth / 2
                 let maxID = Configuration.numberOfScreens * Configuration.appsPerScreen - 1
                 if appID < maxID {
-                    let border = WindowManager.instance.display(.border, at: CGPoint(x: borderX, y: 0)) as? BorderViewController
+                    let border = WindowManager.instance.display(.border(app: appID), at: CGPoint(x: borderX, y: 0)) as? BorderViewController
                     borderForApp[appID] = border
                 }
             }

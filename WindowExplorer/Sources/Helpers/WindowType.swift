@@ -13,7 +13,7 @@ enum WindowType: Equatable {
     case menu(app: Int)
     case settings(app: Int)
     case info(app: Int)
-    case border
+    case border(app: Int)
     case collection(Record)
     case indicator
     case master
@@ -58,8 +58,9 @@ enum WindowType: Equatable {
             return style.settingsWindowSize
         case .info:
             return style.infoWindowSize
-        case .border:
-            return CGSize(width: style.borderWindowWidth, height: Configuration.touchScreen.frameSize.height)
+        case let .border(appID):
+            let width = appID.isEven ? style.borderWindowWidth : style.borderWindowWidth * 2
+            return CGSize(width: width, height: Configuration.touchScreen.frameSize.height)
         case .collection:
             return style.collectionRecordWindowSize
         case .indicator:
