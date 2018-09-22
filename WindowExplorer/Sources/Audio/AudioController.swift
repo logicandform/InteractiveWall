@@ -15,7 +15,8 @@ public final class AudioController {
         guard let player = AKPlayer(url: url) else {
             return nil
         }
-        engine.connect(player.avAudioNode, to: engine.outputNode, format: nil)
+        let format = MultiChannelPanAudioUnit.outputFormat()
+        engine.connect(player.avAudioNode, to: engine.outputNode, format: format)
         try! engine.start()
         player.start()
 

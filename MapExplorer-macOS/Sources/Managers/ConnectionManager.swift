@@ -207,36 +207,45 @@ final class ConnectionManager {
     }
 
     private func transition(from oldType: ApplicationType, to newType: ApplicationType, id: Int, group: Int?) {
-        let newState = AppState(pair: nil, group: id)
         let appStates = states(for: oldType).enumerated()
+        var transitionedApps = [Int]()
 
         for (app, state) in appStates {
-            if oldType != typeForApp(id: app) {
-                continue
-            }
-
             // Check for current group
             if state.group == group {
+                // Ignore updates from other screens once grouped
+                if let appGroup = state.group, let group = group {
+                    if abs(screen(of: app) - screen(of: id)) >= abs(screen(of: app) - screen(of: appGroup)), screen(of: id) != screen(of: group) {
+                        continue
+                    }
+                }
                 // Check for current pair
                 if let appPair = state.pair {
                     // Check if incoming id is closer than current pair
                     if abs(app - id) < abs(app - appPair) || appPair == id {
                         typeForApp[app] = newType
-                        set(newState, for: newType, id: app)
                         transition(app: app, to: newType)
+                        transitionedApps.append(app)
                     }
                 } else {
                     typeForApp[app] = newType
-                    set(newState, for: newType, id: app)
                     transition(app: app, to: newType)
+                    transitionedApps.append(app)
                 }
             }
         }
+
+        let group = groupForApp(id: id, type: newType) ?? id
+        setAppState(from: id, group: group, for: newType, gestureState: .animated, transitioning: true)
+        for app in transitionedApps {
+            set(AppState(pair: nil, group: id), for: newType, id: app)
+        }
+        syncApps(inGroup: id, type: newType)
         resetTimerForApp(id: id, with: newType)
     }
 
     /// Set all app states accordingly when a app sends its position
-    private func setAppState(from id: Int, group: Int, for type: ApplicationType, gestureState: GestureState) {
+    private func setAppState(from id: Int, group: Int, for type: ApplicationType, gestureState: GestureState, transitioning: Bool = false) {
         let pair = gestureState.interruptible ? nil : id
         let newState = AppState(pair: pair, group: id)
         let appStates = states(for: type).enumerated()
@@ -255,7 +264,14 @@ final class ConnectionManager {
                         set(newState, for: type, id: app)
                     }
                 } else {
-                    set(newState, for: type, id: app)
+                    // Maintain groups when transitioning between types
+                    if transitioning {
+                        if abs(app - id) < abs(app - appGroup) {
+                            set(newState, for: type, id: app)
+                        }
+                    } else {
+                        set(newState, for: type, id: app)
+                    }
                 }
             } else if state.group == nil {
                 set(newState, for: type, id: app)

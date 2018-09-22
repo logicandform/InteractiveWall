@@ -27,13 +27,32 @@ const AudioUnitParameterID locationParameterID = 1;
 
 @end
 
-
 @implementation MultiChannelPanAudioUnit {
     BufferedInputBus _inputBus;
     Params params;
 }
 
 @synthesize parameterTree = _parameterTree;
+
+
++ (AVAudioFormat *)outputFormat {
+    // Create the output bus
+    AudioChannelLayout *layout = (AudioChannelLayout *)malloc(sizeof(AudioChannelLayout) + sizeof(AudioChannelDescription) * (channels - 1));
+    for (UInt32 channel = 0; channel < channels; channel += 1) {
+        AudioChannelDescription *desc = &layout->mChannelDescriptions[channel];
+        desc->mChannelLabel = channel + 1;
+        desc->mChannelFlags = 0;
+        desc->mCoordinates[0] = 0;
+        desc->mCoordinates[1] = 0;
+        desc->mCoordinates[2] = 0;
+    }
+    layout->mNumberChannelDescriptions = channels;
+    layout->mChannelBitmap = 0;
+    layout->mChannelLayoutTag = kAudioChannelLayoutTag_UseChannelDescriptions;
+
+    AVAudioChannelLayout *alayout = [[AVAudioChannelLayout alloc] initWithLayout:layout];
+    return [[AVAudioFormat alloc] initStandardFormatWithSampleRate:44100 channelLayout:alayout];
+}
 
 - (instancetype)initWithComponentDescription:(AudioComponentDescription)componentDescription options:(AudioComponentInstantiationOptions)options error:(NSError **)outError {
     self = [super initWithComponentDescription:componentDescription options:options error:outError];

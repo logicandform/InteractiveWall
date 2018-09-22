@@ -5,6 +5,7 @@
 extern const AudioUnitParameterID gainParameterID;
 extern const AudioUnitParameterID locationParameterID;
 
+
 @interface MultiChannelPanAudioUnit : AUAudioUnit
 
 /// Overall gain (volume), between 0 and 1.
@@ -12,5 +13,7 @@ extern const AudioUnitParameterID locationParameterID;
 
 /// Audio location between 0 and 1.
 @property (nonatomic) Float32 location;
+
++ (AVAudioFormat *)outputFormat;
 
 @end

@@ -323,6 +323,7 @@ public class AKPlayer {
                                                repeats: false)
     }
 
+    /// Adjust this function as necessary to sync audio and video
     func schedule(at time: CMTime, duration: Double, completion: (() -> Void)?) {
         let seekThreshold = AVAudioFramePosition(1 * sampleRate)
         let frameCount = AVAudioFrameCount(duration * sampleRate) - 1

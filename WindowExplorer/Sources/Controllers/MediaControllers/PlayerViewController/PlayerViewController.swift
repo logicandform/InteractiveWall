@@ -170,8 +170,11 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
 
     /// Returns the player's horizontal location inside the application's frame from 0 -> 1
     func horizontalPosition(of window: NSWindow) -> Double {
-        let minX = NSScreen.screens.dropFirst().map { $0.frame.minX }.min()!
-        let maxX = NSScreen.screens.map { $0.frame.maxX }.max()!
+        let sortedScreens = NSScreen.screens.sorted { $0.frame.minX < $1.frame.minX }.dropFirst()
+        guard let minX = sortedScreens.first?.frame.minX, let maxX = sortedScreens.last?.frame.maxX else {
+            return 0
+        }
+
         return Double((window.frame.midX - minX) / (maxX - minX))
     }
 }

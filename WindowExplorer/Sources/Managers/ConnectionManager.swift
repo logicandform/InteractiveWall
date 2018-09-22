@@ -159,7 +159,6 @@ final class ConnectionManager {
         case SettingsNotification.merge.name:
             if let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
                 merge(from: id, group: group, of: type)
-                syncApps(group: group, type: type)
             }
         case SettingsNotification.reset.name:
             reset()
@@ -175,37 +174,6 @@ final class ConnectionManager {
 
     // MARK: Helpers
 
-    private func transition(from oldType: ApplicationType, to newType: ApplicationType, id: Int, group: Int?) {
-        let newState = AppState(pair: nil, group: id)
-        let appStates = states(for: oldType).enumerated()
-
-        for (app, state) in appStates {
-            if oldType != typeForApp(id: app) {
-                continue
-            }
-
-            // Check for current group
-            if state.group == group {
-                // Check for current pair
-                if let appPair = state.pair {
-                    // Check if incoming id is closer than current pair
-                    if abs(app - id) < abs(app - appPair) || appPair == id {
-                        typeForApp[app] = newType
-                        set(newState, for: newType, id: app)
-                        updateMenu(id: app, to: newType)
-                        syncApps(group: group, type: newType)
-                    }
-                } else {
-                    typeForApp[app] = newType
-                    set(newState, for: newType, id: app)
-                    updateMenu(id: app, to: newType)
-                    syncApps(group: group, type: newType)
-                }
-            }
-        }
-        updateViews()
-    }
-
     private func reset() {
         let numberOfApps = Configuration.appsPerScreen * Configuration.numberOfScreens
         let initialState = AppState(pair: nil, group: nil)
@@ -218,8 +186,45 @@ final class ConnectionManager {
         updateViews()
     }
 
+    private func transition(from oldType: ApplicationType, to newType: ApplicationType, id: Int, group: Int?) {
+        let appStates = states(for: oldType).enumerated()
+        var transitionedApps = [Int]()
+
+        for (app, state) in appStates {
+            // Check for current group
+            if state.group == group {
+                // Ignore updates from other screens once grouped
+                if let appGroup = state.group, let group = group {
+                    if abs(screen(of: app) - screen(of: id)) >= abs(screen(of: app) - screen(of: appGroup)), screen(of: id) != screen(of: group) {
+                        continue
+                    }
+                }
+                // Check for current pair
+                if let appPair = state.pair {
+                    // Check if incoming id is closer than current pair
+                    if abs(app - id) < abs(app - appPair) || appPair == id {
+                        typeForApp[app] = newType
+                        updateMenu(id: app, to: newType)
+                        transitionedApps.append(app)
+                    }
+                } else {
+                    typeForApp[app] = newType
+                    updateMenu(id: app, to: newType)
+                    transitionedApps.append(app)
+                }
+            }
+        }
+
+        let group = groupForApp(id: id) ?? id
+        setAppState(from: id, group: group, for: newType, gestureState: .animated, transitioning: true)
+        for app in transitionedApps {
+            set(AppState(pair: nil, group: id), for: newType, id: app)
+        }
+        updateViews()
+    }
+
     /// Set all app states accordingly when a app sends its position
-    private func setAppState(from id: Int, group: Int, for type: ApplicationType, gestureState: GestureState) {
+    private func setAppState(from id: Int, group: Int, for type: ApplicationType, gestureState: GestureState, transitioning: Bool = false) {
         let pair = gestureState.interruptible ? nil : id
         let newState = AppState(pair: pair, group: id)
         let appStates = states(for: type).enumerated()
@@ -238,7 +243,14 @@ final class ConnectionManager {
                         set(newState, for: type, id: app)
                     }
                 } else {
-                    set(newState, for: type, id: app)
+                    // Maintain groups when transitioning between types
+                    if transitioning {
+                        if abs(app - id) < abs(app - appGroup) {
+                            set(newState, for: type, id: app)
+                        }
+                    } else {
+                        set(newState, for: type, id: app)
+                    }
                 }
             } else if state.group == nil {
                 set(newState, for: type, id: app)
@@ -342,7 +354,6 @@ final class ConnectionManager {
             if state.group == nil {
                 let group = findGroupForApp(id: app, of: type)
                 set(AppState(pair: nil, group: group), for: type, id: app)
-                syncApps(group: group, type: type)
             }
         }
         updateViews()
@@ -401,12 +412,6 @@ final class ConnectionManager {
         if let menuButtonType = MenuButtonType.from(type) {
             let menu = MenuManager.instance.menuForApp(id: id)
             menu?.set(menuButtonType, selected: true)
-        }
-    }
-
-    private func syncApps(group: Int?, type: ApplicationType) {
-        if let group = group {
-            SettingsManager.instance.syncApps(group: group, type: type)
         }
     }
 
