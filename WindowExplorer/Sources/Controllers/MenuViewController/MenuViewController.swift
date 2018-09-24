@@ -28,7 +28,7 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
     var gestureManager: GestureManager!
     private var resetTimer: Foundation.Timer!
     private var buttonForType = [MenuButtonType: MenuButton]()
-    private var menuToggled = false
+    private var menuOpened = false
     private var animating = false
     private weak var searchChild: SearchChild?
 
@@ -163,8 +163,8 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         let toggleMenuTap = TapGestureRecognizer()
         gestureManager.add(toggleMenuTap, to: menuToggleButton)
         toggleMenuTap.gestureUpdated = { [weak self] gesture in
-            if gesture.state == .ended {
-                self?.toggleSideMenu()
+            if gesture.state == .ended, let opened = self?.menuOpened {
+                self?.toggleSideMenu(open: !opened)
             }
         }
     }
@@ -358,17 +358,16 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
     }
 
     /// Toggles the menus side constraint to increase / decrease its visible size
-    private func toggleSideMenu() {
-        let sideOffset = menuToggled ? Constants.menuButtonSize.height : Constants.menuButtonSize.width
-        menuToggled = !menuToggled
+    private func toggleSideMenu(open: Bool) {
+        menuOpened = open
 
-        let image = menuSide.image(toggled: menuToggled)
+        let image = menuSide.image(toggled: open)
         menuToggleButton.transition(image, duration: Constants.fadeAnimationDuration)
 
         NSAnimationContext.runAnimationGroup({ [weak self] _ in
             NSAnimationContext.current.duration = Constants.fadeAnimationDuration
             NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
-            self?.menuSideConstraint.animator().constant = sideOffset
+            self?.menuSideConstraint.animator().constant = open ? Constants.menuButtonSize.width : Constants.menuButtonSize.height
         })
     }
 
@@ -441,5 +440,6 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         set(.information, selected: false)
         let center = view.frame.midY - menuView.frame.height / 2
         animateMenu(verticalPosition: center)
+        toggleSideMenu(open: false)
     }
 }
