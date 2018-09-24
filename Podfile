@@ -9,7 +9,6 @@ abstract_target 'All' do
     pod 'PromiseKit/Alamofire'
     pod 'AlamofireImage'
 
-
     target 'MapExplorer-iOS' do
         project 'MapExplorer-iOS/MapExplorer-iOS.xcodeproj'
         platform :ios, '9.3'

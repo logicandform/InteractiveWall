@@ -19,6 +19,8 @@ final class Style {
     let menuSelectedColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
     let menuUnselectedColor = NSColor(calibratedRed: 1, green: 1, blue: 1, alpha: 1)
     let menuButtonBackgroundColor = NSColor(deviceWhite: 0.2, alpha: 1)
+    let imageFilterTypeColor = NSColor.red
+    let videoFilterTypeColor = NSColor.cyan
 
     // Windows
     let recordWindowSize = CGSize(width: 416, height: 650)
@@ -49,8 +51,7 @@ final class Style {
     let controllerOffset = 50
 
     // Record Controller
-    let imageFilterTypeColor = NSColor.red
-    let relatedRecordsMaxSize = CGSize(width: 300, height: 534)
+    let relatedRecordsMaxSize = CGSize(width: 300, height: 544)
     let relatedItemColor = NSColor(calibratedRed: 75/255, green: 91/255, blue: 100/255, alpha: 1)
     let noRelatedItemsColor = NSColor(calibratedRed: 33/255, green: 33/255, blue: 33/255, alpha: 1)
     let relatedItemBackgroundColor = NSColor(calibratedRed: 0.08, green: 0.10, blue: 0.11, alpha: 1)

@@ -211,6 +211,11 @@ final class ConnectionManager {
         var transitionedApps = [Int]()
 
         for (app, state) in appStates {
+            // Only update apps that are of the right type
+            if oldType != typeForApp(id: app) {
+                continue
+            }
+
             // Check for current group
             if state.group == group {
                 // Ignore updates from other screens once grouped

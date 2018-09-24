@@ -137,7 +137,9 @@ class Record: Hashable, SearchItemDisplayable {
 
         switch type {
         case .image:
-            return relatedRecordsContainingImages()
+            return relatedRecords.filter { $0.containsImage() }
+        case .video:
+            return relatedRecords.filter { $0.containsVideo() }
         default:
             return []
         }
@@ -153,6 +155,8 @@ class Record: Hashable, SearchItemDisplayable {
         switch type {
         case .image:
             return records.filter { $0.containsImage() }
+        case .video:
+            return records.filter { $0.containsVideo() }
         default:
             return []
         }
@@ -168,10 +172,6 @@ class Record: Hashable, SearchItemDisplayable {
 
     // MARK: Helpers
 
-    private func relatedRecordsContainingImages() -> [Record] {
-        return relatedRecords.filter { $0.containsImage() }
-    }
-
     private func containsImage() -> Bool {
         if let artifact = self as? Artifact, artifact.artifactType == .rg10 {
             return false
@@ -179,6 +179,16 @@ class Record: Hashable, SearchItemDisplayable {
 
         for item in media {
             if item.type == .image || item.type == .pdf {
+                return true
+            }
+        }
+
+        return false
+    }
+
+    private func containsVideo() -> Bool {
+        for item in media {
+            if item.type == .video {
                 return true
             }
         }

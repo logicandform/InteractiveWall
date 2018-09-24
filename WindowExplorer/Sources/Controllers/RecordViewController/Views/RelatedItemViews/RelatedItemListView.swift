@@ -10,17 +10,23 @@ class RelatedItemListView: RelatedItemView {
     @IBOutlet weak var descriptionView: NSTextView!
 
 
+
     // MARK: Overrides
 
-    override func load(_ record: Record?) {
-        guard let record = record else {
-            return
-        }
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
-        super.load(record)
         descriptionView.drawsBackground = false
         descriptionView.textContainer?.maximumNumberOfLines = Constants.numberOfDescriptionLines
-        titleLabel.attributedStringValue = NSAttributedString(string: record.title, attributes: style.relatedItemViewTitleAttributes)
-        descriptionView.textStorage?.setAttributedString(NSAttributedString(string: record.description ?? "", attributes: style.relatedItemViewDescriptionAttributes))
+    }
+
+    override func load(_ record: Record?) {
+        super.load(record)
+
+        if let record = record {
+            titleLabel.attributedStringValue = NSAttributedString(string: record.title, attributes: style.relatedItemViewTitleAttributes)
+            let description = NSAttributedString(string: record.description ?? "", attributes: style.relatedItemViewDescriptionAttributes)
+            descriptionView.textStorage?.setAttributedString(description)
+        }
     }
 }

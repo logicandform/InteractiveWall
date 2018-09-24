@@ -118,7 +118,9 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         relatedRecordsTypeLabel.alphaValue = 0
         relatedRecordsTypeLabel.attributedStringValue = NSAttributedString(string: Constants.allRecordsTitle.uppercased(), attributes: style.relatedItemsTitleAttributes)
         showRelatedItemsImage.isHidden = record.relatedRecords.isEmpty
-        recordTypeSelectionView.stackview.alphaValue = 0
+        recordTypeSelectionView.alphaValue = 0
+        recordTypeSelectionView.wantsLayer = true
+        recordTypeSelectionView.layer?.backgroundColor = style.darkBackground.cgColor
         recordTypeSelectionView.initialize(with: record, manager: gestureManager)
         recordTypeSelectionView.selectionCallback = { [weak self] type in
             self?.didSelectRelatedItemsFilterType(type)
@@ -509,8 +511,9 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             }
         case relatedItemsView:
             if let relatedItem = collectionView.makeItem(withIdentifier: relatedItemsFilterType.layout.identifier, for: indexPath) as? RelatedItemView {
-                relatedItem.record = record.filterRelatedRecords(type: relatedItemsFilterType, from: relatedRecords).at(index: indexPath.item)
+                relatedItem.filterType = relatedItemsFilterType
                 relatedItem.tintColor = record.type.color
+                relatedItem.record = record.filterRelatedRecords(type: relatedItemsFilterType, from: relatedRecords).at(index: indexPath.item)
                 return relatedItem
             }
         default:
@@ -548,7 +551,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             detailView.animator().alphaValue = 0
             relatedItemsView.animator().alphaValue = 0
             windowDragArea.animator().alphaValue = 0
-            recordTypeSelectionView.stackview.animator().alphaValue = 0
+            recordTypeSelectionView.animator().alphaValue = 0
         }, completionHandler: { [weak self] in
             self?.close()
         })
@@ -587,7 +590,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             self?.relatedItemsView.animator().alphaValue = 0
             self?.relatedRecordsLabel.animator().alphaValue = alpha
             self?.relatedRecordsTypeLabel.animator().alphaValue = alpha
-            self?.recordTypeSelectionView.stackview.animator().alphaValue = alpha
+            self?.recordTypeSelectionView.animator().alphaValue = alpha
             self?.showRelatedItemsImage.animator().alphaValue = 1 - alpha
             }, completionHandler: { [weak self] in
                 self?.didToggleRelatedItems(completion: completion)
@@ -722,13 +725,12 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     }
 
     private func updateRelatedRecordsHeight() {
-        let maxHeight = style.relatedRecordsMaxSize.height
-        let numberOfRecords = CGFloat(record.filterRelatedRecords(type: relatedItemsFilterType, from: relatedRecords).count)
-        let numberOfListSpaces = numberOfRecords > 1 ? numberOfRecords - 1 : 0
-        let numberOfGridSpaces = numberOfRecords > relatedItemsFilterType.layout.itemsPerRow ? Int(numberOfRecords / relatedItemsFilterType.layout.itemsPerRow) : 0
-        let numberOfImageRows = numberOfGridSpaces > 0 ? numberOfGridSpaces + 1 : numberOfRecords > 0 ? 1 : 0
-        let height = relatedItemsFilterType.layout == .list ? numberOfRecords * style.relatedRecordsListItemHeight + numberOfListSpaces * style.relatedRecordsItemSpacing : CGFloat(numberOfImageRows) * style.relatedRecordsImageItemHeight + CGFloat(numberOfGridSpaces) * style.relatedRecordsItemSpacing
-        relatedRecordsHeightConstraint.constant = height > maxHeight ? maxHeight : height
+        let numberOfRecords = record.filterRelatedRecords(type: relatedItemsFilterType, from: relatedRecords).count
+        let numberOfRows = ceil(CGFloat(numberOfRecords) / relatedItemsFilterType.layout.itemsPerRow)
+        let numberOfSpaces = max(0, numberOfRows - 1)
+        let height = ceil(numberOfRows * relatedItemsFilterType.layout.itemSize.height + numberOfSpaces * style.relatedRecordsItemSpacing)
+
+        relatedRecordsHeightConstraint.constant = min(height, style.relatedRecordsMaxSize.height)
         relatedRecordScrollView.updateGradient(forced: true, height: height)
         view.layoutSubtreeIfNeeded()
     }

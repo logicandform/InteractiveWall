@@ -735,8 +735,8 @@
 		8F8DE18820A3C11C006FA48B /* RelatedItemViews */ = {
 			isa = PBXGroup;
 			children = (
-				2204620C20472DE80067D9FB /* RelatedItemListView.xib */,
 				8F8DE19120A3EDFD006FA48B /* RelatedItemView.swift */,
+				2204620C20472DE80067D9FB /* RelatedItemListView.xib */,
 				2204620A20472DE80067D9FB /* RelatedItemListView.swift */,
 				8F8DE18E20A3C48C006FA48B /* RelatedItemImageView.xib */,
 				8F8DE18D20A3C48C006FA48B /* RelatedItemImageView.swift */,

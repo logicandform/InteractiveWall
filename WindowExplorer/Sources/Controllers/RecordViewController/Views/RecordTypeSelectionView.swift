@@ -6,12 +6,7 @@ import AppKit
 
 class RecordTypeSelectionView: NSView {
 
-    @IBOutlet weak var stackview: NSStackView! {
-        didSet {
-            stackview.wantsLayer = true
-            stackview.layer?.backgroundColor = style.darkBackground.cgColor
-        }
-    }
+    @IBOutlet weak var stackview: NSStackView!
 
     var selectionCallback: ((RecordFilterType) -> Void)?
     private var imageForType = [RecordFilterType: NSView]()
@@ -31,7 +26,7 @@ class RecordTypeSelectionView: NSView {
     // MARK: API
 
     func initialize(with record: Record, manager: GestureManager) {
-        let filterTypesForRecord = RecordFilterType.allValues.filter { !record.relatedRecords(filterType: $0).isEmpty }
+        let filterTypesForRecord = RecordFilterType.recordFilterValues.filter { !record.relatedRecords(filterType: $0).isEmpty }
 
         filterTypesForRecord.forEach { type in
             // Use two views to increase hit area of image while image is centered

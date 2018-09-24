@@ -1,11 +1,12 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
-
 import Foundation
 import AppKit
 
+
 enum RecordFilterType {
     case image
+    case video
     case school
     case artifact
     case event
@@ -21,6 +22,8 @@ enum RecordFilterType {
         switch self {
         case .image:
             return "IMAGES"
+        case .video:
+            return "VIDEOS"
         default:
             return nil
         }
@@ -34,6 +37,8 @@ enum RecordFilterType {
         switch self {
         case .image:
             return style.imageFilterTypeColor
+        case .video:
+            return style.videoFilterTypeColor
         default:
             return style.unselectedRecordIcon
         }
@@ -47,6 +52,8 @@ enum RecordFilterType {
         switch self {
         case .image:
             return NSImage(named: "image-icon")
+        case .video:
+            return NSImage(named: "video-icon")
         default:
             return nil
         }
@@ -54,7 +61,7 @@ enum RecordFilterType {
 
     var recordType: RecordType? {
         switch self {
-        case .image:
+        case .image, .video:
             return nil
         case .school:
             return .school
@@ -74,13 +81,15 @@ enum RecordFilterType {
     var layout: RelatedItemViewLayout {
         switch self {
         case .image:
-            return RelatedItemViewLayout.grid
+            return RelatedItemViewLayout.images
+        case .video:
+            return RelatedItemViewLayout.videos
         default:
             return RelatedItemViewLayout.list
         }
     }
 
-    static var allValues: [RecordFilterType] {
-        return [.image, .school, .event, .organization, .artifact]
+    static var recordFilterValues: [RecordFilterType] {
+        return [.image, .video, .school, .event, .organization, .artifact]
     }
 }

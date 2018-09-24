@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="RelatedItemImageView" customModule="WindowExplorer" customModuleProvider="target">
             <connections>
                 <outlet property="mediaImageView" destination="BP8-zT-Hm2" id="Hy5-wp-auY"/>
+                <outlet property="videoIconImageView" destination="t0I-Tl-uwL" id="4SO-oL-pbR"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -18,15 +20,32 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="BP8-zT-Hm2" customClass="ImageView" customModule="WindowExplorer" customModuleProvider="target">
-                    <rect key="frame" x="5" y="5" width="470" height="262"/>
+                    <rect key="frame" x="3" y="3" width="474" height="266"/>
+                    <subviews>
+                        <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="t0I-Tl-uwL">
+                            <rect key="frame" x="207" y="104" width="60" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="60" id="IpB-pe-1um"/>
+                                <constraint firstAttribute="width" constant="60" id="o0a-rA-tda"/>
+                            </constraints>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="play-icon" id="QcT-PJ-NFa"/>
+                        </imageView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="t0I-Tl-uwL" firstAttribute="centerX" secondItem="BP8-zT-Hm2" secondAttribute="centerX" id="3jm-lM-JFp"/>
+                        <constraint firstItem="t0I-Tl-uwL" firstAttribute="centerY" secondItem="BP8-zT-Hm2" secondAttribute="centerY" id="PbC-rV-T6L"/>
+                    </constraints>
                 </customView>
             </subviews>
             <constraints>
-                <constraint firstItem="BP8-zT-Hm2" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="5" id="9ha-YQ-d6R"/>
-                <constraint firstAttribute="trailing" secondItem="BP8-zT-Hm2" secondAttribute="trailing" constant="5" id="D9a-wf-LWG"/>
-                <constraint firstItem="BP8-zT-Hm2" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="5" id="WCX-WB-UxS"/>
-                <constraint firstAttribute="bottom" secondItem="BP8-zT-Hm2" secondAttribute="bottom" constant="5" id="oU6-2g-IWA"/>
+                <constraint firstItem="BP8-zT-Hm2" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="3" id="9ha-YQ-d6R"/>
+                <constraint firstAttribute="trailing" secondItem="BP8-zT-Hm2" secondAttribute="trailing" constant="3" id="D9a-wf-LWG"/>
+                <constraint firstItem="BP8-zT-Hm2" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="3" id="WCX-WB-UxS"/>
+                <constraint firstAttribute="bottom" secondItem="BP8-zT-Hm2" secondAttribute="bottom" constant="3" id="oU6-2g-IWA"/>
             </constraints>
         </customView>
     </objects>
+    <resources>
+        <image name="play-icon" width="21" height="21"/>
+    </resources>
 </document>

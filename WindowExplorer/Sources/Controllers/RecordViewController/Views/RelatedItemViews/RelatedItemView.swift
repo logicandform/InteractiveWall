@@ -10,6 +10,7 @@ class RelatedItemView: NSCollectionViewItem {
     @IBOutlet weak var mediaImageView: ImageView!
 
     var tintColor = style.selectedColor
+    var filterType = RecordFilterType.all
     var record: Record? {
         didSet {
             load(record)
@@ -22,15 +23,6 @@ class RelatedItemView: NSCollectionViewItem {
     }
 
 
-    // MARK: Init
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        view.wantsLayer = true
-        set(highlighted: false)
-    }
-
-
     // MARK: API
 
     func set(highlighted: Bool) {
@@ -39,6 +31,21 @@ class RelatedItemView: NSCollectionViewItem {
         } else {
             view.layer?.backgroundColor = style.darkBackground.cgColor
         }
+    }
+
+
+    // MARK: Life-Cycle
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        view.wantsLayer = true
+        set(highlighted: false)
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        mediaImageView.layer?.backgroundColor = style.relatedItemBackgroundColor.cgColor
     }
 
     override func prepareForReuse() {
@@ -69,7 +76,6 @@ class RelatedItemView: NSCollectionViewItem {
     }
 
     func setImage(_ image: NSImage, scaling: ImageScaling) {
-        mediaImageView.layer?.backgroundColor = style.relatedItemBackgroundColor.cgColor
         mediaImageView.transition(image, duration: Constants.imageTransitionDuration, scaling: scaling)
     }
 }

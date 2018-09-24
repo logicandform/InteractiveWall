@@ -4,6 +4,7 @@ import Cocoa
 import Alamofire
 import AlamofireImage
 
+
 class MediaItemView: NSCollectionViewItem {
     static let identifier = NSUserInterfaceItemIdentifier("MediaItemView")
 
@@ -27,8 +28,8 @@ class MediaItemView: NSCollectionViewItem {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.wantsLayer = true
-        view.layer?.borderWidth = 1
+
+        setupViews()
         set(highlighted: false)
     }
 
@@ -44,6 +45,17 @@ class MediaItemView: NSCollectionViewItem {
     }
 
 
+    // MARK: Setup
+
+    private func setupViews() {
+        view.wantsLayer = true
+        view.layer?.borderWidth = 1
+        videoIconImageView.wantsLayer = true
+        videoIconImageView.layer?.cornerRadius = videoIconImageView.frame.width / 2
+        videoIconImageView.layer?.backgroundColor = style.darkBackground.cgColor
+    }
+
+
     // MARK: Helpers
 
     private func load(_ url: Media?) {
@@ -51,24 +63,14 @@ class MediaItemView: NSCollectionViewItem {
             return
         }
 
+        videoIconImageView.isHidden = media.type != .video
+
         if let thumbnail = media.thumbnail {
             Alamofire.request(thumbnail).responseImage { [weak self] response in
                 if let image = response.value {
                     self?.mediaImageView.set(image)
                 }
             }
-        }
-
-        displayIconIfNecessary(for: media)
-    }
-
-    /// Displays the play icon over video media items
-    private func displayIconIfNecessary(for media: Media) {
-        if media.type == .video {
-            videoIconImageView.wantsLayer = true
-            videoIconImageView.layer?.cornerRadius = videoIconImageView.frame.width / 2
-            videoIconImageView.layer?.backgroundColor = style.darkBackground.cgColor
-            videoIconImageView.isHidden = false
         }
     }
 }
