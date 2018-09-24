@@ -20,7 +20,7 @@ struct Configuration {
     static let touchScreen = TouchScreen.pct2485
     static let resetTimeoutDuration = 150.0
     static let closeWindowTimeoutDuration = 180.0
-    static let menuResetTimeoutDuration = 10.0
+    static let menuResetTimeoutDuration = 180.0
 }
 
 

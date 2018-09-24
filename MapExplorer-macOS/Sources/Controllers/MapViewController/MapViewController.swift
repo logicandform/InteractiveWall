@@ -198,7 +198,9 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let annotation = annotation as? CircleAnnotation {
-            return CircleAnnotationView(annotation: annotation, reuseIdentifier: CircleAnnotationView.identifier)
+            let annotationView = CircleAnnotationView(annotation: annotation, reuseIdentifier: CircleAnnotationView.identifier)
+            annotationView.setTitle(scale: currentTextScale)
+            return annotationView
         } else if let cluster = annotation as? MKClusterAnnotation {
             return ClusterAnnotationView(annotation: cluster, reuseIdentifier: ClusterAnnotationView.identifier)
         }
