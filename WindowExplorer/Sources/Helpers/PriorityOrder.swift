@@ -30,7 +30,7 @@ class PriorityOrder {
         if let comments = record.comments, !comments.isEmpty {
             priority += Priority.comment
         }
-        if let date = record.date, !date.isEmpty {
+        if record.dates != nil {
             priority += Priority.date
         }
         if record.coordinate != nil {

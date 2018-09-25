@@ -4,7 +4,8 @@ import Foundation
 import Cocoa
 
 
-struct TimelineDate: CustomStringConvertible, Comparable {
+struct RecordDate: CustomStringConvertible, Comparable {
+
     let day: CGFloat
     let month: Int
     var year: Int
@@ -59,7 +60,7 @@ struct TimelineDate: CustomStringConvertible, Comparable {
     }
 
     init?(json: JSON) {
-        guard let day = json["day"] as? CGFloat, let month = json["month"] as? Int, let year = json["year"] as? Int else {
+        guard let day = json[Keys.day] as? CGFloat, let month = json[Keys.month] as? Int, let year = json[Keys.year] as? Int else {
             return nil
         }
         self.day = day
@@ -69,7 +70,7 @@ struct TimelineDate: CustomStringConvertible, Comparable {
         self.defaultMonthUsed = false
     }
 
-    public static func < (lhs: TimelineDate, rhs: TimelineDate) -> Bool {
+    public static func < (lhs: RecordDate, rhs: RecordDate) -> Bool {
         if lhs.year == rhs.year {
             if lhs.month == rhs.month {
                 return lhs.day < rhs.day
@@ -79,7 +80,7 @@ struct TimelineDate: CustomStringConvertible, Comparable {
         return lhs.year < rhs.year
     }
 
-    public static func == (lhs: TimelineDate, rhs: TimelineDate) -> Bool {
+    public static func == (lhs: RecordDate, rhs: RecordDate) -> Bool {
         return lhs.day == rhs.day && lhs.month == rhs.month && lhs.year == rhs.year
     }
 }

@@ -9,7 +9,7 @@ final class TimelineEvent: Hashable {
     let type: RecordType
     let title: String
     let thumbnail: URL?
-    var dates: TimelineRange
+    var dates: DateRange
     var highlighted = false
 
     var hashValue: Int {
@@ -26,7 +26,7 @@ final class TimelineEvent: Hashable {
 
     // MARK: Init
 
-    init(id: Int, type: RecordType, title: String, dates: TimelineRange, thumbnail: URL?) {
+    init(id: Int, type: RecordType, title: String, dates: DateRange, thumbnail: URL?) {
         self.id = id
         self.type = type
         self.title = title

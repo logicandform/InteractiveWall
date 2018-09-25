@@ -4,10 +4,9 @@ import Foundation
 import Cocoa
 
 
-/// Class containing a start and end date for Timeline items, as well as the ability to parse dates from a string
-struct TimelineRange: CustomStringConvertible, Equatable {
-    var startDate: TimelineDate
-    var endDate: TimelineDate?
+struct DateRange: CustomStringConvertible, Equatable {
+    var startDate: RecordDate
+    var endDate: RecordDate?
 
     var description: String {
         if let endDate = endDate {
@@ -33,10 +32,10 @@ struct TimelineRange: CustomStringConvertible, Equatable {
         }
 
         let dateArray = date.componentsSeparatedBy(separators: " -,./")
-        if dateArray.contains(where: { !$0.isNumerical }), let dates = TimelineRange.parseNonNumerical(dateArray: dateArray) {
+        if dateArray.contains(where: { !$0.isNumerical }), let dates = DateRange.parseNonNumerical(dateArray: dateArray) {
             self.startDate = dates.startDate
             self.endDate = dates.endDate
-        } else if let dates = TimelineRange.parseNumerical(dateArray: dateArray) {
+        } else if let dates = DateRange.parseNumerical(dateArray: dateArray) {
             self.startDate = dates.startDate
             self.endDate = dates.endDate
         } else {
@@ -47,9 +46,9 @@ struct TimelineRange: CustomStringConvertible, Equatable {
 
     // MARK: Helpers
 
-    private static func parseNumerical(dateArray: [String]) -> (startDate: TimelineDate, endDate: TimelineDate?)? {
-        var start: TimelineDate? = nil
-        var end: TimelineDate? = nil
+    private static func parseNumerical(dateArray: [String]) -> (startDate: RecordDate, endDate: RecordDate?)? {
+        var start: RecordDate? = nil
+        var end: RecordDate? = nil
         var startDay: CGFloat? = nil
         var endDay: CGFloat? = nil
         var startMonth: Int? = nil
@@ -76,7 +75,7 @@ struct TimelineRange: CustomStringConvertible, Equatable {
 
         if endDay == nil && endMonth == nil && endYear == nil {
             if let year = startYear {
-                return (startDate: TimelineDate(day: startDay, month: startMonth, year: year), endDate: nil)
+                return (startDate: RecordDate(day: startDay, month: startMonth, year: year), endDate: nil)
             } else {
                 return nil
             }
@@ -93,12 +92,12 @@ struct TimelineRange: CustomStringConvertible, Equatable {
         }
 
         if let year = startYear {
-            start = TimelineDate(day: startDay, month: startMonth, year: year)
+            start = RecordDate(day: startDay, month: startMonth, year: year)
         }
         if let year = endYear {
-            end = TimelineDate(day: endDay, month: endMonth, year: year)
+            end = RecordDate(day: endDay, month: endMonth, year: year)
         } else if let year = startYear {
-            end = TimelineDate(day: endDay, month: endMonth, year: year)
+            end = RecordDate(day: endDay, month: endMonth, year: year)
         }
 
         if let start = start, let end = end {
@@ -108,9 +107,9 @@ struct TimelineRange: CustomStringConvertible, Equatable {
         }
     }
 
-    private static func parseNonNumerical(dateArray: [String]) -> (startDate: TimelineDate, endDate: TimelineDate?)? {
-        var start: TimelineDate? = nil
-        var end: TimelineDate? = nil
+    private static func parseNonNumerical(dateArray: [String]) -> (startDate: RecordDate, endDate: RecordDate?)? {
+        var start: RecordDate? = nil
+        var end: RecordDate? = nil
         var startDay: CGFloat? = nil
         var endDay: CGFloat? = nil
         var startMonth: Int? = nil
@@ -157,7 +156,7 @@ struct TimelineRange: CustomStringConvertible, Equatable {
 
         if endDay == nil && endMonth == nil && endYear == nil {
             if let year = startYear {
-                return (startDate: TimelineDate(day: startDay, month: startMonth, year: year), endDate: nil)
+                return (startDate: RecordDate(day: startDay, month: startMonth, year: year), endDate: nil)
             } else {
                 return nil
             }
@@ -174,12 +173,12 @@ struct TimelineRange: CustomStringConvertible, Equatable {
         }
 
         if let year = startYear {
-            start = TimelineDate(day: startDay, month: startMonth, year: year)
+            start = RecordDate(day: startDay, month: startMonth, year: year)
         }
         if let year = endYear {
-            end = TimelineDate(day: endDay, month: endMonth, year: year)
+            end = RecordDate(day: endDay, month: endMonth, year: year)
         } else if let year = startYear {
-            end = TimelineDate(day: endDay, month: endMonth, year: year)
+            end = RecordDate(day: endDay, month: endMonth, year: year)
         }
 
         if let start = start, let end = end {
@@ -189,7 +188,7 @@ struct TimelineRange: CustomStringConvertible, Equatable {
         }
     }
 
-    static func == (lhs: TimelineRange, rhs: TimelineRange) -> Bool {
+    static func == (lhs: DateRange, rhs: DateRange) -> Bool {
         return lhs.startDate.day == rhs.startDate.day && lhs.startDate.month == rhs.startDate.month && lhs.startDate.year == rhs.startDate.year && lhs.endDate?.day == rhs.endDate?.day && lhs.endDate?.month == rhs.endDate?.month && lhs.endDate?.year == rhs.endDate?.year
     }
 }

@@ -97,12 +97,12 @@
 		A44A56EE2135F35200F73D55 /* TimelineSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44A56ED2135F35200F73D55 /* TimelineSelection.swift */; };
 		A44E14F6211A392B00105F58 /* NSCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44E14F5211A392B00105F58 /* NSCollectionView.swift */; };
 		A44F1B6120FE8232005FEFD1 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44F1B6020FE8232005FEFD1 /* String.swift */; };
-		A44F1B6520FEAF8B005FEFD1 /* TimelineDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44F1B6420FEAF8B005FEFD1 /* TimelineDate.swift */; };
+		A44F1B6520FEAF8B005FEFD1 /* RecordDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44F1B6420FEAF8B005FEFD1 /* RecordDate.swift */; };
 		A4510784211394FE0025FFD7 /* TimelineBorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4510783211394FE0025FFD7 /* TimelineBorderView.swift */; };
 		A45107882113BCA80025FFD7 /* TimelineBorderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A45107872113BCA80025FFD7 /* TimelineBorderView.xib */; };
 		A45146FC2125E8EE00910A25 /* SelectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A45146FB2125E8EE00910A25 /* SelectionManager.swift */; };
 		A46EB937211E261C00504F7C /* TimelineControlsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A46EB936211E261C00504F7C /* TimelineControlsDataSource.swift */; };
-		A4A8761A210015F200113F95 /* TimelineRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A87619210015F200113F95 /* TimelineRange.swift */; };
+		A4A8761A210015F200113F95 /* DateRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A87619210015F200113F95 /* DateRange.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -229,12 +229,12 @@
 		A44A56ED2135F35200F73D55 /* TimelineSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineSelection.swift; sourceTree = "<group>"; };
 		A44E14F5211A392B00105F58 /* NSCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSCollectionView.swift; sourceTree = "<group>"; };
 		A44F1B6020FE8232005FEFD1 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
-		A44F1B6420FEAF8B005FEFD1 /* TimelineDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDate.swift; sourceTree = "<group>"; };
+		A44F1B6420FEAF8B005FEFD1 /* RecordDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDate.swift; sourceTree = "<group>"; };
 		A4510783211394FE0025FFD7 /* TimelineBorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineBorderView.swift; sourceTree = "<group>"; };
 		A45107872113BCA80025FFD7 /* TimelineBorderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineBorderView.xib; sourceTree = "<group>"; };
 		A45146FB2125E8EE00910A25 /* SelectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionManager.swift; sourceTree = "<group>"; };
 		A46EB936211E261C00504F7C /* TimelineControlsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineControlsDataSource.swift; sourceTree = "<group>"; };
-		A4A87619210015F200113F95 /* TimelineRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineRange.swift; sourceTree = "<group>"; };
+		A4A87619210015F200113F95 /* DateRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateRange.swift; sourceTree = "<group>"; };
 		D9FF0C65383B61E5A7A798B0 /* Pods-All-MapExplorer-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-macOS.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-macOS/Pods-All-MapExplorer-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -395,10 +395,10 @@
 				22F0EDFC2066DA1E0075E467 /* ListenerCallback.h */,
 				22F0EDFB2066DA1E0075E467 /* ListenerCallback.m */,
 				8F22945520773EA600731E78 /* Math.swift */,
-				A44F1B6420FEAF8B005FEFD1 /* TimelineDate.swift */,
+				A44F1B6420FEAF8B005FEFD1 /* RecordDate.swift */,
+				A4A87619210015F200113F95 /* DateRange.swift */,
 				2222B13920D85BD700ECCB5D /* ApplicationType.swift */,
 				220AE86020ED48C200F6E9AA /* Months.swift */,
-				A4A87619210015F200113F95 /* TimelineRange.swift */,
 				A44A56ED2135F35200F73D55 /* TimelineSelection.swift */,
 				22667A27214088EF00F15A04 /* DispatchTimer.swift */,
 				226A4519214F1FA300860F0E /* RecordType.swift */,
@@ -797,7 +797,7 @@
 				22290C3A2028FA35000E0573 /* Int.swift in Sources */,
 				A46EB937211E261C00504F7C /* TimelineControlsDataSource.swift in Sources */,
 				A4510784211394FE0025FFD7 /* TimelineBorderView.swift in Sources */,
-				A4A8761A210015F200113F95 /* TimelineRange.swift in Sources */,
+				A4A8761A210015F200113F95 /* DateRange.swift in Sources */,
 				2290A03720E2F01500F028C4 /* TimelineHeaderView.swift in Sources */,
 				22FEF1DF202CFFFA001E9596 /* Touch.swift in Sources */,
 				22B85AF9209B7A6D0099F44E /* TapGestureRecognizer.swift in Sources */,
@@ -819,7 +819,7 @@
 				8FBBD1CF20F5140900D9334C /* ClusterAnnotationView.swift in Sources */,
 				22B85AF8209B7A6D0099F44E /* GestureRecognizer.swift in Sources */,
 				2276AE68204E75C2001FAD8B /* BorderlessWindow.swift in Sources */,
-				A44F1B6520FEAF8B005FEFD1 /* TimelineDate.swift in Sources */,
+				A44F1B6520FEAF8B005FEFD1 /* RecordDate.swift in Sources */,
 				22290C382028FA35000E0573 /* MapKit.swift in Sources */,
 				221C629F203B4906009493DA /* School.swift in Sources */,
 				222694C220699B53007DA6FA /* Event.swift in Sources */,

@@ -155,7 +155,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
 
     // MARK: Helpers
 
-    private func dateTitle(for dates: TimelineRange) -> String {
+    private func dateTitle(for dates: DateRange) -> String {
         if dates.startDate.year > lastYear {
             if let endDate = dates.endDate {
                 return "\(dateTitle(for: dates.startDate)) - \(dateTitle(for: endDate))"
@@ -167,7 +167,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
         }
     }
 
-    private func dateTitle(for date: TimelineDate) -> String {
+    private func dateTitle(for date: RecordDate) -> String {
         let year = yearInRange(for: date.year)
 
         if date.defaultMonthUsed {

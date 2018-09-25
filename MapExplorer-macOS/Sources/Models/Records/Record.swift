@@ -11,7 +11,7 @@ class Record: Hashable {
     let title: String
     let shortTitle: String
     var thumbnail: URL?
-    var dates: TimelineRange?
+    var dates: DateRange?
     var coordinate: CLLocationCoordinate2D?
     let relatedSchoolIDs: [Int]
     let relatedEventIDs: [Int]
@@ -48,8 +48,7 @@ class Record: Hashable {
         self.id = id
         self.title = title
         self.shortTitle = shortTitle
-        let dateString = json[Keys.date] as? String
-        self.dates = TimelineRange(from: dateString)
+        self.dates = DateRange(from: json[Keys.date] as? String)
         self.relatedSchoolIDs = json[Keys.schoolIDs] as? [Int] ?? []
         self.relatedEventIDs = json[Keys.eventIDs] as? [Int] ?? []
         if let latitude = json[Keys.latitude] as? Double, let longitude = json[Keys.longitude] as? Double {

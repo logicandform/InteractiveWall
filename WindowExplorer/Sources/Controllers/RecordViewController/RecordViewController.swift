@@ -197,10 +197,10 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         stackView.addView(titleTextField, in: .top)
         stackView.setCustomSpacing(style.largeTitleTrailingSpace, after: titleTextField)
 
-        if let date = record.date, let firstDate = date.split(separator: "|").first?.description {
+        if let dates = record.dates {
             var dateAttributes = style.recordDateAttributes
             dateAttributes[.foregroundColor] = record.type.color
-            let dateAttributedString = NSAttributedString(string: firstDate, attributes: dateAttributes)
+            let dateAttributedString = NSAttributedString(string: dates.description, attributes: dateAttributes)
             let dateTextField = textField(for: dateAttributedString)
             stackView.addView(dateTextField, in: .top)
             stackView.setCustomSpacing(style.dateTrailingSpace, after: dateTextField)

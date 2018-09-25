@@ -79,23 +79,6 @@ class MasterViewController: NSViewController {
 
     // MARK: Setup
 
-    private func setupView() {
-        view.wantsLayer = true
-        view.layer?.backgroundColor = style.darkBackground.cgColor
-        titleTextField.attributedStringValue = NSAttributedString(string: "Control Center", attributes: style.windowTitleAttributes)
-        windowDragAreaHighlight.wantsLayer = true
-        windowDragAreaHighlight.layer?.backgroundColor = style.selectedColor.cgColor
-        consoleTextView.font = Constants.consoleOutputFont
-        consoleTextView.textColor = Constants.consoleOutputFontColor
-        let state = Configuration.launchOnLoad ? ApplicationState.running : ApplicationState.stopped
-        set(state: state)
-    }
-
-    private func setupGestures() {
-        let mousePan = NSPanGestureRecognizer(target: self, action: #selector(handleMousePan(_:)))
-        windowDragArea.addGestureRecognizer(mousePan)
-    }
-
     private func launch() {
         // Open maps
         for screenID in (1 ... Configuration.numberOfScreens) {
@@ -111,6 +94,23 @@ class MasterViewController: NSViewController {
         if nodeApplication == nil {
             nodeApplication = open(.nodeNetwork, screenID: nil, appID: nil)
         }
+    }
+
+    private func setupView() {
+        view.wantsLayer = true
+        view.layer?.backgroundColor = style.darkBackground.cgColor
+        titleTextField.attributedStringValue = NSAttributedString(string: "Control Center", attributes: style.windowTitleAttributes)
+        windowDragAreaHighlight.wantsLayer = true
+        windowDragAreaHighlight.layer?.backgroundColor = style.selectedColor.cgColor
+        consoleTextView.font = Constants.consoleOutputFont
+        consoleTextView.textColor = Constants.consoleOutputFontColor
+        let state = Configuration.launchOnLoad ? ApplicationState.running : ApplicationState.stopped
+        set(state: state)
+    }
+
+    private func setupGestures() {
+        let mousePan = NSPanGestureRecognizer(target: self, action: #selector(handleMousePan(_:)))
+        windowDragArea.addGestureRecognizer(mousePan)
     }
 
     private func setupActions() {

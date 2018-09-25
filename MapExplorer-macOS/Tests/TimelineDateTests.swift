@@ -4,12 +4,12 @@ import XCTest
 
 
 @testable import MapExplorer_macOS
-class TimelineDateTests: XCTestCase {
+class RecordDateTests: XCTestCase {
 
     // MARK: Standard Format, Same Start/End
 
     func testStandardSingleDate() {
-        guard let dateRange = TimelineRange(from: "October 19, 2019") else {
+        guard let dateRange = DateRange(from: "October 19, 2019") else {
             XCTAssert(false)
             return
         }
@@ -26,7 +26,7 @@ class TimelineDateTests: XCTestCase {
     }
 
     func testStandardSingleDateTwo() {
-        guard let dateRange = TimelineRange(from: "August 19th, 1976") else {
+        guard let dateRange = DateRange(from: "August 19th, 1976") else {
             XCTAssert(false)
             return
         }
@@ -43,7 +43,7 @@ class TimelineDateTests: XCTestCase {
     }
 
     func testStandardSingleDateThree() {
-        guard let dateRange = TimelineRange(from: "11th May, 2010") else {
+        guard let dateRange = DateRange(from: "11th May, 2010") else {
             XCTAssert(false)
             return
         }
@@ -63,7 +63,7 @@ class TimelineDateTests: XCTestCase {
     // MARK: Standard Format, Different Start/End
 
     func testDifferentStartEnd() {
-        guard let dateRange = TimelineRange(from: "January 31, 2019 - December 1, 2125") else {
+        guard let dateRange = DateRange(from: "January 31, 2019 - December 1, 2125") else {
             XCTAssert(false)
             return
         }
@@ -90,7 +90,7 @@ class TimelineDateTests: XCTestCase {
     }
 
     func testDifferentStartEndTwo() {
-        guard let dateRange = TimelineRange(from: "June 28th, 2019 - March 1st, 2125") else {
+        guard let dateRange = DateRange(from: "June 28th, 2019 - March 1st, 2125") else {
             XCTAssert(false)
             return
         }
@@ -117,7 +117,7 @@ class TimelineDateTests: XCTestCase {
     }
 
     func testDifferentStartEndThree() {
-        guard let dateRange = TimelineRange(from: "1st January, 2019 - 2nd February, 2125") else {
+        guard let dateRange = DateRange(from: "1st January, 2019 - 2nd February, 2125") else {
             XCTAssert(false)
             return
         }
@@ -147,7 +147,7 @@ class TimelineDateTests: XCTestCase {
     // MARK: Different Date Components Missing
 
     func testSingleYearListed() {
-        guard let dateRange = TimelineRange(from: "February 7-14, 1958") else {
+        guard let dateRange = DateRange(from: "February 7-14, 1958") else {
             XCTAssert(false)
             return
         }
@@ -175,7 +175,7 @@ class TimelineDateTests: XCTestCase {
     // MARK: Abbreviated Month Test
 
     func testAbbreviatedMonths() {
-        guard let dateRange = TimelineRange(from: "Apr. 25 - Jun. 13, 1784") else {
+        guard let dateRange = DateRange(from: "Apr. 25 - Jun. 13, 1784") else {
             XCTAssert(false)
             return
         }
@@ -204,7 +204,7 @@ class TimelineDateTests: XCTestCase {
     // MARK: Numerical Date Test
 
     func testOneNumericalDate() {
-        guard let dateRange = TimelineRange(from: "30-12-1932") else {
+        guard let dateRange = DateRange(from: "30-12-1932") else {
             XCTAssert(false)
             return
         }
@@ -221,7 +221,7 @@ class TimelineDateTests: XCTestCase {
     }
 
     func testTwoNumericalDates() {
-        guard let dateRange = TimelineRange(from: "30.12.1932-6.05.1968") else {
+        guard let dateRange = DateRange(from: "30.12.1932-6.05.1968") else {
             XCTAssert(false)
             return
         }
@@ -248,7 +248,7 @@ class TimelineDateTests: XCTestCase {
     }
 
     func testNumericalDateTwo() {
-        guard let dateRange = TimelineRange(from: "30/12/1932") else {
+        guard let dateRange = DateRange(from: "30/12/1932") else {
             XCTAssert(false)
             return
         }
@@ -265,7 +265,7 @@ class TimelineDateTests: XCTestCase {
     }
 
     func testTwoNumericalDatesTwo() {
-        guard let dateRange = TimelineRange(from: "30/12/1932-6/05/1968") else {
+        guard let dateRange = DateRange(from: "30/12/1932-6/05/1968") else {
             XCTAssert(false)
             return
         }
@@ -292,7 +292,7 @@ class TimelineDateTests: XCTestCase {
     }
 
     func testNoInput() {
-        if TimelineRange(from: "") == nil {
+        if DateRange(from: "") == nil {
             XCTAssert(true)
         } else {
             XCTAssert(false)

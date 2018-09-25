@@ -146,7 +146,7 @@ final class ConnectionManager {
                 mapHandler?.handleReset(mapRect, fromID: id)
             }
         case TimelineNotification.rect.name:
-            if let dateJSON = info[Keys.date] as? JSON, let date = TimelineDate(json: dateJSON), let group = group, let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture) {
+            if let dateJSON = info[Keys.date] as? JSON, let date = RecordDate(json: dateJSON), let group = group, let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture) {
                 setAppState(from: id, group: group, for: .timeline, gestureState: state)
                 timelineHandler?.handle(date: date, fromID: id)
             }
@@ -156,7 +156,7 @@ final class ConnectionManager {
                 timelineHandler?.handle(verticalPosition: position, fromID: id)
             }
         case TimelineNotification.sync.name:
-            if let dateJSON = info[Keys.date] as? JSON, let date = TimelineDate(json: dateJSON), let position = info[Keys.vertical] as? CGFloat {
+            if let dateJSON = info[Keys.date] as? JSON, let date = RecordDate(json: dateJSON), let position = info[Keys.vertical] as? CGFloat {
                 timelineHandler?.handle(date: date, fromID: id, syncing: true)
                 timelineHandler?.handle(verticalPosition: position, fromID: id, syncing: true)
             }

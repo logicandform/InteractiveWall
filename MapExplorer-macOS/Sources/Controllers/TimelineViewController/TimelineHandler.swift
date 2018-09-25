@@ -42,7 +42,7 @@ final class TimelineHandler {
     // MARK: API
 
     /// Determines how to respond to a received rect from another timeline with the type of gesture that triggered the event.
-    func handle(date: TimelineDate, fromID: Int, syncing: Bool = false) {
+    func handle(date: RecordDate, fromID: Int, syncing: Bool = false) {
         guard let currentGroup = group, currentGroup == fromID else {
             return
         }
@@ -72,7 +72,7 @@ final class TimelineHandler {
         }
     }
 
-    func send(date: TimelineDate, for gestureState: GestureState = .recognized) {
+    func send(date: RecordDate, for gestureState: GestureState = .recognized) {
         // If sending from momentum but another app has interrupted, ignore
         if gestureState == .momentum && pair != nil {
             return
@@ -101,7 +101,7 @@ final class TimelineHandler {
 
         let currentGroup = group ?? appID
         let position = controller.timelineBottomConstraint.constant
-        let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.date: TimelineDate(date: controller.currentDate).toJSON, Keys.vertical: position]
+        let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.date: RecordDate(date: controller.currentDate).toJSON, Keys.vertical: position]
         DistributedNotificationCenter.default().postNotificationName(TimelineNotification.sync.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
@@ -133,9 +133,9 @@ final class TimelineHandler {
 
     // MARK: Helpers
 
-    private func adjust(date: TimelineDate, toApp app: Int, fromApp pair: Int?) -> TimelineDate? {
+    private func adjust(date: RecordDate, toApp app: Int, fromApp pair: Int?) -> RecordDate? {
         let pairedID = pair ?? app
-        return TimelineDate(day: date.day, month: date.month, year: date.year + (appID - pairedID) * TimelineDecadeFlagLayout.yearsPerScreen)
+        return RecordDate(day: date.day, month: date.month, year: date.year + (appID - pairedID) * TimelineDecadeFlagLayout.yearsPerScreen)
     }
 
     /// Resets the pairedDeviceID after a timeout period

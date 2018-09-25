@@ -23,11 +23,11 @@ enum RecordType: String {
     var timelineSortOrder: Int {
         switch self {
         case .school:
-            return 1
-        case .event:
             return 2
-        case .collection:
+        case .event:
             return 3
+        case .collection:
+            return 1
         }
     }
 

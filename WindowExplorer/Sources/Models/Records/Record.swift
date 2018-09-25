@@ -19,7 +19,7 @@ class Record: Hashable, SearchItemDisplayable {
     let shortTitle: String
     let description: String?
     let comments: String?
-    let date: String?
+    let dates: DateRange?
     var coordinate: CLLocationCoordinate2D?
     var media = [Media]()
     let relatedSchoolIDs: [Int]
@@ -85,7 +85,7 @@ class Record: Hashable, SearchItemDisplayable {
         self.title = title
         self.shortTitle = shortTitle
         self.comments = json[Keys.comments] as? String
-        self.date = json[Keys.date] as? String
+        self.dates = DateRange(from: json[Keys.date] as? String)
         self.description = json[Keys.description] as? String
         self.relatedSchoolIDs = json[Keys.schoolIDs] as? [Int] ?? []
         self.relatedOrganizationIDs = json[Keys.organizationIDs] as? [Int] ?? []

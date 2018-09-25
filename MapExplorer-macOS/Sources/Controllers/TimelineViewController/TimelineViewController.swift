@@ -90,7 +90,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         })
     }
 
-    func set(date: TimelineDate, animated: Bool) {
+    func set(date: RecordDate, animated: Bool) {
         currentDate.year = adjust(year: date.year)
         currentDate.month = adjust(month: date.month)
         currentDate.day = adjust(day: date.day)
@@ -114,7 +114,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     }
 
     func reset(animated: Bool) {
-        set(date: TimelineDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year + (appID * TimelineDecadeFlagLayout.yearsPerScreen)), animated: animated)
+        set(date: RecordDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year + (appID * TimelineDecadeFlagLayout.yearsPerScreen)), animated: animated)
         let center = view.frame.height / 2 - timelineBackgroundView.frame.height / 2
         set(verticalPosition: center, animated: animated)
     }
@@ -190,7 +190,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         switch pan.state {
         case .recognized, .momentum:
             updateDate(from: collectionView, with: pan.delta)
-            timelineHandler?.send(date: TimelineDate(date: currentDate), for: pan.state)
+            timelineHandler?.send(date: RecordDate(date: currentDate), for: pan.state)
         case .ended:
             timelineHandler?.endActivity()
         case .possible, .failed:
@@ -242,7 +242,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         switch pan.state {
         case .recognized, .momentum:
             updateDate(from: collectionView, with: pan.delta)
-            timelineHandler?.send(date: TimelineDate(date: currentDate), for: pan.state)
+            timelineHandler?.send(date: RecordDate(date: currentDate), for: pan.state)
         case .ended:
             timelineHandler?.endActivity()
         case .possible, .failed:

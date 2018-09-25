@@ -251,7 +251,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
     }
 
     /// Returns an x-position on the timeline for a given date
-    private func position(for date: TimelineDate, in source: TimelineDataSource) -> CGFloat {
+    private func position(for date: RecordDate, in source: TimelineDataSource) -> CGFloat {
         let xYear = (CGFloat(date.year) - CGFloat(source.firstYear)) * TimelineDecadeFlagLayout.yearWidth
         let xMonth = CGFloat(date.month) * TimelineDecadeFlagLayout.yearWidth / 12
         let xDay = date.day * TimelineDecadeFlagLayout.yearWidth / 12
