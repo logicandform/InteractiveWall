@@ -27,7 +27,7 @@ class InfoCollectionItemView: NSCollectionViewItem {
     // MARK: API
 
     static func height(for record: Record, width: CGFloat) -> CGFloat {
-        let dateText = NSAttributedString(string: record.dates?.description ?? "", attributes: style.recordDateAttributes)
+        let dateText = NSAttributedString(string: record.dates?.description(small: true) ?? "", attributes: style.recordDateAttributes)
         let dateHeight = dateText.height(containerWidth: width - Constants.textFieldHorizontalMargin * 2)
         let descriptionText = NSAttributedString(string: record.description ?? "", attributes: style.recordDescriptionAttributes)
         let descriptionHeight = descriptionText.height(containerWidth: width - Constants.textFieldHorizontalMargin * 2)
@@ -46,7 +46,7 @@ class InfoCollectionItemView: NSCollectionViewItem {
 
         var dateAttributes = style.recordDateAttributes
         dateAttributes[.foregroundColor] = record.type.color
-        dateTextField.attributedStringValue = NSAttributedString(string: record.dates?.description ?? "", attributes: dateAttributes)
+        dateTextField.attributedStringValue = NSAttributedString(string: record.dates?.description(small: true) ?? "", attributes: dateAttributes)
         descriptionTextField.attributedStringValue = NSAttributedString(string: record.description ?? "", attributes: style.recordDescriptionAttributes)
     }
 }

@@ -4,17 +4,9 @@ import Foundation
 import Cocoa
 
 
-struct DateRange: CustomStringConvertible, Equatable {
+struct DateRange: Equatable {
     var startDate: RecordDate
     var endDate: RecordDate?
-
-    var description: String {
-        if let endDate = endDate {
-            return "\(startDate) - \(endDate)"
-        } else {
-            return "\(startDate)"
-        }
-    }
 
     private struct Constants {
         static let minimumYear = 32
@@ -40,6 +32,17 @@ struct DateRange: CustomStringConvertible, Equatable {
             self.endDate = dates.endDate
         } else {
             return nil
+        }
+    }
+
+
+    // MARK: API
+
+    func description(small: Bool) -> String {
+        if let endDate = endDate {
+            return "\(startDate.description(small: small)) - \(endDate.description(small: small))"
+        } else {
+            return "\(startDate.description(small: small))"
         }
     }
 

@@ -4,26 +4,13 @@ import Foundation
 import Cocoa
 
 
-struct RecordDate: CustomStringConvertible, Comparable {
+struct RecordDate: Comparable {
 
     let day: CGFloat
     let month: Int
     var year: Int
     let defaultDayUsed: Bool
     let defaultMonthUsed: Bool
-
-    var description: String {
-        if defaultMonthUsed {
-            return "\(year)"
-        } else if defaultDayUsed {
-            let m = Month(rawValue: month) ?? .january
-            return "\(m.abbreviatedTitle), \(year)"
-        }
-
-        let m = Month(rawValue: month) ?? .january
-        let d = max(Int(day * 31), 1)
-        return "\(m.abbreviatedTitle) \(d), \(year)"
-    }
 
     var toJSON: JSON {
         return [Keys.day: day, Keys.month: month, Keys.year: year]
@@ -68,6 +55,23 @@ struct RecordDate: CustomStringConvertible, Comparable {
         self.year = year
         self.defaultDayUsed = false
         self.defaultMonthUsed = false
+    }
+
+
+    // MARK: API
+
+    func description(small: Bool) -> String {
+        let m = Month(rawValue: month) ?? .january
+        let d = max(Int(day * 31), 1)
+        let monthTitle = small ? m.abbreviatedTitle : m.title
+
+        if defaultMonthUsed {
+            return "\(year)"
+        } else if defaultDayUsed {
+            return "\(monthTitle), \(year)"
+        } else {
+            return "\(monthTitle) \(d), \(year)"
+        }
     }
 
     public static func < (lhs: RecordDate, rhs: RecordDate) -> Bool {

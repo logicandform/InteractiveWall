@@ -121,7 +121,6 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
 
         let event = events[indexPath.item]
         timelineFlag.event = event
-        timelineFlag.dateTextField.attributedStringValue = NSAttributedString(string: dateTitle(for: timelineFlag.event.dates), attributes: style.timelineDateAttributes)
         timelineFlag.set(highlighted: selectedIndexes.contains(indexPath.item), animated: false)
         return timelineFlag
     }
@@ -154,33 +153,6 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
 
 
     // MARK: Helpers
-
-    private func dateTitle(for dates: DateRange) -> String {
-        if dates.startDate.year > lastYear {
-            if let endDate = dates.endDate {
-                return "\(dateTitle(for: dates.startDate)) - \(dateTitle(for: endDate))"
-            } else {
-                return "\(dateTitle(for: dates.startDate))"
-            }
-        } else {
-            return dates.description
-        }
-    }
-
-    private func dateTitle(for date: RecordDate) -> String {
-        let year = yearInRange(for: date.year)
-
-        if date.defaultMonthUsed {
-            return "\(year)"
-        } else if date.defaultDayUsed {
-            let m = Month(rawValue: date.month) ?? .january
-            return "\(m.abbreviatedTitle), \(year)"
-        }
-
-        let m = Month(rawValue: date.month) ?? .january
-        let d = max(Int(date.day * 31), 1)
-        return "\(m.abbreviatedTitle) \(d), \(year)"
-    }
 
     private func yearInRange(for year: Int) -> Int {
         if year > lastYear {

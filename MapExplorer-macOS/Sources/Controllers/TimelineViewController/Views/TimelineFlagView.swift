@@ -85,7 +85,7 @@ class TimelineFlagView: NSCollectionViewItem {
         mediaImageTopConstraint.constant = event.thumbnail == nil ? 0 : Constants.mediaImageTopMargin
         flagHeightConstraint.constant = TimelineFlagView.flagHeight(for: event)
         titleTextField.attributedStringValue = NSAttributedString(string: event.title, attributes: style.timelineTitleAttributes)
-        dateTextField.attributedStringValue = NSAttributedString(string: event.dates.description, attributes: style.timelineDateAttributes)
+        dateTextField.attributedStringValue = NSAttributedString(string: event.dates.description(small: true), attributes: style.timelineDateAttributes)
 
         if let thumbnail = event.thumbnail {
             Alamofire.request(thumbnail).responseImage { [weak self] response in
