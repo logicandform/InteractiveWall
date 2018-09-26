@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -19,10 +20,10 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="ziy-EX-aQR" customClass="ImageView" customModule="WindowExplorer" customModuleProvider="target">
-                    <rect key="frame" x="5" y="5" width="282" height="262"/>
+                    <rect key="frame" x="0.0" y="0.0" width="292" height="272"/>
                     <subviews>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aJM-bH-fKM">
-                            <rect key="frame" x="3" y="0.0" width="276" height="17"/>
+                            <rect key="frame" x="3" y="0.0" width="286" height="17"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" id="CcV-ew-qZK">
                                 <font key="font" metaFont="system"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -38,10 +39,10 @@
                 </customView>
             </subviews>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="ziy-EX-aQR" secondAttribute="bottom" constant="5" id="5OI-AD-svu"/>
-                <constraint firstItem="ziy-EX-aQR" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="5" id="WxM-x2-VJ1"/>
-                <constraint firstItem="ziy-EX-aQR" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="5" id="gy2-qs-QGp"/>
-                <constraint firstAttribute="trailing" secondItem="ziy-EX-aQR" secondAttribute="trailing" constant="5" id="ofY-vB-8zG"/>
+                <constraint firstAttribute="bottom" secondItem="ziy-EX-aQR" secondAttribute="bottom" id="5OI-AD-svu"/>
+                <constraint firstItem="ziy-EX-aQR" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="WxM-x2-VJ1"/>
+                <constraint firstItem="ziy-EX-aQR" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="gy2-qs-QGp"/>
+                <constraint firstAttribute="trailing" secondItem="ziy-EX-aQR" secondAttribute="trailing" id="ofY-vB-8zG"/>
             </constraints>
             <point key="canvasLocation" x="113" y="168"/>
         </customView>
