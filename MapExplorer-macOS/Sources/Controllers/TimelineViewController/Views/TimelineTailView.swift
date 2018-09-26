@@ -12,7 +12,7 @@ class TimelineTailView: NSView {
     private var layers = [Layer]()
 
     private struct Constants {
-        static let countTitleBottomMargin: CGFloat = 2
+        static let countTitleMargins: CGFloat = 2
         static let minimumLayersForTitle = 2
     }
 
@@ -31,9 +31,10 @@ class TimelineTailView: NSView {
 
             if let first = layer.lines.first, index >= Constants.minimumLayersForTitle, needsTitle {
                 let title = NSAttributedString(string: index.description, attributes: style.timelineDateAttributes)
-                if first.start > title.size().width {
+                let titleWidth = title.size().width + 2 * Constants.countTitleMargins
+                if first.start > titleWidth {
                     let baseline = y - style.timelineTailMargin
-                    title.draw(at: CGPoint(x: 0, y: baseline))
+                    title.draw(at: CGPoint(x: Constants.countTitleMargins, y: baseline))
                     needsTitle = false
                 }
             }
@@ -62,7 +63,7 @@ class TimelineTailView: NSView {
             let baseHeight = style.timelineTailMargin
             let layerHeight = CGFloat(layers.count) * (style.timelineTailWidth + style.timelineTailMargin)
             let baseline = baseHeight + layerHeight - style.timelineTailMargin
-            title.draw(at: CGPoint(x: 0, y: baseline))
+            title.draw(at: CGPoint(x: Constants.countTitleMargins, y: baseline))
         }
     }
 
