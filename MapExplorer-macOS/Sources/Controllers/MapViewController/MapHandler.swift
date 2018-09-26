@@ -150,15 +150,15 @@ final class MapHandler {
     func reset(animated: Bool) {
         let canadaRect = MapConstants.canadaRect
         let width = canadaRect.size.width / Double(Configuration.appsPerScreen)
-        let originX = canadaRect.origin.x + (canadaRect.size.width - width) / 2
+        let offset = width / Double(Configuration.appsPerScreen)
+        let originX = appID.isEven ? canadaRect.origin.x - offset : canadaRect.origin.x + width - offset
         let mapRect = MKMapRect(origin: MKMapPoint(x: originX, y: canadaRect.origin.y), size: MKMapSize(width: width, height: 0)).withPreservedAspectRatio(in: mapView)
-        let maxAppID = Configuration.numberOfScreens * Configuration.appsPerScreen - 1
+        let centerAppID = (Configuration.numberOfScreens * Configuration.appsPerScreen - 1) / 2
 
-        if animated && appID == maxAppID {
+        if animated && appID == centerAppID {
             animate(to: mapRect, with: .reset)
         } else if !animated {
-            let adjustedMapRect = adjust(mapRect, toMap: appID, fromMap: maxAppID)
-            mapView.setVisibleMapRect(adjustedMapRect, animated: false)
+            mapView.setVisibleMapRect(mapRect, animated: false)
         }
     }
 
@@ -220,7 +220,6 @@ final class MapHandler {
         let originY = initialMapRect.origin.y + originVector.y * progress
         let size = MKMapSize(width: initialMapRect.size.width - initialMapRect.size.width * (1 - scale) * progress, height: initialMapRect.size.height - initialMapRect.size.height * (1 - scale) * progress)
         let mapRect = MKMapRect(origin: MKMapPoint(x: originX, y: originY), size: size)
-
         let currentGroup = group ?? appID
         let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.map: mapRect.toJSON(), Keys.gesture: GestureState.animated.rawValue]
         DistributedNotificationCenter.default().postNotificationName(type.notification.name, object: nil, userInfo: info, deliverImmediately: true)
