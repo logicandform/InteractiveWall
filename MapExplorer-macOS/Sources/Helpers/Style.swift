@@ -27,6 +27,7 @@ final class Style {
     // Timeline
     let timelineBackgroundColor = NSColor(white: 0.1, alpha: 0.95)
     let timelineBorderColor = NSColor.gray
+    let timelineShadingColor = NSColor.black.withAlphaComponent(0.5)
     let timelineHeaderText = NSColor.gray
     let timelineBorderWidth: CGFloat = 2
     let timelineHeaderHeight: CGFloat = 30

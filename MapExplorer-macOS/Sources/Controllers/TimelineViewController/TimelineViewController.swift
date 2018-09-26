@@ -86,7 +86,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     func fade(out: Bool) {
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration
-            timelineBackgroundView.animator().alphaValue = out ? 0 : 1
+            view.animator().alphaValue = out ? 0 : 1
         })
     }
 
@@ -123,7 +123,9 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     // MARK: Setup
 
     private func setupViews() {
-        timelineBackgroundView.alphaValue = 0
+        view.alphaValue = 0
+        view.wantsLayer = true
+        view.layer?.backgroundColor = style.timelineShadingColor.cgColor
         timelineBackgroundView.wantsLayer = true
         timelineBackgroundView.layer?.backgroundColor = style.timelineBackgroundColor.cgColor
     }
