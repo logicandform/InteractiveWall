@@ -21,6 +21,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
     private struct Constants {
         static let interFlagMargin: CGFloat = 5
         static let headerFlagMargin: CGFloat = 3
+        static let countTitleHeight: CGFloat = 20
     }
 
 
@@ -88,7 +89,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
             let end = start + TimelineDecadeFlagLayout.yearWidth
             let layers = diagram.layersBetween(a: start, b: end)
             layersForYear[year] = layers
-            tailHeightForYear[year] = diagram.height(of: layers)
+            tailHeightForYear[year] = diagram.height(of: layers) + Constants.countTitleHeight
         }
 
         // Build cache of event and tail attributes

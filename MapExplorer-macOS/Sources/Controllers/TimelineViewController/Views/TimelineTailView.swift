@@ -9,14 +9,11 @@ class TimelineTailView: NSView {
     static let nibName = "TimelineTailView"
     static let supplementaryKind = "TimelineTailView"
 
-    private var layers = [Layer]() {
-        didSet {
-            needsDisplay = true
-        }
-    }
+    private var layers = [Layer]()
 
     private struct Constants {
-        static let yearWidth: CGFloat = 192
+        static let countTitleBottomMargin: CGFloat = 2
+        static let minimumLayersForTitle = 2
     }
 
 
@@ -25,11 +22,21 @@ class TimelineTailView: NSView {
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
 
+        var needsTitle = true
+
         for (index, layer) in layers.enumerated() {
             let baseHeight = style.timelineTailMargin
             let layerHeight = CGFloat(index) * (style.timelineTailWidth + style.timelineTailMargin)
             let y = baseHeight + layerHeight
 
+            if let first = layer.lines.first, index >= Constants.minimumLayersForTitle, needsTitle {
+                let title = NSAttributedString(string: index.description, attributes: style.timelineDateAttributes)
+                if first.start > title.size().width {
+                    let baseline = y - style.timelineTailMargin
+                    title.draw(at: CGPoint(x: 0, y: baseline))
+                    needsTitle = false
+                }
+            }
             for line in layer.lines {
                 let color = line.event.highlighted ? line.event.type.color : style.timelineTailColor
                 color.setFill()
@@ -49,6 +56,14 @@ class TimelineTailView: NSView {
                 path.fill()
             }
         }
+
+        if layers.count >= Constants.minimumLayersForTitle, needsTitle {
+            let title = NSAttributedString(string: layers.count.description, attributes: style.timelineDateAttributes)
+            let baseHeight = style.timelineTailMargin
+            let layerHeight = CGFloat(layers.count) * (style.timelineTailWidth + style.timelineTailMargin)
+            let baseline = baseHeight + layerHeight - style.timelineTailMargin
+            title.draw(at: CGPoint(x: 0, y: baseline))
+        }
     }
 
 
@@ -56,5 +71,6 @@ class TimelineTailView: NSView {
 
     func set(_ layers: [Layer]) {
         self.layers = layers
+        needsDisplay = true
     }
 }
