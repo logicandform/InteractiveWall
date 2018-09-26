@@ -14,7 +14,7 @@ struct Configuration {
     static let broadcastIP = "10.58.73.255"
     static let serverURL = "http://\(serverIP):3000"
     static let appsPerScreen = 2
-    static let numberOfScreens = 2
+    static let numberOfScreens = 3
     static let localMediaURLs = true
     static let launchOnLoad = true
     static let touchScreen = TouchScreen.ur9851

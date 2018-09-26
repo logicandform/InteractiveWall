@@ -106,7 +106,7 @@ final class TimelineHandler {
     }
 
     func handleAccessibilityNotification(fromID: Int) {
-        if let currentGroup = group, currentGroup == fromID {
+        if let currentGroup = group, currentGroup == fromID, ConnectionManager.instance.typeForApp(id: appID) == .timeline {
             timelineViewController?.set(verticalPosition: 0, animated: true)
         }
     }

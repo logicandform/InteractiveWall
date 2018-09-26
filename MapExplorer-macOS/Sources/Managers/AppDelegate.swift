@@ -7,7 +7,7 @@ struct Configuration {
     static let serverIP = "10.58.73.183"
     static let serverURL = "http://\(serverIP):3000"
     static let appsPerScreen = 2
-    static let numberOfScreens = 2
+    static let numberOfScreens = 3
     static let touchScreen = TouchScreen.ur9851
     static let ungroupTimoutDuration = 30.0
 }
