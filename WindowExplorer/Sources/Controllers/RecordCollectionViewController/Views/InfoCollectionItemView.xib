@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -19,7 +20,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bVA-LB-UtC">
-                    <rect key="frame" x="3" y="57" width="474" height="17"/>
+                    <rect key="frame" x="-2" y="57" width="484" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="KR0-Kf-fIt">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -27,7 +28,7 @@
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zTj-6M-mh7">
-                    <rect key="frame" x="3" y="20" width="474" height="17"/>
+                    <rect key="frame" x="-2" y="20" width="484" height="17"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="gcp-rm-g8a">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -36,13 +37,13 @@
                 </textField>
             </subviews>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="zTj-6M-mh7" secondAttribute="trailing" constant="5" id="9Jd-0n-1mR"/>
+                <constraint firstAttribute="trailing" secondItem="zTj-6M-mh7" secondAttribute="trailing" id="9Jd-0n-1mR"/>
                 <constraint firstItem="bVA-LB-UtC" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="B1d-Gi-ouF"/>
                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="zTj-6M-mh7" secondAttribute="bottom" constant="20" id="J7d-UN-mg8"/>
                 <constraint firstItem="zTj-6M-mh7" firstAttribute="top" secondItem="bVA-LB-UtC" secondAttribute="bottom" constant="20" id="RQv-Km-w8j"/>
-                <constraint firstItem="bVA-LB-UtC" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="5" id="XQD-JF-iYg"/>
-                <constraint firstAttribute="trailing" secondItem="bVA-LB-UtC" secondAttribute="trailing" constant="5" id="kmv-35-fQ0"/>
-                <constraint firstItem="zTj-6M-mh7" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="5" id="mc6-io-Uoc"/>
+                <constraint firstItem="bVA-LB-UtC" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="XQD-JF-iYg"/>
+                <constraint firstAttribute="trailing" secondItem="bVA-LB-UtC" secondAttribute="trailing" id="kmv-35-fQ0"/>
+                <constraint firstItem="zTj-6M-mh7" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="mc6-io-Uoc"/>
             </constraints>
             <point key="canvasLocation" x="139" y="111"/>
         </customView>

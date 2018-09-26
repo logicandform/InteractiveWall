@@ -11,15 +11,10 @@ class RecordCollectionItemView: NSCollectionViewItem {
     @IBOutlet weak var mediaImageView: ImageView!
     @IBOutlet weak var titleTextField: NSTextField!
 
+    var tintColor = style.collectionColor
     var record: Record? {
         didSet {
             load(record)
-        }
-    }
-
-    var tintColor = style.collectionColor {
-        didSet {
-            view.layer?.borderColor = tintColor.cgColor
         }
     }
 
@@ -44,6 +39,7 @@ class RecordCollectionItemView: NSCollectionViewItem {
 
     func set(highlighted: Bool) {
         if highlighted {
+            view.layer?.borderColor = tintColor.cgColor
             view.layer?.borderWidth = Constants.borderWidth
         } else {
             view.layer?.borderWidth = 0
