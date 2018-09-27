@@ -10,6 +10,8 @@ class MainScene: SKScene {
     private var nodeClusters = Set<NodeCluster>()
     private var lastUpdateTimeInterval = 0.0
     private var selectedEntity: RecordEntity?
+    private var handlerForApp = [Int: NodeHandler]()
+    private var appForNode = [RecordNode: Int]()
 
     private struct Constants {
         static let maximumUpdateDeltaTime = 1.0 / 60.0
@@ -29,6 +31,7 @@ class MainScene: SKScene {
     override func didMove(to view: SKView) {
         super.didMove(to: view)
 
+        setupHandlers()
         setupSystemGestures()
         addPhysics()
         addEntitiesToScene()
@@ -76,6 +79,13 @@ class MainScene: SKScene {
 
 
     // MARK: Setup
+
+    private func setupHandlers() {
+        let max = Configuration.numberOfScreens * Configuration.appsPerScreen
+        for app in 0 ..< max {
+            handlerForApp[app] = NodeHandler(appID: app)
+        }
+    }
 
     private func setupSystemGestures() {
         guard let view = view else {
@@ -145,6 +155,11 @@ class MainScene: SKScene {
 
         switch pan.state {
         case .recognized:
+            if let location = pan.lastLocation, appForNode[node] == nil {
+                let app = calculateApp(xPosition: location.x)
+                appForNode[node] = app
+                handlerForApp[app]?.startActivity()
+            }
             entity.set(state: .dragging)
             entity.set(position: position)
             if entity.isSelected {
@@ -155,7 +170,13 @@ class MainScene: SKScene {
             if entity.isSelected {
                 entity.cluster?.set(position: position)
             }
-        case .possible:
+        case .ended:
+            if let app = appForNode[node] {
+                handlerForApp[app]?.endActivity()
+                handlerForApp[app]?.endUpdates()
+                appForNode.removeValue(forKey: node)
+            }
+        case .possible, .failed:
             finishDrag(for: entity)
         default:
             return
@@ -288,7 +309,8 @@ class MainScene: SKScene {
             if aligned(entity, with: cluster) {
                 if node.openButton(contains: position) {
                     let positionInApplication = position + CGPoint(x: window.frame.minX, y: -Constants.windowDisplayOffset)
-                    postRecordNotification(for: entity.record.type, id: entity.record.id, at: positionInApplication)
+                    let app = calculateApp(xPosition: position.x)
+                    postRecordNotification(app: app, type: entity.record.type, id: entity.record.id, at: positionInApplication)
                 } else if node.closeButton(contains: position) {
                     cluster.reset()
                     nodeClusters.remove(cluster)
@@ -320,8 +342,13 @@ class MainScene: SKScene {
         return entityX == clusterX && entityY == clusterY
     }
 
-    private func postRecordNotification(for type: RecordType, id: Int, at position: CGPoint) {
-        let info: JSON = [Keys.app: 0, Keys.id: id, Keys.position: position.toJSON(), Keys.type: type.rawValue]
+    private func postRecordNotification(app: Int, type: RecordType, id: Int, at position: CGPoint) {
+        let info: JSON = [Keys.app: app, Keys.id: id, Keys.position: position.toJSON(), Keys.type: type.rawValue]
         DistributedNotificationCenter.default().postNotificationName(RecordNotification.display.name, object: nil, userInfo: info, deliverImmediately: true)
+    }
+
+    private func calculateApp(xPosition: CGFloat) -> Int {
+        let appWidth = frame.width / CGFloat(Configuration.numberOfScreens) / CGFloat(Configuration.appsPerScreen) + 1
+        return Int(xPosition / appWidth)
     }
 }

@@ -64,7 +64,7 @@ final class ConnectionManager {
         case .timeline:
             return stateForTimeline.at(index: id)?.pair
         case .nodeNetwork:
-            return nil
+            return stateForNode.at(index: id)?.pair
         }
     }
 
@@ -76,12 +76,12 @@ final class ConnectionManager {
         case .timeline:
             return stateForTimeline.at(index: id)?.group
         case .nodeNetwork:
-            return nil
+            return stateForNode.at(index: id)?.group
         }
     }
 
     /// Returns the current application type for the given appID
-    func typeForApp(id: Int) -> ApplicationType? {
+    func typeForApp(id: Int) -> ApplicationType {
         return typeForApp[id]
     }
 
@@ -93,7 +93,7 @@ final class ConnectionManager {
         case .timeline:
             stateForTimeline[id] = state
         case .nodeNetwork:
-            return
+            stateForNode[id] = state
         }
     }
 
@@ -113,6 +113,9 @@ final class ConnectionManager {
             DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
         }
         for notification in TimelineNotification.allValues {
+            DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
+        }
+        for notification in NodeNotification.allValues {
             DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
         }
         for notification in SettingsNotification.allValues {
@@ -159,6 +162,10 @@ final class ConnectionManager {
             if let dateJSON = info[Keys.date] as? JSON, let date = RecordDate(json: dateJSON), let position = info[Keys.vertical] as? CGFloat {
                 timelineHandler?.handle(date: date, fromID: id, syncing: true)
                 timelineHandler?.handle(verticalPosition: position, fromID: id, syncing: true)
+            }
+        case NodeNotification.pair.name:
+            if let group = group {
+                setAppState(from: id, group: group, for: .nodeNetwork, gestureState: .recognized)
             }
         case SettingsNotification.transition.name:
             if let newTypeString = info[Keys.type] as? String, let newType = ApplicationType(rawValue: newTypeString), let oldTypeString = info[Keys.oldType] as? String, let oldType = ApplicationType(rawValue: oldTypeString) {
@@ -321,6 +328,17 @@ final class ConnectionManager {
         let newState = AppState(pair: nil, group: id)
         let appStates = states(for: type).enumerated()
 
+        // Update type for all apps paired to neighbor
+        let neighborType = typeForApp(id: neighborID)
+        let neighborStates = states(for: neighborType)
+        for (app, state) in neighborStates.enumerated() {
+            if app == neighborID || state.group == neighborID, typeForApp(id: app) == neighborType {
+                typeForApp[app] = type
+                transition(app: app, to: type)
+                set(newState, for: type, id: app)
+            }
+        }
+
         for (app, state) in appStates {
             // Check for current group
             if let appGroup = state.group, appGroup == group {
@@ -348,9 +366,6 @@ final class ConnectionManager {
                     }
                 }
             } else if state.group == nil {
-                set(newState, for: type, id: app)
-            } else if app == neighborID || state.group == neighborID {
-                // Force the merge of neighbor app and everyone in it's group
                 set(newState, for: type, id: app)
                 if type == .timeline, app != id {
                     SelectionManager.instance.merge(app: app, toGroup: id)

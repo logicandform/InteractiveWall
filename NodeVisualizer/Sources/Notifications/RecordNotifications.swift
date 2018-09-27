@@ -2,6 +2,7 @@
 
 import Foundation
 
+
 /// Used to notify the WindowExplorer Application that a record window should be displayed for a given record.
 enum RecordNotification: String {
     case display

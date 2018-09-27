@@ -9,15 +9,15 @@ let style = Style()
 
 
 struct Configuration {
-    static let touchPort: UInt16 = 13000
-    static let serverIP = "10.58.73.183"
+    static let touchPort: UInt16 = 13001
+    static let serverIP = "localhost"
     static let broadcastIP = "10.58.73.255"
     static let serverURL = "http://\(serverIP):3000"
     static let appsPerScreen = 2
-    static let numberOfScreens = 3
-    static let localMediaURLs = true
+    static let numberOfScreens = 1
+    static let localMediaURLs = false
     static let launchOnLoad = true
-    static let touchScreen = TouchScreen.ur9851
+    static let touchScreen = TouchScreen.pct2485
     static let resetTimeoutDuration = 150.0
     static let closeWindowTimeoutDuration = 180.0
     static let menuResetTimeoutDuration = 180.0
@@ -25,10 +25,10 @@ struct Configuration {
 
 
 struct Paths {
-    static let mapExplorer = "/Users/irshdc/Library/Developer/Xcode/DerivedData/MapExplorer-cebdevedrroybgdstwjueirgqasq/Build/Products/Debug/MapExplorer-macOS.app"
-//    static let mapExplorer = "/Users/Tim/Library/Developer/Xcode/DerivedData/MapExplorer-btnxiobgycwlwddqfdkwxqhmpeum/Build/Products/Debug/MapExplorer-macOS.app"
-    static let nodeNetwork = "/Users/irshdc/Library/Developer/Xcode/DerivedData/MapExplorer-cebdevedrroybgdstwjueirgqasq/Build/Products/Debug/NodeVisualizer.app"
-//    static let nodeNetwork = "/Users/Tim/Library/Developer/Xcode/DerivedData/MapExplorer-btnxiobgycwlwddqfdkwxqhmpeum/Build/Products/Debug/NodeVisualizer.app"
+//    static let mapExplorer = "/Users/irshdc/Library/Developer/Xcode/DerivedData/MapExplorer-cebdevedrroybgdstwjueirgqasq/Build/Products/Debug/MapExplorer-macOS.app"
+    static let mapExplorer = "/Users/Tim/Library/Developer/Xcode/DerivedData/MapExplorer-btnxiobgycwlwddqfdkwxqhmpeum/Build/Products/Debug/MapExplorer-macOS.app"
+//    static let nodeNetwork = "/Users/irshdc/Library/Developer/Xcode/DerivedData/MapExplorer-cebdevedrroybgdstwjueirgqasq/Build/Products/Debug/NodeVisualizer.app"
+    static let nodeNetwork = "/Users/Tim/Library/Developer/Xcode/DerivedData/MapExplorer-btnxiobgycwlwddqfdkwxqhmpeum/Build/Products/Debug/NodeVisualizer.app"
 }
 
 

@@ -4,21 +4,15 @@ import Foundation
 import AppKit
 
 protocol GestureRecognizer: class {
-
     var gestureUpdated: ((GestureRecognizer) -> Void)? { get set }
-
     var state: GestureState { get }
-
     func start(_ touch: Touch, with properties: TouchProperties)
-
     func move(_ touch: Touch, with properties: TouchProperties)
-
     func end(_ touch: Touch, with properties: TouchProperties)
-
     func reset()
-
     func invalidate()
 }
+
 
 extension GestureRecognizer {
 
@@ -29,7 +23,8 @@ extension GestureRecognizer {
     func invalidate() {}
 }
 
-enum GestureState {
+
+enum GestureState: String {
     case possible
     case began
     case changed
@@ -38,10 +33,14 @@ enum GestureState {
     case failed
     case momentum
     case recognized
-}
+    case animated
 
-/// Used to differentiate between our GestureRecognizer and NSGestureRecognizer.
-enum GestureType: String {
-    case custom
-    case system
+    var interruptible: Bool {
+        switch self {
+        case .momentum, .animated:
+            return true
+        default:
+            return false
+        }
+    }
 }

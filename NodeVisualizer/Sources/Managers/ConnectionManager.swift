@@ -1,6 +1,7 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
 import Foundation
+import MapKit
 
 
 typealias AppState = (pair: Int?, group: Int?)
@@ -13,24 +14,26 @@ final class ConnectionManager {
     /// The current application type for an appID
     private var typeForApp = [ApplicationType]()
 
-    /// The state for each map indexed by it's appID
+    /// The state for each map indexed by its appID
     private var stateForMap: [AppState]
 
-    /// The state for each node indexed by it's appID
+    /// The state for each node indexed by its appID
     private var stateForNode: [AppState]
 
-    /// The state for each timeline indexed by it's appID
+    /// The state for each timeline indexed by its appID
     private var stateForTimeline: [AppState]
 
-    /// A timer used to reset the entire installation when no activity has been detected
-    private weak var resetTimer: Foundation.Timer?
+    /// The handler associated with for its appID
+    private var handlerForApp = [Int: NodeHandler]()
 
     private struct Keys {
         static let id = "id"
         static let map = "map"
+        static let date = "date"
         static let type = "type"
         static let group = "group"
         static let oldType = "oldType"
+        static let vertical = "vertical"
         static let gesture = "gestureType"
     }
 
@@ -50,6 +53,10 @@ final class ConnectionManager {
 
     // MARK: API
 
+    func register(handler: NodeHandler, app: Int) {
+        handlerForApp[app] = handler
+    }
+
     /// Returns the current pair for the given appID
     func pairForApp(id: Int, type: ApplicationType) -> Int? {
         switch type {
@@ -63,8 +70,8 @@ final class ConnectionManager {
     }
 
     /// Returns the current group for the given appID
-    func groupForApp(id: Int) -> Int? {
-        switch typeForApp(id: id) {
+    func groupForApp(id: Int, type: ApplicationType) -> Int? {
+        switch type {
         case .mapExplorer:
             return stateForMap.at(index: id)?.group
         case .timeline:
@@ -153,9 +160,7 @@ final class ConnectionManager {
             if let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
                 unpair(from: id, for: type)
             }
-            resetTimer?.invalidate()
         case SettingsNotification.ungroup.name:
-            beginResetTimer()
             if let group = group, let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
                 ungroup(from: group, for: type)
             }
@@ -169,10 +174,10 @@ final class ConnectionManager {
             }
         case SettingsNotification.reset.name:
             reset()
+            // TODO: Reset the node interface
         case SettingsNotification.accessibility.name:
             let group = group ?? id
             setAppState(from: id, group: group, for: .timeline, gestureState: .animated)
-            MenuManager.instance.menuForApp(id: id)?.handleAccessibilityNotification()
         default:
             return
         }
@@ -187,10 +192,6 @@ final class ConnectionManager {
         stateForMap = Array(repeating: initialState, count: numberOfApps)
         stateForTimeline = Array(repeating: initialState, count: numberOfApps)
         typeForApp = Array(repeating: .mapExplorer, count: numberOfApps)
-        for app in (0 ..< numberOfApps) {
-            updateMenu(id: app, to: .mapExplorer)
-        }
-        updateViews()
     }
 
     private func transition(from oldType: ApplicationType, to newType: ApplicationType, id: Int, group: Int?) {
@@ -216,23 +217,21 @@ final class ConnectionManager {
                     // Check if incoming id is closer than current pair
                     if abs(app - id) < abs(app - appPair) || appPair == id {
                         typeForApp[app] = newType
-                        updateMenu(id: app, to: newType)
                         transitionedApps.append(app)
                     }
                 } else {
                     typeForApp[app] = newType
-                    updateMenu(id: app, to: newType)
                     transitionedApps.append(app)
                 }
             }
         }
 
-        let group = groupForApp(id: id) ?? id
+        let group = groupForApp(id: id, type: newType) ?? id
         setAppState(from: id, group: group, for: newType, gestureState: .animated, transitioning: true)
         for app in transitionedApps {
             set(AppState(pair: nil, group: id), for: newType, id: app)
         }
-        updateViews()
+        resetTimerForApp(id: id, with: newType)
     }
 
     /// Set all app states accordingly when a app sends its position
@@ -268,7 +267,6 @@ final class ConnectionManager {
                 set(newState, for: type, id: app)
             }
         }
-        updateViews()
     }
 
     /// Initiates a split between applications within the screen containing the given appID
@@ -293,13 +291,14 @@ final class ConnectionManager {
                 // If app is farther or equal to the group then the app splitting, join the closest appID
                 if abs(appGroup - app) >= abs(appGroup - id) {
                     set(AppState(pair: nil, group: closestApp), for: type, id: app)
+                    resetTimerForApp(id: closestApp, with: type)
                 }
             } else if state.group == nil {
                 // Group with the closest of the two apps being split
                 set(AppState(pair: nil, group: closestApp), for: type, id: app)
+                resetTimerForApp(id: closestApp, with: type)
             }
         }
-        updateViews()
     }
 
     private func merge(from id: Int, group: Int?, of type: ApplicationType) {
@@ -314,7 +313,6 @@ final class ConnectionManager {
             if app == neighborID || state.group == neighborID, typeForApp(id: app) == neighborType {
                 typeForApp[app] = type
                 set(newState, for: type, id: app)
-                updateMenu(id: app, to: type)
             }
         }
 
@@ -342,7 +340,6 @@ final class ConnectionManager {
                 set(newState, for: type, id: app)
             }
         }
-        updateViews()
     }
 
     /// If paired to the given id, will unpair else ignore
@@ -354,7 +351,6 @@ final class ConnectionManager {
                 set(AppState(pair: nil, group: state.group), for: type, id: app)
             }
         }
-        updateViews()
     }
 
     /// Ungroup all apps from group with given id
@@ -376,7 +372,6 @@ final class ConnectionManager {
                 set(AppState(pair: nil, group: group), for: type, id: app)
             }
         }
-        updateViews()
     }
 
     /// Find the closest group to a given app
@@ -393,57 +388,18 @@ final class ConnectionManager {
         return externalApps.compactMap({ $0.1.group }).first
     }
 
+    /// Starts the ungroup timer for the map handler associated with the given mapID
+    private func resetTimerForApp(id: Int, with type: ApplicationType) {
+        switch type {
+        case .nodeNetwork:
+            handlerForApp[id]?.endUpdates()
+        default:
+            return
+        }
+    }
+
     /// Returns the screen id of the given app id
-    private func screen(of id: Int) -> Int {
-        return (id / Configuration.appsPerScreen) + 1
-    }
-
-    /// Shows / Hides borders between applications and notifies menu controllers of updates
-    private func updateViews() {
-        let numberOfApps = Configuration.appsPerScreen * Configuration.numberOfScreens
-
-        for app in (0 ..< numberOfApps) {
-            let type = typeForApp(id: app)
-            let statesForType = states(for: type)
-
-            // Update menu for app
-            let menu = MenuManager.instance.menuForApp(id: app)
-            let neighborID = app.isEven ? app + 1 : app - 1
-            let neighborPair = pairForApp(id: neighborID, type: type)
-            let differentTypes = type != typeForApp(id: neighborID)
-            let split = differentTypes || statesForType[app].group != statesForType[neighborID].group
-            let mergeLocked = split && neighborPair == neighborID
-            menu?.set(.split, selected: split)
-            menu?.toggleMergeLock(on: mergeLocked)
-
-            // Update border for app
-            let borderNeighborID = app + 1
-            if let borderNeighborType = typeForApp.at(index: borderNeighborID) {
-                let border = MenuManager.instance.borderForApp(id: app)
-                let borderDifferentTypes = type != borderNeighborType
-                let borderSplit = borderDifferentTypes || statesForType[app].group != statesForType[borderNeighborID].group
-                border?.set(visible: borderSplit)
-            }
-        }
-    }
-
-    /// Sets the menu for the application id to the given type
-    private func updateMenu(id: Int, to type: ApplicationType) {
-        if let menuButtonType = MenuButtonType.from(type) {
-            let menu = MenuManager.instance.menuForApp(id: id)
-            menu?.set(menuButtonType, selected: true)
-        }
-    }
-
-    private func beginResetTimer() {
-        resetTimer?.invalidate()
-        resetTimer = Timer.scheduledTimer(withTimeInterval: Configuration.resetTimeoutDuration, repeats: false) { [weak self] _ in
-            self?.resetTimerFired()
-        }
-    }
-
-    private func resetTimerFired() {
-        let info: JSON = [Keys.id: 0]
-        DistributedNotificationCenter.default().postNotificationName(SettingsNotification.reset.name, object: nil, userInfo: info, deliverImmediately: true)
+    private func screen(of app: Int) -> Int {
+        return (app / Configuration.appsPerScreen) + 1
     }
 }

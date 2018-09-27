@@ -100,6 +100,7 @@
 		22C22431215AE210000E1CAF /* RecordDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C22430215AE210000E1CAF /* RecordDate.swift */; };
 		22C22433215AE262000E1CAF /* DateRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C22432215AE262000E1CAF /* DateRange.swift */; };
 		22C22435215AE672000E1CAF /* Month.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C22434215AE672000E1CAF /* Month.swift */; };
+		22C22443215D89B1000E1CAF /* NodeNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C22442215D89B1000E1CAF /* NodeNotification.swift */; };
 		22CFCF62214875CD00EBD1A6 /* MenuButtonLeft.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22CFCF61214875CD00EBD1A6 /* MenuButtonLeft.xib */; };
 		22CFCF642148A4AD00EBD1A6 /* info_content.plist in Resources */ = {isa = PBXBuildFile; fileRef = 22CFCF632148A4AD00EBD1A6 /* info_content.plist */; };
 		22CFCF662149A1A100EBD1A6 /* MenuSide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CFCF652149A1A100EBD1A6 /* MenuSide.swift */; };
@@ -280,6 +281,7 @@
 		22C22430215AE210000E1CAF /* RecordDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDate.swift; sourceTree = "<group>"; };
 		22C22432215AE262000E1CAF /* DateRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateRange.swift; sourceTree = "<group>"; };
 		22C22434215AE672000E1CAF /* Month.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Month.swift; sourceTree = "<group>"; };
+		22C22442215D89B1000E1CAF /* NodeNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeNotification.swift; sourceTree = "<group>"; };
 		22CFCF61214875CD00EBD1A6 /* MenuButtonLeft.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuButtonLeft.xib; sourceTree = "<group>"; };
 		22CFCF632148A4AD00EBD1A6 /* info_content.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = info_content.plist; sourceTree = "<group>"; };
 		22CFCF652149A1A100EBD1A6 /* MenuSide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSide.swift; sourceTree = "<group>"; };
@@ -520,6 +522,7 @@
 				A47C67E320CB07CB00C361D1 /* MapNotifications.swift */,
 				2222B13B20D9866900ECCB5D /* SettingsNotifications.swift */,
 				2290A04120E4196E00F028C4 /* TimelineNotifications.swift */,
+				22C22442215D89B1000E1CAF /* NodeNotification.swift */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -1119,6 +1122,7 @@
 				22C22433215AE262000E1CAF /* DateRange.swift in Sources */,
 				2204621920472F2D0067D9FB /* PlayerControl.swift in Sources */,
 				22004FE420DD7A7F00B1E740 /* SettingsManager.swift in Sources */,
+				22C22443215D89B1000E1CAF /* NodeNotification.swift in Sources */,
 				22B1E2CF204638CA00BDDF14 /* GestureHandler.swift in Sources */,
 				2236F7602151EC2D00AD8148 /* IndicatorViewController.swift in Sources */,
 				2222C7C320DC028000B76D12 /* RecordCollectionViewController.swift in Sources */,

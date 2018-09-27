@@ -40,6 +40,10 @@
 		22AEAF0120B67E2C00DD184B /* TouchProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AEAEFE20B67E2C00DD184B /* TouchProperties.swift */; };
 		22AEAF0220B67E2C00DD184B /* Touch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AEAEFF20B67E2C00DD184B /* Touch.swift */; };
 		22B6974A2143417C00FD082D /* ClusterLayerNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B697492143417C00FD082D /* ClusterLayerNode.swift */; };
+		22C22437215D48F5000E1CAF /* NodeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C22436215D48F5000E1CAF /* NodeHandler.swift */; };
+		22C22439215D5148000E1CAF /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C22438215D5148000E1CAF /* ConnectionManager.swift */; };
+		22C2243B215D5189000E1CAF /* MapNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C2243A215D5189000E1CAF /* MapNotifications.swift */; };
+		22C2243D215D51F7000E1CAF /* TimelineNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C2243C215D51F7000E1CAF /* TimelineNotifications.swift */; };
 		22CEFD432146173700981FAC /* RecordNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CEFD422146173700981FAC /* RecordNotifications.swift */; };
 		22D6F90320B6810600C7FB5F /* GestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F8F920B6810600C7FB5F /* GestureHandler.swift */; };
 		22D6F90420B6810600C7FB5F /* RecordType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F8FA20B6810600C7FB5F /* RecordType.swift */; };
@@ -75,6 +79,9 @@
 		CDA5A90820DD70B700E1CF87 /* PhysicsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */; };
 		CDC22D2820BDC6B0006BC0BE /* RecordNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC22D2720BDC6B0006BC0BE /* RecordNode.swift */; };
 		CDC39D48211B616300CE5960 /* NodeGestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC39D47211B616300CE5960 /* NodeGestureManager.swift */; };
+		D53B7039215C461A006F126A /* NodeNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B7038215C461A006F126A /* NodeNotifications.swift */; };
+		D53B703B215C5B36006F126A /* ApplicationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B703A215C5B36006F126A /* ApplicationType.swift */; };
+		D53B703D215C5BB4006F126A /* SettingsNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B703C215C5BB4006F126A /* SettingsNotifications.swift */; };
 		D88D9E3C5FEA8DFC85B8FEF4 /* Pods_All_NodeVisualizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A74D0C56BCB99FB5CDC067 /* Pods_All_NodeVisualizer.framework */; };
 /* End PBXBuildFile section */
 
@@ -117,6 +124,10 @@
 		22AEAEFE20B67E2C00DD184B /* TouchProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchProperties.swift; sourceTree = "<group>"; };
 		22AEAEFF20B67E2C00DD184B /* Touch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Touch.swift; sourceTree = "<group>"; };
 		22B697492143417C00FD082D /* ClusterLayerNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterLayerNode.swift; sourceTree = "<group>"; };
+		22C22436215D48F5000E1CAF /* NodeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeHandler.swift; sourceTree = "<group>"; };
+		22C22438215D5148000E1CAF /* ConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
+		22C2243A215D5189000E1CAF /* MapNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapNotifications.swift; sourceTree = "<group>"; };
+		22C2243C215D51F7000E1CAF /* TimelineNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineNotifications.swift; sourceTree = "<group>"; };
 		22CEFD422146173700981FAC /* RecordNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordNotifications.swift; sourceTree = "<group>"; };
 		22D6F8F920B6810600C7FB5F /* GestureHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureHandler.swift; sourceTree = "<group>"; };
 		22D6F8FA20B6810600C7FB5F /* RecordType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordType.swift; sourceTree = "<group>"; };
@@ -155,6 +166,9 @@
 		CDA5A90720DD70B700E1CF87 /* PhysicsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsComponent.swift; sourceTree = "<group>"; };
 		CDC22D2720BDC6B0006BC0BE /* RecordNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordNode.swift; sourceTree = "<group>"; };
 		CDC39D47211B616300CE5960 /* NodeGestureManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeGestureManager.swift; sourceTree = "<group>"; };
+		D53B7038215C461A006F126A /* NodeNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeNotifications.swift; sourceTree = "<group>"; };
+		D53B703A215C5B36006F126A /* ApplicationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationType.swift; sourceTree = "<group>"; };
+		D53B703C215C5BB4006F126A /* SettingsNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotifications.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,7 +227,6 @@
 				22AEAECF20B67C5100DD184B /* Helpers */,
 				22AEAED420B67CB100DD184B /* Extensions */,
 				22AEAED020B67C5600DD184B /* Models */,
-				22AEAED120B67C5D00DD184B /* Views */,
 				22AEAED320B67C6C00DD184B /* Gestures */,
 				22CEFD41214616F000981FAC /* Notifications */,
 			);
@@ -245,6 +258,7 @@
 				CD27F40320BCB5B900375CBC /* RecordManager.swift */,
 				CD0FB28320D1AA9D0058A410 /* EntityManager.swift */,
 				CD1FC73D20DB06AA00B87D02 /* TestingDataManager.swift */,
+				22C22438215D5148000E1CAF /* ConnectionManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -280,6 +294,8 @@
 				22A1232021509410009DC176 /* TouchListener.swift */,
 				22A12325215094B1009DC176 /* ListenerCallback.h */,
 				22A1232321509460009DC176 /* ListenerCallback.m */,
+				D53B703A215C5B36006F126A /* ApplicationType.swift */,
+				22C22436215D48F5000E1CAF /* NodeHandler.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -294,13 +310,6 @@
 				22D6F90E20B681A300C7FB5F /* Media.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		22AEAED120B67C5D00DD184B /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		22AEAED220B67C6500DD184B /* Windows */ = {
@@ -368,6 +377,10 @@
 			isa = PBXGroup;
 			children = (
 				22CEFD422146173700981FAC /* RecordNotifications.swift */,
+				D53B7038215C461A006F126A /* NodeNotifications.swift */,
+				D53B703C215C5BB4006F126A /* SettingsNotifications.swift */,
+				22C2243A215D5189000E1CAF /* MapNotifications.swift */,
+				22C2243C215D51F7000E1CAF /* TimelineNotifications.swift */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -581,6 +594,7 @@
 				22AEAEE420B67D6800DD184B /* NSView.swift in Sources */,
 				22D6F90A20B6810600C7FB5F /* Math.swift in Sources */,
 				22CEFD432146173700981FAC /* RecordNotifications.swift in Sources */,
+				D53B703D215C5BB4006F126A /* SettingsNotifications.swift in Sources */,
 				22AEAF0020B67E2C00DD184B /* TouchState.swift in Sources */,
 				22AEAEBE20B67C2400DD184B /* MainViewController.swift in Sources */,
 				22AEAEE620B67D6800DD184B /* PacketType.swift in Sources */,
@@ -603,20 +617,25 @@
 				22D6F91920B6824300C7FB5F /* PanGestureRecognizer.swift in Sources */,
 				22AEAEF820B67DA600DD184B /* Artifact.swift in Sources */,
 				22D6F91B20B6824300C7FB5F /* TapGestureRecognizer.swift in Sources */,
+				D53B703B215C5B36006F126A /* ApplicationType.swift in Sources */,
 				22AEAEEC20B67D6800DD184B /* NSApplication.swift in Sources */,
 				22AEAEE720B67D6800DD184B /* URL.swift in Sources */,
+				22C2243B215D5189000E1CAF /* MapNotifications.swift in Sources */,
 				22AEAEE320B67D6800DD184B /* Collection.swift in Sources */,
+				D53B7039215C461A006F126A /* NodeNotifications.swift in Sources */,
 				22AEAEFA20B67DA600DD184B /* Event.swift in Sources */,
 				22AEAEBC20B67C2400DD184B /* MainScene.swift in Sources */,
 				22AEAEEB20B67D6800DD184B /* MapKit.swift in Sources */,
 				226A4520214F329500860F0E /* Environment.swift in Sources */,
 				22B6974A2143417C00FD082D /* ClusterLayerNode.swift in Sources */,
+				22C22437215D48F5000E1CAF /* NodeHandler.swift in Sources */,
 				22D6F90320B6810600C7FB5F /* GestureHandler.swift in Sources */,
 				22667A24213F3A2F00F15A04 /* RecordStateMachine.swift in Sources */,
 				CD0FB28420D1AA9D0058A410 /* EntityManager.swift in Sources */,
 				22AEAF0120B67E2C00DD184B /* TouchProperties.swift in Sources */,
 				CD97E34020F584BA00BB869E /* LayerRenderComponent.swift in Sources */,
 				22AEAEE820B67D6800DD184B /* NSImage.swift in Sources */,
+				22C22439215D5148000E1CAF /* ConnectionManager.swift in Sources */,
 				CD27F40620BCBD5A00375CBC /* RecordNetwork.swift in Sources */,
 				22AEAF0220B67E2C00DD184B /* Touch.swift in Sources */,
 				22AEAEF720B67DA600DD184B /* Theme.swift in Sources */,
@@ -625,6 +644,7 @@
 				22D6F90620B6810600C7FB5F /* Style.swift in Sources */,
 				22A1232421509460009DC176 /* ListenerCallback.m in Sources */,
 				CD97E33E20F5765900BB869E /* ClusterLayer.swift in Sources */,
+				22C2243D215D51F7000E1CAF /* TimelineNotifications.swift in Sources */,
 				CD1FC73E20DB06AA00B87D02 /* TestingDataManager.swift in Sources */,
 				22D6F90420B6810600C7FB5F /* RecordType.swift in Sources */,
 				22D6F91C20B6824300C7FB5F /* SwipeGestureRecognizer.swift in Sources */,

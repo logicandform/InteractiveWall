@@ -41,12 +41,19 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     private var selectedType: RecordType?
     private var selectedGroup: String?
     private var selectedRecords = Set<RecordProxy>()
-
     private lazy var focusedCollectionView: NSCollectionView = primaryCollectionView
     private lazy var collectionViews: [NSCollectionView] = [primaryCollectionView, secondaryCollectionView, tertiaryCollectionView]
-    private lazy var scrollViewForCollectionView = [primaryCollectionView: primaryScrollView, secondaryCollectionView: secondaryScrollView, tertiaryCollectionView: tertiaryScrollView]
-    private lazy var heightForCollectionView = [primaryCollectionView: primaryScrollViewHeight, secondaryCollectionView: secondaryScrollViewHeight, tertiaryCollectionView: tertiaryScrollViewHeight]
     private lazy var titleViews: [NSTextField] = [titleLabel, secondaryTextField, tertiaryTextField]
+    private lazy var scrollViewForCollectionView = [
+        primaryCollectionView: primaryScrollView,
+        secondaryCollectionView: secondaryScrollView,
+        tertiaryCollectionView: tertiaryScrollView
+    ]
+    private lazy var heightForCollectionView = [
+        primaryCollectionView: primaryScrollViewHeight,
+        secondaryCollectionView: secondaryScrollViewHeight,
+        tertiaryCollectionView: tertiaryScrollViewHeight
+    ]
     private lazy var searchItemsForView: [NSCollectionView: [SearchItemDisplayable]] = [
         primaryCollectionView: RecordType.searchValues,
         secondaryCollectionView: [],
@@ -73,7 +80,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
         setupGestures()
         setupScrollViews()
-        resetCloseWindowTimer()
         updateWindowDragAreaHighlight(for: selectedType)
         animateViewIn()
     }

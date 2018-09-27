@@ -8,10 +8,11 @@ let style = Style()
 
 struct Configuration {
     static let env = Environment.production
-    static let serverIP = "10.58.73.183"
+    static let serverIP = "localhost"
     static let serverURL = "http://\(serverIP):3000"
     static let appsPerScreen = 2
-    static let numberOfScreens = 3
+    static let numberOfScreens = 1
+    static let ungroupTimoutDuration = 30.0
 }
 
 
@@ -44,5 +45,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let window = BorderlessWindow(frame: frame, controller: controller, level: style.nodeWindowLevel)
         window.setFrame(frame, display: true)
         window.makeKeyAndOrderFront(self)
+
+        ConnectionManager.instance.registerForNotifications()
     }
 }

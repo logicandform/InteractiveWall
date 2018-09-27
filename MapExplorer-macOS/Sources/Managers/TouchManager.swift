@@ -51,11 +51,10 @@ final class TouchManager {
     }
 
     private func handleTouchDown(_ touch: Touch) {
-        guard let type = ConnectionManager.instance.typeForApp(id: appID), let manager = managerForType[type] else {
-            return
+        let type = ConnectionManager.instance.typeForApp(id: appID)
+        if let manager = managerForType[type] {
+            managerForTouch[touch] = manager
+            manager.handle(touch)
         }
-
-        managerForTouch[touch] = manager
-        manager.handle(touch)
     }
 }

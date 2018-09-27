@@ -74,6 +74,7 @@
 		22B85AF9209B7A6D0099F44E /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B85AF3209B7A6D0099F44E /* TapGestureRecognizer.swift */; };
 		22B85AFA209B7A6D0099F44E /* PinchGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B85AF4209B7A6D0099F44E /* PinchGestureRecognizer.swift */; };
 		22C00ABB21010CB5004020F0 /* TimelineDateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C00ABA21010CB5004020F0 /* TimelineDateTests.swift */; };
+		22C22441215D88F1000E1CAF /* NodeNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C22440215D88F1000E1CAF /* NodeNotifications.swift */; };
 		22D6F91E20B6836900C7FB5F /* NSApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F91D20B6836800C7FB5F /* NSApplication.swift */; };
 		22E54CB42124F34E00CBF5A5 /* TailDiagram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E54CB32124F34E00CBF5A5 /* TailDiagram.swift */; };
 		22EF0FA8202B847200571002 /* CachingNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EF0FA7202B847200571002 /* CachingNetwork.swift */; };
@@ -201,6 +202,7 @@
 		22C00AB821010CB5004020F0 /* MapExplorer-macOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MapExplorer-macOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22C00ABA21010CB5004020F0 /* TimelineDateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDateTests.swift; sourceTree = "<group>"; };
 		22C00ABC21010CB5004020F0 /* Tests.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Tests.plist; sourceTree = "<group>"; };
+		22C22440215D88F1000E1CAF /* NodeNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeNotifications.swift; sourceTree = "<group>"; };
 		22D6F91D20B6836800C7FB5F /* NSApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSApplication.swift; sourceTree = "<group>"; };
 		22E54CB32124F34E00CBF5A5 /* TailDiagram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TailDiagram.swift; sourceTree = "<group>"; };
 		22EF0FA7202B847200571002 /* CachingNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachingNetwork.swift; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 				22046265204732A40067D9FB /* RecordNotifications.swift */,
 				2222B13D20D986AF00ECCB5D /* SettingsNotifications.swift */,
 				2290A03F20E412E700F028C4 /* TimelineNotifications.swift */,
+				22C22440215D88F1000E1CAF /* NodeNotifications.swift */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -395,8 +398,6 @@
 				22F0EDFC2066DA1E0075E467 /* ListenerCallback.h */,
 				22F0EDFB2066DA1E0075E467 /* ListenerCallback.m */,
 				8F22945520773EA600731E78 /* Math.swift */,
-				A44F1B6420FEAF8B005FEFD1 /* RecordDate.swift */,
-				A4A87619210015F200113F95 /* DateRange.swift */,
 				2222B13920D85BD700ECCB5D /* ApplicationType.swift */,
 				220AE86020ED48C200F6E9AA /* Months.swift */,
 				A44A56ED2135F35200F73D55 /* TimelineSelection.swift */,
@@ -427,6 +428,8 @@
 				22A4986F2047493A0024B46C /* Touches */,
 				3F0254F12049D521004B831C /* LastTwo.swift */,
 				22004FE920DDA66100B1E740 /* Settings.swift */,
+				A44F1B6420FEAF8B005FEFD1 /* RecordDate.swift */,
+				A4A87619210015F200113F95 /* DateRange.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -807,6 +810,7 @@
 				3F5FAAAC206043D700CF275B /* CircleAnnotation.swift in Sources */,
 				2290A04020E412E700F028C4 /* TimelineNotifications.swift in Sources */,
 				3F5FAAAE206043E600CF275B /* CircleAnnotationView.swift in Sources */,
+				22C22441215D88F1000E1CAF /* NodeNotifications.swift in Sources */,
 				220329092066F20900FFD9E2 /* Data.swift in Sources */,
 				221A66DF211B7F4B004525F5 /* TimelineDecadeFlagLayout.swift in Sources */,
 				22A49873204749700024B46C /* JSON.swift in Sources */,
