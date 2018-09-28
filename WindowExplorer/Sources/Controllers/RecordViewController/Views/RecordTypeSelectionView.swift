@@ -20,13 +20,15 @@ class RecordTypeSelectionView: NSView {
     private struct Constants {
         static let imageTransitionDuration = 0.5
         static let imageHeight: CGFloat = 24
+        static let maxFilterTypesPerRecord = 6
     }
 
 
     // MARK: API
 
     func initialize(with record: Record, manager: GestureManager) {
-        let filterTypesForRecord = RecordFilterType.recordFilterValues.filter { !record.relatedRecords(filterType: $0).isEmpty }
+        let availableTypes = RecordFilterType.recordFilterValues.filter { !record.relatedRecords(filterType: $0).isEmpty }
+        let filterTypesForRecord = availableTypes.prefix(Constants.maxFilterTypesPerRecord)
 
         filterTypesForRecord.forEach { type in
             // Use two views to increase hit area of image while image is centered

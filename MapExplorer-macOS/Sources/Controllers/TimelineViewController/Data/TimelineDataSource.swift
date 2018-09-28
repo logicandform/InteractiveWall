@@ -29,8 +29,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     func setup(with records: [Record]) {
         events = records.compactMap { record in
             if let dates = record.dates {
-                let title = record.shortestTitle()
-                return TimelineEvent(id: record.id, type: record.type, title: title, dates: dates, thumbnail: record.thumbnail)
+                return TimelineEvent(id: record.id, type: record.type, title: record.shortestTitle(), dates: dates, thumbnail: record.thumbnail)
             } else {
                 return nil
             }
@@ -38,6 +37,9 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
 
         events = events.sorted { lhs, rhs in
             if lhs.dates.startDate == rhs.dates.startDate {
+                if lhs.type.timelineSortOrder == rhs.type.timelineSortOrder {
+                    return lhs.id < rhs.id
+                }
                 return lhs.type.timelineSortOrder < rhs.type.timelineSortOrder
             }
             return lhs.dates.startDate < rhs.dates.startDate

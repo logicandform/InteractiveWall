@@ -45,8 +45,9 @@ final class RecordManager {
         return recordsForType[type]?[id]
     }
 
+    /// Returns an array of records from the given ids, removing duplicates
     func records(for type: RecordType, ids: [Int]) -> [Record] {
-        return ids.compactMap { recordsForType[type]?[$0] }
+        return Set(ids).compactMap { recordsForType[type]?[$0] }
     }
 
     func records(for type: RecordType) -> [Record] {

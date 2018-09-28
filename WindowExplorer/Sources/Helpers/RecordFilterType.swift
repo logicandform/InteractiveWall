@@ -12,6 +12,8 @@ enum RecordFilterType {
     case event
     case organization
     case theme
+    case individual
+    case collection
     case all
 
     var title: String? {
@@ -34,14 +36,7 @@ enum RecordFilterType {
             return recordType.color
         }
 
-        switch self {
-        case .image:
-            return style.imageFilterTypeColor
-        case .video:
-            return style.videoFilterTypeColor
-        default:
-            return style.unselectedRecordIcon
-        }
+        return .white
     }
 
     var placeholder: NSImage? {
@@ -61,7 +56,7 @@ enum RecordFilterType {
 
     var recordType: RecordType? {
         switch self {
-        case .image, .video:
+        case .image, .video, .all:
             return nil
         case .school:
             return .school
@@ -73,8 +68,10 @@ enum RecordFilterType {
             return .artifact
         case .theme:
             return .theme
-        case .all:
-            return nil
+        case .individual:
+            return .individual
+        case .collection:
+            return .collection
         }
     }
 
@@ -90,6 +87,6 @@ enum RecordFilterType {
     }
 
     static var recordFilterValues: [RecordFilterType] {
-        return [.image, .video, .school, .event, .organization, .artifact]
+        return [.image, .video, .school, .event, .organization, .artifact, .individual, .collection]
     }
 }

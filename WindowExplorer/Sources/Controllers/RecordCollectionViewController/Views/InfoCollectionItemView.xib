@@ -8,7 +8,9 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="InfoCollectionItemView" customModule="WindowExplorer" customModuleProvider="target">
             <connections>
+                <outlet property="dateHeightConstraint" destination="zFt-Q7-VsA" id="aTT-ic-4cd"/>
                 <outlet property="dateTextField" destination="bVA-LB-UtC" id="uQx-2A-PGL"/>
+                <outlet property="dateTopConstraint" destination="B1d-Gi-ouF" id="wp5-tz-3ri"/>
                 <outlet property="descriptionTextField" destination="zTj-6M-mh7" id="eqU-L4-eXD"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
@@ -21,6 +23,9 @@
             <subviews>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bVA-LB-UtC">
                     <rect key="frame" x="-2" y="57" width="484" height="17"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="17" id="zFt-Q7-VsA"/>
+                    </constraints>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="KR0-Kf-fIt">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
