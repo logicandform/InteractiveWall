@@ -40,6 +40,8 @@ final class CachingNetwork {
         static let themesInGroup = Configuration.serverURL + "/themes/group/%@/%d"
         static let collections = Configuration.serverURL + "/collections/all/%d"
         static let collectionsByID = Configuration.serverURL + "/collections/find/%d"
+        static let individuals = Configuration.serverURL + "/individuals/all/%d"
+        static let individualsByID = Configuration.serverURL + "/individuals/find/%d"
     }
 
     private struct Constants {
@@ -274,6 +276,31 @@ final class CachingNetwork {
 
         return Alamofire.request(url).responseJSON().then { json in
             try ResponseHandler.serializeCollection(from: json)
+        }
+    }
+
+
+    // MARK: Collections
+
+    static func getIndividuals(page: Int = 0, load: [Individual] = []) throws -> Promise<[Individual]> {
+        let url = String(format: Endpoints.individuals, page)
+
+        return Alamofire.request(url).responseJSON().then { json in
+            guard let individuals = try? ResponseHandler.serializeIndividuals(from: json), !individuals.isEmpty else {
+                return Promise(value: load)
+            }
+
+            let next = page + Constants.batchSize
+            let result = load + individuals
+            return try getIndividuals(page: next, load: result)
+        }
+    }
+
+    static func getIndividual(by id: Int) -> Promise<Individual> {
+        let url = String(format: Endpoints.individualsByID, id)
+
+        return Alamofire.request(url).responseJSON().then { json in
+            try ResponseHandler.serializeIndividual(from: json)
         }
     }
 }

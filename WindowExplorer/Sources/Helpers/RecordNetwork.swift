@@ -20,6 +20,8 @@ final class RecordNetwork {
             theme(id: id, completion: completion)
         case .collection:
             collection(id: id, completion: completion)
+        case .individual:
+            individual(id: id, completion: completion)
         }
     }
 
@@ -35,7 +37,7 @@ final class RecordNetwork {
             organizations(ids: ids, completion: completion)
         case .theme:
             themes(ids: ids, completion: completion)
-        case .collection:
+        case .collection, .individual:
             completion(nil)
         }
     }
@@ -52,7 +54,7 @@ final class RecordNetwork {
             organizations(for: group, completion: completion)
         case .theme:
             themes(for: group, completion: completion)
-        case .collection:
+        case .collection, .individual:
             completion(nil)
         }
     }
@@ -71,6 +73,8 @@ final class RecordNetwork {
             themes(completion: completion)
         case .collection:
             collections(completion: completion)
+        case .individual:
+            individuals(completion: completion)
         }
     }
 
@@ -349,6 +353,31 @@ final class RecordNetwork {
             try CachingNetwork.getCollections()
         }.then { collections -> Void in
             completion(collections)
+        }.catch { error in
+            print(error)
+            completion(nil)
+        }
+    }
+
+
+    // MARK: Collections
+
+    private static func individual(id: Int, completion: @escaping ((Record?) -> Void)) {
+        firstly {
+            CachingNetwork.getIndividual(by: id)
+        }.then { individual -> Void in
+            completion(individual)
+        }.catch { error in
+            print(error)
+            completion(nil)
+        }
+    }
+
+    private static func individuals(completion: @escaping (([Record]?) -> Void)) {
+        firstly {
+            try CachingNetwork.getIndividuals()
+        }.then { individuals -> Void in
+            completion(individuals)
         }.catch { error in
             print(error)
             completion(nil)

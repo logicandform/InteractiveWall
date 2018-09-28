@@ -16,6 +16,7 @@ final class Style {
     let eventColor = NSColor(calibratedRed: 145/255, green: 18/255, blue: 88/255, alpha: 1)
     let organizationColor = NSColor(calibratedRed: 16/255, green: 147/255, blue: 79/255, alpha: 1)
     let collectionColor = NSColor.orange
+    let individualColor = NSColor.red
     let menuSelectedColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
     let menuUnselectedColor = NSColor(calibratedRed: 1, green: 1, blue: 1, alpha: 1)
     let menuButtonBackgroundColor = NSColor(deviceWhite: 0.2, alpha: 1)

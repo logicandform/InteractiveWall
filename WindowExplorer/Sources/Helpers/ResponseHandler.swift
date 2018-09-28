@@ -177,4 +177,31 @@ final class ResponseHandler {
 
         return collection
     }
+
+
+    // MARK: Individuals
+
+    static func serializeIndividuals(from json: Any) throws -> [Individual] {
+        guard let json = json as? [JSON] else {
+            throw NetworkError.badResponse
+        }
+
+        return json.compactMap { Individual(json: $0) }
+    }
+
+    static func serializeIndividual(from json: Any) throws -> Individual {
+        guard let json = json as? JSON else {
+            throw NetworkError.badResponse
+        }
+
+        if json.isEmpty {
+            throw NetworkError.notFound
+        }
+
+        guard let individual = Individual(json: json) else {
+            throw NetworkError.serializationError
+        }
+
+        return individual
+    }
 }

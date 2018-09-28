@@ -84,7 +84,7 @@ struct Settings {
             displaySchools = on
         case .organization:
             displayOrganizations = on
-        case .theme, .collection:
+        case .theme, .collection, .individual:
             return
         }
     }
@@ -99,7 +99,7 @@ struct Settings {
             return displaySchools
         case .organization:
             return displayOrganizations
-        case .theme, .collection:
+        case .theme, .collection, .individual:
             return false
         }
     }

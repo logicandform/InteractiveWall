@@ -13,7 +13,8 @@ final class RecordManager {
         .organization: [:],
         .event: [:],
         .theme: [:],
-        .collection: [:]
+        .collection: [:],
+        .individual: [:]
     ]
 
 
@@ -76,30 +77,12 @@ final class RecordManager {
     }
 
     private func makeRelationships(for record: Record) {
-        for id in record.relatedSchoolIDs {
-            if let school = recordsForType[.school]?[id] as? School {
-                record.relatedSchools.append(school)
-            }
-        }
-        for id in record.relatedArtifactIDs {
-            if let artifact = recordsForType[.artifact]?[id] as? Artifact {
-                record.relatedArtifacts.append(artifact)
-            }
-        }
-        for id in record.relatedOrganizationIDs {
-            if let organization = recordsForType[.organization]?[id] as? Organization {
-                record.relatedOrganizations.append(organization)
-            }
-        }
-        for id in record.relatedEventIDs {
-            if let event = recordsForType[.event]?[id] as? Event {
-                record.relatedEvents.append(event)
-            }
-        }
-        for id in record.relatedThemeIDs {
-            if let theme = recordsForType[.theme]?[id] as? Theme {
-                record.relatedThemes.append(theme)
-            }
-        }
+        record.relatedRecordsForType[.school] = records(for: .school, ids: record.relatedSchoolIDs)
+        record.relatedRecordsForType[.artifact] = records(for: .artifact, ids: record.relatedArtifactIDs)
+        record.relatedRecordsForType[.organization] = records(for: .organization, ids: record.relatedOrganizationIDs)
+        record.relatedRecordsForType[.event] = records(for: .event, ids: record.relatedEventIDs)
+        record.relatedRecordsForType[.theme] = records(for: .theme, ids: record.relatedThemeIDs)
+        record.relatedRecordsForType[.collection] = records(for: .collection, ids: record.relatedCollectionIDs)
+        record.relatedRecordsForType[.individual] = records(for: .individual, ids: record.relatedIndividualIDs)
     }
 }

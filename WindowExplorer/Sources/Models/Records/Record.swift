@@ -5,12 +5,6 @@ import AppKit
 import MapKit
 
 
-struct RecordGroup {
-    let type: RecordType
-    let records: [Record]
-}
-
-
 class Record: Hashable, SearchItemDisplayable {
 
     let type: RecordType
@@ -27,24 +21,13 @@ class Record: Hashable, SearchItemDisplayable {
     let relatedArtifactIDs: [Int]
     let relatedEventIDs: [Int]
     let relatedThemeIDs: [Int]
-    var relatedSchools = [School]()
-    var relatedOrganizations = [Organization]()
-    var relatedArtifacts = [Artifact]()
-    var relatedEvents = [Event]()
-    var relatedThemes = [Theme]()
+    let relatedCollectionIDs: [Int]
+    let relatedIndividualIDs: [Int]
+    var relatedRecordsForType = [RecordType: [Record]]()
     lazy var priority = PriorityOrder.priority(for: self)
 
-    var recordGroups: [RecordGroup] {
-        let schoolGroup = RecordGroup(type: .school, records: relatedSchools)
-        let organizationGroup = RecordGroup(type: .organization, records: relatedOrganizations)
-        let artifactGroup = RecordGroup(type: .artifact, records: relatedArtifacts)
-        let eventGroup = RecordGroup(type: .event, records: relatedEvents)
-
-        return [schoolGroup, organizationGroup, artifactGroup, eventGroup]
-    }
-
     var relatedRecords: [Record] {
-        return recordGroups.reduce([]) { $0 + $1.records }
+        return relatedRecordsForType.values.reduce([], +)
     }
 
     var hashValue: Int {
@@ -69,7 +52,9 @@ class Record: Hashable, SearchItemDisplayable {
         static let organizationIDs = "relatedOrganizationIDs"
         static let artifactIDs = "relatedArtifactIDs"
         static let eventIDs = "relatedEventIDs"
-        static let themeIDs = "themeIDs"
+        static let collectionIDs = "relatedCollectionIDs"
+        static let individualIDs = "relatedIndividualIDs"
+        static let themeIDs = "relatedThemeIDs"
     }
 
 
@@ -92,6 +77,8 @@ class Record: Hashable, SearchItemDisplayable {
         self.relatedArtifactIDs = json[Keys.artifactIDs] as? [Int] ?? []
         self.relatedEventIDs = json[Keys.eventIDs] as? [Int] ?? []
         self.relatedThemeIDs = json[Keys.themeIDs] as? [Int] ?? []
+        self.relatedCollectionIDs = json[Keys.collectionIDs] as? [Int] ?? []
+        self.relatedIndividualIDs = json[Keys.individualIDs] as? [Int] ?? []
 
         if let latitude = json[Keys.latitude] as? Double, let longitude = json[Keys.longitude] as? Double {
             self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
@@ -121,11 +108,7 @@ class Record: Hashable, SearchItemDisplayable {
     }
 
     func relatedRecords(type: RecordType) -> [Record] {
-        if let recordGroup = recordGroups.first(where: { $0.type == type }) {
-            return recordGroup.records
-        }
-
-        return []
+        return relatedRecordsForType[type] ?? []
     }
 
     func relatedRecords(filterType type: RecordFilterType) -> [Record] {

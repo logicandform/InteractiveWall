@@ -53,7 +53,7 @@ enum SettingType {
             return .schools
         case .event:
             return .events
-        case .theme, .artifact, .organization, .collection:
+        case .theme, .artifact, .organization, .collection, .individual:
             return nil
         }
     }

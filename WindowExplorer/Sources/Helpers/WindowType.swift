@@ -33,7 +33,7 @@ enum WindowType: Equatable {
 
     init?(for record: Record) {
         switch record.type {
-        case .school, .artifact, .organization, .event, .theme:
+        case .school, .artifact, .organization, .event, .theme, .individual:
             self = .record(record)
         case .collection:
             self = .collection(record)

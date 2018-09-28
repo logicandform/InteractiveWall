@@ -11,6 +11,7 @@ enum RecordType: String, SearchItemDisplayable {
     case school
     case theme
     case collection
+    case individual
 
     var title: String {
         switch self {
@@ -26,6 +27,8 @@ enum RecordType: String, SearchItemDisplayable {
             return "Themes"
         case .collection:
             return "Collections"
+        case .individual:
+            return "Individuals"
         }
     }
 
@@ -43,6 +46,8 @@ enum RecordType: String, SearchItemDisplayable {
             return style.selectedColor
         case .collection:
             return style.collectionColor
+        case .individual:
+            return style.individualColor
         }
     }
 
@@ -60,6 +65,8 @@ enum RecordType: String, SearchItemDisplayable {
             return NSImage(named: "theme-icon")!
         case .collection:
             return NSImage(named: "theme-icon")!
+        case .individual:
+            return NSImage(named: "theme-icon")!
         }
     }
 
@@ -68,6 +75,6 @@ enum RecordType: String, SearchItemDisplayable {
     }
 
     static var allValues: [RecordType] {
-        return [.event, .artifact, .organization, .school, .theme, .collection]
+        return [.event, .artifact, .organization, .school, .theme, .collection, .individual]
     }
 }
