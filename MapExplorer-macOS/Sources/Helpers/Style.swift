@@ -18,7 +18,7 @@ final class Style {
     let eventColor = NSColor(calibratedRed: 145/255, green: 18/255, blue: 88/255, alpha: 1)
     let organizationColor = NSColor(calibratedRed: 16/255, green: 147/255, blue: 79/255, alpha: 1)
     let collectionColor = NSColor.orange
-    let clusterColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
+    let clusterColor = NSColor.orange
 
     // Window Levels
     let mapWindowLevel = NSWindow.Level(28)
@@ -68,6 +68,20 @@ final class Style {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 0
         paragraphStyle.paragraphSpacing = 8
+        paragraphStyle.maximumLineHeight = fontSize + 5
+        paragraphStyle.lineBreakMode = .byWordWrapping
+        let font = NSFont(name: "Soleil", size: fontSize) ?? NSFont.systemFont(ofSize: fontSize)
+        return [.paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: NSColor.white,
+                .kern: 0.5
+        ]
+    }
+
+    var clusterLabelAttributes: [NSAttributedString.Key: Any] {
+        let fontSize: CGFloat = 15
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.paragraphSpacing = 0
         paragraphStyle.maximumLineHeight = fontSize + 5
         paragraphStyle.lineBreakMode = .byWordWrapping
         let font = NSFont(name: "Soleil", size: fontSize) ?? NSFont.systemFont(ofSize: fontSize)

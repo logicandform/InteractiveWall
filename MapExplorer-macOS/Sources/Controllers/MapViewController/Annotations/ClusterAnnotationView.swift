@@ -7,19 +7,35 @@ import MapKit
 class ClusterAnnotationView: MKAnnotationView {
     static let identifier = "ClusterView"
 
-    private let circle = NSView(frame: CGRect(origin: CGPoint(x: -Constants.radius, y: -Constants.radius), size: CGSize(width: Constants.radius * 2.0, height: Constants.radius * 2.0)))
+    private let circle = CALayer()
+    private let text = CATextLayer()
 
     private struct Constants {
         static let radius: CGFloat = 12
+        static let textRadius: CGFloat = 8
         static let borderWidth: CGFloat = 2
+        static let textVerticalOffset: CGFloat = 1
     }
 
     override var annotation: MKAnnotation? {
         willSet {
-            if newValue is MKClusterAnnotation {
-                setupAnnotation()
+            if let cluster = annotation as? MKClusterAnnotation {
+                load(cluster)
             }
         }
+    }
+
+
+    // MARK: Init
+
+    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
+        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        setupViews()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setupViews()
     }
 
 
@@ -33,28 +49,27 @@ class ClusterAnnotationView: MKAnnotationView {
         animateScale.fromValue = 1
         animateScale.toValue = 1 + scale
         animateScale.duration = 0.1
-        circle.layer?.add(animateScale, forKey: "transform.scale")
-
-        let animateCenter = CABasicAnimation(keyPath: "position")
-        animateCenter.autoreverses = true
-        animateCenter.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
-        animateCenter.fromValue = [-Constants.radius, -Constants.radius]
-        animateCenter.toValue = [-Constants.radius-Constants.radius*scale, -Constants.radius-Constants.radius*scale]
-        animateCenter.duration = 0.1
-        circle.layer?.add(animateCenter, forKey: "position")
+        circle.add(animateScale, forKey: "transform.scale")
     }
 
 
     // MARK: Setup
 
-    func setupAnnotation() {
+    private func setupViews() {
+        text.frame = CGRect(origin: CGPoint(x: -Constants.textRadius, y: -(Constants.textRadius + Constants.textVerticalOffset)), size: CGSize(width: Constants.textRadius * 2.0, height: Constants.textRadius * 2.0))
+        text.alignmentMode = .center
+        circle.frame = CGRect(origin: CGPoint(x: -Constants.radius, y: -Constants.radius), size: CGSize(width: Constants.radius * 2.0, height: Constants.radius * 2.0))
+        circle.backgroundColor = style.clusterColor.withAlphaComponent(0.25).cgColor
+        circle.cornerRadius = Constants.radius
+        circle.borderColor = style.clusterColor.cgColor
+        circle.borderWidth = Constants.borderWidth
         displayPriority = .defaultHigh
         collisionMode = .circle
-        circle.wantsLayer = true
-        circle.layer?.backgroundColor = style.clusterColor.withAlphaComponent(0.25).cgColor
-        circle.layer?.cornerRadius = Constants.radius
-        circle.layer?.borderColor = style.clusterColor.cgColor
-        circle.layer?.borderWidth = Constants.borderWidth
-        addSubview(circle)
+    }
+
+    private func load(_ cluster: MKClusterAnnotation) {
+        text.string = NSAttributedString(string: cluster.memberAnnotations.count.description, attributes: style.clusterLabelAttributes)
+        layer?.addSublayer(circle)
+        layer?.addSublayer(text)
     }
 }
