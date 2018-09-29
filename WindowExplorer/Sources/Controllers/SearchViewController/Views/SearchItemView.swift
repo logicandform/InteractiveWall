@@ -33,6 +33,8 @@ class SearchItemView: NSCollectionViewItem {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.wantsLayer = true
+        titleTextField.textColor = .white
+        attributionTextField.textColor = .white
         set(highlighted: false)
     }
 

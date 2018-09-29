@@ -27,6 +27,7 @@ class TimelineControlItemView: NSCollectionViewItem {
         view.wantsLayer = true
         contentView.wantsLayer = true
         contentView.layer?.backgroundColor = .clear
+        set(highlighted: false)
     }
 
 
