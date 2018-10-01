@@ -21,6 +21,7 @@ struct Configuration {
     static let resetTimeoutDuration = 150.0
     static let closeWindowTimeoutDuration = 180.0
     static let menuResetTimeoutDuration = 180.0
+    static let shutdownHour = 20
 }
 
 
@@ -77,6 +78,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         GeocodeHelper.instance.associateSchoolsToProvinces()
         MasterViewController.instantiate()
         IndicatorViewController.instantiate()
+        scheduleShutdown()
         reachability?.stopNotifier()
         reachability = nil
     }
@@ -97,5 +99,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         task.launch()
         task.waitUntilExit()
+    }
+
+    /// Schedules the shutdown of the app at a certain hour of the current day
+    private func scheduleShutdown() {
+        if let date = Calendar.current.date(bySetting: .hour, value: Configuration.shutdownHour, of: Date()) {
+            let timer = Timer(fireAt: date, interval: 0, target: self, selector: #selector(shutdown), userInfo: nil, repeats: false)
+            RunLoop.main.add(timer, forMode: .common)
+        }
+    }
+
+    @objc
+    private func shutdown() {
+        MasterViewController.instance?.close()
+        exit(0)
     }
 }
