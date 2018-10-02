@@ -52,7 +52,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         reachability?.whenReachable = { [weak self] _ in
-            self?.prepareApplication()
+            self?.setupApplication()
         }
         try? reachability?.startNotifier()
     }
@@ -63,12 +63,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 
     // MARK: Helpers
-
-    private func prepareApplication() {
-        RecordManager.instance.initialize { [weak self] in
-            self?.setupApplication()
-        }
-    }
 
     private func setupApplication() {
         WindowManager.instance.registerForNotifications()

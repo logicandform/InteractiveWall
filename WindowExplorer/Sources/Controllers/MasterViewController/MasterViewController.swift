@@ -96,47 +96,19 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
     // MARK: Actions
 
     private func launch(manual: Bool) {
-        guard NSScreen.screens.count >= Configuration.numberOfScreens + 1 else {
-            log(type: .failed, message: "There must be at least \(Configuration.numberOfScreens) screen(s) connected to launch the application.")
-            return
-        }
-
-        // Ensure the database is ready to serve
-        if let status = databaseStatus {
-            if status.refreshing {
-                log(type: .failed, message: "Cannot launch application until database is finished refreshing.")
-                return
-            } else if status.error {
-                log(type: .failed, message: "Cannot launch application until database is running.")
-                return
-            }
-        }
-
         if applicationState == .running {
             log(type: .failed, message: "Application is already running.")
             return
         }
 
-        // Open maps
-        for screenID in (1 ... Configuration.numberOfScreens) {
-            for appIndex in (0 ..< Configuration.appsPerScreen) {
-                let appID = (screenID - 1) * Configuration.appsPerScreen + appIndex
-                if applicationForID[appID] == nil, let application = open(.mapExplorer, screenID: screenID, appID: appIndex) {
-                    applicationForID[appID] = application
-                }
-            }
+        let screenCount = NSScreen.screens.count - 1
+        if screenCount < Configuration.numberOfScreens {
+            log(type: .failed, message: "There must be at least \(Configuration.numberOfScreens) screen(s) connected to launch the application.")
+            return
         }
 
-        // Open node network
-        if nodeApplication == nil {
-            nodeApplication = open(.nodeNetwork, screenID: nil, appID: nil)
-        }
-
-        set(state: .running)
-
-        if manual {
-            log(type: .success, message: "Application has been launched.")
-            ConnectionManager.instance.postResetNotification()
+        requestDatabaseStatus(manual: false) { [weak self] in
+            self?.handleLaunch(manual: manual)
         }
     }
 
@@ -173,9 +145,10 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
         }
     }
 
-    private func requestDatabaseStatus(manual: Bool) {
+    private func requestDatabaseStatus(manual: Bool, completion: (() -> Void)? = nil) {
         DatabaseRefreshHelper.getRefreshStatus { [weak self] status in
             self?.handle(status: status, manual: manual)
+            completion?()
         }
     }
 
@@ -256,6 +229,7 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
         garbageButton.isEnabled = !consoleLogs.isEmpty
     }
 
+
     // MARK: NSCollectionViewDataSource & NSCollectionViewDelegateFlowLayout
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -280,6 +254,47 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
 
     // MARK: Helpers
 
+    private func handleLaunch(manual: Bool) {
+        // Check database status
+        if let status = databaseStatus {
+            if status.refreshing {
+                log(type: .failed, message: "Cannot launch application until database is finished refreshing.")
+                return
+            } else if status.error {
+                log(type: .failed, message: "Cannot launch application until database is running.")
+                return
+            }
+        }
+
+        RecordManager.instance.initialize { [weak self] in
+            self?.startApplication(manual: manual)
+        }
+    }
+
+    private func startApplication(manual: Bool) {
+        // Open Maps
+        for screenID in (1 ... Configuration.numberOfScreens) {
+            for appIndex in (0 ..< Configuration.appsPerScreen) {
+                let appID = (screenID - 1) * Configuration.appsPerScreen + appIndex
+                if applicationForID[appID] == nil, let application = open(.mapExplorer, screenID: screenID, appID: appIndex) {
+                    applicationForID[appID] = application
+                }
+            }
+        }
+
+        // Open Node
+        if nodeApplication == nil {
+            nodeApplication = open(.nodeNetwork, screenID: nil, appID: nil)
+        }
+
+        set(state: .running)
+
+        if manual {
+            log(type: .success, message: "Application has been launched.")
+            ConnectionManager.instance.postResetNotification()
+        }
+    }
+
     private func handleRefresh(status: DatabaseStatus) {
         handle(status: status, manual: true)
         if status.refreshing {
@@ -295,7 +310,8 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
 
         // Log to console if user requested status, or database status has changed
         if manual || (databaseStatus != nil && status != databaseStatus) {
-            log(type: .status, message: status.description)
+            let type = status.error ? LogType.error : LogType.status
+            log(type: type, message: status.description)
         }
 
         set(status: status)
