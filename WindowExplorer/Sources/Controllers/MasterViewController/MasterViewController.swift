@@ -150,7 +150,7 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
         let (output, error) = runCommand(cmd: Commands.supervisorctlPath, args: Commands.restartAll)
 
         if !output.isEmpty {
-            log(type: .status, message: output)
+            log(type: .success, message: output)
         }
         if !error.isEmpty {
             log(type: .error, message: error)

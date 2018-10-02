@@ -22,14 +22,6 @@ class ConsoleItemView: NSCollectionViewItem {
     }
 
 
-    // MARK: Life-Cycle
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-    }
-
-
     // MARK: API
 
     static func height(for log: ConsoleLog) -> CGFloat {
