@@ -34,7 +34,7 @@ final class Style {
     let searchScrollViewSize = CGSize(width: 360, height: 600)
     let borderWindowWidth: CGFloat = 4
     let infoWindowSize = CGSize(width: 500, height: 800)
-    let masterWindowSize = CGSize(width: 600, height: 400)
+    let masterWindowSize = CGSize(width: 740, height: 500)
     let minMediaWindowWidth: CGFloat = 550
     let maxMediaWindowWidth: CGFloat = 700
     let minMediaWindowHeight: CGFloat = 275
@@ -199,6 +199,20 @@ final class Style {
         paragraphStyle.paragraphSpacing = 8
         paragraphStyle.maximumLineHeight = fontSize + 5
         paragraphStyle.lineBreakMode = .byWordWrapping
+        let font = NSFont(name: "Soleil", size: fontSize) ?? NSFont.systemFont(ofSize: fontSize)
+        return [.paragraphStyle: paragraphStyle,
+                .font: font,
+                .foregroundColor: NSColor.white,
+                .kern: 0.5
+        ]
+    }
+
+    var consoleLogAttributes: [NSAttributedString.Key: Any] {
+        let fontSize: CGFloat = 14
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 0
+        paragraphStyle.lineBreakMode = .byWordWrapping
+        paragraphStyle.paragraphSpacing = 0
         let font = NSFont(name: "Soleil", size: fontSize) ?? NSFont.systemFont(ofSize: fontSize)
         return [.paragraphStyle: paragraphStyle,
                 .font: font,

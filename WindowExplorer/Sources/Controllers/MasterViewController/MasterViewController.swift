@@ -3,7 +3,7 @@
 import Cocoa
 
 
-class MasterViewController: NSViewController {
+class MasterViewController: NSViewController, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout {
     static var instance: MasterViewController?
     static let storyboard = "Master"
 
@@ -11,24 +11,27 @@ class MasterViewController: NSViewController {
     @IBOutlet weak var windowDragArea: NSView!
     @IBOutlet weak var windowDragAreaHighlight: NSView!
     @IBOutlet weak var actionSelectionButton: NSPopUpButton!
-    @IBOutlet weak var consoleTextView: NSTextView!
-    @IBOutlet weak var consoleScrollView: NSScrollView!
     @IBOutlet weak var statusTextField: NSTextField!
     @IBOutlet weak var screensTextField: NSTextField!
+    @IBOutlet weak var databaseTextField: NSTextField!
+    @IBOutlet weak var consoleCollectionView: NSCollectionView!
+    @IBOutlet weak var consoleClipView: NSClipView!
+    @IBOutlet weak var garbageButton: NSButton!
 
     private var applicationForID = [Int: NSRunningApplication]()
     private var nodeApplication: NSRunningApplication?
+    private var applicationState = ApplicationState.stopped
+    private var databaseStatus: DatabaseStatus?
+    private var consoleLogs = [ConsoleLog]()
+    private weak var refreshTimer: Foundation.Timer?
 
     private struct Constants {
         static let windowTitle = "Control Center"
-        static let consoleOutputFont = NSFont(name: "Menlo", size: 15)
-        static let consoleOutputFontColor = style.selectedColor
+        static let refreshTimerInterval = 60.0
     }
 
     private struct Commands {
-        static let datePath = "/bin/date"
         static let restartAll = "restart all"
-        static let dateArgs = "+%H:%M:%S   %d/%m/%y"
         static let mapExplorerScript = "map-explorer"
         static let supervisorctlPath = "/usr/local/bin/supervisorctl"
     }
@@ -45,7 +48,8 @@ class MasterViewController: NSViewController {
     }
 
     deinit {
-        close()
+        refreshTimer?.invalidate()
+        close(manual: false)
     }
 
 
@@ -54,58 +58,140 @@ class MasterViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupView()
+        setupViews()
         setupActions()
         setupGestures()
-        updateConnectedScreens()
+        updateConnectedScreenCount()
+        requestDatabaseStatus(manual: false)
         registerForNotifications()
         if Configuration.launchOnLoad {
-            launch()
+            launch(manual: false)
         }
     }
 
 
     // MARK: API
 
-    func close() {
+    func close(manual: Bool) {
+        if applicationState == .stopped {
+            log(type: .failed, message: "Application is not running.")
+            return
+        }
+
         for (id, app) in applicationForID {
             app.terminate()
             applicationForID.removeValue(forKey: id)
         }
+
         nodeApplication?.terminate()
         nodeApplication = nil
+        set(state: .stopped)
+
+        if manual {
+            log(type: .success, message: "Application has been stopped.")
+        }
     }
 
 
-    // MARK: Setup
+    // MARK: Actions
 
-    private func launch() {
+    private func launch(manual: Bool) {
+        guard NSScreen.screens.count >= Configuration.numberOfScreens + 1 else {
+            log(type: .failed, message: "There must be at least \(Configuration.numberOfScreens) screen(s) connected to launch the application.")
+            return
+        }
+
+        // Ensure the database is ready to serve
+        if let status = databaseStatus {
+            if status.refreshing {
+                log(type: .failed, message: "Cannot launch application until database is finished refreshing.")
+                return
+            } else if status.error {
+                log(type: .failed, message: "Cannot launch application until database is running.")
+                return
+            }
+        }
+
+        if applicationState == .running {
+            log(type: .failed, message: "Application is already running.")
+            return
+        }
+
         // Open maps
         for screenID in (1 ... Configuration.numberOfScreens) {
             for appIndex in (0 ..< Configuration.appsPerScreen) {
                 let appID = (screenID - 1) * Configuration.appsPerScreen + appIndex
-
                 if applicationForID[appID] == nil, let application = open(.mapExplorer, screenID: screenID, appID: appIndex) {
                     applicationForID[appID] = application
                 }
             }
         }
+
         // Open node network
         if nodeApplication == nil {
             nodeApplication = open(.nodeNetwork, screenID: nil, appID: nil)
         }
+
+        set(state: .running)
+
+        if manual {
+            log(type: .success, message: "Application has been launched.")
+            ConnectionManager.instance.postResetNotification()
+        }
     }
 
-    private func setupView() {
+    private func updateConnectedScreenCount() {
+        let screenCount = NSScreen.screens.count - 1
+        screensTextField.stringValue = String(screenCount)
+        screensTextField.textColor = screenCount >= Configuration.numberOfScreens ? .green : .red
+    }
+
+    private func restartServers() {
+        let (output, error) = runCommand(cmd: Commands.supervisorctlPath, args: Commands.restartAll)
+
+        if !output.isEmpty {
+            log(type: .status, message: output)
+        }
+        if !error.isEmpty {
+            log(type: .error, message: error)
+        }
+    }
+
+    private func refreshDatabase() {
+        guard let status = databaseStatus else {
+            log(type: .error, message: "Database status has not yet been received.")
+            return
+        }
+
+        if status.refreshing {
+            log(type: .failed, message: "Database is currently refreshing, please wait until the task is finished.")
+            return
+        }
+
+        DatabaseRefreshHelper.refreshDatabase { [weak self] response in
+            self?.handleRefresh(status: response)
+        }
+    }
+
+    private func requestDatabaseStatus(manual: Bool) {
+        DatabaseRefreshHelper.getRefreshStatus { [weak self] status in
+            self?.handle(status: status, manual: manual)
+        }
+    }
+
+
+    // MARK: Setup
+
+    private func setupViews() {
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
         titleTextField.attributedStringValue = NSAttributedString(string: "Control Center", attributes: style.windowTitleAttributes)
         windowDragAreaHighlight.wantsLayer = true
         windowDragAreaHighlight.layer?.backgroundColor = style.selectedColor.cgColor
-        consoleTextView.font = Constants.consoleOutputFont
-        consoleTextView.textColor = Constants.consoleOutputFontColor
-        let state = Configuration.launchOnLoad ? ApplicationState.running : ApplicationState.stopped
-        set(state: state)
+        consoleCollectionView.register(ConsoleItemView.self, forItemWithIdentifier: ConsoleItemView.identifier)
+        consoleCollectionView.layer?.backgroundColor = style.darkBackground.cgColor
+        garbageButton.isEnabled = !consoleLogs.isEmpty
+        set(state: applicationState)
     }
 
     private func setupGestures() {
@@ -151,56 +237,89 @@ class MasterViewController: NSViewController {
 
         switch action {
         case .launch:
-            launch()
+            launch(manual: true)
         case .close:
-            close()
+            close(manual: true)
         case .restartServers:
-            runSupervisorRestart()
+            restartServers()
+        case .refreshDatabase:
+            refreshDatabase()
+        case .status:
+            requestDatabaseStatus(manual: true)
         }
+    }
+
+    @IBAction func garbageButtonClicked(_ sender: Any) {
+        consoleLogs.removeAll()
+        consoleCollectionView.reloadData()
+        consoleCollectionView.scroll(.zero)
+        garbageButton.isEnabled = !consoleLogs.isEmpty
+    }
+
+    // MARK: NSCollectionViewDataSource & NSCollectionViewDelegateFlowLayout
+
+    func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
+        return consoleLogs.count
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
+        guard let consoleItemView = collectionView.makeItem(withIdentifier: ConsoleItemView.identifier, for: indexPath) as? ConsoleItemView else {
+            return NSCollectionViewItem()
+        }
+
+        consoleItemView.log = consoleLogs[indexPath.item]
+        return consoleItemView
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
+        let item = consoleLogs[indexPath.item]
+        let height = ConsoleItemView.height(for: item)
+        return CGSize(width: consoleClipView.frame.width, height: height)
     }
 
 
     // MARK: Helpers
 
+    private func handleRefresh(status: DatabaseStatus) {
+        handle(status: status, manual: true)
+        if status.refreshing {
+            let message = "If the app is open while refreshing the database, some functionality may be limited. The app cannot be restarted until the database is finished refreshing."
+            log(type: .warning, message: message)
+        }
+    }
+
+    /// Updates the current refresh status, if manual; logs output to console
+    private func handle(status: DatabaseStatus, manual: Bool) {
+        databaseTextField.textColor = status.error ? .red : status.refreshing ? .orange : .green
+        databaseTextField.stringValue = status.error ? "Error" : status.refreshing ? "Refreshing" : "Running"
+
+        // Log to console if user requested status, or database status has changed
+        if manual || (databaseStatus != nil && status != databaseStatus) {
+            log(type: .status, message: status.description)
+        }
+
+        set(status: status)
+    }
+
+    /// Creates and inserts a log onto top of console log stack
+    private func log(type: LogType, message: String) {
+        let log = ConsoleLog(type: type, message: message)
+        consoleLogs.insert(log, at: 0)
+        consoleCollectionView.reloadData()
+        consoleCollectionView.scroll(.zero)
+        garbageButton.isEnabled = !consoleLogs.isEmpty
+    }
+
     private func set(state: ApplicationState) {
+        applicationState = state
         statusTextField.stringValue = state.title
         statusTextField.textColor = state.color
     }
 
-    private func updateConnectedScreens() {
-        let screenCount = NSScreen.screens.count - 1
-        screensTextField.stringValue = String(screenCount)
-        screensTextField.textColor = screenCount >= Configuration.numberOfScreens ? .green : .red
-    }
-
     @objc
     private func screensDidChange(_ notification: NSNotification) {
-        updateConnectedScreens()
+        updateConnectedScreenCount()
     }
-
-    private func runSupervisorRestart() {
-        var outputString = ""
-        let time = runCommand(cmd: Commands.datePath, args: Commands.dateArgs)
-        let supervisorResponse = runCommand(cmd: Commands.supervisorctlPath, args: Commands.restartAll)
-
-        time.output.forEach({ currentOutput in
-            outputString += currentOutput
-            outputString += "\n"
-        })
-        supervisorResponse.output.forEach({ currentOutput in
-            if !currentOutput.contains(Commands.mapExplorerScript) {
-                outputString += currentOutput
-                outputString += "\n"
-            }
-        })
-        supervisorResponse.error.forEach({ currentOutput in
-            outputString += currentOutput
-            outputString += "\n"
-        })
-
-        consoleTextView.string = outputString.components(separatedBy: NSCharacterSet.newlines).filter({ !$0.isEmpty }).joined(separator: "\n")
-    }
-
 
     /// Open a known application type with the required parameters
     @discardableResult
@@ -223,13 +342,10 @@ class MasterViewController: NSViewController {
         }
     }
 
-    private func runCommand(cmd: String, args: String...) -> (output: [String], error: [String], exitCode: Int32) {
+    private func runCommand(cmd: String, args: String...) -> (output: String, error: String) {
         guard FileManager.default.fileExists(atPath: cmd) else {
-            return (["Failed: Command \(cmd) does not exist"], [""], -1)
+            return ("", "Command \(cmd) does not exist")
         }
-
-        var output = [String]()
-        var error = [String]()
 
         let task = Process()
         task.launchPath = cmd
@@ -238,24 +354,35 @@ class MasterViewController: NSViewController {
         task.standardOutput = outpipe
         let errpipe = Pipe()
         task.standardError = errpipe
-
         task.launch()
 
         let outdata = outpipe.fileHandleForReading.readDataToEndOfFile()
-        if var string = String(data: outdata, encoding: .utf8) {
-            string = string.trimmingCharacters(in: .newlines)
-            output = string.components(separatedBy: "\n")
-        }
+        let outputString = String(data: outdata, encoding: .utf8) ?? ""
+        let output = outputString.trimmingCharacters(in: .whitespacesAndNewlines)
 
         let errdata = errpipe.fileHandleForReading.readDataToEndOfFile()
-        if var string = String(data: errdata, encoding: .utf8) {
-            string = string.trimmingCharacters(in: .newlines)
-            error = string.components(separatedBy: "\n")
-        }
+        let errorString = String(data: errdata, encoding: .utf8) ?? ""
+        let error = errorString.trimmingCharacters(in: .whitespacesAndNewlines)
 
         task.waitUntilExit()
-        let status = task.terminationStatus
+        return (output, error)
+    }
 
-        return (output, error, status)
+    private func set(status: DatabaseStatus) {
+        databaseStatus = status
+        if status.error || status.refreshing {
+            if refreshTimer == nil {
+                startRefreshTimer()
+            }
+        } else {
+            refreshTimer?.invalidate()
+        }
+    }
+
+    private func startRefreshTimer() {
+        refreshTimer?.invalidate()
+        refreshTimer = Timer.scheduledTimer(withTimeInterval: Constants.refreshTimerInterval, repeats: true) { [weak self] _ in
+            self?.requestDatabaseStatus(manual: false)
+        }
     }
 }

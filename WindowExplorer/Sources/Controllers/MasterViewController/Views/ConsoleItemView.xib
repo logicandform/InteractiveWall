@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="ConsoleItemView" customModule="WindowExplorer" customModuleProvider="target">
+            <connections>
+                <outlet property="dateTextField" destination="AQ2-j5-mv9" id="kwz-Cs-Qxv"/>
+                <outlet property="messageTextField" destination="1Kn-Pa-hcH" id="3bI-YA-oDw"/>
+                <outlet property="typeTextField" destination="2LF-3N-ix6" id="tCg-Zx-Wzl"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="720" height="107"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="AdQ-FV-kJX">
+                    <rect key="frame" x="240" y="0.0" width="480" height="107"/>
+                    <subviews>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2LF-3N-ix6">
+                            <rect key="frame" x="10" y="78" width="460" height="17"/>
+                            <textFieldCell key="cell" id="8XA-p8-CM1">
+                                <font key="font" usesAppearanceFont="YES"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1Kn-Pa-hcH">
+                            <rect key="frame" x="10" y="49" width="460" height="17"/>
+                            <textFieldCell key="cell" id="PZT-Vc-Rj2">
+                                <font key="font" usesAppearanceFont="YES"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="1Kn-Pa-hcH" firstAttribute="top" secondItem="2LF-3N-ix6" secondAttribute="bottom" constant="12" id="CHu-Sm-vQs"/>
+                        <constraint firstAttribute="trailing" secondItem="2LF-3N-ix6" secondAttribute="trailing" constant="12" id="F9N-zs-vUI"/>
+                        <constraint firstItem="1Kn-Pa-hcH" firstAttribute="trailing" secondItem="2LF-3N-ix6" secondAttribute="trailing" id="TgL-LE-tQ6"/>
+                        <constraint firstItem="2LF-3N-ix6" firstAttribute="leading" secondItem="AdQ-FV-kJX" secondAttribute="leading" constant="12" id="bX9-tc-cHE"/>
+                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="1Kn-Pa-hcH" secondAttribute="bottom" constant="12" id="gNe-2s-04F"/>
+                        <constraint firstAttribute="width" constant="480" id="mYS-qz-Bk9"/>
+                        <constraint firstItem="2LF-3N-ix6" firstAttribute="top" secondItem="AdQ-FV-kJX" secondAttribute="top" constant="12" id="unv-qP-wfB"/>
+                        <constraint firstItem="1Kn-Pa-hcH" firstAttribute="leading" secondItem="2LF-3N-ix6" secondAttribute="leading" id="wWH-6q-XwF"/>
+                    </constraints>
+                </customView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" placeholderIntrinsicWidth="200" placeholderIntrinsicHeight="17" translatesAutoresizingMaskIntoConstraints="NO" id="AQ2-j5-mv9">
+                    <rect key="frame" x="18" y="78" width="204" height="17"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" id="gP9-9y-PZ2">
+                        <font key="font" usesAppearanceFont="YES"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstItem="AdQ-FV-kJX" firstAttribute="leading" secondItem="AQ2-j5-mv9" secondAttribute="trailing" constant="20" id="2kw-FI-G2q"/>
+                <constraint firstAttribute="bottom" secondItem="AdQ-FV-kJX" secondAttribute="bottom" id="Dm5-GH-aNk"/>
+                <constraint firstItem="AQ2-j5-mv9" firstAttribute="centerY" secondItem="2LF-3N-ix6" secondAttribute="centerY" id="FBO-sc-NcH"/>
+                <constraint firstItem="AdQ-FV-kJX" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="gJ7-jF-rT8"/>
+                <constraint firstAttribute="trailing" secondItem="AdQ-FV-kJX" secondAttribute="trailing" id="oez-ep-GW3"/>
+                <constraint firstItem="AQ2-j5-mv9" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="z3T-Rs-zTG"/>
+            </constraints>
+            <point key="canvasLocation" x="238" y="281.5"/>
+        </customView>
+    </objects>
+</document>

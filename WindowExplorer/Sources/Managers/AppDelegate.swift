@@ -16,7 +16,7 @@ struct Configuration {
     static let appsPerScreen = 2
     static let numberOfScreens = 1
     static let localMediaURLs = false
-    static let launchOnLoad = true
+    static let launchOnLoad = false
     static let touchScreen = TouchScreen.pct2485
     static let resetTimeoutDuration = 150.0
     static let closeWindowTimeoutDuration = 180.0
@@ -58,7 +58,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationWillTerminate(_ notification: Notification) {
-        MasterViewController.instance?.close()
+        MasterViewController.instance?.close(manual: false)
     }
 
 
@@ -111,7 +111,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc
     private func shutdown() {
-        MasterViewController.instance?.close()
+        MasterViewController.instance?.close(manual: false)
         exit(0)
     }
 }

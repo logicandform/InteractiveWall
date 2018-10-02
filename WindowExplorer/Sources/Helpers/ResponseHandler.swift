@@ -8,6 +8,18 @@ final class ResponseHandler {
 
     // MARK: Generic
 
+    static func serializeDatabaseStatus(from json: Any) throws -> DatabaseStatus {
+        guard let json = json as? JSON else {
+            throw NetworkError.badResponse
+        }
+
+        guard let status = DatabaseStatus(json: json) else {
+            throw NetworkError.serializationError
+        }
+
+        return status
+    }
+
     static func serializeCount(from json: Any) throws -> Int {
         guard let count = json as? Int else {
             throw NetworkError.badResponse

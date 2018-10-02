@@ -50,6 +50,12 @@ final class ConnectionManager {
 
     // MARK: API
 
+    /// Posts a reset notification that causes all apps to reset to their initial state
+    func postResetNotification() {
+        let info: JSON = [Keys.id: 0]
+        DistributedNotificationCenter.default().postNotificationName(SettingsNotification.reset.name, object: nil, userInfo: info, deliverImmediately: true)
+    }
+
     /// Returns the current pair for the given appID
     func pairForApp(id: Int, type: ApplicationType) -> Int? {
         switch type {
@@ -438,12 +444,7 @@ final class ConnectionManager {
     private func beginResetTimer() {
         resetTimer?.invalidate()
         resetTimer = Timer.scheduledTimer(withTimeInterval: Configuration.resetTimeoutDuration, repeats: false) { [weak self] _ in
-            self?.resetTimerFired()
+            self?.postResetNotification()
         }
-    }
-
-    private func resetTimerFired() {
-        let info: JSON = [Keys.id: 0]
-        DistributedNotificationCenter.default().postNotificationName(SettingsNotification.reset.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 }

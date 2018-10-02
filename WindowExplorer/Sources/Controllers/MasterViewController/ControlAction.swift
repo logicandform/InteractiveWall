@@ -8,6 +8,8 @@ enum ControlAction {
     case launch
     case close
     case restartServers
+    case refreshDatabase
+    case status
 
     init?(title: String) {
         switch title {
@@ -17,6 +19,10 @@ enum ControlAction {
             self = .close
         case ControlAction.restartServers.title:
             self = .restartServers
+        case ControlAction.refreshDatabase.title:
+            self = .refreshDatabase
+        case ControlAction.status.title:
+            self = .status
         default:
             return nil
         }
@@ -30,10 +36,14 @@ enum ControlAction {
             return "Close Applications"
         case .restartServers:
             return "Restart Servers"
+        case .refreshDatabase:
+            return "Refresh Local Database"
+        case .status:
+            return "Check Database Status"
         }
     }
 
     static var menuSelectionActions: [ControlAction] {
-        return [.launch, .close, .restartServers]
+        return [.launch, .close, .restartServers, .refreshDatabase, .status]
     }
 }

@@ -20,6 +20,8 @@ final class CachingNetwork {
 
     private struct Endpoints {
         static let countForGroup = Configuration.serverURL + "/%@/count/group/%@"
+        static let refresh = Configuration.serverURL + "/refresh"
+        static let refreshStatus = Configuration.serverURL + "/refresh/status"
         static let places = Configuration.serverURL + "/places/all/%d"
         static let placeByID = Configuration.serverURL + "/places/find/%d"
         static let placesInGroup = Configuration.serverURL + "/places/group/%@/%d"
@@ -50,6 +52,22 @@ final class CachingNetwork {
 
 
     // MARK: Generic
+
+    static func refresh() throws -> Promise<DatabaseStatus> {
+        let url = Endpoints.refresh
+
+        return Alamofire.request(url).responseJSON().then { json in
+            return try ResponseHandler.serializeDatabaseStatus(from: json)
+        }
+    }
+
+    static func status() throws -> Promise<DatabaseStatus> {
+        let url = Endpoints.refreshStatus
+
+        return Alamofire.request(url).responseJSON().then { json in
+            return try ResponseHandler.serializeDatabaseStatus(from: json)
+        }
+    }
 
     static func getCount(of type: RecordType, in group: LetterGroup) throws -> Promise<Int> {
         let url = String(format: Endpoints.countForGroup, type.title.lowercased(), group.rawValue)
