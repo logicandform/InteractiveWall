@@ -286,7 +286,7 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
 
         // Open Node
         if nodeApplication == nil {
-//            nodeApplication = open(.nodeNetwork, screenID: nil, appID: nil)
+            nodeApplication = open(.nodeNetwork, screenID: nil, appID: nil)
         }
 
         set(state: .running)
