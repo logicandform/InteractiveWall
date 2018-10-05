@@ -7,16 +7,9 @@ protocol SearchItemDisplayable {
     var title: String { get }
 }
 
-
 protocol SearchChild: class {
     var delegate: MenuDelegate? { get set }
-    func updateOrigin(to point: CGPoint, animating: Bool)
-}
-
-
-fileprivate struct RecordProxy: Hashable {
-    let id: Int
-    let type: RecordType
+    func setWindow(origin: CGPoint, animate: Bool, completion: (() -> Void)?)
 }
 
 
@@ -29,27 +22,20 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     @IBOutlet weak var secondaryTextField: NSTextField!
     @IBOutlet weak var tertiaryTextField: NSTextField!
     @IBOutlet weak var collapseButtonArea: NSView!
-    @IBOutlet weak var primaryScrollView: FadingScrollView!
-    @IBOutlet weak var secondaryScrollView: FadingScrollView!
-    @IBOutlet weak var tertiaryScrollView: FadingScrollView!
     @IBOutlet weak var primaryScrollViewHeight: NSLayoutConstraint!
     @IBOutlet weak var secondaryScrollViewHeight: NSLayoutConstraint!
     @IBOutlet weak var tertiaryScrollViewHeight: NSLayoutConstraint!
 
     weak var delegate: MenuDelegate?
-    private let relationshipHelper = RelationshipHelper()
     private var selectedType: RecordType?
-    private var selectedGroup: String?
-    private var selectedRecords = Set<RecordProxy>()
+    private var selectedGroup: SearchItemDisplayable?
+    private var selectedRecords = Set<Record>()
+    private var toggling = false
+
     private lazy var focusedCollectionView: NSCollectionView = primaryCollectionView
     private lazy var collectionViews: [NSCollectionView] = [primaryCollectionView, secondaryCollectionView, tertiaryCollectionView]
     private lazy var titleViews: [NSTextField] = [titleLabel, secondaryTextField, tertiaryTextField]
-    private lazy var scrollViewForCollectionView = [
-        primaryCollectionView: primaryScrollView,
-        secondaryCollectionView: secondaryScrollView,
-        tertiaryCollectionView: tertiaryScrollView
-    ]
-    private lazy var heightForCollectionView = [
+    private lazy var heightConstraintForView = [
         primaryCollectionView: primaryScrollViewHeight,
         secondaryCollectionView: secondaryScrollViewHeight,
         tertiaryCollectionView: tertiaryScrollViewHeight
@@ -65,6 +51,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         static let searchItemHeight: CGFloat = 70
         static let defaultWindowDragAreaColor = NSColor.lightGray
         static let collectionViewMargin: CGFloat = 5
+        static let maxCollectionViewHeight: CGFloat = 605
     }
 
 
@@ -73,11 +60,8 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     override func viewDidLoad() {
         super.viewDidLoad()
         titleLabel.attributedStringValue = NSAttributedString(string: titleLabel.stringValue, attributes: style.windowTitleAttributes)
-        relationshipHelper.parent = self
-        relationshipHelper.controllerClosed = { [weak self] controller in
-            self?.unselectRecordForController(controller)
-        }
 
+        setupRelationshipHelper()
         setupGestures()
         setupScrollViews()
         updateWindowDragAreaHighlight(for: selectedType)
@@ -86,6 +70,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     override func viewDidAppear() {
         super.viewDidAppear()
+
         updateHeight(for: primaryCollectionView)
         updateHeight(for: secondaryCollectionView)
         updateHeight(for: tertiaryCollectionView)
@@ -93,6 +78,14 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
 
     // MARK: Setup
+
+    private func setupRelationshipHelper() {
+        relationshipHelper = RelationshipHelper()
+        relationshipHelper?.parent = self
+        relationshipHelper?.controllerClosed = { [weak self] controller in
+            self?.unselectRecordForController(controller)
+        }
+    }
 
     private func setupGestures() {
         collectionViews.forEach { collectionView in
@@ -132,19 +125,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     }
 
 
-    // MARK: API
-
-    func updateOrigin(to point: CGPoint, animating: Bool) {
-        if animating {
-            animate(to: point)
-        } else {
-            view.window?.setFrameOrigin(point)
-        }
-
-        relationshipHelper.reset()
-    }
-
-
     // MARK: GestureHandling
 
     private func handleCollectionViewPan(_ gesture: GestureRecognizer) {
@@ -172,29 +152,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             return
         }
 
-        // Only allow reselected of cells in the tertiaryViewController.
-        switch collectionView {
-        case primaryCollectionView:
-            if searchItemView.type == selectedType {
-                return
-            }
-        case secondaryCollectionView:
-            if searchItemView.item.title == selectedGroup {
-                return
-            }
-        default:
-            break
-        }
-
-        // Set the windowDragHighlight color before waiting to toggle collectionViews
-        if let recordType = searchItemView.item as? RecordType {
-            updateWindowDragAreaHighlight(for: recordType)
-        }
-
-        select(searchItemView)
-        toggle(to: collectionView) { [weak self] in
-            self?.showResults(for: searchItemView)
-        }
+        selectItem(for: searchItemView, in: collectionView)
     }
 
     private func handleWindowDragAreaTap(_ gesture: GestureRecognizer) {
@@ -206,7 +164,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
         let xPos = positionOfTouch.x
         let index = Int(xPos / style.searchWindowFrame.width)
-
         if index < collectionViews.count - 1, let correspondingCollectionView = collectionViews.at(index: index), correspondingCollectionView != focusedCollectionView {
             unselectItem(for: correspondingCollectionView)
             toggle(to: correspondingCollectionView)
@@ -222,35 +179,8 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             let previousCollectionView = focusedCollectionView
             unselectItem(for: previous)
             toggle(to: previous, completion: { [weak self] in
-                self?.deleteItems(in: previousCollectionView)
+                self?.unselectItems(for: previousCollectionView)
             })
-        }
-    }
-
-    private func deleteItems(in previousCollectionView: NSCollectionView?) {
-        if let previousCollectionView = previousCollectionView {
-            searchItemsForView[previousCollectionView] = []
-            previousCollectionView.reloadData()
-            updateHeight(for: previousCollectionView)
-        }
-    }
-
-    override func handleWindowPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let window = view.window, !animating else {
-            return
-        }
-
-        switch pan.state {
-        case .recognized, .momentum:
-            var origin = window.frame.origin
-            origin += pan.delta.round()
-            window.setFrameOrigin(origin)
-        case .possible:
-            WindowManager.instance.checkBounds(of: self)
-        case .began, .ended:
-            relationshipHelper.reset()
-        default:
-            return
         }
     }
 
@@ -274,10 +204,10 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         searchItemView.item = searchItems.at(index: indexPath.item)
 
         // Set the highlighted state of view
-        if searchItemView.collectionView != tertiaryCollectionView {
-            searchItemView.set(highlighted: searchItemView.item.title == selectedGroup)
+        if searchItemView.collectionView != tertiaryCollectionView, let selectedGroup = selectedGroup {
+            searchItemView.set(highlighted: searchItemView.item.title == selectedGroup.title)
         } else if let record = searchItems.at(index: indexPath.item) as? Record {
-            searchItemView.set(highlighted: isSelected(record))
+            searchItemView.set(highlighted: selectedRecords.contains(record))
         }
 
         return searchItemView
@@ -314,40 +244,84 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         })
     }
 
-    override func closeWindowTimerFired() {
-        if relationshipHelper.isEmpty() {
-            animateViewOut()
-        }
-    }
-
     override func close() {
         delegate?.searchChildClosed()
         super.close()
     }
 
 
-    // MARK: Helpers
+    // MARK: Selection Flow
 
-    private func select(_ item: SearchItemView) {
-        guard let collectionView = item.collectionView else {
+    private func selectItem(for view: SearchItemView, in collectionView: NSCollectionView) {
+        if toggling || isSelected(item: view.item) {
             return
         }
 
-        switch collectionView {
-        case tertiaryCollectionView:
-            if let record = item.item as? Record {
-                selectedRecords.insert(RecordProxy(id: record.id, type: record.type))
+        // Select and highlight the item
+        updateSelectionForItem(of: view, in: collectionView)
+
+        // If item is a record, display it
+        if let record = view.item as? Record {
+            display(record)
+            return
+        }
+
+        if let recordType = selectedType, let nextCollectionView = nextCollectionView(from: collectionView) {
+            view.set(loading: true)
+            toggle(to: collectionView) { [weak self] in
+                SearchHelper.results(for: recordType, group: self?.selectedGroup) { results in
+                    view.set(loading: false)
+                    self?.display(results, in: nextCollectionView)
+                }
             }
+        }
+    }
+
+    private func isSelected(item: SearchItemDisplayable) -> Bool {
+        switch item {
+        case let recordType as RecordType:
+            return recordType == selectedType
+        case let letterGroup as LetterGroup:
+            if let selectedGroup = selectedGroup as? LetterGroup {
+                return letterGroup == selectedGroup
+            }
+        case let province as Province:
+            if let selectedGroup = selectedGroup as? Province {
+                return province == selectedGroup
+            }
+        case is Record:
+            return false
+        default:
+            return false
+        }
+
+        return false
+    }
+
+    private func updateSelectionForItem(of view: SearchItemView, in collectionView: NSCollectionView) {
+        switch collectionView {
         case primaryCollectionView:
-            unselectItem(for: collectionView)
+            if let recordType = view.item as? RecordType {
+                unselectItem(for: collectionView)
+                selectedType = recordType
+                updateWindowDragAreaHighlight(for: recordType)
+            }
         case secondaryCollectionView:
-            unselectItem(for: collectionView)
-            selectedGroup = item.item.title
+            if let record = view.item as? Record {
+                selectedRecords.insert(record)
+            } else {
+                unselectItem(for: collectionView)
+                selectedGroup = view.item
+            }
+        case tertiaryCollectionView:
+            if let record = view.item as? Record {
+                selectedRecords.insert(record)
+            }
         default:
             break
         }
 
-        item.set(highlighted: true)
+        view.set(highlighted: true)
     }
 
     // Removes all state from the currently selected view of the given collectionview
@@ -368,48 +342,14 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         }
     }
 
-    private func showResults(for view: SearchItemView) {
-        guard let collectionView = view.collectionView else {
-            return
-        }
-
-        switch collectionView {
-        case primaryCollectionView:
-            if let recordType = view.item as? RecordType, recordType != selectedType {
-                selectedType = recordType
-                searchItemsForView[secondaryCollectionView] = searchItems(for: recordType)
-                secondaryTextField.attributedStringValue = title(for: recordType)
-                secondaryCollectionView.reloadData()
-                secondaryCollectionView.scroll(.zero)
-                toggle(to: secondaryCollectionView)
-            }
-        case secondaryCollectionView:
-            if let group = view.item as? LetterGroup, let type = view.type, view.item.title == selectedGroup {
-                view.set(loading: true)
-                RecordNetwork.records(for: type, in: group) { [weak self] records in
-                    view.set(loading: false)
-                    if let records = records {
-                        self?.load(records, group: group.title, searchItem: view)
-                    }
-                }
-            } else if let province = view.item as? Province, view.item.title == selectedGroup {
-                let schools = GeocodeHelper.instance.schools(for: province).sorted { $0.title < $1.title }
-                load(schools, group: province.abbreviation, searchItem: view)
-            }
-        case tertiaryCollectionView:
-            if let record = view.item as? Record {
-                display(record)
-            }
-        default:
-            break
-        }
-    }
-
     /// Toggles to the given collection view, unselects items for hidden collection views
     private func toggle(to view: NSCollectionView, completion: (() -> Void)? = nil) {
-        guard let window = view.window, let index = collectionViews.index(of: view) else {
+        guard let window = view.window, let index = collectionViews.index(of: view), view != focusedCollectionView else {
+            completion?()
             return
         }
+
+        toggling = true
 
         // Unselect nested search items
         collectionViews.enumerated().forEach { indexOfView, collectionView in
@@ -418,8 +358,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             }
         }
 
-        updateHeight(for: view)
-
+        // Fade titles of collapsing collection views
         NSAnimationContext.runAnimationGroup({ [weak self] _ in
             NSAnimationContext.current.duration = Constants.animationDuration
             for indexOfView in 0 ..< collectionViews.count {
@@ -427,52 +366,81 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
                 self?.titleViews.at(index: indexOfView)?.animator().alphaValue = indexOfView <= index ? 1 : 0
             }
             self?.collapseButtonArea.animator().alphaValue = index.isZero ? 0 : 1
-        }, completionHandler: completion)
+        })
 
+        // Update position and size of window and child controllers
         var frame = window.frame
         frame.size.width = style.searchWindowFrame.width * CGFloat(index + 1) + Constants.collectionViewMargin * CGFloat(index)
-        window.setFrame(frame, display: true, animate: true)
+        setWindow(frame: frame, animate: true, completion: { [weak self] in
+            self?.toggling = false
+            completion?()
+        })
         focusedCollectionView = view
-        updateGradient(for: view)
     }
 
-    /// Returns a collection of search items used as the second level of a search query
-    private func searchItems(for type: RecordType) -> [SearchItemDisplayable] {
-        switch type {
-        case .event, .artifact, .organization, .theme, .collection, .individual:
-            return LetterGroup.allValues
-        case .school:
-            return Province.allValues
+    private func display(_ record: Record) {
+        if let record = RecordManager.instance.record(for: record.type, id: record.id), let windowType = WindowType(for: record) {
+            relationshipHelper?.display(windowType)
+        }
+    }
+
+    private func display(_ items: [SearchItemDisplayable], in collectionView: NSCollectionView) {
+        searchItemsForView[collectionView] = items
+        collectionView.reloadData()
+        collectionView.scroll(.zero)
+        updateTitle(for: collectionView)
+        toggle(to: collectionView)
+        updateHeight(for: collectionView)
+        updateGradient(for: collectionView, forced: true)
+    }
+
+
+    // MARK: Helpers
+
+    private func nextCollectionView(from collectionView: NSCollectionView) -> NSCollectionView? {
+        switch collectionView {
+        case primaryCollectionView:
+            return secondaryCollectionView
+        case secondaryCollectionView:
+            return tertiaryCollectionView
+        default:
+            return nil
+        }
+    }
+
+    private func unselectItems(for collectionView: NSCollectionView?) {
+        if let collectionView = collectionView {
+            searchItemsForView[collectionView] = []
+            collectionView.reloadData()
+            updateHeight(for: collectionView)
         }
     }
 
     /// Returns the attributed string to present as a tile in the window drag area
     private func title(for type: RecordType) -> NSAttributedString {
         switch type {
-        case .event, .artifact, .organization, .theme, .collection, .individual:
+        case .event, .artifact, .organization, .theme, .individual:
             return NSAttributedString(string: "Range", attributes: style.windowTitleAttributes)
         case .school:
             return NSAttributedString(string: "Province", attributes: style.windowTitleAttributes)
+        case .collection:
+            return NSAttributedString(string: "Topics", attributes: style.windowTitleAttributes)
         }
     }
 
-    /// Loads records into and toggles the tertiary collection view, from intermediary group
-    private func load(_ records: [Record], group: String, searchItem: SearchItemView) {
-        guard let selectedType = selectedType, searchItem.item.title == selectedGroup else {
+    private func updateTitle(for collectionView: NSCollectionView) {
+        guard let type = selectedType else {
             return
         }
 
-        searchItemsForView[tertiaryCollectionView] = records
-        tertiaryCollectionView.reloadData()
-        tertiaryCollectionView.scroll(.zero)
-        let title = "\(selectedType.title) (\(group))"
-        tertiaryTextField.attributedStringValue = NSAttributedString(string: title, attributes: style.windowTitleAttributes)
-        toggle(to: tertiaryCollectionView)
-    }
-
-    private func display(_ record: Record) {
-        if let record = RecordManager.instance.record(for: record.type, id: record.id) {
-            relationshipHelper.display(WindowType.record(record))
+        switch collectionView {
+        case secondaryCollectionView:
+            secondaryTextField.attributedStringValue = title(for: type)
+        case tertiaryCollectionView:
+            let title = "\(type.title) (\(selectedGroup?.title ?? ""))"
+            tertiaryTextField.attributedStringValue = NSAttributedString(string: title, attributes: style.windowTitleAttributes)
+        default:
+            break
         }
     }
 
@@ -485,43 +453,45 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         windowDragAreaHighlight.layer?.backgroundColor = recordType.color.cgColor
     }
 
-    private func isSelected(_ record: Record) -> Bool {
-        let recordProxy = RecordProxy(id: record.id, type: record.type)
-        return selectedRecords.contains(recordProxy)
-    }
-
-    private func updateGradient(for view: NSCollectionView) {
-        if let scrollView = view.superview?.superview as? FadingScrollView {
-            scrollView.updateGradient()
-        }
-    }
-
     private func unselectRecordForController(_ controller: BaseViewController) {
-        guard let recordViewController = controller as? RecordViewController, let record = recordViewController.record else {
+        guard let record = record(from: controller) else {
             return
         }
 
-        let recordProxy = RecordProxy(id: record.id, type: record.type)
-        selectedRecords.remove(recordProxy)
+        selectedRecords.remove(record)
+        let secondaryItems = secondaryCollectionView.visibleItems().compactMap({ $0 as? SearchItemView })
+        let tertiaryItems = tertiaryCollectionView.visibleItems().compactMap({ $0 as? SearchItemView })
 
-        for view in tertiaryCollectionView.visibleItems().compactMap({ $0 as? SearchItemView }) {
+        for view in secondaryItems + tertiaryItems {
             if let record = view.item as? Record {
-                let recordProxy = RecordProxy(id: record.id, type: record.type)
-                view.set(highlighted: selectedRecords.contains(recordProxy))
+                view.set(highlighted: selectedRecords.contains(record))
             }
+        }
+    }
+
+    private func record(from controller: BaseViewController) -> Record? {
+        switch controller {
+        case let recordViewController as RecordViewController:
+            return recordViewController.record
+        case let recordCollectionViewController as RecordCollectionViewController:
+            return recordCollectionViewController.record
+        default:
+            return nil
         }
     }
 
     private func updateHeight(for collectionView: NSCollectionView) {
-        let maxHeight = style.searchScrollViewSize.height
+        if let contentHeight = collectionView.collectionViewLayout?.collectionViewContentSize.height {
+            let height = ceil(min(contentHeight, Constants.maxCollectionViewHeight))
+            heightConstraintForView[collectionView]??.constant = height
+            updateGradient(for: collectionView, forced: true, height: height)
+            view.layoutSubtreeIfNeeded()
+        }
+    }
 
-        if let height = collectionView.collectionViewLayout?.collectionViewContentSize.height, let heightConstraint = heightForCollectionView[collectionView], let scrollView = scrollViewForCollectionView[collectionView] {
-            if height > maxHeight {
-                heightConstraint?.constant = maxHeight
-            } else {
-                heightConstraint?.constant = height
-            }
-            scrollView?.updateConstraints()
+    private func updateGradient(for collectionView: NSCollectionView, forced: Bool = false, height: CGFloat? = nil) {
+        if let scrollView = collectionView.superview?.superview as? FadingScrollView {
+            scrollView.updateGradient(forced: forced, height: height)
         }
     }
 }

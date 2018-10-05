@@ -94,9 +94,9 @@ final class WindowManager {
 
     private func display(_ info: RecordInfo, for windowType: WindowType, at origin: CGPoint, app: Int) {
         if let controller = controllerForRecord[info] as? RecordViewController {
-            controller.animate(to: origin)
+            controller.setWindow(origin: origin, animate: true)
         } else if let controller = controllerForRecord[info] as? RecordCollectionViewController {
-            controller.animate(to: origin)
+            controller.setWindow(origin: origin, animate: true)
         } else if let controller = display(windowType, at: origin) {
             controllerForRecord[info] = controller
         }

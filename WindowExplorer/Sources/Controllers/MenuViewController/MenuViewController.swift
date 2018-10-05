@@ -350,7 +350,7 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         let origin = CGPoint(x: x, y: y)
 
         if let searchChild = searchChild {
-            searchChild.updateOrigin(to: origin, animating: true)
+            searchChild.setWindow(origin: origin, animate: true, completion: nil)
         } else {
             searchChild = WindowManager.instance.display(.search, at: origin) as? SearchChild
             searchChild?.delegate = self

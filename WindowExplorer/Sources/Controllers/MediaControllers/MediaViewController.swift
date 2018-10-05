@@ -26,12 +26,6 @@ class MediaViewController: BaseViewController {
         WindowManager.instance.closeWindow(for: self)
     }
 
-    override func updatePosition(animating: Bool) {
-        if let frameAndPosition = parentDelegate?.frameAndPosition(for: self) {
-            updateOrigin(from: frameAndPosition.frame, at: frameAndPosition.position, animating: animating)
-        }
-    }
-
     override func subview(contains position: CGPoint) -> Bool {
         return true
     }
@@ -55,32 +49,6 @@ class MediaViewController: BaseViewController {
             WindowManager.instance.checkBounds(of: self)
         default:
             return
-        }
-    }
-
-
-    // MARK: Helpers
-
-    private func updateOrigin(from recordFrame: CGRect, at position: Int, animating: Bool) {
-        let offsetX = CGFloat(position * style.controllerOffset)
-        let offsetY = CGFloat(position * -style.controllerOffset)
-        let lastScreen = NSScreen.at(position: Configuration.numberOfScreens)
-        var origin = CGPoint(x: recordFrame.maxX + style.windowMargins + offsetX, y: recordFrame.maxY + offsetY - view.frame.height)
-
-        if origin.x > lastScreen.frame.maxX - view.frame.width / 2 {
-            if lastScreen.frame.height - recordFrame.maxY < view.frame.height + style.windowMargins - 2 * offsetY {
-                // Below
-                origin = CGPoint(x: lastScreen.frame.maxX - view.frame.width - style.windowMargins, y: origin.y - recordFrame.height - style.windowMargins)
-            } else {
-                // Above
-                origin = CGPoint(x: lastScreen.frame.maxX - view.frame.width - style.windowMargins, y: origin.y + view.frame.height + style.windowMargins - 2 * offsetY)
-            }
-        }
-
-        if animating {
-            animate(to: origin)
-        } else {
-            view.window?.setFrameOrigin(origin)
         }
     }
 }

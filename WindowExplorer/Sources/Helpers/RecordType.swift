@@ -26,7 +26,7 @@ enum RecordType: String, SearchItemDisplayable {
         case .theme:
             return "Themes"
         case .collection:
-            return "Collections"
+            return "Topics"
         case .individual:
             return "Individuals"
         }
@@ -71,7 +71,7 @@ enum RecordType: String, SearchItemDisplayable {
     }
 
     static var searchValues: [RecordType] {
-        return [.event, .school, .theme]
+        return [.event, .school, .collection]
     }
 
     static var allValues: [RecordType] {

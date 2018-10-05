@@ -7,7 +7,8 @@ import AppKit
 protocol RelationshipDelegate: class {
     func controllerDidClose(_ controller: BaseViewController)
     func controllerDidMove(_ controller: BaseViewController)
-    func frameAndPosition(for controller: BaseViewController) -> (frame: CGRect, position: Int)?
+    func index(of controller: BaseViewController) -> Int?
+    func requestUpdate(for controller: BaseViewController, animate: Bool)
 }
 
 
@@ -15,68 +16,90 @@ final class RelationshipHelper: RelationshipDelegate {
 
     weak var parent: BaseViewController?
     var controllerClosed: ((BaseViewController) -> Void)?
-    private var positionForController = [BaseViewController: Int?]()
+    private var indexForController = [BaseViewController: Int?]()
 
 
     // MARK: API
 
+    /// Displays a window based on the parents frame else animates it to that position
     func display(_ window: WindowType) {
+        guard let parentFrame = parent?.view.window?.frame else {
+            return
+        }
+
         if let controller = controller(for: window) {
-            if let position = positionForController[controller], position != nil {
-                controller.view.window?.makeKeyAndOrderFront(self)
+            if let position = indexForController[controller], position != nil {
+                updateChildPositionsFrom(frame: parentFrame, animate: true)
+                controller.view.window?.orderFront(nil)
             } else {
-                controller.updatePosition(animating: true)
-                positionForController[controller] = availablePosition()
+                indexForController[controller] = nextIndex()
+                controller.updateFromParent(frame: parentFrame, animate: true)
+                updateChildPositionsFrom(frame: parentFrame, animate: true)
             }
         } else if let controller = WindowManager.instance.display(window) as? BaseViewController {
             controller.parentDelegate = self
-            positionForController[controller] = availablePosition()
-            controller.updatePosition(animating: false)
+            indexForController[controller] = nextIndex()
+            controller.updateFromParent(frame: parentFrame, animate: false)
+            updateChildPositionsFrom(frame: parentFrame, animate: true)
+        }
+    }
+
+    /// Compresses child controller indexes so their are no gaps, then updates their frame positions
+    func updateChildPositionsFrom(frame: CGRect, animate: Bool) {
+        let sortedControllers = indexForController.filter { $0.value != nil }.sorted { $0.value! < $1.value! }
+
+        for (controller, _) in sortedControllers {
+            reassignIndex(for: controller)
+            controller.updateFromParent(frame: frame, animate: animate)
         }
     }
 
     func reset() {
-        positionForController.keys.forEach { positionForController[$0] = nil as Int? }
+        indexForController.keys.forEach { indexForController[$0] = nil as Int? }
     }
 
     func isEmpty() -> Bool {
-        return positionForController.keys.isEmpty
+        return indexForController.keys.isEmpty
     }
 
 
     // MARK: RelationshipDelegate
 
     func controllerDidClose(_ controller: BaseViewController) {
-        positionForController.removeValue(forKey: controller)
+        indexForController.removeValue(forKey: controller)
         parent?.resetCloseWindowTimer()
         controllerClosed?(controller)
     }
 
     func controllerDidMove(_ controller: BaseViewController) {
-        positionForController[controller] = nil as Int?
+        indexForController[controller] = nil as Int?
     }
 
-    func frameAndPosition(for controller: BaseViewController) -> (frame: CGRect, position: Int)? {
+    func index(of controller: BaseViewController) -> Int? {
+        if let index = indexForController[controller], index != nil {
+            return index!
+        } else {
+            return firstAvailablePosition()
+        }
+    }
+
+    func requestUpdate(for controller: BaseViewController, animate: Bool) {
         guard let parentFrame = parent?.view.window?.frame else {
-            return nil
+            return
         }
 
-        if let position = positionForController[controller], position != nil {
-            return (parentFrame, position!)
-        } else {
-            return (parentFrame, availablePosition())
-        }
+        controller.updateFromParent(frame: parentFrame, animate: animate)
     }
 
 
     // MARK: Helpers
 
     private func controller(for type: WindowType) -> BaseViewController? {
-        return positionForController.keys.first(where: { $0.type == type })
+        return indexForController.keys.first(where: { $0.type == type })
     }
 
-    private func availablePosition() -> Int {
-        let currentPositions = positionForController.values
+    private func firstAvailablePosition() -> Int {
+        let currentPositions = indexForController.values
 
         var position = 0
         while currentPositions.contains(position) {
@@ -84,5 +107,27 @@ final class RelationshipHelper: RelationshipDelegate {
         }
 
         return position
+    }
+
+    /// Attempts to assign a lower available index for the given controller
+    private func reassignIndex(for controller: BaseViewController) {
+        let nextIndex = firstAvailablePosition()
+
+        if let currentIndex = indexForController[controller], currentIndex != nil {
+            if nextIndex < currentIndex! {
+                indexForController[controller] = nextIndex
+            }
+        } else {
+            indexForController[controller] = nextIndex
+        }
+    }
+
+    private func nextIndex() -> Int {
+        let currentPosition = indexForController.values.compactMap { $0 }
+        if let max = currentPosition.max() {
+            return max + 1
+        } else {
+            return 0
+        }
     }
 }

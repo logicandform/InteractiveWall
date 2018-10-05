@@ -31,7 +31,6 @@ final class Style {
     let playerWindowSize = CGSize(width: 640, height: 440)
     let searchWindowFrame = CGSize(width: 350, height: 655)
     let menuWindowWidth: CGFloat = 700
-    let searchScrollViewSize = CGSize(width: 360, height: 600)
     let borderWindowWidth: CGFloat = 4
     let infoWindowSize = CGSize(width: 500, height: 800)
     let masterWindowSize = CGSize(width: 740, height: 500)

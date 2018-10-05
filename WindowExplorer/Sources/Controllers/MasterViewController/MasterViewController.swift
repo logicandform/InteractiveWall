@@ -74,7 +74,7 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
 
     func close(manual: Bool) {
         if applicationState == .stopped {
-            log(type: .failed, message: "Application is not running.")
+            log(type: .failed, action: .close, message: "Application is not running.")
             return
         }
 
@@ -88,7 +88,7 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
         set(state: .stopped)
 
         if manual {
-            log(type: .success, message: "Application has been stopped.")
+            log(type: .success, action: .close, message: "Application has been stopped.")
         }
     }
 
@@ -97,13 +97,13 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
 
     private func launch(manual: Bool) {
         if applicationState == .running {
-            log(type: .failed, message: "Application is already running.")
+            log(type: .failed, action: .launch, message: "Application is already running.")
             return
         }
 
         let screenCount = NSScreen.screens.count - 1
         if screenCount < Configuration.numberOfScreens {
-            log(type: .failed, message: "There must be at least \(Configuration.numberOfScreens) screen(s) connected to launch the application.")
+            log(type: .failed, action: .launch, message: "There must be at least \(Configuration.numberOfScreens) screen(s) connected to launch the application.")
             return
         }
 
@@ -122,21 +122,21 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
         let (output, error) = runCommand(cmd: Commands.supervisorctlPath, args: Commands.restartAll)
 
         if !output.isEmpty {
-            log(type: .success, message: output)
+            log(type: .success, action: .restartServers, message: output)
         }
         if !error.isEmpty {
-            log(type: .error, message: error)
+            log(type: .error, action: .restartServers, message: error)
         }
     }
 
     private func refreshDatabase() {
         guard let status = databaseStatus else {
-            log(type: .error, message: "Database status has not yet been received.")
+            log(type: .error, action: .refreshDatabase, message: "Database status has not yet been received.")
             return
         }
 
         if status.refreshing {
-            log(type: .failed, message: "Database is currently refreshing, please wait until the task is finished.")
+            log(type: .failed, action: .refreshDatabase, message: "Database is currently refreshing, please wait until the task is finished.")
             return
         }
 
@@ -147,7 +147,7 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
 
     private func requestDatabaseStatus(manual: Bool, completion: (() -> Void)? = nil) {
         DatabaseRefreshHelper.getRefreshStatus { [weak self] status in
-            self?.handle(status: status, manual: manual)
+            self?.handle(status: status, action: .status, manual: manual)
             completion?()
         }
     }
@@ -216,7 +216,9 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
         case .restartServers:
             restartServers()
         case .refreshDatabase:
-            refreshDatabase()
+            requestDatabaseStatus(manual: false) { [weak self] in
+                self?.refreshDatabase()
+            }
         case .status:
             requestDatabaseStatus(manual: true)
         }
@@ -258,10 +260,10 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
         // Check database status
         if let status = databaseStatus {
             if status.refreshing {
-                log(type: .failed, message: "Cannot launch application until database is finished refreshing.")
+                log(type: .failed, action: .launch, message: "Cannot launch application until database is finished refreshing.")
                 return
             } else if status.error {
-                log(type: .failed, message: "Cannot launch application until database is running.")
+                log(type: .failed, action: .launch, message: "Cannot launch application until database is running.")
                 return
             }
         }
@@ -290,36 +292,36 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
         set(state: .running)
 
         if manual {
-            log(type: .success, message: "Application has been launched.")
+            log(type: .success, action: .launch, message: "Application has been launched.")
             ConnectionManager.instance.postResetNotification()
         }
     }
 
     private func handleRefresh(status: DatabaseStatus) {
-        handle(status: status, manual: true)
+        handle(status: status, action: .refreshDatabase, manual: true)
         if status.refreshing {
             let message = "If the app is open while refreshing the database, some functionality may be limited. The app cannot be restarted until the database is finished refreshing."
-            log(type: .warning, message: message)
+            log(type: .warning, action: .refreshDatabase, message: message)
         }
     }
 
     /// Updates the current refresh status, if manual; logs output to console
-    private func handle(status: DatabaseStatus, manual: Bool) {
+    private func handle(status: DatabaseStatus, action: ControlAction, manual: Bool) {
         databaseTextField.textColor = status.error ? .red : status.refreshing ? .orange : .green
         databaseTextField.stringValue = status.error ? "Error" : status.refreshing ? "Refreshing" : "Running"
 
         // Log to console if user requested status, or database status has changed
         if manual || (databaseStatus != nil && status != databaseStatus) {
             let type = status.error ? LogType.error : LogType.status
-            log(type: type, message: status.description)
+            log(type: type, action: action, message: status.description)
         }
 
         set(status: status)
     }
 
     /// Creates and inserts a log onto top of console log stack
-    private func log(type: LogType, message: String) {
-        let log = ConsoleLog(type: type, message: message)
+    private func log(type: LogType, action: ControlAction, message: String) {
+        let log = ConsoleLog(type: type, action: action, message: message)
         consoleLogs.insert(log, at: 0)
         consoleCollectionView.reloadData()
         consoleCollectionView.scroll(.zero)

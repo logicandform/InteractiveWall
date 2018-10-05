@@ -5,6 +5,7 @@ import AppKit
 import Alamofire
 import AlamofireImage
 
+
 class ImageViewController: MediaViewController {
     static let storyboard = "Image"
 
@@ -30,16 +31,17 @@ class ImageViewController: MediaViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.alphaValue = 0
 
         setupScrollView()
         setupImageView()
         setupZoomControl()
         setupGestures()
-        animateViewIn()
     }
 
     override func viewDidDisappear() {
         super.viewDidDisappear()
+
         imageRequest?.cancel()
     }
 
@@ -59,7 +61,7 @@ class ImageViewController: MediaViewController {
         imageView = NSImageView()
         imageRequest = Alamofire.request(media.url).responseImage { [weak self] response in
             if let image = response.value {
-                self?.addImage(image)
+                self?.setup(image: image)
             }
         }
     }
@@ -72,7 +74,7 @@ class ImageViewController: MediaViewController {
         imageZoomControl.tintColor = media.tintColor
     }
 
-    private func addImage(_ image: NSImage) {
+    private func setup(image: NSImage) {
         guard let window = view.window else {
             return
         }
@@ -87,10 +89,14 @@ class ImageViewController: MediaViewController {
         imageView.setFrameSize(frameSize)
         scrollViewHeightConstraint.constant = frameSize.height
         scrollViewWidthConstraint.constant = frameSize.width
-        view.window?.setFrame(NSRect(origin: window.frame.origin, size: frameSize), display: true)
         imageScrollView.documentView = imageView
-
-        updatePosition(animating: false)
+        let frame = CGRect(origin: window.frame.origin, size: frameSize)
+        setWindow(frame: frame, animate: false) { [weak self] in
+            if let strongSelf = self {
+                self?.parentDelegate?.requestUpdate(for: strongSelf, animate: false)
+                self?.animateViewIn()
+            }
+        }
     }
 
     private func setupGestures() {

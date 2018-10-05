@@ -7,7 +7,7 @@ import MapKit
 enum CollectionType {
     case map
     case timeline
-    case themes
+    case topic
     case singular
     case testimony
 
@@ -18,7 +18,7 @@ enum CollectionType {
         case "timeline":
             self = .timeline
         case "themes":
-            self = .themes
+            self = .topic
         case "stand-alone":
             self = .singular
         case "survivors speak":

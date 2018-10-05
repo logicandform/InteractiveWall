@@ -46,14 +46,16 @@ enum LogType {
 struct ConsoleLog {
 
     let type: LogType
+    let action: ControlAction
     let message: String
     let date = Date()
 
 
     // MARK: Init
 
-    init(type: LogType, message: String) {
+    init(type: LogType, action: ControlAction, message: String) {
         self.type = type
+        self.action = action
         self.message = message
     }
 }

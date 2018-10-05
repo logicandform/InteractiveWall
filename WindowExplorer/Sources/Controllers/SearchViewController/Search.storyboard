@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="NYe-qK-JtK">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="NYe-qK-JtK">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -24,7 +25,6 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" id="aAy-l6-vm1">
                                                 <size key="itemSize" width="50" height="50"/>
-                                                <edgeInsets key="sectionInset" left="0.0" right="0.0" top="0.0" bottom="10"/>
                                             </collectionViewFlowLayout>
                                             <color key="primaryBackgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                             <connections>
@@ -39,11 +39,11 @@
                                     <constraint firstAttribute="height" constant="505" id="6Jv-Mv-9us"/>
                                     <constraint firstAttribute="width" constant="350" id="MXe-5j-pAA"/>
                                 </constraints>
-                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="8pX-9c-Y89">
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="8pX-9c-Y89">
                                     <rect key="frame" x="-100" y="-100" width="327" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="eAn-f2-EUL">
+                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="eAn-f2-EUL">
                                     <rect key="frame" x="334" y="0.0" width="16" height="500"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
@@ -59,7 +59,6 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" id="XNT-tN-XVj">
                                                 <size key="itemSize" width="50" height="50"/>
-                                                <edgeInsets key="sectionInset" left="0.0" right="0.0" top="0.0" bottom="10"/>
                                             </collectionViewFlowLayout>
                                             <color key="primaryBackgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                             <connections>
@@ -74,11 +73,11 @@
                                     <constraint firstAttribute="width" constant="350" id="8T4-jf-SAM"/>
                                     <constraint firstAttribute="height" constant="505" id="XOQ-su-FFd"/>
                                 </constraints>
-                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="GlW-FB-MCI">
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="GlW-FB-MCI">
                                     <rect key="frame" x="-100" y="-100" width="327" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="NGX-06-h4b">
+                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="NGX-06-h4b">
                                     <rect key="frame" x="334" y="0.0" width="16" height="500"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
@@ -94,7 +93,6 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" id="YHu-ll-36E">
                                                 <size key="itemSize" width="50" height="50"/>
-                                                <edgeInsets key="sectionInset" left="0.0" right="0.0" top="0.0" bottom="10"/>
                                             </collectionViewFlowLayout>
                                             <color key="primaryBackgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                             <connections>
@@ -109,11 +107,11 @@
                                     <constraint firstAttribute="width" constant="350" id="Ufi-Ql-zcK"/>
                                     <constraint firstAttribute="height" constant="505" id="owv-zl-cyQ"/>
                                 </constraints>
-                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="ABq-A6-NWQ">
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="ABq-A6-NWQ">
                                     <rect key="frame" x="-100" y="-100" width="327" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="gUb-f5-jtj">
+                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="gUb-f5-jtj">
                                     <rect key="frame" x="334" y="0.0" width="16" height="500"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
@@ -237,14 +235,11 @@
                         <outlet property="collapseButtonArea" destination="w51-de-YGS" id="gm5-5y-HYG"/>
                         <outlet property="dismissButton" destination="sOu-1b-tUh" id="glV-Mp-c8I"/>
                         <outlet property="primaryCollectionView" destination="S1c-RT-6BK" id="Rql-aO-Hh0"/>
-                        <outlet property="primaryScrollView" destination="rvJ-Ae-W65" id="AVu-66-aEl"/>
                         <outlet property="primaryScrollViewHeight" destination="owv-zl-cyQ" id="gar-Zi-0AR"/>
                         <outlet property="secondaryCollectionView" destination="Mma-p7-p7J" id="Xf2-4F-Zif"/>
-                        <outlet property="secondaryScrollView" destination="3LC-eL-E7F" id="Kxl-0i-s4r"/>
                         <outlet property="secondaryScrollViewHeight" destination="XOQ-su-FFd" id="oEK-qL-67V"/>
                         <outlet property="secondaryTextField" destination="jVk-aJ-U1i" id="q1z-xL-YsW"/>
                         <outlet property="tertiaryCollectionView" destination="DnM-Ou-hpA" id="EM9-L9-h9T"/>
-                        <outlet property="tertiaryScrollView" destination="gbE-u6-ffb" id="Gvm-y8-uwf"/>
                         <outlet property="tertiaryScrollViewHeight" destination="6Jv-Mv-9us" id="L3v-3i-Is0"/>
                         <outlet property="tertiaryTextField" destination="sam-yv-2oh" id="jt5-wP-dws"/>
                         <outlet property="titleLabel" destination="4sB-bV-Fph" id="LRm-7j-qTO"/>

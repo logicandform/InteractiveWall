@@ -3,6 +3,7 @@
 import Cocoa
 import AppKit
 
+
 class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource, NSTableViewDataSource, NSTableViewDelegate {
     static let storyboard = "Record"
 
@@ -30,7 +31,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     @IBOutlet weak var arrowIndicatorContainerView: NSView!
 
     var record: Record!
-    private let relationshipHelper = RelationshipHelper()
     private var relatedRecords: [Record]!
     private var pageControl = PageControl()
     private var showingRelatedItems = false
@@ -57,10 +57,9 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        relationshipHelper.parent = self
-        placeHolderImage.isHidden = !record.media.isEmpty
 
         setupSublayers()
+        setupRelationshipHelper()
         setupMediaView()
         setupStackview()
         setupGestures()
@@ -71,6 +70,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
     override func viewDidAppear() {
         super.viewDidAppear()
+
         updateArrowIndicatorView()
     }
 
@@ -90,6 +90,12 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         expandImageView.layer?.cornerRadius = Constants.expandImageViewCornerRadius
         expandImageView.layer?.backgroundColor = style.darkBackground.cgColor
         expandImageView.isHidden = record.media.isEmpty
+        placeHolderImage.isHidden = !record.media.isEmpty
+    }
+
+    private func setupRelationshipHelper() {
+        relationshipHelper = RelationshipHelper()
+        relationshipHelper?.parent = self
     }
 
     private func setupMediaView() {
@@ -232,41 +238,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     }
 
 
-    // MARK: API
-
-    override func animate(to origin: NSPoint) {
-        guard let window = self.view.window, let screen = window.screen, shouldAnimate(to: origin), !gestureManager.isActive() else {
-            return
-        }
-
-        gestureManager.invalidateAllGestures()
-        resetCloseWindowTimer()
-        animating = true
-        window.makeKeyAndOrderFront(self)
-
-        let frame = CGRect(origin: origin, size: window.frame.size)
-        let offset = abs(window.frame.minX - origin.x) / screen.frame.width
-        let duration = max(Double(offset), Constants.animationDuration)
-
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = duration
-            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
-            window.animator().setFrame(frame, display: true, animate: true)
-        }, completionHandler: { [weak self] in
-            if let strongSelf = self {
-                strongSelf.animating = false
-                WindowManager.instance.checkBounds(of: strongSelf)
-            }
-        })
-    }
-
-    override func closeWindowTimerFired() {
-        if relationshipHelper.isEmpty() {
-            animateViewOut()
-        }
-    }
-
-
     // MARK: Gesture Handling
 
     private func handleCollectionViewPan(_ gesture: GestureRecognizer) {
@@ -318,7 +289,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             case .ended:
                 selectedMediaItem = mediaItem
                 if let selectedMedia = selectedMediaItem?.media, let windowType = WindowType(for: selectedMedia) {
-                    relationshipHelper.display(windowType)
+                    relationshipHelper?.display(windowType)
                 }
                 selectedMediaItem = nil
             default:
@@ -432,26 +403,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
     }
 
-    override func handleWindowPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let window = view.window, !animating else {
-            return
-        }
-
-        switch pan.state {
-        case .recognized, .momentum:
-            var origin = window.frame.origin
-            origin += pan.delta.round()
-            window.setFrameOrigin(origin)
-        case .possible:
-            WindowManager.instance.checkBounds(of: self)
-        case .began, .ended:
-            parentDelegate?.controllerDidMove(self)
-            relationshipHelper.reset()
-        default:
-            return
-        }
-    }
-
     @objc
     private func handleRelatedItemToggleClick(_ gesture: NSClickGestureRecognizer) {
         toggleRelatedItems()
@@ -479,7 +430,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         case .ended:
             selectedMediaItem = mediaItem
             if let selectedMedia = selectedMediaItem?.media, let windowType = WindowType(for: selectedMedia) {
-                relationshipHelper.display(windowType)
+                relationshipHelper?.display(windowType)
             }
             selectedMediaItem = nil
         default:
@@ -557,17 +508,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         })
     }
 
-    override func close() {
-        parentDelegate?.controllerDidClose(self)
-        WindowManager.instance.closeWindow(for: self)
-    }
-
-    override func updatePosition(animating: Bool) {
-        if let frameAndPosition = parentDelegate?.frameAndPosition(for: self) {
-            updateOrigin(from: frameAndPosition.frame, at: frameAndPosition.position, animating: animating)
-        }
-    }
-
 
     // MARK: Helpers
 
@@ -600,7 +540,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         let offset = showingRelatedItems ? -relatedItemsWidthWithMargins : relatedItemsWidthWithMargins
         var frame = window.frame
         frame.size.width += offset
-        window.setFrame(frame, display: true, animate: true)
+        setWindow(frame: frame, animate: true)
         showingRelatedItems = !showingRelatedItems
     }
 
@@ -616,26 +556,15 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     }
 
     private func selectRelatedRecord(_ record: Record) {
-        guard let window = view.window, showingRelatedItems else {
+        if !showingRelatedItems {
             return
         }
 
-        toggleRelatedItems(completion: {
-            let origin = CGPoint(x: window.frame.maxX + style.windowMargins, y: window.frame.minY)
-            if let windowType = WindowType(for: record), let controller = WindowManager.instance.display(windowType, at: origin) as? RecordViewController {
-                controller.updateOrigin(from: window.frame, animating: false)
+        toggleRelatedItems(completion: { [weak self] in
+            if let windowType = WindowType(for: record) {
+                self?.relationshipHelper?.display(windowType)
             }
         })
-    }
-
-    /// If the position of the controller is close enough to the origin of animation returns false
-    private func shouldAnimate(to origin: NSPoint) -> Bool {
-        guard let currentOrigin = view.window?.frame.origin else {
-            return false
-        }
-
-        let diff = currentOrigin - origin
-        return abs(diff.x) > Constants.animationDistanceThreshold || abs(diff.y) > Constants.animationDistanceThreshold ? true : false
     }
 
     /// Handle a change of record type from the RelatedItemsHeaderView
@@ -653,7 +582,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             if let strongSelf = self {
                 strongSelf.relatedRecordsTypeLabel.attributedStringValue = NSAttributedString(string: titleForType, attributes: style.relatedItemsTitleAttributes)
                 strongSelf.relatedItemsView.reloadData()
-
                 strongSelf.updateRelatedItemsLayout { [weak self] in
                     self?.updateRelatedRecordsHeight()
                     if let strongSelf = self {
@@ -676,10 +604,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         let offset = relatedItemsFilterType.layout.rowWidth - relatedItemsView.frame.width
         var frame = window.frame
         frame.size.width += offset
-        view.window?.setFrame(frame, display: true, animate: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + window.animationResizeTime(frame)) {
-            completion()
-        }
+        setWindow(frame: frame, animate: true, completion: completion)
     }
 
     private func fadeRelatedRecordsAndTitle(out: Bool, completion: (() -> Void)?) {
@@ -692,30 +617,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }, completionHandler: {
             completion?()
         })
-    }
-
-    private func updateOrigin(from recordFrame: CGRect, at position: Int = 0, animating: Bool) {
-        let offsetX = CGFloat(position * style.controllerOffset)
-        let offsetY = CGFloat(position * -style.controllerOffset)
-        let lastScreen = NSScreen.at(position: Configuration.numberOfScreens)
-        var origin = CGPoint(x: recordFrame.maxX + style.windowMargins + offsetX, y: recordFrame.maxY + offsetY - view.frame.height)
-
-        if origin.x > lastScreen.frame.maxX - view.frame.width {
-            if lastScreen.frame.height - recordFrame.maxY < view.frame.height + style.windowMargins - 2 * offsetY {
-                // Below
-                origin = CGPoint(x: lastScreen.frame.maxX - view.frame.width - style.windowMargins, y: origin.y - recordFrame.height - style.windowMargins)
-            } else {
-                // Above
-                origin = CGPoint(x: lastScreen.frame.maxX - view.frame.width - style.windowMargins, y: origin.y + view.frame.height + style.windowMargins - 2 * offsetY)
-            }
-        }
-
-        if animating {
-            animate(to: origin)
-        } else {
-            view.window?.setFrameOrigin(origin)
-            WindowManager.instance.checkBounds(of: self)
-        }
     }
 
     private func updateArrowIndicatorView(with delta: CGFloat = 0) {

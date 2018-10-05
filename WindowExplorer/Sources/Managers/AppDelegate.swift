@@ -16,7 +16,7 @@ struct Configuration {
     static let appsPerScreen = 2
     static let numberOfScreens = 1
     static let localMediaURLs = false
-    static let launchOnLoad = false
+    static let launchOnLoad = true
     static let touchScreen = TouchScreen.pct2485
     static let resetTimeoutDuration = 150.0
     static let closeWindowTimeoutDuration = 180.0
@@ -69,7 +69,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         ConnectionManager.instance.registerForNotifications()
         TouchManager.instance.setupTouchSocket()
         MenuManager.instance.createMenusAndBorders()
-        GeocodeHelper.instance.associateSchoolsToProvinces()
         MasterViewController.instantiate()
         IndicatorViewController.instantiate()
         scheduleShutdown()
@@ -97,9 +96,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     /// Schedules the shutdown of the app at a certain hour of the current day
     private func scheduleShutdown() {
-        if let date = Calendar.current.date(bySetting: .hour, value: Configuration.shutdownHour, of: Date()) {
-            let timer = Timer(fireAt: date, interval: 0, target: self, selector: #selector(shutdown), userInfo: nil, repeats: false)
-            RunLoop.main.add(timer, forMode: .common)
+        let now = Date()
+        if let date = Calendar.current.date(bySettingHour: Configuration.shutdownHour, minute: 0, second: 0, of: now) {
+            if date > now {
+                let timer = Timer(fireAt: date, interval: 0, target: self, selector: #selector(shutdown), userInfo: nil, repeats: false)
+                RunLoop.main.add(timer, forMode: .common)
+            }
         }
     }
 

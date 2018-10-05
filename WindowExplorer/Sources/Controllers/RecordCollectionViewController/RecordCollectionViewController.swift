@@ -13,7 +13,6 @@ class RecordCollectionViewController: BaseViewController, NSCollectionViewDelega
     @IBOutlet weak var arrowIndicatorContainer: NSView!
 
     var record: Record!
-    private let relationshipHelper = RelationshipHelper()
     private var selectedRecords = Set<Record>()
 
     private struct Constants {
@@ -27,12 +26,9 @@ class RecordCollectionViewController: BaseViewController, NSCollectionViewDelega
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        relationshipHelper.parent = self
-        relationshipHelper.controllerClosed = { [weak self] controller in
-            self?.unselectRecordForController(controller)
-        }
 
         setupViews()
+        setupRelationshipHelper()
         setupCollectionView()
         setupGestures()
         animateViewIn()
@@ -41,19 +37,6 @@ class RecordCollectionViewController: BaseViewController, NSCollectionViewDelega
     override func viewDidAppear() {
         super.viewDidAppear()
         updateArrowIndicatorView()
-    }
-
-
-    // MARK: API
-
-    func updateOrigin(to point: CGPoint, animating: Bool) {
-        if animating {
-            animate(to: point)
-        } else {
-            view.window?.setFrameOrigin(point)
-        }
-
-        relationshipHelper.reset()
     }
 
 
@@ -67,6 +50,14 @@ class RecordCollectionViewController: BaseViewController, NSCollectionViewDelega
         collectionView.alphaValue = 0
         titleLabel.attributedStringValue = NSAttributedString(string: record.shortestTitle(), attributes: style.windowTitleAttributes)
         windowDragAreaHighlight.layer?.backgroundColor = style.collectionColor.cgColor
+    }
+
+    private func setupRelationshipHelper() {
+        relationshipHelper = RelationshipHelper()
+        relationshipHelper?.parent = self
+        relationshipHelper?.controllerClosed = { [weak self] controller in
+            self?.unselectRecordForController(controller)
+        }
     }
 
     private func setupCollectionView() {
@@ -119,33 +110,8 @@ class RecordCollectionViewController: BaseViewController, NSCollectionViewDelega
         })
     }
 
-    override func closeWindowTimerFired() {
-        if relationshipHelper.isEmpty() {
-            animateViewOut()
-        }
-    }
-
 
     // MARK: Gesture Handling
-
-    override func handleWindowPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let window = view.window, !animating else {
-            return
-        }
-
-        switch pan.state {
-        case .recognized, .momentum:
-            var origin = window.frame.origin
-            origin += pan.delta.round()
-            window.setFrameOrigin(origin)
-        case .possible:
-            WindowManager.instance.checkBounds(of: self)
-        case .began, .ended:
-            relationshipHelper.reset()
-        default:
-            return
-        }
-    }
 
     private func handleCollectionViewPan(_ gesture: GestureRecognizer) {
         guard let pan = gesture as? PanGestureRecognizer, !animating else {
@@ -250,7 +216,7 @@ class RecordCollectionViewController: BaseViewController, NSCollectionViewDelega
     private func select(_ record: Record) {
         if let windowType = WindowType(for: record) {
             selectedRecords.insert(record)
-            relationshipHelper.display(windowType)
+            relationshipHelper?.display(windowType)
         }
     }
 

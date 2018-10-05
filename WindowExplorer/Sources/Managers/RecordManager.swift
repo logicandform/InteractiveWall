@@ -35,6 +35,7 @@ final class RecordManager {
                 types.remove(type)
                 if types.isEmpty {
                     self?.createRelationships()
+                    GeocodeHelper.instance.associateSchoolsToProvinces()
                     completion()
                 }
             })

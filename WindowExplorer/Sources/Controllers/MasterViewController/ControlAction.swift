@@ -31,9 +31,9 @@ enum ControlAction {
     var title: String {
         switch self {
         case .launch:
-            return "Launch Applications"
+            return "Run Application"
         case .close:
-            return "Close Applications"
+            return "Stop Application"
         case .restartServers:
             return "Restart Servers"
         case .refreshDatabase:

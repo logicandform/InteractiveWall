@@ -49,6 +49,7 @@
 		2222C7C620DC028D00B76D12 /* Collection.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2222C7C520DC028D00B76D12 /* Collection.storyboard */; };
 		2224125E206BFE9F008E7A9D /* RecordType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2224125D206BFE9F008E7A9D /* RecordType.swift */; };
 		222A94EB20D9D50A00B4AE4E /* MenuManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222A94EA20D9D50A00B4AE4E /* MenuManager.swift */; };
+		222C69DA21629013004160B1 /* SearchHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222C69D921629013004160B1 /* SearchHelper.swift */; };
 		222C69DC2162D4CD004160B1 /* DatabaseStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222C69DB2162D4CD004160B1 /* DatabaseStatus.swift */; };
 		222C69DE2162D58D004160B1 /* DatabaseRefreshHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222C69DD2162D58D004160B1 /* DatabaseRefreshHelper.swift */; };
 		222C69E42163ECEA004160B1 /* ConsoleItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222C69E22163ECEA004160B1 /* ConsoleItemView.swift */; };
@@ -233,6 +234,7 @@
 		2222C7C520DC028D00B76D12 /* Collection.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Collection.storyboard; sourceTree = "<group>"; };
 		2224125D206BFE9F008E7A9D /* RecordType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordType.swift; sourceTree = "<group>"; };
 		222A94EA20D9D50A00B4AE4E /* MenuManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuManager.swift; sourceTree = "<group>"; };
+		222C69D921629013004160B1 /* SearchHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHelper.swift; sourceTree = "<group>"; };
 		222C69DB2162D4CD004160B1 /* DatabaseStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseStatus.swift; sourceTree = "<group>"; };
 		222C69DD2162D58D004160B1 /* DatabaseRefreshHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseRefreshHelper.swift; sourceTree = "<group>"; };
 		222C69E22163ECEA004160B1 /* ConsoleItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsoleItemView.swift; sourceTree = "<group>"; };
@@ -722,6 +724,7 @@
 			children = (
 				22B85B02209CF1040099F44E /* Search.storyboard */,
 				22B85B00209CF0FA0099F44E /* SearchViewController.swift */,
+				222C69D921629013004160B1 /* SearchHelper.swift */,
 				22B85B04209CF5030099F44E /* Views */,
 			);
 			path = SearchViewController;
@@ -1100,6 +1103,7 @@
 				226A4526214F343800860F0E /* TouchScreen.swift in Sources */,
 				22004FE620DD7DE700B1E740 /* Settings.swift in Sources */,
 				22A76FEC2046477A006C0AE7 /* PlayerViewController.swift in Sources */,
+				222C69DA21629013004160B1 /* SearchHelper.swift in Sources */,
 				D92E0F00206052C900C1C9A7 /* ArrowControl.swift in Sources */,
 				2204623520472FDF0067D9FB /* Int.swift in Sources */,
 				226D0587204FC78100D74711 /* CachingNetwork.swift in Sources */,

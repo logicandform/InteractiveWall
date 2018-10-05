@@ -14,6 +14,7 @@ class BaseViewController: NSViewController, GestureResponder {
     var type: WindowType!
     var animating = false
     var windowPanGesture: PanGestureRecognizer!
+    var relationshipHelper: RelationshipHelper?
     weak var parentDelegate: RelationshipDelegate?
     weak var closeWindowTimer: Foundation.Timer?
 
@@ -67,6 +68,7 @@ class BaseViewController: NSViewController, GestureResponder {
     // MARK: API
 
     func close() {
+        parentDelegate?.controllerDidClose(self)
         WindowManager.instance.closeWindow(for: self)
     }
 
@@ -78,34 +80,72 @@ class BaseViewController: NSViewController, GestureResponder {
     }
 
     func closeWindowTimerFired() {
-        animateViewOut()
+        if let relationshipHelper = relationshipHelper {
+            if relationshipHelper.isEmpty() {
+                animateViewOut()
+            }
+        } else {
+            animateViewOut()
+        }
     }
 
-    func animate(to origin: NSPoint) {
-        guard let window = view.window, let screen = window.screen, !gestureManager.isActive() else {
+    /// Animates `self` with all current child controllers to the given origin. Duration will depend on distance
+    func setWindow(origin: CGPoint, animate: Bool, completion: (() -> Void)? = nil) {
+        guard let window = view.window, let screen = window.screen else {
             return
         }
-
-        gestureManager.invalidateAllGestures()
-        resetCloseWindowTimer()
-        animating = true
-        window.makeKeyAndOrderFront(self)
 
         let frame = CGRect(origin: origin, size: window.frame.size)
         let offset = abs(window.frame.minX - origin.x) / screen.frame.width
         let duration = max(Double(offset), Constants.animationDuration)
 
-        NSAnimationContext.runAnimationGroup({ _ in
-            NSAnimationContext.current.duration = duration
-            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
-            window.animator().setFrame(frame, display: true, animate: true)
-        }, completionHandler: { [weak self] in
-            self?.animating = false
+        setWindow(frame: frame, animate: animate, duration: duration, completion: completion)
+    }
+
+    /// Sets the frame of the window and updates all child controllers currently attached
+    func setWindow(frame: CGRect, animate: Bool, duration: TimeInterval = Constants.animationDuration, completion: (() -> Void)? = nil) {
+        guard let window = view.window else {
+            return
+        }
+
+        animating = true
+        gestureManager.invalidateAllGestures()
+        resetCloseWindowTimer()
+        window.orderFront(nil)
+
+        NSAnimationContext.runAnimationGroup({ [weak self] _ in
+            NSAnimationContext.current.duration = Constants.animationDuration
+            window.animator().setFrame(frame, display: true, animate: animate)
+            self?.relationshipHelper?.updateChildPositionsFrom(frame: frame, animate: animate)
+            }, completionHandler: { [weak self] in
+                if let strongSelf = self {
+                    strongSelf.animating = false
+                    WindowManager.instance.checkBounds(of: strongSelf)
+                }
+                completion?()
         })
     }
 
-    func updatePosition(animating: Bool) {
-        // Override
+    /// Updates the position of `self` along with all its child controllers based of its position in parent relationship
+    func updateFromParent(frame: CGRect, animate: Bool) {
+        guard let index = parentDelegate?.index(of: self) else {
+            return
+        }
+
+        let offsetX = CGFloat(index * style.controllerOffset)
+        let offsetY = CGFloat(index * -style.controllerOffset)
+        let lastScreen = NSScreen.at(position: Configuration.numberOfScreens)
+        var origin = CGPoint(x: frame.maxX + style.windowMargins + offsetX, y: frame.maxY + offsetY - view.frame.height)
+
+        if origin.x > lastScreen.frame.maxX - view.frame.width {
+            if lastScreen.frame.height - frame.maxY < view.frame.height + style.windowMargins - 2 * offsetY {
+                origin = CGPoint(x: lastScreen.frame.maxX - view.frame.width - style.windowMargins, y: origin.y - frame.height - style.windowMargins)
+            } else {
+                origin = CGPoint(x: lastScreen.frame.maxX - view.frame.width - style.windowMargins, y: origin.y + view.frame.height + style.windowMargins - 2 * offsetY)
+            }
+        }
+
+        setWindow(origin: origin, animate: animate)
     }
 
     func animateViewIn() {
@@ -135,6 +175,8 @@ class BaseViewController: NSViewController, GestureResponder {
 
         switch pan.state {
         case .recognized, .momentum:
+            parentDelegate?.controllerDidMove(self)
+            relationshipHelper?.reset()
             var origin = window.frame.origin
             origin += pan.delta.round()
             window.setFrameOrigin(origin)
@@ -159,10 +201,10 @@ class BaseViewController: NSViewController, GestureResponder {
             return
         }
 
-        resetCloseWindowTimer()
         var origin = window.frame.origin
         origin += gesture.translation(in: nil)
         window.setFrameOrigin(origin)
+        resetCloseWindowTimer()
     }
 
 

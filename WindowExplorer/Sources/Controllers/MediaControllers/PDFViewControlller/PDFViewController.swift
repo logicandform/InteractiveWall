@@ -3,6 +3,7 @@
 import Cocoa
 import Quartz
 
+
 class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDataSource {
     static let storyboard = "PDF"
 
