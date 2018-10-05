@@ -310,6 +310,15 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         }
 
         let pageBounds = page.bounds(for: .artBox)
-        return constrainWindow(size: pageBounds.size)
+        if isRotated(page: page) {
+            let size = CGSize(width: pageBounds.height, height: pageBounds.width)
+            return constrainWindow(size: size)
+        } else {
+            return constrainWindow(size: pageBounds.size)
+        }
+    }
+
+    private func isRotated(page: PDFPage) -> Bool {
+        return page.rotation == 270 || page.rotation == 90
     }
 }
