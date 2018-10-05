@@ -11,6 +11,7 @@ class Record: Hashable {
     let title: String
     let shortTitle: String
     var thumbnail: URL?
+    var localThumbnail: URL?
     var dates: DateRange?
     var coordinate: CLLocationCoordinate2D?
     let relatedSchoolIDs: [Int]
@@ -30,6 +31,7 @@ class Record: Hashable {
         static let longitude = "longitude"
         static let shortTitle = "shortTitle"
         static let thumbnails = "thumbnailPaths"
+        static let localThumbnails = "fullThumbnailPaths"
         static let schoolIDs = "relatedSchoolIDs"
         static let eventIDs = "relatedEventIDs"
     }
@@ -56,6 +58,9 @@ class Record: Hashable {
         }
         if let thumbnailStrings = json[Keys.thumbnails] as? [String], let firstURLString = thumbnailStrings.first {
             self.thumbnail = URL.from(Configuration.serverURL + firstURLString)
+        }
+        if let localThumbnailStrings = json[Keys.localThumbnails] as? [String], let firstURLPath = localThumbnailStrings.first {
+            self.localThumbnail = URL(fileURLWithPath: firstURLPath)
         }
     }
 

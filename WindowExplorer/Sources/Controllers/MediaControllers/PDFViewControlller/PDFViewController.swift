@@ -74,7 +74,8 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         pdfView.displayDirection = .horizontal
         pdfView.autoScales = true
         pdfView.backgroundColor = .clear
-        document = PDFDocument(url: media.url)
+        let url = Configuration.localMediaURLs ? media.localURL : media.url
+        document = PDFDocument(url: url)
         pdfView.document = document
         pdfScrollView.minMagnification = Constants.initialMagnification
         pdfScrollView.maxMagnification = Constants.maximumMagnification

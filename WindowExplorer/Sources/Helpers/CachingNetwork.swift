@@ -2,6 +2,7 @@
 
 import Foundation
 import Alamofire
+import AlamofireImage
 import PromiseKit
 import MapKit
 
@@ -74,6 +75,43 @@ final class CachingNetwork {
 
         return Alamofire.request(url).responseJSON().then { json in
             return try ResponseHandler.serializeCount(from: json)
+        }
+    }
+
+    /// Loads image for media using local or remote url depending on configuration settings
+    static func getImage(for media: Media, completion: @escaping (NSImage?) -> Void) {
+        guard media.type == .image else {
+            completion(nil)
+            return
+        }
+
+        if Configuration.localMediaURLs {
+            let image = NSImage(contentsOf: media.localURL)
+            completion(image)
+        } else {
+            Alamofire.request(media.url).responseImage { response in
+                completion(response.value)
+            }
+        }
+    }
+
+    /// Loads thumbnail for media using local or remote url depending on configuration settings
+    static func getThumbnail(for media: Media, completion: @escaping (NSImage?) -> Void) {
+        if Configuration.localMediaURLs {
+            if let localURL = media.localThumbnail {
+                let image = NSImage(contentsOf: localURL)
+                completion(image)
+            } else {
+                completion(nil)
+            }
+        } else {
+            if let url = media.thumbnail {
+                Alamofire.request(url).responseImage { response in
+                    completion(response.value)
+                }
+            } else {
+                completion(nil)
+            }
         }
     }
 

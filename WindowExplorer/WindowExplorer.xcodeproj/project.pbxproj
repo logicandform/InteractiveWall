@@ -83,6 +83,7 @@
 		22914F752049001B0000D4E1 /* TouchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22914F742049001B0000D4E1 /* TouchManager.swift */; };
 		22914F77204905230000D4E1 /* NSApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22914F76204905230000D4E1 /* NSApplication.swift */; };
 		22927912208E531C005E2036 /* BackgroundTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22927911208E531C005E2036 /* BackgroundTimer.swift */; };
+		22A02AB4216823360067C532 /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A02AB3216823360067C532 /* Animations.swift */; };
 		22A4985E204733770024B46C /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A4985D204733770024B46C /* WindowManager.swift */; };
 		22A498612047349C0024B46C /* RecordNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A498602047349C0024B46C /* RecordNotifications.swift */; };
 		22A498752047499B0024B46C /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A498742047499B0024B46C /* JSON.swift */; };
@@ -268,6 +269,7 @@
 		22914F742049001B0000D4E1 /* TouchManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchManager.swift; sourceTree = "<group>"; };
 		22914F76204905230000D4E1 /* NSApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSApplication.swift; sourceTree = "<group>"; };
 		22927911208E531C005E2036 /* BackgroundTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTimer.swift; sourceTree = "<group>"; };
+		22A02AB3216823360067C532 /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
 		22A4985D204733770024B46C /* WindowManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		22A498602047349C0024B46C /* RecordNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordNotifications.swift; sourceTree = "<group>"; };
 		22A498742047499B0024B46C /* JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
@@ -431,6 +433,7 @@
 				2256D2982090CF3B009DEADE /* NSView.swift */,
 				A4540D15211B62FC00D50395 /* NSCollectionView.swift */,
 				A44A4779213777B8000DFF90 /* String.swift */,
+				22A02AB3216823360067C532 /* Animations.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1118,6 +1121,7 @@
 				227B5E11205611BB00F403B3 /* Style.swift in Sources */,
 				22AE5D2520D2DB3200D5FB9C /* ConnectionManager.swift in Sources */,
 				22CFCF662149A1A100EBD1A6 /* MenuSide.swift in Sources */,
+				22A02AB4216823360067C532 /* Animations.swift in Sources */,
 				8F6EFD7D2098FF0800E4D97D /* FadingScrollView.swift in Sources */,
 				8E4010A220487E0300E81AAA /* Collection.swift in Sources */,
 				2290A04220E4196E00F028C4 /* TimelineNotifications.swift in Sources */,

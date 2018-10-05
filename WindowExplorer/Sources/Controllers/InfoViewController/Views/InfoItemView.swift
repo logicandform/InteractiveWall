@@ -3,8 +3,6 @@
 import Foundation
 import Cocoa
 import AVKit
-import Alamofire
-import AlamofireImage
 
 
 class InfoItemView: NSCollectionViewItem, PlayerControlDelegate {
@@ -145,8 +143,8 @@ class InfoItemView: NSCollectionViewItem, PlayerControlDelegate {
         playerView.isHidden = true
         playerStateImageView.isHidden = true
 
-        Alamofire.request(media.url).responseImage { [weak self] response in
-            if let image = response.value {
+        CachingNetwork.getImage(for: media) { [weak self] image in
+            if let image = image {
                 self?.mediaImageView.set(image)
             }
         }

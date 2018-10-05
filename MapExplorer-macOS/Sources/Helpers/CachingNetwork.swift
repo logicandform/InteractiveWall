@@ -2,6 +2,7 @@
 
 import Foundation
 import Alamofire
+import AlamofireImage
 import PromiseKit
 import MapKit
 
@@ -26,6 +27,29 @@ final class CachingNetwork {
 
     private struct Constants {
         static let batchSize = 20
+    }
+
+
+    // MARK: Generic
+
+    /// Loads thumbnail for events using local or remote url depending on configuration settings
+    static func getImage(for event: TimelineEvent, completion: @escaping (NSImage?) -> Void) {
+        if Configuration.localMediaURLs {
+            if let localURL = event.localThumbnail {
+                let image = NSImage(contentsOf: localURL)
+                completion(image)
+            } else {
+                completion(nil)
+            }
+        } else {
+            if let url = event.thumbnail {
+                Alamofire.request(url).responseImage { response in
+                    completion(response.value)
+                }
+            } else {
+                completion(nil)
+            }
+        }
     }
 
 

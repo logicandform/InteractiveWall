@@ -15,7 +15,7 @@ struct Configuration {
     static let serverURL = "http://\(serverIP):3000"
     static let appsPerScreen = 2
     static let numberOfScreens = 1
-    static let localMediaURLs = false
+    static let localMediaURLs = true
     static let launchOnLoad = true
     static let touchScreen = TouchScreen.pct2485
     static let resetTimeoutDuration = 150.0

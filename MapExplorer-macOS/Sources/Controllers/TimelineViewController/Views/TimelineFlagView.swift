@@ -1,8 +1,6 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
 import Cocoa
-import Alamofire
-import AlamofireImage
 
 
 class TimelineFlagView: NSCollectionViewItem {
@@ -87,11 +85,9 @@ class TimelineFlagView: NSCollectionViewItem {
         titleTextField.attributedStringValue = NSAttributedString(string: event.title, attributes: style.timelineTitleAttributes)
         dateTextField.attributedStringValue = NSAttributedString(string: event.dates.description(small: true), attributes: style.timelineDateAttributes)
 
-        if let thumbnail = event.thumbnail {
-            Alamofire.request(thumbnail).responseImage { [weak self] response in
-                if let image = response.value {
-                    self?.mediaImageView.set(image)
-                }
+        CachingNetwork.getImage(for: event) { [weak self] image in
+            if let image = image {
+                self?.mediaImageView.set(image)
             }
         }
     }

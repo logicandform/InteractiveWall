@@ -29,7 +29,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
     func setup(with records: [Record]) {
         events = records.compactMap { record in
             if let dates = record.dates {
-                return TimelineEvent(id: record.id, type: record.type, title: record.shortestTitle(), dates: dates, thumbnail: record.thumbnail)
+                return TimelineEvent(id: record.id, type: record.type, title: record.shortestTitle(), dates: dates, thumbnail: record.thumbnail, localThumbnail: record.localThumbnail)
             } else {
                 return nil
             }
@@ -54,7 +54,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
 
         for event in events {
             if event.dates.startDate.year < firstYear + TimelineDecadeFlagLayout.infiniteScrollBuffer {
-                let infiniteBufferEvent = TimelineEvent(id: event.id, type: event.type, title: event.title, dates: event.dates, thumbnail: nil)
+                let infiniteBufferEvent = TimelineEvent(id: event.id, type: event.type, title: event.title, dates: event.dates, thumbnail: event.thumbnail, localThumbnail: event.localThumbnail)
                 infiniteBufferEvent.dates.startDate.year += years.count
                 infiniteBufferEvent.dates.endDate?.year += years.count
                 events.append(infiniteBufferEvent)

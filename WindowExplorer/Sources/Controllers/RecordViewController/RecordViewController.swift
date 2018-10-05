@@ -521,6 +521,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
                 if let strongSelf = self {
                     strongSelf.relatedItemsView.scroll(.zero)
                     strongSelf.fadeRelatedRecordsAndTitle(out: false, completion: {})
+                    strongSelf.updateRelatedRecordsHeight()
                 }
             }
         })
@@ -650,7 +651,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
         relatedRecordsHeightConstraint.constant = min(height, style.relatedRecordsMaxSize.height)
         relatedRecordScrollView.updateGradient(forced: true, height: height)
-        view.layoutSubtreeIfNeeded()
+        relatedRecordScrollView.layoutSubtreeIfNeeded()
     }
 
     private func textField(for attributedString: NSAttributedString) -> NSTextField {

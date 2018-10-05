@@ -46,8 +46,10 @@ class ImageView: NSView {
     // MARK: API
 
     func set(_ image: NSImage?, scaling: ImageScaling = .aspectFill) {
-        layer?.contentsGravity = scaling.contentsGravity
-        layer?.contents = image
+        CATransaction.suppressAnimations {
+            layer?.contentsGravity = scaling.contentsGravity
+            layer?.contents = image
+        }
     }
 
     func transition(_ image: NSImage?, duration: TimeInterval, scaling: ImageScaling = .aspectFill, type: CATransitionType = .fade) {

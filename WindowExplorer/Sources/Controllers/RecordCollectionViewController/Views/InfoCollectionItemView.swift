@@ -1,8 +1,6 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
 import Cocoa
-import Alamofire
-import AlamofireImage
 
 
 class InfoCollectionItemView: NSCollectionViewItem {

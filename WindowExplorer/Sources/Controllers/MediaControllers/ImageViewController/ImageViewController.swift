@@ -2,8 +2,6 @@
 
 import Cocoa
 import AppKit
-import Alamofire
-import AlamofireImage
 
 
 class ImageViewController: MediaViewController {
@@ -14,8 +12,6 @@ class ImageViewController: MediaViewController {
     @IBOutlet weak var scrollViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageZoomControl: ZoomControl!
 
-    private var imageView: ImageView!
-    private var imageRequest: DataRequest?
     private var adjusted = false
     private lazy var contentViewFrame = imageScrollView.contentView.frame
 
@@ -34,15 +30,14 @@ class ImageViewController: MediaViewController {
         view.alphaValue = 0
 
         setupScrollView()
-        setupImageView()
         setupZoomControl()
         setupGestures()
     }
 
-    override func viewDidDisappear() {
-        super.viewDidDisappear()
+    override func viewWillAppear() {
+        super.viewWillAppear()
 
-        imageRequest?.cancel()
+        loadImage()
     }
 
 
@@ -53,32 +48,38 @@ class ImageViewController: MediaViewController {
         imageScrollView.maxMagnification = Constants.maximumMagnification
     }
 
-    private func setupImageView() {
+    private func setupZoomControl() {
+        imageZoomControl.gestureManager = gestureManager
+        imageZoomControl.tintColor = media.tintColor
+        imageZoomControl.zoomSliderUpdated = { [weak self] scale in
+            self?.didScrubZoomSlider(scale)
+        }
+    }
+
+    private func setupGestures() {
+        let pinchGesture = PinchGestureRecognizer()
+        gestureManager.add(pinchGesture, to: imageScrollView)
+        pinchGesture.gestureUpdated = { [weak self] gesture in
+            self?.didPinchImageView(gesture)
+        }
+    }
+
+    private func loadImage() {
         guard media.type == .image else {
             return
         }
 
-        imageView = ImageView()
-        imageRequest = Alamofire.request(media.url).responseImage { [weak self] response in
-            if let image = response.value {
-                self?.setup(image: image)
-            }
+        CachingNetwork.getImage(for: media) { [weak self] image in
+            self?.display(image: image)
         }
     }
 
-    private func setupZoomControl() {
-        imageZoomControl.gestureManager = gestureManager
-        imageZoomControl.zoomSliderUpdated = { [weak self] scale in
-            self?.didScrubZoomSlider(scale)
-        }
-        imageZoomControl.tintColor = media.tintColor
-    }
-
-    private func setup(image: NSImage) {
-        guard let window = view.window else {
+    private func display(image: NSImage?) {
+        guard let image = image, let window = view.window else {
             return
         }
 
+        let imageView = ImageView()
         imageView.set(image)
         let size = constrainWindow(size: image.size)
         imageView.setFrameSize(size)
@@ -92,14 +93,6 @@ class ImageViewController: MediaViewController {
                 self?.animateViewIn()
                 self?.adjusted = true
             }
-        }
-    }
-
-    private func setupGestures() {
-        let pinchGesture = PinchGestureRecognizer()
-        gestureManager.add(pinchGesture, to: imageScrollView)
-        pinchGesture.gestureUpdated = { [weak self] gesture in
-            self?.didPinchImageView(gesture)
         }
     }
 

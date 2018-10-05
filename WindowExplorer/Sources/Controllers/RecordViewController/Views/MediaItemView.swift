@@ -1,8 +1,6 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
 import Cocoa
-import Alamofire
-import AlamofireImage
 
 
 class MediaItemView: NSCollectionViewItem {
@@ -65,11 +63,9 @@ class MediaItemView: NSCollectionViewItem {
 
         videoIconImageView.isHidden = media.type != .video
 
-        if let thumbnail = media.thumbnail {
-            Alamofire.request(thumbnail).responseImage { [weak self] response in
-                if let image = response.value {
-                    self?.mediaImageView.set(image)
-                }
+        CachingNetwork.getThumbnail(for: media) { [weak self] thumbnail in
+            if let thumbnail = thumbnail {
+                self?.mediaImageView.set(thumbnail)
             }
         }
     }

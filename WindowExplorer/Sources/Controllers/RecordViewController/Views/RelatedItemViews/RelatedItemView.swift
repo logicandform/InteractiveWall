@@ -1,8 +1,6 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
 import Cocoa
-import Alamofire
-import AlamofireImage
 
 
 class RelatedItemView: NSCollectionViewItem {
@@ -64,20 +62,17 @@ class RelatedItemView: NSCollectionViewItem {
 
     func load(_ record: Record) {
         let placeholder = record.type.placeholder.tinted(with: record.type.color)
-        if let media = record.media.first, let thumbnail = media.thumbnail {
-            Alamofire.request(thumbnail).responseImage { [weak self] response in
-                if let image = response.value {
-                    self?.setImage(image, scaling: .aspectFill)
+
+        if let media = record.media.first {
+            CachingNetwork.getThumbnail(for: media) { [weak self] thumbnail in
+                if let thumbnail = thumbnail {
+                    self?.mediaImageView.set(thumbnail, scaling: .aspectFill)
                 } else {
-                    self?.setImage(placeholder, scaling: .center)
+                    self?.mediaImageView.set(placeholder, scaling: .center)
                 }
             }
         } else {
-            setImage(placeholder, scaling: .center)
+            mediaImageView.set(placeholder, scaling: .center)
         }
-    }
-
-    func setImage(_ image: NSImage, scaling: ImageScaling) {
-        mediaImageView.transition(image, duration: Constants.imageTransitionDuration, scaling: scaling)
     }
 }

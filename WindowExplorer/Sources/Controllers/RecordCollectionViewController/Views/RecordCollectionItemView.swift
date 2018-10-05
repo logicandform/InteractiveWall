@@ -1,8 +1,6 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
 import Cocoa
-import Alamofire
-import AlamofireImage
 
 
 class RecordCollectionItemView: NSCollectionViewItem {
@@ -62,10 +60,10 @@ class RecordCollectionItemView: NSCollectionViewItem {
         titleTextField.attributedStringValue = NSAttributedString(string: record.shortestTitle(), attributes: style.recordSmallHeaderAttributes)
 
         let placeholder = record.type.placeholder.tinted(with: record.type.color)
-        if let media = record.media.first, let thumbnail = media.thumbnail {
-            Alamofire.request(thumbnail).responseImage { [weak self] response in
-                if let image = response.value {
-                    self?.setImage(image, scaling: .aspectFill)
+        if let media = record.media.first {
+            CachingNetwork.getThumbnail(for: media) { [weak self] thumbnail in
+                if let thumbnail = thumbnail {
+                    self?.setImage(thumbnail, scaling: .aspectFill)
                 } else {
                     self?.setImage(placeholder, scaling: .center)
                 }
