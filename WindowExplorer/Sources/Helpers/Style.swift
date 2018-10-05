@@ -34,10 +34,10 @@ final class Style {
     let borderWindowWidth: CGFloat = 4
     let infoWindowSize = CGSize(width: 500, height: 800)
     let masterWindowSize = CGSize(width: 740, height: 500)
-    let minMediaWindowWidth: CGFloat = 550
-    let maxMediaWindowWidth: CGFloat = 700
-    let minMediaWindowHeight: CGFloat = 275
-    let maxMediaWindowHeight: CGFloat = 1500
+    let minMediaWindowWidth: CGFloat = 416
+    let maxMediaWindowWidth: CGFloat = 650
+    let minMediaWindowHeight: CGFloat = 416
+    let maxMediaWindowHeight: CGFloat = 650
     let windowMargins: CGFloat = 20
 
     // Text

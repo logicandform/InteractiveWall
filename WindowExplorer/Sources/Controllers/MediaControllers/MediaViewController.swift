@@ -12,6 +12,7 @@ class MediaViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
         windowDragAreaHighlight.layer?.backgroundColor = media.tintColor.cgColor
@@ -21,34 +22,23 @@ class MediaViewController: BaseViewController {
 
     // MARK: Overrides
 
-    override func close() {
-        parentDelegate?.controllerDidClose(self)
-        WindowManager.instance.closeWindow(for: self)
-    }
-
     override func subview(contains position: CGPoint) -> Bool {
         return true
     }
 
 
-    // MARK: Gesture Handling
+    // MARK: API
 
-    override func handleWindowPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let window = view.window, !animating else {
-            return
-        }
-
-        switch pan.state {
-        case .began:
-            parentDelegate?.controllerDidMove(self)
-        case .recognized, .momentum:
-            var origin = window.frame.origin
-            origin += pan.delta.round()
-            window.setFrameOrigin(origin)
-        case .possible:
-            WindowManager.instance.checkBounds(of: self)
-        default:
-            return
+    /// Returns a window size that fits within the min / max media window constraints while maintaining aspect ratio
+    func constrainWindow(size: CGSize) -> CGSize {
+        if size.height > size.width {
+            let scale = size.width / size.height
+            let height = clamp(size.height, min: style.minMediaWindowHeight, max: style.maxMediaWindowHeight)
+            return CGSize(width: height * scale, height: height)
+        } else {
+            let scale = size.height / size.width
+            let width = clamp(size.width, min: style.minMediaWindowWidth, max: style.maxMediaWindowWidth)
+            return CGSize(width: width, height: width * scale)
         }
     }
 }

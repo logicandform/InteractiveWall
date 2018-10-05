@@ -8,6 +8,7 @@ enum MediaType {
     case image
     case video
     case pdf
+    case rg10
     case unknown
 
     init(for url: URL) {
@@ -40,7 +41,7 @@ enum MediaType {
 
 final class Media: Hashable {
 
-    let type: MediaType
+    var type: MediaType
     let url: URL
     let localURL: URL
     let thumbnail: URL?

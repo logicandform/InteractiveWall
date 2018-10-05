@@ -39,6 +39,8 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         static let doubleTapScale: CGFloat = 0.45
         static let doubleTapAnimationDuration = 0.3
         static let minimumZoomScale: CGFloat = 0.2
+        static let defaultMultipageSize = CGSize(width: 650, height: 650)
+        static let rg10Size = CGSize(width: 700, height: 1000)
     }
 
 
@@ -57,6 +59,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
 
     override func viewDidAppear() {
         super.viewDidAppear()
+
         updateViewsForCurrentPage()
     }
 
@@ -64,7 +67,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
     // MARK: Setup
 
     private func setupPDF() {
-        guard media.type == .pdf else {
+        guard [.pdf, .rg10].contains(media.type) else {
             return
         }
 
@@ -75,7 +78,7 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         pdfView.document = document
         pdfScrollView.minMagnification = Constants.initialMagnification
         pdfScrollView.maxMagnification = Constants.maximumMagnification
-        resizeToFirstPage()
+        resize(for: media.type)
     }
 
     private func setupThumbnailView() {
@@ -271,24 +274,41 @@ class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDa
         }
     }
 
-    private func resizeToFirstPage() {
-        guard let page = pdfView.currentPage else {
-            return
-        }
-
-        let mediaBox = page.bounds(for: .artBox)
-        let scale = mediaBox.height / mediaBox.width
-        let width = clamp(mediaBox.size.width, min: style.minMediaWindowWidth, max: style.maxMediaWindowWidth)
-        let height = clamp(width * scale, min: style.minMediaWindowHeight, max: style.maxMediaWindowHeight)
-        scrollViewWidthConstraint.constant = width
-        scrollViewHeightConstraint.constant = height
-        view.needsLayout = true
-        view.layout()
-    }
-
     private func didScrubZoomSlider(_ scale: CGFloat) {
         pdfScrollView.magnification = scale * Constants.maximumMagnification
         leftArrow.isHidden = !pdfView.canGoToPreviousPage || scale >= Constants.minimumZoomScale
         rightArrow.isHidden = !pdfView.canGoToNextPage || scale >= Constants.minimumZoomScale
+    }
+
+    private func resize(for type: MediaType) {
+        let mediaSize = size(for: type)
+        scrollViewWidthConstraint.constant = mediaSize.width
+        scrollViewHeightConstraint.constant = mediaSize.height
+        view.needsLayout = true
+        view.layout()
+    }
+
+    private func size(for type: MediaType) -> CGSize {
+        let pageCount = document?.pageCount ?? 0
+
+        switch media.type {
+        case .pdf where pageCount == 1:
+            return firstPageSize()
+        case .pdf:
+            return Constants.defaultMultipageSize
+        case .rg10:
+            return Constants.rg10Size
+        default:
+            return .zero
+        }
+    }
+
+    private func firstPageSize() -> CGSize {
+        guard let page = pdfView.currentPage else {
+            return .zero
+        }
+
+        let pageBounds = page.bounds(for: .artBox)
+        return constrainWindow(size: pageBounds.size)
     }
 }

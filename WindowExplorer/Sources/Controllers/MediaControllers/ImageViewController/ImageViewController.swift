@@ -14,9 +14,9 @@ class ImageViewController: MediaViewController {
     @IBOutlet weak var scrollViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageZoomControl: ZoomControl!
 
-    private var imageView: NSImageView!
+    private var imageView: ImageView!
     private var imageRequest: DataRequest?
-    private var frameSize: NSSize!
+    private var adjusted = false
     private lazy var contentViewFrame = imageScrollView.contentView.frame
 
     private struct Constants {
@@ -58,7 +58,7 @@ class ImageViewController: MediaViewController {
             return
         }
 
-        imageView = NSImageView()
+        imageView = ImageView()
         imageRequest = Alamofire.request(media.url).responseImage { [weak self] response in
             if let image = response.value {
                 self?.setup(image: image)
@@ -79,22 +79,18 @@ class ImageViewController: MediaViewController {
             return
         }
 
-        let imageRatio = image.size.height / image.size.width
-        let width = clamp(image.size.width, min: style.minMediaWindowWidth, max: style.maxMediaWindowWidth)
-        let height = clamp(width * imageRatio, min: style.minMediaWindowHeight, max: style.maxMediaWindowHeight)
-
-        imageView.image = image
-        imageView.imageScaling = .scaleAxesIndependently
-        frameSize = NSSize(width: width, height: height)
-        imageView.setFrameSize(frameSize)
-        scrollViewHeightConstraint.constant = frameSize.height
-        scrollViewWidthConstraint.constant = frameSize.width
+        imageView.set(image)
+        let size = constrainWindow(size: image.size)
+        imageView.setFrameSize(size)
+        scrollViewHeightConstraint.constant = size.height
+        scrollViewWidthConstraint.constant = size.width
         imageScrollView.documentView = imageView
-        let frame = CGRect(origin: window.frame.origin, size: frameSize)
+        let frame = CGRect(origin: window.frame.origin, size: size)
         setWindow(frame: frame, animate: false) { [weak self] in
             if let strongSelf = self {
                 self?.parentDelegate?.requestUpdate(for: strongSelf, animate: false)
                 self?.animateViewIn()
+                self?.adjusted = true
             }
         }
     }
@@ -105,6 +101,17 @@ class ImageViewController: MediaViewController {
         pinchGesture.gestureUpdated = { [weak self] gesture in
             self?.didPinchImageView(gesture)
         }
+    }
+
+
+    // MARK: Overrides
+
+    override func draggableInside(bounds: CGRect) -> Bool {
+        // Don't close window until image has been adjusted and window has been updated
+        if !adjusted {
+            return true
+        }
+        return super.draggableInside(bounds: bounds)
     }
 
 

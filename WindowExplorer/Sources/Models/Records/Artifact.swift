@@ -41,7 +41,13 @@ final class Artifact: Record {
     // MARK: Init
 
     init?(json: JSON) {
-        self.artifactType = ArtifactType(string: json[Keys.artifactType] as? String)
+        let artifactType = ArtifactType(string: json[Keys.artifactType] as? String)
+        self.artifactType = artifactType
         super.init(type: .artifact, json: json)
+        if artifactType == .rg10 {
+            for page in media {
+                page.type = .rg10
+            }
+        }
     }
 }

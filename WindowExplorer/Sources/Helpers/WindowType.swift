@@ -24,7 +24,7 @@ enum WindowType: Equatable {
             self = .image(media)
         case .video:
             self = .player(media)
-        case .pdf:
+        case .pdf, .rg10:
             self = .pdf(media)
         case .unknown:
             return nil
