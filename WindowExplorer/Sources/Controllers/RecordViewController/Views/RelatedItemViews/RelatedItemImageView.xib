@@ -20,10 +20,10 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="BP8-zT-Hm2" customClass="ImageView" customModule="WindowExplorer" customModuleProvider="target">
-                    <rect key="frame" x="3" y="3" width="474" height="266"/>
+                    <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
                     <subviews>
                         <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="t0I-Tl-uwL">
-                            <rect key="frame" x="207" y="104" width="60" height="60"/>
+                            <rect key="frame" x="210" y="106" width="60" height="60"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="60" id="IpB-pe-1um"/>
                                 <constraint firstAttribute="width" constant="60" id="o0a-rA-tda"/>
@@ -38,10 +38,10 @@
                 </customView>
             </subviews>
             <constraints>
-                <constraint firstItem="BP8-zT-Hm2" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="3" id="9ha-YQ-d6R"/>
-                <constraint firstAttribute="trailing" secondItem="BP8-zT-Hm2" secondAttribute="trailing" constant="3" id="D9a-wf-LWG"/>
-                <constraint firstItem="BP8-zT-Hm2" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="3" id="WCX-WB-UxS"/>
-                <constraint firstAttribute="bottom" secondItem="BP8-zT-Hm2" secondAttribute="bottom" constant="3" id="oU6-2g-IWA"/>
+                <constraint firstItem="BP8-zT-Hm2" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="9ha-YQ-d6R"/>
+                <constraint firstAttribute="trailing" secondItem="BP8-zT-Hm2" secondAttribute="trailing" id="D9a-wf-LWG"/>
+                <constraint firstItem="BP8-zT-Hm2" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="WCX-WB-UxS"/>
+                <constraint firstAttribute="bottom" secondItem="BP8-zT-Hm2" secondAttribute="bottom" id="oU6-2g-IWA"/>
             </constraints>
         </customView>
     </objects>

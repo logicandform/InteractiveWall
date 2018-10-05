@@ -24,10 +24,10 @@ class Record: Hashable, SearchItemDisplayable {
     let relatedCollectionIDs: [Int]
     let relatedIndividualIDs: [Int]
     var relatedRecordsForType = [RecordType: [Record]]()
-    lazy var priority = PriorityOrder.priority(for: self)
+    private lazy var priority = PriorityOrder.priority(for: self)
 
     var relatedRecords: [Record] {
-        return relatedRecordsForType.values.reduce([], +)
+        return relatedRecordsForType.values.reduce([], +).sorted { $0.priority > $1.priority }
     }
 
     var hashValue: Int {
@@ -107,8 +107,9 @@ class Record: Hashable, SearchItemDisplayable {
         return shortTitle.count < title.count ? shortTitle : title
     }
 
-    func relatedRecords(type: RecordType) -> [Record] {
-        return relatedRecordsForType[type] ?? []
+    func relatedRecords(type: RecordType, prioritized: Bool = true) -> [Record] {
+        let records = relatedRecordsForType[type] ?? []
+        return prioritized ? records.sorted { $0.priority > $1.priority } : records
     }
 
     func relatedRecords(filterType type: RecordFilterType) -> [Record] {
@@ -123,23 +124,6 @@ class Record: Hashable, SearchItemDisplayable {
             return relatedRecords.filter { $0.containsImage() }
         case .video:
             return relatedRecords.filter { $0.containsVideo() }
-        default:
-            return []
-        }
-    }
-
-    func filterRelatedRecords(type: RecordFilterType, from records: [Record]) -> [Record] {
-        if let recordType = type.recordType {
-            return records.filter { $0.type == recordType }
-        } else if type == .all {
-            return records
-        }
-
-        switch type {
-        case .image:
-            return records.filter { $0.containsImage() }
-        case .video:
-            return records.filter { $0.containsVideo() }
         default:
             return []
         }

@@ -11,7 +11,7 @@ class RelatedItemView: NSCollectionViewItem {
 
     var tintColor = style.selectedColor
     var filterType = RecordFilterType.all
-    var record: Record? {
+    var record: Record! {
         didSet {
             load(record)
         }
@@ -20,6 +20,7 @@ class RelatedItemView: NSCollectionViewItem {
     struct Constants {
         static let imageTransitionDuration = 0.3
         static let numberOfDescriptionLines = 3
+        static let borderWidth: CGFloat = 3
     }
 
 
@@ -27,9 +28,9 @@ class RelatedItemView: NSCollectionViewItem {
 
     func set(highlighted: Bool) {
         if highlighted {
-            view.layer?.backgroundColor = tintColor.cgColor
+            view.layer?.borderColor = tintColor.cgColor
         } else {
-            view.layer?.backgroundColor = style.darkBackground.cgColor
+            view.layer?.borderColor = style.darkBackground.cgColor
         }
     }
 
@@ -38,6 +39,7 @@ class RelatedItemView: NSCollectionViewItem {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+
         view.wantsLayer = true
         set(highlighted: false)
     }
@@ -45,22 +47,22 @@ class RelatedItemView: NSCollectionViewItem {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.layer?.borderWidth = Constants.borderWidth
+        view.layer?.borderColor = style.darkBackground.cgColor
+        view.layer?.backgroundColor = style.darkBackground.cgColor
         mediaImageView.layer?.backgroundColor = style.relatedItemBackgroundColor.cgColor
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
+
         mediaImageView.set(nil)
     }
 
 
     // MARK: Helpers
 
-    func load(_ record: Record?) {
-        guard let record = record else {
-            return
-        }
-
+    func load(_ record: Record) {
         let placeholder = record.type.placeholder.tinted(with: record.type.color)
         if let media = record.media.first, let thumbnail = media.thumbnail {
             Alamofire.request(thumbnail).responseImage { [weak self] response in

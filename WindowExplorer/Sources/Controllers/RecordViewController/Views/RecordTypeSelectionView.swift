@@ -4,16 +4,22 @@ import Cocoa
 import AppKit
 
 
+protocol RecordFilterDelegate: class {
+    func canSelectFilterType(_ type: RecordFilterType) -> Bool
+    func didSelectFilterType(_ type: RecordFilterType)
+}
+
+
 class RecordTypeSelectionView: NSView {
 
     @IBOutlet weak var stackview: NSStackView!
 
-    var selectionCallback: ((RecordFilterType) -> Void)?
+    weak var delegate: RecordFilterDelegate?
     private var imageForType = [RecordFilterType: NSView]()
     private var selectedType: RecordFilterType = .all {
         didSet {
-            selectionCallback?(selectedType)
             unselect(oldValue)
+            delegate?.didSelectFilterType(selectedType)
         }
     }
 
@@ -66,6 +72,10 @@ class RecordTypeSelectionView: NSView {
     }
 
     private func didSelect(type: RecordFilterType) {
+        guard let delegate = delegate, delegate.canSelectFilterType(type) else {
+            return
+        }
+
         if type == selectedType {
             selectedType = .all
         } else if let image = imageForType[type] {

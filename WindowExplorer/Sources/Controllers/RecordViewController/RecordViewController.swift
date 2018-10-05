@@ -4,7 +4,7 @@ import Cocoa
 import AppKit
 
 
-class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource, NSTableViewDataSource, NSTableViewDelegate {
+class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource, RecordFilterDelegate {
     static let storyboard = "Record"
 
     @IBOutlet weak var detailView: NSView!
@@ -31,11 +31,13 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     @IBOutlet weak var arrowIndicatorContainerView: NSView!
 
     var record: Record!
-    private var relatedRecords: [Record]!
+    private var displayedRelatedRecords = [Record]()
+    private var selectedRecords = Set<Record>()
     private var pageControl = PageControl()
     private var showingRelatedItems = false
     private var relatedItemsFilterType = RecordFilterType.all
     private var currentLayout = RelatedItemViewLayout.list
+    private var toggling = false
 
     private struct Constants {
         static let allRecordsTitle = "RECORDS"
@@ -96,6 +98,9 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private func setupRelationshipHelper() {
         relationshipHelper = RelationshipHelper()
         relationshipHelper?.parent = self
+        relationshipHelper?.controllerClosed = { [weak self] controller in
+            self?.unselectRelatedRecord(for: controller)
+        }
     }
 
     private func setupMediaView() {
@@ -115,6 +120,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     }
 
     private func setupRelatedItemsView() {
+        displayedRelatedRecords = record.relatedRecords
         relatedItemsView.alphaValue = 0
         relatedItemsView.register(RelatedItemListView.self, forItemWithIdentifier: RelatedItemListView.identifier)
         relatedItemsView.register(RelatedItemImageView.self, forItemWithIdentifier: RelatedItemImageView.identifier)
@@ -128,10 +134,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         recordTypeSelectionView.wantsLayer = true
         recordTypeSelectionView.layer?.backgroundColor = style.darkBackground.cgColor
         recordTypeSelectionView.initialize(with: record, manager: gestureManager)
-        recordTypeSelectionView.selectionCallback = { [weak self] type in
-            self?.didSelectRelatedItemsFilterType(type)
-        }
-        relatedRecords = record.relatedRecords.sorted(by: { $0.priority > $1.priority })
+        recordTypeSelectionView.delegate = self
         updateRelatedRecordsHeight()
     }
 
@@ -176,14 +179,9 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
 
         let showRelatedItemsTap = TapGestureRecognizer()
         gestureManager.add(showRelatedItemsTap, to: showRelatedItemsArea)
+        gestureManager.add(showRelatedItemsTap, to: hideRelatedItemsArea)
         showRelatedItemsTap.gestureUpdated = { [weak self] gesture in
-            self?.handleShowRelatedItemsTap(gesture)
-        }
-
-        let hideRelatedItemsTap = TapGestureRecognizer()
-        gestureManager.add(hideRelatedItemsTap, to: hideRelatedItemsArea)
-        hideRelatedItemsTap.gestureUpdated = { [weak self] gesture in
-            self?.handleHideRelatedItemsTap(gesture)
+            self?.handleToggleRelatedItemsTap(gesture)
         }
 
         let arrowIndicatorTap = TapGestureRecognizer()
@@ -314,8 +312,8 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
     }
 
-    private func handleShowRelatedItemsTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, !record.relatedRecords.isEmpty, !showRelatedItemsImage.alphaValue.isZero else {
+    private func handleToggleRelatedItemsTap(_ gesture: GestureRecognizer) {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, !record.relatedRecords.isEmpty, !animating, !toggling else {
             return
         }
 
@@ -323,19 +321,12 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         relatedRecordScrollView.updateGradient()
     }
 
-    private func handleHideRelatedItemsTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
-            return
-        }
-
-        toggleRelatedItems()
-        relatedRecordScrollView.updateGradient()
-    }
-
-    private var selectedRelatedItem: RelatedItemView? {
+    private var highlightedRelatedItem: RelatedItemView? {
         didSet {
-            oldValue?.set(highlighted: false)
-            selectedRelatedItem?.set(highlighted: true)
+            if let oldRecord = oldValue?.record, !selectedRecords.contains(oldRecord) {
+                oldValue?.set(highlighted: false)
+            }
+            highlightedRelatedItem?.set(highlighted: true)
         }
     }
 
@@ -344,21 +335,21 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             let location = tap.position,
             let indexPath = relatedItemsView.indexPathForItem(at: location + relatedItemsView.visibleRect.origin),
             let relatedItem = relatedItemsView.item(at: indexPath) as? RelatedItemView else {
-                selectedRelatedItem = nil
+                highlightedRelatedItem = nil
                 return
         }
 
         switch tap.state {
         case .began:
-            selectedRelatedItem = relatedItem
+            highlightedRelatedItem = relatedItem
         case .failed:
-            selectedRelatedItem = nil
+            highlightedRelatedItem = nil
         case .ended:
-            selectedRelatedItem = relatedItem
-            if let selectedRecord = selectedRelatedItem?.record {
+            highlightedRelatedItem = relatedItem
+            if let selectedRecord = highlightedRelatedItem?.record {
                 selectRelatedRecord(selectedRecord)
             }
-            selectedRelatedItem = nil
+            highlightedRelatedItem = nil
         default:
             return
         }
@@ -446,7 +437,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         case mediaView:
             return record.media.count
         case relatedItemsView:
-            return record.filterRelatedRecords(type: relatedItemsFilterType, from: relatedRecords).count
+            return displayedRelatedRecords.count
         default:
             return 0
         }
@@ -464,7 +455,9 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             if let relatedItem = collectionView.makeItem(withIdentifier: relatedItemsFilterType.layout.identifier, for: indexPath) as? RelatedItemView {
                 relatedItem.filterType = relatedItemsFilterType
                 relatedItem.tintColor = record.type.color
-                relatedItem.record = record.filterRelatedRecords(type: relatedItemsFilterType, from: relatedRecords).at(index: indexPath.item)
+                let relatedRecord = displayedRelatedRecords[indexPath.item]
+                relatedItem.record = relatedRecord
+                relatedItem.set(highlighted: selectedRecords.contains(relatedRecord))
                 return relatedItem
             }
         default:
@@ -509,6 +502,39 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     }
 
 
+    // MARK: RecordFilterDelegate
+
+    func canSelectFilterType(_ type: RecordFilterType) -> Bool {
+        return showingRelatedItems && !toggling
+    }
+
+    func didSelectFilterType(_ type: RecordFilterType) {
+        toggling = true
+        relatedItemsFilterType = type
+
+        // Transitions the related records and their title by fading out & in
+        fadeRelatedRecordsAndTitle(out: true, completion: { [weak self] in
+            self?.updateRelatedRecordsHeight()
+            self?.didToggleFilterType(type: type) { [weak self] in
+                self?.updateRelatedRecordsHeight()
+                self?.toggling = false
+                if let strongSelf = self {
+                    strongSelf.relatedItemsView.scroll(.zero)
+                    strongSelf.fadeRelatedRecordsAndTitle(out: false, completion: {})
+                }
+            }
+        })
+    }
+
+    private func didToggleFilterType(type: RecordFilterType, completion: @escaping () -> Void) {
+        let titleForType = type.title?.uppercased() ?? Constants.allRecordsTitle
+        relatedRecordsTypeLabel.attributedStringValue = NSAttributedString(string: titleForType, attributes: style.relatedItemsTitleAttributes)
+        displayedRelatedRecords = record.relatedRecords(filterType: type)
+        relatedItemsView.reloadData()
+        updateRelatedItemsLayout(completion: completion)
+    }
+
+
     // MARK: Helpers
 
     private func animateCollectionView(to point: CGPoint, duration: TimeInterval, for index: Int) {
@@ -522,6 +548,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             return
         }
 
+        toggling = true
         relatedItemsView.isHidden = false
         let alpha: CGFloat = showingRelatedItems ? 0 : 1
 
@@ -533,7 +560,10 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             self?.recordTypeSelectionView.animator().alphaValue = alpha
             self?.showRelatedItemsImage.animator().alphaValue = 1 - alpha
             }, completionHandler: { [weak self] in
-                self?.didToggleRelatedItems(completion: completion)
+                self?.didToggleRelatedItems { [weak self] in
+                    self?.toggling = false
+                    completion?()
+                }
         })
 
         let relatedItemsWidthWithMargins = relatedItemsFilterType.layout.rowWidth + Constants.relatedItemsViewMargin
@@ -560,37 +590,24 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             return
         }
 
-        toggleRelatedItems(completion: { [weak self] in
-            if let windowType = WindowType(for: record) {
-                self?.relationshipHelper?.display(windowType)
-            }
-        })
+        if let windowType = WindowType(for: record) {
+            selectedRecords.insert(record)
+            relationshipHelper?.display(windowType)
+        }
     }
 
-    /// Handle a change of record type from the RelatedItemsHeaderView
-    private func didSelectRelatedItemsFilterType(_ type: RecordFilterType) {
-        guard showingRelatedItems else {
+    private func unselectRelatedRecord(for controller: BaseViewController) {
+        guard let recordViewController = controller as? RecordViewController, let record = recordViewController.record else {
             return
         }
 
-        relatedItemsFilterType = type
-        let titleForType = type.title?.uppercased() ?? Constants.allRecordsTitle
+        selectedRecords.remove(record)
 
-        // Transitions the related records and their title by fading out & in
-        fadeRelatedRecordsAndTitle(out: true, completion: { [weak self] in
-            self?.updateRelatedRecordsHeight()
-            if let strongSelf = self {
-                strongSelf.relatedRecordsTypeLabel.attributedStringValue = NSAttributedString(string: titleForType, attributes: style.relatedItemsTitleAttributes)
-                strongSelf.relatedItemsView.reloadData()
-                strongSelf.updateRelatedItemsLayout { [weak self] in
-                    self?.updateRelatedRecordsHeight()
-                    if let strongSelf = self {
-                        strongSelf.relatedItemsView.scroll(.zero)
-                        strongSelf.fadeRelatedRecordsAndTitle(out: false, completion: {})
-                    }
-                }
+        for view in relatedItemsView.visibleItems().compactMap({ $0 as? RelatedItemView }) {
+            if let record = view.record {
+                view.set(highlighted: selectedRecords.contains(record))
             }
-        })
+        }
     }
 
     // Adjusts the size of the window if necessary, which changes the relatedRecordView through autolayout
@@ -626,7 +643,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     }
 
     private func updateRelatedRecordsHeight() {
-        let numberOfRecords = record.filterRelatedRecords(type: relatedItemsFilterType, from: relatedRecords).count
+        let numberOfRecords = displayedRelatedRecords.count
         let numberOfRows = ceil(CGFloat(numberOfRecords) / relatedItemsFilterType.layout.itemsPerRow)
         let numberOfSpaces = max(0, numberOfRows - 1)
         let height = ceil(numberOfRows * relatedItemsFilterType.layout.itemSize.height + numberOfSpaces * style.relatedRecordsItemSpacing)

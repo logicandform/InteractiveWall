@@ -6,16 +6,12 @@ import Foundation
 class PriorityOrder {
 
     struct Priority {
-        static let date = 1
-        static let description = 1
-        static let coordinate = 1
-        static let comment = 1
+        static let date = 2
         static let media = 3
-        static let relatedSchools = 1
-        static let relatedOrganizations = 1
-        static let relatedArtifacts = 1
-        static let relatedEvents = 1
-        static let relatedTheme = 1
+        static let comment = 2
+        static let coordinate = 1
+        static let description = 2
+        static let relatedRecordType = 1
     }
 
 
@@ -45,19 +41,11 @@ class PriorityOrder {
                 priority += Priority.media
             }
         }
-        if !record.relatedRecords(type: .artifact).isEmpty {
-            priority += Priority.relatedSchools
+        for type in RecordType.allValues {
+            if !record.relatedRecords(type: type, prioritized: false).isEmpty {
+                priority += Priority.relatedRecordType
+            }
         }
-        if !record.relatedRecords(type: .organization).isEmpty {
-            priority += Priority.relatedOrganizations
-        }
-        if !record.relatedRecords(type: .artifact).isEmpty {
-            priority += Priority.relatedArtifacts
-        }
-        if !record.relatedRecords(type: .event).isEmpty {
-            priority += Priority.relatedEvents
-        }
-
         return priority
     }
 }

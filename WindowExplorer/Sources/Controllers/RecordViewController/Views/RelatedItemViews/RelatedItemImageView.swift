@@ -15,7 +15,7 @@ class RelatedItemImageView: RelatedItemView {
 
     // MARK: Overrides
 
-    override func load(_ record: Record?) {
+    override func load(_ record: Record) {
         super.load(record)
 
         videoIconImageView.isHidden = filterType != .video

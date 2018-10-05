@@ -56,7 +56,7 @@ class RecordCollectionViewController: BaseViewController, NSCollectionViewDelega
         relationshipHelper = RelationshipHelper()
         relationshipHelper?.parent = self
         relationshipHelper?.controllerClosed = { [weak self] controller in
-            self?.unselectRecordForController(controller)
+            self?.unselectRecord(for: controller)
         }
     }
 
@@ -220,7 +220,7 @@ class RecordCollectionViewController: BaseViewController, NSCollectionViewDelega
         }
     }
 
-    private func unselectRecordForController(_ controller: BaseViewController) {
+    private func unselectRecord(for controller: BaseViewController) {
         guard let recordViewController = controller as? RecordViewController, let record = recordViewController.record else {
             return
         }
