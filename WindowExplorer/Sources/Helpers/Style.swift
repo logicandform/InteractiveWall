@@ -28,7 +28,7 @@ final class Style {
     let collectionRecordWindowSize = CGSize(width: 416, height: 650)
     let imageWindowSize = CGSize(width: 640, height: 410)
     let pdfWindowSize = CGSize(width: 600, height: 640)
-    let playerWindowSize = CGSize(width: 640, height: 440)
+    let playerWindowSize = CGSize(width: 1013, height: 650)
     let searchWindowFrame = CGSize(width: 350, height: 655)
     let menuWindowWidth: CGFloat = 700
     let borderWindowWidth: CGFloat = 4

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="ObE-0t-P64">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="ObE-0t-P64">
     <dependencies>
-        <plugIn identifier="com.apple.AVKitIBPlugin" version="14113"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.AVKitIBPlugin" version="14313.18"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -74,14 +74,11 @@
                                 <rect key="frame" x="0.0" y="0.0" width="640" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="hf1-Pw-L9a"/>
-                                    <constraint firstAttribute="width" constant="640" id="nrt-FI-tep"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="640" id="xPh-S6-5yP"/>
                                 </constraints>
                             </customView>
                             <avPlayerView controlsStyle="none" translatesAutoresizingMaskIntoConstraints="NO" id="0vf-bx-Jlv">
                                 <rect key="frame" x="0.0" y="40" width="640" height="360"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="640" id="Siq-rt-Wpd"/>
                                     <constraint firstAttribute="width" secondItem="0vf-bx-Jlv" secondAttribute="height" multiplier="16:9" id="baj-Dw-r1b"/>
                                 </constraints>
                             </avPlayerView>
@@ -99,11 +96,14 @@
                             <constraint firstItem="Ps0-Dg-pIZ" firstAttribute="leading" secondItem="X51-8y-Yv7" secondAttribute="leading" id="4wE-OL-iU5"/>
                             <constraint firstAttribute="trailing" secondItem="5eT-b4-flP" secondAttribute="trailing" id="5DM-Ps-D8T"/>
                             <constraint firstItem="Ps0-Dg-pIZ" firstAttribute="top" secondItem="0vf-bx-Jlv" secondAttribute="bottom" id="Fi3-0Y-1DW"/>
+                            <constraint firstAttribute="trailing" secondItem="Ps0-Dg-pIZ" secondAttribute="trailing" id="JnG-7a-dni"/>
+                            <constraint firstItem="Ps0-Dg-pIZ" firstAttribute="leading" secondItem="X51-8y-Yv7" secondAttribute="leading" id="Plu-s1-bPh"/>
                             <constraint firstItem="Rpo-GW-82A" firstAttribute="centerX" secondItem="0vf-bx-Jlv" secondAttribute="centerX" id="YLU-P8-n3W"/>
                             <constraint firstAttribute="trailing" secondItem="0vf-bx-Jlv" secondAttribute="trailing" id="hwI-qv-g5r"/>
                             <constraint firstItem="Rpo-GW-82A" firstAttribute="centerY" secondItem="0vf-bx-Jlv" secondAttribute="centerY" id="i73-AD-mUX"/>
                             <constraint firstItem="5eT-b4-flP" firstAttribute="top" secondItem="X51-8y-Yv7" secondAttribute="top" id="iOO-sr-M3Q"/>
                             <constraint firstAttribute="bottom" secondItem="Ps0-Dg-pIZ" secondAttribute="bottom" id="iOf-J1-XwZ"/>
+                            <constraint firstItem="0vf-bx-Jlv" firstAttribute="top" secondItem="5eT-b4-flP" secondAttribute="bottom" id="vS1-jJ-sbW"/>
                             <constraint firstItem="5eT-b4-flP" firstAttribute="leading" secondItem="X51-8y-Yv7" secondAttribute="leading" id="zaF-QJ-Okc"/>
                         </constraints>
                     </view>
