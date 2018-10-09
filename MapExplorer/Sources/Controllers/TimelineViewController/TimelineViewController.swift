@@ -163,10 +163,10 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
             self?.didPanOnTimeline(gesture)
         }
 
-        let timelineLongTapGesture = TapGestureRecognizer(withDelay: false, cancelsOnMove: false)
-        gestureManager.add(timelineLongTapGesture, to: timelineCollectionView)
-        timelineLongTapGesture.touchUpdated = { [weak self] gesture, touch in
-            self?.didLongTapOnTimeline(gesture, touch)
+        let timelineMultiTapGesture = MultiTapGestureRecognizer(withDelay: false, cancelsOnMove: false)
+        gestureManager.add(timelineMultiTapGesture, to: timelineCollectionView)
+        timelineMultiTapGesture.touchUpdated = { [weak self] touch, state in
+            self?.didTapOnTimelineItem(touch, state: state)
         }
 
         let panGesture = PanGestureRecognizer()
@@ -203,17 +203,13 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         }
     }
 
-    private func didLongTapOnTimeline(_ gesture: GestureRecognizer, _ touch: Touch) {
-        guard let tap = gesture as? TapGestureRecognizer else {
-            return
-        }
-
-        switch tap.state {
+    private func didTapOnTimelineItem(_ touch: Touch, state: GestureState) {
+        switch state {
         case .began:
-            if let location = tap.position,
-                let indexPath = timelineCollectionView.indexPathForItem(at: location + timelineCollectionView.visibleRect.origin),
+            let positionInTimeline = touch.position + timelineCollectionView.visibleRect.origin
+            if let indexPath = timelineCollectionView.indexPathForItem(at: positionInTimeline),
                 let item = timelineCollectionView.item(at: indexPath) as? TimelineFlagView,
-                item.flagContains(location + timelineCollectionView.visibleRect.origin) {
+                item.flagContains(positionInTimeline) {
                 itemForTouch[touch] = indexPath.item
                 startTimer(for: touch, item: indexPath.item)
                 SelectionManager.instance.set(item: indexPath.item, selected: true)

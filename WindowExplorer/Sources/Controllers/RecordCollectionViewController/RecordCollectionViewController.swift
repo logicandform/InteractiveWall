@@ -15,6 +15,7 @@ class RecordCollectionViewController: BaseViewController, NSCollectionViewDelega
 
     var record: Record!
     private var selectedRecords = Set<Record>()
+    private var highlightedRecordForTouch = [Touch: Record]()
 
     private struct Constants {
         static let textCellHeight: CGFloat = 200
@@ -75,10 +76,10 @@ class RecordCollectionViewController: BaseViewController, NSCollectionViewDelega
             self?.handleCollectionViewPan(gesture)
         }
 
-        let relatedItemTap = TapGestureRecognizer(withDelay: true)
+        let relatedItemTap = MultiTapGestureRecognizer(withDelay: true)
         gestureManager.add(relatedItemTap, to: collectionView)
-        relatedItemTap.gestureUpdated = { [weak self] gesture in
-            self?.handleCollectionViewTap(gesture)
+        relatedItemTap.touchUpdated = { [weak self] touch, state in
+            self?.handleCollectionViewTap(touch, state: state)
         }
 
         let arrowIndicatorTap = TapGestureRecognizer()
@@ -131,17 +132,28 @@ class RecordCollectionViewController: BaseViewController, NSCollectionViewDelega
         }
     }
 
-    private func handleCollectionViewTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended,
-            let location = tap.position,
-            let indexPath = collectionView.indexPathForItem(at: location + collectionView.visibleRect.origin),
-            let collectionItemView = collectionView.item(at: indexPath) as? RecordCollectionItemView,
-            let record = collectionItemView.record else {
-                return
+    private func handleCollectionViewTap(_ touch: Touch, state: GestureState) {
+        switch state {
+        case .began:
+            if let indexPath = collectionView.indexPathForItem(at: touch.position + collectionView.visibleRect.origin),
+                let relatedItem = collectionView.item(at: indexPath) as? RecordCollectionItemView,
+                let record = relatedItem.record {
+                relatedItem.set(highlighted: true)
+                highlightedRecordForTouch[touch] = record
+            }
+        case .failed:
+            if highlightedRecordForTouch[touch] != nil {
+                highlightedRecordForTouch.removeValue(forKey: touch)
+                updateRelatedItemHighlights()
+            }
+        case .ended:
+            if let record = highlightedRecordForTouch[touch] {
+                select(record)
+                highlightedRecordForTouch.removeValue(forKey: touch)
+            }
+        default:
+            break
         }
-
-        collectionItemView.set(highlighted: true)
-        select(record)
     }
 
     private func handleArrowIndicatorTap(_ gesture: GestureRecognizer) {
@@ -180,7 +192,9 @@ class RecordCollectionViewController: BaseViewController, NSCollectionViewDelega
             if let collectionItemView = collectionView.makeItem(withIdentifier: RecordCollectionItemView.identifier, for: indexPath) as? RecordCollectionItemView {
                 let relatedRecord = record.relatedRecords[indexPath.item - 1]
                 collectionItemView.record = relatedRecord
-                collectionItemView.set(highlighted: selectedRecords.contains(relatedRecord))
+                let highlightedRecords = Set(highlightedRecordForTouch.values)
+                let highlighted = highlightedRecords.contains(record) || selectedRecords.contains(record)
+                collectionItemView.set(highlighted: highlighted)
                 return collectionItemView
             }
         }
@@ -221,16 +235,34 @@ class RecordCollectionViewController: BaseViewController, NSCollectionViewDelega
         }
     }
 
+    private func record(from controller: BaseViewController) -> Record? {
+        switch controller {
+        case let recordViewController as RecordViewController:
+            return recordViewController.record
+        case let recordCollectionViewController as RecordCollectionViewController:
+            return recordCollectionViewController.record
+        default:
+            return nil
+        }
+    }
+
     private func unselectRecord(for controller: BaseViewController) {
-        guard let recordViewController = controller as? RecordViewController, let record = recordViewController.record else {
+        guard let record = record(from: controller) else {
             return
         }
 
         selectedRecords.remove(record)
+        updateRelatedItemHighlights()
+    }
+
+    /// Updates all the visible related item views and updates their highlighted status
+    private func updateRelatedItemHighlights() {
+        let highlightedRecords = Set(highlightedRecordForTouch.values)
 
         for view in collectionView.visibleItems().compactMap({ $0 as? RecordCollectionItemView }) {
             if let record = view.record {
-                view.set(highlighted: selectedRecords.contains(record))
+                let highlighted = highlightedRecords.contains(record) || selectedRecords.contains(record)
+                view.set(highlighted: highlighted)
             }
         }
     }

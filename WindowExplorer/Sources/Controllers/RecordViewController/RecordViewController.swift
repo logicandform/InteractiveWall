@@ -34,10 +34,11 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     var record: Record!
     private var displayedRelatedRecords = [Record]()
     private var selectedRecords = Set<Record>()
+    private var highlightedRecordForTouch = [Touch: Record]()
     private var pageControl = PageControl()
-    private var showingRelatedItems = false
     private var relatedItemsFilterType = RecordFilterType.all
     private var currentLayout = RelatedItemViewLayout.list
+    private var showingRelatedItems = false
     private var toggling = false
 
     private struct Constants {
@@ -166,10 +167,10 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             self?.handleRelatedViewPan(gesture)
         }
 
-        let relatedItemTap = TapGestureRecognizer(withDelay: true)
+        let relatedItemTap = MultiTapGestureRecognizer(withDelay: true)
         gestureManager.add(relatedItemTap, to: relatedItemsView)
-        relatedItemTap.gestureUpdated = { [weak self] gesture in
-            self?.handleRelatedItemTap(gesture)
+        relatedItemTap.touchUpdated = { [weak self] touch, state in
+            self?.handleRelatedItemMultiTap(touch, state: state)
         }
 
         let stackViewPanGesture = PanGestureRecognizer()
@@ -322,37 +323,27 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         relatedRecordScrollView.updateGradient()
     }
 
-    private var highlightedRelatedItem: RelatedItemView? {
-        didSet {
-            if let oldRecord = oldValue?.record, !selectedRecords.contains(oldRecord) {
-                oldValue?.set(highlighted: false)
-            }
-            highlightedRelatedItem?.set(highlighted: true)
-        }
-    }
-
-    private func handleRelatedItemTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer,
-            let location = tap.position,
-            let indexPath = relatedItemsView.indexPathForItem(at: location + relatedItemsView.visibleRect.origin),
-            let relatedItem = relatedItemsView.item(at: indexPath) as? RelatedItemView else {
-                highlightedRelatedItem = nil
-                return
-        }
-
-        switch tap.state {
+    private func handleRelatedItemMultiTap(_ touch: Touch, state: GestureState) {
+        switch state {
         case .began:
-            highlightedRelatedItem = relatedItem
-        case .failed:
-            highlightedRelatedItem = nil
-        case .ended:
-            highlightedRelatedItem = relatedItem
-            if let selectedRecord = highlightedRelatedItem?.record {
-                selectRelatedRecord(selectedRecord)
+            if let indexPath = relatedItemsView.indexPathForItem(at: touch.position + relatedItemsView.visibleRect.origin),
+                let relatedItem = relatedItemsView.item(at: indexPath) as? RelatedItemView,
+                let record = relatedItem.record {
+                relatedItem.set(highlighted: true)
+                highlightedRecordForTouch[touch] = record
             }
-            highlightedRelatedItem = nil
+        case .failed:
+            if highlightedRecordForTouch[touch] != nil {
+                highlightedRecordForTouch.removeValue(forKey: touch)
+                updateRelatedItemHighlights()
+            }
+        case .ended:
+            if let record = highlightedRecordForTouch[touch] {
+                selectRelatedRecord(record)
+                highlightedRecordForTouch.removeValue(forKey: touch)
+            }
         default:
-            return
+            break
         }
     }
 
@@ -458,7 +449,9 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
                 relatedItem.tintColor = record.type.color
                 let relatedRecord = displayedRelatedRecords[indexPath.item]
                 relatedItem.record = relatedRecord
-                relatedItem.set(highlighted: selectedRecords.contains(relatedRecord))
+                let highlightedRecords = Set(highlightedRecordForTouch.values)
+                let highlighted = highlightedRecords.contains(relatedRecord) || selectedRecords.contains(relatedRecord)
+                relatedItem.set(highlighted: highlighted)
                 return relatedItem
             }
         default:
@@ -598,16 +591,34 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
     }
 
+    private func record(from controller: BaseViewController) -> Record? {
+        switch controller {
+        case let recordViewController as RecordViewController:
+            return recordViewController.record
+        case let recordCollectionViewController as RecordCollectionViewController:
+            return recordCollectionViewController.record
+        default:
+            return nil
+        }
+    }
+
     private func unselectRelatedRecord(for controller: BaseViewController) {
-        guard let recordViewController = controller as? RecordViewController, let record = recordViewController.record else {
+        guard let record = record(from: controller) else {
             return
         }
 
         selectedRecords.remove(record)
+        updateRelatedItemHighlights()
+    }
+
+    /// Updates all the visible related item views and updates their highlighted status
+    private func updateRelatedItemHighlights() {
+        let highlightedRecords = Set(highlightedRecordForTouch.values)
 
         for view in relatedItemsView.visibleItems().compactMap({ $0 as? RelatedItemView }) {
             if let record = view.record {
-                view.set(highlighted: selectedRecords.contains(record))
+                let highlighted = highlightedRecords.contains(record) || selectedRecords.contains(record)
+                view.set(highlighted: highlighted)
             }
         }
     }

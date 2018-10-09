@@ -21,6 +21,7 @@
 		22382B34216C41510031FA23 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22382B33216C41510031FA23 /* JSON.swift */; };
 		22382B36216C418C0031FA23 /* Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22382B35216C418C0031FA23 /* Numbers.swift */; };
 		22F5C007216D195600169387 /* NodeGestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F5C006216D195600169387 /* NodeGestureManager.swift */; };
+		22F73D98216D31EE0016EF55 /* MultiTapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F73D97216D31EE0016EF55 /* MultiTapGestureRecognizer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		22382B33216C41510031FA23 /* JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		22382B35216C418C0031FA23 /* Numbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Numbers.swift; sourceTree = "<group>"; };
 		22F5C006216D195600169387 /* NodeGestureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeGestureManager.swift; sourceTree = "<group>"; };
+		22F73D97216D31EE0016EF55 /* MultiTapGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiTapGestureRecognizer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 				22382B18216C3F380031FA23 /* PanGestureRecognizer.swift */,
 				22382B19216C3F380031FA23 /* PinchGestureRecognizer.swift */,
 				22382B17216C3F380031FA23 /* TapGestureRecognizer.swift */,
+				22F73D97216D31EE0016EF55 /* MultiTapGestureRecognizer.swift */,
 			);
 			path = Gestures;
 			sourceTree = "<group>";
@@ -223,6 +226,7 @@
 				22382B30216C40F70031FA23 /* GestureHandler.swift in Sources */,
 				22382B1D216C3F380031FA23 /* TapGestureRecognizer.swift in Sources */,
 				22382B1E216C3F380031FA23 /* PanGestureRecognizer.swift in Sources */,
+				22F73D98216D31EE0016EF55 /* MultiTapGestureRecognizer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

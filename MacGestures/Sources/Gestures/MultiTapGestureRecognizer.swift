@@ -1,16 +1,17 @@
-//  Copyright © 2017 JABT. All rights reserved.
+//  Copyright © 2018 JABT. All rights reserved.
 
 import Foundation
-import AppKit
 
 
-public class TapGestureRecognizer: NSObject, GestureRecognizer {
+/// Gesture for registered multiple tap gestures simultaneously. Must use `touchUpdated` block instead of `gestureUpdated`.
+public class MultiTapGestureRecognizer: NSObject, GestureRecognizer {
 
     public var gestureUpdated: ((GestureRecognizer) -> Void)?
+    public var touchUpdated: ((Touch, GestureState) -> Void)?
     private(set) public var state = GestureState.possible
     private(set) public var position: CGPoint?
-
-    private var positionForTouch = [Touch: CGPoint]()
+    private var initialPositionForTouch = [Touch: CGPoint]()
+    private var stateForTouch = [Touch: GestureState]()
     private let delayTap: Bool
     private let cancelOnMove: Bool
 
@@ -21,7 +22,7 @@ public class TapGestureRecognizer: NSObject, GestureRecognizer {
 
 
     // MARK: Init
-    
+
     public init(withDelay: Bool = false, cancelsOnMove: Bool = true) {
         self.delayTap = withDelay
         self.cancelOnMove = cancelsOnMove
@@ -31,9 +32,8 @@ public class TapGestureRecognizer: NSObject, GestureRecognizer {
     // MARK: API
 
     public func start(_ touch: Touch, with properties: TouchProperties) {
-        positionForTouch[touch] = touch.position
-        position = touch.position
-        state = .began
+        initialPositionForTouch[touch] = touch.position
+        stateForTouch[touch] = .began
 
         if delayTap {
             startDelayedTimer(for: touch)
@@ -43,54 +43,56 @@ public class TapGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     public func move(_ touch: Touch, with properties: TouchProperties) {
-        guard let initialPosition = positionForTouch[touch], state != .ended else {
+        guard let initialPosition = initialPositionForTouch[touch], let touchState = stateForTouch[touch], touchState != .ended else {
             return
         }
 
         let delta = CGVector(dx: initialPosition.x - touch.position.x, dy: initialPosition.y - touch.position.y)
         let distance = sqrt(pow(delta.dx, 2) + pow(delta.dy, 2))
         if distance > Constants.maximumDistanceMoved {
-            state = .failed
+            stateForTouch[touch] = .failed
             if cancelOnMove {
                 end(touch, with: properties)
             } else {
-                state = .ended
+                touchUpdated?(touch, .failed)
+                stateForTouch[touch] = .ended
             }
         }
     }
 
     public func end(_ touch: Touch, with properties: TouchProperties) {
-        guard positionForTouch.keys.contains(touch) else {
+        guard let touchState = stateForTouch[touch] else {
             return
         }
 
-        position = touch.position
-
-        switch state {
+        switch touchState {
         case .failed:
-            gestureUpdated?(self)
+            touchUpdated?(touch, touchState)
         case .began:
-            gestureUpdated?(self)
+            touchUpdated?(touch, touchState)
             fallthrough
         default:
-            state = .ended
-            gestureUpdated?(self)
+            stateForTouch[touch] = .ended
+            touchUpdated?(touch, .ended)
         }
 
-        reset()
-        positionForTouch.removeValue(forKey: touch)
+        initialPositionForTouch.removeValue(forKey: touch)
+        stateForTouch.removeValue(forKey: touch)
     }
 
     public func reset() {
-        state = .possible
+        initialPositionForTouch.removeAll()
+        stateForTouch.removeAll()
     }
 
 
     // MARK: Helpers
 
     private func recognize(touch: Touch) {
-        gestureUpdated?(self)
-        state = .recognized
+        if let touchState = stateForTouch[touch] {
+            touchUpdated?(touch, touchState)
+            stateForTouch[touch] = .recognized
+        }
     }
 
     private func startDelayedTimer(for touch: Touch) {
@@ -100,7 +102,7 @@ public class TapGestureRecognizer: NSObject, GestureRecognizer {
     }
 
     private func delayedTimerFired(for touch: Touch) {
-        if state == .began {
+        if let state = stateForTouch[touch], state == .began {
             recognize(touch: touch)
         }
     }
