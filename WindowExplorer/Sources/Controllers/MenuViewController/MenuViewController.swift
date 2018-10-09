@@ -31,6 +31,7 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
     private var buttonForType = [MenuButtonType: MenuButton]()
     private var menuOpened = false
     private var animating = false
+    private var infoController: InfoViewController?
     private weak var searchChild: SearchChild?
 
     private var menuSide: MenuSide {
@@ -79,6 +80,7 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         if let infoViewController = segue.destinationController as? InfoViewController {
             infoViewController.appID = appID
             infoViewController.gestureManager = gestureManager
+            infoController = infoViewController
         }
     }
 
@@ -116,7 +118,9 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
             set(.timeline, selected: false)
             set(.information, selected: false)
         case .information:
-            set(infoMenuView.subviews.first, hidden: !selected, animated: true)
+            set(infoMenuView.subviews.first, hidden: !selected, animated: true) { [weak self] in
+                self?.didHideInfoPanel()
+            }
         case .search where selected:
             displaySearchChild()
             set(.information, selected: false)
@@ -326,12 +330,12 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         }
     }
 
-    private func set(_ view: NSView?, hidden: Bool, animated: Bool) {
+    private func set(_ view: NSView?, hidden: Bool, animated: Bool, completion: (() -> Void)? = nil) {
         if animated {
             NSAnimationContext.runAnimationGroup({ _ in
                 NSAnimationContext.current.duration = Constants.fadeAnimationDuration
                 view?.animator().alphaValue = hidden ? 0 : 1
-            })
+            }, completionHandler: completion)
         } else {
             view?.alphaValue = hidden ? 0 : 1
         }
@@ -442,5 +446,11 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         let center = view.frame.midY - menuView.frame.height / 2
         animateMenu(verticalPosition: center)
         toggleSideMenu(open: false)
+    }
+
+    private func didHideInfoPanel() {
+        if let button = buttonForType[.information], !button.selected {
+            infoController?.reset()
+        }
     }
 }

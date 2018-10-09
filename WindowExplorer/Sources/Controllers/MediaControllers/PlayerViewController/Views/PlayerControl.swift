@@ -81,6 +81,11 @@ class PlayerControl: NSView {
 
     // MARK: API
 
+    func reset() {
+        setCurrentTime(for: .zero)
+        seek(to: .zero)
+    }
+
     func set(_ newState: PlayerState) {
         if state == newState {
             return
@@ -273,7 +278,7 @@ class PlayerControl: NSView {
         }
 
         if let timeString = string(for: time) {
-            currentTimeLabel.stringValue = timeString
+            currentTimeLabel?.stringValue = timeString
         }
 
         if !duration.seconds.isZero {

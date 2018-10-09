@@ -53,6 +53,18 @@ class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollec
     }
 
 
+    // MARK: API
+
+    /// Resets videos and collection view offset
+    func reset() {
+        pageControl.selectedPage = UInt(0)
+        infoCollectionView.scroll(.zero)
+        for infoItem in infoCollectionView.visibleItems().compactMap({ $0 as? InfoItemView }) {
+            infoItem.playerControl?.reset()
+        }
+    }
+
+
     // MARK: Setup
 
     private func setupView() {
