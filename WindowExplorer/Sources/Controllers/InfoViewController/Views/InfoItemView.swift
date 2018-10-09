@@ -3,6 +3,7 @@
 import Foundation
 import Cocoa
 import AVKit
+import MacGestures
 
 
 class InfoItemView: NSCollectionViewItem, PlayerControlDelegate {

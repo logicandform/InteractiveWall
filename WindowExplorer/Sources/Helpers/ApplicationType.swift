@@ -20,9 +20,9 @@ enum ApplicationType: String {
     var appName: String {
         switch self {
         case .mapExplorer, .timeline:
-            return "MapExplorer-macOS"
+            return "MapExplorer"
         case .nodeNetwork:
-            return "NodeVisualizer"
+            return "NodeExplorer"
         }
     }
 
@@ -31,7 +31,7 @@ enum ApplicationType: String {
         case .mapExplorer, .timeline:
             return "AppListener\(app)"
         case .nodeNetwork:
-            return "NodeListener"
+            return "NodeExplorer"
         }
     }
 }

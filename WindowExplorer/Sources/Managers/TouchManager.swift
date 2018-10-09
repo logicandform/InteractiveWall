@@ -2,6 +2,8 @@
 
 import Foundation
 import MONode
+import MacGestures
+
 
 final class TouchManager: SocketManagerDelegate {
     static let instance = TouchManager()

@@ -1,6 +1,7 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
 import Cocoa
+import MacGestures
 
 
 class IndicatorViewController: NSViewController {

@@ -1,6 +1,7 @@
 //  Copyright © 2018 JABT. All rights reserved.
 
 import Foundation
+import MacGestures
 
 
 typealias AppState = (pair: Int?, group: Int?)

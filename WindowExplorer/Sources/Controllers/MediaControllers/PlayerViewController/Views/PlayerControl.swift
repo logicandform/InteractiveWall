@@ -2,6 +2,7 @@
 
 import Cocoa
 import AVKit
+import MacGestures
 
 
 protocol PlayerControlDelegate: class {

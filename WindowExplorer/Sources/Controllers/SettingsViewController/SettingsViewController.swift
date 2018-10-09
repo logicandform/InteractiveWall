@@ -2,6 +2,7 @@
 
 import Foundation
 import Cocoa
+import MacGestures
 
 
 class SettingsViewController: NSViewController, GestureResponder {

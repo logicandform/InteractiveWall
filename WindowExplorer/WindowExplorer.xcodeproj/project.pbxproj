@@ -34,15 +34,7 @@
 		2204623820472FDF0067D9FB /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204623020472FDF0067D9FB /* URL.swift */; };
 		2204623920472FDF0067D9FB /* NetworkConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204623120472FDF0067D9FB /* NetworkConfiguration.swift */; };
 		2204623A20472FDF0067D9FB /* MapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204623220472FDF0067D9FB /* MapKit.swift */; };
-		22046243204730780067D9FB /* SwipeGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204623D204730780067D9FB /* SwipeGestureRecognizer.swift */; };
-		22046244204730780067D9FB /* PanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204623E204730780067D9FB /* PanGestureRecognizer.swift */; };
-		22046245204730780067D9FB /* RotateGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204623F204730780067D9FB /* RotateGestureRecognizer.swift */; };
-		22046246204730780067D9FB /* GestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046240204730780067D9FB /* GestureRecognizer.swift */; };
-		22046247204730780067D9FB /* PinchGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046241204730780067D9FB /* PinchGestureRecognizer.swift */; };
-		22046248204730780067D9FB /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046242204730780067D9FB /* TapGestureRecognizer.swift */; };
-		22046254204730C70067D9FB /* Touch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046249204730C60067D9FB /* Touch.swift */; };
 		22046259204730C70067D9FB /* School.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204624E204730C70067D9FB /* School.swift */; };
-		2204625D204730C70067D9FB /* TouchProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22046252204730C70067D9FB /* TouchProperties.swift */; };
 		2222B13C20D9866900ECCB5D /* SettingsNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2222B13B20D9866900ECCB5D /* SettingsNotifications.swift */; };
 		2222C7BF20DC020200B76D12 /* RelatedItemListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2204620C20472DE80067D9FB /* RelatedItemListView.xib */; };
 		2222C7C320DC028000B76D12 /* RecordCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2222C7C120DC028000B76D12 /* RecordCollectionViewController.swift */; };
@@ -59,9 +51,9 @@
 		222D1BC4214C8505007417B8 /* RecordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222D1BC3214C8505007417B8 /* RecordManager.swift */; };
 		222EA54020DC14F400DB16CA /* RecordCollectionItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222EA53E20DC14F400DB16CA /* RecordCollectionItemView.swift */; };
 		222EA54120DC14F400DB16CA /* RecordCollectionItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 222EA53F20DC14F400DB16CA /* RecordCollectionItemView.xib */; };
-		223613E720509D920024145C /* LastTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223613E620509D920024145C /* LastTwo.swift */; };
 		2236F7602151EC2D00AD8148 /* IndicatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2236F75E2151EC2D00AD8148 /* IndicatorViewController.swift */; };
 		2236F7632151EC4A00AD8148 /* Indicator.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2236F7622151EC4A00AD8148 /* Indicator.storyboard */; };
+		22382B3E216C4BCA0031FA23 /* MacGestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22382B3D216C4BCA0031FA23 /* MacGestures.swift */; };
 		2243C7DD2093A10F00CE2CA0 /* ApplicationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2243C7DC2093A10F00CE2CA0 /* ApplicationType.swift */; };
 		2247670020562F65003E8790 /* MediaItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224766FE20562F65003E8790 /* MediaItemView.swift */; };
 		2247670120562F65003E8790 /* MediaItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 224766FF20562F65003E8790 /* MediaItemView.xib */; };
@@ -79,15 +71,16 @@
 		226D0589204FC7BC00D74711 /* ResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226D0588204FC7BC00D74711 /* ResponseHandler.swift */; };
 		2276AE65204E7150001FAD8B /* BorderlessWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2276AE64204E7150001FAD8B /* BorderlessWindow.swift */; };
 		227B5E11205611BB00F403B3 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227B5E10205611BB00F403B3 /* Style.swift */; };
+		2282D14D216C57B80006F8E5 /* MacGestures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2282D14C216C57B80006F8E5 /* MacGestures.framework */; };
+		2282D14E216C57BB0006F8E5 /* MacGestures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2282D14C216C57B80006F8E5 /* MacGestures.framework */; };
+		2282D14F216C57BB0006F8E5 /* MacGestures.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2282D14C216C57B80006F8E5 /* MacGestures.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2290A04220E4196E00F028C4 /* TimelineNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2290A04120E4196E00F028C4 /* TimelineNotifications.swift */; };
 		22914F752049001B0000D4E1 /* TouchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22914F742049001B0000D4E1 /* TouchManager.swift */; };
 		22914F77204905230000D4E1 /* NSApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22914F76204905230000D4E1 /* NSApplication.swift */; };
-		22927912208E531C005E2036 /* BackgroundTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22927911208E531C005E2036 /* BackgroundTimer.swift */; };
 		22A02AB4216823360067C532 /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A02AB3216823360067C532 /* Animations.swift */; };
 		22A4985E204733770024B46C /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A4985D204733770024B46C /* WindowManager.swift */; };
 		22A498612047349C0024B46C /* RecordNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A498602047349C0024B46C /* RecordNotifications.swift */; };
 		22A498752047499B0024B46C /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A498742047499B0024B46C /* JSON.swift */; };
-		22A49878204749C30024B46C /* TouchState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A49877204749C30024B46C /* TouchState.swift */; };
 		22A6D96B209D2936009957BB /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A6D96A209D2936009957BB /* BaseViewController.swift */; };
 		22A76FE620464764006C0AE7 /* PDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A76FE420464764006C0AE7 /* PDFViewController.swift */; };
 		22A76FE720464764006C0AE7 /* PDF.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22A76FE520464764006C0AE7 /* PDF.storyboard */; };
@@ -97,8 +90,6 @@
 		22A923252044AF05003EA9BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22A923242044AF05003EA9BB /* Assets.xcassets */; };
 		22AE5D2520D2DB3200D5FB9C /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AE5D2420D2DB3200D5FB9C /* ConnectionManager.swift */; };
 		22AEAF0420B67E6700DD184B /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AEAF0320B67E6700DD184B /* Math.swift */; };
-		22B1E2CD204638B900BDDF14 /* GestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2CC204638B900BDDF14 /* GestureManager.swift */; };
-		22B1E2CF204638CA00BDDF14 /* GestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1E2CE204638CA00BDDF14 /* GestureHandler.swift */; };
 		22B85AFD209B7ADF0099F44E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22B85AFB209B7ADF0099F44E /* Main.storyboard */; };
 		22B85B01209CF0FA0099F44E /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B85B00209CF0FA0099F44E /* SearchViewController.swift */; };
 		22B85B03209CF1040099F44E /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22B85B02209CF1040099F44E /* Search.storyboard */; };
@@ -180,6 +171,17 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		22382B3A216C47D10031FA23 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				2282D14F216C57BB0006F8E5 /* MacGestures.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		22A9234F2044B09D003EA9BB /* Embed XPC Services */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -221,15 +223,7 @@
 		2204623020472FDF0067D9FB /* URL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		2204623120472FDF0067D9FB /* NetworkConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkConfiguration.swift; sourceTree = "<group>"; };
 		2204623220472FDF0067D9FB /* MapKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapKit.swift; sourceTree = "<group>"; };
-		2204623D204730780067D9FB /* SwipeGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeGestureRecognizer.swift; sourceTree = "<group>"; };
-		2204623E204730780067D9FB /* PanGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanGestureRecognizer.swift; sourceTree = "<group>"; };
-		2204623F204730780067D9FB /* RotateGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotateGestureRecognizer.swift; sourceTree = "<group>"; };
-		22046240204730780067D9FB /* GestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureRecognizer.swift; sourceTree = "<group>"; };
-		22046241204730780067D9FB /* PinchGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinchGestureRecognizer.swift; sourceTree = "<group>"; };
-		22046242204730780067D9FB /* TapGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapGestureRecognizer.swift; sourceTree = "<group>"; };
-		22046249204730C60067D9FB /* Touch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Touch.swift; sourceTree = "<group>"; };
 		2204624E204730C70067D9FB /* School.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = School.swift; sourceTree = "<group>"; };
-		22046252204730C70067D9FB /* TouchProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchProperties.swift; sourceTree = "<group>"; };
 		2222B13B20D9866900ECCB5D /* SettingsNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotifications.swift; sourceTree = "<group>"; };
 		2222C7C120DC028000B76D12 /* RecordCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCollectionViewController.swift; sourceTree = "<group>"; };
 		2222C7C520DC028D00B76D12 /* Collection.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Collection.storyboard; sourceTree = "<group>"; };
@@ -245,9 +239,9 @@
 		222D1BC3214C8505007417B8 /* RecordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordManager.swift; sourceTree = "<group>"; };
 		222EA53E20DC14F400DB16CA /* RecordCollectionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCollectionItemView.swift; sourceTree = "<group>"; };
 		222EA53F20DC14F400DB16CA /* RecordCollectionItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecordCollectionItemView.xib; sourceTree = "<group>"; };
-		223613E620509D920024145C /* LastTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastTwo.swift; sourceTree = "<group>"; };
 		2236F75E2151EC2D00AD8148 /* IndicatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorViewController.swift; sourceTree = "<group>"; };
 		2236F7622151EC4A00AD8148 /* Indicator.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Indicator.storyboard; sourceTree = "<group>"; };
+		22382B3D216C4BCA0031FA23 /* MacGestures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacGestures.swift; sourceTree = "<group>"; };
 		2243C7DC2093A10F00CE2CA0 /* ApplicationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationType.swift; sourceTree = "<group>"; };
 		224766FE20562F65003E8790 /* MediaItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaItemView.swift; sourceTree = "<group>"; };
 		224766FF20562F65003E8790 /* MediaItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MediaItemView.xib; sourceTree = "<group>"; };
@@ -265,15 +259,14 @@
 		226D0588204FC7BC00D74711 /* ResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseHandler.swift; sourceTree = "<group>"; };
 		2276AE64204E7150001FAD8B /* BorderlessWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderlessWindow.swift; sourceTree = "<group>"; };
 		227B5E10205611BB00F403B3 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
+		2282D14C216C57B80006F8E5 /* MacGestures.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MacGestures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2290A04120E4196E00F028C4 /* TimelineNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineNotifications.swift; sourceTree = "<group>"; };
 		22914F742049001B0000D4E1 /* TouchManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchManager.swift; sourceTree = "<group>"; };
 		22914F76204905230000D4E1 /* NSApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSApplication.swift; sourceTree = "<group>"; };
-		22927911208E531C005E2036 /* BackgroundTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTimer.swift; sourceTree = "<group>"; };
 		22A02AB3216823360067C532 /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
 		22A4985D204733770024B46C /* WindowManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		22A498602047349C0024B46C /* RecordNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordNotifications.swift; sourceTree = "<group>"; };
 		22A498742047499B0024B46C /* JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
-		22A49877204749C30024B46C /* TouchState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchState.swift; sourceTree = "<group>"; };
 		22A6D96A209D2936009957BB /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		22A76FE420464764006C0AE7 /* PDFViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PDFViewController.swift; sourceTree = "<group>"; };
 		22A76FE520464764006C0AE7 /* PDF.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PDF.storyboard; sourceTree = "<group>"; };
@@ -286,8 +279,6 @@
 		22A9232A2044AF05003EA9BB /* WindowExplorer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WindowExplorer.entitlements; sourceTree = "<group>"; };
 		22AE5D2420D2DB3200D5FB9C /* ConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		22AEAF0320B67E6700DD184B /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
-		22B1E2CC204638B900BDDF14 /* GestureManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureManager.swift; sourceTree = "<group>"; };
-		22B1E2CE204638CA00BDDF14 /* GestureHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureHandler.swift; sourceTree = "<group>"; };
 		22B85AFC209B7ADF0099F44E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Controllers/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		22B85B00209CF0FA0099F44E /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		22B85B02209CF1040099F44E /* Search.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Search.storyboard; sourceTree = "<group>"; };
@@ -379,7 +370,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2282D14D216C57B80006F8E5 /* MacGestures.framework in Frameworks */,
 				618F0C38206A114100762C20 /* AVFoundation.framework in Frameworks */,
+				2282D14E216C57BB0006F8E5 /* MacGestures.framework in Frameworks */,
 				618F0C37206A113B00762C20 /* Accelerate.framework in Frameworks */,
 				C6DB17689F287C9826286DF2 /* Pods_All_WindowExplorer.framework in Frameworks */,
 			);
@@ -434,6 +427,7 @@
 				A4540D15211B62FC00D50395 /* NSCollectionView.swift */,
 				A44A4779213777B8000DFF90 /* String.swift */,
 				22A02AB3216823360067C532 /* Animations.swift */,
+				22382B3D216C4BCA0031FA23 /* MacGestures.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -443,27 +437,12 @@
 			children = (
 				22A4987A204749EA0024B46C /* Records */,
 				22616CA020A235170042C420 /* Search */,
-				22A49876204749B70024B46C /* Touches */,
-				223613E620509D920024145C /* LastTwo.swift */,
 				D9F24E5C205AFE2900B9FCB8 /* Media.swift */,
 				22004FE520DD7DE700B1E740 /* Settings.swift */,
 				22C22434215AE672000E1CAF /* Month.swift */,
 				222C69DB2162D4CD004160B1 /* DatabaseStatus.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		2204623C204730050067D9FB /* Gestures */ = {
-			isa = PBXGroup;
-			children = (
-				22046240204730780067D9FB /* GestureRecognizer.swift */,
-				2204623E204730780067D9FB /* PanGestureRecognizer.swift */,
-				22046241204730780067D9FB /* PinchGestureRecognizer.swift */,
-				2204623F204730780067D9FB /* RotateGestureRecognizer.swift */,
-				2204623D204730780067D9FB /* SwipeGestureRecognizer.swift */,
-				22046242204730780067D9FB /* TapGestureRecognizer.swift */,
-			);
-			path = Gestures;
 			sourceTree = "<group>";
 		};
 		2222C7C020DC024F00B76D12 /* RecordCollectionViewController */ = {
@@ -557,16 +536,6 @@
 			path = Notifications;
 			sourceTree = "<group>";
 		};
-		22A49876204749B70024B46C /* Touches */ = {
-			isa = PBXGroup;
-			children = (
-				22046249204730C60067D9FB /* Touch.swift */,
-				22A49877204749C30024B46C /* TouchState.swift */,
-				22046252204730C70067D9FB /* TouchProperties.swift */,
-			);
-			path = Touches;
-			sourceTree = "<group>";
-		};
 		22A4987A204749EA0024B46C /* Records */ = {
 			isa = PBXGroup;
 			children = (
@@ -608,8 +577,8 @@
 			isa = PBXGroup;
 			children = (
 				22A923302044AF19003EA9BB /* Sources */,
-				22A923332044AF2D003EA9BB /* Metadata */,
 				22A923312044AF1E003EA9BB /* Resources */,
+				22A923332044AF2D003EA9BB /* Metadata */,
 				22A9231E2044AF05003EA9BB /* Products */,
 				E7F56EE9570176C399CE51F3 /* Pods */,
 				BA7AB469DDFD237E3385F839 /* Frameworks */,
@@ -635,7 +604,6 @@
 				2204621A20472F840067D9FB /* Extensions */,
 				2204623B20472FFD0067D9FB /* Models */,
 				22B1E2D0204638CD00BDDF14 /* Helpers */,
-				2204623C204730050067D9FB /* Gestures */,
 				22A4985F204734790024B46C /* Notifications */,
 				61767FFD206895EE00970640 /* Audio */,
 			);
@@ -696,19 +664,16 @@
 		22B1E2D0204638CD00BDDF14 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				22B1E2CC204638B900BDDF14 /* GestureManager.swift */,
 				2243C7DC2093A10F00CE2CA0 /* ApplicationType.swift */,
 				A407161120ABAE5B00B54593 /* RelationshipHelper.swift */,
 				227B5E10205611BB00F403B3 /* Style.swift */,
 				22A498742047499B0024B46C /* JSON.swift */,
-				22B1E2CE204638CA00BDDF14 /* GestureHandler.swift */,
 				226D0586204FC78100D74711 /* CachingNetwork.swift */,
 				226D0588204FC7BC00D74711 /* ResponseHandler.swift */,
 				D9F24E5E205B01A000B9FCB8 /* WindowType.swift */,
 				8E40109F20487B8D00E81AAA /* WindowFactory.swift */,
 				D9F24E5A2059DD1900B9FCB8 /* RecordNetwork.swift */,
 				2224125D206BFE9F008E7A9D /* RecordType.swift */,
-				22927911208E531C005E2036 /* BackgroundTimer.swift */,
 				8FA62A07206BFAFC004E6092 /* RecordInfo.swift */,
 				A4694B65209CEC18006A407F /* RecordFilterType.swift */,
 				CD096C8920A3AD7F00C8A732 /* GeocodeHelper.swift */,
@@ -851,6 +816,7 @@
 		BA7AB469DDFD237E3385F839 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2282D14C216C57B80006F8E5 /* MacGestures.framework */,
 				618F0C36206A113B00762C20 /* Accelerate.framework */,
 				61767FFA20688A3700970640 /* AudioToolbox.framework */,
 				61767FF620688A0200970640 /* AVFoundation.framework */,
@@ -939,6 +905,7 @@
 				22A9234F2044B09D003EA9BB /* Embed XPC Services */,
 				D706A887330181305494F3D8 /* [CP] Embed Pods Frameworks */,
 				A4F3914A20BCBB490034D304 /* ShellScript */,
+				22382B3A216C47D10031FA23 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1055,11 +1022,11 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/../Pods/Target Support Files/Pods-All-WindowExplorer/Pods-All-WindowExplorer-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Alamofire-macOS/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/AlamofireImage-macOS/AlamofireImage.framework",
-				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket-macOS/CocoaAsyncSocket.framework",
-				"${BUILT_PRODUCTS_DIR}/MONode-macOS/MONode.framework",
-				"${BUILT_PRODUCTS_DIR}/PromiseKit.root-Alamofire-CorePromise-Foundation-QuartzCore/PromiseKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
+				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework",
+				"${BUILT_PRODUCTS_DIR}/MONode/MONode.framework",
+				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1110,9 +1077,7 @@
 				D92E0F00206052C900C1C9A7 /* ArrowControl.swift in Sources */,
 				2204623520472FDF0067D9FB /* Int.swift in Sources */,
 				226D0587204FC78100D74711 /* CachingNetwork.swift in Sources */,
-				22046246204730780067D9FB /* GestureRecognizer.swift in Sources */,
 				618F0C322069FFD600762C20 /* AudioController.swift in Sources */,
-				2204625D204730C70067D9FB /* TouchProperties.swift in Sources */,
 				A456F6C020C73826004534A4 /* SettingsViewController.swift in Sources */,
 				2204623420472FDF0067D9FB /* NSImage.swift in Sources */,
 				D9F24E62205B040700B9FCB8 /* ImageViewController.swift in Sources */,
@@ -1128,7 +1093,6 @@
 				618F0C2F2069F98900762C20 /* MultiChannelPanner.swift in Sources */,
 				22F309BF20A224A000BA5456 /* LetterGroup.swift in Sources */,
 				3F2FAB5B204F7D24002EDF5D /* Artifact.swift in Sources */,
-				22B1E2CD204638B900BDDF14 /* GestureManager.swift in Sources */,
 				A44A56F52136186600F73D55 /* InfoViewController.swift in Sources */,
 				D9F24E5D205AFE2900B9FCB8 /* Media.swift in Sources */,
 				225FBBA1208E89BA00B2CD3E /* MasterViewController.swift in Sources */,
@@ -1140,13 +1104,11 @@
 				222D1BC0214B198B007417B8 /* RecordCollection.swift in Sources */,
 				D992E20A20533A3A00EAB698 /* RecordViewController.swift in Sources */,
 				22A4985E204733770024B46C /* WindowManager.swift in Sources */,
-				22046245204730780067D9FB /* RotateGestureRecognizer.swift in Sources */,
 				2222B13C20D9866900ECCB5D /* SettingsNotifications.swift in Sources */,
 				A4694B66209CEC18006A407F /* RecordFilterType.swift in Sources */,
 				D92E0EFE20604BDB00C1C9A7 /* PageControl.swift in Sources */,
 				2243C7DD2093A10F00CE2CA0 /* ApplicationType.swift in Sources */,
 				2204623A20472FDF0067D9FB /* MapKit.swift in Sources */,
-				22046254204730C70067D9FB /* Touch.swift in Sources */,
 				3F47D52F206420C6001E86E3 /* FlippedClipView.swift in Sources */,
 				222C69E42163ECEA004160B1 /* ConsoleItemView.swift in Sources */,
 				A479488020B89ACC00091CEC /* MenuButtonType.swift in Sources */,
@@ -1160,14 +1122,11 @@
 				2204621920472F2D0067D9FB /* PlayerControl.swift in Sources */,
 				22004FE420DD7A7F00B1E740 /* SettingsManager.swift in Sources */,
 				22C22443215D89B1000E1CAF /* NodeNotification.swift in Sources */,
-				22B1E2CF204638CA00BDDF14 /* GestureHandler.swift in Sources */,
 				2236F7602151EC2D00AD8148 /* IndicatorViewController.swift in Sources */,
 				2222C7C320DC028000B76D12 /* RecordCollectionViewController.swift in Sources */,
-				22A49878204749C30024B46C /* TouchState.swift in Sources */,
 				2204623720472FDF0067D9FB /* PacketType.swift in Sources */,
 				D9F24E5B2059DD1900B9FCB8 /* RecordNetwork.swift in Sources */,
 				222EA54020DC14F400DB16CA /* RecordCollectionItemView.swift in Sources */,
-				223613E720509D920024145C /* LastTwo.swift in Sources */,
 				222C69E72163EE11004160B1 /* ConsoleLog.swift in Sources */,
 				2204623320472FDF0067D9FB /* CoreGraphics.swift in Sources */,
 				8FA62A08206BFAFC004E6092 /* RecordInfo.swift in Sources */,
@@ -1180,14 +1139,12 @@
 				CD7B3CD320ADFB2500723BDB /* ZoomControl.swift in Sources */,
 				222C69DC2162D4CD004160B1 /* DatabaseStatus.swift in Sources */,
 				22A498752047499B0024B46C /* JSON.swift in Sources */,
-				22046247204730780067D9FB /* PinchGestureRecognizer.swift in Sources */,
 				8FEABDA12064702600612C84 /* MediaViewController.swift in Sources */,
-				22046243204730780067D9FB /* SwipeGestureRecognizer.swift in Sources */,
 				8F8DE18F20A3C48C006FA48B /* RelatedItemImageView.swift in Sources */,
+				22382B3E216C4BCA0031FA23 /* MacGestures.swift in Sources */,
 				D901EBF02057490400BBFCF2 /* RegularTableView.swift in Sources */,
 				224D9A6B207606E30041F1C6 /* VolumeLevel.swift in Sources */,
 				618F0C35206A08CE00762C20 /* AudioComponentDescription.swift in Sources */,
-				22046248204730780067D9FB /* TapGestureRecognizer.swift in Sources */,
 				8FE6467B2060553100E6116A /* RegularScrollView.swift in Sources */,
 				A456618020D9CDC400D23333 /* BorderControl.swift in Sources */,
 				225FBBA5208EAF9400B2CD3E /* ControlAction.swift in Sources */,
@@ -1206,8 +1163,6 @@
 				22A6D96B209D2936009957BB /* BaseViewController.swift in Sources */,
 				3F0902612049C6B10044F100 /* Theme.swift in Sources */,
 				A4540D16211B62FC00D50395 /* NSCollectionView.swift in Sources */,
-				22046244204730780067D9FB /* PanGestureRecognizer.swift in Sources */,
-				22927912208E531C005E2036 /* BackgroundTimer.swift in Sources */,
 				222C69DE2162D58D004160B1 /* DatabaseRefreshHelper.swift in Sources */,
 				2204623820472FDF0067D9FB /* URL.swift in Sources */,
 				A44A56FB2136342000F73D55 /* InfoItemView.swift in Sources */,

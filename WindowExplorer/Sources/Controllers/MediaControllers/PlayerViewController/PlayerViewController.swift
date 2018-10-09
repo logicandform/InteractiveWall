@@ -3,6 +3,7 @@
 import Foundation
 import AVKit
 import AppKit
+import MacGestures
 
 
 class PlayerViewController: MediaViewController, PlayerControlDelegate {

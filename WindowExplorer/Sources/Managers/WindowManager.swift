@@ -4,6 +4,7 @@ import Foundation
 import AppKit
 import MONode
 import PromiseKit
+import MacGestures
 
 
 final class WindowManager {

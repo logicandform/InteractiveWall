@@ -2,6 +2,7 @@
 
 import Cocoa
 import Quartz
+import MacGestures
 
 
 class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDataSource {

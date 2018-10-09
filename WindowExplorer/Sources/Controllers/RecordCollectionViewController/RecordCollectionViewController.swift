@@ -2,6 +2,7 @@
 
 import Cocoa
 import PromiseKit
+import MacGestures
 
 
 class RecordCollectionViewController: BaseViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource {

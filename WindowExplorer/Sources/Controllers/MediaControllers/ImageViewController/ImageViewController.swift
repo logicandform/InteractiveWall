@@ -2,6 +2,7 @@
 
 import Cocoa
 import AppKit
+import MacGestures
 
 
 class ImageViewController: MediaViewController {

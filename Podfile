@@ -1,6 +1,6 @@
 use_frameworks!
 inhibit_all_warnings!
-workspace 'MapExplorer'
+workspace 'InteractiveWall'
 
 abstract_target 'All' do
     pod 'MONode', :git => 'git@github.com:SlantDesign/mo.git'
@@ -9,15 +9,8 @@ abstract_target 'All' do
     pod 'PromiseKit/Alamofire'
     pod 'AlamofireImage'
 
-    target 'MapExplorer-iOS' do
-        project 'MapExplorer-iOS/MapExplorer-iOS.xcodeproj'
-        platform :ios, '9.3'
-
-        pod 'C4', '~> 3.0.1'
-    end
-
-    target 'MapExplorer-macOS' do
-        project 'MapExplorer-macOS/MapExplorer-macOS.xcodeproj'
+    target 'MapExplorer' do
+        project 'MapExplorer/MapExplorer.xcodeproj'
         platform :osx, '10.13'
     end
 
@@ -28,8 +21,8 @@ abstract_target 'All' do
         pod 'ReachabilitySwift'
     end
 
-    target 'NodeVisualizer' do
-        project 'NodeVisualizer/NodeVisualizer.xcodeproj'
+    target 'NodeExplorer' do
+        project 'NodeExplorer/NodeExplorer.xcodeproj'
         platform :osx, '10.13'
     end
 end
