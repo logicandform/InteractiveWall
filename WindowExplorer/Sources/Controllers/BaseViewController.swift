@@ -133,8 +133,8 @@ class BaseViewController: NSViewController, GestureResponder {
             return
         }
 
-        let offsetX = CGFloat(index * style.controllerOffset)
-        let offsetY = CGFloat(index * -style.controllerOffset)
+        let offsetX = CGFloat(index) * style.windowOffset.dx
+        let offsetY = CGFloat(index) * style.windowOffset.dy
         let lastScreen = NSScreen.at(position: Configuration.numberOfScreens)
         var origin = CGPoint(x: frame.maxX + style.windowMargins + offsetX, y: frame.maxY + offsetY - view.frame.height)
 

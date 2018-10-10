@@ -54,6 +54,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         static let stackViewBottomInset: CGFloat = 15
         static let expandImageViewCornerRadius: CGFloat = 2.0
         static let relatedImagesAnimationTime = 0.1
+        static let pageControlIndicatorSize: CGFloat = 8
     }
 
 
@@ -82,9 +83,11 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     // MARK: Setup
 
     private func setupSublayers() {
+        titleLabel.attributedStringValue = NSAttributedString(string: record.shortestTitle(), attributes: style.windowTitleAttributes)
         detailView.alphaValue = 0
         detailView.wantsLayer = true
         detailView.layer?.backgroundColor = style.darkBackground.cgColor
+        relatedItemsHeader.alphaValue = 0
         relatedItemsHeader.wantsLayer = true
         relatedItemsHeader.layer?.backgroundColor = style.darkBackgroundOpaque.cgColor
         relatedItemsHeaderHighlight.wantsLayer = true
@@ -110,6 +113,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         mediaView.frame = NSRect(origin: mediaView.frame.origin, size: NSSize(width: CGFloat(record.media.count) * mediaCollectionClipView.frame.size.width, height: mediaView.frame.height))
         placeHolderImage.image = record.type.placeholder.tinted(with: record.type.color)
         pageControl.color = .white
+        pageControl.indicatorSize = Constants.pageControlIndicatorSize
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.wantsLayer = true
         detailView.addSubview(pageControl)
@@ -198,7 +202,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         stackView.edgeInsets = stackViewEdgeInsets
         stackScrollView.updateGradient()
 
-        let titleAttributedString = NSAttributedString(string: record.shortestTitle(), attributes: style.recordLargeTitleAttributes)
+        let titleAttributedString = NSAttributedString(string: record.title, attributes: style.recordLargeTitleAttributes)
         let titleTextField = textField(for: titleAttributedString)
         stackView.addView(titleTextField, in: .top)
         stackView.setCustomSpacing(style.largeTitleTrailingSpace, after: titleTextField)
@@ -550,6 +554,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         NSAnimationContext.runAnimationGroup({ [weak self] _ in
             NSAnimationContext.current.duration = Constants.animationDuration
             self?.relatedItemsView.animator().alphaValue = 0
+            self?.relatedItemsHeader.animator().alphaValue = alpha
             self?.relatedRecordsLabel.animator().alphaValue = alpha
             self?.relatedRecordsTypeLabel.animator().alphaValue = alpha
             self?.recordTypeSelectionView.animator().alphaValue = alpha

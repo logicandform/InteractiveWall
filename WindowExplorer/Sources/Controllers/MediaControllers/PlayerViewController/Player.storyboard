@@ -12,11 +12,11 @@
             <objects>
                 <viewController id="ObE-0t-P64" customClass="PlayerViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="X51-8y-Yv7">
-                        <rect key="frame" x="0.0" y="0.0" width="640" height="440"/>
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="443"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="5eT-b4-flP">
-                                <rect key="frame" x="0.0" y="400" width="640" height="40"/>
+                                <rect key="frame" x="0.0" y="400" width="640" height="43"/>
                                 <subviews>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="zHy-N6-K3a">
                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -41,7 +41,7 @@
                                         </constraints>
                                     </customView>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ml-Y1-izE">
-                                        <rect key="frame" x="46" y="0.0" width="588" height="29"/>
+                                        <rect key="frame" x="38" y="0.0" width="596" height="29"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="29" id="xMt-aB-HMi"/>
                                         </constraints>
@@ -52,22 +52,22 @@
                                         </textFieldCell>
                                     </textField>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="aSf-NN-EXu">
-                                        <rect key="frame" x="0.0" y="0.0" width="640" height="1"/>
+                                        <rect key="frame" x="0.0" y="40" width="640" height="3"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="1" id="JmG-Q4-EWm"/>
+                                            <constraint firstAttribute="height" constant="3" id="JmG-Q4-EWm"/>
                                         </constraints>
                                     </customView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="1uO-ac-4QX"/>
+                                    <constraint firstAttribute="height" constant="43" id="1uO-ac-4QX"/>
+                                    <constraint firstItem="aSf-NN-EXu" firstAttribute="top" secondItem="5eT-b4-flP" secondAttribute="top" id="5ch-UL-D4j"/>
                                     <constraint firstItem="zHy-N6-K3a" firstAttribute="leading" secondItem="5eT-b4-flP" secondAttribute="leading" id="F8e-Tq-sdG"/>
                                     <constraint firstItem="aSf-NN-EXu" firstAttribute="leading" secondItem="5eT-b4-flP" secondAttribute="leading" id="HDd-XH-Vz2"/>
-                                    <constraint firstItem="zHy-N6-K3a" firstAttribute="top" secondItem="5eT-b4-flP" secondAttribute="top" id="OrF-wT-U0V"/>
-                                    <constraint firstItem="2ml-Y1-izE" firstAttribute="leading" secondItem="zHy-N6-K3a" secondAttribute="trailing" constant="8" id="Pd0-wP-ZcQ"/>
-                                    <constraint firstAttribute="bottom" secondItem="aSf-NN-EXu" secondAttribute="bottom" id="YfX-61-bs7"/>
+                                    <constraint firstItem="2ml-Y1-izE" firstAttribute="leading" secondItem="zHy-N6-K3a" secondAttribute="trailing" id="Pd0-wP-ZcQ"/>
                                     <constraint firstAttribute="trailing" secondItem="aSf-NN-EXu" secondAttribute="trailing" id="ZQZ-RR-1qi"/>
                                     <constraint firstAttribute="bottom" secondItem="2ml-Y1-izE" secondAttribute="bottom" id="cSS-js-oG7"/>
                                     <constraint firstAttribute="trailing" secondItem="2ml-Y1-izE" secondAttribute="trailing" constant="8" id="w5o-Hc-kCu"/>
+                                    <constraint firstAttribute="bottom" secondItem="zHy-N6-K3a" secondAttribute="bottom" id="yyp-4H-Tix"/>
                                 </constraints>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="Ps0-Dg-pIZ" customClass="PlayerControl" customModule="WindowExplorer" customModuleProvider="target">

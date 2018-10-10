@@ -19,6 +19,8 @@ class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollec
     @IBOutlet weak var toggleButtonArea: NSView!
     @IBOutlet weak var volumeButtonArea: NSView!
     @IBOutlet weak var playerControlArea: NSView!
+    @IBOutlet weak var toggleLeftButton: ImageView!
+    @IBOutlet weak var toggleRightButton: ImageView!
 
     var appID: Int!
     var gestureManager: GestureManager!
@@ -32,6 +34,8 @@ class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollec
         static let pageControlHeight: CGFloat = 20
         static let unfocusThresholdPercent: CGFloat = 0.15
         static let fadeAnimationDuration = 0.5
+        static let pageControlIndicatorSize: CGFloat = 12
+        static let toggleAnimationDuration = 0.4
     }
 
 
@@ -43,6 +47,7 @@ class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollec
         setupView()
         setupGestures()
         setupCollectionView()
+        setupToggleButtons()
         setupPageControl()
     }
 
@@ -103,17 +108,48 @@ class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollec
         playControlScrubGesture.gestureUpdated = { [weak self] gesture in
             self?.didScrubOnView(gesture)
         }
+
+        let leftToggleTap = TapGestureRecognizer()
+        gestureManager.add(leftToggleTap, to: toggleLeftButton)
+        leftToggleTap.gestureUpdated = { [weak self] gesture in
+            if gesture.state == .ended {
+                self?.toggleInfoItem(forward: false)
+            }
+        }
+
+        let rightToggleTap = TapGestureRecognizer()
+        gestureManager.add(rightToggleTap, to: toggleRightButton)
+        rightToggleTap.gestureUpdated = { [weak self] gesture in
+            if gesture.state == .ended {
+                self?.toggleInfoItem(forward: true)
+            }
+        }
+    }
+
+    private func setupToggleButtons() {
+        toggleLeftButton.wantsLayer = true
+        toggleLeftButton.layer?.cornerRadius = toggleLeftButton.frame.width / 2
+        toggleLeftButton.layer?.backgroundColor = NSColor.gray.cgColor
+        let leftButtonImage = NSImage(named: "left-arrow-icon")
+        toggleLeftButton.set(leftButtonImage, scaling: .center)
+        toggleRightButton.wantsLayer = true
+        toggleRightButton.layer?.cornerRadius = toggleRightButton.frame.width / 2
+        toggleRightButton.layer?.backgroundColor = NSColor.gray.cgColor
+        let rightButtonImage = NSImage(named: "right-arrow-icon")
+        toggleRightButton.set(rightButtonImage, scaling: .center)
     }
 
     private func setupPageControl() {
-        pageControl.color = .white
+        pageControl.color = style.menuSelectedColor
+        pageControl.unselectedColor = NSColor.gray
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.wantsLayer = true
+        pageControl.indicatorSize = Constants.pageControlIndicatorSize
         view.addSubview(pageControl)
 
         pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        pageControl.centerYAnchor.constraint(equalTo: toggleLeftButton.centerYAnchor).isActive = true
         pageControl.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        pageControl.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         pageControl.heightAnchor.constraint(equalToConstant: Constants.pageControlHeight).isActive = true
         pageControl.numberOfPages = UInt(infoItems.count)
     }
@@ -247,5 +283,17 @@ class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollec
         let margin = offset.truncatingRemainder(dividingBy: 1)
         let distance = margin < 0.5 ? margin : 1 - margin
         return distance > percent
+    }
+
+    private func toggleInfoItem(forward: Bool) {
+        playControlScrubGesture.invalidate()
+        focusedInfoView?.unfocus()
+        let current = CGFloat(pageControl.selectedPage)
+        let target = forward ? current + 1 : current - 1
+        let maxIndex = max(infoItems.count - 1, 0)
+        let index = clamp(target, min: 0, max: CGFloat(maxIndex))
+        let rect = infoCollectionView.visibleRect
+        let origin = CGPoint(x: rect.width * index, y: 0)
+        animateCollectionView(to: origin, duration: Constants.toggleAnimationDuration, for: Int(index))
     }
 }

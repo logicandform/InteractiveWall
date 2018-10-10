@@ -11,7 +11,6 @@ enum WindowType: Equatable {
     case pdf(Media)
     case search
     case menu(app: Int)
-    case settings(app: Int)
     case info(app: Int)
     case border(app: Int)
     case collection(Record)
@@ -54,8 +53,6 @@ enum WindowType: Equatable {
             return style.searchWindowFrame
         case .menu:
             return CGSize(width: style.menuWindowWidth, height: Configuration.touchScreen.frameSize.height)
-        case .settings:
-            return style.settingsWindowSize
         case .info:
             return style.infoWindowSize
         case let .border(appID):
@@ -76,7 +73,7 @@ enum WindowType: Equatable {
             return style.borderWindowLevel
         case .record, .image, .player, .pdf, .search, .collection:
             return style.recordWindowLevel
-        case .menu, .settings, .info:
+        case .menu, .info:
             return style.menuWindowLevel
         case .indicator:
             return style.touchIndicatorWindowLevel

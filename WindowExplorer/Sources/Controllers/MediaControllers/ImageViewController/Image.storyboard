@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="stH-E5-D9l">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="stH-E5-D9l">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -10,11 +11,11 @@
             <objects>
                 <viewController id="stH-E5-D9l" customClass="ImageViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="sSn-s5-6HM">
-                        <rect key="frame" x="0.0" y="0.0" width="640" height="432"/>
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="435"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="529-pd-R3M">
-                                <rect key="frame" x="0.0" y="392" width="640" height="40"/>
+                                <rect key="frame" x="0.0" y="392" width="640" height="43"/>
                                 <subviews>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="NkP-e9-NC4">
                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -39,13 +40,13 @@
                                         </constraints>
                                     </customView>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="CLy-R4-WR0">
-                                        <rect key="frame" x="0.0" y="0.0" width="640" height="1"/>
+                                        <rect key="frame" x="0.0" y="40" width="640" height="3"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="1" id="Of4-Vh-d8P"/>
+                                            <constraint firstAttribute="height" constant="3" id="Of4-Vh-d8P"/>
                                         </constraints>
                                     </customView>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1GK-FO-lwr">
-                                        <rect key="frame" x="46" y="0.0" width="588" height="29"/>
+                                        <rect key="frame" x="38" y="0.0" width="596" height="29"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="29" id="g5g-AP-8FI"/>
                                         </constraints>
@@ -57,13 +58,13 @@
                                     </textField>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="1GK-FO-lwr" firstAttribute="leading" secondItem="NkP-e9-NC4" secondAttribute="trailing" constant="8" id="0B4-eH-V77"/>
+                                    <constraint firstItem="1GK-FO-lwr" firstAttribute="leading" secondItem="NkP-e9-NC4" secondAttribute="trailing" id="0B4-eH-V77"/>
                                     <constraint firstItem="CLy-R4-WR0" firstAttribute="leading" secondItem="529-pd-R3M" secondAttribute="leading" id="5zL-TU-iIC"/>
-                                    <constraint firstAttribute="bottom" secondItem="CLy-R4-WR0" secondAttribute="bottom" id="8Yr-aK-Vqd"/>
                                     <constraint firstItem="NkP-e9-NC4" firstAttribute="leading" secondItem="529-pd-R3M" secondAttribute="leading" id="N2c-XN-sdy"/>
-                                    <constraint firstItem="NkP-e9-NC4" firstAttribute="top" secondItem="529-pd-R3M" secondAttribute="top" id="f5g-dx-4cY"/>
-                                    <constraint firstAttribute="height" constant="40" id="fwT-XL-vNP"/>
+                                    <constraint firstAttribute="height" constant="43" id="fwT-XL-vNP"/>
                                     <constraint firstAttribute="trailing" secondItem="CLy-R4-WR0" secondAttribute="trailing" id="iBy-PR-Kju"/>
+                                    <constraint firstAttribute="bottom" secondItem="NkP-e9-NC4" secondAttribute="bottom" id="lh6-De-OMz"/>
+                                    <constraint firstItem="CLy-R4-WR0" firstAttribute="top" secondItem="529-pd-R3M" secondAttribute="top" id="o52-H3-Pz7"/>
                                     <constraint firstAttribute="bottom" secondItem="1GK-FO-lwr" secondAttribute="bottom" id="ptd-aS-BrU"/>
                                     <constraint firstAttribute="trailing" secondItem="1GK-FO-lwr" secondAttribute="trailing" constant="8" id="xas-Zt-nVk"/>
                                 </constraints>
@@ -85,11 +86,11 @@
                                     <constraint firstAttribute="width" constant="624" id="etP-mP-7KU"/>
                                     <constraint firstAttribute="height" constant="352" id="qA2-gP-fqc"/>
                                 </constraints>
-                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="vQy-Dv-4a6">
+                                <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="vQy-Dv-4a6">
                                     <rect key="frame" x="0.0" y="336" width="624" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="nVi-Xv-HAv">
+                                <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="nVi-Xv-HAv">
                                     <rect key="frame" x="608" y="0.0" width="16" height="352"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>

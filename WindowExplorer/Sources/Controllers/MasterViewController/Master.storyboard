@@ -11,7 +11,7 @@
             <objects>
                 <viewController id="aqO-32-87F" customClass="MasterViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="Wc8-TP-M8l">
-                        <rect key="frame" x="0.0" y="0.0" width="735" height="393"/>
+                        <rect key="frame" x="0.0" y="0.0" width="735" height="396"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mSd-7i-Rsz">
@@ -32,7 +32,7 @@
                                 </popUpButtonCell>
                             </popUpButton>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="3F4-Er-svo">
-                                <rect key="frame" x="0.0" y="353" width="735" height="40"/>
+                                <rect key="frame" x="0.0" y="353" width="735" height="43"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5jl-LF-iwh">
                                         <rect key="frame" x="18" y="0.0" width="699" height="29"/>
@@ -46,20 +46,20 @@
                                         </textFieldCell>
                                     </textField>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="zfK-zf-EJw">
-                                        <rect key="frame" x="0.0" y="0.0" width="735" height="1"/>
+                                        <rect key="frame" x="0.0" y="40" width="735" height="3"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="1" id="xY5-oA-Mx7"/>
+                                            <constraint firstAttribute="height" constant="3" id="xY5-oA-Mx7"/>
                                         </constraints>
                                     </customView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="zfK-zf-EJw" secondAttribute="trailing" id="2kW-oa-S1q"/>
                                     <constraint firstAttribute="trailing" secondItem="5jl-LF-iwh" secondAttribute="trailing" constant="20" id="462-Bn-4IQ"/>
+                                    <constraint firstItem="zfK-zf-EJw" firstAttribute="top" secondItem="3F4-Er-svo" secondAttribute="top" id="Sgb-vB-20j"/>
                                     <constraint firstItem="zfK-zf-EJw" firstAttribute="leading" secondItem="3F4-Er-svo" secondAttribute="leading" id="XTD-DK-107"/>
                                     <constraint firstAttribute="bottom" secondItem="5jl-LF-iwh" secondAttribute="bottom" id="aKe-o6-ekP"/>
                                     <constraint firstItem="5jl-LF-iwh" firstAttribute="leading" secondItem="3F4-Er-svo" secondAttribute="leading" constant="20" id="dIg-rg-Sn8"/>
-                                    <constraint firstAttribute="height" constant="40" id="ftW-2H-iE0"/>
-                                    <constraint firstAttribute="bottom" secondItem="zfK-zf-EJw" secondAttribute="bottom" id="sXs-lK-Ael"/>
+                                    <constraint firstAttribute="height" constant="43" id="ftW-2H-iE0"/>
                                 </constraints>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="ymn-JJ-20y">

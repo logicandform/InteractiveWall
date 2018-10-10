@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.AVKitIBPlugin" version="14113"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.AVKitIBPlugin" version="14313.18"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
-        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="InfoItemView" customModule="WindowExplorer" customModuleProvider="target">
@@ -28,10 +27,10 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="4R8-hS-CIt">
-                    <rect key="frame" x="0.0" y="400" width="500" height="40"/>
+                    <rect key="frame" x="0.0" y="397" width="500" height="43"/>
                     <subviews>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mjG-G9-Km3">
-                            <rect key="frame" x="46" y="0.0" width="448" height="29"/>
+                            <rect key="frame" x="38" y="0.0" width="456" height="29"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="29" id="z8c-xa-5m8"/>
                             </constraints>
@@ -42,9 +41,9 @@
                             </textFieldCell>
                         </textField>
                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="rXP-0a-K7j">
-                            <rect key="frame" x="0.0" y="0.0" width="500" height="1"/>
+                            <rect key="frame" x="0.0" y="40" width="500" height="3"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="1" id="nK4-vi-4w0"/>
+                                <constraint firstAttribute="height" constant="3" id="nK4-vi-4w0"/>
                             </constraints>
                         </customView>
                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="HGm-xj-jIM">
@@ -61,7 +60,6 @@
                             </subviews>
                             <constraints>
                                 <constraint firstItem="c3j-DD-CvL" firstAttribute="centerY" secondItem="HGm-xj-jIM" secondAttribute="centerY" id="1In-VJ-gqy"/>
-                                <constraint firstAttribute="width" secondItem="HGm-xj-jIM" secondAttribute="height" multiplier="1:1" id="3uY-sg-Qcu"/>
                                 <constraint firstItem="c3j-DD-CvL" firstAttribute="centerX" secondItem="HGm-xj-jIM" secondAttribute="centerX" id="G3v-9v-aL2"/>
                                 <constraint firstAttribute="height" constant="40" id="Jk6-2q-3tH"/>
                                 <constraint firstAttribute="width" constant="40" id="Pca-gr-Cut"/>
@@ -69,21 +67,19 @@
                         </customView>
                     </subviews>
                     <constraints>
-                        <constraint firstItem="HGm-xj-jIM" firstAttribute="top" secondItem="4R8-hS-CIt" secondAttribute="top" id="3JX-Uh-8Vm"/>
-                        <constraint firstAttribute="height" constant="40" id="4aX-qH-Ajh"/>
+                        <constraint firstItem="rXP-0a-K7j" firstAttribute="top" secondItem="4R8-hS-CIt" secondAttribute="top" id="3t5-iQ-7Tm"/>
+                        <constraint firstAttribute="height" constant="43" id="4aX-qH-Ajh"/>
                         <constraint firstAttribute="trailing" secondItem="rXP-0a-K7j" secondAttribute="trailing" id="H3G-FA-nHU"/>
                         <constraint firstItem="rXP-0a-K7j" firstAttribute="leading" secondItem="4R8-hS-CIt" secondAttribute="leading" id="JF5-Lg-B0M"/>
                         <constraint firstAttribute="trailing" secondItem="mjG-G9-Km3" secondAttribute="trailing" constant="8" id="Phx-4e-fdb"/>
                         <constraint firstAttribute="bottom" secondItem="HGm-xj-jIM" secondAttribute="bottom" id="U71-j8-MXG"/>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="UQB-XO-s81"/>
                         <constraint firstAttribute="bottom" secondItem="mjG-G9-Km3" secondAttribute="bottom" id="Vtn-0L-ZE0"/>
-                        <constraint firstItem="mjG-G9-Km3" firstAttribute="leading" secondItem="HGm-xj-jIM" secondAttribute="trailing" constant="8" id="X4i-el-0nj"/>
+                        <constraint firstItem="mjG-G9-Km3" firstAttribute="leading" secondItem="HGm-xj-jIM" secondAttribute="trailing" id="X4i-el-0nj"/>
                         <constraint firstItem="HGm-xj-jIM" firstAttribute="leading" secondItem="4R8-hS-CIt" secondAttribute="leading" id="ZqJ-oQ-KAd"/>
-                        <constraint firstAttribute="bottom" secondItem="rXP-0a-K7j" secondAttribute="bottom" id="ncR-SN-Rdk"/>
                     </constraints>
                 </customView>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="FWQ-Qg-iVl" customClass="ImageView" customModule="WindowExplorer" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="119" width="500" height="281"/>
+                    <rect key="frame" x="0.0" y="116" width="500" height="281"/>
                     <subviews>
                         <avPlayerView controlsStyle="none" translatesAutoresizingMaskIntoConstraints="NO" id="GHD-oG-q4Y">
                             <rect key="frame" x="0.0" y="0.0" width="500" height="281"/>
@@ -95,7 +91,7 @@
                             </constraints>
                         </customView>
                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="72A-hH-2aC">
-                            <rect key="frame" x="215" y="106" width="70" height="70"/>
+                            <rect key="frame" x="215" y="105" width="70" height="70"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="70" id="DmV-De-r8p"/>
                                 <constraint firstAttribute="width" constant="70" id="eOC-Fc-Pxa"/>
@@ -118,7 +114,7 @@
                     </constraints>
                 </customView>
                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CQY-jO-dcr">
-                    <rect key="frame" x="20" y="99" width="460" height="0.0"/>
+                    <rect key="frame" x="20" y="96" width="460" height="0.0"/>
                 </stackView>
             </subviews>
             <constraints>

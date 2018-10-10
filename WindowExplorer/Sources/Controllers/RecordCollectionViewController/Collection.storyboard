@@ -11,11 +11,11 @@
             <objects>
                 <viewController id="Br5-Pb-O0I" customClass="RecordCollectionViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="I0N-k6-TNG">
-                        <rect key="frame" x="0.0" y="0.0" width="416" height="720"/>
+                        <rect key="frame" x="0.0" y="0.0" width="416" height="723"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="oMV-1r-Wl3">
-                                <rect key="frame" x="0.0" y="680" width="416" height="40"/>
+                                <rect key="frame" x="0.0" y="680" width="416" height="43"/>
                                 <subviews>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="6MS-GT-ooe">
                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -37,7 +37,7 @@
                                         </constraints>
                                     </customView>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D3Z-3E-NqK">
-                                        <rect key="frame" x="46" y="0.0" width="364" height="29"/>
+                                        <rect key="frame" x="38" y="0.0" width="372" height="29"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="29" id="IgU-C2-ruc"/>
                                         </constraints>
@@ -48,21 +48,21 @@
                                         </textFieldCell>
                                     </textField>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="Os9-An-9ST">
-                                        <rect key="frame" x="0.0" y="0.0" width="416" height="1"/>
+                                        <rect key="frame" x="0.0" y="40" width="416" height="3"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="1" id="Ig1-Mp-S28"/>
+                                            <constraint firstAttribute="height" constant="3" id="Ig1-Mp-S28"/>
                                         </constraints>
                                     </customView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="D3Z-3E-NqK" secondAttribute="bottom" id="2iB-Sp-WJ7"/>
-                                    <constraint firstItem="D3Z-3E-NqK" firstAttribute="leading" secondItem="6MS-GT-ooe" secondAttribute="trailing" constant="8" id="EZQ-8I-LfO"/>
-                                    <constraint firstAttribute="height" constant="40" id="JBo-yF-CtL"/>
+                                    <constraint firstAttribute="bottom" secondItem="6MS-GT-ooe" secondAttribute="bottom" id="3MM-1P-pUf"/>
+                                    <constraint firstItem="D3Z-3E-NqK" firstAttribute="leading" secondItem="6MS-GT-ooe" secondAttribute="trailing" id="EZQ-8I-LfO"/>
+                                    <constraint firstAttribute="height" constant="43" id="JBo-yF-CtL"/>
                                     <constraint firstItem="Os9-An-9ST" firstAttribute="leading" secondItem="oMV-1r-Wl3" secondAttribute="leading" id="Nk9-ov-K78"/>
-                                    <constraint firstItem="6MS-GT-ooe" firstAttribute="top" secondItem="oMV-1r-Wl3" secondAttribute="top" id="fNK-ox-cu5"/>
+                                    <constraint firstItem="Os9-An-9ST" firstAttribute="top" secondItem="oMV-1r-Wl3" secondAttribute="top" id="POk-7Q-naC"/>
                                     <constraint firstAttribute="trailing" secondItem="D3Z-3E-NqK" secondAttribute="trailing" constant="8" id="j0g-17-EcN"/>
                                     <constraint firstItem="6MS-GT-ooe" firstAttribute="leading" secondItem="oMV-1r-Wl3" secondAttribute="leading" id="jM9-Jx-7ru"/>
-                                    <constraint firstAttribute="bottom" secondItem="Os9-An-9ST" secondAttribute="bottom" id="phg-Oo-EG7"/>
                                     <constraint firstAttribute="trailing" secondItem="Os9-An-9ST" secondAttribute="trailing" id="wLb-bN-M3W"/>
                                 </constraints>
                             </customView>
@@ -90,11 +90,11 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="660" placeholder="YES" id="FZD-Ie-5pC"/>
                                 </constraints>
-                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="5BZ-9f-VGD">
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="5BZ-9f-VGD">
                                     <rect key="frame" x="-100" y="-100" width="300" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="zpx-AJ-fLv">
+                                <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="zpx-AJ-fLv">
                                     <rect key="frame" x="360" y="0.0" width="16" height="660"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>

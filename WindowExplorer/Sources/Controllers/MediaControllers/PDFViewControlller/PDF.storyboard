@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="1Ij-Lj-j0K">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="1Ij-Lj-j0K">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
-        <plugIn identifier="com.apple.pdfkit.ibplugin" version="14113"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
+        <plugIn identifier="com.apple.pdfkit.ibplugin" version="14313.18"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -11,11 +12,11 @@
             <objects>
                 <viewController id="1Ij-Lj-j0K" customClass="PDFViewController" customModule="WindowExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="l0O-E9-8FM">
-                        <rect key="frame" x="0.0" y="0.0" width="640" height="762"/>
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="765"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="QK0-JK-wDg">
-                                <rect key="frame" x="0.0" y="722" width="640" height="40"/>
+                                <rect key="frame" x="0.0" y="722" width="640" height="43"/>
                                 <subviews>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="ty9-rb-Gm3">
                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -40,7 +41,7 @@
                                         </constraints>
                                     </customView>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FZL-O2-tAp">
-                                        <rect key="frame" x="46" y="0.0" width="588" height="29"/>
+                                        <rect key="frame" x="38" y="0.0" width="596" height="29"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="29" id="zkM-Nh-jSx"/>
                                         </constraints>
@@ -51,21 +52,21 @@
                                         </textFieldCell>
                                     </textField>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="ARk-O2-Nsv">
-                                        <rect key="frame" x="0.0" y="0.0" width="640" height="1"/>
+                                        <rect key="frame" x="0.0" y="40" width="640" height="3"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="1" id="5oA-8z-Nth"/>
+                                            <constraint firstAttribute="height" constant="3" id="5oA-8z-Nth"/>
                                         </constraints>
                                     </customView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="ARk-O2-Nsv" secondAttribute="trailing" id="3bP-Wp-TaC"/>
                                     <constraint firstAttribute="trailing" secondItem="FZL-O2-tAp" secondAttribute="trailing" constant="8" id="HUz-sI-IYW"/>
-                                    <constraint firstAttribute="height" constant="40" id="LRm-zF-CLJ"/>
+                                    <constraint firstAttribute="height" constant="43" id="LRm-zF-CLJ"/>
                                     <constraint firstItem="ty9-rb-Gm3" firstAttribute="leading" secondItem="QK0-JK-wDg" secondAttribute="leading" id="NzT-fa-jBn"/>
-                                    <constraint firstAttribute="bottom" secondItem="ARk-O2-Nsv" secondAttribute="bottom" id="Qif-PN-c2J"/>
-                                    <constraint firstItem="ty9-rb-Gm3" firstAttribute="top" secondItem="QK0-JK-wDg" secondAttribute="top" id="hOk-Ce-IEw"/>
+                                    <constraint firstItem="ARk-O2-Nsv" firstAttribute="top" secondItem="QK0-JK-wDg" secondAttribute="top" id="f0z-ld-W6M"/>
+                                    <constraint firstAttribute="bottom" secondItem="ty9-rb-Gm3" secondAttribute="bottom" id="k78-yh-hSl"/>
                                     <constraint firstAttribute="bottom" secondItem="FZL-O2-tAp" secondAttribute="bottom" id="oo9-Nf-O6X"/>
-                                    <constraint firstItem="FZL-O2-tAp" firstAttribute="leading" secondItem="ty9-rb-Gm3" secondAttribute="trailing" constant="8" id="rI3-eM-s9N"/>
+                                    <constraint firstItem="FZL-O2-tAp" firstAttribute="leading" secondItem="ty9-rb-Gm3" secondAttribute="trailing" id="rI3-eM-s9N"/>
                                     <constraint firstItem="ARk-O2-Nsv" firstAttribute="leading" secondItem="QK0-JK-wDg" secondAttribute="leading" id="u6a-uv-3ot"/>
                                 </constraints>
                             </customView>
@@ -102,11 +103,11 @@
                                     <constraint firstItem="LrV-6C-x9X" firstAttribute="height" secondItem="MNf-ca-Rd2" secondAttribute="height" id="ggm-PD-AJQ"/>
                                     <constraint firstAttribute="height" constant="682" id="pM5-pO-hv8"/>
                                 </constraints>
-                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="YnQ-E6-B5f">
+                                <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="YnQ-E6-B5f">
                                     <rect key="frame" x="0.0" y="666" width="516" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="Soh-uV-gKh">
+                                <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="Soh-uV-gKh">
                                     <rect key="frame" x="500" y="0.0" width="16" height="682"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
@@ -135,7 +136,7 @@
                                             <color key="backgroundColor" red="0.90063423409999999" green="0.90063423409999999" blue="0.90063423409999999" alpha="0.0" colorSpace="custom" customColorSpace="displayP3"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn identifier="" width="108" minWidth="40" maxWidth="1000" id="uCv-a1-Y0r">
+                                                <tableColumn width="108" minWidth="40" maxWidth="1000" id="uCv-a1-Y0r">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -185,11 +186,11 @@
                                     <constraint firstAttribute="width" constant="108" id="H5r-GM-4lQ"/>
                                 </constraints>
                                 <edgeInsets key="contentInsets" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
-                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" controlSize="small" horizontal="YES" id="Gn9-mn-svs">
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" controlSize="small" horizontal="YES" id="Gn9-mn-svs">
                                     <rect key="frame" x="-100" y="-100" width="100" height="11"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" controlSize="small" horizontal="NO" id="TJT-xb-Vh8">
+                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" controlSize="small" horizontal="NO" id="TJT-xb-Vh8">
                                     <rect key="frame" x="224" y="17" width="11" height="102"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>

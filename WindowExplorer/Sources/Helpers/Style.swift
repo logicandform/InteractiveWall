@@ -3,6 +3,7 @@
 import Foundation
 import AppKit
 
+
 final class Style {
 
     // Colors
@@ -20,8 +21,6 @@ final class Style {
     let menuSelectedColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
     let menuUnselectedColor = NSColor(calibratedRed: 1, green: 1, blue: 1, alpha: 1)
     let menuButtonBackgroundColor = NSColor(deviceWhite: 0.2, alpha: 1)
-    let imageFilterTypeColor = NSColor.red
-    let videoFilterTypeColor = NSColor.cyan
 
     // Windows
     let recordWindowSize = CGSize(width: 416, height: 650)
@@ -47,11 +46,11 @@ final class Style {
     let descriptionTrailingSpace: CGFloat = 10
     let missingDateTitleTrailingSpace: CGFloat = 47
 
-    // Controllers
-    let controllerOffset = 50
+    // Window displacement
+    let windowOffset = CGVector(dx: 25, dy: -40)
 
     // Record Controller
-    let relatedRecordsMaxSize = CGSize(width: 300, height: 544)
+    let relatedRecordsMaxSize = CGSize(width: 300, height: 565)
     let relatedItemColor = NSColor(calibratedRed: 75/255, green: 91/255, blue: 100/255, alpha: 1)
     let noRelatedItemsColor = NSColor(calibratedRed: 33/255, green: 33/255, blue: 33/255, alpha: 1)
     let relatedItemBackgroundColor = NSColor(calibratedRed: 0.08, green: 0.10, blue: 0.11, alpha: 1)
@@ -65,16 +64,6 @@ final class Style {
     let menuLockIconPosition = CGPoint(x: -3, y: 3)
     let menuSecondarySelectedColor = NSColor(calibratedRed: 0.06, green: 0.28, blue: 0.24, alpha: 1)
     let menuAccessibilityIconColor = NSColor(calibratedRed: 0, green: 0, blue: 0, alpha: 1)
-
-    // Settings Controller
-    let settingsWindowSize = CGSize(width: 275, height: 187)
-    let artifactSecondarySelectedColor = NSColor(calibratedRed: 0.17, green: 0, blue: 0.27, alpha: 1)
-    let schoolSecondarySelectedColor = NSColor(calibratedRed: 0, green: 0.19, blue: 0.32, alpha: 1)
-    let organizationSecondarySelectedColor = NSColor(calibratedRed: 0, green: 0.25, blue: 0.16, alpha: 1)
-    let eventSecondarySelectedColor = NSColor(calibratedRed: 0.29, green: 0.07, blue: 0.16, alpha: 1)
-    let toggleUnselectedColor = NSColor(calibratedRed: 0.51, green: 0.62, blue: 0.65, alpha: 1)
-    let toggleSecondaryUnselectedColor = NSColor(calibratedRed: 0.16, green: 0.18, blue: 0.19, alpha: 1)
-    let toggleSwitchFrame = NSRect(x: 0, y: 0, width: 32, height: 16)
 
     // Border Controller
     let borderColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
@@ -104,7 +93,7 @@ final class Style {
         return [.paragraphStyle: paragraphStyle,
                 .font: font,
                 .foregroundColor: NSColor.white,
-                .kern: 1.5]
+                .kern: 1.0]
     }
 
     var relatedItemsTitleAttributes: [NSAttributedString.Key: Any] {
@@ -112,7 +101,7 @@ final class Style {
 
         return [.font: font,
                 .foregroundColor: NSColor.white,
-                .kern: 0.5,
+                .kern: 1.0,
                 .baselineOffset: font.fontName == "Soleil" ? 1 : 0]
     }
 

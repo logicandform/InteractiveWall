@@ -19,6 +19,12 @@ public class PageControl: NSControl {
         }
     }
 
+    public var unselectedColor = NSColor.gray {
+        didSet {
+            redrawIndicators()
+        }
+    }
+
     public var indicatorSize: CGFloat = 7 {
         didSet {
             redrawIndicators()
@@ -78,7 +84,7 @@ public class PageControl: NSControl {
                 case (.dot, true), (.circle, true):
                     color.setFill()
                 case (.dot, false):
-                    color.withAlphaComponent(0.33).setFill()
+                    unselectedColor.setFill()
                 case (.circle, false):
                     color.setStroke()
                     fill = false

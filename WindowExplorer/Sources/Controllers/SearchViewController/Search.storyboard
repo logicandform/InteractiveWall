@@ -15,7 +15,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gbE-u6-ffb" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="710" y="0.0" width="350" height="505"/>
+                                <rect key="frame" x="710" y="-3" width="350" height="505"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="mRt-Zl-nHF">
                                     <rect key="frame" x="0.0" y="0.0" width="350" height="505"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -49,7 +49,7 @@
                                 </scroller>
                             </scrollView>
                             <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3LC-eL-E7F" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="355" y="0.0" width="350" height="505"/>
+                                <rect key="frame" x="355" y="-3" width="350" height="505"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="RR8-Bh-xmj">
                                     <rect key="frame" x="0.0" y="0.0" width="350" height="505"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -83,7 +83,7 @@
                                 </scroller>
                             </scrollView>
                             <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rvJ-Ae-W65" customClass="FadingScrollView" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="350" height="505"/>
+                                <rect key="frame" x="0.0" y="-3" width="350" height="505"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="xtD-cc-2HP">
                                     <rect key="frame" x="0.0" y="0.0" width="350" height="505"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -117,7 +117,7 @@
                                 </scroller>
                             </scrollView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="oGe-AJ-Idu">
-                                <rect key="frame" x="0.0" y="510" width="1060" height="40"/>
+                                <rect key="frame" x="0.0" y="507" width="1060" height="43"/>
                                 <subviews>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="sOu-1b-tUh">
                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -139,9 +139,9 @@
                                         </constraints>
                                     </customView>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="4S0-Hp-abU">
-                                        <rect key="frame" x="0.0" y="0.0" width="1060" height="1"/>
+                                        <rect key="frame" x="0.0" y="40" width="1060" height="3"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="1" id="fef-et-hpC"/>
+                                            <constraint firstAttribute="height" constant="3" id="fef-et-hpC"/>
                                         </constraints>
                                     </customView>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4sB-bV-Fph">
@@ -199,17 +199,16 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="4S0-Hp-abU" firstAttribute="leading" secondItem="oGe-AJ-Idu" secondAttribute="leading" id="7oq-mx-01c"/>
-                                    <constraint firstItem="sOu-1b-tUh" firstAttribute="top" secondItem="oGe-AJ-Idu" secondAttribute="top" id="8W0-kf-FSW"/>
+                                    <constraint firstAttribute="bottom" secondItem="sOu-1b-tUh" secondAttribute="bottom" id="ARB-mS-elh"/>
                                     <constraint firstAttribute="trailing" secondItem="w51-de-YGS" secondAttribute="trailing" id="CMY-xu-ZAM"/>
                                     <constraint firstAttribute="bottom" secondItem="jVk-aJ-U1i" secondAttribute="bottom" id="K7b-4P-toa"/>
-                                    <constraint firstAttribute="bottom" secondItem="4S0-Hp-abU" secondAttribute="bottom" id="KBu-KV-dJ7"/>
                                     <constraint firstAttribute="bottom" secondItem="4sB-bV-Fph" secondAttribute="bottom" id="R3t-b0-Jby"/>
-                                    <constraint firstAttribute="height" constant="40" id="R4R-AN-tL4"/>
+                                    <constraint firstAttribute="height" constant="43" id="R4R-AN-tL4"/>
                                     <constraint firstAttribute="bottom" secondItem="sam-yv-2oh" secondAttribute="bottom" id="WHi-b0-mpB"/>
-                                    <constraint firstItem="w51-de-YGS" firstAttribute="top" secondItem="oGe-AJ-Idu" secondAttribute="top" id="b0a-sh-t6J"/>
                                     <constraint firstItem="sOu-1b-tUh" firstAttribute="leading" secondItem="oGe-AJ-Idu" secondAttribute="leading" id="gxd-Jz-05U"/>
                                     <constraint firstAttribute="trailing" secondItem="4S0-Hp-abU" secondAttribute="trailing" id="lQr-hI-DAd"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="pc4-Li-HSc"/>
+                                    <constraint firstItem="4S0-Hp-abU" firstAttribute="top" secondItem="oGe-AJ-Idu" secondAttribute="top" id="rkH-8m-zig"/>
+                                    <constraint firstAttribute="bottom" secondItem="w51-de-YGS" secondAttribute="bottom" id="sBC-tf-EcX"/>
                                 </constraints>
                             </customView>
                         </subviews>

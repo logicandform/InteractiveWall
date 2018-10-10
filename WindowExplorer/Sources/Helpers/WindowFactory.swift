@@ -57,11 +57,6 @@ final class WindowFactory {
             let menuViewController = storyboard.instantiateController(withIdentifier: identifier) as! MenuViewController
             menuViewController.appID = appID
             return menuViewController
-        case let .settings(appID):
-            let storyboard = NSStoryboard(name: SettingsViewController.storyboard, bundle: .main)
-            let settingsViewController = storyboard.instantiateInitialController() as! SettingsViewController
-            settingsViewController.appID = appID
-            return settingsViewController
         case let .info(appID):
             let storyboard = NSStoryboard(name: InfoViewController.storyboard, bundle: .main)
             let infoViewController = storyboard.instantiateInitialController() as! InfoViewController
