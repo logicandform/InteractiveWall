@@ -197,10 +197,21 @@
                                     <action selector="garbageButtonClicked:" target="aqO-32-87F" id="vVp-yE-KkO"/>
                                 </connections>
                             </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Q2W-Rn-RQl">
+                                <rect key="frame" x="488" y="209" width="221" height="18"/>
+                                <buttonCell key="cell" type="check" title="Prevent windows from timing out" bezelStyle="regularSquare" imagePosition="left" inset="2" id="8hi-Wq-cmR">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="presentationCheckboxClicked:" target="aqO-32-87F" id="yaW-9R-tDD"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="1Sz-r8-D2k" secondAttribute="trailing" constant="12" id="7iO-r8-k95"/>
                             <constraint firstItem="ymn-JJ-20y" firstAttribute="leading" secondItem="Wc8-TP-M8l" secondAttribute="leading" id="A2B-Ag-5b4"/>
+                            <constraint firstItem="Q2W-Rn-RQl" firstAttribute="centerY" secondItem="mSd-7i-Rsz" secondAttribute="centerY" id="AVf-UE-3QW"/>
                             <constraint firstItem="ymn-JJ-20y" firstAttribute="top" secondItem="3F4-Er-svo" secondAttribute="bottom" id="Ade-h5-6lz"/>
                             <constraint firstItem="3F4-Er-svo" firstAttribute="top" secondItem="Wc8-TP-M8l" secondAttribute="top" id="BHZ-o8-3Ew"/>
                             <constraint firstItem="4nz-vb-GsC" firstAttribute="height" secondItem="ymn-JJ-20y" secondAttribute="height" id="BXO-Wk-5cq"/>
@@ -210,6 +221,7 @@
                             <constraint firstAttribute="bottom" secondItem="1Sz-r8-D2k" secondAttribute="bottom" constant="12" id="JcS-BY-2Z1"/>
                             <constraint firstItem="o2b-t2-z8m" firstAttribute="leading" secondItem="mSd-7i-Rsz" secondAttribute="leading" id="KuM-9e-E1L"/>
                             <constraint firstAttribute="trailing" secondItem="3F4-Er-svo" secondAttribute="trailing" id="Muf-zl-blU"/>
+                            <constraint firstItem="Q2W-Rn-RQl" firstAttribute="leading" secondItem="mSd-7i-Rsz" secondAttribute="trailing" constant="22" id="PZO-DS-juC"/>
                             <constraint firstItem="o2b-t2-z8m" firstAttribute="trailing" secondItem="mSd-7i-Rsz" secondAttribute="trailing" id="SJY-S9-Sie"/>
                             <constraint firstItem="mSd-7i-Rsz" firstAttribute="top" secondItem="ymn-JJ-20y" secondAttribute="bottom" constant="20" id="Uf7-T5-cOp"/>
                             <constraint firstItem="HgU-cY-X4N" firstAttribute="top" secondItem="3F4-Er-svo" secondAttribute="bottom" id="h55-9K-pCe"/>

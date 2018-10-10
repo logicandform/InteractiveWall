@@ -7,9 +7,16 @@ import PromiseKit
 import MacGestures
 
 
+enum PresentationMode {
+    case timeout
+    case lock
+}
+
+
 final class WindowManager {
     static let instance = WindowManager()
 
+    private(set) var mode = PresentationMode.timeout
     private(set) var windows = [NSWindow: GestureManager]()
     private var controllerForRecord = [RecordInfo: NSViewController]()
 
@@ -70,6 +77,17 @@ final class WindowManager {
         }
     }
 
+    func set(mode: PresentationMode) {
+        self.mode = mode
+
+        switch mode {
+        case .timeout:
+            resetAllWindowTimeouts()
+        case .lock:
+            break
+        }
+    }
+
 
     // MARK: Receiving Notifications
 
@@ -100,6 +118,14 @@ final class WindowManager {
             controller.setWindow(origin: origin, animate: true)
         } else if let controller = display(windowType, at: origin) {
             controllerForRecord[info] = controller
+        }
+    }
+
+    private func resetAllWindowTimeouts() {
+        for window in windows.keys {
+            if let controller = window.contentViewController as? BaseViewController {
+                controller.resetCloseWindowTimer()
+            }
         }
     }
 }

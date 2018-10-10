@@ -224,6 +224,11 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
         }
     }
 
+    @IBAction func presentationCheckboxClicked(_ sender: NSButton) {
+        let mode: PresentationMode = sender.state == .on ? .lock : .timeout
+        WindowManager.instance.set(mode: mode)
+    }
+
     @IBAction func garbageButtonClicked(_ sender: Any) {
         consoleLogs.removeAll()
         consoleCollectionView.reloadData()

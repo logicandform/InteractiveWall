@@ -74,6 +74,10 @@ class BaseViewController: NSViewController, GestureResponder {
     }
 
     func resetCloseWindowTimer() {
+        guard WindowManager.instance.mode == .timeout else {
+            return
+        }
+
         closeWindowTimer?.invalidate()
         closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Configuration.closeWindowTimeoutDuration, repeats: false) { [weak self] _ in
             self?.closeWindowTimerFired()
@@ -81,6 +85,10 @@ class BaseViewController: NSViewController, GestureResponder {
     }
 
     func closeWindowTimerFired() {
+        guard WindowManager.instance.mode == .timeout else {
+            return
+        }
+
         if let relationshipHelper = relationshipHelper {
             if relationshipHelper.isEmpty() {
                 animateViewOut()
