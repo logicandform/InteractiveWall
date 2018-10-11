@@ -85,7 +85,7 @@ class ClusterAnnotationView: MKAnnotationView, AnimatableAnnotation {
     private func performShrink() {
         CATransaction.begin()
         CATransaction.setAnimationDuration(Constants.animationDuration)
-        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut))
+        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeIn))
         for ring in rings {
             ring.transform = CATransform3DIdentity
         }
