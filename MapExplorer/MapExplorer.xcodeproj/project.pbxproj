@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		22004FEA20DDA66100B1E740 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22004FE920DDA66100B1E740 /* Settings.swift */; };
 		22004FED20E164AF00B1E740 /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22004FEC20E164AF00B1E740 /* TimelineViewController.swift */; };
 		22004FEF20E164CB00B1E740 /* Timeline.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22004FEE20E164CB00B1E740 /* Timeline.storyboard */; };
 		22004FF320E16CE200B1E740 /* TimelineItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22004FF120E16CE200B1E740 /* TimelineItemView.swift */; };
@@ -78,8 +77,8 @@
 		22FEF1D6202CFE8D001E9596 /* GestureDemoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1CF202CFE8C001E9596 /* GestureDemoController.swift */; };
 		32AAD6142F7887D6A13C4B56 /* Pods_All_MapExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4DC16D1E47B486A4E08792E /* Pods_All_MapExplorer.framework */; };
 		3F2FAB5D204F7D9E002EDF5D /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2FAB5C204F7D9E002EDF5D /* Collection.swift */; };
-		3F5FAAAC206043D700CF275B /* CircleAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FAAAB206043D700CF275B /* CircleAnnotation.swift */; };
-		3F5FAAAE206043E600CF275B /* CircleAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FAAAD206043E600CF275B /* CircleAnnotationView.swift */; };
+		3F5FAAAC206043D700CF275B /* RecordAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FAAAB206043D700CF275B /* RecordAnnotation.swift */; };
+		3F5FAAAE206043E600CF275B /* RecordAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FAAAD206043E600CF275B /* RecordAnnotationView.swift */; };
 		8F1A1CBB205B41AC00A59A84 /* FlippedMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1A1CBA205B41AC00A59A84 /* FlippedMapView.swift */; };
 		8F22945620773EA600731E78 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F22945520773EA600731E78 /* Math.swift */; };
 		8F64A1E720BEF88600F0D209 /* MapViewWithMiniMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F64A1E620BEF88600F0D209 /* MapViewWithMiniMap.swift */; };
@@ -131,7 +130,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		22004FE920DDA66100B1E740 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		22004FEC20E164AF00B1E740 /* TimelineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineViewController.swift; sourceTree = "<group>"; };
 		22004FEE20E164CB00B1E740 /* Timeline.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Timeline.storyboard; sourceTree = "<group>"; };
 		22004FF120E16CE200B1E740 /* TimelineItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineItemView.swift; sourceTree = "<group>"; };
@@ -209,8 +207,8 @@
 		26A4912457E23A30817143A3 /* Pods-All-MapExplorer-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-macOS.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-macOS/Pods-All-MapExplorer-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		39B2384F39CC84964B0970BD /* Pods-MapExplorer-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		3F2FAB5C204F7D9E002EDF5D /* Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
-		3F5FAAAB206043D700CF275B /* CircleAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleAnnotation.swift; sourceTree = "<group>"; };
-		3F5FAAAD206043E600CF275B /* CircleAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleAnnotationView.swift; sourceTree = "<group>"; };
+		3F5FAAAB206043D700CF275B /* RecordAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordAnnotation.swift; sourceTree = "<group>"; };
+		3F5FAAAD206043E600CF275B /* RecordAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordAnnotationView.swift; sourceTree = "<group>"; };
 		3F8603439C52E9F28AA284E0 /* Pods-All-MapExplorer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer/Pods-All-MapExplorer.release.xcconfig"; sourceTree = "<group>"; };
 		445B0D3435E4817E74A1D847 /* Pods-All-MapExplorer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer/Pods-All-MapExplorer.debug.xcconfig"; sourceTree = "<group>"; };
 		8F1A1CBA205B41AC00A59A84 /* FlippedMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlippedMapView.swift; sourceTree = "<group>"; };
@@ -416,7 +414,6 @@
 			isa = PBXGroup;
 			children = (
 				22A49871204749500024B46C /* Records */,
-				22004FE920DDA66100B1E740 /* Settings.swift */,
 				A44F1B6420FEAF8B005FEFD1 /* RecordDate.swift */,
 				A4A87619210015F200113F95 /* DateRange.swift */,
 			);
@@ -529,8 +526,8 @@
 		3F946244205C59750056933C /* Annotations */ = {
 			isa = PBXGroup;
 			children = (
-				3F5FAAAB206043D700CF275B /* CircleAnnotation.swift */,
-				3F5FAAAD206043E600CF275B /* CircleAnnotationView.swift */,
+				3F5FAAAB206043D700CF275B /* RecordAnnotation.swift */,
+				3F5FAAAD206043E600CF275B /* RecordAnnotationView.swift */,
 				8FBBD1CE20F5140900D9334C /* ClusterAnnotationView.swift */,
 			);
 			path = Annotations;
@@ -748,7 +745,6 @@
 				2200500420E2B8AC00B1E740 /* TimelineDataSource.swift in Sources */,
 				8F64A1E720BEF88600F0D209 /* MapViewWithMiniMap.swift in Sources */,
 				22D6F91E20B6836900C7FB5F /* NSApplication.swift in Sources */,
-				22004FEA20DDA66100B1E740 /* Settings.swift in Sources */,
 				226A451E214F246600860F0E /* RecordNetwork.swift in Sources */,
 				226A4524214F342200860F0E /* TouchScreen.swift in Sources */,
 				2290A03520E2E4BE00F028C4 /* FlippedCollectionView.swift in Sources */,
@@ -770,9 +766,9 @@
 				2290A03720E2F01500F028C4 /* TimelineHeaderView.swift in Sources */,
 				22004FF620E17A9400B1E740 /* TouchManager.swift in Sources */,
 				221C62A8203B57F7009493DA /* URL.swift in Sources */,
-				3F5FAAAC206043D700CF275B /* CircleAnnotation.swift in Sources */,
+				3F5FAAAC206043D700CF275B /* RecordAnnotation.swift in Sources */,
 				2290A04020E412E700F028C4 /* TimelineNotifications.swift in Sources */,
-				3F5FAAAE206043E600CF275B /* CircleAnnotationView.swift in Sources */,
+				3F5FAAAE206043E600CF275B /* RecordAnnotationView.swift in Sources */,
 				22C22441215D88F1000E1CAF /* NodeNotifications.swift in Sources */,
 				220329092066F20900FFD9E2 /* Data.swift in Sources */,
 				221A66DF211B7F4B004525F5 /* TimelineDecadeFlagLayout.swift in Sources */,

@@ -160,7 +160,7 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
         view.layer?.backgroundColor = style.darkBackground.cgColor
         titleTextField.attributedStringValue = NSAttributedString(string: "Control Center", attributes: style.windowTitleAttributes)
         windowDragAreaHighlight.wantsLayer = true
-        windowDragAreaHighlight.layer?.backgroundColor = style.selectedColor.cgColor
+        windowDragAreaHighlight.layer?.backgroundColor = style.menuSelectedColor.cgColor
         consoleCollectionView.register(ConsoleItemView.self, forItemWithIdentifier: ConsoleItemView.identifier)
         consoleCollectionView.layer?.backgroundColor = style.darkBackground.cgColor
         garbageButton.isEnabled = !consoleLogs.isEmpty

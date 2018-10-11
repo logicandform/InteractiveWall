@@ -87,7 +87,7 @@ final class Style {
         let font = NSFont(name: "Soleil", size: fontSize) ?? NSFont.systemFont(ofSize: fontSize)
         return [.paragraphStyle: paragraphStyle,
                 .font: font,
-                .foregroundColor: NSColor.white,
+                .foregroundColor: NSColor.black,
                 .kern: 0.5
         ]
     }

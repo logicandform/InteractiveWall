@@ -50,7 +50,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     private struct Constants {
         static let animationDuration = 0.5
         static let searchItemHeight: CGFloat = 70
-        static let defaultWindowDragAreaColor = NSColor.lightGray
+        static let defaultWindowHighlightColor = NSColor.white
         static let collectionViewMargin: CGFloat = 5
         static let maxCollectionViewHeight: CGFloat = 605
     }
@@ -331,6 +331,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
         if collectionView == primaryCollectionView {
             selectedType = nil
+            updateWindowDragAreaHighlight(for: nil)
         } else if collectionView == secondaryCollectionView {
             selectedGroup = nil
         }
@@ -447,7 +448,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     private func updateWindowDragAreaHighlight(for recordType: RecordType?) {
         guard let recordType = recordType else {
-            windowDragAreaHighlight.layer?.backgroundColor = Constants.defaultWindowDragAreaColor.cgColor
+            windowDragAreaHighlight.layer?.backgroundColor = Constants.defaultWindowHighlightColor.cgColor
             return
         }
 

@@ -7,7 +7,7 @@ class RelatedItemView: NSCollectionViewItem {
 
     @IBOutlet weak var mediaImageView: ImageView!
 
-    var tintColor = style.selectedColor
+    var tintColor = NSColor.white
     var filterType = RecordFilterType.all
     var record: Record! {
         didSet {

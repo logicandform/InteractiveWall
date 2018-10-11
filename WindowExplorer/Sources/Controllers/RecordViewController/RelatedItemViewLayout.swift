@@ -18,6 +18,10 @@ enum RelatedItemViewLayout {
         }
     }
 
+    var itemSpacing: CGFloat {
+        return 5
+    }
+
     var identifier: NSUserInterfaceItemIdentifier {
         switch self {
         case .list:
@@ -30,11 +34,11 @@ enum RelatedItemViewLayout {
     var itemSize: CGSize {
         switch self {
         case .list:
-            return CGSize(width: style.relatedRecordsListItemWidth, height: style.relatedRecordsListItemHeight)
+            return CGSize(width: 300, height: 80)
         case .images:
-            return CGSize(width: style.relatedRecordsImageItemWidth, height: style.relatedRecordsImageItemHeight)
+            return CGSize(width: 180, height: 180)
         case .videos:
-            let width = style.relatedRecordsListItemWidth
+            let width = RelatedItemViewLayout.list.itemSize.width
             let aspectRatio: CGFloat = 9 / 16
             return CGSize(width: width, height: width * aspectRatio)
         }
@@ -43,11 +47,11 @@ enum RelatedItemViewLayout {
     var rowWidth: CGFloat {
         switch self {
         case .list:
-            return style.relatedRecordsListItemWidth * itemsPerRow + style.relatedRecordsItemSpacing * (itemsPerRow - 1)
+            return itemSize.width * itemsPerRow + itemSpacing * (itemsPerRow - 1)
         case .images:
-            return style.relatedRecordsImageItemWidth * itemsPerRow + style.relatedRecordsItemSpacing * (itemsPerRow - 1)
+            return itemSize.width * itemsPerRow + itemSpacing * (itemsPerRow - 1)
         case .videos:
-            return style.relatedRecordsListItemWidth * itemsPerRow + style.relatedRecordsItemSpacing * (itemsPerRow - 1)
+            return itemSize.width * itemsPerRow + itemSpacing * (itemsPerRow - 1)
         }
     }
 }

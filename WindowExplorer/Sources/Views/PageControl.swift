@@ -6,6 +6,7 @@
 import Foundation
 import AppKit
 
+
 public class PageControl: NSControl {
 
     private var needsToRedrawIndicators = false
@@ -31,12 +32,12 @@ public class PageControl: NSControl {
         }
     }
 
-    public enum Style: Int {
+    public enum PageStyle: Int {
         case dot
         case circle
     }
 
-    public var style = Style.dot {
+    public var style = PageStyle.dot {
         didSet {
             redrawIndicators()
         }

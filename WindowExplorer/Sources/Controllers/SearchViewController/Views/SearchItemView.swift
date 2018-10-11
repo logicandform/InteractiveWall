@@ -9,11 +9,11 @@ class SearchItemView: NSCollectionViewItem {
     @IBOutlet weak var attributionTextField: NSTextField!
     @IBOutlet weak var spinner: NSProgressIndicator!
 
-    var tintColor = style.selectedColor
+    var tintColor = style.menuSelectedColor
 
     var type: RecordType? {
         didSet {
-            tintColor = type?.color ?? style.selectedColor
+            tintColor = type?.color ?? style.menuSelectedColor
         }
     }
 

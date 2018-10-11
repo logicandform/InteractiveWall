@@ -62,7 +62,7 @@ class BaseViewController: NSViewController, GestureResponder {
         windowDragArea.wantsLayer = true
         windowDragArea.layer?.backgroundColor = style.dragAreaBackground.cgColor
         windowDragAreaHighlight.wantsLayer = true
-        windowDragAreaHighlight.layer?.backgroundColor = style.selectedColor.cgColor
+        windowDragAreaHighlight.layer?.backgroundColor = CGColor.white
     }
 
 
@@ -141,8 +141,8 @@ class BaseViewController: NSViewController, GestureResponder {
             return
         }
 
-        let offsetX = CGFloat(index) * style.windowOffset.dx
-        let offsetY = CGFloat(index) * style.windowOffset.dy
+        let offsetX = CGFloat(index) * style.windowStackOffset.dx
+        let offsetY = CGFloat(index) * style.windowStackOffset.dy
         let lastScreen = NSScreen.at(position: Configuration.numberOfScreens)
         var origin = CGPoint(x: frame.maxX + style.windowMargins + offsetX, y: frame.maxY + offsetY - view.frame.height)
 

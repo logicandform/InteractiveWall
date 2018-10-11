@@ -74,7 +74,7 @@ class IndicatorViewController: NSViewController {
         indicator.wantsLayer = true
         indicator.layer?.cornerRadius = radius
         indicator.layer?.masksToBounds = true
-        indicator.layer?.backgroundColor = style.selectedColor.cgColor
+        indicator.layer?.backgroundColor = style.touchIndicatorColor.cgColor
         view.addSubview(indicator)
 
         NSAnimationContext.runAnimationGroup({ _ in

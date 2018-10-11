@@ -20,7 +20,6 @@
 		1FAFF021206EDD93005DC68B /* Soleil-07.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF015206EDD93005DC68B /* Soleil-07.otf */; };
 		1FAFF022206EDD93005DC68B /* Soleil-02.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF016206EDD93005DC68B /* Soleil-02.otf */; };
 		1FAFF023206EDD93005DC68B /* Soleil-06.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1FAFF017206EDD93005DC68B /* Soleil-06.otf */; };
-		22004FE620DD7DE700B1E740 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22004FE520DD7DE700B1E740 /* Settings.swift */; };
 		2204620E20472DE80067D9FB /* RelatedItemListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204620A20472DE80067D9FB /* RelatedItemListView.swift */; };
 		2204621720472F2D0067D9FB /* PlayerControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2204621420472F2D0067D9FB /* PlayerControl.xib */; };
 		2204621820472F2D0067D9FB /* PlayerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204621520472F2D0067D9FB /* PlayerState.swift */; };
@@ -136,7 +135,6 @@
 		A4540D16211B62FC00D50395 /* NSCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4540D15211B62FC00D50395 /* NSCollectionView.swift */; };
 		A4551B6420DC38D100D8C029 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4551B6320DC38D100D8C029 /* MenuButton.swift */; };
 		A4551B6620DC71D000D8C029 /* MenuButtonRight.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4551B6520DC71D000D8C029 /* MenuButtonRight.xib */; };
-		A456618020D9CDC400D23333 /* BorderControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A456617F20D9CDC400D23333 /* BorderControl.swift */; };
 		A456618320D9D42D00D23333 /* BorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A456618220D9D42D00D23333 /* BorderViewController.swift */; };
 		A456618520D9D43B00D23333 /* Border.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A456618420D9D43B00D23333 /* Border.storyboard */; };
 		A457D19820C9A42900D21ABA /* SwitchControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A457D19720C9A42900D21ABA /* SwitchControl.swift */; };
@@ -203,7 +201,6 @@
 		1FAFF015206EDD93005DC68B /* Soleil-07.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-07.otf"; sourceTree = "<group>"; };
 		1FAFF016206EDD93005DC68B /* Soleil-02.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-02.otf"; sourceTree = "<group>"; };
 		1FAFF017206EDD93005DC68B /* Soleil-06.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Soleil-06.otf"; sourceTree = "<group>"; };
-		22004FE520DD7DE700B1E740 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		2204620A20472DE80067D9FB /* RelatedItemListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelatedItemListView.swift; sourceTree = "<group>"; };
 		2204620C20472DE80067D9FB /* RelatedItemListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RelatedItemListView.xib; sourceTree = "<group>"; };
 		2204621420472F2D0067D9FB /* PlayerControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerControl.xib; sourceTree = "<group>"; };
@@ -327,7 +324,6 @@
 		A4540D15211B62FC00D50395 /* NSCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSCollectionView.swift; sourceTree = "<group>"; };
 		A4551B6320DC38D100D8C029 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		A4551B6520DC71D000D8C029 /* MenuButtonRight.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuButtonRight.xib; sourceTree = "<group>"; };
-		A456617F20D9CDC400D23333 /* BorderControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderControl.swift; sourceTree = "<group>"; };
 		A456618220D9D42D00D23333 /* BorderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderViewController.swift; sourceTree = "<group>"; };
 		A456618420D9D43B00D23333 /* Border.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Border.storyboard; sourceTree = "<group>"; };
 		A457D19720C9A42900D21ABA /* SwitchControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchControl.swift; sourceTree = "<group>"; };
@@ -428,7 +424,6 @@
 				22A4987A204749EA0024B46C /* Records */,
 				22616CA020A235170042C420 /* Search */,
 				D9F24E5C205AFE2900B9FCB8 /* Media.swift */,
-				22004FE520DD7DE700B1E740 /* Settings.swift */,
 				22C22434215AE672000E1CAF /* Month.swift */,
 				222C69DB2162D4CD004160B1 /* DatabaseStatus.swift */,
 			);
@@ -834,7 +829,6 @@
 				D92E0EFF206052C900C1C9A7 /* ArrowControl.swift */,
 				8F6EFD7C2098FF0800E4D97D /* FadingScrollView.swift */,
 				A457D19720C9A42900D21ABA /* SwitchControl.swift */,
-				A456617F20D9CDC400D23333 /* BorderControl.swift */,
 				A447476120D8789F00346714 /* ZoomControl */,
 			);
 			path = Views;
@@ -1048,7 +1042,6 @@
 				1F910718206C2973008F9513 /* ImageView.swift in Sources */,
 				A47C67E420CB07CB00C361D1 /* MapNotifications.swift in Sources */,
 				226A4526214F343800860F0E /* TouchScreen.swift in Sources */,
-				22004FE620DD7DE700B1E740 /* Settings.swift in Sources */,
 				22A76FEC2046477A006C0AE7 /* PlayerViewController.swift in Sources */,
 				222C69DA21629013004160B1 /* SearchHelper.swift in Sources */,
 				D92E0F00206052C900C1C9A7 /* ArrowControl.swift in Sources */,
@@ -1121,7 +1114,6 @@
 				224D9A6B207606E30041F1C6 /* VolumeLevel.swift in Sources */,
 				618F0C35206A08CE00762C20 /* AudioComponentDescription.swift in Sources */,
 				8FE6467B2060553100E6116A /* RegularScrollView.swift in Sources */,
-				A456618020D9CDC400D23333 /* BorderControl.swift in Sources */,
 				225FBBA5208EAF9400B2CD3E /* ControlAction.swift in Sources */,
 				2247670020562F65003E8790 /* MediaItemView.swift in Sources */,
 				22914F77204905230000D4E1 /* NSApplication.swift in Sources */,

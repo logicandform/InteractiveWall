@@ -43,7 +43,7 @@ enum RecordType: String, SearchItemDisplayable {
         case .school:
             return style.schoolColor
         case .theme:
-            return style.selectedColor
+            return style.themeColor
         case .collection:
             return style.collectionColor
         case .individual:

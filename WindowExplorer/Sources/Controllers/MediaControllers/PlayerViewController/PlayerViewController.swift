@@ -15,6 +15,10 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
 
     private var audioPlayer: AKPlayer?
 
+    private struct Constants {
+        static let audioSyncInterval = 1.0 / 30.0
+    }
+
 
     // MARK: Life-cycle
 
@@ -112,7 +116,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         }
 
         let time = player.currentTime()
-        audioPlayer?.schedule(at: time, duration: style.audioSyncInterval) { [weak self] in
+        audioPlayer?.schedule(at: time, duration: Constants.audioSyncInterval) { [weak self] in
             DispatchQueue.global(qos: .default).async {
                 self?.scheduleAudioSegment()
             }

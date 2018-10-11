@@ -5,7 +5,7 @@ import Foundation
 import MapKit
 
 
-class CircleAnnotation: NSObject, MKAnnotation {
+class RecordAnnotation: NSObject, MKAnnotation {
 
     var coordinate: CLLocationCoordinate2D
     var type: RecordType

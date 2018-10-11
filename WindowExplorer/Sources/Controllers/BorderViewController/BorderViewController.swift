@@ -7,12 +7,21 @@ import Cocoa
 class BorderViewController: NSViewController {
     static let storyboard = "Border"
 
-    @IBOutlet weak var border: BorderControl!
+
+    // MARK: Setup
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.wantsLayer = true
+        view.isHidden = true
+        view.layer?.backgroundColor = style.menuSelectedColor.cgColor
+    }
 
 
     // MARK: API
 
     func set(visible: Bool) {
-        border.isVisible = visible
+        view.isHidden = !visible
     }
 }

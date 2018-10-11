@@ -10,7 +10,7 @@ class PDFTableViewItem: NSView {
     @IBOutlet weak var imageView: NSImageView!
     @IBOutlet weak var textField: NSTextField!
 
-    var tintColor = style.selectedColor
+    var tintColor = NSColor.white
     var page: PDFPage? {
         didSet {
             load(page)

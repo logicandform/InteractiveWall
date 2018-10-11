@@ -14,7 +14,7 @@ class MediaItemView: NSCollectionViewItem {
         static let percentageOfAdditionalWidthForTransitionLocation: CGFloat = 0.9
     }
 
-    var tintColor = style.selectedColor
+    var tintColor = NSColor.white
     var media: Media? {
         didSet {
             load(media)

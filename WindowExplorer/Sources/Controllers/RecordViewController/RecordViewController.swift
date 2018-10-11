@@ -55,6 +55,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         static let expandImageViewCornerRadius: CGFloat = 2.0
         static let relatedImagesAnimationTime = 0.1
         static let pageControlIndicatorSize: CGFloat = 8
+        static let relatedRecordsMaxHeight: CGFloat = 565
     }
 
 
@@ -664,9 +665,9 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         let numberOfRecords = displayedRelatedRecords.count
         let numberOfRows = ceil(CGFloat(numberOfRecords) / relatedItemsFilterType.layout.itemsPerRow)
         let numberOfSpaces = max(0, numberOfRows - 1)
-        let height = ceil(numberOfRows * relatedItemsFilterType.layout.itemSize.height + numberOfSpaces * style.relatedRecordsItemSpacing)
+        let height = ceil(numberOfRows * relatedItemsFilterType.layout.itemSize.height + numberOfSpaces * relatedItemsFilterType.layout.itemSpacing)
 
-        relatedRecordsHeightConstraint.constant = min(height, style.relatedRecordsMaxSize.height)
+        relatedRecordsHeightConstraint.constant = min(height, Constants.relatedRecordsMaxHeight)
         relatedRecordScrollView.updateGradient(forced: true, height: height)
         relatedRecordScrollView.layoutSubtreeIfNeeded()
     }

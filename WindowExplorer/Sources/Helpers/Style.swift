@@ -6,23 +6,34 @@ import AppKit
 
 final class Style {
 
-    // Colors
+
+    // MARK: General colors
+
     let darkBackground = NSColor.black.withAlphaComponent(0.85)
     let darkBackgroundOpaque = NSColor.black
-    let selectedColor = NSColor(calibratedRed: 0, green: 200/255, blue: 1, alpha: 1)
-    let unselectedRecordIcon = NSColor.gray
     let dragAreaBackground = NSColor.black.withAlphaComponent(0.85)
-    let artifactColor = NSColor(calibratedRed: 128/255, green: 1/255, blue: 206/255, alpha: 1)
-    let schoolColor = NSColor(calibratedRed: 78/255, green: 106/255, blue: 200/255, alpha: 1)
-    let eventColor = NSColor(calibratedRed: 145/255, green: 18/255, blue: 88/255, alpha: 1)
-    let organizationColor = NSColor(calibratedRed: 16/255, green: 147/255, blue: 79/255, alpha: 1)
-    let collectionColor = NSColor.orange
-    let individualColor = NSColor.red
+    let unselectedRecordIcon = NSColor.gray
     let menuSelectedColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
     let menuUnselectedColor = NSColor(calibratedRed: 1, green: 1, blue: 1, alpha: 1)
-    let menuButtonBackgroundColor = NSColor(deviceWhite: 0.2, alpha: 1)
+    let menuButtonBackgroundColor = NSColor(srgbRed: 34.0/255.0, green: 34.0/255.0, blue: 34.0/255.0, alpha: 0.32)
+    let relatedItemBackgroundColor = NSColor(calibratedRed: 0.08, green: 0.10, blue: 0.11, alpha: 1)
+    let touchIndicatorColor = NSColor(calibratedRed: 0, green: 200/255, blue: 1, alpha: 1)
+    let zoomControlColor = NSColor(white: 0.2, alpha: 0.8)
 
-    // Windows
+
+    // MARK: RecordType Colors
+
+    let artifactColor = NSColor(srgbRed: 205.0/255.0, green: 33.0/255.0, blue: 54.0/255.0, alpha: 1.0)
+    let schoolColor = NSColor(srgbRed: 7.0/255.0, green: 61.0/255.0, blue: 224.0/255.0, alpha: 1.0)
+    let eventColor = NSColor(srgbRed: 228.0/255.0, green: 54.0/255.0, blue: 188.0/255.0, alpha: 1.0)
+    let organizationColor = NSColor(srgbRed: 0.0/255.0, green: 159.0/255.0, blue: 75.0/255.0, alpha: 1.0)
+    let collectionColor = NSColor(srgbRed: 229.0/255.0, green: 121.0/255.0, blue: 0.0/255.0, alpha: 1.0)
+    let individualColor = NSColor.red
+    let themeColor = NSColor(srgbRed: 0.0/255.0, green: 154.0/255.0, blue: 254.0/255.0, alpha: 1.0)
+
+
+    // MARK: Windows Properties
+
     let recordWindowSize = CGSize(width: 416, height: 650)
     let collectionRecordWindowSize = CGSize(width: 416, height: 650)
     let imageWindowSize = CGSize(width: 640, height: 410)
@@ -38,40 +49,11 @@ final class Style {
     let minMediaWindowHeight: CGFloat = 416
     let maxMediaWindowHeight: CGFloat = 650
     let windowMargins: CGFloat = 20
+    let windowStackOffset = CGVector(dx: 25, dy: -40)
 
-    // Text
-    let largeTitleTrailingSpace: CGFloat = 6
-    let dateTrailingSpace: CGFloat = 20
-    let smallHeaderTrailingSpace: CGFloat = 4
-    let descriptionTrailingSpace: CGFloat = 10
-    let missingDateTitleTrailingSpace: CGFloat = 47
 
-    // Window displacement
-    let windowOffset = CGVector(dx: 25, dy: -40)
+    // MARK: Window Levels
 
-    // Record Controller
-    let relatedRecordsMaxSize = CGSize(width: 300, height: 565)
-    let relatedItemColor = NSColor(calibratedRed: 75/255, green: 91/255, blue: 100/255, alpha: 1)
-    let noRelatedItemsColor = NSColor(calibratedRed: 33/255, green: 33/255, blue: 33/255, alpha: 1)
-    let relatedItemBackgroundColor = NSColor(calibratedRed: 0.08, green: 0.10, blue: 0.11, alpha: 1)
-    let relatedRecordsListItemWidth: CGFloat = 300
-    let relatedRecordsListItemHeight: CGFloat = 80
-    let relatedRecordsImageItemWidth: CGFloat = 180
-    let relatedRecordsImageItemHeight: CGFloat = 180
-    let relatedRecordsItemSpacing: CGFloat = 5
-
-    // Menu Controller
-    let menuLockIconPosition = CGPoint(x: -3, y: 3)
-    let menuSecondarySelectedColor = NSColor(calibratedRed: 0.06, green: 0.28, blue: 0.24, alpha: 1)
-    let menuAccessibilityIconColor = NSColor(calibratedRed: 0, green: 0, blue: 0, alpha: 1)
-
-    // Border Controller
-    let borderColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
-
-    // Zoom Control
-    let zoomControlColor = NSColor(white: 0.2, alpha: 0.8)
-
-    // Window Levels
     let masterWindowLevel = NSWindow.Level.normal
     let nodeWindowLevel = NSWindow.Level(27)
     let mapWindowLevel = NSWindow.Level(28)
@@ -81,10 +63,18 @@ final class Style {
     let menuWindowLevel = NSWindow.Level(32)
     let touchIndicatorWindowLevel = NSWindow.Level(33)
 
-    // Audio
-    let audioSyncInterval = 1.0 / 30.0
 
-    // Titles
+    // MARK: Text Properties
+
+    let largeTitleTrailingSpace: CGFloat = 6
+    let dateTrailingSpace: CGFloat = 20
+    let smallHeaderTrailingSpace: CGFloat = 4
+    let descriptionTrailingSpace: CGFloat = 10
+    let missingDateTitleTrailingSpace: CGFloat = 47
+
+
+    // MARK: Text Attributes
+
     var windowTitleAttributes: [NSAttributedString.Key: Any] {
         let font = NSFont(name: "Soleil", size: 16) ?? NSFont.systemFont(ofSize: 16)
         let paragraphStyle = NSMutableParagraphStyle()

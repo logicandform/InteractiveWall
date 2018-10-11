@@ -20,8 +20,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
-    private var recordForAnnotation = [CircleAnnotation: Record]()
-    private var currentSettings = Settings()
+    private var recordForAnnotation = [RecordAnnotation: Record]()
+    private var annotationForTouch = [Touch: MKAnnotation]()
     private var currentTextScale: CGFloat = 1
 
     private var tileURL: String {
@@ -32,8 +32,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private struct Constants {
         static let maxZoomWidth = MapConstants.canadaRect.size.width / Double(Configuration.appsPerScreen)
         static let minZoomWidth = 424500.0
-        static let touchRadius: CGFloat = 20
-        static let annotationHitSize = CGSize(width: 50, height: 50)
+        static let annotationHitSize = CGSize(width: 40, height: 40)
         static let doubleTapScale = 0.5
         static let spacingBetweenAnnotations = 0.008
         static let coordinateToMapPointOriginOffset = 180.0
@@ -103,10 +102,10 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     private func setupGestures() {
-        let tapGesture = TapGestureRecognizer()
+        let tapGesture = MultiTapGestureRecognizer()
         gestureManager.add(tapGesture, to: mapView)
-        tapGesture.gestureUpdated = { [weak self] gesture in
-            self?.didTapOnMap(gesture)
+        tapGesture.touchUpdated = { [weak self] touch, state in
+            self?.didTapOnMap(touch, state: state)
         }
 
         let pinchGesture = PinchGestureRecognizer()
@@ -147,35 +146,35 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         }
     }
 
-    /// If the tap is positioned on a selectable annotation, the annotation's didSelect function is invoked.
-    private func didTapOnMap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, let position = tap.position else {
-            return
-        }
-
-        let touchRect = CGRect(x: position.x - Constants.touchRadius, y: position.y - Constants.touchRadius, width: Constants.touchRadius * 2, height: Constants.touchRadius * 2)
-        let sortedAnnotations = mapView.annotations.sorted(by: { $0 is MKClusterAnnotation && !($1 is MKClusterAnnotation) })
-        for annotation in sortedAnnotations {
-            let positionInView = mapView.convert(annotation.coordinate, toPointTo: mapView).inverted(in: view)
-            if touchRect.contains(positionInView) {
-                if tap.state == .began {
-                    if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
-                        annotationView.runAnimation()
-                        return
-                    } else if let annotationView = mapView.view(for: annotation) as? ClusterAnnotationView {
-                        annotationView.runAnimation()
-                        return
+    private func didTapOnMap(_ touch: Touch, state: GestureState) {
+        switch state {
+        case .began:
+            let sortedAnnotations = mapView.annotations.sorted(by: { $0 is MKClusterAnnotation && !($1 is MKClusterAnnotation) })
+            for annotation in sortedAnnotations {
+                let positionInView = position(for: annotation)
+                let hitRadius = Constants.annotationHitSize.width / 2
+                let annotationRect = CGRect(origin: CGPoint(x: positionInView.x - hitRadius, y: positionInView.y - hitRadius), size: Constants.annotationHitSize)
+                if annotationRect.contains(touch.position) {
+                    if let annotationView = mapView.view(for: annotation) as? AnimatableAnnotation {
+                        annotationView.grow()
                     }
-                } else if tap.state == .ended {
-                    if let annotation = annotation as? CircleAnnotation, let record = recordForAnnotation[annotation] {
-                        postRecordNotification(for: record, at: CGPoint(x: positionInView.x, y: positionInView.y - Constants.recordWindowOffset))
-                        return
-                    } else if let clusterAnnotation = annotation as? MKClusterAnnotation {
-                        didSelect(clusterAnnotation: clusterAnnotation, at: position)
-                        return
-                    }
+                    annotationForTouch[touch] = annotation
+                    return
                 }
             }
+        case .failed, .ended:
+            if let annotation = annotationForTouch[touch] {
+                if let annotationView = mapView.view(for: annotation) as? AnimatableAnnotation {
+                    annotationView.shrink()
+                }
+
+                annotationForTouch.removeValue(forKey: touch)
+                if state == .ended {
+                    select(annotation: annotation)
+                }
+            }
+        default:
+            return
         }
     }
 
@@ -209,8 +208,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     }
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        if let annotation = annotation as? CircleAnnotation {
-            let annotationView = CircleAnnotationView(annotation: annotation, reuseIdentifier: CircleAnnotationView.identifier)
+        if let annotation = annotation as? RecordAnnotation {
+            let annotationView = RecordAnnotationView(annotation: annotation, reuseIdentifier: RecordAnnotationView.identifier)
             annotationView.setTitle(scale: currentTextScale)
             return annotationView
         } else if let cluster = annotation as? MKClusterAnnotation {
@@ -228,9 +227,8 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
         currentTextScale = scale
         let annotations = mapView.annotations
-
         for annotation in annotations {
-            if let annotationView = mapView.view(for: annotation) as? CircleAnnotationView {
+            if let annotationView = mapView.view(for: annotation) as? RecordAnnotationView {
                 annotationView.setTitle(scale: scale)
             }
         }
@@ -238,6 +236,31 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
 
     // MARK: Helpers
+
+    private func position(for annotation: MKAnnotation) -> CGPoint {
+        return mapView.convert(annotation.coordinate, toPointTo: mapView).inverted(in: view)
+    }
+
+    private func select(annotation: MKAnnotation) {
+        let annotationPosition = position(for: annotation)
+
+        switch annotation {
+        case let circleAnnotation as RecordAnnotation:
+            if let record = recordForAnnotation[circleAnnotation] {
+                let offsetPosition = CGPoint(x: annotationPosition.x, y: annotationPosition.y - Constants.recordWindowOffset)
+                postRecordNotification(for: record, at: offsetPosition)
+            }
+        case let clusterAnnotation as MKClusterAnnotation:
+            let region = restrainSpan(for: clusterAnnotation.boundingCoordinateRegion())
+            var newMapRect = MKMapRect(coordinateRegion: region).withPreservedAspectRatio(in: mapView)
+            let translationX = (newMapRect.size.width / 2) - newMapRect.size.width * Double(annotationPosition.x / mapView.frame.width)
+            let translationY = -newMapRect.size.height * (1 - Double(annotationPosition.y / mapView.frame.height))
+            newMapRect.origin += MKMapPoint(x: translationX, y: translationY)
+            mapHandler?.animate(to: newMapRect, with: MapAnimationType.clusterTap)
+        default:
+            return
+        }
+    }
 
     private func postRecordNotification(for record: Record, at position: CGPoint) {
         guard let window = view.window else {
@@ -290,21 +313,11 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private func addAnnotations(for records: [Record]) {
         records.forEach { record in
             if let coordinate = record.coordinate {
-                let annotation = CircleAnnotation(coordinate: coordinate, type: record.type, title: record.shortestTitle())
+                let annotation = RecordAnnotation(coordinate: coordinate, type: record.type, title: record.shortestTitle())
                 recordForAnnotation[annotation] = record
                 mapView.addAnnotation(annotation)
             }
         }
-    }
-
-    /// Zoom into the annotations contained in the cluster
-    private func didSelect(clusterAnnotation: MKClusterAnnotation, at position: CGPoint) {
-        let region = restrainSpan(for: clusterAnnotation.boundingCoordinateRegion())
-        var newMapRect = MKMapRect(coordinateRegion: region).withPreservedAspectRatio(in: mapView)
-        let translationX = (newMapRect.size.width / 2) - newMapRect.size.width * Double(position.x / mapView.frame.width)
-        let translationY = -newMapRect.size.height * (1 - Double(position.y / mapView.frame.height))
-        newMapRect.origin += MKMapPoint(x: translationX, y: translationY)
-        mapHandler?.animate(to: newMapRect, with: MapAnimationType.clusterTap)
     }
 
     /// Clamps the region span between the max and min zoom levels
