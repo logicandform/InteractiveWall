@@ -14,6 +14,7 @@ class BaseViewController: NSViewController, GestureResponder {
     var gestureManager: GestureManager!
     var type: WindowType!
     var animating = false
+    var expired = false
     var windowPanGesture: PanGestureRecognizer!
     var relationshipHelper: RelationshipHelper?
     weak var parentDelegate: RelationshipDelegate?
@@ -21,6 +22,7 @@ class BaseViewController: NSViewController, GestureResponder {
 
     private struct Constants {
         static let animationDuration = 0.5
+        static let expiredWindowTimeoutDuration = 15.0
     }
 
 
@@ -78,8 +80,20 @@ class BaseViewController: NSViewController, GestureResponder {
             return
         }
 
+        expired = false
         closeWindowTimer?.invalidate()
         closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Configuration.closeWindowTimeoutDuration, repeats: false) { [weak self] _ in
+            self?.closeWindowTimerFired()
+        }
+    }
+
+    func closeWindowIfExpired() {
+        guard expired else {
+            return
+        }
+
+        closeWindowTimer?.invalidate()
+        closeWindowTimer = Timer.scheduledTimer(withTimeInterval: Constants.expiredWindowTimeoutDuration, repeats: false) { [weak self] _ in
             self?.closeWindowTimerFired()
         }
     }
@@ -89,6 +103,7 @@ class BaseViewController: NSViewController, GestureResponder {
             return
         }
 
+        expired = true
         if let relationshipHelper = relationshipHelper {
             if relationshipHelper.isEmpty() {
                 animateViewOut()

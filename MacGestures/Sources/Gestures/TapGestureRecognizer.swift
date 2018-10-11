@@ -85,6 +85,10 @@ public class TapGestureRecognizer: NSObject, GestureRecognizer {
         state = .possible
     }
 
+    public func invalidate() {
+        
+    }
+
 
     // MARK: Helpers
 

@@ -13,35 +13,3 @@ public protocol GestureRecognizer: class {
     func reset()
     func invalidate()
 }
-
-
-public extension GestureRecognizer {
-
-    var state: GestureState {
-        return .possible
-    }
-
-    func invalidate() {}
-}
-
-
-public enum GestureState: String {
-    case possible
-    case began
-    case changed
-    case ended
-    case cancelled
-    case failed
-    case momentum
-    case recognized
-    case animated
-
-    public var interruptible: Bool {
-        switch self {
-        case .momentum, .animated:
-            return true
-        default:
-            return false
-        }
-    }
-}

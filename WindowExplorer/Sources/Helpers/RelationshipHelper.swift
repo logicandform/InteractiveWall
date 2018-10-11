@@ -67,8 +67,10 @@ final class RelationshipHelper: RelationshipDelegate {
 
     func controllerDidClose(_ controller: BaseViewController) {
         indexForController.removeValue(forKey: controller)
-        parent?.resetCloseWindowTimer()
         controllerClosed?(controller)
+        if indexForController.isEmpty {
+            parent?.closeWindowIfExpired()
+        }
     }
 
     func controllerDidMove(_ controller: BaseViewController) {

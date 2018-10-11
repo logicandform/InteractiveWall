@@ -65,7 +65,7 @@ final class NodeHandler {
 
     private func beginUngroupTimer() {
         ungroupTimer?.invalidate()
-        ungroupTimer = Timer.scheduledTimer(withTimeInterval: Configuration.ungroupTimoutDuration, repeats: false) { [weak self] _ in
+        ungroupTimer = Timer.scheduledTimer(withTimeInterval: Configuration.ungroupTimeoutDuration, repeats: false) { [weak self] _ in
             self?.ungroupTimerFired()
         }
     }

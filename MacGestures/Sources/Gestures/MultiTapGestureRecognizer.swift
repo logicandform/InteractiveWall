@@ -85,6 +85,10 @@ public class MultiTapGestureRecognizer: NSObject, GestureRecognizer {
         stateForTouch.removeAll()
     }
 
+    public func invalidate() {
+
+    }
+
 
     // MARK: Helpers
 
