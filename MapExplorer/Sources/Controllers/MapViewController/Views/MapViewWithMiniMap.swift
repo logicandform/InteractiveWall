@@ -29,7 +29,7 @@ class MapViewWithMiniMap: MKMapView, MKMapViewDelegate {
         static let miniMapMargin: CGFloat = 10
         static let defaultMiniMapPosition = CompassDirection.ne
         static let miniMapLocationRectBorderColor = NSColor.white
-        static let miniMapLocationRectBackgroundColor = style.selectedColor
+        static let miniMapLocationRectBackgroundColor = NSColor.blue
     }
 
 

@@ -3,28 +3,41 @@
 import Foundation
 import AppKit
 
-let style = Style()
 
 final class Style {
 
-    let darkBackground = NSColor.black.withAlphaComponent(0.9)
+
+    // MARK: General Colors
+
+    let darkBackground = NSColor.black.withAlphaComponent(0.85)
     let darkBackgroundOpaque = NSColor.black
-    let selectedColor = NSColor(calibratedRed: 0, green: 200/255, blue: 1, alpha: 1)
-    let clear = NSColor.clear
 
-    // Map Annotation Markers
-    let artifactColor = NSColor(calibratedRed: 128/255, green: 1/255, blue: 206/255, alpha: 1)
-    let schoolColor = NSColor(calibratedRed: 78/255, green: 106/255, blue: 200/255, alpha: 1)
-    let eventColor = NSColor(calibratedRed: 145/255, green: 18/255, blue: 88/255, alpha: 1)
-    let organizationColor = NSColor(calibratedRed: 16/255, green: 147/255, blue: 79/255, alpha: 1)
-    let collectionColor = NSColor.orange
-    let clusterColor = NSColor.orange
 
-    // Window Levels
+    // MARK: RecordType Colors
+
+    let artifactColor = NSColor(srgbRed: 205.0/255.0, green: 33.0/255.0, blue: 54.0/255.0, alpha: 1.0)
+    let schoolColor = NSColor(srgbRed: 7.0/255.0, green: 61.0/255.0, blue: 224.0/255.0, alpha: 1.0)
+    let eventColor = NSColor(srgbRed: 228.0/255.0, green: 54.0/255.0, blue: 188.0/255.0, alpha: 1.0)
+    let organizationColor = NSColor(srgbRed: 0.0/255.0, green: 159.0/255.0, blue: 75.0/255.0, alpha: 1.0)
+    let collectionColor = NSColor(srgbRed: 229.0/255.0, green: 121.0/255.0, blue: 0.0/255.0, alpha: 1.0)
+    let individualColor = NSColor.red
+    let themeColor = NSColor(srgbRed: 0.0/255.0, green: 154.0/255.0, blue: 254.0/255.0, alpha: 1.0)
+
+
+    // MARK: Window Levels
+
+    let masterWindowLevel = NSWindow.Level.normal
+    let nodeWindowLevel = NSWindow.Level(27)
     let mapWindowLevel = NSWindow.Level(28)
     let timelineWindowLevel = NSWindow.Level(29)
+    let borderWindowLevel = NSWindow.Level(30)
+    let recordWindowLevel = NSWindow.Level(31)
+    let menuWindowLevel = NSWindow.Level(32)
+    let touchIndicatorWindowLevel = NSWindow.Level(33)
 
-    // Timeline
+
+    // MARK: Timeline
+
     let timelineBackgroundColor = NSColor(white: 0.1, alpha: 0.95)
     let timelineBorderColor = NSColor.gray
     let timelineShadingColor = NSColor.black.withAlphaComponent(0.5)

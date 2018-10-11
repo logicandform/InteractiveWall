@@ -24,7 +24,7 @@ class ClusterAnnotationView: MKAnnotationView, AnimatableAnnotation {
         static let textVerticalOffset: CGFloat = 1
         static let textRadius: CGFloat = 8
         static let steps: [CGFloat] = [11, 8]
-        static let opacities: [Float] = [0.4, 1]
+        static let opacities: [Float] = [0.3, 1]
         static let animationDuration = 0.2
         static let shadowOpacity: Float = 1
         static let shadowOffset = CGSize(width: 0, height: 4)

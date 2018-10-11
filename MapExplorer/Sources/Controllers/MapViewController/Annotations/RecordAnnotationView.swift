@@ -30,7 +30,7 @@ class RecordAnnotationView: MKAnnotationView, AnimatableAnnotation {
 
     private struct Constants {
         static let steps: [CGFloat] = [11, 8, 2]
-        static let opacities: [Float] = [0.4, 1, 1]
+        static let opacities: [Float] = [0.3, 1, 1]
         static let animationDuration = 0.2
         static let titleLeftOffset: CGFloat = 14
         static let shadowOpacity: Float = 1

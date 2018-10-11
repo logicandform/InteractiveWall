@@ -3,6 +3,9 @@
 import Cocoa
 
 
+let style = Style()
+
+
 struct Configuration {
     static let serverIP = "10.58.73.203"
     static let serverURL = "http://\(serverIP):3000"

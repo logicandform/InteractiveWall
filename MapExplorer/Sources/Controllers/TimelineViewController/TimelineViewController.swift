@@ -44,6 +44,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         static let recordSpawnOffset: CGFloat = 2
         static let longTouchDuration = 1.5
         static let verticalAnimationDuration = 1.2
+        static let timelineIndicatorColor = CGColor.white
     }
 
     private struct Keys {
@@ -152,7 +153,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         timelineIndicatorView.wantsLayer = true
         timelineIndicatorView.layer?.cornerRadius = Constants.timelineIndicatorBorderRadius
         timelineIndicatorView.layer?.borderWidth = Constants.timelineIndicatorBorderWidth
-        timelineIndicatorView.layer?.borderColor = style.selectedColor.cgColor
+        timelineIndicatorView.layer?.borderColor = Constants.timelineIndicatorColor
         setupHorizontalGradient(in: decadeScrollView)
     }
 

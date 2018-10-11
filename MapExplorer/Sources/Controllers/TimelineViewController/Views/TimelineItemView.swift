@@ -13,7 +13,7 @@ class TimelineItemView: NSCollectionViewItem {
     @IBOutlet weak var backgroundView: NSView!
     @IBOutlet weak var titleTextField: NSTextField!
 
-    var tintColor = style.selectedColor
+    var tintColor = NSColor.white
     var event: TimelineEvent! {
         didSet {
             load(event)
