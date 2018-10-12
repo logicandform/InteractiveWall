@@ -13,8 +13,16 @@ class MediaViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupView()
+    }
+
+
+    // MARK: Setup
+
+    private func setupView() {
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
+        view.addCustomBorders()
         windowDragAreaHighlight.layer?.backgroundColor = media.tintColor.cgColor
         titleLabel.attributedStringValue = NSAttributedString(string: media.title ?? "", attributes: style.windowTitleAttributes)
     }

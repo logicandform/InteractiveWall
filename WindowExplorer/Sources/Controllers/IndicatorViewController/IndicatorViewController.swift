@@ -52,7 +52,7 @@ class IndicatorViewController: NSViewController {
 
     private func setupView() {
         view.wantsLayer = true
-        view.layer?.backgroundColor = CGColor.clear
+        view.layer?.backgroundColor = .clear
     }
 
 

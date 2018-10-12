@@ -13,7 +13,24 @@ class RelatedItemImageView: RelatedItemView {
     }
 
 
+    // MARK: Life-Cycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.layer?.borderWidth = style.windowHighlightWidth
+    }
+
+
     // MARK: Overrides
+
+    override func set(highlighted: Bool) {
+        if highlighted {
+            view.layer?.borderColor = tintColor.cgColor
+        } else {
+            view.layer?.borderColor = style.defaultBorderColor.cgColor
+        }
+    }
 
     override func load(_ record: Record) {
         super.load(record)

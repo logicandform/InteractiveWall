@@ -15,13 +15,13 @@ final class Style {
 
     // MARK: RecordType Colors
 
-    let artifactColor = NSColor(srgbRed: 205.0/255.0, green: 33.0/255.0, blue: 54.0/255.0, alpha: 1.0)
-    let schoolColor = NSColor(srgbRed: 7.0/255.0, green: 61.0/255.0, blue: 224.0/255.0, alpha: 1.0)
-    let eventColor = NSColor(srgbRed: 228.0/255.0, green: 54.0/255.0, blue: 188.0/255.0, alpha: 1.0)
-    let organizationColor = NSColor(srgbRed: 0.0/255.0, green: 159.0/255.0, blue: 75.0/255.0, alpha: 1.0)
-    let collectionColor = NSColor(srgbRed: 229.0/255.0, green: 121.0/255.0, blue: 0.0/255.0, alpha: 1.0)
+    let artifactColor = NSColor(srgbRed: 205/255, green: 33/255, blue: 54/255, alpha: 1)
+    let schoolColor = NSColor(srgbRed: 7/255, green: 61/255, blue: 224/255, alpha: 1)
+    let eventColor = NSColor(srgbRed: 228/255, green: 54/255, blue: 188/255, alpha: 1)
+    let organizationColor = NSColor(srgbRed: 0/255, green: 159/255, blue: 75/255, alpha: 1)
+    let collectionColor = NSColor(srgbRed: 229/255, green: 121/255, blue: 0/255, alpha: 1)
     let individualColor = NSColor.red
-    let themeColor = NSColor(srgbRed: 0.0/255.0, green: 154.0/255.0, blue: 254.0/255.0, alpha: 1.0)
+    let themeColor = NSColor(srgbRed: 0/255, green: 154/255, blue: 254/255, alpha: 1)
 
 
     // MARK: Window Levels
@@ -92,11 +92,10 @@ final class Style {
     }
 
     var clusterLabelAttributes: [NSAttributedString.Key: Any] {
-        let fontSize: CGFloat = 15
+        let fontSize: CGFloat = 14
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 0
-        paragraphStyle.maximumLineHeight = fontSize + 5
-        paragraphStyle.lineBreakMode = .byWordWrapping
+        paragraphStyle.maximumLineHeight = fontSize + 3
         let font = NSFont(name: "Soleil", size: fontSize) ?? NSFont.systemFont(ofSize: fontSize)
         return [.paragraphStyle: paragraphStyle,
                 .font: font,

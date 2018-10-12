@@ -43,7 +43,7 @@ class RecordTypeSelectionView: NSView {
             let image = NSView()
             view.addSubview(image)
             image.wantsLayer = true
-            image.layer?.contents = type.placeholder?.tinted(with: style.unselectedRecordIcon)
+            image.layer?.contents = type.placeholder?.tinted(with: style.defaultBorderColor)
             stackview.addView(view, in: .leading)
             view.translatesAutoresizingMaskIntoConstraints = false
             view.heightAnchor.constraint(equalTo: stackview.heightAnchor).isActive = true
@@ -90,6 +90,6 @@ class RecordTypeSelectionView: NSView {
             return
         }
 
-        image.transition(to: currentImage.tinted(with: style.unselectedRecordIcon), duration: Constants.imageTransitionDuration)
+        image.transition(to: currentImage.tinted(with: style.defaultBorderColor), duration: Constants.imageTransitionDuration)
     }
 }

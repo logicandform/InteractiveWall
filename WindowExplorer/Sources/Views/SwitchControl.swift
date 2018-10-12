@@ -14,7 +14,7 @@ import QuartzCore
 @IBDesignable
 public class SwitchControl: NSButton {
 
-    let kDefaultTintColor = style.unselectedRecordIcon
+    let kDefaultTintColor = style.defaultBorderColor
     let kBorderWidth: CGFloat = 1.0
     let kGoldenRatio: CGFloat = 1.61803398875
     let kDecreasedGoldenRatio: CGFloat = 1.38

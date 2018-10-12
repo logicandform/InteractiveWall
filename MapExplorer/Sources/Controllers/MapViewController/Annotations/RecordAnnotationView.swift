@@ -29,7 +29,7 @@ class RecordAnnotationView: MKAnnotationView, AnimatableAnnotation {
     }
 
     private struct Constants {
-        static let steps: [CGFloat] = [11, 8, 2]
+        static let widths: [CGFloat] = [22, 16, 4]
         static let opacities: [Float] = [0.3, 1, 1]
         static let animationDuration = 0.2
         static let titleLeftOffset: CGFloat = 14
@@ -119,15 +119,14 @@ class RecordAnnotationView: MKAnnotationView, AnimatableAnnotation {
         layer?.shadowOffset = Constants.shadowOffset
         clusteringIdentifier = RecordAnnotationView.identifier
 
-        title.backgroundColor = CGColor.clear
+        title.backgroundColor = .clear
         title.anchorPoint = CGPoint(x: 0, y: 0.5)
 
         for (index, ring) in rings.enumerated() {
-            ring.frame = CGRect(origin: .zero, size: CGSize(width: Constants.steps[index] * 2.0, height: Constants.steps[index] * 2.0))
+            ring.frame = CGRect(origin: .zero, size: CGSize(width: Constants.widths[index], height: Constants.widths[index]))
             ring.path = CGPath(ellipseIn: ring.frame, transform: nil)
-            ring.position = CGPoint(x: 0, y: bounds.midY)
+            ring.position = .zero
             ring.opacity = Constants.opacities[index]
-            ring.transform = CATransform3DIdentity
         }
     }
 
@@ -137,7 +136,7 @@ class RecordAnnotationView: MKAnnotationView, AnimatableAnnotation {
         title.frame = CGRect(origin: CGPoint(x: Constants.titleLeftOffset, y: -titleSize.height/2), size: titleSize)
         layer?.addSublayer(title)
         for (index, ring) in rings.enumerated() {
-            ring.fillColor = index == rings.count - 1 ? CGColor.white : annotation.type.color.cgColor
+            ring.fillColor = index == rings.count - 1 ? .white : annotation.type.color.cgColor
             layer?.addSublayer(ring)
         }
     }

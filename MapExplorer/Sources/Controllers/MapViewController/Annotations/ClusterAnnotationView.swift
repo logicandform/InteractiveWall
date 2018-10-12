@@ -21,9 +21,8 @@ class ClusterAnnotationView: MKAnnotationView, AnimatableAnnotation {
     }
 
     private struct Constants {
-        static let textVerticalOffset: CGFloat = 1
         static let textRadius: CGFloat = 8
-        static let steps: [CGFloat] = [11, 8]
+        static let widths: [CGFloat] = [22, 16]
         static let opacities: [Float] = [0.3, 1]
         static let animationDuration = 0.2
         static let shadowOpacity: Float = 1
@@ -102,16 +101,14 @@ class ClusterAnnotationView: MKAnnotationView, AnimatableAnnotation {
         displayPriority = .defaultHigh
         clusteringIdentifier = RecordAnnotationView.identifier
 
-        text.frame = CGRect(origin: CGPoint(x: -Constants.textRadius, y: -(Constants.textRadius + Constants.textVerticalOffset)), size: CGSize(width: Constants.textRadius * 2.0, height: Constants.textRadius * 2.0))
         text.alignmentMode = .center
 
         for (index, ring) in rings.enumerated() {
-            ring.frame = CGRect(origin: .zero, size: CGSize(width: Constants.steps[index] * 2.0, height: Constants.steps[index] * 2.0))
+            ring.frame = CGRect(origin: .zero, size: CGSize(width: Constants.widths[index], height: Constants.widths[index]))
             ring.path = CGPath(ellipseIn: ring.frame, transform: nil)
-            ring.position = CGPoint(x: 0, y: bounds.midY)
+            ring.position = .zero
             ring.opacity = Constants.opacities[index]
-            ring.transform = CATransform3DIdentity
-            ring.fillColor = CGColor.white
+            ring.fillColor = .white
             layer?.addSublayer(ring)
         }
     }
@@ -120,7 +117,11 @@ class ClusterAnnotationView: MKAnnotationView, AnimatableAnnotation {
         for ring in rings {
             layer?.addSublayer(ring)
         }
-        text.string = NSAttributedString(string: cluster.memberAnnotations.count.description, attributes: style.clusterLabelAttributes)
+
+        let textString = NSAttributedString(string: cluster.memberAnnotations.count.description, attributes: style.clusterLabelAttributes)
+        let textSize = textString.size()
+        text.string = textString
+        text.frame = CGRect(origin: CGPoint(x: -(textSize.width / 2), y: -(textSize.height / 2)), size: textSize)
         layer?.addSublayer(text)
     }
 }

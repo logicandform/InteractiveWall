@@ -10,6 +10,7 @@ class InfoItemView: NSCollectionViewItem, PlayerControlDelegate {
     static let identifier = NSUserInterfaceItemIdentifier(rawValue: "InfoItemView")
 
     @IBOutlet weak var titleLabel: NSTextField!
+    @IBOutlet weak var windowDragArea: NSView!
     @IBOutlet weak var highlightView: NSView!
     @IBOutlet weak var stackView: NSStackView!
     @IBOutlet weak var mediaImageView: ImageView!
@@ -91,6 +92,17 @@ class InfoItemView: NSCollectionViewItem, PlayerControlDelegate {
 
     // MARK: Setup
 
+    private func setupViews() {
+        windowDragArea.wantsLayer = true
+        windowDragArea.layer?.backgroundColor = style.dragAreaBackground.cgColor
+        highlightView.wantsLayer = true
+        highlightView.layer?.backgroundColor = style.menuSelectedColor.cgColor
+        playerControl.tintColor = style.menuSelectedColor
+        playerStateImageView.wantsLayer = true
+        playerStateImageView.layer?.cornerRadius = playerStateImageView.frame.width / 2
+        playerStateImageView.layer?.backgroundColor = style.darkBackground.cgColor
+    }
+
     private func load(_ item: InfoItem) {
         titleLabel.attributedStringValue = NSAttributedString(string: item.title, attributes: style.windowTitleAttributes)
         setupStackView(for: item.labels)
@@ -149,15 +161,6 @@ class InfoItemView: NSCollectionViewItem, PlayerControlDelegate {
                 self?.mediaImageView.set(image)
             }
         }
-    }
-
-    private func setupViews() {
-        highlightView.wantsLayer = true
-        highlightView.layer?.backgroundColor = style.menuSelectedColor.cgColor
-        playerControl.tintColor = style.menuSelectedColor
-        playerStateImageView.wantsLayer = true
-        playerStateImageView.layer?.cornerRadius = playerStateImageView.frame.width / 2
-        playerStateImageView.layer?.backgroundColor = style.darkBackground.cgColor
     }
 
 

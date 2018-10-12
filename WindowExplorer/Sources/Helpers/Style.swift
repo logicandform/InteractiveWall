@@ -7,29 +7,29 @@ import AppKit
 final class Style {
 
 
-    // MARK: General colors
+    // MARK: General Style
 
-    let darkBackground = NSColor.black.withAlphaComponent(0.85)
-    let darkBackgroundOpaque = NSColor.black
-    let dragAreaBackground = NSColor.black.withAlphaComponent(0.85)
-    let unselectedRecordIcon = NSColor.gray
+    let darkBackground = NSColor(srgbRed: 35/255, green: 38/255, blue: 40/255, alpha: 0.88)
+    let dragAreaBackground = NSColor(srgbRed: 35/255, green: 38/255, blue: 40/255, alpha: 0.88)
     let menuSelectedColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
-    let menuUnselectedColor = NSColor(calibratedRed: 1, green: 1, blue: 1, alpha: 1)
-    let menuButtonBackgroundColor = NSColor(srgbRed: 34.0/255.0, green: 34.0/255.0, blue: 34.0/255.0, alpha: 0.32)
-    let relatedItemBackgroundColor = NSColor(calibratedRed: 0.08, green: 0.10, blue: 0.11, alpha: 1)
+    let menuButtonBackgroundColor = NSColor(srgbRed: 34/255, green: 34/255, blue: 34/255, alpha: 0.32)
     let touchIndicatorColor = NSColor(calibratedRed: 0, green: 200/255, blue: 1, alpha: 1)
-    let zoomControlColor = NSColor(white: 0.2, alpha: 0.8)
+    let defaultBorderColor = NSColor(white: 0.5, alpha: 1)
+    let defaultBorderWidth: CGFloat = 1
+    let zoomControlColor = NSColor(white: 0.25, alpha: 0.8)
+    let windowHighlightWidth: CGFloat = 3
+    let windowHighlightZPosition: CGFloat = 10
 
 
     // MARK: RecordType Colors
 
-    let artifactColor = NSColor(srgbRed: 205.0/255.0, green: 33.0/255.0, blue: 54.0/255.0, alpha: 1.0)
-    let schoolColor = NSColor(srgbRed: 7.0/255.0, green: 61.0/255.0, blue: 224.0/255.0, alpha: 1.0)
-    let eventColor = NSColor(srgbRed: 228.0/255.0, green: 54.0/255.0, blue: 188.0/255.0, alpha: 1.0)
-    let organizationColor = NSColor(srgbRed: 0.0/255.0, green: 159.0/255.0, blue: 75.0/255.0, alpha: 1.0)
-    let collectionColor = NSColor(srgbRed: 229.0/255.0, green: 121.0/255.0, blue: 0.0/255.0, alpha: 1.0)
+    let artifactColor = NSColor(srgbRed: 205/255, green: 33/255, blue: 54/255, alpha: 1)
+    let schoolColor = NSColor(srgbRed: 7/255, green: 61/255, blue: 224/255, alpha: 1)
+    let eventColor = NSColor(srgbRed: 228/255, green: 54/255, blue: 188/255, alpha: 1)
+    let organizationColor = NSColor(srgbRed: 0/255, green: 159/255, blue: 75/255, alpha: 1)
+    let collectionColor = NSColor(srgbRed: 229/255, green: 121/255, blue: 0/255, alpha: 1)
     let individualColor = NSColor.red
-    let themeColor = NSColor(srgbRed: 0.0/255.0, green: 154.0/255.0, blue: 254.0/255.0, alpha: 1.0)
+    let themeColor = NSColor(srgbRed: 0/255, green: 154/255, blue: 254/255, alpha: 1)
 
 
     // MARK: Windows Properties
@@ -83,7 +83,7 @@ final class Style {
         return [.paragraphStyle: paragraphStyle,
                 .font: font,
                 .foregroundColor: NSColor.white,
-                .kern: 1.0]
+                .kern: 1]
     }
 
     var relatedItemsTitleAttributes: [NSAttributedString.Key: Any] {
@@ -91,7 +91,7 @@ final class Style {
 
         return [.font: font,
                 .foregroundColor: NSColor.white,
-                .kern: 1.0,
+                .kern: 1,
                 .baselineOffset: font.fontName == "Soleil" ? 1 : 0]
     }
 

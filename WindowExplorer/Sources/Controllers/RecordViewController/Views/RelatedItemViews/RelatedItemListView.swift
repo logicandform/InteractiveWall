@@ -10,7 +10,7 @@ class RelatedItemListView: RelatedItemView {
     @IBOutlet weak var descriptionView: NSTextView!
 
 
-    // MARK: Overrides
+    // MARK: Life-Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,6 +18,9 @@ class RelatedItemListView: RelatedItemView {
         descriptionView.drawsBackground = false
         descriptionView.textContainer?.maximumNumberOfLines = Constants.numberOfDescriptionLines
     }
+
+
+    // MARK: Overrides
 
     override func load(_ record: Record) {
         super.load(record)

@@ -74,7 +74,7 @@ class RecordCollectionItemView: NSCollectionViewItem {
     }
 
     private func setImage(_ image: NSImage?, scaling: ImageScaling) {
-        mediaImageView.layer?.backgroundColor = style.relatedItemBackgroundColor.cgColor
+        mediaImageView.layer?.backgroundColor = .black
         mediaImageView.transition(image, duration: Constants.imageTransitionDuration, scaling: scaling)
     }
 }

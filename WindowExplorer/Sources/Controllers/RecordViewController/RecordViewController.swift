@@ -55,7 +55,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         static let expandImageViewCornerRadius: CGFloat = 2.0
         static let relatedImagesAnimationTime = 0.1
         static let pageControlIndicatorSize: CGFloat = 8
-        static let relatedRecordsMaxHeight: CGFloat = 565
+        static let relatedRecordsMaxHeight: CGFloat = 561
     }
 
 
@@ -71,7 +71,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         setupGestures()
         setupRelatedItemsView()
         animateViewIn()
-        resetCloseWindowTimer()
     }
 
     override func viewDidAppear() {
@@ -88,9 +87,11 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         detailView.alphaValue = 0
         detailView.wantsLayer = true
         detailView.layer?.backgroundColor = style.darkBackground.cgColor
+        detailView.addCustomBorders()
         relatedItemsHeader.alphaValue = 0
         relatedItemsHeader.wantsLayer = true
-        relatedItemsHeader.layer?.backgroundColor = style.darkBackgroundOpaque.cgColor
+        relatedItemsHeader.layer?.backgroundColor = style.dragAreaBackground.cgColor
+        relatedItemsHeader.addCustomBorders()
         relatedItemsHeaderHighlight.wantsLayer = true
         relatedItemsHeaderHighlight.layer?.backgroundColor = record.type.color.cgColor
         windowDragAreaHighlight.layer?.backgroundColor = record.type.color.cgColor
@@ -113,7 +114,8 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         mediaView.register(MediaItemView.self, forItemWithIdentifier: MediaItemView.identifier)
         mediaView.frame = NSRect(origin: mediaView.frame.origin, size: NSSize(width: CGFloat(record.media.count) * mediaCollectionClipView.frame.size.width, height: mediaView.frame.height))
         placeHolderImage.image = record.type.placeholder.tinted(with: record.type.color)
-        pageControl.color = .white
+        pageControl.color = record.type.color
+        pageControl.unselectedColor = style.defaultBorderColor
         pageControl.indicatorSize = Constants.pageControlIndicatorSize
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.wantsLayer = true
@@ -137,9 +139,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         relatedRecordsTypeLabel.alphaValue = 0
         relatedRecordsTypeLabel.attributedStringValue = NSAttributedString(string: Constants.allRecordsTitle.uppercased(), attributes: style.relatedItemsTitleAttributes)
         showRelatedItemsImage.isHidden = record.relatedRecords.isEmpty
-        recordTypeSelectionView.alphaValue = 0
-        recordTypeSelectionView.wantsLayer = true
-        recordTypeSelectionView.layer?.backgroundColor = style.darkBackground.cgColor
         recordTypeSelectionView.initialize(with: record, manager: gestureManager)
         recordTypeSelectionView.delegate = self
         updateRelatedRecordsHeight()
@@ -494,7 +493,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             detailView.animator().alphaValue = 0
             relatedItemsView.animator().alphaValue = 0
             windowDragArea.animator().alphaValue = 0
-            recordTypeSelectionView.animator().alphaValue = 0
         }, completionHandler: { [weak self] in
             self?.close()
         })
@@ -558,7 +556,6 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
             self?.relatedItemsHeader.animator().alphaValue = alpha
             self?.relatedRecordsLabel.animator().alphaValue = alpha
             self?.relatedRecordsTypeLabel.animator().alphaValue = alpha
-            self?.recordTypeSelectionView.animator().alphaValue = alpha
             self?.showRelatedItemsImage.animator().alphaValue = 1 - alpha
             }, completionHandler: { [weak self] in
                 self?.didToggleRelatedItems { [weak self] in

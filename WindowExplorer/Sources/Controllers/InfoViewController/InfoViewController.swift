@@ -75,6 +75,7 @@ class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollec
     private func setupView() {
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
+        view.addCustomBorders()
     }
 
     private func setupCollectionView() {
@@ -129,19 +130,19 @@ class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollec
     private func setupToggleButtons() {
         toggleLeftButton.wantsLayer = true
         toggleLeftButton.layer?.cornerRadius = toggleLeftButton.frame.width / 2
-        toggleLeftButton.layer?.backgroundColor = NSColor.gray.cgColor
-        let leftButtonImage = NSImage(named: "left-arrow-icon")
+        toggleLeftButton.layer?.backgroundColor = style.defaultBorderColor.cgColor
+        let leftButtonImage = NSImage(named: "left-arrow-icon")?.tinted(with: style.darkBackground)
         toggleLeftButton.set(leftButtonImage, scaling: .center)
         toggleRightButton.wantsLayer = true
         toggleRightButton.layer?.cornerRadius = toggleRightButton.frame.width / 2
-        toggleRightButton.layer?.backgroundColor = NSColor.gray.cgColor
-        let rightButtonImage = NSImage(named: "right-arrow-icon")
+        toggleRightButton.layer?.backgroundColor = style.defaultBorderColor.cgColor
+        let rightButtonImage = NSImage(named: "right-arrow-icon")?.tinted(with: style.darkBackground)
         toggleRightButton.set(rightButtonImage, scaling: .center)
     }
 
     private func setupPageControl() {
         pageControl.color = style.menuSelectedColor
-        pageControl.unselectedColor = NSColor.gray
+        pageControl.unselectedColor = style.defaultBorderColor
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.wantsLayer = true
         pageControl.indicatorSize = Constants.pageControlIndicatorSize

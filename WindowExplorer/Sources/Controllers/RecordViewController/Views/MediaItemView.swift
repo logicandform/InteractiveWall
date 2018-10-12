@@ -38,7 +38,7 @@ class MediaItemView: NSCollectionViewItem {
         if highlighted {
             view.layer?.borderColor = tintColor.cgColor
         } else {
-            view.layer?.borderColor = CGColor.clear
+            view.layer?.borderColor = .clear
         }
     }
 
@@ -47,7 +47,7 @@ class MediaItemView: NSCollectionViewItem {
 
     private func setupViews() {
         view.wantsLayer = true
-        view.layer?.borderWidth = 1
+        view.layer?.borderWidth = style.windowHighlightWidth
         videoIconImageView.wantsLayer = true
         videoIconImageView.layer?.cornerRadius = videoIconImageView.frame.width / 2
         videoIconImageView.layer?.backgroundColor = style.darkBackground.cgColor

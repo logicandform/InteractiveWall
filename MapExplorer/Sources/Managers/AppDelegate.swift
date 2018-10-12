@@ -7,13 +7,13 @@ let style = Style()
 
 
 struct Configuration {
-    static let serverIP = "10.58.73.203"
+    static let serverIP = "localhost"
     static let serverURL = "http://\(serverIP):3000"
     static let appsPerScreen = 2
     static let numberOfScreens = 1
-    static let localMediaURLs = false
-    static let touchScreen = TouchScreen.ur9851
-    static let ungroupTimoutDuration = 30.0
+    static let localMediaURLs = true
+    static let touchScreen = TouchScreen.pct2485
+    static let ungroupTimoutDuration = 90.0
 }
 
 

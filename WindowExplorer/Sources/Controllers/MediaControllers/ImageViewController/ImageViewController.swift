@@ -89,12 +89,14 @@ class ImageViewController: MediaViewController {
         imageScrollView.documentView = imageView
         let frame = CGRect(origin: window.frame.origin, size: size)
         setWindow(frame: frame, animate: false) { [weak self] in
-            if let strongSelf = self {
-                self?.parentDelegate?.requestUpdate(for: strongSelf, animate: false)
-                self?.animateViewIn()
-                self?.adjusted = true
-            }
+            self?.didDisplayImage()
         }
+    }
+
+    private func didDisplayImage() {
+        parentDelegate?.requestUpdate(for: self, animate: false)
+        animateViewIn()
+        adjusted = true
     }
 
 

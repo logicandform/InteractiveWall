@@ -159,6 +159,8 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
         titleTextField.attributedStringValue = NSAttributedString(string: "Control Center", attributes: style.windowTitleAttributes)
+        windowDragArea.wantsLayer = true
+        windowDragArea.layer?.backgroundColor = style.dragAreaBackground.cgColor
         windowDragAreaHighlight.wantsLayer = true
         windowDragAreaHighlight.layer?.backgroundColor = style.menuSelectedColor.cgColor
         consoleCollectionView.register(ConsoleItemView.self, forItemWithIdentifier: ConsoleItemView.identifier)

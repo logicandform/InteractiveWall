@@ -64,7 +64,7 @@ class BaseViewController: NSViewController, GestureResponder {
         windowDragArea.wantsLayer = true
         windowDragArea.layer?.backgroundColor = style.dragAreaBackground.cgColor
         windowDragAreaHighlight.wantsLayer = true
-        windowDragAreaHighlight.layer?.backgroundColor = CGColor.white
+        windowDragAreaHighlight.layer?.backgroundColor = .white
     }
 
 

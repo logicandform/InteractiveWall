@@ -23,6 +23,40 @@ extension NSView {
 
         return screenIndex
     }
+
+    func addCustomBorders() {
+        for position in BorderPosition.allCases {
+            let borderLayer = border(for: position)
+            layer?.addSublayer(borderLayer)
+        }
+    }
+
+    private enum BorderPosition: CaseIterable {
+        case left
+        case bottom
+        case right
+    }
+
+    private func border(for position: BorderPosition) -> CALayer {
+        let layer = CALayer()
+        layer.frame = CGRect(origin: .zero, size: CGSize(width: style.defaultBorderWidth, height: frame.height - style.windowHighlightWidth))
+        layer.backgroundColor = style.defaultBorderColor.cgColor
+        layer.zPosition = style.windowHighlightZPosition
+
+        switch position {
+        case .bottom:
+            layer.frame = CGRect(origin: .zero, size: CGSize(width: frame.width, height: style.defaultBorderWidth))
+            layer.autoresizingMask = .layerWidthSizable
+        case .left:
+            layer.frame = CGRect(origin: .zero, size: CGSize(width: style.defaultBorderWidth, height: frame.height - style.windowHighlightWidth))
+            layer.autoresizingMask = .layerHeightSizable
+        case .right:
+            layer.frame = CGRect(origin: CGPoint(x: frame.width - style.defaultBorderWidth, y: 0), size: CGSize(width: style.defaultBorderWidth, height: frame.height - style.windowHighlightWidth))
+            layer.autoresizingMask = [.layerHeightSizable, .layerMinXMargin]
+        }
+
+        return layer
+    }
 }
 
 

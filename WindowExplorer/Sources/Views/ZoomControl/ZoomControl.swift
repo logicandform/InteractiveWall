@@ -24,6 +24,7 @@ class ZoomControl: NSView {
         didSet {
             if let color = tintColor, let cell = seekBar.cell as? ColoredSliderCell {
                 cell.leadingColor = color
+                cell.trailingColor = style.defaultBorderColor
             }
         }
     }

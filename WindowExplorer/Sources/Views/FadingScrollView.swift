@@ -57,24 +57,24 @@ class FadingScrollView: NSScrollView {
         }
 
         currentPosition = position
-        let transparent = NSColor.clear.cgColor
-        let opaque = style.darkBackgroundOpaque.cgColor
+        let transparent = CGColor.clear
+        let opaque = CGColor.black
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = NSRect(x: bounds.origin.x, y: 0, width: bounds.size.width, height: bounds.size.height)
 
         switch position {
         case .top:
             gradientLayer.colors = [opaque, transparent]
-            gradientLayer.locations = [NSNumber(value: 1.0 - Constants.fadePercentage), 1.0]
+            gradientLayer.locations = [NSNumber(value: 1 - Constants.fadePercentage), 1]
         case .bottom:
             gradientLayer.colors = [transparent, opaque]
-            gradientLayer.locations = [0.0, NSNumber(value: Constants.fadePercentage)]
+            gradientLayer.locations = [0, NSNumber(value: Constants.fadePercentage)]
         case .middle:
             gradientLayer.colors = [transparent, opaque, opaque, transparent]
-            gradientLayer.locations = [0.0, NSNumber(value: Constants.fadePercentage), NSNumber(value: 1.0 - Constants.fadePercentage), 1.0]
+            gradientLayer.locations = [0, NSNumber(value: Constants.fadePercentage), NSNumber(value: 1 - Constants.fadePercentage), 1]
         case .none:
             gradientLayer.colors = [opaque, opaque]
-            gradientLayer.locations = [0.0, 1.0]
+            gradientLayer.locations = [0, 1]
         }
 
         layer?.mask = gradientLayer

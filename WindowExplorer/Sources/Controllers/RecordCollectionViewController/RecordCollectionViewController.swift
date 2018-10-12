@@ -47,7 +47,7 @@ class RecordCollectionViewController: BaseViewController, NSCollectionViewDelega
     private func setupViews() {
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
-        view.alphaValue = 0
+        view.addCustomBorders()
         windowDragArea.alphaValue = 0
         collectionView.alphaValue = 0
         titleLabel.attributedStringValue = NSAttributedString(string: record.shortestTitle(), attributes: style.windowTitleAttributes)

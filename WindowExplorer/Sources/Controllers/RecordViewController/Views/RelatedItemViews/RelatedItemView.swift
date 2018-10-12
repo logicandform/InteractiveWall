@@ -18,18 +18,6 @@ class RelatedItemView: NSCollectionViewItem {
     struct Constants {
         static let imageTransitionDuration = 0.3
         static let numberOfDescriptionLines = 3
-        static let borderWidth: CGFloat = 3
-    }
-
-
-    // MARK: API
-
-    func set(highlighted: Bool) {
-        if highlighted {
-            view.layer?.borderColor = tintColor.cgColor
-        } else {
-            view.layer?.borderColor = style.darkBackground.cgColor
-        }
     }
 
 
@@ -39,22 +27,33 @@ class RelatedItemView: NSCollectionViewItem {
         super.awakeFromNib()
 
         view.wantsLayer = true
+        view.layer?.backgroundColor = style.darkBackground.cgColor
         set(highlighted: false)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.layer?.borderWidth = Constants.borderWidth
-        view.layer?.borderColor = style.darkBackground.cgColor
-        view.layer?.backgroundColor = style.darkBackground.cgColor
-        mediaImageView.layer?.backgroundColor = style.relatedItemBackgroundColor.cgColor
+        mediaImageView.layer?.backgroundColor = .black
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
 
         mediaImageView.set(nil)
+    }
+
+
+    // MARK: API
+
+    func set(highlighted: Bool) {
+        if highlighted {
+            view.layer?.borderWidth = style.windowHighlightWidth
+            view.layer?.borderColor = tintColor.cgColor
+        } else {
+            view.layer?.borderWidth = style.defaultBorderWidth
+            view.layer?.borderColor = style.defaultBorderColor.cgColor
+        }
     }
 
 
