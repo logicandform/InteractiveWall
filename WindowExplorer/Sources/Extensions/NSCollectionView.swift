@@ -14,7 +14,7 @@ extension NSCollectionView {
 
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = duration
-            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
+            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeIn)
             clipView.animator().setBoundsOrigin(point)
         }, completionHandler: completion)
     }
