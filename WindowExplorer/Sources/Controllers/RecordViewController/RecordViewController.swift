@@ -87,11 +87,11 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         detailView.alphaValue = 0
         detailView.wantsLayer = true
         detailView.layer?.backgroundColor = style.darkBackground.cgColor
-        detailView.addCustomBorders()
+        detailView.addBordersUnderHighlight()
         relatedItemsHeader.alphaValue = 0
         relatedItemsHeader.wantsLayer = true
         relatedItemsHeader.layer?.backgroundColor = style.dragAreaBackground.cgColor
-        relatedItemsHeader.addCustomBorders()
+        relatedItemsHeader.addBordersUnderHighlight()
         relatedItemsHeaderHighlight.wantsLayer = true
         relatedItemsHeaderHighlight.layer?.backgroundColor = record.type.color.cgColor
         windowDragAreaHighlight.layer?.backgroundColor = record.type.color.cgColor

@@ -18,7 +18,7 @@ final class Style {
     let defaultBorderWidth: CGFloat = 1
     let zoomControlColor = NSColor(white: 0.25, alpha: 0.8)
     let windowHighlightWidth: CGFloat = 3
-    let windowHighlightZPosition: CGFloat = 10
+    let windowBorderZPosition: CGFloat = 10
 
 
     // MARK: RecordType Colors

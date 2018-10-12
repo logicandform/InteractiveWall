@@ -75,7 +75,7 @@ class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollec
     private func setupView() {
         view.wantsLayer = true
         view.layer?.backgroundColor = style.darkBackground.cgColor
-        view.addCustomBorders()
+        view.addBordersUnderHighlight()
     }
 
     private func setupCollectionView() {

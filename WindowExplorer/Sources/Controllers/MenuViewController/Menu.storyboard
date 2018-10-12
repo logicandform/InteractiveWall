@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
-        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
     </dependencies>
     <scenes>
         <!--Info-->
@@ -30,7 +29,7 @@
                                 </constraints>
                             </stackView>
                             <containerView translatesAutoresizingMaskIntoConstraints="NO" id="aSl-0L-qLt">
-                                <rect key="frame" x="0.0" y="300" width="500" height="800"/>
+                                <rect key="frame" x="1" y="300" width="500" height="800"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="800" id="gq9-3W-cc8"/>
                                     <constraint firstAttribute="width" constant="500" id="uVw-CH-aX0"/>
@@ -54,7 +53,7 @@
                                 </constraints>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="NQM-Tg-GPE">
-                                <rect key="frame" x="0.0" y="1060" width="500" height="40"/>
+                                <rect key="frame" x="1" y="1060" width="500" height="40"/>
                                 <subviews>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="wBC-72-N7o">
                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -86,7 +85,7 @@
                             <constraint firstAttribute="trailing" secondItem="XOO-wB-Aer" secondAttribute="leading" constant="50" id="eNL-jS-I36"/>
                             <constraint firstAttribute="bottom" secondItem="y9D-aO-cag" secondAttribute="bottom" id="hHb-wx-hwq"/>
                             <constraint firstItem="Biq-Io-5tR" firstAttribute="leading" secondItem="XOO-wB-Aer" secondAttribute="leading" id="iGO-DN-pY4"/>
-                            <constraint firstItem="XOO-wB-Aer" firstAttribute="leading" secondItem="aSl-0L-qLt" secondAttribute="trailing" id="kGK-15-aXY"/>
+                            <constraint firstItem="XOO-wB-Aer" firstAttribute="leading" secondItem="aSl-0L-qLt" secondAttribute="trailing" constant="-1" id="kGK-15-aXY"/>
                             <constraint firstItem="XOO-wB-Aer" firstAttribute="top" relation="greaterThanOrEqual" secondItem="AdH-oQ-xB7" secondAttribute="top" id="qTH-97-cBd"/>
                             <constraint firstItem="NQM-Tg-GPE" firstAttribute="trailing" secondItem="aSl-0L-qLt" secondAttribute="trailing" id="xJd-sj-2u9"/>
                         </constraints>
@@ -122,7 +121,7 @@
                                 </constraints>
                             </stackView>
                             <containerView translatesAutoresizingMaskIntoConstraints="NO" id="Mf6-a3-oND">
-                                <rect key="frame" x="50" y="300" width="500" height="800"/>
+                                <rect key="frame" x="49" y="300" width="500" height="800"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="500" id="cbB-iO-dy1"/>
                                     <constraint firstAttribute="height" constant="800" id="tac-Rw-Vnk"/>
@@ -146,7 +145,7 @@
                                 </constraints>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="5hW-TD-b2t">
-                                <rect key="frame" x="50" y="1060" width="500" height="40"/>
+                                <rect key="frame" x="49" y="1060" width="500" height="40"/>
                                 <subviews>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="02B-j2-5dU">
                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -167,7 +166,7 @@
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="kWu-fr-l1x" secondAttribute="bottom" constant="50" id="5Jz-mO-Vrk"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Mf6-a3-oND" secondAttribute="bottom" id="6H7-tR-gNr"/>
                             <constraint firstItem="5hW-TD-b2t" firstAttribute="trailing" secondItem="Mf6-a3-oND" secondAttribute="trailing" id="9LM-dd-pO4"/>
-                            <constraint firstItem="Mf6-a3-oND" firstAttribute="leading" secondItem="kWu-fr-l1x" secondAttribute="trailing" id="9rs-5n-sfI"/>
+                            <constraint firstItem="Mf6-a3-oND" firstAttribute="leading" secondItem="kWu-fr-l1x" secondAttribute="trailing" constant="-1" id="9rs-5n-sfI"/>
                             <constraint firstAttribute="bottom" secondItem="Mf6-a3-oND" secondAttribute="bottom" priority="200" constant="300" id="EEr-mo-jf4"/>
                             <constraint firstAttribute="bottom" secondItem="kWu-fr-l1x" secondAttribute="bottom" priority="250" constant="300" id="G8a-9T-A8Q"/>
                             <constraint firstItem="kWu-fr-l1x" firstAttribute="top" secondItem="V3P-Dx-vtf" secondAttribute="bottom" id="R3C-t3-QrG"/>

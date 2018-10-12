@@ -4,6 +4,14 @@ import Foundation
 import AppKit
 
 
+enum BorderPosition: CaseIterable {
+    case top
+    case left
+    case bottom
+    case right
+}
+
+
 extension NSView {
 
     /// Animates the transition of the view's layer contents to a new image
@@ -24,38 +32,35 @@ extension NSView {
         return screenIndex
     }
 
-    func addCustomBorders() {
-        for position in BorderPosition.allCases {
-            let borderLayer = border(for: position)
-            layer?.addSublayer(borderLayer)
-        }
+    func addBordersUnderHighlight() {
+        addBorder(for: .left, indent: style.windowHighlightWidth)
+        addBorder(for: .right, indent: style.windowHighlightWidth)
+        addBorder(for: .bottom)
     }
 
-    private enum BorderPosition: CaseIterable {
-        case left
-        case bottom
-        case right
-    }
-
-    private func border(for position: BorderPosition) -> CALayer {
-        let layer = CALayer()
-        layer.frame = CGRect(origin: .zero, size: CGSize(width: style.defaultBorderWidth, height: frame.height - style.windowHighlightWidth))
-        layer.backgroundColor = style.defaultBorderColor.cgColor
-        layer.zPosition = style.windowHighlightZPosition
+    @discardableResult
+    func addBorder(for position: BorderPosition, thickness: CGFloat = style.defaultBorderWidth, indent: CGFloat = 0) -> CALayer {
+        let border = CALayer()
+        border.backgroundColor = style.defaultBorderColor.cgColor
+        border.zPosition = style.windowBorderZPosition
 
         switch position {
+        case .top:
+            border.frame = CGRect(origin: CGPoint(x: 0, y: frame.height - thickness), size: CGSize(width: frame.width - indent, height: thickness))
+            border.autoresizingMask = [.layerWidthSizable, .layerMinYMargin]
         case .bottom:
-            layer.frame = CGRect(origin: .zero, size: CGSize(width: frame.width, height: style.defaultBorderWidth))
-            layer.autoresizingMask = .layerWidthSizable
+            border.frame = CGRect(origin: .zero, size: CGSize(width: frame.width - indent, height: thickness))
+            border.autoresizingMask = .layerWidthSizable
         case .left:
-            layer.frame = CGRect(origin: .zero, size: CGSize(width: style.defaultBorderWidth, height: frame.height - style.windowHighlightWidth))
-            layer.autoresizingMask = .layerHeightSizable
+            border.frame = CGRect(origin: .zero, size: CGSize(width: thickness, height: frame.height - indent))
+            border.autoresizingMask = .layerHeightSizable
         case .right:
-            layer.frame = CGRect(origin: CGPoint(x: frame.width - style.defaultBorderWidth, y: 0), size: CGSize(width: style.defaultBorderWidth, height: frame.height - style.windowHighlightWidth))
-            layer.autoresizingMask = [.layerHeightSizable, .layerMinXMargin]
+            border.frame = CGRect(origin: CGPoint(x: frame.width - thickness, y: 0), size: CGSize(width: thickness, height: frame.height - indent))
+            border.autoresizingMask = [.layerHeightSizable, .layerMinXMargin]
         }
 
-        return layer
+        layer?.addSublayer(border)
+        return border
     }
 }
 

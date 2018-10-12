@@ -29,10 +29,13 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
     var gestureManager: GestureManager!
     private var resetTimer: Foundation.Timer!
     private var buttonForType = [MenuButtonType: MenuButton]()
-    private var menuOpened = false
-    private var animating = false
     private var infoController: InfoViewController?
     private weak var searchChild: SearchChild?
+    private var menuBottomBorder: CALayer?
+    private var accessibilityTopBorder: CALayer?
+    private var bordersHidden = false
+    private var menuOpened = false
+    private var animating = false
 
     private var menuSide: MenuSide {
         return appID.isEven ? .left : .right
@@ -73,6 +76,7 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         super.viewDidAppear()
 
         centerMenu()
+        setupBorders()
         setupInfoMenu()
     }
 
@@ -140,6 +144,16 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
 
     // MARK: Setup
 
+    private func setupBorders() {
+        menuView.wantsLayer = true
+        menuView.addBorder(for: .top)
+        menuView.addBorder(for: .right)
+        menuBottomBorder = menuView.addBorder(for: .bottom)
+        accessibilityButtonArea.wantsLayer = true
+        accessibilityButtonArea.addBorder(for: .right)
+        accessibilityTopBorder = accessibilityButtonArea.addBorder(for: .top)
+    }
+
     private func setupMenu() {
         MenuButtonType.itemsInMenu.map {
             createButton(for: $0)
@@ -200,7 +214,7 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
     // MARK: Gesture Handling
 
     private func didSelect(type: MenuButtonType) {
-        guard let button = buttonForType[type] else {
+        guard let button = buttonForType[type], !gestureManager.isActive() else {
             return
         }
 
@@ -236,6 +250,7 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
             let infoBottomOffset = clamp(infoBottomConstraint.constant + pan.delta.dy, min: 0, max: view.frame.height - infoMenuView.frame.height)
             infoBottomConstraint.constant = infoBottomOffset
             menuBottomConstraint.constant = menuView.frame.minY
+            updateMenuBorders()
         default:
             return
         }
@@ -254,6 +269,7 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
             let menuBottomOffset = clamp(menuBottomConstraint.constant + pan.delta.dy, min: Constants.menuButtonSize.height, max: view.frame.height - menuView.frame.height)
             menuBottomConstraint.constant = menuBottomOffset
             infoBottomConstraint.constant = infoMenuView.frame.minY
+            updateMenuBorders()
         default:
             return
         }
@@ -428,9 +444,15 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
             NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
             self?.menuBottomConstraint.animator().constant = verticalPosition
         }, completionHandler: { [weak self] in
-            self?.animating = false
-            completion?()
+            self?.finishedAnimatingMenu(completion: completion)
         })
+    }
+
+    private func finishedAnimatingMenu(completion: (() -> Void)?) {
+        infoBottomConstraint.constant = min(infoBottomConstraint.constant, menuBottomConstraint.constant)
+        updateMenuBorders()
+        animating = false
+        completion?()
     }
 
     private func refreshResetTimer() {
@@ -452,5 +474,20 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         if let button = buttonForType[.information], !button.selected {
             infoController?.reset()
         }
+    }
+
+    /// Updates the visibility of the top / bottom borders of the menu and accessibility button when they are connected / dissconnected
+    private func updateMenuBorders() {
+        let connectedMenus = menuBottomConstraint.constant == accessibilityButtonArea.frame.height
+        if connectedMenus == bordersHidden {
+            return
+        }
+
+        bordersHidden = connectedMenus
+
+        CATransaction.begin()
+        menuBottomBorder?.opacity = connectedMenus ? 0 : 1
+        accessibilityTopBorder?.opacity = connectedMenus ? 0 : 1
+        CATransaction.commit()
     }
 }
