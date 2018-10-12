@@ -147,10 +147,11 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
     private func setupBorders() {
         menuView.wantsLayer = true
         menuView.addBorder(for: .top)
-        menuView.addBorder(for: .right)
+        let innerSide: BorderPosition = appID.isEven ? .right : .left
+        menuView.addBorder(for: innerSide)
         menuBottomBorder = menuView.addBorder(for: .bottom)
         accessibilityButtonArea.wantsLayer = true
-        accessibilityButtonArea.addBorder(for: .right)
+        accessibilityButtonArea.addBorder(for: innerSide)
         accessibilityTopBorder = accessibilityButtonArea.addBorder(for: .top)
     }
 
