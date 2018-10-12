@@ -22,6 +22,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
         static let interFlagMargin: CGFloat = 5
         static let headerFlagMargin: CGFloat = 3
         static let countTitleHeight: CGFloat = 20
+        static let tailZPosition = -1000
     }
 
 
@@ -83,7 +84,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
             }
         }
 
-        // Cache the layers for each year for fast access
+        // Cache the layer for each year for fast access
         for year in (source.firstYear...source.lastYear + TimelineDecadeFlagLayout.infiniteScrollBuffer) {
             let start = CGFloat(year) * TimelineDecadeFlagLayout.yearWidth - CGFloat(source.firstYear) * TimelineDecadeFlagLayout.yearWidth
             let end = start + TimelineDecadeFlagLayout.yearWidth
@@ -176,7 +177,6 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
         let flagFrame = frameForFlag(atX: x, size: CGSize(width: style.timelineItemWidth, height: flagHeight), year: event.dates.startDate.year, in: source)
         flagFrameForEvent[event] = flagFrame
         let totalHeight = flagFrame.minY - style.timelineHeaderHeight + flagHeight
-
         attributes.zIndex = Int(-totalHeight)
         attributes.frame = CGRect(origin: CGPoint(x: x, y: style.timelineHeaderHeight), size: CGSize(width: style.timelineItemWidth, height: totalHeight))
         return attributes
@@ -215,7 +215,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
         let y = style.timelineHeaderHeight + Constants.headerFlagMargin
         let height = tailHeightForYear[year] ?? 0
         attributes.frame = CGRect(x: x, y: y, width: TimelineDecadeFlagLayout.yearWidth, height: height)
-        attributes.zIndex = -1000
+        attributes.zIndex = Constants.tailZPosition
         return attributes
     }
 

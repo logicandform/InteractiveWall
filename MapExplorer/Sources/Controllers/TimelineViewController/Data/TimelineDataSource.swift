@@ -121,9 +121,10 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
             return NSCollectionViewItem()
         }
 
-        let event = events[indexPath.item]
+        let constrainedIndex = indexPath.item % uniqueEvents
+        let event = events[constrainedIndex]
         timelineFlag.event = event
-        timelineFlag.set(highlighted: selectedIndexes.contains(indexPath.item), animated: false)
+        timelineFlag.set(highlighted: selectedIndexes.contains(constrainedIndex), animated: false)
         return timelineFlag
     }
 
