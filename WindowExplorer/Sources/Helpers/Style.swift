@@ -39,7 +39,7 @@ final class Style {
     let imageWindowSize = CGSize(width: 640, height: 410)
     let pdfWindowSize = CGSize(width: 600, height: 640)
     let playerWindowSize = CGSize(width: 1013, height: 650)
-    let searchWindowFrame = CGSize(width: 350, height: 655)
+    let searchWindowFrame = CGSize(width: 300, height: 655)
     let menuWindowWidth: CGFloat = 700
     let borderWindowWidth: CGFloat = 4
     let infoWindowSize = CGSize(width: 500, height: 800)

@@ -130,6 +130,8 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         view.layer?.backgroundColor = style.timelineShadingColor.cgColor
         timelineBackgroundView.wantsLayer = true
         timelineBackgroundView.layer?.backgroundColor = style.timelineBackgroundColor.cgColor
+        timelineBackgroundView.addBorder(for: .top)
+        timelineBackgroundView.addBorder(for: .bottom)
     }
 
     private func setupTimeline() {

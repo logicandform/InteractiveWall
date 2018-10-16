@@ -2,6 +2,7 @@
 
 import Cocoa
 
+
 class SearchItemView: NSCollectionViewItem {
     static let identifier = NSUserInterfaceItemIdentifier("SearchItemView")
 
@@ -10,6 +11,7 @@ class SearchItemView: NSCollectionViewItem {
     @IBOutlet weak var spinner: NSProgressIndicator!
 
     var tintColor = style.menuSelectedColor
+    private var highlightBorders = [CALayer]()
 
     var type: RecordType? {
         didSet {
@@ -25,6 +27,7 @@ class SearchItemView: NSCollectionViewItem {
 
     private struct Constants {
         static let animationDuration = 0.2
+        static let textColor = NSColor.white
     }
 
 
@@ -32,9 +35,22 @@ class SearchItemView: NSCollectionViewItem {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.wantsLayer = true
-        titleTextField.textColor = .white
-        attributionTextField.textColor = .white
+
+        setupViews()
+    }
+
+    func setupBorders(index: Int) {
+        let borderThickness = style.windowHighlightWidth + style.defaultBorderWidth
+        let topThickness = index.isZero ? borderThickness : borderThickness - style.defaultBorderWidth
+        let highlightTop = view.addBorder(for: .top, thickness: topThickness, zPosition: 5)
+        let highlightLeft = view.addBorder(for: .left, thickness: borderThickness, zPosition: 5)
+        let highlightBottom = view.addBorder(for: .bottom, thickness: borderThickness, zPosition: 5)
+        let rightThickness = borderThickness + style.defaultBorderWidth
+        let highlightRight = view.addBorder(for: .right, thickness: rightThickness, zPosition: 5)
+        highlightBorders = [highlightTop, highlightLeft, highlightBottom, highlightRight]
+        view.addBorder(for: .left)
+        view.addBorder(for: .right)
+        view.addBorder(for: .bottom)
         set(highlighted: false)
     }
 
@@ -42,10 +58,9 @@ class SearchItemView: NSCollectionViewItem {
     // MARK: API
 
     func set(highlighted: Bool) {
-        if highlighted {
-            view.layer?.backgroundColor = tintColor.cgColor
-        } else {
-            view.layer?.backgroundColor = style.darkBackground.cgColor
+        for border in highlightBorders {
+            border.backgroundColor = tintColor.cgColor
+            border.isHidden = !highlighted
         }
     }
 
@@ -56,8 +71,19 @@ class SearchItemView: NSCollectionViewItem {
             spinner.stopAnimation(nil)
         }
 
-        titleTextField.isHidden = loading
+        titleTextField.textColor = loading ? style.defaultBorderColor : Constants.textColor
+        attributionTextField.textColor = loading ? style.defaultBorderColor : Constants.textColor
         spinner.isHidden = !loading
+    }
+
+
+    // MARK: Setup
+
+    private func setupViews() {
+        view.wantsLayer = true
+        view.layer?.backgroundColor = style.darkBackground.cgColor
+        titleTextField.textColor = Constants.textColor
+        attributionTextField.textColor = Constants.textColor
     }
 
 

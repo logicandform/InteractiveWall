@@ -8,6 +8,7 @@ protocol SearchItemDisplayable {
     var title: String { get }
 }
 
+
 protocol SearchChild: class {
     var delegate: MenuDelegate? { get set }
     func setWindow(origin: CGPoint, animate: Bool, completion: (() -> Void)?)
@@ -22,7 +23,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     @IBOutlet weak var tertiaryCollectionView: NSCollectionView!
     @IBOutlet weak var secondaryTextField: NSTextField!
     @IBOutlet weak var tertiaryTextField: NSTextField!
-    @IBOutlet weak var collapseButtonArea: NSView!
     @IBOutlet weak var primaryScrollViewHeight: NSLayoutConstraint!
     @IBOutlet weak var secondaryScrollViewHeight: NSLayoutConstraint!
     @IBOutlet weak var tertiaryScrollViewHeight: NSLayoutConstraint!
@@ -51,7 +51,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         static let animationDuration = 0.5
         static let searchItemHeight: CGFloat = 70
         static let defaultWindowHighlightColor = NSColor.white
-        static let collectionViewMargin: CGFloat = 5
         static let maxCollectionViewHeight: CGFloat = 605
     }
 
@@ -60,12 +59,11 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        titleLabel.attributedStringValue = NSAttributedString(string: titleLabel.stringValue, attributes: style.windowTitleAttributes)
 
+        setupViews()
         setupRelationshipHelper()
         setupGestures()
         setupScrollViews()
-        updateWindowDragAreaHighlight(for: selectedType)
         animateViewIn()
     }
 
@@ -79,6 +77,12 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
 
     // MARK: Setup
+
+    private func setupViews() {
+        titleLabel.attributedStringValue = NSAttributedString(string: titleLabel.stringValue, attributes: style.windowTitleAttributes)
+        windowDragArea.addBordersUnderHighlight()
+        updateWindowDragAreaHighlight(for: selectedType)
+    }
 
     private func setupRelationshipHelper() {
         relationshipHelper = RelationshipHelper()
@@ -101,12 +105,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
             collectionViewTap.gestureUpdated = { [weak self] gesture in
                 self?.handleCollectionViewTap(gesture)
             }
-        }
-
-        let collapseButtonTap = TapGestureRecognizer()
-        gestureManager.add(collapseButtonTap, to: collapseButtonArea)
-        collapseButtonTap.gestureUpdated = { [weak self] gesture in
-            self?.handleCollapseButtonTap(gesture)
         }
 
         let windowDragAreaTap = TapGestureRecognizer()
@@ -157,31 +155,14 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
     }
 
     private func handleWindowDragAreaTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer,
-            tap.state == .ended,
-            let positionOfTouch = tap.position else {
+        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended, let positionOfTouch = tap.position else {
             return
         }
 
-        let xPos = positionOfTouch.x
-        let index = Int(xPos / style.searchWindowFrame.width)
+        let index = Int(positionOfTouch.x / style.searchWindowFrame.width)
         if index < collectionViews.count - 1, let correspondingCollectionView = collectionViews.at(index: index), correspondingCollectionView != focusedCollectionView {
             unselectItem(for: correspondingCollectionView)
             toggle(to: correspondingCollectionView)
-        }
-    }
-
-    private func handleCollapseButtonTap(_ gesture: GestureRecognizer) {
-        guard let tap = gesture as? TapGestureRecognizer, tap.state == .ended else {
-            return
-        }
-
-        if let index = collectionViews.index(of: focusedCollectionView), let previous = collectionViews.at(index: index - 1) {
-            let previousCollectionView = focusedCollectionView
-            unselectItem(for: previous)
-            toggle(to: previous, completion: { [weak self] in
-                self?.unselectItems(for: previousCollectionView)
-            })
         }
     }
 
@@ -203,6 +184,7 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
 
         searchItemView.type = selectedType
         searchItemView.item = searchItems.at(index: indexPath.item)
+        searchItemView.setupBorders(index: indexPath.item)
 
         // Set the highlighted state of view
         if searchItemView.collectionView != tertiaryCollectionView, let selectedGroup = selectedGroup {
@@ -228,7 +210,6 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         tertiaryCollectionView.alphaValue = 0
         secondaryTextField.alphaValue = 0
         tertiaryTextField.alphaValue = 0
-        collapseButtonArea.alphaValue = 0
         NSAnimationContext.runAnimationGroup({ _ in
             NSAnimationContext.current.duration = Constants.animationDuration
             primaryCollectionView.animator().alphaValue = 1
@@ -367,12 +348,11 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
                 self?.collectionViews.at(index: indexOfView)?.animator().alphaValue = indexOfView <= index ? 1 : 0
                 self?.titleViews.at(index: indexOfView)?.animator().alphaValue = indexOfView <= index ? 1 : 0
             }
-            self?.collapseButtonArea.animator().alphaValue = index.isZero ? 0 : 1
         })
 
         // Update position and size of window and child controllers
         var frame = window.frame
-        frame.size.width = style.searchWindowFrame.width * CGFloat(index + 1) + Constants.collectionViewMargin * CGFloat(index)
+        frame.size.width = style.searchWindowFrame.width * CGFloat(index + 1) - CGFloat(index)
         setWindow(frame: frame, animate: true, completion: { [weak self] in
             self?.toggling = false
             completion?()
@@ -439,7 +419,10 @@ class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCo
         case secondaryCollectionView:
             secondaryTextField.attributedStringValue = title(for: type)
         case tertiaryCollectionView:
-            let title = "\(type.title) (\(selectedGroup?.title ?? ""))"
+            var title = "\(type.title) (\(selectedGroup?.title ?? ""))"
+            if let province = selectedGroup as? Province {
+                title = "\(type.title) (\(province.abbreviation))"
+            }
             tertiaryTextField.attributedStringValue = NSAttributedString(string: title, attributes: style.windowTitleAttributes)
         default:
             break

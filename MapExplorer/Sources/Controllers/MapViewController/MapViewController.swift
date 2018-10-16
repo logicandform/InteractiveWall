@@ -33,7 +33,6 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let animationDuration = 0.5
         static let recordWindowOffset: CGFloat = 20
         static let mapTitleUpdateThreshold = 10000000.0
-        static let mbtilesPath = "/Users/irshdc/dev/CanadaShoreIceRoad.mbtiles"
     }
 
     private struct Keys {
@@ -89,7 +88,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private func setupMap() {
         mapHandler = MapHandler(mapView: mapView, controller: self)
         ConnectionManager.instance.mapHandler = mapHandler
-        if let overlay = MBXMBTilesOverlay(mbTilesPath: Constants.mbtilesPath) {
+        if let overlay = MBXMBTilesOverlay(mbTilesPath: Configuration.mbtilesPath) {
             overlay.canReplaceMapContent = true
             mapView.addOverlay(overlay)
         }

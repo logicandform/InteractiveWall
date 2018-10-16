@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -23,7 +24,7 @@
                     <rect key="frame" x="142" y="27" width="16" height="16"/>
                 </progressIndicator>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aRF-4l-VWg">
-                    <rect key="frame" x="256" y="26" width="26" height="17"/>
+                    <rect key="frame" x="256" y="27" width="26" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="(0)" id="5Vs-uk-noK">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -31,7 +32,7 @@
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SNb-xw-cHU">
-                    <rect key="frame" x="130" y="26" width="41" height="17"/>
+                    <rect key="frame" x="18" y="27" width="41" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Label" id="rbD-zf-e0H">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -40,14 +41,13 @@
                 </textField>
             </subviews>
             <constraints>
-                <constraint firstItem="SNb-xw-cHU" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="53n-01-se1"/>
                 <constraint firstItem="aRF-4l-VWg" firstAttribute="centerY" secondItem="SNb-xw-cHU" secondAttribute="centerY" id="6t4-b5-P7O"/>
                 <constraint firstAttribute="trailing" secondItem="aRF-4l-VWg" secondAttribute="trailing" constant="20" id="CSH-bx-muI"/>
                 <constraint firstItem="aRF-4l-VWg" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="SNb-xw-cHU" secondAttribute="trailing" constant="8" id="eFC-qN-Zx1"/>
                 <constraint firstItem="96G-nx-k16" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="iYJ-IS-cgp"/>
                 <constraint firstItem="96G-nx-k16" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="pYp-n3-RRt"/>
                 <constraint firstItem="SNb-xw-cHU" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="slB-d3-q3T"/>
-                <constraint firstItem="SNb-xw-cHU" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="wKi-VZ-Ywz"/>
+                <constraint firstItem="SNb-xw-cHU" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="wKi-VZ-Ywz"/>
             </constraints>
             <point key="canvasLocation" x="48" y="77"/>
         </customView>

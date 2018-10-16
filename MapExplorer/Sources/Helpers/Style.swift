@@ -7,10 +7,13 @@ import AppKit
 final class Style {
 
 
-    // MARK: General Colors
+    // MARK: General Properties
 
     let darkBackground = NSColor.black.withAlphaComponent(0.85)
     let darkBackgroundOpaque = NSColor.black
+    let defaultBorderColor = NSColor(white: 0.5, alpha: 1)
+    let defaultBorderWidth: CGFloat = 1
+    let windowBorderZPosition: CGFloat = 10
 
 
     // MARK: RecordType Colors

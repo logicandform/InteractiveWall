@@ -21,6 +21,7 @@
 		220AE85E20ED441A00F6E9AA /* TimelineControlItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220AE85C20ED441A00F6E9AA /* TimelineControlItemView.swift */; };
 		220AE85F20ED441A00F6E9AA /* TimelineControlItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 220AE85D20ED441A00F6E9AA /* TimelineControlItemView.xib */; };
 		220AE86120ED48C200F6E9AA /* Months.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220AE86020ED48C200F6E9AA /* Months.swift */; };
+		2213CDCA21766326003C695F /* NSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2213CDC921766326003C695F /* NSView.swift */; };
 		221A66DC211B7181004525F5 /* TimelineFlagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A66DA211B7181004525F5 /* TimelineFlagView.swift */; };
 		221A66DD211B7181004525F5 /* TimelineFlagView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 221A66DB211B7181004525F5 /* TimelineFlagView.xib */; };
 		221A66DF211B7F4B004525F5 /* TimelineDecadeFlagLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A66DE211B7F4B004525F5 /* TimelineDecadeFlagLayout.swift */; };
@@ -144,6 +145,7 @@
 		220AE85C20ED441A00F6E9AA /* TimelineControlItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineControlItemView.swift; sourceTree = "<group>"; };
 		220AE85D20ED441A00F6E9AA /* TimelineControlItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineControlItemView.xib; sourceTree = "<group>"; };
 		220AE86020ED48C200F6E9AA /* Months.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Months.swift; sourceTree = "<group>"; };
+		2213CDC921766326003C695F /* NSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSView.swift; sourceTree = "<group>"; };
 		221A66DA211B7181004525F5 /* TimelineFlagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineFlagView.swift; sourceTree = "<group>"; };
 		221A66DB211B7181004525F5 /* TimelineFlagView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineFlagView.xib; sourceTree = "<group>"; };
 		221A66DE211B7F4B004525F5 /* TimelineDecadeFlagLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDecadeFlagLayout.swift; sourceTree = "<group>"; };
@@ -440,6 +442,7 @@
 				A44E14F5211A392B00105F58 /* NSCollectionView.swift */,
 				22F3EBA7215313CB00FCFF6B /* Animations.swift */,
 				22F5C002216D17C700169387 /* MacGestures.swift */,
+				2213CDC921766326003C695F /* NSView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -793,6 +796,7 @@
 				2276AE68204E75C2001FAD8B /* BorderlessWindow.swift in Sources */,
 				A44F1B6520FEAF8B005FEFD1 /* RecordDate.swift in Sources */,
 				22290C382028FA35000E0573 /* MapKit.swift in Sources */,
+				2213CDCA21766326003C695F /* NSView.swift in Sources */,
 				221C629F203B4906009493DA /* School.swift in Sources */,
 				222694C220699B53007DA6FA /* Event.swift in Sources */,
 				22004FF320E16CE200B1E740 /* TimelineItemView.swift in Sources */,
