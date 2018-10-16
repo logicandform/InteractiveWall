@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="TYK-5A-x82">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="TYK-5A-x82">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
-        <plugIn identifier="com.apple.MapKitIBPlugin" version="14109"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
+        <plugIn identifier="com.apple.MapKitIBPlugin" version="14313.18"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Map View Controller-->
         <scene sceneID="3Z0-BZ-FpD">
             <objects>
-                <viewController id="TYK-5A-x82" customClass="MapViewController" customModule="MapExplorer_macOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="TYK-5A-x82" customClass="MapViewController" customModule="MapExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="qa6-7c-s1W">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="417"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <mapView mapType="satellite" rotateEnabled="NO" pitchEnabled="NO" showsBuildings="NO" showsPointsOfInterest="NO" showsCompass="NO" showsZoomControls="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s1R-HV-vyu" customClass="MapViewWithMiniMap" customModule="MapExplorer_macOS" customModuleProvider="target">
+                            <mapView mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsBuildings="NO" showsPointsOfInterest="NO" showsCompass="NO" showsZoomControls="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s1R-HV-vyu" customClass="CustomMapView" customModule="MapExplorer" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="417"/>
                                 <connections>
                                     <outlet property="delegate" destination="TYK-5A-x82" id="dxv-gV-hz1"/>

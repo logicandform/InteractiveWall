@@ -101,7 +101,7 @@ final class MapHandler {
     }
 
     /// Replaces apples setVisibleMapRect animationed which has a bug
-    func animate(to mapRect: MKMapRect, with type: MapAnimationType) {
+    func animate(to mapRect: MKMapRect, type: MapAnimationType) {
         var initialOrigin = mapView.visibleMapRect.origin
         let finalOrigin = mapRect.origin
 
@@ -157,7 +157,7 @@ final class MapHandler {
         let centerAppID = (Configuration.numberOfScreens * Configuration.appsPerScreen - 1) / 2
 
         if animated && appID == centerAppID {
-            animate(to: mapRect, with: .reset)
+            animate(to: mapRect, type: .reset)
         } else if !animated {
             mapView.setVisibleMapRect(mapRect, animated: false)
         }

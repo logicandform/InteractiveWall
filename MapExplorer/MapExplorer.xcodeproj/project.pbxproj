@@ -74,14 +74,14 @@
 		22F5BFFF216D165200169387 /* MacGestures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22F5BFFA216D163F00169387 /* MacGestures.framework */; };
 		22F5C000216D165200169387 /* MacGestures.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22F5BFFA216D163F00169387 /* MacGestures.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		22F5C003216D17C700169387 /* MacGestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F5C002216D17C700169387 /* MacGestures.swift */; };
+		22FCB3952171774900CC2AEE /* MBXMBTilesOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 22FCB3932171774900CC2AEE /* MBXMBTilesOverlay.m */; };
 		22FEF1D6202CFE8D001E9596 /* GestureDemoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1CF202CFE8C001E9596 /* GestureDemoController.swift */; };
 		32AAD6142F7887D6A13C4B56 /* Pods_All_MapExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4DC16D1E47B486A4E08792E /* Pods_All_MapExplorer.framework */; };
 		3F2FAB5D204F7D9E002EDF5D /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2FAB5C204F7D9E002EDF5D /* Collection.swift */; };
 		3F5FAAAC206043D700CF275B /* RecordAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FAAAB206043D700CF275B /* RecordAnnotation.swift */; };
 		3F5FAAAE206043E600CF275B /* RecordAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FAAAD206043E600CF275B /* RecordAnnotationView.swift */; };
-		8F1A1CBB205B41AC00A59A84 /* FlippedMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1A1CBA205B41AC00A59A84 /* FlippedMapView.swift */; };
+		8F1A1CBB205B41AC00A59A84 /* CustomMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F1A1CBA205B41AC00A59A84 /* CustomMapView.swift */; };
 		8F22945620773EA600731E78 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F22945520773EA600731E78 /* Math.swift */; };
-		8F64A1E720BEF88600F0D209 /* MapViewWithMiniMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F64A1E620BEF88600F0D209 /* MapViewWithMiniMap.swift */; };
 		8FB48D6D2128E1D7009980B1 /* MapAnimationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB48D6C2128E1D7009980B1 /* MapAnimationType.swift */; };
 		8FBBD1CF20F5140900D9334C /* ClusterAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBBD1CE20F5140900D9334C /* ClusterAnnotationView.swift */; };
 		A44A56EE2135F35200F73D55 /* TimelineSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44A56ED2135F35200F73D55 /* TimelineSelection.swift */; };
@@ -203,6 +203,8 @@
 		22F3EBA7215313CB00FCFF6B /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
 		22F5BFFA216D163F00169387 /* MacGestures.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MacGestures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		22F5C002216D17C700169387 /* MacGestures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacGestures.swift; sourceTree = "<group>"; };
+		22FCB3932171774900CC2AEE /* MBXMBTilesOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBXMBTilesOverlay.m; sourceTree = "<group>"; };
+		22FCB3942171774900CC2AEE /* MBXMBTilesOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBXMBTilesOverlay.h; sourceTree = "<group>"; };
 		22FEF1CF202CFE8C001E9596 /* GestureDemoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureDemoController.swift; sourceTree = "<group>"; };
 		26A4912457E23A30817143A3 /* Pods-All-MapExplorer-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-macOS.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-macOS/Pods-All-MapExplorer-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		39B2384F39CC84964B0970BD /* Pods-MapExplorer-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -211,9 +213,8 @@
 		3F5FAAAD206043E600CF275B /* RecordAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordAnnotationView.swift; sourceTree = "<group>"; };
 		3F8603439C52E9F28AA284E0 /* Pods-All-MapExplorer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer/Pods-All-MapExplorer.release.xcconfig"; sourceTree = "<group>"; };
 		445B0D3435E4817E74A1D847 /* Pods-All-MapExplorer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer/Pods-All-MapExplorer.debug.xcconfig"; sourceTree = "<group>"; };
-		8F1A1CBA205B41AC00A59A84 /* FlippedMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlippedMapView.swift; sourceTree = "<group>"; };
+		8F1A1CBA205B41AC00A59A84 /* CustomMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMapView.swift; sourceTree = "<group>"; };
 		8F22945520773EA600731E78 /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
-		8F64A1E620BEF88600F0D209 /* MapViewWithMiniMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewWithMiniMap.swift; sourceTree = "<group>"; };
 		8FB48D6C2128E1D7009980B1 /* MapAnimationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnimationType.swift; sourceTree = "<group>"; };
 		8FBBD1CE20F5140900D9334C /* ClusterAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterAnnotationView.swift; sourceTree = "<group>"; };
 		9CF6CE4790742AE255C12240 /* Pods_All_MapExplorer_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_All_MapExplorer_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -371,6 +372,7 @@
 				2204621120472E3C0067D9FB /* MapHandler.swift */,
 				3F946244205C59750056933C /* Annotations */,
 				22368E272037918F00D03A0E /* Views */,
+				22FCB3922171772B00CC2AEE /* Tiles */,
 			);
 			path = MapViewController;
 			sourceTree = "<group>";
@@ -453,8 +455,7 @@
 		22368E272037918F00D03A0E /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				8F1A1CBA205B41AC00A59A84 /* FlippedMapView.swift */,
-				8F64A1E620BEF88600F0D209 /* MapViewWithMiniMap.swift */,
+				8F1A1CBA205B41AC00A59A84 /* CustomMapView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -512,6 +513,15 @@
 				22E54CB32124F34E00CBF5A5 /* TailDiagram.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		22FCB3922171772B00CC2AEE /* Tiles */ = {
+			isa = PBXGroup;
+			children = (
+				22FCB3942171774900CC2AEE /* MBXMBTilesOverlay.h */,
+				22FCB3932171774900CC2AEE /* MBXMBTilesOverlay.m */,
+			);
+			path = Tiles;
 			sourceTree = "<group>";
 		};
 		22FEF1E4202D079B001E9596 /* GestureDemoController */ = {
@@ -743,7 +753,6 @@
 				8FB48D6D2128E1D7009980B1 /* MapAnimationType.swift in Sources */,
 				A44E14F6211A392B00105F58 /* NSCollectionView.swift in Sources */,
 				2200500420E2B8AC00B1E740 /* TimelineDataSource.swift in Sources */,
-				8F64A1E720BEF88600F0D209 /* MapViewWithMiniMap.swift in Sources */,
 				22D6F91E20B6836900C7FB5F /* NSApplication.swift in Sources */,
 				226A451E214F246600860F0E /* RecordNetwork.swift in Sources */,
 				226A4524214F342200860F0E /* TouchScreen.swift in Sources */,
@@ -755,6 +764,7 @@
 				225C92B92130CC6D00D629EE /* ImageView.swift in Sources */,
 				22004FED20E164AF00B1E740 /* TimelineViewController.swift in Sources */,
 				22B1E2AA2045F2EE00BDDF14 /* AVKit.swift in Sources */,
+				22FCB3952171774900CC2AEE /* MBXMBTilesOverlay.m in Sources */,
 				22E54CB42124F34E00CBF5A5 /* TailDiagram.swift in Sources */,
 				222D1BC2214B3EF7007417B8 /* RecordCollection.swift in Sources */,
 				22667A28214088EF00F15A04 /* DispatchTimer.swift in Sources */,
@@ -786,7 +796,7 @@
 				221C629F203B4906009493DA /* School.swift in Sources */,
 				222694C220699B53007DA6FA /* Event.swift in Sources */,
 				22004FF320E16CE200B1E740 /* TimelineItemView.swift in Sources */,
-				8F1A1CBB205B41AC00A59A84 /* FlippedMapView.swift in Sources */,
+				8F1A1CBB205B41AC00A59A84 /* CustomMapView.swift in Sources */,
 				220AE85E20ED441A00F6E9AA /* TimelineControlItemView.swift in Sources */,
 				22EF0FA8202B847200571002 /* CachingNetwork.swift in Sources */,
 				22290C092028F9EC000E0573 /* AppDelegate.swift in Sources */,

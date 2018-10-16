@@ -16,18 +16,12 @@ struct MapConstants {
 class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, NSGestureRecognizerDelegate {
     static let storyboard = "Map"
 
-    @IBOutlet weak var mapView: MapViewWithMiniMap!
+    @IBOutlet weak var mapView: CustomMapView!
 
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?
-    private var recordForAnnotation = [RecordAnnotation: Record]()
     private var annotationForTouch = [Touch: MKAnnotation]()
     private var currentTextScale: CGFloat = 1
-
-    private var tileURL: String {
-        let tileID = max(screenID, 1)
-        return "http://\(Configuration.serverIP):4\(tileID)00/v2/tiles/{z}/{x}/{y}.pbf"
-    }
 
     private struct Constants {
         static let maxZoomWidth = MapConstants.canadaRect.size.width / Double(Configuration.appsPerScreen)
@@ -39,6 +33,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         static let animationDuration = 0.5
         static let recordWindowOffset: CGFloat = 20
         static let mapTitleUpdateThreshold = 10000000.0
+        static let mbtilesPath = "/Users/irshdc/dev/CanadaShoreIceRoad.mbtiles"
     }
 
     private struct Keys {
@@ -94,10 +89,10 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private func setupMap() {
         mapHandler = MapHandler(mapView: mapView, controller: self)
         ConnectionManager.instance.mapHandler = mapHandler
-        let overlay = MKTileOverlay(urlTemplate: tileURL)
-        overlay.canReplaceMapContent = true
-        mapView.addOverlay(overlay)
-        mapView.miniMapPosition = appID.isEven ? .nw : .ne
+        if let overlay = MBXMBTilesOverlay(mbTilesPath: Constants.mbtilesPath) {
+            overlay.canReplaceMapContent = true
+            mapView.addOverlay(overlay)
+        }
         addRecordsToMap()
     }
 
@@ -151,7 +146,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
         case .began:
             let sortedAnnotations = mapView.annotations.sorted(by: { $0 is MKClusterAnnotation && !($1 is MKClusterAnnotation) })
             for annotation in sortedAnnotations {
-                let positionInView = position(for: annotation)
+                let positionInView = mapView.convert(annotation.coordinate, toPointTo: mapView).inverted(in: mapView)
                 let hitRadius = Constants.annotationHitSize.width / 2
                 let annotationRect = CGRect(origin: CGPoint(x: positionInView.x - hitRadius, y: positionInView.y - hitRadius), size: Constants.annotationHitSize)
                 if annotationRect.contains(touch.position) {
@@ -237,26 +232,20 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
 
     // MARK: Helpers
 
-    private func position(for annotation: MKAnnotation) -> CGPoint {
-        return mapView.convert(annotation.coordinate, toPointTo: mapView).inverted(in: view)
-    }
-
     private func select(annotation: MKAnnotation) {
-        let annotationPosition = position(for: annotation)
+        let annotationPosition = mapView.convert(annotation.coordinate, toPointTo: mapView).inverted(in: mapView)
 
         switch annotation {
-        case let circleAnnotation as RecordAnnotation:
-            if let record = recordForAnnotation[circleAnnotation] {
-                let offsetPosition = CGPoint(x: annotationPosition.x, y: annotationPosition.y - Constants.recordWindowOffset)
-                postRecordNotification(for: record, at: offsetPosition)
-            }
+        case let recordAnnotation as RecordAnnotation:
+            let offsetPosition = CGPoint(x: annotationPosition.x, y: annotationPosition.y - Constants.recordWindowOffset)
+            postRecordNotification(for: recordAnnotation.record, at: offsetPosition)
         case let clusterAnnotation as MKClusterAnnotation:
             let region = restrainSpan(for: clusterAnnotation.boundingCoordinateRegion())
             var newMapRect = MKMapRect(coordinateRegion: region).withPreservedAspectRatio(in: mapView)
             let translationX = (newMapRect.size.width / 2) - newMapRect.size.width * Double(annotationPosition.x / mapView.frame.width)
             let translationY = -newMapRect.size.height * (1 - Double(annotationPosition.y / mapView.frame.height))
             newMapRect.origin += MKMapPoint(x: translationX, y: translationY)
-            mapHandler?.animate(to: newMapRect, with: MapAnimationType.clusterTap)
+            mapHandler?.animate(to: newMapRect, type: .clusterTap)
         default:
             return
         }
@@ -313,8 +302,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private func addAnnotations(for records: [Record]) {
         records.forEach { record in
             if let coordinate = record.coordinate {
-                let annotation = RecordAnnotation(coordinate: coordinate, type: record.type, title: record.shortestTitle())
-                recordForAnnotation[annotation] = record
+                let annotation = RecordAnnotation(coordinate: coordinate, record: record)
                 mapView.addAnnotation(annotation)
             }
         }

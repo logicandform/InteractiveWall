@@ -70,3 +70,6 @@ Carthage/Build
 
 # Redis Server
 dump.rdb
+
+# MBTiles
+*.mbtiles

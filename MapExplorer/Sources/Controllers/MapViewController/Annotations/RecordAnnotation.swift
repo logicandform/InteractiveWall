@@ -8,12 +8,10 @@ import MapKit
 class RecordAnnotation: NSObject, MKAnnotation {
 
     var coordinate: CLLocationCoordinate2D
-    var type: RecordType
-    var title: String?
+    let record: Record
 
-    init(coordinate: CLLocationCoordinate2D, type: RecordType, title: String) {
+    init(coordinate: CLLocationCoordinate2D, record: Record) {
         self.coordinate = coordinate
-        self.type = type
-        self.title = title
+        self.record = record
     }
 }

@@ -29,7 +29,7 @@ public class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
     public var gestureUpdated: ((GestureRecognizer) -> Void)?
     private(set) public var state = GestureState.possible
-    private(set) public var scale: CGFloat = Pinch.initialScale
+    private(set) public var scale = Pinch.initialScale
     private(set) public var delta = CGVector.zero
     private(set) public var center: CGPoint!
     private var timeOfLastUpdate: Date!

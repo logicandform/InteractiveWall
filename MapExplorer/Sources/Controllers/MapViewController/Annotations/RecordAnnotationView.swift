@@ -131,12 +131,12 @@ class RecordAnnotationView: MKAnnotationView, AnimatableAnnotation {
     }
 
     private func load(_ annotation: RecordAnnotation) {
-        title.string = NSMutableAttributedString(string: annotation.title ?? "", attributes: style.mapLabelAttributes)
+        title.string = NSMutableAttributedString(string: annotation.record.shortestTitle(), attributes: style.mapLabelAttributes)
         let titleSize = title.preferredFrameSize()
         title.frame = CGRect(origin: CGPoint(x: Constants.titleLeftOffset, y: -titleSize.height/2), size: titleSize)
         layer?.addSublayer(title)
         for (index, ring) in rings.enumerated() {
-            ring.fillColor = index == rings.count - 1 ? .white : annotation.type.color.cgColor
+            ring.fillColor = index == rings.count - 1 ? .white : annotation.record.type.color.cgColor
             layer?.addSublayer(ring)
         }
     }

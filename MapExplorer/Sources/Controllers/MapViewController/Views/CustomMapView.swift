@@ -4,19 +4,19 @@ import Cocoa
 import AppKit
 import MapKit
 
-class FlippedMapView: MKMapView {
-    fileprivate var removeLegal = true
+
+class CustomMapView: MKMapView {
+
+    private var removedLegal = false
 
     override var isFlipped: Bool {
-        return true
+        return false
     }
 
     override func layout() {
-        if removeLegal {
-            var subviews = self.subviews
-            subviews.removeLast()
+        if !removedLegal {
             subviews.last?.removeFromSuperview()
-            removeLegal = true
+            removedLegal = true
         }
         super.layout()
     }

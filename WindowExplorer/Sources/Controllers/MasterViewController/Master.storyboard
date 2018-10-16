@@ -15,7 +15,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mSd-7i-Rsz">
-                                <rect key="frame" x="266" y="204" width="205" height="25"/>
+                                <rect key="frame" x="266" y="204" width="205" height="26"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="yRA-Yt-2lM"/>
                                 </constraints>
@@ -118,7 +118,7 @@
                                 </constraints>
                             </customView>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="o2b-t2-z8m">
-                                <rect key="frame" x="268" y="164" width="200" height="23"/>
+                                <rect key="frame" x="268" y="163" width="200" height="25"/>
                                 <buttonCell key="cell" type="roundTextured" title="Apply" bezelStyle="texturedRounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="smM-v4-yy2">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -174,11 +174,11 @@
                                         </collectionView>
                                     </subviews>
                                 </clipView>
-                                <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="Cnw-1I-fHq">
+                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="Cnw-1I-fHq">
                                     <rect key="frame" x="0.0" y="129" width="735" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="m1n-Hi-Mtn">
+                                <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="m1n-Hi-Mtn">
                                     <rect key="frame" x="719" y="0.0" width="16" height="145"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
@@ -257,6 +257,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="garbage-can" width="37.5" height="37.5"/>
+        <image name="garbage-can" width="75" height="75"/>
     </resources>
 </document>
