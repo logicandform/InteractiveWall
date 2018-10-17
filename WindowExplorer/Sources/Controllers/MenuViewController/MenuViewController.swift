@@ -34,7 +34,7 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
     private var menuBottomBorder: CALayer?
     private var accessibilityTopBorder: CALayer?
     private var bordersHidden = false
-    private var menuOpened = false
+    private var menuOpened = true
     private var animating = false
 
     private var menuSide: MenuSide {
@@ -45,7 +45,7 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         static let imageTransitionDuration = 0.5
         static let fadeAnimationDuration = 0.5
         static let verticalAnimationDuration = 1.2
-        static let menuButtonSize = CGSize(width: 200, height: 50)
+        static let menuButtonSize = CGSize(width: 135, height: 50)
         static let inactivePriority = NSLayoutConstraint.Priority(150)
         static let activePriority = NSLayoutConstraint.Priority(200)
     }
@@ -161,7 +161,7 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         }.forEach {
             menuView.addView($0, in: .top)
         }
-        menuToggleButton.set(menuSide.arrow)
+        menuToggleButton.set(menuSide.image(toggled: menuOpened))
         set(.map, selected: true)
     }
 

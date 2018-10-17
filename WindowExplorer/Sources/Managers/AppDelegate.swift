@@ -9,15 +9,15 @@ let style = Style()
 
 
 struct Configuration {
-    static let touchPort: UInt16 = 13001
-    static let serverIP = "localhost"
+    static let touchPort: UInt16 = 13003
+    static let serverIP = "10.58.73.203"
     static let broadcastIP = "10.58.73.255"
     static let serverURL = "http://\(serverIP):3000"
     static let appsPerScreen = 2
     static let numberOfScreens = 1
-    static let localMediaURLs = true
+    static let localMediaURLs = false
     static let launchOnLoad = true
-    static let touchScreen = TouchScreen.pct2485
+    static let touchScreen = TouchScreen.ur9851
     static let resetTimeoutDuration = 150.0
     static let closeWindowTimeoutDuration = 180.0
     static let menuResetTimeoutDuration = 180.0

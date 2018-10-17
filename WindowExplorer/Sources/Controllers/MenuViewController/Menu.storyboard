@@ -23,13 +23,13 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="fillEqually" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" placeholderIntrinsicWidth="50" placeholderIntrinsicHeight="350" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XOO-wB-Aer">
-                                <rect key="frame" x="500" y="300" width="200" height="350"/>
+                                <rect key="frame" x="415" y="300" width="135" height="350"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="2Qu-TE-yRx"/>
+                                    <constraint firstAttribute="width" constant="135" id="2Qu-TE-yRx"/>
                                 </constraints>
                             </stackView>
                             <containerView translatesAutoresizingMaskIntoConstraints="NO" id="aSl-0L-qLt">
-                                <rect key="frame" x="1" y="300" width="500" height="800"/>
+                                <rect key="frame" x="-84" y="300" width="500" height="800"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="800" id="gq9-3W-cc8"/>
                                     <constraint firstAttribute="width" constant="500" id="uVw-CH-aX0"/>
@@ -39,21 +39,21 @@
                                 </connections>
                             </containerView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="Biq-Io-5tR" customClass="ImageView" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="500" y="650" width="50" height="40"/>
+                                <rect key="frame" x="415" y="650" width="50" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="FIC-r7-x2d"/>
                                     <constraint firstAttribute="height" constant="40" id="Zm6-f1-7Xa"/>
                                 </constraints>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="y9D-aO-cag">
-                                <rect key="frame" x="500" y="0.0" width="200" height="50"/>
+                                <rect key="frame" x="415" y="0.0" width="200" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="fZR-JY-PGR"/>
                                     <constraint firstAttribute="width" constant="200" id="xJO-bc-sPI"/>
                                 </constraints>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="NQM-Tg-GPE">
-                                <rect key="frame" x="1" y="1060" width="500" height="40"/>
+                                <rect key="frame" x="-84" y="1060" width="500" height="40"/>
                                 <subviews>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="wBC-72-N7o">
                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -82,7 +82,7 @@
                             <constraint firstItem="NQM-Tg-GPE" firstAttribute="top" secondItem="aSl-0L-qLt" secondAttribute="top" id="SmC-eN-dDc"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="XOO-wB-Aer" secondAttribute="bottom" constant="50" id="ZmH-8a-rf3"/>
                             <constraint firstItem="XOO-wB-Aer" firstAttribute="top" secondItem="Biq-Io-5tR" secondAttribute="bottom" id="bSW-mJ-4te"/>
-                            <constraint firstAttribute="trailing" secondItem="XOO-wB-Aer" secondAttribute="leading" constant="50" id="eNL-jS-I36"/>
+                            <constraint firstAttribute="trailing" secondItem="XOO-wB-Aer" secondAttribute="leading" constant="135" id="eNL-jS-I36"/>
                             <constraint firstAttribute="bottom" secondItem="y9D-aO-cag" secondAttribute="bottom" id="hHb-wx-hwq"/>
                             <constraint firstItem="Biq-Io-5tR" firstAttribute="leading" secondItem="XOO-wB-Aer" secondAttribute="leading" id="iGO-DN-pY4"/>
                             <constraint firstItem="XOO-wB-Aer" firstAttribute="leading" secondItem="aSl-0L-qLt" secondAttribute="trailing" constant="-1" id="kGK-15-aXY"/>
@@ -115,13 +115,13 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="fillEqually" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" placeholderIntrinsicWidth="50" placeholderIntrinsicHeight="350" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kWu-fr-l1x">
-                                <rect key="frame" x="-150" y="300" width="200" height="350"/>
+                                <rect key="frame" x="0.0" y="300" width="135" height="350"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="b0g-iR-Mjq"/>
+                                    <constraint firstAttribute="width" constant="135" id="b0g-iR-Mjq"/>
                                 </constraints>
                             </stackView>
                             <containerView translatesAutoresizingMaskIntoConstraints="NO" id="Mf6-a3-oND">
-                                <rect key="frame" x="49" y="300" width="500" height="800"/>
+                                <rect key="frame" x="134" y="300" width="500" height="800"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="500" id="cbB-iO-dy1"/>
                                     <constraint firstAttribute="height" constant="800" id="tac-Rw-Vnk"/>
@@ -131,21 +131,21 @@
                                 </connections>
                             </containerView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="V3P-Dx-vtf" customClass="ImageView" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="650" width="50" height="40"/>
+                                <rect key="frame" x="85" y="650" width="50" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="U55-uj-Zmr"/>
                                     <constraint firstAttribute="width" constant="50" id="zcG-3q-kMj"/>
                                 </constraints>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="y44-Um-Qrw">
-                                <rect key="frame" x="-150" y="0.0" width="200" height="50"/>
+                                <rect key="frame" x="-65" y="0.0" width="200" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="PIX-Zf-xz4"/>
                                     <constraint firstAttribute="width" constant="200" id="gWX-iW-ses"/>
                                 </constraints>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="5hW-TD-b2t">
-                                <rect key="frame" x="49" y="1060" width="500" height="40"/>
+                                <rect key="frame" x="134" y="1060" width="500" height="40"/>
                                 <subviews>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="02B-j2-5dU">
                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -173,7 +173,7 @@
                             <constraint firstItem="Mf6-a3-oND" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7iZ-IN-46X" secondAttribute="top" id="Rip-bB-qPw"/>
                             <constraint firstItem="kWu-fr-l1x" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7iZ-IN-46X" secondAttribute="top" id="UQi-3a-1IB"/>
                             <constraint firstItem="kWu-fr-l1x" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Mf6-a3-oND" secondAttribute="bottom" priority="250" id="VtM-CT-Fh0"/>
-                            <constraint firstItem="kWu-fr-l1x" firstAttribute="trailing" secondItem="7iZ-IN-46X" secondAttribute="leading" constant="50" id="ZKK-yF-UVI"/>
+                            <constraint firstItem="kWu-fr-l1x" firstAttribute="trailing" secondItem="7iZ-IN-46X" secondAttribute="leading" constant="135" id="ZKK-yF-UVI"/>
                             <constraint firstItem="y44-Um-Qrw" firstAttribute="trailing" secondItem="kWu-fr-l1x" secondAttribute="trailing" id="aDI-DV-Ue0"/>
                             <constraint firstItem="5hW-TD-b2t" firstAttribute="leading" secondItem="Mf6-a3-oND" secondAttribute="leading" id="bVm-62-bHf"/>
                             <constraint firstItem="Mf6-a3-oND" firstAttribute="top" relation="lessThanOrEqual" secondItem="kWu-fr-l1x" secondAttribute="top" priority="250" id="dPk-BR-haY"/>

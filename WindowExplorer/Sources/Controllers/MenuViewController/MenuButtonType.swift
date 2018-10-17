@@ -95,21 +95,21 @@ enum MenuButtonType {
         switch self {
         case .split:
             let title = selected ? "Merge" : "Split"
-            return locked ? "\(title) (Locked)" : title
+            return locked ? "Locked" : title
         case .map:
             return "Map"
         case .timeline:
             return "Timeline"
         case .nodeNetwork:
-            return "Node Network"
+            return "Nodes"
         case .information:
-            return "Information"
+            return "Info"
         case .settings:
             return "Settings"
         case .search:
             return "Browse"
         case .accessibility:
-            return "Accessibility"
+            return "Drop"
         }
     }
 
