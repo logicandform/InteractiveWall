@@ -14,11 +14,12 @@ final class Style {
     let menuSelectedColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
     let menuButtonBackgroundColor = NSColor(srgbRed: 34/255, green: 34/255, blue: 34/255, alpha: 0.32)
     let touchIndicatorColor = NSColor(calibratedRed: 0, green: 200/255, blue: 1, alpha: 1)
+    let zoomControlColor = NSColor(white: 0.25, alpha: 0.8)
     let defaultBorderColor = NSColor(white: 0.5, alpha: 1)
     let defaultBorderWidth: CGFloat = 1
-    let zoomControlColor = NSColor(white: 0.25, alpha: 0.8)
+    let defaultBorderZPosition: CGFloat = 20
     let windowHighlightWidth: CGFloat = 3
-    let windowBorderZPosition: CGFloat = 10
+    let windowHighlightZPosition: CGFloat = 10
 
 
     // MARK: RecordType Colors

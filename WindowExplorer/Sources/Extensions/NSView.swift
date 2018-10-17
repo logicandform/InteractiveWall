@@ -39,7 +39,7 @@ extension NSView {
     }
 
     @discardableResult
-    func addBorder(for position: BorderPosition, thickness: CGFloat = style.defaultBorderWidth, indent: CGFloat = 0, zPosition: CGFloat = style.windowBorderZPosition) -> CALayer {
+    func addBorder(for position: BorderPosition, thickness: CGFloat = style.defaultBorderWidth, indent: CGFloat = 0, zPosition: CGFloat = style.defaultBorderZPosition) -> CALayer {
         let border = CALayer()
         border.backgroundColor = style.defaultBorderColor.cgColor
         border.zPosition = zPosition

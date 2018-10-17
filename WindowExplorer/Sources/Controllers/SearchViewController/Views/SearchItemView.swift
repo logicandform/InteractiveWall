@@ -44,10 +44,10 @@ class SearchItemView: NSCollectionViewItem {
         removeBorders()
         let borderThickness = style.windowHighlightWidth + style.defaultBorderWidth
         let topThickness = index.isZero ? borderThickness : borderThickness - style.defaultBorderWidth
-        highlightBorders.append(view.addBorder(for: .top, thickness: topThickness, zPosition: 5))
-        highlightBorders.append(view.addBorder(for: .left, thickness: borderThickness, zPosition: 5))
-        highlightBorders.append(view.addBorder(for: .bottom, thickness: borderThickness, zPosition: 5))
-        highlightBorders.append(view.addBorder(for: .right, thickness: borderThickness, zPosition: 5))
+        highlightBorders.append(view.addBorder(for: .top, thickness: topThickness, zPosition: style.windowHighlightZPosition))
+        highlightBorders.append(view.addBorder(for: .left, thickness: borderThickness, zPosition: style.windowHighlightZPosition))
+        highlightBorders.append(view.addBorder(for: .bottom, thickness: borderThickness, zPosition: style.windowHighlightZPosition))
+        highlightBorders.append(view.addBorder(for: .right, thickness: borderThickness, zPosition: style.windowHighlightZPosition))
         defaultBorders.append(view.addBorder(for: .left))
         defaultBorders.append(view.addBorder(for: .right))
         defaultBorders.append(view.addBorder(for: .bottom))

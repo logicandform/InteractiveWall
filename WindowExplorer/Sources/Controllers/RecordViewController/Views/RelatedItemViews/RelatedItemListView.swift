@@ -33,10 +33,10 @@ class RelatedItemListView: RelatedItemView {
         super.setupBorders(index: index)
         let highlightThickness = style.windowHighlightWidth + style.defaultBorderWidth
         let topThickness = index.isZero ? highlightThickness : highlightThickness - style.defaultBorderWidth
-        highlightBorders.append(view.addBorder(for: .top, thickness: topThickness, zPosition: 5))
-        highlightBorders.append(view.addBorder(for: .left, thickness: highlightThickness, zPosition: 5))
-        highlightBorders.append(view.addBorder(for: .right, thickness: highlightThickness, zPosition: 5))
-        highlightBorders.append(view.addBorder(for: .bottom, thickness: highlightThickness, zPosition: 5))
+        highlightBorders.append(view.addBorder(for: .top, thickness: topThickness, zPosition: style.windowHighlightZPosition))
+        highlightBorders.append(view.addBorder(for: .left, thickness: highlightThickness, zPosition: style.windowHighlightZPosition))
+        highlightBorders.append(view.addBorder(for: .right, thickness: highlightThickness, zPosition: style.windowHighlightZPosition))
+        highlightBorders.append(view.addBorder(for: .bottom, thickness: highlightThickness, zPosition: style.windowHighlightZPosition))
         defaultBorders.append(view.addBorder(for: .left))
         defaultBorders.append(view.addBorder(for: .right))
         defaultBorders.append(view.addBorder(for: .bottom))
