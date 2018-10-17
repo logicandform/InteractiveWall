@@ -18,6 +18,10 @@ final class RelationshipHelper: RelationshipDelegate {
     var controllerClosed: ((BaseViewController) -> Void)?
     private var indexForController = [BaseViewController: Int?]()
 
+    private struct Constants {
+        static let maxChildControllers = 8
+    }
+
 
     // MARK: API
 
@@ -33,12 +37,14 @@ final class RelationshipHelper: RelationshipDelegate {
                 controller.view.window?.orderFront(nil)
             } else {
                 indexForController[controller] = nextIndex()
+                removeOldestIfNecessary()
                 controller.updateFromParent(frame: parentFrame, animate: true)
                 updateChildPositionsFrom(frame: parentFrame, animate: true)
             }
         } else if let controller = WindowManager.instance.display(window) as? BaseViewController {
             controller.parentDelegate = self
             indexForController[controller] = nextIndex()
+            removeOldestIfNecessary()
             controller.updateFromParent(frame: parentFrame, animate: false)
             updateChildPositionsFrom(frame: parentFrame, animate: true)
         }
@@ -130,6 +136,15 @@ final class RelationshipHelper: RelationshipDelegate {
             return max + 1
         } else {
             return 0
+        }
+    }
+
+    /// Removes the oldest child if the displayed maximum has been surpassed
+    private func removeOldestIfNecessary() {
+        let sortedControllers = indexForController.filter { $0.value != nil }.sorted { $0.value! < $1.value! }
+
+        if sortedControllers.count > Constants.maxChildControllers {
+            sortedControllers.first?.key.close()
         }
     }
 }
