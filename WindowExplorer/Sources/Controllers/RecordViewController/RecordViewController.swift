@@ -455,6 +455,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
                 relatedItem.record = relatedRecord
                 let highlightedRecords = Set(highlightedRecordForTouch.values)
                 let highlighted = highlightedRecords.contains(relatedRecord) || selectedRecords.contains(relatedRecord)
+                relatedItem.setupBorders(index: indexPath.item)
                 relatedItem.set(highlighted: highlighted)
                 return relatedItem
             }
@@ -634,6 +635,10 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         }
 
         currentLayout = relatedItemsFilterType.layout
+        if let flowLayout = relatedItemsView.collectionViewLayout as? NSCollectionViewFlowLayout {
+            flowLayout.minimumInteritemSpacing = currentLayout.itemSpacing
+            flowLayout.minimumLineSpacing = currentLayout.lineSpacing
+        }
         let offset = relatedItemsFilterType.layout.rowWidth - relatedItemsView.frame.width
         var frame = window.frame
         frame.size.width += offset
@@ -662,7 +667,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         let numberOfRecords = displayedRelatedRecords.count
         let numberOfRows = ceil(CGFloat(numberOfRecords) / relatedItemsFilterType.layout.itemsPerRow)
         let numberOfSpaces = max(0, numberOfRows - 1)
-        let height = ceil(numberOfRows * relatedItemsFilterType.layout.itemSize.height + numberOfSpaces * relatedItemsFilterType.layout.itemSpacing)
+        let height = ceil(numberOfRows * relatedItemsFilterType.layout.itemSize.height + numberOfSpaces * relatedItemsFilterType.layout.lineSpacing)
 
         relatedRecordsHeightConstraint.constant = min(height, Constants.relatedRecordsMaxHeight)
         relatedRecordScrollView.updateGradient(forced: true, height: height)

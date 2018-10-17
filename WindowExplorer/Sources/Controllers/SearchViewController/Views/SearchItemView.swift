@@ -11,6 +11,7 @@ class SearchItemView: NSCollectionViewItem {
     @IBOutlet weak var spinner: NSProgressIndicator!
 
     var tintColor = style.menuSelectedColor
+    private var defaultBorders = [CALayer]()
     private var highlightBorders = [CALayer]()
 
     var type: RecordType? {
@@ -40,17 +41,16 @@ class SearchItemView: NSCollectionViewItem {
     }
 
     func setupBorders(index: Int) {
+        removeBorders()
         let borderThickness = style.windowHighlightWidth + style.defaultBorderWidth
         let topThickness = index.isZero ? borderThickness : borderThickness - style.defaultBorderWidth
-        let highlightTop = view.addBorder(for: .top, thickness: topThickness, zPosition: 5)
-        let highlightLeft = view.addBorder(for: .left, thickness: borderThickness, zPosition: 5)
-        let highlightBottom = view.addBorder(for: .bottom, thickness: borderThickness, zPosition: 5)
-        let rightThickness = borderThickness + style.defaultBorderWidth
-        let highlightRight = view.addBorder(for: .right, thickness: rightThickness, zPosition: 5)
-        highlightBorders = [highlightTop, highlightLeft, highlightBottom, highlightRight]
-        view.addBorder(for: .left)
-        view.addBorder(for: .right)
-        view.addBorder(for: .bottom)
+        highlightBorders.append(view.addBorder(for: .top, thickness: topThickness, zPosition: 5))
+        highlightBorders.append(view.addBorder(for: .left, thickness: borderThickness, zPosition: 5))
+        highlightBorders.append(view.addBorder(for: .bottom, thickness: borderThickness, zPosition: 5))
+        highlightBorders.append(view.addBorder(for: .right, thickness: borderThickness, zPosition: 5))
+        defaultBorders.append(view.addBorder(for: .left))
+        defaultBorders.append(view.addBorder(for: .right))
+        defaultBorders.append(view.addBorder(for: .bottom))
         set(highlighted: false)
     }
 
@@ -108,6 +108,16 @@ class SearchItemView: NSCollectionViewItem {
         if let province = item as? Province {
             let count = GeocodeHelper.instance.schools(for: province).count
             attributionTextField.stringValue = "\(count)"
+        }
+    }
+
+    private func removeBorders() {
+        let borders = defaultBorders + highlightBorders
+        defaultBorders.removeAll()
+        highlightBorders.removeAll()
+
+        for border in borders {
+            border.removeFromSuperlayer()
         }
     }
 }

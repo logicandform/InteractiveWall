@@ -9,6 +9,9 @@ class RelatedItemView: NSCollectionViewItem {
 
     var tintColor = NSColor.white
     var filterType = RecordFilterType.all
+    var defaultBorders = [CALayer]()
+    var highlightBorders = [CALayer]()
+
     var record: Record! {
         didSet {
             load(record)
@@ -41,19 +44,20 @@ class RelatedItemView: NSCollectionViewItem {
         super.prepareForReuse()
 
         mediaImageView.set(nil)
+        removeBorders()
     }
 
 
     // MARK: API
 
+    /// Updates the borders for a given index
+    func setupBorders(index: Int) {
+        removeBorders()
+    }
+
+    /// Sets the highlighted state of the cell, should be called after `setupBorders`
     func set(highlighted: Bool) {
-        if highlighted {
-            view.layer?.borderWidth = style.windowHighlightWidth
-            view.layer?.borderColor = tintColor.cgColor
-        } else {
-            view.layer?.borderWidth = style.defaultBorderWidth
-            view.layer?.borderColor = style.defaultBorderColor.cgColor
-        }
+
     }
 
 
@@ -72,6 +76,16 @@ class RelatedItemView: NSCollectionViewItem {
             }
         } else {
             mediaImageView.set(placeholder, scaling: .center)
+        }
+    }
+
+    private func removeBorders() {
+        let borders = defaultBorders + highlightBorders
+        defaultBorders.removeAll()
+        highlightBorders.removeAll()
+
+        for border in borders {
+            border.removeFromSuperlayer()
         }
     }
 }

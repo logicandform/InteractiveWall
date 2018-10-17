@@ -19,7 +19,21 @@ enum RelatedItemViewLayout {
     }
 
     var itemSpacing: CGFloat {
-        return 5
+        switch self {
+        case .list, .videos:
+            return 0
+        case .images:
+            return 5
+        }
+    }
+
+    var lineSpacing: CGFloat {
+        switch self {
+        case .list:
+            return 0
+        case .images, .videos:
+            return 5
+        }
     }
 
     var identifier: NSUserInterfaceItemIdentifier {
@@ -45,13 +59,6 @@ enum RelatedItemViewLayout {
     }
 
     var rowWidth: CGFloat {
-        switch self {
-        case .list:
-            return itemSize.width * itemsPerRow + itemSpacing * (itemsPerRow - 1)
-        case .images:
-            return itemSize.width * itemsPerRow + itemSpacing * (itemsPerRow - 1)
-        case .videos:
-            return itemSize.width * itemsPerRow + itemSpacing * (itemsPerRow - 1)
-        }
+        return itemSize.width * itemsPerRow + itemSpacing * (itemsPerRow - 1)
     }
 }

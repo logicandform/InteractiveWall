@@ -102,7 +102,7 @@
                                         <collectionView id="9ag-mR-qAv">
                                             <rect key="frame" x="0.0" y="0.0" width="304" height="561"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                            <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="5" minimumLineSpacing="5" id="rH5-xl-k60">
+                                            <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="5" id="rH5-xl-k60">
                                                 <size key="itemSize" width="300" height="80"/>
                                             </collectionViewFlowLayout>
                                             <color key="primaryBackgroundColor" red="0.025183623660000001" green="0.93838995700000005" blue="0.1151539907" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
