@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,6 +21,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="550" height="1100"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
+                            <visualEffectView appearanceType="inheritedVibrantLight" blendingMode="behindWindow" material="fullScreenUI" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="SZP-eJ-iPr">
+                                <rect key="frame" x="415" y="300" width="135" height="350"/>
+                            </visualEffectView>
                             <stackView distribution="fillEqually" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" placeholderIntrinsicWidth="50" placeholderIntrinsicHeight="350" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XOO-wB-Aer">
                                 <rect key="frame" x="415" y="300" width="135" height="350"/>
                                 <constraints>
@@ -73,11 +75,15 @@
                             <constraint firstAttribute="bottom" secondItem="aSl-0L-qLt" secondAttribute="bottom" priority="200" constant="300" id="JYC-GA-XNW"/>
                             <constraint firstItem="NQM-Tg-GPE" firstAttribute="leading" secondItem="aSl-0L-qLt" secondAttribute="leading" id="RZx-n6-B65"/>
                             <constraint firstItem="NQM-Tg-GPE" firstAttribute="top" secondItem="aSl-0L-qLt" secondAttribute="top" id="SmC-eN-dDc"/>
+                            <constraint firstItem="SZP-eJ-iPr" firstAttribute="top" secondItem="XOO-wB-Aer" secondAttribute="top" id="Yqt-Zu-JFM"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="XOO-wB-Aer" secondAttribute="bottom" constant="50" id="ZmH-8a-rf3"/>
                             <constraint firstAttribute="trailing" secondItem="XOO-wB-Aer" secondAttribute="leading" constant="135" id="eNL-jS-I36"/>
+                            <constraint firstItem="SZP-eJ-iPr" firstAttribute="trailing" secondItem="XOO-wB-Aer" secondAttribute="trailing" id="erm-ZY-44C"/>
                             <constraint firstAttribute="bottom" secondItem="y9D-aO-cag" secondAttribute="bottom" id="hHb-wx-hwq"/>
                             <constraint firstItem="XOO-wB-Aer" firstAttribute="leading" secondItem="aSl-0L-qLt" secondAttribute="trailing" constant="-1" id="kGK-15-aXY"/>
+                            <constraint firstItem="SZP-eJ-iPr" firstAttribute="bottom" secondItem="XOO-wB-Aer" secondAttribute="bottom" id="ppH-gy-WJL"/>
                             <constraint firstItem="XOO-wB-Aer" firstAttribute="top" relation="greaterThanOrEqual" secondItem="AdH-oQ-xB7" secondAttribute="top" id="qTH-97-cBd"/>
+                            <constraint firstItem="SZP-eJ-iPr" firstAttribute="leading" secondItem="XOO-wB-Aer" secondAttribute="leading" id="tZX-7w-IYu"/>
                             <constraint firstItem="NQM-Tg-GPE" firstAttribute="trailing" secondItem="aSl-0L-qLt" secondAttribute="trailing" id="xJd-sj-2u9"/>
                         </constraints>
                     </view>
@@ -103,6 +109,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="550" height="1100"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
+                            <visualEffectView appearanceType="inheritedVibrantLight" blendingMode="behindWindow" material="fullScreenUI" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="IM5-Pe-mvX">
+                                <rect key="frame" x="0.0" y="300" width="135" height="350"/>
+                            </visualEffectView>
                             <stackView distribution="fillEqually" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" placeholderIntrinsicWidth="50" placeholderIntrinsicHeight="350" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kWu-fr-l1x">
                                 <rect key="frame" x="0.0" y="300" width="135" height="350"/>
                                 <constraints>
@@ -154,11 +163,15 @@
                             <constraint firstItem="Mf6-a3-oND" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7iZ-IN-46X" secondAttribute="top" id="Rip-bB-qPw"/>
                             <constraint firstItem="kWu-fr-l1x" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7iZ-IN-46X" secondAttribute="top" id="UQi-3a-1IB"/>
                             <constraint firstItem="kWu-fr-l1x" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Mf6-a3-oND" secondAttribute="bottom" priority="250" id="VtM-CT-Fh0"/>
+                            <constraint firstItem="IM5-Pe-mvX" firstAttribute="trailing" secondItem="kWu-fr-l1x" secondAttribute="trailing" id="YXd-cH-h24"/>
                             <constraint firstItem="kWu-fr-l1x" firstAttribute="trailing" secondItem="7iZ-IN-46X" secondAttribute="leading" constant="135" id="ZKK-yF-UVI"/>
                             <constraint firstItem="y44-Um-Qrw" firstAttribute="trailing" secondItem="kWu-fr-l1x" secondAttribute="trailing" id="aDI-DV-Ue0"/>
                             <constraint firstItem="5hW-TD-b2t" firstAttribute="leading" secondItem="Mf6-a3-oND" secondAttribute="leading" id="bVm-62-bHf"/>
                             <constraint firstItem="Mf6-a3-oND" firstAttribute="top" relation="lessThanOrEqual" secondItem="kWu-fr-l1x" secondAttribute="top" priority="250" id="dPk-BR-haY"/>
+                            <constraint firstItem="IM5-Pe-mvX" firstAttribute="top" secondItem="kWu-fr-l1x" secondAttribute="top" id="fGV-nv-SV5"/>
                             <constraint firstAttribute="bottom" secondItem="y44-Um-Qrw" secondAttribute="bottom" id="peE-eJ-ylu"/>
+                            <constraint firstItem="IM5-Pe-mvX" firstAttribute="leading" secondItem="kWu-fr-l1x" secondAttribute="leading" id="qfD-QI-0Uz"/>
+                            <constraint firstItem="IM5-Pe-mvX" firstAttribute="bottom" secondItem="kWu-fr-l1x" secondAttribute="bottom" id="rHL-y5-B0O"/>
                             <constraint firstItem="5hW-TD-b2t" firstAttribute="top" secondItem="Mf6-a3-oND" secondAttribute="top" id="vlC-Gt-UIh"/>
                         </constraints>
                     </view>

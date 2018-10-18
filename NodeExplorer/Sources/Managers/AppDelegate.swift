@@ -11,7 +11,7 @@ struct Configuration {
     static let serverIP = "10.58.73.203"
     static let serverURL = "http://\(serverIP):3000"
     static let appsPerScreen = 2
-    static let numberOfScreens = 1
+    static let numberOfScreens = 3
     static let ungroupTimeoutDuration = 30.0
 }
 

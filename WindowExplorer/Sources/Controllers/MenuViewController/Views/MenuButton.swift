@@ -51,8 +51,6 @@ class MenuButton: NSView {
         addSubview(contentView)
         contentView.frame = frame
         contentView.autoresizingMask = [.width, .height]
-        wantsLayer = true
-        layer?.backgroundColor = style.menuButtonBackgroundColor.cgColor
         buttonView.wantsLayer = true
     }
 
@@ -66,7 +64,7 @@ class MenuButton: NSView {
 
         self.type = type
         buttonView.layer?.contents = type.image
-        let buttonBackgroundColor = selected ? type.selectedBackgroundColor : type.unselectedBackgroundColor
+        let buttonBackgroundColor = selected ? type.selectedBackgroundColor : .clear
         buttonView.layer?.backgroundColor = buttonBackgroundColor?.cgColor
         updateTitle()
     }
@@ -78,7 +76,7 @@ class MenuButton: NSView {
 
         self.selected = selected
         let image = selected ? type.selectedImage : type.image
-        let buttonBackgroundColor = selected ? type.selectedBackgroundColor : type.unselectedBackgroundColor
+        let buttonBackgroundColor = selected ? type.selectedBackgroundColor : .clear
         buttonView.transition(to: image, duration: Constants.imageTransitionDuration)
         buttonView.layer?.backgroundColor = buttonBackgroundColor?.cgColor
         updateTitle()

@@ -156,8 +156,7 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
     // MARK: Setup
 
     private func setupViews() {
-        view.wantsLayer = true
-        view.layer?.backgroundColor = style.darkBackground.cgColor
+        view.addBordersUnderHighlight()
         titleTextField.attributedStringValue = NSAttributedString(string: "Control Center", attributes: style.windowTitleAttributes)
         windowDragArea.wantsLayer = true
         windowDragArea.layer?.backgroundColor = style.dragAreaBackground.cgColor

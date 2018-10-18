@@ -69,25 +69,12 @@ enum MenuButtonType {
         }
     }
 
-    var detailImage: NSImage? {
-        switch self {
-        case .split:
-            return NSImage(named: "Lock Icon")
-        default:
-            return nil
-        }
-    }
-
-    var unselectedBackgroundColor: NSColor? {
-        return style.darkBackground
-    }
-
     var selectedBackgroundColor: NSColor? {
         switch self {
-        case .split, .accessibility:
-            return style.menuSelectedColor
-        case .map, .timeline, .nodeNetwork, .information, .settings, .search:
+        case .split, .map, .timeline, .nodeNetwork, .information, .settings, .search:
             return style.darkBackground
+        case .accessibility:
+            return style.menuSelectedColor
         }
     }
 
@@ -125,6 +112,6 @@ enum MenuButtonType {
     }
 
     static var itemsInMenu: [MenuButtonType] {
-        return [.split, .map, .timeline, .information, .search]
+        return [.split, .map, .timeline, .search, .information]
     }
 }

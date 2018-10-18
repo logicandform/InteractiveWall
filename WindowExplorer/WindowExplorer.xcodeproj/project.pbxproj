@@ -1287,6 +1287,7 @@
 				DEVELOPMENT_TEAM = M6262HME76;
 				INFOPLIST_FILE = Metadata/WindowExplorer.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = is.slant.WindowExplorer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1306,6 +1307,7 @@
 				DEVELOPMENT_TEAM = M6262HME76;
 				INFOPLIST_FILE = Metadata/WindowExplorer.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = is.slant.WindowExplorer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
