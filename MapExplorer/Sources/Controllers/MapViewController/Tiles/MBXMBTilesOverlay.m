@@ -70,25 +70,31 @@
 
 - (NSData *)mbtilesImageDataForPath:(MKTileOverlayPath)path
 {
-    // If path is not within bounds of our tileset, use default tile
     NSString *query = [NSString stringWithFormat:@"select tile_data from tiles where zoom_level = %ld and tile_column = %ld and tile_row = %ld",(long)path.z,(long)path.x,(long)path.y];;
     NSData *data = [self mbtiles:_mbtilesPath dataForSingleColumnQuery:query];
     if(data && data.length == 0) {
         return nil;
     } else if (!data) {
-        // Load default tile
-        NSString *query = [NSString stringWithFormat:@"select tile_data from tiles where zoom_level = %ld and tile_column = %ld and tile_row = %ld",(long)5,(long)10,(long)27];;
-        NSData *data = [self mbtiles:_mbtilesPath dataForSingleColumnQuery:query];
-
-        if (data && data.length == 0) {
-            return nil;
-        } else {
-            return data;
-        }
+        // If path is not within bounds of our tileset, use default tile
+        return [self mbtilesDefaultTileData];
     } else {
         return data;
     }
 }
+
+/// Returns data for a default tile to be rendered wherever the mbtiles do not cover
+- (NSData *)mbtilesDefaultTileData
+{
+    NSString *query = [NSString stringWithFormat:@"select tile_data from tiles where zoom_level = %ld and tile_column = %ld and tile_row = %ld",(long)5,(long)10,(long)27];;
+    NSData *data = [self mbtiles:_mbtilesPath dataForSingleColumnQuery:query];
+
+    if (data && data.length != 0) {
+        return data;
+    } else {
+        return [self mbtilesDefaultTileData];
+    }
+}
+
 
 - (NSData *)mbtiles:(NSString *)mbtilesPath dataForSingleColumnQuery:(NSString *)query
 {
