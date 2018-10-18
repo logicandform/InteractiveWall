@@ -38,13 +38,6 @@
                                     <segue destination="jhG-ud-xa9" kind="embed" id="dU9-dd-qf9"/>
                                 </connections>
                             </containerView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Biq-Io-5tR" customClass="ImageView" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="415" y="650" width="50" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="FIC-r7-x2d"/>
-                                    <constraint firstAttribute="height" constant="40" id="Zm6-f1-7Xa"/>
-                                </constraints>
-                            </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="y9D-aO-cag">
                                 <rect key="frame" x="415" y="0.0" width="200" height="50"/>
                                 <constraints>
@@ -81,10 +74,8 @@
                             <constraint firstItem="NQM-Tg-GPE" firstAttribute="leading" secondItem="aSl-0L-qLt" secondAttribute="leading" id="RZx-n6-B65"/>
                             <constraint firstItem="NQM-Tg-GPE" firstAttribute="top" secondItem="aSl-0L-qLt" secondAttribute="top" id="SmC-eN-dDc"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="XOO-wB-Aer" secondAttribute="bottom" constant="50" id="ZmH-8a-rf3"/>
-                            <constraint firstItem="XOO-wB-Aer" firstAttribute="top" secondItem="Biq-Io-5tR" secondAttribute="bottom" id="bSW-mJ-4te"/>
                             <constraint firstAttribute="trailing" secondItem="XOO-wB-Aer" secondAttribute="leading" constant="135" id="eNL-jS-I36"/>
                             <constraint firstAttribute="bottom" secondItem="y9D-aO-cag" secondAttribute="bottom" id="hHb-wx-hwq"/>
-                            <constraint firstItem="Biq-Io-5tR" firstAttribute="leading" secondItem="XOO-wB-Aer" secondAttribute="leading" id="iGO-DN-pY4"/>
                             <constraint firstItem="XOO-wB-Aer" firstAttribute="leading" secondItem="aSl-0L-qLt" secondAttribute="trailing" constant="-1" id="kGK-15-aXY"/>
                             <constraint firstItem="XOO-wB-Aer" firstAttribute="top" relation="greaterThanOrEqual" secondItem="AdH-oQ-xB7" secondAttribute="top" id="qTH-97-cBd"/>
                             <constraint firstItem="NQM-Tg-GPE" firstAttribute="trailing" secondItem="aSl-0L-qLt" secondAttribute="trailing" id="xJd-sj-2u9"/>
@@ -97,8 +88,6 @@
                         <outlet property="infoDragArea" destination="NQM-Tg-GPE" id="nzG-tR-82O"/>
                         <outlet property="infoMenuView" destination="aSl-0L-qLt" id="kQx-G9-Kov"/>
                         <outlet property="menuBottomConstraint" destination="A15-Ug-xBa" id="9Us-6d-AU7"/>
-                        <outlet property="menuSideConstraint" destination="eNL-jS-I36" id="Gpb-lk-SRq"/>
-                        <outlet property="menuToggleButton" destination="Biq-Io-5tR" id="pFP-cY-fnU"/>
                         <outlet property="menuView" destination="XOO-wB-Aer" id="cla-3s-HfH"/>
                     </connections>
                 </viewController>
@@ -130,13 +119,6 @@
                                     <segue destination="ML4-sp-dgz" kind="embed" id="HuH-g6-DV5"/>
                                 </connections>
                             </containerView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="V3P-Dx-vtf" customClass="ImageView" customModule="WindowExplorer" customModuleProvider="target">
-                                <rect key="frame" x="85" y="650" width="50" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="U55-uj-Zmr"/>
-                                    <constraint firstAttribute="width" constant="50" id="zcG-3q-kMj"/>
-                                </constraints>
-                            </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="y44-Um-Qrw">
                                 <rect key="frame" x="-65" y="0.0" width="200" height="50"/>
                                 <constraints>
@@ -169,7 +151,6 @@
                             <constraint firstItem="Mf6-a3-oND" firstAttribute="leading" secondItem="kWu-fr-l1x" secondAttribute="trailing" constant="-1" id="9rs-5n-sfI"/>
                             <constraint firstAttribute="bottom" secondItem="Mf6-a3-oND" secondAttribute="bottom" priority="200" constant="300" id="EEr-mo-jf4"/>
                             <constraint firstAttribute="bottom" secondItem="kWu-fr-l1x" secondAttribute="bottom" priority="250" constant="300" id="G8a-9T-A8Q"/>
-                            <constraint firstItem="kWu-fr-l1x" firstAttribute="top" secondItem="V3P-Dx-vtf" secondAttribute="bottom" id="R3C-t3-QrG"/>
                             <constraint firstItem="Mf6-a3-oND" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7iZ-IN-46X" secondAttribute="top" id="Rip-bB-qPw"/>
                             <constraint firstItem="kWu-fr-l1x" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7iZ-IN-46X" secondAttribute="top" id="UQi-3a-1IB"/>
                             <constraint firstItem="kWu-fr-l1x" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Mf6-a3-oND" secondAttribute="bottom" priority="250" id="VtM-CT-Fh0"/>
@@ -178,7 +159,6 @@
                             <constraint firstItem="5hW-TD-b2t" firstAttribute="leading" secondItem="Mf6-a3-oND" secondAttribute="leading" id="bVm-62-bHf"/>
                             <constraint firstItem="Mf6-a3-oND" firstAttribute="top" relation="lessThanOrEqual" secondItem="kWu-fr-l1x" secondAttribute="top" priority="250" id="dPk-BR-haY"/>
                             <constraint firstAttribute="bottom" secondItem="y44-Um-Qrw" secondAttribute="bottom" id="peE-eJ-ylu"/>
-                            <constraint firstItem="V3P-Dx-vtf" firstAttribute="trailing" secondItem="kWu-fr-l1x" secondAttribute="trailing" id="tmT-6F-axt"/>
                             <constraint firstItem="5hW-TD-b2t" firstAttribute="top" secondItem="Mf6-a3-oND" secondAttribute="top" id="vlC-Gt-UIh"/>
                         </constraints>
                     </view>
@@ -189,8 +169,6 @@
                         <outlet property="infoDragArea" destination="5hW-TD-b2t" id="J5b-Vf-f4X"/>
                         <outlet property="infoMenuView" destination="Mf6-a3-oND" id="u47-Th-Yel"/>
                         <outlet property="menuBottomConstraint" destination="G8a-9T-A8Q" id="SkB-7W-SQa"/>
-                        <outlet property="menuSideConstraint" destination="ZKK-yF-UVI" id="SyK-hP-QXg"/>
-                        <outlet property="menuToggleButton" destination="V3P-Dx-vtf" id="7rp-2W-Bow"/>
                         <outlet property="menuView" destination="kWu-fr-l1x" id="27c-dy-Pz1"/>
                     </connections>
                 </viewController>

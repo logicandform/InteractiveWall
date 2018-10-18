@@ -20,10 +20,8 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
     @IBOutlet weak var infoDragArea: NSView!
     @IBOutlet weak var infoCloseArea: NSView!
     @IBOutlet weak var accessibilityButtonArea: NSView!
-    @IBOutlet weak var menuToggleButton: ImageView!
     @IBOutlet weak var menuBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var infoBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var menuSideConstraint: NSLayoutConstraint!
 
     var appID: Int!
     var gestureManager: GestureManager!
@@ -161,7 +159,6 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         }.forEach {
             menuView.addView($0, in: .top)
         }
-        menuToggleButton.set(menuSide.image(toggled: menuOpened))
         set(.map, selected: true)
     }
 
@@ -177,14 +174,6 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         infoCloseButtonTap.gestureUpdated = { [weak self] gesture in
             if gesture.state == .ended {
                 self?.set(.information, selected: false)
-            }
-        }
-
-        let toggleMenuTap = TapGestureRecognizer()
-        gestureManager.add(toggleMenuTap, to: menuToggleButton)
-        toggleMenuTap.gestureUpdated = { [weak self] gesture in
-            if gesture.state == .ended, let opened = self?.menuOpened {
-                self?.toggleSideMenu(open: !opened)
             }
         }
     }
@@ -305,7 +294,7 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
             return true
         }
 
-        return menuView.frame.contains(position) || accessibilityButtonArea.frame.contains(position) || menuToggleButton.frame.contains(position)
+        return menuView.frame.contains(position) || accessibilityButtonArea.frame.contains(position)
     }
 
 
@@ -377,20 +366,6 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
             searchChild = WindowManager.instance.display(.search, at: origin) as? SearchChild
             searchChild?.delegate = self
         }
-    }
-
-    /// Toggles the menus side constraint to increase / decrease its visible size
-    private func toggleSideMenu(open: Bool) {
-        menuOpened = open
-
-        let image = menuSide.image(toggled: open)
-        menuToggleButton.transition(image, duration: Constants.fadeAnimationDuration)
-
-        NSAnimationContext.runAnimationGroup({ [weak self] _ in
-            NSAnimationContext.current.duration = Constants.fadeAnimationDuration
-            NSAnimationContext.current.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
-            self?.menuSideConstraint.animator().constant = open ? Constants.menuButtonSize.width : Constants.menuButtonSize.height
-        })
     }
 
     private func postAccessibilityNotification() {
@@ -468,7 +443,6 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         set(.information, selected: false)
         let center = view.frame.midY - menuView.frame.height / 2
         animateMenu(verticalPosition: center)
-        toggleSideMenu(open: false)
     }
 
     private func didHideInfoPanel() {
