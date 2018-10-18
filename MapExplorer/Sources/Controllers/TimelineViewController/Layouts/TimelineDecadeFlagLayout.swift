@@ -19,7 +19,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
     private var flagFrameForEvent = [TimelineEvent: CGRect]()
 
     private struct Constants {
-        static let interFlagMargin: CGFloat = 5
+        static let interFlagMargin: CGFloat = 10
         static let headerFlagMargin: CGFloat = 3
         static let countTitleHeight: CGFloat = 20
         static let tailZPosition = -1000
@@ -93,18 +93,31 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
             tailHeightForYear[year] = diagram.height(of: layers) + Constants.countTitleHeight
         }
 
-        // Build cache of event and tail attributes
+        // Build cache of schools and tail attributes
         for year in (source.firstYear...source.lastYear + TimelineDecadeFlagLayout.infiniteScrollBuffer) {
             if let events = source.eventsForYear[year] {
+                let schools = events.filter { $0.type == .school }
+                for school in schools {
+                    if let flagAttributes = flagAttributes(for: school, in: source, year: year) {
+                        attributesForEvent[school] = flagAttributes
+                    }
+                }
+            }
+            // Create tail attributes for each year
+            if let tailAttributes = tailAttributes(year: year, in: source) {
+                tailAttributesForYear[year] = tailAttributes
+            }
+        }
+
+        // Build cache for events after schools so they appear on top
+        for year in (source.firstYear...source.lastYear + TimelineDecadeFlagLayout.infiniteScrollBuffer) {
+            if let timelineEvents = source.eventsForYear[year] {
+                let events = timelineEvents.filter { $0.type == .event }
                 for event in events {
                     if let flagAttributes = flagAttributes(for: event, in: source, year: year) {
                         attributesForEvent[event] = flagAttributes
                     }
                 }
-            }
-            // Don't create tails for years past the last year for now
-            if let tailAttributes = tailAttributes(year: year, in: source) {
-                tailAttributesForYear[year] = tailAttributes
             }
         }
     }
@@ -221,8 +234,8 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
 
     /// Returns the lowest frame available at the given x position and size.
     private func frameForFlag(atX x: CGFloat, size: CGSize, year: Int, in source: TimelineDataSource) -> CGRect {
-        let minY = style.timelineHeaderHeight + style.timelineTailMargin
-        let intersectingFrames = flagFrameForEvent.values.filter { $0.minX <= x && $0.maxX > x }
+        let minY = style.timelineHeaderHeight + Constants.interFlagMargin
+        let intersectingFrames = flagFrameForEvent.values.filter { $0.minX <= x && $0.maxX > x || $0.minX <= x + size.width && $0.maxX > x + size.width }
         var sortedFrames = intersectingFrames.sorted(by: { $0.minY < $1.minY })
 
         // If no underlying frames, place at minY

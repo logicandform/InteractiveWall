@@ -10,13 +10,13 @@ class SearchItemView: NSCollectionViewItem {
     @IBOutlet weak var attributionTextField: NSTextField!
     @IBOutlet weak var spinner: NSProgressIndicator!
 
-    var tintColor = style.menuSelectedColor
+    var tintColor = style.menuTintColor
     private var defaultBorders = [CALayer]()
     private var highlightBorders = [CALayer]()
 
     var type: RecordType? {
         didSet {
-            tintColor = type?.color ?? style.menuSelectedColor
+            tintColor = type?.color ?? style.menuTintColor
         }
     }
 

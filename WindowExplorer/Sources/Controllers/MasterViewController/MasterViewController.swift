@@ -161,7 +161,7 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
         windowDragArea.wantsLayer = true
         windowDragArea.layer?.backgroundColor = style.dragAreaBackground.cgColor
         windowDragAreaHighlight.wantsLayer = true
-        windowDragAreaHighlight.layer?.backgroundColor = style.menuSelectedColor.cgColor
+        windowDragAreaHighlight.layer?.backgroundColor = style.menuTintColor.cgColor
         consoleCollectionView.register(ConsoleItemView.self, forItemWithIdentifier: ConsoleItemView.identifier)
         consoleCollectionView.layer?.backgroundColor = style.darkBackground.cgColor
         garbageButton.isEnabled = !consoleLogs.isEmpty
@@ -292,7 +292,7 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
 
         // Open Node
         if nodeApplication == nil {
-            nodeApplication = open(.nodeNetwork, screenID: nil, appID: nil)
+//            nodeApplication = open(.nodeNetwork, screenID: nil, appID: nil)
         }
 
         set(state: .running)

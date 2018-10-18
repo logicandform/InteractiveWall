@@ -69,15 +69,6 @@ enum MenuButtonType {
         }
     }
 
-    var selectedBackgroundColor: NSColor? {
-        switch self {
-        case .split, .map, .timeline, .nodeNetwork, .information, .settings, .search:
-            return style.darkBackground
-        case .accessibility:
-            return style.menuSelectedColor
-        }
-    }
-
     func title(selected: Bool, locked: Bool) -> String {
         switch self {
         case .split:

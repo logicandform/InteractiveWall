@@ -9,9 +9,10 @@ final class Style {
 
     // MARK: General Style
 
-    let darkBackground = NSColor(srgbRed: 35/255, green: 38/255, blue: 40/255, alpha: 0.88)
-    let dragAreaBackground = NSColor(srgbRed: 35/255, green: 38/255, blue: 40/255, alpha: 0.88)
-    let menuSelectedColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
+    let darkBackground = NSColor(srgbRed: 35/255, green: 38/255, blue: 40/255, alpha: 0.93)
+    let dragAreaBackground = NSColor(srgbRed: 35/255, green: 38/255, blue: 40/255, alpha: 0.93)
+    let menuTintColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
+    let menuSelectedColor = NSColor.darkGray
     let touchIndicatorColor = NSColor(calibratedRed: 0, green: 200/255, blue: 1, alpha: 1)
     let zoomControlColor = NSColor(white: 0.25, alpha: 0.8)
     let defaultBorderColor = NSColor(white: 0.5, alpha: 1)

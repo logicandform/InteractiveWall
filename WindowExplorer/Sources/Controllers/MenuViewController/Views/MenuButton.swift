@@ -64,8 +64,6 @@ class MenuButton: NSView {
 
         self.type = type
         buttonView.layer?.contents = type.image
-        let buttonBackgroundColor = selected ? type.selectedBackgroundColor : .clear
-        buttonView.layer?.backgroundColor = buttonBackgroundColor?.cgColor
         updateTitle()
     }
 
@@ -76,9 +74,7 @@ class MenuButton: NSView {
 
         self.selected = selected
         let image = selected ? type.selectedImage : type.image
-        let buttonBackgroundColor = selected ? type.selectedBackgroundColor : .clear
         buttonView.transition(to: image, duration: Constants.imageTransitionDuration)
-        buttonView.layer?.backgroundColor = buttonBackgroundColor?.cgColor
         updateTitle()
     }
 
@@ -102,7 +98,7 @@ class MenuButton: NSView {
     private func updateTitle() {
         let title = type.title(selected: selected, locked: locked)
         var attributes = style.windowTitleAttributes
-        attributes[.foregroundColor] = selected ? style.menuSelectedColor : NSColor.white
+        attributes[.foregroundColor] = selected ? style.menuTintColor : .white
         titleField.attributedStringValue = NSAttributedString(string: title, attributes: attributes)
     }
 }

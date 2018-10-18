@@ -15,7 +15,7 @@ class BorderViewController: NSViewController {
 
         view.wantsLayer = true
         view.isHidden = true
-        view.layer?.backgroundColor = style.menuSelectedColor.cgColor
+        view.layer?.backgroundColor = style.menuTintColor.cgColor
     }
 
 

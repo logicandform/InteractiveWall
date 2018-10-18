@@ -141,7 +141,7 @@ class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollec
     }
 
     private func setupPageControl() {
-        pageControl.color = style.menuSelectedColor
+        pageControl.color = style.menuTintColor
         pageControl.unselectedColor = style.defaultBorderColor
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.wantsLayer = true

@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="qGn-1v-M5l">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="qGn-1v-M5l">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Timeline View Controller-->
         <scene sceneID="RH4-9z-fgx">
             <objects>
-                <viewController id="qGn-1v-M5l" customClass="TimelineViewController" customModule="MapExplorer_macOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="qGn-1v-M5l" customClass="TimelineViewController" customModule="MapExplorer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="xW1-Dr-xog">
                         <rect key="frame" x="0.0" y="0.0" width="664" height="475"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="yPT-yt-MBL">
-                                <rect key="frame" x="0.0" y="119" width="664" height="237"/>
+                                <rect key="frame" x="0.0" y="119" width="664" height="277"/>
                                 <subviews>
                                     <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="FoW-Io-IhM">
-                                        <rect key="frame" x="0.0" y="80" width="664" height="157"/>
+                                        <rect key="frame" x="0.0" y="80" width="664" height="197"/>
                                         <clipView key="contentView" drawsBackground="NO" id="2EQ-1e-jeX">
-                                            <rect key="frame" x="0.0" y="0.0" width="664" height="157"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="664" height="197"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <collectionView id="hh4-uZ-Why" customClass="FlippedCollectionView" customModule="MapExplorer_macOS" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="0.0" width="664" height="157"/>
+                                                <collectionView id="hh4-uZ-Why" customClass="FlippedCollectionView" customModule="MapExplorer" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="664" height="197"/>
                                                     <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" scrollDirection="horizontal" id="aIQ-M3-5l0">
                                                         <size key="itemSize" width="50" height="50"/>
@@ -34,11 +34,11 @@
                                             </subviews>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </clipView>
-                                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="YCC-Tu-WbH">
+                                        <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="YCC-Tu-WbH">
                                             <rect key="frame" x="-100" y="-100" width="233" height="15"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
-                                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="NTd-xJ-g9d">
+                                        <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="NTd-xJ-g9d">
                                             <rect key="frame" x="-100" y="-100" width="16" height="197"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
@@ -55,7 +55,7 @@
                                                         <collectionView id="7yP-gS-dIq">
                                                             <rect key="frame" x="0.0" y="0.0" width="490" height="40"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                                            <collectionViewLayout key="collectionViewLayout" id="pZu-R1-8Lt" customClass="TimelineControlLayout" customModule="MapExplorer_macOS" customModuleProvider="target"/>
+                                                            <collectionViewLayout key="collectionViewLayout" id="pZu-R1-8Lt" customClass="TimelineControlLayout" customModule="MapExplorer" customModuleProvider="target"/>
                                                             <color key="primaryBackgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                                         </collectionView>
                                                     </subviews>
@@ -65,11 +65,11 @@
                                                     <constraint firstAttribute="height" constant="40" id="1Qq-iJ-86c"/>
                                                     <constraint firstAttribute="width" constant="490" id="qPf-4F-Dia"/>
                                                 </constraints>
-                                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="Kzq-zF-KHc">
+                                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="Kzq-zF-KHc">
                                                     <rect key="frame" x="-100" y="-100" width="490" height="16"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </scroller>
-                                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="si7-Qh-eMq">
+                                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="si7-Qh-eMq">
                                                     <rect key="frame" x="-100" y="-100" width="16" height="21"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </scroller>
@@ -103,7 +103,7 @@
                             </customView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="yPT-yt-MBL" firstAttribute="height" secondItem="xW1-Dr-xog" secondAttribute="height" multiplier="1:2" id="4kl-l1-jT1"/>
+                            <constraint firstItem="yPT-yt-MBL" firstAttribute="height" secondItem="xW1-Dr-xog" secondAttribute="height" multiplier="7:12" id="4kl-l1-jT1"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="yPT-yt-MBL" secondAttribute="bottom" id="CjM-DR-FTw"/>
                             <constraint firstAttribute="trailing" secondItem="yPT-yt-MBL" secondAttribute="trailing" id="Shd-6P-MgF"/>
                             <constraint firstItem="yPT-yt-MBL" firstAttribute="leading" secondItem="xW1-Dr-xog" secondAttribute="leading" id="c7y-eD-7MD"/>

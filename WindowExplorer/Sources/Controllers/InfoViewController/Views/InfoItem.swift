@@ -49,10 +49,10 @@ struct InfoItem {
         // Each item will have either a video or an image
         if let video = json[Keys.video] as? String, let localVideo = json[Keys.localVideo] as? String, !video.isEmpty, let url = URL.from(Configuration.serverURL + video) {
             let localURL = URL(fileURLWithPath: localVideo)
-            self.media = Media(url: url, localURL: localURL, thumbnail: nil, localThumbnail: nil, title: nil, color: style.menuSelectedColor)
+            self.media = Media(url: url, localURL: localURL, thumbnail: nil, localThumbnail: nil, title: nil, color: style.menuTintColor)
         } else if let thumbnail = json[Keys.thumbnail] as? String, let localThumbnail = json[Keys.localThumbnail] as? String, !thumbnail.isEmpty, let url = URL.from(Configuration.serverURL + thumbnail) {
             let localURL = URL(fileURLWithPath: localThumbnail)
-            self.media = Media(url: url, localURL: localURL, thumbnail: nil, localThumbnail: nil, title: nil, color: style.menuSelectedColor)
+            self.media = Media(url: url, localURL: localURL, thumbnail: nil, localThumbnail: nil, title: nil, color: style.menuTintColor)
         } else {
             return nil
         }

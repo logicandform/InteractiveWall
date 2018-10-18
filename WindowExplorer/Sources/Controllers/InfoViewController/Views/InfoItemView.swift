@@ -96,8 +96,8 @@ class InfoItemView: NSCollectionViewItem, PlayerControlDelegate {
         windowDragArea.wantsLayer = true
         windowDragArea.layer?.backgroundColor = style.dragAreaBackground.cgColor
         highlightView.wantsLayer = true
-        highlightView.layer?.backgroundColor = style.menuSelectedColor.cgColor
-        playerControl.tintColor = style.menuSelectedColor
+        highlightView.layer?.backgroundColor = style.menuTintColor.cgColor
+        playerControl.tintColor = style.menuTintColor
         playerStateImageView.wantsLayer = true
         playerStateImageView.layer?.cornerRadius = playerStateImageView.frame.width / 2
         playerStateImageView.layer?.backgroundColor = style.darkBackground.cgColor
