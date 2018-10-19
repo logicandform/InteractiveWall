@@ -7,7 +7,7 @@ import MacGestures
 
 final class TouchManager: SocketManagerDelegate {
     static let instance = TouchManager()
-    static let touchNetwork = NetworkConfiguration(broadcastHost: Configuration.broadcastIP, nodePort: Configuration.touchPort)
+    static let touchNetwork = NetworkConfiguration(broadcastHost: "0.0.0.0", nodePort: Configuration.touchPort)
 
     private var socketManager: SocketManager?
     private var managersForTouch = [Touch: (NSWindow, GestureManager)]()

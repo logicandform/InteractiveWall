@@ -22,7 +22,7 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
         static let interFlagMargin: CGFloat = 10
         static let headerFlagMargin: CGFloat = 3
         static let countTitleHeight: CGFloat = 20
-        static let tailZPosition = -1000
+        static let tailZPosition = -2000
     }
 
 
@@ -41,15 +41,9 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
     }
 
 
-    // MARK: Overrides
+    // MARK: API
 
-    /// Let's only try to calculate this once in an init function? necessary?
-    override func prepare() {
-        super.prepare()
-        guard let source = collectionView?.dataSource as? TimelineDataSource else {
-            return
-        }
-
+    func initialize(source: TimelineDataSource) {
         flagFrameForEvent.removeAll()
         attributesForEvent.removeAll()
         layersForYear.removeAll()
@@ -109,7 +103,18 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
             }
         }
 
-        // Build cache for events after schools so they appear on top
+        // Build cache for collections and events after schools so they appear on top
+        for year in (source.firstYear...source.lastYear + TimelineDecadeFlagLayout.infiniteScrollBuffer) {
+            if let timelineEvents = source.eventsForYear[year] {
+                let events = timelineEvents.filter { $0.type == .collection }
+                for event in events {
+                    if let flagAttributes = flagAttributes(for: event, in: source, year: year) {
+                        attributesForEvent[event] = flagAttributes
+                    }
+                }
+            }
+        }
+
         for year in (source.firstYear...source.lastYear + TimelineDecadeFlagLayout.infiniteScrollBuffer) {
             if let timelineEvents = source.eventsForYear[year] {
                 let events = timelineEvents.filter { $0.type == .event }
@@ -121,6 +126,9 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
             }
         }
     }
+
+
+    // MARK: Overrides
 
     override var collectionViewContentSize: NSSize {
         guard let source = collectionView?.dataSource as? TimelineDataSource else {
@@ -236,7 +244,12 @@ class TimelineDecadeFlagLayout: NSCollectionViewFlowLayout {
     private func frameForFlag(atX x: CGFloat, size: CGSize, year: Int, in source: TimelineDataSource) -> CGRect {
         let minY = style.timelineHeaderHeight + Constants.interFlagMargin
         let intersectingFrames = flagFrameForEvent.values.filter { $0.minX <= x && $0.maxX > x || $0.minX <= x + size.width && $0.maxX > x + size.width }
-        var sortedFrames = intersectingFrames.sorted(by: { $0.minY < $1.minY })
+        var sortedFrames = intersectingFrames.sorted(by: { lhs, rhs in
+            if lhs.minY == rhs.minY {
+                return lhs.size.height < rhs.size.height
+            }
+            return lhs.minY < rhs.minY
+        })
 
         // If no underlying frames, place at minY
         guard let first = sortedFrames.first else {
