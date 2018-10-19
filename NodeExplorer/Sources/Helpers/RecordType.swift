@@ -37,22 +37,22 @@ enum RecordType: String {
         case .school:
             return style.schoolColor
         case .theme:
-            return style.selectedColor
+            return style.themeColor
         }
     }
 
-    var placeholder: NSImage {
+    var imageName: String {
         switch self {
         case .event:
-            return NSImage(named: "event-icon")!
+            return "event-icon-colored"
         case .artifact:
-            return NSImage(named: "artifact-icon")!
+            return "artifact-icon-colored"
         case .organization:
-            return NSImage(named: "organization-icon")!
+            return "organization-icon-colored"
         case .school:
-            return NSImage(named: "school-icon")!
+            return "school-icon-colored"
         case .theme:
-            return NSImage(named: "school-icon")!
+            return "school-icon-colored"
         }
     }
 

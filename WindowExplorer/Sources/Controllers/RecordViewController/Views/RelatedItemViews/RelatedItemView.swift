@@ -64,7 +64,7 @@ class RelatedItemView: NSCollectionViewItem {
     // MARK: Helpers
 
     func load(_ record: Record) {
-        let placeholder = record.type.placeholder.tinted(with: record.type.color)
+        let placeholder = record.type.placeholder
 
         if let media = record.media.first {
             CachingNetwork.getThumbnail(for: media) { [weak self] thumbnail in

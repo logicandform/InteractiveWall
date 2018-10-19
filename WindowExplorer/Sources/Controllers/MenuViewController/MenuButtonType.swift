@@ -103,6 +103,6 @@ enum MenuButtonType {
     }
 
     static var itemsInMenu: [MenuButtonType] {
-        return [.split, .map, .timeline, .search, .information]
+        return [.split, .map, .timeline, .nodeNetwork, .search, .information]
     }
 }

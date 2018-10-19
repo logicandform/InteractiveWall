@@ -27,7 +27,7 @@ class MainScene: SKScene {
     }
 
 
-    // MARK: Lifecycle
+    // MARK: Life-Cycle
 
     override func didMove(to view: SKView) {
         super.didMove(to: view)
@@ -82,6 +82,11 @@ class MainScene: SKScene {
         } else {
             return []
         }
+    }
+
+    func remove(cluster: NodeCluster) {
+        cluster.reset()
+        nodeClusters.remove(cluster)
     }
 
 
@@ -171,6 +176,8 @@ class MainScene: SKScene {
             entity.set(position: position)
             if entity.isSelected {
                 entity.cluster?.set(position: position)
+            } else {
+                entity.cluster?.resetCloseTimer()
             }
         case .momentum:
             entity.set(position: position)
@@ -319,8 +326,7 @@ class MainScene: SKScene {
                     let app = calculateApp(xPosition: position.x)
                     postRecordNotification(app: app, type: entity.record.type, id: entity.record.id, at: positionInApplication)
                 } else if node.closeButton(contains: position) {
-                    cluster.reset()
-                    nodeClusters.remove(cluster)
+                    remove(cluster: cluster)
                 }
             }
         default:

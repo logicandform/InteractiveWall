@@ -113,7 +113,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private func setupMediaView() {
         mediaView.register(MediaItemView.self, forItemWithIdentifier: MediaItemView.identifier)
         mediaView.frame = NSRect(origin: mediaView.frame.origin, size: NSSize(width: CGFloat(record.media.count) * mediaCollectionClipView.frame.size.width, height: mediaView.frame.height))
-        placeHolderImage.image = record.type.placeholder.tinted(with: record.type.color)
+        placeHolderImage.image = record.type.placeholder
         pageControl.color = record.type.color
         pageControl.unselectedColor = style.defaultBorderColor
         pageControl.indicatorSize = Constants.pageControlIndicatorSize

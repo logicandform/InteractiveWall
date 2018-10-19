@@ -81,7 +81,7 @@ class RecordTypeSelectionView: NSView {
             selectedType = .all
         } else if let image = imageForType[type] {
             selectedType = type
-            image.transition(to: type.placeholder?.tinted(with: type.color), duration: Constants.imageTransitionDuration)
+            image.transition(to: type.placeholder, duration: Constants.imageTransitionDuration)
         }
     }
 

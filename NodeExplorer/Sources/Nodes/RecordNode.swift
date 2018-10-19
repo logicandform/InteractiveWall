@@ -12,14 +12,16 @@ class RecordNode: SKSpriteNode {
     private(set) var titleNode: SKLabelNode!
     private(set) var closeNode: SKSpriteNode!
     private(set) var openNode: SKSpriteNode!
+    private(set) var iconNode: SKSpriteNode!
 
     private struct Constants {
         static let circleTextureImage = "layer_node"
-        static let labelFontSize: CGFloat = 30
-        static let labelSystemFontSize: CGFloat = 10
+        static let labelSystemFontSize: CGFloat = 4
         static let buttonSize = CGSize(width: 8, height: 8)
-        static let buttonOffset: CGFloat = 44
+        static let buttonOffset: CGFloat = 40
         static let imageColorBlendPercent: CGFloat = 0.75
+        static let wordsPerTitle = 6
+        static let textInsetMargin: CGFloat = 20
     }
 
 
@@ -27,7 +29,7 @@ class RecordNode: SKSpriteNode {
 
     init(record: Record) {
         self.record = record
-        super.init(texture: nil, color: .clear, size: .zero)
+        super.init(texture: SKTexture(imageNamed: Constants.circleTextureImage), color: record.type.color, size: style.defaultNodeSize)
         makeNodes(for: record)
     }
 
@@ -82,40 +84,42 @@ class RecordNode: SKSpriteNode {
     // MARK: Helpers
 
     private func makeNodes(for record: Record) {
-        texture = SKTexture(imageNamed: Constants.circleTextureImage)
-        color = record.type.color
         colorBlendFactor = 1
-        size = style.defaultNodeSize
-        downloadImage(for: record)
+        addBackgroundNode()
         addTitleNode(for: record)
         addOpenNode()
         addCloseNode()
+        addIconNode(for: record)
     }
 
-    private func downloadImage(for record: Record) {
-        guard let media = record.media.first, let thumbnail = media.thumbnail else {
-            return
-        }
-
-        Alamofire.request(thumbnail).responseImage { [weak self] response in
-            if let image = response.value {
-                let rounded = image.roundedCorners()
-                self?.texture = SKTexture(image: rounded)
-                self?.colorBlendFactor = Constants.imageColorBlendPercent
-            }
-        }
+    private func addBackgroundNode() {
+        let texture = SKTexture(imageNamed: Constants.circleTextureImage)
+        let node = SKSpriteNode(texture: texture, color: .black, size: CGSize(width: frame.width - 5, height: frame.height - 5))
+        node.colorBlendFactor = 1
+        addChild(node)
     }
 
     private func addTitleNode(for record: Record) {
         titleNode = SKLabelNode()
-        titleNode.text = record.id.description
+        titleNode.text = title(for: record)
+        titleNode.numberOfLines = 3
+        titleNode.lineBreakMode = .byClipping
+        titleNode.preferredMaxLayoutWidth = frame.width - Constants.textInsetMargin
         titleNode.verticalAlignmentMode = .center
         titleNode.horizontalAlignmentMode = .center
-        titleNode.fontSize = Constants.labelFontSize
-        titleNode.fontColor = .black
+        titleNode.fontColor = .white
+        titleNode.fontSize = 10
+        titleNode.fontName = "Soleil"
         titleNode.zPosition = 1
-        titleNode.fontName = NSFont.boldSystemFont(ofSize: Constants.labelSystemFontSize).fontName
         addChild(titleNode)
+    }
+
+    private func addIconNode(for record: Record) {
+        iconNode = SKSpriteNode(imageNamed: record.type.imageName)
+        iconNode.alpha = 0
+        iconNode.zPosition = 1
+        iconNode.size = CGSize(width: frame.width/2, height: frame.height/2)
+        addChild(iconNode)
     }
 
     private func addOpenNode() {
@@ -135,30 +139,14 @@ class RecordNode: SKSpriteNode {
         closeNode.alpha = 0
         addChild(closeNode)
     }
-}
 
-fileprivate extension NSImage {
-
-    func roundedCorners() -> NSImage {
-        let length = min(size.width, size.height)
-        let rect = NSRect(origin: .zero, size: CGSize(width: length, height: length))
-        if let cgImage = cgImage, let context = CGContext(data: nil, width: Int(length), height: Int(length), bitsPerComponent: 8, bytesPerRow: 4 * Int(size.width), space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue) {
-            context.beginPath()
-            context.addPath(CGPath(roundedRect: rect, cornerWidth: length/2, cornerHeight: length/2, transform: nil))
-            context.closePath()
-            context.clip()
-            context.draw(cgImage, in: rect)
-
-            if let composedImage = context.makeImage() {
-                return NSImage(cgImage: composedImage, size: size)
-            }
+    private func title(for record: Record) -> String {
+        let words = record.shortestTitle().split(separator: " ")
+        let firstSix = words.prefix(Constants.wordsPerTitle)
+        var title = firstSix.joined(separator: " ")
+        if words.count > Constants.wordsPerTitle {
+            title.append(contentsOf: " ...")
         }
-
-        return self
-    }
-
-    var cgImage: CGImage? {
-        var rect = CGRect(origin: .zero, size: size)
-        return cgImage(forProposedRect: &rect, context: nil, hints: nil)
+        return title
     }
 }

@@ -139,5 +139,8 @@ final class RecordStateMachine {
         let buttonAction = showButtons ? SKAction.fadeIn(withDuration: style.fadeAnimationDuration) : SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
         entity.node.closeNode.run(buttonAction)
         entity.node.openNode.run(buttonAction)
+        let showIcon = NodeCluster.showIconFor(level: level)
+        let iconAction = showIcon ? SKAction.fadeIn(withDuration: style.fadeAnimationDuration) : SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
+        entity.node.iconNode.run(iconAction)
     }
 }

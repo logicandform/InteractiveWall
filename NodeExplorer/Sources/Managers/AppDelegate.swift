@@ -12,7 +12,8 @@ struct Configuration {
     static let serverURL = "http://\(serverIP):3000"
     static let appsPerScreen = 2
     static let numberOfScreens = 1
-    static let ungroupTimeoutDuration = 30.0
+    static let ungroupTimeoutDuration = 60.0
+    static let clusterTimeoutDuration = 60.0
 }
 
 

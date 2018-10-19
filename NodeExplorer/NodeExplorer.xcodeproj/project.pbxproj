@@ -62,7 +62,6 @@
 		CD1FC73E20DB06AA00B87D02 /* TestingDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1FC73D20DB06AA00B87D02 /* TestingDataManager.swift */; };
 		CD27F40420BCB5B900375CBC /* RecordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40320BCB5B900375CBC /* RecordManager.swift */; };
 		CD27F40620BCBD5A00375CBC /* RecordNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40520BCBD5A00375CBC /* RecordNetwork.swift */; };
-		CD2CC5EC20B8E6D800FB3C10 /* RecordFilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2CC5EA20B8E6D800FB3C10 /* RecordFilterType.swift */; };
 		CD97E33C20F4125800BB869E /* NodeCluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD97E33B20F4125800BB869E /* NodeCluster.swift */; };
 		CD97E33E20F5765900BB869E /* ClusterLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD97E33D20F5765900BB869E /* ClusterLayer.swift */; };
 		CD97E34020F584BA00BB869E /* LayerRenderComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD97E33F20F584BA00BB869E /* LayerRenderComponent.swift */; };
@@ -152,7 +151,6 @@
 		CD1FC73D20DB06AA00B87D02 /* TestingDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingDataManager.swift; sourceTree = "<group>"; };
 		CD27F40320BCB5B900375CBC /* RecordManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordManager.swift; sourceTree = "<group>"; };
 		CD27F40520BCBD5A00375CBC /* RecordNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordNetwork.swift; sourceTree = "<group>"; };
-		CD2CC5EA20B8E6D800FB3C10 /* RecordFilterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordFilterType.swift; sourceTree = "<group>"; };
 		CD97E33B20F4125800BB869E /* NodeCluster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeCluster.swift; sourceTree = "<group>"; };
 		CD97E33D20F5765900BB869E /* ClusterLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterLayer.swift; sourceTree = "<group>"; };
 		CD97E33F20F584BA00BB869E /* LayerRenderComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerRenderComponent.swift; sourceTree = "<group>"; };
@@ -265,7 +263,6 @@
 				22D6F90020B6810600C7FB5F /* Math.swift */,
 				22D6F90120B6810600C7FB5F /* PriorityOrder.swift */,
 				CD27F40520BCBD5A00375CBC /* RecordNetwork.swift */,
-				CD2CC5EA20B8E6D800FB3C10 /* RecordFilterType.swift */,
 				22D6F8FA20B6810600C7FB5F /* RecordType.swift */,
 				22D6F90220B6810600C7FB5F /* ResponseHandler.swift */,
 				22D6F8FC20B6810600C7FB5F /* Style.swift */,
@@ -584,7 +581,6 @@
 				22AEAEF720B67DA600DD184B /* Theme.swift in Sources */,
 				22F5C005216D191F00169387 /* MacGestures.swift in Sources */,
 				CD97E33C20F4125800BB869E /* NodeCluster.swift in Sources */,
-				CD2CC5EC20B8E6D800FB3C10 /* RecordFilterType.swift in Sources */,
 				22D6F90620B6810600C7FB5F /* Style.swift in Sources */,
 				22A1232421509460009DC176 /* ListenerCallback.m in Sources */,
 				CD97E33E20F5765900BB869E /* ClusterLayer.swift in Sources */,

@@ -9,18 +9,15 @@ typealias EntityLevels = [Set<RecordEntity>]
 
 
 /// Class that creates layers for a selected entity.
-final class NodeCluster: Hashable {
+final class NodeCluster: NSObject {
     static let selectedEntityLevel = -1
 
     private(set) var center: CGPoint
     private(set) var selectedEntity: RecordEntity
     private(set) var entitiesForLevel = EntityLevels()
     private(set) var layerForLevel = [Int: ClusterLayer]()
-    private let scene: MainScene
-
-    var hashValue: Int {
-        return selectedEntity.hashValue
-    }
+    private unowned var scene: MainScene
+    private weak var closeTimer: Foundation.Timer?
 
     private lazy var componentSystems: [GKComponentSystem] = {
         let renderSystem = GKComponentSystem(componentClass: LayerRenderComponent.self)
@@ -34,6 +31,8 @@ final class NodeCluster: Hashable {
         self.scene = scene
         self.selectedEntity = entity
         self.center = selectedEntity.position
+        super.init()
+        self.resetCloseTimer()
     }
 
 
@@ -48,6 +47,7 @@ final class NodeCluster: Hashable {
 
     /// Updates the layers in the cluster for the selected entity and updates the levels for all current entities
     func select(_ entity: RecordEntity) {
+        resetCloseTimer()
         attach(to: entity)
         setLayers(toLevel: entitiesForLevel.count)
         updateStatesForEntities()
@@ -56,8 +56,10 @@ final class NodeCluster: Hashable {
     /// Updates the layers in the cluster for when the selected entity is panning
     func updateLayerLevels(forPan pan: Bool) {
         if pan {
+            closeTimer?.invalidate()
             setLayers(toLevel: 0)
         } else {
+            resetCloseTimer()
             removeLayer(level: 0)
             setLayers(toLevel: entitiesForLevel.count)
         }
@@ -158,9 +160,20 @@ final class NodeCluster: Hashable {
         }
     }
 
+    func resetCloseTimer() {
+        closeTimer?.invalidate()
+        closeTimer = Timer.scheduledTimer(withTimeInterval: Configuration.clusterTimeoutDuration, repeats: false) { [weak self] _ in
+            self?.closeTimerFired()
+        }
+    }
+
     /// Determines if a certain level should show or hide its title
     static func showTitleFor(level: Int) -> Bool {
         return level < 1
+    }
+
+    static func showIconFor(level: Int) -> Bool {
+        return level > 0
     }
 
 
@@ -250,6 +263,10 @@ final class NodeCluster: Hashable {
 
     private func flatten(_ levels: EntityLevels) -> Set<RecordEntity> {
         return levels.reduce(Set<RecordEntity>()) { return $0.union($1) }
+    }
+
+    private func closeTimerFired() {
+        scene.remove(cluster: self)
     }
 
     static func == (lhs: NodeCluster, rhs: NodeCluster) -> Bool {
