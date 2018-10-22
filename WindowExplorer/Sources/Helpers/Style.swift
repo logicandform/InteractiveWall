@@ -70,7 +70,7 @@ final class Style {
     let largeTitleTrailingSpace: CGFloat = 6
     let dateTrailingSpace: CGFloat = 20
     let smallHeaderTrailingSpace: CGFloat = 4
-    let descriptionTrailingSpace: CGFloat = 10
+    let descriptionTrailingSpace: CGFloat = 20
     let missingDateTitleTrailingSpace: CGFloat = 47
 
 

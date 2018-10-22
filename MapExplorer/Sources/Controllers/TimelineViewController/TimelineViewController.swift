@@ -42,7 +42,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         static let fadePercentage = 0.1
         static let resetAnimationDuration = 1.0
         static let recordSpawnOffset: CGFloat = 2
-        static let longTouchDuration = 1.5
+        static let tailHighlightTouchDuration = 1.5
         static let verticalAnimationDuration = 1.2
         static let timelineIndicatorColor = CGColor.white
     }
@@ -590,12 +590,16 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
 
     private func startTimer(for touch: Touch, item: Int) {
         createRecordForTouch[touch] = true
-        timerForTouch[touch] = Timer.scheduledTimer(withTimeInterval: Constants.longTouchDuration, repeats: false) { [weak self] _ in
+        timerForTouch[touch] = Timer.scheduledTimer(withTimeInterval: Constants.tailHighlightTouchDuration, repeats: false) { [weak self] _ in
             self?.timerFired(for: touch, item: item)
         }
     }
 
     private func timerFired(for touch: Touch, item: Int) {
+        if timerForTouch[touch] == nil {
+            return
+        }
+
         SelectionManager.instance.highlight(item: item)
         createRecordForTouch[touch] = false
     }

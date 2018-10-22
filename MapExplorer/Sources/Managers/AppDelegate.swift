@@ -12,7 +12,7 @@ struct Configuration {
     static let appsPerScreen = 2
     static let numberOfScreens = 1
     static let localMediaURLs = true
-    static let touchScreen = TouchScreen.pct2485
+    static let touchScreen = TouchScreen.ur9851
     static let ungroupTimoutDuration = 90.0
 //    static let mbtilesPath = "/Users/irshdc/dev/CanadaShoreIceRoad.mbtiles"
     static let mbtilesPath = "/Users/Tim/Xcode/UBC/CanadaShoreIceRoad.mbtiles"

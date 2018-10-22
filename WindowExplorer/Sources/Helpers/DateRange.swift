@@ -9,7 +9,7 @@ struct DateRange: Equatable {
     var endDate: RecordDate?
 
     private struct Constants {
-        static let minimumYear = 32
+        static let minimumYear = 1000
         static let maximumDay = 31
         static let days = Array(1...31)
         static let months = Array(1...12)
