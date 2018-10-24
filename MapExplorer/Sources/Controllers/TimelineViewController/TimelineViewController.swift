@@ -213,6 +213,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
             if let indexPath = timelineCollectionView.indexPathForItem(at: positionInTimeline),
                 let item = timelineCollectionView.item(at: indexPath) as? TimelineFlagView,
                 item.flagContains(positionInTimeline) {
+                SelectionManager.instance.highlight(item: indexPath.item)
                 itemForTouch[touch] = indexPath.item
                 startTimer(for: touch, item: indexPath.item)
                 SelectionManager.instance.set(item: indexPath.item, selected: true)
@@ -600,7 +601,6 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
             return
         }
 
-        SelectionManager.instance.highlight(item: item)
         createRecordForTouch[touch] = false
     }
 }
