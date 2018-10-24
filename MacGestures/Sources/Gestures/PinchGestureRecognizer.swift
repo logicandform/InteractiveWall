@@ -19,6 +19,8 @@ public class PinchGestureRecognizer: NSObject, GestureRecognizer {
         static let numberOfFingers = 2
         static let minimumBehaviorChangeThreshold: CGFloat = 20
         static let minimumSpreadDistance: CGFloat = 60
+        static let minimumShrinkScale: CGFloat = 0.4
+        static let maximumZoomScale: CGFloat = 2
     }
 
     private struct Pan {
@@ -196,7 +198,11 @@ public class PinchGestureRecognizer: NSObject, GestureRecognizer {
         let lastSpread = self.lastSpread ?? touchSpread
 
         if shouldRecognize(touchSpread), touchSpread > Pinch.minimumSpreadDistance {
-            scale = touchSpread / lastSpreadSinceUpdate
+            let newScale = touchSpread / lastSpreadSinceUpdate
+            if newScale < Pinch.minimumShrinkScale || newScale > Pinch.maximumZoomScale {
+                return
+            }
+            scale = newScale
             behavior = behavior(of: touchSpread)
             self.lastSpread = touchSpread
         } else if changedBehavior(from: lastSpread, to: touchSpread), touchSpread > Pinch.minimumSpreadDistance {
