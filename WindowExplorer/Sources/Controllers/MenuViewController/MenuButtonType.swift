@@ -46,7 +46,7 @@ enum MenuButtonType {
         case .nodeNetwork:
             return NSImage(named: "node-icon-active")
         case .information:
-            return NSImage(named: "info-icon-active")
+            return NSImage(named: "info-icon")?.tinted(with: style.menuTintColor)
         case .settings:
             return NSImage(named: "settings-icon-active")
         case .search:
