@@ -9,10 +9,9 @@ import GameplayKit
 class MovementComponent: GKComponent {
 
     private struct Constants {
-        static let strength: CGFloat = 1000
+        static let strength = Configuration.touchScreen.frameSize.width / 2
         static let dt: CGFloat = 1 / 5000
-        static let distancePadding: CGFloat = -10
-        static let speed: CGFloat = 200
+        static let speed: CGFloat = 500
     }
 
 
@@ -60,9 +59,8 @@ class MovementComponent: GKComponent {
         }
 
         // Find the difference in distance. This gives the total distance that is left to travel for the node
-        guard let currentLevel = entity.clusterLevel.currentLevel,
-            let currentLevelBoundingEntityComponent = cluster.layerForLevel[currentLevel]?.renderComponent else {
-                return
+        guard let currentLevel = entity.clusterLevel.currentLevel, let currentLevelBoundingEntityComponent = cluster.layerForLevel[currentLevel]?.renderComponent else {
+            return
         }
 
         let overlapingSibling = entity.physicsBody.allContactedBodies().contains { $0.node is RecordNode }

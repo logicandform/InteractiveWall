@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1A2A0F12595D1F02395CA6B2 /* Pods_All_NodeExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94CE60E4184F4257779FD9C4 /* Pods_All_NodeExplorer.framework */; };
+		222381EA2183BE8B002145A1 /* TouchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222381E92183BE8B002145A1 /* TouchScreen.swift */; };
 		225FF694217F89760080B841 /* BitMaskGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225FF693217F89760080B841 /* BitMaskGenerator.swift */; };
 		225FF696217F8A060080B841 /* EntityState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225FF695217F8A060080B841 /* EntityState.swift */; };
 		22667A24213F3A2F00F15A04 /* RecordStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22667A23213F3A2F00F15A04 /* RecordStateMachine.swift */; };
@@ -88,6 +89,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		222381E92183BE8B002145A1 /* TouchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchScreen.swift; sourceTree = "<group>"; };
 		225FF693217F89760080B841 /* BitMaskGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitMaskGenerator.swift; sourceTree = "<group>"; };
 		225FF695217F8A060080B841 /* EntityState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityState.swift; sourceTree = "<group>"; };
 		22667A23213F3A2F00F15A04 /* RecordStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordStateMachine.swift; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 				22C22436215D48F5000E1CAF /* NodeHandler.swift */,
 				225FF693217F89760080B841 /* BitMaskGenerator.swift */,
 				225FF695217F8A060080B841 /* EntityState.swift */,
+				222381E92183BE8B002145A1 /* TouchScreen.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -584,6 +587,7 @@
 				22D6F90420B6810600C7FB5F /* RecordType.swift in Sources */,
 				CD0FB28020D1A4AE0058A410 /* RecordRenderComponent.swift in Sources */,
 				225FF694217F89760080B841 /* BitMaskGenerator.swift in Sources */,
+				222381EA2183BE8B002145A1 /* TouchScreen.swift in Sources */,
 				22AEAEB620B67C2400DD184B /* AppDelegate.swift in Sources */,
 				22AEAEEE20B67D7500DD184B /* BorderlessWindow.swift in Sources */,
 				22AEAEE920B67D6800DD184B /* NetworkConfiguration.swift in Sources */,
