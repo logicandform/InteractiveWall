@@ -24,8 +24,6 @@ class MovementComponent: GKComponent {
             return
         }
 
-        checkAndUpdateBitMaskIfCloned()
-
         switch entity.state {
         case .seekEntity(let entity):
             seek(entity)
@@ -33,30 +31,6 @@ class MovementComponent: GKComponent {
             move(to: level)
         case .static, .selected, .dragging, .reset, .remove:
             break
-        }
-    }
-
-
-    // MARK: Helpers
-
-    private func checkAndUpdateBitMaskIfCloned() {
-        if let entity = entity as? RecordEntity {
-            if let previousCluster = entity.previousCluster,
-                let outmostBoundingEntity = previousCluster.layerForLevel[previousCluster.layerForLevel.count - 1]?.renderComponent {
-                let deltaX = entity.position.x - previousCluster.center.x
-                let deltaY = entity.position.y - previousCluster.center.y
-                let distance = previousCluster.distanceOf(x: deltaX, y: deltaY)
-
-                // Update bitmasks if the entity has gone outside the cluster's maxRadius or if the selected entity is panned inside the cluster's maxRadius before
-                // the entity has gone outside the maxRadius
-                if distance > outmostBoundingEntity.maxRadius || (entity.cluster?.selectedEntity.state == .dragging && distance < outmostBoundingEntity.maxRadius) {
-                    entity.previousCluster = nil
-                    entity.updateBitMasks()
-                }
-            } else if entity.physicsBody.categoryBitMask == ColliderType.clonedRecordNode {
-                entity.previousCluster = nil
-                entity.updateBitMasks()
-            }
         }
     }
 
@@ -91,7 +65,9 @@ class MovementComponent: GKComponent {
                 return
         }
 
-        let r2 = currentLevelBoundingEntityComponent.minRadius
+        let overlapingSibling = entity.physicsBody.allContactedBodies().contains { $0.node is RecordNode }
+        let wasSelected = entity.clusterLevel.previousLevel == NodeCluster.selectedEntityLevel
+        let r2 = overlapingSibling || wasSelected ? currentLevelBoundingEntityComponent.maxRadius : currentLevelBoundingEntityComponent.minRadius
         let r1 = distanceBetweenNodeAndCenter
 
         if (r2 - r1) < -entity.bodyRadius {

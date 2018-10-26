@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1A2A0F12595D1F02395CA6B2 /* Pods_All_NodeExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94CE60E4184F4257779FD9C4 /* Pods_All_NodeExplorer.framework */; };
+		225FF694217F89760080B841 /* BitMaskGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225FF693217F89760080B841 /* BitMaskGenerator.swift */; };
+		225FF696217F8A060080B841 /* EntityState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225FF695217F8A060080B841 /* EntityState.swift */; };
 		22667A24213F3A2F00F15A04 /* RecordStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22667A23213F3A2F00F15A04 /* RecordStateMachine.swift */; };
 		22667A26214088D900F15A04 /* DispatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22667A25214088D900F15A04 /* DispatchTimer.swift */; };
 		226A4518214EF36200860F0E /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226A4517214EF36200860F0E /* Record.swift */; };
@@ -58,7 +60,6 @@
 		CD0FB28220D1A6300058A410 /* RecordEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0FB28120D1A6300058A410 /* RecordEntity.swift */; };
 		CD0FB28420D1AA9D0058A410 /* EntityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0FB28320D1AA9D0058A410 /* EntityManager.swift */; };
 		CD0FB28820D1BFDD0058A410 /* MovementComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0FB28720D1BFDD0058A410 /* MovementComponent.swift */; };
-		CD0FB28A20D83B840058A410 /* RecordEntityBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0FB28920D83B840058A410 /* RecordEntityBehavior.swift */; };
 		CD1FC73E20DB06AA00B87D02 /* TestingDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1FC73D20DB06AA00B87D02 /* TestingDataManager.swift */; };
 		CD27F40420BCB5B900375CBC /* RecordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40320BCB5B900375CBC /* RecordManager.swift */; };
 		CD27F40620BCBD5A00375CBC /* RecordNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD27F40520BCBD5A00375CBC /* RecordNetwork.swift */; };
@@ -87,6 +88,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		225FF693217F89760080B841 /* BitMaskGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitMaskGenerator.swift; sourceTree = "<group>"; };
+		225FF695217F8A060080B841 /* EntityState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityState.swift; sourceTree = "<group>"; };
 		22667A23213F3A2F00F15A04 /* RecordStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordStateMachine.swift; sourceTree = "<group>"; };
 		22667A25214088D900F15A04 /* DispatchTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchTimer.swift; sourceTree = "<group>"; };
 		226A4517214EF36200860F0E /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
@@ -147,7 +150,6 @@
 		CD0FB28120D1A6300058A410 /* RecordEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordEntity.swift; sourceTree = "<group>"; };
 		CD0FB28320D1AA9D0058A410 /* EntityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityManager.swift; sourceTree = "<group>"; };
 		CD0FB28720D1BFDD0058A410 /* MovementComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementComponent.swift; sourceTree = "<group>"; };
-		CD0FB28920D83B840058A410 /* RecordEntityBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordEntityBehavior.swift; sourceTree = "<group>"; };
 		CD1FC73D20DB06AA00B87D02 /* TestingDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingDataManager.swift; sourceTree = "<group>"; };
 		CD27F40320BCB5B900375CBC /* RecordManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordManager.swift; sourceTree = "<group>"; };
 		CD27F40520BCBD5A00375CBC /* RecordNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordNetwork.swift; sourceTree = "<group>"; };
@@ -202,7 +204,6 @@
 				22AEAECE20B67C4B00DD184B /* Controllers */,
 				CD0FB28D20D853D70058A410 /* Entities */,
 				CD0FB28E20D853E00058A410 /* Components */,
-				CD0FB28F20D854060058A410 /* Behaviors */,
 				CDB6CE3020DDD33B0033E328 /* Nodes */,
 				22AEAED220B67C6500DD184B /* Windows */,
 				22AEAECF20B67C5100DD184B /* Helpers */,
@@ -274,6 +275,8 @@
 				22A1232321509460009DC176 /* ListenerCallback.m */,
 				D53B703A215C5B36006F126A /* ApplicationType.swift */,
 				22C22436215D48F5000E1CAF /* NodeHandler.swift */,
+				225FF693217F89760080B841 /* BitMaskGenerator.swift */,
+				225FF695217F8A060080B841 /* EntityState.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -367,14 +370,6 @@
 				CD97E33F20F584BA00BB869E /* LayerRenderComponent.swift */,
 			);
 			path = Components;
-			sourceTree = "<group>";
-		};
-		CD0FB28F20D854060058A410 /* Behaviors */ = {
-			isa = PBXGroup;
-			children = (
-				CD0FB28920D83B840058A410 /* RecordEntityBehavior.swift */,
-			);
-			path = Behaviors;
 			sourceTree = "<group>";
 		};
 		CDB6CE3020DDD33B0033E328 /* Nodes */ = {
@@ -548,8 +543,8 @@
 				22AEAEE620B67D6800DD184B /* PacketType.swift in Sources */,
 				CDA5A90820DD70B700E1CF87 /* PhysicsComponent.swift in Sources */,
 				22AEAEE220B67D6800DD184B /* Int.swift in Sources */,
+				225FF696217F8A060080B841 /* EntityState.swift in Sources */,
 				226A4518214EF36200860F0E /* Record.swift in Sources */,
-				CD0FB28A20D83B840058A410 /* RecordEntityBehavior.swift in Sources */,
 				22D6F90B20B6810600C7FB5F /* PriorityOrder.swift in Sources */,
 				22A1232E21509806009DC176 /* AnimationType.swift in Sources */,
 				22AEAEEA20B67D6800DD184B /* CoreGraphics.swift in Sources */,
@@ -588,6 +583,7 @@
 				CD1FC73E20DB06AA00B87D02 /* TestingDataManager.swift in Sources */,
 				22D6F90420B6810600C7FB5F /* RecordType.swift in Sources */,
 				CD0FB28020D1A4AE0058A410 /* RecordRenderComponent.swift in Sources */,
+				225FF694217F89760080B841 /* BitMaskGenerator.swift in Sources */,
 				22AEAEB620B67C2400DD184B /* AppDelegate.swift in Sources */,
 				22AEAEEE20B67D7500DD184B /* BorderlessWindow.swift in Sources */,
 				22AEAEE920B67D6800DD184B /* NetworkConfiguration.swift in Sources */,

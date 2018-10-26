@@ -27,10 +27,6 @@ final class RecordManager {
     private(set) var relativesForProxy = [RecordProxy: Set<RecordProxy>]()
     private(set) var relatedLevelsForProxy = [RecordProxy: RelatedLevels]()
 
-    private struct Constants {
-        static let maxRelatedLevel = 4
-    }
-
 
     // MARK: Init
 
@@ -161,7 +157,7 @@ final class RecordManager {
             levelsForProxy.insert(relatives, at: 0)
 
             // Populate following levels based on the level 0 entities
-            for level in (1 ... Constants.maxRelatedLevel) {
+            for level in (1 ..< NodeCluster.maxRelatedLevels) {
                 let proxiesForPreviousLevel = levelsForProxy.at(index: level - 1) ?? []
                 var proxiesForLevel = Set<RecordProxy>()
                 for recordProxy in proxiesForPreviousLevel {

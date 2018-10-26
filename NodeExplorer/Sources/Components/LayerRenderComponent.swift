@@ -9,7 +9,7 @@ import GameplayKit
 class LayerRenderComponent: GKComponent {
 
     let level: Int
-    let cluster: NodeCluster
+    unowned var cluster: NodeCluster
     let layerNode: ClusterLayerNode
     var minRadius: CGFloat
     var maxRadius: CGFloat
@@ -30,7 +30,7 @@ class LayerRenderComponent: GKComponent {
         self.minRadius = radius
         self.maxRadius = radius
         self.currentRadius = radius
-        self.layerNode = ClusterLayerNode(level: level, radius: radius, center: center)
+        self.layerNode = ClusterLayerNode(level: level, cluster: cluster, radius: radius, center: center)
         super.init()
     }
 
@@ -56,12 +56,12 @@ class LayerRenderComponent: GKComponent {
          */
 
         // Calculate the distance between the center and its own level entities
-        var distance: CGFloat = 0.0
+        var distance: CGFloat = 0
         if let contactEntities = cluster.entitiesForLevel.at(index: level) {
             // Iterate through its contactEntities to see if it hasCollidedWithLayer, and determine the max distance from the root to the contactEntity
             for contactEntity in contactEntities {
                 // Only use entities that have reached the layer and are not currently being dragged
-                if contactEntity.hasCollidedWithLayer && contactEntity.state != .dragging {
+                if case .seekEntity(_) = contactEntity.state, contactEntity.hasCollidedWithLayer {
                     let contactEntityRadiusOffset = contactEntity.bodyRadius + Constants.entityDistanceOffset
                     let calculatedRadius = cluster.distance(to: contactEntity) + contactEntityRadiusOffset
                     if calculatedRadius > distance {
@@ -72,7 +72,7 @@ class LayerRenderComponent: GKComponent {
         }
 
         // Set the maxRadius for this level's bounding node
-        maxRadius = distance > currentRadius ? distance : currentRadius
+        maxRadius = max(distance, currentRadius)
 
         // Scale its own bounding node by using its previous level's bounding node maxRadius
         if let previousLevelNodeBoundingEntity = cluster.layerForLevel[level - 1] {

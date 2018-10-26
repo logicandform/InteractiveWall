@@ -122,8 +122,8 @@ final class EntityManager {
         copy.node.scale(to: entity.node.size)
         let showTitle = NodeCluster.showTitleFor(level: level)
         copy.node.titleNode.alpha = showTitle ? 1 : 0
-        copy.setClonedNodeBitMasks()
         copy.previousCluster = entity.cluster
+        copy.updateBitMasks()
         scene.addChild(copy.node)
         scene.addGestures(to: copy.node)
         return copy

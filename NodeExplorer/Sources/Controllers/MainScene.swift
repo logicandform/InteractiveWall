@@ -8,7 +8,7 @@ import MacGestures
 class MainScene: SKScene {
 
     var gestureManager: NodeGestureManager!
-    private var nodeClusters = Set<NodeCluster>()
+    private var clusterForID = [Int: NodeCluster]()
     private var lastUpdateTimeInterval = 0.0
     private var selectedEntity: RecordEntity?
     private var handlerForApp = [Int: NodeHandler]()
@@ -16,7 +16,8 @@ class MainScene: SKScene {
 
     private struct Constants {
         static let maximumUpdateDeltaTime = 1.0 / 60.0
-        static let windowDisplayOffset: CGFloat = 20
+        static let windowDisplayOffset: CGFloat = 30
+        static let maximumNumberOfClusters = 16
     }
 
     private struct Keys {
@@ -46,7 +47,7 @@ class MainScene: SKScene {
         lastUpdateTimeInterval = currentTime
 
         EntityManager.instance.update(deltaTime)
-        for cluster in nodeClusters {
+        for cluster in clusterForID.values {
             cluster.update(deltaTime)
         }
 
@@ -86,7 +87,7 @@ class MainScene: SKScene {
 
     func remove(cluster: NodeCluster) {
         cluster.reset()
-        nodeClusters.remove(cluster)
+        clusterForID.removeValue(forKey: cluster.id)
     }
 
 
@@ -216,9 +217,10 @@ class MainScene: SKScene {
                     entity.set(state: .seekLevel(level))
 
                     // If entity was dragged outside of its cluster, duplicate entity with its own cluster
-                    if !cluster.intersects(entity) && frame(contains: entity) {
+                    if !cluster.intersects(entity) && frame(contains: entity), availableClusterID() != nil {
                         let copy = EntityManager.instance.createCopy(of: entity, level: level)
-                        createCluster(with: copy)
+                        let newCluster = createCluster(with: copy)
+                        newCluster?.select(copy)
                     }
                 } else {
                     EntityManager.instance.release(entity)
@@ -226,18 +228,13 @@ class MainScene: SKScene {
             } else {
                 // Create a new cluster from the entity if within application frame
                 if frame(contains: entity) {
-                    createCluster(with: entity)
+                    let newCluster = createCluster(with: entity)
+                    newCluster?.select(entity)
                 } else {
                     EntityManager.instance.release(entity)
                 }
             }
         }
-    }
-
-    private func createCluster(with entity: RecordEntity) {
-        let cluster = NodeCluster(scene: self, entity: entity)
-        nodeClusters.insert(cluster)
-        cluster.select(entity)
     }
 
     @objc
@@ -308,8 +305,9 @@ class MainScene: SKScene {
             return
         }
 
-        let cluster = nodeCluster(for: entity)
-        nodeClusters.insert(cluster)
+        guard let cluster = nodeCluster(for: entity) else {
+            return
+        }
 
         switch entity.state {
         case .static:
@@ -334,12 +332,32 @@ class MainScene: SKScene {
         }
     }
 
-    private func nodeCluster(for entity: RecordEntity) -> NodeCluster {
+    private func nodeCluster(for entity: RecordEntity) -> NodeCluster? {
         if let current = entity.cluster {
             return current
         }
 
-        return NodeCluster(scene: self, entity: entity)
+        return createCluster(with: entity)
+    }
+
+    private func createCluster(with entity: RecordEntity) -> NodeCluster? {
+        guard let id = availableClusterID() else {
+            return nil
+        }
+
+        let cluster = NodeCluster(id: id, scene: self, entity: entity)
+        clusterForID[id] = cluster
+        return cluster
+    }
+
+    private func availableClusterID() -> Int? {
+        for id in 1 ... Constants.maximumNumberOfClusters {
+            if clusterForID[id] == nil {
+                return id
+            }
+        }
+
+        return nil
     }
 
     private func frame(contains entity: RecordEntity) -> Bool {

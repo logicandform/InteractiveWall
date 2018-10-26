@@ -3,6 +3,7 @@
 import Foundation
 import MONode
 
+
 extension PacketType {
 
     // MapHandling
@@ -15,6 +16,7 @@ extension PacketType {
     static let touchUp = PacketType(rawValue: 1001)
     static let touchMove = PacketType(rawValue: 1002)
 }
+
 
 extension Packet {
 

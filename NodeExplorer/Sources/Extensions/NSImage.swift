@@ -2,6 +2,7 @@
 
 import AppKit
 
+
 extension NSImage {
 
     func tinted(with tint: NSColor) -> NSImage {

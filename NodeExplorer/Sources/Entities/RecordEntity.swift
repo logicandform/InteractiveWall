@@ -4,37 +4,6 @@ import Foundation
 import GameplayKit
 
 
-enum EntityState: Equatable {
-    case `static`
-    case selected
-    case seekEntity(RecordEntity)
-    case seekLevel(Int)
-    case dragging
-    case reset
-    case remove
-
-    /// Determines if the current state is able to transition into the panning state
-    var pannable: Bool {
-        switch self {
-        case .static, .selected, .dragging, .seekEntity(_):
-            return true
-        case .seekLevel(_), .reset, .remove:
-            return false
-        }
-    }
-
-    /// Determines if a RecordEntity should recognize a tap when in a given state
-    var tappable: Bool {
-        switch self {
-        case .static, .selected, .seekEntity(_):
-            return true
-        case .seekLevel(_), .dragging, .reset, .remove:
-            return false
-        }
-    }
-}
-
-
 final class RecordEntity: GKEntity {
 
     let record: Record
@@ -69,10 +38,6 @@ final class RecordEntity: GKEntity {
 
     var isSelected: Bool {
         return clusterLevel.currentLevel == NodeCluster.selectedEntityLevel
-    }
-
-    override var description: String {
-        return "( [RecordEntity] ID: \(record.id), type: \(record.type), State: \(state) )"
     }
 
 
@@ -134,7 +99,7 @@ final class RecordEntity: GKEntity {
 
     func set(level: Int) {
         clusterLevel = (clusterLevel.currentLevel, level)
-        node.setZ(level: level)
+        node.setZ(level: level, clusterID: cluster?.id ?? 0)
     }
 
     func set(state: EntityState) {
@@ -151,11 +116,10 @@ final class RecordEntity: GKEntity {
     }
 
     func updateBitMasks() {
-        physicsComponent.updateBitMasks()
-    }
-
-    func setClonedNodeBitMasks() {
-        physicsComponent.setClonedNodeBitMasks()
+        let mask = BitMaskGenerator.bitMask(for: self)
+        physicsBody.categoryBitMask = mask
+        physicsBody.collisionBitMask = mask
+        physicsBody.contactTestBitMask = mask
     }
 
     func perform(action: SKAction, forKey key: String) {
@@ -174,21 +138,19 @@ final class RecordEntity: GKEntity {
 
     /// 'Reset' the entity to initial state so that proper animations and movements can take place
     func reset() {
-        resetBitMasks()
         hasCollidedWithLayer = false
         clusterLevel = (nil, nil)
         cluster = nil
         previousCluster = nil
         renderComponent.recordNode.scale(to: style.defaultNodeSize)
         set(position: initialPosition)
-    }
-
-    func resetBitMasks() {
-        physicsComponent.resetBitMasks()
+        updateBitMasks()
     }
 
     func clone() -> RecordEntity {
-        return RecordEntity(record: record, levels: relatedRecordsForLevel)
+        let clone = RecordEntity(record: record, levels: relatedRecordsForLevel)
+        clone.initialPosition = initialPosition
+        return clone
     }
 
     /// Calculates the distance between self and another entity

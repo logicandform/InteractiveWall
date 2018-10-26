@@ -3,6 +3,7 @@
 import Foundation
 import AppKit
 
+
 extension NSView {
 
     /// Animates the transition of the view's layer contents to a new image
@@ -15,12 +16,14 @@ extension NSView {
     }
 }
 
+
 extension NSCollectionView {
 
     func item(at row: Int, section: Int = 0) -> NSCollectionViewItem? {
         return item(at: IndexPath(item: row, section: section))
     }
 }
+
 
 extension NSScrollView {
 

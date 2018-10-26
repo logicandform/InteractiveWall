@@ -9,7 +9,8 @@ import AlamofireImage
 class ClusterLayerNode: SKSpriteNode {
     static let nodeName = "boundingNode"
 
-    private let level: Int
+    let level: Int
+    unowned var cluster: NodeCluster
 
     private struct Constants {
         static let layerNodeImage = "layer_node"
@@ -18,19 +19,19 @@ class ClusterLayerNode: SKSpriteNode {
 
     // MARK: Initializers
 
-    init(level: Int, radius: CGFloat, center: CGPoint) {
+    init(level: Int, cluster: NodeCluster, radius: CGFloat, center: CGPoint) {
         self.level = level
+        self.cluster = cluster
         super.init(texture: nil, color: .clear, size: CGSize(width: radius*2, height: radius*2))
         texture = SKTexture(imageNamed: Constants.layerNodeImage)
-        let alpha = 1 - CGFloat(level) * 0.18
+        let alpha = 0.8 - CGFloat(level) * 0.18
         color = NSColor(white: 0.2, alpha: alpha)
         colorBlendFactor = 1
         position = center
-        zPosition = CGFloat(-level)
         name = ClusterLayerNode.nodeName
         physicsBody = ClusterLayerNode.physicsBody(radius: radius)
-        let bitMasks = ClusterLayerNode.bitMasks(forLevel: level)
-        set(bitMasks)
+        updateBitMask()
+        updateZPosition()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -40,32 +41,11 @@ class ClusterLayerNode: SKSpriteNode {
 
     // MARK: API
 
-    func set(_ bitMasks: ColliderType) {
-        physicsBody?.categoryBitMask = bitMasks.categoryBitMask
-        physicsBody?.collisionBitMask = bitMasks.collisionBitMask
-        physicsBody?.contactTestBitMask = bitMasks.contactTestBitMask
-    }
-
     // Updates the size of the physics body and node
     func set(radius: CGFloat) {
         physicsBody = ClusterLayerNode.physicsBody(radius: radius)
-        let bitMasksForLevel = ClusterLayerNode.bitMasks(forLevel: level)
-        set(bitMasksForLevel)
         size = CGSize(width: radius*2, height: radius*2)
-    }
-
-    /// Provides the bitMasks for the bounding node's physics bodies. The bits are offset by 10 in order to make them unique from the level entity's bitMasks.
-    static func bitMasks(forLevel level: Int) -> ColliderType {
-        let levelBit = 10 + level
-        let categoryBitMask: UInt32 = 1 << levelBit
-        let contactTestBitMask: UInt32 = 1 << levelBit
-        let collisionBitMask: UInt32 = 1 << levelBit
-
-        return ColliderType(
-            categoryBitMask: categoryBitMask,
-            collisionBitMask: collisionBitMask,
-            contactTestBitMask: contactTestBitMask
-        )
+        updateBitMask()
     }
 
     static func physicsBody(radius: CGFloat) -> SKPhysicsBody {
@@ -75,5 +55,21 @@ class ClusterLayerNode: SKSpriteNode {
         physicsBody.restitution = 0
         physicsBody.friction = 1
         return physicsBody
+    }
+
+
+    // MARK: Setup
+
+    private func updateBitMask() {
+        let mask = BitMaskGenerator.bitMask(for: self)
+        physicsBody?.categoryBitMask = mask
+        physicsBody?.collisionBitMask = mask
+        physicsBody?.contactTestBitMask = mask
+    }
+
+    private func updateZPosition() {
+        let clusterOffset = (cluster.id + 1) * 10
+        let layerOffset = 5
+        zPosition = CGFloat(clusterOffset - (level + layerOffset))
     }
 }

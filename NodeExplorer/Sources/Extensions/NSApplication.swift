@@ -3,6 +3,7 @@
 import Foundation
 import AppKit
 
+
 extension NSScreen {
 
     /// Returns index of screen based on origin location; low -> high

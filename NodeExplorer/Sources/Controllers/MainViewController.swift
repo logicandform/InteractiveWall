@@ -56,9 +56,6 @@ class MainViewController: NSViewController, NodeGestureResponder {
     private func setupView() {
         mainView.showsFPS = true
         mainView.showsNodeCount = true
-        mainView.showsFields = false
-        mainView.showsPhysics = false
-        mainView.ignoresSiblingOrder = true
     }
 
     private func setupEntities() {

@@ -11,7 +11,9 @@ typealias EntityLevels = [Set<RecordEntity>]
 /// Class that creates layers for a selected entity.
 final class NodeCluster: NSObject {
     static let selectedEntityLevel = -1
+    static let maxRelatedLevels = 4
 
+    let id: Int
     private(set) var center: CGPoint
     private(set) var selectedEntity: RecordEntity
     private(set) var entitiesForLevel = EntityLevels()
@@ -27,7 +29,8 @@ final class NodeCluster: NSObject {
 
     // MARK: Init
 
-    init(scene: MainScene, entity: RecordEntity) {
+    init(id: Int, scene: MainScene, entity: RecordEntity) {
+        self.id = id
         self.scene = scene
         self.selectedEntity = entity
         self.center = selectedEntity.position
@@ -49,7 +52,7 @@ final class NodeCluster: NSObject {
     func select(_ entity: RecordEntity) {
         resetCloseTimer()
         attach(to: entity)
-        setLayers(toLevel: entitiesForLevel.count)
+        setLayers(toLevel: entitiesForLevel.count - 1)
         updateStatesForEntities()
     }
 
@@ -61,10 +64,9 @@ final class NodeCluster: NSObject {
         } else {
             resetCloseTimer()
             removeLayer(level: 0)
-            setLayers(toLevel: entitiesForLevel.count)
+            setLayers(toLevel: entitiesForLevel.count - 1)
         }
 
-        updateInnerMostLayerBitMasks(forPan: pan)
         for entities in entitiesForLevel {
             for entity in entities {
                 entity.hasCollidedWithLayer = false
@@ -244,20 +246,6 @@ final class NodeCluster: NSObject {
         layerForLevel.removeValue(forKey: level)
         for componentSystem in componentSystems {
             componentSystem.removeComponent(foundIn: layer)
-        }
-    }
-
-    private func updateInnerMostLayerBitMasks(forPan pan: Bool) {
-        guard let innerMostLayerNode = layerForLevel[0]?.renderComponent.layerNode else {
-            return
-        }
-
-        if pan {
-            let bitMasksForPan = ColliderType(categoryBitMask: ColliderType.panBoundingNode, collisionBitMask: ColliderType.panBoundingNode, contactTestBitMask: ColliderType.panBoundingNode)
-            innerMostLayerNode.set(bitMasksForPan)
-        } else {
-            let bitMasksForLevel = ClusterLayerNode.bitMasks(forLevel: 0)
-            innerMostLayerNode.set(bitMasksForLevel)
         }
     }
 

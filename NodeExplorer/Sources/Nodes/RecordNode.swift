@@ -37,25 +37,11 @@ class RecordNode: SKSpriteNode {
         fatalError("init(coder:) has not been implemented")
     }
 
-
-    // MARK: API
-
-    static func bitMasks(forLevel level: Int) -> ColliderType {
-        let categoryBitMask: UInt32 = 1 << level
-        let collisionBitMask: UInt32 = 1 << level
-        let contactTestBitMask: UInt32 = 1 << level
-
-        return ColliderType(
-            categoryBitMask: categoryBitMask,
-            collisionBitMask: collisionBitMask,
-            contactTestBitMask: contactTestBitMask
-        )
-    }
-
-    /// Sets the zPosition of `self`
-    func setZ(level: Int) {
-        // Since titles are 1 level above the node, must multiply level by 2 to avoid undefined ordering
-        zPosition = CGFloat(20 - level * 2)
+    func setZ(level: Int, clusterID: Int) {
+        // Account for negative levels (dragging and selected)
+        let base = max(0, level + 1)
+        let clusterOffset = (clusterID + 1) * 10
+        zPosition = CGFloat(clusterOffset - base)
     }
 
     func closeButton(contains point: CGPoint) -> Bool {
@@ -110,14 +96,12 @@ class RecordNode: SKSpriteNode {
         titleNode.fontColor = .white
         titleNode.fontSize = 10
         titleNode.fontName = "Soleil"
-        titleNode.zPosition = 1
         addChild(titleNode)
     }
 
     private func addIconNode(for record: Record) {
         iconNode = SKSpriteNode(imageNamed: record.type.imageName)
         iconNode.alpha = 0
-        iconNode.zPosition = 1
         iconNode.size = CGSize(width: frame.width/2, height: frame.height/2)
         addChild(iconNode)
     }
@@ -126,7 +110,6 @@ class RecordNode: SKSpriteNode {
         openNode = SKSpriteNode(imageNamed: "open-button")
         openNode.size = Constants.buttonSize
         openNode.position = CGPoint(x: 0, y: -Constants.buttonOffset)
-        openNode.zPosition = 1
         openNode.alpha = 0
         addChild(openNode)
     }
@@ -135,7 +118,6 @@ class RecordNode: SKSpriteNode {
         closeNode = SKSpriteNode(imageNamed: "close-button")
         closeNode.size = Constants.buttonSize
         closeNode.position = CGPoint(x: 0, y: Constants.buttonOffset)
-        closeNode.zPosition = 1
         closeNode.alpha = 0
         addChild(closeNode)
     }

@@ -13,7 +13,7 @@ struct Configuration {
     static let appsPerScreen = 2
     static let numberOfScreens = 1
     static let ungroupTimeoutDuration = 60.0
-    static let clusterTimeoutDuration = 60.0
+    static let clusterTimeoutDuration = 180.0
 }
 
 

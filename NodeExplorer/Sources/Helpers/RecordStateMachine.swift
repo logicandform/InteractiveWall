@@ -78,7 +78,7 @@ final class RecordStateMachine {
         case .dragging:
             entity.removeAnimation(forKey: AnimationType.move(.zero).key)
             entity.physicsBody.isDynamic = false
-            entity.node.setZ(level: Constants.draggingLevel)
+            entity.node.setZ(level: Constants.draggingLevel, clusterID: entity.cluster?.id ?? 0)
             if entity.isSelected {
                 entity.cluster?.updateLayerLevels(forPan: true)
             }
@@ -92,7 +92,7 @@ final class RecordStateMachine {
     /// Fade out, resize and set to initial position
     private func reset() {
         let entity = self.entity
-        entity.resetBitMasks()
+        entity.updateBitMasks()
         entity.physicsBody.isDynamic = false
         let fade = SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
         entity.perform(action: fade) {
@@ -105,7 +105,7 @@ final class RecordStateMachine {
 
     private func remove() {
         let entity = self.entity
-        entity.resetBitMasks()
+        entity.updateBitMasks()
         entity.physicsBody.isDynamic = false
         let fade = SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
         entity.perform(action: fade) {
