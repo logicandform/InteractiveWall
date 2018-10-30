@@ -141,7 +141,7 @@ class MainScene: SKScene {
     }
 
     private func setupEntities() {
-        let entityTypes: [RecordType] = [.school, .event, .organization]
+        let entityTypes: [RecordType] = [.school, .event, .organization, .artifact]
         let entities = entityTypes.reduce([]) { $0 + EntityManager.instance.entities(of: $1) }
         let spacing = frame.width / CGFloat(entities.count / 2)
         let nodeRadius = style.defaultNodeSize.width / 2

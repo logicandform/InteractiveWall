@@ -62,6 +62,7 @@ final class RecordStateMachine {
             entity.physicsBody.angularDamping = 0
             entity.node.removeAllActions()
             updateViews(level: Constants.backgroundLevel)
+            entity.node.setZ(level: Constants.backgroundLevel, clusterID: 0)
             scale()
         case .selected:
             entity.set(level: NodeCluster.selectedEntityLevel)

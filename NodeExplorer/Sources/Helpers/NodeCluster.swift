@@ -11,7 +11,7 @@ typealias EntityLevels = [Set<RecordEntity>]
 /// Class that creates layers for a selected entity.
 final class NodeCluster: NSObject {
     static let selectedEntityLevel = -1
-    static let maxRelatedLevels = 4
+    static let maxRelatedLevels = 3
 
     let id: Int
     private(set) var center: CGPoint

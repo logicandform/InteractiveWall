@@ -47,7 +47,7 @@ final class BitMaskGenerator {
 
     // Returns the inset for a cluster for a UInt32 bit mask, leaving space for the background mask
     private static func inset(for cluster: NodeCluster) -> Int {
-        let normalizedID = cluster.id % (Constants.availableClusterBits / NodeCluster.maxRelatedLevels)
+        let normalizedID = (cluster.id  - 1) % (Constants.availableClusterBits / NodeCluster.maxRelatedLevels)
         return normalizedID * NodeCluster.maxRelatedLevels
     }
 }
