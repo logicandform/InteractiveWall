@@ -19,6 +19,8 @@ final class RecordStateMachine {
 
     private struct Constants {
         static let draggingLevel = -2
+        static let backgroundLevel = 0
+        static let driftingAlpha: CGFloat = 0.8
     }
 
 
@@ -33,9 +35,9 @@ final class RecordStateMachine {
 
     private func exit(state: EntityState) {
         switch state {
-        case .static, .selected, .reset, .remove:
+        case .static, .drift, .selected, .reset, .remove:
             break
-        case .seekLevel(_), .seekEntity(_):
+        case .seekLevel, .seekEntity:
             entity.node.removeAllActions()
         case .dragging:
             if entity.isSelected {
@@ -45,13 +47,25 @@ final class RecordStateMachine {
     }
 
     private func enter(state: EntityState) {
+        entity.updateBitMasks()
+
         switch state {
         case .static:
             break
+        case .drift:
+            entity.resetProperties()
+            entity.physicsBody.velocity.dy = CGFloat.random(in: style.themeDyRange)
+            entity.physicsBody.isDynamic = true
+            entity.physicsBody.friction = 0
+            entity.physicsBody.linearDamping = 0
+            entity.physicsBody.restitution = 0
+            entity.physicsBody.angularDamping = 0
+            entity.node.removeAllActions()
+            updateViews(level: Constants.backgroundLevel)
+            scale()
         case .selected:
             entity.set(level: NodeCluster.selectedEntityLevel)
             entity.hasCollidedWithLayer = false
-            entity.updateBitMasks()
             entity.physicsBody.isDynamic = false
             entity.node.removeAllActions()
             updateViews(level: NodeCluster.selectedEntityLevel)
@@ -59,7 +73,6 @@ final class RecordStateMachine {
         case .seekLevel(let level):
             entity.set(level: level)
             entity.hasCollidedWithLayer = false
-            entity.updateBitMasks()
             entity.physicsBody.isDynamic = true
             entity.physicsBody.restitution = 0
             entity.physicsBody.friction = 1
@@ -67,8 +80,7 @@ final class RecordStateMachine {
             entity.node.removeAllActions()
             updateViews(level: level)
             scale()
-        case .seekEntity(_):
-            entity.updateBitMasks()
+        case .seekEntity:
             entity.physicsBody.isDynamic = true
             entity.physicsBody.restitution = 0
             entity.physicsBody.friction = 1
@@ -83,6 +95,7 @@ final class RecordStateMachine {
                 entity.cluster?.updateLayerLevels(forPan: true)
             }
         case .reset:
+            updateViews(level: Constants.backgroundLevel)
             reset()
         case .remove:
             remove()
@@ -92,20 +105,17 @@ final class RecordStateMachine {
     /// Fade out, resize and set to initial position
     private func reset() {
         let entity = self.entity
-        entity.updateBitMasks()
         entity.physicsBody.isDynamic = false
         let fade = SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
         entity.perform(action: fade) {
-            entity.reset()
-            // Only set alpha = 1 while in development
-            entity.node.alpha = 1
+            entity.resetProperties()
+            entity.resetNode()
             entity.set(state: .static)
         }
     }
 
     private func remove() {
         let entity = self.entity
-        entity.updateBitMasks()
         entity.physicsBody.isDynamic = false
         let fade = SKAction.fadeOut(withDuration: style.fadeAnimationDuration)
         entity.perform(action: fade) {

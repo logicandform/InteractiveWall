@@ -12,22 +12,22 @@ enum AnimationType {
 
     var duration: TimeInterval {
         switch self {
-        case .move(_):
+        case .move:
             return style.moveAnimationDuration
-        case .scale(_):
+        case .scale:
             return style.scaleAnimationDuration
-        case .fade(_):
+        case .fade:
             return style.fadeAnimationDuration
         }
     }
 
     var key: String {
         switch self {
-        case .move(_):
+        case .move:
             return "move"
-        case .scale(_):
+        case .scale:
             return "scale"
-        case .fade(_):
+        case .fade:
             return "fade"
         }
     }

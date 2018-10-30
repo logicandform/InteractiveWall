@@ -135,11 +135,11 @@ class TestingDataManager {
     /// Relates records to a specified record and stores it locally in dictionary
     private func associate(records: [Record], to record: Record) {
         let filtered = records.filter { $0.proxy != record.proxy }
-        record.relatedOrganizations = filtered.compactMap { $0 as? Organization }
-        record.relatedArtifacts = filtered.compactMap { $0 as? Artifact }
-        record.relatedSchools = filtered.compactMap { $0 as? School }
-        record.relatedEvents = filtered.compactMap { $0 as? Event }
-        record.relatedThemes = filtered.compactMap { $0 as? Theme }
+        record.relatedRecordsForType[.organization] = Set(filtered.compactMap { $0 as? Organization })
+        record.relatedRecordsForType[.artifact] = Set(filtered.compactMap { $0 as? Artifact })
+        record.relatedRecordsForType[.school] = Set(filtered.compactMap { $0 as? School })
+        record.relatedRecordsForType[.event] = Set(filtered.compactMap { $0 as? Event })
+        record.relatedRecordsForType[.theme] = Set(filtered.compactMap { $0 as? Theme })
     }
 
     private func createLevelsForRecords() {

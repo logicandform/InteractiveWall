@@ -15,8 +15,9 @@ typealias RelatedLevels = [Set<RecordProxy>]
 final class RecordManager {
     static let instance = RecordManager()
 
-    /// Type: [ID: Record]
-    private var recordsForType: [RecordType: [Int: Record]] = [
+    private(set) var relativesForProxy = [RecordProxy: Set<RecordProxy>]()
+    private(set) var relatedLevelsForProxy = [RecordProxy: RelatedLevels]()
+    private(set) var recordsForType: [RecordType: [Int: Record]] = [
         .school: [:],
         .artifact: [:],
         .organization: [:],
@@ -24,8 +25,9 @@ final class RecordManager {
         .theme: [:]
     ]
 
-    private(set) var relativesForProxy = [RecordProxy: Set<RecordProxy>]()
-    private(set) var relatedLevelsForProxy = [RecordProxy: RelatedLevels]()
+    private struct Constants {
+        static let minRelativeCount = 2
+    }
 
 
     // MARK: Init
@@ -45,7 +47,7 @@ final class RecordManager {
                 types.remove(type)
                 if types.isEmpty {
                     self?.createRelationships()
-                    self?.filterSingleArtifactConnections()
+                    self?.filterRecords()
                     self?.createLevelsForProxies()
                     completion()
                 }
@@ -55,7 +57,7 @@ final class RecordManager {
 
     func createEntities() {
         for (proxy, levels) in relatedLevelsForProxy {
-            if let record = recordsForType[proxy.type]?[proxy.id] {
+            if let record = RecordManager.instance.recordsForType[proxy.type]?[proxy.id] {
                 EntityManager.instance.createEntity(record: record, levels: levels)
             }
         }
@@ -87,31 +89,23 @@ final class RecordManager {
     }
 
     private func makeRelationships(for record: Record) {
-        for id in record.relatedSchoolIDs {
-            if let school = recordsForType[.school]?[id] as? School {
-                record.relatedSchools.append(school)
-            }
+        record.relatedRecordsForType[.school] = records(for: .school, ids: record.relatedSchoolIDs)
+        record.relatedRecordsForType[.artifact] = records(for: .artifact, ids: record.relatedArtifactIDs)
+        record.relatedRecordsForType[.organization] = records(for: .organization, ids: record.relatedOrganizationIDs)
+        record.relatedRecordsForType[.event] = records(for: .event, ids: record.relatedEventIDs)
+
+        let themes = records(for: .theme, ids: record.relatedThemeIDs)
+        record.relatedRecordsForType[.theme] = themes
+
+        // Apply the inverse relationship for theme records
+        for theme in themes {
+            theme.relate(to: record)
         }
-        for id in record.relatedArtifactIDs {
-            if let artifact = recordsForType[.artifact]?[id] as? Artifact {
-                record.relatedArtifacts.append(artifact)
-            }
-        }
-        for id in record.relatedOrganizationIDs {
-            if let organization = recordsForType[.organization]?[id] as? Organization {
-                record.relatedOrganizations.append(organization)
-            }
-        }
-        for id in record.relatedEventIDs {
-            if let event = recordsForType[.event]?[id] as? Event {
-                record.relatedEvents.append(event)
-            }
-        }
-        for id in record.relatedThemeIDs {
-            if let theme = recordsForType[.theme]?[id] as? Theme {
-                record.relatedThemes.append(theme)
-            }
-        }
+    }
+
+    /// Returns a set of records from the given ids
+    private func records(for type: RecordType, ids: [Int]) -> Set<Record> {
+        return Set(ids.compactMap { recordsForType[type]?[$0] })
     }
 
     private func records(for type: RecordType) -> [Record] {
@@ -122,7 +116,8 @@ final class RecordManager {
         return Array(recordsForID.values)
     }
 
-    private func filterSingleArtifactConnections() {
+    /// Filters out records with only one related item or less
+    private func filterRecords() {
         let unfilteredRelativesForProxy = relativesForProxy
 
         for (proxy, relatives) in relativesForProxy {
@@ -141,8 +136,9 @@ final class RecordManager {
         }
     }
 
+    /// Returns true if the record for the proxy has less than minRelativeCount relatives
     private func shouldRemove(proxy: RecordProxy, from relativesForProxy: [RecordProxy: Set<RecordProxy>]) -> Bool {
-        if proxy.type == .artifact, let relatives = relativesForProxy[proxy], relatives.count == 1 {
+        if let relatives = relativesForProxy[proxy], relatives.count < Constants.minRelativeCount {
             return true
         }
 

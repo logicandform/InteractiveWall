@@ -75,6 +75,6 @@ enum RecordType: String, SearchItemDisplayable {
     }
 
     static var allValues: [RecordType] {
-        return [.event, .artifact, .organization, .school, .theme, .collection, .individual]
+        return [.theme, .event, .artifact, .organization, .school, .collection, .individual]
     }
 }

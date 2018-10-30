@@ -4,7 +4,9 @@ import Foundation
 
 
 enum EntityState: Equatable {
+
     case `static`
+    case drift(dx: CGFloat)
     case selected
     case seekEntity(RecordEntity)
     case seekLevel(Int)
@@ -15,9 +17,9 @@ enum EntityState: Equatable {
     /// Determines if the current state is able to transition into the panning state
     var pannable: Bool {
         switch self {
-        case .static, .selected, .dragging, .seekEntity(_):
+        case .static, .drift, .selected, .dragging, .seekEntity:
             return true
-        case .seekLevel(_), .reset, .remove:
+        case .seekLevel, .reset, .remove:
             return false
         }
     }
@@ -25,9 +27,9 @@ enum EntityState: Equatable {
     /// Determines if a RecordEntity should recognize a tap when in a given state
     var tappable: Bool {
         switch self {
-        case .static, .selected, .seekEntity(_):
+        case .static, .drift, .selected, .seekEntity:
             return true
-        case .seekLevel(_), .dragging, .reset, .remove:
+        case .seekLevel, .dragging, .reset, .remove:
             return false
         }
     }

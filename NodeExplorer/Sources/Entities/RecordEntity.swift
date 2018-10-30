@@ -10,7 +10,7 @@ final class RecordEntity: GKEntity {
     let relatedRecordsForLevel: RelatedLevels
     let relatedRecords: Set<RecordProxy>
     var hasCollidedWithLayer = false
-    var initialPosition = CGPoint.zero
+    var initialPosition: CGPoint?
     var cluster: NodeCluster?
     weak var previousCluster: NodeCluster?
     private lazy var stateMachine = RecordStateMachine(entity: self)
@@ -76,7 +76,6 @@ final class RecordEntity: GKEntity {
         }
         self.relatedRecords = relatedRecords
         super.init()
-
         let renderComponent = RecordRenderComponent(record: record)
         let physicsComponent = PhysicsComponent(physicsBody: SKPhysicsBody(circleOfRadius: style.defaultNodePhysicsBodyRadius))
         let movementComponent = MovementComponent()
@@ -84,6 +83,7 @@ final class RecordEntity: GKEntity {
         addComponent(movementComponent)
         addComponent(renderComponent)
         addComponent(physicsComponent)
+        updateBitMasks()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -93,8 +93,10 @@ final class RecordEntity: GKEntity {
 
     // MARK: API
 
-    func set(position: CGPoint) {
-        renderComponent.recordNode.position = position
+    func set(position: CGPoint?) {
+        if let position = position {
+            renderComponent.recordNode.position = position
+        }
     }
 
     func set(level: Int) {
@@ -136,15 +138,17 @@ final class RecordEntity: GKEntity {
         renderComponent.recordNode.removeAction(forKey: key)
     }
 
-    /// 'Reset' the entity to initial state so that proper animations and movements can take place
-    func reset() {
+    func resetProperties() {
         hasCollidedWithLayer = false
         clusterLevel = (nil, nil)
         cluster = nil
         previousCluster = nil
+    }
+
+    /// 'Reset' the entity to initial state so that proper animations and movements can take place
+    func resetNode() {
         renderComponent.recordNode.scale(to: style.defaultNodeSize)
         set(position: initialPosition)
-        updateBitMasks()
     }
 
     func clone() -> RecordEntity {

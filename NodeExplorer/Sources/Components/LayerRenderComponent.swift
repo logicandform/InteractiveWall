@@ -61,7 +61,7 @@ class LayerRenderComponent: GKComponent {
             // Iterate through its contactEntities to see if it hasCollidedWithLayer, and determine the max distance from the root to the contactEntity
             for contactEntity in contactEntities {
                 // Only use entities that have reached the layer and are not currently being dragged
-                if case .seekEntity(_) = contactEntity.state, contactEntity.hasCollidedWithLayer {
+                if case .seekEntity = contactEntity.state, contactEntity.hasCollidedWithLayer {
                     let contactEntityRadiusOffset = contactEntity.bodyRadius + Constants.entityDistanceOffset
                     let calculatedRadius = cluster.distance(to: contactEntity) + contactEntityRadiusOffset
                     if calculatedRadius > distance {

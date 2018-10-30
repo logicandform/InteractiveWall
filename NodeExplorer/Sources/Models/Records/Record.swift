@@ -27,24 +27,11 @@ class Record: Hashable {
     let relatedArtifactIDs: [Int]
     let relatedEventIDs: [Int]
     let relatedThemeIDs: [Int]
-    var relatedSchools = [School]()
-    var relatedOrganizations = [Organization]()
-    var relatedArtifacts = [Artifact]()
-    var relatedEvents = [Event]()
-    var relatedThemes = [Theme]()
+    var relatedRecordsForType = [RecordType: Set<Record>]()
     lazy var priority = PriorityOrder.priority(for: self)
 
-    var recordGroups: [RecordGroup] {
-        let schoolGroup = RecordGroup(type: .school, records: relatedSchools)
-        let organizationGroup = RecordGroup(type: .organization, records: relatedOrganizations)
-        let artifactGroup = RecordGroup(type: .artifact, records: relatedArtifacts)
-        let eventGroup = RecordGroup(type: .event, records: relatedEvents)
-
-        return [schoolGroup, organizationGroup, artifactGroup, eventGroup]
-    }
-
     var relatedRecords: [Record] {
-        return recordGroups.reduce([]) { $0 + $1.records }
+        return relatedRecordsForType.values.reduce([], +)
     }
 
     var proxy: RecordProxy {
@@ -73,7 +60,7 @@ class Record: Hashable {
         static let organizationIDs = "relatedOrganizationIDs"
         static let artifactIDs = "relatedArtifactIDs"
         static let eventIDs = "relatedEventIDs"
-        static let themeIDs = "themeIDs"
+        static let themeIDs = "relatedThemeIDs"
     }
 
 
@@ -125,11 +112,19 @@ class Record: Hashable {
     }
 
     func relatedRecords(type: RecordType) -> [Record] {
-        if let recordGroup = recordGroups.first(where: { $0.type == type }) {
-            return recordGroup.records
+        guard let records = relatedRecordsForType[type] else {
+            return []
         }
 
-        return []
+        return Array(records)
+    }
+
+    func relate(to record: Record) {
+        if relatedRecordsForType[record.type] == nil {
+            relatedRecordsForType[record.type] = [record]
+        } else {
+            relatedRecordsForType[record.type]?.insert(record)
+        }
     }
 
 

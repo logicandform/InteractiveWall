@@ -24,6 +24,8 @@ class MovementComponent: GKComponent {
         }
 
         switch entity.state {
+        case let .drift(dx):
+            drift(dx: dx)
         case .seekEntity(let entity):
             seek(entity)
         case .seekLevel(let level):
@@ -36,11 +38,29 @@ class MovementComponent: GKComponent {
 
     // MARK: Physics Movement
 
+    private func drift(dx: CGFloat) {
+        guard let entity = entity as? RecordEntity, let scene = entity.node.scene else {
+            return
+        }
+
+        let nodeRadius = style.defaultNodeSize.width / 2
+        entity.physicsBody.velocity.dx = dx
+        entity.physicsBody.velocity.dy = clamp(entity.physicsBody.velocity.dy, min: style.themeDyRange.lowerBound, max: style.themeDyRange.upperBound)
+
+        if entity.position.x > scene.frame.width + nodeRadius {
+            entity.set(position: CGPoint(x: -nodeRadius, y: entity.position.y))
+        }
+        if entity.position.y < -nodeRadius {
+            entity.set(position: CGPoint(x: entity.position.x, y: scene.frame.height + nodeRadius))
+        }
+        if entity.position.y > scene.frame.height + nodeRadius {
+            entity.set(position: CGPoint(x: entity.position.x, y: -nodeRadius))
+        }
+    }
+
     /// Applies appropriate physics that moves the entity to the appropriate higher level before entering next state and setting its bitMasks
     private func move(to level: Int) {
-        guard let entity = entity as? RecordEntity,
-            let cluster = entity.cluster,
-            let referenceNode = cluster.layerForLevel[level]?.renderComponent.layerNode else {
+        guard let entity = entity as? RecordEntity, let cluster = entity.cluster, let referenceNode = cluster.layerForLevel[level]?.renderComponent.layerNode else {
             return
         }
 

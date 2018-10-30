@@ -18,6 +18,8 @@ class MainScene: SKScene {
         static let maximumUpdateDeltaTime = 1.0 / 60.0
         static let windowDisplayOffset: CGFloat = 30
         static let maximumNumberOfClusters = 16
+        static let themesPerColumn = 4
+        static let themeColumnsPerScreen = 4
     }
 
     private struct Keys {
@@ -35,8 +37,9 @@ class MainScene: SKScene {
 
         setupHandlers()
         setupSystemGestures()
-        addPhysics()
-        addEntitiesToScene()
+        setupPhysics()
+        setupThemes()
+        setupEntities()
     }
 
     override func update(_ currentTime: TimeInterval) {
@@ -112,22 +115,44 @@ class MainScene: SKScene {
         view.addGestureRecognizer(nsPanGesture)
     }
 
-    private func addPhysics() {
+    private func setupPhysics() {
         physicsWorld.gravity = .zero
     }
 
-    private func addEntitiesToScene() {
-        let entities = EntityManager.instance.allEntities()
+    private func setupThemes() {
+        guard let scene = scene else {
+            return
+        }
+
+        let themes = EntityManager.instance.entities(of: .theme)
+
+        for theme in themes {
+            let dx = CGFloat.random(in: style.themeDxRange)
+            let x = CGFloat.random(in: 0 ... scene.frame.width)
+            let y = CGFloat.random(in: 0 ... scene.frame.height)
+            theme.set(state: .drift(dx: dx))
+
+            if let recordNode = theme.component(ofType: RecordRenderComponent.self)?.recordNode {
+                recordNode.position = CGPoint(x: x, y: y)
+                addChild(recordNode)
+                addGestures(to: recordNode)
+            }
+        }
+    }
+
+    private func setupEntities() {
+        let entityTypes: [RecordType] = [.school, .event, .organization]
+        let entities = entityTypes.reduce([]) { $0 + EntityManager.instance.entities(of: $1) }
         let spacing = frame.width / CGFloat(entities.count / 2)
-        let nodeOffset = style.defaultNodePhysicsBodyRadius / 2
+        let nodeRadius = style.defaultNodeSize.width / 2
 
         for (index, entity) in entities.enumerated() {
             let x = spacing * CGFloat(index / 2)
-            let y = index.isEven ? -nodeOffset : frame.height + nodeOffset
+            let y = index.isEven ? -nodeRadius : frame.height + nodeRadius
             entity.initialPosition = CGPoint(x: x, y: y)
             if let recordNode = entity.component(ofType: RecordRenderComponent.self)?.recordNode {
-                recordNode.position = entity.initialPosition
-                recordNode.zPosition = 1
+                recordNode.position = CGPoint(x: x, y: y)
+                recordNode.alpha = 0
                 addChild(recordNode)
                 addGestures(to: recordNode)
             }
@@ -207,33 +232,24 @@ class MainScene: SKScene {
             } else {
                 entity.cluster?.reset()
             }
-        } else {
-            // If entity was part of a cluster, seek its selected entity
-            if let cluster = entity.cluster {
-                // Update the entity given the cluster current selected entity
-                if let level = cluster.level(for: entity) {
-                    entity.hasCollidedWithLayer = false
-                    entity.set(level: level)
-                    entity.set(state: .seekLevel(level))
+        } else if let cluster = entity.cluster {
+            // Update the entity given the cluster current selected entity
+            if let level = cluster.level(for: entity) {
+                entity.hasCollidedWithLayer = false
+                entity.set(level: level)
+                entity.set(state: .seekLevel(level))
 
-                    // If entity was dragged outside of its cluster, duplicate entity with its own cluster
-                    if !cluster.intersects(entity) && frame(contains: entity), availableClusterID() != nil {
-                        let copy = EntityManager.instance.createCopy(of: entity, level: level)
-                        let newCluster = createCluster(with: copy)
-                        newCluster?.select(copy)
-                    }
-                } else {
-                    EntityManager.instance.release(entity)
+                // If entity was dragged outside of its cluster, duplicate entity with its own cluster
+                if !cluster.intersects(entity) && frame(contains: entity), availableClusterID() != nil {
+                    let copy = EntityManager.instance.createCopy(of: entity, level: level)
+                    let newCluster = createCluster(with: copy)
+                    newCluster?.select(copy)
                 }
             } else {
-                // Create a new cluster from the entity if within application frame
-                if frame(contains: entity) {
-                    let newCluster = createCluster(with: entity)
-                    newCluster?.select(entity)
-                } else {
-                    EntityManager.instance.release(entity)
-                }
+                EntityManager.instance.release(entity)
             }
+        } else {
+            EntityManager.instance.release(entity)
         }
     }
 
@@ -310,9 +326,9 @@ class MainScene: SKScene {
         }
 
         switch entity.state {
-        case .static:
+        case .static, .drift:
             cluster.select(entity)
-        case .seekEntity(_):
+        case .seekEntity:
             if entity.hasCollidedWithLayer {
                 cluster.select(entity)
             }

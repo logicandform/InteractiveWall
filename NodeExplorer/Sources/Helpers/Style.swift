@@ -43,6 +43,12 @@ final class Style {
     let levelThreeNodeSize = CGSize(width: levelThreeNodeRadius * 2, height: levelThreeNodeRadius * 2)
     let levelFourNodeSize = CGSize(width: levelFourNodeRadius * 2, height: levelFourNodeRadius * 2)
 
+
+    // MARK: Drifting Theme Properties
+
+    let themeDxRange = ClosedRange<CGFloat>(uncheckedBounds: (20, 100))
+    let themeDyRange = ClosedRange<CGFloat>(uncheckedBounds: (-20, 20))
+
     // Animations
     let fadeAnimationDuration = 1.0
     let moveAnimationDuration = 1.2

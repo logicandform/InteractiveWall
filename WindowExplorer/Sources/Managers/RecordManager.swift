@@ -46,11 +46,6 @@ final class RecordManager {
         return recordsForType[type]?[id]
     }
 
-    /// Returns an array of records from the given ids, removing duplicates
-    func records(for type: RecordType, ids: [Int]) -> [Record] {
-        return Set(ids).compactMap { recordsForType[type]?[$0] }
-    }
-
     func records(for type: RecordType) -> [Record] {
         guard let recordsForID = recordsForType[type] else {
             return []
@@ -86,5 +81,10 @@ final class RecordManager {
         record.relatedRecordsForType[.theme] = records(for: .theme, ids: record.relatedThemeIDs)
         record.relatedRecordsForType[.collection] = records(for: .collection, ids: record.relatedCollectionIDs)
         record.relatedRecordsForType[.individual] = records(for: .individual, ids: record.relatedIndividualIDs)
+    }
+
+    /// Returns an array of records from the given ids, removing duplicates
+    private func records(for type: RecordType, ids: [Int]) -> [Record] {
+        return Set(ids).compactMap { recordsForType[type]?[$0] }
     }
 }
