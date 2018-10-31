@@ -9,11 +9,12 @@ final class Style {
 
     // MARK: General Style
 
-    let darkBackground = NSColor(srgbRed: 35/255, green: 38/255, blue: 40/255, alpha: 0.93)
-    let dragAreaBackground = NSColor(srgbRed: 35/255, green: 38/255, blue: 40/255, alpha: 0.93)
+    let darkBackground = NSColor(srgbRed: 30/255, green: 33/255, blue: 35/255, alpha: 0.98)
+    let darkBackgroundOpaque = NSColor(srgbRed: 17/255, green: 17/255, blue: 17/255, alpha: 1)
+    let dragAreaBackground = NSColor(srgbRed: 30/255, green: 33/255, blue: 35/255, alpha: 0.98)
     let menuTintColor = NSColor(calibratedRed: 0, green: 0.90, blue: 0.70, alpha: 1)
     let menuSelectedColor = NSColor.darkGray
-    let touchIndicatorColor = NSColor(calibratedRed: 0, green: 200/255, blue: 1, alpha: 1)
+    let touchIndicatorColor = NSColor.gray
     let zoomControlColor = NSColor(white: 0.25, alpha: 0.8)
     let defaultBorderColor = NSColor(white: 0.5, alpha: 1)
     let defaultBorderWidth: CGFloat = 1
@@ -77,7 +78,7 @@ final class Style {
     // MARK: Text Attributes
 
     var windowTitleAttributes: [NSAttributedString.Key: Any] {
-        let font = NSFont(name: "Soleil", size: 16) ?? NSFont.systemFont(ofSize: 16)
+        let font = NSFont(name: "SoleilLt", size: 16) ?? NSFont.systemFont(ofSize: 16)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byTruncatingTail
 
@@ -88,7 +89,7 @@ final class Style {
     }
 
     var relatedItemsTitleAttributes: [NSAttributedString.Key: Any] {
-        let font = NSFont(name: "Soleil", size: 13) ?? NSFont.systemFont(ofSize: 13)
+        let font = NSFont(name: "SoleilLt", size: 13) ?? NSFont.systemFont(ofSize: 13)
 
         return [.font: font,
                 .foregroundColor: NSColor.white,
@@ -97,7 +98,7 @@ final class Style {
     }
 
     var mediaItemTitleAttributes: [NSAttributedString.Key: Any] {
-        let font = NSFont(name: "Soleil", size: 13) ?? NSFont.systemFont(ofSize: 13)
+        let font = NSFont(name: "SoleilLt", size: 13) ?? NSFont.systemFont(ofSize: 13)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byTruncatingTail
 
@@ -108,7 +109,7 @@ final class Style {
     }
 
     var relatedItemViewTitleAttributes: [NSAttributedString.Key: Any] {
-        let font = NSFont(name: "Soleil-Bold", size: 11) ?? NSFont.systemFont(ofSize: 11)
+        let font = NSFont(name: "Soleil", size: 12) ?? NSFont.systemFont(ofSize: 12)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byTruncatingTail
 
@@ -119,9 +120,9 @@ final class Style {
     }
 
     var relatedItemViewDescriptionAttributes: [NSAttributedString.Key: Any] {
-        let font = NSFont(name: "Soleil", size: 10) ?? NSFont.systemFont(ofSize: 10)
+        let font = NSFont(name: "SoleilLt", size: 10) ?? NSFont.systemFont(ofSize: 10)
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineBreakMode = .byCharWrapping
+        paragraphStyle.lineBreakMode = .byWordWrapping
         paragraphStyle.paragraphSpacing = 0
         paragraphStyle.paragraphSpacingBefore = 0
 
@@ -137,7 +138,7 @@ final class Style {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 0
         paragraphStyle.maximumLineHeight = fontSize + 5
-        let font = NSFont(name: "Soleil", size: fontSize) ?? NSFont.systemFont(ofSize: fontSize)
+        let font = NSFont(name: "SoleilLt", size: fontSize) ?? NSFont.systemFont(ofSize: fontSize)
         return [.paragraphStyle: paragraphStyle,
                 .font: font,
                 .foregroundColor: NSColor.white,
@@ -149,7 +150,7 @@ final class Style {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 0
         paragraphStyle.paragraphSpacingBefore = 0
-        let font = NSFont(name: "Soleil", size: 14) ?? NSFont.systemFont(ofSize: 14)
+        let font = NSFont(name: "SoleilLt", size: 14) ?? NSFont.systemFont(ofSize: 14)
         return [.paragraphStyle: paragraphStyle,
                 .font: font,
                 .foregroundColor: NSColor.white,
@@ -163,7 +164,7 @@ final class Style {
         paragraphStyle.lineBreakMode = .byWordWrapping
         paragraphStyle.paragraphSpacing = 0
         paragraphStyle.paragraphSpacingBefore = 20
-        let font = NSFont(name: "Soleil", size: 12) ?? NSFont.systemFont(ofSize: 12)
+        let font = NSFont(name: "SoleilLt", size: 12) ?? NSFont.systemFont(ofSize: 12)
         return [.paragraphStyle: paragraphStyle,
                 .font: font,
                 .foregroundColor: NSColor.white,
@@ -178,7 +179,7 @@ final class Style {
         paragraphStyle.paragraphSpacing = 8
         paragraphStyle.maximumLineHeight = fontSize + 5
         paragraphStyle.lineBreakMode = .byWordWrapping
-        let font = NSFont(name: "Soleil", size: fontSize) ?? NSFont.systemFont(ofSize: fontSize)
+        let font = NSFont(name: "SoleilLt", size: fontSize) ?? NSFont.systemFont(ofSize: fontSize)
         return [.paragraphStyle: paragraphStyle,
                 .font: font,
                 .foregroundColor: NSColor.white,
@@ -192,7 +193,7 @@ final class Style {
         paragraphStyle.lineSpacing = 0
         paragraphStyle.lineBreakMode = .byWordWrapping
         paragraphStyle.paragraphSpacing = 0
-        let font = NSFont(name: "Soleil", size: fontSize) ?? NSFont.systemFont(ofSize: fontSize)
+        let font = NSFont(name: "SoleilLt", size: fontSize) ?? NSFont.systemFont(ofSize: fontSize)
         return [.paragraphStyle: paragraphStyle,
                 .font: font,
                 .foregroundColor: NSColor.white,

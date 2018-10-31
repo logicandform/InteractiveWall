@@ -82,10 +82,10 @@ class RecordAnnotationView: MKAnnotationView, AnimatableAnnotation {
 
     private func performGrow() {
         CATransaction.begin()
+        CATransaction.setAnimationDuration(Constants.animationDuration)
         CATransaction.setCompletionBlock { [weak self] in
             self?.finishedGrowing()
         }
-        CATransaction.setAnimationDuration(Constants.animationDuration)
         CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut))
         for (index, ring) in rings.enumerated() {
             let scale = 1 + CGFloat(index + 1) * 0.2

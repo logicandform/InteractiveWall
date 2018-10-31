@@ -78,13 +78,20 @@ final class RecordManager {
         record.relatedRecordsForType[.artifact] = records(for: .artifact, ids: record.relatedArtifactIDs)
         record.relatedRecordsForType[.organization] = records(for: .organization, ids: record.relatedOrganizationIDs)
         record.relatedRecordsForType[.event] = records(for: .event, ids: record.relatedEventIDs)
-        record.relatedRecordsForType[.theme] = records(for: .theme, ids: record.relatedThemeIDs)
         record.relatedRecordsForType[.collection] = records(for: .collection, ids: record.relatedCollectionIDs)
         record.relatedRecordsForType[.individual] = records(for: .individual, ids: record.relatedIndividualIDs)
+
+        let themes = records(for: .theme, ids: record.relatedThemeIDs)
+        record.relatedRecordsForType[.theme] = themes
+
+        // Apply the inverse relationship for theme records
+        for theme in themes {
+            theme.relate(to: record)
+        }
     }
 
     /// Returns an array of records from the given ids, removing duplicates
-    private func records(for type: RecordType, ids: [Int]) -> [Record] {
-        return Set(ids).compactMap { recordsForType[type]?[$0] }
+    private func records(for type: RecordType, ids: [Int]) -> Set<Record> {
+        return Set(ids.compactMap { recordsForType[type]?[$0] })
     }
 }

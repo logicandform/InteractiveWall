@@ -52,9 +52,9 @@ enum RecordType: String {
         case .school:
             return NSImage(named: "school-icon")!
         case .theme:
-            return NSImage(named: "topic-icon")!
+            return NSImage(named: "theme-icon")!
 //        case .collection:
-//            return NSImage(named: "collection-icon")!
+//            return NSImage(named: "topic-icon")!
 //        case .individual:
 //            return NSImage(named: "individual-icon")!
         }

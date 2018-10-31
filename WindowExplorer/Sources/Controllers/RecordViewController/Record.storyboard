@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="7oi-8d-QFD">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -66,7 +65,7 @@
                                                     <constraint firstAttribute="height" constant="20" id="Abr-UL-hcu"/>
                                                     <constraint firstAttribute="width" constant="20" id="idE-yE-8Rf"/>
                                                 </constraints>
-                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="close button" id="bLV-Ya-WN3"/>
+                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="close-icon" id="bLV-Ya-WN3"/>
                                             </imageView>
                                         </subviews>
                                         <constraints>
@@ -142,7 +141,7 @@
                                                             <constraint firstAttribute="height" constant="20" id="WQJ-wJ-xpb"/>
                                                             <constraint firstAttribute="width" constant="20" id="bhB-6t-csa"/>
                                                         </constraints>
-                                                        <imageCell key="cell" enabled="NO" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="close button" id="P4n-fY-qum"/>
+                                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="close-icon" id="P4n-fY-qum"/>
                                                     </imageView>
                                                 </subviews>
                                                 <constraints>
@@ -262,7 +261,7 @@
                                                     <constraint firstAttribute="height" constant="20" id="Kcm-4v-8zt"/>
                                                     <constraint firstAttribute="width" constant="20" id="SxH-HT-MfA"/>
                                                 </constraints>
-                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="down_arrow_indicator" id="u2l-fZ-VH0"/>
+                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="down-arrow-icon" id="u2l-fZ-VH0"/>
                                             </imageView>
                                         </subviews>
                                         <constraints>
@@ -318,7 +317,7 @@
                                             <constraint firstAttribute="height" constant="30" id="kZg-Qm-H9m"/>
                                             <constraint firstAttribute="width" constant="30" id="o9G-Xk-LdZ"/>
                                         </constraints>
-                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="expand_arrow" id="dRL-fG-QQd"/>
+                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="expand-arrow-icon" id="dRL-fG-QQd"/>
                                     </imageView>
                                 </subviews>
                                 <constraints>
@@ -390,9 +389,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="close button" width="15" height="15"/>
-        <image name="down_arrow_indicator" width="31" height="11"/>
-        <image name="expand_arrow" width="22" height="24"/>
-        <image name="plus-icon" width="40" height="40"/>
+        <image name="close-icon" width="20" height="20"/>
+        <image name="down-arrow-icon" width="31" height="11"/>
+        <image name="expand-arrow-icon" width="22" height="24"/>
+        <image name="plus-icon" width="20" height="20"/>
     </resources>
 </document>

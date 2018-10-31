@@ -97,7 +97,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
         windowDragAreaHighlight.layer?.backgroundColor = record.type.color.cgColor
         expandImageView.wantsLayer = true
         expandImageView.layer?.cornerRadius = Constants.expandImageViewCornerRadius
-        expandImageView.layer?.backgroundColor = style.darkBackground.cgColor
+        expandImageView.layer?.backgroundColor = style.darkBackground.withAlphaComponent(0.8).cgColor
         expandImageView.isHidden = record.media.isEmpty
         placeHolderImage.isHidden = !record.media.isEmpty
     }
@@ -113,7 +113,7 @@ class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayo
     private func setupMediaView() {
         mediaView.register(MediaItemView.self, forItemWithIdentifier: MediaItemView.identifier)
         mediaView.frame = NSRect(origin: mediaView.frame.origin, size: NSSize(width: CGFloat(record.media.count) * mediaCollectionClipView.frame.size.width, height: mediaView.frame.height))
-        placeHolderImage.image = record.type.placeholder
+        placeHolderImage.image = record.type.placeholder.tinted(with: record.type.color)
         pageControl.color = record.type.color
         pageControl.unselectedColor = style.defaultBorderColor
         pageControl.indicatorSize = Constants.pageControlIndicatorSize

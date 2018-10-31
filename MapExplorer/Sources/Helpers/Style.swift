@@ -9,8 +9,8 @@ final class Style {
 
     // MARK: General Properties
 
-    let darkBackground = NSColor.black.withAlphaComponent(0.85)
-    let darkBackgroundOpaque = NSColor.black
+    let darkBackground = NSColor(srgbRed: 30/255, green: 33/255, blue: 35/255, alpha: 0.98)
+    let darkBackgroundOpaque = NSColor(srgbRed: 17/255, green: 17/255, blue: 17/255, alpha: 1)
     let defaultBorderColor = NSColor(white: 0.5, alpha: 1)
     let defaultBorderWidth: CGFloat = 1
     let windowBorderZPosition: CGFloat = 10

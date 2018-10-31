@@ -103,7 +103,7 @@ class RecordNode: SKSpriteNode {
         let texture = SKTexture(image: record.type.placeholder.tinted(with: record.type.color))
         iconNode = SKSpriteNode(texture: texture)
         iconNode.alpha = 0
-        iconNode.size = CGSize(width: frame.width/2, height: frame.height/2)
+        iconNode.size = frame.size
         addChild(iconNode)
     }
 

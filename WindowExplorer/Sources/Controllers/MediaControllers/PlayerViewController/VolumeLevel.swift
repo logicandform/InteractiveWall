@@ -25,7 +25,7 @@ enum VolumeLevel {
     var image: NSImage? {
         switch self {
         case .mute:
-            return NSImage(named: "sound-off-icon")
+            return NSImage(named: "sound-0-icon")
         case .low:
             return NSImage(named: "sound-1-icon")
         case .medium:

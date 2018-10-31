@@ -37,7 +37,7 @@ class RelatedItemView: NSCollectionViewItem {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        mediaImageView.layer?.backgroundColor = .black
+        mediaImageView.layer?.backgroundColor = style.darkBackgroundOpaque.cgColor
     }
 
     override func prepareForReuse() {
@@ -64,7 +64,7 @@ class RelatedItemView: NSCollectionViewItem {
     // MARK: Helpers
 
     func load(_ record: Record) {
-        let placeholder = record.type.placeholder
+        let placeholder = record.type.placeholder.tinted(with: record.type.color)
 
         if let media = record.media.first {
             CachingNetwork.getThumbnail(for: media) { [weak self] thumbnail in

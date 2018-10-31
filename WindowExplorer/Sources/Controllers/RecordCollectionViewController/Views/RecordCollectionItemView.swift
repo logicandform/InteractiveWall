@@ -58,8 +58,8 @@ class RecordCollectionItemView: NSCollectionViewItem {
         }
 
         titleTextField.attributedStringValue = NSAttributedString(string: record.shortestTitle(), attributes: style.recordSmallHeaderAttributes)
+        let placeholder = record.type.placeholder.tinted(with: record.type.color)
 
-        let placeholder = record.type.placeholder
         if let media = record.media.first {
             CachingNetwork.getThumbnail(for: media) { [weak self] thumbnail in
                 if let thumbnail = thumbnail {

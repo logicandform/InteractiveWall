@@ -38,23 +38,15 @@ class RecordTypeSelectionView: NSView {
         let filterTypesForRecord = availableTypes.prefix(Constants.maxFilterTypesPerRecord)
 
         filterTypesForRecord.forEach { type in
-            // Use two views to increase hit area of image while image is centered
-            let view = NSView()
             let image = NSView()
-            view.addSubview(image)
             image.wantsLayer = true
             image.layer?.contents = type.placeholder?.tinted(with: style.defaultBorderColor)
-            stackview.addView(view, in: .leading)
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.heightAnchor.constraint(equalTo: stackview.heightAnchor).isActive = true
-            view.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
+            stackview.addView(image, in: .leading)
             image.translatesAutoresizingMaskIntoConstraints = false
-            image.widthAnchor.constraint(equalToConstant: Constants.imageHeight).isActive = true
-            image.heightAnchor.constraint(equalToConstant: Constants.imageHeight).isActive = true
-            image.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-            image.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+            image.heightAnchor.constraint(equalTo: stackview.heightAnchor).isActive = true
+            image.widthAnchor.constraint(equalTo: image.heightAnchor).isActive = true
             imageForType[type] = image
-            addGesture(to: view, in: manager, for: type)
+            addGesture(to: image, in: manager, for: type)
         }
     }
 
@@ -81,7 +73,7 @@ class RecordTypeSelectionView: NSView {
             selectedType = .all
         } else if let image = imageForType[type] {
             selectedType = type
-            image.transition(to: type.placeholder, duration: Constants.imageTransitionDuration)
+            image.transition(to: type.placeholder?.tinted(with: type.color), duration: Constants.imageTransitionDuration)
         }
     }
 

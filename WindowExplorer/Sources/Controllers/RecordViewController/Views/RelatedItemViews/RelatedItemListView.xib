@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -30,7 +29,10 @@
                             </constraints>
                         </customView>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oFi-RG-9Vw">
-                            <rect key="frame" x="78" y="52" width="214" height="18"/>
+                            <rect key="frame" x="78" y="52" width="214" height="22"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="22" id="qM5-dA-ULR"/>
+                            </constraints>
                             <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" usesSingleLineMode="YES" id="DZc-6H-bXz">
                                 <font key="font" size="11" name="Soleil-Bold"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -70,7 +72,7 @@
                         <constraint firstAttribute="bottom" secondItem="PLs-By-PJe" secondAttribute="bottom" constant="4" id="7dL-HV-4hW"/>
                         <constraint firstAttribute="bottom" secondItem="GPP-LU-OnZ" secondAttribute="bottom" constant="10" id="BzF-VA-i9M"/>
                         <constraint firstItem="PLs-By-PJe" firstAttribute="leading" secondItem="oFi-RG-9Vw" secondAttribute="leading" constant="-4" id="ET4-Jd-G7p"/>
-                        <constraint firstItem="GPP-LU-OnZ" firstAttribute="top" secondItem="oFi-RG-9Vw" secondAttribute="top" id="JKp-4t-hHD"/>
+                        <constraint firstItem="GPP-LU-OnZ" firstAttribute="top" secondItem="oFi-RG-9Vw" secondAttribute="top" constant="4" id="JKp-4t-hHD"/>
                         <constraint firstItem="oFi-RG-9Vw" firstAttribute="leading" secondItem="GPP-LU-OnZ" secondAttribute="trailing" constant="10" id="QqD-jt-rK6"/>
                         <constraint firstItem="GPP-LU-OnZ" firstAttribute="top" secondItem="YQD-s2-RG2" secondAttribute="top" constant="10" id="SlW-57-NqM"/>
                         <constraint firstItem="GPP-LU-OnZ" firstAttribute="leading" secondItem="YQD-s2-RG2" secondAttribute="leading" constant="10" id="cpg-vy-ORO"/>

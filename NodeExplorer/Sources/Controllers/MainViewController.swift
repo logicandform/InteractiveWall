@@ -80,7 +80,7 @@ class MainViewController: NSViewController, NodeGestureResponder {
 
     private func makeMainScene() -> MainScene {
         let mainScene = MainScene(size: CGSize(width: mainView.bounds.width, height: mainView.bounds.height))
-        mainScene.backgroundColor = style.darkBackground
+        mainScene.backgroundColor = style.darkBackgroundOpaque
         mainScene.scaleMode = .aspectFill
         return mainScene
     }

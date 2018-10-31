@@ -87,6 +87,6 @@ enum RecordFilterType {
     }
 
     static var recordFilterValues: [RecordFilterType] {
-        return [.image, .video, .school, .event, .organization, .artifact, .individual, .collection]
+        return [.image, .video, .collection, .school, .event, .organization, .artifact, .individual, .theme]
     }
 }

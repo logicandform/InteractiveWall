@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="1Ij-Lj-j0K">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
         <plugIn identifier="com.apple.pdfkit.ibplugin" version="14313.18"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -27,7 +26,7 @@
                                                     <constraint firstAttribute="width" constant="20" id="duO-Uw-fEV"/>
                                                     <constraint firstAttribute="height" constant="20" id="k8r-rg-Cm2"/>
                                                 </constraints>
-                                                <imageCell key="cell" enabled="NO" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="close button" id="gp8-sK-WJC"/>
+                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="close-icon" id="gp8-sK-WJC"/>
                                                 <connections>
                                                     <action selector="closeButtonTapped:" target="1Ij-Lj-j0K" id="r5d-dD-9wv"/>
                                                 </connections>
@@ -247,6 +246,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="close button" width="15" height="15"/>
+        <image name="close-icon" width="20" height="20"/>
     </resources>
 </document>

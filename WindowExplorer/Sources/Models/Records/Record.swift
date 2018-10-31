@@ -23,7 +23,7 @@ class Record: Hashable, SearchItemDisplayable {
     let relatedThemeIDs: [Int]
     let relatedCollectionIDs: [Int]
     let relatedIndividualIDs: [Int]
-    var relatedRecordsForType = [RecordType: [Record]]()
+    var relatedRecordsForType = [RecordType: Set<Record>]()
     private lazy var priority = PriorityOrder.priority(for: self)
 
     var relatedRecords: [Record] {
@@ -109,7 +109,7 @@ class Record: Hashable, SearchItemDisplayable {
 
     func relatedRecords(type: RecordType, prioritized: Bool = true) -> [Record] {
         let records = relatedRecordsForType[type] ?? []
-        return prioritized ? records.sorted { $0.priority > $1.priority } : records
+        return prioritized ? records.sorted { $0.priority > $1.priority } : Array(records)
     }
 
     func relatedRecords(filterType type: RecordFilterType) -> [Record] {
@@ -126,6 +126,14 @@ class Record: Hashable, SearchItemDisplayable {
             return relatedRecords.filter { $0.isRelatedVideoArtifact() }
         default:
             return []
+        }
+    }
+
+    func relate(to record: Record) {
+        if relatedRecordsForType[record.type] == nil {
+            relatedRecordsForType[record.type] = [record]
+        } else {
+            relatedRecordsForType[record.type]?.insert(record)
         }
     }
 

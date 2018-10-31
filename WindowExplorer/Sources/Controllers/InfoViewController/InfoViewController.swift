@@ -132,12 +132,12 @@ class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollec
         toggleLeftButton.layer?.cornerRadius = toggleLeftButton.frame.width / 2
         toggleLeftButton.layer?.backgroundColor = style.defaultBorderColor.cgColor
         let leftButtonImage = NSImage(named: "left-arrow-icon")?.tinted(with: style.darkBackground)
-        toggleLeftButton.set(leftButtonImage, scaling: .center)
+        toggleLeftButton.set(leftButtonImage)
         toggleRightButton.wantsLayer = true
         toggleRightButton.layer?.cornerRadius = toggleRightButton.frame.width / 2
         toggleRightButton.layer?.backgroundColor = style.defaultBorderColor.cgColor
         let rightButtonImage = NSImage(named: "right-arrow-icon")?.tinted(with: style.darkBackground)
-        toggleRightButton.set(rightButtonImage, scaling: .center)
+        toggleRightButton.set(rightButtonImage)
     }
 
     private func setupPageControl() {

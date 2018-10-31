@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="Br5-Pb-O0I">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,7 +25,7 @@
                                                     <constraint firstAttribute="width" constant="20" id="uIB-FX-MAY"/>
                                                     <constraint firstAttribute="height" constant="20" id="vyh-gs-g9e"/>
                                                 </constraints>
-                                                <imageCell key="cell" enabled="NO" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="close button" id="PfS-3I-pQQ"/>
+                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="close-icon" id="PfS-3I-pQQ"/>
                                             </imageView>
                                         </subviews>
                                         <constraints>
@@ -108,7 +107,7 @@
                                             <constraint firstAttribute="width" constant="20" id="XJs-UI-xX0"/>
                                             <constraint firstAttribute="height" constant="20" id="bQf-Ob-iab"/>
                                         </constraints>
-                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="down_arrow_indicator" id="kqh-4K-WKl"/>
+                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="down-arrow-icon" id="kqh-4K-WKl"/>
                                     </imageView>
                                 </subviews>
                                 <constraints>
@@ -148,7 +147,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="close button" width="15" height="15"/>
-        <image name="down_arrow_indicator" width="31" height="11"/>
+        <image name="close-icon" width="20" height="20"/>
+        <image name="down-arrow-icon" width="31" height="11"/>
     </resources>
 </document>

@@ -7,10 +7,7 @@ import AppKit
 final class Style {
 
     // Generic
-    let darkBackground = NSColor.black.withAlphaComponent(0.85)
-    let selectedColor = NSColor(calibratedRed: 0, green: 200/255, blue: 1, alpha: 1)
-    let unselectedRecordIcon = NSColor.gray
-    let dragAreaBackground = NSColor.black.withAlphaComponent(0.85)
+    let darkBackgroundOpaque = NSColor(srgbRed: 17/255, green: 17/255, blue: 17/255, alpha: 1)
 
     // Records
     let artifactColor = NSColor(srgbRed: 128/255, green: 1/255, blue: 206/255, alpha: 1)
