@@ -13,29 +13,6 @@ enum MenuButtonType {
     case search
     case accessibility
 
-    var image: NSImage {
-        switch self {
-        case .split:
-            return NSImage(named: "split-icon")!
-        case .map:
-            return NSImage(named: "map-icon")!
-        case .timeline:
-            return NSImage(named: "timeline-icon")!
-        case .nodeNetwork:
-            return NSImage(named: "node-icon")!
-        case .information:
-            return NSImage(named: "info-icon")!
-        case .search:
-            return NSImage(named: "browse-icon")!
-        case .accessibility:
-            return NSImage(named: "drop-icon")!
-        }
-    }
-
-    var selectedImage: NSImage? {
-        return image.tinted(with: style.menuTintColor)
-    }
-
     var applicationType: ApplicationType? {
         switch self {
         case .map:
@@ -66,6 +43,35 @@ enum MenuButtonType {
             return "Browse"
         case .accessibility:
             return "Drop"
+        }
+    }
+
+    func image(selected: Bool, side: MenuSide) -> NSImage {
+        let color = selected ? style.menuTintColor : style.menuUnselectedColor
+
+        switch self {
+        case .split:
+            if selected {
+                switch side {
+                case .left:
+                    return NSImage(named: "split-left")!.tinted(with: color)
+                case .right:
+                    return NSImage(named: "split-right")!.tinted(with: color)
+                }
+            }
+            return NSImage(named: "split-icon")!.tinted(with: color)
+        case .map:
+            return NSImage(named: "map-icon")!.tinted(with: color)
+        case .timeline:
+            return NSImage(named: "timeline-icon")!.tinted(with: color)
+        case .nodeNetwork:
+            return NSImage(named: "node-icon")!.tinted(with: color)
+        case .information:
+            return NSImage(named: "info-icon")!.tinted(with: color)
+        case .search:
+            return NSImage(named: "browse-icon")!.tinted(with: color)
+        case .accessibility:
+            return NSImage(named: "drop-icon")!.tinted(with: color)
         }
     }
 

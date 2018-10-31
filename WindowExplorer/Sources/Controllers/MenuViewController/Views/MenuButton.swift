@@ -13,6 +13,7 @@ class MenuButton: NSView {
     @IBOutlet weak var titleField: NSTextField!
     @IBOutlet weak var lockIcon: NSImageView!
 
+    private var side = MenuSide.left
     private(set) var type: MenuButtonType!
     private(set) var selected = false
     private(set) var locked = false
@@ -30,6 +31,7 @@ class MenuButton: NSView {
 
     convenience init(frame: CGRect, side: MenuSide) {
         self.init(frame: frame)
+        self.side = side
         let nib = side == .left ? MenuButton.leftMenuButton : MenuButton.rightMenuButton
         setup(nib: nib)
     }
@@ -63,7 +65,7 @@ class MenuButton: NSView {
         }
 
         self.type = type
-        buttonView.layer?.contents = type.image
+        buttonView.layer?.contents = type.image(selected: false, side: side)
         updateTitle()
     }
 
@@ -73,8 +75,7 @@ class MenuButton: NSView {
         }
 
         self.selected = selected
-        let image = selected ? type.selectedImage : type.image
-        buttonView.transition(to: image, duration: Constants.imageTransitionDuration)
+        buttonView.layer?.contents = type.image(selected: selected, side: side)
         updateTitle()
     }
 
@@ -98,7 +99,7 @@ class MenuButton: NSView {
     private func updateTitle() {
         let title = type.title(selected: selected, locked: locked)
         var attributes = style.windowTitleAttributes
-        attributes[.foregroundColor] = selected ? style.menuTintColor : .white
+        attributes[.foregroundColor] = selected ? style.menuTintColor : style.menuUnselectedColor
         titleField.attributedStringValue = NSAttributedString(string: title, attributes: attributes)
     }
 }

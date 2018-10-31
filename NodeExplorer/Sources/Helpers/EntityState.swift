@@ -71,6 +71,6 @@ enum EntityState: Equatable {
 
     /// A property that reduces the body’s rotational velocity.
     var angularDamping: CGFloat {
-        return 0
+        return 0.5
     }
 }
