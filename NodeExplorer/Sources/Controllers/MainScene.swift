@@ -5,21 +5,18 @@ import GameplayKit
 import MacGestures
 
 
-class MainScene: SKScene {
+class MainScene: SKScene, SKPhysicsContactDelegate {
 
     var gestureManager: NodeGestureManager!
     private var clusterForID = [Int: NodeCluster]()
-    private var lastUpdateTimeInterval = 0.0
     private var selectedEntity: RecordEntity?
     private var handlerForApp = [Int: NodeHandler]()
     private var appForNode = [RecordNode: Int]()
 
     private struct Constants {
-        static let maximumUpdateDeltaTime = 1.0 / 60.0
         static let windowDisplayOffset: CGFloat = 30
-        static let maximumNumberOfClusters = 16
-        static let themesPerColumn = 4
-        static let themeColumnsPerScreen = 4
+        static let maximumNumberOfClusters = 18
+        static let draggingImpulseFactor: CGFloat = 4
     }
 
     private struct Keys {
@@ -45,13 +42,9 @@ class MainScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         super.update(currentTime)
 
-        var deltaTime = currentTime - lastUpdateTimeInterval
-        deltaTime = deltaTime > Constants.maximumUpdateDeltaTime ? Constants.maximumUpdateDeltaTime : deltaTime
-        lastUpdateTimeInterval = currentTime
-
-        EntityManager.instance.update(deltaTime)
+        EntityManager.instance.update(currentTime)
         for cluster in clusterForID.values {
-            cluster.update(deltaTime)
+            cluster.update(currentTime)
         }
 
         for node in children {
@@ -69,7 +62,7 @@ class MainScene: SKScene {
             self?.handleTapGesture(gesture)
         }
 
-        let panGesture = PanGestureRecognizer()
+        let panGesture = PanGestureRecognizer(recognizedThreshold: 0)
         gestureManager.add(panGesture, to: node)
         panGesture.gestureUpdated = { [weak self] gesture in
             self?.handlePanGesture(gesture)
@@ -117,6 +110,7 @@ class MainScene: SKScene {
 
     private func setupPhysics() {
         physicsWorld.gravity = .zero
+        physicsWorld.contactDelegate = self
     }
 
     private func setupThemes() {
@@ -185,11 +179,7 @@ class MainScene: SKScene {
             return
         }
 
-        let deltaX = pan.delta.dx
-        let deltaY = pan.delta.dy
-        let newX = node.position.x + deltaX
-        let newY = node.position.y + deltaY
-        let position = CGPoint(x: newX, y: newY)
+        let position = node.position + pan.delta
 
         switch pan.state {
         case .recognized:
@@ -199,6 +189,7 @@ class MainScene: SKScene {
                 handlerForApp[app]?.startActivity()
             }
             entity.set(state: .dragging)
+            entity.dragVelocity = pan.delta
             entity.set(position: position)
             if entity.isSelected {
                 entity.cluster?.set(position: position)
@@ -207,10 +198,12 @@ class MainScene: SKScene {
             }
         case .momentum:
             entity.set(position: position)
+            entity.dragVelocity = pan.delta
             if entity.isSelected {
                 entity.cluster?.set(position: position)
             }
         case .ended:
+            entity.dragVelocity = nil
             if let app = appForNode[node] {
                 handlerForApp[app]?.endActivity()
                 handlerForApp[app]?.endUpdates()
@@ -249,7 +242,13 @@ class MainScene: SKScene {
                 EntityManager.instance.release(entity)
             }
         } else {
-            EntityManager.instance.release(entity)
+            // Only release themes then they are closed from a cluster
+            if entity.record.type == .theme {
+                let dx = CGFloat.random(in: style.themeDxRange)
+                entity.set(state: .drift(dx: dx))
+            } else {
+                EntityManager.instance.release(entity)
+            }
         }
     }
 
@@ -280,27 +279,23 @@ class MainScene: SKScene {
                 selectedEntity?.set(state: .dragging)
             }
         case .changed:
-            let pannedPosition = recognizer.location(in: recognizer.view)
-            let pannedNodePosition = convertPoint(fromView: pannedPosition)
-
-            selectedEntity?.set(position: pannedNodePosition)
+            let position = recognizer.location(in: recognizer.view)
+            let velocity = recognizer.velocity(in: recognizer.view)
+            selectedEntity?.set(position: position)
+            selectedEntity?.dragVelocity = velocity.asVector / 60
             if let entity = selectedEntity, entity.isSelected {
-                entity.cluster?.set(position: pannedNodePosition)
+                entity.cluster?.set(position: position)
             }
         case .ended:
             guard let selectedEntity = selectedEntity else {
                 return
             }
 
-            let pannedVelocity = recognizer.velocity(in: recognizer.view)
-            let nodePannedVelocity = convertPoint(fromView: pannedVelocity)
-            let delta = CGPoint(x: nodePannedVelocity.x * 0.4, y: nodePannedVelocity.y * 0.4)
-            let currentPosition = selectedEntity.position
-            let newPosition = CGPoint(x: currentPosition.x + delta.x, y: currentPosition.y + delta.y)
-
-            selectedEntity.set(position: newPosition)
+            let position = recognizer.location(in: recognizer.view)
+            selectedEntity.set(position: position)
+            selectedEntity.dragVelocity = nil
             if selectedEntity.isSelected {
-                selectedEntity.cluster?.set(position: newPosition)
+                selectedEntity.cluster?.set(position: position)
             }
 
             if selectedEntity.state == .dragging {
@@ -309,6 +304,28 @@ class MainScene: SKScene {
             }
         default:
             return
+        }
+    }
+
+
+    // MARK: SKPhysicsContactDelegate
+
+    func didBegin(_ contact: SKPhysicsContact) {
+        guard let lhs = contact.bodyA.node?.entity as? RecordEntity, let rhs = contact.bodyB.node?.entity as? RecordEntity else {
+            return
+        }
+
+        /// When a dragged node contacts a drifting node, apply an impulse based on the velocity of the dragged node
+        if lhs.state == .dragging, let velocity = lhs.dragVelocity {
+            if case .drift(_) = rhs.state {
+                let impulse = contact.contactNormal * CGFloat(velocity.magnitude) * Constants.draggingImpulseFactor
+                rhs.physicsBody.applyImpulse(impulse)
+            }
+        } else if rhs.state == .dragging, let velocity = rhs.dragVelocity {
+            if case .drift(_) = lhs.state {
+                let impulse = contact.contactNormal * -CGFloat(velocity.magnitude) * Constants.draggingImpulseFactor
+                lhs.physicsBody.applyImpulse(impulse)
+            }
         }
     }
 
@@ -377,7 +394,7 @@ class MainScene: SKScene {
     }
 
     private func frame(contains entity: RecordEntity) -> Bool {
-        return entity.node.frame.intersects(frame)
+        return frame.contains(entity.node.frame)
     }
 
     /// Determines if a given entity is aligned with its cluster

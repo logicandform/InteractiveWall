@@ -62,11 +62,11 @@ enum RecordType: String, SearchItemDisplayable {
         case .school:
             return NSImage(named: "school-icon")!
         case .theme:
-            return NSImage(named: "theme-icon")!
+            return NSImage(named: "topic-icon")!
         case .collection:
-            return NSImage(named: "theme-icon")!
+            return NSImage(named: "collection-icon")!
         case .individual:
-            return NSImage(named: "theme-icon")!
+            return NSImage(named: "individual-icon")!
         }
     }
 

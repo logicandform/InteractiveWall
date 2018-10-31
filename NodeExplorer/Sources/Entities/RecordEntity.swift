@@ -13,6 +13,7 @@ final class RecordEntity: GKEntity {
     var initialPosition: CGPoint?
     var cluster: NodeCluster?
     weak var previousCluster: NodeCluster?
+    var dragVelocity: CGVector?
     private lazy var stateMachine = RecordStateMachine(entity: self)
     private(set) var clusterLevel: (previousLevel: Int?, currentLevel: Int?) = (nil, nil)
 
@@ -50,16 +51,16 @@ final class RecordEntity: GKEntity {
         return renderComponent
     }
 
-    private var physicsComponent: PhysicsComponent {
-        guard let physicsComponent = component(ofType: PhysicsComponent.self) else {
-            fatalError("A RecordEntity must have a PhysicsComponent")
+    private var physicsComponent: RecordPhysicsComponent {
+        guard let physicsComponent = component(ofType: RecordPhysicsComponent.self) else {
+            fatalError("A RecordEntity must have a RecordPhysicsComponent")
         }
         return physicsComponent
     }
 
-    private var movementComponent: MovementComponent {
-        guard let movementComponent = component(ofType: MovementComponent.self) else {
-            fatalError("A RecordEntity must have a MovementComponent")
+    private var movementComponent: RecordMovementComponent {
+        guard let movementComponent = component(ofType: RecordMovementComponent.self) else {
+            fatalError("A RecordEntity must have a RecordMovementComponent")
         }
         return movementComponent
     }
@@ -77,13 +78,14 @@ final class RecordEntity: GKEntity {
         self.relatedRecords = relatedRecords
         super.init()
         let renderComponent = RecordRenderComponent(record: record)
-        let physicsComponent = PhysicsComponent(physicsBody: SKPhysicsBody(circleOfRadius: style.defaultNodePhysicsBodyRadius))
-        let movementComponent = MovementComponent()
+        let physicsComponent = RecordPhysicsComponent(physicsBody: SKPhysicsBody(circleOfRadius: style.defaultNodePhysicsBodyRadius))
+        let movementComponent = RecordMovementComponent()
         renderComponent.recordNode.physicsBody = physicsComponent.physicsBody
         addComponent(movementComponent)
         addComponent(renderComponent)
         addComponent(physicsComponent)
         updateBitMasks()
+        updatePhysicsProperties()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -122,6 +124,14 @@ final class RecordEntity: GKEntity {
         physicsBody.categoryBitMask = mask
         physicsBody.collisionBitMask = mask
         physicsBody.contactTestBitMask = mask
+    }
+
+    func updatePhysicsProperties() {
+        physicsBody.isDynamic = state.dynamic
+        physicsBody.restitution = state.restitution
+        physicsBody.friction = state.friction
+        physicsBody.linearDamping = state.linearDamping
+        physicsBody.angularDamping = state.angularDamping
     }
 
     func perform(action: SKAction, forKey key: String) {

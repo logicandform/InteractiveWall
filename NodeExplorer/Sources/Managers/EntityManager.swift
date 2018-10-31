@@ -23,8 +23,8 @@ final class EntityManager {
 
     /// List of all GKComponentSystems. The systems will be updated in order. The order is defined to match assumptions made within components.
     private lazy var componentSystems: [GKComponentSystem] = {
-        let movementSystem = GKComponentSystem(componentClass: MovementComponent.self)
-        let physicsSystem = GKComponentSystem(componentClass: PhysicsComponent.self)
+        let movementSystem = GKComponentSystem(componentClass: RecordMovementComponent.self)
+        let physicsSystem = GKComponentSystem(componentClass: RecordPhysicsComponent.self)
         return [movementSystem, physicsSystem]
     }()
 
@@ -133,7 +133,6 @@ final class EntityManager {
         let showTitle = NodeCluster.showTitleFor(level: level)
         copy.node.titleNode.alpha = showTitle ? 1 : 0
         copy.previousCluster = entity.cluster
-        copy.updateBitMasks()
         scene.addChild(copy.node)
         scene.addGestures(to: copy.node)
         return copy
@@ -144,28 +143,6 @@ final class EntityManager {
         for componentSystem in componentSystems {
             componentSystem.update(deltaTime: deltaTime)
         }
-    }
-
-    /// Adds each entity's components to the component system to allow updates to occur
-    func addToComponentSystems(for entities: [RecordEntity]) {
-        for entity in entities {
-            for componentSystem in componentSystems {
-                componentSystem.addComponent(foundIn: entity)
-            }
-        }
-    }
-
-    /// Removes each entity's components from the component system so that unnecessary updates do not happen
-    func removeFromComponentSystems(for entities: [RecordEntity]) {
-        for entity in entities {
-            removeComponents(from: entity)
-        }
-    }
-
-    /// Dynamically add a new component to an entity
-    func add(component: GKComponent, to entity: RecordEntity) {
-        entity.addComponent(component)
-        addComponents(to: entity)
     }
 
 

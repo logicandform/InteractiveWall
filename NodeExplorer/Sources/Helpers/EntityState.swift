@@ -33,4 +33,44 @@ enum EntityState: Equatable {
             return false
         }
     }
+
+    /// A Boolean value that indicates whether the physics body is moved by the physics simulation.
+    var dynamic: Bool {
+        switch self {
+        case .drift, .seekLevel, .seekEntity:
+            return true
+        case .static, .selected, .dragging, .remove, .reset:
+            return false
+        }
+    }
+
+    /// Determines how much energy the physics body loses when it bounces off another object.
+    var restitution: CGFloat {
+        switch self {
+        case .drift, .dragging, .static, .selected, .remove, .reset:
+            return 0.4
+        case .seekLevel, .seekEntity:
+            return 0
+        }
+    }
+
+    /// The roughness of the surface of the physics body.
+    var friction: CGFloat {
+        switch self {
+        case .drift, .dragging, .static, .selected, .remove, .reset:
+            return 0
+        case .seekLevel, .seekEntity:
+            return 1
+        }
+    }
+
+    /// A property that reduces the body’s linear velocity.
+    var linearDamping: CGFloat {
+        return 1
+    }
+
+    /// A property that reduces the body’s rotational velocity.
+    var angularDamping: CGFloat {
+        return 0
+    }
 }

@@ -41,18 +41,22 @@ enum RecordType: String {
         }
     }
 
-    var imageName: String {
+    var placeholder: NSImage {
         switch self {
         case .event:
-            return "event-icon-colored"
+            return NSImage(named: "event-icon")!
         case .artifact:
-            return "artifact-icon-colored"
+            return NSImage(named: "artifact-icon")!
         case .organization:
-            return "organization-icon-colored"
+            return NSImage(named: "organization-icon")!
         case .school:
-            return "school-icon-colored"
+            return NSImage(named: "school-icon")!
         case .theme:
-            return "school-icon-colored"
+            return NSImage(named: "topic-icon")!
+//        case .collection:
+//            return NSImage(named: "collection-icon")!
+//        case .individual:
+//            return NSImage(named: "individual-icon")!
         }
     }
 

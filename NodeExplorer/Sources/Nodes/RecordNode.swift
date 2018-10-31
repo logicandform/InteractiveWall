@@ -15,7 +15,7 @@ class RecordNode: SKSpriteNode {
     private(set) var iconNode: SKSpriteNode!
 
     private struct Constants {
-        static let circleTextureImage = "layer_node"
+        static let circleTextureImage = "layer-node"
         static let labelSystemFontSize: CGFloat = 4
         static let buttonSize = CGSize(width: 8, height: 8)
         static let buttonOffset: CGFloat = 40
@@ -100,7 +100,8 @@ class RecordNode: SKSpriteNode {
     }
 
     private func addIconNode(for record: Record) {
-        iconNode = SKSpriteNode(imageNamed: record.type.imageName)
+        let texture = SKTexture(image: record.type.placeholder.tinted(with: record.type.color))
+        iconNode = SKSpriteNode(texture: texture)
         iconNode.alpha = 0
         iconNode.size = CGSize(width: frame.width/2, height: frame.height/2)
         addChild(iconNode)

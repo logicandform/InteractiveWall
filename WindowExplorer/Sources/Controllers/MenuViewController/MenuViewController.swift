@@ -220,7 +220,7 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
                 postTransitionNotification(for: type)
                 set(.information, selected: false)
             }
-        case .information, .settings:
+        case .information:
             set(type, selected: !button.selected)
         case .search, .accessibility:
             set(type, selected: true, forced: true)

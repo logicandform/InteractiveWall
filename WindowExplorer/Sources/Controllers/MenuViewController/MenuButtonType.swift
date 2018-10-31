@@ -10,50 +10,30 @@ enum MenuButtonType {
     case timeline
     case nodeNetwork
     case information
-    case settings
     case search
     case accessibility
 
-    var image: NSImage? {
+    var image: NSImage {
         switch self {
         case .split:
-            return NSImage(named: "split-icon")
+            return NSImage(named: "split-icon")!
         case .map:
-            return NSImage(named: "map-icon")
+            return NSImage(named: "map-icon")!
         case .timeline:
-            return NSImage(named: "timeline-icon")
+            return NSImage(named: "timeline-icon")!
         case .nodeNetwork:
-            return NSImage(named: "node-icon")
+            return NSImage(named: "node-icon")!
         case .information:
-            return NSImage(named: "info-icon")
-        case .settings:
-            return NSImage(named: "settings-icon")
+            return NSImage(named: "info-icon")!
         case .search:
-            return NSImage(named: "search-icon")
+            return NSImage(named: "browse-icon")!
         case .accessibility:
-            return NSImage(named: "accessibility-icon")
+            return NSImage(named: "drop-icon")!
         }
     }
 
     var selectedImage: NSImage? {
-        switch self {
-        case .split:
-            return NSImage(named: "merge-icon")
-        case .map:
-            return NSImage(named: "map-icon-active")
-        case .timeline:
-            return NSImage(named: "timeline-icon-active")
-        case .nodeNetwork:
-            return NSImage(named: "node-icon-active")
-        case .information:
-            return NSImage(named: "info-icon")?.tinted(with: style.menuTintColor)
-        case .settings:
-            return NSImage(named: "settings-icon-active")
-        case .search:
-            return NSImage(named: "search-icon-active")
-        case .accessibility:
-            return NSImage(named: "accessibility-icon-active")
-        }
+        return image.tinted(with: style.menuTintColor)
     }
 
     var applicationType: ApplicationType? {
@@ -82,8 +62,6 @@ enum MenuButtonType {
             return "Nodes"
         case .information:
             return "Info"
-        case .settings:
-            return "Settings"
         case .search:
             return "Browse"
         case .accessibility:
@@ -103,6 +81,6 @@ enum MenuButtonType {
     }
 
     static var itemsInMenu: [MenuButtonType] {
-        return [.split, .map, .timeline, .nodeNetwork, .search, .information]
+        return [.information, .search, .map, .timeline, .nodeNetwork, .split]
     }
 }

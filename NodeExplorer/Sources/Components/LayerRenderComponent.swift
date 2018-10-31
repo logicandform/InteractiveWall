@@ -9,11 +9,11 @@ import GameplayKit
 class LayerRenderComponent: GKComponent {
 
     let level: Int
-    unowned var cluster: NodeCluster
     let layerNode: ClusterLayerNode
     var minRadius: CGFloat
     var maxRadius: CGFloat
     private var currentRadius: CGFloat
+    private unowned var cluster: NodeCluster
 
     private struct Constants {
         static let entityDistanceOffset: CGFloat = 15

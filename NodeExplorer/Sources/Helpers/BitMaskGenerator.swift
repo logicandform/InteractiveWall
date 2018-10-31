@@ -30,11 +30,10 @@ final class BitMaskGenerator {
                     return levelMask << inset(for: cluster)
                 }
             }
+            return .min
         default:
             return .min
         }
-
-        return .min
     }
 
     static func bitMask(for layer: ClusterLayerNode) -> UInt32 {
