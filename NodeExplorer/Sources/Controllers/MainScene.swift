@@ -62,7 +62,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
             self?.handleTapGesture(gesture)
         }
 
-        let panGesture = PanGestureRecognizer(recognizedThreshold: 0)
+        let panGesture = PanGestureRecognizer(recognizedThreshold: 10)
         gestureManager.add(panGesture, to: node)
         panGesture.gestureUpdated = { [weak self] gesture in
             self?.handlePanGesture(gesture)
@@ -170,7 +170,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func handlePanGesture(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let node = gestureManager.node(for: pan) as? RecordNode, let entity = node.entity as? RecordEntity, entity.state.pannable else {
+        guard let scene = scene, let pan = gesture as? PanGestureRecognizer, let node = gestureManager.node(for: pan) as? RecordNode, let entity = node.entity as? RecordEntity, entity.state.pannable else {
             return
         }
 
@@ -197,8 +197,8 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
                 entity.cluster?.resetCloseTimer()
             }
         case .momentum:
-            let positionInFrame = contain(position: position)
-            entity.set(position: positionInFrame)
+            let positionInScene = contain(position: position, to: scene, for: entity.node)
+            entity.set(position: positionInScene)
             entity.dragVelocity = pan.delta
             if entity.isSelected {
                 entity.cluster?.set(position: position)
@@ -217,9 +217,19 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         }
     }
 
-    private func contain(position: CGPoint) -> CGPoint {
-        let x = position.x.truncatingRemainder(dividingBy: frame.width)
-        let y = position.y.truncatingRemainder(dividingBy: frame.height)
+    private func contain(position: CGPoint, to scene: SKScene, for node: RecordNode) -> CGPoint {
+        let radius = node.size.width / 2
+        var x = position.x
+        var y = position.y
+
+        if x > scene.frame.width + radius {
+            x = -radius
+        }
+        if y < -radius {
+            y = scene.frame.height + radius
+        } else if y > scene.frame.height + radius {
+            y = -radius
+        }
         return CGPoint(x: x, y: y)
     }
 

@@ -44,18 +44,18 @@ class RecordMovementComponent: GKComponent {
         }
 
         entity.physicsBody.velocity.dx = max(dx, entity.physicsBody.velocity.dx)
-        let nodeRadius = style.defaultNodeSize.width / 2
+        let radius = entity.node.size.width / 2
 
-        if entity.position.x > scene.frame.width + nodeRadius {
-            entity.set(position: CGPoint(x: -nodeRadius, y: entity.position.y))
+        if entity.position.x > scene.frame.width + radius {
+            entity.set(position: CGPoint(x: -radius, y: entity.position.y))
             let dx = CGFloat.random(in: style.themeDxRange)
             entity.set(state: .drift(dx: dx))
         }
-        if entity.position.y < -nodeRadius {
-            entity.set(position: CGPoint(x: entity.position.x, y: scene.frame.height + nodeRadius))
+        if entity.position.y < -radius {
+            entity.set(position: CGPoint(x: entity.position.x, y: scene.frame.height + radius))
         }
-        if entity.position.y > scene.frame.height + nodeRadius {
-            entity.set(position: CGPoint(x: entity.position.x, y: -nodeRadius))
+        if entity.position.y > scene.frame.height + radius {
+            entity.set(position: CGPoint(x: entity.position.x, y: -radius))
         }
     }
 

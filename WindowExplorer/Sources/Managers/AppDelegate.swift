@@ -16,7 +16,7 @@ struct Configuration {
     static let numberOfScreens = 1
     static let localMediaURLs = true
     static let launchOnLoad = true
-    static let touchScreen = TouchScreen.pct2485
+    static let touchScreen = TouchScreen.ur9851
     static let resetTimeoutDuration = 150.0
     static let closeWindowTimeoutDuration = 180.0
     static let menuResetTimeoutDuration = 180.0
@@ -25,10 +25,10 @@ struct Configuration {
 
 
 struct Paths {
-//    static let mapExplorer = "/Users/irshdc/Library/Developer/Xcode/DerivedData/InteractiveWall-atywugxlwkeqhpauwgaflngywsjq/Build/Products/Debug/MapExplorer.app"
-    static let mapExplorer = "/Users/Tim/Library/Developer/Xcode/DerivedData/InteractiveWall-adiypssigffcldcmakgbwofhzjwu/Build/Products/Debug/MapExplorer.app"
-//    static let nodeNetwork = "/Users/irshdc/Library/Developer/Xcode/DerivedData/InteractiveWall-atywugxlwkeqhpauwgaflngywsjq/Build/Products/Debug/NodeExplorer.app"
-    static let nodeNetwork = "/Users/Tim/Library/Developer/Xcode/DerivedData/InteractiveWall-adiypssigffcldcmakgbwofhzjwu/Build/Products/Debug/NodeExplorer.app"
+    static let mapExplorer = "/Users/irshdc/Library/Developer/Xcode/DerivedData/InteractiveWall-atywugxlwkeqhpauwgaflngywsjq/Build/Products/Debug/MapExplorer.app"
+//    static let mapExplorer = "/Users/Tim/Library/Developer/Xcode/DerivedData/InteractiveWall-adiypssigffcldcmakgbwofhzjwu/Build/Products/Debug/MapExplorer.app"
+    static let nodeNetwork = "/Users/irshdc/Library/Developer/Xcode/DerivedData/InteractiveWall-atywugxlwkeqhpauwgaflngywsjq/Build/Products/Debug/NodeExplorer.app"
+//    static let nodeNetwork = "/Users/Tim/Library/Developer/Xcode/DerivedData/InteractiveWall-adiypssigffcldcmakgbwofhzjwu/Build/Products/Debug/NodeExplorer.app"
 }
 
 
