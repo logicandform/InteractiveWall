@@ -197,7 +197,8 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
                 entity.cluster?.resetCloseTimer()
             }
         case .momentum:
-            entity.set(position: position)
+            let positionInFrame = contain(position: position)
+            entity.set(position: positionInFrame)
             entity.dragVelocity = pan.delta
             if entity.isSelected {
                 entity.cluster?.set(position: position)
@@ -214,6 +215,12 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         default:
             return
         }
+    }
+
+    private func contain(position: CGPoint) -> CGPoint {
+        let x = position.x.truncatingRemainder(dividingBy: frame.width)
+        let y = position.y.truncatingRemainder(dividingBy: frame.height)
+        return CGPoint(x: x, y: y)
     }
 
     private func finishDrag(for entity: RecordEntity) {
