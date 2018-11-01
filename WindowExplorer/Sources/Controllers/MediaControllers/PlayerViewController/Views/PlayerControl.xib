@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,7 +22,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IOp-BE-Ma6">
-                    <rect key="frame" x="38" y="15" width="60" height="14"/>
+                    <rect key="frame" x="38" y="14" width="60" height="14"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="14" id="0a7-O9-FEI"/>
                         <constraint firstAttribute="width" constant="56" id="DLx-ZI-TvE"/>
@@ -35,9 +34,9 @@
                     </textFieldCell>
                 </textField>
                 <slider horizontalHuggingPriority="210" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="8jO-Ld-nn0">
-                    <rect key="frame" x="102" y="11" width="428" height="19"/>
+                    <rect key="frame" x="102" y="10" width="428" height="20"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="15" id="sRP-hR-Myv"/>
+                        <constraint firstAttribute="height" constant="16" id="sRP-hR-Myv"/>
                     </constraints>
                     <sliderCell key="cell" continuous="YES" alignment="left" maxValue="1" tickMarkPosition="above" sliderType="linear" id="Gyh-Oz-32g" customClass="ColoredSliderCell" customModule="WindowExplorer" customModuleProvider="target"/>
                 </slider>
@@ -50,7 +49,7 @@
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="play-icon-small" id="vWK-aG-IuH"/>
                 </imageView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KTF-Qn-y4E">
-                    <rect key="frame" x="534" y="15" width="60" height="14"/>
+                    <rect key="frame" x="534" y="14" width="60" height="14"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="56" id="HEf-kR-HvO"/>
                         <constraint firstAttribute="height" constant="14" id="QyU-ZY-k1K"/>
@@ -77,7 +76,7 @@
                 <constraint firstItem="Zw9-9M-z75" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="DEZ-Z4-hzH"/>
                 <constraint firstItem="KTF-Qn-y4E" firstAttribute="leading" secondItem="8jO-Ld-nn0" secondAttribute="trailing" constant="8" id="Mpo-lc-fGc"/>
                 <constraint firstItem="Zw9-9M-z75" firstAttribute="leading" secondItem="KTF-Qn-y4E" secondAttribute="trailing" constant="8" id="PVm-7c-GEE"/>
-                <constraint firstItem="KTF-Qn-y4E" firstAttribute="centerY" secondItem="8jO-Ld-nn0" secondAttribute="centerY" constant="-2" id="RET-vy-GLn"/>
+                <constraint firstItem="KTF-Qn-y4E" firstAttribute="centerY" secondItem="8jO-Ld-nn0" secondAttribute="centerY" constant="-1" id="RET-vy-GLn"/>
                 <constraint firstAttribute="bottom" secondItem="Zw9-9M-z75" secondAttribute="bottom" id="Xeu-E9-ZDu"/>
                 <constraint firstItem="8jO-Ld-nn0" firstAttribute="leading" secondItem="IOp-BE-Ma6" secondAttribute="trailing" constant="8" id="ghk-Bi-JGg"/>
                 <constraint firstItem="Ubj-9h-laa" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="ktW-qX-vTq"/>

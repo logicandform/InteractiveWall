@@ -54,6 +54,8 @@ class ZoomControl: NSView {
         addSubview(contentView)
         contentView.frame = bounds
         contentView.autoresizingMask = .width
+        zoomOutButton.image = NSImage(named: "less-icon")?.tinted(with: style.defaultBorderColor)
+        zoomInButton.image = NSImage(named: "more-icon")?.tinted(with: style.defaultBorderColor)
     }
 
     private func setupGestures() {

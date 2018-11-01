@@ -11,7 +11,7 @@ class ColoredSliderCell: NSSliderCell {
     var trailingColor = NSColor.darkGray
 
     private struct Constants {
-        static let verticalOffset: CGFloat = 0.5
+        static let barHeight: CGFloat = 2
     }
 
 
@@ -28,15 +28,14 @@ class ColoredSliderCell: NSSliderCell {
         let currentPosition = CGFloat((doubleValue - minValue) / (maxValue - minValue))
         let barRadius = rounded ? rect.height / 2 : 0
         let leadingRectWidth = currentPosition * rect.width
-        let barHeight: CGFloat = 2
-        let origin = CGPoint(x: rect.origin.x, y: rect.origin.y + barHeight/2 + Constants.verticalOffset)
+        let origin = CGPoint(x: rect.origin.x, y: rect.origin.y + Constants.barHeight/2)
 
-        let totalRect = CGRect(origin: origin, size: CGSize(width: rect.size.width, height: barHeight))
+        let totalRect = CGRect(origin: origin, size: CGSize(width: rect.size.width, height: Constants.barHeight))
         let trailingRectPath = NSBezierPath(roundedRect: totalRect, xRadius: barRadius, yRadius: barRadius)
         trailingColor.setFill()
         trailingRectPath.fill()
 
-        let leadingRect = CGRect(origin: origin, size: CGSize(width: leadingRectWidth, height: barHeight))
+        let leadingRect = CGRect(origin: origin, size: CGSize(width: leadingRectWidth, height: Constants.barHeight))
         let leadingRectPath = NSBezierPath(roundedRect: leadingRect, xRadius: barRadius, yRadius: barRadius)
         leadingColor.setFill()
         leadingRectPath.fill()
