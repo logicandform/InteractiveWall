@@ -69,16 +69,20 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         }
     }
 
+    /// Return an array containing the first record node hit before a cluster layer.
     override func nodes(at p: CGPoint) -> [SKNode] {
-        let recordNode = super.nodes(at: p).first { node in
-            node is RecordNode && node.contains(p)
+        let nodes = super.nodes(at: p)
+
+        for node in nodes {
+            if node is ClusterLayerNode && node.contains(p) {
+                return []
+            }
+            if node is RecordNode && node.contains(p) {
+                return [node]
+            }
         }
 
-        if let recordNode = recordNode {
-            return [recordNode]
-        } else {
-            return []
-        }
+        return []
     }
 
     func remove(cluster: NodeCluster) {
