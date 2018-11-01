@@ -66,7 +66,12 @@ enum EntityState: Equatable {
 
     /// A property that reduces the body’s linear velocity.
     var linearDamping: CGFloat {
-        return 1
+        switch self {
+        case .drift:
+            return 0.5
+        default:
+            return 1
+        }
     }
 
     /// A property that reduces the body’s rotational velocity.
