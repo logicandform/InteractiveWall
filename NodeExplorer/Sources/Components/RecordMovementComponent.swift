@@ -47,10 +47,10 @@ class RecordMovementComponent: GKComponent {
 
         entity.physicsBody.velocity.dx = max(dx, entity.physicsBody.velocity.dx)
         let radius = entity.node.size.width / 2
+        let isDrifting = abs(entity.physicsBody.velocity.dx - dx) < Constants.driftingDisplacement
 
         if entity.position.x > scene.frame.width + radius {
             // If node drifts off screen with expected velocity, update node with new y position
-            let isDrifting = abs(entity.physicsBody.velocity.dx - dx) < Constants.driftingDisplacement
             let y = isDrifting ? CGFloat.random(in: radius ... scene.frame.height - radius) : entity.position.y
             entity.set(position: CGPoint(x: -entity.node.size.width * 2, y: y))
             let dx = CGFloat.random(in: style.themeDxRange)
@@ -63,10 +63,12 @@ class RecordMovementComponent: GKComponent {
             entity.set(position: CGPoint(x: entity.position.x, y: -radius))
         }
         // If entity is drifting near the edge of the screen, apply vertical velocity
-        if entity.position.y < radius {
-            entity.physicsBody.velocity.dy = 10
-        } else if entity.position.y > scene.frame.height - radius {
-            entity.physicsBody.velocity.dy = -10
+        if isDrifting {
+            if entity.position.y < radius {
+                entity.physicsBody.velocity.dy = 10
+            } else if entity.position.y > scene.frame.height - radius {
+                entity.physicsBody.velocity.dy = -10
+            }
         }
     }
 

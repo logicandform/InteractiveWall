@@ -43,7 +43,7 @@ final class Style {
 
     // MARK: Drifting Theme Properties
 
-    let themeDxRange = ClosedRange<CGFloat>(uncheckedBounds: (40, 120))
+    let themeDxRange = ClosedRange<CGFloat>(uncheckedBounds: (40, 150))
 
 
     // MARK: Animations Properties
