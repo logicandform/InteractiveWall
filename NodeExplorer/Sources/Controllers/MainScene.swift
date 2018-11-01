@@ -201,7 +201,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
                 entity.cluster?.resetCloseTimer()
             }
         case .momentum:
-            let positionInScene = contain(position: position, to: scene, for: entity.node)
+            let positionInScene = contained(position: position, in: scene, for: entity)
             entity.set(position: positionInScene)
             entity.dragVelocity = pan.delta
             if entity.isSelected {
@@ -221,14 +221,17 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         }
     }
 
-    private func contain(position: CGPoint, to scene: SKScene, for node: RecordNode) -> CGPoint {
-        let radius = node.size.width / 2
+    /// Contains the position of the entity to the scene vertically and horizontally (if entity is not controlling cluster).
+    private func contained(position: CGPoint, in scene: SKScene, for entity: RecordEntity) -> CGPoint {
+        let radius = entity.node.size.width / 2
         var x = position.x
         var y = position.y
 
-        if x > scene.frame.width + radius {
-            x = -radius
+        // Only contain x position to scene if entity does not have a cluster
+        if entity.cluster == nil, x > scene.frame.width + radius {
+            x = -entity.node.size.width * 2
         }
+        // Contain y position within the scene
         if y < -radius {
             y = scene.frame.height + radius
         } else if y > scene.frame.height + radius {
@@ -415,7 +418,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func frame(contains entity: RecordEntity) -> Bool {
-        return frame.contains(entity.node.frame)
+        return frame.intersects(entity.node.frame)
     }
 
     /// Determines if a given entity is aligned with its cluster

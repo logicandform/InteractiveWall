@@ -116,10 +116,20 @@ final class RecordStateMachine {
 
     /// Scale to the proper size for the current cluster level else scale to default size
     private func scale() {
-        let size = NodeCluster.sizeFor(level: entity.clusterLevel.currentLevel)
+        let size = nodeSize(for: entity)
         let scale = AnimationType.scale(size)
         let fade = AnimationType.fade(out: false)
         entity.apply([scale, fade])
+    }
+
+    /// Determines the size of the node for an entity based on its state
+    private func nodeSize(for entity: RecordEntity) -> CGSize {
+        switch entity.state {
+        case .drift:
+            return style.driftingNodeSize
+        default:
+            return NodeCluster.sizeFor(level: entity.clusterLevel.currentLevel)
+        }
     }
 
     /// Fades the title node for the entity appropriately for the given level

@@ -12,6 +12,7 @@ class RecordMovementComponent: GKComponent {
         static let strength = Configuration.touchScreen.frameSize.width / 2
         static let dt: CGFloat = 1 / 5000
         static let speed: CGFloat = 500
+        static let driftingDisplacement: CGFloat = 0.5
     }
 
 
@@ -38,6 +39,7 @@ class RecordMovementComponent: GKComponent {
 
     // MARK: Physics Movement
 
+    /// Applies minimum horizontal velocity and contains nodes to the scene
     private func drift(dx: CGFloat) {
         guard let entity = entity as? RecordEntity, let scene = entity.node.scene else {
             return
@@ -47,7 +49,10 @@ class RecordMovementComponent: GKComponent {
         let radius = entity.node.size.width / 2
 
         if entity.position.x > scene.frame.width + radius {
-            entity.set(position: CGPoint(x: -radius, y: entity.position.y))
+            // If node drifts off screen with expected velocity, update node with new y position
+            let isDrifting = abs(entity.physicsBody.velocity.dx - dx) < Constants.driftingDisplacement
+            let y = isDrifting ? CGFloat.random(in: radius ... scene.frame.height - radius) : entity.position.y
+            entity.set(position: CGPoint(x: -entity.node.size.width * 2, y: y))
             let dx = CGFloat.random(in: style.themeDxRange)
             entity.set(state: .drift(dx: dx))
         }
@@ -56,6 +61,12 @@ class RecordMovementComponent: GKComponent {
         }
         if entity.position.y > scene.frame.height + radius {
             entity.set(position: CGPoint(x: entity.position.x, y: -radius))
+        }
+        // If entity is drifting near the edge of the screen, apply vertical velocity
+        if entity.position.y < radius {
+            entity.physicsBody.velocity.dy = 10
+        } else if entity.position.y > scene.frame.height - radius {
+            entity.physicsBody.velocity.dy = -10
         }
     }
 

@@ -47,7 +47,7 @@ enum MenuButtonType {
     }
 
     func image(selected: Bool, side: MenuSide) -> NSImage {
-        let color = selected ? style.menuTintColor : style.menuUnselectedColor
+        let color = selected ? style.menuTintColor : style.defaultBorderColor
 
         switch self {
         case .split:

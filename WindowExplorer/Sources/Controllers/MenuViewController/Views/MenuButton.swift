@@ -99,7 +99,7 @@ class MenuButton: NSView {
     private func updateTitle() {
         let title = type.title(selected: selected, locked: locked)
         var attributes = style.windowTitleAttributes
-        attributes[.foregroundColor] = selected ? style.menuTintColor : style.menuUnselectedColor
+        attributes[.foregroundColor] = selected ? style.menuTintColor : style.defaultBorderColor
         titleField.attributedStringValue = NSAttributedString(string: title, attributes: attributes)
     }
 }
