@@ -18,6 +18,8 @@ class LayerRenderComponent: GKComponent {
     private struct Constants {
         static let entityDistanceOffset: CGFloat = 15
         static let defaultRadius: CGFloat = 1
+        static let maxLevelOneRadius: CGFloat = 800
+        static let maxRadiusStep: CGFloat = 200
     }
 
 
@@ -44,7 +46,8 @@ class LayerRenderComponent: GKComponent {
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
 
-        if cluster.selectedEntity.state == .dragging {
+        // If cluster if currently being dragged, don't draw layers
+        if cluster.isDragging {
             return
         }
 
@@ -71,8 +74,8 @@ class LayerRenderComponent: GKComponent {
             }
         }
 
-        // Set the maxRadius for this level's bounding node
-        maxRadius = max(distance, currentRadius)
+        let limit = Constants.maxLevelOneRadius + CGFloat(level - 1) * Constants.maxRadiusStep
+        maxRadius = clamp(distance, min: currentRadius, max: limit)
 
         // Scale its own bounding node by using its previous level's bounding node maxRadius
         if let previousLevelNodeBoundingEntity = cluster.layerForLevel[level - 1] {

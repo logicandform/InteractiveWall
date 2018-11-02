@@ -15,22 +15,16 @@ final class BitMaskGenerator {
         switch entity.state {
         case .drift:
             return Constants.backgroundBitMask
-        case .dragging:
+        case .dragging, .seekEntity:
             if let cluster = entity.cluster {
-                return 1 << inset(for: cluster)
-            } else {
-                return Constants.backgroundBitMask
-            }
-        case .seekEntity:
-            if let cluster = entity.cluster {
-                if cluster.selectedEntity.state == .dragging {
+                if cluster.isDragging {
                     return 1 << inset(for: cluster)
                 } else if let level = entity.clusterLevel.currentLevel {
                     let levelMask: UInt32 = 1 << level
                     return levelMask << inset(for: cluster)
                 }
             }
-            return .min
+            return entity.record.type == .theme ? Constants.backgroundBitMask : .min
         default:
             return .min
         }

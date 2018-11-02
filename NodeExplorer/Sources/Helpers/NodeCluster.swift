@@ -21,6 +21,10 @@ final class NodeCluster: NSObject {
     private unowned var scene: MainScene
     private weak var closeTimer: Foundation.Timer?
 
+    var isDragging: Bool {
+        return selectedEntity.state == .dragging
+    }
+
     private lazy var componentSystems: [GKComponentSystem] = {
         let renderSystem = GKComponentSystem(componentClass: LayerRenderComponent.self)
         return [renderSystem]
