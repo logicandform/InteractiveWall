@@ -7,21 +7,17 @@ final class RecordManager {
     static let instance = RecordManager()
 
     /// Type: [ID: Record]
-    private var recordsForType: [RecordType: [Int: Record]] = [
-        .school: [:],
-        .artifact: [:],
-        .organization: [:],
-        .event: [:],
-        .theme: [:],
-        .collection: [:],
-        .individual: [:]
-    ]
+    private var recordsForType: [RecordType: [Int: Record]] = [:]
 
 
     // MARK: Init
 
     /// Use singleton
-    private init() { }
+    private init() {
+        for type in RecordType.allValues {
+            recordsForType[type] = [:]
+        }
+    }
 
 
     // MARK: API

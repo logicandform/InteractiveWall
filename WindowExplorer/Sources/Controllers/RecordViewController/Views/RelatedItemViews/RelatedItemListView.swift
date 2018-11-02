@@ -7,17 +7,7 @@ class RelatedItemListView: RelatedItemView {
     static let identifier = NSUserInterfaceItemIdentifier(rawValue: "RelatedItemListView")
 
     @IBOutlet weak var titleLabel: NSTextField!
-    @IBOutlet weak var descriptionView: NSTextView!
-
-
-    // MARK: Life-Cycle
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        descriptionView.drawsBackground = false
-        descriptionView.textContainer?.maximumNumberOfLines = Constants.numberOfDescriptionLines
-    }
+    @IBOutlet weak var descriptionLabel: NSTextField!
 
 
     // MARK: Overrides
@@ -50,7 +40,6 @@ class RelatedItemListView: RelatedItemView {
         super.load(record)
 
         titleLabel.attributedStringValue = NSAttributedString(string: record.title, attributes: style.relatedItemViewTitleAttributes)
-        let description = NSAttributedString(string: record.description ?? "", attributes: style.relatedItemViewDescriptionAttributes)
-        descriptionView.textStorage?.setAttributedString(description)
+        descriptionLabel.attributedStringValue = NSAttributedString(string: record.description ?? "", attributes: style.relatedItemViewDescriptionAttributes)
     }
 }

@@ -13,15 +13,7 @@ final class EntityManager {
     var scene: MainScene!
 
     /// Set of all entities for type and proxy
-    private(set) var entitiesForType: [RecordType: [RecordProxy: [RecordEntity]]] = [
-        .school: [:],
-        .artifact: [:],
-        .organization: [:],
-        .event: [:],
-        .theme: [:],
-        .individual: [:],
-        .collection: [:]
-    ]
+    private(set) var entitiesForType: [RecordType: [RecordProxy: [RecordEntity]]] = [:]
 
     /// List of all GKComponentSystems. The systems will be updated in order. The order is defined to match assumptions made within components.
     private lazy var componentSystems: [GKComponentSystem] = {
@@ -39,7 +31,11 @@ final class EntityManager {
     // MARK: Init
 
     /// Use singleton
-    private init() { }
+    private init() {
+        for type in RecordType.allValues {
+            entitiesForType[type] = [:]
+        }
+    }
 
 
     // MARK: API

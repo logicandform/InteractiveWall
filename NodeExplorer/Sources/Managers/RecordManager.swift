@@ -17,15 +17,7 @@ final class RecordManager {
 
     private(set) var relativesForProxy = [RecordProxy: Set<RecordProxy>]()
     private(set) var relatedLevelsForProxy = [RecordProxy: RelatedLevels]()
-    private(set) var recordsForType: [RecordType: [Int: Record]] = [
-        .school: [:],
-        .artifact: [:],
-        .organization: [:],
-        .event: [:],
-        .theme: [:],
-        .individual: [:],
-        .collection: [:]
-    ]
+    private(set) var recordsForType: [RecordType: [Int: Record]] = [:]
 
     private struct Constants {
         static let minRelativeCount = 2
@@ -35,7 +27,11 @@ final class RecordManager {
     // MARK: Init
 
     /// Use singleton
-    private init() {}
+    private init() {
+        for type in RecordType.allValues {
+            recordsForType[type] = [:]
+        }
+    }
 
 
     // MARK: API

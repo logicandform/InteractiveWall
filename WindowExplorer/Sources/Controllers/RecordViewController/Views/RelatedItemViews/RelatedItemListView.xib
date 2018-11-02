@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="RelatedItemListView" customModule="WindowExplorer" customModuleProvider="target">
             <connections>
-                <outlet property="descriptionView" destination="tzF-dV-bDK" id="2rQ-s9-Xl4"/>
+                <outlet property="descriptionLabel" destination="BoK-BE-UjM" id="wi5-oa-tQs"/>
                 <outlet property="mediaImageView" destination="GPP-LU-OnZ" id="ZIK-hb-e7x"/>
                 <outlet property="titleLabel" destination="oFi-RG-9Vw" id="ekW-Br-MED"/>
                 <outlet property="view" destination="c22-O7-iKe" id="Voa-ol-fEC"/>
@@ -29,56 +29,33 @@
                             </constraints>
                         </customView>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oFi-RG-9Vw">
-                            <rect key="frame" x="78" y="52" width="214" height="22"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="22" id="qM5-dA-ULR"/>
-                            </constraints>
+                            <rect key="frame" x="78" y="52" width="214" height="18"/>
                             <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" usesSingleLineMode="YES" id="DZc-6H-bXz">
                                 <font key="font" size="11" name="Soleil-Bold"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PLs-By-PJe">
-                            <rect key="frame" x="76" y="4" width="216" height="48"/>
-                            <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="3Gd-au-x14">
-                                <rect key="frame" x="0.0" y="0.0" width="216" height="48"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <subviews>
-                                    <textView autoresizesSubviews="NO" editable="NO" selectable="NO" drawsBackground="NO" importsGraphics="NO" verticallyResizable="NO" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" id="tzF-dV-bDK">
-                                        <rect key="frame" x="0.0" y="0.0" width="216" height="48"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        <size key="minSize" width="216" height="48"/>
-                                        <size key="maxSize" width="463" height="10000000"/>
-                                        <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                    </textView>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </clipView>
-                            <edgeInsets key="contentInsets" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
-                            <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="zD2-nk-u3s">
-                                <rect key="frame" x="-100" y="-100" width="87" height="18"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                            </scroller>
-                            <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="KXE-U4-A2V">
-                                <rect key="frame" x="-100" y="-100" width="16" height="48"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                            </scroller>
-                        </scrollView>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BoK-BE-UjM">
+                            <rect key="frame" x="78" y="31" width="214" height="17"/>
+                            <textFieldCell key="cell" truncatesLastVisibleLine="YES" id="W1v-3J-AsQ">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="bottom" secondItem="PLs-By-PJe" secondAttribute="bottom" constant="4" id="7dL-HV-4hW"/>
+                        <constraint firstItem="BoK-BE-UjM" firstAttribute="leading" secondItem="oFi-RG-9Vw" secondAttribute="leading" id="0X8-3h-dFu"/>
                         <constraint firstAttribute="bottom" secondItem="GPP-LU-OnZ" secondAttribute="bottom" constant="10" id="BzF-VA-i9M"/>
-                        <constraint firstItem="PLs-By-PJe" firstAttribute="leading" secondItem="oFi-RG-9Vw" secondAttribute="leading" constant="-4" id="ET4-Jd-G7p"/>
-                        <constraint firstItem="GPP-LU-OnZ" firstAttribute="top" secondItem="oFi-RG-9Vw" secondAttribute="top" constant="4" id="JKp-4t-hHD"/>
+                        <constraint firstItem="BoK-BE-UjM" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="GPP-LU-OnZ" secondAttribute="bottom" id="GTC-Qo-7Jh"/>
+                        <constraint firstItem="GPP-LU-OnZ" firstAttribute="top" secondItem="oFi-RG-9Vw" secondAttribute="top" id="JKp-4t-hHD"/>
                         <constraint firstItem="oFi-RG-9Vw" firstAttribute="leading" secondItem="GPP-LU-OnZ" secondAttribute="trailing" constant="10" id="QqD-jt-rK6"/>
                         <constraint firstItem="GPP-LU-OnZ" firstAttribute="top" secondItem="YQD-s2-RG2" secondAttribute="top" constant="10" id="SlW-57-NqM"/>
+                        <constraint firstItem="BoK-BE-UjM" firstAttribute="top" secondItem="oFi-RG-9Vw" secondAttribute="bottom" constant="4" id="aVx-WU-F2i"/>
                         <constraint firstItem="GPP-LU-OnZ" firstAttribute="leading" secondItem="YQD-s2-RG2" secondAttribute="leading" constant="10" id="cpg-vy-ORO"/>
-                        <constraint firstItem="PLs-By-PJe" firstAttribute="top" secondItem="oFi-RG-9Vw" secondAttribute="bottom" id="dqZ-4K-KKY"/>
+                        <constraint firstItem="BoK-BE-UjM" firstAttribute="trailing" secondItem="oFi-RG-9Vw" secondAttribute="trailing" id="dNm-e9-kDB"/>
                         <constraint firstAttribute="trailing" secondItem="oFi-RG-9Vw" secondAttribute="trailing" constant="10" id="jfK-7i-bsF"/>
-                        <constraint firstAttribute="trailing" secondItem="PLs-By-PJe" secondAttribute="trailing" constant="8" id="wok-NW-kwF"/>
                     </constraints>
                 </customView>
             </subviews>
