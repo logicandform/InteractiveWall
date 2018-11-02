@@ -19,25 +19,13 @@ enum NetworkError: Error {
 final class CachingNetwork {
 
     private struct Endpoints {
-        static let countForGroup = Configuration.serverURL + "/%@/count/group/%@"
-        static let places = Configuration.serverURL + "/places/all/%d"
-        static let placeByID = Configuration.serverURL + "/places/find/%d"
-        static let placesInGroup = Configuration.serverURL + "/places/group/%@/%d"
         static let organizations = Configuration.serverURL + "/organizations/all/%d"
-        static let organizationByID = Configuration.serverURL + "/organizations/find/%d"
-        static let organizationsInGroup = Configuration.serverURL + "/organizations/group/%@/%d"
         static let events = Configuration.serverURL + "/events/all/%d"
-        static let eventByID = Configuration.serverURL + "/events/find/%d"
-        static let eventsInGroup = Configuration.serverURL + "/events/group/%@/%d"
         static let artifacts = Configuration.serverURL + "/artifacts/all/%d"
-        static let artifactByID = Configuration.serverURL + "/artifacts/find/%d"
-        static let artifactsInGroup = Configuration.serverURL + "/artifacts/group/%@/%d"
         static let schools = Configuration.serverURL + "/schools/all/%d"
-        static let schoolByID = Configuration.serverURL + "/schools/find/%d"
-        static let schoolsInGroup = Configuration.serverURL + "/schools/group/%@/%d"
         static let themes = Configuration.serverURL + "/themes/all/%d"
-        static let themeByID = Configuration.serverURL + "/themes/find/%d"
-        static let themesInGroup = Configuration.serverURL + "/themes/group/%@/%d"
+        static let collections = Configuration.serverURL + "/collections/all/%d"
+        static let individuals = Configuration.serverURL + "/individuals/all/%d"
     }
 
     private struct Constants {
@@ -61,14 +49,6 @@ final class CachingNetwork {
         }
     }
 
-    static func getOrganization(by id: Int) -> Promise<Organization> {
-        let url = String(format: Endpoints.organizationByID, id)
-
-        return Alamofire.request(url).responseJSON().then { json in
-            try ResponseHandler.serializeOrganization(from: json)
-        }
-    }
-
 
     // MARK: Events
 
@@ -83,14 +63,6 @@ final class CachingNetwork {
             let next = page + Constants.batchSize
             let result = load + events
             return try getEvents(page: next, load: result)
-        }
-    }
-
-    static func getEvent(by id: Int) -> Promise<Event> {
-        let url = String(format: Endpoints.eventByID, id)
-
-        return Alamofire.request(url).responseJSON().then { json in
-            try ResponseHandler.serializeEvent(from: json)
         }
     }
 
@@ -111,14 +83,6 @@ final class CachingNetwork {
         }
     }
 
-    static func getArtifact(by id: Int) -> Promise<Artifact> {
-        let url = String(format: Endpoints.artifactByID, id)
-
-        return Alamofire.request(url).responseJSON().then { json in
-            try ResponseHandler.serializeArtifact(from: json)
-        }
-    }
-
 
     // MARK: Schools
 
@@ -133,14 +97,6 @@ final class CachingNetwork {
             let next = page + Constants.batchSize
             let result = load + schools
             return try getSchools(page: next, load: result)
-        }
-    }
-
-    static func getSchool(by id: Int) -> Promise<School> {
-        let url = String(format: Endpoints.schoolByID, id)
-
-        return Alamofire.request(url).responseJSON().then { json in
-            try ResponseHandler.serializeSchool(from: json)
         }
     }
 
@@ -161,11 +117,37 @@ final class CachingNetwork {
         }
     }
 
-    static func getTheme(by id: Int) -> Promise<Theme> {
-        let url = String(format: Endpoints.themeByID, id)
+
+    // MARK: Collections
+
+    static func getCollections(page: Int = 0, load: [RecordCollection] = []) throws -> Promise<[RecordCollection]> {
+        let url = String(format: Endpoints.collections, page)
 
         return Alamofire.request(url).responseJSON().then { json in
-            try ResponseHandler.serializeTheme(from: json)
+            guard let collections = try? ResponseHandler.serializeCollections(from: json), !collections.isEmpty else {
+                return Promise(value: load)
+            }
+
+            let next = page + Constants.batchSize
+            let result = load + collections
+            return try getCollections(page: next, load: result)
+        }
+    }
+
+
+    // MARK: Individuals
+
+    static func getIndividuals(page: Int = 0, load: [Individual] = []) throws -> Promise<[Individual]> {
+        let url = String(format: Endpoints.individuals, page)
+
+        return Alamofire.request(url).responseJSON().then { json in
+            guard let individuals = try? ResponseHandler.serializeIndividuals(from: json), !individuals.isEmpty else {
+                return Promise(value: load)
+            }
+
+            let next = page + Constants.batchSize
+            let result = load + individuals
+            return try getIndividuals(page: next, load: result)
         }
     }
 }

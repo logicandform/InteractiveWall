@@ -10,6 +10,8 @@ enum RecordType: String {
     case organization
     case school
     case theme
+    case individual
+    case collection
 
     var title: String {
         switch self {
@@ -23,6 +25,10 @@ enum RecordType: String {
             return "Schools"
         case .theme:
             return "Themes"
+        case .individual:
+            return "Individuals"
+        case .collection:
+            return "Topics"
         }
     }
 
@@ -38,6 +44,10 @@ enum RecordType: String {
             return style.schoolColor
         case .theme:
             return style.themeColor
+        case .individual:
+            return style.individualColor
+        case .collection:
+            return style.collectionColor
         }
     }
 
@@ -53,14 +63,14 @@ enum RecordType: String {
             return NSImage(named: "school-icon")!
         case .theme:
             return NSImage(named: "theme-icon")!
-//        case .collection:
-//            return NSImage(named: "topic-icon")!
-//        case .individual:
-//            return NSImage(named: "individual-icon")!
+        case .collection:
+            return NSImage(named: "topic-icon")!
+        case .individual:
+            return NSImage(named: "individual-icon")!
         }
     }
 
     static var allValues: [RecordType] {
-        return [.theme, .event, .artifact, .organization, .school]
+        return [.theme, .event, .artifact, .organization, .school, .individual, .collection]
     }
 }

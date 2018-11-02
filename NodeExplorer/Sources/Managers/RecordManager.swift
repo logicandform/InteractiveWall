@@ -22,7 +22,9 @@ final class RecordManager {
         .artifact: [:],
         .organization: [:],
         .event: [:],
-        .theme: [:]
+        .theme: [:],
+        .individual: [:],
+        .collection: [:]
     ]
 
     private struct Constants {

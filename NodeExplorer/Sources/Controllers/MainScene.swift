@@ -139,7 +139,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func setupEntities() {
-        let entityTypes: [RecordType] = [.school, .event, .organization, .artifact]
+        let entityTypes: [RecordType] = [.school, .event, .organization, .artifact, .individual, .collection]
         let entities = entityTypes.reduce([]) { $0 + EntityManager.instance.entities(of: $1) }
         let spacing = frame.width / CGFloat(entities.count / 2)
         let nodeRadius = style.defaultNodeSize.width / 2

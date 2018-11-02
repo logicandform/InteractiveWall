@@ -9,17 +9,19 @@ import GameplayKit
 final class EntityManager {
     static let instance = EntityManager()
 
+    /// The scene that record nodes are added to
+    var scene: MainScene!
+
     /// Set of all entities for type and proxy
     private(set) var entitiesForType: [RecordType: [RecordProxy: [RecordEntity]]] = [
         .school: [:],
         .artifact: [:],
         .organization: [:],
         .event: [:],
-        .theme: [:]
+        .theme: [:],
+        .individual: [:],
+        .collection: [:]
     ]
-
-    /// The scene that record nodes are added to
-    var scene: MainScene!
 
     /// List of all GKComponentSystems. The systems will be updated in order. The order is defined to match assumptions made within components.
     private lazy var componentSystems: [GKComponentSystem] = {

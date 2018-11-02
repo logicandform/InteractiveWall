@@ -205,6 +205,10 @@ class TestingDataManager {
             return Event(json: json)
         case .theme:
             return Theme(json: json)
+        case .individual:
+            return Individual(json: json)
+        case .collection:
+            return RecordCollection(json: json)
         }
     }
 }

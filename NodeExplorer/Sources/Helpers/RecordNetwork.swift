@@ -6,21 +6,6 @@ import PromiseKit
 
 final class RecordNetwork {
 
-    static func record(for type: RecordType, id: Int, completion: @escaping ((Record?) -> Void)) {
-        switch type {
-        case .artifact:
-            artifact(id: id, completion: completion)
-        case .school:
-            school(id: id, completion: completion)
-        case .event:
-            event(id: id, completion: completion)
-        case .organization:
-            organization(id: id, completion: completion)
-        case .theme:
-            theme(id: id, completion: completion)
-        }
-    }
-
     static func records(for type: RecordType, completion: @escaping (([Record]?) -> Void)) {
         switch type {
         case .artifact:
@@ -33,22 +18,15 @@ final class RecordNetwork {
             organizations(completion: completion)
         case .theme:
             themes(completion: completion)
+        case .individual:
+            individuals(completion: completion)
+        case .collection:
+            collections(completion: completion)
         }
     }
 
 
     // MARK: Artifacts
-
-    private static func artifact(id: Int, completion: @escaping ((Record?) -> Void)) {
-        firstly {
-            CachingNetwork.getArtifact(by: id)
-        }.then { artifact -> Void in
-            completion(artifact)
-        }.catch { error in
-            print(error)
-            completion(nil)
-        }
-    }
 
     private static func artifacts(completion: @escaping (([Record]?) -> Void)) {
         firstly {
@@ -64,17 +42,6 @@ final class RecordNetwork {
 
     // MARK: Schools
 
-    private static func school(id: Int, completion: @escaping ((Record?) -> Void)) {
-        firstly {
-            CachingNetwork.getSchool(by: id)
-        }.then { school -> Void in
-            completion(school)
-        }.catch { error in
-            print(error)
-            completion(nil)
-        }
-    }
-
     private static func schools(completion: @escaping (([Record]?) -> Void)) {
         firstly {
             try CachingNetwork.getSchools()
@@ -88,17 +55,6 @@ final class RecordNetwork {
 
 
     // MARK: Events
-
-    private static func event(id: Int, completion: @escaping ((Record?) -> Void)) {
-        firstly {
-            CachingNetwork.getEvent(by: id)
-        }.then { event -> Void in
-            completion(event)
-        }.catch { error in
-            print(error)
-            completion(nil)
-        }
-    }
 
     private static func events(completion: @escaping (([Record]?) -> Void)) {
         firstly {
@@ -114,17 +70,6 @@ final class RecordNetwork {
 
     // MARK: Organizations
 
-    private static func organization(id: Int, completion: @escaping ((Record?) -> Void)) {
-        firstly {
-            CachingNetwork.getOrganization(by: id)
-        }.then { organization -> Void in
-            completion(organization)
-        }.catch { error in
-            print(error)
-            completion(nil)
-        }
-    }
-
     private static func organizations(completion: @escaping (([Record]?) -> Void)) {
         firstly {
             try CachingNetwork.getOrganizations()
@@ -139,22 +84,39 @@ final class RecordNetwork {
 
     // MARK: Themes
 
-    private static func theme(id: Int, completion: @escaping ((Record?) -> Void)) {
+    private static func themes(completion: @escaping (([Record]?) -> Void)) {
         firstly {
-            CachingNetwork.getTheme(by: id)
-        }.then { theme -> Void in
-            completion(theme)
+            try CachingNetwork.getThemes()
+        }.then { themes -> Void in
+            completion(themes)
         }.catch { error in
             print(error)
             completion(nil)
         }
     }
 
-    private static func themes(completion: @escaping (([Record]?) -> Void)) {
+
+    // MARK: Individuals
+
+    private static func individuals(completion: @escaping (([Individual]?) -> Void)) {
         firstly {
-            try CachingNetwork.getThemes()
-        }.then { themes -> Void in
-            completion(themes)
+            try CachingNetwork.getIndividuals()
+        }.then { individuals -> Void in
+            completion(individuals)
+        }.catch { error in
+            print(error)
+            completion(nil)
+        }
+    }
+
+
+    // MARK: Collections
+
+    private static func collections(completion: @escaping (([RecordCollection]?) -> Void)) {
+        firstly {
+            try CachingNetwork.getCollections()
+        }.then { collections -> Void in
+            completion(collections)
         }.catch { error in
             print(error)
             completion(nil)

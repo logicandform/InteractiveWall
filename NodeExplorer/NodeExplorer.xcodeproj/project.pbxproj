@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1A2A0F12595D1F02395CA6B2 /* Pods_All_NodeExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94CE60E4184F4257779FD9C4 /* Pods_All_NodeExplorer.framework */; };
 		222381EA2183BE8B002145A1 /* TouchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222381E92183BE8B002145A1 /* TouchScreen.swift */; };
+		2232E09A218BE53A00A34C50 /* RecordCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2232E099218BE53A00A34C50 /* RecordCollection.swift */; };
+		2232E09C218BE54C00A34C50 /* Individual.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2232E09B218BE54C00A34C50 /* Individual.swift */; };
 		225FF694217F89760080B841 /* BitMaskGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225FF693217F89760080B841 /* BitMaskGenerator.swift */; };
 		225FF696217F8A060080B841 /* EntityState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225FF695217F8A060080B841 /* EntityState.swift */; };
 		22667A24213F3A2F00F15A04 /* RecordStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22667A23213F3A2F00F15A04 /* RecordStateMachine.swift */; };
@@ -90,6 +92,8 @@
 
 /* Begin PBXFileReference section */
 		222381E92183BE8B002145A1 /* TouchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchScreen.swift; sourceTree = "<group>"; };
+		2232E099218BE53A00A34C50 /* RecordCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCollection.swift; sourceTree = "<group>"; };
+		2232E09B218BE54C00A34C50 /* Individual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Individual.swift; sourceTree = "<group>"; };
 		225FF693217F89760080B841 /* BitMaskGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitMaskGenerator.swift; sourceTree = "<group>"; };
 		225FF695217F8A060080B841 /* EntityState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityState.swift; sourceTree = "<group>"; };
 		22667A23213F3A2F00F15A04 /* RecordStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordStateMachine.swift; sourceTree = "<group>"; };
@@ -328,6 +332,8 @@
 				22AEAEEF20B67DA500DD184B /* Organization.swift */,
 				22AEAEF320B67DA600DD184B /* School.swift */,
 				22AEAEF120B67DA600DD184B /* Theme.swift */,
+				2232E099218BE53A00A34C50 /* RecordCollection.swift */,
+				2232E09B218BE54C00A34C50 /* Individual.swift */,
 			);
 			path = Records;
 			sourceTree = "<group>";
@@ -568,6 +574,7 @@
 				22AEAEBC20B67C2400DD184B /* MainScene.swift in Sources */,
 				22AEAEEB20B67D6800DD184B /* MapKit.swift in Sources */,
 				226A4520214F329500860F0E /* Environment.swift in Sources */,
+				2232E09C218BE54C00A34C50 /* Individual.swift in Sources */,
 				22B6974A2143417C00FD082D /* ClusterLayerNode.swift in Sources */,
 				22C22437215D48F5000E1CAF /* NodeHandler.swift in Sources */,
 				22667A24213F3A2F00F15A04 /* RecordStateMachine.swift in Sources */,
@@ -592,6 +599,7 @@
 				22AEAEEE20B67D7500DD184B /* BorderlessWindow.swift in Sources */,
 				22AEAEE920B67D6800DD184B /* NetworkConfiguration.swift in Sources */,
 				CD0FB28820D1BFDD0058A410 /* RecordMovementComponent.swift in Sources */,
+				2232E09A218BE53A00A34C50 /* RecordCollection.swift in Sources */,
 				CD27F40420BCB5B900375CBC /* RecordManager.swift in Sources */,
 				22D6F90820B6810600C7FB5F /* CachingNetwork.swift in Sources */,
 				22D6F90920B6810600C7FB5F /* JSON.swift in Sources */,

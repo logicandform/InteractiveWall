@@ -336,7 +336,7 @@ final class CachingNetwork {
     }
 
 
-    // MARK: Collections
+    // MARK: Individuals
 
     static func getIndividuals(page: Int = 0, load: [Individual] = []) throws -> Promise<[Individual]> {
         let url = String(format: Endpoints.individuals, page)
