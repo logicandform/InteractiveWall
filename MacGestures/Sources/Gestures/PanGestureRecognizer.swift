@@ -18,11 +18,9 @@ public class PanGestureRecognizer: NSObject, GestureRecognizer {
 
     private struct Constants {
         static let defaultRecognizedThreshold: CGFloat = 20
-        static let minimumFingers = 1
         static let minimumDeltaUpdateThreshold = 4.0
-        static let gesturePausedTime = 0.1
+        static let gestureDelay = 0.1
     }
-
     
 
     // MARK: Init
@@ -35,9 +33,10 @@ public class PanGestureRecognizer: NSObject, GestureRecognizer {
         })
     }
 
-    public convenience init(recognizedThreshold: CGFloat) {
+    public convenience init(recognizedThreshold: CGFloat = 20, friction: FrictionLevel = .medium) {
         self.init()
         self.recognizedThreshold = recognizedThreshold
+        self.panFrictionLevel = friction
     }
 
 
@@ -102,7 +101,7 @@ public class PanGestureRecognizer: NSObject, GestureRecognizer {
         state = .ended
         gestureUpdated?(self)
 
-        if shouldStartMomentum, abs(timeOfLastUpdate.timeIntervalSinceNow) < Constants.gesturePausedTime {
+        if shouldStartMomentum, abs(timeOfLastUpdate.timeIntervalSinceNow) < Constants.gestureDelay {
             beginMomentum()
         } else {
             reset()
@@ -161,15 +160,15 @@ public class PanGestureRecognizer: NSObject, GestureRecognizer {
 
     // MARK: Momentum
 
-    private struct Momentum {
-        static let panInitialFrictionFactor = 1.04
-        static let panFrictionFactorScale = 0.003
-        static let panThresholdMomentumDelta = 2.0
-    }
-
     private var momentumTimer: DispatchTimer!
     private var panFrictionFactor = Momentum.panInitialFrictionFactor
+    private var panFrictionLevel = FrictionLevel.medium
     private var panMomentumDelta = CGVector.zero
+
+    private struct Momentum {
+        static let panInitialFrictionFactor = 1.04
+        static let panThresholdMomentumDelta = 2.0
+    }
 
     private func beginMomentum() {
         panFrictionFactor = Momentum.panInitialFrictionFactor
@@ -193,7 +192,7 @@ public class PanGestureRecognizer: NSObject, GestureRecognizer {
         if delta.magnitude < Momentum.panThresholdMomentumDelta {
             delta = .zero
         } else {
-            panFrictionFactor += Momentum.panFrictionFactorScale
+            panFrictionFactor += panFrictionLevel.scale
             delta /= panFrictionFactor
         }
     }

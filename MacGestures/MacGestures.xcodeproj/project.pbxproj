@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2232E09E218CFB9900A34C50 /* FrictionLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2232E09D218CFB9900A34C50 /* FrictionLevel.swift */; };
 		22382B0D216C167F0031FA23 /* MacGestures.h in Headers */ = {isa = PBXBuildFile; fileRef = 22382B0B216C167F0031FA23 /* MacGestures.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22382B1B216C3F380031FA23 /* GestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22382B15216C3F380031FA23 /* GestureRecognizer.swift */; };
 		22382B1D216C3F380031FA23 /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22382B17216C3F380031FA23 /* TapGestureRecognizer.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2232E09D218CFB9900A34C50 /* FrictionLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrictionLevel.swift; sourceTree = "<group>"; };
 		22382B08216C167F0031FA23 /* MacGestures.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MacGestures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		22382B0B216C167F0031FA23 /* MacGestures.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MacGestures.h; sourceTree = "<group>"; };
 		22382B0C216C167F0031FA23 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 				22382B2F216C40F70031FA23 /* GestureHandler.swift */,
 				22382B2B216C408B0031FA23 /* DispatchTimer.swift */,
 				22382B33216C41510031FA23 /* JSON.swift */,
+				2232E09D218CFB9900A34C50 /* FrictionLevel.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -220,6 +223,7 @@
 				22382B34216C41510031FA23 /* JSON.swift in Sources */,
 				22F73D9A216D3DE70016EF55 /* GestureState.swift in Sources */,
 				22382B36216C418C0031FA23 /* Numbers.swift in Sources */,
+				2232E09E218CFB9900A34C50 /* FrictionLevel.swift in Sources */,
 				22382B24216C3F750031FA23 /* Touch.swift in Sources */,
 				22382B1B216C3F380031FA23 /* GestureRecognizer.swift in Sources */,
 				22382B32216C41340031FA23 /* CoreGraphics.swift in Sources */,

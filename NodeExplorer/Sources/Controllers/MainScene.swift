@@ -17,6 +17,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
         static let windowDisplayOffset: CGFloat = 30
         static let maximumNumberOfClusters = 18
         static let draggingImpulseFactor: CGFloat = 4
+        static let panRecognizedThreshold: CGFloat = 10
     }
 
     private struct Keys {
@@ -62,7 +63,7 @@ class MainScene: SKScene, SKPhysicsContactDelegate {
             self?.handleTapGesture(gesture)
         }
 
-        let panGesture = PanGestureRecognizer(recognizedThreshold: 10)
+        let panGesture = PanGestureRecognizer(recognizedThreshold: Constants.panRecognizedThreshold, friction: .low)
         gestureManager.add(panGesture, to: node)
         panGesture.gestureUpdated = { [weak self] gesture in
             self?.handlePanGesture(gesture)

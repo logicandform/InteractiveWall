@@ -17,7 +17,6 @@ public class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private struct Pinch {
         static let initialScale: CGFloat = 1
         static let numberOfFingers = 2
-        static let minimumBehaviorChangeThreshold: CGFloat = 20
         static let minimumSpreadDistance: CGFloat = 60
         static let minimumShrinkScale: CGFloat = 0.4
         static let maximumZoomScale: CGFloat = 2
@@ -35,6 +34,7 @@ public class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private(set) public var delta = CGVector.zero
     private(set) public var center: CGPoint!
     private var timeOfLastUpdate: Date!
+    private var recognizedThreshold: CGFloat = Pan.recognizedThreshold
 
     // Pinch
     private(set) var lastSpread: CGFloat?
@@ -47,6 +47,15 @@ public class PinchGestureRecognizer: NSObject, GestureRecognizer {
     private var positionForTouch = [Touch: CGPoint]()
     private var lastLocation: CGPoint?
     private var cumulativeDelta = CGVector.zero
+
+
+    // MARK: Init
+
+    public convenience init(recognizedThreshold: CGFloat = 20, friction: FrictionLevel = .medium) {
+        self.init()
+        self.recognizedThreshold = recognizedThreshold
+        self.frictionLevel = friction
+    }
 
 
     // MARK: API
@@ -265,7 +274,7 @@ public class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
     /// If the newSpread has a different behavior and surpasses the minimum threshold, returns true
     private func changedBehavior(from oldSpread: CGFloat, to newSpread: CGFloat) -> Bool {
-        if behavior != behavior(of: newSpread), abs(oldSpread - newSpread) > Pinch.minimumBehaviorChangeThreshold {
+        if behavior != behavior(of: newSpread), abs(oldSpread - newSpread) > recognizedThreshold {
             return true
         }
 
@@ -300,27 +309,24 @@ public class PinchGestureRecognizer: NSObject, GestureRecognizer {
 
     // MARK: Momentum
 
+    private var momentumTimer: Timer?
+    private var panFrictionFactor = Momentum.panInitialFrictionFactor
+    private var panMomentumDelta = CGVector.zero
+    private var pinchFrictionFactor = Momentum.pinchInitialFrictionFactor
+    private var pinchMomentumScale = Pinch.initialScale
+    private var frictionLevel = FrictionLevel.medium
+
     private struct Momentum {
         static let pinchThresholdMomentumScale: CGFloat = 0.0001
         static let pinchInitialFrictionFactor: CGFloat = 1.15
-        static let pinchFrictionFactorScale: CGFloat = 0.003
         static let minimumPinchTimeToStart = 0.1
         static let maximumPinchScaleAboutZero: CGFloat = 0.2
-        static let panInitialFrictionFactor = 1.05
-        static let panFrictionFactorScale = 0.002
+        static let panInitialFrictionFactor = 1.04
         static let panThresholdMomentumDelta: Double = 2
         static let panStartMinimumMomentumDelta: Double = 5
     }
 
-    private var momentumTimer: Timer?
-    private var panFrictionFactor = Momentum.panInitialFrictionFactor
-    private var pinchFrictionFactor = Momentum.pinchInitialFrictionFactor
-
-    private var pinchMomentumScale = Pinch.initialScale
-    private var panMomentumDelta = CGVector.zero
-
     private func beginMomentum() {
-
         // Pinch
         pinchFrictionFactor = Momentum.pinchInitialFrictionFactor
         setMomentumScale()
@@ -365,7 +371,7 @@ public class PinchGestureRecognizer: NSObject, GestureRecognizer {
             scale -= 1
             scale /= pinchFrictionFactor
             scale += 1
-            pinchFrictionFactor += Momentum.pinchFrictionFactorScale
+            pinchFrictionFactor += CGFloat(frictionLevel.scale)
         }
     }
 
@@ -373,7 +379,7 @@ public class PinchGestureRecognizer: NSObject, GestureRecognizer {
         if delta.magnitude < Momentum.panThresholdMomentumDelta {
             delta = .zero
         } else {
-            panFrictionFactor += Momentum.panFrictionFactorScale
+            panFrictionFactor += frictionLevel.scale
             delta /= panFrictionFactor
         }
     }
