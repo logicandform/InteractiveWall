@@ -126,9 +126,9 @@ class RecordNode: SKSpriteNode {
     private func title(for record: Record) -> String {
         let words = record.shortestTitle().split(separator: " ")
         let firstSix = words.prefix(Constants.wordsPerTitle)
-        var title = firstSix.joined(separator: " ")
+        let title = firstSix.joined(separator: " ")
         if words.count > Constants.wordsPerTitle {
-            title.append(contentsOf: " ...")
+            return title.appending(" ...")
         }
         return title
     }

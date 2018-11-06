@@ -18,16 +18,16 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
     @IBOutlet weak var consoleClipView: NSClipView!
     @IBOutlet weak var garbageButton: NSButton!
 
+    private(set) var applicationState = ApplicationState.stopped
     private var applicationForID = [Int: NSRunningApplication]()
     private var nodeApplication: NSRunningApplication?
-    private var applicationState = ApplicationState.stopped
     private var databaseStatus: DatabaseStatus?
     private var consoleLogs = [ConsoleLog]()
     private weak var refreshTimer: Foundation.Timer?
 
     private struct Constants {
         static let windowTitle = "Control Center"
-        static let refreshTimerInterval = 60.0
+        static let refreshTimerInterval = 30.0
     }
 
     private struct Commands {
@@ -147,7 +147,7 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
 
     private func requestDatabaseStatus(manual: Bool, completion: (() -> Void)? = nil) {
         DatabaseRefreshHelper.getRefreshStatus { [weak self] status in
-            self?.handle(status: status, action: .status, manual: manual)
+            self?.handle(status: status, action: .databaseStatus, manual: manual)
             completion?()
         }
     }
@@ -220,7 +220,7 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
             requestDatabaseStatus(manual: false) { [weak self] in
                 self?.refreshDatabase()
             }
-        case .status:
+        case .databaseStatus:
             requestDatabaseStatus(manual: true)
         }
     }
@@ -299,7 +299,7 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
 
         if manual {
             log(type: .success, action: .launch, message: "Application has been launched.")
-            ConnectionManager.instance.postResetNotification()
+            ConnectionManager.instance.postHardResetNotification()
         }
     }
 
@@ -326,7 +326,7 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
     }
 
     /// Creates and inserts a log onto top of console log stack
-    private func log(type: LogType, action: ControlAction, message: String) {
+    private func log(type: LogType, action: ControlAction?, message: String) {
         let log = ConsoleLog(type: type, action: action, message: message)
         consoleLogs.insert(log, at: 0)
         consoleCollectionView.reloadData()
@@ -343,6 +343,10 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
     @objc
     private func screensDidChange(_ notification: NSNotification) {
         updateConnectedScreenCount()
+        stopAppIfNecessary()
+        MenuManager.instance.updateMenuAndBorderPositions()
+        IndicatorViewController.instance?.updatePositionAndSize()
+        updatePosition()
     }
 
     /// Open a known application type with the required parameters
@@ -408,5 +412,19 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
         refreshTimer = Timer.scheduledTimer(withTimeInterval: Constants.refreshTimerInterval, repeats: true) { [weak self] _ in
             self?.requestDatabaseStatus(manual: false)
         }
+    }
+
+    private func stopAppIfNecessary() {
+        let screenCount = NSScreen.screens.count - 1
+        if screenCount < Configuration.numberOfScreens, applicationState == .running {
+            close(manual: false)
+            log(type: .error, action: nil, message: "A screen has dissconnected: the application has been stopped.")
+        }
+    }
+
+    private func updatePosition() {
+        let screen = NSScreen.mainScreen
+        let origin = CGPoint(x: screen.frame.midX - style.masterWindowSize.width/2, y: screen.frame.midY - style.masterWindowSize.height/2)
+        view.window?.setFrameOrigin(origin)
     }
 }

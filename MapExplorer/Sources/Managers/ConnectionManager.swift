@@ -147,7 +147,7 @@ final class ConnectionManager {
             }
         case MapNotification.reset.name:
             if let mapJSON = info[Keys.map] as? JSON, let mapRect = MKMapRect(json: mapJSON) {
-                mapHandler?.handleReset(mapRect, fromID: id)
+                mapHandler?.handleReset(mapRect, fromID: id, fromGroup: group)
             }
         case TimelineNotification.rect.name:
             if let dateJSON = info[Keys.date] as? JSON, let date = RecordDate(json: dateJSON), let group = group, let gesture = info[Keys.gesture] as? String, let state = GestureState(rawValue: gesture) {
@@ -190,13 +190,15 @@ final class ConnectionManager {
                 syncApps(inGroup: group, type: type)
             }
         case SettingsNotification.reset.name:
-            reset()
-            mapHandler?.reset(animated: true)
-            timelineHandler?.reset(animated: true)
+            if let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
+                reset(id: id, group: group, from: type)
+            }
         case SettingsNotification.accessibility.name:
             let group = group ?? id
             setAppState(from: id, group: group, for: .timeline, gestureState: .animated)
             timelineHandler?.handleAccessibilityNotification(fromID: id)
+        case SettingsNotification.hardReset.name:
+            hardReset()
         default:
             return
         }
@@ -205,13 +207,70 @@ final class ConnectionManager {
 
     // MARK: Helpers
 
-    private func reset() {
+    private func hardReset() {
         let numberOfApps = Configuration.appsPerScreen * Configuration.numberOfScreens
         let initialState = AppState(pair: nil, group: nil)
         stateForMap = Array(repeating: initialState, count: numberOfApps)
         stateForTimeline = Array(repeating: initialState, count: numberOfApps)
         typeForApp = Array(repeating: .mapExplorer, count: numberOfApps)
         transition(app: appID, to: .mapExplorer)
+        timelineHandler?.reset(animated: true)
+        let centerAppID = (Configuration.numberOfScreens * Configuration.appsPerScreen - 1) / 2
+        if appID == centerAppID {
+            mapHandler?.reset(animated: true)
+        }
+    }
+
+    private func reset(id: Int, group: Int?, from type: ApplicationType) {
+        let appStates = states(for: type).enumerated()
+        var transitionedApps = [Int]()
+
+        for (app, state) in appStates {
+            // Only update apps that are of the right type
+            if type != typeForApp(id: app) {
+                continue
+            }
+
+            // Check for current group
+            if state.group == group {
+                // Ignore updates from other screens once grouped
+                if let appGroup = state.group, let group = group {
+                    if abs(screen(of: app) - screen(of: id)) >= abs(screen(of: app) - screen(of: appGroup)), screen(of: id) != screen(of: group) {
+                        continue
+                    }
+                }
+                // Check for current pair
+                if let appPair = state.pair {
+                    // Check if incoming id is closer than current pair
+                    if abs(app - id) < abs(app - appPair) || appPair == id {
+                        typeForApp[app] = .mapExplorer
+                        transition(app: app, to: .mapExplorer)
+                        transitionedApps.append(app)
+                        if app == appID, type == .timeline {
+                            timelineHandler?.reset(animated: true)
+                        }
+                    }
+                } else {
+                    typeForApp[app] = .mapExplorer
+                    transition(app: app, to: .mapExplorer)
+                    transitionedApps.append(app)
+                    if app == appID, type == .timeline {
+                        timelineHandler?.reset(animated: true)
+                    }
+                }
+            }
+        }
+
+        // Force the apps that transitioned into new group, then sync group
+        let group = groupForApp(id: id, type: .mapExplorer) ?? id
+        setAppState(from: id, group: group, for: .mapExplorer, gestureState: .animated, transitioning: true)
+        for app in transitionedApps {
+            set(AppState(pair: nil, group: id), for: .mapExplorer, id: app)
+        }
+        if appID == id {
+            mapHandler?.reset(animated: true)
+        }
+        resetTimerForApp(id: id, with: .mapExplorer)
     }
 
     private func transition(from oldType: ApplicationType, to newType: ApplicationType, id: Int, group: Int?) {
@@ -248,6 +307,7 @@ final class ConnectionManager {
             }
         }
 
+        // Force the apps that transitioned into new group, then sync group
         let group = groupForApp(id: id, type: newType) ?? id
         setAppState(from: id, group: group, for: newType, gestureState: .animated, transitioning: true)
         for app in transitionedApps {

@@ -102,6 +102,7 @@ final class SelectionManager {
             DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: notification.name, object: nil)
         }
         DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: SettingsNotification.reset.name, object: nil)
+        DistributedNotificationCenter.default().addObserver(self, selector: #selector(handleNotification(_:)), name: SettingsNotification.hardReset.name, object: nil)
     }
 
 
@@ -125,6 +126,10 @@ final class SelectionManager {
                 setHighlight(index: index, group: group)
             }
         case SettingsNotification.reset.name:
+            if let group = group, let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
+                reset(group: group, for: type)
+            }
+        case SettingsNotification.hardReset.name:
             resetAll()
         default:
             return
@@ -140,6 +145,30 @@ final class SelectionManager {
         let emptyIntSet = Set<Int>()
 
         for (app, _) in appStates {
+            selectionForApp[app] = emptySelectionSet
+            timeForHighlight[app] = [:]
+
+            if app == appID {
+                delegate?.replace(selection: emptySelectionSet)
+                delegate?.replace(highlighted: emptyIntSet)
+            }
+        }
+    }
+
+    private func reset(group: Int, for type: ApplicationType) {
+        let appStates = ConnectionManager.instance.states(for: .timeline).enumerated()
+        let emptySelectionSet = Set<TimelineSelection>()
+        let emptyIntSet = Set<Int>()
+
+        for (app, _) in appStates {
+            guard ConnectionManager.instance.typeForApp(id: app) == type else {
+                return
+            }
+
+            if let groupForApp = ConnectionManager.instance.groupForApp(id: app, type: type), groupForApp != group {
+                return
+            }
+
             selectionForApp[app] = emptySelectionSet
             timeForHighlight[app] = [:]
 

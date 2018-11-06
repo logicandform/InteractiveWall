@@ -24,7 +24,7 @@ final class ConnectionManager {
     private var stateForTimeline: [AppState]
 
     /// A timer used to reset the entire installation when no activity has been detected
-    private weak var resetTimer: Foundation.Timer?
+    private weak var hardResetTimer: Foundation.Timer?
 
     private struct Keys {
         static let id = "id"
@@ -52,9 +52,9 @@ final class ConnectionManager {
     // MARK: API
 
     /// Posts a reset notification that causes all apps to reset to their initial state
-    func postResetNotification() {
+    func postHardResetNotification() {
         let info: JSON = [Keys.id: 0]
-        DistributedNotificationCenter.default().postNotificationName(SettingsNotification.reset.name, object: nil, userInfo: info, deliverImmediately: true)
+        DistributedNotificationCenter.default().postNotificationName(SettingsNotification.hardReset.name, object: nil, userInfo: info, deliverImmediately: true)
     }
 
     /// Returns the current pair for the given appID
@@ -160,7 +160,7 @@ final class ConnectionManager {
             if let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
                 unpair(from: id, for: type)
             }
-            resetTimer?.invalidate()
+            hardResetTimer?.invalidate()
         case SettingsNotification.ungroup.name:
             beginResetTimer()
             if let group = group, let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
@@ -175,11 +175,15 @@ final class ConnectionManager {
                 merge(from: id, group: group, of: type)
             }
         case SettingsNotification.reset.name:
-            reset()
+            if let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
+                transition(from: type, to: .mapExplorer, id: id, group: group)
+            }
         case SettingsNotification.accessibility.name:
             let group = group ?? id
             setAppState(from: id, group: group, for: .timeline, gestureState: .animated)
             MenuManager.instance.menuForApp(id: id)?.handleAccessibilityNotification()
+        case SettingsNotification.hardReset.name:
+            hardReset()
         default:
             return
         }
@@ -188,7 +192,7 @@ final class ConnectionManager {
 
     // MARK: Helpers
 
-    private func reset() {
+    private func hardReset() {
         let numberOfApps = Configuration.appsPerScreen * Configuration.numberOfScreens
         let initialState = AppState(pair: nil, group: nil)
         stateForMap = Array(repeating: initialState, count: numberOfApps)
@@ -197,7 +201,6 @@ final class ConnectionManager {
         for app in (0 ..< numberOfApps) {
             updateMenu(id: app, to: .mapExplorer)
         }
-        updateViews()
     }
 
     private func transition(from oldType: ApplicationType, to newType: ApplicationType, id: Int, group: Int?) {
@@ -234,6 +237,7 @@ final class ConnectionManager {
             }
         }
 
+        // Force the apps that transitioned into new group, then sync group
         let group = groupForApp(id: id) ?? id
         setAppState(from: id, group: group, for: newType, gestureState: .animated, transitioning: true)
         for app in transitionedApps {
@@ -443,9 +447,9 @@ final class ConnectionManager {
     }
 
     private func beginResetTimer() {
-        resetTimer?.invalidate()
-        resetTimer = Timer.scheduledTimer(withTimeInterval: Configuration.resetTimeoutDuration, repeats: false) { [weak self] _ in
-            self?.postResetNotification()
+        hardResetTimer?.invalidate()
+        hardResetTimer = Timer.scheduledTimer(withTimeInterval: Configuration.resetTimeoutDuration, repeats: false) { [weak self] _ in
+            self?.postHardResetNotification()
         }
     }
 }

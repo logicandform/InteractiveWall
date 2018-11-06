@@ -48,11 +48,40 @@ final class MenuManager {
         }
     }
 
+    /// Called after a screen gets dissconnected and reconnected to fix window positioning
+    func updateMenuAndBorderPositions() {
+        for (id, menu) in menuForID {
+            let screenID = screen(of: id)
+            let screenFrame = NSScreen.at(position: screenID).frame
+            let x = id.isEven ? screenFrame.minX : screenFrame.maxX - style.menuWindowWidth
+            let y = screenFrame.midY - screenFrame.height / 2
+
+            menu.view.window?.setFrameOrigin(CGPoint(x: x, y: y))
+        }
+
+        for (id, border) in borderForApp {
+            let screenID = screen(of: id)
+            let screenFrame = NSScreen.at(position: screenID).frame
+            let borderWidth = id.isEven ? style.borderWindowWidth : style.borderWindowWidth * 2
+            let x = id.isEven ? screenFrame.midX - borderWidth / 2 : screenFrame.maxX - borderWidth / 2
+
+            border.view.window?.setFrameOrigin(CGPoint(x: x, y: 0))
+        }
+    }
+
     func menuForApp(id: Int) -> MenuViewController? {
         return menuForID[id]
     }
 
     func borderForApp(id: Int) -> BorderViewController? {
         return borderForApp[id]
+    }
+
+
+    // MARK: Helpers
+
+    /// Returns the screen id of the given app id
+    private func screen(of id: Int) -> Int {
+        return (id / Configuration.appsPerScreen) + 1
     }
 }

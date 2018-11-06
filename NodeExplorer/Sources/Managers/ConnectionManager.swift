@@ -174,11 +174,14 @@ final class ConnectionManager {
                 merge(from: id, group: group, of: type)
             }
         case SettingsNotification.reset.name:
-            reset()
-            // TODO: Reset the node interface
+            if let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
+                transition(from: type, to: .mapExplorer, id: id, group: group)
+            }
         case SettingsNotification.accessibility.name:
             let group = group ?? id
             setAppState(from: id, group: group, for: .timeline, gestureState: .animated)
+        case SettingsNotification.hardReset.name:
+            hardReset()
         default:
             return
         }
@@ -187,7 +190,7 @@ final class ConnectionManager {
 
     // MARK: Helpers
 
-    private func reset() {
+    private func hardReset() {
         let numberOfApps = Configuration.appsPerScreen * Configuration.numberOfScreens
         let initialState = AppState(pair: nil, group: nil)
         stateForMap = Array(repeating: initialState, count: numberOfApps)

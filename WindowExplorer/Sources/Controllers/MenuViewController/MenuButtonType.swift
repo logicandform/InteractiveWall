@@ -11,6 +11,7 @@ enum MenuButtonType {
     case nodeNetwork
     case information
     case search
+    case reset
     case accessibility
 
     var applicationType: ApplicationType? {
@@ -41,6 +42,8 @@ enum MenuButtonType {
             return "Info"
         case .search:
             return "Browse"
+        case .reset:
+            return "Reset"
         case .accessibility:
             return "Drop"
         }
@@ -70,6 +73,8 @@ enum MenuButtonType {
             return NSImage(named: "info-icon")!.tinted(with: color)
         case .search:
             return NSImage(named: "browse-icon")!.tinted(with: color)
+        case .reset:
+            return NSImage(named: "reset-icon")!.tinted(with: color)
         case .accessibility:
             return NSImage(named: "drop-icon")!.tinted(with: color)
         }
@@ -87,6 +92,6 @@ enum MenuButtonType {
     }
 
     static var itemsInMenu: [MenuButtonType] {
-        return [.information, .search, .map, .timeline, .nodeNetwork, .split]
+        return [.information, .search, .map, .timeline, .nodeNetwork, .reset, .split]
     }
 }

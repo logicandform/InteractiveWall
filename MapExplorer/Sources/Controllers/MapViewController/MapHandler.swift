@@ -79,8 +79,8 @@ final class MapHandler {
         }
     }
 
-    func handleReset(_ mapRect: MKMapRect, fromID: Int) {
-        if group == nil {
+    func handleReset(_ mapRect: MKMapRect, fromID: Int, fromGroup: Int?) {
+        if group == nil || group == fromGroup {
             let adjustedMapRect = adjust(mapRect, toMap: appID, fromMap: fromID)
             mapView.setVisibleMapRect(adjustedMapRect, animated: false)
         }
@@ -92,8 +92,10 @@ final class MapHandler {
             return
         }
 
-        // Stop animating if necessary
-        endAnimation()
+        // Allow animations to run when a gesture is in momentum
+        if !gestureState.interruptible {
+            endAnimation()
+        }
 
         let currentGroup = group ?? appID
         let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.map: mapRect.toJSON(), Keys.gesture: gestureState.rawValue]
@@ -154,9 +156,8 @@ final class MapHandler {
         let offset = width / Double(Configuration.appsPerScreen)
         let originX = appID.isEven ? canadaRect.origin.x - offset : canadaRect.origin.x + width - offset
         let mapRect = MKMapRect(origin: MKMapPoint(x: originX, y: canadaRect.origin.y), size: MKMapSize(width: width, height: 0)).withPreservedAspectRatio(in: mapView)
-        let centerAppID = (Configuration.numberOfScreens * Configuration.appsPerScreen - 1) / 2
 
-        if animated && appID == centerAppID {
+        if animated {
             animate(to: mapRect, type: .reset)
         } else if !animated {
             mapView.setVisibleMapRect(mapRect, animated: false)
@@ -214,9 +215,9 @@ final class MapHandler {
             return
         }
 
-        let progress = min(1.0, abs(animationStart!.timeIntervalSinceNow) / type.duration)
+        let progress = min(1, abs(animationStart!.timeIntervalSinceNow) / type.duration)
 
-        // Accounts for international date line
+        // Account for international date line
         let originX = (initialMapRect.origin.x + originVector.x * progress).truncatingRemainder(dividingBy: MKMapRect.world.size.width)
         let originY = initialMapRect.origin.y + originVector.y * progress
         let size = MKMapSize(width: initialMapRect.size.width - initialMapRect.size.width * (1 - scale) * progress, height: initialMapRect.size.height - initialMapRect.size.height * (1 - scale) * progress)

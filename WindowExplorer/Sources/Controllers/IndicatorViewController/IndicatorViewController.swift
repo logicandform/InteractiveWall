@@ -47,6 +47,13 @@ class IndicatorViewController: NSViewController {
         }
     }
 
+    /// Called when screens are changed
+    func updatePositionAndSize() {
+        let origin = CGPoint(x: NSScreen.mainScreen.frame.maxX, y: 0)
+        let size = CGSize(width: Configuration.touchScreen.frameSize.width * CGFloat(Configuration.numberOfScreens), height: Configuration.touchScreen.frameSize.height)
+        view.window?.setFrame(CGRect(origin: origin, size: size), display: true)
+    }
+
 
     // MARK: Setup
 

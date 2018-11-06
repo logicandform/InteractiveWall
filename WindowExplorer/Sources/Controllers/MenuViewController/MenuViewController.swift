@@ -34,6 +34,7 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
     private var bordersHidden = false
     private var menuOpened = true
     private var animating = false
+    private weak var resetButtonTimer: Foundation.Timer?
 
     private var menuSide: MenuSide {
         return appID.isEven ? .left : .right
@@ -46,6 +47,7 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         static let menuButtonSize = CGSize(width: 135, height: 50)
         static let inactivePriority = NSLayoutConstraint.Priority(150)
         static let activePriority = NSLayoutConstraint.Priority(200)
+        static let resetButtonAnimationDuration = 3.0
     }
 
     private struct Keys {
@@ -126,6 +128,9 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         case .search where selected:
             displaySearchChild()
             set(.information, selected: false)
+        case .reset where selected:
+            postResetNotification()
+            startResetButtonTimer()
         case .accessibility where selected:
             postAccessibilityNotification()
         default:
@@ -204,7 +209,7 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
     // MARK: Gesture Handling
 
     private func didSelect(type: MenuButtonType) {
-        guard let button = buttonForType[type], !gestureManager.isActive() else {
+        guard let button = buttonForType[type], !gestureManager.isActive(), MasterViewController.instance?.applicationState == .running else {
             return
         }
 
@@ -222,7 +227,7 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
             }
         case .information:
             set(type, selected: !button.selected)
-        case .search, .accessibility:
+        case .search, .reset, .accessibility:
             set(type, selected: true, forced: true)
         }
     }
@@ -368,6 +373,14 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         }
     }
 
+    private func postResetNotification() {
+        var info: JSON = [Keys.id: appID, Keys.type: ConnectionManager.instance.typeForApp(id: appID).rawValue]
+        if let group = ConnectionManager.instance.groupForApp(id: appID) {
+            info[Keys.group] = group
+        }
+        DistributedNotificationCenter.default().postNotificationName(SettingsNotification.reset.name, object: nil, userInfo: info, deliverImmediately: true)
+    }
+
     private func postAccessibilityNotification() {
         var info: JSON = [Keys.id: appID]
         if let group = ConnectionManager.instance.groupForApp(id: appID) {
@@ -464,5 +477,12 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
         menuBottomBorder?.opacity = connectedMenus ? 0 : 1
         accessibilityTopBorder?.opacity = connectedMenus ? 0 : 1
         CATransaction.commit()
+    }
+
+    private func startResetButtonTimer() {
+        resetButtonTimer?.invalidate()
+        resetButtonTimer = Timer.scheduledTimer(withTimeInterval: Constants.resetButtonAnimationDuration, repeats: false) { [weak self] _ in
+            self?.set(.reset, selected: false)
+        }
     }
 }

@@ -26,7 +26,7 @@ class ConsoleItemView: NSCollectionViewItem {
 
     static func height(for log: ConsoleLog) -> CGFloat {
         let width = Constants.consoleOutputSideWidth - Constants.textFieldMargins * 2
-        let titleString = "\(log.type.title) - \(log.action.title)"
+        let titleString = log.action == nil ? log.type.title : "\(log.type.title) - \(log.action!.title)"
         let typeString = NSAttributedString(string: titleString, attributes: style.consoleLogAttributes)
         let typeHeight = typeString.height(containerWidth: width)
         let dateString = NSAttributedString(string: log.message, attributes: style.consoleLogAttributes)
@@ -46,7 +46,7 @@ class ConsoleItemView: NSCollectionViewItem {
         dateTextField.attributedStringValue = NSAttributedString(string: dateString, attributes: style.consoleLogAttributes)
         var titleAttributes = style.consoleLogAttributes
         titleAttributes[.foregroundColor] = log.type.color
-        let titleString = "\(log.type.title) - \(log.action.title)"
+        let titleString = log.action == nil ? log.type.title : "\(log.type.title) - \(log.action!.title)"
         typeTextField.attributedStringValue = NSAttributedString(string: titleString, attributes: titleAttributes)
         messageTextField.attributedStringValue = NSAttributedString(string: log.message, attributes: style.consoleLogAttributes)
     }

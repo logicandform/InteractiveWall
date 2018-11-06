@@ -10,17 +10,15 @@ enum SettingsNotification: String {
     case sync
     case split
     case merge
-    case filter
-    case labels
-    case miniMap
     case reset
     case accessibility
+    case hardReset
 
     var name: Notification.Name {
         return Notification.Name(rawValue: "SettingsNotification_\(rawValue)")
     }
 
     static var allValues: [SettingsNotification] {
-        return [.transition, .unpair, .ungroup, .sync, .split, .merge, .filter, .labels, .miniMap, .reset, .accessibility]
+        return [.transition, .unpair, .ungroup, .sync, .split, .merge, .reset, .accessibility, .hardReset]
     }
 }

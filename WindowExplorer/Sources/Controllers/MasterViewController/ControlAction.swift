@@ -9,7 +9,7 @@ enum ControlAction {
     case close
     case restartServers
     case refreshDatabase
-    case status
+    case databaseStatus
 
     init?(title: String) {
         switch title {
@@ -21,8 +21,8 @@ enum ControlAction {
             self = .restartServers
         case ControlAction.refreshDatabase.title:
             self = .refreshDatabase
-        case ControlAction.status.title:
-            self = .status
+        case ControlAction.databaseStatus.title:
+            self = .databaseStatus
         default:
             return nil
         }
@@ -38,12 +38,12 @@ enum ControlAction {
             return "Restart Servers"
         case .refreshDatabase:
             return "Refresh Local Database"
-        case .status:
+        case .databaseStatus:
             return "Check Database Status"
         }
     }
 
     static var menuSelectionActions: [ControlAction] {
-        return [.launch, .close, .restartServers, .refreshDatabase, .status]
+        return [.launch, .close, .restartServers, .refreshDatabase, .databaseStatus]
     }
 }
