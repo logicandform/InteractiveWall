@@ -37,17 +37,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     var reachability = Reachability()
 
-    private struct Constants {
-        static let killAllPath = "/usr/bin/killall"
-    }
-
 
     // MARK: Lifecycle
 
     func applicationWillFinishLaunching(_ notification: Notification) {
-        terminateOtherInstances()
-        run(command: Constants.killAllPath, args: ApplicationType.mapExplorer.appName)
-        run(command: Constants.killAllPath, args: ApplicationType.nodeNetwork.appName)
+        terminateRunningApplications()
     }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
@@ -64,17 +58,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     // MARK: Helpers
 
-    // Terminates all other instances of this application
-    private func terminateOtherInstances() {
-        let runningApps = NSWorkspace.shared.runningApplications
-
-        for app in runningApps {
-            if app.localizedName == NSRunningApplication.current.localizedName, app != NSRunningApplication.current {
-                app.terminate()
-            }
-        }
-    }
-
     private func setupApplication() {
         WindowManager.instance.registerForNotifications()
         ConnectionManager.instance.registerForNotifications()
@@ -87,22 +70,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         reachability = nil
     }
 
-    private func run(command: String, args: String...) {
-        guard FileManager.default.fileExists(atPath: command) else {
-            print("Failed: Command \(command) does not exist")
-            return
+    /// Terminates all other instances of this application and any instances of MapExplorer or NodeExplorer
+    private func terminateRunningApplications() {
+        let runningApps = NSWorkspace.shared.runningApplications
+        let appsToKill = [ApplicationType.mapExplorer.appName, ApplicationType.nodeNetwork.appName]
+
+        for app in runningApps {
+            if app.localizedName == NSRunningApplication.current.localizedName, app != NSRunningApplication.current {
+                app.terminate()
+            } else if let name = app.localizedName, appsToKill.contains(name) {
+                app.terminate()
+            }
         }
-
-        let task = Process()
-        task.launchPath = command
-        task.arguments = args
-        let outpipe = Pipe()
-        task.standardOutput = outpipe
-        let errpipe = Pipe()
-        task.standardError = errpipe
-
-        task.launch()
-        task.waitUntilExit()
     }
 
     /// Schedules the shutdown of the app at a certain hour of the current day
