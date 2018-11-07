@@ -34,12 +34,12 @@ class ClusterAnnotationView: MKAnnotationView, AnimatableAnnotation {
 
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
-        setupRings()
+        setupView()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setupRings()
+        setupView()
     }
 
 
@@ -94,13 +94,12 @@ class ClusterAnnotationView: MKAnnotationView, AnimatableAnnotation {
 
     // MARK: Setup
 
-    private func setupRings() {
+    private func setupView() {
         wantsLayer = true
+        displayPriority = .required
+        clusteringIdentifier = RecordAnnotationView.identifier
         layer?.shadowOpacity = Constants.shadowOpacity
         layer?.shadowOffset = Constants.shadowOffset
-        displayPriority = .defaultHigh
-        clusteringIdentifier = RecordAnnotationView.identifier
-
         text.alignmentMode = .center
 
         for (index, ring) in rings.enumerated() {

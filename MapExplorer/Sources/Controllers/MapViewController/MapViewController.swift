@@ -22,6 +22,7 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     private var mapHandler: MapHandler?
     private var annotationForTouch = [Touch: MKAnnotation]()
     private var currentTextScale: CGFloat = 1
+    private var initialized = false
 
     private struct Constants {
         static let maxZoomWidth = MapConstants.canadaRect.size.width / Double(Configuration.appsPerScreen)
@@ -69,7 +70,10 @@ class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, 
     override func viewDidAppear() {
         super.viewDidAppear()
 
-        mapHandler?.reset(animated: false)
+        if !initialized {
+            mapHandler?.reset(animated: false)
+            initialized = true
+        }
     }
 
 

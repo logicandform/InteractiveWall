@@ -42,12 +42,12 @@ class RecordAnnotationView: MKAnnotationView, AnimatableAnnotation {
 
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
-        setupRings()
+        setupView()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setupRings()
+        setupView()
     }
 
 
@@ -113,12 +113,12 @@ class RecordAnnotationView: MKAnnotationView, AnimatableAnnotation {
 
     // MARK: Setup
 
-    private func setupRings() {
+    private func setupView() {
+        displayPriority = .required
+        clusteringIdentifier = RecordAnnotationView.identifier
         wantsLayer = true
         layer?.shadowOpacity = Constants.shadowOpacity
         layer?.shadowOffset = Constants.shadowOffset
-        clusteringIdentifier = RecordAnnotationView.identifier
-
         title.backgroundColor = .clear
         title.anchorPoint = CGPoint(x: 0, y: 0.5)
 
