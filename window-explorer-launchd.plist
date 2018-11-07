@@ -10,7 +10,11 @@
         <string>window-explorer-launchd.plist</string>
 
         <key>Program</key>
-        <string>/Users/irshdc/Library/Developer/Xcode/DerivedData/MapExplorer-cebdevedrroybgdstwjueirgqasq/Build/Products/Debug/WindowExplorer.app/Contents/MacOS/WindowExplorer</string>
+        <string>/Users/Tim/Downloads/WindowExplorer.app/Contents/MacOS/WindowExplorer</string>
+
+        <!-- Launch when user logs in -->
+        <key>RunAtLoad</key>
+        <true/>
 
         <!-- Start at 7am -->
         <key>StartCalendarInterval</key>
@@ -21,7 +25,7 @@
         	<integer>0</integer>
         </dict>
 
-        <!-- Start app once on login, restart if app crashes -->
+        <!-- Restart if app crashes, Don't restart if manually closed or exit with 0 -->
         <key>KeepAlive</key>
         <dict>
           <key>NetworkState</key>
@@ -31,9 +35,9 @@
         </dict>
 
         <key>StandardErrorPath</key>
-        <string>/Users/irshdc/dev/MapExplorer/error.log</string>
+        <string>/Users/irshdc/dev/InteractiveWall/error.log</string>
 
         <key>StandardOutPath</key>
-        <string>/Users/irshdc/dev/MapExplorer/info.log</string>
+        <string>/Users/irshdc/dev/InteractiveWall/info.log</string>
 </dict>
 </plist>

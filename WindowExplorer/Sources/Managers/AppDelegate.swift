@@ -37,7 +37,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     var reachability = Reachability()
 
-    private struct ConsoleKeys {
+    private struct Constants {
         static let killAllPath = "/usr/bin/killall"
     }
 
@@ -45,8 +45,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // MARK: Lifecycle
 
     func applicationWillFinishLaunching(_ notification: Notification) {
-        run(command: ConsoleKeys.killAllPath, args: ApplicationType.mapExplorer.appName)
-        run(command: ConsoleKeys.killAllPath, args: ApplicationType.nodeNetwork.appName)
+        terminateOtherInstances()
+        run(command: Constants.killAllPath, args: ApplicationType.mapExplorer.appName)
+        run(command: Constants.killAllPath, args: ApplicationType.nodeNetwork.appName)
     }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
@@ -62,6 +63,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 
     // MARK: Helpers
+
+    // Terminates all other instances of this application
+    private func terminateOtherInstances() {
+        let runningApps = NSWorkspace.shared.runningApplications
+
+        for app in runningApps {
+            if app.localizedName == NSRunningApplication.current.localizedName, app != NSRunningApplication.current {
+                app.terminate()
+            }
+        }
+    }
 
     private func setupApplication() {
         WindowManager.instance.registerForNotifications()
