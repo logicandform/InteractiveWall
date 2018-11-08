@@ -10,7 +10,7 @@
         <string>window-explorer-launchd.plist</string>
 
         <key>Program</key>
-        <string>/Users/Tim/Downloads/WindowExplorer.app/Contents/MacOS/WindowExplorer</string>
+        <string>/Applications/WindowExplorer.app/Contents/MacOS/WindowExplorer</string>
 
         <!-- Launch when user logs in -->
         <key>RunAtLoad</key>
