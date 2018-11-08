@@ -57,7 +57,7 @@ public class AKPlayer {
 
     // The underlying player node
     let playerNode = AVAudioPlayerNode()
-    private var inmixer = AVAudioMixerNode()
+    private var inmixer = AVAudioEnvironmentNode()
     private var panner = MultiChannelPanner()
     private static var outmixer = AVAudioMixerNode()
     private var startingFrame: AVAudioFramePosition?
@@ -327,23 +327,31 @@ public class AKPlayer {
     func schedule(at time: CMTime, duration: Double, completion: (() -> Void)?) {
         let seekThreshold = AVAudioFramePosition(1 * sampleRate)
         let frameCount = AVAudioFrameCount(duration * sampleRate) - 1
-        let newFrame = AVAudioFramePosition(time.seconds * sampleRate)
+        let requestedFrame = AVAudioFramePosition(time.seconds * sampleRate)
 
-        if abs(newFrame - nextRenderFrame) >= seekThreshold {
+        var frameToSchedule = nextRenderFrame
+        var when: AVAudioTime?
+
+        if abs(requestedFrame - nextRenderFrame) >= seekThreshold {
             // If the difference is too large it's probably a seek operation
-            nextRenderFrame = newFrame
-        } else if newFrame < nextRenderFrame {
-            // If running too fast just skip scheduling this segment
+            frameToSchedule = requestedFrame
+            when = AVAudioTime(hostTime: mach_absolute_time())
+            print("Seek \(nextRenderFrame - requestedFrame)")
+        } else if requestedFrame < nextRenderFrame {
+            // Audio is running too fast.
             DispatchQueue.main.asyncAfter(wallDeadline: .now() + duration) {
                 completion?()
             }
+            inmixer.rate *= 0.9
+            print("Fast \(nextRenderFrame - requestedFrame) rate \(inmixer.rate)")
             return
+        } else if requestedFrame > nextRenderFrame {
+            // Audio is running too slow.
+            inmixer.rate *= 1.1
+            print("Slow \(nextRenderFrame - requestedFrame) rate \(inmixer.rate)")
         }
-        // Missing `else` here because we don't want to reschedule audio, it causes audible glitches. This works
-        // beacause it is a lot more common that video runs slower and if the opposite happens we'll eventually
-        // correct it with the first case above (seek).
 
-        scheduleSegment(from: nextRenderFrame, frameCount: frameCount, at: nil, completion: completion)
+        scheduleSegment(from: frameToSchedule, frameCount: frameCount, at: when, completion: completion)
         nextRenderFrame += AVAudioFramePosition(frameCount)
     }
 
