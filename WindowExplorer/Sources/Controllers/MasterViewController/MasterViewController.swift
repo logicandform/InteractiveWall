@@ -295,11 +295,14 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
             nodeApplication = open(.nodeNetwork, screenID: nil, appID: nil)
         }
 
-        set(state: .running)
-
         if manual {
             log(type: .success, action: .launch, message: "Application has been launched.")
             ConnectionManager.instance.postHardResetNotification()
+        }
+
+        // Give the applications time to boot before allowing user interaction
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+            self?.set(state: .running)
         }
     }
 
