@@ -325,34 +325,28 @@ public class AKPlayer {
 
     /// Adjust this function as necessary to sync audio and video
     func schedule(at time: CMTime, duration: Double, completion: (() -> Void)?) {
-        let seekThreshold = AVAudioFramePosition(1 * sampleRate)
+        let seekThreshold = AVAudioFramePosition(0.1 * sampleRate)
         let frameCount = AVAudioFrameCount(duration * sampleRate) - 1
         let requestedFrame = AVAudioFramePosition(time.seconds * sampleRate)
 
         var frameToSchedule = nextRenderFrame
-        var when: AVAudioTime?
 
         if abs(requestedFrame - nextRenderFrame) >= seekThreshold {
             // If the difference is too large it's probably a seek operation
             frameToSchedule = requestedFrame
-            when = AVAudioTime(hostTime: mach_absolute_time())
-            print("Seek \(nextRenderFrame - requestedFrame)")
         } else if requestedFrame < nextRenderFrame {
             // Audio is running too fast.
-            DispatchQueue.main.asyncAfter(wallDeadline: .now() + duration) {
+            DispatchQueue.main.asyncAfter(wallDeadline: .now() + 1.0/60.0) {
                 completion?()
             }
-            inmixer.rate *= 0.9
-            print("Fast \(nextRenderFrame - requestedFrame) rate \(inmixer.rate)")
             return
         } else if requestedFrame > nextRenderFrame {
             // Audio is running too slow.
-            inmixer.rate *= 1.1
-            print("Slow \(nextRenderFrame - requestedFrame) rate \(inmixer.rate)")
+            frameToSchedule = (requestedFrame + nextRenderFrame) / 2
         }
 
-        scheduleSegment(from: frameToSchedule, frameCount: frameCount, at: when, completion: completion)
-        nextRenderFrame += AVAudioFramePosition(frameCount)
+        scheduleSegment(from: frameToSchedule, frameCount: frameCount, at: nil, completion: completion)
+        nextRenderFrame = frameToSchedule + AVAudioFramePosition(frameCount)
     }
 
     func scheduleBuffer(at audioTime: AVAudioTime) {

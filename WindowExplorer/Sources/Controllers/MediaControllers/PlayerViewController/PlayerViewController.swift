@@ -16,7 +16,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     private var audioPlayer: AKPlayer?
 
     private struct Constants {
-        static let audioSyncInterval = 1.0 / 30.0
+        static let audioSyncInterval = 1.0/10.0
     }
 
 
@@ -111,7 +111,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     }
 
     private func scheduleAudioSegment() {
-        guard let player = playerView.player else {
+        guard let player = playerView.player, playerControl.state == .playing else {
             return
         }
 
@@ -164,6 +164,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         })
 
         resetCloseWindowTimer()
+        scheduleAudioSegment()
     }
 
     func playerChangedVolume(_ state: VolumeLevel) {
