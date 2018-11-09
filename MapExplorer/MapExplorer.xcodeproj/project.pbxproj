@@ -72,8 +72,6 @@
 		22F0EDF82066D9500075E467 /* TouchListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F0EDF72066D9500075E467 /* TouchListener.swift */; };
 		22F0EDFD2066DA1E0075E467 /* ListenerCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F0EDFB2066DA1E0075E467 /* ListenerCallback.m */; };
 		22F3EBA8215313CB00FCFF6B /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F3EBA7215313CB00FCFF6B /* Animations.swift */; };
-		22F5BFFF216D165200169387 /* MacGestures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22F5BFFA216D163F00169387 /* MacGestures.framework */; };
-		22F5C000216D165200169387 /* MacGestures.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22F5BFFA216D163F00169387 /* MacGestures.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		22F5C003216D17C700169387 /* MacGestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F5C002216D17C700169387 /* MacGestures.swift */; };
 		22FCB3952171774900CC2AEE /* MBXMBTilesOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 22FCB3932171774900CC2AEE /* MBXMBTilesOverlay.m */; };
 		22FEF1D6202CFE8D001E9596 /* GestureDemoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1CF202CFE8C001E9596 /* GestureDemoController.swift */; };
@@ -115,17 +113,6 @@
 			files = (
 			);
 			name = "Embed XPC Services";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		22F5C001216D165200169387 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				22F5C000216D165200169387 /* MacGestures.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -239,7 +226,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22F5BFFF216D165200169387 /* MacGestures.framework in Frameworks */,
 				32AAD6142F7887D6A13C4B56 /* Pods_All_MapExplorer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -583,7 +569,6 @@
 				22FEF1BD202CD86D001E9596 /* Run Swiftlint */,
 				5B065ABFB721CD1408B62F1F /* [CP] Embed Pods Frameworks */,
 				22A923132044A1D2003EA9BB /* Embed XPC Services */,
-				22F5C001216D165200169387 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -708,11 +693,12 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/../Pods/Target Support Files/Pods-All-MapExplorer/Pods-All-MapExplorer-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-All-MapExplorer/Pods-All-MapExplorer-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework",
 				"${BUILT_PRODUCTS_DIR}/MONode/MONode.framework",
+				"${BUILT_PRODUCTS_DIR}/MacGestures/MacGestures.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -721,11 +707,12 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MONode.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MacGestures.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-All-MapExplorer/Pods-All-MapExplorer-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-All-MapExplorer/Pods-All-MapExplorer-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8F1D2FAC58B31812451CE63B /* [CP] Check Pods Manifest.lock */ = {
@@ -983,6 +970,7 @@
 				DEVELOPMENT_TEAM = M6262HME76;
 				INFOPLIST_FILE = Metadata/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = is.jabt.MapExplorer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1005,6 +993,7 @@
 				DEVELOPMENT_TEAM = M6262HME76;
 				INFOPLIST_FILE = Metadata/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = is.jabt.MapExplorer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -8,21 +8,22 @@ abstract_target 'All' do
     pod 'PromiseKit', '~> 4.4'
     pod 'PromiseKit/Alamofire'
     pod 'AlamofireImage'
+    pod 'MacGestures', :git => 'https://github.com/logicandform/MacGestures.git'
 
     target 'MapExplorer' do
         project 'MapExplorer/MapExplorer.xcodeproj'
-        platform :osx, '10.13'
+        platform :osx, '10.14'
     end
 
     target 'WindowExplorer' do
         project 'WindowExplorer/WindowExplorer.xcodeproj'
-        platform :osx, '10.13'
+        platform :osx, '10.14'
 
         pod 'ReachabilitySwift'
     end
 
     target 'NodeExplorer' do
         project 'NodeExplorer/NodeExplorer.xcodeproj'
-        platform :osx, '10.13'
+        platform :osx, '10.14'
     end
 end

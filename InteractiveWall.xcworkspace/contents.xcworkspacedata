@@ -11,9 +11,6 @@
       location = "group:NodeExplorer/NodeExplorer.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:MacGestures/MacGestures.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>

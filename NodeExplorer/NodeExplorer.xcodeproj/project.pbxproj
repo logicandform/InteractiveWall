@@ -56,8 +56,6 @@
 		22D6F90C20B6810600C7FB5F /* ResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F90220B6810600C7FB5F /* ResponseHandler.swift */; };
 		22D6F91020B681A300C7FB5F /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6F90E20B681A300C7FB5F /* Media.swift */; };
 		22F5C005216D191F00169387 /* MacGestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F5C004216D191F00169387 /* MacGestures.swift */; };
-		22F5C00A216D1BBF00169387 /* MacGestures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22F5C008216D1BBA00169387 /* MacGestures.framework */; };
-		22F5C00B216D1BBF00169387 /* MacGestures.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 22F5C008216D1BBA00169387 /* MacGestures.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CD006AE020C8A681006F0FB4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD006ADF20C8A681006F0FB4 /* Main.storyboard */; };
 		CD0FB28020D1A4AE0058A410 /* RecordRenderComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0FB27F20D1A4AE0058A410 /* RecordRenderComponent.swift */; };
 		CD0FB28220D1A6300058A410 /* RecordEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0FB28120D1A6300058A410 /* RecordEntity.swift */; };
@@ -75,20 +73,6 @@
 		D53B703B215C5B36006F126A /* ApplicationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B703A215C5B36006F126A /* ApplicationType.swift */; };
 		D53B703D215C5BB4006F126A /* SettingsNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B703C215C5BB4006F126A /* SettingsNotifications.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		22F5C00C216D1BBF00169387 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				22F5C00B216D1BBF00169387 /* MacGestures.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		222381E92183BE8B002145A1 /* TouchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchScreen.swift; sourceTree = "<group>"; };
@@ -174,7 +158,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22F5C00A216D1BBF00169387 /* MacGestures.framework in Frameworks */,
 				1A2A0F12595D1F02395CA6B2 /* Pods_All_NodeExplorer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -413,7 +396,6 @@
 				225B1BCA2110ECF6001441BC /* Run Swiftlint */,
 				22AEAEB020B67C2400DD184B /* Resources */,
 				8F6BFB4034FA330CA3A7FD30 /* [CP] Embed Pods Frameworks */,
-				22F5C00C216D1BBF00169387 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -515,11 +497,12 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/../Pods/Target Support Files/Pods-All-NodeExplorer/Pods-All-NodeExplorer-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-All-NodeExplorer/Pods-All-NodeExplorer-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework",
 				"${BUILT_PRODUCTS_DIR}/MONode/MONode.framework",
+				"${BUILT_PRODUCTS_DIR}/MacGestures/MacGestures.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -528,11 +511,12 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MONode.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MacGestures.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-All-NodeExplorer/Pods-All-NodeExplorer-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-All-NodeExplorer/Pods-All-NodeExplorer-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -748,6 +732,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = is.slant.NodeExplorer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -772,6 +757,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = is.slant.NodeExplorer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
