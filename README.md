@@ -1,7 +1,6 @@
-# MapExplorer
+# Interactive Wall
 
-This is the main repository for the MapExplorer application for UBC.
-It has iOS, tvOS, and macOS targets.
+Pending Documentation...
 
 ## Getting Started
 
