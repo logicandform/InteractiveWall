@@ -1,6 +1,6 @@
 # Interactive Wall
 
-Pending Documentation...
+Documentation Ongoing...
 
 ## Getting Started
 
