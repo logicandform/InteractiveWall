@@ -9,9 +9,9 @@ import MacGestures
 class PlayerViewController: MediaViewController, PlayerControlDelegate {
     static let storyboard = "Player"
 
-    @IBOutlet weak var playerView: AVPlayerView!
-    @IBOutlet weak var playerControl: PlayerControl!
-    @IBOutlet weak var playerStateImageView: NSImageView!
+    @IBOutlet private weak var playerView: AVPlayerView!
+    @IBOutlet private weak var playerControl: PlayerControl!
+    @IBOutlet private weak var playerStateImageView: NSImageView!
 
     private var audioPlayer: AKPlayer?
 
@@ -94,11 +94,13 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         let controller = AudioController.shared
         audioPlayer = controller.play(url: url)
 
+        var clock: CMClock?
+        CMAudioDeviceClockCreate(allocator: nil, deviceUID: nil, clockOut: &clock)
+
         let player = AVPlayer(url: url)
+        player.masterClock = clock
         player.isMuted = true
         playerView.player = player
-
-        scheduleAudioSegment()
 
         playerControl.player = player
         playerControl.gestureManager = gestureManager
@@ -110,17 +112,19 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         playerStateImageView.layer?.backgroundColor = style.darkBackground.cgColor
     }
 
-    private func scheduleAudioSegment() {
-        guard let player = playerView.player, playerControl.state == .playing else {
+    private func play() {
+        guard let player = playerView.player, playerControl.state != .playing else {
             return
         }
 
-        let time = player.currentTime()
-        audioPlayer?.schedule(at: time, duration: Constants.audioSyncInterval) { [weak self] in
-            DispatchQueue.global(qos: .default).async {
-                self?.scheduleAudioSegment()
-            }
-        }
+        let loadTime = 0.5 as TimeInterval // Time to give the video and audio to load, in seconds
+        let hostTime = mach_absolute_time() + UInt64(loadTime * TimeInterval(NSEC_PER_SEC))
+
+        // Play video
+        player.setRate(1, time: CMTime.invalid, atHostTime: CMClockMakeHostTimeFromSystemUnits(hostTime))
+
+        // Play audio
+        audioPlayer?.start(at: AVAudioTime(hostTime: hostTime))
     }
 
     private func setupGestures() {
@@ -164,7 +168,10 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         })
 
         resetCloseWindowTimer()
-        scheduleAudioSegment()
+
+        if state == .playing {
+            play()
+        }
     }
 
     func playerChangedVolume(_ state: VolumeLevel) {

@@ -173,7 +173,7 @@ public class AKPlayer {
 
     /// true if the player is buffering audio rather than playing from disk
     public var isBuffered: Bool {
-        return isLooping
+        return true
     }
 
     public var isLooping: Bool = false
