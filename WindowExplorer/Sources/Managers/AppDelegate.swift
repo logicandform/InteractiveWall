@@ -10,8 +10,7 @@ let style = Style()
 
 struct Configuration {
     static let touchPort: UInt16 = 13001
-    static let serverIP = "localhost"
-    static let serverURL = "http://\(serverIP):3000"
+    static let serverURL = "http://localhost:3000"
     static let appsPerScreen = 2
     static let numberOfScreens = 1
     static let localMediaURLs = true

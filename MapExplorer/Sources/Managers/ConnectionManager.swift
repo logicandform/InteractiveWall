@@ -387,7 +387,6 @@ final class ConnectionManager {
     private func merge(from id: Int, group: Int?, of type: ApplicationType) {
         let neighborID = id.isEven ? id + 1 : id - 1
         let newState = AppState(pair: nil, group: id)
-        let appStates = states(for: type).enumerated()
 
         // Update type for all apps paired to neighbor
         let neighborType = typeForApp(id: neighborID)
@@ -400,6 +399,7 @@ final class ConnectionManager {
             }
         }
 
+        let appStates = states(for: type).enumerated()
         for (app, state) in appStates {
             // Check for current group
             if let appGroup = state.group, appGroup == group {
