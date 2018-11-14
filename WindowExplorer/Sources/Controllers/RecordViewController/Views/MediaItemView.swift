@@ -6,8 +6,8 @@ import Cocoa
 class MediaItemView: NSCollectionViewItem {
     static let identifier = NSUserInterfaceItemIdentifier("MediaItemView")
 
-    @IBOutlet weak var mediaImageView: ImageView!
-    @IBOutlet weak var videoIconImageView: NSImageView!
+    @IBOutlet private weak var mediaImageView: ImageView!
+    @IBOutlet private weak var videoIconImageView: NSImageView!
 
     private struct Constants {
         static let titleBackgroundAdditionalWidth: CGFloat = 80

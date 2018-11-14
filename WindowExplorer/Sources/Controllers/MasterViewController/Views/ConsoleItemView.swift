@@ -6,9 +6,9 @@ import Cocoa
 class ConsoleItemView: NSCollectionViewItem {
     static let identifier = NSUserInterfaceItemIdentifier("ConsoleItemView")
 
-    @IBOutlet weak var dateTextField: NSTextField!
-    @IBOutlet weak var typeTextField: NSTextField!
-    @IBOutlet weak var messageTextField: NSTextField!
+    @IBOutlet private weak var dateTextField: NSTextField!
+    @IBOutlet private weak var typeTextField: NSTextField!
+    @IBOutlet private weak var messageTextField: NSTextField!
 
     private struct Constants {
         static let consoleOutputSideWidth: CGFloat = 480

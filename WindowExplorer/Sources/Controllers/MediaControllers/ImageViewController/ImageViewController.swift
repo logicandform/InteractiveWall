@@ -8,10 +8,10 @@ import MacGestures
 class ImageViewController: MediaViewController {
     static let storyboard = "Image"
 
-    @IBOutlet weak var imageScrollView: RegularScrollView!
-    @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var scrollViewWidthConstraint: NSLayoutConstraint!
-    @IBOutlet weak var imageZoomControl: ZoomControl!
+    @IBOutlet private weak var imageScrollView: RegularScrollView!
+    @IBOutlet private weak var scrollViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var scrollViewWidthConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var imageZoomControl: ZoomControl!
 
     private var adjusted = false
     private lazy var contentViewFrame = imageScrollView.contentView.frame

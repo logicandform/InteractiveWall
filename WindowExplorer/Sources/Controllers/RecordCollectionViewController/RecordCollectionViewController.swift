@@ -8,10 +8,10 @@ import MacGestures
 class RecordCollectionViewController: BaseViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource {
     static let storyboard = "Collection"
 
-    @IBOutlet weak var collectionView: NSCollectionView!
-    @IBOutlet weak var collectionClipView: NSClipView!
-    @IBOutlet weak var collectionScrollView: FadingScrollView!
-    @IBOutlet weak var arrowIndicatorContainer: NSView!
+    @IBOutlet private weak var collectionView: NSCollectionView!
+    @IBOutlet private weak var collectionClipView: NSClipView!
+    @IBOutlet private weak var collectionScrollView: FadingScrollView!
+    @IBOutlet private weak var arrowIndicatorContainer: NSView!
 
     var record: Record!
     private var selectedRecords = Set<Record>()

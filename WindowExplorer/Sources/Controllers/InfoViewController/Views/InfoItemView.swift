@@ -9,15 +9,15 @@ import MacGestures
 class InfoItemView: NSCollectionViewItem, PlayerControlDelegate {
     static let identifier = NSUserInterfaceItemIdentifier(rawValue: "InfoItemView")
 
-    @IBOutlet weak var titleLabel: NSTextField!
-    @IBOutlet weak var windowDragArea: NSView!
-    @IBOutlet weak var highlightView: NSView!
-    @IBOutlet weak var stackView: NSStackView!
-    @IBOutlet weak var mediaImageView: ImageView!
-    @IBOutlet weak var playerView: AVPlayerView!
-    @IBOutlet weak var playerControl: PlayerControl!
-    @IBOutlet weak var playerStateImageView: NSImageView!
-    @IBOutlet weak var playerControlTopConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var titleLabel: NSTextField!
+    @IBOutlet private weak var windowDragArea: NSView!
+    @IBOutlet private weak var highlightView: NSView!
+    @IBOutlet private weak var stackView: NSStackView!
+    @IBOutlet private weak var mediaImageView: ImageView!
+    @IBOutlet private weak var playerView: AVPlayerView!
+    @IBOutlet private weak var playerControl: PlayerControl!
+    @IBOutlet private weak var playerStateImageView: NSImageView!
+    @IBOutlet private weak var playerControlTopConstraint: NSLayoutConstraint!
 
     weak var delegate: InfoViewDelegate?
     private var showingControls = false
@@ -87,6 +87,10 @@ class InfoItemView: NSCollectionViewItem, PlayerControlDelegate {
 
     func set(volume level: VolumeLevel) {
         playerControl.set(volume: level)
+    }
+
+    func reset() {
+        playerControl.reset()
     }
 
 

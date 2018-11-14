@@ -13,14 +13,14 @@ protocol InfoViewDelegate: class {
 class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout, GestureResponder, InfoViewDelegate {
     static let storyboard = "Info"
 
-    @IBOutlet weak var infoScrollView: FadingScrollView!
-    @IBOutlet weak var infoClipView: NSClipView!
-    @IBOutlet weak var infoCollectionView: NSCollectionView!
-    @IBOutlet weak var toggleButtonArea: NSView!
-    @IBOutlet weak var volumeButtonArea: NSView!
-    @IBOutlet weak var playerControlArea: NSView!
-    @IBOutlet weak var toggleLeftButton: ImageView!
-    @IBOutlet weak var toggleRightButton: ImageView!
+    @IBOutlet private weak var infoScrollView: FadingScrollView!
+    @IBOutlet private weak var infoClipView: NSClipView!
+    @IBOutlet private weak var infoCollectionView: NSCollectionView!
+    @IBOutlet private weak var toggleButtonArea: NSView!
+    @IBOutlet private weak var volumeButtonArea: NSView!
+    @IBOutlet private weak var playerControlArea: NSView!
+    @IBOutlet private weak var toggleLeftButton: ImageView!
+    @IBOutlet private weak var toggleRightButton: ImageView!
 
     var appID: Int!
     var gestureManager: GestureManager!
@@ -65,7 +65,7 @@ class InfoViewController: NSViewController, NSCollectionViewDataSource, NSCollec
         pageControl.selectedPage = UInt(0)
         infoCollectionView.scroll(.zero)
         for infoItem in infoCollectionView.visibleItems().compactMap({ $0 as? InfoItemView }) {
-            infoItem.playerControl?.reset()
+            infoItem.reset()
         }
     }
 

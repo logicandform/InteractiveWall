@@ -9,7 +9,7 @@ import MacGestures
 class MainViewController: NSViewController, NodeGestureResponder {
     static let storyboard = "Main"
 
-    @IBOutlet var mainView: SKView!
+    @IBOutlet private var mainView: SKView!
 
     var gestureManager: NodeGestureManager!
     private let touchListener = TouchListener()

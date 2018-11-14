@@ -6,8 +6,8 @@ import Cocoa
 class RecordCollectionItemView: NSCollectionViewItem {
     static let identifier = NSUserInterfaceItemIdentifier(rawValue: "RecordCollectionItemView")
 
-    @IBOutlet weak var mediaImageView: ImageView!
-    @IBOutlet weak var titleTextField: NSTextField!
+    @IBOutlet private weak var mediaImageView: ImageView!
+    @IBOutlet private weak var titleTextField: NSTextField!
 
     var tintColor = style.collectionColor
     var record: Record? {

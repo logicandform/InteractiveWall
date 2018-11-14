@@ -6,12 +6,12 @@ import Cocoa
 class TimelineItemView: NSCollectionViewItem {
     static let identifier = NSUserInterfaceItemIdentifier(rawValue: "TimelineItemView")
 
-    @IBOutlet weak var contentView: NSView!
-    @IBOutlet weak var contentViewTrailingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var highlightView: NSView!
-    @IBOutlet weak var highlightViewWidthConstraint: NSLayoutConstraint!
-    @IBOutlet weak var backgroundView: NSView!
-    @IBOutlet weak var titleTextField: NSTextField!
+    @IBOutlet private weak var contentView: NSView!
+    @IBOutlet private weak var contentViewTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var highlightView: NSView!
+    @IBOutlet private weak var highlightViewWidthConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var backgroundView: NSView!
+    @IBOutlet private weak var titleTextField: NSTextField!
 
     var tintColor = NSColor.white
     var event: TimelineEvent! {

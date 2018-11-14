@@ -11,16 +11,16 @@ import MacGestures
 class TimelineViewController: NSViewController, GestureResponder, SelectionHandler, NSCollectionViewDelegateFlowLayout {
     static let storyboard = "Timeline"
 
-    @IBOutlet weak var timelineBackgroundView: NSView!
-    @IBOutlet weak var timelineCollectionView: FlippedCollectionView!
-    @IBOutlet weak var timelineClipView: NSClipView!
-    @IBOutlet weak var timelineScrollView: NSScrollView!
-    @IBOutlet weak var timelineBaseView: NSView!
-    @IBOutlet weak var decadeCollectionView: NSCollectionView!
-    @IBOutlet weak var decadeClipView: NSClipView!
-    @IBOutlet weak var decadeScrollView: NSScrollView!
-    @IBOutlet weak var timelineIndicatorView: NSView!
-    @IBOutlet weak var timelineBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var timelineBackgroundView: NSView!
+    @IBOutlet private weak var timelineCollectionView: FlippedCollectionView!
+    @IBOutlet private weak var timelineClipView: NSClipView!
+    @IBOutlet private weak var timelineScrollView: NSScrollView!
+    @IBOutlet private weak var timelineBaseView: NSView!
+    @IBOutlet private weak var decadeCollectionView: NSCollectionView!
+    @IBOutlet private weak var decadeClipView: NSClipView!
+    @IBOutlet private weak var decadeScrollView: NSScrollView!
+    @IBOutlet private weak var timelineIndicatorView: NSView!
+    @IBOutlet private weak var timelineBottomConstraint: NSLayoutConstraint!
 
     var gestureManager: GestureManager!
     private(set) var currentDate = Constants.initialDate
@@ -119,6 +119,10 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
         set(date: RecordDate(day: Constants.initialDate.day, month: Constants.initialDate.month, year: Constants.initialDate.year + (appID * TimelineDecadeFlagLayout.yearsPerScreen)), animated: animated)
         let center = view.frame.height / 2 - timelineBackgroundView.frame.height / 2
         set(verticalPosition: center, animated: animated)
+    }
+
+    func getVerticalPosition() -> CGFloat {
+         return timelineBottomConstraint.constant
     }
 
 

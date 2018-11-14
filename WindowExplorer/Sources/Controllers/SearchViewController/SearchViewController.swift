@@ -18,14 +18,14 @@ protocol SearchChild: class {
 class SearchViewController: BaseViewController, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout, SearchChild {
     static let storyboard = "Search"
 
-    @IBOutlet weak var primaryCollectionView: NSCollectionView!
-    @IBOutlet weak var secondaryCollectionView: NSCollectionView!
-    @IBOutlet weak var tertiaryCollectionView: NSCollectionView!
-    @IBOutlet weak var secondaryTextField: NSTextField!
-    @IBOutlet weak var tertiaryTextField: NSTextField!
-    @IBOutlet weak var primaryScrollViewHeight: NSLayoutConstraint!
-    @IBOutlet weak var secondaryScrollViewHeight: NSLayoutConstraint!
-    @IBOutlet weak var tertiaryScrollViewHeight: NSLayoutConstraint!
+    @IBOutlet private weak var primaryCollectionView: NSCollectionView!
+    @IBOutlet private weak var secondaryCollectionView: NSCollectionView!
+    @IBOutlet private weak var tertiaryCollectionView: NSCollectionView!
+    @IBOutlet private weak var secondaryTextField: NSTextField!
+    @IBOutlet private weak var tertiaryTextField: NSTextField!
+    @IBOutlet private weak var primaryScrollViewHeight: NSLayoutConstraint!
+    @IBOutlet private weak var secondaryScrollViewHeight: NSLayoutConstraint!
+    @IBOutlet private weak var tertiaryScrollViewHeight: NSLayoutConstraint!
 
     weak var delegate: MenuDelegate?
     private var selectedType: RecordType?

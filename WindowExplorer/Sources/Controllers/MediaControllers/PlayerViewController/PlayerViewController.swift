@@ -112,7 +112,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         playerStateImageView.layer?.backgroundColor = style.darkBackground.cgColor
     }
 
-    private func play() {
+    private func playAudio() {
         guard let player = playerView.player, playerControl.state != .playing else {
             return
         }
@@ -170,7 +170,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         resetCloseWindowTimer()
 
         if state == .playing {
-            play()
+            playAudio()
         }
     }
 

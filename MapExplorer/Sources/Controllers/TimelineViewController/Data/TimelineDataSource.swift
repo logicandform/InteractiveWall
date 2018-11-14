@@ -133,7 +133,7 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
         case TimelineHeaderView.supplementaryKind:
             if let headerView = collectionView.makeSupplementaryView(ofKind: kind, withIdentifier: TimelineHeaderView.identifier, for: indexPath) as? TimelineHeaderView {
                 let year = firstYear + (indexPath.item % years.count)
-                headerView.textLabel.stringValue = year.description
+                headerView.set(text: year.description)
                 return headerView
             }
         case TimelineBorderView.supplementaryKind:

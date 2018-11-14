@@ -14,12 +14,12 @@ protocol PlayerControlDelegate: class {
 class PlayerControl: NSView {
     static let nib = "PlayerControl"
 
-    @IBOutlet weak var toggleButton: NSImageView!
-    @IBOutlet weak var volumeButton: NSImageView!
-    @IBOutlet weak var contentView: NSView!
-    @IBOutlet weak var seekBar: NSSlider!
-    @IBOutlet weak var currentTimeLabel: NSTextField!
-    @IBOutlet weak var durationLabel: NSTextField!
+    @IBOutlet private weak var toggleButton: NSImageView!
+    @IBOutlet private weak var volumeButton: NSImageView!
+    @IBOutlet private weak var contentView: NSView!
+    @IBOutlet private weak var seekBar: NSSlider!
+    @IBOutlet private weak var currentTimeLabel: NSTextField!
+    @IBOutlet private weak var durationLabel: NSTextField!
 
     weak var delegate: PlayerControlDelegate?
     private(set) var volume = VolumeLevel.low

@@ -7,8 +7,8 @@ class PDFTableViewItem: NSView {
     static let interfaceIdentifier = NSUserInterfaceItemIdentifier(rawValue: "PDFTableViewItem")
     static let nibName = "PDFTableViewItem"
 
-    @IBOutlet weak var imageView: NSImageView!
-    @IBOutlet weak var textField: NSTextField!
+    @IBOutlet private weak var imageView: NSImageView!
+    @IBOutlet private weak var textField: NSTextField!
 
     var tintColor = NSColor.white
     var page: PDFPage? {

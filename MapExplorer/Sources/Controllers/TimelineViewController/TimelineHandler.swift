@@ -101,7 +101,7 @@ final class TimelineHandler {
         }
 
         let currentGroup = group ?? appID
-        let position = controller.timelineBottomConstraint.constant
+        let position = controller.getVerticalPosition()
         let info: JSON = [Keys.id: appID, Keys.group: currentGroup, Keys.date: RecordDate(date: controller.currentDate).toJSON, Keys.vertical: position]
         DistributedNotificationCenter.default().postNotificationName(TimelineNotification.sync.name, object: nil, userInfo: info, deliverImmediately: true)
     }

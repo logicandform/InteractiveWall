@@ -8,10 +8,10 @@ class MenuButton: NSView {
     static let leftMenuButton = "MenuButtonLeft"
     static let rightMenuButton = "MenuButtonRight"
 
-    @IBOutlet weak var contentView: NSView!
-    @IBOutlet weak var buttonView: NSView!
-    @IBOutlet weak var titleField: NSTextField!
-    @IBOutlet weak var lockIcon: NSImageView!
+    @IBOutlet private weak var contentView: NSView!
+    @IBOutlet private weak var buttonView: NSView!
+    @IBOutlet private weak var titleField: NSTextField!
+    @IBOutlet private weak var lockIcon: NSImageView!
 
     private var side = MenuSide.left
     private(set) var type: MenuButtonType!

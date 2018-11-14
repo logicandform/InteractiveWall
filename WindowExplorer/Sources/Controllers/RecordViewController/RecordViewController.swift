@@ -8,28 +8,28 @@ import MacGestures
 class RecordViewController: BaseViewController, NSCollectionViewDelegateFlowLayout, NSCollectionViewDataSource, RecordFilterDelegate {
     static let storyboard = "Record"
 
-    @IBOutlet weak var detailView: NSView!
-    @IBOutlet weak var relatedItemsHeader: NSView!
-    @IBOutlet weak var relatedItemsHeaderHighlight: NSView!
-    @IBOutlet weak var relatedRecordsLabel: NSTextField!
-    @IBOutlet weak var relatedRecordsTypeLabel: NSTextField!
-    @IBOutlet weak var mediaView: NSCollectionView!
-    @IBOutlet weak var mediaCollectionClipView: NSClipView!
-    @IBOutlet weak var stackView: NSStackView!
-    @IBOutlet weak var stackScrollView: FadingScrollView!
-    @IBOutlet weak var stackClipView: NSClipView!
-    @IBOutlet weak var relatedItemsView: NSCollectionView!
-    @IBOutlet weak var relatedRecordCollectionClipView: NSClipView!
-    @IBOutlet weak var relatedRecordScrollView: FadingScrollView!
-    @IBOutlet weak var relatedRecordsHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var closeWindowTapArea: NSView!
-    @IBOutlet weak var showRelatedItemsArea: NSView!
-    @IBOutlet weak var hideRelatedItemsArea: NSView!
-    @IBOutlet weak var showRelatedItemsImage: NSImageView!
-    @IBOutlet weak var placeHolderImage: NSImageView!
-    @IBOutlet weak var recordTypeSelectionView: RecordTypeSelectionView!
-    @IBOutlet weak var expandImageView: NSImageView!
-    @IBOutlet weak var arrowIndicatorContainerView: NSView!
+    @IBOutlet private weak var detailView: NSView!
+    @IBOutlet private weak var relatedItemsHeader: NSView!
+    @IBOutlet private weak var relatedItemsHeaderHighlight: NSView!
+    @IBOutlet private weak var relatedRecordsLabel: NSTextField!
+    @IBOutlet private weak var relatedRecordsTypeLabel: NSTextField!
+    @IBOutlet private weak var mediaView: NSCollectionView!
+    @IBOutlet private weak var mediaCollectionClipView: NSClipView!
+    @IBOutlet private weak var stackView: NSStackView!
+    @IBOutlet private weak var stackScrollView: FadingScrollView!
+    @IBOutlet private weak var stackClipView: NSClipView!
+    @IBOutlet private weak var relatedItemsView: NSCollectionView!
+    @IBOutlet private weak var relatedRecordCollectionClipView: NSClipView!
+    @IBOutlet private weak var relatedRecordScrollView: FadingScrollView!
+    @IBOutlet private weak var relatedRecordsHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var closeWindowTapArea: NSView!
+    @IBOutlet private weak var showRelatedItemsArea: NSView!
+    @IBOutlet private weak var hideRelatedItemsArea: NSView!
+    @IBOutlet private weak var showRelatedItemsImage: NSImageView!
+    @IBOutlet private weak var placeHolderImage: NSImageView!
+    @IBOutlet private weak var recordTypeSelectionView: RecordTypeSelectionView!
+    @IBOutlet private weak var expandImageView: NSImageView!
+    @IBOutlet private weak var arrowIndicatorContainerView: NSView!
 
     var record: Record!
     private var displayedRelatedRecords = [Record]()

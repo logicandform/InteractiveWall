@@ -7,16 +7,16 @@ class MasterViewController: NSViewController, NSCollectionViewDataSource, NSColl
     static var instance: MasterViewController?
     static let storyboard = "Master"
 
-    @IBOutlet weak var titleTextField: NSTextField!
-    @IBOutlet weak var windowDragArea: NSView!
-    @IBOutlet weak var windowDragAreaHighlight: NSView!
-    @IBOutlet weak var actionSelectionButton: NSPopUpButton!
-    @IBOutlet weak var statusTextField: NSTextField!
-    @IBOutlet weak var screensTextField: NSTextField!
-    @IBOutlet weak var databaseTextField: NSTextField!
-    @IBOutlet weak var consoleCollectionView: NSCollectionView!
-    @IBOutlet weak var consoleClipView: NSClipView!
-    @IBOutlet weak var garbageButton: NSButton!
+    @IBOutlet private weak var titleTextField: NSTextField!
+    @IBOutlet private weak var windowDragArea: NSView!
+    @IBOutlet private weak var windowDragAreaHighlight: NSView!
+    @IBOutlet private weak var actionSelectionButton: NSPopUpButton!
+    @IBOutlet private weak var statusTextField: NSTextField!
+    @IBOutlet private weak var screensTextField: NSTextField!
+    @IBOutlet private weak var databaseTextField: NSTextField!
+    @IBOutlet private weak var consoleCollectionView: NSCollectionView!
+    @IBOutlet private weak var consoleClipView: NSClipView!
+    @IBOutlet private weak var garbageButton: NSButton!
 
     private(set) var applicationState = ApplicationState.stopped
     private var applicationForID = [Int: NSRunningApplication]()

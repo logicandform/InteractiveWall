@@ -15,13 +15,13 @@ class MenuViewController: NSViewController, GestureResponder, MenuDelegate {
     static let leftSideIdentifier = "MenuLeft"
     static let rightSideIdentifier = "MenuRight"
 
-    @IBOutlet weak var menuView: NSStackView!
-    @IBOutlet weak var infoMenuView: NSView!
-    @IBOutlet weak var infoDragArea: NSView!
-    @IBOutlet weak var infoCloseArea: NSView!
-    @IBOutlet weak var accessibilityButtonArea: NSView!
-    @IBOutlet weak var menuBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var infoBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var menuView: NSStackView!
+    @IBOutlet private weak var infoMenuView: NSView!
+    @IBOutlet private weak var infoDragArea: NSView!
+    @IBOutlet private weak var infoCloseArea: NSView!
+    @IBOutlet private weak var accessibilityButtonArea: NSView!
+    @IBOutlet private weak var menuBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var infoBottomConstraint: NSLayoutConstraint!
 
     var appID: Int!
     var gestureManager: GestureManager!

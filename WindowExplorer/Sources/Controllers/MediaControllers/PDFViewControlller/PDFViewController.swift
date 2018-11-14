@@ -8,14 +8,14 @@ import MacGestures
 class PDFViewController: MediaViewController, NSTableViewDelegate, NSTableViewDataSource {
     static let storyboard = "PDF"
 
-    @IBOutlet weak var pdfView: PDFView!
-    @IBOutlet weak var pdfScrollView: NSScrollView!
-    @IBOutlet weak var thumbnailView: NSTableView!
-    @IBOutlet weak var backTapArea: NSView!
-    @IBOutlet weak var forwardTapArea: NSView!
-    @IBOutlet weak var scrollViewWidthConstraint: NSLayoutConstraint!
-    @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var zoomControl: ZoomControl!
+    @IBOutlet private weak var pdfView: PDFView!
+    @IBOutlet private weak var pdfScrollView: NSScrollView!
+    @IBOutlet private weak var thumbnailView: NSTableView!
+    @IBOutlet private weak var backTapArea: NSView!
+    @IBOutlet private weak var forwardTapArea: NSView!
+    @IBOutlet private weak var scrollViewWidthConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var scrollViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var zoomControl: ZoomControl!
 
     private var document: PDFDocument!
     private let leftArrow = ArrowControl()

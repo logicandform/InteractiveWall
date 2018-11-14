@@ -6,10 +6,10 @@ import Cocoa
 class InfoCollectionItemView: NSCollectionViewItem {
     static let identifier = NSUserInterfaceItemIdentifier(rawValue: "InfoCollectionItemView")
 
-    @IBOutlet weak var dateTextField: NSTextField!
-    @IBOutlet weak var descriptionTextField: NSTextField!
-    @IBOutlet weak var dateHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var dateTopConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var dateTextField: NSTextField!
+    @IBOutlet private weak var descriptionTextField: NSTextField!
+    @IBOutlet private weak var dateHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var dateTopConstraint: NSLayoutConstraint!
 
     var tintColor = style.collectionColor
     var record: Record? {

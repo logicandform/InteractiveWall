@@ -6,8 +6,8 @@ import Cocoa
 class TimelineControlItemView: NSCollectionViewItem {
     static let identifier = NSUserInterfaceItemIdentifier("TimelineControlItemView")
 
-    @IBOutlet weak var contentView: NSView!
-    @IBOutlet weak var titleTextField: NSTextField!
+    @IBOutlet private weak var contentView: NSView!
+    @IBOutlet private weak var titleTextField: NSTextField!
 
     override var title: String? {
         didSet {

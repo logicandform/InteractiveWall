@@ -7,10 +7,10 @@ import MacGestures
 class ZoomControl: NSView {
     static let nib = "ZoomControl"
 
-    @IBOutlet var contentView: NSView!
-    @IBOutlet weak var seekBar: NSSlider!
-    @IBOutlet weak var zoomOutButton: NSButton!
-    @IBOutlet weak var zoomInButton: NSButton!
+    @IBOutlet private var contentView: NSView!
+    @IBOutlet private weak var seekBar: NSSlider!
+    @IBOutlet private weak var zoomOutButton: NSButton!
+    @IBOutlet private weak var zoomInButton: NSButton!
 
     var zoomSliderUpdated: ((CGFloat) -> Void)?
 

@@ -8,13 +8,13 @@ class TimelineHeaderView: NSView {
     static let nibName = "TimelineHeaderView"
     static let supplementaryKind = "TimelineHeaderView"
 
-    @IBOutlet weak var textLabel: NSTextField! {
+    @IBOutlet private weak var textLabel: NSTextField! {
         didSet {
             textLabel.textColor = style.timelineHeaderText
         }
     }
 
-    @IBOutlet weak var topBorder: NSView! {
+    @IBOutlet private weak var topBorder: NSView! {
         didSet {
             topBorder.wantsLayer = true
             topBorder.layer?.backgroundColor = style.timelineBorderColor.cgColor
@@ -24,6 +24,13 @@ class TimelineHeaderView: NSView {
     private struct Constants {
         static let tickHeight: CGFloat = 10
         static let tickWidth: CGFloat = 2
+    }
+
+
+    // MARK: API
+
+    func set(text: String) {
+        textLabel.stringValue = text
     }
 
 

@@ -6,9 +6,9 @@ import Cocoa
 class SearchItemView: NSCollectionViewItem {
     static let identifier = NSUserInterfaceItemIdentifier("SearchItemView")
 
-    @IBOutlet weak var titleTextField: NSTextField!
-    @IBOutlet weak var attributionTextField: NSTextField!
-    @IBOutlet weak var spinner: NSProgressIndicator!
+    @IBOutlet private weak var titleTextField: NSTextField!
+    @IBOutlet private weak var attributionTextField: NSTextField!
+    @IBOutlet private weak var spinner: NSProgressIndicator!
 
     var tintColor = style.menuTintColor
     private var defaultBorders = [CALayer]()

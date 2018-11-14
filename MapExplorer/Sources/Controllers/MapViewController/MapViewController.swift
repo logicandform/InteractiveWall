@@ -16,7 +16,7 @@ struct MapConstants {
 class MapViewController: NSViewController, MKMapViewDelegate, GestureResponder, NSGestureRecognizerDelegate {
     static let storyboard = "Map"
 
-    @IBOutlet weak var mapView: CustomMapView!
+    @IBOutlet private weak var mapView: CustomMapView!
 
     var gestureManager: GestureManager!
     private var mapHandler: MapHandler?

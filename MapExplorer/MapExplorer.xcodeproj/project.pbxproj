@@ -41,7 +41,6 @@
 		22290C3A2028FA35000E0573 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C352028FA34000E0573 /* Int.swift */; };
 		22290C3B2028FA35000E0573 /* PacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C362028FA34000E0573 /* PacketType.swift */; };
 		22290C3C2028FA35000E0573 /* NetworkConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22290C372028FA34000E0573 /* NetworkConfiguration.swift */; };
-		222AB400203CE9AE002BFAF2 /* Demo.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 222AB3FF203CE9AE002BFAF2 /* Demo.storyboard */; };
 		222AB408203DF8F5002BFAF2 /* Map.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 222AB407203DF8F5002BFAF2 /* Map.storyboard */; };
 		222D1BC2214B3EF7007417B8 /* RecordCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222D1BC1214B3EF7007417B8 /* RecordCollection.swift */; };
 		22318DE0202B984F0092937C /* ResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22318DDF202B984F0092937C /* ResponseHandler.swift */; };
@@ -74,7 +73,6 @@
 		22F3EBA8215313CB00FCFF6B /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F3EBA7215313CB00FCFF6B /* Animations.swift */; };
 		22F5C003216D17C700169387 /* MacGestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F5C002216D17C700169387 /* MacGestures.swift */; };
 		22FCB3952171774900CC2AEE /* MBXMBTilesOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 22FCB3932171774900CC2AEE /* MBXMBTilesOverlay.m */; };
-		22FEF1D6202CFE8D001E9596 /* GestureDemoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FEF1CF202CFE8C001E9596 /* GestureDemoController.swift */; };
 		32AAD6142F7887D6A13C4B56 /* Pods_All_MapExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4DC16D1E47B486A4E08792E /* Pods_All_MapExplorer.framework */; };
 		3F2FAB5D204F7D9E002EDF5D /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2FAB5C204F7D9E002EDF5D /* Collection.swift */; };
 		3F5FAAAC206043D700CF275B /* RecordAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5FAAAB206043D700CF275B /* RecordAnnotation.swift */; };
@@ -155,7 +153,6 @@
 		22290C352028FA34000E0573 /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
 		22290C362028FA34000E0573 /* PacketType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PacketType.swift; sourceTree = "<group>"; };
 		22290C372028FA34000E0573 /* NetworkConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkConfiguration.swift; sourceTree = "<group>"; };
-		222AB3FF203CE9AE002BFAF2 /* Demo.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Demo.storyboard; sourceTree = "<group>"; };
 		222AB407203DF8F5002BFAF2 /* Map.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Map.storyboard; sourceTree = "<group>"; };
 		222D1BC1214B3EF7007417B8 /* RecordCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCollection.swift; sourceTree = "<group>"; };
 		22318DDF202B984F0092937C /* ResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseHandler.swift; sourceTree = "<group>"; };
@@ -194,7 +191,6 @@
 		22F5C002216D17C700169387 /* MacGestures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacGestures.swift; sourceTree = "<group>"; };
 		22FCB3932171774900CC2AEE /* MBXMBTilesOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBXMBTilesOverlay.m; sourceTree = "<group>"; };
 		22FCB3942171774900CC2AEE /* MBXMBTilesOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBXMBTilesOverlay.h; sourceTree = "<group>"; };
-		22FEF1CF202CFE8C001E9596 /* GestureDemoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GestureDemoController.swift; sourceTree = "<group>"; };
 		26A4912457E23A30817143A3 /* Pods-All-MapExplorer-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-All-MapExplorer-macOS.release.xcconfig"; path = "../Pods/Target Support Files/Pods-All-MapExplorer-macOS/Pods-All-MapExplorer-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		39B2384F39CC84964B0970BD /* Pods-MapExplorer-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapExplorer-macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapExplorer-macOS/Pods-MapExplorer-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		3F2FAB5C204F7D9E002EDF5D /* Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
@@ -347,7 +343,6 @@
 				22290C0E2028F9EC000E0573 /* Main.storyboard */,
 				22290C1D2028FA1E000E0573 /* MapViewController */,
 				22004FEB20E1645E00B1E740 /* TimelineViewController */,
-				22FEF1E4202D079B001E9596 /* GestureDemoController */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -513,15 +508,6 @@
 			path = Tiles;
 			sourceTree = "<group>";
 		};
-		22FEF1E4202D079B001E9596 /* GestureDemoController */ = {
-			isa = PBXGroup;
-			children = (
-				222AB3FF203CE9AE002BFAF2 /* Demo.storyboard */,
-				22FEF1CF202CFE8C001E9596 /* GestureDemoController.swift */,
-			);
-			path = GestureDemoController;
-			sourceTree = "<group>";
-		};
 		3F946244205C59750056933C /* Annotations */ = {
 			isa = PBXGroup;
 			children = (
@@ -650,7 +636,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				22004FF420E16CE200B1E740 /* TimelineItemView.xib in Resources */,
-				222AB400203CE9AE002BFAF2 /* Demo.storyboard in Resources */,
 				220AE85F20ED441A00F6E9AA /* TimelineControlItemView.xib in Resources */,
 				2290A03920E2F0AC00F028C4 /* TimelineHeaderView.xib in Resources */,
 				222AB408203DF8F5002BFAF2 /* Map.storyboard in Resources */,
@@ -803,7 +788,6 @@
 				22318DE0202B984F0092937C /* ResponseHandler.swift in Sources */,
 				22290C3C2028FA35000E0573 /* NetworkConfiguration.swift in Sources */,
 				22290C2E2028FA1F000E0573 /* Style.swift in Sources */,
-				22FEF1D6202CFE8D001E9596 /* GestureDemoController.swift in Sources */,
 				22046268204732A40067D9FB /* MapNotifications.swift in Sources */,
 				22F0EDF82066D9500075E467 /* TouchListener.swift in Sources */,
 				A45146FC2125E8EE00910A25 /* SelectionManager.swift in Sources */,

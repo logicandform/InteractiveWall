@@ -6,14 +6,14 @@ import Cocoa
 class TimelineFlagView: NSCollectionViewItem {
     static let identifier = NSUserInterfaceItemIdentifier(rawValue: "TimelineFlagView")
 
-    @IBOutlet weak var flagView: NSView!
-    @IBOutlet weak var mediaImageView: ImageView!
-    @IBOutlet weak var flagPoleView: NSView!
-    @IBOutlet weak var titleTextField: NSTextField!
-    @IBOutlet weak var dateTextField: NSTextField!
-    @IBOutlet weak var flagHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var mediaImageHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var mediaImageTopConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var flagView: NSView!
+    @IBOutlet private weak var mediaImageView: ImageView!
+    @IBOutlet private weak var flagPoleView: NSView!
+    @IBOutlet private weak var titleTextField: NSTextField!
+    @IBOutlet private weak var dateTextField: NSTextField!
+    @IBOutlet private weak var flagHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var mediaImageHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var mediaImageTopConstraint: NSLayoutConstraint!
 
     private var tintColor = style.timelineFlagBackgroundColor
     var event: TimelineEvent! {
