@@ -46,8 +46,8 @@ final class TimelineDataSource: NSObject, NSCollectionViewDataSource {
         }
 
         uniqueEvents = events.count
-        let minYear = events.min(by: { $0.dates.startDate.year < $1.dates.startDate.year })?.dates.startDate.year ?? Constants.defaultFirstYear
-        let maxYear = events.max(by: { $0.dates.startDate.year < $1.dates.startDate.year })?.dates.startDate.year ?? Constants.defaultLastYear
+        let minYear = events.map { $0.dates.startDate.year }.min() ?? Constants.defaultFirstYear
+        let maxYear = events.compactMap { $0.dates.endDate?.year }.max() ?? Constants.defaultLastYear
         firstYear = (minYear / 10) * 10
         lastYear = (maxYear / 10) * 10 + 10
         years = Array(firstYear...lastYear)

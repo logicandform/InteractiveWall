@@ -23,15 +23,6 @@ extension NSView {
         layer?.contents = image
     }
 
-    /// Calculates the screen index based off the x-position of the view
-    func calculateScreenIndex() -> Int? {
-        guard let window = window, let screen = NSScreen.containing(x: window.frame.midX), let screenIndex = screen.orderedIndex else {
-            return nil
-        }
-
-        return screenIndex
-    }
-
     func addBordersUnderHighlight() {
         addBorder(for: .left, indent: style.windowHighlightWidth)
         addBorder(for: .right, indent: style.windowHighlightWidth)

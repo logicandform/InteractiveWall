@@ -1,7 +1,8 @@
 excluded:
   - SQLite.swift
   - Templates
-
+  - Pods
+  
 whitelist_rules:
   - attributes
   - class_delegate_protocol
@@ -52,4 +53,3 @@ whitelist_rules:
   - vertical_parameter_alignment
   - void_return
   - weak_delegate
-
