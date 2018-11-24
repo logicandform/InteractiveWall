@@ -25,7 +25,7 @@ PODS:
 DEPENDENCIES:
   - Alamofire (~> 4.7)
   - AlamofireImage
-  - MacGestures (from `https://github.com/logicandform/MacGestures.git`)
+  - MacGestures
   - "MONode (from `git@github.com:SlantDesign/mo.git`)"
   - PromiseKit (~> 4.4)
   - PromiseKit/Alamofire
@@ -36,19 +36,15 @@ SPEC REPOS:
     - Alamofire
     - AlamofireImage
     - CocoaAsyncSocket
+    - MacGestures
     - PromiseKit
     - ReachabilitySwift
 
 EXTERNAL SOURCES:
-  MacGestures:
-    :git: https://github.com/logicandform/MacGestures.git
   MONode:
     :git: "git@github.com:SlantDesign/mo.git"
 
 CHECKOUT OPTIONS:
-  MacGestures:
-    :commit: 391b2a6e42095b8282b66c0fefe29e525bda3a6b
-    :git: https://github.com/logicandform/MacGestures.git
   MONode:
     :commit: 50eab2c5b295ec5a66d79aeb6637f19868b056b9
     :git: "git@github.com:SlantDesign/mo.git"
@@ -62,6 +58,6 @@ SPEC CHECKSUMS:
   PromiseKit: 743e497a5f505a470d3bbbf4ce0663c1268af0a4
   ReachabilitySwift: 408477d1b6ed9779dba301953171e017c31241f3
 
-PODFILE CHECKSUM: 99b410e8e2a6affb1690f7c90b49329f0f4b9200
+PODFILE CHECKSUM: f8c3fc4e334805fd7eece648f525bc978f853b19
 
 COCOAPODS: 1.6.0.beta.2
