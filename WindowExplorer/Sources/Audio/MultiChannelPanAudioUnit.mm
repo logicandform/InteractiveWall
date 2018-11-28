@@ -35,7 +35,7 @@ const AudioUnitParameterID locationParameterID = 1;
 @synthesize parameterTree = _parameterTree;
 
 
-+ (AVAudioFormat *)outputFormat {
++ (AVAudioFormat *)outputFormat:(double)sampleRate {
     // Create the output bus
     AudioChannelLayout *layout = (AudioChannelLayout *)malloc(sizeof(AudioChannelLayout) + sizeof(AudioChannelDescription) * (channels - 1));
     for (UInt32 channel = 0; channel < channels; channel += 1) {
@@ -51,7 +51,7 @@ const AudioUnitParameterID locationParameterID = 1;
     layout->mChannelLayoutTag = kAudioChannelLayoutTag_UseChannelDescriptions;
 
     AVAudioChannelLayout *alayout = [[AVAudioChannelLayout alloc] initWithLayout:layout];
-    return [[AVAudioFormat alloc] initStandardFormatWithSampleRate:44100 channelLayout:alayout];
+    return [[AVAudioFormat alloc] initStandardFormatWithSampleRate:sampleRate channelLayout:alayout];
 }
 
 - (instancetype)initWithComponentDescription:(AudioComponentDescription)componentDescription options:(AudioComponentInstantiationOptions)options error:(NSError **)outError {
@@ -75,37 +75,13 @@ const AudioUnitParameterID locationParameterID = 1;
                              flags:kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
                              valueStrings:nil dependentParameters:nil];
 
+
     // Initialize the parameter values.
     params.gain = 1;
     params.location = 0.5;
 
     // Create the parameter tree.
     _parameterTree = [AUParameterTree createTreeWithChildren:@[ gain, location ]];
-    
-    // Create the input bus
-    AVAudioFormat *inputFormat = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:44100.0 channels:1];
-    _inputBus.init(inputFormat, 2);
-    _inputBusArray = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self busType:AUAudioUnitBusTypeInput busses:@[_inputBus.bus]];
-
-    // Create the output bus
-    AudioChannelLayout *layout = (AudioChannelLayout *)malloc(sizeof(AudioChannelLayout) + sizeof(AudioChannelDescription) * (channels - 1));
-    for (UInt32 channel = 0; channel < channels; channel += 1) {
-        AudioChannelDescription *desc = &layout->mChannelDescriptions[channel];
-        desc->mChannelLabel = channel + 1;
-        desc->mChannelFlags = 0;
-        desc->mCoordinates[0] = 0;
-        desc->mCoordinates[1] = 0;
-        desc->mCoordinates[2] = 0;
-    }
-    layout->mNumberChannelDescriptions = channels;
-    layout->mChannelBitmap = 0;
-    layout->mChannelLayoutTag = kAudioChannelLayoutTag_UseChannelDescriptions;
-
-    AVAudioChannelLayout *alayout = [[AVAudioChannelLayout alloc] initWithLayout:layout];
-    AVAudioFormat *outputFormat = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:44100 channelLayout:alayout];
-    _outputBus = [[AUAudioUnitBus alloc] initWithFormat:outputFormat error:nil];
-    _outputBus.supportedChannelCounts = @[@(channels)];
-    _outputBusArray = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self busType:AUAudioUnitBusTypeOutput busses:@[_outputBus]];
 
     // implementorValueObserver is called when a parameter changes value.
     typeof(self) __weak weakSelf = self;
@@ -141,6 +117,33 @@ const AudioUnitParameterID locationParameterID = 1;
     self.maximumFramesToRender = 512;
     
     return self;
+}
+
+- (void)set:(double)sampleRate {
+    // Create the input bus
+    AVAudioFormat *inputFormat = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:sampleRate channels:1];
+    _inputBus.init(inputFormat, 2);
+    _inputBusArray = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self busType:AUAudioUnitBusTypeInput busses:@[_inputBus.bus]];
+
+    // Create the output bus
+    AudioChannelLayout *layout = (AudioChannelLayout *)malloc(sizeof(AudioChannelLayout) + sizeof(AudioChannelDescription) * (channels - 1));
+    for (UInt32 channel = 0; channel < channels; channel += 1) {
+        AudioChannelDescription *desc = &layout->mChannelDescriptions[channel];
+        desc->mChannelLabel = channel + 1;
+        desc->mChannelFlags = 0;
+        desc->mCoordinates[0] = 0;
+        desc->mCoordinates[1] = 0;
+        desc->mCoordinates[2] = 0;
+    }
+    layout->mNumberChannelDescriptions = channels;
+    layout->mChannelBitmap = 0;
+    layout->mChannelLayoutTag = kAudioChannelLayoutTag_UseChannelDescriptions;
+
+    AVAudioChannelLayout *alayout = [[AVAudioChannelLayout alloc] initWithLayout:layout];
+    AVAudioFormat *outputFormat = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:sampleRate channelLayout:alayout];
+    _outputBus = [[AUAudioUnitBus alloc] initWithFormat:outputFormat error:nil];
+    _outputBus.supportedChannelCounts = @[@(channels)];
+    _outputBusArray = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self busType:AUAudioUnitBusTypeOutput busses:@[_outputBus]];
 }
 
 - (Float32)gain {

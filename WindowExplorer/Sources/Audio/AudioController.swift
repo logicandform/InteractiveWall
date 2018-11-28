@@ -3,19 +3,19 @@
 import AVFoundation
 import Foundation
 
+
 public final class AudioController {
     public static let shared = AudioController()
 
     let engine = AVAudioEngine()
 
-    public init() {
-    }
+    public init() {}
 
     public func play(url: URL) -> AKPlayer? {
-        guard let player = AKPlayer(url: url) else {
+        guard let player = AKPlayer(url: url), let sampleRate = player.audioFile?.fileFormat.sampleRate else {
             return nil
         }
-        let format = MultiChannelPanAudioUnit.outputFormat()
+        let format = MultiChannelPanAudioUnit.outputFormat(sampleRate)
         engine.connect(player.avAudioNode, to: engine.outputNode, format: format)
         try! engine.start()
         player.start()

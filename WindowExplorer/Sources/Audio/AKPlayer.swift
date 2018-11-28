@@ -58,7 +58,7 @@ public class AKPlayer {
     // The underlying player node
     let playerNode = AVAudioPlayerNode()
     private var inmixer = AVAudioEnvironmentNode()
-    private var panner = MultiChannelPanner()
+    private var panner: MultiChannelPanner!
     private static var outmixer = AVAudioMixerNode()
     private var startingFrame: AVAudioFramePosition?
     private var endingFrame: AVAudioFramePosition?
@@ -189,8 +189,13 @@ public class AKPlayer {
         if !FileManager.default.fileExists(atPath: url.path) {
             return nil
         }
+
         do {
             let avfile = try AVAudioFile(forReading: url)
+            if avfile.fileFormat.channelCount != 2 {
+                print("Attempted to load audio for file that is not using stereo sound.")
+                return nil
+            }
             self.init(audioFile: avfile)
             return
         } catch {
@@ -203,6 +208,7 @@ public class AKPlayer {
     public convenience init(audioFile: AVAudioFile) {
         self.init()
         self.audioFile = audioFile
+        self.panner = MultiChannelPanner(sampleRate: audioFile.fileFormat.sampleRate)
         initialize()
     }
 
@@ -283,7 +289,14 @@ public class AKPlayer {
     /// Play using full options. Last in the convenience play chain, all play() commands will end up here
     public func play(from startingTime: Double, to endingTime: Double, at audioTime: AVAudioTime?) {
         preroll(from: startingTime, to: endingTime)
-        scheduleSegment(from: 0, frameCount: frameCount, at: audioTime, completion: nil)
+
+        if isBuffered {
+            let time = audioTime ?? AVAudioTime.now()
+            scheduleBuffer(at: time)
+        } else {
+            scheduleSegment(from: 0, frameCount: frameCount, at: audioTime, completion: nil)
+        }
+
         playerNode.play()
     }
 
@@ -349,6 +362,7 @@ public class AKPlayer {
         nextRenderFrame = frameToSchedule + AVAudioFramePosition(frameCount)
     }
 
+    // Play from buffer
     func scheduleBuffer(at audioTime: AVAudioTime) {
         guard let buffer = buffer else { return }
 
@@ -416,7 +430,9 @@ public class AKPlayer {
 
     // Fills the buffer with data read from audioFile
     private func updateBuffer(force: Bool = false) {
-        if !isBuffered { return }
+        if !isBuffered {
+            return
+        }
 
         guard let audioFile = audioFile else { return }
 

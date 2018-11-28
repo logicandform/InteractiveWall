@@ -43,7 +43,7 @@ final class MultiChannelPanner {
     // MARK: - Initialization
 
     /// Initialize this node
-    init(gain: Double = 1, location: Double = 0.5) {
+    init(sampleRate: Double, gain: Double = 1, location: Double = 0.5) {
         AUAudioUnit.registerSubclass(MultiChannelPanAudioUnit.self, as: MultiChannelPanner.componentDescription, name: "Local \(self)", version: UInt32.max)
         AVAudioUnit.instantiate(with: MultiChannelPanner.componentDescription, options: []) { avAudioUnit, _ in
             guard let avAudioUnit = avAudioUnit else {
@@ -51,7 +51,10 @@ final class MultiChannelPanner {
             }
             AudioController.shared.engine.attach(avAudioUnit)
             self.audioNode = avAudioUnit
-            self.internalAU = avAudioUnit.auAudioUnit as? MultiChannelPanAudioUnit
+            if let multiChannelPanAudioUnit = avAudioUnit.auAudioUnit as? MultiChannelPanAudioUnit {
+                self.internalAU = multiChannelPanAudioUnit
+                multiChannelPanAudioUnit.set(sampleRate)
+            }
         }
 
         guard let tree = internalAU?.parameterTree else {

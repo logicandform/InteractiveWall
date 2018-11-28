@@ -70,6 +70,25 @@ enum RecordType: String, SearchItemDisplayable {
         }
     }
 
+    var sortOrder: Int {
+        switch self {
+        case .event:
+            return 5
+        case .artifact:
+            return 6
+        case .organization:
+            return 4
+        case .school:
+            return 3
+        case .theme:
+            return 7
+        case .collection:
+            return 1
+        case .individual:
+            return 2
+        }
+    }
+
     static var searchValues: [RecordType] {
         return [.event, .school, .collection]
     }

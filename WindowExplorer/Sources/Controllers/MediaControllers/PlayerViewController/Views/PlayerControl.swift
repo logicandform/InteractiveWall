@@ -22,13 +22,14 @@ class PlayerControl: NSView {
     @IBOutlet private weak var durationLabel: NSTextField!
 
     weak var delegate: PlayerControlDelegate?
+    weak var audioPlayer: AKPlayer?
     private(set) var volume = VolumeLevel.low
     private var duration = CMTime()
     private var scrubbing = false
     private var currentScrubImageUpdateNumber = 0.0
     lazy private var scrubImageUpdateTimeInterval = duration.seconds / Constants.scrubImageUpdatesPerVideo
 
-    var player: AVPlayer? {
+    weak var player: AVPlayer? {
         didSet {
             setup(for: player)
         }
@@ -94,10 +95,10 @@ class PlayerControl: NSView {
         switch newState {
         case .playing:
             state = .playing
-            player?.play()
+            play(at: currentTime)
         case .paused:
             state = .paused
-            player?.pause()
+            stopPlaying()
         case .finished:
             return
         }
@@ -117,13 +118,13 @@ class PlayerControl: NSView {
         switch state {
         case .playing:
             state = .paused
-            player?.pause()
+            stopPlaying()
         case .paused:
             state = .playing
-            player?.play()
+            play(at: currentTime)
         case .finished:
-            seek(to: CMTimeMake(value: 0, timescale: duration.timescale))
             state = .paused
+            seek(to: .zero)
         }
     }
 
@@ -191,7 +192,7 @@ class PlayerControl: NSView {
         switch pan.state {
         case .began:
             scrubbing = true
-            player?.pause()
+            stopPlaying()
             if seekBar.frame.minX <= position.x && seekBar.frame.maxX >= position.x {
                 setCurrentTime(for: position)
                 seek(to: currentTime)
@@ -210,7 +211,7 @@ class PlayerControl: NSView {
         case .ended, .failed:
             seek(to: currentTime)
             if state == .playing {
-                player?.play()
+                play(at: currentTime)
             }
             scrubbing = false
         default:
@@ -237,16 +238,39 @@ class PlayerControl: NSView {
 
     // MARK: Helpers
 
+    private func seek(to time: CMTime) {
+        player?.seek(to: time, toleranceBefore: .zero, toleranceAfter: .zero)
+        audioPlayer?.setPosition(time.seconds)
+    }
+
+    private func play(at time: CMTime) {
+        guard let player = player, state == .playing, player.status == .readyToPlay else {
+            return
+        }
+
+        let loadTime = 0.5 as TimeInterval // Time to give the video and audio to load, in seconds
+        let hostTime = mach_absolute_time() + UInt64(loadTime * TimeInterval(NSEC_PER_SEC))
+
+        // Play video
+        player.setRate(1, time: .invalid, atHostTime: CMClockMakeHostTimeFromSystemUnits(hostTime))
+
+        // Play audio
+        if let audioPlayer = audioPlayer {
+            audioPlayer.play(from: time.seconds, to: audioPlayer.duration, at: AVAudioTime(hostTime: hostTime))
+        }
+    }
+
+    private func stopPlaying() {
+        player?.pause()
+        audioPlayer?.stop()
+    }
+
     private func setCurrentTime(for position: CGPoint) {
         let margin = Constants.seekBarInsetMargin
         let positionInSeekBar = Double((position.x - seekBar.frame.minX - margin) / (seekBar.frame.width - (margin * 2)))
         let seekPosition = clamp(positionInSeekBar, min: 0, max: 1)
         let timeInSeconds = seekPosition * duration.seconds
         currentTime = CMTime(seconds: timeInSeconds, preferredTimescale: duration.timescale)
-    }
-
-    private func seek(to time: CMTime) {
-        player?.seek(to: time, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
     }
 
     private func string(for time: CMTime) -> String? {

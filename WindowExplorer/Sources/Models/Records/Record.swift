@@ -27,7 +27,15 @@ class Record: Hashable, SearchItemDisplayable {
     private lazy var priority = PriorityOrder.priority(for: self)
 
     var relatedRecords: [Record] {
-        return relatedRecordsForType.values.reduce([], +).sorted { $0.priority > $1.priority }
+        return relatedRecordsForType.values.reduce([], +).sorted {
+            if $0.priority == $1.priority {
+                if $0.type == $1.type {
+                    return $0.id < $1.id
+                }
+                return $0.type.sortOrder < $1.type.sortOrder
+            }
+            return $0.priority > $1.priority
+        }
     }
 
     var hashValue: Int {

@@ -16,7 +16,7 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
     private var audioPlayer: AKPlayer?
 
     private struct Constants {
-        static let audioSyncInterval = 1.0/10.0
+        static let autoPlayDelay = 1.0
     }
 
 
@@ -36,7 +36,10 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
             audioPlayer?.location = horizontalPosition(of: window)
         }
         audioPlayer?.volume = playerControl.volume.gain
-        playerControl.toggle()
+        // Must delay auto play for player status to become ready
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.autoPlayDelay) { [weak self] in
+            self?.playerControl.toggle()
+        }
     }
 
 
@@ -91,18 +94,15 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         }
 
         let url = Configuration.localMediaURLs ? media.localURL : media.url
-        let controller = AudioController.shared
-        audioPlayer = controller.play(url: url)
-
-        var clock: CMClock?
-        CMAudioDeviceClockCreate(allocator: nil, deviceUID: nil, clockOut: &clock)
+        audioPlayer = AudioController.shared.play(url: url)
 
         let player = AVPlayer(url: url)
-        player.masterClock = clock
         player.isMuted = true
+        player.automaticallyWaitsToMinimizeStalling = false
         playerView.player = player
 
         playerControl.player = player
+        playerControl.audioPlayer = audioPlayer
         playerControl.gestureManager = gestureManager
         playerControl.tintColor = media.tintColor
         playerControl.delegate = self
@@ -112,20 +112,6 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         playerStateImageView.layer?.backgroundColor = style.darkBackground.cgColor
     }
 
-    private func playAudio() {
-        guard let player = playerView.player, playerControl.state != .playing else {
-            return
-        }
-
-        let loadTime = 0.5 as TimeInterval // Time to give the video and audio to load, in seconds
-        let hostTime = mach_absolute_time() + UInt64(loadTime * TimeInterval(NSEC_PER_SEC))
-
-        // Play video
-        player.setRate(1, time: CMTime.invalid, atHostTime: CMClockMakeHostTimeFromSystemUnits(hostTime))
-
-        // Play audio
-        audioPlayer?.start(at: AVAudioTime(hostTime: hostTime))
-    }
 
     private func setupGestures() {
         let singleFingerPlayerTap = TapGestureRecognizer()
@@ -168,10 +154,6 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
         })
 
         resetCloseWindowTimer()
-
-        if state == .playing {
-            playAudio()
-        }
     }
 
     func playerChangedVolume(_ state: VolumeLevel) {

@@ -14,6 +14,8 @@ extern const AudioUnitParameterID locationParameterID;
 /// Audio location between 0 and 1.
 @property (nonatomic) Float32 location;
 
-+ (AVAudioFormat *)outputFormat;
++ (AVAudioFormat *)outputFormat:(double)sampleRate;
+
+- (void)set:(double)sampleRate;
 
 @end
