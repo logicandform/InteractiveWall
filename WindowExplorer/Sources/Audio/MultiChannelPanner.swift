@@ -49,12 +49,12 @@ final class MultiChannelPanner {
             guard let avAudioUnit = avAudioUnit else {
                 return
             }
-            AudioController.shared.engine.attach(avAudioUnit)
             self.audioNode = avAudioUnit
             if let multiChannelPanAudioUnit = avAudioUnit.auAudioUnit as? MultiChannelPanAudioUnit {
                 self.internalAU = multiChannelPanAudioUnit
                 multiChannelPanAudioUnit.set(sampleRate)
             }
+            AudioController.shared.engine.attach(avAudioUnit)
         }
 
         guard let tree = internalAU?.parameterTree else {

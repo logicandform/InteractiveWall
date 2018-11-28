@@ -12,13 +12,18 @@ public final class AudioController {
     public init() {}
 
     public func play(url: URL) -> AKPlayer? {
-        guard let player = AKPlayer(url: url), let sampleRate = player.audioFile?.fileFormat.sampleRate else {
+        guard let player = AKPlayer(url: url), let audioFile = player.audioFile else {
             return nil
         }
-        let format = MultiChannelPanAudioUnit.outputFormat(sampleRate)
-        engine.connect(player.avAudioNode, to: engine.outputNode, format: format)
-        try! engine.start()
-        player.start()
+
+        let format = MultiChannelPanAudioUnit.outputFormat(audioFile.fileFormat.sampleRate)
+        DispatchQueue.main.async { [weak self] in
+            if let strongSelf = self {
+                strongSelf.engine.connect(player.avAudioNode, to: strongSelf.engine.outputNode, format: format)
+                try! strongSelf.engine.start()
+                player.start()
+            }
+        }
 
         return player
     }

@@ -37,7 +37,7 @@ import AVFoundation
  Please note that pre macOS 10.13 / iOS 11 the completionHandler isn't sample accurate. It's pretty close though.
  */
 public class AKPlayer {
-    open var avAudioNode: AVAudioNode
+    private(set) static var outmixer = AVAudioMixerNode()
 
     public struct Loop {
         public var start: Double = 0 {
@@ -55,11 +55,10 @@ public class AKPlayer {
 
     // MARK: - Private Parts
 
-    // The underlying player node
+    open var avAudioNode: AVAudioNode
     let playerNode = AVAudioPlayerNode()
     private var inmixer = AVAudioEnvironmentNode()
     private var panner: MultiChannelPanner!
-    private static var outmixer = AVAudioMixerNode()
     private var startingFrame: AVAudioFramePosition?
     private var endingFrame: AVAudioFramePosition?
     private var nextRenderFrame: AVAudioFramePosition = 0
@@ -232,16 +231,13 @@ public class AKPlayer {
             AudioController.shared.engine.attach(AKPlayer.outmixer)
         }
 
-        let format = AVAudioFormat(standardFormatWithSampleRate: audioFile.fileFormat.sampleRate,
-                                   channels: audioFile.fileFormat.channelCount)
+        let format = AVAudioFormat(standardFormatWithSampleRate: audioFile.fileFormat.sampleRate, channels: audioFile.fileFormat.channelCount)
         sampleRate = audioFile.fileFormat.sampleRate
 
         AudioController.shared.engine.connect(playerNode, to: inmixer, format: format)
         AudioController.shared.engine.connect(inmixer, to: panner.audioNode!, format: format)
 
-        let mixerFormat = AVAudioFormat(
-            standardFormatWithSampleRate: audioFile.fileFormat.sampleRate,
-            channels: 6)
+        let mixerFormat = AVAudioFormat(standardFormatWithSampleRate: audioFile.fileFormat.sampleRate, channels: 6)
         AudioController.shared.engine.connect(panner.audioNode!, to: AKPlayer.outmixer, format: mixerFormat)
 
         loop.start = 0
