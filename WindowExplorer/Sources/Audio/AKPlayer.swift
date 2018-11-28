@@ -94,7 +94,9 @@ public class AKPlayer {
 
     /// The duration of the loaded audio file
     public var duration: Double {
-        guard let audioFile = audioFile else { return 0 }
+        guard let audioFile = audioFile else {
+            return 0
+        }
         return Double(audioFile.length) / audioFile.fileFormat.sampleRate
     }
 
