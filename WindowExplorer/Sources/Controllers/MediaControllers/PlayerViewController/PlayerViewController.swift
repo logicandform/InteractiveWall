@@ -98,7 +98,6 @@ class PlayerViewController: MediaViewController, PlayerControlDelegate {
 
         let player = AVPlayer(url: url)
         player.isMuted = true
-        player.automaticallyWaitsToMinimizeStalling = false
         playerView.player = player
 
         playerControl.player = player

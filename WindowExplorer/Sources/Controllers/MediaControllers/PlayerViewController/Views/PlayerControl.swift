@@ -149,6 +149,7 @@ class PlayerControl: NSView {
             return
         }
 
+        player.automaticallyWaitsToMinimizeStalling = false
         duration = item.asset.duration
         if let durationString = string(for: duration) {
             durationLabel.stringValue = durationString
