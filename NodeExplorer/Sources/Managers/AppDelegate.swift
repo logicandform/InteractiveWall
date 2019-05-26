@@ -15,6 +15,7 @@ struct Configuration {
     static let touchScreen = TouchScreen.ur9851
     static let ungroupTimeoutDuration = 60.0
     static let clusterTimeoutDuration = 180.0
+    static let initialAppType = ApplicationType.timeline
 }
 
 

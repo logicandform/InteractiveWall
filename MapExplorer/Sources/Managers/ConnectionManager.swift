@@ -51,7 +51,7 @@ final class ConnectionManager {
         self.stateForMap = Array(repeating: initialState, count: numberOfApps)
         self.stateForTimeline = Array(repeating: initialState, count: numberOfApps)
         self.stateForNode = Array(repeating: initialState, count: numberOfApps)
-        self.typeForApp = Array(repeating: .mapExplorer, count: numberOfApps)
+        self.typeForApp = Array(repeating: Configuration.initialAppType, count: numberOfApps)
     }
 
 
@@ -212,12 +212,19 @@ final class ConnectionManager {
         let initialState = AppState(pair: nil, group: nil)
         stateForMap = Array(repeating: initialState, count: numberOfApps)
         stateForTimeline = Array(repeating: initialState, count: numberOfApps)
-        typeForApp = Array(repeating: .mapExplorer, count: numberOfApps)
-        transition(app: appID, to: .mapExplorer)
+        typeForApp = Array(repeating: Configuration.initialAppType, count: numberOfApps)
+        transition(app: appID, to: Configuration.initialAppType)
         timelineHandler?.reset(animated: true)
         let centerAppID = (Configuration.numberOfScreens * Configuration.appsPerScreen - 1) / 2
         if appID == centerAppID {
-            mapHandler?.reset(animated: true)
+            switch Configuration.initialAppType {
+            case .mapExplorer:
+                mapHandler?.reset(animated: true)
+            case .timeline:
+                timelineHandler?.reset(animated: true)
+            case .nodeNetwork:
+                break
+            }
         }
     }
 
@@ -243,34 +250,55 @@ final class ConnectionManager {
                 if let appPair = state.pair {
                     // Check if incoming id is closer than current pair
                     if abs(app - id) < abs(app - appPair) || appPair == id {
-                        typeForApp[app] = .mapExplorer
-                        transition(app: app, to: .mapExplorer)
+                        typeForApp[app] = Configuration.initialAppType
+                        transition(app: app, to: Configuration.initialAppType)
                         transitionedApps.append(app)
-                        if app == appID, type == .timeline {
-                            timelineHandler?.reset(animated: true)
+                        if app == appID {
+                            switch (type, Configuration.initialAppType) {
+                            case (.mapExplorer, .timeline):
+                                mapHandler?.reset(animated: true)
+                            case (.timeline, .mapExplorer):
+                                timelineHandler?.reset(animated: true)
+                            default:
+                                break
+                            }
                         }
                     }
                 } else {
-                    typeForApp[app] = .mapExplorer
-                    transition(app: app, to: .mapExplorer)
+                    typeForApp[app] = Configuration.initialAppType
+                    transition(app: app, to: Configuration.initialAppType)
                     transitionedApps.append(app)
-                    if app == appID, type == .timeline {
-                        timelineHandler?.reset(animated: true)
+                    if app == appID {
+                        switch (type, Configuration.initialAppType) {
+                        case (.mapExplorer, .timeline):
+                            mapHandler?.reset(animated: true)
+                        case (.timeline, .mapExplorer):
+                            timelineHandler?.reset(animated: true)
+                        default:
+                            break
+                        }
                     }
                 }
             }
         }
 
         // Force the apps that transitioned into new group, then sync group
-        let group = groupForApp(id: id, type: .mapExplorer) ?? id
-        setAppState(from: id, group: group, for: .mapExplorer, gestureState: .animated, transitioning: true)
+        let group = groupForApp(id: id, type: Configuration.initialAppType) ?? id
+        setAppState(from: id, group: group, for: Configuration.initialAppType, gestureState: .animated, transitioning: true)
         for app in transitionedApps {
-            set(AppState(pair: nil, group: id), for: .mapExplorer, id: app)
+            set(AppState(pair: nil, group: id), for: Configuration.initialAppType, id: app)
         }
         if appID == id {
-            mapHandler?.reset(animated: true)
+            switch Configuration.initialAppType {
+            case .mapExplorer:
+                mapHandler?.reset(animated: true)
+            case .timeline:
+                timelineHandler?.reset(animated: true)
+            case .nodeNetwork:
+                break
+            }
         }
-        resetTimerForApp(id: id, with: .mapExplorer)
+        resetTimerForApp(id: id, with: Configuration.initialAppType)
     }
 
     private func transition(from oldType: ApplicationType, to newType: ApplicationType, id: Int, group: Int?) {

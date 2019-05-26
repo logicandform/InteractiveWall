@@ -20,6 +20,7 @@ struct Configuration {
     static let closeWindowTimeoutDuration = 180.0
     static let menuResetTimeoutDuration = 180.0
     static let shutdownHour = 20
+    static let initialAppType = ApplicationType.timeline
 }
 
 

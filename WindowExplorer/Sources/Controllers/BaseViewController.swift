@@ -47,7 +47,7 @@ class BaseViewController: NSViewController, GestureResponder {
         let mousePan = NSPanGestureRecognizer(target: self, action: #selector(handleMousePan(_:)))
         windowDragArea.addGestureRecognizer(mousePan)
 
-        windowPanGesture = PanGestureRecognizer()
+        let windowPanGesture = PanGestureRecognizer()
         gestureManager.add(windowPanGesture, to: windowDragArea)
         windowPanGesture.gestureUpdated = { [weak self] gesture in
             self?.handleWindowPan(gesture)
@@ -193,19 +193,16 @@ class BaseViewController: NSViewController, GestureResponder {
     // MARK: Gesture Handling
 
     func handleWindowPan(_ gesture: GestureRecognizer) {
-        guard let pan = gesture as? PanGestureRecognizer, let window = view.window, !animating else {
+        guard let pan = gesture as? PanGestureRecognizer,
+            let window = view.window else {
             return
         }
 
         switch pan.state {
         case .recognized, .momentum:
-            parentDelegate?.controllerDidMove(self)
-            relationshipHelper?.reset()
             var origin = window.frame.origin
             origin += pan.delta.round()
             window.setFrameOrigin(origin)
-        case .possible:
-            WindowManager.instance.checkBounds(of: self)
         default:
             return
         }

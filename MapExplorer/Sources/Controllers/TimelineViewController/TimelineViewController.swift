@@ -100,7 +100,7 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     }
 
     func set(verticalPosition: CGFloat, animated: Bool) {
-        if !animated {
+        guard animated else {
             timelineBottomConstraint.constant = verticalPosition
             return
         }
@@ -129,7 +129,6 @@ class TimelineViewController: NSViewController, GestureResponder, SelectionHandl
     // MARK: Setup
 
     private func setupViews() {
-        view.alphaValue = 0
         view.wantsLayer = true
         view.layer?.backgroundColor = style.timelineShadingColor.cgColor
         timelineBackgroundView.wantsLayer = true

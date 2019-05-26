@@ -862,7 +862,7 @@
 				22A9231B2044AF05003EA9BB /* Resources */,
 				22A9234F2044B09D003EA9BB /* Embed XPC Services */,
 				D706A887330181305494F3D8 /* [CP] Embed Pods Frameworks */,
-				A4F3914A20BCBB490034D304 /* ShellScript */,
+				A4F3914A20BCBB490034D304 /* Swiftlint Script */,
 			);
 			buildRules = (
 			);
@@ -958,13 +958,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		A4F3914A20BCBB490034D304 /* ShellScript */ = {
+		A4F3914A20BCBB490034D304 /* Swiftlint Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Swiftlint Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -16,6 +16,7 @@ struct Configuration {
     static let ungroupTimoutDuration = 90.0
     static let mbtilesPath = "/Users/irshdc/dev/CanadaDark.mbtiles"
 //    static let mbtilesPath = "/Users/Tim/Xcode/UBC/CanadaShoreIceRoad.mbtiles"
+    static let initialAppType = ApplicationType.timeline
 }
 
 

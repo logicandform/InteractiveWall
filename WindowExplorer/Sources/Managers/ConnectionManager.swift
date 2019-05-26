@@ -45,7 +45,7 @@ final class ConnectionManager {
         self.stateForMap = Array(repeating: initialState, count: numberOfApps)
         self.stateForTimeline = Array(repeating: initialState, count: numberOfApps)
         self.stateForNode = Array(repeating: initialState, count: numberOfApps)
-        self.typeForApp = Array(repeating: .mapExplorer, count: numberOfApps)
+        self.typeForApp = Array(repeating: Configuration.initialAppType, count: numberOfApps)
     }
 
 
@@ -176,7 +176,7 @@ final class ConnectionManager {
             }
         case SettingsNotification.reset.name:
             if let typeString = info[Keys.type] as? String, let type = ApplicationType(rawValue: typeString) {
-                transition(from: type, to: .mapExplorer, id: id, group: group)
+                transition(from: type, to: Configuration.initialAppType, id: id, group: group)
             }
         case SettingsNotification.accessibility.name:
             let group = group ?? id
@@ -197,9 +197,9 @@ final class ConnectionManager {
         let initialState = AppState(pair: nil, group: nil)
         stateForMap = Array(repeating: initialState, count: numberOfApps)
         stateForTimeline = Array(repeating: initialState, count: numberOfApps)
-        typeForApp = Array(repeating: .mapExplorer, count: numberOfApps)
+        typeForApp = Array(repeating: Configuration.initialAppType, count: numberOfApps)
         for app in (0 ..< numberOfApps) {
-            updateMenu(id: app, to: .mapExplorer)
+            updateMenu(id: app, to: Configuration.initialAppType)
         }
     }
 
